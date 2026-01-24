@@ -1,0 +1,3 @@
+/home/ssuny/CaptainSkillTree/C:/temp/CaptainSkillTree/obj/Captain_SkillTree.csproj.AssemblyReference.cache
+/home/ssuny/CaptainSkillTree/C:/temp/CaptainSkillTree/obj/Captain_SkillTree.GeneratedMSBuildEditorConfig.editorconfig
+/home/ssuny/CaptainSkillTree/C:/temp/CaptainSkillTree/obj/Captain_SkillTree.csproj.CoreCompileInputs.cache

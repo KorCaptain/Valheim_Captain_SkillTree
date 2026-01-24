@@ -1,0 +1,10 @@
+﻿{
+  "name": "CaptainSkillTree",
+  "version_number": "0.1.167",
+  "website_url": "https://github.com/yourusername/CaptainSkillTree",
+  "description": "Valheim Skill Tree Expansion - EpicMMOSystem Expert System",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2200",
+    "blacks7ar-EpicMMOSystem-1.6.9"
+  ]
+}

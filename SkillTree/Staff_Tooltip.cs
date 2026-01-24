@@ -1,0 +1,229 @@
+using System;
+
+namespace CaptainSkillTree.SkillTree
+{
+    /// <summary>
+    /// 지팡이 스킬 동적 툴팁 시스템 (컨피그 연동)
+    /// HealerMode_Tooltip 패턴을 따라 이중 시전 툴팁을 동적으로 생성
+    /// </summary>
+    public static class Staff_Tooltip
+    {
+        /// <summary>
+        /// 이중 시전 툴팁 데이터 구조체
+        /// </summary>
+        public class DualCastTooltipData
+        {
+            public string skillName = "";
+            public string description = "";
+            public string additionalInfo = "";
+            public string projectileCount = "";
+            public string damagePercent = "";
+            public string angleOffset = "";
+            public string eitrCost = "";
+            public string cooldown = "";
+            public string skillType = "";
+            public string requirement = "";
+            public string confirmation = "";
+            public string specialNote = "";
+        }
+
+        /// <summary>
+        /// 이중 시전 스킬 동적 툴팁 생성 (컨피그 연동)
+        /// </summary>
+        public static string GetDualCastTooltip()
+        {
+            try
+            {
+                // Staff_Config에서 동적 설정값 가져오기
+                int projectileCount = Staff_Config.StaffDoubleCastProjectileCountValue;
+                float damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue;
+                float angleOffset = Staff_Config.StaffDoubleCastAngleOffsetValue;
+                float eitrCost = Staff_Config.StaffDoubleCastEitrCostValue;
+                float cooldown = Staff_Config.StaffDoubleCastCooldownValue;
+
+                // 필요포인트 가져오기
+                var requiredPoints = Staff_Config.StaffDoubleCastRequiredPointsValue;
+
+                // 상세 툴팁 데이터 생성
+                var data = new DualCastTooltipData
+                {
+                    skillName = "이중 시전",
+                    description = $"T키로 {projectileCount}발 추가 마법 발사체 발사",
+                    additionalInfo = $"좌 -{angleOffset:F0}°, 우 +{angleOffset:F0}° 각도로 분산 발사",
+                    projectileCount = $"{projectileCount}발",
+                    damagePercent = $"{damagePercent:F0}%",
+                    angleOffset = $"±{angleOffset:F0}°",
+                    eitrCost = $"{eitrCost:F0}",
+                    cooldown = $"{cooldown:F0}초",
+                    skillType = "액티브 스킬(T키)",
+                    requirement = "지팡이 또는 완드 착용",
+                    confirmation = "", // 확인사항 제거
+                    specialNote = $"30초간 버프 유지, 다음 마법 공격 시 자동 발동\n\n<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                };
+
+                string finalTooltip = GenerateDualCastTooltip(data);
+                return finalTooltip;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전 툴팁] 툴팁 생성 실패: {ex.Message}");
+                return GetDualCastFallbackTooltip();
+            }
+        }
+
+        /// <summary>
+        /// 이중 시전 툴팁 생성 (HealerMode_Tooltip 구조 참조)
+        /// </summary>
+        public static string GenerateDualCastTooltip(DualCastTooltipData data)
+        {
+            try
+            {
+                var tooltip = "";
+
+                // 스킬 이름 (황금색, 크기 22)
+                if (!string.IsNullOrEmpty(data.skillName))
+                {
+                    tooltip += $"<color=#FFD700><size=22>{data.skillName}</size></color>\n\n";
+                }
+
+                // 설명 섹션
+                if (!string.IsNullOrEmpty(data.description))
+                {
+                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+
+                    if (!string.IsNullOrEmpty(data.additionalInfo))
+                    {
+                        tooltip += $" ({data.additionalInfo})";
+                    }
+                    tooltip += "</size></color>\n";
+                }
+
+                // 발사체 효과 섹션
+                if (!string.IsNullOrEmpty(data.projectileCount))
+                {
+                    tooltip += $"<color=#98FB98><size=16>🏹 발사체 효과: </size></color><color=#00FF00><size=16>추가 {data.projectileCount} 발사</size></color>\n";
+                }
+
+                // 데미지 섹션
+                if (!string.IsNullOrEmpty(data.damagePercent))
+                {
+                    tooltip += $"<color=#87CEEB><size=16>⚔️ 발사체 데미지: </size></color><color=#B0E0E6><size=16>지팡이/완드 공격력의 {data.damagePercent}</size></color>\n";
+                }
+
+                // 분산 각도 섹션
+                if (!string.IsNullOrEmpty(data.angleOffset))
+                {
+                    tooltip += $"<color=#87CEEB><size=16>📍 분산 각도: </size></color><color=#B0E0E6><size=16>{data.angleOffset}</size></color>\n";
+                }
+
+                // 소모 섹션
+                if (!string.IsNullOrEmpty(data.eitrCost))
+                {
+                    tooltip += $"<color=#FFB347><size=16>⚡ 소모: </size></color><color=#FFDAB9><size=16>Eitr {data.eitrCost}</size></color>\n";
+                }
+
+                // 스킬 유형 섹션
+                if (!string.IsNullOrEmpty(data.skillType))
+                {
+                    tooltip += $"<color=#87CEEB><size=16>🔮 스킬유형: </size></color><color=#B0E0E6><size=16>{data.skillType}</size></color>\n";
+                }
+
+                // 쿨타임 섹션
+                if (!string.IsNullOrEmpty(data.cooldown))
+                {
+                    tooltip += $"<color=#FFA500><size=16>⏳ 쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                }
+
+                // 필요조건 섹션
+                if (!string.IsNullOrEmpty(data.requirement))
+                {
+                    tooltip += $"<color=#98FB98><size=16>✅ 필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                }
+
+                // 확인사항 섹션 (빈 문자열이면 표시하지 않음)
+                if (!string.IsNullOrEmpty(data.confirmation))
+                {
+                    tooltip += $"<color=#F0E68C><size=16>⚠️ 확인사항: </size></color><color=#FFE4B5><size=16>🪄 {data.confirmation}</size></color>\n";
+                }
+
+                // 특별 안내 섹션
+                if (!string.IsNullOrEmpty(data.specialNote))
+                {
+                    tooltip += $"<color=#DDA0DD><size=16>💡 특별안내: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
+                }
+
+                return tooltip.TrimEnd('\n');
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전 툴팁] 구조화된 툴팁 생성 실패: {ex.Message}");
+                return GetDualCastFallbackTooltip();
+            }
+        }
+
+        /// <summary>
+        /// 이중 시전 백업 툴팁 (오류 시 사용)
+        /// </summary>
+        public static string GetDualCastFallbackTooltip()
+        {
+            var requiredPoints = Staff_Config.StaffDoubleCastRequiredPointsValue;
+
+            return "<color=#FFD700><size=22>이중 시전</size></color>\n\n" +
+                   "<color=#E0E0E0><size=16>T키: 추가 마법 발사체 2발 발사 (좌 -5°, 우 +5°)\n\n" +
+                   "• 발사체 데미지: 지팡이/완드 공격력의 70%\n" +
+                   "• 소모: Eitr 20\n" +
+                   "• 쿨타임: 30초\n" +
+                   "• 필요조건: 지팡이 또는 완드 착용\n\n" +
+                   "💥 스킬유형: 액티브 버프 스킬(T키)\n\n" +
+                   $"<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";
+        }
+
+        /// <summary>
+        /// 툴팁 데이터 검증
+        /// </summary>
+        public static bool ValidateTooltipData(DualCastTooltipData data)
+        {
+            try
+            {
+                if (data == null)
+                {
+                    Plugin.Log.LogError("[이중 시전 툴팁] 툴팁 데이터가 null입니다");
+                    return false;
+                }
+
+                if (string.IsNullOrEmpty(data.skillName))
+                {
+                    Plugin.Log.LogWarning("[이중 시전 툴팁] 스킬 이름이 비어있습니다");
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전 툴팁] 데이터 검증 실패: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 현재 컨피그 값들 디버그 출력
+        /// </summary>
+        public static void LogCurrentTooltipConfig()
+        {
+            try
+            {
+                Plugin.Log.LogInfo("[이중 시전 툴팁] 현재 컨피그 기반 툴팁 설정:");
+                Plugin.Log.LogInfo($"  - 추가 발사체 수: {Staff_Config.StaffDoubleCastProjectileCountValue}개");
+                Plugin.Log.LogInfo($"  - 발사체 데미지: {Staff_Config.StaffDoubleCastDamagePercentValue}%");
+                Plugin.Log.LogInfo($"  - 각도 오프셋: ±{Staff_Config.StaffDoubleCastAngleOffsetValue}°");
+                Plugin.Log.LogInfo($"  - 에이트르 소모: {Staff_Config.StaffDoubleCastEitrCostValue}");
+                Plugin.Log.LogInfo($"  - 쿨타임: {Staff_Config.StaffDoubleCastCooldownValue}초");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전 툴팁] 컨피그 로그 출력 실패: {ex.Message}");
+            }
+        }
+    }
+}

@@ -1,0 +1,235 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>CaptainSkillTree</AssemblyName>
+    <RootNamespace>CaptainSkillTree</RootNamespace>
+    <OutputType>Library</OutputType>
+    <Platforms>x64</Platforms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>disable</Nullable>
+    <NoWarn>CS8618;CS8625;CS8603;CS8600;CS8602;CS0618;CS8632;MSB3539</NoWarn>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <BaseIntermediateOutputPath>C:\Users\ssuny\Desktop\Cusor_data\obj\</BaseIntermediateOutputPath>
+    <BaseOutputPath>C:\Users\ssuny\Desktop\Cusor_data\bin\</BaseOutputPath>
+    <IntermediateOutputPath>C:\Users\ssuny\Desktop\Cusor_data\obj\</IntermediateOutputPath>
+    <OutputPath>C:\Users\ssuny\Desktop\Cusor_data\bin\</OutputPath>
+    <UseSharedCompilation>false</UseSharedCompilation>
+    <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
+    <!-- 🔧 버전 관리 시스템 -->
+    <Version>0.1.167</Version>
+    <AutoIncrementVersion>true</AutoIncrementVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- BepInEx 참조 (admin 사용자로 변경) -->
+    <Reference Include="assembly_utils">
+      <HintPath>C:\SteamLibrary\steamapps\common\Valheim\valheim_Data\Managed\publicized_assemblies\assembly_utils_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="assembly_valheim">
+      <HintPath>Lib\assembly_valheim_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>C:\Users\admin\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Cusor_1\BepInEx\core\BepInEx.dll</HintPath>
+    </Reference>
+    <!-- Harmony 참조 (하나만 유지) -->
+    <Reference Include="0Harmony">
+      <HintPath>C:\Users\admin\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Cusor_1\BepInEx\core\0Harmony.dll</HintPath>
+    </Reference>
+    <!-- EpicMMOSystem.dll 참조 -->
+    <Reference Include="EpicMMOSystem">
+      <HintPath>C:\Users\admin\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Cusor_1\BepInEx\plugins\WackyMole-WackyEpicMMOSystem\EpicMMOSystem.dll</HintPath>
+    </Reference>
+    <!-- AnimationSpeedManager.dll 참조 (배포 시 포함) -->
+    <Reference Include="AnimationSpeedManager">
+      <HintPath>Lib\AnimationSpeedManager.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <!-- Jotunn 참조 -->
+    <Reference Include="Jotunn">
+      <HintPath>C:\Users\admin\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Cusor_1\BepInEx\plugins\ValheimModding-Jotunn\Jotunn.dll</HintPath>
+    </Reference>
+    <!-- UnityEngine 메인 엔진 DLL 참조 -->
+    <Reference Include="UnityEngine">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\Valheim\valheim_Data\Managed\publicized_assemblies\UnityEngine.AudioModule_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\Valheim\valheim_Data\Managed\publicized_assemblies\UnityEngine.PhysicsModule_publicized.dll</HintPath>
+    </Reference>
+    <!-- UnityEngine.UIModule (CanvasRenderer 등 UI 핵심) -->
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <!-- 기타 참조는 모두 C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed 또는 plugins 폴더 -->
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>bin/x64/Debug/net48/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <!-- UnityWebRequest for BGM audio loading -->
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <!-- ParticleSystem 모듈 추가 - VFX 효과 구현에 필수 -->
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="**\*.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- 레거시 파일들 빌드에서 제외 -->
+    <Compile Remove="SkillTree\SpearComboActiveSkill.cs" />
+    <Compile Remove="SkillTree\SpearThrowActiveSkill.cs" />
+    <!-- Skill_data 폴더에서 구 버전 API 파일들 제외 -->
+    <Compile Remove="SkillTree\Skill_data\**\*.cs" />
+    <!-- MultiShot.cs 제거 (아처 멀티샷 주석 처리로 인해 불필요) -->
+    <!-- 
+    <Compile Include="..\Skill_data\MultiShot.cs">
+      <Link>SkillTree\MultiShot.cs</Link>
+    </Compile>
+    -->
+  </ItemGroup>
+  <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <!-- Newtonsoft.Json 제거 - BepInEx 환경에서 의존성 문제 발생 -->
+  <!--
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  -->
+  <ItemGroup>
+    <!-- 아이콘 및 UI 에셋 (Resources 폴더 유지) -->
+    <EmbeddedResource Include="asset/Resources/captainskilltreeui" />
+    <EmbeddedResource Include="asset/Resources/skill_start" />
+    <EmbeddedResource Include="asset/Resources/skill_node" />
+    <EmbeddedResource Include="asset/Resources/job_icon" />
+    <!-- BGM 음원 파일 (Resources 폴더 유지) -->
+    <EmbeddedResource Include="asset/Resources/Skill_Tree_BGM.ogg" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- VFX 효과 에셋들 (VFX 폴더의 모든 프리팹을 EmbeddedResource로 포함) -->
+    <!-- AOE 슬래시 효과 (작동하지 않는 파일들 제거됨) -->
+    <!-- <EmbeddedResource Include="asset/VFX/aoe slash blue" /> -->
+    <!-- 삭제된 파일: aoe slash green, aoe slash orange -->
+    <!-- 영역 효과 -->
+    <EmbeddedResource Include="asset/VFX/area_circles_blue" />
+    <EmbeddedResource Include="asset/VFX/area_fire_red" />
+    <EmbeddedResource Include="asset/VFX/area_heal_green" />
+    <EmbeddedResource Include="asset/VFX/area_magic_multicolor" />
+    <EmbeddedResource Include="asset/VFX/area_star_ellow" />
+    <!-- 버프/디버프 효과 (buff_01 파일 추가 - "Buff_01" GameObject 포함) -->
+    <EmbeddedResource Include="asset/VFX/buff_01" />
+    <EmbeddedResource Include="asset/VFX/buff_02a" />
+    <EmbeddedResource Include="asset/VFX/buff_03a" />
+    <EmbeddedResource Include="asset/VFX/buff_03a_aura" />
+    <EmbeddedResource Include="asset/VFX/debuff" />
+    <EmbeddedResource Include="asset/VFX/debuff_03" />
+    <EmbeddedResource Include="asset/VFX/debuff_03_aura" />
+    <EmbeddedResource Include="asset/VFX/statusailment_01" />
+    <EmbeddedResource Include="asset/VFX/statusailment_01_aura" />
+    <!-- 색종이 효과 -->
+    <EmbeddedResource Include="asset/VFX/confetti_blast_multicolor" />
+    <EmbeddedResource Include="asset/VFX/confetti_directional_multicolor" />
+    <!-- 먼지/연기 효과 (삭제된 파일들 제거) -->
+    <EmbeddedResource Include="asset/VFX/dust_permanently_blue" />
+    <!-- 삭제된 파일: dust ground, smoke ground, smoke aoe explosion -->
+    <!-- 플래시 효과 -->
+    <EmbeddedResource Include="asset/VFX/flash_blue_purple" />
+    <EmbeddedResource Include="asset/VFX/flash_ellow" />
+    <EmbeddedResource Include="asset/VFX/flash_ellow_pink" />
+    <EmbeddedResource Include="asset/VFX/flash_magic_blue_pink" />
+    <EmbeddedResource Include="asset/VFX/flash_magic_ellow_blue" />
+    <EmbeddedResource Include="asset/VFX/flash_round_ellow" />
+    <EmbeddedResource Include="asset/VFX/flash_star_ellow_green" />
+    <EmbeddedResource Include="asset/VFX/flash_star_ellow_purple" />
+    <!-- 특수 지면 효과 (ground aoe explosion 파일 삭제되어 주석 처리) -->
+    <!-- <EmbeddedResource Include="asset/VFX/ground aoe explosion" /> -->
+    <!-- 방어/치료 효과 -->
+    <EmbeddedResource Include="asset/VFX/guard_01" />
+    <EmbeddedResource Include="asset/VFX/healing" />
+    <!-- 타격 효과 -->
+    <EmbeddedResource Include="asset/VFX/hit_01" />
+    <EmbeddedResource Include="asset/VFX/hit_02" />
+    <EmbeddedResource Include="asset/VFX/hit_03" />
+    <EmbeddedResource Include="asset/VFX/hit_04" />
+    <!-- 레이저/마법 효과 (laser aoe, meteors aoe 파일 삭제되어 주석 처리) -->
+    <!-- <EmbeddedResource Include="asset/VFX/laser aoe" /> -->
+    <!-- <EmbeddedResource Include="asset/VFX/meteors aoe" /> -->
+    <!-- 러브/오라 효과 (star aura 제거 - 사용하지 않음) -->
+    <!-- 멀티샷/플렉서스 효과 (multishot 파일 없음 - sparkle_ellow로 대체) -->
+    <!-- <EmbeddedResource Include="asset/VFX/multishot" /> -->
+    <EmbeddedResource Include="asset/VFX/plexus" />
+    <!-- <EmbeddedResource Include="asset/VFX/plexus aoe" /> -->
+    <!-- 폭발 효과 (삭제된 파일들 제거) -->
+    <!-- 삭제된 파일: red energy explosion, snow aoe -->
+    <!-- 샤인 효과 -->
+    <EmbeddedResource Include="asset/VFX/shine_blue" />
+    <EmbeddedResource Include="asset/VFX/shine_ellow" />
+    <EmbeddedResource Include="asset/VFX/shine_pink" />
+    <!-- 스파클/스파크 효과 (삭제된 파일들 제거) -->
+    <EmbeddedResource Include="asset/VFX/sparkle_ellow" />
+    <!-- 삭제된 파일: sparks blue -->
+    <!-- 특수 효과 (taunt 파일 복구됨) -->
+    <EmbeddedResource Include="asset/VFX/taunt" />
+    <!-- 워터 블라스트 효과 -->
+    <EmbeddedResource Include="asset/VFX/water_blast_blue" />
+    <EmbeddedResource Include="asset/VFX/water_blast_green" />
+    <!-- 쇼크 효과 (shock_vfx 시리즈 제거 - 사용하지 않음) -->
+  </ItemGroup>
+  <!--
+    * 각 참조별로 지정된 경로만 사용
+    * EpicMMOSystem.dll, Jotunn.dll 등은 최신 버전으로 직접 복사 필요
+  -->
+  <!-- 🔧 자동 버전 증가 타겟 -->
+  <Target Name="IncrementVersion" BeforeTargets="BeforeBuild" Condition="'$(AutoIncrementVersion)' == 'true'">
+    <Message Text="🔧 버전 자동 증가 시스템 실행..." Importance="high" />
+    <Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)build\IncrementVersion.ps1&quot; -ProjectFile &quot;$(MSBuildProjectFullPath)&quot; -ProjectDir &quot;$(ProjectDir)&quot;" ConsoleToMSBuild="true" IgnoreStandardErrorWarningFormat="true" />
+  </Target>
+</Project>
