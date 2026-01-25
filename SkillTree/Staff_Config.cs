@@ -269,7 +269,8 @@ namespace CaptainSkillTree.SkillTree
         public static int StaffHealerRequiredPointsValue => StaffHealerRequiredPoints?.Value ?? 3;
 
         // 힐러모드 이펙트 하드코딩 상수 (동적 연동 시스템)
-        public static string StaffHealerBuffVFXValue => "buff_03a";
+        // Valheim 내장 VFX 사용 (buff_03a 대체 - ZNetView 충돌 방지)
+        public static string StaffHealerBuffVFXValue => "vfx_Potion_health_medium";
         public static string StaffHealerStatusVFXValue => "statusailment_01_aura";
         public static string StaffHealerHealingVFXValue => "vfx_HealthUpgrade";
         public static string StaffHealerActivationSoundValue => "sfx_dverger_heal_start";

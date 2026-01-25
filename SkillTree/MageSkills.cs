@@ -201,8 +201,8 @@ namespace CaptainSkillTree.SkillTree
                 
                 Vector3 playerPos = player.transform.position;
 
-                // ZRoutedRpc를 통한 멀티플레이어 VFX
-                VFXManager.PlayVFXMultiplayer("vfx_GodExplosion", "", playerPos, player.transform.rotation, 3f);
+                // SimpleVFX로 VFX 재생
+                SimpleVFX.Play("vfx_GodExplosion", playerPos, 3f);
                 
                 // 범위 내 모든 몬스터 찾기 (개선된 검색 로직)
                 List<Character> targets = new List<Character>();
@@ -302,11 +302,11 @@ namespace CaptainSkillTree.SkillTree
         {
             if (caster == null || target == null) yield break;
 
-            // ✅ VFX 재생 (EpicMMOSystem 방식 - 단순 Instantiate + Destroy)
+            // ✅ VFX 재생 (SimpleVFX 방식)
             try
             {
                 Vector3 targetPos = target.transform.position + Vector3.up * 1.5f;
-                VFXManager.PlayVFXMultiplayer(vfxName, "", targetPos, target.transform.rotation, duration);
+                SimpleVFX.Play(vfxName, targetPos, duration);
             }
             catch (System.Exception ex)
             {
@@ -346,8 +346,8 @@ namespace CaptainSkillTree.SkillTree
                 // 폭발 효과 - vfx_HealthUpgrade 종료와 함께 데미지 적용
                 Vector3 targetPos = target.transform.position;
 
-                // ZRoutedRpc를 통한 멀티플레이어 VFX/사운드
-                VFXManager.PlayVFXMultiplayer("fx_siegebomb_explosion", "sfx_GiantDemolisher_rock_destroyed", targetPos, target.transform.rotation, 2f);
+                // SimpleVFX로 VFX + 사운드 재생
+                SimpleVFX.PlayWithSound("fx_siegebomb_explosion", "sfx_GiantDemolisher_rock_destroyed", targetPos, 2f);
                 
                 // 데미지 적용
                 HitData hitData = new HitData();

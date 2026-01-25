@@ -37,50 +37,8 @@ namespace CaptainSkillTree
         //    여기서는 이동속도 버프만 적용 (선택적)
         public static void TryApplyDodgeAndSpeedBuff(Player player)
         {
-            // "신경강화" 스킬을 배웠는지 확인
+            // 신경강화 스킬의 회피율은 SkillEffect.StatTree에서 영구 적용
             if (SkillTreeManager.Instance.GetSkillLevel("defense_Step6_attack") <= 0) return;
-
-            // ✅ 참고: 신경강화 스킬의 회피율 +15%는 이제 영구 효과로 변경됨
-            //    공격 시 추가 버프가 필요하면 여기에 구현 가능
-            //    현재는 비활성화 상태 (필요 시 주석 해제)
-
-            /*
-            // 공격 시 이동속도 임시 버프 (선택적)
-            float now = Time.time;
-            if (!lastTriggeredTime.ContainsKey(player.GetPlayerID()) || now - lastTriggeredTime[player.GetPlayerID()] > BuffCooldown)
-            {
-                lastTriggeredTime[player.GetPlayerID()] = now;
-
-                // SE_NerveEnhancement 상태 효과 적용 (이동속도 +12%)
-                var seMan = player.GetSEMan();
-                var nerveEffect = ScriptableObject.CreateInstance<SE_NerveEnhancement>();
-                seMan.AddStatusEffect(nerveEffect);
-
-                Plugin.Log.LogDebug("[신경강화] 공격 시 이동속도 버프 발동 (4초)");
-            }
-            */
-        }
-
-        // ✅ 더 이상 사용하지 않음 - 회피율은 영구 적용으로 변경
-        // 필요 시 이동속도 버프만 남길 수 있음
-        private static IEnumerator TemporaryStatBuff(Player player, float dodgeAdd, float speedAdd, float duration)
-        {
-            // ✅ 회피율 조작 제거 - 이제 SkillEffect.StatTree의 Player.Update 패치에서 처리
-            var seMan = player.GetSEMan();
-            var nerveEffect = ScriptableObject.CreateInstance<SE_NerveEnhancement>();
-            seMan.AddStatusEffect(nerveEffect);
-
-            yield return new WaitForSeconds(duration);
-
-            // ✅ 플레이어 사망 체크 추가 (대기 후)
-            if (player == null || player.IsDead())
-            {
-                Plugin.Log.LogDebug("[신경강화] 플레이어 사망으로 버프 코루틴 중단");
-                yield break;
-            }
-
-            // 복구 (이동속도 효과만 제거)
-            seMan.RemoveStatusEffect(nerveEffect);
         }
 
         // 이동속도 버프를 위한 간단한 상태 효과 (SE_Stats 상속)
@@ -318,62 +276,6 @@ namespace CaptainSkillTree
             catch (Exception ex)
             {
                 Log.LogError($"[서버 싱크] 설정 수신 실패: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 공격 속도 AnimationSpeedManager 통합 등록
-        /// EpicMMOSystem의 AnimationSpeedManager를 통해 공격 속도 보너스 적용
-        /// </summary>
-        internal static void RegisterAttackSpeedHandler()
-        {
-            try
-            {
-                // AnimationSpeedManager가 존재하는지 확인하고 등록
-                var animationSpeedManagerType = Type.GetType("EpicLoot.MagicItemEffects.AnimationSpeedManager, EpicMMOSystem");
-                if (animationSpeedManagerType != null)
-                {
-                    var addMethod = animationSpeedManagerType.GetMethod("Add", new[] { typeof(Func<Character, double, double>) });
-
-                    if (addMethod != null)
-                    {
-                        // 공격 속도 핸들러 등록
-                        Func<Character, double, double> attackSpeedHandler = (character, speed) =>
-                        {
-                            if (character is Player player && player.InAttack())
-                            {
-                                float attackSpeedBonus = SkillEffect.GetTotalAttackSpeedBonus(player);
-
-                                if (attackSpeedBonus > 0f)
-                                {
-                                    // 공격 속도 배율 적용
-                                    double bonusMultiplier = 1.0 + (attackSpeedBonus / 100.0);
-                                    double modifiedSpeed = speed * bonusMultiplier;
-
-                                    Log.LogDebug($"[공격 속도] {player.GetPlayerName()} 속도 변경: {speed:F3} → {modifiedSpeed:F3} (+{attackSpeedBonus}%)");
-                                    return modifiedSpeed;
-                                }
-                            }
-                            return speed;
-                        };
-
-                        // AnimationSpeedManager에 핸들러 등록
-                        addMethod.Invoke(null, new object[] { attackSpeedHandler });
-                        Log.LogInfo("[공격 속도] AnimationSpeedManager를 통한 공격 속도 제어 핸들러 등록 완료");
-                    }
-                    else
-                    {
-                        Log.LogWarning("[공격 속도] AnimationSpeedManager.Add 메서드를 찾을 수 없음");
-                    }
-                }
-                else
-                {
-                    Log.LogDebug("[공격 속도] AnimationSpeedManager가 없음 - 직접 제어 방식 유지");
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.LogError($"[공격 속도] AnimationSpeedManager 등록 실패: {ex.Message}");
             }
         }
 

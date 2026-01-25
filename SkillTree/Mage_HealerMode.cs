@@ -187,8 +187,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (isHealed)
                 {
-                    // VFXManager의 실제 메서드 사용
-                    VFXManager.PlayVFX(HealerMode_Config.HealingVFXValue, player.transform.position);
+                    // SimpleVFX로 힐링 VFX 재생
+                    SimpleVFX.Play(HealerMode_Config.HealingVFXValue, player.transform.position, 2f);
                 }
             }
             catch (Exception ex)

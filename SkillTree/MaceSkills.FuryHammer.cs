@@ -246,7 +246,7 @@ namespace CaptainSkillTree.SkillTree
                         break;
                 }
 
-                VFXManager.PlayVFXMultiplayer(vfxName, sfxName, fixedVfxPosition, Quaternion.identity, duration);
+                SimpleVFX.PlayWithSound(vfxName, sfxName, fixedVfxPosition, duration);
                 Plugin.Log.LogInfo($"[분노의 망치] {i + 1}타 효과 재생: VFX={vfxName}, SFX={sfxName} (고정 위치)");
 
                 // 데미지 적용 (고정된 VFX 위치와 동일)

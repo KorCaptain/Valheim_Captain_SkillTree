@@ -103,51 +103,52 @@ namespace CaptainSkillTree.SkillTree
                 var existingIndicator = healModeUIIndicator[player];
                 if (existingIndicator != null)
                 {
-                    Plugin.Log.LogInfo($"[힐 모드] {player.GetPlayerName()} 기존 buff_03a 이팩트 제거");
+                    Plugin.Log.LogInfo($"[힐 모드] {player.GetPlayerName()} 기존 힐링 이팩트 제거");
                     UnityEngine.Object.Destroy(existingIndicator);
                 }
                 healModeUIIndicator.Remove(player);
             }
-            
+
             // 상태 설정
             isHealModeActive[player] = true;
-            
-            // buff_03a 이펙트를 캐릭터 발밑에 부착해서 따라다니게 함
-            try 
+
+            // Valheim 내장 VFX를 캐릭터 발밑에 부착해서 따라다니게 함
+            // (buff_03a 대신 vfx_Potion_health_medium 사용 - ZNetView 충돌 방지)
+            try
             {
-                var buff03aPrefab = VFXManager.GetVFXPrefab("buff_03a");
-                if (buff03aPrefab != null)
+                var healVfxPrefab = VFXManager.GetVFXPrefab("vfx_Potion_health_medium");
+                if (healVfxPrefab != null)
                 {
                     // 캐릭터 발밑 위치로 변경 (Y 좌표를 0.1로 낮춤)
                     Vector3 buffPosition = player.transform.position + Vector3.up * 0.1f;
-                    GameObject buffEffect = UnityEngine.Object.Instantiate(buff03aPrefab, buffPosition, player.transform.rotation);
-                    
+                    GameObject buffEffect = UnityEngine.Object.Instantiate(healVfxPrefab, buffPosition, player.transform.rotation);
+
                     // 캐릭터를 따라다니도록 부모 설정 (발밑에 위치)
                     buffEffect.transform.SetParent(player.transform, false);
                     buffEffect.transform.localPosition = Vector3.up * 0.1f; // 발밑 위치로 로컬 설정
-                    
-                    // buff_03a 이팩트임을 명시적으로 표시 (이름 설정)
-                    buffEffect.name = "HealMode_buff_03a_Effect";
-                    
+
+                    // 힐 모드 이팩트임을 명시적으로 표시 (이름 설정)
+                    buffEffect.name = "HealMode_VFX_Effect";
+
                     healModeUIIndicator[player] = buffEffect;
-                    Plugin.Log.LogInfo($"[힐 모드] {player.GetPlayerName()} buff_03a 이펙트 발밑에 부착 완료 - {buffEffect.name}");
+                    Plugin.Log.LogInfo($"[힐 모드] {player.GetPlayerName()} 힐링 이펙트 발밑에 부착 완료 - {buffEffect.name}");
                 }
-                else 
+                else
                 {
-                    Plugin.Log.LogWarning("[힐 모드] buff_03a 프리팹 찾을 수 없음 - 기본 효과로 대체");
+                    Plugin.Log.LogWarning("[힐 모드] vfx_Potion_health_medium 프리팹 찾을 수 없음 - 기본 효과로 대체");
                     // 실패시 기본 효과도 발밑에 위치
                     Vector3 indicatorPos = player.transform.position + Vector3.up * 0.2f;
-                    VFXManager.PlayVFXMultiplayer("vfx_HealthUpgrade", "heal_mode_active", indicatorPos, player.transform.rotation, 999f);
+                    SimpleVFX.Play("vfx_HealthUpgrade", indicatorPos, 999f);
                 }
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[힐 모드] buff_03a 이펙트 부착 실패: {ex.Message} - 기본 효과로 대체");
+                Plugin.Log.LogError($"[힐 모드] 힐링 이펙트 부착 실패: {ex.Message} - 기본 효과로 대체");
                 // 실패시 기본 효과도 발밑에 위치
                 Vector3 indicatorPos = player.transform.position + Vector3.up * 0.2f;
-                VFXManager.PlayVFXMultiplayer("vfx_HealthUpgrade", "heal_mode_active", indicatorPos, player.transform.rotation, 999f);
+                SimpleVFX.Play("vfx_HealthUpgrade", indicatorPos, 999f);
             }
-            
+
             Plugin.Log.LogInfo($"[힐 모드] {player.GetPlayerName()} 힐 모드 활성화 완료 (발밑 이펙트)");
         }
         
@@ -160,29 +161,29 @@ namespace CaptainSkillTree.SkillTree
             
             // 상태 해제
             isHealModeActive[player] = false;
-            
-            // buff_03a 이팩트 제거 (확실하게 제거)
+
+            // 힐링 이팩트 제거 (확실하게 제거)
             if (healModeUIIndicator.ContainsKey(player))
             {
                 var indicator = healModeUIIndicator[player];
                 if (indicator != null)
                 {
-                    Plugin.Log.LogInfo($"[힐 모드] {player.GetPlayerName()} buff_03a 이팩트 제거");
+                    Plugin.Log.LogInfo($"[힐 모드] {player.GetPlayerName()} 힐링 이팩트 제거");
                     UnityEngine.Object.Destroy(indicator);
                 }
                 healModeUIIndicator.Remove(player);
             }
-            
+
             // 혹시 남아있을 수 있는 다른 이팩트들도 정리
             try
             {
-                // 플레이어 하위의 모든 buff_03a 이팩트 찾아서 제거
+                // 플레이어 하위의 모든 힐 모드 이팩트 찾아서 제거
                 var childEffects = player.transform.GetComponentsInChildren<Transform>();
                 foreach (var child in childEffects)
                 {
-                    if (child != null && child.name.Contains("buff_03a"))
+                    if (child != null && (child.name.Contains("HealMode_") || child.name.Contains("buff_03a")))
                     {
-                        Plugin.Log.LogInfo($"[힐 모드] 추가 buff_03a 이팩트 발견 및 제거: {child.name}");
+                        Plugin.Log.LogInfo($"[힐 모드] 추가 힐링 이팩트 발견 및 제거: {child.name}");
                         UnityEngine.Object.Destroy(child.gameObject);
                     }
                 }
@@ -191,8 +192,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogWarning($"[힐 모드] 추가 이팩트 정리 중 오류: {ex.Message}");
             }
-            
-            Plugin.Log.LogInfo($"[힐 모드] {player.GetPlayerName()} 힐 모드 비활성화 완료 - buff_03a 이팩트 완전 제거");
+
+            Plugin.Log.LogInfo($"[힐 모드] {player.GetPlayerName()} 힐 모드 비활성화 완료 - 힐링 이팩트 완전 제거");
         }
         
         /// <summary>
@@ -361,10 +362,10 @@ namespace CaptainSkillTree.SkillTree
                     return false;
                 }
                 
-                // 시전시 fx_Fader_Roar 효과 재생 (하이브리드 방식으로 모든 유저가 볼 수 있도록)
+                // 시전시 fx_Fader_Roar 효과 재생 (SimpleVFX 방식)
                 Vector3 playerPos = player.transform.position;
                 Plugin.Log.LogInfo($"[힐 파이어볼] {player.GetPlayerName()} 시전 효과 재생 시도: fx_Fader_Roar at {playerPos}");
-                VFXManager.PlayVFXMultiplayer("fx_Fader_Roar", "magic_cast", playerPos, player.transform.rotation, 3f);
+                SimpleVFX.PlayWithSound("fx_Fader_Roar", "magic_cast", playerPos, 3f);
                 Plugin.Log.LogInfo($"[힐 파이어볼] 시전 효과 재생 완료");
                 
                 // 발사 방향 계산 (2발 발사용)
@@ -512,21 +513,21 @@ namespace CaptainSkillTree.SkillTree
 
                 Plugin.Log.LogInfo($"[힐 VFX] {target.GetPlayerName()} 위치: {targetPos}, 회전: {targetRot}");
 
-                // === 하이브리드 VFX 방식으로 모든 유저가 볼 수 있도록 개선 (안정성 우선) ===
+                // === SimpleVFX 방식으로 VFX 재생 ===
 
-                // 주요 힐링 VFX (발헤임 기본 프리팹 - 모든 유저 동기화)
+                // 주요 힐링 VFX (발헤임 기본 프리팹)
                 Plugin.Log.LogInfo($"[힐 VFX] vfx_HealthUpgrade 재생 시도: {targetPos}");
-                VFXManager.PlayVFXMultiplayer("vfx_HealthUpgrade", "sfx_health_up", targetPos, targetRot, HEALING_VFX_DURATION);
+                SimpleVFX.PlayWithSound("vfx_HealthUpgrade", "sfx_health_up", targetPos, HEALING_VFX_DURATION);
 
                 // 힐링 시각 효과 (매핑된 이름 사용)
                 Vector3 healPos = elevatedPos + Vector3.up * 0.5f;
                 Plugin.Log.LogInfo($"[힐 VFX] healing 재생 시도: {healPos}");
-                VFXManager.PlayVFXMultiplayer("healing", "heal", healPos, targetRot, HEALING_VFX_DURATION);
+                SimpleVFX.PlayWithSound("healing", "heal", healPos, HEALING_VFX_DURATION);
 
                 // 지속적인 힐링 표시를 위한 추가 효과
                 Vector3 backPos = targetPos - target.transform.forward * 0.3f + Vector3.up * 0.6f;
                 Plugin.Log.LogInfo($"[힐 VFX] healing 지속 효과 재생 시도: {backPos}");
-                VFXManager.PlayVFXMultiplayer("healing", "heal_continuous", backPos, targetRot, HEALING_VFX_DURATION * 1.2f);
+                SimpleVFX.PlayWithSound("healing", "heal_continuous", backPos, HEALING_VFX_DURATION * 1.2f);
 
                 Plugin.Log.LogInfo($"[힐 VFX] 모든 VFX 재생 완료 - {target.GetPlayerName()}");
             }
@@ -698,19 +699,19 @@ namespace CaptainSkillTree.SkillTree
             
             // 힐 모드 상태 정리
             isHealModeActive.Clear();
-            
-            // buff_03a UI 표시 효과 완전 정리
+
+            // 힐링 UI 표시 효과 완전 정리
             foreach (var kvp in healModeUIIndicator)
             {
                 if (kvp.Value != null)
                 {
-                    Plugin.Log.LogInfo($"[힐 모드 정리] buff_03a 이팩트 제거: {kvp.Key.GetPlayerName()}");
+                    Plugin.Log.LogInfo($"[힐 모드 정리] 힐링 이팩트 제거: {kvp.Key.GetPlayerName()}");
                     UnityEngine.Object.Destroy(kvp.Value);
                 }
             }
             healModeUIIndicator.Clear();
-            
-            // 모든 플레이어의 남은 buff_03a 이팩트 정리
+
+            // 모든 플레이어의 남은 힐 모드 이팩트 정리
             try
             {
                 foreach (var player in Player.GetAllPlayers())
@@ -720,9 +721,9 @@ namespace CaptainSkillTree.SkillTree
                         var childEffects = player.transform.GetComponentsInChildren<Transform>();
                         foreach (var child in childEffects)
                         {
-                            if (child != null && (child.name.Contains("buff_03a") || child.name.Contains("HealMode_buff_03a_Effect")))
+                            if (child != null && (child.name.Contains("HealMode_") || child.name.Contains("buff_03a")))
                             {
-                                Plugin.Log.LogInfo($"[힐 모드 정리] 남은 buff_03a 이팩트 발견 및 제거: {child.name}");
+                                Plugin.Log.LogInfo($"[힐 모드 정리] 남은 힐링 이팩트 발견 및 제거: {child.name}");
                                 UnityEngine.Object.Destroy(child.gameObject);
                             }
                         }
@@ -751,7 +752,7 @@ namespace CaptainSkillTree.SkillTree
             recentlyHealedPlayers.Clear();
             healCastTimes.Clear();
             
-            Plugin.Log.LogInfo("[힐 파이어볼] 모든 상태 정리 완료 - buff_03a 이팩트 완전 제거");
+            Plugin.Log.LogInfo("[힐 파이어볼] 모든 상태 정리 완료 - 힐링 이팩트 완전 제거");
         }
         
         /// <summary>
@@ -996,7 +997,7 @@ namespace CaptainSkillTree.SkillTree
                 
                 // 적중 지역에 healing 이팩트 표시 (프로젝타일 충돌 위치)
                 Plugin.Log.LogInfo($"[힐 파이어볼] 충돌 지역 이팩트 재생 시도: healing at {impactPoint}");
-                VFXManager.PlayVFXMultiplayer("healing", "magic_heal", impactPoint, Quaternion.identity, 3f);
+                SimpleVFX.PlayWithSound("healing", "magic_heal", impactPoint, 3f);
                 Plugin.Log.LogInfo($"[힐 파이어볼] 충돌 지역 이팩트 재생 완료");
                 
                 // 시전자에게 결과 메시지

@@ -53,8 +53,9 @@ namespace CaptainSkillTree.SkillTree
                 // === 발사체 설정 제거 - 즉시 힐링으로 변경 ===
 
                 // === 이펙트 설정 ===
+                // Valheim 내장 VFX 사용 (buff_03a 대체 - ZNetView 충돌 방지)
                 healerBuffVFXConfig = SkillTreeConfig.BindServerSync(config,
-                    "힐러모드 이펙트", "힐러모드 버프 VFX", "buff_03a",
+                    "힐러모드 이펙트", "힐러모드 버프 VFX", "vfx_Potion_health_medium",
                     "힐러모드 활성화 시 발밑에 표시되는 버프 이펙트");
 
                 healerStatusVFXConfig = SkillTreeConfig.BindServerSync(config,
@@ -84,7 +85,7 @@ namespace CaptainSkillTree.SkillTree
         public static float HealPercentageValue => healPercentageConfig?.Value ?? 25f;
         public static float HealRangeValue => healRangeConfig?.Value ?? 12f;
         // 발사체 관련 접근자 제거 - 즉시 힐링으로 변경
-        public static string HealerBuffVFXValue => healerBuffVFXConfig?.Value ?? "buff_03a";
+        public static string HealerBuffVFXValue => healerBuffVFXConfig?.Value ?? "vfx_Potion_health_medium";
         public static string HealerStatusVFXValue => healerStatusVFXConfig?.Value ?? "statusailment_01_aura";
         public static string HealingVFXValue => healingVFXConfig?.Value ?? "vfx_HealthUpgrade";
         public static string ActivationSoundValue => activationSoundConfig?.Value ?? "sfx_dverger_heal_start";

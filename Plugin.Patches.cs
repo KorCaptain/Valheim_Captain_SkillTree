@@ -51,13 +51,7 @@ namespace CaptainSkillTree
                         if (__instance != null && !__instance.IsPlayer())
                         {
                             Vector3 monsterPos = __instance.transform.position + Vector3.up * 1f;
-                            VFXManager.PlayVFXMultiplayer(
-                                "confetti_directional_multicolor",
-                                "",
-                                monsterPos,
-                                Quaternion.identity,
-                                2f
-                            );
+                            SimpleVFX.Play("confetti_directional_multicolor", monsterPos, 2f);
                             Log.LogDebug("[연공창] confetti 효과 재생");
                         }
 
@@ -169,13 +163,6 @@ namespace CaptainSkillTree
                 {
                     Log.LogError($"[단검 데미지 버프] 상태 확인 오류: {ex.Message}");
                 }
-            }
-
-            private static void ApplyKnifeSpeedBonus(Player player)
-            {
-                // 단검 데미지 버프로 변경됨 - 이 함수는 더 이상 사용되지 않음
-                // 데미지는 HitData 계산 시 직접 적용
-                return;
             }
 
             private static void ResetAnimatorSpeed(Player player)

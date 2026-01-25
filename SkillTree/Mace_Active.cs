@@ -407,14 +407,7 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogInfo($"[수호자의 진심] 막기 반사 VFX 재생 시도 - 방패 위치: {shieldPosition}");
 
                 // ✅ 막을 시 guard_01 VFX 재생 (방패 앞 위치)
-                VFXManager.PlayVFXMultiplayer(
-                    "guard_01",  // 파란색 원형 물파장 효과
-                    "",  // 사운드 없음
-                    shieldPosition,
-                    Quaternion.identity,
-                    1.5f,
-                    1f  // 크기 1배
-                );
+                SimpleVFX.Play("guard_01", shieldPosition, 1.5f);
 
                 Plugin.Log.LogInfo($"[수호자의 진심] guard_01 VFX 재생 완료 (방패 앞)");
             }

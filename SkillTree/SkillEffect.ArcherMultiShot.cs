@@ -702,8 +702,8 @@ namespace CaptainSkillTree.SkillTree
                 
                 var headPosition = target.transform.position + headOffset;
                 
-                // VFXManager를 통한 hit_01 효과 재생 (네트워크 동기화)
-                VFXManager.PlayVFXMultiplayer("hit_01", "arrow_hit", headPosition, target.transform.rotation, 1.5f);
+                // SimpleVFX로 hit_01 효과 재생
+                SimpleVFX.PlayWithSound("hit_01", "arrow_hit", headPosition, 1.5f);
                 
                 Plugin.Log.LogInfo($"[아처 멀티샷] hit_01 VFX 효과 재생 완료 - 타겟: {target.name}, 위치: {headPosition}");
             }

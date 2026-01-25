@@ -22,7 +22,7 @@ fx_shaman_protect - 푸른 회오리 이팩트
 fx_shield_start - 쉴드 및 버프 시작 이팩트
 fx_shieldgenerator_domehit - 그린 방어 이팩트
 staff_greenroots_projectile - 그린 볼 뿌리 소환
-
+fx_Fader_Spin - 광역 원 푸른 
 
 
 ## 🎯 핵심 원칙
@@ -50,8 +50,9 @@ CaptainSkillTree.asset.Resources.{리소스명}
 - `debuff_03` - ㅣ ㅣ ㅣ ㅣ 하얀색 버프? 비슷 - 종료코드 필요
 - `debuff_03_aura` - 오라 타입 디버프
 - `statusailment_01` - 상태 이상 효과 1
-- `statusailment_01_aura` - 상태 이상 오라
-- buff_01` - 공격력 증가 버프
+- `statusailment_01_aura` - 스킬 시전 캐릭터 머리 표시(종료 필요)
+- buff_01 - 공격력 증가 버프
+- fx_Fader_Spin - 광역 푸른 둥근 보기좋은 굿
 
 ### 타격/전투 효과
 - `hit_01` - 기본 타격 효과 1
@@ -65,7 +66,8 @@ CaptainSkillTree.asset.Resources.{리소스명}
 - `taunt` - 도발 효과 - 몬스터 머리위에 표시 필요
 
 ### 오라/지속 효과
- - StatusAilment_01_Aura    캐릭터 머리위에 별 버프 모양 - "단 한 발" 스킬 이팩트
+ - StatusAilment_01_Aura    스킬 시전동안 (종료 필요)
+                                     캐릭터 머리위에 별 버프 모양 - "단 한 발" 스킬 이팩트
 - `plexus` - 플렉서스 효과 - 번개 파란색 라운드  - 반복됨 종료 코드 필요(종료 코드는 버서커 이팩티 종료 참고)
 
 ### MMO 호환 효과

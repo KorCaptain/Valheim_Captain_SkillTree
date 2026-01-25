@@ -769,8 +769,8 @@ namespace CaptainSkillTree.SkillTree
                 Vector3 playerPos = player.transform.position;
                 Quaternion playerRot = player.transform.rotation;
 
-                // ZRoutedRpc를 통한 멀티플레이어 VFX (flash_blue_purple만)
-                VFXManager.PlayVFXMultiplayer("flash_blue_purple", "", playerPos, playerRot, 2f);
+                // SimpleVFX로 VFX 재생
+                SimpleVFX.Play("flash_blue_purple", playerPos, 2f);
 
                 // Plugin.Log.LogInfo($"[로그 그림자 일격] {player.GetPlayerName()} 시각 효과 재생 완료 (flash_blue_purple)");
             }
@@ -787,10 +787,10 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // ZRoutedRpc를 통한 멀티플레이어 사운드
+                // SimpleVFX로 사운드 재생
                 Vector3 playerPos = player.transform.position;
 
-                VFXManager.PlayVFXMultiplayer("", "sfx_oozebomb_explode", playerPos, player.transform.rotation, 0.5f);
+                SimpleVFX.Play("sfx_oozebomb_explode", playerPos, 0.5f);
                 // Plugin.Log.LogDebug($"[로그 그림자 일격] {player.GetPlayerName()} 사운드 효과 재생 (sfx_oozebomb_explode)");
             }
             catch (System.Exception)

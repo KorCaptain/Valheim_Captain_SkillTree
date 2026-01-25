@@ -204,21 +204,23 @@ namespace CaptainSkillTree.Prefab
         /// </summary>
         public static void Initialize()
         {
+            Plugin.Log.LogInfo($"[프리팹 등록] Initialize 호출됨 - isInitialized: {isInitialized}");
+
             if (isInitialized) return;
 
             try
             {
-                // Plugin.Log.LogDebug("=== [프리팹 등록] PrefabRegistry 초기화 시작 ==="); // 제거: 과도한 로그
-                
+                Plugin.Log.LogInfo("[프리팹 등록] LoadPrefabBundles 시작...");
+
                 // EmbeddedResource에서 프리팹 번들 로드
                 LoadPrefabBundles();
-                
+
                 isInitialized = true;
-                // Plugin.Log.LogDebug($"=== [프리팹 등록] 초기화 완료 - 등록된 프리팹: {registeredPrefabs.Count}개 ==="); // 제거: 과도한 로그
+                Plugin.Log.LogInfo($"[프리팹 등록] 초기화 완료 - 등록된 프리팹: {registeredPrefabs.Count}개");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[프리팹 등록] 초기화 실패: {ex.Message}");
+                Plugin.Log.LogError($"[프리팹 등록] 초기화 실패: {ex.Message}\n{ex.StackTrace}");
             }
         }
         #endregion
@@ -231,8 +233,12 @@ namespace CaptainSkillTree.Prefab
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourceNames = assembly.GetManifestResourceNames();
-            
-            // Plugin.Log.LogDebug("=== [프리팹 등록] VFX AssetBundle 로드 시작 ==="); // 제거: 과도한 로그
+
+            Plugin.Log.LogInfo($"[프리팹 등록] 총 리소스 수: {resourceNames.Length}개");
+
+            // VFX 관련 리소스만 필터링해서 출력
+            var vfxResources = resourceNames.Where(r => r.Contains("VFX") || r.Contains("debuff")).ToList();
+            Plugin.Log.LogInfo($"[프리팹 등록] VFX 리소스: {string.Join(", ", vfxResources)}");
             
             // 스킬트리 UI 전용 프리팹들 (ZNetScene 등록 불필요) - Plugin.cs에서 직접 처리
             var skillTreeUIBundles = new HashSet<string>
@@ -624,6 +630,31 @@ namespace CaptainSkillTree.Prefab
 
         }
         */
+
+        // ⚠️ VFXManager 패치 비활성화 (v0.1.119 - SimpleVFX로 대체)
+        // SimpleVFX.cs에서 ZNetScene.Awake 패치로 초기화됨
+        /*
+        /// <summary>
+        /// ZNetScene.Awake 패치 - VFX 프리팹 캐싱 (WackyEpicMMOSystem 방식)
+        /// </summary>
+        [HarmonyPatch(typeof(ZNetScene), "Awake")]
+        public static class ZNetScene_Awake_VFXCache_Patch
+        {
+            static void Postfix(ZNetScene __instance)
+            {
+                try
+                {
+                    // VFXManager 프리팹 캐싱 (WackyEpicMMOSystem 방식)
+                    VFX.VFXManager.Initialize();
+                    Plugin.Log?.LogInfo("[VFX] ZNetScene.Awake에서 VFXManager 초기화 완료");
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log?.LogError($"[VFX] ZNetScene.Awake 패치 오류: {ex.Message}");
+                }
+            }
+        }
+        */
         #endregion
 
         #region Helper Methods
@@ -677,12 +708,22 @@ namespace CaptainSkillTree.Prefab
         public static List<string> GetRegisteredPrefabNames() => new List<string>(registeredPrefabs.Keys);
 
         /// <summary>
-        /// 특정 프리팹 GameObject 반환
+        /// 특정 프리팹 GameObject 반환 (대소문자 무시)
         /// </summary>
         public static GameObject GetRegisteredPrefab(string prefabName)
         {
-            registeredPrefabs.TryGetValue(prefabName, out GameObject prefab);
-            return prefab;
+            // 정확한 이름으로 먼저 시도
+            if (registeredPrefabs.TryGetValue(prefabName, out GameObject prefab))
+                return prefab;
+
+            // 대소문자 무시하고 검색
+            foreach (var kvp in registeredPrefabs)
+            {
+                if (string.Equals(kvp.Key, prefabName, StringComparison.OrdinalIgnoreCase))
+                    return kvp.Value;
+            }
+
+            return null;
         }
 
         /// <summary>

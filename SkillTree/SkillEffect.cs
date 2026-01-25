@@ -186,7 +186,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 // VFX 재생 (사운드는 별도로 재생)
-                VFXManager.PlayVFXMultiplayer(effectName, "", position, rotation, 3f);
+                SimpleVFX.Play(effectName, position, 3f);
                 Plugin.Log.LogDebug($"[스킬 이펙트] {effectName} VFX 재생");
             }
             catch (System.Exception ex)
@@ -203,7 +203,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 // 사운드만 재생
-                VFXManager.PlayVFXMultiplayer("", soundName, position, Quaternion.identity, 2f);
+                SimpleVFX.Play(soundName, position, 2f);
                 Plugin.Log.LogDebug($"[스킬 사운드] {soundName} 사운드 재생");
             }
             catch (System.Exception ex)

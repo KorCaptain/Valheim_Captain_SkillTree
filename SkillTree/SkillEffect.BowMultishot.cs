@@ -358,8 +358,8 @@ namespace CaptainSkillTree.SkillTree
                     effectPosition = new Vector3(characterCenter.x, characterCenter.y + 0.5f, characterCenter.z);
                 }
                 
-                // VFXManager를 통한 hit_01 효과 재생 (네트워크 동기화)
-                VFXManager.PlayVFXMultiplayer("hit_01", "arrow_hit", effectPosition, target.transform.rotation, 1.5f);
+                // SimpleVFX로 hit_01 효과 재생
+                SimpleVFX.PlayWithSound("hit_01", "arrow_hit", effectPosition, 1.5f);
                 Plugin.Log.LogDebug($"[활 전문가 멀티샷] hit_01 효과 재생 완료 - 타겟: {target?.name ?? "Unknown"}, 위치: {effectPosition}");
             }
             catch (System.Exception ex)

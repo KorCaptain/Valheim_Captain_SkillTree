@@ -991,7 +991,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogInfo($"[지팡이 힐] VFX 재생 시도 - 위치: {casterPos}, 회전: {caster.transform.rotation}");
 
                     // 시전자 위치에 shaman_heal_aoe 이펙트 + 사운드
-                    VFXManager.PlayVFXMultiplayer("shaman_heal_aoe", "sfx_dverger_heal_finish", casterPos, caster.transform.rotation, 3f);
+                    SimpleVFX.PlayWithSound("shaman_heal_aoe", "sfx_dverger_heal_finish", casterPos, 3f);
 
                     Plugin.Log.LogInfo("[지팡이 힐] shaman_heal_aoe VFX/사운드 재생 완료");
                 }
@@ -1039,7 +1039,7 @@ namespace CaptainSkillTree.SkillTree
                             Vector3 playerPos = targetPlayer.transform.position;
                             Plugin.Log.LogInfo($"[지팡이 힐] 개별 VFX 재생 시도 - {targetPlayer.GetPlayerName()} at {playerPos}");
 
-                            VFXManager.PlayVFXMultiplayer("vfx_spawn_small", "", playerPos, Quaternion.identity, 1f);
+                            SimpleVFX.Play("vfx_spawn_small", playerPos, 1f);
 
                             Plugin.Log.LogInfo($"[지팡이 힐] 개별 VFX 재생 완료 - {targetPlayer.GetPlayerName()}");
                         }
@@ -1908,13 +1908,7 @@ namespace CaptainSkillTree.SkillTree
                     // 몬스터 위치에 타격 불꽃 효과 (vfx_HitSparks)
                     Vector3 targetPosition = target.transform.position + Vector3.up * 1f;
 
-                    VFXManager.PlayVFXMultiplayer(
-                        "vfx_HitSparks",
-                        "",
-                        targetPosition,
-                        Quaternion.identity,
-                        1.5f
-                    );
+                    SimpleVFX.Play("vfx_HitSparks", targetPosition, 1.5f);
 
                     Plugin.Log.LogInfo($"[연공창] {target.name}에게 타격 불꽃 효과 재생 (vfx_HitSparks)");
                 }
@@ -2067,7 +2061,7 @@ namespace CaptainSkillTree.SkillTree
                     // 몬스터 적중 시 explosion 이펙트 재생 (네트워크 동기화)
                     try
                     {
-                        VFXManager.PlayVFXMultiplayer("fx_siegebomb_explosion", "", target.transform.position, target.transform.rotation, 3f);
+                        SimpleVFX.Play("fx_siegebomb_explosion", target.transform.position, 3f);
                     }
                     catch (Exception vfxEx)
                     {
@@ -2245,7 +2239,7 @@ namespace CaptainSkillTree.SkillTree
                         try
                         {
                             Vector3 enemyHeadPos = enemy.GetHeadPoint();
-                            VFXManager.PlayVFXMultiplayer("statusailment_01_aura", "", enemyHeadPos, Quaternion.identity, 2f);
+                            SimpleVFX.Play("statusailment_01_aura", enemyHeadPos, 2f);
                         }
                         catch
                         {
@@ -2284,7 +2278,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 // shine_blue VFX 재생 (사운드 없음)
-                VFXManager.PlayVFXMultiplayer("shine_blue", "", position, Quaternion.identity, duration);
+                SimpleVFX.Play("shine_blue", position, duration);
                 Plugin.Log.LogDebug($"[발구르기 VFX] shine_blue 재생 완료 ({duration}초 지속)");
             }
             catch (System.Exception ex)

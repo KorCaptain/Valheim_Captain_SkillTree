@@ -668,7 +668,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 시작점 VFX (먼저 재생)
-                VFXManager.PlayVFXMultiplayer("vfx_spawn_small", "", originalPosition, Quaternion.identity, 1.5f);
+                SimpleVFX.Play("vfx_spawn_small", originalPosition, 1.5f);
 
                 // Rigidbody로 빠른 돌격 실행
                 var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
@@ -709,7 +709,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 도착점 VFX
-                VFXManager.PlayVFXMultiplayer("fx_backstab", "", behindPosition, player.transform.rotation, 2f);
+                SimpleVFX.Play("fx_backstab", behindPosition, 2f);
 
                 Plugin.Log.LogDebug($"[암살자의 심장] 돌격 성공 - {target.GetHoverName() ?? target.name} 뒤로 이동");
                 return true;

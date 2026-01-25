@@ -404,7 +404,7 @@ namespace CaptainSkillTree.SkillTree
                 Vector3 playerPos = player.transform.position;
                 
                 // ZRoutedRpc를 통한 멀티플레이어 VFX/사운드
-                VFXManager.PlayVFXMultiplayer("shaman_heal_aoe", "sfx_dverger_heal_finish", playerPos, player.transform.rotation, 3f);
+                SimpleVFX.PlayWithSound("shaman_heal_aoe", "sfx_dverger_heal_finish", playerPos, 3f);
                 Plugin.Log.LogInfo("[성기사] shaman_heal_aoe VFX/사운드 재생");
             }
             catch (Exception ex)
@@ -412,14 +412,14 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[성기사] 하이브리드 이펙트/사운드 재생 실패: {ex.Message}");
             }
 
-            // 2. 시전자 발밑에 buff_03a 효과 1회 표시
+            // 2. 시전자 발밑에 힐링 효과 1회 표시 (Valheim 내장 VFX 사용)
             PlayPaladinActivationEffect(player);
 
             // 3. 시전자 즉시 회복 (컨피그 비율)
             float selfHealAmount = player.GetMaxHealth() * Paladin_Config.SelfHealPercentValue;
             player.Heal(selfHealAmount, true);
             
-            // 시전자 본인에게도 buff_03a_aura 효과 추가 (도트 힐 지속시간과 동일)
+            // 시전자 본인에게도 힐링 오라 효과 추가 (도트 힐 지속시간과 동일)
             CreatePaladinAuraEffect(player, Paladin_Config.HealDurationValue);
             
             if (Paladin_Config.ShowHealNumbersValue)
@@ -478,16 +478,16 @@ namespace CaptainSkillTree.SkillTree
             bool showNumbers = Paladin_Config.ShowHealNumbersValue;
             bool showProgress = Paladin_Config.ShowHealProgressValue;
             
-            // 성기사 전용 buff_03a_aura 효과 추가 (도트 힐 동안 지속)
+            // 성기사 전용 힐링 오라 효과 추가 (도트 힐 동안 지속)
             GameObject personalAuraEffect = null;
             try
             {
                 personalAuraEffect = CreatePaladinAuraEffect(target, healDuration);
-                
-                // ZRoutedRpc를 통한 멀티플레이어 사운드
-                VFXManager.PlayVFXMultiplayer("", "sfx_dverger_heal_finish", target.transform.position, Quaternion.identity, 2f);
 
-                Plugin.Log.LogInfo($"[성기사] {target.GetPlayerName()}에게 buff_03a_aura 및 사운드 생성 완료");
+                // ZRoutedRpc를 통한 멀티플레이어 사운드
+                SimpleVFX.Play("sfx_dverger_heal_finish", target.transform.position, 2f);
+
+                Plugin.Log.LogInfo($"[성기사] {target.GetPlayerName()}에게 힐링 오라 및 사운드 생성 완료");
             }
             catch (Exception ex)
             {
@@ -522,7 +522,7 @@ namespace CaptainSkillTree.SkillTree
                     // ZRoutedRpc를 통한 힐링 사운드
                     try
                     {
-                        VFXManager.PlayVFXMultiplayer("", "sfx_dverger_heal_finish", target.transform.position, Quaternion.identity, 1f);
+                        SimpleVFX.Play("sfx_dverger_heal_finish", target.transform.position, 1f);
                     }
                     catch (Exception soundEx)
                     {
@@ -561,7 +561,8 @@ namespace CaptainSkillTree.SkillTree
 
 
         /// <summary>
-        /// 성기사 스킬 활성화 시 buff_03 효과 1회 표시 (캐릭터 발밑)
+        /// 성기사 스킬 활성화 시 힐링 효과 1회 표시 (캐릭터 발밑)
+        /// Valheim 내장 VFX 사용 (buff_03a 대체)
         /// </summary>
         private static void PlayPaladinActivationEffect(Player player)
         {
@@ -570,17 +571,18 @@ namespace CaptainSkillTree.SkillTree
                 // 캐릭터 발밑 위치 계산
                 var footPosition = player.transform.position + Vector3.down * 0.1f;
 
-                // ZRoutedRpc를 통한 멀티플레이어 VFX (모든 클라이언트에서 재생됨)
-                VFXManager.PlayVFXMultiplayer("buff_03a", "", footPosition, Quaternion.identity, 2f);
+                // Valheim 내장 VFX 사용 (ZNetView 충돌 방지)
+                SimpleVFX.Play("vfx_Potion_health_medium", footPosition, 2f);
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[성기사] buff_03a 활성화 효과 생성 실패: {ex.Message}");
+                Plugin.Log.LogError($"[성기사] 힐링 활성화 효과 생성 실패: {ex.Message}");
             }
         }
         
         /// <summary>
-        /// 성기사 도트 힐 받는 캐릭터에게 buff_03a_aura 효과 생성 (도트 힐 동안 지속)
+        /// 성기사 도트 힐 받는 캐릭터에게 힐링 오라 효과 생성 (도트 힐 동안 지속)
+        /// Valheim 내장 VFX 사용 (buff_03a_aura 대체)
         /// </summary>
         private static GameObject CreatePaladinAuraEffect(Player target, float duration)
         {
@@ -589,14 +591,14 @@ namespace CaptainSkillTree.SkillTree
                 // 캐릭터 발밑 위치 계산
                 var footPosition = target.transform.position + Vector3.down * 0.1f;
 
-                // ZRoutedRpc를 통한 멀티플레이어 VFX (모든 클라이언트에서 재생됨)
-                VFXManager.PlayVFXMultiplayer("buff_03a_aura", "", footPosition, Quaternion.identity, duration);
+                // Valheim 내장 VFX 사용 (ZNetView 충돌 방지)
+                SimpleVFX.Play("vfx_Potion_health_medium", footPosition, duration);
 
                 return null;
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[성기사] buff_03a_aura 효과 생성 실패: {ex.Message}");
+                Plugin.Log.LogError($"[성기사] 힐링 오라 효과 생성 실패: {ex.Message}");
                 return null;
             }
         }
@@ -609,7 +611,7 @@ namespace CaptainSkillTree.SkillTree
             if (auraEffect == null || target == null)
                 yield break;
 
-            Plugin.Log.LogInfo($"[성기사] {target.GetPlayerName()}의 buff_03a_aura 시작 - {duration}초간 지속");
+            Plugin.Log.LogInfo($"[성기사] {target.GetPlayerName()}의 힐링 오라 시작 - {duration}초간 지속");
 
             // 지정된 시간 동안 대기
             yield return new WaitForSeconds(duration);
@@ -621,7 +623,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     UnityEngine.Object.Destroy(auraEffect);
                 }
-                Plugin.Log.LogInfo($"[성기사] 플레이어 사망으로 buff_03a_aura 조기 제거");
+                Plugin.Log.LogInfo($"[성기사] 플레이어 사망으로 힐링 오라 조기 제거");
                 yield break;
             }
 
@@ -629,7 +631,7 @@ namespace CaptainSkillTree.SkillTree
             if (auraEffect != null)
             {
                 UnityEngine.Object.Destroy(auraEffect);
-                Plugin.Log.LogInfo($"[성기사] {target?.GetPlayerName() ?? "Unknown"}의 buff_03a_aura 제거 완료 ({duration}초 지속)");
+                Plugin.Log.LogInfo($"[성기사] {target?.GetPlayerName() ?? "Unknown"}의 힐링 오라 제거 완료 ({duration}초 지속)");
             }
         }
 
@@ -878,8 +880,8 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // ZRoutedRpc를 통한 멀티플레이어 VFX
-                VFXManager.PlayVFXMultiplayer(effectName, "", position, Quaternion.identity, 3f);
+                // SimpleVFX 방식으로 VFX 재생
+                SimpleVFX.Play(effectName, position, 3f);
                 Plugin.Log.LogInfo($"[직업 이펙트] {effectName} VFX 재생");
             }
             catch (System.Exception ex)

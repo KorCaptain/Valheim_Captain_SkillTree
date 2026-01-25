@@ -19,7 +19,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.167")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.199")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     public partial class Plugin : BaseUnityPlugin
@@ -29,7 +29,6 @@ namespace CaptainSkillTree
         private static Sprite swordIcon;
         private static AssetBundle iconAssetBundle;
         private static AssetBundle uiAssetBundle;
-        private static AssetBundle xButtonBundle;
         private static AssetBundle customIconBundle;
         private static AssetBundle jobIconBundle;
         private static AssetBundle vfxBundle;
@@ -379,18 +378,6 @@ namespace CaptainSkillTree
             return customIconBundle;
         }
 
-        public static AssetBundle GetXButtonBundle()
-        {
-            if (xButtonBundle == null)
-            {
-                var assembly = typeof(Plugin).Assembly;
-                var stream = assembly.GetManifestResourceStream("CaptainSkillTree.asset.Resources.x_button");
-                if (stream != null)
-                    xButtonBundle = AssetBundle.LoadFromStream(stream);
-            }
-            return xButtonBundle;
-        }
-
         public static AssetBundle GetJobIconBundle()
         {
             if (jobIconBundle == null)
@@ -475,15 +462,6 @@ namespace CaptainSkillTree
             return jobVfxBundle;
         }
 
-        public static void UnloadXButtonBundle()
-        {
-            if (xButtonBundle != null)
-            {
-                xButtonBundle.Unload(false);
-                xButtonBundle = null;
-            }
-        }
-
         public static T LoadEmbeddedAsset<T>(string resourcePath) where T : UnityEngine.Object
         {
             try
@@ -523,62 +501,6 @@ namespace CaptainSkillTree
                 return null;
             }
         }
-
-        #endregion
-
-        #region SkillTree Input Listener (레거시 - Gui.SkillTreeInputListener로 이동됨)
-
-        // ⚠️ 중첩 클래스는 더 이상 사용되지 않음
-        // T/G/H/Y 키 처리가 포함된 Gui/SkillTreeInputListener.cs 사용
-        // ] 키 디버그 기능도 해당 파일로 이동 필요 시 추가 가능
-
-        /*
-        // 입력 리스너: ] 키로 레벨업/포인트 지급 (레거시)
-        public class SkillTreeInputListener : MonoBehaviour
-        {
-            public static SkillTreeInputListener Instance { get; private set; }
-
-            void Awake()
-            {
-                Instance = this;
-            }
-
-            void Update()
-            {
-                try
-                {
-                    SkillTreeManager.Instance?.OnUpdate();
-                }
-                catch (Exception e)
-                {
-                    Plugin.Log.LogWarning($"[SkillTree] SkillTreeManager 업데이트 실패: {e.Message}");
-                }
-
-                if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.RightBracket))
-                {
-                    if ((System.Object)Player.m_localPlayer != null)
-                    {
-                        try
-                        {
-                            var levelSystem = global::EpicMMOSystem.LevelSystem.Instance;
-                            long needExp = levelSystem.getNeedExp();
-                            API.EpicMMOSystem_API.AddExp((int)needExp);
-                            Plugin.SkillTreePoint += 3;
-                        }
-                        catch (Exception e)
-                        {
-                            Plugin.Log.LogWarning($"[SkillTree] EpicMMOSystem API 호출 실패 (경험치 추가): {e.Message}");
-                        }
-                    }
-                }
-            }
-
-            void OnDestroy()
-            {
-                Instance = null;
-            }
-        }
-        */
 
         #endregion
 
@@ -914,8 +836,9 @@ namespace CaptainSkillTree
                     Log.LogDebug("[아이콘] 커스텀 아이콘 적용 성공");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.LogDebug($"[아이콘] 커스텀 아이콘 로드 실패: {ex.Message}");
             }
 
             if (!iconLoaded)
@@ -942,8 +865,9 @@ namespace CaptainSkillTree
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Log.LogDebug($"[아이콘] 기본 아이콘 로드 실패: {ex.Message}");
                 }
             }
 
@@ -1074,39 +998,18 @@ namespace CaptainSkillTree
 
         private static void InitializePrefabSystem()
         {
-            // ⚠️ VFX 시스템 완전 비활성화 (EpicMMOSystem 방식 - 무한 로딩 방지)
-            Log.LogDebug("[프리팹 초기화] VFX 시스템 비활성화 - EpicMMOSystem 방식 적용");
-        }
-
-        private static IEnumerator DelayedVFXRegistration()
-        {
-            yield return new WaitForSeconds(2f);
-
-            if (Player.m_localPlayer != null && Player.m_localPlayer.IsDead())
-            {
-                Log.LogInfo("[VFX 프리팹] 플레이어 사망으로 VFX 등록 중단");
-                yield break;
-            }
-
             try
             {
-                if (ZNetScene.instance != null)
-                {
-                    Log.LogDebug("[VFX 프리팹] 수동 등록 시작");
-                    VFXPrefabRegistry.RegisterVFXPrefabs(ZNetScene.instance);
-                    VFXPrefabRegistry.DiagnoseRegistrationStatus();
-                    VFXManager.DiagnoseHybridSystem();
-                    VFXManager.DeepDebugBuff01();
-                    Log.LogDebug("[VFX 프리팹] 수동 등록 완료");
-                }
-                else
-                {
-                    Log.LogError("[VFX 프리팹] ZNetScene이 여전히 null - 등록 실패");
-                }
+                // PrefabRegistry 초기화 (AssetBundle에서 VFX 프리팹 로드)
+                Prefab.PrefabRegistry.Initialize();
+
+                var names = Prefab.PrefabRegistry.GetRegisteredPrefabNames();
+                Log.LogInfo($"[프리팹] PrefabRegistry 초기화 완료 - 등록된 프리팹: {names.Count}개");
+                Log.LogInfo($"[프리팹] 등록된 이름: {string.Join(", ", names)}");
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                Log.LogError($"[VFX 프리팹] 수동 등록 중 오류: {ex.Message}");
+                Log.LogError($"[프리팹] 초기화 실패: {ex.Message}");
             }
         }
 

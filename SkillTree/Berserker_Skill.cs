@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
-using CaptainSkillTree.VFX;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -213,22 +212,14 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 분노 VFX 효과 생성 (플레이어를 따라다니는 이펙트)
+        /// 분노 VFX 효과 생성 (WackyEpicMMO 방식 - 플레이어를 따라다니는 이펙트)
         /// </summary>
         private static void CreateRageEffect(Player player)
         {
             try
             {
-                // 플레이어를 따라다니는 VFX 생성 (로컬 전용)
-                VFXManager.PlayVFXAttachedToPlayer(
-                    player,
-                    "debuff",                                       // VFX 이름
-                    "sfx_morgen_alert",                            // 사운드 이름
-                    Berserker_Config.BerserkerRageDurationValue,   // 지속 시간
-                    Vector3.zero                                    // 오프셋 (플레이어 중심)
-                );
-
-                // VFX/사운드 재생 완료
+                // SimpleVFX 방식: Valheim 내장 VFX로 플레이어 효과
+                SimpleVFX.PlayOnPlayer(player, Berserker_Config.BerserkerRageDurationValue);
             }
             catch (Exception ex)
             {
@@ -237,7 +228,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 몬스터 적중 시 VFX 효과 (ZRoutedRpc 방식)
+        /// 몬스터 적중 시 VFX 효과 (WackyEpicMMO CriticalVFX 방식)
         /// </summary>
         public static void CreateMonsterHitEffect(Character target)
         {
@@ -245,16 +236,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (target == null) return;
 
-                // ZRoutedRpc를 통한 안전한 멀티플레이어 VFX 재생
-                VFXManager.PlayVFXMultiplayer(
-                    "flash_round_ellow",
-                    "",  // 사운드 없음
-                    target.transform.position + Vector3.up * 1f,
-                    target.transform.rotation,
-                    2f
-                );
-
-                // 몬스터 적중 VFX 재생 완료
+                // SimpleVFX 방식: Valheim 내장 VFX로 몬스터 타격 효과
+                SimpleVFX.PlayAtPosition(target.transform.position + Vector3.up * 1f, 2f);
             }
             catch (Exception ex)
             {
@@ -360,24 +343,14 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 패시브 VFX 효과 생성
+        /// 패시브 VFX 효과 생성 (WackyEpicMMO 방식)
         /// </summary>
         private static void CreatePassiveEffect(Player player)
         {
             try
             {
-                float duration = Berserker_Config.BerserkerPassiveInvincibilityDurationValue;
-
-                // ZRoutedRpc를 통한 안전한 멀티플레이어 VFX 재생
-                VFXManager.PlayVFXMultiplayer(
-                    "statusailment_01",
-                    "",  // 사운드 없음
-                    player.transform.position + Vector3.up * 1f,
-                    player.transform.rotation,
-                    3f
-                );
-
-                // 패시브 VFX 재생 완료
+                // SimpleVFX 방식: Valheim 내장 VFX로 패시브 효과
+                SimpleVFX.PlayOnPlayer(player, 3f);
             }
             catch (Exception ex)
             {

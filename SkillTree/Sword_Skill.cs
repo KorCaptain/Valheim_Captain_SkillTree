@@ -100,7 +100,7 @@ namespace CaptainSkillTree.SkillTree
             if (newStacks >= maxStacks && currentStacks < maxStacks)
             {
                 Vector3 playerPos = player.transform.position + Vector3.up * 1f;
-                VFXManager.PlayVFXMultiplayer("fx_eikthyr_stomp", "", playerPos, player.transform.rotation, 0.8f);
+                SimpleVFX.Play("fx_eikthyr_stomp", playerPos, 0.8f);
             }
         }
 
@@ -390,7 +390,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // VFX 재생
                 Vector3 hitPosition = player.transform.position + player.transform.forward * 2f + Vector3.up * 1f;
-                VFXManager.PlayVFXMultiplayer(vfxName, sfxName, hitPosition, player.transform.rotation, vfxDuration);
+                SimpleVFX.PlayWithSound(vfxName, sfxName, hitPosition, vfxDuration);
 
                 // 직접 데미지 적용 (범위 3m 내 몬스터)
                 var monsters = Character.GetAllCharacters()
@@ -486,7 +486,7 @@ namespace CaptainSkillTree.SkillTree
                 // 스킬 시전 효과: debuff_03 (플레이어 주변)
                 try
                 {
-                    VFXManager.PlayVFXMultiplayer("debuff_03", "", playerPos, player.transform.rotation, 1.2f);
+                    SimpleVFX.Play("debuff_03", playerPos, 1.2f);
                 }
                 catch (System.Exception vfxEx)
                 {
@@ -496,7 +496,7 @@ namespace CaptainSkillTree.SkillTree
                 // 적중 효과: flash_blue_purple (전방 위치)
                 try
                 {
-                    VFXManager.PlayVFXMultiplayer("flash_blue_purple", "", forwardPos, player.transform.rotation, 1.0f);
+                    SimpleVFX.Play("flash_blue_purple", forwardPos, 1.0f);
                 }
                 catch (System.Exception hitVfxEx)
                 {

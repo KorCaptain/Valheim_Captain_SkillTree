@@ -146,12 +146,7 @@ namespace CaptainSkillTree.SkillTree
             polearmKingLastUseTime[player] = now;
 
             // VFX/SFX 재생 (액티브 스킬이므로 허용)
-            VFXManager.PlayVFXMultiplayer(
-                "fx_guardstone_activate",
-                "",  // 사운드 없음
-                player.transform.position,
-                player.transform.rotation
-            );
+            SimpleVFX.Play("fx_guardstone_activate", player.transform.position, 3f);
 
             DrawFloatingText(player, $"👑 장창의 제왕! ({SkillTreeConfig.PolearmStep5KingDurationValue}초)");
             Plugin.Log.LogInfo($"[장창의 제왕] 스킬 사용 - 지속시간: {SkillTreeConfig.PolearmStep5KingDurationValue}초");

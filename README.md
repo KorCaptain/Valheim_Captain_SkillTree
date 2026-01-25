@@ -51,7 +51,7 @@ cd CaptainSkillTree && dotnet build Captain_SkillTree.csproj -c Release
 **두 파일 모두 포함**해서 배포하세요:
 
 ```
-📁 CaptainSkillTree_v0.1.167.zip
+📁 CaptainSkillTree_v0.1.199.zip
 ├── CaptainSkillTree.dll
 └── AnimationSpeedManager.dll
 ```
