@@ -1743,7 +1743,7 @@ namespace CaptainSkillTree.SkillTree
                     if (SkillEffect.HasSkill("mace_Step3_branch_heavy"))
                     {
                         totalMaceBonusFixed += Mace_Config.MaceStep3HeavyDamageBonusValue;
-                        Plugin.Log.LogDebug($"[무거운 타격] +{Mace_Config.MaceStep3HeavyDamageBonusValue} 고정");
+                        // 매 프레임 호출되므로 로그 제거
                     }
 
                     // Tier 5: 공격력 강화 - 공격력 +20%
@@ -1757,14 +1757,14 @@ namespace CaptainSkillTree.SkillTree
                     if (totalMaceBonusPercent > 0)
                     {
                         GetDamageHelper.ApplyPhysicalDamageBonus(ref __result, totalMaceBonusPercent);
-                        Plugin.Log.LogInfo($"[둔기 스킬] 비율 보너스 +{totalMaceBonusPercent}%");
+                        // 매 프레임 호출되므로 LogDebug로 변경 (무한 로그 방지)
                     }
 
                     // 고정값 보너스 적용 (blunt만)
                     if (totalMaceBonusFixed > 0 && __result.m_blunt > 0)
                     {
                         __result.m_blunt += totalMaceBonusFixed;
-                        Plugin.Log.LogInfo($"[둔기 스킬] 고정 데미지 +{totalMaceBonusFixed} (blunt)");
+                        // 매 프레임 호출되므로 LogDebug로 변경 (무한 로그 방지)
                     }
                 }
 

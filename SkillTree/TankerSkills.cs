@@ -583,8 +583,8 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 몬스터 도발 효과 - vfx_creature_tamed 스타일 (하트/분홍 상승 입자)
-        /// ✅ ZNetView 없는 순수 Unity 컴포넌트만 사용 (무한 로딩 방지)
+        /// 몬스터 도발 효과 표시 - 순수 Instantiate만 사용
+        /// ✅ 발헤임 기본 VFX는 SetParent/Destroy/코루틴 금지!
         /// </summary>
         private static void ShowTauntEffectOnMonster(Character monster, float duration)
         {
@@ -592,52 +592,39 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
-                float height = CalculateMonsterHeight(monster);
-                Vector3 pos = monster.transform.position + Vector3.up * height;
+                string monsterName = monster.name ?? "Unknown";
+                float dynamicHeight = CalculateMonsterHeight(monster);
+                Vector3 headPosition = monster.transform.position + Vector3.up * dynamicHeight;
 
-                // ✅ Taunt 효과 (vfx_creature_tamed 스타일 - 분홍/붉은 하트 상승)
-                var tauntObj = new GameObject("MonsterTauntMarker");
-                tauntObj.transform.position = pos;
+                Plugin.Log.LogDebug($"[Tanker 도발] {monsterName} 머리 위 도발 효과 생성 - 높이: {dynamicHeight}m");
 
-                // 분홍색 Light (길들임/도발 상태)
-                var tauntLight = tauntObj.AddComponent<Light>();
-                tauntLight.type = LightType.Point;
-                tauntLight.color = new Color(1f, 0.4f, 0.5f); // 분홍색
-                tauntLight.intensity = 4f;
-                tauntLight.range = 4f;
+                // taunt 프리팹 - 순수 Instantiate만 (발헤임이 알아서 정리)
+                var znetScene = ZNetScene.instance;
+                if (znetScene != null)
+                {
+                    var tauntVFX = znetScene.GetPrefab("taunt");
+                    if (tauntVFX != null)
+                    {
+                        // ✅ 순수 Instantiate만 - SetParent/Destroy 금지!
+                        UnityEngine.Object.Instantiate(tauntVFX, headPosition, Quaternion.identity);
+                        Plugin.Log.LogDebug($"[taunt 이펙트] {monsterName} 순수 표현 완료");
+                        return;
+                    }
+                }
 
-                // 위로 상승하는 분홍 입자 (하트 느낌)
-                var tauntPS = tauntObj.AddComponent<ParticleSystem>();
-                var tauntMain = tauntPS.main;
-                tauntMain.startColor = new ParticleSystem.MinMaxGradient(
-                    new Color(1f, 0.5f, 0.6f, 0.9f),  // 밝은 분홍
-                    new Color(1f, 0.3f, 0.4f, 0.7f)   // 진한 분홍
-                );
-                tauntMain.startSize = new ParticleSystem.MinMaxCurve(0.2f, 0.4f);
-                tauntMain.startLifetime = 1.0f;
-                tauntMain.startSpeed = 1.5f;
-                tauntMain.maxParticles = 20;
-                tauntMain.simulationSpace = ParticleSystemSimulationSpace.World;
-                tauntMain.gravityModifier = -0.4f; // 위로 상승
-
-                var tauntEmission = tauntPS.emission;
-                tauntEmission.rateOverTime = 15f;
-
-                var tauntShape = tauntPS.shape;
-                tauntShape.shapeType = ParticleSystemShapeType.Sphere;
-                tauntShape.radius = 0.3f;
-
-                // ✅ 지정된 시간 후 자동 삭제 (최대 2초)
-                UnityEngine.Object.Destroy(tauntObj, Mathf.Min(duration, 2f));
+                // 프리팹 없으면 메시지만
+                Plugin.Log.LogDebug($"[taunt 이펙트] {monsterName} taunt 프리팹 없음");
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[몬스터 도발 VFX] 효과 재생 실패: {ex.Message}");
+                Plugin.Log.LogError($"[도발 이펙트] 생성 실패: {ex.Message}");
             }
         }
 
-        // ❌ FollowMonsterEffect 코루틴 제거됨 - SetParent/Dictionary 사용으로 무한 로딩 원인
+        // ❌ FollowMonsterEffect 코루틴 제거됨 - SetParent/Destroy 사용으로 무한 로딩 유발
+        // ❌ ShowFallbackTauntEffect 제거됨 - 발헤임 기본 VFX 순수 표현으로 대체
 
+        /// <summary>
         /// <summary>
         /// 몬스터 크기에 따른 동적 높이 계산
         /// </summary>
@@ -707,20 +694,22 @@ namespace CaptainSkillTree.SkillTree
         // ❌ ShowFallbackTauntEffect 제거됨 - 사용되지 않음
 
         /// <summary>
-        /// 탱커 방어 버프 시작 - Light + ParticleSystem 직접 생성
-        /// ✅ ZNetView 없는 순수 Unity 컴포넌트만 사용 (무한 로딩 방지)
+        /// 탱커 방어 버프 시작 - 피해 감소만 적용 (VFX는 PlayTankerEffects에서 fx_Fader_Spin만 사용)
         /// </summary>
         private static void StartTankerDefenseBuff(Player player)
         {
             try
             {
-                float buffDuration = Tanker_Config.TankerTauntDurationValue;
-
-                // ✅ Light + ParticleSystem 기반 VFX (ZNetView 없음 - 무한 로딩 방지)
-                PlaySafeTankerVFX(player, buffDuration);
+                float buffDuration = Tanker_Config.TankerTauntBuffDurationValue;
+                Plugin.Log.LogDebug($"[탱커 방어 버프] {player.GetPlayerName()} 방어 버프 시작 - {buffDuration}초간 피해 {Tanker_Config.TankerTauntDamageReductionValue}% 감소");
 
                 // 피해 감소 버프 적용
                 ApplyTankerDamageReduction(player, buffDuration);
+
+                // 텍스트 알림
+                player.Message(MessageHud.MessageType.Center, "<color=#FFD700>⚔ 방어 버프 활성화! ⚔</color>");
+
+                Plugin.Log.LogDebug($"[탱커 방어 버프] {player.GetPlayerName()} 방어 버프 적용 완료");
             }
             catch (System.Exception ex)
             {
@@ -728,59 +717,8 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>
-        /// 탱커 방어 버프 VFX - fx_guardstone_deactivate (Light + ParticleSystem 직접 생성)
-        /// ✅ ZNetView 없는 순수 Unity 컴포넌트만 사용 (무한 로딩 방지)
-        /// </summary>
-        private static void PlaySafeTankerVFX(Player player, float duration)
-        {
-            try
-            {
-                Vector3 position = player.transform.position + Vector3.up * 1.0f;
-
-                // ✅ fx_guardstone_deactivate 스타일 효과 (푸른 보호막 해제 느낌)
-                var vfxObj = new GameObject("TankerBuffVFX");
-                vfxObj.transform.position = position;
-
-                // 푸른색 Light (가드스톤 느낌)
-                var light = vfxObj.AddComponent<Light>();
-                light.type = LightType.Point;
-                light.color = new Color(0.3f, 0.6f, 1f); // 푸른색
-                light.intensity = 6f;
-                light.range = 8f;
-
-                // 하강하는 입자 (deactivate 느낌)
-                var ps = vfxObj.AddComponent<ParticleSystem>();
-                var main = ps.main;
-                main.startColor = new ParticleSystem.MinMaxGradient(
-                    new Color(0.4f, 0.7f, 1f, 0.8f),
-                    new Color(0.2f, 0.5f, 0.9f, 0.6f)
-                );
-                main.startSize = new ParticleSystem.MinMaxCurve(0.2f, 0.4f);
-                main.startLifetime = 1.0f;
-                main.startSpeed = 1.5f;
-                main.maxParticles = 40;
-                main.simulationSpace = ParticleSystemSimulationSpace.World;
-                main.gravityModifier = 0.3f; // 아래로 하강
-
-                var emission = ps.emission;
-                emission.rateOverTime = 30f;
-
-                var shape = ps.shape;
-                shape.shapeType = ParticleSystemShapeType.Sphere;
-                shape.radius = 1.0f;
-
-                // ✅ 1.5초 후 자동 삭제
-                UnityEngine.Object.Destroy(vfxObj, 1.5f);
-
-                // 텍스트 알림
-                player.Message(MessageHud.MessageType.Center, "<color=#FFD700>⚔ 방어 버프 활성화! ⚔</color>");
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[탱커 VFX] 실패: {ex.Message}");
-            }
-        }
+        // ❌ TankerDefenseBuffEffect 코루틴 제거됨 - fx_guardstone_permitted_add + fx_Fader_Spin 동시 사용 시 무한 로딩
+        // ❌ PlayFallbackTankerVFX 제거됨 - 더 이상 사용되지 않음
 
         /// <summary>
         /// 탱커 피해 감소 적용 (플래그 기반 시스템 - 코루틴 없음)
@@ -838,11 +776,37 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 탱커 스킬 발동 효과 - 제거됨 (PlaySafeTankerVFX에서 통합 처리)
+        /// 탱커 스킬 발동 효과 - fx_Fader_Spin VFX
+        /// ✅ 발헤임 기본 VFX는 순수 Instantiate만 사용 (SetParent/Destroy 금지)
         /// </summary>
         private static void PlayTankerEffects(Player player)
         {
-            // VFX는 PlaySafeTankerVFX()에서 처리
+            if (player == null) return;
+
+            try
+            {
+                // fx_Fader_Spin 이펙트 - 순수 Instantiate (발헤임이 알아서 정리)
+                var znetScene = ZNetScene.instance;
+                if (znetScene != null)
+                {
+                    var faderSpinVFX = znetScene.GetPrefab("fx_Fader_Spin");
+                    if (faderSpinVFX != null)
+                    {
+                        Vector3 playerPos = player.transform.position;
+                        // ✅ 순수 Instantiate만 - SetParent/Destroy 금지!
+                        UnityEngine.Object.Instantiate(faderSpinVFX, playerPos, Quaternion.identity);
+                        Plugin.Log.LogDebug("[탱커 VFX] fx_Fader_Spin 순수 표현 완료");
+                    }
+                    else
+                    {
+                        Plugin.Log.LogDebug("[탱커 VFX] fx_Fader_Spin 프리팹을 찾을 수 없음");
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[탱커 VFX] fx_Fader_Spin 재생 실패: {ex.Message}");
+            }
         }
 
 

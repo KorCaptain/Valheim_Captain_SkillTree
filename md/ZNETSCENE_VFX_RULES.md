@@ -1,13 +1,23 @@
 # ZNetScene VFX/SFX 통합 관리 규칙
 
+## 🎯 핵심 원칙
+
+### 1. ZNetScene 필수 등록 규칙
+- **외부 VFX/SFX 효과는 ZNetScene에 등록 후 사용**
+
+- **Plugin.cs의 UnifiedVfxPrefabRegisterPatch에서 자동 등록**
+- **사용 전 반드시 ZNetScene.instance.GetPrefab()로 존재 확인**
+
 ## ⚠️ 중요: 이 문서는 VFX 프리팹 목록 참고용입니다
+내부 VFX 프리팹은 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\VFX 의 Valheim_prefab.txt 참고
+외부 VFX 폴더 위치 -  C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\asset\VFX
 
-**VFX 재생 방법은 [VFX_SOUND_INFINITE_LOADING_FIX.md](VFX_SOUND_INFINITE_LOADING_FIX.md)를 따르세요.**
 
-이 문서의 `직접 Instantiate` 패턴은 구버전이며, **무한 로딩을 유발할 수 있습니다**.
-반드시 최신 `VFXManager.PlayVFXMultiplayer()` 메서드를 사용하세요.
+** VFX 재생 방법은 VFX_SOUND_INFINITE_LOADING_FIX.md 를 따르세요.**
 
----
+** `직접 Instantiate` 패턴은 구버전이며, **무한 로딩을 유발할 수 있습니다**.
+발헤임 내부 VFX는  `VFXManager.PlayVFXMultiplayer()` 메서드를 사용하세요.
+외부 VFX는 SimpleVFX.cs 로 구현
 
 ## 발헤임 기본 이팩트로 프리팹 기본 등록 되어 있음
 smokebomb_explosion - 발헤임 기본 스모크 효과 - 로그 이팩트
@@ -23,22 +33,6 @@ fx_shield_start - 쉴드 및 버프 시작 이팩트
 fx_shieldgenerator_domehit - 그린 방어 이팩트
 staff_greenroots_projectile - 그린 볼 뿌리 소환
 fx_Fader_Spin - 광역 원 푸른 
-
-
-## 🎯 핵심 원칙
-
-### 1. ZNetScene 필수 등록 규칙
-- **모든 VFX/SFX 효과는 ZNetScene에 등록 후 사용**
-- **Plugin.cs의 UnifiedVfxPrefabRegisterPatch에서 자동 등록**
-- **사용 전 반드시 ZNetScene.instance.GetPrefab()로 존재 확인**
-
-### 2. DLL 리소스 구조
-```
-
-
-
-CaptainSkillTree.asset.Resources.{리소스명}
-```
 
 ## 📦 등록된 VFX 프리팹 목록
 

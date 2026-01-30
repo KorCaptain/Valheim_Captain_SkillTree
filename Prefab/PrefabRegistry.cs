@@ -204,19 +204,14 @@ namespace CaptainSkillTree.Prefab
         /// </summary>
         public static void Initialize()
         {
-            Plugin.Log.LogInfo($"[프리팹 등록] Initialize 호출됨 - isInitialized: {isInitialized}");
-
             if (isInitialized) return;
 
             try
             {
-                Plugin.Log.LogInfo("[프리팹 등록] LoadPrefabBundles 시작...");
-
                 // EmbeddedResource에서 프리팹 번들 로드
                 LoadPrefabBundles();
 
                 isInitialized = true;
-                Plugin.Log.LogInfo($"[프리팹 등록] 초기화 완료 - 등록된 프리팹: {registeredPrefabs.Count}개");
             }
             catch (Exception ex)
             {
@@ -233,12 +228,6 @@ namespace CaptainSkillTree.Prefab
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourceNames = assembly.GetManifestResourceNames();
-
-            Plugin.Log.LogInfo($"[프리팹 등록] 총 리소스 수: {resourceNames.Length}개");
-
-            // VFX 관련 리소스만 필터링해서 출력
-            var vfxResources = resourceNames.Where(r => r.Contains("VFX") || r.Contains("debuff")).ToList();
-            Plugin.Log.LogInfo($"[프리팹 등록] VFX 리소스: {string.Join(", ", vfxResources)}");
             
             // 스킬트리 UI 전용 프리팹들 (ZNetScene 등록 불필요) - Plugin.cs에서 직접 처리
             var skillTreeUIBundles = new HashSet<string>

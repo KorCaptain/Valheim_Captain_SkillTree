@@ -114,70 +114,21 @@ namespace CaptainSkillTree
             }
         }
 
-        // 단검 공격 속도 패치 - 적 처치 후 일정 시간 동안만 공격속도 증가 효과 적용 (무기 착용 기반)
-        [HarmonyPatch(typeof(CharacterAnimEvent), nameof(CharacterAnimEvent.CustomFixedUpdate))]
-        public static class KnifeAttackSpeedAnimatorPatch
-        {
-            private static readonly Dictionary<Player, float> lastSpeedApplied = new Dictionary<Player, float>();
-
-            public static void Postfix(CharacterAnimEvent __instance)
-            {
-                try
-                {
-                    // 로컬 플레이어만 처리
-                    var player = Player.m_localPlayer;
-                    if (player == null) return;
-
-                    // CharacterAnimEvent에서 플레이어의 애니메이터인지 확인
-                    var playerAnimator = player.GetComponentInChildren<Animator>();
-                    if (playerAnimator == null || __instance.GetComponentInParent<Player>() != player) return;
-
-                    // 단검을 착용하고 있는지 확인
-                    var currentWeapon = player.GetCurrentWeapon();
-                    if (currentWeapon?.m_shared?.m_skillType != Skills.SkillType.Knives)
-                    {
-                        // 단검이 아니면 속도를 기본값으로 복구
-                        ResetAnimatorSpeed(player);
-                        return;
-                    }
-
-                    // 스킬 보유 확인
-                    if (!SkillEffect.HasSkill("knife_step4_attack_damage"))
-                    {
-                        ResetAnimatorSpeed(player);
-                        return;
-                    }
-
-                    // 단검 데미지 버프 활성화 여부 확인 (AnimationSpeedManager 사용하지 않음)
-                    // 단검 데미지 버프는 데미지 계산 시 직접 적용됨
-                    if (SkillEffect.knifeDamageBonusEndTime.TryGetValue(player, out float endTime) && Time.time < endTime)
-                    {
-                        // 데미지 버프 활성 상태 - 별도 처리 불필요
-                    }
-                    else
-                    {
-                        // 버프 시간 종료
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.LogError($"[단검 데미지 버프] 상태 확인 오류: {ex.Message}");
-                }
-            }
-
-            private static void ResetAnimatorSpeed(Player player)
-            {
-                var animator = player.GetComponentInChildren<Animator>();
-                if (animator == null) return;
-
-                // 이미 기본 속도면 건드리지 않음
-                if (Mathf.Abs(animator.speed - 1f) < 0.01f) return;
-
-                animator.speed = 1f;
-                lastSpeedApplied.Remove(player);
-                Log.LogDebug($"[단검 공격속도] {player.GetPlayerName()} 애니메이터 속도 복구: 1.0 (버프 해제)");
-            }
-        }
+        // ============================================================================
+        // ⛔ KnifeAttackSpeedAnimatorPatch - 비활성화됨 (v0.1.225)
+        // ============================================================================
+        // 문제: animator.speed 직접 조작이 AnimationSpeedManager와 충돌하여
+        //       모든 무기의 기본 공격 속도가 느려지는 버그 발생
+        //
+        // 해결: 모든 공격 속도는 AnimationSpeedManager에서 통합 처리
+        //       - Game.Awake의 AttackSpeedHandler_Game_Awake_Patch 참조
+        //       - SkillEffect.GetTotalAttackSpeedBonus()에서 단검 포함 모든 무기 처리
+        //
+        // 참고: md/Attack_Speed_bug.md 문서 참조
+        // ============================================================================
+        // [HarmonyPatch(typeof(CharacterAnimEvent), nameof(CharacterAnimEvent.CustomFixedUpdate))]
+        // public static class KnifeAttackSpeedAnimatorPatch { ... }
+        // ============================================================================
 
         // 스태미나 재생 누적
         [HarmonyPatch(typeof(SEMan), nameof(SEMan.ModifyStaminaRegen))]
@@ -511,45 +462,89 @@ namespace CaptainSkillTree
     }
 
     /// <summary>
-    /// Game.Awake 패치 - AnimationSpeedManager에 공격속도 핸들러 등록
-    /// EpicLoot의 ModifyAttackSpeed 패턴 준수
+    /// Rule 14-3: Game.Awake Postfix에서 AnimationSpeedManager 핸들러 등록
+    /// AnimationSpeedManager가 초기화된 이후에 등록해야 안정적으로 작동함
+    /// Phase 2: 진단 로그 강화
     /// </summary>
     [HarmonyPatch(typeof(Game), "Awake")]
-    public static class CaptainSkillTree_AnimationSpeedManager_Patch
+    public static class AttackSpeedHandler_Game_Awake_Patch
     {
         private static bool _attackSpeedHandlerRegistered = false;
+        private static float _lastDiagnosticLogTime = 0f;
+        private const float DIAGNOSTIC_LOG_INTERVAL = 5f; // 5초에 1번만 로그
 
         [HarmonyPostfix]
-        public static void Postfix(Game __instance)
+        public static void Postfix()
         {
-            if (_attackSpeedHandlerRegistered) return;  // 중복 방지
+            if (_attackSpeedHandlerRegistered) return;
+
+            Plugin.Log.LogWarning("========== [공격 속도] Game.Awake - 핸들러 등록 시도 ==========");
 
             try
             {
-                // ✅ 직접 호출 방식 (DLL 참조)
                 AnimationSpeedManager.Add((character, speed) =>
                 {
+                    // 플레이어 공격 중일 때만 처리
                     if (character is Player player && player.InAttack())
                     {
-                        float attackSpeedBonus =
-                            SkillEffect.GetTotalAttackSpeedBonus(player);
+                        double finalSpeed = speed;
+
+                        // ⚠️ Phase 2 진단: 입력 속도가 1.0 미만인지 확인 (다른 핸들러가 속도를 줄이고 있는지)
+                        if (speed < 0.99)
+                        {
+                            Plugin.Log.LogWarning($"[공속 진단] ⚠️ 입력 속도가 1.0 미만! speed={speed:F3} (다른 핸들러가 감소시킴?)");
+                            // 기본 속도 보정: 1.0 미만이면 1.0으로 복구
+                            finalSpeed = 1.0;
+                        }
+
+                        // 공격속도 보너스 계산
+                        float attackSpeedBonus = SkillEffect.GetTotalAttackSpeedBonus(player);
 
                         if (attackSpeedBonus > 0f)
                         {
                             double bonusMultiplier = 1.0 + (attackSpeedBonus / 100.0);
-                            double modifiedSpeed = speed * bonusMultiplier;
+                            finalSpeed = finalSpeed * bonusMultiplier;
+                            Plugin.Log.LogInfo($"[공격 속도] ✅ +{attackSpeedBonus}%: 입력={speed:F3} → 출력={finalSpeed:F3}");
 
-                            return modifiedSpeed;
+                            // 슬래쉬 액티브 스킬 추가 배율 적용
+                            if (Sword_Skill.IsSlashActive(player))
+                            {
+                                return Sword_Skill.ModifySlashAttackSpeed(player, finalSpeed);
+                            }
+
+                            return finalSpeed;
                         }
+                        else
+                        {
+                            // Phase 2: 보너스가 없을 때도 진단 로그 (스로틀링 적용)
+                            if (Time.time - _lastDiagnosticLogTime > DIAGNOSTIC_LOG_INTERVAL)
+                            {
+                                var weapon = player.GetCurrentWeapon();
+                                string weaponName = weapon?.m_shared?.m_name ?? "없음";
+                                Plugin.Log.LogDebug($"[공속 진단] 보너스 없음 - 무기: {weaponName}, 입력속도={speed:F3}, 출력속도={finalSpeed:F3}");
+                                _lastDiagnosticLogTime = Time.time;
+                            }
+                        }
+
+                        // 슬래쉬만 활성화된 경우 (공속 보너스 없이)
+                        if (Sword_Skill.IsSlashActive(player))
+                        {
+                            return Sword_Skill.ModifySlashAttackSpeed(player, finalSpeed);
+                        }
+
+                        // 보너스 없어도 보정된 속도 반환
+                        return finalSpeed;
                     }
                     return speed;
                 });
 
                 _attackSpeedHandlerRegistered = true;
+                Plugin.Log.LogWarning("========== [공격 속도] AnimationSpeedManager 핸들러 등록 완료! (Game.Awake) ==========");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[공격 속도] AnimationSpeedManager 등록 실패: {ex.Message}");
+                Plugin.Log.LogError($"========== [공격 속도] AnimationSpeedManager 등록 실패: {ex.Message} ==========");
+                Plugin.Log.LogError($"[공격 속도] StackTrace: {ex.StackTrace}");
             }
         }
     }

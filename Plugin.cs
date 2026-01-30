@@ -19,7 +19,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.199")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.225")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     public partial class Plugin : BaseUnityPlugin
@@ -95,8 +95,8 @@ namespace CaptainSkillTree
             // 프리팹 레지스트리 초기화
             InitializePrefabSystem();
 
-            // AnimationSpeedManager를 통한 슬래쉬 공격 속도 제어 등록
-            RegisterSlashAnimationSpeedHandler();
+            // NOTE: AnimationSpeedManager 핸들러는 Game.Awake Postfix에서 등록됨 (Rule 14-3)
+            // Plugin.Patches.cs의 AttackSpeedHandler_Game_Awake_Patch 참조
 
             // Jotunn CommandManager로 콘솔 명령어 등록
             RegisterJotunnCommands();
@@ -123,35 +123,8 @@ namespace CaptainSkillTree
             }
         }
 
-        /// <summary>
-        /// MMO 시스템과 연동하여 슬래쉬 공격 속도 제어 핸들러 등록
-        /// </summary>
-        private static void RegisterSlashAnimationSpeedHandler()
-        {
-            try
-            {
-                AnimationSpeedManager.Add((character, speed) =>
-                {
-                    if (character is Player player)
-                    {
-                        if (Sword_Skill.IsSlashActive(player))
-                        {
-                            var modifiedSpeed = Sword_Skill.ModifySlashAttackSpeed(player, speed);
-                            if (modifiedSpeed != speed)
-                            {
-                                Log.LogDebug($"[슬래쉬 스킬] {player.GetPlayerName()} 슬래쉬 속도 변경: {speed:F3} → {modifiedSpeed:F3}");
-                            }
-                            return modifiedSpeed;
-                        }
-                    }
-                    return speed;
-                });
-            }
-            catch (Exception ex)
-            {
-                Log.LogError($"[슬래쉬 스킬] AnimationSpeedManager 등록 실패: {ex.Message}");
-            }
-        }
+        // NOTE: AnimationSpeedManager 핸들러는 Plugin.Patches.cs의
+        // AttackSpeedHandler_Game_Awake_Patch에서 Game.Awake Postfix로 등록됨 (Rule 14-3)
 
         // 핵심 안전 장치 초기화
         private static void InitializeCoreSafeguards()
@@ -1002,10 +975,6 @@ namespace CaptainSkillTree
             {
                 // PrefabRegistry 초기화 (AssetBundle에서 VFX 프리팹 로드)
                 Prefab.PrefabRegistry.Initialize();
-
-                var names = Prefab.PrefabRegistry.GetRegisteredPrefabNames();
-                Log.LogInfo($"[프리팹] PrefabRegistry 초기화 완료 - 등록된 프리팹: {names.Count}개");
-                Log.LogInfo($"[프리팹] 등록된 이름: {string.Join(", ", names)}");
             }
             catch (System.Exception ex)
             {

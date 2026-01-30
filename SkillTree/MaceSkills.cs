@@ -6,104 +6,45 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 둔기 스킬 효과 구현 (직접 패치 방식 - Tier 2)
+    /// WeaponHelper, SkillBonusCalculator 사용하여 중복 코드 제거
     /// </summary>
     public static class MaceSkills
     {
         /// <summary>
-        /// 둔기 무기 사용 여부 확인
-        /// </summary>
-        public static bool IsUsingMace(Player player)
-        {
-            if (player == null) return false;
-
-            var weapon = player.GetCurrentWeapon();
-            if (weapon == null) return false;
-
-            return weapon.m_shared.m_skillType == Skills.SkillType.Clubs;
-        }
-
-        /// <summary>
         /// 모든 둔기 데미지 보너스 계산
         /// Tier 0 (전문가 +5%) + Tier 1 (+10%) + Tier 5 DPS (+20%)
         /// </summary>
-        public static float GetTotalMaceDamageBonus(string skillId)
+        public static float GetTotalMaceDamageBonus(string skillId = "")
         {
-            var manager = SkillTreeManager.Instance;
-            if (manager == null) return 0f;
-
-            float totalBonus = 0f;
-
-            // Tier 0: 둔기 전문가 (+5%)
-            if (manager.GetSkillLevel("mace_expert_damage") > 0)
-            {
-                totalBonus += Mace_Config.MaceExpertDamageBonusValue;
-            }
-
-            // Tier 1: 둔기 공격력 강화 (+10%)
-            if (manager.GetSkillLevel("mace_Step1_damage") > 0)
-            {
-                totalBonus += Mace_Config.MaceStep1DamageBonusValue;
-            }
-
-            // Tier 5 DPS: 공격력 강화 (+20%)
-            if (manager.GetSkillLevel("mace_Step5_dps") > 0)
-            {
-                totalBonus += Mace_Config.MaceStep5DpsDamageBonusValue;
-            }
-
-            return totalBonus;
+            return SkillBonusCalculator.CalculateTotal(
+                ("mace_expert_damage", () => Mace_Config.MaceExpertDamageBonusValue),
+                ("mace_Step1_damage", () => Mace_Config.MaceStep1DamageBonusValue),
+                ("mace_Step5_dps", () => Mace_Config.MaceStep5DpsDamageBonusValue)
+            );
         }
 
         /// <summary>
         /// 기절 확률 계산
         /// Tier 0 (전문가 20%) + Tier 2 (+15%)
         /// </summary>
-        public static float GetTotalStunChance(string skillId)
+        public static float GetTotalStunChance(string skillId = "")
         {
-            var manager = SkillTreeManager.Instance;
-            if (manager == null) return 0f;
-
-            float totalChance = 0f;
-
-            // Tier 0: 둔기 전문가 (20%)
-            if (manager.GetSkillLevel("mace_expert_damage") > 0)
-            {
-                totalChance += Mace_Config.MaceExpertStunChanceValue;
-            }
-
-            // Tier 2: 기절 강화 (+15%)
-            if (manager.GetSkillLevel("mace_Step2_stun_boost") > 0)
-            {
-                totalChance += Mace_Config.MaceStep2StunChanceBonusValue;
-            }
-
-            return totalChance;
+            return SkillBonusCalculator.CalculateTotal(
+                ("mace_expert_damage", () => Mace_Config.MaceExpertStunChanceValue),
+                ("mace_Step2_stun_boost", () => Mace_Config.MaceStep2StunChanceBonusValue)
+            );
         }
 
         /// <summary>
         /// 기절 지속시간 계산
         /// Tier 0 (전문가 0.5초) + Tier 2 (+0.5초)
         /// </summary>
-        public static float GetTotalStunDuration(string skillId)
+        public static float GetTotalStunDuration(string skillId = "")
         {
-            var manager = SkillTreeManager.Instance;
-            if (manager == null) return 0f;
-
-            float totalDuration = 0f;
-
-            // Tier 0: 둔기 전문가 (0.5초)
-            if (manager.GetSkillLevel("mace_expert_damage") > 0)
-            {
-                totalDuration += Mace_Config.MaceExpertStunDurationValue;
-            }
-
-            // Tier 2: 기절 강화 (+0.5초)
-            if (manager.GetSkillLevel("mace_Step2_stun_boost") > 0)
-            {
-                totalDuration += Mace_Config.MaceStep2StunDurationBonusValue;
-            }
-
-            return totalDuration;
+            return SkillBonusCalculator.CalculateTotal(
+                ("mace_expert_damage", () => Mace_Config.MaceExpertStunDurationValue),
+                ("mace_Step2_stun_boost", () => Mace_Config.MaceStep2StunDurationBonusValue)
+            );
         }
 
         /// <summary>
@@ -112,18 +53,10 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float GetTotalArmorBonusPercent()
         {
-            var manager = SkillTreeManager.Instance;
-            if (manager == null) return 0f;
-
-            float totalBonus = 0f;
-
-            // Tier 6: 그랜드마스터 (+20%)
-            if (manager.GetSkillLevel("mace_Step6_grandmaster") > 0)
-            {
-                totalBonus += Mace_Config.MaceStep6ArmorBonusValue;
-            }
-
-            return totalBonus;
+            return SkillBonusCalculator.GetIfActive(
+                "mace_Step6_grandmaster",
+                () => Mace_Config.MaceStep6ArmorBonusValue
+            );
         }
 
         /// <summary>
@@ -132,18 +65,10 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float GetTotalArmorBonusFixed()
         {
-            var manager = SkillTreeManager.Instance;
-            if (manager == null) return 0f;
-
-            float totalBonus = 0f;
-
-            // Tier 3: 방어 강화 (+3 고정값)
-            if (manager.GetSkillLevel("mace_Step3_branch_guard") > 0)
-            {
-                totalBonus += Mace_Config.MaceStep3GuardArmorBonusValue;
-            }
-
-            return totalBonus;
+            return SkillBonusCalculator.GetIfActive(
+                "mace_Step3_branch_guard",
+                () => Mace_Config.MaceStep3GuardArmorBonusValue
+            );
         }
 
         /// <summary>
@@ -152,16 +77,10 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float GetAttackSpeedBonus()
         {
-            var manager = SkillTreeManager.Instance;
-            if (manager == null) return 0f;
-
-            // Tier 5 DPS: 공격속도 보너스 (+10%)
-            if (manager.GetSkillLevel("mace_Step5_dps") > 0)
-            {
-                return Mace_Config.MaceStep5DpsAttackSpeedBonusValue;
-            }
-
-            return 0f;
+            return SkillBonusCalculator.GetIfActive(
+                "mace_Step5_dps",
+                () => Mace_Config.MaceStep5DpsAttackSpeedBonusValue
+            );
         }
     }
 
@@ -180,22 +99,15 @@ namespace CaptainSkillTree.SkillTree
                 // 공격자가 플레이어인지 확인
                 if (hit.GetAttacker() is not Player attacker) return;
 
-                // 둔기 무기 사용 여부 확인
-                if (!MaceSkills.IsUsingMace(attacker)) return;
+                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
+                if (!WeaponHelper.IsUsingMace(attacker)) return;
 
-                // 총 데미지 배율 계산 (공격 전문가 패턴)
-                float totalDamageMultiplier = 1f;
-
-                // 데미지 보너스 계산
-                float damageBonus = MaceSkills.GetTotalMaceDamageBonus("");
+                // 총 데미지 배율 계산
+                float damageBonus = MaceSkills.GetTotalMaceDamageBonus();
                 if (damageBonus > 0f)
                 {
-                    totalDamageMultiplier *= (1f + damageBonus / 100f);
-                }
+                    float totalDamageMultiplier = 1f + damageBonus / 100f;
 
-                // 배율이 1보다 크면 적용
-                if (totalDamageMultiplier > 1f)
-                {
                     // blunt 데미지 타입에만 배율 적용
                     hit.m_damage.m_blunt *= totalDamageMultiplier;
 
@@ -222,12 +134,12 @@ namespace CaptainSkillTree.SkillTree
                 // 공격자가 플레이어인지 확인
                 if (hit.GetAttacker() is not Player attacker) return;
 
-                // 둔기 무기 사용 여부 확인
-                if (!MaceSkills.IsUsingMace(attacker)) return;
+                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
+                if (!WeaponHelper.IsUsingMace(attacker)) return;
 
                 // 기절 확률 및 지속시간 계산
-                float stunChance = MaceSkills.GetTotalStunChance("");
-                float stunDuration = MaceSkills.GetTotalStunDuration("");
+                float stunChance = MaceSkills.GetTotalStunChance();
+                float stunDuration = MaceSkills.GetTotalStunDuration();
 
                 if (stunChance <= 0f || stunDuration <= 0f) return;
 
@@ -262,14 +174,11 @@ namespace CaptainSkillTree.SkillTree
                 // 공격자가 플레이어인지 확인
                 if (hit.GetAttacker() is not Player attacker) return;
 
-                // 둔기 무기 사용 여부 확인
-                if (!MaceSkills.IsUsingMace(attacker)) return;
+                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
+                if (!WeaponHelper.IsUsingMace(attacker)) return;
 
-                var manager = SkillTreeManager.Instance;
-                if (manager == null) return;
-
-                // Tier 4: 밀어내기
-                if (manager.GetSkillLevel("mace_Step4_push") > 0)
+                // Tier 4: 밀어내기 (SkillBonusCalculator 사용)
+                if (SkillBonusCalculator.IsSkillActive("mace_Step4_push"))
                 {
                     float knockbackChance = Mace_Config.MaceStep4KnockbackChanceValue;
 
@@ -303,8 +212,8 @@ namespace CaptainSkillTree.SkillTree
                 // 플레이어만 처리
                 if (__instance is not Player player) return;
 
-                // 둔기 무기 사용 여부 확인
-                if (!MaceSkills.IsUsingMace(player)) return;
+                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
+                if (!WeaponHelper.IsUsingMace(player)) return;
 
                 // 방어력 비율 보너스 계산
                 float armorBonusPercent = MaceSkills.GetTotalArmorBonusPercent();
@@ -346,14 +255,11 @@ namespace CaptainSkillTree.SkillTree
                 // 플레이어만 처리
                 if (__instance is not Player player) return;
 
-                // 둔기 무기 사용 여부 확인
-                if (!MaceSkills.IsUsingMace(player)) return;
+                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
+                if (!WeaponHelper.IsUsingMace(player)) return;
 
-                var manager = SkillTreeManager.Instance;
-                if (manager == null) return;
-
-                // Tier 5 Tank: 체력 보너스 (+25%)
-                if (manager.GetSkillLevel("mace_Step5_tank") > 0)
+                // Tier 5 Tank: 체력 보너스 (+25%) (SkillBonusCalculator 사용)
+                if (SkillBonusCalculator.IsSkillActive("mace_Step5_tank"))
                 {
                     float healthBonus = Mace_Config.MaceStep5TankHealthBonusValue;
                     float baseHealth = __result;
@@ -384,14 +290,11 @@ namespace CaptainSkillTree.SkillTree
                 // 피격자가 플레이어인지 확인
                 if (__instance is not Player player) return;
 
-                // 둔기 무기 사용 여부 확인
-                if (!MaceSkills.IsUsingMace(player)) return;
+                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
+                if (!WeaponHelper.IsUsingMace(player)) return;
 
-                var manager = SkillTreeManager.Instance;
-                if (manager == null) return;
-
-                // Tier 5 Tank: 받는 데미지 감소 (-10%)
-                if (manager.GetSkillLevel("mace_Step5_tank") > 0)
+                // Tier 5 Tank: 받는 데미지 감소 (-10%) (SkillBonusCalculator 사용)
+                if (SkillBonusCalculator.IsSkillActive("mace_Step5_tank"))
                 {
                     float damageReduction = Mace_Config.MaceStep5TankDamageReductionValue;
                     float reductionMultiplier = 1f - (damageReduction / 100f);

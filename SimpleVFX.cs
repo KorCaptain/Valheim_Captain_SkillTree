@@ -30,6 +30,19 @@ namespace CaptainSkillTree
         private static bool _initialized = false;
 
         /// <summary>
+        /// 커스텀 VFX 목록 (AssetBundle에서 로드, Destroy 필요)
+        /// 발헤임 기본 VFX는 Destroy 호출 시 무한 로딩 발생!
+        /// </summary>
+        private static readonly HashSet<string> _customVFXNames = new HashSet<string>
+        {
+            "debuff", "debuff_03", "buff_02a", "buff_03a", "buff_03a_aura",
+            "hit_01", "hit_02", "hit_03", "hit_04",
+            "flash_blue_purple", "flash_round_ellow", "statusailment_01", "statusailment_01_aura",
+            "shine_blue", "water_blast_blue", "confetti_directional_multicolor",
+            "guard_01", "healing"
+        };
+
+        /// <summary>
         /// 플레이어용 VFX (debuff 번들)
         /// </summary>
         public static GameObject PlayerVFX = null;
@@ -149,6 +162,9 @@ namespace CaptainSkillTree
                 {
                     if (obj == null) continue;
 
+                    // 프리팹만 필터링 (씬 인스턴스 제외)
+                    if (obj.scene.name != null && obj.scene.rootCount > 0) continue;
+
                     // 몬스터용 VFX - fx_seeker_hurt
                     if (obj.name.Contains("fx_seeker_hurt") && MonsterVFX == null)
                     {
@@ -258,6 +274,8 @@ namespace CaptainSkillTree
 
         /// <summary>
         /// Valheim 내장 VFX를 이름으로 재생 (고정 위치)
+        /// - 커스텀 VFX: Destroy 호출 O
+        /// - 발헤임 기본 VFX: Destroy 호출 X (무한 로딩 방지)
         /// </summary>
         public static GameObject Play(string vfxName, Vector3 position, float duration = 3f)
         {
@@ -266,32 +284,45 @@ namespace CaptainSkillTree
             try
             {
                 GameObject prefab = null;
+                bool isCustom = IsCustomVFX(vfxName);
 
                 // 1. 캐시에서 찾기
                 if (_cachedPrefabs.TryGetValue(vfxName, out prefab) && prefab != null)
                 {
-                    var vfxObj = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
-                    if (vfxObj != null)
-                    {
-                        UnityEngine.Object.Destroy(vfxObj, duration);
-                        return vfxObj;
-                    }
+                    return InstantiateVFX(prefab, position, duration, vfxName);
                 }
 
-                // 2. ZNetScene에서 찾기
-                var znet = ZNetScene.instance;
-                if (znet != null)
+                // 2. 커스텀 VFX는 Resources에서 찾기
+                if (isCustom)
                 {
-                    prefab = znet.GetPrefab(vfxName);
+                    prefab = FindPrefabInResources(vfxName);
                     if (prefab != null)
                     {
-                        _cachedPrefabs[vfxName] = prefab;  // 캐시에 추가
-                        var vfxObj = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
-                        if (vfxObj != null)
+                        _cachedPrefabs[vfxName] = prefab;
+                        return InstantiateVFX(prefab, position, duration, vfxName);
+                    }
+                }
+                else
+                {
+                    // 3. 발헤임 기본 VFX는 ZNetScene에서 찾기 (Destroy 안 함)
+                    if (ZNetScene.instance != null)
+                    {
+                        prefab = ZNetScene.instance.GetPrefab(vfxName);
+                        if (prefab != null)
                         {
-                            UnityEngine.Object.Destroy(vfxObj, duration);
+                            var vfxObj = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
+                            // ⚠️ 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
                             return vfxObj;
                         }
+                    }
+
+                    // 4. ZNetScene 실패 시 Resources에서 시도 (fallback)
+                    prefab = FindPrefabInResources(vfxName);
+                    if (prefab != null)
+                    {
+                        _cachedPrefabs[vfxName] = prefab;
+                        // 발헤임 기본 VFX이므로 Destroy 안 함
+                        return UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
                     }
                 }
 
@@ -305,7 +336,65 @@ namespace CaptainSkillTree
         }
 
         /// <summary>
+        /// Resources에서 프리팹 찾기 (ZNetScene 사용 금지)
+        /// WackyEpicMMOSystem 방식: 프리팹만 필터링 (씬 인스턴스 제외)
+        /// </summary>
+        private static GameObject FindPrefabInResources(string prefabName)
+        {
+            try
+            {
+                foreach (var obj in Resources.FindObjectsOfTypeAll<GameObject>())
+                {
+                    if (obj != null && obj.name == prefabName)
+                    {
+                        // 프리팹만 필터링 (씬 인스턴스 제외)
+                        // scene.name이 null이거나 rootCount가 0이면 프리팹
+                        if (obj.scene.name == null || obj.scene.rootCount == 0)
+                        {
+                            return obj;
+                        }
+                    }
+                }
+            }
+            catch { }
+            return null;
+        }
+
+        /// <summary>
+        /// 커스텀 VFX인지 확인 (Destroy 필요 여부 결정)
+        /// 발헤임 기본 VFX에 Destroy 호출하면 무한 로딩 발생!
+        /// </summary>
+        private static bool IsCustomVFX(string vfxName)
+        {
+            return !string.IsNullOrEmpty(vfxName) && _customVFXNames.Contains(vfxName);
+        }
+
+        /// <summary>
+        /// VFX Instantiate (타입별 분리 처리)
+        /// - 커스텀 VFX: Instantiate + Destroy
+        /// - 발헤임 기본 VFX: 순수 Instantiate (Destroy 안 함 - 발헤임이 자동 정리)
+        /// </summary>
+        private static GameObject InstantiateVFX(GameObject prefab, Vector3 position, float duration, string vfxName = "")
+        {
+            if (prefab == null) return null;
+
+            var vfxObj = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
+            if (vfxObj != null)
+            {
+                // 커스텀 VFX만 Destroy 호출
+                if (!string.IsNullOrEmpty(vfxName) && IsCustomVFX(vfxName))
+                {
+                    UnityEngine.Object.Destroy(vfxObj, duration);
+                }
+                // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
+            }
+            return vfxObj;
+        }
+
+        /// <summary>
         /// Valheim 내장 VFX를 플레이어에 부착 (캐릭터 따라다님)
+        /// - 커스텀 VFX: Destroy 호출 O
+        /// - 발헤임 기본 VFX: Destroy 호출 X (무한 로딩 방지)
         /// </summary>
         public static GameObject PlayOnPlayer(Player player, string vfxName, float duration = 5f, Vector3? localOffset = null)
         {
@@ -314,17 +403,24 @@ namespace CaptainSkillTree
             try
             {
                 GameObject prefab = null;
+                bool isCustom = IsCustomVFX(vfxName);
 
-                // 1. 캐시에서 찾기
-                if (!_cachedPrefabs.TryGetValue(vfxName, out prefab) || prefab == null)
+                // 프리팹 찾기
+                if (isCustom)
                 {
-                    // 2. ZNetScene에서 찾기
-                    var znet = ZNetScene.instance;
-                    if (znet != null)
+                    prefab = GetOrFindPrefab(vfxName);
+                }
+                else
+                {
+                    // 발헤임 기본 VFX는 ZNetScene에서 우선 찾기
+                    if (ZNetScene.instance != null)
                     {
-                        prefab = znet.GetPrefab(vfxName);
-                        if (prefab != null)
-                            _cachedPrefabs[vfxName] = prefab;
+                        prefab = ZNetScene.instance.GetPrefab(vfxName);
+                    }
+                    // fallback
+                    if (prefab == null)
+                    {
+                        prefab = GetOrFindPrefab(vfxName);
                     }
                 }
 
@@ -335,7 +431,14 @@ namespace CaptainSkillTree
                 if (vfxObj != null)
                 {
                     vfxObj.transform.localPosition = localOffset ?? new Vector3(0f, 1f, 0f);
-                    UnityEngine.Object.Destroy(vfxObj, duration);
+
+                    // 커스텀 VFX만 Destroy 호출
+                    if (isCustom)
+                    {
+                        UnityEngine.Object.Destroy(vfxObj, duration);
+                    }
+                    // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
+
                     return vfxObj;
                 }
 
@@ -349,7 +452,24 @@ namespace CaptainSkillTree
         }
 
         /// <summary>
+        /// 캐시 또는 Resources에서 프리팹 찾기
+        /// </summary>
+        private static GameObject GetOrFindPrefab(string vfxName)
+        {
+            if (_cachedPrefabs.TryGetValue(vfxName, out var prefab) && prefab != null)
+                return prefab;
+
+            prefab = FindPrefabInResources(vfxName);
+            if (prefab != null)
+                _cachedPrefabs[vfxName] = prefab;
+
+            return prefab;
+        }
+
+        /// <summary>
         /// Valheim 내장 VFX를 타겟에 부착 (타겟 따라다님)
+        /// - 커스텀 VFX: Destroy 호출 O
+        /// - 발헤임 기본 VFX: Destroy 호출 X (무한 로딩 방지)
         /// </summary>
         public static GameObject PlayOnTarget(Character target, string vfxName, float duration = 3f, Vector3? localOffset = null)
         {
@@ -358,16 +478,24 @@ namespace CaptainSkillTree
             try
             {
                 GameObject prefab = null;
+                bool isCustom = IsCustomVFX(vfxName);
 
-                // 캐시 또는 ZNetScene에서 찾기
-                if (!_cachedPrefabs.TryGetValue(vfxName, out prefab) || prefab == null)
+                // 프리팹 찾기
+                if (isCustom)
                 {
-                    var znet = ZNetScene.instance;
-                    if (znet != null)
+                    prefab = GetOrFindPrefab(vfxName);
+                }
+                else
+                {
+                    // 발헤임 기본 VFX는 ZNetScene에서 우선 찾기
+                    if (ZNetScene.instance != null)
                     {
-                        prefab = znet.GetPrefab(vfxName);
-                        if (prefab != null)
-                            _cachedPrefabs[vfxName] = prefab;
+                        prefab = ZNetScene.instance.GetPrefab(vfxName);
+                    }
+                    // fallback
+                    if (prefab == null)
+                    {
+                        prefab = GetOrFindPrefab(vfxName);
                     }
                 }
 
@@ -378,7 +506,14 @@ namespace CaptainSkillTree
                 if (vfxObj != null)
                 {
                     vfxObj.transform.localPosition = localOffset ?? new Vector3(0f, 1.5f, 0f);
-                    UnityEngine.Object.Destroy(vfxObj, duration);
+
+                    // 커스텀 VFX만 Destroy 호출
+                    if (isCustom)
+                    {
+                        UnityEngine.Object.Destroy(vfxObj, duration);
+                    }
+                    // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
+
                     return vfxObj;
                 }
 

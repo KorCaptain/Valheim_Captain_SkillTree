@@ -253,10 +253,17 @@ namespace CaptainSkillTree.SkillTree
                 var weapon = player.GetCurrentWeapon();
                 if (weapon == null) return 0f;
 
-                // 속도 트리 1단계: 공격속도 (speed_step1_attack) - 모든 무기
-                if (HasSkill("speed_step1_attack"))
+                var skillType = weapon.m_shared.m_skillType;
+
+                // 속도 트리 1단계: 민첩함의 기초 (speed_base) - 모든 무기 공격속도
+                int speedBaseLevel = SkillTreeManager.Instance?.GetSkillLevel("speed_base") ?? -1;
+                bool hasSpeedBase = speedBaseLevel > 0;
+                Plugin.Log.LogInfo($"[공속 DEBUG] speed_base 체크: level={speedBaseLevel}, has={hasSpeedBase}");
+                if (hasSpeedBase)
                 {
-                    bonus += SkillTreeConfig.SpeedBaseAttackSpeedValue;
+                    float speedBaseValue = SkillTreeConfig.SpeedBaseAttackSpeedValue;
+                    bonus += speedBaseValue;
+                    Plugin.Log.LogInfo($"[공속 DEBUG] speed_base 적용: +{speedBaseValue}%");
                 }
 
                 // 검 빠른 베기 (sword_step1_fastslash) - 검 착용 시만
@@ -337,9 +344,11 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 둔기 공격속도 보너스 (Tier 5 DPS: +10%)
-                if (MaceSkills.IsUsingMace(player))
+                bool isUsingMace = WeaponHelper.IsUsingMace(player);
+                if (isUsingMace)
                 {
                     float maceBonus = MaceSkills.GetAttackSpeedBonus();
+                    Plugin.Log.LogInfo($"[공속 DEBUG] 둔기 착용, mace_Step5_dps 보너스: {maceBonus}%");
                     if (maceBonus > 0f)
                     {
                         bonus += maceBonus;
@@ -348,6 +357,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 단검 빠른 공격 스킬은 데미지 보너스로 변경됨 (공격 속도 무관)
 
+                Plugin.Log.LogInfo($"[공속 DEBUG] 최종 보너스: {bonus}% (무기: {skillType})");
                 return bonus;
             }
             catch (System.Exception ex)
