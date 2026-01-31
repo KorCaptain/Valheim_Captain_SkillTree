@@ -259,7 +259,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step3_speedshot",
                 Name = "활 숙련",
-                Description = $"활 기술(숙련도) +{SkillTreeConfig.BowStep3SpeedShotSkillBonusValue}\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
+                Description = $"활 기술(숙련도) +{SkillTreeConfig.BowStep3SpeedShotSkillBonusValue}\n<color=#FFD700><size=14>※ 사망해도 보너스 유지</size></color>\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 3,
@@ -270,37 +270,15 @@ namespace CaptainSkillTree.SkillTree
                 Prerequisites = new List<string> { "bow_Step2_focus", "bow_Step2_multishot" },
                 NextNodes = new List<string> { "bow_Step3_silentshot", "bow_Step4_multishot2", "bow_Step5_instinct" },
                 ApplyEffect = (lv) => {
+                    // 숙련도 보너스는 Skills.GetSkillLevel 패치에서 자동 적용됨
+                    // 사망해도 유지되며, 스킬트리 해제 시 자동 초기화
                     var player = Player.m_localPlayer;
-                    if (player == null) {
-                        Plugin.Log.LogError("[활 숙련] Player.m_localPlayer가 null입니다!");
-                        return;
-                    }
-                    
-                    var skills = player.GetSkills();
-                    if (skills == null) {
-                        Plugin.Log.LogError("[활 숙련] player.GetSkills()가 null입니다!");
-                        return;
-                    }
-                    
-                    // 발하임 스킬 레벨 직접 증가 (CheatRaiseSkill 방식)
-                    float skillLevelBonus = SkillTreeConfig.BowStep3SpeedShotSkillBonusValue; // 10
-                    float previousLevel = skills.GetSkillLevel(Skills.SkillType.Bows);
-                    
-                    Plugin.Log.LogWarning($"[활 숙련] 현재 활 기술 레벨: {previousLevel}, 상승할 레벨: {skillLevelBonus}");
-                    
-                    try {
-                        // 발하임 공식 CheatRaiseSkill 메서드 사용 (Terminal.cs에서 사용하는 방식)
-                        // 이 방법이 레벨을 직접 올리는 가장 확실한 방법
-                        skills.CheatRaiseSkill("Bows", skillLevelBonus, true);
-                        
-                        float newLevel = skills.GetSkillLevel(Skills.SkillType.Bows);
-                        
-                        SkillEffect.ShowSkillEffectText(player, $"🏹 활 숙련 습득! 활 기술 +{skillLevelBonus} 레벨 (레벨: {previousLevel:F1} → {newLevel:F1})", 
+                    if (player != null) {
+                        float skillLevelBonus = SkillTreeConfig.BowStep3SpeedShotSkillBonusValue;
+                        SkillEffect.ShowSkillEffectText(player,
+                            $"🏹 활 숙련 습득! 활 기술 +{skillLevelBonus} (사망해도 유지)",
                             new Color(0.2f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
-                        
-                        Plugin.Log.LogWarning($"[활 숙련] CheatRaiseSkill로 활 기술 레벨 상승: {previousLevel:F1} → {newLevel:F1} (+{skillLevelBonus} 레벨)");
-                    } catch (System.Exception ex) {
-                        Plugin.Log.LogError($"[활 숙련] CheatRaiseSkill 실패: {ex.Message}");
+                        Plugin.Log.LogInfo($"[활 숙련] 활 숙련도 +{skillLevelBonus} 보너스 활성화");
                     }
                 }
             });

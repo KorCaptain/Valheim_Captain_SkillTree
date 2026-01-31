@@ -74,51 +74,66 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
-                // 조건부 보너스는 최대 하나만 적용 (중복 방지)
-                bool hasConditionalBonus = false;
-
-                // 우선순위 1: 근접 연속의 흐름 (가장 강력한 효과)
-                if (!hasConditionalBonus && SkillTreeManager.Instance?.GetSkillLevel("melee_combo") > 0 &&
-                    SkillEffect.meleeComboSpeedEndTime.TryGetValue(player, out float meleeEndTime) &&
-                    currentTime < meleeEndTime)
+                // === 구르기 후 이동속도 (speed_base) - 다른 효과와 중첩 가능 ===
+                float dodgeBonus = SkillEffect.GetDodgeSpeedBonus(player);
+                if (dodgeBonus > 0f)
                 {
-                    conditionalBonus = SkillTreeConfig.SpeedMeleeComboSpeedValue / 100f;
-                    hasConditionalBonus = true;
-                    Plugin.Log.LogDebug($"[Speed] 근접 연속의 흐름 활성화: +{conditionalBonus * 100f:F1}%");
+                    conditionalBonus += dodgeBonus;
+                    Plugin.Log.LogDebug($"[Speed] 민첩함의 기초 활성화: +{dodgeBonus * 100f:F1}%");
                 }
 
-                // 우선순위 2: 석궁 숙련자
-                if (!hasConditionalBonus && SkillTreeManager.Instance?.GetSkillLevel("crossbow_reload2") > 0 &&
+                // === 무기별 조건부 보너스 (하나만 적용) ===
+                bool hasWeaponBonus = false;
+
+                // 우선순위 1: 석궁 숙련자 이동속도
+                if (!hasWeaponBonus && SkillTreeManager.Instance?.GetSkillLevel("crossbow_reload2") > 0 &&
                     SkillEffect.crossbowExpertSpeedEndTime.TryGetValue(player, out float crossbowEndTime) &&
                     currentTime < crossbowEndTime)
                 {
-                    conditionalBonus = SkillTreeConfig.SpeedCrossbowExpertSpeedValue / 100f;
-                    hasConditionalBonus = true;
-                    Plugin.Log.LogDebug($"[Speed] 석궁 숙련자 활성화: +{conditionalBonus * 100f:F1}%");
+                    conditionalBonus += SkillTreeConfig.SpeedCrossbowExpertSpeedValue / 100f;
+                    hasWeaponBonus = true;
+                    Plugin.Log.LogDebug($"[Speed] 석궁 숙련자 활성화: +{SkillTreeConfig.SpeedCrossbowExpertSpeedValue}%");
                 }
 
-                // 우선순위 3: 활 연계 속도 (스태미나 효과만, 이동속도 보너스 제거)
-                if (!hasConditionalBonus && SkillTreeManager.Instance?.GetSkillLevel("bow_speed2") > 0 &&
-                    SkillEffect.bowExpertStaminaEndTime.TryGetValue(player, out float bowEndTime) &&
-                    currentTime < bowEndTime)
+                // 우선순위 2: 이동 시전 (moving_cast) - 마법 시전 중 이동속도
+                if (!hasWeaponBonus)
                 {
-                    // 활 연계 속도는 스태미나 효과만 적용, 이동속도는 추가하지 않음
-                    conditionalBonus = 0f; // 이동속도 보너스 제거
-                    Plugin.Log.LogDebug($"[Speed] 활 연계 속도 활성화: 스태미나 효과만 적용");
+                    float movingCastBonus = SkillEffect.GetMovingCastSpeedBonus(player);
+                    if (movingCastBonus > 0f)
+                    {
+                        conditionalBonus += movingCastBonus;
+                        hasWeaponBonus = true;
+                        Plugin.Log.LogDebug($"[Speed] 이동 시전 활성화: +{movingCastBonus * 100f:F1}%");
+                    }
                 }
 
-                // 요툰의 방패: 방패 장착 시 이동속도 보너스 (시간 제한 없는 조건부, 다른 보너스와 중첩 가능)
+                // === 장전 중 이동속도 (중첩 가능) ===
+                // 활 장전 중 이동속도 (bow_draw1)
+                float bowDrawBonus = SkillEffect.GetBowDrawMoveSpeedBonus(player);
+                if (bowDrawBonus > 0f)
+                {
+                    conditionalBonus += bowDrawBonus;
+                    Plugin.Log.LogDebug($"[Speed] 활 가속 장전 중: +{bowDrawBonus * 100f:F1}%");
+                }
+
+                // 석궁 재장전 중 이동속도 (crossbow_draw1)
+                float crossbowReloadBonus = SkillEffect.GetCrossbowReloadMoveSpeedBonus(player);
+                if (crossbowReloadBonus > 0f)
+                {
+                    conditionalBonus += crossbowReloadBonus;
+                    Plugin.Log.LogDebug($"[Speed] 석궁 가속 재장전 중: +{crossbowReloadBonus * 100f:F1}%");
+                }
+
+                // === 요툰의 방패: 방패 장착 시 이동속도 보너스 ===
                 if (SkillTreeManager.Instance?.GetSkillLevel("defense_Step6_true") > 0)
                 {
                     float shieldSpeedBonus = GetJotunnShieldSpeedBonus(player);
                     if (shieldSpeedBonus > 0f)
                     {
-                        conditionalBonus += shieldSpeedBonus; // 다른 보너스와 중첩 가능
+                        conditionalBonus += shieldSpeedBonus;
                         Plugin.Log.LogDebug($"[Speed] 요툰의 방패 활성화: +{shieldSpeedBonus * 100f:F1}%");
                     }
                 }
-
-                // knife_step3_move_speed: SE_StatTreeSpeed에서 처리 (중복 방지)
 
                 return conditionalBonus;
             }

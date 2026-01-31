@@ -470,15 +470,11 @@ namespace CaptainSkillTree
     public static class AttackSpeedHandler_Game_Awake_Patch
     {
         private static bool _attackSpeedHandlerRegistered = false;
-        private static float _lastDiagnosticLogTime = 0f;
-        private const float DIAGNOSTIC_LOG_INTERVAL = 5f; // 5초에 1번만 로그
 
         [HarmonyPostfix]
         public static void Postfix()
         {
             if (_attackSpeedHandlerRegistered) return;
-
-            Plugin.Log.LogWarning("========== [공격 속도] Game.Awake - 핸들러 등록 시도 ==========");
 
             try
             {
@@ -489,11 +485,9 @@ namespace CaptainSkillTree
                     {
                         double finalSpeed = speed;
 
-                        // ⚠️ Phase 2 진단: 입력 속도가 1.0 미만인지 확인 (다른 핸들러가 속도를 줄이고 있는지)
+                        // 입력 속도가 1.0 미만이면 1.0으로 보정
                         if (speed < 0.99)
                         {
-                            Plugin.Log.LogWarning($"[공속 진단] ⚠️ 입력 속도가 1.0 미만! speed={speed:F3} (다른 핸들러가 감소시킴?)");
-                            // 기본 속도 보정: 1.0 미만이면 1.0으로 복구
                             finalSpeed = 1.0;
                         }
 
@@ -504,7 +498,6 @@ namespace CaptainSkillTree
                         {
                             double bonusMultiplier = 1.0 + (attackSpeedBonus / 100.0);
                             finalSpeed = finalSpeed * bonusMultiplier;
-                            Plugin.Log.LogInfo($"[공격 속도] ✅ +{attackSpeedBonus}%: 입력={speed:F3} → 출력={finalSpeed:F3}");
 
                             // 슬래쉬 액티브 스킬 추가 배율 적용
                             if (Sword_Skill.IsSlashActive(player))
@@ -513,17 +506,6 @@ namespace CaptainSkillTree
                             }
 
                             return finalSpeed;
-                        }
-                        else
-                        {
-                            // Phase 2: 보너스가 없을 때도 진단 로그 (스로틀링 적용)
-                            if (Time.time - _lastDiagnosticLogTime > DIAGNOSTIC_LOG_INTERVAL)
-                            {
-                                var weapon = player.GetCurrentWeapon();
-                                string weaponName = weapon?.m_shared?.m_name ?? "없음";
-                                Plugin.Log.LogDebug($"[공속 진단] 보너스 없음 - 무기: {weaponName}, 입력속도={speed:F3}, 출력속도={finalSpeed:F3}");
-                                _lastDiagnosticLogTime = Time.time;
-                            }
                         }
 
                         // 슬래쉬만 활성화된 경우 (공속 보너스 없이)
@@ -539,12 +521,10 @@ namespace CaptainSkillTree
                 });
 
                 _attackSpeedHandlerRegistered = true;
-                Plugin.Log.LogWarning("========== [공격 속도] AnimationSpeedManager 핸들러 등록 완료! (Game.Awake) ==========");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"========== [공격 속도] AnimationSpeedManager 등록 실패: {ex.Message} ==========");
-                Plugin.Log.LogError($"[공격 속도] StackTrace: {ex.StackTrace}");
+                Plugin.Log.LogError($"[공격 속도] AnimationSpeedManager 등록 실패: {ex.Message}");
             }
         }
     }

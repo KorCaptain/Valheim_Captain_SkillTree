@@ -258,12 +258,10 @@ namespace CaptainSkillTree.SkillTree
                 // 속도 트리 1단계: 민첩함의 기초 (speed_base) - 모든 무기 공격속도
                 int speedBaseLevel = SkillTreeManager.Instance?.GetSkillLevel("speed_base") ?? -1;
                 bool hasSpeedBase = speedBaseLevel > 0;
-                Plugin.Log.LogInfo($"[공속 DEBUG] speed_base 체크: level={speedBaseLevel}, has={hasSpeedBase}");
                 if (hasSpeedBase)
                 {
                     float speedBaseValue = SkillTreeConfig.SpeedBaseAttackSpeedValue;
                     bonus += speedBaseValue;
-                    Plugin.Log.LogInfo($"[공속 DEBUG] speed_base 적용: +{speedBaseValue}%");
                 }
 
                 // 검 빠른 베기 (sword_step1_fastslash) - 검 착용 시만
@@ -300,6 +298,14 @@ namespace CaptainSkillTree.SkillTree
                     bonus += SkillTreeConfig.SpeedDexterityAttackSpeedBonusValue;
                 }
 
+                // 연속의 흐름 (melee_combo) - 2연속 적중 시 공격속도 보너스
+                float meleeComboBonus = GetMeleeComboAttackSpeedBonus(player);
+                if (meleeComboBonus > 0f)
+                {
+                    bonus += meleeComboBonus;
+                    Plugin.Log.LogDebug($"[공속] 연속의 흐름 보너스: +{meleeComboBonus}%");
+                }
+
                 // 근접 가속 (melee_speed1)
                 if (HasSkill("melee_speed1"))
                 {
@@ -312,24 +318,47 @@ namespace CaptainSkillTree.SkillTree
                     if (isMelee)
                     {
                         bonus += SkillTreeConfig.SpeedMeleeAttackSpeedValue;
+
+                        // 3연속 공격 보너스
+                        if (IsTier8MeleeComboActive(player))
+                        {
+                            bonus += SkillTreeConfig.SpeedMeleeComboTripleBonusValue;
+                            Plugin.Log.LogDebug($"[공속] 근접 3연속 보너스: +{SkillTreeConfig.SpeedMeleeComboTripleBonusValue}%");
+                        }
                     }
                 }
 
                 // 활 가속 (bow_draw1)
-                if (HasSkill("bow_draw1"))
+                if (weapon.m_shared.m_skillType == Skills.SkillType.Bows)
                 {
-                    if (weapon.m_shared.m_skillType == Skills.SkillType.Bows)
+                    if (HasSkill("bow_draw1"))
                     {
                         bonus += SkillTreeConfig.SpeedBowDrawSpeedValue;
+                    }
+
+                    // 활 숙련자 (bow_speed2) - 2연속 적중 시 다음 장전 속도 보너스
+                    float bowExpertBonus = GetBowExpertDrawSpeedBonus(player);
+                    if (bowExpertBonus > 0f)
+                    {
+                        bonus += bowExpertBonus;
+                        Plugin.Log.LogDebug($"[공속] 활 숙련자 장전속도: +{bowExpertBonus}%");
                     }
                 }
 
                 // 석궁 가속 (crossbow_draw1)
-                if (HasSkill("crossbow_draw1"))
+                if (weapon.m_shared.m_skillType == Skills.SkillType.Crossbows)
                 {
-                    if (weapon.m_shared.m_skillType == Skills.SkillType.Crossbows)
+                    if (HasSkill("crossbow_draw1"))
                     {
                         bonus += SkillTreeConfig.SpeedCrossbowDrawSpeedValue;
+                    }
+
+                    // 석궁 숙련자 (crossbow_reload2) - 버프 중 재장전 속도 보너스
+                    float crossbowExpertBonus = GetCrossbowExpertReloadBonus(player);
+                    if (crossbowExpertBonus > 0f)
+                    {
+                        bonus += crossbowExpertBonus;
+                        Plugin.Log.LogDebug($"[공속] 석궁 숙련자 재장전: +{crossbowExpertBonus}%");
                     }
                 }
 
@@ -348,16 +377,12 @@ namespace CaptainSkillTree.SkillTree
                 if (isUsingMace)
                 {
                     float maceBonus = MaceSkills.GetAttackSpeedBonus();
-                    Plugin.Log.LogInfo($"[공속 DEBUG] 둔기 착용, mace_Step5_dps 보너스: {maceBonus}%");
                     if (maceBonus > 0f)
                     {
                         bonus += maceBonus;
                     }
                 }
 
-                // 단검 빠른 공격 스킬은 데미지 보너스로 변경됨 (공격 속도 무관)
-
-                Plugin.Log.LogInfo($"[공속 DEBUG] 최종 보너스: {bonus}% (무기: {skillType})");
                 return bonus;
             }
             catch (System.Exception ex)

@@ -19,7 +19,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.225")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.256")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     public partial class Plugin : BaseUnityPlugin
