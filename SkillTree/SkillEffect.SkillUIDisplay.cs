@@ -139,7 +139,6 @@ namespace CaptainSkillTree.SkillTree
             TMP_Text nameText = null;
             TMP_Text levelText = null;
             int displayedLevel = 0;
-            string existingBonusText = ""; // 다른 모드(EpicLoot 등)의 보너스 텍스트
 
             // 각 텍스트 컴포넌트 분석
             foreach (var tmp in tmpTexts)
@@ -157,52 +156,41 @@ namespace CaptainSkillTree.SkillTree
                     continue; // 이미 처리됨, 건너뛰기
                 }
 
+                // 색상 태그 모두 제거
+                string cleanText = System.Text.RegularExpressions.Regex.Replace(trimmed, "<.*?>", "");
+
                 // 숫자만 포함된 텍스트 (순수 레벨)
                 int parsedValue;
-                if (int.TryParse(trimmed, out parsedValue))
+                if (int.TryParse(cleanText, out parsedValue))
                 {
                     levelText = tmp;
                     displayedLevel = parsedValue;
                 }
-                // 다른 모드가 수정한 텍스트 (예: "10 +5" 파란색)
-                else if (trimmed.Contains("+") && levelText == null)
+                // 다른 모드가 수정한 텍스트 (예: "10 +5" 등)
+                else if (cleanText.Contains("+") && levelText == null)
                 {
                     levelText = tmp;
-                    // 첫 번째 숫자 추출 (기본 레벨)
-                    var parts = trimmed.Split(new char[] { ' ', '+' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (parts.Length > 0)
+
+                    // 첫 번째 숫자만 추출 (기본 레벨)
+                    var parts = cleanText.Split(new char[] { ' ', '+' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length > 0 && int.TryParse(parts[0], out parsedValue))
                     {
-                        // 색상 태그 제거 후 파싱
-                        string firstPart = System.Text.RegularExpressions.Regex.Replace(parts[0], "<.*?>", "");
-                        if (int.TryParse(firstPart, out parsedValue))
-                        {
-                            displayedLevel = parsedValue;
-                        }
-                        // 기존 보너스 텍스트 보존 (우리 빨간색 제외)
-                        if (parts.Length > 1 && !trimmed.Contains("#FF3333"))
-                        {
-                            // 다른 모드의 보너스 부분 추출
-                            int plusIndex = trimmed.IndexOf('+');
-                            if (plusIndex >= 0)
-                            {
-                                existingBonusText = trimmed.Substring(plusIndex);
-                                // 우리 태그가 아닌 경우만 보존
-                                if (!existingBonusText.Contains("#FF3333") && !existingBonusText.Contains("#ff3333"))
-                                {
-                                    // 기존 보너스는 유지
-                                }
-                                else
-                                {
-                                    existingBonusText = "";
-                                }
-                            }
-                        }
+                        displayedLevel = parsedValue;
                     }
                 }
-                else if (!trimmed.Contains("+") && !trimmed.Contains("<"))
+                else if (!cleanText.Contains("+") && cleanText.Length > 0)
                 {
-                    // 스킬 이름 텍스트
-                    if (nameText == null)
+                    // 스킬 이름 텍스트 (숫자가 아닌 것)
+                    bool isNumber = true;
+                    foreach (char c in cleanText)
+                    {
+                        if (!char.IsDigit(c) && c != ' ')
+                        {
+                            isNumber = false;
+                            break;
+                        }
+                    }
+                    if (!isNumber && nameText == null)
                     {
                         nameText = tmp;
                     }
@@ -224,21 +212,20 @@ namespace CaptainSkillTree.SkillTree
 
             int bonusLevelInt = Mathf.RoundToInt(bonusLevel);
 
-            // 기본 레벨 계산 (우리 보너스만 제외, 다른 모드 보너스는 유지)
+            // 기본 레벨 계산 (표시된 값에서 우리 보너스 제외)
             int baseLevelInt = displayedLevel - bonusLevelInt;
             if (baseLevelInt < 0) baseLevelInt = 0;
 
-            // 포맷 생성
+            // 포맷 생성 - 기본 레벨 + 빨간색 보너스만 표시 (다른 모드 보너스 무시)
             string formattedText;
-            if (!string.IsNullOrEmpty(existingBonusText))
+            if (baseLevelInt == 0)
             {
-                // 다른 모드 보너스가 있으면: "기본 +다른모드보너스 +우리보너스(빨간색)"
-                formattedText = $"{baseLevelInt} {existingBonusText} <color=#FF3333>+{bonusLevelInt}</color>";
-                Plugin.Log.LogDebug($"[숙련도 UI] {skillType}: 다른 모드 감지, 병합 표시");
+                // 기본 0 생략: "+보너스(빨간색)"만 표시
+                formattedText = $"<color=#FF3333>+{bonusLevelInt}</color>";
             }
             else
             {
-                // 우리 보너스만: "기본 +우리보너스(빨간색)"
+                // "기본 +보너스(빨간색)"
                 formattedText = $"{baseLevelInt} <color=#FF3333>+{bonusLevelInt}</color>";
             }
 

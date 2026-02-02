@@ -40,7 +40,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_base",
                 Name = "민첩함의 기초",
-                Description = $"공격속도 +{SkillTreeConfig.SpeedBaseAttackSpeedValue}%\n구르기 후 {SkillTreeConfig.SpeedBaseDodgeDurationValue}초간 이동속도 +{SkillTreeConfig.SpeedBaseDodgeMoveSpeedValue}%",
+                Description = $"공격속도 +{SkillTreeConfig.SpeedBaseAttackSpeedValue}%, 구르기 후 {SkillTreeConfig.SpeedBaseDodgeDurationValue}초간 이동속도 +{SkillTreeConfig.SpeedBaseDodgeMoveSpeedValue}%",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 1,
@@ -151,7 +151,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_ex2",
                 Name = "수련자2",
-                Description = $"지팡이 숙련 +{SkillTreeConfig.SpeedEx2StaffSkillValue}, 활 숙련 +{SkillTreeConfig.SpeedEx2BowSkillValue}",
+                Description = $"마법 숙련 +{SkillTreeConfig.SpeedEx2StaffSkillValue}, 활 숙련 +{SkillTreeConfig.SpeedEx2BowSkillValue}",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 3,
@@ -289,7 +289,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "all_master",
                 Name = "숙련자",
-                Description = $"이동 숙련 +{SkillTreeConfig.AllMasterRunSkillValue}, 점프 숙련 +{SkillTreeConfig.AllMasterJumpSkillValue}",
+                Description = $"달리기 숙련 +{SkillTreeConfig.AllMasterRunSkillValue}, 점프 숙련 +{SkillTreeConfig.AllMasterJumpSkillValue}",
                 RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 7,

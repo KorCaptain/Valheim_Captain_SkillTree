@@ -495,7 +495,7 @@ namespace CaptainSkillTree.Audio
 
         #region Valheim Music Control
         /// <summary>
-        /// 발헤임 기본 음악 일시정지 (더 안전한 방식)
+        /// 발헤임 기본 음악 일시정지 (볼륨 0 + AudioSource.Pause() 이중 방식)
         /// </summary>
         private void PauseValheimMusic()
         {
@@ -504,36 +504,40 @@ namespace CaptainSkillTree.Audio
                 // MusicMan이 존재하는지 확인
                 if (MusicMan.instance != null)
                 {
-                    // 현재 음악이 재생 중인지 확인
-                    if (MusicMan.instance.IsPlaying())
-                    {
-                        // 발헤임 음악 상태 추적 제거
-                        originalValheimVolume = MusicMan.m_masterMusicVolume;
+                    // 1. 원본 볼륨 저장
+                    originalValheimVolume = MusicMan.m_masterMusicVolume;
 
-                        // 볼륨을 0으로 설정하여 음소거 (안전한 방식)
-                        MusicMan.m_masterMusicVolume = 0f;
-                    }
-                    else
+                    // 2. 볼륨을 0으로 설정하여 음소거
+                    MusicMan.m_masterMusicVolume = 0f;
+
+                    // 3. AudioSource 직접 Pause (Reflection 사용)
+                    var musicSourceField = typeof(MusicMan).GetField("m_musicSource",
+                        BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (musicSourceField != null)
                     {
-                        // 발헤임 음악 상태 추적 제거
-                        Plugin.Log.LogDebug("[BGM 관리자] 발헤임 음악이 재생 중이 아님");
+                        var audioSource = musicSourceField.GetValue(MusicMan.instance) as AudioSource;
+                        if (audioSource != null && audioSource.isPlaying)
+                        {
+                            audioSource.Pause();
+                            Plugin.Log.LogDebug("[BGM 관리자] MusicMan AudioSource 일시정지 완료");
+                        }
                     }
+
+                    Plugin.Log.LogDebug("[BGM 관리자] 발헤임 음악 일시정지 완료 (볼륨 0 + AudioSource.Pause)");
                 }
                 else
                 {
                     Plugin.Log.LogDebug("[BGM 관리자] MusicMan.instance가 아직 초기화되지 않음 (게임 로딩 중)");
-                    // 발헤임 음악 상태 추적 제거
                 }
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[BGM 관리자] 발헤임 음악 일시정지 실패: {ex.Message}");
-                // 발헤임 음악 상태 추적 제거
             }
         }
 
         /// <summary>
-        /// 발헤임 기본 음악 강제 복원 (BGM OFF와 동일한 로직)
+        /// 발헤임 기본 음악 복원 (AudioSource.UnPause() + 볼륨 복원 이중 방식)
         /// </summary>
         private void ResumeValheimMusic()
         {
@@ -542,70 +546,46 @@ namespace CaptainSkillTree.Audio
                 // MusicMan이 존재하는지 확인
                 if (MusicMan.instance != null)
                 {
-                    // 1. 스킬트리 BGM이 음소거했던 볼륨을 무조건 복원
-                    if (originalValheimVolume > 0)
+                    // 1. AudioSource UnPause (Reflection 사용)
+                    var musicSourceField = typeof(MusicMan).GetField("m_musicSource",
+                        BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (musicSourceField != null)
                     {
-                        MusicMan.m_masterMusicVolume = originalValheimVolume;
-                    }
-                    else
-                    {
-                        // 원래 볼륨을 모르면 기본값으로 복원
-                        MusicMan.m_masterMusicVolume = 1.0f;
-                    }
-                    
-                    // 2. MusicMan 강제 리셋 - 환경에 맞는 음악을 즉시 재시작
-                    try
-                    {
-                        // 현재 음악이 없거나 중지된 상태라면 MusicMan이 자동으로 환경음악을 시작함
-                        if (!MusicMan.instance.IsPlaying())
+                        var audioSource = musicSourceField.GetValue(MusicMan.instance) as AudioSource;
+                        if (audioSource != null)
                         {
-                            Plugin.Log.LogDebug("[BGM 관리자] MusicMan에 음악이 없음 - 자동 재시작 대기");
+                            audioSource.UnPause();
+                            Plugin.Log.LogDebug("[BGM 관리자] MusicMan AudioSource 재개 완료");
                         }
-                        else
-                        {
-                            Plugin.Log.LogDebug("[BGM 관리자] MusicMan에 음악이 재생 중 - 볼륨만 복원");
-                        }
-                        
-                        // MusicMan의 Update() 루프가 자동으로 적절한 환경 음악을 선택하게 됨
-                        Plugin.Log.LogDebug("[BGM 관리자] ✅ 발헤임 음악 복원 완료 - MusicMan이 환경에 맞는 음악을 자동 재생할 것입니다");
                     }
-                    catch (Exception musicEx)
-                    {
-                        Plugin.Log.LogWarning($"[BGM 관리자] MusicMan 상태 확인 중 오류 (무시됨): {musicEx.Message}");
-                        Plugin.Log.LogDebug("[BGM 관리자] ✅ 볼륨 복원은 완료됨");
-                    }
+
+                    // 2. 볼륨 복원
+                    MusicMan.m_masterMusicVolume = originalValheimVolume > 0 ? originalValheimVolume : 1.0f;
+
+                    Plugin.Log.LogDebug($"[BGM 관리자] 발헤임 음악 복원 완료 (볼륨: {MusicMan.m_masterMusicVolume})");
                 }
                 else
                 {
                     Plugin.Log.LogWarning("[BGM 관리자] MusicMan.instance가 null입니다 - 게임 로딩 중일 수 있음");
                 }
-                
+
                 // 3. 상태 초기화 (항상 수행)
-                // 발헤임 음악 상태 추적 제거
                 originalValheimVolume = 1.0f;
-                
-                Plugin.Log.LogDebug("[BGM 관리자] 📻 발헤임 음악 복원 프로세스 완료");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[BGM 관리자] ❌ 발헤임 음악 복원 중 예외 발생: {ex.Message}");
-                
+                Plugin.Log.LogError($"[BGM 관리자] 발헤임 음악 복원 실패: {ex.Message}");
+
                 // 예외 발생 시에도 최소한 볼륨은 복원 시도
                 try
                 {
                     if (MusicMan.instance != null)
                     {
                         MusicMan.m_masterMusicVolume = 1.0f;
-                        Plugin.Log.LogDebug("[BGM 관리자] 예외 발생으로 인한 볼륨 기본값 복원");
                     }
                 }
-                catch (Exception fallbackEx)
-                {
-                    Plugin.Log.LogError($"[BGM 관리자] 폴백 볼륨 복원도 실패: {fallbackEx.Message}");
-                }
-                
-                // 상태 초기화
-                // 발헤임 음악 상태 추적 제거
+                catch { }
+
                 originalValheimVolume = 1.0f;
             }
         }

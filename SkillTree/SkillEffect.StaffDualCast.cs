@@ -1,0 +1,377 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using CaptainSkillTree.VFX;
+
+namespace CaptainSkillTree.SkillTree
+{
+    /// <summary>
+    /// 지팡이 이중 시전 액티브 스킬 시스템
+    /// T키로 버프 활성화 후 30초 내 마법 공격 시 추가 발사체 2개 발사
+    /// </summary>
+    public static partial class SkillEffect
+    {
+        // === 이중 시전 쿨타임 관리 ===
+        private static Dictionary<Player, float> staffDualExplosionCooldowns = new Dictionary<Player, float>();
+
+        // === 이중 시전 버프 상태 관리 ===
+        private static Dictionary<Player, bool> staffDualCastReady = new Dictionary<Player, bool>();
+        private static Dictionary<Player, float> staffDualCastExpiry = new Dictionary<Player, float>();
+        private static Dictionary<Player, Coroutine> staffDualCastBuffCoroutines = new Dictionary<Player, Coroutine>();
+
+        // 버프 효과 인스턴스 관리
+        private static Dictionary<Player, GameObject> staffDualCastBuffEffects = new Dictionary<Player, GameObject>();
+        private static Dictionary<Player, GameObject> staffDualCastStatusEffects = new Dictionary<Player, GameObject>();
+
+        // 프리팹 캐시
+        private static GameObject cachedStaffDualCastBuffPrefab = null;
+        private static GameObject cachedStaffDualCastStatusPrefab = null;
+
+        /// <summary>
+        /// 이중 시전 버프 활성화 (T키)
+        /// </summary>
+        public static void ActivateStaffDualCast(Player player)
+        {
+            try
+            {
+                // 쿨타임 확인
+                if (staffDualExplosionCooldowns.ContainsKey(player) && Time.time < staffDualExplosionCooldowns[player])
+                {
+                    float remaining = staffDualExplosionCooldowns[player] - Time.time;
+                    DrawFloatingText(player, $"이중시전 쿨타임: {Mathf.CeilToInt(remaining)}초", Color.red);
+                    return;
+                }
+
+                // 에이트르 확인
+                float eitrCost = Staff_Config.StaffDoubleCastEitrCostValue;
+                if (player.GetEitr() < eitrCost)
+                {
+                    DrawFloatingText(player, $"에이트르가 부족합니다 ({eitrCost} 필요)", Color.red);
+                    return;
+                }
+
+                // 에이트르 소모
+                player.UseEitr(eitrCost);
+
+                // 쿨타임 적용
+                staffDualExplosionCooldowns[player] = Time.time + Staff_Config.StaffDoubleCastCooldownValue;
+
+                // 버프 활성화 (30초간 지속)
+                float buffDuration = 30f;
+                staffDualCastReady[player] = true;
+                staffDualCastExpiry[player] = Time.time + buffDuration;
+
+                // VFX/SFX 효과
+                PlayStaffDualCastBuffActivationEffects(player);
+
+                // 기존 코루틴 중단
+                if (staffDualCastBuffCoroutines.ContainsKey(player))
+                {
+                    SkillTreeInputListener.Instance.StopCoroutine(staffDualCastBuffCoroutines[player]);
+                    staffDualCastBuffCoroutines.Remove(player);
+                }
+
+                // 타이머 코루틴 시작
+                var coroutine = SkillTreeInputListener.Instance.StartCoroutine(StaffDualCastBuffTimer(player, buffDuration));
+                staffDualCastBuffCoroutines[player] = coroutine;
+
+                DrawFloatingText(player, $"✨ 이중시전 준비! (30초간)", new Color(0.8f, 0.3f, 1f, 1f));
+                Plugin.Log.LogInfo($"[이중 시전] T키로 버프 활성화 - 지속시간: {buffDuration}초, 에이트르 소모: {eitrCost}");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전] 버프 활성화 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 버프 활성화 효과
+        /// </summary>
+        public static void PlayStaffDualCastBuffActivationEffects(Player player)
+        {
+            try
+            {
+                PlayStaffDualCastBuffEffect(player);
+                PlayStaffDualCastStatusEffect(player);
+                PlayStaffDualCastActivationSound(player);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전] 버프 활성화 효과 재생 실패: {ex.Message}");
+            }
+        }
+
+        private static void PlayStaffDualCastBuffEffect(Player player)
+        {
+            try
+            {
+                if (cachedStaffDualCastBuffPrefab == null)
+                {
+                    cachedStaffDualCastBuffPrefab = VFXManager.GetVFXPrefab("buff_02a");
+                    if (cachedStaffDualCastBuffPrefab == null) return;
+                }
+
+                // 기존 효과 제거
+                if (staffDualCastBuffEffects.ContainsKey(player) && staffDualCastBuffEffects[player] != null)
+                {
+                    UnityEngine.Object.Destroy(staffDualCastBuffEffects[player]);
+                    staffDualCastBuffEffects.Remove(player);
+                }
+
+                // 효과 생성
+                var footPosition = player.transform.position + Vector3.down * 0.1f;
+                var effectInstance = UnityEngine.Object.Instantiate(cachedStaffDualCastBuffPrefab, footPosition, Quaternion.identity);
+                effectInstance.transform.SetParent(player.transform, false);
+                effectInstance.transform.localPosition = Vector3.down * 0.1f;
+                effectInstance.transform.localScale = Vector3.one * 0.4f;
+
+                SetStaffDualCastBuffTransparency(effectInstance, 0.2f);
+                staffDualCastBuffEffects[player] = effectInstance;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전] 버프 효과 재생 실패: {ex.Message}");
+            }
+        }
+
+        private static void PlayStaffDualCastStatusEffect(Player player)
+        {
+            try
+            {
+                if (cachedStaffDualCastStatusPrefab == null)
+                {
+                    cachedStaffDualCastStatusPrefab = VFXManager.GetVFXPrefab("statusailment_01_aura");
+                    if (cachedStaffDualCastStatusPrefab == null) return;
+                }
+
+                // 기존 효과 제거
+                if (staffDualCastStatusEffects.ContainsKey(player) && staffDualCastStatusEffects[player] != null)
+                {
+                    UnityEngine.Object.Destroy(staffDualCastStatusEffects[player]);
+                    staffDualCastStatusEffects.Remove(player);
+                }
+
+                // 머리 위 효과 생성
+                var headPosition = player.transform.position + Vector3.up * 2.0f;
+                var statusInstance = UnityEngine.Object.Instantiate(cachedStaffDualCastStatusPrefab, headPosition, Quaternion.identity);
+                statusInstance.transform.SetParent(player.transform, false);
+                statusInstance.transform.localPosition = Vector3.up * 2.0f;
+                statusInstance.transform.localScale = Vector3.one * 0.7f;
+
+                staffDualCastStatusEffects[player] = statusInstance;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전] 상태 효과 재생 실패: {ex.Message}");
+            }
+        }
+
+        private static void PlayStaffDualCastActivationSound(Player player)
+        {
+            try
+            {
+                var znet = ZNetScene.instance;
+                if (znet != null)
+                {
+                    var soundEffect = znet.GetPrefab("sfx_StaffLightning_charge");
+                    if (soundEffect != null)
+                    {
+                        UnityEngine.Object.Instantiate(soundEffect, player.transform.position, Quaternion.identity);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전] 활성화 사운드 재생 오류: {ex.Message}");
+            }
+        }
+
+        private static void SetStaffDualCastBuffTransparency(GameObject buffEffect, float alpha)
+        {
+            if (buffEffect == null) return;
+
+            var renderers = buffEffect.GetComponentsInChildren<Renderer>(true);
+            foreach (var renderer in renderers)
+            {
+                if (renderer?.material != null && renderer.material.HasProperty("_Color"))
+                {
+                    Color color = renderer.material.color;
+                    color.a = alpha;
+                    renderer.material.color = color;
+                }
+            }
+
+            var particleSystems = buffEffect.GetComponentsInChildren<ParticleSystem>(true);
+            foreach (var ps in particleSystems)
+            {
+                if (ps != null)
+                {
+                    var main = ps.main;
+                    Color startColor = main.startColor.color;
+                    startColor.a = alpha;
+                    main.startColor = startColor;
+                }
+            }
+        }
+
+        private static IEnumerator StaffDualCastBuffTimer(Player player, float buffDuration)
+        {
+            float startTime = Time.time;
+            float nextRemindTime = startTime + 10f;
+
+            while (staffDualCastReady.ContainsKey(player) && staffDualCastReady[player] &&
+                   Time.time < staffDualCastExpiry[player])
+            {
+                if (player == null || player.IsDead())
+                {
+                    ClearStaffDualCastBuff(player);
+                    yield break;
+                }
+
+                if (Time.time >= nextRemindTime)
+                {
+                    float remainingTime = staffDualCastExpiry[player] - Time.time;
+                    if (remainingTime > 0)
+                    {
+                        DrawFloatingText(player, $"✨ 이중 시전 준비됨 ({remainingTime:F0}초)", new Color(0.8f, 0.3f, 1f, 1f));
+                        nextRemindTime = Time.time + 10f;
+                    }
+                }
+
+                yield return new WaitForSeconds(1f);
+            }
+
+            if (staffDualCastReady.ContainsKey(player) && staffDualCastReady[player])
+            {
+                DrawFloatingText(player, "이중 시전 버프 만료", Color.yellow);
+                ClearStaffDualCastBuff(player);
+            }
+        }
+
+        /// <summary>
+        /// 이중 시전 버프 상태 확인
+        /// </summary>
+        public static bool IsStaffDualCastReady(Player player)
+        {
+            return staffDualCastReady.ContainsKey(player) &&
+                   staffDualCastReady[player] &&
+                   Time.time < staffDualCastExpiry[player];
+        }
+
+        /// <summary>
+        /// 이중 시전 버프 정리
+        /// </summary>
+        public static void ClearStaffDualCastBuff(Player player)
+        {
+            try
+            {
+                if (player == null) return;
+
+                staffDualCastReady.Remove(player);
+                staffDualCastExpiry.Remove(player);
+
+                if (staffDualCastBuffEffects.ContainsKey(player) && staffDualCastBuffEffects[player] != null)
+                {
+                    UnityEngine.Object.Destroy(staffDualCastBuffEffects[player]);
+                    staffDualCastBuffEffects.Remove(player);
+                }
+
+                if (staffDualCastStatusEffects.ContainsKey(player) && staffDualCastStatusEffects[player] != null)
+                {
+                    UnityEngine.Object.Destroy(staffDualCastStatusEffects[player]);
+                    staffDualCastStatusEffects.Remove(player);
+                }
+
+                staffDualCastBuffCoroutines.Remove(player);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전] 버프 정리 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 이중 시전 실제 실행 (마법 공격 시 추가 발사체 2개 발사)
+        /// </summary>
+        public static void PerformStaffDualCastAttack(Player player, ItemDrop.ItemData weapon, Vector3 baseDirection)
+        {
+            try
+            {
+                if (!IsStaffDualCastReady(player)) return;
+
+                int projectileCount = Staff_Config.StaffDoubleCastProjectileCountValue;
+                float angleOffset = Staff_Config.StaffDoubleCastAngleOffsetValue;
+                float damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue / 100f;
+
+                for (int i = 0; i < projectileCount; i++)
+                {
+                    float angle = (i == 0) ? -angleOffset : angleOffset;
+                    Vector3 direction = Quaternion.Euler(0, angle, 0) * baseDirection;
+                    CreateValheimProjectile(player, weapon, direction, damagePercent, i + 1);
+                }
+
+                ClearStaffDualCastBuff(player);
+                DrawFloatingText(player, $"✨ 이중 시전 발동! 추가 발사체 {projectileCount}개", new Color(0.8f, 0.3f, 1f, 1f));
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전] 실제 실행 오류: {ex.Message}");
+            }
+        }
+
+        private static void CreateValheimProjectile(Player player, ItemDrop.ItemData weapon, Vector3 direction, float damagePercent, int projectileIndex)
+        {
+            try
+            {
+                var attack = weapon.m_shared.m_attack;
+                if (attack.m_attackProjectile == null) return;
+
+                Vector3 startPos = player.transform.position + Vector3.up * 1.5f + player.transform.forward * 1.0f;
+                GameObject projectile = UnityEngine.Object.Instantiate(attack.m_attackProjectile, startPos, Quaternion.LookRotation(direction));
+
+                if (projectile != null)
+                {
+                    var projectileComp = projectile.GetComponent<Projectile>();
+                    if (projectileComp != null)
+                    {
+                        projectileComp.m_damage = weapon.GetDamage();
+                        projectileComp.m_damage.Modify(damagePercent);
+
+                        var rb = projectile.GetComponent<Rigidbody>();
+                        if (rb != null)
+                        {
+                            rb.velocity = direction.normalized * attack.m_projectileVel;
+                        }
+
+                        projectileComp.Setup(player, direction * attack.m_projectileVel, -1f, null, weapon, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[이중 시전] 발사체 생성 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 플레이어 사망 시 정리
+        /// </summary>
+        public static void CleanupStaffDualCastOnDeath(Player player)
+        {
+            try
+            {
+                if (staffDualCastBuffCoroutines.ContainsKey(player))
+                {
+                    SkillTreeInputListener.Instance.StopCoroutine(staffDualCastBuffCoroutines[player]);
+                    staffDualCastBuffCoroutines.Remove(player);
+                }
+                ClearStaffDualCastBuff(player);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[이중 시전] 정리 실패: {ex.Message}");
+            }
+        }
+    }
+}
