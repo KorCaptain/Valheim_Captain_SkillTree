@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using HarmonyLib;
 using CaptainSkillTree.SkillTree;
 using CaptainSkillTree.SkillTree.CriticalSystem;
 using CaptainSkillTree.VFX;
 using CaptainSkillTree.Audio;
+using CaptainSkillTree.MMO_System;
 
 namespace CaptainSkillTree
 {
@@ -206,9 +208,6 @@ namespace CaptainSkillTree
                     var currentWeapon = player.GetCurrentWeapon();
                     if (currentWeapon == null || currentWeapon.m_shared.m_skillType != Skills.SkillType.Swords) return;
 
-                    // 패링 스택 시스템 호출 (검 전문가 스킬 보유 시)
-                    Sword_Skill.OnParrySuccess(player);
-
                     var manager = SkillTreeManager.Instance;
                     var seman = player.GetSEMan();
 
@@ -289,6 +288,7 @@ namespace CaptainSkillTree
             {
                 try
                 {
+                    // 스킬트리 UI 닫기
                     if (skillTreeUI != null && skillTreeUI.panel != null && skillTreeUI.panel.activeSelf)
                     {
                         skillTreeUI.panel.SetActive(false);
@@ -300,17 +300,106 @@ namespace CaptainSkillTree
                         }
                     }
 
-                    // 아이콘이 비활성화되지 않도록 보장
-                    if (skillTreeIconObj != null && !skillTreeIconObj.activeSelf)
+                    // 인벤토리 닫을 때 아이콘도 숨김
+                    if (skillTreeIconObj != null)
                     {
-                        Log.LogWarning("[스킬트리] 아이콘이 비활성화됨, 다시 활성화 시도");
-                        // 인벤토리가 닫혔을 때는 아이콘을 숨김 (정상 동작)
                         skillTreeIconObj.SetActive(false);
                     }
                 }
                 catch (Exception ex)
                 {
                     Log.LogError($"[스킬트리] InventoryHidePatch 오류: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 스킬트리 아이콘 표시 및 위치 조정
+        /// 인벤토리 열 때만 아이콘 표시
+        /// EpicMMO가 없을 때 캐릭터 머리 위에 배치
+        /// </summary>
+        [HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.Show))]
+        public static class InventoryShowIconPositionPatch
+        {
+            private static bool _iconPositionAdjusted = false;
+
+            public static void Postfix(InventoryGui __instance)
+            {
+                try
+                {
+                    // 아이콘이 없으면 스킵
+                    if (skillTreeIconObj == null) return;
+
+                    // 인벤토리 열 때 아이콘 표시
+                    skillTreeIconObj.SetActive(true);
+
+                    // EpicMMO가 있으면 기본 위치 유지 (EpicMMO 버튼 옆)
+                    if (!EpicMMOReflectionHelper.IsInitialized)
+                    {
+                        EpicMMOReflectionHelper.Initialize();
+                    }
+
+                    if (EpicMMOReflectionHelper.IsAvailable)
+                    {
+                        return;
+                    }
+
+                    // 이미 조정했으면 스킵 (매번 재조정 방지)
+                    if (_iconPositionAdjusted) return;
+
+                    // EpicMMO 없을 때 아이콘 위치를 화면 중앙 캐릭터 머리 위로 조정
+                    var rect = skillTreeIconObj.GetComponent<RectTransform>();
+                    if (rect == null) return;
+
+                    // 최상위 Canvas에 배치하여 화면 중앙 기준으로 위치 설정
+                    var canvas = skillTreeIconObj.GetComponentInParent<Canvas>();
+                    if (canvas != null)
+                    {
+                        rect.SetParent(canvas.transform, false);
+
+                        // 화면 중앙 기준 (캐릭터 머리 위)
+                        rect.anchorMin = new Vector2(0.5f, 0.5f);
+                        rect.anchorMax = new Vector2(0.5f, 0.5f);
+                        rect.pivot = new Vector2(0.5f, 0.5f);
+                        rect.anchoredPosition = new Vector2(0, 150); // 화면 중앙에서 150픽셀 위 (캐릭터 머리 위)
+                        rect.sizeDelta = new Vector2(60, 60);
+
+                        _iconPositionAdjusted = true;
+                        Log.LogInfo("[스킬트리] 아이콘 위치 조정: 화면 중앙 캐릭터 머리 위 (EpicMMO 미사용)");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError($"[스킬트리] 아이콘 위치 조정 실패: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 게임 시작 시 스킬트리 아이콘 초기 숨김
+        /// 인벤토리 열 때만 표시되도록 함
+        /// </summary>
+        [HarmonyPatch(typeof(Hud), "Awake")]
+        public static class HudAwakeHideIconPatch
+        {
+            public static void Postfix()
+            {
+                // Hud 초기화 후 약간의 지연을 두고 아이콘 숨김 처리
+                if (Instance != null)
+                {
+                    Instance.StartCoroutine(DelayedHideIcon());
+                }
+            }
+
+            private static IEnumerator DelayedHideIcon()
+            {
+                // 아이콘 생성 완료될 때까지 대기
+                yield return new WaitForSeconds(1f);
+
+                if (skillTreeIconObj != null)
+                {
+                    skillTreeIconObj.SetActive(false);
+                    Log.LogInfo("[스킬트리] 아이콘 초기 숨김 완료 - 인벤토리(Tab) 열 때 표시됨");
                 }
             }
         }
@@ -483,6 +572,12 @@ namespace CaptainSkillTree
                     // 플레이어 공격 중일 때만 처리
                     if (character is Player player && player.InAttack())
                     {
+                        // 돌진 베기 활성 시 Config 기반 공격속도 (다른 트리 보너스 무시)
+                        if (Sword_Skill.IsSlashActive(player))
+                        {
+                            return 1.0 + (Sword_Config.RushSlashAttackSpeedBonusValue / 100.0);
+                        }
+
                         double finalSpeed = speed;
 
                         // 입력 속도가 1.0 미만이면 1.0으로 보정
@@ -498,20 +593,7 @@ namespace CaptainSkillTree
                         {
                             double bonusMultiplier = 1.0 + (attackSpeedBonus / 100.0);
                             finalSpeed = finalSpeed * bonusMultiplier;
-
-                            // 슬래쉬 액티브 스킬 추가 배율 적용
-                            if (Sword_Skill.IsSlashActive(player))
-                            {
-                                return Sword_Skill.ModifySlashAttackSpeed(player, finalSpeed);
-                            }
-
                             return finalSpeed;
-                        }
-
-                        // 슬래쉬만 활성화된 경우 (공속 보너스 없이)
-                        if (Sword_Skill.IsSlashActive(player))
-                        {
-                            return Sword_Skill.ModifySlashAttackSpeed(player, finalSpeed);
                         }
 
                         // 보너스 없어도 보정된 속도 반환

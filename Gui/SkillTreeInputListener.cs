@@ -2,6 +2,7 @@ namespace CaptainSkillTree
 {
     using CaptainSkillTree.Gui;
     using CaptainSkillTree.Audio;
+    using CaptainSkillTree.MMO_System;
     using UnityEngine;
 
     public class SkillTreeInputListener : MonoBehaviour
@@ -99,14 +100,13 @@ namespace CaptainSkillTree
                 {
                     try
                     {
-                        var levelSystem = global::EpicMMOSystem.LevelSystem.Instance;
-                        long needExp = levelSystem.getNeedExp();
-                        API.EpicMMOSystem_API.AddExp((int)needExp);
+                        long needExp = CaptainMMOBridge.GetExpToNextLevel();
+                        CaptainMMOBridge.AddExp((int)needExp);
                         Plugin.SkillTreePoint += 3;
                     }
                     catch (System.Exception e)
                     {
-                        Plugin.Log.LogWarning($"[SkillTree] EpicMMOSystem API 호출 실패 (경험치 추가): {e.Message}");
+                        Plugin.Log.LogWarning($"[SkillTree] 레벨업 실패 (경험치 추가): {e.Message}");
                     }
                 }
             }

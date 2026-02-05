@@ -66,13 +66,6 @@ namespace CaptainSkillTree.SkillTree
 
         #endregion
 
-        #region === Core Config 설정 ===
-
-        public static ConfigEntry<int> LevelPerSkillPoint;
-        public static int LevelPerSkillPointValue => (int)GetEffectiveValue("level_per_skill_point", (float)LevelPerSkillPoint.Value);
-
-        #endregion
-
         #region === 검 전문가 스킬 설정 ===
 
         public static ConfigEntry<float> SwordExpertDamage;
@@ -409,10 +402,6 @@ namespace CaptainSkillTree.SkillTree
         public static void Initialize(ConfigFile config)
         {
             DetectServerClientMode();
-
-            // === Core Config 설정 ===
-            LevelPerSkillPoint = BindServerSync(config, "Core_Config", "Level_per_SkillPoint", 1,
-                "[서버동기화] 레벨당 스킬 포인트 획득량 [기본: 1, 범위: 1-10]");
 
             // === 분리된 Config 시스템 초기화 (알파벳 순) ===
             Attack_Config.Initialize(config);

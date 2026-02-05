@@ -14,26 +14,32 @@ namespace CaptainSkillTree.SkillTree
         // 기존 SwordTooltipData 제거
 
         /// <summary>
-        /// Sword Slash 상세 툴팁 생성
+        /// 돌진 연속 베기 상세 툴팁 생성
         /// </summary>
         public static string GetSwordSlashTooltip()
         {
-            Plugin.Log.LogDebug("[검 툴팁] GetSwordSlashTooltip() 호출됨");
+            Plugin.Log.LogDebug("[검 툴팁] GetSwordSlashTooltip() 호출됨 (돌진 연속 베기)");
 
             // 컨피그에서 실제 값 가져오기
-            var skillData = Sword_Config.GetSwordSlashData();
+            var skillData = Sword_Config.GetRushSlashData();
             var requiredPoints = 3; // MeleeSkillData.cs에서 확인한 값
 
-            Plugin.Log.LogDebug($"[검 툴팁] 컨피그 값들 - 공격횟수: {skillData.attackCount}, 간격: {skillData.attackInterval}초, 데미지: {skillData.damageRatio}%, 스태미나: {skillData.staminaCost}, 쿨타임: {skillData.cooldown}초");
+            Plugin.Log.LogDebug($"[검 툴팁] 컨피그 값들 - 1차: {skillData.damage1stRatio}%, 2차: {skillData.damage2ndRatio}%, 3차: {skillData.damage3rdRatio}%, 스태미나: {skillData.staminaCost}, 쿨타임: {skillData.cooldown}초");
+
+            // 돌진 연속 베기 설명 구성
+            string description = $"전방 {skillData.initialDistance}m 돌진 후 몬스터 주변을 빠르게 이동하며 3회 연속 베기\n" +
+                                $"<color=#98FB98>1차 베기: 공격력 {skillData.damage1stRatio}%</color>\n" +
+                                $"<color=#FFA500>2차 베기: 공격력 {skillData.damage2ndRatio}%</color>\n" +
+                                $"<color=#FF6B6B>3차 베기 (피니셔): 공격력 {skillData.damage3rdRatio}%</color>";
 
             // MeleeTooltipUtils를 사용한 툴팁 데이터 생성
             var data = MeleeTooltipUtils.CreateActiveSkillData(
-                "<color=#FFD700><size=22>Sword Slash</size></color>",
-                $"{skillData.attackInterval}초 간격으로 {skillData.attackCount}회 연속공격 (1회 공격력 {skillData.damageRatio}%)",
+                "<color=#FFD700><size=22>돌진 연속 베기</size></color>",
+                description,
                 $"{skillData.staminaCost}",
                 $"{skillData.cooldown}초",
                 MeleeTooltipUtils.WeaponType.Sword,
-                "연속 공격 중 이동 불가",
+                "스킬 사용 중 무적 아님",
                 "",
                 "G키"
             );
@@ -189,36 +195,26 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 방어 전환 툴팁 생성 (sword_step5_defswitch)
-        /// 패링 스택 시스템 설명 포함
         /// </summary>
         public static string GetDefSwitchTooltip()
         {
             Plugin.Log.LogDebug("[검 툴팁] GetDefSwitchTooltip() 호출됨");
 
-            var requiredPoints = 2; // MeleeSkillData.cs에서 확인한 값
+            var requiredPoints = 2;
 
-            // 패링 스택 Config 값 가져오기
-            int maxStacks = Sword_Config.MaxParryStacksValue;
-            float buffDuration = Sword_Config.ParryStackBuffDurationValue;
-            float stack1Bonus = Sword_Config.ParryStack1DamageBonusValue;
-            float stack2Bonus = Sword_Config.ParryStack2DamageBonusValue;
-            float stack3Bonus = Sword_Config.ParryStack3DamageBonusValue;
+            float shieldReduction = Sword_Config.SwordDefenseSwitchDamageReductionValue;
+            float noShieldBonus = Sword_Config.SwordDefenseSwitchDamageBonusValue;
 
-            // 패링 스택 효과 설명
-            string parryStackDesc = $"<color=#87CEEB>【패링 스택 시스템】</color>\n" +
-                                   $"방패 착용 시 패링 성공마다 스택 +1 (최대 {maxStacks})\n" +
-                                   $"<color=#98FB98>1스택: 공격력 +{stack1Bonus}%</color>\n" +
-                                   $"<color=#FFA500>2스택: 공격력 +{stack2Bonus}%</color>\n" +
-                                   $"<color=#FF6B6B>3스택: 공격력 +{stack3Bonus}%</color>\n" +
-                                   $"<color=#DDA0DD>버프 {buffDuration}초 유지, 패링 시 연장</color>";
+            string description = $"<color=#98FB98>방패 착용 시: 받는 피해 -{shieldReduction}%</color>\n" +
+                                $"<color=#FFA500>방패 미착용 시: 공격력 +{noShieldBonus}%</color>";
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 "<color=#FFD700><size=22>방어 전환</size></color>",
-                parryStackDesc,
+                description,
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = "검 + 방패 착용";
-            data.additionalInfo = "패링으로 스택을 쌓아 공격력 대폭 증가";
+            data.requirement = "검 착용";
+            data.additionalInfo = "전투 스타일에 따라 공격 또는 방어 강화";
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
@@ -409,17 +405,17 @@ namespace CaptainSkillTree.SkillTree
 
 
         /// <summary>
-        /// Sword Slash 대체 툴팁 (설정 로드 실패 시)
+        /// 돌진 연속 베기 대체 툴팁 (설정 로드 실패 시)
         /// </summary>
         private static string GetSwordSlashFallbackTooltip()
         {
             var data = MeleeTooltipUtils.CreateActiveSkillData(
-                "<color=#FFD700><size=22>Sword Slash</size></color>",
-                "순간 공격속도를 빠르게 하여 0.2초 간격으로 3회공격(1회 공격력 80%)",
-                "15",
-                "35초",
+                "<color=#FFD700><size=22>돌진 연속 베기</size></color>",
+                "전방 5m 돌진 후 몬스터 주변을 이동하며 3회 연속 베기\n1차: 70%, 2차: 80%, 3차: 90%",
+                "30",
+                "25초",
                 MeleeTooltipUtils.WeaponType.Sword,
-                "연속 공격 중 이동 불가, 공격 중단 불가",
+                "스킬 사용 중 무적 아님",
                 "",
                 "G키"
             );

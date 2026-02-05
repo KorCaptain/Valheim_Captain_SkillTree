@@ -20,7 +20,7 @@
     <UseSharedCompilation>false</UseSharedCompilation>
     <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
     <!-- 🔧 버전 관리 시스템 -->
-    <Version>0.1.273</Version>
+    <Version>0.1.313</Version>
     <AutoIncrementVersion>true</AutoIncrementVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -38,10 +38,12 @@
     <Reference Include="0Harmony">
       <HintPath>C:\Users\admin\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Cusor_1\BepInEx\core\0Harmony.dll</HintPath>
     </Reference>
-    <!-- EpicMMOSystem.dll 참조 -->
+    <!-- EpicMMOSystem.dll 참조 제거 - 리플렉션으로 선택적 연동 -->
+    <!--
     <Reference Include="EpicMMOSystem">
       <HintPath>C:\Users\admin\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Cusor_1\BepInEx\plugins\WackyMole-WackyEpicMMOSystem\EpicMMOSystem.dll</HintPath>
     </Reference>
+    -->
     <!-- AnimationSpeedManager.dll 참조 (배포 시 포함) -->
     <Reference Include="AnimationSpeedManager">
       <HintPath>Lib\AnimationSpeedManager.dll</HintPath>

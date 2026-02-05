@@ -1,4 +1,3 @@
-using EpicMMOSystem;
 using HarmonyLib;
 using UnityEngine;
 using System.Collections;

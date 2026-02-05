@@ -13,13 +13,14 @@ using System.Linq;
 using CaptainSkillTree.Audio;
 using CaptainSkillTree.Prefab;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.MMO_System;
 using Jotunn.Utils;
 using Jotunn.Entities;
 using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.273")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.313")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -56,11 +57,19 @@ namespace CaptainSkillTree
             Log = Logger;
             _instance = this;
 
+            // ===== Captain Level System Config (최상단) =====
+            CaptainLevelConfig.Bind(Config);
+            Log.LogInfo("[Captain Level System] Config 바인딩 완료");
+
             // Config 시스템 초기화
             SkillTreeConfig.Initialize(Config);
 
             // Staff Tree Config 시스템 초기화 (힐러모드 설정 포함)
             Staff_Config.InitConfig(Config);
+
+            // ===== Captain MMO Bridge 초기화 =====
+            // EpicMMO 감지 후 자동으로 시스템 선택
+            CaptainMMOBridge.Initialize();
 
             // 안전 장치 초기화
             InitializeCoreSafeguards();
@@ -68,13 +77,13 @@ namespace CaptainSkillTree
             HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("CaptainSkillTree.Mod");
 
             // Harmony 패치 등록
-            Log.LogInfo("========== WackyEpicMMOSystem 설치 확인 중... ==========");
+            Log.LogInfo("========== Captain SkillTree 초기화 중... ==========");
 
             try
             {
                 harmony.PatchAll();
-                Log.LogInfo("========== WackyEpicMMOSystem 설치 확인 및 연동 성공! ==========");
-                Log.LogDebug("[MMO 연동] 제작 강화 시스템 Harmony 패치 등록 완료");
+                Log.LogInfo($"========== Captain SkillTree 초기화 완료! (MMO: {(EpicMMOReflectionHelper.IsAvailable ? "연동" : "독립")}) ==========");
+                Log.LogDebug("[Harmony] 패치 등록 완료");
             }
             catch (Exception ex)
             {

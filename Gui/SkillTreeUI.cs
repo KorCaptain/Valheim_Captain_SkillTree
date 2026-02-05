@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
-using EpicMMOSystem;
 using System.Linq;
 using TMPro;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using CaptainSkillTree.Gui;
 using CaptainSkillTree.Audio;
+using CaptainSkillTree.MMO_System;
 using Jotunn.Managers;
 
 namespace CaptainSkillTree.Gui
@@ -107,7 +107,10 @@ namespace CaptainSkillTree.Gui
             panel.SetActive(false); // 항상 비활성화로 시작
             var panelRect = panel.GetComponent<RectTransform>();
             panelRect.sizeDelta = new Vector2(2048, 1152);
+
+            // 스킬트리 UI는 항상 화면 중앙에 배치
             panelRect.anchoredPosition = Vector2.zero;
+            Plugin.Log.LogInfo("[SkillTreeUI] UI 위치: 화면 중앙");
             
             // 패널 자체에 투명한 배경 설정하여 인벤토리 클릭 차단
             var panelImage = panel.GetComponent<Image>();
@@ -877,10 +880,10 @@ namespace CaptainSkillTree.Gui
             // 0. 플레이어 레벨 조건 체크 (직업 아이콘 등)
             if (node.RequiredPlayerLevel > 0)
             {
-                var levelSys = EpicMMOSystem.LevelSystem.Instance;
-                if (levelSys == null || levelSys.getLevel() < node.RequiredPlayerLevel)
+                int currentPlayerLevel = CaptainMMOBridge.GetLevel();
+                if (currentPlayerLevel < node.RequiredPlayerLevel)
                 {
-                    return new InvestResult(false, $"플레이어 레벨 {node.RequiredPlayerLevel} 이상이 필요합니다. (현재: {levelSys?.getLevel() ?? 0})");
+                    return new InvestResult(false, $"플레이어 레벨 {node.RequiredPlayerLevel} 이상이 필요합니다. (현재: {currentPlayerLevel})");
                 }
             }
             
@@ -1015,8 +1018,8 @@ namespace CaptainSkillTree.Gui
             // 0. 플레이어 레벨 조건 체크 (직업 아이콘 등)
             if (node.RequiredPlayerLevel > 0)
             {
-                var levelSys = EpicMMOSystem.LevelSystem.Instance;
-                if (levelSys == null || levelSys.getLevel() < node.RequiredPlayerLevel)
+                int currentPlayerLevel = CaptainMMOBridge.GetLevel();
+                if (currentPlayerLevel < node.RequiredPlayerLevel)
                 {
                     return false;
                 }

@@ -90,65 +90,58 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> SwordStep5DefenseSwitchNoShieldBonus;
 
-        // ===== Tier 6: Sword Slash 액티브 스킬 =====
+        // ===== Tier 6: 돌진 연속 베기 (Rush Slash) 액티브 스킬 =====
 
         /// <summary>
-        /// Tier 6 Sword Slash - 필요 포인트
+        /// Tier 6 Rush Slash - 필요 포인트
         /// </summary>
-        public static ConfigEntry<int> SwordSlashRequiredPoints;
+        public static ConfigEntry<int> RushSlashRequiredPoints;
 
         /// <summary>
-        /// Sword Slash - 연속 공격 횟수
+        /// 돌진 연속 베기 - 1차 공격력 비율 (%)
         /// </summary>
-        public static ConfigEntry<int> SwordSlashAttackCount;
+        public static ConfigEntry<float> RushSlash1stDamageRatio;
 
         /// <summary>
-        /// Sword Slash - 공격 간격 (초)
+        /// 돌진 연속 베기 - 2차 공격력 비율 (%)
         /// </summary>
-        public static ConfigEntry<float> SwordSlashAttackInterval;
+        public static ConfigEntry<float> RushSlash2ndDamageRatio;
 
         /// <summary>
-        /// Sword Slash - 1회 공격력 비율 (%)
+        /// 돌진 연속 베기 - 3차 공격력 비율 (%)
         /// </summary>
-        public static ConfigEntry<float> SwordSlashDamageRatio;
+        public static ConfigEntry<float> RushSlash3rdDamageRatio;
 
         /// <summary>
-        /// Sword Slash - 스태미나 소모량
+        /// 돌진 연속 베기 - 초기 돌진 거리 (m)
         /// </summary>
-        public static ConfigEntry<float> SwordSlashStaminaCost;
+        public static ConfigEntry<float> RushSlashInitialDistance;
 
         /// <summary>
-        /// Sword Slash - 쿨타임 (초)
+        /// 돌진 연속 베기 - 측면 이동 거리 (m)
         /// </summary>
-        public static ConfigEntry<float> SwordSlashCooldown;
-
-        // ===== 패링 스택 시스템 (방어 전환 연계) =====
+        public static ConfigEntry<float> RushSlashSideDistance;
 
         /// <summary>
-        /// 패링 스택 - 버프 지속시간 (초)
-        /// 패링 성공 시 타이머 리셋
+        /// 돌진 연속 베기 - 스태미나 소모량
         /// </summary>
-        public static ConfigEntry<float> ParryStackBuffDuration;
+        public static ConfigEntry<float> RushSlashStaminaCost;
 
         /// <summary>
-        /// 패링 스택 - 최대 스택 수 (3스택)
+        /// 돌진 연속 베기 - 쿨타임 (초)
         /// </summary>
-        public static ConfigEntry<int> MaxParryStacks;
+        public static ConfigEntry<float> RushSlashCooldown;
 
         /// <summary>
-        /// 패링 스택 - 1스택 공격력 보너스 (%)
+        /// 돌진 연속 베기 - 이동 속도 (m/s)
         /// </summary>
-        public static ConfigEntry<float> ParryStack1DamageBonus;
+        public static ConfigEntry<float> RushSlashMoveSpeed;
 
         /// <summary>
-        /// 패링 스택 - 2스택 공격력 보너스 (%)
+        /// 돌진 연속 베기 - 공격 속도 보너스 (%, 기본 공격속도 대비)
+        /// 스킬 발동 중 다른 트리 공격속도 무시, 이 값만 적용
         /// </summary>
-        public static ConfigEntry<float> ParryStack2DamageBonus;
-
-        /// <summary>
-        /// 패링 스택 - 3스택 공격력 보너스 (%)
-        /// </summary>
-        public static ConfigEntry<float> ParryStack3DamageBonus;
+        public static ConfigEntry<float> RushSlashAttackSpeedBonus;
 
         // ===== 동적 값 프로퍼티 (서버 동기화 지원) =====
 
@@ -192,37 +185,55 @@ namespace CaptainSkillTree.SkillTree
         public static float SwordDefenseSwitchDamageBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Step5_DefenseSwitch_NoShieldBonus", SwordStep5DefenseSwitchNoShieldBonus?.Value ?? 15f);
 
-        // === Tier 6: Sword Slash ===
-        public static int SwordSlashRequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Sword_Step6_RequiredPoints", SwordSlashRequiredPoints?.Value ?? 3);
-        public static int SwordSlashAttackCountValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Sword_Slash_AttackCount", SwordSlashAttackCount?.Value ?? 3);
-        public static float SwordSlashAttackIntervalValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_Slash_AttackInterval", SwordSlashAttackInterval?.Value ?? 0.3f);
-        public static float SwordSlashDamageRatioValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_Slash_DamageRatio", SwordSlashDamageRatio?.Value ?? 80f);
-        public static float SwordSlashStaminaCostValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_Slash_StaminaCost", SwordSlashStaminaCost?.Value ?? 25f);
-        public static float SwordSlashCooldownValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_Slash_Cooldown", SwordSlashCooldown?.Value ?? 35f);
-        public static float SwordSlashDurationValue => 1f; // 고정값
+        // === Tier 6: 돌진 연속 베기 (Rush Slash) ===
+        public static int RushSlashRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("Sword_Step6_RequiredPoints", RushSlashRequiredPoints?.Value ?? 3);
+        public static float RushSlash1stDamageRatioValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_1st_DamageRatio", RushSlash1stDamageRatio?.Value ?? 70f);
+        public static float RushSlash2ndDamageRatioValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_2nd_DamageRatio", RushSlash2ndDamageRatio?.Value ?? 80f);
+        public static float RushSlash3rdDamageRatioValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_3rd_DamageRatio", RushSlash3rdDamageRatio?.Value ?? 90f);
+        public static float RushSlashInitialDistanceValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_InitialDistance", RushSlashInitialDistance?.Value ?? 5f);
+        public static float RushSlashSideDistanceValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_SideDistance", RushSlashSideDistance?.Value ?? 3f);
+        public static float RushSlashStaminaCostValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_StaminaCost", RushSlashStaminaCost?.Value ?? 30f);
+        public static float RushSlashCooldownValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_Cooldown", RushSlashCooldown?.Value ?? 25f);
+        public static float RushSlashMoveSpeedValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_MoveSpeed", RushSlashMoveSpeed?.Value ?? 20f);
+        public static float RushSlashAttackSpeedBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_AttackSpeedBonus", RushSlashAttackSpeedBonus?.Value ?? 220f);
 
-        // === 패링 스택 시스템 (방어 전환 연계) ===
-        public static float ParryStackBuffDurationValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_ParryStack_BuffDuration", ParryStackBuffDuration?.Value ?? 15f);
-        public static int MaxParryStacksValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Sword_ParryStack_MaxStacks", MaxParryStacks?.Value ?? 3);
-        public static float ParryStack1DamageBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_ParryStack_1_DamageBonus", ParryStack1DamageBonus?.Value ?? 55f);
-        public static float ParryStack2DamageBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_ParryStack_2_DamageBonus", ParryStack2DamageBonus?.Value ?? 120f);
-        public static float ParryStack3DamageBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_ParryStack_3_DamageBonus", ParryStack3DamageBonus?.Value ?? 200f);
+        // 호환성 유지용 (기존 코드 참조)
+        public static float SwordSlashDamageRatioValue => RushSlash1stDamageRatioValue;
+        public static float SwordSlashStaminaCostValue => RushSlashStaminaCostValue;
+        public static float SwordSlashCooldownValue => RushSlashCooldownValue;
+        public static float SwordSlashDurationValue => 2f; // 돌진 연속 베기 총 지속시간
 
         // ===== 호환성 래퍼 (기존 코드 지원) =====
 
         /// <summary>
-        /// Sword Slash 스킬 상세 정보 구조체
+        /// 돌진 연속 베기 스킬 상세 정보 구조체
+        /// </summary>
+        public struct RushSlashSkillData
+        {
+            public float damage1stRatio;   // 1차 공격력 비율 (70%)
+            public float damage2ndRatio;   // 2차 공격력 비율 (80%)
+            public float damage3rdRatio;   // 3차 공격력 비율 (90%)
+            public float initialDistance;  // 초기 돌진 거리 (5m)
+            public float sideDistance;     // 측면 이동 거리 (3m)
+            public float moveSpeed;        // 이동 속도 (20m/s)
+            public float staminaCost;      // 스태미나 소모량 (30)
+            public float cooldown;         // 쿨타임 (25초)
+            public string skillKey;        // 키 바인딩
+            public string requirement;     // 사용 조건
+        }
+
+        /// <summary>
+        /// 기존 호환성용 구조체 (deprecated)
         /// </summary>
         public struct SwordSlashSkillData
         {
@@ -237,17 +248,37 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// Sword Slash 스킬 데이터 가져오기
+        /// 돌진 연속 베기 스킬 데이터 가져오기
+        /// </summary>
+        public static RushSlashSkillData GetRushSlashData()
+        {
+            return new RushSlashSkillData
+            {
+                damage1stRatio = RushSlash1stDamageRatioValue,
+                damage2ndRatio = RushSlash2ndDamageRatioValue,
+                damage3rdRatio = RushSlash3rdDamageRatioValue,
+                initialDistance = RushSlashInitialDistanceValue,
+                sideDistance = RushSlashSideDistanceValue,
+                moveSpeed = RushSlashMoveSpeedValue,
+                staminaCost = RushSlashStaminaCostValue,
+                cooldown = RushSlashCooldownValue,
+                skillKey = "G키",
+                requirement = "검 착용"
+            };
+        }
+
+        /// <summary>
+        /// 기존 호환성용 메서드 (deprecated)
         /// </summary>
         public static SwordSlashSkillData GetSwordSlashData()
         {
             return new SwordSlashSkillData
             {
-                attackCount = SwordSlashAttackCountValue,
-                attackInterval = SwordSlashAttackIntervalValue,
-                damageRatio = SwordSlashDamageRatioValue,
-                staminaCost = SwordSlashStaminaCostValue,
-                cooldown = SwordSlashCooldownValue,
+                attackCount = 3,
+                attackInterval = 0.2f,
+                damageRatio = RushSlash1stDamageRatioValue,
+                staminaCost = RushSlashStaminaCostValue,
+                cooldown = RushSlashCooldownValue,
                 duration = SwordSlashDurationValue,
                 skillKey = "G키",
                 requirement = "검 착용"
@@ -378,117 +409,114 @@ namespace CaptainSkillTree.SkillTree
                 "Tier 5: 방어 전환(sword_step5_defswitch) - 방패 미착용 시 공격력 보너스 (%)"
             );
 
-            // Tier 6: Sword Slash 액티브 스킬
-            SwordSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
+            // Tier 6: 돌진 연속 베기 (Rush Slash) 액티브 스킬
+            RushSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_SwordSlash_필요포인트",
+                "Tier6_RushSlash_필요포인트",
                 3,
-                "Tier 6: Sword Slash(sword_step6_slash) - 필요 포인트"
+                "Tier 6: 돌진 연속 베기(sword_step5_finalcut) - 필요 포인트"
             );
 
-            SwordSlashAttackCount = SkillTreeConfig.BindServerSync(config,
+            RushSlash1stDamageRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_SwordSlash_연속공격횟수",
-                3,
-                "Tier 6: Sword Slash(sword_step6_slash) - 연속 공격 횟수"
+                "Tier6_RushSlash_1차공격력비율",
+                70f,
+                "Tier 6: 돌진 연속 베기 - 1차 공격력 비율 (%)"
             );
 
-            SwordSlashAttackInterval = SkillTreeConfig.BindServerSync(config,
+            RushSlash2ndDamageRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_SwordSlash_공격간격",
-                0.3f,
-                "Tier 6: Sword Slash(sword_step6_slash) - 공격 간격 (초)"
-            );
-
-            SwordSlashDamageRatio = SkillTreeConfig.BindServerSync(config,
-                "Sword Tree",
-                "Tier6_SwordSlash_1회공격력비율",
+                "Tier6_RushSlash_2차공격력비율",
                 80f,
-                "Tier 6: Sword Slash(sword_step6_slash) - 1회 공격력 비율 (%)"
+                "Tier 6: 돌진 연속 베기 - 2차 공격력 비율 (%)"
             );
 
-            SwordSlashStaminaCost = SkillTreeConfig.BindServerSync(config,
+            RushSlash3rdDamageRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_SwordSlash_스태미나소모",
+                "Tier6_RushSlash_3차공격력비율",
+                90f,
+                "Tier 6: 돌진 연속 베기 - 3차 공격력 비율 (%)"
+            );
+
+            RushSlashInitialDistance = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier6_RushSlash_초기돌진거리",
+                5f,
+                "Tier 6: 돌진 연속 베기 - 초기 돌진 거리 (m)"
+            );
+
+            RushSlashSideDistance = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier6_RushSlash_측면이동거리",
+                3f,
+                "Tier 6: 돌진 연속 베기 - 측면 이동 거리 (m)"
+            );
+
+            RushSlashStaminaCost = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier6_RushSlash_스태미나소모",
+                30f,
+                "Tier 6: 돌진 연속 베기 - 스태미나 소모량"
+            );
+
+            RushSlashCooldown = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier6_RushSlash_쿨타임",
                 25f,
-                "Tier 6: Sword Slash(sword_step6_slash) - 스태미나 소모량"
+                "Tier 6: 돌진 연속 베기 - 쿨타임 (초)"
             );
 
-            SwordSlashCooldown = SkillTreeConfig.BindServerSync(config,
+            RushSlashMoveSpeed = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_SwordSlash_쿨타임",
-                35f,
-                "Tier 6: Sword Slash(sword_step6_slash) - 쿨타임 (초)"
+                "Tier6_RushSlash_이동속도",
+                20f,
+                "Tier 6: 돌진 연속 베기 - 이동 속도 (m/s)"
             );
 
-            // 패링 스택 시스템 (방어 전환 스킬 연계)
-            ParryStackBuffDuration = SkillTreeConfig.BindServerSync(config,
+            RushSlashAttackSpeedBonus = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "패링스택_버프지속시간",
-                15f,
-                "패링 스택 - 버프 지속시간 (초), 패링 성공 시 타이머 리셋"
-            );
-
-            MaxParryStacks = SkillTreeConfig.BindServerSync(config,
-                "Sword Tree",
-                "패링스택_최대스택",
-                3,
-                "패링 스택 - 최대 스택 수 (3스택)"
-            );
-
-            ParryStack1DamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Sword Tree",
-                "패링스택_1스택공격력",
-                55f,
-                "패링 스택 - 1스택 공격력 보너스 (%)"
-            );
-
-            ParryStack2DamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Sword Tree",
-                "패링스택_2스택공격력",
-                120f,
-                "패링 스택 - 2스택 공격력 보너스 (%)"
-            );
-
-            ParryStack3DamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Sword Tree",
-                "패링스택_3스택공격력",
-                200f,
-                "패링 스택 - 3스택 공격력 보너스 (%)"
+                "Tier6_RushSlash_공격속도보너스",
+                220f,
+                "Tier 6: 돌진 연속 베기 - 공격 속도 보너스 (%, 기본 대비). 스킬 중 다른 트리 공격속도 무시"
             );
 
             Plugin.Log.LogInfo("[Sword Config] 검 스킬 Config 초기화 완료");
         }
 
         /// <summary>
-        /// 실시간 스킬 데미지 계산
+        /// 돌진 연속 베기 데미지 계산 (공격 차수별)
         /// </summary>
-        public static float CalculateSwordSlashDamage(float baseDamage)
+        /// <param name="baseDamage">기본 무기 데미지</param>
+        /// <param name="attackNumber">공격 차수 (1, 2, 3)</param>
+        public static float CalculateRushSlashDamage(float baseDamage, int attackNumber)
         {
-            return baseDamage * (SwordSlashDamageRatioValue / 100f);
+            float ratio = attackNumber switch
+            {
+                1 => RushSlash1stDamageRatioValue,
+                2 => RushSlash2ndDamageRatioValue,
+                3 => RushSlash3rdDamageRatioValue,
+                _ => RushSlash1stDamageRatioValue
+            };
+            return baseDamage * (ratio / 100f);
         }
 
         /// <summary>
-        /// 총 스킬 지속시간 계산
+        /// 총 스킬 지속시간 계산 (이동 기반)
         /// </summary>
         public static float CalculateTotalSkillDuration()
         {
-            return (SwordSlashAttackCountValue - 1) * SwordSlashAttackIntervalValue + 0.4f;
+            // 초기 돌진 + 측면 이동 2회 + 후방 이동
+            float totalDistance = RushSlashInitialDistanceValue + (RushSlashSideDistanceValue * 3);
+            return totalDistance / RushSlashMoveSpeedValue + 0.6f; // 공격 모션 시간 추가
         }
 
         /// <summary>
-        /// 패링 스택에 따른 공격력 보너스 계산
-        /// 1스택: 55%, 2스택: 120%, 3스택: 200%
+        /// 기존 호환성용 메서드 (deprecated)
         /// </summary>
-        public static float CalculateParryDamageBonus(int stacks)
+        public static float CalculateSwordSlashDamage(float baseDamage)
         {
-            return stacks switch
-            {
-                1 => ParryStack1DamageBonusValue,
-                2 => ParryStack2DamageBonusValue,
-                >= 3 => ParryStack3DamageBonusValue,
-                _ => 0f
-            };
+            return CalculateRushSlashDamage(baseDamage, 1);
         }
+
     }
 }

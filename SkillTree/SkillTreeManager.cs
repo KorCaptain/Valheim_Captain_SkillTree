@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-using EpicMMOSystem;
 using System.IO;
 using System.Text;
+using CaptainSkillTree.MMO_System;
 // using Newtonsoft.Json; // BepInEx 환경에서 제거
 #if !NO_JOTUNN
 using Jotunn.Managers;
@@ -1022,65 +1022,53 @@ namespace CaptainSkillTree.SkillTree
             return totalPoints;
         }
         // 전체 최대 포인트: (현재 레벨) * 2 + 보너스 포인트
+        // CaptainMMOBridge를 통해 EpicMMO 또는 자체 시스템에서 자동 선택
         public int GetTotalMaxPoints()
         {
-            int level = 1;
-            try 
-            {
-                // API를 통해 레벨 가져오기
-                level = API.EpicMMOSystem_API.GetLevel();
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogWarning($"[SkillTree] EpicMMOSystem API 호출 실패, 기본 레벨 1을 사용합니다. 오류: {e.Message}");
-                // Fallback to direct call if API fails for some reason (optional, but safer)
-                if (global::EpicMMOSystem.LevelSystem.Instance != null)
-                    level = global::EpicMMOSystem.LevelSystem.Instance.getLevel();
-            }
-            
-            // 기본 포인트 (레벨당 2포인트)
-            int basePoints = Mathf.Max(0, level * 2);
-            
+            int level = GetCurrentLevel(); // CaptainMMOBridge 통합 API 사용
+
+            // 기본 포인트 (레벨당 스킬 포인트)
+            int pointsPerLevel = CaptainLevelConfig.SkillPointsPerLevel?.Value ?? 2;
+            int basePoints = Mathf.Max(0, level * pointsPerLevel);
+
             // 보너스 포인트 추가 (skilladd 명령어로 추가된 포인트)
             int bonusPoints = 0;
             if (Player.m_localPlayer != null)
             {
                 bonusPoints = CaptainSkillTree.SkillTree.SkillAddCommand.GetBonusSkillPoints(Player.m_localPlayer);
             }
-            
+
             return basePoints + bonusPoints;
         }
 
         // MMO 시스템에서 현재 캐릭터 레벨을 가져옴
+        // CaptainMMOBridge를 통해 EpicMMO 또는 자체 시스템에서 자동 선택
         public int GetCurrentLevel() {
             try
             {
-                // 1순위: API를 통해 레벨 가져오기
-                return API.EpicMMOSystem_API.GetLevel();
+                // CaptainMMOBridge 통합 API 사용 (EpicMMO 또는 자체 시스템 자동 선택)
+                return CaptainMMOBridge.GetLevel();
             }
             catch (System.Exception e)
             {
-                Plugin.Log.LogWarning($"[SkillTree] EpicMMOSystem API 호출 실패, 직접 접근 시도: {e.Message}");
-                
+                Plugin.Log.LogWarning($"[SkillTree] CaptainMMOBridge.GetLevel() 실패: {e.Message}");
+
                 try
                 {
-                    // 2순위: 직접 시스템 접근
-                    if (global::EpicMMOSystem.LevelSystem.Instance != null)
-                        return global::EpicMMOSystem.LevelSystem.Instance.getLevel();
+                    // Fallback 1: EpicMMO 리플렉션 헬퍼 사용
+                    if (EpicMMOReflectionHelper.IsAvailable)
+                        return EpicMMOReflectionHelper.GetLevel();
                 }
-                catch (System.Exception e2)
+                catch { }
+
+                // Fallback 3: 자체 시스템 직접 접근
+                if (CaptainLevelSystem.Instance != null && CaptainLevelSystem.Instance.IsInitialized)
                 {
-                    Plugin.Log.LogWarning($"[SkillTree] 직접 접근도 실패: {e2.Message}");
+                    return CaptainLevelSystem.Instance.Level;
                 }
-                
-                // 3순위: 테스트용 계산 (Plugin.SkillTreePoint 기반)
-                if (Plugin.SkillTreePoint > 0)
-                {
-                    int calculatedLevel = (Plugin.SkillTreePoint / 2) + 1;
-                    return Math.Max(1, calculatedLevel);
-                }
-                
-                return 1; // 최종 기본값
+
+                // 최종 기본값
+                return 1;
             }
         }
         // 스킬포인트 = MMO 레벨 * 2 (기본) + 추가 포인트 + 보너스 포인트
