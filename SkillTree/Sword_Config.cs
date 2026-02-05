@@ -73,22 +73,37 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> SwordStep4TrueDuelSpeed;
 
-        // ===== Tier 5: 방어 전환 =====
+        // ===== Tier 5: 패링 돌격 (Parry Rush) - G키 액티브 스킬 =====
 
         /// <summary>
-        /// Tier 5 방어 전환 - 필요 포인트
+        /// Tier 5 패링 돌격 - 필요 포인트
         /// </summary>
         public static ConfigEntry<int> SwordStep5DefenseSwitchRequiredPoints;
 
         /// <summary>
-        /// Tier 5 방어 전환 - 방패 착용 시 피해 감소 (%)
+        /// 패링 돌격 - 버프 지속시간 (초)
         /// </summary>
-        public static ConfigEntry<float> SwordStep5DefenseSwitchShieldReduction;
+        public static ConfigEntry<float> ParryRushDuration;
 
         /// <summary>
-        /// Tier 5 방어 전환 - 방패 미착용 시 공격력 보너스 (%)
+        /// 패링 돌격 - 공격력 보너스 (%)
         /// </summary>
-        public static ConfigEntry<float> SwordStep5DefenseSwitchNoShieldBonus;
+        public static ConfigEntry<float> ParryRushDamageBonus;
+
+        /// <summary>
+        /// 패링 돌격 - 밀어내기 거리 (m)
+        /// </summary>
+        public static ConfigEntry<float> ParryRushPushDistance;
+
+        /// <summary>
+        /// 패링 돌격 - 스태미나 소모
+        /// </summary>
+        public static ConfigEntry<float> ParryRushStaminaCost;
+
+        /// <summary>
+        /// 패링 돌격 - 쿨타임 (초)
+        /// </summary>
+        public static ConfigEntry<float> ParryRushCooldown;
 
         // ===== Tier 6: 돌진 연속 베기 (Rush Slash) 액티브 스킬 =====
 
@@ -177,13 +192,19 @@ namespace CaptainSkillTree.SkillTree
         public static float SwordStep4TrueDuelSpeedValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Step4_TrueDuel_Speed", SwordStep4TrueDuelSpeed?.Value ?? 15f);
 
-        // === Tier 5: 방어 전환 ===
+        // === Tier 5: 패링 돌격 (Parry Rush) ===
         public static int SwordStep5DefenseSwitchRequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Sword_Step5_RequiredPoints", SwordStep5DefenseSwitchRequiredPoints?.Value ?? 1);
-        public static float SwordDefenseSwitchDamageReductionValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_Step5_DefenseSwitch_ShieldReduction", SwordStep5DefenseSwitchShieldReduction?.Value ?? 10f);
-        public static float SwordDefenseSwitchDamageBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_Step5_DefenseSwitch_NoShieldBonus", SwordStep5DefenseSwitchNoShieldBonus?.Value ?? 15f);
+            (int)SkillTreeConfig.GetEffectiveValue("Sword_Step5_RequiredPoints", SwordStep5DefenseSwitchRequiredPoints?.Value ?? 3);
+        public static float ParryRushDurationValue =>
+            SkillTreeConfig.GetEffectiveValue("ParryRush_Duration", ParryRushDuration?.Value ?? 30f);
+        public static float ParryRushDamageBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("ParryRush_DamageBonus", ParryRushDamageBonus?.Value ?? 100f);
+        public static float ParryRushPushDistanceValue =>
+            SkillTreeConfig.GetEffectiveValue("ParryRush_PushDistance", ParryRushPushDistance?.Value ?? 4f);
+        public static float ParryRushStaminaCostValue =>
+            SkillTreeConfig.GetEffectiveValue("ParryRush_StaminaCost", ParryRushStaminaCost?.Value ?? 10f);
+        public static float ParryRushCooldownValue =>
+            SkillTreeConfig.GetEffectiveValue("ParryRush_Cooldown", ParryRushCooldown?.Value ?? 60f);
 
         // === Tier 6: 돌진 연속 베기 (Rush Slash) ===
         public static int RushSlashRequiredPointsValue =>
@@ -387,26 +408,47 @@ namespace CaptainSkillTree.SkillTree
                 "Tier 4: 진검승부(sword_step4_true_duel) - 공격속도 보너스 (%)"
             );
 
-            // Tier 5: 방어 전환
+            // Tier 5: 패링 돌격 (Parry Rush)
             SwordStep5DefenseSwitchRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_방어전환_필요포인트",
-                1,
-                "Tier 5: 방어 전환(sword_step5_defswitch) - 필요 포인트"
+                "Tier5_패링돌격_필요포인트",
+                3,
+                "Tier 5: 패링 돌격(sword_step5_defswitch) - 필요 포인트"
             );
 
-            SwordStep5DefenseSwitchShieldReduction = SkillTreeConfig.BindServerSync(config,
+            ParryRushDuration = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_방어전환_방패착용시피해감소",
+                "Tier5_패링돌격_버프지속시간",
+                30f,
+                "Tier 5: 패링 돌격 - 버프 지속시간 (초)"
+            );
+
+            ParryRushDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier5_패링돌격_공격력보너스",
+                100f,
+                "Tier 5: 패링 돌격 - 패링 성공 시 돌격 공격력 보너스 (%)"
+            );
+
+            ParryRushPushDistance = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier5_패링돌격_밀어내기거리",
+                4f,
+                "Tier 5: 패링 돌격 - 밀어내기 거리 (m)"
+            );
+
+            ParryRushStaminaCost = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier5_패링돌격_스태미나소모",
                 10f,
-                "Tier 5: 방어 전환(sword_step5_defswitch) - 방패 착용 시 받는 피해 감소 (%)"
+                "Tier 5: 패링 돌격 - G키 버프 활성화 스태미나 소모"
             );
 
-            SwordStep5DefenseSwitchNoShieldBonus = SkillTreeConfig.BindServerSync(config,
+            ParryRushCooldown = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_방어전환_방패미착용시공격력",
-                15f,
-                "Tier 5: 방어 전환(sword_step5_defswitch) - 방패 미착용 시 공격력 보너스 (%)"
+                "Tier5_패링돌격_쿨타임",
+                60f,
+                "Tier 5: 패링 돌격 - 쿨타임 (초)"
             );
 
             // Tier 6: 돌진 연속 베기 (Rush Slash) 액티브 스킬
@@ -480,7 +522,7 @@ namespace CaptainSkillTree.SkillTree
                 "Tier 6: 돌진 연속 베기 - 공격 속도 보너스 (%, 기본 대비). 스킬 중 다른 트리 공격속도 무시"
             );
 
-            Plugin.Log.LogInfo("[Sword Config] 검 스킬 Config 초기화 완료");
+            Plugin.Log.LogDebug("[Sword Config] 검 스킬 Config 초기화 완료");
         }
 
         /// <summary>

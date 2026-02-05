@@ -198,13 +198,15 @@ namespace CaptainSkillTree
             }
         }
 
-        [HarmonyPatch(typeof(Character), "BlockAttack")]
+        [HarmonyPatch(typeof(Humanoid), "BlockAttack")]
         public static class SwordSkillTreeParryPatch
         {
-            public static void Postfix(Character __instance, bool __result)
+            public static void Postfix(Character __instance, bool __result, HitData hit, Character attacker)
             {
                 if (__result && __instance is Player player && player.IsPlayer())
                 {
+                    // 패링 돌격은 Stagger 패치에서 처리 (아래 ParryRush_Stagger_Patch)
+
                     var currentWeapon = player.GetCurrentWeapon();
                     if (currentWeapon == null || currentWeapon.m_shared.m_skillType != Skills.SkillType.Swords) return;
 
@@ -224,6 +226,38 @@ namespace CaptainSkillTree
                         effect.m_ttl = 5f;
                         seman.AddStatusEffect(effect, true);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 패링 돌격 전용 패치: 발헤임이 패링 성공 시 attacker.Stagger()를 호출함
+        /// 이를 감지하여 패링 돌격을 발동
+        /// </summary>
+        [HarmonyPatch(typeof(Character), nameof(Character.Stagger))]
+        public static class ParryRush_Stagger_Patch
+        {
+            public static void Postfix(Character __instance)
+            {
+                try
+                {
+                    // __instance = 스태거 당하는 캐릭터 (공격자/몬스터)
+                    if (__instance == null || __instance.IsPlayer()) return;
+
+                    var player = Player.m_localPlayer;
+                    if (player == null || player.IsDead()) return;
+                    if (!Sword_Skill.IsParryRushActive(player)) return;
+
+                    // 플레이어가 막기 중 + 몬스터가 스태거됨 = 패링 성공
+                    if (player.IsBlocking())
+                    {
+                        Sword_Skill.OnParryRushTrigger(player, __instance);
+                        Plugin.Log.LogInfo("[패링 돌격] Stagger 감지 → 패링 돌격 발동");
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Plugin.Log.LogError($"[패링 돌격] Stagger 패치 오류: {ex.Message}");
                 }
             }
         }
@@ -578,26 +612,16 @@ namespace CaptainSkillTree
                             return 1.0 + (Sword_Config.RushSlashAttackSpeedBonusValue / 100.0);
                         }
 
-                        double finalSpeed = speed;
-
-                        // 입력 속도가 1.0 미만이면 1.0으로 보정
-                        if (speed < 0.99)
-                        {
-                            finalSpeed = 1.0;
-                        }
-
-                        // 공격속도 보너스 계산
+                        // 공격속도 보너스 계산 (원래 speed를 기반으로 곱산)
                         float attackSpeedBonus = SkillEffect.GetTotalAttackSpeedBonus(player);
 
                         if (attackSpeedBonus > 0f)
                         {
                             double bonusMultiplier = 1.0 + (attackSpeedBonus / 100.0);
-                            finalSpeed = finalSpeed * bonusMultiplier;
-                            return finalSpeed;
+                            return speed * bonusMultiplier;
                         }
 
-                        // 보너스 없어도 보정된 속도 반환
-                        return finalSpeed;
+                        return speed;
                     }
                     return speed;
                 });

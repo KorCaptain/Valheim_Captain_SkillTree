@@ -323,7 +323,7 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "sword_step5_finalcut", "sword_step5_defswitch" },
                 ApplyEffect = (lv) => { }
             });
-            // 6단계: Sword Slash (액티브 G키 스킬)
+            // 6단계: Sword Slash (액티브 G키 스킬) - 패링 돌격과 상호 배타
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step5_finalcut",
@@ -338,16 +338,17 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "sword_step4_duel" },
                 NextNodes = new List<string>(),
+                MutuallyExclusive = new List<string> { "sword_step5_defswitch" },
                 ApplyEffect = (lv) => { }
             });
-            
-            // 6단계: 방어 전환
+
+            // 6단계: 패링 돌격 (액티브 G키 스킬) - Sword Slash와 상호 배타
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step5_defswitch",
-                Name = "방어 전환",
+                Name = "패링 돌격",
                 Description = "",
-                RequiredPoints = 2,
+                RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(470, 360),
@@ -356,6 +357,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "sword_step4_duel" },
                 NextNodes = new List<string>(),
+                MutuallyExclusive = new List<string> { "sword_step5_finalcut" },
                 ApplyEffect = (lv) => { }
             });
 

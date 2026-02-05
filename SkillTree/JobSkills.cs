@@ -987,6 +987,16 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[Sword Skill] 정리 실패 (무시): {ex.Message}");
                 }
 
+                // 0-4b. 패링 돌격 정리
+                try
+                {
+                    Sword_Skill.CleanupParryRushOnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[Parry Rush] 정리 실패 (무시): {ex.Message}");
+                }
+
                 // 0-5. Staff Heal 정리 (지팡이 힐 모드)
                 try
                 {

@@ -442,21 +442,20 @@ namespace CaptainSkillTree.SkillTree
             
             // 액티브 스킬 정의
             var tKeySkills = new[] { "crossbow_Step6_expert", "bow_Step6_critboost", "staff_Step6_dual_cast" };
-            var gKeySkills = new[] { "sword_step5_finalcut", "knife_step9_assassin_heart", "staff_step5_healing_fireball", "mace_step7_fury_hammer", "spear_Step5_combo", "mace_Step7_guardian_heart" };
-            var hKeySkills = new[] { "mace_warrior_shout", "spear_step6_enhanced_throw" };
+            var gKeyMeleeSkills = new[] { "sword_step5_finalcut", "sword_step5_defswitch", "knife_step9_assassin_heart", "mace_step7_fury_hammer", "spear_Step5_combo", "polearm_step5_king", "mace_Step7_guardian_heart" };
+            var gKeyOtherSkills = new[] { "staff_Step6_heal" };
             var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin" };
-            
+
             // 액티브 스킬이 아니면 제한 없음
-            if (!tKeySkills.Contains(skillId) && !gKeySkills.Contains(skillId) && 
-                !hKeySkills.Contains(skillId) && !yKeySkills.Contains(skillId))
+            if (!tKeySkills.Contains(skillId) && !gKeyMeleeSkills.Contains(skillId) &&
+                !gKeyOtherSkills.Contains(skillId) && !yKeySkills.Contains(skillId))
             {
                 return true;
             }
-            
-            // T키 원거리 액티브 스킬 제한 (백업 방식: 전문가 필수 조건 제거, 1개만 선택 가능 제한만)
+
+            // T키 원거리 액티브 스킬 제한 (1개만 선택 가능)
             if (tKeySkills.Contains(skillId))
             {
-                // 이미 다른 T키 스킬이 있는지 확인
                 var existingTKeySkills = tKeySkills.Where(skill => skill != skillId && GetSkillLevel(skill) > 0).ToList();
                 if (existingTKeySkills.Count > 0)
                 {
@@ -464,21 +463,24 @@ namespace CaptainSkillTree.SkillTree
                     return false;
                 }
             }
-            
-            // G키 액티브 스킬 제한 (백업 방식: 전문가 필수 조건 제거)
-            if (gKeySkills.Contains(skillId))
+
+            // G키 근접 액티브 스킬 제한 (1개만 선택 가능)
+            if (gKeyMeleeSkills.Contains(skillId))
             {
-                // G키 스킬들 간 제한 없음 (지팡이/둔기 전문가는 2개 모두 선택 가능, 근접도 제한 완화)
+                var existingMeleeSkills = gKeyMeleeSkills.Where(skill => skill != skillId && GetSkillLevel(skill) > 0).ToList();
+                if (existingMeleeSkills.Count > 0)
+                {
+                    restrictionMessage = $"근접 액티브 스킬은 1개만 선택 가능 (현재: {string.Join(", ", existingMeleeSkills)})";
+                    return false;
+                }
+            }
+
+            // G키 기타 스킬 (지팡이 힐 등) - 제한 없음
+            if (gKeyOtherSkills.Contains(skillId))
+            {
                 return true;
             }
-            
-            // H키 스킬은 제거되었으므로 항상 차단
-            if (hKeySkills.Contains(skillId))
-            {
-                restrictionMessage = "H키 스킬은 더 이상 지원되지 않습니다 (Y키 직업 스킬 사용)";
-                return false;
-            }
-            
+
             // Y키 직업 액티브 스킬 제한 (1개만 선택 가능)
             if (yKeySkills.Contains(skillId))
             {

@@ -61,92 +61,106 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// G키: 보조형 액티브 스킬 (무기별 처리)
+        /// G키: 보조형 액티브 스킬 (보유 스킬 우선 → 무기 확인)
         /// </summary>
         public static void HandleGKeySkills(Player player)
         {
             if (player == null || player.IsDead()) return;
 
-            // 1. 지팡이: 범위 힐
-            if (IsUsingStaff(player))
+            // === 보유 스킬 우선 라우팅 (스킬을 배웠으면 무기 확인 후 실행) ===
+
+            // 1. 검: 패링 돌격 (sword_step5_defswitch) - 방패 필수
+            if (HasSkill("sword_step5_defswitch"))
             {
-                if (HasSkill("staff_Step6_heal"))
+                if (!Sword_Skill.IsUsingSword(player))
                 {
-                    ActivateStaffAreaHeal(player);
+                    DrawFloatingText(player, "검을 장착해야 합니다!", Color.red);
                     return;
                 }
-                DrawFloatingText(player, "지팡이 힐 스킬이 필요합니다!", Color.red);
+                Sword_Skill.ActivateParryRush(player);
                 return;
             }
 
-            // 2. 단검: 암살자의 심장
-            if (IsUsingDagger(player))
+            // 2. 검: 돌진 연속 베기 (sword_step5_finalcut)
+            if (HasSkill("sword_step5_finalcut") || HasSkill("sword_slash"))
             {
-                if (HasSkill("knife_step9_assassin_heart"))
+                if (!Sword_Skill.IsUsingSword(player))
                 {
-                    ActivateKnifeAssassinHeart(player);
+                    DrawFloatingText(player, "검을 장착해야 합니다!", Color.red);
                     return;
                 }
-                DrawFloatingText(player, "암살자의 심장 스킬이 필요합니다!", Color.red);
+                Sword_Skill.ActivateSwordSlash(player);
                 return;
             }
 
-            // 3. 검: Sword Slash
-            if (Sword_Skill.IsUsingSword(player))
+            // 3. 단검: 암살자의 심장
+            if (HasSkill("knife_step9_assassin_heart"))
             {
-                if (HasSkill("sword_step5_finalcut") || HasSkill("sword_slash"))
+                if (!IsUsingDagger(player))
                 {
-                    Sword_Skill.ActivateSwordSlash(player);
+                    DrawFloatingText(player, "단검을 장착해야 합니다!", Color.red);
                     return;
                 }
-                DrawFloatingText(player, "검 액티브 스킬이 필요합니다!", Color.red);
+                ActivateKnifeAssassinHeart(player);
                 return;
             }
 
-            // 4. 창: 연공창
-            if (IsUsingSpear(player))
+            // 4. 지팡이: 범위 힐
+            if (HasSkill("staff_Step6_heal"))
             {
-                if (HasSkill("spear_Step5_combo"))
+                if (!IsUsingStaff(player))
                 {
-                    HandleSpearActiveSkill(player);
+                    DrawFloatingText(player, "지팡이를 장착해야 합니다!", Color.red);
                     return;
                 }
-                DrawFloatingText(player, "창 액티브 스킬이 필요합니다!", Color.red);
+                ActivateStaffAreaHeal(player);
                 return;
             }
 
-            // 5. 폴암: 장창의 제왕
-            if (IsUsingPolearm(player))
+            // 5. 창: 연공창
+            if (HasSkill("spear_Step5_combo"))
             {
-                if (HasSkill("polearm_step5_king"))
+                if (!IsUsingSpear(player))
                 {
-                    UsePolearmKingSkill(player);
+                    DrawFloatingText(player, "창을 장착해야 합니다!", Color.red);
                     return;
                 }
-                DrawFloatingText(player, "장창의 제왕 스킬이 필요합니다!", Color.red);
+                HandleSpearActiveSkill(player);
                 return;
             }
 
-            // 6. 양손 둔기: 분노의 망치
+            // 6. 폴암: 장창의 제왕
+            if (HasSkill("polearm_step5_king"))
+            {
+                if (!IsUsingPolearm(player))
+                {
+                    DrawFloatingText(player, "폴암을 장착해야 합니다!", Color.red);
+                    return;
+                }
+                UsePolearmKingSkill(player);
+                return;
+            }
+
+            // 7. 양손 둔기: 분노의 망치
             if (IsUsingTwoHandedMace(player))
             {
                 FuryHammerSkill.HandleGKeyPress(player);
                 return;
             }
 
-            // 7. 방패 + 한손 둔기: 수호자의 진심
-            if (HasShield(player) && IsUsingOneHandedMace(player))
+            // 8. 방패 + 한손 둔기: 수호자의 진심
+            if (HasSkill("mace_Step7_guardian_heart"))
             {
-                if (HasSkill("mace_Step7_guardian_heart"))
+                if (!HasShield(player) || !IsUsingOneHandedMace(player))
                 {
-                    ActivateGuardianHeart(player);
+                    DrawFloatingText(player, "한손 둔기 + 방패를 장착해야 합니다!", Color.red);
                     return;
                 }
-                DrawFloatingText(player, "수호자의 진심 스킬이 필요합니다!", Color.red);
+                ActivateGuardianHeart(player);
                 return;
             }
 
-            DrawFloatingText(player, "G키를 지원하는 무기를 착용하세요!", Color.red);
+            DrawFloatingText(player, "G키 액티브 스킬이 필요합니다!", Color.red);
         }
 
         /// <summary>

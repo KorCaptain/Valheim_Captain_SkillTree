@@ -73,7 +73,7 @@ namespace CaptainSkillTree.SkillTree
         /// 패링 지속시간 보너스 (defense_Step5_parry)
         /// Character.BlockAttack 메서드 패치 (막기 성공 시)
         /// </summary>
-        [HarmonyPatch(typeof(Character), "BlockAttack")]
+        [HarmonyPatch(typeof(Humanoid), "BlockAttack")]
         public static class Character_BlockAttack_DefenseTree_Patch
         {
             [HarmonyPriority(Priority.Low)]

@@ -69,7 +69,6 @@ namespace CaptainSkillTree.SkillTree
             if (swordComboCount[player] >= 2)
             {
                 DrawFloatingText(player, $"⚔️ 검 전문가 2연속! (+{SkillTreeConfig.SwordStep1ExpertComboBonusValue}%)");
-                Plugin.Log.LogInfo($"[검 전문가] 2연속 공격 달성 - 공격력 +{SkillTreeConfig.SwordStep1ExpertComboBonusValue}% 보너스 적용");
 
                 nextAttackBoosted[player] = true;
                 nextAttackMultiplier[player] = 1f + (SkillTreeConfig.SwordStep1ExpertComboBonusValue / 100f);
@@ -101,7 +100,6 @@ namespace CaptainSkillTree.SkillTree
             if (swordComboCount[player] >= 3)
             {
                 DrawFloatingText(player, $"⚔️ 연속베기! 3연속 공격력 +{SkillTreeConfig.SwordStep2ComboSlashBonusValue}%");
-                Plugin.Log.LogInfo("[연속베기] 3연속 공격 달성 - 공격력 +13% 보너스 적용");
 
                 nextAttackBoosted[player] = true;
                 nextAttackMultiplier[player] = 1f + (SkillTreeConfig.SwordStep2ComboSlashBonusValue / 100f);
@@ -153,32 +151,7 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>
-        /// 방어 전환 - 방패 착용/미착용에 따른 스탯 조정
-        /// </summary>
-        public static void ApplySwordDefenseSwitch(Player player, HitData hit)
-        {
-            if (!HasSkill("sword_step5_defswitch")) return;
-
-            var inventory = player.GetInventory();
-            bool hasShield = false;
-            if (inventory != null)
-            {
-                var items = inventory.GetEquippedItems();
-                hasShield = items.Any(item => item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield);
-            }
-
-            if (hasShield)
-            {
-                DrawFloatingText(player, "🛡️ 방어 전환 (방패): 방어력 +15%, 공격력 -5%");
-                Plugin.Log.LogDebug("[방어 전환] 방패 착용 모드 - 방어력 +15%, 공격력 -5%");
-            }
-            else
-            {
-                DrawFloatingText(player, "⚔️ 방어 전환 (공격): 공격력 +20%, 방어력 -10%");
-                Plugin.Log.LogDebug("[방어 전환] 공격 모드 - 공격력 +20%, 방어력 -10%");
-            }
-        }
+        // ApplySwordDefenseSwitch 제거됨 - 패링 돌격 액티브 스킬로 전환 (Sword_Skill.cs)
 
         /// <summary>
         /// Sword Slash 액티브 스킬 데미지 보너스 적용

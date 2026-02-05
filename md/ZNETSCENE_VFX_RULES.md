@@ -15,9 +15,9 @@
 
 ** VFX 재생 방법은 VFX_SOUND_INFINITE_LOADING_FIX.md 를 따르세요.**
 
-** `직접 Instantiate` 패턴은 구버전이며, **무한 로딩을 유발할 수 있습니다**.
-발헤임 내부 VFX는  `VFXManager.PlayVFXMultiplayer()` 메서드를 사용하세요.
-외부 VFX는 SimpleVFX.cs 로 구현
+**VFX 타입별 사용 메서드:**
+- **커스텀 VFX** (hit_01, debuff 등): `SimpleVFX` 사용
+- **발헤임 기본 VFX** (smokebomb_explosion, vfx_blocked 등): `VFXManager.PlayVFXMultiplayer()` 사용
 
 ## 발헤임 기본 이팩트로 프리팹 기본 등록 되어 있음
 smokebomb_explosion - 발헤임 기본 스모크 효과 - 로그 이팩트

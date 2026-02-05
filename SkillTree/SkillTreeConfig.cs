@@ -518,7 +518,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (args.InitialSynchronization)
                     {
-                        Plugin.Log.LogInfo("[SkillTreeConfig] Jotunn 서버 설정 초기 동기화 완료");
+                        Plugin.Log.LogDebug("[SkillTreeConfig] Jotunn 서버 설정 초기 동기화 완료");
                         _hasReceivedServerConfig = true;
                         try { RefreshAllSkillEffects(); }
                         catch (Exception ex) { Plugin.Log.LogWarning($"[SkillTreeConfig] 스킬 효과 재계산 중 오류: {ex.Message}"); }

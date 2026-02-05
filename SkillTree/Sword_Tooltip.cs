@@ -194,27 +194,34 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 방어 전환 툴팁 생성 (sword_step5_defswitch)
+        /// 패링 돌격 툴팁 생성 (sword_step5_defswitch)
         /// </summary>
         public static string GetDefSwitchTooltip()
         {
-            Plugin.Log.LogDebug("[검 툴팁] GetDefSwitchTooltip() 호출됨");
+            Plugin.Log.LogDebug("[검 툴팁] GetDefSwitchTooltip() 호출됨 (패링 돌격)");
 
-            var requiredPoints = 2;
+            var requiredPoints = 3;
 
-            float shieldReduction = Sword_Config.SwordDefenseSwitchDamageReductionValue;
-            float noShieldBonus = Sword_Config.SwordDefenseSwitchDamageBonusValue;
+            float duration = Sword_Config.ParryRushDurationValue;
+            float damageBonus = Sword_Config.ParryRushDamageBonusValue;
+            float pushDist = Sword_Config.ParryRushPushDistanceValue;
+            float staminaCost = Sword_Config.ParryRushStaminaCostValue;
+            float cooldown = Sword_Config.ParryRushCooldownValue;
 
-            string description = $"<color=#98FB98>방패 착용 시: 받는 피해 -{shieldReduction}%</color>\n" +
-                                $"<color=#FFA500>방패 미착용 시: 공격력 +{noShieldBonus}%</color>";
+            string description = $"{duration}초 동안 패링 성공 시 몬스터에게 방패돌격\n" +
+                                $"<color=#98FB98>공격력 +{damageBonus}%</color>\n" +
+                                $"<color=#FFA500>{pushDist}m 밀어내기</color>";
 
-            var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>방어 전환</size></color>",
+            var data = MeleeTooltipUtils.CreateActiveSkillData(
+                "<color=#FFD700><size=22>패링 돌격</size></color>",
                 description,
-                MeleeTooltipUtils.WeaponType.Sword
+                $"{staminaCost}",
+                $"{cooldown}초",
+                MeleeTooltipUtils.WeaponType.Sword,
+                "근접 액티브 스킬은 1개만 습득 가능",
+                "방패 착용",
+                "G키"
             );
-            data.requirement = "검 착용";
-            data.additionalInfo = "전투 스타일에 따라 공격 또는 방어 강화";
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);

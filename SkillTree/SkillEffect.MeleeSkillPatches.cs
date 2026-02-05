@@ -442,9 +442,7 @@ namespace CaptainSkillTree.SkillTree
             float riposteBonus = Sword_Skill.GetSwordRiposteDamageBonus(player);
             if (riposteBonus > 0) totalSwordBonusFixed += riposteBonus;
 
-            // 방어 전환 - 방패 미착용 시
-            float defenseSwitchBonus = Sword_Skill.GetSwordDefenseSwitchDamageBonus(player);
-            if (defenseSwitchBonus > 0) totalSwordBonusPercent += defenseSwitchBonus;
+            // 방어 전환 → 패링 돌격으로 전환됨 (액티브 스킬, 패시브 보너스 없음)
 
             // 비율 보너스 적용
             if (totalSwordBonusPercent > 0 && result.m_slash > 0)

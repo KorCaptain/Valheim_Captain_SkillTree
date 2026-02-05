@@ -39,17 +39,41 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
-                var leftItemField = typeof(Humanoid).GetField("m_leftItem",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                var leftItem = leftItemField?.GetValue(player) as ItemDrop.ItemData;
+                var inventory = player.GetInventory();
+                if (inventory == null) return false;
 
-                return leftItem != null && leftItem.IsWeapon() &&
-                       leftItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield;
+                foreach (var item in inventory.GetEquippedItems())
+                {
+                    if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+                        return true;
+                }
+                return false;
             }
             catch
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 장비 목록에서 검 무기 아이템 반환 (패링 중 GetCurrentWeapon 문제 회피)
+        /// </summary>
+        public static ItemDrop.ItemData GetEquippedSword(Player player)
+        {
+            if (player == null) return null;
+            try
+            {
+                var inventory = player.GetInventory();
+                if (inventory == null) return null;
+
+                foreach (var item in inventory.GetEquippedItems())
+                {
+                    if (item.m_shared.m_skillType == Skills.SkillType.Swords)
+                        return item;
+                }
+                return null;
+            }
+            catch { return null; }
         }
 
         /// <summary>
@@ -690,30 +714,250 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>
-        /// 방어 전환 - 방패 미착용 시 공격력 보너스
-        /// </summary>
-        public static float GetSwordDefenseSwitchDamageBonus(Player player)
-        {
-            if (!SkillEffect.HasSkill("sword_step5_defswitch") || !Sword_Skill.IsUsingSword(player)) return 0f;
+        // === 패링 돌격 (Parry Rush) 액티브 스킬 관련 변수 ===
+        private static Dictionary<Player, float> parryRushCooldowns = new Dictionary<Player, float>();
+        private static Dictionary<Player, bool> parryRushActive = new Dictionary<Player, bool>();
+        private static Dictionary<Player, float> parryRushExpiry = new Dictionary<Player, float>();
 
+        /// <summary>
+        /// G키로 패링 돌격 30초 버프 활성화
+        /// - 스킬 보유 확인 (sword_step5_defswitch)
+        /// - 방패 착용 확인
+        /// - 쿨타임/스태미나 확인
+        /// - 버프 활성화 + VFX 재생
+        /// </summary>
+        public static void ActivateParryRush(Player player)
+        {
             try
             {
-                // 방패 미착용 시 공격력 보너스
-                if (!HasShield(player))
+                if (player == null || player.IsDead()) return;
+
+                // 1. 스킬 보유 확인
+                if (!SkillEffect.HasSkill("sword_step5_defswitch"))
                 {
-                    float bonus = Sword_Config.SwordDefenseSwitchDamageBonusValue;
-                    if (bonus > 0f)
-                        Plugin.Log.LogDebug($"[방어 전환] 방패 미착용 - 공격력 +{bonus}%");
-                    return bonus;
+                    SkillEffect.DrawFloatingText(player, "패링 돌격 스킬이 필요합니다", Color.red);
+                    return;
                 }
 
-                return 0f;
+                // 2. 방패 착용 확인
+                if (!HasShield(player))
+                {
+                    SkillEffect.DrawFloatingText(player, "방패를 착용해야 합니다", Color.red);
+                    return;
+                }
+
+                // 3. 쿨타임 확인
+                float now = Time.time;
+                if (parryRushCooldowns.TryGetValue(player, out float cdEnd) && now < cdEnd)
+                {
+                    float remaining = cdEnd - now;
+                    SkillEffect.DrawFloatingText(player, $"쿨타임: {Mathf.CeilToInt(remaining)}초", Color.yellow);
+                    return;
+                }
+
+                // 4. 스태미나 확인
+                float staminaCost = Sword_Config.ParryRushStaminaCostValue;
+                if (player.GetStamina() < staminaCost)
+                {
+                    SkillEffect.DrawFloatingText(player, "스태미나 부족", Color.red);
+                    return;
+                }
+
+                // 5. 이미 버프 활성 중인지 확인
+                if (IsParryRushActive(player))
+                {
+                    SkillEffect.DrawFloatingText(player, "패링 돌격 이미 활성 중", Color.yellow);
+                    return;
+                }
+
+                // 6. 버프 활성화
+                float duration = Sword_Config.ParryRushDurationValue;
+                float cooldown = Sword_Config.ParryRushCooldownValue;
+
+                parryRushActive[player] = true;
+                parryRushExpiry[player] = now + duration;
+                parryRushCooldowns[player] = now + cooldown;
+
+                // 7. 스태미나 소모
+                player.UseStamina(staminaCost);
+
+                // 8. 버프 표시
+                if (Gui.SkillBuffDisplay.Instance != null)
+                {
+                    Gui.SkillBuffDisplay.Instance.ShowBuff(
+                        "parry_rush_buff",
+                        "패링 돌격",
+                        duration,
+                        Color.cyan
+                    );
+                }
+
+                // 9. 발동 메시지 + VFX
+                SkillEffect.DrawFloatingText(player, $"🛡️ 패링 돌격! ({duration}초)", Color.cyan);
+                VFXManager.PlayVFXMultiplayer("vfx_blocked", "", player.transform.position, player.transform.rotation, duration);
+
+                Plugin.Log.LogInfo($"[패링 돌격] 버프 활성화 - {duration}초, 쿨타임 {cooldown}초");
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[방어 전환] 공격력 보너스 계산 실패: {ex.Message}");
-                return 0f;
+                Plugin.Log.LogError($"[패링 돌격] 버프 활성화 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 패링 성공 시 돌격 실행 - 방패 들고 몬스터에게 돌진, 데미지 + 밀어내기
+        /// </summary>
+        public static void OnParryRushTrigger(Player player, Character attacker)
+        {
+            try
+            {
+                if (player == null || player.IsDead() || attacker == null || attacker.IsDead()) return;
+                if (!IsParryRushActive(player)) return;
+
+                // 무기 확인 (방패 패링 중 GetCurrentWeapon이 방패를 반환할 수 있으므로 장비 목록에서 검 확인)
+                var weapon = GetEquippedSword(player);
+                if (weapon == null) return;
+
+                // 돌격 코루틴 시작
+                var coroutine = ExecuteParryRushCharge(player, attacker, weapon);
+                player.StartCoroutine(coroutine);
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[패링 돌격] 돌격 트리거 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 패링 돌격 차지 코루틴 - blocking 모션으로 몬스터까지 돌진 후 데미지 + 밀어내기
+        /// </summary>
+        private static IEnumerator ExecuteParryRushCharge(Player player, Character target, ItemDrop.ItemData weapon)
+        {
+            if (player == null || target == null) yield break;
+
+            // 1. blocking 모션 시작
+            var zanim = player.GetComponentInChildren<ZSyncAnimation>();
+            if (zanim != null)
+            {
+                zanim.SetBool("blocking", true);
+            }
+
+            // 2. 몬스터 방향으로 회전
+            Vector3 targetPos = target.transform.position;
+            Vector3 direction = (targetPos - player.transform.position);
+            direction.y = 0;
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                player.transform.rotation = Quaternion.LookRotation(direction.normalized);
+            }
+
+            // 3. 몬스터까지 빠르게 이동 (20m/s)
+            float distance = Vector3.Distance(player.transform.position, targetPos);
+            float moveSpeed = 20f;
+            float moveDuration = Mathf.Max(distance / moveSpeed, 0.05f);
+            float elapsed = 0f;
+            Vector3 startPos = player.transform.position;
+
+            while (elapsed < moveDuration)
+            {
+                if (player == null || player.IsDead()) yield break;
+
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / moveDuration);
+                float smoothT = 1f - Mathf.Pow(1f - t, 2f);
+
+                // 타겟 위치 갱신 (이동했을 수 있음)
+                if (target != null && !target.IsDead())
+                {
+                    targetPos = target.transform.position;
+                }
+
+                Vector3 newPos = Vector3.Lerp(startPos, targetPos, smoothT);
+                // 지면 높이 보정
+                if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
+                    LayerMask.GetMask("terrain", "Default")))
+                {
+                    newPos.y = groundHit.point.y + 0.1f;
+                }
+                player.transform.position = newPos;
+
+                yield return null;
+            }
+
+            // 4. 도착 - 데미지 적용
+            if (target != null && !target.IsDead() && player != null && !player.IsDead())
+            {
+                var weaponDamage = weapon.GetDamage();
+                float damageMultiplier = 1f + (Sword_Config.ParryRushDamageBonusValue / 100f);
+
+                var hit = new HitData();
+                hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
+                hit.m_damage.m_blunt = weaponDamage.m_blunt * damageMultiplier;
+                hit.m_damage.m_pierce = weaponDamage.m_pierce * damageMultiplier;
+
+                hit.m_point = target.GetCenterPoint();
+                hit.m_dir = (target.transform.position - player.transform.position).normalized;
+                hit.m_pushForce = Sword_Config.ParryRushPushDistanceValue;
+                hit.m_attacker = player.GetZDOID();
+                hit.SetAttacker(player);
+                hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
+
+                target.Damage(hit);
+
+                // VFX: 적중 효과
+                VFXManager.PlayVFXMultiplayer("vfx_sledge_hit", "", target.GetCenterPoint(), Quaternion.identity, 2f);
+
+                SkillEffect.DrawFloatingText(player, $"🛡️ 패링 돌격! (+{Sword_Config.ParryRushDamageBonusValue}%)", Color.cyan);
+                Plugin.Log.LogInfo($"[패링 돌격] 돌격 성공! 공격력 +{Sword_Config.ParryRushDamageBonusValue}%, 밀어내기 {Sword_Config.ParryRushPushDistanceValue}m");
+            }
+
+            // 5. blocking 해제
+            yield return new WaitForSeconds(0.2f);
+            if (zanim != null && player != null && !player.IsDead())
+            {
+                zanim.SetBool("blocking", false);
+            }
+        }
+
+        /// <summary>
+        /// 패링 돌격 버프 활성 상태 확인
+        /// </summary>
+        public static bool IsParryRushActive(Player player)
+        {
+            if (player == null) return false;
+            return parryRushActive.TryGetValue(player, out bool active) && active &&
+                   parryRushExpiry.TryGetValue(player, out float expiry) && Time.time < expiry;
+        }
+
+        /// <summary>
+        /// 패링 돌격 상태 정리
+        /// </summary>
+        public static void CleanupParryRush(Player player)
+        {
+            if (player == null) return;
+            parryRushActive.Remove(player);
+            parryRushExpiry.Remove(player);
+
+            if (Gui.SkillBuffDisplay.Instance != null)
+            {
+                Gui.SkillBuffDisplay.Instance.RemoveBuff("parry_rush_buff");
+            }
+        }
+
+        /// <summary>
+        /// 패링 돌격 사망 시 정리
+        /// </summary>
+        public static void CleanupParryRushOnDeath(Player player)
+        {
+            try
+            {
+                parryRushCooldowns.Remove(player);
+                parryRushActive.Remove(player);
+                parryRushExpiry.Remove(player);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[패링 돌격] 사망 정리 실패: {ex.Message}");
             }
         }
 
@@ -751,35 +995,6 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>
-        /// 방어 전환 - 방패 착용 시 받는 피해 감소
-        /// 실제 효과는 Character.Damage 패치에서 적용됨
-        /// </summary>
-        public static float GetSwordDefenseSwitchDamageReduction(Player player)
-        {
-            if (!SkillEffect.HasSkill("sword_step5_defswitch") || !Sword_Skill.IsUsingSword(player)) return 0f;
-
-            try
-            {
-                // 방패 착용 확인 (리플렉션 사용)
-                var leftItemField = typeof(Humanoid).GetField("m_leftItem", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                var leftItem = leftItemField?.GetValue(player) as ItemDrop.ItemData;
-                bool hasShield = leftItem != null && leftItem.IsWeapon() && leftItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield;
-
-                if (hasShield)
-                {
-                    float damageReduction = Sword_Config.SwordDefenseSwitchDamageReductionValue;
-                    Plugin.Log.LogDebug($"[방어 전환] 방패 착용 - 받는 피해 -{damageReduction}%");
-                    return damageReduction;
-                }
-
-                return 0f;
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[방어 전환] 피해 감소 계산 실패: {ex.Message}");
-                return 0f;
-            }
-        }
+        // GetSwordDefenseSwitchDamageReduction 제거됨 - 패링 돌격 액티브 스킬로 전환
     }
 }

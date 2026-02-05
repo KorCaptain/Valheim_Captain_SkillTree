@@ -285,8 +285,8 @@ private static void CreateSmokeEffect(Player player)
 
 | VFX 타입 | 사용 메서드 | 이유 |
 |---------|-----------|------|
-| **발헤임 기본 VFX** | `ZNetScene.GetPrefab() → Instantiate()` | 발헤임의 네이티브 정리 시스템 활용 |
-| **커스텀 VFX** | `VFXManager.PlayVFXMultiplayer()` | 멀티플레이어 동기화 필요 |
+| **발헤임 기본 VFX** | `VFXManager.PlayVFXMultiplayer()` | 멀티플레이어 동기화 + 안전한 정리 |
+| **커스텀 VFX** | `SimpleVFX` | 커스텀 AssetBundle VFX 전용 처리 |
 
 **발헤임 기본 VFX 예시**:
 - `smokebomb_explosion`, `vfx_sledge_iron_hit`, `fx_siegebomb_explosion`
