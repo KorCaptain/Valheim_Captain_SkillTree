@@ -40,7 +40,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 창 연공창 액티브 스킬 (G키)
+        /// 창 연공창 액티브 스킬 (H키)
         /// </summary>
         public static void HandleSpearActiveSkill(Player player)
         {

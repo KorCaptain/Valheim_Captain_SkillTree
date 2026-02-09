@@ -8,7 +8,7 @@ using CaptainSkillTree.VFX;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 분노의 망치 스킬 전용 클래스 (둔기 G키 액티브 스킬)
+    /// 분노의 망치 스킬 전용 클래스 (둔기 H키 액티브 스킬)
     /// VFX 규칙 준수: VFXManager.PlayVFXMultiplayer 사용
     /// </summary>
     public static class FuryHammerSkill
@@ -23,9 +23,9 @@ namespace CaptainSkillTree.SkillTree
         private const float ATTACK_INTERVAL = 0.5f;   // 공격간 딜레이 고정 (초)
 
         /// <summary>
-        /// G키 누름 처리: 차지 시작
+        /// H키 누름 처리: 차지 시작
         /// </summary>
-        public static void HandleGKeyPress(Player player)
+        public static void HandleHKeyPress(Player player)
         {
             if (player == null || player.IsDead()) return;
 
@@ -45,7 +45,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (canFuryHammer && nowG - lastMaceSkillTime > cooldown)
             {
-                Plugin.Log.LogInfo("[분노의 망치] G키 차지 시작");
+                Plugin.Log.LogInfo("[분노의 망치] H키 차지 시작");
                 isChargingFuryHammer = true;
             }
             else if (canFuryHammer)
@@ -60,9 +60,9 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// G키 해제 처리: 스킬 발동
+        /// H키 해제 처리: 스킬 발동
         /// </summary>
-        public static void HandleGKeyRelease(Player player)
+        public static void HandleHKeyRelease(Player player)
         {
             if (!isChargingFuryHammer) return;
             if (player == null || player.IsDead()) return;
@@ -81,7 +81,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogInfo("[분노의 망치] 기존 코루틴 중단");
                 }
 
-                Plugin.Log.LogInfo($"[분노의 망치] G키 해제 - ApplyFuryHammer 호출, 차지: {chargeDuration}");
+                Plugin.Log.LogInfo($"[분노의 망치] H키 해제 - ApplyFuryHammer 호출, 차지: {chargeDuration}");
 
                 // 새 코루틴 시작
                 lastMaceSkillTime = Time.time;

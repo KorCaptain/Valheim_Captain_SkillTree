@@ -42,7 +42,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "crossbow_Step1_damage",
                 Name = "석궁 전문가",
-                Description = $"석궁 공격력 +{Crossbow_Config.CrossbowExpertDamageBonusValue}%\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>",
+                Description = $"석궁 공격력 +{Crossbow_Config.CrossbowExpertDamageBonusValue}%\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 1,
@@ -61,7 +61,7 @@ namespace CaptainSkillTree.SkillTree
                 Name = "연속 발사 Lv1",
                 Description = $"{Crossbow_Config.CrossbowRapidFireChanceValue}% 확률로 {Crossbow_Config.CrossbowRapidFireShotCountValue}발 연속 발사\n" +
                               $"(각 {Crossbow_Config.CrossbowRapidFireDamagePercentValue}% 데미지, 볼트 {Crossbow_Config.CrossbowRapidFireBoltConsumptionValue}발 소모)\n" +
-                              $"<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>",
+                              $"<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 2,
@@ -78,7 +78,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "crossbow_Step2_balance",
                 Name = "균형 조준",
-                Description = $"명중 시 {Crossbow_Config.CrossbowBalanceKnockbackChanceValue}% 확률로 넉백 ({Crossbow_Config.CrossbowBalanceKnockbackDistanceValue}m)\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>",
+                Description = $"명중 시 {Crossbow_Config.CrossbowBalanceKnockbackChanceValue}% 확률로 넉백 ({Crossbow_Config.CrossbowBalanceKnockbackDistanceValue}m)\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 3,
@@ -95,7 +95,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "crossbow_Step3_rapid",
                 Name = "고속 장전",
-                Description = $"장전속도 +{Crossbow_Config.CrossbowRapidReloadSpeedValue}%\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>",
+                Description = $"장전속도 +{Crossbow_Config.CrossbowRapidReloadSpeedValue}%\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 3,
@@ -112,7 +112,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "crossbow_Step3_mark",
                 Name = "정직한 한 발",
-                Description = $"치명타 확률 0% 고정, 대신 석궁 공격력 +{Crossbow_Config.CrossbowMarkDamageBonusValue}%\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>",
+                Description = $"치명타 확률 0% 고정, 대신 석궁 공격력 +{Crossbow_Config.CrossbowMarkDamageBonusValue}%\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>",
                 RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 3,
@@ -129,7 +129,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "crossbow_Step4_re",
                 Name = "자동 장전",
-                Description = $"명중 시 {Crossbow_Config.CrossbowAutoReloadChanceValue}% 확률로 다음 1회 장전 속도 200%\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>",
+                Description = $"명중 시 {Crossbow_Config.CrossbowAutoReloadChanceValue}% 확률로 다음 1회 장전 속도 200%\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 4,
@@ -149,7 +149,7 @@ namespace CaptainSkillTree.SkillTree
                 Description = $"{Crossbow_Config.CrossbowRapidFireLv2ChanceValue}% 확률로 {Crossbow_Config.CrossbowRapidFireLv2ShotCountValue}발 연속 발사\n" +
                               $"(각 {Crossbow_Config.CrossbowRapidFireLv2DamagePercentValue}% 데미지, 볼트 {Crossbow_Config.CrossbowRapidFireLv2BoltConsumptionValue}발 소모)\n" +
                               $"<color=#FFD700><size=16>※ Lv1과 확률 합산</size></color>\n" +
-                              $"<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>",
+                              $"<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 5,
@@ -166,7 +166,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "crossbow_Step5_final",
                 Name = "결전의 일격",
-                Description = $"체력 {Crossbow_Config.CrossbowFinalStrikeHpThresholdValue}% 이상 적에게 추가 {Crossbow_Config.CrossbowFinalStrikeDamageBonusValue}% 피해\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>",
+                Description = $"체력 {Crossbow_Config.CrossbowFinalStrikeHpThresholdValue}% 이상 적에게 추가 {Crossbow_Config.CrossbowFinalStrikeDamageBonusValue}% 피해\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>",
                 RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 5,
@@ -179,11 +179,11 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // Step 6: 단 한 발 (액티브 스킬)
+            // Step 6: 단 한 발 (액티브 스킬) - 표준 툴팁 형식
             manager.AddSkill(new SkillNode {
                 Id = "crossbow_Step6_expert",
                 Name = "단 한 발",
-                Description = $"T키: {Crossbow_Config.CrossbowOneShotDurationValue}초 이내 석궁 발사 시 공격력 +{Crossbow_Config.CrossbowOneShotDamageBonusValue}%, 넉백 {Crossbow_Config.CrossbowOneShotKnockbackValue}m (쿨타임 {Crossbow_Config.CrossbowOneShotCooldownValue}초)\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>",
+                Description = GetOneShotTooltip(),
                 RequiredPoints = 4,
                 MaxLevel = 1,
                 Tier = 6,
@@ -202,7 +202,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step1_damage",
                 Name = "활 전문가",
-                Description = $"활 공격력 +{SkillTreeConfig.BowStep1ExpertDamageBonusValue}%\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
+                Description = $"활 공격력 +{SkillTreeConfig.BowStep1ExpertDamageBonusValue}%\n<color=#DDA0DD><size=16>※ 활 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 1,
@@ -219,7 +219,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step2_focus",
                 Name = "집중 사격",
-                Description = $"치명타 확률 +{SkillTreeConfig.BowStep2FocusCritBonusValue}%\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
+                Description = $"치명타 확률 +{SkillTreeConfig.BowStep2FocusCritBonusValue}%\n<color=#DDA0DD><size=16>※ 활 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 2,
@@ -236,7 +236,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step2_multishot",
                 Name = "멀티샷 Lv1",
-                Description = $"{SkillTreeConfig.BowMultishotLv1ChanceValue}% 확률로 화살 2개 발사\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
+                Description = $"{SkillTreeConfig.BowMultishotLv1ChanceValue}% 확률로 화살 2개 발사\n<color=#DDA0DD><size=16>※ 활 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 2,
@@ -259,7 +259,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step3_speedshot",
                 Name = "활 숙련",
-                Description = $"활 기술(숙련도) +{SkillTreeConfig.BowStep3SpeedShotSkillBonusValue}\n<color=#FFD700><size=14>※ 사망해도 보너스 유지</size></color>\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
+                Description = $"활 기술(숙련도) +{SkillTreeConfig.BowStep3SpeedShotSkillBonusValue}\n<color=#FFD700><size=14>※ 사망해도 보너스 유지</size></color>\n<color=#DDA0DD><size=16>※ 활 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 3,
@@ -287,7 +287,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step3_silentshot",
                 Name = "기본 활공격",
-                Description = $"활 공격력 +{SkillTreeConfig.BowStep3SilentShotDamageBonusValue}\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
+                Description = $"활 공격력 +{SkillTreeConfig.BowStep3SilentShotDamageBonusValue}\n<color=#DDA0DD><size=16>※ 활 착용시 효과발동</size></color>",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 4,
@@ -304,7 +304,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step4_multishot2",
                 Name = "멀티샷 Lv2",
-                Description = $"{SkillTreeConfig.BowMultishotLv2ChanceValue}% 확률로 추가 화살 2발 발사 (+3도 각도)\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
+                Description = $"{SkillTreeConfig.BowMultishotLv2ChanceValue}% 확률로 추가 화살 2발 발사 (+3도 각도)\n<color=#DDA0DD><size=16>※ 활 착용시 효과발동</size></color>",
                 RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 4,
@@ -327,7 +327,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step5_instinct",
                 Name = "사냥 본능",
-                Description = $"치명타 확률 +{SkillTreeConfig.BowStep5InstinctCritBonusValue}%\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
+                Description = $"치명타 확률 +{SkillTreeConfig.BowStep5InstinctCritBonusValue}%\n<color=#DDA0DD><size=16>※ 활 착용시 효과발동</size></color>",
                 RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 4,
@@ -344,7 +344,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step5_master",
                 Name = "정조준",
-                Description = $"크리티컬 데미지 +{SkillTreeConfig.BowStep5MasterCritDamageValue}%\n<color=#A020F0><size=16>※ 활 착용시 효과발동</size></color>",
+                Description = $"크리티컬 데미지 +{SkillTreeConfig.BowStep5MasterCritDamageValue}%\n<color=#DDA0DD><size=16>※ 활 착용시 효과발동</size></color>",
                 RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 5,
@@ -357,11 +357,11 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // Step 6: 폭발 화살 (액티브 스킬)
+            // Step 6: 폭발 화살 (액티브 스킬) - 표준 툴팁 형식
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step6_critboost",
                 Name = "폭발 화살",
-                Description = $"T키: 폭발 화살 발사 (공격력의 {SkillTreeConfig.BowExplosiveArrowDamageValue}% 폭발 데미지, 쿨타임 {SkillTreeConfig.BowExplosiveArrowCooldownValue}초)\n소모: 스태미나 {SkillTreeConfig.BowExplosiveArrowStaminaCostValue}%\n스킬유형: 액티브 스킬, T키\n무기타입: 활\n<color=#FF4500><size=16>※ 폭발 범위 피해</size></color>",
+                Description = GetExplosiveArrowTooltip(),
                 RequiredPoints = 4,
                 MaxLevel = 1,
                 Tier = 6,
@@ -516,7 +516,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "staff_Step6_dual_cast",
                 Name = "이중시전",
-                Description = $"T키로 추가 마법 발사체 {Staff_Config.StaffDoubleCastProjectileCountValue}발 발사 (좌 -{Staff_Config.StaffDoubleCastAngleOffsetValue:F0}°, 우 +{Staff_Config.StaffDoubleCastAngleOffsetValue:F0}°)\n발사체 데미지: 지팡이/완드 공격력의 {Staff_Config.StaffDoubleCastDamagePercentValue:F0}%\n소모: Eitr {Staff_Config.StaffDoubleCastEitrCostValue:F0}\n스킬유형: 액티브 T키\n무기타입: 지팡이\n쿨타임: {Staff_Config.StaffDoubleCastCooldownValue:F0}초\n필요조건: 지팡이 또는 완드 착용",
+                Description = $"R키로 추가 마법 발사체 {Staff_Config.StaffDoubleCastProjectileCountValue}발 발사 (좌 -{Staff_Config.StaffDoubleCastAngleOffsetValue:F0}°, 우 +{Staff_Config.StaffDoubleCastAngleOffsetValue:F0}°)\n발사체 데미지: 지팡이/완드 공격력의 {Staff_Config.StaffDoubleCastDamagePercentValue:F0}%\n소모: Eitr {Staff_Config.StaffDoubleCastEitrCostValue:F0}\n스킬유형: 액티브 R키\n무기타입: 지팡이\n쿨타임: {Staff_Config.StaffDoubleCastCooldownValue:F0}초\n필요조건: 지팡이 또는 완드 착용",
                 RequiredPoints = Staff_Config.StaffDoubleCastRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -533,7 +533,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "staff_Step6_heal",
                 Name = "힐",
-                Description = $"G키로 {HealerMode_Config.HealerModeDurationValue:F0}초 동안 힐러모드 활성화\n아군 최대체력의 {HealerMode_Config.HealPercentageValue}% 즉시 회복\n소모: Eitr {HealerMode_Config.HealerModeEitrCostValue:F0}\n스킬유형: 액티브 G키\n무기타입: 지팡이\n쿨타임: {HealerMode_Config.HealerModeCooldownValue:F0}초\n필요조건: 지팡이 또는 완드 착용",
+                Description = $"H키로 {HealerMode_Config.HealerModeDurationValue:F0}초 동안 힐러모드 활성화\n아군 최대체력의 {HealerMode_Config.HealPercentageValue}% 즉시 회복\n소모: Eitr {HealerMode_Config.HealerModeEitrCostValue:F0}\n스킬유형: 액티브 H키\n무기타입: 지팡이\n쿨타임: {HealerMode_Config.HealerModeCooldownValue:F0}초\n필요조건: 지팡이 또는 완드 착용",
                 RequiredPoints = Staff_Config.StaffHealerRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -602,6 +602,82 @@ namespace CaptainSkillTree.SkillTree
             {
                 manager.SkillNodes["ranged_root"].Position = new Vector2(-90, 60);
             }
+        }
+
+        /// <summary>
+        /// 폭발 화살 동적 툴팁 생성 (R키 액티브 스킬)
+        /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형 → 쿨타임 → 필요조건 → 필요포인트
+        /// </summary>
+        public static string GetExplosiveArrowTooltip()
+        {
+            var tooltip = "";
+
+            // 1. 스킬명
+            tooltip += $"<color=#FFD700><size=22>폭발 화살</size></color>\n\n";
+
+            // 2. 설명
+            tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>폭발 화살 발사, 적중 시 주변 적에게 폭발 피해</size></color>\n";
+
+            // 3. 데미지
+            tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>공격력의 {SkillTreeConfig.BowExplosiveArrowDamageValue}% 폭발 피해</size></color>\n";
+
+            // 4. 범위
+            tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>폭발 범위 5m</size></color>\n";
+
+            // 5. 소모
+            tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {SkillTreeConfig.BowExplosiveArrowStaminaCostValue}%</size></color>\n";
+
+            // 6. 스킬유형 (R키 강조)
+            tooltip += $"<color=#9400D3><size=16>스킬유형: </size></color><color=#FFD700><size=16>액티브 스킬 - R키</size></color>\n";
+
+            // 7. 쿨타임
+            tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{SkillTreeConfig.BowExplosiveArrowCooldownValue}초</size></color>\n";
+
+            // 8. 필요조건
+            tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>활 착용</size></color>\n";
+
+            // 9. 필요포인트
+            tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>4</size></color>";
+
+            return tooltip.TrimEnd('\n');
+        }
+
+        /// <summary>
+        /// 단 한 발 동적 툴팁 생성 (R키 액티브 스킬)
+        /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형 → 쿨타임 → 필요조건 → 필요포인트
+        /// </summary>
+        public static string GetOneShotTooltip()
+        {
+            var tooltip = "";
+
+            // 1. 스킬명
+            tooltip += $"<color=#FFD700><size=22>단 한 발</size></color>\n\n";
+
+            // 2. 설명
+            tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{Crossbow_Config.CrossbowOneShotDurationValue}초간 버프 활성화, 다음 석궁 발사 시 강력한 일격</size></color>\n";
+
+            // 3. 데미지
+            tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>공격력 +{Crossbow_Config.CrossbowOneShotDamageBonusValue}%</size></color>\n";
+
+            // 4. 범위 (넉백)
+            tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>넉백 {Crossbow_Config.CrossbowOneShotKnockbackValue}m</size></color>\n";
+
+            // 5. 소모
+            tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 20</size></color>\n";
+
+            // 6. 스킬유형 (R키 강조)
+            tooltip += $"<color=#9400D3><size=16>스킬유형: </size></color><color=#FFD700><size=16>액티브 스킬 - R키</size></color>\n";
+
+            // 7. 쿨타임
+            tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{Crossbow_Config.CrossbowOneShotCooldownValue}초</size></color>\n";
+
+            // 8. 필요조건
+            tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>석궁 착용</size></color>\n";
+
+            // 9. 필요포인트
+            tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>4</size></color>";
+
+            return tooltip.TrimEnd('\n');
         }
     }
 }

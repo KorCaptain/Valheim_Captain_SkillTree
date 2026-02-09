@@ -17,7 +17,7 @@ namespace CaptainSkillTree.SkillTree
 
         public override string Help => "스킬 초기화 (관리자 전용): skillreset <플레이어이름>";
 
-        public override bool IsCheat => true; // 관리자 전용
+        public override bool IsCheat => true; // 관리자 전용 (devcommands 필요)
 
         /// <summary>
         /// 자동완성 옵션 제공 - 현재 접속된 플레이어 목록
@@ -331,13 +331,18 @@ namespace CaptainSkillTree.SkillTree
                     return false;
                 }
 
+                // 보너스 스킬 포인트도 초기화 (skilladd로 추가된 포인트)
+                int previousBonusPoints = SkillAddCommand.GetBonusSkillPoints(targetPlayer);
+                SkillAddCommand.SetBonusSkillPoints(targetPlayer, 0);
+                Plugin.Log.LogInfo($"[스킬 초기화] 보너스 포인트 초기화: {previousBonusPoints} -> 0");
+
                 // UI 새로고침 (해당 플레이어가 로컬 플레이어인 경우)
                 if (targetPlayer == Player.m_localPlayer)
                 {
                     RefreshSkillTreeUI();
                 }
 
-                Plugin.Log.LogDebug($"[스킬 초기화] {targetPlayer.GetPlayerName()} 스킬 초기화 완료");
+                Plugin.Log.LogDebug($"[스킬 초기화] {targetPlayer.GetPlayerName()} 스킬 초기화 완료 (보너스 포인트 포함)");
                 return true;
             }
             catch (Exception ex)

@@ -70,11 +70,55 @@ namespace CaptainSkillTree.SkillTree
                     "힐러모드 이펙트", "활성화 사운드", "sfx_dverger_heal_start",
                     "힐러모드 활성화 시 재생되는 사운드");
 
+                // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
+                RegisterHealerModeEventHandlers();
+
                 Plugin.Log.LogDebug("[힐러모드 컨피그] 모든 설정값이 초기화됨");
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[힐러모드 컨피그] 설정 초기화 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 힐러모드 컨피그 변경 시 툴팁 자동 업데이트 이벤트 등록
+        /// </summary>
+        private static void RegisterHealerModeEventHandlers()
+        {
+            try
+            {
+                healerModeDurationConfig.SettingChanged += (sender, args) => OnHealerModeConfigChanged();
+                healerModeCooldownConfig.SettingChanged += (sender, args) => OnHealerModeConfigChanged();
+                healerModeEitrCostConfig.SettingChanged += (sender, args) => OnHealerModeConfigChanged();
+                healPercentageConfig.SettingChanged += (sender, args) => OnHealerModeConfigChanged();
+                healRangeConfig.SettingChanged += (sender, args) => OnHealerModeConfigChanged();
+                healerBuffVFXConfig.SettingChanged += (sender, args) => OnHealerModeConfigChanged();
+                healerStatusVFXConfig.SettingChanged += (sender, args) => OnHealerModeConfigChanged();
+                healingVFXConfig.SettingChanged += (sender, args) => OnHealerModeConfigChanged();
+                activationSoundConfig.SettingChanged += (sender, args) => OnHealerModeConfigChanged();
+
+                Plugin.Log.LogDebug("[힐러모드 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[힐러모드 컨피그] 이벤트 핸들러 등록 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 힐러모드 컨피그 변경 시 호출
+        /// </summary>
+        private static void OnHealerModeConfigChanged()
+        {
+            try
+            {
+                Plugin.Log.LogInfo("[힐러모드 컨피그] 설정값 변경됨");
+                LogCurrentConfig();
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[힐러모드 컨피그] 설정 변경 처리 실패: {ex.Message}");
             }
         }
 

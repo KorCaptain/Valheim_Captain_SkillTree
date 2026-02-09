@@ -205,8 +205,8 @@ namespace CaptainSkillTree.SkillTree
             );
             data.requirement = "단검 또는 클로 착용";
             data.requiredPoints = requiredPoints.ToString();
-            data.skillType = "액티브 스킬(G키)";
-            data.confirmation = "근접 액티브 스킬은 1개만 습득가능\n정면에 적 없으면 스킬 취소";
+            data.skillType = "액티브 스킬 - G키";
+            data.confirmation = "같은 무기 전문가 내에서만 다중 습득 가능\n정면에 적 없으면 스킬 취소";
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }

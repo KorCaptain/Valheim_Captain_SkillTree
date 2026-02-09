@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 폭발 화살 시스템 - T키 액티브 스킬
+    /// 폭발 화살 시스템 - R키 액티브 스킬
     /// 석궁 단 한발과 똑같은 방식으로 구현 (즉시 발동, 다음 한 발만)
     /// Character.Damage 패치를 사용하여 안전하게 구현
     /// </summary>
@@ -17,13 +17,13 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, bool> explosiveArrowReady = new Dictionary<Player, bool>();
         
         /// <summary>
-        /// 폭발 화살 T키 액티브 스킬 실행 (석궁 단 한발과 동일)
+        /// 폭발 화살 R키 액티브 스킬 실행 (석궁 단 한발과 동일)
         /// </summary>
         public static void ExecuteExplosiveArrow(Player player)
         {
             try
             {
-                Plugin.Log.LogInfo("[폭발 화살] T키 실행 시작");
+                Plugin.Log.LogInfo("[폭발 화살] R키 실행 시작");
                 
                 // 기본 조건 검사
                 if (player == null || player.IsDead())
@@ -82,7 +82,7 @@ namespace CaptainSkillTree.SkillTree
                 
                 // 성공 메시지 (석궁과 동일한 스타일)
                 ShowSkillEffectText(player, "💥 폭발 화살 준비 완료!", new Color(1f, 0.4f, 0f), SkillEffectTextType.Combat);
-                Plugin.Log.LogInfo("[폭발 화살] ✅ T키 액티브 스킬 발동 완료 - 다음 한 발 준비됨");
+                Plugin.Log.LogInfo("[폭발 화살] ✅ R키 액티브 스킬 발동 완료 - 다음 한 발 준비됨");
             }
             catch (System.Exception ex)
             {

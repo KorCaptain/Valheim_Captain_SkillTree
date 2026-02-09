@@ -373,10 +373,26 @@ namespace CaptainSkillTree.Gui
                 pendingPoints += pending.Value * node.RequiredPoints;
             }
             int availablePoints = maxPoints - usedPoints - pendingPoints;
+
             if (skillPointText != null)
             {
                 skillPointText.supportRichText = true;
-                skillPointText.text = $"스킬트리 사용가능 포인트 <color=#FF0000>{availablePoints:00}</color><color=#FFFFFF> / </color><color=#000000>{maxPoints:00}</color>";
+
+                // 스킬포인트 기반 레벨 표시 모드 확인
+                var levelInfo = CaptainMMOBridge.GetLevelInfo();
+
+                if (levelInfo.isSkillPointBased)
+                {
+                    // 스킬포인트 기반 레벨 모드: Lv.34 스킬포인트 05 / 150
+                    // (사용: 102, 2pt/Lv) - 줄바꿈 후 흰색 표시
+                    skillPointText.text = $"<color=#00BFFF>Lv.{levelInfo.level}</color> 스킬포인트 <color=#FF0000>{availablePoints:00}</color><color=#FFFFFF> / </color><color=#000000>{maxPoints}</color>\n<color=#FFFFFF>(사용: {levelInfo.usedPoints}, {levelInfo.pointsPerLevel}pt/Lv)</color>";
+                }
+                else
+                {
+                    // 기존 모드: 스킬트리 사용가능 포인트 05 / 150
+                    int currentLevel = CaptainMMOBridge.GetLevel();
+                    skillPointText.text = $"<color=#00BFFF>Lv.{currentLevel}</color> 스킬포인트 <color=#FF0000>{availablePoints:00}</color><color=#FFFFFF> / </color><color=#000000>{maxPoints:00}</color>";
+                }
             }
         }
 
@@ -1326,10 +1342,10 @@ namespace CaptainSkillTree.Gui
             tooltipText += $"<color=#FFFFFF><size=18>{descMain}</size></color>\n\n";
             if (!string.IsNullOrEmpty(condLine)) {
                 if (condLine.StartsWith("※")) {
-                    tooltipText += "<color=#A020F0><size=18>※</size></color>";
+                    tooltipText += "<color=#DDA0DD><size=18>※</size></color>";
                     tooltipText += $"<color=#00BFFF><size=18>{condLine.Substring(1).Trim()}</size></color>\n";
                 } else {
-                    tooltipText += "<color=#A020F0><size=18>※</size></color>";
+                    tooltipText += "<color=#DDA0DD><size=18>※</size></color>";
                     tooltipText += $"<color=#00BFFF><size=18>{condLine.Trim()}</size></color>\n";
                 }
             }

@@ -9,7 +9,7 @@ using CaptainSkillTree.VFX;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 메이지 즉시 힐링 시스템 - G키로 범위 내 즉시 힐링
+    /// 메이지 즉시 힐링 시스템 - H키로 범위 내 즉시 힐링
     /// 시전자 중심 12m 범위, 다른 플레이어만 치료 (자기 치료 불가)
     /// 적중한 아군 체력의 25%를 즉시 회복, 에이트르 30 소모, 30초 쿨타임
     /// </summary>
@@ -26,7 +26,7 @@ namespace CaptainSkillTree.SkillTree
         private static float HEAL_RANGE => HealerMode_Config.HealRangeValue;                   // Config 연동
 
         /// <summary>
-        /// 메이지 즉시 힐링 시전 (G키 - 범위 내 즉시 힐링)
+        /// 메이지 즉시 힐링 시전 (H키 - 범위 내 즉시 힐링)
         /// 쿨타임 중이면 남은 시간 표시
         /// </summary>
         public static bool CastInstantHeal(Player player)

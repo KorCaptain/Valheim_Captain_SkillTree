@@ -26,7 +26,7 @@ namespace CaptainSkillTree.SkillTree
         // 백스텝 샷: 구르기 후 치명타 확률 증가 (Tier 5)
         public static Dictionary<Player, float> bowBackstepShotEndTime = new Dictionary<Player, float>();
 
-        // 크리티컬 부스트: T키 액티브 치명타 확률 100% (Tier 6)
+        // 크리티컬 부스트: R키 액티브 치명타 확률 100% (Tier 6)
         public static Dictionary<Player, float> bowCritBoostEndTime = new Dictionary<Player, float>();
 
         // static constructor - 원거리 스킬 이펙트 등록

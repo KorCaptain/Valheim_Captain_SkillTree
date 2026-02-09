@@ -19,6 +19,8 @@ namespace CaptainSkillTree.SkillTree
             public string skillName;          // 스킬명
             public string description;        // 설명
             public string additionalInfo;     // 추가 정보
+            public string damage;             // 데미지/효과 (신규)
+            public string range;              // 범위 (신규)
             public string consumeStamina;     // 스태미나 소모
             public string skillType;          // 스킬 유형
             public string cooldown;           // 쿨타임
@@ -54,6 +56,18 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 공통 근접 무기 툴팁 생성 함수
         /// 모든 무기 타입에서 사용 가능한 통합 툴팁 생성기
+        ///
+        /// 표준 항목 순서:
+        /// 1. 스킬명 (#FFD700, size=22)
+        /// 2. 설명 (#FFD700 / #E0E0E0)
+        /// 3. 데미지/효과 (#FF6B6B / #FFB6C1)
+        /// 4. 범위 (#87CEEB / #B0E0E6)
+        /// 5. 소모 (#FFB347 / #FFDAB9)
+        /// 6. 스킬유형 (키별 강조색상)
+        /// 7. 쿨타임 (#FFA500 / #FFDB58)
+        /// 8. 필요조건 (#98FB98 / #00FF00)
+        /// 9. 확인사항 (#F0E68C / #FFE4B5)
+        /// 10. 필요포인트 (#87CEEB / #FF6B6B)
         /// </summary>
         /// <param name="data">툴팁 데이터</param>
         /// <param name="weaponType">무기 타입 (로깅용)</param>
@@ -64,31 +78,50 @@ namespace CaptainSkillTree.SkillTree
             {
                 var tooltip = "";
 
-                // 스킬명 섹션
+                // 1. 스킬명 섹션 (#FFD700, size=22)
                 if (!string.IsNullOrEmpty(data.skillName))
                 {
                     tooltip += $"<color=#FFD700><size=22>{data.skillName}</size></color>\n\n";
                 }
 
-                // 설명 섹션
+                // 2. 설명 섹션 (#FFD700 / #E0E0E0)
                 if (!string.IsNullOrEmpty(data.description))
                 {
                     tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}</size></color>\n";
                 }
 
-                // 소모 섹션 (있을 때만 표시)
-                if (!string.IsNullOrEmpty(data.consumeStamina))
+                // 3. 데미지/효과 섹션 (#FF6B6B / #FFB6C1) - 빨강 계열로 강조
+                if (!string.IsNullOrEmpty(data.damage))
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스테미나 {data.consumeStamina}</size></color>\n";
+                    tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>{data.damage}</size></color>\n";
                 }
 
-                // 쿨타임 섹션 (액티브 스킬만)
+                // 4. 범위 섹션 (#87CEEB / #B0E0E6)
+                if (!string.IsNullOrEmpty(data.range))
+                {
+                    tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
+                }
+
+                // 5. 소모 섹션 (#FFB347 / #FFDAB9)
+                if (!string.IsNullOrEmpty(data.consumeStamina))
+                {
+                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.consumeStamina}</size></color>\n";
+                }
+
+                // 6. 스킬 유형 섹션 (키별 강조색상 적용)
+                if (!string.IsNullOrEmpty(data.skillType))
+                {
+                    var (labelColor, valueColor) = GetSkillTypeColors(data.skillType);
+                    tooltip += $"<color={labelColor}><size=16>스킬유형: </size></color><color={valueColor}><size=16>{data.skillType}</size></color>\n";
+                }
+
+                // 7. 쿨타임 섹션 (#FFA500 / #FFDB58)
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
                     tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
-                // 필요조건 섹션
+                // 8. 필요조건 섹션 (#98FB98 / #00FF00)
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
                     tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
@@ -98,22 +131,16 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[MeleeTooltip] 필요조건이 비어있음: skillName='{data.skillName}'");
                 }
 
-                // 스킬 유형 섹션 (패시브/액티브)
-                if (!string.IsNullOrEmpty(data.skillType))
-                {
-                    tooltip += $"<color=#87CEEB><size=16>스킬유형: </size></color><color=#B0E0E6><size=16>{data.skillType}</size></color>\n";
-                }
-
-                // 필요 포인트 섹션
-                if (!string.IsNullOrEmpty(data.requiredPoints))
-                {
-                    tooltip += $"<color=#DDA0DD><size=16>필요 포인트: </size></color><color=#E6E6FA><size=16>{data.requiredPoints}</size></color>\n";
-                }
-
-                // 확인사항 섹션
+                // 9. 확인사항 섹션 (#F0E68C / #FFE4B5)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                }
+
+                // 10. 필요 포인트 섹션 (#87CEEB / #FF6B6B)
+                if (!string.IsNullOrEmpty(data.requiredPoints))
+                {
+                    tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{data.requiredPoints}</size></color>";
                 }
 
                 LogTooltipGeneration(weaponType, "GenerateTooltip", "성공");
@@ -124,6 +151,30 @@ namespace CaptainSkillTree.SkillTree
                 LogTooltipError(weaponType, "GenerateTooltip", ex.Message);
                 return "툴팁 생성 오류";
             }
+        }
+
+        /// <summary>
+        /// 스킬유형에 따른 키 바인딩 강조 색상 반환
+        /// G키: 오렌지레드/라임그린 - 근접 메인
+        /// H키: 딥핑크/시안 - 보조 스킬
+        /// R키: 다크바이올렛/골드 - 원거리/마법
+        /// Y키: 도저블루/그린옐로우 - 직업 스킬
+        /// </summary>
+        private static (string labelColor, string valueColor) GetSkillTypeColors(string skillType)
+        {
+            if (string.IsNullOrEmpty(skillType))
+                return ("#87CEEB", "#B0E0E6");
+
+            if (skillType.Contains("G키"))
+                return ("#FF4500", "#00FF00");  // 오렌지레드/라임그린
+            if (skillType.Contains("H키"))
+                return ("#FF1493", "#00FFFF");  // 딥핑크/시안
+            if (skillType.Contains("R키"))
+                return ("#9400D3", "#FFD700");  // 다크바이올렛/골드
+            if (skillType.Contains("Y키"))
+                return ("#1E90FF", "#ADFF2F");  // 도저블루/그린옐로우
+
+            return ("#87CEEB", "#B0E0E6");  // 기본 색상
         }
 
         /// <summary>
@@ -263,6 +314,8 @@ namespace CaptainSkillTree.SkillTree
                 skillName = skillName,
                 description = description,
                 additionalInfo = "",
+                damage = "",
+                range = "",
                 consumeStamina = "",
                 skillType = "패시브 스킬",
                 cooldown = "",
@@ -282,16 +335,19 @@ namespace CaptainSkillTree.SkillTree
         /// <param name="weaponType">무기 타입</param>
         /// <param name="additionalInfo">추가 정보</param>
         /// <param name="confirmation">확인사항</param>
-        /// <param name="keyBinding">키 바인딩 (예: "G키", "T키")</param>
+        /// <param name="keyBinding">키 바인딩 (예: "G키", "R키")</param>
+        /// <param name="damage">데미지 정보 (선택)</param>
+        /// <param name="range">범위 정보 (선택)</param>
         /// <returns>기본 액티브 스킬 툴팁 데이터</returns>
         public static MeleeTooltipData CreateActiveSkillData(string skillName, string description,
             string consumeStamina, string cooldown, WeaponType weaponType,
-            string additionalInfo = "", string confirmation = "", string keyBinding = "")
+            string additionalInfo = "", string confirmation = "", string keyBinding = "",
+            string damage = "", string range = "")
         {
             string skillTypeText = "액티브 스킬";
             if (!string.IsNullOrEmpty(keyBinding))
             {
-                skillTypeText = $"액티브 스킬({keyBinding})";
+                skillTypeText = $"액티브 스킬 - {keyBinding}";
             }
 
             return new MeleeTooltipData
@@ -299,6 +355,8 @@ namespace CaptainSkillTree.SkillTree
                 skillName = skillName,
                 description = description,
                 additionalInfo = additionalInfo,
+                damage = damage,
+                range = range,
                 consumeStamina = consumeStamina,
                 skillType = skillTypeText,
                 cooldown = cooldown,

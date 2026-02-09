@@ -20,6 +20,14 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep3QuickDamageBonus;
         public static ConfigEntry<float> SpearStep4TripleDamageBonus;
         public static ConfigEntry<float> SpearStep5PenetrateCritChance;
+
+        // === 꿰뚫는 창 (번개 충격) 설정 ===
+        public static ConfigEntry<float> SpearStep5PenetrateBuffDuration;
+        public static ConfigEntry<float> SpearStep5PenetrateLightningDamage;
+        public static ConfigEntry<int> SpearStep5PenetrateComboCount;
+        public static ConfigEntry<float> SpearStep5PenetrateCooldown;
+        public static ConfigEntry<float> SpearStep5PenetrateStaminaCost;
+
         public static ConfigEntry<float> SpearStep5ComboCooldown;
         public static ConfigEntry<float> SpearStep5ComboDamage;
         public static ConfigEntry<float> SpearStep5ComboStaminaCost;
@@ -39,6 +47,14 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep4QuickDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step3_quick_damage_bonus", SpearStep3QuickDamageBonus.Value);
         public static float SpearStep5TripleDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step4_triple_damage_bonus", SpearStep4TripleDamageBonus.Value);
         public static float SpearStep6PenetrateCritChanceValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_crit_chance", SpearStep5PenetrateCritChance.Value);
+
+        // === 꿰뚫는 창 (번개 충격) 접근 프로퍼티 ===
+        public static float SpearStep6PenetrateBuffDurationValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_buff_duration", SpearStep5PenetrateBuffDuration.Value);
+        public static float SpearStep6PenetrateLightningDamageValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_lightning_damage", SpearStep5PenetrateLightningDamage.Value);
+        public static int SpearStep6PenetrateComboCountValue => (int)SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_combo_count", SpearStep5PenetrateComboCount.Value);
+        public static float SpearStep6PenetrateCooldownValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_cooldown", SpearStep5PenetrateCooldown.Value);
+        public static float SpearStep6PenetrateStaminaCostValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_stamina_cost", SpearStep5PenetrateStaminaCost.Value);
+
         public static float SpearStep6ComboCooldownValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_combo_cooldown", SpearStep5ComboCooldown.Value);
         public static float SpearStep6ComboDamageValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_combo_damage", SpearStep5ComboDamage.Value);
         public static float SpearStep6ComboStaminaCostValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_combo_stamina_cost", SpearStep5ComboStaminaCost.Value);
@@ -76,13 +92,13 @@ namespace CaptainSkillTree.SkillTree
                 "Spear Tree", "Tier1_급소찌르기_창공격력보너스", 20f,
                 "Tier 1: 급소 찌르기(spear_step1_crit) - 창 공격력 보너스 (%)");
 
-            SpearStep2EvasionDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree", "Tier2_회피찌르기_구르기직후피해보너스", 25f,
-                "Tier 2: 회피 찌르기(spear_step2_evasion) - 구르기 직후 공격 피해 보너스 (%)");
-
             SpearStep3PierceDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree", "Tier3_연격창_무기공격력보너스", 4f,
                 "Tier 3: 연격창(spear_Step3_pierce) - 무기 공격력 보너스 (고정 수치)");
+
+            SpearStep2EvasionDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier4_회피찌르기_구르기직후피해보너스", 25f,
+                "Tier 4: 회피 찌르기(spear_step2_evasion) - 구르기 직후 공격 피해 보너스 (%)");
 
             SpearStep3QuickDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree", "Tier3_쾌속창_투창공격력보너스", 40f,
@@ -93,8 +109,28 @@ namespace CaptainSkillTree.SkillTree
                 "Tier 4: 삼연창(spear_step4_triple) - 3연속 공격 공격력 보너스 (%)");
 
             SpearStep5PenetrateCritChance = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree", "Tier5_꿰뚫는창_치명타확률", 12f,
-                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - 치명타 확률 (%)");
+                "Spear Tree", "Tier5_꿰뚫는창_치명타확률_미사용", 12f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - 미사용 (번개 충격으로 변경됨)");
+
+            SpearStep5PenetrateBuffDuration = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier5_꿰뚫는창_버프지속시간", 30f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - 버프 지속시간 (초)");
+
+            SpearStep5PenetrateLightningDamage = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier5_꿰뚫는창_번개데미지배율", 260f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - 번개 충격 데미지 배율 (%)");
+
+            SpearStep5PenetrateComboCount = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier5_꿰뚫는창_연속적중횟수", 3,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - 번개 발동 연속 적중 횟수");
+
+            SpearStep5PenetrateCooldown = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier5_꿰뚫는창_G키쿨타임", 60f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - G키 액티브 쿨타임 (초)");
+
+            SpearStep5PenetrateStaminaCost = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier5_꿰뚫는창_G키스태미나소모", 25f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - G키 액티브 스태미나 소모 (%)");
 
             SpearStep5ComboCooldown = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree", "Tier5_연공창_G키쿨타임", 25f,

@@ -254,7 +254,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string WithWeaponCondition(this string desc, string weaponName)
         {
-            return $"{desc}\n<color=#A020F0><size=16>※ {weaponName} 착용시 효과발동</size></color>";
+            return $"{desc}\n<color=#DDA0DD><size=16>※ {weaponName} 착용시 효과발동</size></color>";
         }
 
         /// <summary>

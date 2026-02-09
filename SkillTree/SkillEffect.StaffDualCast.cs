@@ -8,7 +8,7 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 지팡이 이중 시전 액티브 스킬 시스템
-    /// T키로 버프 활성화 후 30초 내 마법 공격 시 추가 발사체 2개 발사
+    /// R키로 버프 활성화 후 30초 내 마법 공격 시 추가 발사체 2개 발사
     /// </summary>
     public static partial class SkillEffect
     {
@@ -29,7 +29,7 @@ namespace CaptainSkillTree.SkillTree
         private static GameObject cachedStaffDualCastStatusPrefab = null;
 
         /// <summary>
-        /// 이중 시전 버프 활성화 (T키)
+        /// 이중 시전 버프 활성화 (R키)
         /// </summary>
         public static void ActivateStaffDualCast(Player player)
         {
@@ -77,7 +77,7 @@ namespace CaptainSkillTree.SkillTree
                 staffDualCastBuffCoroutines[player] = coroutine;
 
                 DrawFloatingText(player, $"✨ 이중시전 준비! (30초간)", new Color(0.8f, 0.3f, 1f, 1f));
-                Plugin.Log.LogInfo($"[이중 시전] T키로 버프 활성화 - 지속시간: {buffDuration}초, 에이트르 소모: {eitrCost}");
+                Plugin.Log.LogInfo($"[이중 시전] R키로 버프 활성화 - 지속시간: {buffDuration}초, 에이트르 소모: {eitrCost}");
             }
             catch (Exception ex)
             {

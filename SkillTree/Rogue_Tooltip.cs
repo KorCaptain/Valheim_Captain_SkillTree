@@ -63,7 +63,7 @@ namespace CaptainSkillTree.SkillTree
                     range = $"{aggroRange}m",
                     consumeStamina = $"{staminaCost:F0}",
                     consumeArrow = "",
-                    skillType = "직업 액티브 스킬(Y키)",
+                    skillType = "직업 액티브 스킬 - Y키",
                     cooldown = $"{cooldown:F0}초",
                     requirement = "단검 착용, 로그 직업",
                     confirmation = "직업은 1개만 선택가능, 레벨 10 이상",
@@ -97,7 +97,7 @@ namespace CaptainSkillTree.SkillTree
                 // 설명 섹션
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#90EE90><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
 
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -112,8 +112,8 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.consumeStamina}</size></color>\n";
                 }
 
-                // 스킬유형 섹션
-                tooltip += $"<color=#DDA0DD><size=16>스킬유형: </size></color><color=#E6E6FA><size=16>직업 액티브 스킬(Y키)</size></color>\n";
+                // 스킬유형 섹션 (Y키 강조: #1E90FF / #ADFF2F)
+                tooltip += $"<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>직업 액티브 스킬 - Y키</size></color>\n";
 
                 // 패시브 섹션
                 tooltip += $"<color=#98FB98><size=16>패시브: </size></color><color=#ADFF2F><size=16>은신 스킬 +{stealthSkillBonus:F0}, 은신 속도 +{stealthSpeedBonus:F0}%, 낙하 데미지 -{fallDamageReduction:F0}%</size></color>\n";
@@ -130,13 +130,13 @@ namespace CaptainSkillTree.SkillTree
                 // 확인사항 섹션 (비어있으면 표시하지 않음)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 필요 아이템 섹션 (비어있으면 표시하지 않음)
                 if (!string.IsNullOrEmpty(data.requiredItem))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>⚠️필요 아이템: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
+                    tooltip += $"<color=#87CEEB><size=16>필요 아이템: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
@@ -173,8 +173,8 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"\n스킬유형: {data.skillType}\n";
                 tooltip += $"쿨타임: {data.cooldown}\n";
                 tooltip += $"필요조건: {data.requirement}\n";
-                tooltip += $"⚠️확인사항: {data.confirmation}\n";
-                tooltip += $"⚠️필요 아이템: {data.requiredItem}";
+                tooltip += $"확인사항: {data.confirmation}\n";
+                tooltip += $"필요 아이템: {data.requiredItem}";
                 
                 return tooltip;
             }
@@ -198,7 +198,7 @@ namespace CaptainSkillTree.SkillTree
                 range = $"{Rogue_Config.RogueShadowStrikeAggroRangeValue}m",
                 consumeStamina = $"{Rogue_Config.RogueShadowStrikeStaminaCostValue:F0}",
                 consumeArrow = "",
-                skillType = "직업 액티브 스킬(Y키)",
+                skillType = "직업 액티브 스킬 - Y키",
                 cooldown = $"{Rogue_Config.RogueShadowStrikeCooldownValue:F0}초",
                 requirement = "단검 착용, 로그 직업",
                 confirmation = "직업은 1개만 선택가능, 레벨 10 이상",

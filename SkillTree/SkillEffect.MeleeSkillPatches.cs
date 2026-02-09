@@ -183,6 +183,9 @@ namespace CaptainSkillTree.SkillTree
 
         private static void ProcessSpearAttack(Player player, Character target, HitData hit)
         {
+            // 번개 충격 처리 중이면 스킵 (재진입 방지 - 무한 루프 방지)
+            if (SkillEffect.IsProcessingSpearLightningDamage()) return;
+
             // 창 전문가 2연속 공격 체크
             SkillEffect.CheckSpearExpertCombo(player);
 
@@ -233,8 +236,8 @@ namespace CaptainSkillTree.SkillTree
             // 투창 전문가
             SkillEffect.ApplySpearThrowExpertDamage(hit);
 
-            // 꿰뚫는 창
-            SkillEffect.ApplySpearPenetrateCritical(player, hit);
+            // 꿰뚫는 창 (번개 충격)
+            SkillEffect.CheckSpearPenetrateCombo(player, target, hit);
         }
 
         private static void ProcessPolearmAttack(Player player, HitData hit)

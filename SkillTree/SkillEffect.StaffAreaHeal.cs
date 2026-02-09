@@ -7,7 +7,7 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 지팡이 즉시 범위 힐 액티브 스킬 시스템
-    /// G키로 시전자 주변 플레이어에게 즉시 힐링 적용
+    /// H키로 시전자 주변 플레이어에게 즉시 힐링 적용
     /// </summary>
     public static partial class SkillEffect
     {
@@ -75,10 +75,12 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogError($"[지팡이 힐] VFX 재생 실패: {ex.Message}");
                 }
 
-                // 범위 내 플레이어에게 힐링 적용 (시전자 제외)
+                // 범위 내 플레이어에게 힐링 적용 (시전자 제외 - ID 기반 비교)
+                long casterId = caster.GetPlayerID();
                 var allPlayers = Player.GetAllPlayers();
                 var nearbyPlayers = allPlayers
-                    .Where(p => p != caster &&
+                    .Where(p => p != null &&
+                               p.GetPlayerID() != casterId &&  // ID 기반 비교로 확실하게 제외
                                Vector3.Distance(p.transform.position, casterPos) <= healRange &&
                                !p.IsDead())
                     .ToList();

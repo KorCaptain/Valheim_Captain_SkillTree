@@ -40,7 +40,7 @@ namespace CaptainSkillTree.SkillTree
         private static ConfigEntry<float> StaffCritRate;
         private static ConfigEntry<int> StaffCritRateRequiredPoints;
 
-        // === Step 6-1: 이중시전 (T키 액티브) 설정 ===
+        // === Step 6-1: 이중시전 (R키 액티브) 설정 ===
         private static ConfigEntry<int> StaffDoubleCastProjectileCount;
         private static ConfigEntry<float> StaffDoubleCastDamagePercent;
         private static ConfigEntry<float> StaffDoubleCastAngleOffset;
@@ -48,7 +48,7 @@ namespace CaptainSkillTree.SkillTree
         private static ConfigEntry<float> StaffDoubleCastCooldown;
         private static ConfigEntry<int> StaffDoubleCastRequiredPoints;
 
-        // === Step 6-2: 힐러모드 (G키 액티브) 설정 ===
+        // === Step 6-2: 힐러모드 (H키 액티브) 설정 ===
         private static ConfigEntry<int> StaffHealerModeDuration;
         private static ConfigEntry<float> StaffHealerModeEitrCost;
         private static ConfigEntry<float> StaffHealerModeCooldown;
@@ -150,7 +150,7 @@ namespace CaptainSkillTree.SkillTree
                     "Staff Tree", "Tier5_치명타확률_필요포인트", 3,
                     "Tier 5: 치명타 확률(staff_step5_crit_rate) - 스킬 습득에 필요한 포인트");
 
-                // === Tier 6-1: 이중시전 (T키 액티브) ===
+                // === Tier 6-1: 이중시전 (R키 액티브) ===
                 StaffDoubleCastProjectileCount = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier6_이중시전_추가발사체수", 2,
                     "Tier 6: 이중시전(staff_step6_double_cast) - 추가 발사체 개수");
@@ -175,7 +175,7 @@ namespace CaptainSkillTree.SkillTree
                     "Staff Tree", "Tier6_이중시전_필요포인트", 3,
                     "Tier 6: 이중시전(staff_step6_double_cast) - 스킬 습득에 필요한 포인트");
 
-                // === Tier 6-2: 힐러모드 (G키 액티브) ===
+                // === Tier 6-2: 힐러모드 (H키 액티브) ===
                 StaffHealerModeDuration = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier6_힐러모드_지속시간", 180,
                     "Tier 6: 힐러모드(staff_step6_healer_mode) - 지속 시간 (초)");
@@ -210,10 +210,73 @@ namespace CaptainSkillTree.SkillTree
 
                 // === 힐러모드 이펙트는 하드코딩으로 처리 (동적 연동 시스템이므로 컨피그 불필요) ===
                 // 이펙트 설정은 HealerMode_Config.cs와 Mage_HealerMode.cs에서 하드코딩으로 관리
+
+                // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
+                RegisterStaffEventHandlers();
+
+                Plugin.Log.LogDebug("[Staff 컨피그] 설정 초기화 완료");
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[Staff 컨피그] 설정 초기화 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 지팡이 컨피그 변경 시 툴팁 자동 업데이트 이벤트 등록
+        /// </summary>
+        private static void RegisterStaffEventHandlers()
+        {
+            try
+            {
+                // Step 6-1: 이중시전 이벤트
+                StaffDoubleCastProjectileCount.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffDoubleCastDamagePercent.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffDoubleCastAngleOffset.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffDoubleCastEitrCost.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffDoubleCastCooldown.SettingChanged += (sender, args) => OnStaffConfigChanged();
+
+                // Step 6-2: 힐러모드 이벤트
+                StaffHealerModeDuration.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffHealerModeEitrCost.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffHealerModeCooldown.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffHealerHealPercentage.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffHealerHealRange.SettingChanged += (sender, args) => OnStaffConfigChanged();
+
+                // 기타 스킬 이벤트
+                StaffExpertDamage.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffFocusEitrReduction.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffStreamCastSpeed.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffAmpDamage.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffRangeBonus.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffLuckManaChance.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffCritDamage.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffCritRate.SettingChanged += (sender, args) => OnStaffConfigChanged();
+
+                Plugin.Log.LogDebug("[Staff 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[Staff 컨피그] 이벤트 핸들러 등록 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 지팡이 컨피그 변경 시 호출
+        /// </summary>
+        private static void OnStaffConfigChanged()
+        {
+            try
+            {
+                Plugin.Log.LogInfo("[Staff 컨피그] 설정값 변경됨 - 툴팁 업데이트");
+                LogCurrentConfig();
+
+                // 스킬트리 UI가 열려있으면 자동으로 다음 호버 시 갱신됨
+                // (SkillTreeData.GetSkillNodes()가 항상 최신 Config 값을 반환하므로)
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[Staff 컨피그] 설정 변경 처리 실패: {ex.Message}");
             }
         }
 

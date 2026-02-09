@@ -144,36 +144,36 @@ namespace CaptainSkillTree.SkillTree
                 "Tier 5: 정조준(bow_step5_master) - 크리티컬 데미지 보너스 (%)");
 
             BowStep6CritBoostDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_T키액티브데미지보너스", 50f,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - T키 액티브 스킬 데미지 보너스 (%)");
+                "Bow Tree", "Tier6_크리티컬부스트_R키액티브데미지보너스", 50f,
+                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 데미지 보너스 (%)");
 
             BowStep6CritBoostCritChance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_T키액티브치명타확률", 100f,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - T키 액티브 스킬 치명타 확률 (%)");
+                "Bow Tree", "Tier6_크리티컬부스트_R키액티브치명타확률", 100f,
+                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 치명타 확률 (%)");
 
             BowStep6CritBoostArrowCount = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_T키액티브화살개수", 5,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - T키 액티브 스킬 화살 개수");
+                "Bow Tree", "Tier6_크리티컬부스트_R키액티브화살개수", 5,
+                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 화살 개수");
 
             BowStep6CritBoostCooldown = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_T키액티브쿨타임", 45f,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - T키 액티브 스킬 쿨타임 (초)");
+                "Bow Tree", "Tier6_크리티컬부스트_R키액티브쿨타임", 45f,
+                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 쿨타임 (초)");
 
             BowStep6CritBoostStaminaCost = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_T키액티브스태미나소모", 25f,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - T키 액티브 스킬 스태미나 소모 (%)");
+                "Bow Tree", "Tier6_크리티컬부스트_R키액티브스태미나소모", 25f,
+                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 스태미나 소모 (%)");
 
             BowExplosiveArrowDamage = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_폭발화살_T키액티브데미지배율", 120f,
-                "Tier 6: 폭발 화살(bow_step6_explosive) - T키 액티브 스킬 데미지 배율 (%)");
+                "Bow Tree", "Tier6_폭발화살_R키액티브데미지배율", 120f,
+                "Tier 6: 폭발 화살(bow_step6_explosive) - R키 액티브 스킬 데미지 배율 (%)");
 
             BowExplosiveArrowCooldown = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_폭발화살_T키액티브쿨타임", 20f,
-                "Tier 6: 폭발 화살(bow_step6_explosive) - T키 액티브 스킬 쿨타임 (초)");
+                "Bow Tree", "Tier6_폭발화살_R키액티브쿨타임", 20f,
+                "Tier 6: 폭발 화살(bow_step6_explosive) - R키 액티브 스킬 쿨타임 (초)");
 
             BowExplosiveArrowStaminaCost = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_폭발화살_T키액티브스태미나소모", 15f,
-                "Tier 6: 폭발 화살(bow_step6_explosive) - T키 액티브 스킬 스태미나 소모 (%)");
+                "Bow Tree", "Tier6_폭발화살_R키액티브스태미나소모", 15f,
+                "Tier 6: 폭발 화살(bow_step6_explosive) - R키 액티브 스킬 스태미나 소모 (%)");
 
             BowExplosiveArrowRadius = SkillTreeConfig.BindServerSync(config,
                 "Bow Tree", "Tier6_폭발화살_폭발범위", 4f,

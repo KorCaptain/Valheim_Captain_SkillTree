@@ -13,6 +13,20 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static partial class SkillEffect
     {
+        // === 꿰뚫는 창 (번개 충격) 시스템 ===
+        public static Dictionary<Player, float> spearPenetrateBuffEndTime = new Dictionary<Player, float>();
+        public static Dictionary<Player, int> spearPenetrateComboCount = new Dictionary<Player, int>();
+        public static Dictionary<Player, float> spearPenetrateLastHitTime = new Dictionary<Player, float>();
+        public static Dictionary<Player, float> spearPenetrateCooldownEndTime = new Dictionary<Player, float>();
+
+        // 재진입 방지 플래그 (번개 충격 데미지가 다시 콤보를 트리거하지 않도록)
+        private static bool isProcessingSpearLightningDamage = false;
+
+        /// <summary>
+        /// 번개 충격 처리 중 여부 확인 (외부에서 재진입 방지용)
+        /// </summary>
+        public static bool IsProcessingSpearLightningDamage() => isProcessingSpearLightningDamage;
+
         // === 검 연계 시스템 ===
 
         /// <summary>
@@ -277,20 +291,158 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 꿰뚫는 창 치명타 확률 적용
+        /// 꿰뚫는 창 G키 액티브 스킬 (쿨타임 및 스태미나 체크)
         /// </summary>
-        public static void ApplySpearPenetrateCritical(Player player, HitData hit)
+        public static void ActivateSpearPenetrateLightning(Player player)
         {
             if (!HasSkill("spear_Step5_penetrate")) return;
 
-            float critChance = 0.12f;
-            if (UnityEngine.Random.Range(0f, 1f) <= critChance)
+            // 쿨타임 체크
+            float cooldown = Spear_Config.SpearStep6PenetrateCooldownValue;
+            if (spearPenetrateCooldownEndTime.TryGetValue(player, out float cooldownEnd) && Time.time < cooldownEnd)
             {
-                hit.m_damage.m_pierce *= 2f;
+                float remaining = cooldownEnd - Time.time;
+                DrawFloatingText(player, $"꿰뚫는 창 쿨타임 ({remaining:F1}초)", Color.red);
+                return;
+            }
 
-                DrawFloatingText(player, "💥 꿰뚫는 창 치명타!", Color.red);
-                Plugin.Log.LogDebug("[꿰뚫는 창] 치명타 발생! (12% 확률)");
+            // 스태미나 체크
+            float staminaCost = player.GetMaxStamina() * (Spear_Config.SpearStep6PenetrateStaminaCostValue / 100f);
+            if (player.GetStamina() < staminaCost)
+            {
+                DrawFloatingText(player, "스태미나가 부족합니다!", Color.red);
+                return;
+            }
+
+            // 스태미나 소모
+            player.UseStamina(staminaCost);
+
+            // 버프 활성화
+            ActivateSpearPenetrateBuff(player);
+
+            // 쿨타임 시작
+            spearPenetrateCooldownEndTime[player] = Time.time + cooldown;
+
+            // VFX 재생 (플레이어 위치)
+            SimpleVFX.Play("vfx_offering_activate", player.transform.position, 1f);
+
+            Plugin.Log.LogInfo($"[꿰뚫는 창] G키 액티브 스킬 발동 - 쿨타임: {cooldown}초, 스태미나: {staminaCost:F0}");
+        }
+
+        /// <summary>
+        /// 꿰뚫는 창 버프 활성화 (내부 호출용)
+        /// </summary>
+        public static void ActivateSpearPenetrateBuff(Player player)
+        {
+            float duration = Spear_Config.SpearStep6PenetrateBuffDurationValue;
+            spearPenetrateBuffEndTime[player] = Time.time + duration;
+            spearPenetrateComboCount[player] = 0;
+
+            DrawFloatingText(player, $"⚡ 꿰뚫는 창 발동! ({duration}초)", Color.yellow);
+            Plugin.Log.LogInfo($"[꿰뚫는 창] 버프 활성화 - {duration}초간 지속");
+        }
+
+        /// <summary>
+        /// 꿰뚫는 창 버프 활성 여부 확인
+        /// </summary>
+        public static bool IsSpearPenetrateBuffActive(Player player)
+        {
+            if (!spearPenetrateBuffEndTime.ContainsKey(player)) return false;
+            return Time.time < spearPenetrateBuffEndTime[player];
+        }
+
+        /// <summary>
+        /// 꿰뚫는 창 콤보 체크 및 번개 충격 발동
+        /// G키로 버프 활성화 후 3회 연속 적중 시 번개 충격 발동
+        /// </summary>
+        public static void CheckSpearPenetrateCombo(Player player, Character target, HitData hit)
+        {
+            if (!HasSkill("spear_Step5_penetrate")) return;
+            if (target == null || !target.IsMonsterFaction(Time.time)) return;
+
+            // 번개 충격 데미지 처리 중이면 스킵 (재진입 방지)
+            if (isProcessingSpearLightningDamage) return;
+
+            // 버프가 비활성화 상태면 스킵 (G키로 활성화 필요)
+            if (!IsSpearPenetrateBuffActive(player)) return;
+
+            float now = Time.time;
+            int requiredCombo = Spear_Config.SpearStep6PenetrateComboCountValue;
+
+            // 콤보 카운터 초기화 체크 (3초 이내 연속 적중만 인정)
+            if (!spearPenetrateComboCount.ContainsKey(player))
+                spearPenetrateComboCount[player] = 0;
+
+            if (spearPenetrateLastHitTime.ContainsKey(player) && now - spearPenetrateLastHitTime[player] < 3f)
+            {
+                spearPenetrateComboCount[player]++;
+            }
+            else
+            {
+                spearPenetrateComboCount[player] = 1;
+            }
+            spearPenetrateLastHitTime[player] = now;
+
+            Plugin.Log.LogDebug($"[꿰뚫는 창] 콤보 카운트: {spearPenetrateComboCount[player]}/{requiredCombo}");
+
+            // 연속 적중 횟수 달성 시 번개 충격 발동
+            if (spearPenetrateComboCount[player] >= requiredCombo)
+            {
+                TriggerSpearPenetrateLightning(player, target, hit);
+                spearPenetrateComboCount[player] = 0;
             }
         }
+
+        /// <summary>
+        /// 꿰뚫는 창 번개 충격 발동
+        /// 몬스터를 2m 띄우고 번개 데미지 적용
+        /// </summary>
+        private static void TriggerSpearPenetrateLightning(Player player, Character target, HitData hit)
+        {
+            if (target == null || target.IsDead()) return;
+            if (player == null) return;
+
+            // 이미 번개 충격 처리 중이면 스킵 (재진입 방지)
+            if (isProcessingSpearLightningDamage) return;
+
+            try
+            {
+                // 번개 충격 처리 시작 플래그 설정
+                isProcessingSpearLightningDamage = true;
+
+                float damageMultiplier = Spear_Config.SpearStep6PenetrateLightningDamageValue / 100f;
+
+                // 1. 번개 데미지 계산
+                float baseDamage = hit != null ? hit.GetTotalDamage() : 50f;
+                float lightningDamage = baseDamage * damageMultiplier;
+
+                // 2. VFX 재생 (Valheim 기본 프리팹, 크기 35%)
+                SimpleVFX.Play("fx_eikthyr_stomp", target.transform.position, 0.35f);
+
+                // 3. 번개 데미지 적용
+                if (!target.IsDead())
+                {
+                    HitData lightningHit = new HitData();
+                    lightningHit.m_damage.m_lightning = lightningDamage;
+                    lightningHit.m_point = target.transform.position;
+                    lightningHit.m_dir = (target.transform.position - player.transform.position).normalized;
+                    lightningHit.SetAttacker(player);
+                    target.Damage(lightningHit);
+                }
+
+                DrawFloatingText(player, $"⚡ 번개 충격! ({lightningDamage:F0})", Color.cyan);
+                Plugin.Log.LogInfo($"[꿰뚫는 창] 번개 충격 발동 - 데미지: {lightningDamage:F0}");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogWarning($"[꿰뚫는 창] 번개 충격 오류: {ex.Message}");
+            }
+            finally
+            {
+                // 번개 충격 처리 완료 플래그 해제
+                isProcessingSpearLightningDamage = false;
+            }
+        }
+
     }
 }

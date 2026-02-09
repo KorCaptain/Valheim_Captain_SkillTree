@@ -142,5 +142,92 @@ namespace CaptainSkillTree.SkillTree
                    skillType == Skills.SkillType.Knives ||
                    skillType == Skills.SkillType.Axes;
         }
+
+        /// <summary>
+        /// 단검 사용 여부 확인 (IsUsingKnife의 별칭)
+        /// </summary>
+        public static bool IsUsingDagger(Player player) => IsUsingKnife(player);
+
+        /// <summary>
+        /// 한손 둔기 사용 여부 확인 (방패와 함께 착용 가능한 둔기)
+        /// </summary>
+        public static bool IsUsingOneHandedMace(Player player)
+        {
+            if (player == null) return false;
+
+            var weapon = player.GetCurrentWeapon();
+            if (weapon?.m_shared == null) return false;
+
+            // Clubs 스킬 타입이어야 함
+            if (weapon.m_shared.m_skillType != Skills.SkillType.Clubs)
+                return false;
+
+            // 양손 무기 확인 (양손이면 한손 둔기가 아님)
+            string prefabName = weapon.m_dropPrefab?.name ?? "";
+            string weaponName = weapon.m_shared.m_name?.ToLower() ?? "";
+
+            // 양손 둔기 패턴
+            bool isTwoHanded = prefabName.Contains("2h") ||
+                               prefabName.Contains("TwoHanded") ||
+                               prefabName.Contains("Sledge") ||  // 슬레지해머
+                               prefabName.Contains("Demolisher") ||  // 디몰리셔
+                               weaponName.Contains("양손") ||
+                               weaponName.Contains("sledge") ||
+                               weaponName.Contains("demolisher");
+
+            return !isTwoHanded;
+        }
+
+        /// <summary>
+        /// 양손 둔기 사용 여부 확인 (슬레지해머, 디몰리셔 등)
+        /// </summary>
+        public static bool IsUsingTwoHandedMace(Player player)
+        {
+            if (player == null) return false;
+
+            var weapon = player.GetCurrentWeapon();
+            if (weapon?.m_shared == null) return false;
+
+            // Clubs 스킬 타입이어야 함
+            if (weapon.m_shared.m_skillType != Skills.SkillType.Clubs)
+                return false;
+
+            // 양손 둔기 패턴 확인
+            string prefabName = weapon.m_dropPrefab?.name ?? "";
+            string weaponName = weapon.m_shared.m_name?.ToLower() ?? "";
+
+            return prefabName.Contains("2h") ||
+                   prefabName.Contains("TwoHanded") ||
+                   prefabName.Contains("Sledge") ||  // 슬레지해머
+                   prefabName.Contains("Demolisher") ||  // 디몰리셔
+                   weaponName.Contains("양손") ||
+                   weaponName.Contains("sledge") ||
+                   weaponName.Contains("demolisher");
+        }
+
+        /// <summary>
+        /// 방패 착용 여부 확인
+        /// </summary>
+        public static bool HasShield(Player player)
+        {
+            if (player == null) return false;
+
+            // Humanoid.m_leftItem은 protected이므로 인벤토리에서 장착된 방패 확인
+            var inventory = player.GetInventory();
+            if (inventory == null) return false;
+
+            // 장착된 아이템 중 방패 타입 확인
+            foreach (var item in inventory.GetAllItems())
+            {
+                if (item != null && item.m_equipped && item.m_shared != null)
+                {
+                    if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

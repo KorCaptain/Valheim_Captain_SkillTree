@@ -1,0 +1,44 @@
+● 구현 완료 요약
+
+  양방향 마이그레이션 시스템
+
+  시나리오 1: EpicMMO 없이 플레이 → 나중에 EpicMMO 추가
+  - Captain 데이터 (CaptainSkillTree_Level, CaptainSkillTree_TotalExp)가 EpicMMO에 자동 마이그레이션
+
+  시나리오 2: EpicMMO와 함께 플레이 → 나중에 EpicMMO 제거
+  - EpicMMO 사용 중 플레이어 저장 시 자동 백업 (CaptainSkillTree_EpicMMOBackup_*)
+  - EpicMMO 제거 후 접속 시 백업에서 Captain 데이터로 자동 복구
+
+  구현된 파일 (6개 신규)
+
+  MMO_System/
+  ├── CaptainLevelConfig.cs   # Config 설정 (최상단 정렬)
+  ├── CaptainExpTable.cs      # 경험치 테이블 (EpicMMO 공식)
+  ├── CaptainMonsterExp.cs    # 몬스터 경험치 데이터
+  ├── CaptainLevelSystem.cs   # 자체 레벨 시스템 코어
+  ├── CaptainMMOBridge.cs     # 듀얼 시스템 스위치 + 양방향 마이그레이션
+  └── CaptainMMOPatches.cs    # Harmony 패치 + 콘솔 명령어
+
+  콘솔 명령어
+  ┌──────────────────────┬───────────────────┐
+  │        명령어        │       설명        │
+  ├──────────────────────┼───────────────────┤
+  │ captainlvl [level]   │ 레벨 설정/확인    │
+  ├──────────────────────┼───────────────────┤
+  │ captainexp [amount]  │ 경험치 추가/확인  │
+  ├──────────────────────┼───────────────────┤
+  │ captainstatus        │ 현재 상태 표시    │
+  ├──────────────────────┼───────────────────┤
+  │ captainreset         │ 레벨 초기화       │
+  ├──────────────────────┼───────────────────┤
+  │ captainmigrate       │ 강제 마이그레이션 │
+  ├──────────────────────┼───────────────────┤
+  │ captainmigratestatus │ 마이그레이션 상태 │
+  ├──────────────────────┼───────────────────┤
+  │ captainhelp          │ 도움말            │
+  └──────────────────────┴───────────────────┘
+  데이터 저장 키 (Player.m_customData)
+
+  - CaptainSkillTree_Level / CurrentExp / TotalExp - Captain 시스템 데이터
+  - CaptainSkillTree_EpicMMOBackup_Level / TotalExp - EpicMMO 백업 (복구용)
+  - CaptainSkillTree_MigrationToEpicMMO / ToCaptain - 마이그레이션 완료 플래그

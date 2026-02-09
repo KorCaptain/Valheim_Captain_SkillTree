@@ -80,8 +80,8 @@ namespace CaptainSkillTree.SkillTree
                 // 설명 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#90EE90><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
-                    
+                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+
                     // 추가 정보가 있으면 괄호로 추가
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -97,7 +97,7 @@ namespace CaptainSkillTree.SkillTree
                 var consumeParts = new List<string>();
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    consumeParts.Add($"스테미나 {data.consumeStamina}");
+                    consumeParts.Add($"스태미나 {data.consumeStamina}");
                 }
                 if (!string.IsNullOrEmpty(data.consumeArrow))
                 {
@@ -109,10 +109,10 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>{string.Join(", ", consumeParts)}</size></color>\n";
                 }
 
-                // 스킬 유형 섹션 (기존 툴팁 스타일)
+                // 스킬 유형 섹션 (Y키 강조: #1E90FF / #ADFF2F)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#DDA0DD><size=16>스킬유형: </size></color><color=#E6E6FA><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>{data.skillType}</size></color>\n";
                 }
 
                 // 패시브 스킬 섹션 (새로 추가)
@@ -136,13 +136,13 @@ namespace CaptainSkillTree.SkillTree
                 // 확인사항 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 필요 아이템 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.requiredItem))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>⚠️필요 아이템: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
+                    tooltip += $"<color=#87CEEB><size=16>필요 아이템: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');

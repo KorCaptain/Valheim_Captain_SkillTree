@@ -21,6 +21,9 @@ namespace CaptainSkillTree
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
                 // Debug.Log($"[SkillTreeInputListener] Instance 등록, this={{this.GetHashCode()}} (name={{gameObject.name}})"); // 제거: 과도한 Unity 로그
+
+                // LevelSyncManager 초기화
+                LevelSyncManager.Instance.Initialize();
             }
             else
             {
@@ -42,6 +45,16 @@ namespace CaptainSkillTree
                 Plugin.Log.LogWarning($"[SkillTree] SkillTreeManager 업데이트 실패: {e.Message}");
             }
 
+            // === LevelSyncManager 업데이트 (EpicMMO 레벨 변화 감지) ===
+            try
+            {
+                LevelSyncManager.Instance?.Update();
+            }
+            catch (System.Exception e)
+            {
+                Plugin.Log.LogWarning($"[SkillTree] LevelSyncManager 업데이트 실패: {e.Message}");
+            }
+
             // === 채팅창/콘솔 활성화 시 키 입력 차단 ===
             if (IsChatOrConsoleOpen())
             {
@@ -52,10 +65,10 @@ namespace CaptainSkillTree
             var player = Player.m_localPlayer;
             if (player != null && !player.IsDead())
             {
-                // T키 눌림 - 원거리 액티브 스킬
-                if (Input.GetKeyDown(KeyCode.T))
+                // R키 눌림 - 원거리 액티브 스킬
+                if (Input.GetKeyDown(KeyCode.R))
                 {
-                    CaptainSkillTree.SkillTree.SkillEffect.HandleTKeySkills(player);
+                    CaptainSkillTree.SkillTree.SkillEffect.HandleRKeySkills(player);
                 }
 
                 // G키 눌림 - 보조형 액티브 스킬 (차지 시작)
@@ -70,11 +83,16 @@ namespace CaptainSkillTree
                     CaptainSkillTree.SkillTree.SkillEffect.HandleGKeyUpSkills(player);
                 }
                 
-                // H키 눌림 - 방어형 액티브 스킬 (현재 비활성화됨)
+                // H키 눌림 - 보조형 액티브 스킬 (연공창, 분노의 망치)
                 if (Input.GetKeyDown(KeyCode.H))
                 {
-                    // H키 기능이 Y키 탱커 직업 스킬로 이동되어 현재 비활성화됨
-                    // CaptainSkillTree.SkillTree.SkillEffect.HandleHKeySkills(player);
+                    CaptainSkillTree.SkillTree.SkillEffect.HandleHKeySkills(player);
+                }
+
+                // H키 해제 - 분노의 망치 차지 해제
+                if (Input.GetKeyUp(KeyCode.H))
+                {
+                    CaptainSkillTree.SkillTree.SkillEffect.HandleHKeyUpSkills(player);
                 }
                 
                 // Y키 눌림 - 직업 액티브 스킬
@@ -93,7 +111,7 @@ namespace CaptainSkillTree
                     }
                 }
 
-                // 휠마우스 버튼 클릭은 더 이상 사용하지 않음 (연공창이 G키로 이동됨)
+                // 휠마우스 버튼 클릭은 더 이상 사용하지 않음 (연공창이 H키로 이동됨)
 
                 // === ] 키 - 디버그용 레벨업/포인트 지급 ===
                 if (Input.GetKeyDown(KeyCode.RightBracket))
@@ -274,6 +292,9 @@ namespace CaptainSkillTree
         {
             // OnDestroy - 모든 코루틴 정리
             StopAllCoroutines();
+
+            // LevelSyncManager 정리
+            LevelSyncManager.Instance?.Cleanup();
 
             if (Instance == this)
             {

@@ -179,7 +179,7 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                 }
             }
 
-            // Tier 6: 크리티컬 부스트 - T키 액티브 (100% 치명타)
+            // Tier 6: 크리티컬 부스트 - R키 액티브 (100% 치명타)
             if (SkillEffect.HasSkill("bow_Step6_critboost"))
             {
                 if (SkillEffect.bowCritBoostEndTime.TryGetValue(player, out float endTime)
@@ -188,7 +188,7 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                     float tierBonus = SkillTreeConfig.BowStep6CritBoostCritChanceValue;
                     bonus += tierBonus;
                     float remainingTime = endTime - Time.time;
-                    Plugin.Log.LogDebug($"[치명타] Tier 6 크리티컬 부스트 (T키 액티브): +{tierBonus}% (남은 시간: {remainingTime:F1}초)");
+                    Plugin.Log.LogDebug($"[치명타] Tier 6 크리티컬 부스트 (R키 액티브): +{tierBonus}% (남은 시간: {remainingTime:F1}초)");
                 }
             }
 
@@ -262,13 +262,8 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
             // === 공통 보너스 (공격 전문가 트리) ===
             bonus += GetCommonCritChanceBonus(player);
 
-            // Tier 6: 꿰뚫는 창 - 치명타 확률 +12%
-            if (SkillEffect.HasSkill("spear_Step5_penetrate"))
-            {
-                float tierBonus = SkillTreeConfig.SpearStep6PenetrateCritChanceValue;
-                bonus += tierBonus;
-                Plugin.Log.LogDebug($"[치명타] Tier 6 꿰뚫는 창 (패시브): +{tierBonus}%");
-            }
+            // Tier 6: 꿰뚫는 창 - 번개 충격으로 변경됨 (SkillEffect.SwordSpearSkillEffects.cs)
+            // 3회 연속 적중 시 번개 충격 발동, 치명타 확률 보너스 제거됨
 
             if (bonus > 0f)
             {

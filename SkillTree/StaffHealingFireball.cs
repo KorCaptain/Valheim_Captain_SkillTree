@@ -15,7 +15,7 @@ namespace CaptainSkillTree.SkillTree
     /// (SkillEffect.ActiveSkills.cs의 ActivateStaffAreaHeal 메서드 참조)
     ///
     /// 이 파일은 과거 사용했던 "힐 파이어볼" 시스템의 코드입니다:
-    /// - G키로 힐 모드 토글
+    /// - H키로 힐 모드 토글
     /// - 마우스 클릭으로 힐 파이어볼 발사
     /// - PVP 무시 힐링
     /// - healing VFX 2초 유지
@@ -50,7 +50,7 @@ namespace CaptainSkillTree.SkillTree
         private const float HEALING_VFX_DURATION = 2f;          // healing VFX 2초 지속
         
         /// <summary>
-        /// G키로 힐 모드 토글 (활성화/비활성화)
+        /// H키로 힐 모드 토글 (활성화/비활성화)
         /// </summary>
         public static bool ToggleHealMode(Player player)
         {

@@ -232,10 +232,10 @@ namespace CaptainSkillTree.SkillTree
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "sword_expert" },
-                NextNodes = new List<string> { "sword_step2_combo" },
+                NextNodes = new List<string> { "sword_step3_riposte" },
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 2단계: 반격 자세
             manager.AddSkill(new SkillNode
             {
@@ -251,27 +251,10 @@ namespace CaptainSkillTree.SkillTree
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "sword_expert" },
-                NextNodes = new List<string> { "sword_step2_combo" },
+                NextNodes = new List<string> { "sword_step3_riposte" },
                 ApplyEffect = (lv) => { }
             });
-            // 3단계: 연속베기
-            manager.AddSkill(new SkillNode
-            {
-                Id = "sword_step2_combo",
-                Name = "연속베기",
-                Description = "",
-                RequiredPoints = 2,
-                MaxLevel = 1,
-                Tier = 3,
-                Position = SwordPos(sword_a3, sword_r3),
-                Category = "근접",
-                IconNameLocked = "all_skill_lock",
-                IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "sword_step1_fastslash", "sword_step1_counter" },
-                NextNodes = new List<string> { "sword_step3_riposte", "sword_step3_allinone" },
-                ApplyEffect = (lv) => { }
-            });
-            // 4단계: 칼날 되치기
+            // 3단계: 칼날 되치기 (티어 순서 변경: 연속베기와 교체)
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step3_riposte",
@@ -279,17 +262,34 @@ namespace CaptainSkillTree.SkillTree
                 Description = "",
                 RequiredPoints = 3,
                 MaxLevel = 1,
+                Tier = 3,
+                Position = SwordPos(sword_a3, sword_r3),
+                Category = "근접",
+                IconNameLocked = "all_skill_lock",
+                IconNameUnlocked = "all_skill_unlock",
+                Prerequisites = new List<string> { "sword_step1_fastslash", "sword_step1_counter" },
+                NextNodes = new List<string> { "sword_step2_combo", "sword_step3_allinone" },
+                ApplyEffect = (lv) => { }
+            });
+            // 4단계: 연속베기 (티어 순서 변경: 칼날 되치기와 교체)
+            manager.AddSkill(new SkillNode
+            {
+                Id = "sword_step2_combo",
+                Name = "연속베기",
+                Description = "",
+                RequiredPoints = 2,
+                MaxLevel = 1,
                 Tier = 4,
                 Position = SwordPos(sword_a4_2, sword_r4),
                 Category = "근접",
-                IconNameLocked = "all_skill_unlock",
+                IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "sword_step2_combo" },
+                Prerequisites = new List<string> { "sword_step3_riposte" },
                 NextNodes = new List<string> { "sword_step4_duel" },
                 ApplyEffect = (lv) => { }
             });
             
-            // 4단계: 공방일체  
+            // 4단계: 공방일체
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step3_allinone",
@@ -302,7 +302,7 @@ namespace CaptainSkillTree.SkillTree
                 Category = "근접",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "sword_step2_combo" },
+                Prerequisites = new List<string> { "sword_step3_riposte" },
                 NextNodes = new List<string> { "sword_step4_duel" },
                 ApplyEffect = (lv) => { }
             });
@@ -319,11 +319,11 @@ namespace CaptainSkillTree.SkillTree
                 Category = "근접",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "sword_step3_riposte", "sword_step3_allinone" },
+                Prerequisites = new List<string> { "sword_step2_combo", "sword_step3_allinone" },
                 NextNodes = new List<string> { "sword_step5_finalcut", "sword_step5_defswitch" },
                 ApplyEffect = (lv) => { }
             });
-            // 6단계: Sword Slash (액티브 G키 스킬) - 패링 돌격과 상호 배타
+            // 6단계: Sword Slash (액티브 G키 스킬)
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step5_finalcut",
@@ -338,11 +338,10 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "sword_step4_duel" },
                 NextNodes = new List<string>(),
-                MutuallyExclusive = new List<string> { "sword_step5_defswitch" },
                 ApplyEffect = (lv) => { }
             });
 
-            // 6단계: 패링 돌격 (액티브 G키 스킬) - Sword Slash와 상호 배타
+            // 6단계: 패링 돌격 (액티브 G키 스킬)
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step5_defswitch",
@@ -357,7 +356,6 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "sword_step4_duel" },
                 NextNodes = new List<string>(),
-                MutuallyExclusive = new List<string> { "sword_step5_finalcut" },
                 ApplyEffect = (lv) => { }
             });
 
@@ -392,12 +390,12 @@ namespace CaptainSkillTree.SkillTree
                 Position = new Vector2(275, 65),
                 Category = "근접",
                 Prerequisites = new List<string> { "spear_expert" },
-                NextNodes = new List<string> { "spear_Step2_evasion" },
+                NextNodes = new List<string> { "spear_Step3_pierce" },
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 2-2단계: 급소 찌르기
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step1_crit",
@@ -409,46 +407,46 @@ namespace CaptainSkillTree.SkillTree
                 Position = new Vector2(290, 15),
                 Category = "근접",
                 Prerequisites = new List<string> { "spear_expert" },
-                NextNodes = new List<string> { "spear_Step2_evasion" },
+                NextNodes = new List<string> { "spear_Step3_pierce" },
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
-            // 3단계: 회피 찌르기
+
+            // 3단계: 연격창 (티어 순서 변경: 회피찌르기보다 먼저)
             manager.AddSkill(new SkillNode {
-                Id = "spear_Step2_evasion",
-                Name = "회피 찌르기",
-                Description = "구르기 직후 공격 시 피해 +25%, 공격 스태미나 -8%\n필요조건: 창 착용",
+                Id = "spear_Step3_pierce",
+                Name = "연격창",
+                Description = "무기 공격력 +4\n필요조건: 창 착용",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 3,
                 Position = new Vector2(360, 60),
                 Category = "근접",
                 Prerequisites = new List<string> { "spear_Step1_throw", "spear_Step1_crit" },
-                NextNodes = new List<string> { "spear_Step3_pierce", "spear_Step3_quick" },
+                NextNodes = new List<string> { "spear_Step2_evasion", "spear_Step3_quick" },
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
-            // 4-1단계: 연격창
+
+            // 4-1단계: 회피 찌르기 (티어 순서 변경: 연격창 다음)
             manager.AddSkill(new SkillNode {
-                Id = "spear_Step3_pierce",
-                Name = "연격창",
-                Description = "무기 공격력 +4\n필요조건: 창 착용",
+                Id = "spear_Step2_evasion",
+                Name = "회피 찌르기",
+                Description = "구르기 직후 공격 시 피해 +25%, 공격 스태미나 -8%\n필요조건: 창 착용",
                 RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 4,
                 Position = new Vector2(435, 140),
                 Category = "근접",
-                Prerequisites = new List<string> { "spear_Step2_evasion" },
+                Prerequisites = new List<string> { "spear_Step3_pierce" },
                 NextNodes = new List<string> { "spear_Step4_triple" },
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 4-2단계: 쾌속 창
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step3_quick",
@@ -459,13 +457,13 @@ namespace CaptainSkillTree.SkillTree
                 Tier = 4,
                 Position = new Vector2(455, 60),
                 Category = "근접",
-                Prerequisites = new List<string> { "spear_Step2_evasion" },
+                Prerequisites = new List<string> { "spear_Step3_pierce" },
                 NextNodes = new List<string> { "spear_Step4_triple" },
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 5단계: 삼연창
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step4_triple",
@@ -476,7 +474,7 @@ namespace CaptainSkillTree.SkillTree
                 Tier = 5,
                 Position = new Vector2(525, 120),
                 Category = "근접",
-                Prerequisites = new List<string> { "spear_Step3_pierce", "spear_Step3_quick" },
+                Prerequisites = new List<string> { "spear_Step2_evasion", "spear_Step3_quick" },
                 NextNodes = new List<string> { "spear_Step5_penetrate", "spear_Step5_combo" },
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
@@ -487,7 +485,7 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step5_penetrate",
                 Name = "꿰뚫는 창",
-                Description = $"치명타 확률 +{SkillTreeConfig.SpearStep6PenetrateCritChanceValue}%\n필요조건: 창 착용",
+                Description = $"G키: {Spear_Config.SpearStep6PenetrateBuffDurationValue}초간 번개 충격 모드, {Spear_Config.SpearStep6PenetrateComboCountValue}회 연속 적중 시 번개 충격 발동 (데미지 +{Spear_Config.SpearStep6PenetrateLightningDamageValue}%) | 소모: 스태미나 {Spear_Config.SpearStep6PenetrateStaminaCostValue}% | 쿨타임: {Spear_Config.SpearStep6PenetrateCooldownValue}초",
                 RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 6,
@@ -518,7 +516,7 @@ namespace CaptainSkillTree.SkillTree
             });
             
             // ==================== 폴암 스킬 트리 ====================
-            
+
             // 1단계: 폴암 전문가
             manager.AddSkill(new SkillNode {
                 Id = "polearm_expert",
@@ -536,7 +534,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "polearm_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 2단계: 회전베기
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step1_spin",
@@ -548,17 +546,17 @@ namespace CaptainSkillTree.SkillTree
                 Position = new Vector2(310, -30),
                 Category = "근접",
                 Prerequisites = new List<string> { "polearm_expert" },
-                NextNodes = new List<string> { "polearm_step1_suppress", "polearm_step2_hero" },
+                NextNodes = new List<string> { "polearm_step4_charge", "polearm_step2_hero" },
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
-            // 3-1단계: 제압 공격
+
+            // 3-1단계: 폴암강화 (티어 순서 변경: 제압 공격과 교환)
             manager.AddSkill(new SkillNode {
-                Id = "polearm_step1_suppress",
-                Name = "제압 공격",
-                Description = $"공격력 +{SkillTreeConfig.PolearmStep1SuppressDamageValue}%",
+                Id = "polearm_step4_charge",
+                Name = "폴암강화",
+                Description = "무기 공격력 +5",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 3,
@@ -570,8 +568,8 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
-            // 3단계: 영웅 타격
+
+            // 3-2단계: 영웅 타격
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step2_hero",
                 Name = "영웅 타격",
@@ -587,7 +585,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 4단계: 광역 강타
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step3_area",
@@ -598,13 +596,13 @@ namespace CaptainSkillTree.SkillTree
                 Tier = 4,
                 Position = new Vector2(465, -5),
                 Category = "근접",
-                Prerequisites = new List<string> { "polearm_step1_suppress", "polearm_step2_hero" },
-                NextNodes = new List<string> { "polearm_step3_ground", "polearm_step4_moon", "polearm_step4_charge" },
+                Prerequisites = new List<string> { "polearm_step4_charge", "polearm_step2_hero" },
+                NextNodes = new List<string> { "polearm_step3_ground", "polearm_step4_moon", "polearm_step1_suppress" },
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 5-1단계: 지면 강타
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step3_ground",
@@ -621,7 +619,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 5-2단계: 반달 베기
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step4_moon",
@@ -638,12 +636,12 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
-            // 5-3단계: 폴암강화
+
+            // 5-3단계: 제압 공격 (티어 순서 변경: 폴암강화와 교환)
             manager.AddSkill(new SkillNode {
-                Id = "polearm_step4_charge",
-                Name = "폴암강화",
-                Description = "무기 공격력 +5",
+                Id = "polearm_step1_suppress",
+                Name = "제압 공격",
+                Description = $"공격력 +{SkillTreeConfig.PolearmStep1SuppressDamageValue}%",
                 RequiredPoints = 3,
                 MaxLevel = 1,
                 Tier = 5,
@@ -655,7 +653,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 6단계: 장창의 제왕
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step5_king",
@@ -666,7 +664,7 @@ namespace CaptainSkillTree.SkillTree
                 Tier = 6,
                 Position = new Vector2(625, 20),
                 Category = "근접",
-                Prerequisites = new List<string> { "polearm_step3_ground", "polearm_step4_moon", "polearm_step4_charge" },
+                Prerequisites = new List<string> { "polearm_step3_ground", "polearm_step4_moon", "polearm_step1_suppress" },
                 NextNodes = new List<string>(),
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",

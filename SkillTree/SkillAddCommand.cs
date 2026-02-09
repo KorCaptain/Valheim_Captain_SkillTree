@@ -18,7 +18,7 @@ namespace CaptainSkillTree.SkillTree
 
         public override string Help => "스킬 포인트 추가 (관리자 전용): skilladd <숫자> <캐릭터이름>";
 
-        public override bool IsCheat => true; // 관리자 전용
+        public override bool IsCheat => true; // 관리자 전용 (devcommands 필요)
 
         /// <summary>
         /// 자동완성 옵션 제공

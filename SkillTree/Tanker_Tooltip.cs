@@ -50,7 +50,7 @@ namespace CaptainSkillTree.SkillTree
                 var tooltip = "<color=#FFD700><size=22>탱커 - 전장의 함성</size></color>\n\n";
                 
                 // 액티브 스킬 설명
-                tooltip += "<color=#90EE90><size=16>설명: </size></color><color=#E0E0E0><size=16>";
+                tooltip += "<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>";
                 tooltip += $"{range}m 범위 적을 도발해 {duration}초 동안 나를 공격하게 만듭니다.";
                 tooltip += $"(보스 {bossDuration}초), 시전자는 {buffDuration}초 동안 피해감소 {activeDamageReduction}%";
                 tooltip += "</size></color>\n";
@@ -59,10 +59,10 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{range}m</size></color>\n";
                 
                 // 소모 자원
-                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스테미나 {stamina}</size></color>\n";
+                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {stamina}</size></color>\n";
                 
-                // 스킬 유형
-                tooltip += "<color=#DDA0DD><size=16>스킬유형: </size></color><color=#E6E6FA><size=16>액티브 도발 스킬 - Y키</size></color>\n";
+                // 스킬 유형 (Y키 강조: #1E90FF / #ADFF2F)
+                tooltip += "<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>액티브 도발 스킬 - Y키</size></color>\n";
                 
                 // 쿨타임
                 tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{cooldown}초</size></color>\n";
@@ -74,7 +74,7 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += "<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>방패 착용</size></color>\n";
                 
                 // 확인사항
-                tooltip += "<color=#F0E68C><size=16>⚠️확인사항: </size></color><color=#FFE4B5><size=16>직업은 1개만 선택가능, Lv 10 이상</size></color>\n";
+                tooltip += "<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>직업은 1개만 선택가능, Lv 10 이상</size></color>\n";
                 
                 // 필요포인트
                 tooltip += "<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>에이크쉬르 트로피</size></color>";
@@ -103,8 +103,8 @@ namespace CaptainSkillTree.SkillTree
                 // 설명 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#90EE90><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
-                    
+                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+
                     // 추가 정보가 있으면 괄호로 추가
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -120,7 +120,7 @@ namespace CaptainSkillTree.SkillTree
                 var consumeParts = new List<string>();
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    consumeParts.Add($"스테미나 {data.consumeStamina}");
+                    consumeParts.Add($"스태미나 {data.consumeStamina}");
                 }
                 if (!string.IsNullOrEmpty(data.consumeArrow) && data.consumeArrow != "없음")
                 {
@@ -132,10 +132,10 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>{string.Join(", ", consumeParts)}</size></color>\n";
                 }
 
-                // 스킬 유형 섹션 (기존 툴팁 스타일)
+                // 스킬 유형 섹션 (Y키 강조: #1E90FF / #ADFF2F)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#DDA0DD><size=16>스킬유형: </size></color><color=#E6E6FA><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>{data.skillType}</size></color>\n";
                 }
 
                 // 쿨타임 섹션 (기존 툴팁 스타일)
@@ -153,7 +153,7 @@ namespace CaptainSkillTree.SkillTree
                 // 확인사항 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 필요포인트 섹션 (기존 툴팁 스타일)

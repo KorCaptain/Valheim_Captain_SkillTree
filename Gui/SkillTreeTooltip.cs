@@ -202,6 +202,16 @@ namespace CaptainSkillTree.Gui
                 // 연공창 스킬 전용 동적 툴팁 처리 (SpearSkillMappings에 없으므로 특별 처리)
                 tooltipText = Spear_Tooltip.GetSpearEnhancedThrowTooltip();
             }
+            else if (node.Id == "bow_Step6_critboost")
+            {
+                // 폭발 화살 스킬 전용 동적 툴팁 처리
+                tooltipText = RangedSkillData.GetExplosiveArrowTooltip();
+            }
+            else if (node.Id == "crossbow_Step6_expert")
+            {
+                // 단 한 발 스킬 전용 동적 툴팁 처리
+                tooltipText = RangedSkillData.GetOneShotTooltip();
+            }
             else
             {
                 string desc = node.Description ?? "";
@@ -777,11 +787,11 @@ namespace CaptainSkillTree.Gui
                     }
                     else if (trimmedLine.Contains("키:"))
                     {
-                        // Y키, T키, G키, H키 설명은 스킬 설명에 포함 (단, 키 정보와 쿨타임 정보는 제외)
+                        // Y키, R키, G키, H키 설명은 스킬 설명에 포함 (단, 키 정보와 쿨타임 정보는 제외)
                         string cleanLine = trimmedLine;
                         
-                        // 키 정보 제거 (Y키:, T키:, G키:, H키:, F키: 등)
-                        cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"[YTGHF]키:\s*", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
+                        // 키 정보 제거 (Y키:, R키:, G키:, H키:, F키: 등)
+                        cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"[YRGHF]키:\s*", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
                         
                         // 쿨타임 정보 제거
                         cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"\(쿨타임\s*\d+초\)", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
@@ -888,8 +898,8 @@ namespace CaptainSkillTree.Gui
             // 액티브 스킬 키 확인
             if (descMain.Contains("Y키:"))
                 return "액티브스킬 (Y키)";
-            if (descMain.Contains("T키:"))
-                return "액티브스킬 (T키)";
+            if (descMain.Contains("R키:"))
+                return "액티브스킬 (R키)";
             if (descMain.Contains("G키:"))
                 return "액티브스킬 (G키)";
             if (descMain.Contains("H키:"))
@@ -1024,7 +1034,7 @@ namespace CaptainSkillTree.Gui
                 @"\(쿨타임\s*\d+초\)",      // (쿨타임 30초) 형태
                 @",?\s*쿨타임\s*\d+초",     // , 쿨타임 30초 형태
                 @"쿨타임\s*\d+초",          // 쿨타임 30초 형태
-                @"[YTGHF]키:\s*"           // Y키:, T키:, G키:, H키:, F키: 제거
+                @"[YRGHF]키:\s*"           // Y키:, R키:, G키:, H키:, F키: 제거
             };
             
             // 단순 텍스트 패턴 제거

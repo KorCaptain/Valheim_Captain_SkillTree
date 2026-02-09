@@ -216,7 +216,7 @@ namespace CaptainSkillTree.SkillTree
                 var data = new FuryHammerTooltipData
                 {
                     skillName = "분노의 망치",
-                    description = $"G키로 {attackCount}회 연속 세컨더리 어택 발동",
+                    description = $"{attackCount}회 연속 세컨더리 어택 발동",
                     additionalInfo = $"1~4타: {attackInterval}초 간격, 5타: {attackInterval}초 후 데미지",
                     attackCount = "", // 제거
                     baseDamage = $"현재 공격력 × 1~4타: {normalHitMultiplier:F0}%, 5타: {finalHitMultiplier:F0}%",
@@ -225,9 +225,9 @@ namespace CaptainSkillTree.SkillTree
                     attackInterval = "", // 제거 (additionalInfo에 포함)
                     staminaCost = $"{staminaCost:F0}",
                     cooldown = $"{cooldown:F0}초",
-                    skillType = "액티브 스킬(G키)",
+                    skillType = "액티브 스킬 - H키",
                     requirement = "양손둔기 착용",
-                    confirmation = "근접 액티브 스킬은 1개만 습득가능",
+                    confirmation = "같은 무기 전문가 내에서만 다중 습득 가능",
                     requiredPoints = "3"
                 };
 
@@ -243,7 +243,8 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 분노의 망치 툴팁 생성 (Staff 스타일)
+        /// 분노의 망치 툴팁 생성 (H키 액티브 스킬)
+        /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형(H키 강조) → 쿨타임 → 필요조건 → 확인사항 → 필요포인트
         /// </summary>
         private static string GenerateFuryHammerTooltip(FuryHammerTooltipData data)
         {
@@ -251,13 +252,13 @@ namespace CaptainSkillTree.SkillTree
             {
                 var tooltip = "";
 
-                // 스킬 이름 (황금색, 크기 22)
+                // 1. 스킬명 (#FFD700, size=22)
                 if (!string.IsNullOrEmpty(data.skillName))
                 {
                     tooltip += $"<color=#FFD700><size=22>{data.skillName}</size></color>\n\n";
                 }
 
-                // 설명 섹션
+                // 2. 설명 (#FFD700 / #E0E0E0)
                 if (!string.IsNullOrEmpty(data.description))
                 {
                     tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
@@ -269,70 +270,52 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += "</size></color>\n";
                 }
 
-                // 공격 효과 섹션
-                if (!string.IsNullOrEmpty(data.attackCount))
-                {
-                    tooltip += $"<color=#98FB98><size=16>⚔️ 공격 효과: </size></color><color=#00FF00><size=16>{data.attackCount}</size></color>\n";
-                }
-
-                // 데미지 배율 섹션
+                // 3. 데미지 (#FF6B6B / #FFB6C1)
                 if (!string.IsNullOrEmpty(data.baseDamage))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>💥 데미지: </size></color><color=#B0E0E6><size=16>{data.baseDamage}</size></color>\n";
+                    tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>{data.baseDamage}</size></color>\n";
                 }
 
-                // 데미지 증가 섹션 (제거됨)
-                if (!string.IsNullOrEmpty(data.damageIncrement))
-                {
-                    tooltip += $"<color=#87CEEB><size=16>📈 공격당 증가: </size></color><color=#B0E0E6><size=16>{data.damageIncrement}</size></color>\n";
-                }
-
-                // AOE 범위 섹션
+                // 4. 범위 (#87CEEB / #B0E0E6) - AOE 범위
                 if (!string.IsNullOrEmpty(data.aoeRadius))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>🌀 AOE 범위: </size></color><color=#B0E0E6><size=16>{data.aoeRadius}</size></color>\n";
+                    tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{data.aoeRadius}</size></color>\n";
                 }
 
-                // 공격 간격 섹션
-                if (!string.IsNullOrEmpty(data.attackInterval))
-                {
-                    tooltip += $"<color=#87CEEB><size=16>⏱️ 공격 간격: </size></color><color=#B0E0E6><size=16>{data.attackInterval}</size></color>\n";
-                }
-
-                // 소모 섹션
+                // 5. 소모 (#FFB347 / #FFDAB9)
                 if (!string.IsNullOrEmpty(data.staminaCost))
                 {
-                    tooltip += $"<color=#FFB347><size=16>⚡ 소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.staminaCost}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.staminaCost}</size></color>\n";
                 }
 
-                // 스킬 유형 섹션
+                // 6. 스킬유형 (H키 강조: #FF1493 / #00FFFF)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>🔨 스킬유형: </size></color><color=#B0E0E6><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#FF1493><size=16>스킬유형: </size></color><color=#00FFFF><size=16>{data.skillType}</size></color>\n";
                 }
 
-                // 쿨타임 섹션
+                // 7. 쿨타임 (#FFA500 / #FFDB58)
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>⏳ 쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
-                // 필요조건 섹션
+                // 8. 필요조건 (#98FB98 / #00FF00)
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>✅ 필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
-                // 확인사항 섹션
+                // 9. 확인사항 (#F0E68C / #FFE4B5)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️ 확인사항: </size></color><color=#FFE4B5><size=16>🔨 {data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
-                // 필요포인트 섹션
+                // 10. 필요포인트 (#87CEEB / #FF6B6B)
                 if (!string.IsNullOrEmpty(data.requiredPoints))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{data.requiredPoints}</size></color>";
+                    tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{data.requiredPoints}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
@@ -350,14 +333,14 @@ namespace CaptainSkillTree.SkillTree
         private static string GetFuryHammerFallbackTooltip()
         {
             return "<color=#FFD700><size=22>분노의 망치</size></color>\n\n" +
-                   "<color=#E0E0E0><size=16>G키: 5회 연속 세컨더리 어택 발동 (1~4타: 0.8초 간격, 5타: 0.5초 후 데미지)\n\n" +
+                   "<color=#E0E0E0><size=16>H키: 5회 연속 세컨더리 어택 발동 (1~4타: 0.8초 간격, 5타: 0.5초 후 데미지)\n\n" +
                    "• 데미지: 현재 공격력 × 1~4타: 80%, 5타: 150%\n" +
                    "• AOE 범위: 5m\n" +
                    "• 소모: 스태미나 40\n" +
                    "• 쿨타임: 30초\n" +
                    "• 필요조건: 둔기 착용\n\n" +
-                   "💥 스킬유형: 액티브 스킬(G키)\n\n" +
-                   "⚠️ 확인사항: 🔨 근접 액티브 스킬은 1개만 습득가능</size></color>";
+                   "💥 스킬유형: 액티브 스킬 - H키\n\n" +
+                   "확인사항: 같은 무기 전문가 내에서만 다중 습득 가능</size></color>";
         }
 
         /// <summary>
@@ -400,16 +383,16 @@ namespace CaptainSkillTree.SkillTree
                 var data = new GuardianHeartTooltipData
                 {
                     skillName = "수호자의 진심",
-                    description = $"G키로 {duration:F0}초간 방어 버프 활성화",
+                    description = $"{duration:F0}초간 방어 버프 활성화",
                     additionalInfo = $"받는 데미지의 {reflectPercent:F0}%를 공격자에게 반사",
                     duration = $"{duration:F0}초",
                     reflectPercent = $"{reflectPercent:F0}%",
                     staminaCost = $"{staminaCost:F0}",
                     cooldown = $"{cooldown:F0}초",
-                    skillType = "액티브 스킬(G키)",
+                    skillType = "액티브 스킬 - G키",
                     requirement = "둔기 + 방패 착용",
-                    confirmation = "근접 액티브 스킬은 1개만 습득가능",
-                    specialNote = $"버프 지속 중 방어력 증가 및 데미지 감소 효과 적용\n\n<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                    confirmation = "같은 무기 전문가 내에서만 다중 습득 가능",
+                    specialNote = $"버프 지속 중 방어력 증가 및 데미지 감소 효과 적용\n\n<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
                 };
 
                 string finalTooltip = GenerateGuardianHeartTooltip(data);
@@ -424,7 +407,8 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 수호자의 진심 툴팁 생성 (Staff 스타일)
+        /// 수호자의 진심 툴팁 생성 (G키 액티브 스킬)
+        /// 표준 항목 순서: 스킬명 → 설명 → 데미지/효과 → 범위 → 소모 → 스킬유형(G키 강조) → 쿨타임 → 필요조건 → 확인사항 → 필요포인트
         /// </summary>
         private static string GenerateGuardianHeartTooltip(GuardianHeartTooltipData data)
         {
@@ -432,13 +416,13 @@ namespace CaptainSkillTree.SkillTree
             {
                 var tooltip = "";
 
-                // 스킬 이름 (황금색, 크기 22)
+                // 1. 스킬명 (#FFD700, size=22)
                 if (!string.IsNullOrEmpty(data.skillName))
                 {
                     tooltip += $"<color=#FFD700><size=22>{data.skillName}</size></color>\n\n";
                 }
 
-                // 설명 섹션
+                // 2. 설명 (#FFD700 / #E0E0E0)
                 if (!string.IsNullOrEmpty(data.description))
                 {
                     tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
@@ -450,52 +434,56 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += "</size></color>\n";
                 }
 
-                // 버프 지속시간 섹션
-                if (!string.IsNullOrEmpty(data.duration))
+                // 3. 효과 - 버프 지속시간 + 데미지 반사 (#FF6B6B / #FFB6C1)
+                if (!string.IsNullOrEmpty(data.duration) || !string.IsNullOrEmpty(data.reflectPercent))
                 {
-                    tooltip += $"<color=#98FB98><size=16>🛡️ 버프 지속시간: </size></color><color=#00FF00><size=16>{data.duration}</size></color>\n";
+                    string effectText = "";
+                    if (!string.IsNullOrEmpty(data.duration))
+                        effectText += $"버프 {data.duration}";
+                    if (!string.IsNullOrEmpty(data.reflectPercent))
+                    {
+                        if (!string.IsNullOrEmpty(effectText)) effectText += ", ";
+                        effectText += $"데미지 반사 {data.reflectPercent}";
+                    }
+                    tooltip += $"<color=#FF6B6B><size=16>효과: </size></color><color=#FFB6C1><size=16>{effectText}</size></color>\n";
                 }
 
-                // 데미지 반사 섹션
-                if (!string.IsNullOrEmpty(data.reflectPercent))
-                {
-                    tooltip += $"<color=#87CEEB><size=16>⚡ 데미지 반사: </size></color><color=#B0E0E6><size=16>{data.reflectPercent}</size></color>\n";
-                }
+                // 4. 범위 - 생략 (자기 자신)
 
-                // 소모 섹션
+                // 5. 소모 (#FFB347 / #FFDAB9)
                 if (!string.IsNullOrEmpty(data.staminaCost))
                 {
-                    tooltip += $"<color=#FFB347><size=16>⚡ 소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.staminaCost}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.staminaCost}</size></color>\n";
                 }
 
-                // 스킬 유형 섹션
+                // 6. 스킬유형 (G키 강조: #FF4500 / #00FF00)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>🛡️ 스킬유형: </size></color><color=#B0E0E6><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#FF4500><size=16>스킬유형: </size></color><color=#00FF00><size=16>{data.skillType}</size></color>\n";
                 }
 
-                // 쿨타임 섹션
+                // 7. 쿨타임 (#FFA500 / #FFDB58)
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>⏳ 쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
-                // 필요조건 섹션
+                // 8. 필요조건 (#98FB98 / #00FF00)
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>✅ 필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
-                // 확인사항 섹션
+                // 9. 확인사항 (#F0E68C / #FFE4B5)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️ 확인사항: </size></color><color=#FFE4B5><size=16>🔨 {data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
-                // 특별 안내 섹션
+                // 10. 필요포인트 - specialNote에 포함되어 있음
                 if (!string.IsNullOrEmpty(data.specialNote))
                 {
-                    tooltip += $"<color=#DDA0DD><size=16>💡 특별안내: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
+                    tooltip += $"<color=#DDA0DD><size=16>특별안내: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
@@ -521,8 +509,8 @@ namespace CaptainSkillTree.SkillTree
                    "• 소모: 스태미나 25\n" +
                    "• 쿨타임: 120초\n" +
                    "• 필요조건: 둔기 착용\n\n" +
-                   "🛡️ 스킬유형: 액티브 스킬(G키)\n\n" +
-                   $"<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";
+                   "스킬유형: 액티브 스킬 - G키\n\n" +
+                   $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";
         }
 
         // [DEPRECATED] - Use MeleeTooltipUtils.GenerateTooltip() instead

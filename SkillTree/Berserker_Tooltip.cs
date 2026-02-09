@@ -50,12 +50,12 @@ namespace CaptainSkillTree.SkillTree
                 var data = new BerserkerTooltipData
                 {
                     skillName = "버서커 분노",
-                    description = $"Y키로 {duration}초간 분노 상태 발동하여 강력한 공격력 증가",
+                    description = $"{duration}초간 분노 상태 발동하여 강력한 공격력 증가",
                     additionalInfo = $"체력 손실 1%당 데미지 +{damagePerPercent:F0}%, 최대 +{maxDamageBonus:F0}% 한계",
                     range = "자신",
                     consumeStamina = $"{staminaCost:F0}",
                     consumeArrow = "없음",
-                    skillType = "액티브 스킬(Y키)",
+                    skillType = "액티브 스킬 - Y키",
                     cooldown = $"{cooldown:F0}초",
                     requirement = "직업 버서커",
                     confirmation = "직업은 1개만 선택가능",
@@ -101,52 +101,52 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 분노 효과 섹션
-                tooltip += $"<color=#FF6B6B><size=16>⚔️ 분노 효과: </size></color><color=#FF8C82><size=16>체력 손실 1%당 데미지 +{Berserker_Config.BerserkerRageDamagePerHealthPercentValue}%</size></color>\n";
+                tooltip += $"<color=#FF6B6B><size=16>분노 효과: </size></color><color=#FF8C82><size=16>체력 손실 1%당 데미지 +{Berserker_Config.BerserkerRageDamagePerHealthPercentValue}%</size></color>\n";
 
                 // 패시브 효과 섹션
                 var passiveHealthThreshold = Berserker_Config.BerserkerPassiveHealthThresholdValue;
                 var passiveInvincibilityDuration = Berserker_Config.BerserkerPassiveInvincibilityDurationValue;
                 var passiveCooldown = Berserker_Config.BerserkerPassiveCooldownValue;
-                tooltip += $"<color=#98FB98><size=16>🛡️ 패시브 효과: </size></color><color=#00FF00><size=16>스태미나 재생 +20%, 체력 {passiveHealthThreshold:F0}% 이하 시 {passiveInvincibilityDuration:F0}초간 무적 (쿨타임 {passiveCooldown / 60f:F0}분)</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>패시브 효과: </size></color><color=#00FF00><size=16>스태미나 재생 +20%, 체력 {passiveHealthThreshold:F0}% 이하 시 {passiveInvincibilityDuration:F0}초간 무적 (쿨타임 {passiveCooldown / 60f:F0}분)</size></color>\n";
 
                 // 영향 범위 섹션
                 if (!string.IsNullOrEmpty(data.range))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>📍 영향 범위: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
+                    tooltip += $"<color=#87CEEB><size=16>영향 범위: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
                 }
 
                 // 소모 섹션
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    tooltip += $"<color=#FFB347><size=16>⚡ 소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.consumeStamina}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.consumeStamina}</size></color>\n";
                 }
 
-                // 스킬 유형 섹션
+                // 스킬 유형 섹션 (Y키 강조: #1E90FF / #ADFF2F)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>🔮 스킬유형: </size></color><color=#B0E0E6><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>{data.skillType}</size></color>\n";
                 }
 
                 // 쿨타임 섹션
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>⏳ 쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
                 // 필요조건 섹션
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>✅ 필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
                 // 확인사항 섹션
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️ 확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 필요포인트 섹션 추가
-                tooltip += $"<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>에이크쉬르 트로피</size></color>";
+                tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>에이크쉬르 트로피</size></color>";
 
                 return tooltip.TrimEnd('\n');
             }
@@ -165,12 +165,12 @@ namespace CaptainSkillTree.SkillTree
             var data = new BerserkerTooltipData
             {
                 skillName = "버서커 분노",
-                description = $"Y키로 {Berserker_Config.BerserkerRageDurationValue}초간 분노 상태 발동하여 강력한 공격력 증가",
+                description = $"{Berserker_Config.BerserkerRageDurationValue}초간 분노 상태 발동하여 강력한 공격력 증가",
                 additionalInfo = $"체력 손실 1%당 데미지 +{Berserker_Config.BerserkerRageDamagePerHealthPercentValue:F0}%, 최대 +{Berserker_Config.BerserkerRageMaxDamageBonusValue:F0}% 한계",
                 range = "자신",
                 consumeStamina = $"{Berserker_Config.BerserkerRageStaminaCostValue}",
                 consumeArrow = "없음",
-                skillType = "액티브 스킬(Y키)",
+                skillType = "액티브 스킬 - Y키",
                 cooldown = $"{Berserker_Config.BerserkerRageCooldownValue}초",
                 requirement = "직업 버서커",
                 confirmation = "직업은 1개만 선택가능",
@@ -205,8 +205,8 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"\n스킬유형: {data.skillType}\n";
                 tooltip += $"쿨타임: {data.cooldown}\n";
                 tooltip += $"필요조건: {data.requirement}\n";
-                tooltip += $"⚠️확인사항: {data.confirmation}\n";
-                tooltip += $"⚠️필요 아이템: {data.requiredItem}";
+                tooltip += $"확인사항: {data.confirmation}\n";
+                tooltip += $"필요 아이템: {data.requiredItem}";
                 
                 return tooltip;
             }
@@ -226,15 +226,15 @@ namespace CaptainSkillTree.SkillTree
                    "[액티브 스킬 - Y키]\n" +
                    "20초 동안 체력의 -1% 비례 데미지 +2%, 체력이 적을수록 더 강한 데미지\n\n" +
                    "[패시브 스킬]\n" +
-                   "• 스테미나 리젠 +20% (항상 적용)\n" +
+                   "• 스태미나 리젠 +20% (항상 적용)\n" +
                    "• 체력 10% 이하 시 7초간 무적 (쿨타임 300초)\n\n" +
                    "추가: 최대 +200% 데미지 한계, 빨간/황금 오라 효과\n" +
                    "범위: 자신\n" +
                    "소모: 스태미나 20 (액티브만)\n" +
                    "쿨타임: 45초 (액티브), 300초 (패시브)\n" +
                    "필요조건: 직업 버서커\n" +
-                   "⚠️확인사항: 직업은 1개만 선택가능, Lv 10 이상\n" +
-                   "⚠️필요 아이템: 고대 바크 스피어";
+                   "확인사항: 직업은 1개만 선택가능, Lv 10 이상\n" +
+                   "필요 아이템: 고대 바크 스피어";
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace CaptainSkillTree.SkillTree
                 var damagePerPercent = Berserker_Config.BerserkerRageDamagePerHealthPercentValue;
                 var maxBonus = Berserker_Config.BerserkerRageMaxDamageBonusValue;
 
-                string simulation = "📊 체력별 데미지 보너스 예상:\n";
+                string simulation = "체력별 데미지 보너스 예상:\n";
                 
                 // 체력 100%, 75%, 50%, 25%, 1%일 때의 보너스 계산
                 int[] healthLevels = { 100, 75, 50, 25, 1 };

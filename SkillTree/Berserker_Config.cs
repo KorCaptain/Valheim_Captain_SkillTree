@@ -93,12 +93,40 @@ namespace CaptainSkillTree.SkillTree
                     "Berserker Job Skills", "Passive_Cooldown", 180f,
                     "Passive skill cooldown (seconds) - Default: 3 minutes");
 
+                // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
+                RegisterBerserkerEventHandlers();
+
                 Plugin.Log.LogDebug("[Berserker Config] All settings loaded (Active + Passive)");
                 LogBerserkerConfigValues();
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[Berserker Config] Initialization failed: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 버서커 컨피그 변경 시 툴팁 자동 업데이트 이벤트 등록
+        /// </summary>
+        private static void RegisterBerserkerEventHandlers()
+        {
+            try
+            {
+                BerserkerRageCooldown.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+                BerserkerRageStaminaCost.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+                BerserkerRageDuration.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+                BerserkerRageDamagePerHealthPercent.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+                BerserkerRageMaxDamageBonus.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+                BerserkerRageHealthThreshold.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+                BerserkerPassiveHealthThreshold.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+                BerserkerPassiveInvincibilityDuration.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+                BerserkerPassiveCooldown.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+
+                Plugin.Log.LogDebug("[Berserker Config] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[Berserker Config] 이벤트 핸들러 등록 실패: {ex.Message}");
             }
         }
 
@@ -145,8 +173,8 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogInfo("[Berserker Config] Settings changed - Updating values");
                 LogBerserkerConfigValues();
 
-                // Update tooltip (future implementation)
-                // Berserker_Tooltip.UpdateBerserkerTooltip();
+                // 툴팁 업데이트
+                JobSkills.UpdateBerserkerTooltip();
             }
             catch (System.Exception ex)
             {

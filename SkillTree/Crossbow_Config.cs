@@ -313,44 +313,44 @@ namespace CaptainSkillTree.SkillTree
 
                 // Tier 1: 석궁 전문가
                 UpdateSkillTooltip("crossbow_Step1_damage",
-                    $"석궁 데미지 +{CrossbowExpertDamageBonusValue}%\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>");
+                    $"석궁 데미지 +{CrossbowExpertDamageBonusValue}%\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>");
 
                 // Tier 2: 연속 발사
                 UpdateSkillTooltip("crossbow_Step2_rapid_fire",
                     $"{CrossbowRapidFireChanceValue}% 확률로 {CrossbowRapidFireShotCountValue}발 연속 발사\n" +
                     $"(각 {CrossbowRapidFireDamagePercentValue}% 데미지, 볼트 {CrossbowRapidFireBoltConsumptionValue}발 소모)\n" +
-                    $"<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>");
+                    $"<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>");
 
                 // Tier 3-1: 균형 조준
                 UpdateSkillTooltip("crossbow_Step2_balance",
-                    $"명중 시 {CrossbowBalanceKnockbackChanceValue}% 확률로 넉백 ({CrossbowBalanceKnockbackDistanceValue}m)\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>");
+                    $"명중 시 {CrossbowBalanceKnockbackChanceValue}% 확률로 넉백 ({CrossbowBalanceKnockbackDistanceValue}m)\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>");
 
                 // Tier 3-2: 고속 장전
                 UpdateSkillTooltip("crossbow_Step3_rapid",
-                    $"장전속도 +{CrossbowRapidReloadSpeedValue}%\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>");
+                    $"장전속도 +{CrossbowRapidReloadSpeedValue}%\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>");
 
                 // Tier 3-3: 정직한 한 발
                 UpdateSkillTooltip("crossbow_Step3_mark",
-                    $"치명타 확률 0% 고정, 대신 석궁 데미지 +{CrossbowMarkDamageBonusValue}%\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>");
+                    $"치명타 확률 0% 고정, 대신 석궁 데미지 +{CrossbowMarkDamageBonusValue}%\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>");
 
                 // Tier 4: 자동 장전
                 UpdateSkillTooltip("crossbow_Step4_re",
-                    $"명중 시 {CrossbowAutoReloadChanceValue}% 확률로 다음 1회 장전 속도 200%\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>");
+                    $"명중 시 {CrossbowAutoReloadChanceValue}% 확률로 다음 1회 장전 속도 200%\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>");
 
                 // Tier 5-1: 연속 발사 Lv2
                 UpdateSkillTooltip("crossbow_Step4_rapid_fire_lv2",
                     $"{CrossbowRapidFireLv2ChanceValue}% 확률로 {CrossbowRapidFireLv2ShotCountValue}발 연속 발사\n" +
                     $"(각 {CrossbowRapidFireLv2DamagePercentValue}% 데미지, 볼트 {CrossbowRapidFireLv2BoltConsumptionValue}발 소모)\n" +
                     $"<color=#FFD700><size=16>※ Lv1과 확률 합산</size></color>\n" +
-                    $"<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>");
+                    $"<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>");
 
                 // Tier 5-2: 결전의 일격
                 UpdateSkillTooltip("crossbow_Step5_final",
-                    $"체력 {CrossbowFinalStrikeHpThresholdValue}% 이상 적에게 추가 {CrossbowFinalStrikeDamageBonusValue}% 피해\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>");
+                    $"체력 {CrossbowFinalStrikeHpThresholdValue}% 이상 적에게 추가 {CrossbowFinalStrikeDamageBonusValue}% 피해\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>");
 
                 // Tier 6: 단 한 발 (액티브 스킬)
                 UpdateSkillTooltip("crossbow_Step6_expert",
-                    $"T키: {CrossbowOneShotDurationValue}초 이내 석궁 발사 시 공격력 +{CrossbowOneShotDamageBonusValue}%, 넉백 {CrossbowOneShotKnockbackValue}m (쿨타임 {CrossbowOneShotCooldownValue}초)\n<color=#A020F0><size=16>※ 석궁 착용시 효과발동</size></color>");
+                    $"R키: {CrossbowOneShotDurationValue}초 이내 석궁 발사 시 공격력 +{CrossbowOneShotDamageBonusValue}%, 넉백 {CrossbowOneShotKnockbackValue}m (쿨타임 {CrossbowOneShotCooldownValue}초)\n<color=#DDA0DD><size=16>※ 석궁 착용시 효과발동</size></color>");
 
                 Plugin.Log.LogInfo("[석궁 툴팁] 모든 석궁 스킬 툴팁 업데이트 완료");
             }

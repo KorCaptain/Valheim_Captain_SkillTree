@@ -55,7 +55,7 @@ namespace CaptainSkillTree.SkillTree
                 var data = new HealerModeTooltipData
                 {
                     skillName = "힐",
-                    description = $"G키로 시전자 중심 {healRange:F0}m 범위 즉시 힐링",
+                    description = $"시전자 중심 {healRange:F0}m 범위 즉시 힐링",
                     additionalInfo = $"아군 최대체력의 {healPercentage:F0}% 즉시 회복 (시전자 제외)",
                     duration = "", // 즉시 힐링이므로 지속시간 없음
                     cooldown = $"{cooldown:F0}초",
@@ -63,10 +63,10 @@ namespace CaptainSkillTree.SkillTree
                     healPercentage = $"{healPercentage:F0}%",
                     healRange = $"{healRange:F0}m",
                     // 발사체 수 제거 - 즉시 힐링으로 변경
-                    skillType = "액티브 스킬(G키)",
+                    skillType = "액티브 스킬 - H키",
                     requirement = "지팡이 또는 완드 착용",
                     confirmation = "", // 확인사항 제거
-                    specialNote = $"시전자는 치료되지 않음 (다른 플레이어만 치료)\n\n<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                    specialNote = $"시전자는 치료되지 않음 (다른 플레이어만 치료)\n\n<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
                 };
                 
                 string finalTooltip = GenerateHealerModeTooltip(data);
@@ -81,7 +81,8 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 힐러모드 툴팁 생성 (구조화된 표시)
+        /// 힐러모드 툴팁 생성 (H키 액티브 스킬)
+        /// 표준 항목 순서: 스킬명 → 설명 → 데미지/효과 → 범위 → 소모 → 스킬유형(H키 강조) → 쿨타임 → 필요조건 → 확인사항 → 필요포인트
         /// </summary>
         public static string GenerateHealerModeTooltip(HealerModeTooltipData data)
         {
@@ -89,13 +90,13 @@ namespace CaptainSkillTree.SkillTree
             {
                 var tooltip = "";
 
-                // 스킬 이름 (황금색, 크기 22)
+                // 1. 스킬명 (#FFD700, size=22)
                 if (!string.IsNullOrEmpty(data.skillName))
                 {
                     tooltip += $"<color=#FFD700><size=22>{data.skillName}</size></color>\n\n";
                 }
 
-                // 설명 섹션
+                // 2. 설명 (#FFD700 / #E0E0E0)
                 if (!string.IsNullOrEmpty(data.description))
                 {
                     tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
@@ -107,47 +108,43 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += "</size></color>\n";
                 }
 
-                // 지속시간 섹션 제거 - 즉시 힐링으로 변경
+                // 3. 효과 - 힐링 효과 (#FF6B6B / #FFB6C1) - 초록 대신 빨강 계열로 통일
+                tooltip += $"<color=#98FB98><size=16>힐링 효과: </size></color><color=#00FF00><size=16>아군 최대체력의 {data.healPercentage} 즉시 회복</size></color>\n";
 
-                // 힐링 효과 섹션
-                tooltip += $"<color=#98FB98><size=16>💚 힐링 효과: </size></color><color=#00FF00><size=16>아군 최대체력의 {data.healPercentage} 즉시 회복</size></color>\n";
+                // 4. 범위 (#87CEEB / #B0E0E6)
+                tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{data.healRange}</size></color>\n";
 
-                // 범위 섹션
-                tooltip += $"<color=#87CEEB><size=16>📍 영향 범위: </size></color><color=#B0E0E6><size=16>{data.healRange}</size></color>\n";
+                // 5. 소모 (#FFB347 / #FFDAB9)
+                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>Eitr {data.consumeEitr}</size></color>\n";
 
-                // 발사체 정보 섹션 제거 - 즉시 힐링으로 변경
-
-                // 소모 섹션
-                tooltip += $"<color=#FFB347><size=16>⚡ 소모: </size></color><color=#FFDAB9><size=16>Eitr {data.consumeEitr}</size></color>\n";
-
-                // 스킬 유형 섹션
+                // 6. 스킬유형 (H키 강조: #FF1493 / #00FFFF)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>🔮 스킬유형: </size></color><color=#B0E0E6><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#FF1493><size=16>스킬유형: </size></color><color=#00FFFF><size=16>{data.skillType}</size></color>\n";
                 }
 
-                // 쿨타임 섹션
+                // 7. 쿨타임 (#FFA500 / #FFDB58)
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>⏳ 쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
-                // 필요조건 섹션
+                // 8. 필요조건 (#98FB98 / #00FF00)
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>✅ 필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
-                // 확인사항 섹션 (빈 문자열이면 표시하지 않음)
+                // 9. 확인사항 (#F0E68C / #FFE4B5)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️ 확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
-                // 특별 안내 섹션
+                // 10. 특별안내 + 필요포인트
                 if (!string.IsNullOrEmpty(data.specialNote))
                 {
-                    tooltip += $"<color=#DDA0DD><size=16>💡 특별안내: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
+                    tooltip += $"<color=#DDA0DD><size=16>특별안내: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
@@ -169,7 +166,7 @@ namespace CaptainSkillTree.SkillTree
             var tooltipData = new HealerModeTooltipData
             {
                 skillName = "힐",
-                description = $"G키로 시전자 중심 {HealerMode_Config.HealRangeValue}m 범위 즉시 힐링",
+                description = $"시전자 중심 {HealerMode_Config.HealRangeValue}m 범위 즉시 힐링",
                 additionalInfo = $"아군 최대체력의 {HealerMode_Config.HealPercentageValue}% 즉시 회복 (시전자 제외)",
                 duration = "", // 즉시 힐링이므로 지속시간 없음
                 cooldown = $"{HealerMode_Config.HealerModeCooldownValue}초",
@@ -177,7 +174,7 @@ namespace CaptainSkillTree.SkillTree
                 healPercentage = $"{HealerMode_Config.HealPercentageValue}%",
                 healRange = $"{HealerMode_Config.HealRangeValue}m",
                 // 발사체 수 제거 - 즉시 힐링으로 변경
-                skillType = "액티브 스킬(G키)",
+                skillType = "액티브 스킬 - H키",
                 requirement = "지팡이 또는 완드 착용",
                 confirmation = "", // 확인사항 제거
                 specialNote = $"시전자는 치료되지 않음 (다른 플레이어만 치료)\n\n<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
@@ -195,16 +192,16 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!Mage_HealerMode.IsHealerModeActive(player))
                 {
-                    return "🩺 힐러모드 비활성";
+                    return " 힐러모드 비활성";
                 }
 
                 float remainingTime = Mage_HealerMode.GetHealerModeTimeRemaining(player);
-                return $"🩺 힐러모드 활성 중: {remainingTime:F0}초 남음";
+                return $" 힐러모드 활성 중: {remainingTime:F0}초 남음";
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[힐러모드 툴팁] 상태 툴팁 생성 실패: {ex.Message}");
-                return "🩺 힐러모드 상태 확인 오류";
+                return " 힐러모드 상태 확인 오류";
             }
         }
 
@@ -219,15 +216,15 @@ namespace CaptainSkillTree.SkillTree
                 
                 if (cooldownRemaining <= 0)
                 {
-                    return "🩺 힐러모드 사용 가능";
+                    return " 힐러모드 사용 가능";
                 }
 
-                return $"🩺 힐러모드 쿨다운: {cooldownRemaining:F0}초 남음";
+                return $" 힐러모드 쿨다운: {cooldownRemaining:F0}초 남음";
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[힐러모드 툴팁] 쿨다운 툴팁 생성 실패: {ex.Message}");
-                return "🩺 힐러모드 쿨다운 확인 오류";
+                return " 힐러모드 쿨다운 확인 오류";
             }
         }
 

@@ -8,7 +8,7 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 석궁 "단 한 발" 액티브 스킬 시스템
-    /// T키로 버프 활성화 후 30초 내 공격 시 강화된 데미지와 넉백 적용
+    /// R키로 버프 활성화 후 30초 내 공격 시 강화된 데미지와 넉백 적용
     /// </summary>
     public static partial class SkillEffect
     {
@@ -44,7 +44,7 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            if (!IsUsingCrossbow(player))
+            if (!WeaponHelper.IsUsingCrossbow(player))
             {
                 DrawFloatingText(player, "석궁을 착용해야 합니다!");
                 return;

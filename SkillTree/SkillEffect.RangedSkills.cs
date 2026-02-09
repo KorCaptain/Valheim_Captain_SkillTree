@@ -508,14 +508,14 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogDebug($"[조용한 사냥] +{SkillTreeConfig.BowStep3SilentShotDamageBonusValue}%");
                     }
 
-                    // Tier 6: 크리티컬 부스트 (T키 액티브) - 데미지 +50%
+                    // Tier 6: 크리티컬 부스트 (R키 액티브) - 데미지 +50%
                     if (player != null && SkillEffect.HasSkill("bow_Step6_critboost"))
                     {
                         if (SkillEffect.bowCritBoostEndTime.TryGetValue(player, out float endTime) &&
                             Time.time < endTime)
                         {
                             totalBowBonus += SkillTreeConfig.BowStep6CritBoostDamageBonusValue;
-                            Plugin.Log.LogDebug($"[크리티컬 부스트] T키 액티브 +{SkillTreeConfig.BowStep6CritBoostDamageBonusValue}% (버프 중)");
+                            Plugin.Log.LogDebug($"[크리티컬 부스트] R키 액티브 +{SkillTreeConfig.BowStep6CritBoostDamageBonusValue}% (버프 중)");
                         }
                     }
 

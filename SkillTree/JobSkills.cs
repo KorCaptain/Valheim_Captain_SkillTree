@@ -1037,7 +1037,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[수호자의 진심] 정리 실패 (무시): {ex.Message}");
                 }
 
-                // 0-9. 석궁 단 한 발 정리 (석궁 T키 액티브)
+                // 0-9. 석궁 단 한 발 정리 (석궁 R키 액티브)
                 try
                 {
                     SkillEffect.CleanupCrossbowOneShotOnDeath(player);
@@ -1057,7 +1057,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[도발] 정리 실패 (무시): {ex.Message}");
                 }
 
-                // 0-11. 폭발 화살 정리 (활 T키 액티브)
+                // 0-11. 폭발 화살 정리 (활 R키 액티브)
                 try
                 {
                     SkillEffect.CleanupExplosiveArrowOnDeath(player);

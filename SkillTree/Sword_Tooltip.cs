@@ -39,7 +39,7 @@ namespace CaptainSkillTree.SkillTree
                 $"{skillData.staminaCost}",
                 $"{skillData.cooldown}초",
                 MeleeTooltipUtils.WeaponType.Sword,
-                "스킬 사용 중 무적 아님",
+                "같은 무기 전문가 내에서만 다중 습득 가능\n스킬 사용 중 무적 아님",
                 "",
                 "G키"
             );
@@ -218,9 +218,9 @@ namespace CaptainSkillTree.SkillTree
                 $"{staminaCost}",
                 $"{cooldown}초",
                 MeleeTooltipUtils.WeaponType.Sword,
-                "근접 액티브 스킬은 1개만 습득 가능",
+                "같은 무기 전문가 내에서만 다중 습득 가능",
                 "방패 착용",
-                "G키"
+                "H키"
             );
             data.requiredPoints = requiredPoints.ToString();
 
@@ -345,7 +345,7 @@ namespace CaptainSkillTree.SkillTree
                 // 확인사항 섹션
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
@@ -368,7 +368,7 @@ namespace CaptainSkillTree.SkillTree
                 if (!string.IsNullOrEmpty(data.description))
                 {
                     tooltip += $"<color=#E0E0E0><size=16>{data.description}";
-                    
+
                     // 추가 정보가 있으면 괄호로 추가
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -380,7 +380,7 @@ namespace CaptainSkillTree.SkillTree
                 // 소모 섹션
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스테미나 {data.consumeStamina}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.consumeStamina}</size></color>\n";
                 }
 
                 // 쿨타임 섹션 (액티브 스킬만)
@@ -398,7 +398,7 @@ namespace CaptainSkillTree.SkillTree
                 // 확인사항 섹션
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');

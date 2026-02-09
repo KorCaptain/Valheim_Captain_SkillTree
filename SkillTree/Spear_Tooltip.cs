@@ -81,24 +81,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 회피 찌르기 툴팁 생성
-        /// </summary>
-        public static string GetSpearStep2EvasionTooltip()
-        {
-            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep2EvasionTooltip() 호출됨");
-
-            var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "회피 찌르기",
-                "구르기 직후 공격 시 피해 +25%, 공격 스태미나 -8%",
-                MeleeTooltipUtils.WeaponType.Spear
-            );
-            data.requiredPoints = "2";
-
-            return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Spear);
-        }
-
-        /// <summary>
-        /// 연격창 툴팁 생성
+        /// 연격창 툴팁 생성 (Tier 3)
         /// </summary>
         public static string GetSpearStep3PierceTooltip()
         {
@@ -107,6 +90,23 @@ namespace CaptainSkillTree.SkillTree
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 "연격창",
                 $"무기 공격력 +{SkillTreeConfig.SpearStep3PierceDamageBonusValue}",
+                MeleeTooltipUtils.WeaponType.Spear
+            );
+            data.requiredPoints = "2";
+
+            return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Spear);
+        }
+
+        /// <summary>
+        /// 회피 찌르기 툴팁 생성 (Tier 4)
+        /// </summary>
+        public static string GetSpearStep2EvasionTooltip()
+        {
+            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep2EvasionTooltip() 호출됨");
+
+            var data = MeleeTooltipUtils.CreatePassiveSkillData(
+                "회피 찌르기",
+                "구르기 직후 공격 시 피해 +25%, 공격 스태미나 -8%",
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requiredPoints = "3";
@@ -149,24 +149,58 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 꿰뚫는 창 툴팁 생성
+        /// 꿰뚫는 창 액티브 스킬 툴팁 생성 (번개 충격)
+        /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형(G키 강조) → 쿨타임 → 필요조건 → 확인사항 → 필요포인트
         /// </summary>
         public static string GetSpearStep5PenetrateTooltip()
         {
             Plugin.Log.LogDebug("[창 툴팁] GetSpearStep5PenetrateTooltip() 호출됨");
 
-            var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "꿰뚫는 창",
-                $"치명타 확률 +{SkillTreeConfig.SpearStep6PenetrateCritChanceValue}%",
-                MeleeTooltipUtils.WeaponType.Spear
-            );
-            data.requiredPoints = "3";
+            try
+            {
+                var tooltip = "";
 
-            return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Spear);
+                // 1. 스킬명 (#FFD700, size=22)
+                tooltip += $"<color=#FFD700><size=22>꿰뚫는 창</size></color>\n\n";
+
+                // 2. 설명 (#FFD700 / #E0E0E0)
+                tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{Spear_Config.SpearStep6PenetrateBuffDurationValue}초간 번개 충격 모드 활성화, {Spear_Config.SpearStep6PenetrateComboCountValue}회 연속 적중 시 번개 충격 발동</size></color>\n";
+
+                // 3. 데미지 (#FF6B6B / #FFB6C1)
+                tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>무기 공격력 +{Spear_Config.SpearStep6PenetrateLightningDamageValue}%</size></color>\n";
+
+                // 4. 범위 - 생략 (단일 대상)
+
+                // 5. 소모 (#FFB347 / #FFDAB9)
+                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {Spear_Config.SpearStep6PenetrateStaminaCostValue}%</size></color>\n";
+
+                // 6. 스킬유형 (G키 강조: #FF4500 / #00FF00)
+                tooltip += $"<color=#FF4500><size=16>스킬유형: </size></color><color=#00FF00><size=16>액티브 스킬 - G키</size></color>\n";
+
+                // 7. 쿨타임 (#FFA500 / #FFDB58)
+                tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{Spear_Config.SpearStep6PenetrateCooldownValue}초</size></color>\n";
+
+                // 8. 필요조건 (#98FB98 / #00FF00)
+                tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>창 착용</size></color>\n";
+
+                // 9. 확인사항 (#F0E68C / #FFE4B5)
+                tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>같은 무기 전문가 내에서만 다중 습득 가능</size></color>\n";
+
+                // 10. 필요포인트 (#87CEEB / #FF6B6B)
+                tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>3</size></color>";
+
+                return tooltip.TrimEnd('\n');
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[창 툴팁] GetSpearStep5PenetrateTooltip 생성 실패: {ex.Message}");
+                return "툴팁 생성 오류";
+            }
         }
 
         /// <summary>
-        /// 연공창 액티브 스킬 툴팁 생성 (힐 스킬 형식)
+        /// 연공창 액티브 스킬 툴팁 생성 (H키 액티브 스킬)
+        /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형(H키 강조) → 쿨타임 → 필요조건 → 확인사항 → 필요포인트
         /// </summary>
         public static string GetSpearEnhancedThrowTooltip()
         {
@@ -174,32 +208,35 @@ namespace CaptainSkillTree.SkillTree
             {
                 var tooltip = "";
 
-                // 스킬 이름 (황금색, 크기 22 - 힐 스킬과 동일)
+                // 1. 스킬명 (#FFD700, size=22)
                 tooltip += $"<color=#FFD700><size=22>연공창</size></color>\n\n";
 
-                // 설명 섹션
-                tooltip += $"<color=#90EE90><size=16>설명: </size></color><color=#E0E0E0><size=16>투창을 강화하여 창을 던지고 적과 주변 몬스터를 넉백시킴</size></color>\n";
+                // 2. 설명 (#FFD700 / #E0E0E0)
+                tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>투창을 강화하여 창을 던지고 적과 주변 몬스터를 넉백시킴</size></color>\n";
 
-                // ⚔️ 데미지 섹션
-                tooltip += $"<color=#FF6B6B><size=16>⚔️ 데미지: </size></color><color=#FFB6C1><size=16>+{SkillTreeConfig.SpearStep6ComboDamageValue}%</size></color>\n";
+                // 3. 데미지 (#FF6B6B / #FFB6C1)
+                tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>+{SkillTreeConfig.SpearStep6ComboDamageValue}%</size></color>\n";
 
-                // 📍 범위 섹션
-                tooltip += $"<color=#87CEEB><size=16>📍 범위: </size></color><color=#B0E0E6><size=16>주변 {SkillTreeConfig.SpearStep2ThrowRangeValue}m</size></color>\n";
+                // 4. 범위 (#87CEEB / #B0E0E6)
+                tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>주변 {SkillTreeConfig.SpearStep2ThrowRangeValue}m</size></color>\n";
 
-                // ⚡ 소모 섹션
-                tooltip += $"<color=#FFB347><size=16>⚡ 소모: </size></color><color=#FFDAB9><size=16>스태미나 {SkillTreeConfig.SpearStep2ThrowStaminaCostValue}%</size></color>\n";
+                // 5. 소모 (#FFB347 / #FFDAB9)
+                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {SkillTreeConfig.SpearStep2ThrowStaminaCostValue}%</size></color>\n";
 
-                // 🔮 스킬유형 섹션
-                tooltip += $"<color=#DDA0DD><size=16>🔮 스킬유형: </size></color><color=#E6E6FA><size=16>액티브 스킬 - G키</size></color>\n";
+                // 6. 스킬유형 (H키 강조: #FF1493 / #00FFFF)
+                tooltip += $"<color=#FF1493><size=16>스킬유형: </size></color><color=#00FFFF><size=16>액티브 스킬 - H키</size></color>\n";
 
-                // ⏳ 쿨타임 섹션
-                tooltip += $"<color=#FFA500><size=16>⏳ 쿨타임: </size></color><color=#FFDB58><size=16>{SkillTreeConfig.SpearStep6ComboCooldownValue}초</size></color>\n";
+                // 7. 쿨타임 (#FFA500 / #FFDB58)
+                tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{SkillTreeConfig.SpearStep6ComboCooldownValue}초</size></color>\n";
 
-                // ✅ 필요조건 섹션
-                tooltip += $"<color=#98FB98><size=16>✅ 필요조건: </size></color><color=#00FF00><size=16>창 착용</size></color>\n";
+                // 8. 필요조건 (#98FB98 / #00FF00)
+                tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>창 착용</size></color>\n";
 
-                // 💎 필요포인트 섹션
-                tooltip += $"<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>3</size></color>";
+                // 9. 확인사항 (#F0E68C / #FFE4B5)
+                tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>같은 무기 전문가 내에서만 다중 습득 가능</size></color>\n";
+
+                // 10. 필요포인트 (#87CEEB / #FF6B6B)
+                tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>3</size></color>";
 
                 return tooltip.TrimEnd('\n');
             }
@@ -235,7 +272,7 @@ namespace CaptainSkillTree.SkillTree
                 // 소모 섹션 (있을 때만 표시)
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스테미나 {data.consumeStamina}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.consumeStamina}</size></color>\n";
                 }
 
                 // 쿨타임 섹션 (액티브 스킬만)
@@ -253,7 +290,7 @@ namespace CaptainSkillTree.SkillTree
                 // 확인사항 섹션
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>⚠️확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>";
+                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');

@@ -53,10 +53,10 @@ namespace CaptainSkillTree.SkillTree
                 "Polearm Tree", "Tier1_회전베기_휠마우스공격력보너스", 60f,
                 "Tier 1: 회전베기(polearm_step1_spin_wheel) - 휠 마우스 공격력 보너스 (%)");
 
-            // Tier 1: 제압 공격
+            // Tier 5: 제압 공격 (티어 순서 변경: 폴암강화와 교환)
             PolearmStep1SuppressDamage = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier1_제압공격_공격력보너스", 30f,
-                "Tier 1: 제압 공격(polearm_step1_suppress) - 공격력 보너스 (%)");
+                "Polearm Tree", "Tier5_제압공격_공격력보너스", 30f,
+                "Tier 5: 제압 공격(polearm_step1_suppress) - 공격력 보너스 (%)");
 
             // Tier 2: 영웅 타격
             PolearmStep2HeroKnockbackChance = SkillTreeConfig.BindServerSync(config,
@@ -86,10 +86,10 @@ namespace CaptainSkillTree.SkillTree
                 "Polearm Tree", "Tier4_반달베기_공격스태미나감소", 15f,
                 "Tier 4: 반달 베기(polearm_step4_moon) - 공격 스태미나 감소 (%)");
 
-            // Tier 4: 폴암강화
+            // Tier 3: 폴암강화 (티어 순서 변경: 제압 공격과 교환)
             PolearmStep4ChargeDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier4_폴암강화_무기공격력보너스", 5f,
-                "Tier 4: 폴암강화(polearm_step4_charge) - 무기 공격력 보너스 (고정 수치)");
+                "Polearm Tree", "Tier3_폴암강화_무기공격력보너스", 5f,
+                "Tier 3: 폴암강화(polearm_step4_charge) - 무기 공격력 보너스 (고정 수치)");
 
             // Tier 5: 장창의 제왕
             PolearmStep5KingHealthThreshold = SkillTreeConfig.BindServerSync(config,
