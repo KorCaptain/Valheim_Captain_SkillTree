@@ -9,6 +9,17 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static class Crossbow_Config
     {
+        #region 필요 포인트 설정
+
+        public static ConfigEntry<int> CrossbowExpertRequiredPoints;
+        public static ConfigEntry<int> CrossbowStep2RequiredPoints;
+        public static ConfigEntry<int> CrossbowStep3RequiredPoints;
+        public static ConfigEntry<int> CrossbowStep4RequiredPoints;
+        public static ConfigEntry<int> CrossbowStep5RequiredPoints;
+        public static ConfigEntry<int> CrossbowOneShotRequiredPoints;
+
+        #endregion
+
         #region 석궁 전문가 스킬 기본 설정
 
         // Tier 1: 석궁 전문가
@@ -54,6 +65,31 @@ namespace CaptainSkillTree.SkillTree
         #endregion
 
         #region Dynamic Value Properties (MMO 연동)
+
+        // === 필요 포인트 동적 값 ===
+        public static int CrossbowExpertRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_expert_required_points",
+            CrossbowExpertRequiredPoints?.Value ?? 2);
+
+        public static int CrossbowStep2RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_step2_required_points",
+            CrossbowStep2RequiredPoints?.Value ?? 2);
+
+        public static int CrossbowStep3RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_step3_required_points",
+            CrossbowStep3RequiredPoints?.Value ?? 2);
+
+        public static int CrossbowStep4RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_step4_required_points",
+            CrossbowStep4RequiredPoints?.Value ?? 2);
+
+        public static int CrossbowStep5RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_step5_required_points",
+            CrossbowStep5RequiredPoints?.Value ?? 3);
+
+        public static int CrossbowOneShotRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_oneshot_required_points",
+            CrossbowOneShotRequiredPoints?.Value ?? 4);
 
         // === 석궁 전문가 동적 값 ===
         public static float CrossbowExpertDamageBonusValue =>
@@ -153,6 +189,31 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogDebug("=== [석궁 컨피그] 초기화 시작 ===");
 
+                // === 필요 포인트 설정 ===
+                CrossbowExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier1_석궁전문가_필요포인트", 2,
+                    "Tier 1: 석궁 전문가(crossbow_Step1_damage) - 필요 포인트");
+
+                CrossbowStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier2_연속발사_필요포인트", 2,
+                    "Tier 2: 연속 발사(crossbow_Step2_rapid_fire) - 필요 포인트");
+
+                CrossbowStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier3_석궁스킬_필요포인트", 2,
+                    "Tier 3: 석궁 스킬 - 필요 포인트");
+
+                CrossbowStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier4_자동장전_필요포인트", 2,
+                    "Tier 4: 자동 장전(crossbow_Step4_re) - 필요 포인트");
+
+                CrossbowStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier5_석궁스킬_필요포인트", 3,
+                    "Tier 5: 석궁 스킬 - 필요 포인트");
+
+                CrossbowOneShotRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier6_단한발_필요포인트", 4,
+                    "Tier 6: 단 한 발(R키 액티브) - 필요 포인트");
+
                 // === Tier 1: 석궁 전문가 ===
                 CrossbowExpertDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier1_석궁전문가_데미지보너스", 5f,
@@ -249,6 +310,11 @@ namespace CaptainSkillTree.SkillTree
                 CrossbowOneShotCooldown = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier6_단한발_쿨타임", 60f,
                     "Tier 6: 단 한 발(crossbow_Step6_expert) - 쿨타임 (초)");
+
+                // === 구분선 ===
+                SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "──────────────────────────", "",
+                    "--------------------------");
 
                 // === 이벤트 핸들러 등록 (툴팁 실시간 업데이트) ===
                 RegisterCrossbowEventHandlers();

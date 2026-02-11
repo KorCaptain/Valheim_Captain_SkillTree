@@ -7,6 +7,15 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static class Bow_Config
     {
+        // === 필요 포인트 설정 ===
+        public static ConfigEntry<int> BowExpertRequiredPoints;
+        public static ConfigEntry<int> BowStep2RequiredPoints;
+        public static ConfigEntry<int> BowMultishotRequiredPoints;
+        public static ConfigEntry<int> BowStep3RequiredPoints;
+        public static ConfigEntry<int> BowStep4RequiredPoints;
+        public static ConfigEntry<int> BowStep5RequiredPoints;
+        public static ConfigEntry<int> BowExplosiveArrowRequiredPoints;
+
         // === 활 전문가 멀티샷 패시브 스킬 설정 ===
         public static ConfigEntry<float> BowMultishotLv1Chance;
         public static ConfigEntry<float> BowMultishotLv2Chance;
@@ -37,6 +46,15 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> BowExplosiveArrowCooldown;
         public static ConfigEntry<float> BowExplosiveArrowStaminaCost;
         public static ConfigEntry<float> BowExplosiveArrowRadius;
+
+        // === 필요 포인트 접근 프로퍼티 ===
+        public static int BowExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_expert_required_points", BowExpertRequiredPoints?.Value ?? 2);
+        public static int BowStep2RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step2_required_points", BowStep2RequiredPoints?.Value ?? 2);
+        public static int BowMultishotRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_multishot_required_points", BowMultishotRequiredPoints?.Value ?? 2);
+        public static int BowStep3RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step3_required_points", BowStep3RequiredPoints?.Value ?? 2);
+        public static int BowStep4RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step4_required_points", BowStep4RequiredPoints?.Value ?? 3);
+        public static int BowStep5RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step5_required_points", BowStep5RequiredPoints?.Value ?? 3);
+        public static int BowExplosiveArrowRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_explosive_required_points", BowExplosiveArrowRequiredPoints?.Value ?? 4);
 
         // === 활 전문가 접근 프로퍼티들 ===
         public static float BowMultishotLv1ChanceValue => SkillTreeConfig.GetEffectiveValue("Bow_MultiShot_Lv1_Chance", BowMultishotLv1Chance.Value);
@@ -69,26 +87,55 @@ namespace CaptainSkillTree.SkillTree
 
         public static void Initialize(ConfigFile config)
         {
+            // === 필요 포인트 설정 ===
+            BowExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier1_활전문가_필요포인트", 2,
+                "Tier 1: 활 전문가(bow_Step1_damage) - 필요 포인트");
+
+            BowStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier2_집중사격_필요포인트", 2,
+                "Tier 2: 집중 사격(bow_Step2_focus) - 필요 포인트");
+
+            BowMultishotRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier2_멀티샷_필요포인트", 2,
+                "Tier 2: 멀티샷 Lv1(bow_Step2_multishot) - 필요 포인트");
+
+            BowStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier3_활숙련_필요포인트", 2,
+                "Tier 3: 활 숙련(bow_Step3_speedshot) - 필요 포인트");
+
+            BowStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier4_멀티샷Lv2_필요포인트", 3,
+                "Tier 4: 멀티샷 Lv2(bow_Step4_multishot2) - 필요 포인트");
+
+            BowStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier5_정조준_필요포인트", 3,
+                "Tier 5: 정조준(bow_Step5_master) - 필요 포인트");
+
+            BowExplosiveArrowRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier6_폭발화살_필요포인트", 4,
+                "Tier 6: 폭발 화살(R키 액티브) - 필요 포인트");
+
             // === Bow Tree: 멀티샷 패시브 ===
             BowMultishotLv1Chance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier_멀티샷Lv1_발동확률", 15f,
-                "활 전문가: 멀티샷 Lv1(bow_multishot_lv1) - 발동 확률 (%)");
+                "Bow Tree", "Tier2_멀티샷Lv1_발동확률", 15f,
+                "Tier 2: 멀티샷 Lv1(bow_multishot_lv1) - 발동 확률 (%)");
 
             BowMultishotLv2Chance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier_멀티샷Lv2_발동확률", 36f,
-                "활 전문가: 멀티샷 Lv2(bow_multishot_lv2) - 발동 확률 (%)");
+                "Bow Tree", "Tier4_멀티샷Lv2_발동확률", 36f,
+                "Tier 4: 멀티샷 Lv2(bow_multishot_lv2) - 발동 확률 (%)");
 
             BowMultishotArrowCount = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier_멀티샷_추가화살수", 2,
-                "활 전문가: 멀티샷 - 추가 발사 화살 수");
+                "Bow Tree", "Tier2_멀티샷_추가화살수", 2,
+                "Tier 2: 멀티샷 - 추가 발사 화살 수");
 
             BowMultishotArrowConsumption = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier_멀티샷_화살소모량", 0,
-                "활 전문가: 멀티샷 - 화살 소모량");
+                "Bow Tree", "Tier2_멀티샷_화살소모량", 0,
+                "Tier 2: 멀티샷 - 화살 소모량");
 
             BowMultishotDamagePercent = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier_멀티샷_화살데미지비율", 70f,
-                "활 전문가: 멀티샷 - 화살당 데미지 비율 (%)");
+                "Bow Tree", "Tier2_멀티샷_화살데미지비율", 70f,
+                "Tier 2: 멀티샷 - 화살당 데미지 비율 (%)");
 
             // === Bow Tree: 공격 스킬 ===
             BowStep1ExpertDamageBonus = SkillTreeConfig.BindServerSync(config,

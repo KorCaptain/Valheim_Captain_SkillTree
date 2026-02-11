@@ -7,6 +7,17 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static class Speed_Config
     {
+        // === 필요 포인트 설정 ===
+        public static ConfigEntry<int> SpeedRootRequiredPoints;
+        public static ConfigEntry<int> SpeedStep1RequiredPoints;
+        public static ConfigEntry<int> SpeedStep2RequiredPoints;
+        public static ConfigEntry<int> SpeedStep3RequiredPoints;
+        public static ConfigEntry<int> SpeedStep4RequiredPoints;
+        public static ConfigEntry<int> SpeedStep5RequiredPoints;
+        public static ConfigEntry<int> SpeedStep6RequiredPoints;
+        public static ConfigEntry<int> SpeedStep7RequiredPoints;
+        public static ConfigEntry<int> SpeedStep8RequiredPoints;
+
         // === 티어0: 속도 전문가 ===
         public static ConfigEntry<float> SpeedRootMoveSpeed;
 
@@ -64,7 +75,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpeedStaffCastSpeedFinal;
         public static ConfigEntry<float> SpeedStaffTripleEitrRecovery;
 
-        // === 레거시 (하위 호환용) ===
+        // === 티어0~2 추가 설정 ===
         public static ConfigEntry<float> SpeedBaseMoveSpeed;
         public static ConfigEntry<float> SpeedBaseAttackSpeed;
         public static ConfigEntry<float> SpeedBaseDodgeSpeed;
@@ -72,6 +83,17 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpeedBowExpertDuration;
         public static ConfigEntry<float> SpeedStaffCastSpeed;
         public static ConfigEntry<float> SpeedCooldownReduction;
+
+        // === 필요 포인트 접근 프로퍼티 ===
+        public static int SpeedRootRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_root_required_points", SpeedRootRequiredPoints?.Value ?? 2);
+        public static int SpeedStep1RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step1_required_points", SpeedStep1RequiredPoints?.Value ?? 2);
+        public static int SpeedStep2RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step2_required_points", SpeedStep2RequiredPoints?.Value ?? 2);
+        public static int SpeedStep3RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step3_required_points", SpeedStep3RequiredPoints?.Value ?? 2);
+        public static int SpeedStep4RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step4_required_points", SpeedStep4RequiredPoints?.Value ?? 2);
+        public static int SpeedStep5RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step5_required_points", SpeedStep5RequiredPoints?.Value ?? 3);
+        public static int SpeedStep6RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step6_required_points", SpeedStep6RequiredPoints?.Value ?? 2);
+        public static int SpeedStep7RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step7_required_points", SpeedStep7RequiredPoints?.Value ?? 3);
+        public static int SpeedStep8RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step8_required_points", SpeedStep8RequiredPoints?.Value ?? 2);
 
         // === 속도 전문가 접근 프로퍼티들 ===
         public static float SpeedRootMoveSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Expert_MoveSpeed", SpeedRootMoveSpeed.Value);
@@ -110,23 +132,60 @@ namespace CaptainSkillTree.SkillTree
         public static float SpeedStaffCastSpeedFinalValue => SkillTreeConfig.GetEffectiveValue("Speed_Step8_StaffCastSpeed", SpeedStaffCastSpeedFinal.Value);
         public static float SpeedStaffTripleEitrRecoveryValue => SkillTreeConfig.GetEffectiveValue("Speed_Step8_StaffTripleEitr", SpeedStaffTripleEitrRecovery.Value);
 
-        // 레거시 프로퍼티
-        public static float SpeedBaseMoveSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Legacy_MoveSpeed", SpeedBaseMoveSpeed.Value);
-        public static float SpeedBaseAttackSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Legacy_AttackSpeed", SpeedBaseAttackSpeed.Value);
-        public static float SpeedBaseDodgeSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Legacy_DodgeSpeed", SpeedBaseDodgeSpeed.Value);
-        public static float SpeedMeleeComboSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Legacy_MeleeComboSpeed", SpeedMeleeComboSpeed.Value);
-        public static float SpeedBowExpertDurationValue => SkillTreeConfig.GetEffectiveValue("Speed_Legacy_BowExpertDuration", SpeedBowExpertDuration.Value);
-        public static float SpeedStaffCastSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Legacy_StaffCastSpeed", SpeedStaffCastSpeed.Value);
-        public static float SpeedCooldownReductionValue => SkillTreeConfig.GetEffectiveValue("Speed_Legacy_CooldownReduction", SpeedCooldownReduction.Value);
+        // 티어0~2 추가 프로퍼티
+        public static float SpeedBaseMoveSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier0_BaseMoveSpeed", SpeedBaseMoveSpeed.Value);
+        public static float SpeedBaseAttackSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier1_BaseAttackSpeed", SpeedBaseAttackSpeed.Value);
+        public static float SpeedBaseDodgeSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier1_BaseDodgeSpeed", SpeedBaseDodgeSpeed.Value);
+        public static float SpeedMeleeComboSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier2_MeleeComboSpeed", SpeedMeleeComboSpeed.Value);
+        public static float SpeedBowExpertDurationValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier2_BowExpertDuration", SpeedBowExpertDuration.Value);
+        public static float SpeedStaffCastSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier2_StaffCastSpeed", SpeedStaffCastSpeed.Value);
+        public static float SpeedCooldownReductionValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier0_CooldownReduction", SpeedCooldownReduction.Value);
 
-        // 추가 레거시 호환 프로퍼티
-        public static float SpeedMeleeComboBonusValue => SkillTreeConfig.GetEffectiveValue("Speed_MeleeComboBonus", SpeedMeleeComboStamina.Value);
-        public static float SpeedCrossbowReloadSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_CrossbowReloadSpeed", SpeedCrossbowDrawSpeed.Value);
-        public static float SpeedBowHitBonusValue => SkillTreeConfig.GetEffectiveValue("Speed_BowHitBonus", SpeedBowExpertStamina.Value);
-        public static float SpeedBowHitDurationValue => SkillTreeConfig.GetEffectiveValue("Speed_BowHitDuration", SpeedBowExpertDuration.Value);
+        // 티어2 호환 프로퍼티
+        public static float SpeedMeleeComboBonusValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier2_MeleeComboBonus", SpeedMeleeComboStamina.Value);
+        public static float SpeedCrossbowReloadSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier2_CrossbowReloadSpeed", SpeedCrossbowDrawSpeed.Value);
+        public static float SpeedBowHitBonusValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier2_BowHitBonus", SpeedBowExpertStamina.Value);
+        public static float SpeedBowHitDurationValue => SkillTreeConfig.GetEffectiveValue("Speed_Tier2_BowHitDuration", SpeedBowExpertDuration.Value);
 
         public static void Initialize(ConfigFile config)
         {
+            // === 필요 포인트 설정 ===
+            SpeedRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier0_속도전문가_필요포인트", 2,
+                "Tier 0: 속도 전문가(speed_root) - 필요 포인트");
+
+            SpeedStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier1_민첩함의기초_필요포인트", 2,
+                "Tier 1: 민첩함의 기초(speed_base) - 필요 포인트");
+
+            SpeedStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier2_무기특화_필요포인트", 2,
+                "Tier 2: 무기별 특화 스킬 - 필요 포인트");
+
+            SpeedStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier3_수련자_필요포인트", 2,
+                "Tier 3: 수련자 스킬 - 필요 포인트");
+
+            SpeedStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier4_마스터_필요포인트", 2,
+                "Tier 4: 마스터 스킬 - 필요 포인트");
+
+            SpeedStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier5_점프숙련자_필요포인트", 3,
+                "Tier 5: 점프 숙련자(agility_peak) - 필요 포인트");
+
+            SpeedStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier6_스탯_필요포인트", 2,
+                "Tier 6: 스탯 스킬 - 필요 포인트");
+
+            SpeedStep7RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier7_숙련자_필요포인트", 3,
+                "Tier 7: 숙련자(all_master) - 필요 포인트");
+
+            SpeedStep8RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier8_최종가속_필요포인트", 2,
+                "Tier 8: 최종 가속 스킬 - 필요 포인트");
+
             // === 티어0: 속도 전문가 ===
             SpeedRootMoveSpeed = SkillTreeConfig.BindServerSync(config,
                 "Speed Tree", "Tier0_속도전문가_이동속도", 5f,
@@ -276,34 +335,34 @@ namespace CaptainSkillTree.SkillTree
                 "Speed Tree", "Tier8_시전가속_3연속에이트르회복", 12f,
                 "티어8: 시전 가속 - 3연속 적중 시 에이트르 최대치의 회복률 (%)");
 
-            // === 기타 (하위 호환 및 공통) ===
+            // === 티어0~2 추가 설정 ===
             SpeedBaseAttackSpeed = SkillTreeConfig.BindServerSync(config,
                 "Speed Tree", "Tier1_민첩함의기초_공격속도", 5f,
                 "티어1: 민첩함의 기초 - 공격속도 보너스 (%)");
 
             SpeedBaseDodgeSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Common_구르기속도", 10f,
-                "공통: 구르기 속도 보너스 (%)");
+                "Speed Tree", "Tier1_민첩함의기초_구르기속도", 10f,
+                "티어1: 민첩함의 기초 - 구르기 속도 보너스 (%)");
 
             SpeedBaseMoveSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Common_기본이동속도", 3f,
-                "공통: 기본 이동속도 보너스 (%)");
+                "Speed Tree", "Tier0_속도전문가_기본이동속도", 3f,
+                "티어0: 속도 전문가 - 기본 이동속도 보너스 (%)");
 
             SpeedMeleeComboSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Common_근접콤보속도", 5f,
-                "공통: 근접 콤보 속도 보너스 (%)");
+                "Speed Tree", "Tier2_연속의흐름_콤보속도", 5f,
+                "티어2: 연속의 흐름 - 근접 콤보 속도 보너스 (%)");
 
             SpeedBowExpertDuration = SkillTreeConfig.BindServerSync(config,
                 "Speed Tree", "Tier2_활숙련자_버프지속시간", 5f,
                 "티어2: 활 숙련자 버프 지속시간 (초)");
 
             SpeedStaffCastSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Common_지팡이시전속도", 4f,
-                "공통: 지팡이 시전 중 이동속도 (%)");
+                "Speed Tree", "Tier2_이동시전_시전속도", 4f,
+                "티어2: 이동 시전 - 지팡이 시전 중 이동속도 (%)");
 
             SpeedCooldownReduction = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Common_쿨타임감소", 1f,
-                "공통: 쿨타임 감소 (초)");
+                "Speed Tree", "Tier0_속도전문가_쿨타임감소", 1f,
+                "티어0: 속도 전문가 - 쿨타임 감소 (초)");
 
             Plugin.Log.LogDebug("[Speed_Config] 속도 전문가 트리 설정 초기화 완료");
         }

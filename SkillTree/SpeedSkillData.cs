@@ -16,8 +16,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_root",
                 Name = "속도 전문가",
-                Description = $"이동속도 +{SkillTreeConfig.SpeedRootMoveSpeedValue}%",
-                RequiredPoints = 2,
+                Description = $"이동속도 +{Speed_Config.SpeedRootMoveSpeedValue}%",
+                RequiredPoints = Speed_Config.SpeedRootRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 0,
                 Position = new Vector2(-90, -60),
@@ -29,9 +29,9 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player != null) {
                         SkillEffect.ShowSkillEffectText(player,
-                            $"🏃 속도 전문가 투자 완료! (+{SkillTreeConfig.SpeedRootMoveSpeedValue}% 이동속도)",
+                            $"🏃 속도 전문가 투자 완료! (+{Speed_Config.SpeedRootMoveSpeedValue}% 이동속도)",
                             new Color(0.2f, 0.9f, 1f), SkillEffect.SkillEffectTextType.Combat);
-                        Plugin.Log.LogInfo($"[속도 전문가] 스킬 투자 완료: +{SkillTreeConfig.SpeedRootMoveSpeedValue}% 이동속도");
+                        Plugin.Log.LogInfo($"[속도 전문가] 스킬 투자 완료: +{Speed_Config.SpeedRootMoveSpeedValue}% 이동속도");
                     }
                 }
             });
@@ -40,8 +40,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_base",
                 Name = "민첩함의 기초",
-                Description = $"공격속도 +{SkillTreeConfig.SpeedBaseAttackSpeedValue}%, 구르기 후 {SkillTreeConfig.SpeedBaseDodgeDurationValue}초간 이동속도 +{SkillTreeConfig.SpeedBaseDodgeMoveSpeedValue}%",
-                RequiredPoints = 2,
+                Description = $"공격속도 +{Speed_Config.SpeedBaseAttackSpeedValue}%, 구르기 후 {Speed_Config.SpeedBaseDodgeDurationValue}초간 이동속도 +{Speed_Config.SpeedBaseDodgeMoveSpeedValue}%",
+                RequiredPoints = Speed_Config.SpeedStep1RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
                 Position = new Vector2(-180, -100),
@@ -55,7 +55,7 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player != null) {
                         SkillEffect.ShowSkillEffectText(player,
-                            $"🏃 민첩함의 기초 습득!\n공격속도 +{SkillTreeConfig.SpeedBaseAttackSpeedValue}%\n구르기 후 이동속도 +{SkillTreeConfig.SpeedBaseDodgeMoveSpeedValue}%",
+                            $"🏃 민첩함의 기초 습득!\n공격속도 +{Speed_Config.SpeedBaseAttackSpeedValue}%\n구르기 후 이동속도 +{Speed_Config.SpeedBaseDodgeMoveSpeedValue}%",
                             new Color(0.2f, 0.9f, 1f), SkillEffect.SkillEffectTextType.Combat);
                     }
                 }
@@ -65,8 +65,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "melee_combo",
                 Name = "연속의 흐름",
-                Description = $"근접 2연속 적중 시 {SkillTreeConfig.SpeedMeleeComboDurationValue}초간 공격속도 +{SkillTreeConfig.SpeedMeleeComboAttackSpeedValue}%, 스태미나 -{SkillTreeConfig.SpeedMeleeComboStaminaValue}%",
-                RequiredPoints = 2,
+                Description = $"근접 2연속 적중 시 {Speed_Config.SpeedMeleeComboDurationValue}초간 공격속도 +{Speed_Config.SpeedMeleeComboAttackSpeedValue}%, 스태미나 -{Speed_Config.SpeedMeleeComboStaminaValue}%",
+                RequiredPoints = Speed_Config.SpeedStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(-310, -80),
@@ -82,8 +82,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "crossbow_reload2",
                 Name = "석궁 숙련자",
-                Description = $"석궁 적중 시 이동속도 +{SkillTreeConfig.SpeedCrossbowExpertSpeedValue}%({SkillTreeConfig.SpeedCrossbowExpertDurationValue}초), 버프 중 재장전 +{SkillTreeConfig.SpeedCrossbowExpertReloadValue}%",
-                RequiredPoints = 2,
+                Description = $"석궁 적중 시 이동속도 +{Speed_Config.SpeedCrossbowExpertSpeedValue}%({Speed_Config.SpeedCrossbowExpertDurationValue}초), 버프 중 재장전 +{Speed_Config.SpeedCrossbowExpertReloadValue}%",
+                RequiredPoints = Speed_Config.SpeedStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(-270, -130),
@@ -99,8 +99,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_speed2",
                 Name = "활 숙련자",
-                Description = $"활 2연속 적중 시 스태미나 -{SkillTreeConfig.SpeedBowExpertStaminaValue}%, 다음 장전 +{SkillTreeConfig.SpeedBowExpertDrawSpeedValue}%",
-                RequiredPoints = 2,
+                Description = $"활 2연속 적중 시 스태미나 -{Speed_Config.SpeedBowExpertStaminaValue}%, 다음 장전 +{Speed_Config.SpeedBowExpertDrawSpeedValue}%",
+                RequiredPoints = Speed_Config.SpeedStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(-240, -160),
@@ -116,8 +116,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "moving_cast",
                 Name = "이동 시전",
-                Description = $"마법 시전 중 이동속도 +{SkillTreeConfig.SpeedStaffCastMoveSpeedValue}%, 에이트르 소모 -{SkillTreeConfig.SpeedStaffCastEitrReductionValue}%",
-                RequiredPoints = 2,
+                Description = $"마법 시전 중 이동속도 +{Speed_Config.SpeedStaffCastMoveSpeedValue}%, 에이트르 소모 -{Speed_Config.SpeedStaffCastEitrReductionValue}%",
+                RequiredPoints = Speed_Config.SpeedStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(-200, -210),
@@ -134,8 +134,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_ex1",
                 Name = "수련자1",
-                Description = $"근접무기 숙련 +{SkillTreeConfig.SpeedEx1MeleeSkillValue}, 석궁 숙련 +{SkillTreeConfig.SpeedEx1CrossbowSkillValue}",
-                RequiredPoints = 2,
+                Description = $"근접무기 숙련 +{Speed_Config.SpeedEx1MeleeSkillValue}, 석궁 숙련 +{Speed_Config.SpeedEx1CrossbowSkillValue}",
+                RequiredPoints = Speed_Config.SpeedStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
                 Position = new Vector2(-330, -160),
@@ -151,8 +151,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_ex2",
                 Name = "수련자2",
-                Description = $"마법 숙련 +{SkillTreeConfig.SpeedEx2StaffSkillValue}, 활 숙련 +{SkillTreeConfig.SpeedEx2BowSkillValue}",
-                RequiredPoints = 2,
+                Description = $"마법 숙련 +{Speed_Config.SpeedEx2StaffSkillValue}, 활 숙련 +{Speed_Config.SpeedEx2BowSkillValue}",
+                RequiredPoints = Speed_Config.SpeedStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
                 Position = new Vector2(-300, -190),
@@ -169,8 +169,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_master",
                 Name = "에너자이져",
-                Description = $"음식 소모 속도 -{SkillTreeConfig.SpeedFoodEfficiencyValue}%",
-                RequiredPoints = 2,
+                Description = $"음식 소모 속도 -{Speed_Config.SpeedFoodEfficiencyValue}%",
+                RequiredPoints = Speed_Config.SpeedStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
                 Position = new Vector2(-390, -190),
@@ -186,8 +186,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "ship_master",
                 Name = "선 장",
-                Description = $"배 운전시 속도 +{SkillTreeConfig.SpeedShipBonusValue}%",
-                RequiredPoints = 2,
+                Description = $"배 운전시 속도 +{Speed_Config.SpeedShipBonusValue}%",
+                RequiredPoints = Speed_Config.SpeedStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
                 Position = new Vector2(-360, -220),
@@ -204,8 +204,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "agility_peak",
                 Name = "점프 숙련자",
-                Description = $"점프 숙련 +{SkillTreeConfig.JumpSkillLevelBonusValue}, 점프 스태미나 -{SkillTreeConfig.JumpStaminaReductionValue}%",
-                RequiredPoints = 3,
+                Description = $"점프 숙련 +{Speed_Config.JumpSkillLevelBonusValue}, 점프 스태미나 -{Speed_Config.JumpStaminaReductionValue}%",
+                RequiredPoints = Speed_Config.SpeedStep5RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
                 Position = new Vector2(-425, -230),
@@ -220,7 +220,7 @@ namespace CaptainSkillTree.SkillTree
                     if (player == null) return;
                     var skills = player.GetSkills();
                     if (skills == null) return;
-                    float skillLevelBonus = SkillTreeConfig.JumpSkillLevelBonusValue;
+                    float skillLevelBonus = Speed_Config.JumpSkillLevelBonusValue;
                     float previousLevel = skills.GetSkillLevel(Skills.SkillType.Jump);
                     try {
                         skills.CheatRaiseSkill("Jump", skillLevelBonus, true);
@@ -237,8 +237,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_1",
                 Name = "민첩",
-                Description = $"근접 공격속도 +{SkillTreeConfig.SpeedDexterityAttackSpeedBonusValue}%, 이동속도 +{SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue}%",
-                RequiredPoints = 2,
+                Description = $"근접 공격속도 +{Speed_Config.SpeedDexterityAttackSpeedBonusValue}%, 이동속도 +{Speed_Config.SpeedDexterityMoveSpeedBonusValue}%",
+                RequiredPoints = Speed_Config.SpeedStep6RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(-510, -210),
@@ -254,8 +254,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_2",
                 Name = "지구력",
-                Description = $"스태미나 최대치 +{SkillTreeConfig.SpeedEnduranceStaminaBonusValue}",
-                RequiredPoints = 2,
+                Description = $"스태미나 최대치 +{Speed_Config.SpeedEnduranceStaminaBonusValue}",
+                RequiredPoints = Speed_Config.SpeedStep6RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(-475, -250),
@@ -271,8 +271,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "speed_3",
                 Name = "지능",
-                Description = $"에이트르 최대치 +{SkillTreeConfig.SpeedIntellectEitrBonusValue}",
-                RequiredPoints = 2,
+                Description = $"에이트르 최대치 +{Speed_Config.SpeedIntellectEitrBonusValue}",
+                RequiredPoints = Speed_Config.SpeedStep6RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(-430, -290),
@@ -289,8 +289,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "all_master",
                 Name = "숙련자",
-                Description = $"달리기 숙련 +{SkillTreeConfig.AllMasterRunSkillValue}, 점프 숙련 +{SkillTreeConfig.AllMasterJumpSkillValue}",
-                RequiredPoints = 3,
+                Description = $"달리기 숙련 +{Speed_Config.AllMasterRunSkillValue}, 점프 숙련 +{Speed_Config.AllMasterJumpSkillValue}",
+                RequiredPoints = Speed_Config.SpeedStep7RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 7,
                 Position = new Vector2(-565, -280),
@@ -307,8 +307,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "melee_speed1",
                 Name = "근접 가속",
-                Description = $"근접 공격속도 +{SkillTreeConfig.SpeedMeleeAttackSpeedValue}%, 3연속 적중 시 다음 공격속도 +{SkillTreeConfig.SpeedMeleeComboTripleBonusValue}%",
-                RequiredPoints = 2,
+                Description = $"근접 공격속도 +{Speed_Config.SpeedMeleeAttackSpeedValue}%, 3연속 적중 시 다음 공격속도 +{Speed_Config.SpeedMeleeComboTripleBonusValue}%",
+                RequiredPoints = Speed_Config.SpeedStep8RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 8,
                 Position = new Vector2(-645, -250),
@@ -324,8 +324,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "crossbow_draw1",
                 Name = "석궁 가속",
-                Description = $"석궁 재장전 +{SkillTreeConfig.SpeedCrossbowDrawSpeedValue}%, 재장전 중 이동속도 +{SkillTreeConfig.SpeedCrossbowReloadMoveSpeedValue}%",
-                RequiredPoints = 2,
+                Description = $"석궁 재장전 +{Speed_Config.SpeedCrossbowDrawSpeedValue}%, 재장전 중 이동속도 +{Speed_Config.SpeedCrossbowReloadMoveSpeedValue}%",
+                RequiredPoints = Speed_Config.SpeedStep8RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 8,
                 Position = new Vector2(-665, -300),
@@ -341,8 +341,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "bow_draw1",
                 Name = "활 가속",
-                Description = $"활 장전 +{SkillTreeConfig.SpeedBowDrawSpeedValue}%, 장전 중 이동속도 +{SkillTreeConfig.SpeedBowDrawMoveSpeedValue}%",
-                RequiredPoints = 2,
+                Description = $"활 장전 +{Speed_Config.SpeedBowDrawSpeedValue}%, 장전 중 이동속도 +{Speed_Config.SpeedBowDrawMoveSpeedValue}%",
+                RequiredPoints = Speed_Config.SpeedStep8RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 8,
                 Position = new Vector2(-635, -350),
@@ -358,8 +358,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "staff_speed1",
                 Name = "시전 가속",
-                Description = $"마법 공격속도 +{SkillTreeConfig.SpeedStaffCastSpeedFinalValue}%, 3연속 적중 시 에이트르 최대치의 {SkillTreeConfig.SpeedStaffTripleEitrRecoveryValue}% 회복",
-                RequiredPoints = 2,
+                Description = $"마법 공격속도 +{Speed_Config.SpeedStaffCastSpeedFinalValue}%, 3연속 적중 시 에이트르 최대치의 {Speed_Config.SpeedStaffTripleEitrRecoveryValue}% 회복",
+                RequiredPoints = Speed_Config.SpeedStep8RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 8,
                 Position = new Vector2(-565, -350),

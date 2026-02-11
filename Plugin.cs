@@ -20,7 +20,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.383")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.429")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -64,11 +64,8 @@ namespace CaptainSkillTree
             // Config 시스템 초기화
             SkillTreeConfig.Initialize(Config);
 
-            // Staff Tree Config 시스템 초기화
+            // Staff Tree Config 시스템 초기화 (힐 설정 포함)
             Staff_Config.InitConfig(Config);
-
-            // 힐러모드 Config 시스템 초기화
-            HealerMode_Config.InitConfig(Config);
 
             // ===== Captain MMO Bridge 초기화 =====
             // EpicMMO 감지 후 자동으로 시스템 선택

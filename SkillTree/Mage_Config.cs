@@ -16,7 +16,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<string> MageVFXName;                   // VFX 이름 (기본: "vfx_HealthUpgrade")
 
         // === 메이지 패시브 스킬 컨피그 엔트리들 ===
-        public static ConfigEntry<float> MageElementalResistance;        // 모든 속성 저항 (기본: 15%)
+        public static ConfigEntry<float> MageElementalResistance;        // 마법 속성 저항 (기본: 15%) - 화염/냉기/번개/독/영혼
 
         // === 동적 값 접근자 (MMO 시스템 연동) ===
         public static float MageAOERangeValue => SkillTreeConfig.GetEffectiveValue("Mage_AOE_Range", MageAOERange.Value);
@@ -79,7 +79,7 @@ namespace CaptainSkillTree.SkillTree
                     "Mage Job Skills",
                     "Mage_Elemental_Resistance",
                     15.0f,
-                    "메이지 패시브 - 모든 속성 저항 (%)"
+                    "메이지 패시브 - 마법 속성 저항 (%) - 화염/냉기/번개/독/영혼 (물리 제외)"
                 );
 
                 Plugin.Log.LogDebug("[메이지 컨피그] 설정 항목 생성 완료 (액티브 + 패시브)");

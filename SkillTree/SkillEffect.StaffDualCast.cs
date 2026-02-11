@@ -24,6 +24,9 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, GameObject> staffDualCastBuffEffects = new Dictionary<Player, GameObject>();
         private static Dictionary<Player, GameObject> staffDualCastStatusEffects = new Dictionary<Player, GameObject>();
 
+        // 버프 VFX 인스턴스 관리 (statusailment_01_aura)
+        private static Dictionary<Player, GameObject> staffDualCastBuffVFXInstances = new Dictionary<Player, GameObject>();
+
         // 프리팹 캐시
         private static GameObject cachedStaffDualCastBuffPrefab = null;
         private static GameObject cachedStaffDualCastStatusPrefab = null;
@@ -95,6 +98,7 @@ namespace CaptainSkillTree.SkillTree
                 PlayStaffDualCastBuffEffect(player);
                 PlayStaffDualCastStatusEffect(player);
                 PlayStaffDualCastActivationSound(player);
+                CreateStaffDualCastBuffVFX(player);  // 버프 VFX 추가
             }
             catch (Exception ex)
             {
@@ -283,6 +287,9 @@ namespace CaptainSkillTree.SkillTree
                     staffDualCastStatusEffects.Remove(player);
                 }
 
+                // 버프 VFX 제거
+                RemoveStaffDualCastBuffVFX(player);
+
                 staffDualCastBuffCoroutines.Remove(player);
             }
             catch (Exception ex)
@@ -304,11 +311,20 @@ namespace CaptainSkillTree.SkillTree
                 float angleOffset = Staff_Config.StaffDoubleCastAngleOffsetValue;
                 float damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue / 100f;
 
+                Plugin.Log.LogInfo($"[이중 시전] Config 값 - 발사체: {projectileCount}개, 각도: {angleOffset}°, 데미지: {damagePercent * 100}%");
+
+                // 발사체 수에 따라 각도를 균등 분배
+                // 예: 2개 → -5°, +5° / 4개 → -15°, -5°, +5°, +15°
+                float totalSpread = angleOffset * 2f; // 전체 각도 범위
+                float angleStep = projectileCount > 1 ? totalSpread / (projectileCount - 1) : 0f;
+                float startAngle = -angleOffset;
+
                 for (int i = 0; i < projectileCount; i++)
                 {
-                    float angle = (i == 0) ? -angleOffset : angleOffset;
+                    float angle = projectileCount > 1 ? startAngle + (angleStep * i) : 0f;
                     Vector3 direction = Quaternion.Euler(0, angle, 0) * baseDirection;
                     CreateValheimProjectile(player, weapon, direction, damagePercent, i + 1);
+                    Plugin.Log.LogDebug($"[이중 시전] 발사체 {i + 1}/{projectileCount} 생성, 각도: {angle:F1}°");
                 }
 
                 ClearStaffDualCastBuff(player);
@@ -373,5 +389,51 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogWarning($"[이중 시전] 정리 실패: {ex.Message}");
             }
         }
+
+        #region === 버프 VFX 시스템 ===
+
+        /// <summary>
+        /// 이중시전 버프 VFX 생성 (머리 위 1.2m)
+        /// </summary>
+        private static void CreateStaffDualCastBuffVFX(Player player)
+        {
+            try
+            {
+                // 기존 VFX 제거
+                RemoveStaffDualCastBuffVFX(player);
+
+                // 새 VFX 생성 (머리 위 1.2m, 무한 지속)
+                var vfx = SimpleVFX.PlayOnPlayer(player, "statusailment_01_aura", 9999f, new Vector3(0f, 1.2f, 0f));
+                if (vfx != null)
+                {
+                    staffDualCastBuffVFXInstances[player] = vfx;
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogDebug($"[이중시전 버프 VFX] 생성 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 이중시전 버프 VFX 제거
+        /// </summary>
+        private static void RemoveStaffDualCastBuffVFX(Player player)
+        {
+            try
+            {
+                if (staffDualCastBuffVFXInstances.TryGetValue(player, out var vfx) && vfx != null)
+                {
+                    UnityEngine.Object.Destroy(vfx);
+                }
+                staffDualCastBuffVFXInstances.Remove(player);
+            }
+            catch (Exception)
+            {
+                // 조용히 무시
+            }
+        }
+
+        #endregion
     }
 }

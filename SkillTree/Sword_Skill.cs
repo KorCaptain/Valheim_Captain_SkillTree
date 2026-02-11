@@ -171,7 +171,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 6. 스킬 활성화
-                float duration = Sword_Config.SwordSlashDurationValue;
+                float duration = Sword_Config.CalculateTotalSkillDuration();
                 float cooldown = Sword_Config.RushSlashCooldownValue;
 
                 rushSlashActive[player] = true;
@@ -979,13 +979,13 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (hit.GetAttacker() is Player player && Sword_Skill.IsUsingSword(player))
                 {
-                    // Sword Slash 액티브 80% 배율 적용
+                    // Rush Slash 액티브 데미지 배율 적용
                     if (Sword_Skill.IsSwordSlashActive(player))
                     {
-                        float damageRatio = Sword_Config.SwordSlashDamageRatioValue / 100f;
+                        float damageRatio = Sword_Config.RushSlash1stDamageRatioValue / 100f;
                         hit.m_damage.m_slash *= damageRatio;
 
-                        Plugin.Log.LogDebug($"[Sword Slash] 액티브 배율 {damageRatio:F2}x (slash)");
+                        Plugin.Log.LogDebug($"[Rush Slash] 액티브 배율 {damageRatio:F2}x (slash)");
                     }
                 }
             }

@@ -453,13 +453,13 @@ namespace CaptainSkillTree.Gui
                     result = $"속성 공격 +{Staff_Config.StaffAmpDamageValue}%";
                     break;
                 case "staff_Step4_reduction": // 냉기 속성
-                    result = "냉기 공격 +3";
+                    result = $"냉기 공격 +{Staff_Config.StaffFrostDamageBonusValue}";
                     break;
                 case "staff_Step4_range": // 화염 속성
-                    result = "화염 공격 +3";
+                    result = $"화염 공격 +{Staff_Config.StaffFireDamageBonusValue}";
                     break;
                 case "staff_Step4_surge": // 번개 속성
-                    result = "번개 공격 +3";
+                    result = $"번개 공격 +{Staff_Config.StaffLightningDamageBonusValue}";
                     break;
                 case "staff_Step5_archmage": // 행운 마력
                     result = $"{Staff_Config.StaffLuckManaChanceValue}% 확률로 에이트르 소모 없음";

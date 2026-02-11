@@ -19,11 +19,11 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, float> instantHealCooldowns = new Dictionary<Player, float>();
 
         // === 설정값 ===
-        // Config 연동으로 변경 - 동적 값 사용
-        private static float INSTANT_HEAL_COOLDOWN => HealerMode_Config.HealerModeCooldownValue;           // Config 연동
-        private static float INSTANT_HEAL_EITR_COST => HealerMode_Config.HealerModeEitrCostValue;         // Config 연동
-        private static float HEAL_PERCENTAGE => HealerMode_Config.HealPercentageValue / 100f;  // Config 연동 (% → 소수)
-        private static float HEAL_RANGE => HealerMode_Config.HealRangeValue;                   // Config 연동
+        // Staff_Config 연동 - 동적 값 사용
+        private static float INSTANT_HEAL_COOLDOWN => Staff_Config.StaffHealCooldownValue;
+        private static float INSTANT_HEAL_EITR_COST => Staff_Config.StaffHealEitrCostValue;
+        private static float HEAL_PERCENTAGE => Staff_Config.StaffHealPercentageValue / 100f;  // % → 소수
+        private static float HEAL_RANGE => Staff_Config.StaffHealRangeValue;
 
         /// <summary>
         /// 메이지 즉시 힐링 시전 (H키 - 범위 내 즉시 힐링)
@@ -79,29 +79,30 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 즉시 힐링 실행 - 범위 내 모든 다른 플레이어 힐링
+        /// 즉시 힐링 실행 - 범위 내 플레이어 힐링 (자기 치료 여부는 Config로 제어)
         /// </summary>
         private static void PerformInstantHeal(Player caster)
         {
             Vector3 casterPos = caster.transform.position;
+            bool healSelf = Staff_Config.StaffHealSelfValue;
 
             // 1. 활성화 사운드 재생
             PlayInstantHealSound(caster);
 
-            // 2. 범위 내 모든 플레이어에게 즉시 힐링 적용 (시전자 제외)
+            // 2. 범위 내 플레이어에게 즉시 힐링 적용 (자기 치료 여부는 Config로 제어)
             var nearbyPlayers = Player.GetAllPlayers()
-                .Where(p => p != caster && Vector3.Distance(p.transform.position, casterPos) <= HEAL_RANGE && !p.IsDead())
+                .Where(p => (healSelf || p != caster) && Vector3.Distance(p.transform.position, casterPos) <= HEAL_RANGE && !p.IsDead())
                 .ToList();
 
-            Plugin.Log.LogInfo($"[메이지 즉시 힐링] 범위 내 플레이어 발견: {nearbyPlayers.Count}명");
+            Plugin.Log.LogInfo($"[메이지 즉시 힐링] 범위 내 플레이어 발견: {nearbyPlayers.Count}명 (자기치료: {healSelf})");
 
             foreach (var targetPlayer in nearbyPlayers)
             {
                 HealPlayer(targetPlayer, caster);
             }
 
-            // 3. 시전자에게 힐링 VFX 표시 (자기 자신은 치료 안됨을 명시)
-            PlayHealingVFX(caster, false); // 자기 자신은 치료 안됨
+            // 3. 시전자에게 힐링 VFX 표시 (자기 치료 Config에 따라)
+            PlayHealingVFX(caster, healSelf);
 
             if (nearbyPlayers.Count == 0)
             {
@@ -187,8 +188,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (isHealed)
                 {
-                    // SimpleVFX로 힐링 VFX 재생
-                    SimpleVFX.Play(HealerMode_Config.HealingVFXValue, player.transform.position, 2f);
+                    // SimpleVFX로 힐링 VFX 재생 (하드코딩)
+                    SimpleVFX.Play("vfx_spawn_small", player.transform.position, 2f);
                 }
             }
             catch (Exception ex)

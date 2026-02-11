@@ -62,6 +62,9 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, RageState> rageStates = new Dictionary<Player, RageState>();
         private static Dictionary<Player, PassiveState> passiveStates = new Dictionary<Player, PassiveState>();
 
+        // 버서커 분노 버프 VFX 인스턴스 (머리 위 statusailment_01_aura)
+        private static Dictionary<Player, GameObject> rageBuffVFXInstances = new Dictionary<Player, GameObject>();
+
         #endregion
 
         #region Active Skill - Berserker Rage
@@ -220,11 +223,84 @@ namespace CaptainSkillTree.SkillTree
             {
                 // SimpleVFX 방식: Valheim 내장 VFX로 플레이어 효과
                 SimpleVFX.PlayOnPlayer(player, Berserker_Config.BerserkerRageDurationValue);
+
+                // 머리 위 상태 표시 VFX 생성 (연공창 방식)
+                CreateRageBuffVFX(player);
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[버서커 분노] VFX 생성 실패: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// 버서커 분노 버프 VFX 생성 (머리 위 - 연공창 방식)
+        /// </summary>
+        private static void CreateRageBuffVFX(Player player)
+        {
+            try
+            {
+                // 기존 VFX가 있으면 제거
+                RemoveRageBuffVFX(player);
+
+                // 새 VFX 생성 - statusailment_01_aura (머리 높이, 수동 관리)
+                var vfx = SimpleVFX.PlayOnPlayer(player, "statusailment_01_aura", 9999f, new Vector3(0f, 1.2f, 0f));
+                if (vfx != null)
+                {
+                    rageBuffVFXInstances[player] = vfx;
+                    Plugin.Log.LogInfo("[버서커 분노] 버프 VFX 생성됨");
+
+                    // 버프 만료 시 VFX 자동 제거 코루틴 시작
+                    if (Plugin.Instance != null)
+                    {
+                        Plugin.Instance.StartCoroutine(MonitorRageBuffExpiration(player));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[버서커 분노] 버프 VFX 생성 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 버프 만료 모니터링 코루틴 - 분노 종료 시 VFX 제거
+        /// </summary>
+        private static IEnumerator MonitorRageBuffExpiration(Player player)
+        {
+            while (player != null && !player.IsDead())
+            {
+                // 버프 상태 확인
+                if (!IsPlayerInRage(player))
+                {
+                    // 버프 종료 - VFX 제거
+                    RemoveRageBuffVFX(player);
+                    Plugin.Log.LogInfo("[버서커 분노] 버프 만료 - VFX 제거됨");
+                    yield break;
+                }
+
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            // 플레이어 사망 또는 null - VFX 정리
+            RemoveRageBuffVFX(player);
+        }
+
+        /// <summary>
+        /// 버서커 분노 버프 VFX 제거
+        /// </summary>
+        private static void RemoveRageBuffVFX(Player player)
+        {
+            try
+            {
+                if (rageBuffVFXInstances.TryGetValue(player, out var vfx) && vfx != null)
+                {
+                    UnityEngine.Object.Destroy(vfx);
+                    Plugin.Log.LogInfo("[버서커 분노] 버프 VFX 제거됨");
+                }
+                rageBuffVFXInstances.Remove(player);
+            }
+            catch { }
         }
 
         /// <summary>

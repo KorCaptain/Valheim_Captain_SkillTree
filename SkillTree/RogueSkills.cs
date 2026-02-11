@@ -28,6 +28,9 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, bool> stealthActive = new Dictionary<Player, bool>();
         private static Dictionary<Player, Coroutine> stealthDurationCoroutine = new Dictionary<Player, Coroutine>();
 
+        // === 버프 VFX 시스템 ===
+        private static Dictionary<Player, GameObject> rogueBuffVFXInstances = new Dictionary<Player, GameObject>();
+
         
         /// <summary>
         /// 로그 스킬을 SkillTreeManager에 등록
@@ -625,7 +628,10 @@ namespace CaptainSkillTree.SkillTree
                     var coroutine = Plugin.Instance.StartCoroutine(RogueAttackBuffCoroutine(player, buffDuration));
                     rogueAttackBuffCoroutine[player] = coroutine;
                 }
-                
+
+                // 버프 VFX 생성 (머리 위 1.2m)
+                CreateRogueBuffVFX(player);
+
                 // Plugin.Log.LogInfo($"[로그 그림자 일격] {player.GetPlayerName()} 공격력 버프 시작");
             }
             catch (System.Exception)
@@ -670,6 +676,9 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
+                // 버프 VFX 제거
+                RemoveRogueBuffVFX(player);
+
                 yield break;
             }
 
@@ -692,6 +701,9 @@ namespace CaptainSkillTree.SkillTree
 
             // sparkle_ellow 이팩트 제거 (주석처리 - 무한 로딩 원인 가능성)
             // RemoveSparkleEffect(player);
+
+            // 버프 VFX 제거
+            RemoveRogueBuffVFX(player);
 
             // 🔒 수정 3: 안전한 버프 종료 알림
             if (player != null && !player.IsDead())
@@ -1096,6 +1108,52 @@ namespace CaptainSkillTree.SkillTree
                 }
             } // lock 종료
         }
+
+        #region === 버프 VFX 시스템 ===
+
+        /// <summary>
+        /// 로그 버프 VFX 생성 (머리 위 1.2m)
+        /// </summary>
+        private static void CreateRogueBuffVFX(Player player)
+        {
+            try
+            {
+                // 기존 VFX 제거
+                RemoveRogueBuffVFX(player);
+
+                // 새 VFX 생성 (머리 위 1.2m, 무한 지속)
+                var vfx = SimpleVFX.PlayOnPlayer(player, "statusailment_01_aura", 9999f, new Vector3(0f, 1.2f, 0f));
+                if (vfx != null)
+                {
+                    rogueBuffVFXInstances[player] = vfx;
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogDebug($"[로그 버프 VFX] 생성 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 로그 버프 VFX 제거
+        /// </summary>
+        private static void RemoveRogueBuffVFX(Player player)
+        {
+            try
+            {
+                if (rogueBuffVFXInstances.TryGetValue(player, out var vfx) && vfx != null)
+                {
+                    UnityEngine.Object.Destroy(vfx);
+                }
+                rogueBuffVFXInstances.Remove(player);
+            }
+            catch (Exception)
+            {
+                // 조용히 무시
+            }
+        }
+
+        #endregion
 
     }
 

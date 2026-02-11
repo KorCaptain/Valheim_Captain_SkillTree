@@ -7,6 +7,14 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static class Polearm_Config
     {
+        // === 필요 포인트 설정 ===
+        public static ConfigEntry<int> PolearmExpertRequiredPoints;
+        public static ConfigEntry<int> PolearmStep1RequiredPoints;
+        public static ConfigEntry<int> PolearmStep2RequiredPoints;
+        public static ConfigEntry<int> PolearmStep3RequiredPoints;
+        public static ConfigEntry<int> PolearmStep4RequiredPoints;
+        public static ConfigEntry<int> PolearmKingRequiredPoints;
+
         // === 폴암 전문가 스킬 설정 ===
         public static ConfigEntry<float> PolearmExpertRangeBonus;
         public static ConfigEntry<float> PolearmStep1SpinWheelDamage;
@@ -23,6 +31,14 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PolearmStep5KingStaminaCost;
         public static ConfigEntry<float> PolearmStep5KingCooldown;
         public static ConfigEntry<float> PolearmStep5KingDuration;
+
+        // === 필요 포인트 접근 프로퍼티 ===
+        public static int PolearmExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_expert_required_points", PolearmExpertRequiredPoints?.Value ?? 2);
+        public static int PolearmStep1RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step1_required_points", PolearmStep1RequiredPoints?.Value ?? 2);
+        public static int PolearmStep2RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step2_required_points", PolearmStep2RequiredPoints?.Value ?? 2);
+        public static int PolearmStep3RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step3_required_points", PolearmStep3RequiredPoints?.Value ?? 2);
+        public static int PolearmStep4RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step4_required_points", PolearmStep4RequiredPoints?.Value ?? 2);
+        public static int PolearmKingRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_king_required_points", PolearmKingRequiredPoints?.Value ?? 3);
 
         // === 폴암 전문가 접근 프로퍼티들 ===
         public static float PolearmExpertRangeBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_expert_range_bonus", PolearmExpertRangeBonus.Value);
@@ -43,6 +59,31 @@ namespace CaptainSkillTree.SkillTree
 
         public static void Initialize(ConfigFile config)
         {
+            // === 필요 포인트 설정 ===
+            PolearmExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier0_폴암전문가_필요포인트", 2,
+                "Tier 0: 폴암 전문가(polearm_expert) - 필요 포인트");
+
+            PolearmStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier1_폴암스킬_필요포인트", 2,
+                "Tier 1: 폴암 스킬 - 필요 포인트");
+
+            PolearmStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier2_폴암스킬_필요포인트", 2,
+                "Tier 2: 폴암 스킬 - 필요 포인트");
+
+            PolearmStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier3_폴암스킬_필요포인트", 2,
+                "Tier 3: 폴암 스킬 - 필요 포인트");
+
+            PolearmStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier4_폴암스킬_필요포인트", 2,
+                "Tier 4: 폴암 스킬 - 필요 포인트");
+
+            PolearmKingRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier5_장창의제왕_필요포인트", 3,
+                "Tier 5: 장창의 제왕(G키 액티브) - 필요 포인트");
+
             // Tier 0: 폴암 전문가
             PolearmExpertRangeBonus = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier0_폴암전문가_공격범위보너스", 15f,
@@ -111,6 +152,11 @@ namespace CaptainSkillTree.SkillTree
             PolearmStep5KingDuration = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier5_장창의제왕_지속시간", 10f,
                 "Tier 5: 장창의 제왕(polearm_step5_king) - 지속시간 (초)");
+
+            // === 구분선 ===
+            SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "──────────────────────────", "",
+                "--------------------------");
 
             Plugin.Log.LogDebug("[Polearm_Config] 폴암 전문가 트리 설정 초기화 완료");
         }

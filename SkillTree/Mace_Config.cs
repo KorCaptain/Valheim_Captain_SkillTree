@@ -143,6 +143,11 @@ namespace CaptainSkillTree.SkillTree
         // ===== 분노의 망치 (Fury Hammer) - G키 액티브 스킬 =====
 
         /// <summary>
+        /// 분노의 망치 - 필요 포인트
+        /// </summary>
+        public static ConfigEntry<int> FuryHammerRequiredPoints;
+
+        /// <summary>
         /// 분노의 망치 - 1~4타 데미지 배율 (%) - 현재 공격력 기준
         /// </summary>
         public static ConfigEntry<float> FuryHammerNormalHitMultiplier;
@@ -261,6 +266,10 @@ namespace CaptainSkillTree.SkillTree
             (int)SkillTreeConfig.GetEffectiveValue("Mace_Step6_RequiredPoints", MaceStep6RequiredPoints?.Value ?? 1);
         public static float MaceStep6ArmorBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step6_ArmorBonus", MaceStep6ArmorBonus?.Value ?? 20f);
+
+        // === Tier 7: 분노의 망치 ===
+        public static int FuryHammerRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_RequiredPoints", FuryHammerRequiredPoints?.Value ?? 3);
 
         /// <summary>
         /// 분노의 망치 1~4타 데미지 배율 (서버 우선) - 현재 공격력 기준
@@ -503,6 +512,13 @@ namespace CaptainSkillTree.SkillTree
             );
 
             // Tier 7: 분노의 망치 (Fury Hammer)
+            FuryHammerRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier7_분노의망치_필요포인트",
+                3,
+                "Tier 7: 분노의 망치(mace_step7_fury_hammer) - 필요 포인트"
+            );
+
             FuryHammerNormalHitMultiplier = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_분노의망치_1~4타배율",

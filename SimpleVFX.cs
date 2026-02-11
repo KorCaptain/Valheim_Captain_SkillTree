@@ -35,11 +35,46 @@ namespace CaptainSkillTree
         /// </summary>
         private static readonly HashSet<string> _customVFXNames = new HashSet<string>
         {
-            "debuff", "debuff_03", "buff_02a", "buff_03a", "buff_03a_aura",
+            // 영역 효과
+            "area_circles_blue", "area_fire_red", "area_heal_green",
+            "area_magic_multicolor", "area_star_ellow",
+
+            // 버프/디버프 효과
+            "buff_01", "buff_02a", "buff_03a", "buff_03a_aura",
+            "debuff", "debuff_03", "debuff_03_aura",
+            "statusailment_01", "statusailment_01_aura",
+
+            // 색종이 효과
+            "confetti_blast_multicolor", "confetti_directional_multicolor",
+
+            // 먼지/연기 효과
+            "dust_permanently_blue",
+
+            // 플래시 효과 (flash_star_ellow_purple 포함!)
+            "flash_blue_purple", "flash_ellow", "flash_ellow_pink",
+            "flash_magic_blue_pink", "flash_magic_ellow_blue", "flash_round_ellow",
+            "flash_star_ellow_green", "flash_star_ellow_purple",
+
+            // 방어/치료 효과
+            "guard_01", "healing",
+
+            // 타격 효과
             "hit_01", "hit_02", "hit_03", "hit_04",
-            "flash_blue_purple", "flash_round_ellow", "statusailment_01", "statusailment_01_aura",
-            "shine_blue", "water_blast_blue", "confetti_directional_multicolor",
-            "guard_01", "healing"
+
+            // 플렉서스 효과
+            "plexus",
+
+            // 샤인 효과
+            "shine_blue", "shine_ellow", "shine_pink",
+
+            // 스파클/스파크 효과
+            "sparkle_ellow",
+
+            // 특수 효과
+            "taunt",
+
+            // 워터 블라스트 효과
+            "water_blast_blue", "water_blast_green"
         };
 
         /// <summary>
@@ -67,18 +102,62 @@ namespace CaptainSkillTree
             {
                 Plugin.Log?.LogInfo("[SimpleVFX] 초기화 시작...");
 
-                // 1. "debuff" 번들만 로드
+                // 1. PrefabRegistry에서 등록된 VFX 프리팹 가져오기
+                LoadFromPrefabRegistry();
+
+                // 2. "debuff" 번들만 로드 (fallback)
                 LoadDebuffBundle();
 
-                // 2. Valheim 내장 VFX 캐시 (몬스터용)
+                // 3. Valheim 내장 VFX 캐시 (몬스터용)
                 CacheValheimPrefabs();
 
                 _initialized = true;
-                Plugin.Log?.LogInfo("[SimpleVFX] 초기화 완료");
+                Plugin.Log?.LogInfo($"[SimpleVFX] 초기화 완료 - 캐시된 프리팹: {_cachedPrefabs.Count}개");
             }
             catch (Exception ex)
             {
                 Plugin.Log?.LogError($"[SimpleVFX] 초기화 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// PrefabRegistry에서 등록된 VFX 프리팹들을 캐시에 추가
+        /// </summary>
+        private static void LoadFromPrefabRegistry()
+        {
+            try
+            {
+                var allPrefabs = CaptainSkillTree.Prefab.PrefabRegistry.GetAllRegisteredPrefabs();
+                int loadedCount = 0;
+
+                foreach (var kvp in allPrefabs)
+                {
+                    string prefabName = kvp.Key;
+                    GameObject prefab = kvp.Value;
+
+                    if (prefab == null) continue;
+
+                    // 커스텀 VFX 이름인 경우만 캐시에 추가
+                    if (_customVFXNames.Contains(prefabName) && !_cachedPrefabs.ContainsKey(prefabName))
+                    {
+                        _cachedPrefabs[prefabName] = prefab;
+                        loadedCount++;
+                    }
+
+                    // 대소문자 무시 검색 (예: Buff_01 -> buff_01)
+                    string lowerName = prefabName.ToLowerInvariant();
+                    if (_customVFXNames.Contains(lowerName) && !_cachedPrefabs.ContainsKey(lowerName))
+                    {
+                        _cachedPrefabs[lowerName] = prefab;
+                        loadedCount++;
+                    }
+                }
+
+                Plugin.Log?.LogInfo($"[SimpleVFX] PrefabRegistry에서 {loadedCount}개 VFX 로드됨");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log?.LogWarning($"[SimpleVFX] PrefabRegistry 로드 실패: {ex.Message}");
             }
         }
 

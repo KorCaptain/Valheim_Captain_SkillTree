@@ -7,6 +7,16 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static class Attack_Config
     {
+        // === 필요 포인트 설정 ===
+        public static ConfigEntry<int> AttackRootRequiredPoints;
+        public static ConfigEntry<int> AttackStep1RequiredPoints;
+        public static ConfigEntry<int> AttackStep2RequiredPoints;
+        public static ConfigEntry<int> AttackStep3RequiredPoints;
+        public static ConfigEntry<int> AttackStep4RequiredPoints;
+        public static ConfigEntry<int> AttackStep4RangedRequiredPoints;
+        public static ConfigEntry<int> AttackStep5RequiredPoints;
+        public static ConfigEntry<int> AttackStep6RequiredPoints;
+
         // === 공격 전문가 노드 설정 ===
         // 루트 (공격 전문가)
         public static ConfigEntry<float> AttackRootDamageBonus;
@@ -42,6 +52,16 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> AttackStaffElemental;
         public static ConfigEntry<float> AttackFinisherMeleeBonus;
 
+        // === 필요 포인트 접근 프로퍼티 ===
+        public static int AttackRootRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_root_required_points", AttackRootRequiredPoints?.Value ?? 2);
+        public static int AttackStep1RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step1_required_points", AttackStep1RequiredPoints?.Value ?? 2);
+        public static int AttackStep2RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step2_required_points", AttackStep2RequiredPoints?.Value ?? 2);
+        public static int AttackStep3RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step3_required_points", AttackStep3RequiredPoints?.Value ?? 2);
+        public static int AttackStep4RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step4_required_points", AttackStep4RequiredPoints?.Value ?? 2);
+        public static int AttackStep4RangedRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step4_ranged_required_points", AttackStep4RangedRequiredPoints?.Value ?? 3);
+        public static int AttackStep5RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step5_required_points", AttackStep5RequiredPoints?.Value ?? 2);
+        public static int AttackStep6RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step6_required_points", AttackStep6RequiredPoints?.Value ?? 3);
+
         // === 공격 전문가 접근 프로퍼티들 ===
         public static float AttackRootDamageBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_Expert_Damage", AttackRootDamageBonus.Value);
         public static float AttackMeleeBonusChanceValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_MeleeBonusChance", AttackMeleeBonusChance.Value);
@@ -71,6 +91,39 @@ namespace CaptainSkillTree.SkillTree
 
         public static void Initialize(ConfigFile config)
         {
+            // === 필요 포인트 설정 ===
+            AttackRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier0_공격전문가_필요포인트", 2,
+                "Tier 0: 공격 전문가(attack_root) - 필요 포인트");
+
+            AttackStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier1_기본공격_필요포인트", 2,
+                "Tier 1: 기본 공격(atk_base) - 필요 포인트");
+
+            AttackStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_무기특화_필요포인트", 2,
+                "Tier 2: 무기별 특화 스킬 - 필요 포인트");
+
+            AttackStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier3_공격증가_필요포인트", 2,
+                "Tier 3: 공격 증가(atk_twohand_drain) - 필요 포인트");
+
+            AttackStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier4_세부강화_필요포인트", 2,
+                "Tier 4: 세부 강화(근접/정밀) - 필요 포인트");
+
+            AttackStep4RangedRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier4_원거리강화_필요포인트", 3,
+                "Tier 4: 원거리 강화(atk_ranged_enhance) - 필요 포인트");
+
+            AttackStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier5_특수화스탯_필요포인트", 2,
+                "Tier 5: 특수화 스탯(atk_special) - 필요 포인트");
+
+            AttackStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_최종특화_필요포인트", 3,
+                "Tier 6: 최종 특화 스킬들 - 필요 포인트");
+
             // === Tier 0: 공격 전문가 ===
             AttackRootDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Attack Tree", "Tier0_공격전문가_모든데미지보너스", 10f,

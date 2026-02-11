@@ -121,6 +121,9 @@ namespace CaptainSkillTree.SkillTree
                     bowAttack.m_startEffect.Create(spawnPoint, Quaternion.identity, null, 1f);
                 }
 
+                // 석궁 발사 사운드 재생
+                CaptainSkillTree.VFX.VFXManager.PlaySound("sfx_arbalest_fire", spawnPoint, 2f);
+
                 // 프로젝타일 생성
                 var projectileObj = UnityEngine.Object.Instantiate(
                     ammoAttack.m_attackProjectile,
@@ -150,6 +153,16 @@ namespace CaptainSkillTree.SkillTree
 
                     var velocity = fireDirection * bowAttack.m_projectileVel;
                     projectile.Setup(player, velocity, bowAttack.m_projectileAccuracy, hitData, ammo, weapon);
+
+                    // 적중 VFX 설정 (vfx_arrowhit)
+                    var hitEffectPrefab = ZNetScene.instance?.GetPrefab("vfx_arrowhit");
+                    if (hitEffectPrefab != null && projectile.m_hitEffects != null)
+                    {
+                        projectile.m_hitEffects.m_effectPrefabs = new EffectList.EffectData[]
+                        {
+                            new EffectList.EffectData { m_prefab = hitEffectPrefab, m_enabled = true }
+                        };
+                    }
 
                     var rigidbody = projectileObj.GetComponent<Rigidbody>();
                     if (rigidbody != null)

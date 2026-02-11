@@ -39,24 +39,25 @@ namespace CaptainSkillTree.SkillTree
             
             try
             {
-                // 컨피그에서 실제 값 가져오기
-                var duration = HealerMode_Config.HealerModeDurationValue;
-                var cooldown = HealerMode_Config.HealerModeCooldownValue;
-                var eitrCost = HealerMode_Config.HealerModeEitrCostValue;
-                var healPercentage = HealerMode_Config.HealPercentageValue;
-                var healRange = HealerMode_Config.HealRangeValue;
+                // 컨피그에서 실제 값 가져오기 (Staff_Config에서 힐 설정 가져옴)
+                var cooldown = Staff_Config.StaffHealCooldownValue;
+                var eitrCost = Staff_Config.StaffHealEitrCostValue;
+                var healPercentage = Staff_Config.StaffHealPercentageValue;
+                var healRange = Staff_Config.StaffHealRangeValue;
+                var healSelf = Staff_Config.StaffHealSelfValue;
                 // 발사체 관련 변수 제거 - 즉시 힐링으로 변경
-                
-                Plugin.Log.LogDebug($"[힐러모드 툴팁] 컨피그 값들 - 지속시간: {duration}초, 쿨타임: {cooldown}초, 힐링: {healPercentage}%, 범위: {healRange}m");
+
+                Plugin.Log.LogDebug($"[힐러모드 툴팁] 컨피그 값들 - 쿨타임: {cooldown}초, 힐링: {healPercentage}%, 범위: {healRange}m, 자힐: {healSelf}");
                 
                 // 상세 툴팁 데이터 생성
-                var requiredPoints = Staff_Config.StaffHealerRequiredPointsValue;
+                var requiredPoints = Staff_Config.StaffHealRequiredPointsValue;
+                string selfHealNote = healSelf ? "시전자 포함 치료" : "시전자는 치료되지 않음 (다른 플레이어만 치료)";
 
                 var data = new HealerModeTooltipData
                 {
                     skillName = "힐",
                     description = $"시전자 중심 {healRange:F0}m 범위 즉시 힐링",
-                    additionalInfo = $"아군 최대체력의 {healPercentage:F0}% 즉시 회복 (시전자 제외)",
+                    additionalInfo = $"아군 최대체력의 {healPercentage:F0}% 즉시 회복",
                     duration = "", // 즉시 힐링이므로 지속시간 없음
                     cooldown = $"{cooldown:F0}초",
                     consumeEitr = $"{eitrCost:F0}",
@@ -66,7 +67,7 @@ namespace CaptainSkillTree.SkillTree
                     skillType = "액티브 스킬 - H키",
                     requirement = "지팡이 또는 완드 착용",
                     confirmation = "", // 확인사항 제거
-                    specialNote = $"시전자는 치료되지 않음 (다른 플레이어만 치료)\n\n<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                    specialNote = $"{selfHealNote}\n\n<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
                 };
                 
                 string finalTooltip = GenerateHealerModeTooltip(data);
@@ -161,23 +162,25 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static string GetHealerModeFallbackTooltip()
         {
-            var requiredPoints = Staff_Config.StaffHealerRequiredPointsValue;
+            var requiredPoints = Staff_Config.StaffHealRequiredPointsValue;
+            var healSelf = Staff_Config.StaffHealSelfValue;
+            string selfHealNote = healSelf ? "시전자 포함 치료" : "시전자는 치료되지 않음 (다른 플레이어만 치료)";
 
             var tooltipData = new HealerModeTooltipData
             {
                 skillName = "힐",
-                description = $"시전자 중심 {HealerMode_Config.HealRangeValue}m 범위 즉시 힐링",
-                additionalInfo = $"아군 최대체력의 {HealerMode_Config.HealPercentageValue}% 즉시 회복 (시전자 제외)",
+                description = $"시전자 중심 {Staff_Config.StaffHealRangeValue}m 범위 즉시 힐링",
+                additionalInfo = $"아군 최대체력의 {Staff_Config.StaffHealPercentageValue}% 즉시 회복",
                 duration = "", // 즉시 힐링이므로 지속시간 없음
-                cooldown = $"{HealerMode_Config.HealerModeCooldownValue}초",
-                consumeEitr = $"{HealerMode_Config.HealerModeEitrCostValue}",
-                healPercentage = $"{HealerMode_Config.HealPercentageValue}%",
-                healRange = $"{HealerMode_Config.HealRangeValue}m",
+                cooldown = $"{Staff_Config.StaffHealCooldownValue}초",
+                consumeEitr = $"{Staff_Config.StaffHealEitrCostValue}",
+                healPercentage = $"{Staff_Config.StaffHealPercentageValue}%",
+                healRange = $"{Staff_Config.StaffHealRangeValue}m",
                 // 발사체 수 제거 - 즉시 힐링으로 변경
                 skillType = "액티브 스킬 - H키",
                 requirement = "지팡이 또는 완드 착용",
                 confirmation = "", // 확인사항 제거
-                specialNote = $"시전자는 치료되지 않음 (다른 플레이어만 치료)\n\n<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                specialNote = $"{selfHealNote}\n\n<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
             };
 
             return GenerateHealerModeTooltip(tooltipData);

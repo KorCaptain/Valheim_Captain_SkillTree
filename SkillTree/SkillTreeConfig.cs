@@ -403,21 +403,23 @@ namespace CaptainSkillTree.SkillTree
         {
             DetectServerClientMode();
 
-            // === 분리된 Config 시스템 초기화 (알파벳 순) ===
-            Attack_Config.Initialize(config);
-            Bow_Config.Initialize(config);
-            Defense_Config.Initialize(config);
+            // === Config 초기화 (Speed → Bow → Staff → Crossbow 순) ===
             Speed_Config.Initialize(config);
-            Spear_Config.Initialize(config);
-            Polearm_Config.Initialize(config);
-
-            // === 무기 전문가 Config 초기화 ===
+            Bow_Config.Initialize(config);
             Staff_Config.InitConfig(config);
-            Knife_Config.InitializeKnifeConfig(config);
             Crossbow_Config.InitializeCrossbowConfig(config);
-            Mace_Config.Initialize(config);
+
+            // === 전문가 트리 Config 초기화 ===
+            Attack_Config.Initialize(config);
+            Defense_Config.Initialize(config);
+
+            // === 근접 무기 Config 초기화 ===
+            Knife_Config.InitializeKnifeConfig(config);
             Sword_Config.Initialize(config);
             InitializeSwordConfig(config);
+            Mace_Config.Initialize(config);
+            Spear_Config.Initialize(config);
+            Polearm_Config.Initialize(config);
 
             // === 직업 스킬 Config 초기화 ===
             Archer_Config.InitializeArcherConfig(config);

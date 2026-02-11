@@ -581,7 +581,7 @@ namespace CaptainSkillTree.SkillTree
         
         /// <summary>
         /// 성기사 도트 힐 받는 캐릭터에게 힐링 오라 효과 생성 (도트 힐 동안 지속)
-        /// Valheim 내장 VFX 사용 (buff_03a_aura 대체)
+        /// 커스텀 VFX buff_03a 사용 (캐릭터 발밑)
         /// </summary>
         private static GameObject CreatePaladinAuraEffect(Player target, float duration)
         {
@@ -592,6 +592,9 @@ namespace CaptainSkillTree.SkillTree
 
                 // Valheim 내장 VFX 사용 (ZNetView 충돌 방지)
                 SimpleVFX.Play("vfx_Potion_health_medium", footPosition, duration);
+
+                // 커스텀 buff_03a VFX를 캐릭터 발밑에 추가 (도트 힐 지속시간 동안)
+                SimpleVFX.PlayOnPlayer(target, "buff_03a", duration, new Vector3(0f, 0f, 0f));
 
                 return null;
             }

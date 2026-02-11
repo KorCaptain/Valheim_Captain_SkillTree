@@ -232,8 +232,21 @@ namespace CaptainSkillTree.MMO_System
             int addedPoints = (newLevel - oldLevel) * pointsPerLevel;
 
             // MessageHud를 통한 알림
-            ShowNotification($"<color=green>레벨 업!</color>\n" +
-                             $"+{addedPoints} 스킬포인트 (Lv.{newLevel})");
+            // 게임 시작 시 (oldLevel이 0 또는 1이고 newLevel이 크게 점프한 경우) vs 실제 레벨업 구분
+            bool isGameStart = (oldLevel <= 1 && (newLevel - oldLevel) > 1);
+
+            if (isGameStart)
+            {
+                // 게임 시작 시 (첫 접속/로드) - EpicMMO 연동 메시지
+                ShowNotification($"<color=green>EpicMMO 모드와 레벨 연동~!</color>\n" +
+                                 $"+{addedPoints} 스킬포인트 (Lv.{newLevel})");
+            }
+            else
+            {
+                // 실제 레벨업 시
+                ShowNotification($"<color=green>레벨 업!</color>\n" +
+                                 $"+{addedPoints} 스킬포인트 (Lv.{newLevel})");
+            }
 
             // 이벤트 발생
             OnLevelIncreased?.Invoke(newLevel);
@@ -241,7 +254,7 @@ namespace CaptainSkillTree.MMO_System
             // UI 갱신
             RefreshUI();
 
-            Plugin.Log.LogInfo($"[LevelSyncManager] 레벨 증가: Lv.{oldLevel} → Lv.{newLevel} (+{addedPoints} SP)");
+            Plugin.Log.LogInfo($"[LevelSyncManager] 레벨 증가: Lv.{oldLevel} → Lv.{newLevel} (+{addedPoints} SP) [게임시작: {isGameStart}]");
         }
 
         #endregion

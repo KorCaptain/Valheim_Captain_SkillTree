@@ -72,7 +72,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 "급소 찌르기",
-                "창 공격력 +20%",
+                $"창 공격력 +{Spear_Config.SpearStep2CritDamageBonusValue}%",
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requiredPoints = "2";
@@ -106,7 +106,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 "회피 찌르기",
-                "구르기 직후 공격 시 피해 +25%, 공격 스태미나 -8%",
+                $"구르기 직후 공격 시 피해 +{Spear_Config.SpearStep3EvasionDamageBonusValue}%, 공격 스태미나 -{Spear_Config.SpearStep3EvasionStaminaReductionValue}%",
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requiredPoints = "3";
@@ -123,7 +123,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 "쾌속 창",
-                "투창 공격력 +40%",
+                $"투창 공격력 +{Spear_Config.SpearStep4QuickDamageBonusValue}%",
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requiredPoints = "3";
@@ -140,7 +140,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 "삼연창",
-                "3연속 공격 시 공격력 +20%",
+                $"3연속 공격 시 공격력 +{Spear_Config.SpearStep5TripleDamageBonusValue}%",
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requiredPoints = "3";

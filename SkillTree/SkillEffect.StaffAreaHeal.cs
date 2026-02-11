@@ -30,7 +30,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 에이트르 확인
-                float eitrCost = HealerMode_Config.HealerModeEitrCostValue;
+                float eitrCost = Staff_Config.StaffHealEitrCostValue;
                 if (player.GetEitr() < eitrCost)
                 {
                     DrawFloatingText(player, $"에이트르가 부족합니다 ({eitrCost} 필요)", Color.red);
@@ -41,12 +41,12 @@ namespace CaptainSkillTree.SkillTree
                 player.UseEitr(eitrCost);
 
                 // 쿨타임 적용
-                staffHealCooldowns[player] = Time.time + HealerMode_Config.HealerModeCooldownValue;
+                staffHealCooldowns[player] = Time.time + Staff_Config.StaffHealCooldownValue;
 
                 // 범위 힐 실행
                 ExecuteAreaHeal(player);
 
-                Plugin.Log.LogInfo($"[지팡이 범위 힐] 발동 - 범위: {HealerMode_Config.HealRangeValue}m, 치료량: {HealerMode_Config.HealPercentageValue}%");
+                Plugin.Log.LogInfo($"[지팡이 범위 힐] 발동 - 범위: {Staff_Config.StaffHealRangeValue}m, 치료량: {Staff_Config.StaffHealPercentageValue}%");
             }
             catch (Exception ex)
             {
@@ -62,10 +62,10 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 Vector3 casterPos = caster.transform.position;
-                float healRange = HealerMode_Config.HealRangeValue;
-                float healPercent = HealerMode_Config.HealPercentageValue / 100f;
+                float healRange = Staff_Config.StaffHealRangeValue;
+                float healPercent = Staff_Config.StaffHealPercentageValue / 100f;
 
-                // VFX 재생
+                // VFX 재생 (하드코딩)
                 try
                 {
                     SimpleVFX.PlayWithSound("shaman_heal_aoe", "sfx_dverger_heal_finish", casterPos, 3f);
@@ -75,12 +75,12 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogError($"[지팡이 힐] VFX 재생 실패: {ex.Message}");
                 }
 
-                // 범위 내 플레이어에게 힐링 적용 (시전자 제외 - ID 기반 비교)
+                // 범위 내 플레이어에게 힐링 적용 (시전자 제외 - 아군만 힐링)
                 long casterId = caster.GetPlayerID();
                 var allPlayers = Player.GetAllPlayers();
                 var nearbyPlayers = allPlayers
                     .Where(p => p != null &&
-                               p.GetPlayerID() != casterId &&  // ID 기반 비교로 확실하게 제외
+                               p.GetPlayerID() != casterId &&  // 시전자 항상 제외
                                Vector3.Distance(p.transform.position, casterPos) <= healRange &&
                                !p.IsDead())
                     .ToList();
@@ -96,10 +96,12 @@ namespace CaptainSkillTree.SkillTree
 
                         targetPlayer.Heal(healAmount, true);
 
-                        // 개별 힐 이펙트
+                        // 개별 힐 이펙트 (하드코딩)
                         try
                         {
                             SimpleVFX.Play("vfx_spawn_small", targetPlayer.transform.position, 1f);
+                            // 힐 받는 캐릭터 발밑에 buff_03a VFX 추가
+                            SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a", 2f, new Vector3(0f, 0f, 0f));
                         }
                         catch { }
 

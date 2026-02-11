@@ -25,7 +25,7 @@ namespace CaptainSkillTree.SkillTree
             public string requirement;       // 필요조건 (예: "지팡이 착용")
             public string confirmation;      // 확인사항 (예: "직업은 1개만 선택가능, Lv 10 이상")
             public string requiredItem;      // 필요 아이템
-            public string passiveSkills;     // 패시브 스킬 (예: "모든 속성 저항 +15%")
+            public string passiveSkills;     // 패시브 스킬 (예: "마법 속성 저항 +15%")
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace CaptainSkillTree.SkillTree
                 cooldown = $"{cooldown}초",
                 requirement = "지팡이 착용, 메이지 직업",
                 confirmation = "직업은 1개만 선택가능, 레벨 10 이상",
-                passiveSkills = $"모든 속성 저항 +{elementalResistance}%",
+                passiveSkills = $"마법 속성 저항 +{elementalResistance}%",
                 requiredItem = "에이크쉬르 트로피"
             };
             
@@ -169,7 +169,7 @@ namespace CaptainSkillTree.SkillTree
                 requirement = "지팡이 착용, 메이지 직업",
                 confirmation = "직업은 1개만 선택가능, Lv 10 이상",
                 requiredItem = "에이크쉬르 트로피",
-                passiveSkills = "모든 속성 저항 +15%"
+                passiveSkills = "마법 속성 저항 +15%"
             };
 
             return GenerateMageTooltip(tooltipData);

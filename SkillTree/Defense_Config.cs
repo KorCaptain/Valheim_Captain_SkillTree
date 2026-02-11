@@ -9,6 +9,17 @@ namespace CaptainSkillTree.SkillTree
     public static class Defense_Config
     {
         // =====================================================
+        // 필요 포인트 설정
+        // =====================================================
+        public static ConfigEntry<int> DefenseRootRequiredPoints;
+        public static ConfigEntry<int> DefenseStep1RequiredPoints;
+        public static ConfigEntry<int> DefenseStep2RequiredPoints;
+        public static ConfigEntry<int> DefenseStep3RequiredPoints;
+        public static ConfigEntry<int> DefenseStep4RequiredPoints;
+        public static ConfigEntry<int> DefenseStep5RequiredPoints;
+        public static ConfigEntry<int> DefenseStep6RequiredPoints;
+
+        // =====================================================
         // Tier 0: 방어 전문가 (defense_root)
         // =====================================================
 
@@ -256,6 +267,22 @@ namespace CaptainSkillTree.SkillTree
         // 동적 값 프로퍼티 (서버 동기화 지원)
         // =====================================================
 
+        // === 필요 포인트 동적 값 ===
+        public static int DefenseRootRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("defense_root_required_points", DefenseRootRequiredPoints?.Value ?? 2);
+        public static int DefenseStep1RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("defense_step1_required_points", DefenseStep1RequiredPoints?.Value ?? 2);
+        public static int DefenseStep2RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("defense_step2_required_points", DefenseStep2RequiredPoints?.Value ?? 2);
+        public static int DefenseStep3RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("defense_step3_required_points", DefenseStep3RequiredPoints?.Value ?? 3);
+        public static int DefenseStep4RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("defense_step4_required_points", DefenseStep4RequiredPoints?.Value ?? 3);
+        public static int DefenseStep5RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("defense_step5_required_points", DefenseStep5RequiredPoints?.Value ?? 3);
+        public static int DefenseStep6RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("defense_step6_required_points", DefenseStep6RequiredPoints?.Value ?? 4);
+
         // === Tier 0: 방어 전문가 ===
         public static float DefenseRootHealthBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_Root_HealthBonus", DefenseRootHealthBonus?.Value ?? 5f);
@@ -378,6 +405,38 @@ namespace CaptainSkillTree.SkillTree
         /// <param name="config">BepInEx ConfigFile</param>
         public static void Initialize(ConfigFile config)
         {
+            // ===========================================
+            // 필요 포인트 설정
+            // ===========================================
+
+            DefenseRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier0_방어전문가_필요포인트", 2,
+                "Tier 0: 방어 전문가(defense_root) - 필요 포인트");
+
+            DefenseStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier1_피부경화_필요포인트", 2,
+                "Tier 1: 피부경화(defense_Step1_survival) - 필요 포인트");
+
+            DefenseStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier2_심신체력_필요포인트", 2,
+                "Tier 2: 심신단련/체력단련 - 필요 포인트");
+
+            DefenseStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier3_단전회피체력방패_필요포인트", 3,
+                "Tier 3: 단전호흡/회피단련/체력증강/방패훈련 - 필요 포인트");
+
+            DefenseStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier4_충격발구바위_필요포인트", 3,
+                "Tier 4: 충격파방출/발구르기/바위피부 - 필요 포인트");
+
+            DefenseStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier5_지구기민트롤막기_필요포인트", 3,
+                "Tier 5: 지구력/기민함/트롤의재생력/막기달인 - 필요 포인트");
+
+            DefenseStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_최종스킬_필요포인트", 4,
+                "Tier 6: 최종 스킬들 - 필요 포인트");
+
             // ===========================================
             // Tier 0: 방어 전문가
             // ===========================================
@@ -628,6 +687,14 @@ namespace CaptainSkillTree.SkillTree
                 "Tier6_요툰의방패_대형방패이동속도보상",
                 10f,
                 "Tier 6: 요툰의 방패(defense_Step6_true) - Tower/대형 방패 이동속도 보상 (%)"
+            );
+
+            // === 구분선 ===
+            SkillTreeConfig.BindServerSync(config,
+                "Defense Tree",
+                "──────────────────────────",
+                "",
+                "--------------------------"
             );
         }
     }
