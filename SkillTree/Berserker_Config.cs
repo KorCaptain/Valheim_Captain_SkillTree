@@ -57,40 +57,40 @@ namespace CaptainSkillTree.SkillTree
             {
                 // === Active Skill: Berserker Rage ===
                 BerserkerRageCooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Active_Cooldown", 45f,
+                    "Berserker Job Skills", "Beserker_Active_Cooldown", 45f,
                     "Berserker Rage cooldown (seconds)");
 
                 BerserkerRageStaminaCost = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Active_StaminaCost", 20f,
+                    "Berserker Job Skills", "Beserker_Active_StaminaCost", 20f,
                     "Berserker Rage stamina cost");
 
                 BerserkerRageDuration = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Active_Duration", 20f,
+                    "Berserker Job Skills", "Beserker_Active_Duration", 20f,
                     "Berserker Rage duration (seconds)");
 
                 BerserkerRageDamagePerHealthPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Active_DamagePerHealthPercent", 2f,
+                    "Berserker Job Skills", "Beserker_Active_DamagePerHealthPercent", 2f,
                     "Damage increase per 1% health (%) - Lower health = higher damage");
 
                 BerserkerRageMaxDamageBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Active_MaxDamageBonus", 200f,
+                    "Berserker Job Skills", "Beserker_Active_MaxDamageBonus", 200f,
                     "Maximum damage bonus cap (%)");
 
                 BerserkerRageHealthThreshold = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Active_HealthThreshold", 100f,
+                    "Berserker Job Skills", "Beserker_Active_HealthThreshold", 100f,
                     "Health threshold for effect activation (%)");
 
                 // === Passive Skill: Death Defiance ===
                 BerserkerPassiveHealthThreshold = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Passive_HealthThreshold", 10f,
+                    "Berserker Job Skills", "Beserker_Passive_HealthThreshold", 10f,
                     "Passive activation health threshold (%) - Triggers invincibility below this HP");
 
                 BerserkerPassiveInvincibilityDuration = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Passive_InvincibilityDuration", 8f,
+                    "Berserker Job Skills", "Beserker_Passive_InvincibilityDuration", 8f,
                     "Invincibility duration (seconds)");
 
                 BerserkerPassiveCooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Passive_Cooldown", 180f,
+                    "Berserker Job Skills", "Beserker_Passive_Cooldown", 180f,
                     "Passive skill cooldown (seconds) - Default: 3 minutes");
 
                 // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===

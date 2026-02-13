@@ -101,15 +101,7 @@ namespace CaptainSkillTree
                     CaptainSkillTree.SkillTree.SkillTreeManager.Instance.HandleActiveSkillKeyInput();
                 }
                 
-                // === 마우스 클릭 - 힐 파이어볼 발사 (힐 모드 활성화 시에만) ===
-                if (Input.GetMouseButtonDown(0)) // 마우스 왼쪽 클릭
-                {
-                    // 힐 모드가 활성화되어 있으면 힐 파이어볼 발사
-                    if (CaptainSkillTree.SkillTree.StaffHealingFireball.IsHealModeActive(player))
-                    {
-                        CaptainSkillTree.SkillTree.StaffHealingFireball.LaunchHealFireballOnClick(player);
-                    }
-                }
+                // 마우스 클릭 - 힐 파이어볼 시스템 제거됨 (H키 즉시 범위 힐로 변경)
 
                 // 휠마우스 버튼 클릭은 더 이상 사용하지 않음 (연공창이 H키로 이동됨)
 

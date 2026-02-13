@@ -187,51 +187,6 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 힐러모드 활성화 상태 정보 툴팁
-        /// </summary>
-        public static string GetHealerModeStatusTooltip(Player player)
-        {
-            try
-            {
-                if (!Mage_HealerMode.IsHealerModeActive(player))
-                {
-                    return " 힐러모드 비활성";
-                }
-
-                float remainingTime = Mage_HealerMode.GetHealerModeTimeRemaining(player);
-                return $" 힐러모드 활성 중: {remainingTime:F0}초 남음";
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[힐러모드 툴팁] 상태 툴팁 생성 실패: {ex.Message}");
-                return " 힐러모드 상태 확인 오류";
-            }
-        }
-
-        /// <summary>
-        /// 힐러모드 쿨다운 정보 툴팁
-        /// </summary>
-        public static string GetHealerModeCooldownTooltip(Player player)
-        {
-            try
-            {
-                float cooldownRemaining = Mage_HealerMode.GetHealerModeCooldownRemaining(player);
-                
-                if (cooldownRemaining <= 0)
-                {
-                    return " 힐러모드 사용 가능";
-                }
-
-                return $" 힐러모드 쿨다운: {cooldownRemaining:F0}초 남음";
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[힐러모드 툴팁] 쿨다운 툴팁 생성 실패: {ex.Message}");
-                return " 힐러모드 쿨다운 확인 오류";
-            }
-        }
-
-        /// <summary>
         /// 힐러모드 툴팁 강제 업데이트
         /// </summary>
         public static void UpdateHealerModeTooltip()

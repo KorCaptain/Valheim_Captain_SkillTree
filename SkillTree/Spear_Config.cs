@@ -27,8 +27,13 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep2EvasionDamageBonus;
         public static ConfigEntry<float> SpearStep2EvasionStaminaReduction;
         public static ConfigEntry<float> SpearStep3PierceDamageBonus;
-        public static ConfigEntry<float> SpearStep3QuickDamageBonus;
-        public static ConfigEntry<float> SpearStep4TripleDamageBonus;
+        // 폭발창 설정
+        public static ConfigEntry<float> SpearExplosionChance;
+        public static ConfigEntry<float> SpearExplosionRadius;
+        public static ConfigEntry<float> SpearExplosionDamageBonus;
+        // 이연창 설정
+        public static ConfigEntry<float> SpearDualDamageBonus;
+        public static ConfigEntry<float> SpearDualDuration;
         public static ConfigEntry<float> SpearStep5PenetrateCritChance;
 
         // === 꿰뚫는 창 (번개 충격) 설정 ===
@@ -66,8 +71,13 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep3EvasionDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step2_evasion_damage_bonus", SpearStep2EvasionDamageBonus.Value);
         public static float SpearStep3EvasionStaminaReductionValue => SkillTreeConfig.GetEffectiveValue("spear_Step2_evasion_stamina_reduction", SpearStep2EvasionStaminaReduction.Value);
         public static float SpearStep3PierceDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step3_pierce_damage", SpearStep3PierceDamageBonus.Value);
-        public static float SpearStep4QuickDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step3_quick_damage_bonus", SpearStep3QuickDamageBonus.Value);
-        public static float SpearStep5TripleDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step4_triple_damage_bonus", SpearStep4TripleDamageBonus.Value);
+        // 폭발창 접근 프로퍼티
+        public static float SpearExplosionChanceValue => SkillTreeConfig.GetEffectiveValue("spear_explosion_chance", SpearExplosionChance.Value);
+        public static float SpearExplosionRadiusValue => SkillTreeConfig.GetEffectiveValue("spear_explosion_radius", SpearExplosionRadius.Value);
+        public static float SpearExplosionDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_explosion_damage_bonus", SpearExplosionDamageBonus.Value);
+        // 이연창 접근 프로퍼티
+        public static float SpearDualDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_dual_damage_bonus", SpearDualDamageBonus.Value);
+        public static float SpearDualDurationValue => SkillTreeConfig.GetEffectiveValue("spear_dual_duration", SpearDualDuration.Value);
         public static float SpearStep6PenetrateCritChanceValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_crit_chance", SpearStep5PenetrateCritChance.Value);
 
         // === 꿰뚫는 창 (번개 충격) 접근 프로퍼티 ===
@@ -118,16 +128,16 @@ namespace CaptainSkillTree.SkillTree
                 "Tier 5: 연공창(H키 액티브) - 필요 포인트");
 
             SpearStep1AttackSpeed = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree", "Tier1_창전문가_2연속공격속도보너스", 10f,
-                "Tier 1: 창 전문가(spear_step1_expert) - 2연속 공격 속도 보너스 (%)");
+                "Spear Tree", "Tier0_창전문가_2연속공격속도보너스", 10f,
+                "Tier 0: 창 전문가(spear_expert) - 2연속 공격 속도 보너스 (%)");
 
             SpearStep1DamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree", "Tier1_창전문가_2연속공격력보너스", 7f,
-                "Tier 1: 창 전문가(spear_step1_expert) - 2연속 공격력 보너스 (%)");
+                "Spear Tree", "Tier0_창전문가_2연속공격력보너스", 7f,
+                "Tier 0: 창 전문가(spear_expert) - 2연속 공격력 보너스 (%)");
 
             SpearStep1Duration = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree", "Tier1_창전문가_효과지속시간", 4f,
-                "Tier 1: 창 전문가(spear_step1_expert) - 효과 지속시간 (초)");
+                "Spear Tree", "Tier0_창전문가_효과지속시간", 4f,
+                "Tier 0: 창 전문가(spear_expert) - 효과 지속시간 (초)");
 
             SpearStep1ThrowCooldown = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree", "Tier1_투창전문가_투창쿨타임", 30f,
@@ -157,13 +167,27 @@ namespace CaptainSkillTree.SkillTree
                 "Spear Tree", "Tier4_회피찌르기_공격스태미나감소", 8f,
                 "Tier 4: 회피 찌르기(spear_step2_evasion) - 공격 스태미나 감소 (%)");
 
-            SpearStep3QuickDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree", "Tier3_쾌속창_투창공격력보너스", 40f,
-                "Tier 3: 쾌속 창(spear_step3_quick) - 투창 공격력 보너스 (%)");
+            // === 폭발창 설정 ===
+            SpearExplosionChance = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier3_폭발창_폭발확률", 30f,
+                "Tier 3: 폭발창(spear_step3_explosion) - 폭발 발동 확률 (%)");
 
-            SpearStep4TripleDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree", "Tier4_삼연창_3연속공격공격력보너스", 20f,
-                "Tier 4: 삼연창(spear_step4_triple) - 3연속 공격 공격력 보너스 (%)");
+            SpearExplosionRadius = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier3_폭발창_폭발범위", 5f,
+                "Tier 3: 폭발창(spear_step3_explosion) - 폭발 범위 (m)");
+
+            SpearExplosionDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier3_폭발창_공격력보너스", 30f,
+                "Tier 3: 폭발창(spear_step3_explosion) - 폭발 공격력 보너스 (%)");
+
+            // === 이연창 설정 ===
+            SpearDualDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier4_이연창_공격력보너스", 20f,
+                "Tier 4: 이연창(spear_step4_dual) - 2연속 공격 시 공격력 보너스 (%)");
+
+            SpearDualDuration = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree", "Tier4_이연창_지속시간", 10f,
+                "Tier 4: 이연창(spear_step4_dual) - 버프 지속시간 (초)");
 
             SpearStep5PenetrateCritChance = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree", "Tier5_꿰뚫는창_치명타확률_미사용", 12f,

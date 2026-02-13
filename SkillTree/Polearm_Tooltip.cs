@@ -153,59 +153,67 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 장창의 제왕 툴팁 생성 (G키 액티브 스킬)
-        /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형(G키 강조) → 쿨타임 → 필요조건 → 확인사항 → 필요포인트
+        /// 관통 돌격 툴팁 생성 (G키 액티브 스킬)
+        /// 전방 돌진 → 첫 관통 타격 → 후방 AOE 넉백
         /// </summary>
         public static string GetPolearmStep5KingTooltip()
         {
             try
             {
-                Plugin.Log.LogDebug("[폴암 툴팁] GetPolearmStep5KingTooltip() 호출됨");
+                Plugin.Log.LogDebug("[폴암 툴팁] GetPolearmStep5KingTooltip() 호출됨 (관통 돌격)");
 
                 // Config에서 동적 설정값 가져오기
-                float healthThreshold = SkillTreeConfig.PolearmStep5KingHealthThresholdValue;
-                float damageBonus = SkillTreeConfig.PolearmStep5KingDamageBonusValue;
-                float staminaCost = SkillTreeConfig.PolearmStep5KingStaminaCostValue;
-                float cooldown = SkillTreeConfig.PolearmStep5KingCooldownValue;
+                float dashDistance = Polearm_Config.PolearmPierceChargeDashDistanceValue;
+                float primaryDamage = Polearm_Config.PolearmPierceChargePrimaryDamageValue;
+                float aoeDamage = Polearm_Config.PolearmPierceChargeAoeDamageValue;
+                float aoeAngle = Polearm_Config.PolearmPierceChargeAoeAngleValue;
+                float aoeRadius = Polearm_Config.PolearmPierceChargeAoeRadiusValue;
+                float knockbackDist = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
+                float staminaCost = Polearm_Config.PolearmPierceChargeStaminaCostValue;
+                float cooldown = Polearm_Config.PolearmPierceChargeCooldownValue;
 
                 var tooltip = "";
 
                 // 1. 스킬명 (#FFD700, size=22)
-                tooltip += $"<color=#FFD700><size=22>장창의 제왕</size></color>\n\n";
+                tooltip += $"<color=#FFD700><size=22>관통 돌격</size></color>\n\n";
 
                 // 2. 설명 (#FFD700 / #E0E0E0)
-                tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>체력 {healthThreshold:F0}% 이상인 적에게 강력한 공격</size></color>\n";
+                tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>전방 {dashDistance:F0}m 돌진, 적 충돌 시 관통 공격</size></color>\n";
 
                 // 3. 데미지 (#FF6B6B / #FFB6C1)
-                tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>추가 피해 +{damageBonus:F0}%</size></color>\n";
+                tooltip += $"<color=#FF6B6B><size=16>첫 타격: </size></color><color=#FFB6C1><size=16>공격력 +{primaryDamage:F0}%</size></color>\n";
 
-                // 4. 범위 - 생략 (단일 대상)
+                // 4. AOE 데미지
+                tooltip += $"<color=#FF6B6B><size=16>AOE 넉백: </size></color><color=#FFB6C1><size=16>공격력 +{aoeDamage:F0}% (뒤쪽 {aoeAngle:F0}°, {aoeRadius:F0}m)</size></color>\n";
 
-                // 5. 소모 (#FFB347 / #FFDAB9)
-                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {staminaCost:F0}%</size></color>\n";
+                // 5. 넉백 거리
+                tooltip += $"<color=#87CEEB><size=16>넉백 거리: </size></color><color=#ADD8E6><size=16>{knockbackDist:F0}m</size></color>\n";
 
-                // 6. 스킬유형 (G키 강조: #FF4500 / #00FF00)
+                // 6. 소모 (#FFB347 / #FFDAB9)
+                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {staminaCost:F0}</size></color>\n";
+
+                // 7. 스킬유형 (G키 강조: #FF4500 / #00FF00)
                 tooltip += $"<color=#FF4500><size=16>스킬유형: </size></color><color=#00FF00><size=16>액티브 스킬 - G키</size></color>\n";
 
-                // 7. 쿨타임 (#FFA500 / #FFDB58)
+                // 8. 쿨타임 (#FFA500 / #FFDB58)
                 tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{cooldown:F0}초</size></color>\n";
 
-                // 8. 필요조건 (#98FB98 / #00FF00)
+                // 9. 필요조건 (#98FB98 / #00FF00)
                 tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>폴암 착용</size></color>\n";
 
-                // 9. 확인사항 (#F0E68C / #FFE4B5)
+                // 10. 확인사항 (#F0E68C / #FFE4B5)
                 tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>같은 무기 전문가 내에서만 다중 습득 가능</size></color>\n";
 
-                // 10. 필요포인트 (#87CEEB / #FF6B6B)
+                // 11. 필요포인트 (#87CEEB / #FF6B6B)
                 tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>3</size></color>";
 
-                Plugin.Log.LogDebug($"[장창의 제왕 툴팁] 최종 툴팁 생성 완료 - 길이: {tooltip?.Length ?? 0}");
+                Plugin.Log.LogDebug($"[관통 돌격 툴팁] 최종 툴팁 생성 완료 - 길이: {tooltip?.Length ?? 0}");
                 return tooltip.TrimEnd('\n');
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[장창의 제왕 툴팁] 생성 실패: {ex.Message}");
-                return "<color=#FFD700><size=22>장창의 제왕</size></color>\n\n<color=#E0E0E0><size=16>액티브 G키 스킬\n툴팁 생성 오류</size></color>";
+                Plugin.Log.LogError($"[관통 돌격 툴팁] 생성 실패: {ex.Message}");
+                return "<color=#FFD700><size=22>관통 돌격</size></color>\n\n<color=#E0E0E0><size=16>액티브 G키 스킬\n툴팁 생성 오류</size></color>";
             }
         }
 

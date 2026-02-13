@@ -109,7 +109,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 5-2. 창: 연공창 - H키로 이동됨
 
-            // 6. 폴암: 장창의 제왕
+            // 6. 폴암: 관통 돌격
             if (HasSkill("polearm_step5_king"))
             {
                 if (!WeaponHelper.IsUsingPolearm(player))
@@ -117,7 +117,7 @@ namespace CaptainSkillTree.SkillTree
                     DrawFloatingText(player, "폴암을 장착해야 합니다!", Color.red);
                     return;
                 }
-                UsePolearmKingSkill(player);
+                UsePolearmPierceChargeSkill(player);
                 return;
             }
 

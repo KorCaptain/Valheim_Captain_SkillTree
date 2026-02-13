@@ -115,15 +115,15 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 쾌속 창 툴팁 생성
+        /// 폭발창 툴팁 생성
         /// </summary>
         public static string GetSpearStep3QuickTooltip()
         {
-            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep3QuickTooltip() 호출됨");
+            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep3QuickTooltip() (폭발창) 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "쾌속 창",
-                $"투창 공격력 +{Spear_Config.SpearStep4QuickDamageBonusValue}%",
+                "폭발창",
+                $"{Spear_Config.SpearExplosionChanceValue}% 확률로 폭발\n범위 {Spear_Config.SpearExplosionRadiusValue}m, 공격력 +{Spear_Config.SpearExplosionDamageBonusValue}%",
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requiredPoints = "3";
@@ -132,15 +132,15 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 삼연창 툴팁 생성
+        /// 이연창 툴팁 생성
         /// </summary>
         public static string GetSpearStep4TripleTooltip()
         {
-            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep4TripleTooltip() 호출됨");
+            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep4TripleTooltip() (이연창) 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "삼연창",
-                $"3연속 공격 시 공격력 +{Spear_Config.SpearStep5TripleDamageBonusValue}%",
+                "이연창",
+                $"2연속 공격 시 {Spear_Config.SpearDualDurationValue}초 동안 공격력 +{Spear_Config.SpearDualDamageBonusValue}%",
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requiredPoints = "3";

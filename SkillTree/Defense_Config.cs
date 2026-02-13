@@ -688,14 +688,6 @@ namespace CaptainSkillTree.SkillTree
                 10f,
                 "Tier 6: 요툰의 방패(defense_Step6_true) - Tower/대형 방패 이동속도 보상 (%)"
             );
-
-            // === 구분선 ===
-            SkillTreeConfig.BindServerSync(config,
-                "Defense Tree",
-                "──────────────────────────",
-                "",
-                "--------------------------"
-            );
         }
     }
 }

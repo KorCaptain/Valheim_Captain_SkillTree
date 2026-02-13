@@ -21,10 +21,10 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, int> polearmAreaComboCount = new Dictionary<Player, int>();
         public static Dictionary<Player, float> polearmAreaLastHitTime = new Dictionary<Player, float>();
 
-        // 장창의 제왕 액티브 스킬 추적
-        public static Dictionary<Player, float> polearmKingLastUseTime = new Dictionary<Player, float>();
-        public static Dictionary<Player, float> polearmKingBuffEndTime = new Dictionary<Player, float>();
-        public static Dictionary<Player, bool> polearmKingBuffActive = new Dictionary<Player, bool>();
+        // 관통 돌격 액티브 스킬 추적
+        public static Dictionary<Player, float> polearmPierceChargeLastUseTime = new Dictionary<Player, float>();
+        public static Dictionary<Player, bool> polearmPierceChargeActive = new Dictionary<Player, bool>();
+        public static Dictionary<Player, Coroutine> polearmPierceChargeCoroutines = new Dictionary<Player, Coroutine>();
 
         /// <summary>
         /// 폴암 공격 범위 보너스 계산
@@ -98,20 +98,20 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 장창의 제왕 액티브 스킬 사용 (G키)
-        /// 체력 50% 이상인 적에게 추가 피해 +50%
+        /// 관통 돌격 액티브 스킬 사용 (G키)
+        /// 전방 5m 돌진 → 첫 몬스터 관통 타격 (+200%) → 뒤쪽 40도 AOE 넉백 (+150%)
         /// </summary>
-        public static bool UsePolearmKingSkill(Player player)
+        public static bool UsePolearmPierceChargeSkill(Player player)
         {
             if (player == null || !HasSkill("polearm_step5_king")) return false;
 
             float now = Time.time;
 
             // 쿨타임 체크
-            if (polearmKingLastUseTime.ContainsKey(player))
+            if (polearmPierceChargeLastUseTime.ContainsKey(player))
             {
-                float timeSinceLastUse = now - polearmKingLastUseTime[player];
-                float cooldown = SkillTreeConfig.PolearmStep5KingCooldownValue;
+                float timeSinceLastUse = now - polearmPierceChargeLastUseTime[player];
+                float cooldown = Polearm_Config.PolearmPierceChargeCooldownValue;
 
                 if (timeSinceLastUse < cooldown)
                 {
@@ -121,8 +121,8 @@ namespace CaptainSkillTree.SkillTree
                 }
             }
 
-            // 스태미나 체크
-            float staminaCost = player.GetMaxStamina() * (SkillTreeConfig.PolearmStep5KingStaminaCostValue / 100f);
+            // 스태미나 체크 (고정값 20)
+            float staminaCost = Polearm_Config.PolearmPierceChargeStaminaCostValue;
             if (player.GetStamina() < staminaCost)
             {
                 DrawFloatingText(player, "❌ 스태미나 부족!");
@@ -136,64 +136,424 @@ namespace CaptainSkillTree.SkillTree
                 return false;
             }
 
+            // 이미 스킬 실행 중인지 확인
+            if (polearmPierceChargeActive.ContainsKey(player) && polearmPierceChargeActive[player])
+            {
+                DrawFloatingText(player, "⚠️ 관통 돌격 실행 중");
+                return false;
+            }
+
             // 스태미나 소모
             player.UseStamina(staminaCost);
 
-            // 버프 활성화
-            polearmKingBuffActive[player] = true;
-            polearmKingBuffEndTime[player] = now + SkillTreeConfig.PolearmStep5KingDurationValue;
-            polearmKingLastUseTime[player] = now;
+            // 스킬 활성화
+            polearmPierceChargeActive[player] = true;
+            polearmPierceChargeLastUseTime[player] = now;
 
-            // VFX/SFX 재생 (액티브 스킬이므로 허용)
-            SimpleVFX.Play("fx_guardstone_activate", player.transform.position, 3f);
+            // 코루틴 시작
+            if (polearmPierceChargeCoroutines.ContainsKey(player) && polearmPierceChargeCoroutines[player] != null)
+            {
+                player.StopCoroutine(polearmPierceChargeCoroutines[player]);
+            }
 
-            DrawFloatingText(player, $"👑 장창의 제왕! ({SkillTreeConfig.PolearmStep5KingDurationValue}초)");
-            Plugin.Log.LogInfo($"[장창의 제왕] 스킬 사용 - 지속시간: {SkillTreeConfig.PolearmStep5KingDurationValue}초");
+            var coroutine = ExecutePierceChargeSequence(player);
+            polearmPierceChargeCoroutines[player] = player.StartCoroutine(coroutine);
+
+            DrawFloatingText(player, "🔱 관통 돌격!");
+            Plugin.Log.LogInfo($"[관통 돌격] 스킬 사용 - 돌진 거리: {Polearm_Config.PolearmPierceChargeDashDistanceValue}m");
 
             return true;
         }
 
         /// <summary>
-        /// 장창의 제왕 버프가 활성화되어 있는지 확인
+        /// 관통 돌격 시퀀스 실행 코루틴
         /// </summary>
-        public static bool IsPolearmKingBuffActive(Player player)
+        private static IEnumerator ExecutePierceChargeSequence(Player player)
         {
-            if (player == null || !HasSkill("polearm_step5_king")) return false;
-
-            if (!polearmKingBuffActive.ContainsKey(player)) return false;
-
-            if (!polearmKingBuffActive[player]) return false;
-
-            float now = Time.time;
-            if (polearmKingBuffEndTime.ContainsKey(player) && now < polearmKingBuffEndTime[player])
+            if (player == null || player.IsDead())
             {
-                return true;
+                CleanupPierceCharge(player);
+                yield break;
             }
 
-            // 버프 만료
-            polearmKingBuffActive[player] = false;
-            return false;
+            // 무기 확인
+            var weapon = player.GetCurrentWeapon();
+            if (weapon == null)
+            {
+                CleanupPierceCharge(player);
+                yield break;
+            }
+
+            var weaponDamage = weapon.GetDamage();
+            float dashDistance = Polearm_Config.PolearmPierceChargeDashDistanceValue;
+            float moveSpeed = 35f; // 돌진 속도 (m/s) - 빠른 돌격
+
+            // === Phase 0: 전방 몬스터 감지 및 타겟팅 ===
+            Vector3 startPos = player.transform.position;
+            Vector3 cameraForward = GetCameraForward(player);
+
+            // 전방 원뿔 범위(45도) 내 몬스터 탐색
+            Character targetMonster = FindMonsterInCone(player, cameraForward, dashDistance, 45f);
+
+            Vector3 dashDir;
+            float actualDashDistance = dashDistance;
+
+            if (targetMonster != null)
+            {
+                // 몬스터가 있으면 그 방향으로 돌진
+                Vector3 toMonster = targetMonster.transform.position - startPos;
+                toMonster.y = 0;
+                dashDir = toMonster.normalized;
+                actualDashDistance = Mathf.Min(toMonster.magnitude + 1f, dashDistance); // 몬스터까지 거리 + 1m
+
+                // 플레이어를 몬스터 방향으로 회전
+                player.transform.rotation = Quaternion.LookRotation(dashDir);
+
+                Plugin.Log.LogDebug($"[관통 돌격] 타겟 감지: {targetMonster.m_name}, 거리: {toMonster.magnitude:F1}m");
+            }
+            else
+            {
+                // 몬스터가 없으면 카메라 전방으로 돌진
+                dashDir = cameraForward;
+            }
+
+            // === Phase 1: 전방 돌진 (몬스터 충돌 시 중단) ===
+            Character hitMonster = null;
+            float traveled = 0f;
+            float duration = actualDashDistance / moveSpeed;
+            float elapsed = 0f;
+
+            while (elapsed < duration && player != null && !player.IsDead())
+            {
+                elapsed += Time.deltaTime;
+                float step = moveSpeed * Time.deltaTime;
+                Vector3 newPos = player.transform.position + dashDir * step;
+                newPos = GetGroundPosition(newPos);
+                player.transform.position = newPos;
+                traveled += step;
+
+                // 충돌 감지 (1.5m 반경)
+                hitMonster = FindNearestMonsterInRadius(player, 1.5f);
+                if (hitMonster != null)
+                {
+                    Plugin.Log.LogDebug($"[관통 돌격] 몬스터 충돌 감지: {hitMonster.m_name}");
+                    break; // 돌진 중단
+                }
+
+                yield return null;
+            }
+
+            if (player == null || player.IsDead())
+            {
+                CleanupPierceCharge(player);
+                yield break;
+            }
+
+            // === Phase 2: 첫 관통 타격 ===
+            if (hitMonster != null && !hitMonster.IsDead())
+            {
+                // 타겟 방향으로 회전
+                Vector3 lookDir = (hitMonster.transform.position - player.transform.position);
+                lookDir.y = 0;
+                if (lookDir.sqrMagnitude > 0.001f)
+                    player.transform.rotation = Quaternion.LookRotation(lookDir.normalized);
+
+                // 일반 공격 실행 - Attack 직접 트리거
+                TriggerMeleeAttack(player, weapon);
+
+                // 첫 관통 데미지 (+200%)
+                float primaryDamageMultiplier = 1f + (Polearm_Config.PolearmPierceChargePrimaryDamageValue / 100f);
+
+                var hit = new HitData();
+                hit.m_damage.m_slash = weaponDamage.m_slash * primaryDamageMultiplier;
+                hit.m_damage.m_blunt = weaponDamage.m_blunt * primaryDamageMultiplier;
+                hit.m_damage.m_pierce = weaponDamage.m_pierce * primaryDamageMultiplier;
+
+                hit.m_point = hitMonster.GetCenterPoint();
+                hit.m_dir = dashDir;
+                hit.m_attacker = player.GetZDOID();
+                hit.SetAttacker(player);
+                hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
+
+                // 첫 몬스터 넉백 적용
+                float knockbackForce = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
+                Vector3 primaryKnockbackDir = (hitMonster.transform.position - player.transform.position).normalized;
+                hit.m_pushForce = knockbackForce * 3f; // HitData의 pushForce로 넉백
+
+                hitMonster.Damage(hit);
+
+                // 첫 몬스터 스태거 + 물리적 넉백
+                hitMonster.Stagger(primaryKnockbackDir);
+                var monsterBody = hitMonster.GetComponent<Rigidbody>();
+                if (monsterBody != null)
+                {
+                    monsterBody.AddForce(primaryKnockbackDir * knockbackForce * 10f, ForceMode.Impulse);
+                    Plugin.Log.LogDebug($"[관통 돌격] 첫 몬스터 Rigidbody 넉백 적용: {knockbackForce * 10f}");
+                }
+
+                // VFX: 첫 관통 (커스텀 VFX - SimpleVFX)
+                SimpleVFX.Play("confetti_blast_multicolor", hitMonster.GetCenterPoint(), 2f);
+
+                DrawFloatingText(player, $"💥 관통! (+{Polearm_Config.PolearmPierceChargePrimaryDamageValue}%)");
+                Plugin.Log.LogInfo($"[관통 돌격] 첫 타격 성공 - 데미지 +{Polearm_Config.PolearmPierceChargePrimaryDamageValue}%");
+
+                yield return new WaitForSeconds(0.2f);
+
+                // === Phase 3: 후방 AOE 넉백 ===
+                if (player != null && !player.IsDead() && hitMonster != null && !hitMonster.IsDead())
+                {
+                    Vector3 monsterPos = hitMonster.transform.position;
+                    Vector3 knockbackDir = dashDir; // 플레이어 → 몬스터 방향 = 넉백 방향
+                    float aoeRadius = Polearm_Config.PolearmPierceChargeAoeRadiusValue;
+                    float halfAngle = Polearm_Config.PolearmPierceChargeAoeAngleValue / 2f;
+
+                    // AOE 범위 내 적 탐색 (첫 타격 몬스터 뒤쪽)
+                    var aoeTargets = GetEnemiesInConeArea(monsterPos, knockbackDir, aoeRadius, halfAngle, player, hitMonster);
+
+                    if (aoeTargets.Count > 0)
+                    {
+                        float aoeDamageMultiplier = 1f + (Polearm_Config.PolearmPierceChargeAoeDamageValue / 100f);
+                        float knockbackDistance = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
+
+                        foreach (var enemy in aoeTargets)
+                        {
+                            if (enemy == null || enemy.IsDead()) continue;
+
+                            // AOE 데미지 (+150%)
+                            var aoeHit = new HitData();
+                            aoeHit.m_damage.m_slash = weaponDamage.m_slash * aoeDamageMultiplier;
+                            aoeHit.m_damage.m_blunt = weaponDamage.m_blunt * aoeDamageMultiplier;
+                            aoeHit.m_damage.m_pierce = weaponDamage.m_pierce * aoeDamageMultiplier;
+
+                            // 넉백 방향 계산 (몬스터 위치 기준)
+                            Vector3 enemyKnockDir = (enemy.transform.position - monsterPos).normalized;
+                            if (enemyKnockDir.sqrMagnitude < 0.001f)
+                                enemyKnockDir = knockbackDir; // 같은 위치면 기본 방향 사용
+
+                            aoeHit.m_point = enemy.GetCenterPoint();
+                            aoeHit.m_dir = enemyKnockDir;
+                            aoeHit.m_pushForce = knockbackDistance * 3f; // 넉백 거리를 힘으로 변환
+                            aoeHit.m_attacker = player.GetZDOID();
+                            aoeHit.SetAttacker(player);
+                            aoeHit.m_toolTier = (short)weapon.m_shared.m_toolTier;
+
+                            enemy.Damage(aoeHit);
+
+                            // 스태거 + 물리적 넉백 적용
+                            enemy.Stagger(enemyKnockDir);
+                            var rb = enemy.GetComponent<Rigidbody>();
+                            if (rb != null)
+                            {
+                                rb.AddForce(enemyKnockDir * knockbackDistance * 10f, ForceMode.Impulse);
+                            }
+
+                            // VFX: AOE 넉백 (발헤임 기본 VFX - VFXManager) - fx_crit 사용
+                            VFXManager.PlayVFXMultiplayer("fx_crit", "", enemy.GetCenterPoint(), Quaternion.identity, 2f);
+                        }
+
+                        DrawFloatingText(player, $"⚡ AOE 넉백! ({aoeTargets.Count}명, +{Polearm_Config.PolearmPierceChargeAoeDamageValue}%)");
+                        Plugin.Log.LogInfo($"[관통 돌격] AOE 넉백 - {aoeTargets.Count}명 타격");
+                    }
+                }
+            }
+            else
+            {
+                // 몬스터 충돌 없이 돌진 완료
+                DrawFloatingText(player, "🔱 돌진 완료 (타격 없음)");
+            }
+
+            // 상태 정리
+            CleanupPierceCharge(player);
+            yield return null;
         }
 
         /// <summary>
-        /// 장창의 제왕 데미지 보너스 적용
-        /// 체력 50% 이상인 적에게만 적용
+        /// 카메라 기준 전방 방향 (Y축 무시)
         /// </summary>
-        public static float GetPolearmKingDamageBonus(Character target)
+        private static Vector3 GetCameraForward(Player player)
         {
-            if (target == null || target.IsDead()) return 0f;
-
-            float healthPercent = (target.GetHealth() / target.GetMaxHealth()) * 100f;
-            float threshold = SkillTreeConfig.PolearmStep5KingHealthThresholdValue;
-
-            if (healthPercent >= threshold)
+            if (Camera.main != null)
             {
-                float bonus = SkillTreeConfig.PolearmStep5KingDamageBonusValue;
-                Plugin.Log.LogDebug($"[장창의 제왕] 대상 체력 {healthPercent:F1}% >= {threshold}% - 추가 피해 +{bonus}%");
-                return bonus;
+                Vector3 forward = Camera.main.transform.forward;
+                forward.y = 0;
+                return forward.normalized;
+            }
+            return player.transform.forward;
+        }
+
+        /// <summary>
+        /// 지면 높이 보정 (Raycast)
+        /// </summary>
+        private static Vector3 GetGroundPosition(Vector3 pos)
+        {
+            if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("terrain", "Default")))
+            {
+                return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
+            }
+            return pos;
+        }
+
+        /// <summary>
+        /// 반경 내 가장 가까운 몬스터 탐색
+        /// </summary>
+        private static Character FindNearestMonsterInRadius(Player player, float radius)
+        {
+            if (player == null) return null;
+
+            Character nearest = null;
+            float minDist = radius;
+
+            foreach (var c in Character.GetAllCharacters())
+            {
+                if (c == null || c.IsDead() || !c.IsMonsterFaction(Time.time)) continue;
+
+                float dist = Vector3.Distance(c.transform.position, player.transform.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    nearest = c;
+                }
             }
 
-            return 0f;
+            return nearest;
+        }
+
+        /// <summary>
+        /// 전방 원뿔 범위 내 가장 가까운 몬스터 탐색 (돌진 타겟팅용)
+        /// </summary>
+        private static Character FindMonsterInCone(Player player, Vector3 direction, float maxDistance, float coneAngle)
+        {
+            if (player == null) return null;
+
+            Character nearest = null;
+            float minDist = maxDistance;
+            float halfAngle = coneAngle / 2f;
+
+            foreach (var c in Character.GetAllCharacters())
+            {
+                if (c == null || c.IsDead() || !c.IsMonsterFaction(Time.time)) continue;
+
+                Vector3 toMonster = c.transform.position - player.transform.position;
+                toMonster.y = 0;
+                float dist = toMonster.magnitude;
+
+                if (dist > maxDistance || dist < 0.5f) continue; // 너무 멀거나 너무 가까우면 제외
+
+                // 각도 체크
+                float angle = Vector3.Angle(direction, toMonster.normalized);
+                if (angle > halfAngle) continue;
+
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    nearest = c;
+                }
+            }
+
+            return nearest;
+        }
+
+        /// <summary>
+        /// 근접 공격 트리거 (일반 공격 애니메이션 실행)
+        /// </summary>
+        private static void TriggerMeleeAttack(Player player, ItemDrop.ItemData weapon)
+        {
+            try
+            {
+                if (player == null || weapon == null) return;
+
+                // 방법 1: Humanoid.StartAttack 사용 (가장 안정적)
+                // secondaryAttack = false (일반 공격)
+                bool attackStarted = player.StartAttack(null, false);
+                if (attackStarted)
+                {
+                    Plugin.Log.LogDebug("[관통 돌격] Humanoid.StartAttack() 성공");
+                    return;
+                }
+
+                // 방법 2: m_attack 필드를 리플렉션으로 접근해서 트리거
+                var attackField = typeof(Humanoid).GetField("m_attack",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                if (attackField != null)
+                {
+                    var currentAttack = attackField.GetValue(player) as Attack;
+                    if (currentAttack != null)
+                    {
+                        // 이미 진행 중인 공격이 있으면 성공으로 간주
+                        Plugin.Log.LogDebug("[관통 돌격] 기존 Attack 진행 중");
+                        return;
+                    }
+                }
+
+                // 방법 3: Animator로 직접 공격 애니메이션 트리거
+                var animator = player.GetComponentInChildren<Animator>();
+                if (animator != null)
+                {
+                    // Valheim의 공격 애니메이션 파라미터
+                    animator.SetTrigger("swing_longsword");
+                    Plugin.Log.LogDebug("[관통 돌격] Animator swing_longsword 트리거 실행");
+                    return;
+                }
+
+                // 방법 4: ZSyncAnimation 사용
+                var zsync = player.GetComponentInChildren<ZSyncAnimation>();
+                if (zsync != null)
+                {
+                    zsync.SetTrigger("swing_longsword");
+                    Plugin.Log.LogDebug("[관통 돌격] ZSyncAnimation swing_longsword 트리거 실행");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogWarning($"[관통 돌격] 근접 공격 트리거 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 원뿔 범위 내 적 탐색 (첫 타격 몬스터 뒤쪽)
+        /// </summary>
+        private static List<Character> GetEnemiesInConeArea(Vector3 origin, Vector3 direction, float radius, float halfAngle, Player player, Character excludeTarget)
+        {
+            var enemies = new List<Character>();
+
+            foreach (var c in Character.GetAllCharacters())
+            {
+                if (c == null || c.IsDead() || c == player || c == excludeTarget) continue;
+                if (!c.IsMonsterFaction(Time.time)) continue;
+
+                float dist = Vector3.Distance(c.transform.position, origin);
+                if (dist > radius) continue;
+
+                // 각도 체크 (방향 기준)
+                Vector3 toEnemy = (c.transform.position - origin).normalized;
+                float angle = Vector3.Angle(direction, toEnemy);
+
+                if (angle <= halfAngle)
+                {
+                    enemies.Add(c);
+                }
+            }
+
+            return enemies;
+        }
+
+        /// <summary>
+        /// 관통 돌격 상태 정리
+        /// </summary>
+        private static void CleanupPierceCharge(Player player)
+        {
+            if (player != null && polearmPierceChargeActive.ContainsKey(player))
+            {
+                polearmPierceChargeActive[player] = false;
+            }
+        }
+
+        /// <summary>
+        /// 관통 돌격 활성 상태 확인
+        /// </summary>
+        public static bool IsPolearmPierceChargeActive(Player player)
+        {
+            return polearmPierceChargeActive.TryGetValue(player, out bool active) && active;
         }
 
         /// <summary>
@@ -310,50 +670,6 @@ namespace CaptainSkillTree.SkillTree
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[Attack_Start_PolearmStamina_Patch] 오류: {ex.Message}");
-            }
-        }
-    }
-
-    /// <summary>
-    /// 장창의 제왕 데미지 보너스 패치
-    /// Character.Damage() Postfix에서 추가 데미지 적용
-    /// </summary>
-    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
-    public static class Character_Damage_PolearmKing_Patch
-    {
-        static void Prefix(Character __instance, HitData hit)
-        {
-            try
-            {
-                if (__instance == null || hit == null) return;
-
-                var attacker = hit.GetAttacker();
-                if (attacker == null || !attacker.IsPlayer()) return;
-
-                var player = attacker as Player;
-                if (player == null || !SkillEffect.IsUsingPolearm(player)) return;
-
-                // 장창의 제왕 버프 활성화 확인
-                if (!SkillEffect.IsPolearmKingBuffActive(player)) return;
-
-                // 대상 체력 체크 및 보너스 적용
-                float damageBonus = SkillEffect.GetPolearmKingDamageBonus(__instance);
-
-                if (damageBonus > 0f)
-                {
-                    // 모든 물리 데미지에 보너스 적용
-                    hit.m_damage.m_blunt *= (1f + (damageBonus / 100f));
-                    hit.m_damage.m_slash *= (1f + (damageBonus / 100f));
-                    hit.m_damage.m_pierce *= (1f + (damageBonus / 100f));
-                    hit.m_damage.m_chop *= (1f + (damageBonus / 100f));
-                    hit.m_damage.m_pickaxe *= (1f + (damageBonus / 100f));
-
-                    Plugin.Log.LogInfo($"[장창의 제왕] 추가 피해 +{damageBonus}% 적용");
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[Character_Damage_PolearmKing_Patch] 오류: {ex.Message}");
             }
         }
     }
@@ -521,9 +837,20 @@ namespace CaptainSkillTree.SkillTree
             {
                 polearmAreaComboCount.Remove(player);
                 polearmAreaLastHitTime.Remove(player);
-                polearmKingLastUseTime.Remove(player);
-                polearmKingBuffEndTime.Remove(player);
-                polearmKingBuffActive.Remove(player);
+
+                // 관통 돌격 상태 정리
+                polearmPierceChargeLastUseTime.Remove(player);
+                polearmPierceChargeActive.Remove(player);
+
+                if (polearmPierceChargeCoroutines.ContainsKey(player) && polearmPierceChargeCoroutines[player] != null)
+                {
+                    try
+                    {
+                        player.StopCoroutine(polearmPierceChargeCoroutines[player]);
+                    }
+                    catch { }
+                    polearmPierceChargeCoroutines.Remove(player);
+                }
 
                 Attack_Start_PolearmWheelDetect_Patch.Cleanup(player);
 

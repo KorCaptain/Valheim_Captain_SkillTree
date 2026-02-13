@@ -109,125 +109,125 @@ namespace CaptainSkillTree.SkillTree
                     "Knife Tree", "Tier0_단검전문가_필요포인트", 2,
                     "Tier 0: 단검 전문가(knife_expert_damage) - 필요 포인트");
 
-                // === Tier 2: 회피 숙련 ===
+                // === Tier 1: 회피 숙련 ===
                 KnifeEvasionBonus = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier2_회피숙련_회피확률", 20f,
-                    "Tier 2: 회피 숙련(knife_step2_evasion) - 회피 확률 (%)");
+                    "Knife Tree", "Tier1_회피숙련_회피확률", 20f,
+                    "Tier 1: 회피 숙련(knife_step2_evasion) - 회피 확률 (%)");
 
                 KnifeEvasionDuration = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier2_회피숙련_무적시간", 3f,
-                    "Tier 2: 회피 숙련(knife_step2_evasion) - 회피 후 무적 시간 (초)");
+                    "Knife Tree", "Tier1_회피숙련_무적시간", 3f,
+                    "Tier 1: 회피 숙련(knife_step2_evasion) - 회피 후 무적 시간 (초)");
 
                 KnifeEvasionRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier2_회피숙련_필요포인트", 2,
-                    "Tier 2: 회피 숙련(knife_step2_evasion) - 필요 포인트");
+                    "Knife Tree", "Tier1_회피숙련_필요포인트", 2,
+                    "Tier 1: 회피 숙련(knife_step2_evasion) - 필요 포인트");
 
-                // === Tier 3: 빠른 움직임 ===
+                // === Tier 2: 빠른 움직임 ===
                 KnifeMoveSpeedBonus = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier3_빠른움직임_이동속도증가", 10f,
-                    "Tier 3: 빠른 움직임(knife_step3_move_speed) - 이동속도 증가 (%)");
+                    "Knife Tree", "Tier2_빠른움직임_이동속도증가", 10f,
+                    "Tier 2: 빠른 움직임(knife_step3_move_speed) - 이동속도 증가 (%)");
 
                 KnifeMoveSpeedDuration = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier3_빠른움직임_효과지속시간", 15f,
-                    "Tier 3: 빠른 움직임(knife_step3_move_speed) - 효과 지속시간 (초)");
+                    "Knife Tree", "Tier2_빠른움직임_효과지속시간", 15f,
+                    "Tier 2: 빠른 움직임(knife_step3_move_speed) - 효과 지속시간 (초)");
 
                 KnifeMoveSpeedRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier3_빠른움직임_필요포인트", 2,
-                    "Tier 3: 빠른 움직임(knife_step3_move_speed) - 필요 포인트");
+                    "Knife Tree", "Tier2_빠른움직임_필요포인트", 2,
+                    "Tier 2: 빠른 움직임(knife_step3_move_speed) - 필요 포인트");
 
-                // === Tier 4: 전투 숙련 ===
+                // === Tier 3: 전투 숙련 ===
                 KnifeAttackDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier4_전투숙련_단검데미지증가", 2f,
-                    "Tier 4: 전투 숙련(knife_step4_attack_damage) - 적 처치 시 단검 데미지 증가 (고정값)");
+                    "Knife Tree", "Tier3_전투숙련_단검데미지증가", 2f,
+                    "Tier 3: 전투 숙련(knife_step4_attack_damage) - 적 처치 시 단검 데미지 증가 (고정값)");
 
                 KnifeAttackDamageDuration = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier4_전투숙련_효과지속시간", 10f,
-                    "Tier 4: 전투 숙련(knife_step4_attack_damage) - 효과 지속시간 (초)");
+                    "Knife Tree", "Tier3_전투숙련_효과지속시간", 10f,
+                    "Tier 3: 전투 숙련(knife_step4_attack_damage) - 효과 지속시간 (초)");
 
                 KnifeAttackSpeedRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier4_전투숙련_필요포인트", 2,
-                    "Tier 4: 전투 숙련(knife_step4_attack_damage) - 필요 포인트");
+                    "Knife Tree", "Tier3_전투숙련_필요포인트", 2,
+                    "Tier 3: 전투 숙련(knife_step4_attack_damage) - 필요 포인트");
 
-                // === Tier 5: 치명타 숙련 ===
+                // === Tier 4: 치명타 숙련 ===
                 KnifeCritRateBonus = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier5_치명타숙련_치명타확률증가", 12f,
-                    "Tier 5: 치명타 숙련(knife_step5_crit_rate) - 치명타 확률 증가 (%)");
+                    "Knife Tree", "Tier4_치명타숙련_치명타확률증가", 12f,
+                    "Tier 4: 치명타 숙련(knife_step5_crit_rate) - 치명타 확률 증가 (%)");
 
                 KnifeCritRateDuration = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier5_치명타숙련_효과지속시간", 15f,
-                    "Tier 5: 치명타 숙련(knife_step5_crit_rate) - 효과 지속시간 (초)");
+                    "Knife Tree", "Tier4_치명타숙련_효과지속시간", 15f,
+                    "Tier 4: 치명타 숙련(knife_step5_crit_rate) - 효과 지속시간 (초)");
 
                 KnifeCritRateRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier5_치명타숙련_필요포인트", 3,
-                    "Tier 5: 치명타 숙련(knife_step5_crit_rate) - 필요 포인트");
+                    "Knife Tree", "Tier4_치명타숙련_필요포인트", 3,
+                    "Tier 4: 치명타 숙련(knife_step5_crit_rate) - 필요 포인트");
 
-                // === Tier 6: 치명적 피해 ===
+                // === Tier 5: 치명적 피해 ===
                 KnifeCombatDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier6_치명적피해_공격력증가", 25f,
-                    "Tier 6: 치명적 피해(knife_step6_combat_damage) - 공격력 증가 (%)");
+                    "Knife Tree", "Tier5_치명적피해_공격력증가", 25f,
+                    "Tier 5: 치명적 피해(knife_step6_combat_damage) - 공격력 증가 (%)");
 
                 KnifeCombatDamageRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier6_치명적피해_필요포인트", 2,
-                    "Tier 6: 치명적 피해(knife_step6_combat_damage) - 필요 포인트");
+                    "Knife Tree", "Tier5_치명적피해_필요포인트", 2,
+                    "Tier 5: 치명적 피해(knife_step6_combat_damage) - 필요 포인트");
 
-                // === Tier 7: 암살자 ===
+                // === Tier 6: 암살자 ===
                 KnifeExecutionCritDamage = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier7_암살자_치명타피해증가", 25f,
-                    "Tier 7: 암살자(knife_step7_execution) - 치명타 피해 증가 (%)");
+                    "Knife Tree", "Tier6_암살자_치명타피해증가", 25f,
+                    "Tier 6: 암살자(knife_step7_execution) - 치명타 피해 증가 (%)");
 
                 KnifeExecutionStaggerBonus = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier7_암살자_비틀거림공격력", 10f,
-                    "Tier 7: 암살자(knife_step7_execution) - 비틀거림 공격력 증가 (%)");
+                    "Knife Tree", "Tier6_암살자_비틀거림공격력", 10f,
+                    "Tier 6: 암살자(knife_step7_execution) - 비틀거림 공격력 증가 (%)");
 
                 KnifeExecutionRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier7_암살자_필요포인트", 2,
-                    "Tier 7: 암살자(knife_step7_execution) - 필요 포인트");
+                    "Knife Tree", "Tier6_암살자_필요포인트", 2,
+                    "Tier 6: 암살자(knife_step7_execution) - 필요 포인트");
 
-                // === Tier 8: 암살술 ===
+                // === Tier 7: 암살술 ===
                 KnifeAssassinationCritMultiplier = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier8_암살술_백스탭공격력증가", 35f,
-                    "Tier 8: 암살술(knife_step8_assassination) - 백스탭 공격력 증가 (%)");
+                    "Knife Tree", "Tier7_암살술_백스탭공격력증가", 35f,
+                    "Tier 7: 암살술(knife_step8_assassination) - 백스탭 공격력 증가 (%)");
 
                 KnifeAssassinationRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier8_암살술_필요포인트", 2,
-                    "Tier 8: 암살술(knife_step8_assassination) - 필요 포인트");
+                    "Knife Tree", "Tier7_암살술_필요포인트", 2,
+                    "Tier 7: 암살술(knife_step8_assassination) - 필요 포인트");
 
-                // === Tier 9: 암살자의 심장 (G키 액티브) ===
+                // === Tier 8: 암살자의 심장 (G키 액티브) ===
                 KnifeAssassinHeartDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier9_암살자의심장_데미지보너스", 50f,
-                    "Tier 9: 암살자의 심장(knife_step9_assassin_heart) - 데미지 보너스 (%)");
+                    "Knife Tree", "Tier8_암살자의심장_데미지보너스", 50f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 데미지 보너스 (%)");
 
                 KnifeAssassinHeartCritChance = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier9_암살자의심장_치명타확률증가", 60f,
-                    "Tier 9: 암살자의 심장(knife_step9_assassin_heart) - 치명타 확률 증가 (%)");
+                    "Knife Tree", "Tier8_암살자의심장_치명타확률증가", 60f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 치명타 확률 증가 (%)");
 
                 KnifeAssassinHeartCritDamage = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier9_암살자의심장_치명타데미지배수", 1.3f,
-                    "Tier 9: 암살자의 심장(knife_step9_assassin_heart) - 치명타 데미지 배수");
+                    "Knife Tree", "Tier8_암살자의심장_치명타데미지배수", 1.3f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 치명타 데미지 배수");
 
                 KnifeAssassinHeartDuration = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier9_암살자의심장_효과지속시간", 7f,
-                    "Tier 9: 암살자의 심장(knife_step9_assassin_heart) - 효과 지속시간 (초)");
+                    "Knife Tree", "Tier8_암살자의심장_효과지속시간", 7f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 효과 지속시간 (초)");
 
                 KnifeAssassinHeartStaminaCost = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier9_암살자의심장_스태미나소모", 20f,
-                    "Tier 9: 암살자의 심장(knife_step9_assassin_heart) - 스태미나 소모량");
+                    "Knife Tree", "Tier8_암살자의심장_스태미나소모", 20f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 스태미나 소모량");
 
                 KnifeAssassinHeartCooldown = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier9_암살자의심장_쿨타임", 40f,
-                    "Tier 9: 암살자의 심장(knife_step9_assassin_heart) - 쿨타임 (초)");
+                    "Knife Tree", "Tier8_암살자의심장_쿨타임", 40f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 쿨타임 (초)");
 
                 KnifeAssassinHeartTeleportRange = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier9_암살자의심장_순간이동탐색범위", 7f,
-                    "Tier 9: 암살자의 심장(knife_step9_assassin_heart) - 순간이동 대상 탐색 범위 (m)");
+                    "Knife Tree", "Tier8_암살자의심장_순간이동탐색범위", 7f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 순간이동 대상 탐색 범위 (m)");
 
                 KnifeAssassinHeartTeleportBehind = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier9_암살자의심장_순간이동뒤쪽거리", 1f,
-                    "Tier 9: 암살자의 심장(knife_step9_assassin_heart) - 대상 뒤쪽으로 이동할 거리 (m)");
+                    "Knife Tree", "Tier8_암살자의심장_순간이동뒤쪽거리", 1f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 대상 뒤쪽으로 이동할 거리 (m)");
 
                 KnifeAssassinHeartRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Knife Tree", "Tier9_암살자의심장_필요포인트", 3,
-                    "Tier 9: 암살자의 심장(knife_step9_assassin_heart) - 필요 포인트");
+                    "Knife Tree", "Tier8_암살자의심장_필요포인트", 3,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 필요 포인트");
 
                 Plugin.Log.LogDebug("[단검 컨피그] 모든 설정 로드 완료");
 

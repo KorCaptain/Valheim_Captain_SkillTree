@@ -1000,15 +1000,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[Parry Rush] 정리 실패 (무시): {ex.Message}");
                 }
 
-                // 0-5. Staff Heal 정리 (지팡이 힐 모드)
-                try
-                {
-                    StaffHealingFireball.CleanupStaffHealOnDeath(player);
-                }
-                catch (Exception ex)
-                {
-                    Plugin.Log.LogWarning($"[Staff Heal] 정리 실패 (무시): {ex.Message}");
-                }
+                // 0-5. Staff Heal 정리 - 제거됨 (H키 즉시 범위 힐로 변경, 쿨다운만 관리)
 
                 // 0-6. Rogue Skills 정리 (로그 그림자 일격)
                 try

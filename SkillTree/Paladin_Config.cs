@@ -21,11 +21,6 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PaladinHealDuration { get; set; }
         public static ConfigEntry<float> PaladinHealInterval { get; set; }
         
-        // === VFX 설정 ===
-        public static ConfigEntry<float> PaladinHealCircleEffectInterval { get; set; }
-        public static ConfigEntry<bool> PaladinShowHealNumbers { get; set; }
-        public static ConfigEntry<bool> PaladinShowHealProgress { get; set; }
-        
         // === 패시브 효과 설정 ===
         public static ConfigEntry<float> PaladinElementalResistanceReduction { get; set; }
         
@@ -34,90 +29,68 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static void InitializePaladinConfig()
         {
-            // === 기본 스킬 설정 ===
+            // === 액티브 스킬 설정 ===
             PaladinHealCooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
-                "PaladinHealCooldown",
+                "Paladin_Active_Cooldown",
                 30f,
                 "성기사 신성한 치유 쿨타임 (초)"
             );
-            
+
             PaladinHealRange = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
-                "PaladinHealRange",
+                "Paladin_Active_Range",
                 5f,
                 "성기사 신성한 치유 범위 (미터)"
             );
-            
+
             PaladinHealEitrCost = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
-                "PaladinHealEitrCost",
+                "Paladin_Active_EitrCost",
                 10f,
                 "성기사 신성한 치유 에이트르 소모량"
             );
-            
+
             PaladinHealStaminaCost = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
-                "PaladinHealStaminaCost",
+                "Paladin_Active_StaminaCost",
                 10f,
                 "성기사 신성한 치유 스태미나 소모량"
             );
-            
-            // === 힐링 효과 설정 ===
+
+            // === 액티브 힐링 효과 설정 ===
             PaladinHealSelfPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
-                "PaladinHealSelfPercent",
+                "Paladin_Active_SelfHealPercent",
                 15f,
                 "성기사 자가 치유 비율 (최대 체력의 %)"
             );
-            
+
             PaladinHealAllyPercentOverTime = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
-                "PaladinHealAllyPercentOverTime",
+                "Paladin_Active_AllyHealPercentOverTime",
                 2f,
                 "성기사 아군 지속 치유 비율 (최대 체력의 %, 매초)"
             );
-            
+
             PaladinHealDuration = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
-                "PaladinHealDuration",
+                "Paladin_Active_Duration",
                 10f,
                 "성기사 지속 치유 지속 시간 (초)"
             );
-            
+
             PaladinHealInterval = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
-                "PaladinHealInterval",
+                "Paladin_Active_Interval",
                 1f,
                 "성기사 지속 치유 간격 (초)"
             );
-            
-            // === VFX 설정 ===
-            PaladinHealCircleEffectInterval = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "PaladinHealCircleEffectInterval",
-                2f,
-                "성기사 healing circle 효과 갱신 간격 (초)"
-            );
-            
-            PaladinShowHealNumbers = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "PaladinShowHealNumbers",
-                true,
-                "성기사 힐링 수치 표시 여부"
-            );
-            
-            PaladinShowHealProgress = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "PaladinShowHealProgress",
-                true,
-                "성기사 지속 힐링 진행률 표시 여부 (3/10 형태)"
-            );
-            
+
             // === 패시브 효과 설정 ===
             PaladinElementalResistanceReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
-                "PaladinElementalResistanceReduction",
+                "Paladin_Passive_ElementalResistanceReduction",
                 8f,
                 "성기사 물리 및 속성 저항 감소 비율 (%)"
             );
@@ -143,9 +116,6 @@ namespace CaptainSkillTree.SkillTree
                 PaladinHealAllyPercentOverTime.SettingChanged += (sender, args) => UpdatePaladinTooltip();
                 PaladinHealDuration.SettingChanged += (sender, args) => UpdatePaladinTooltip();
                 PaladinHealInterval.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinHealCircleEffectInterval.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinShowHealNumbers.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinShowHealProgress.SettingChanged += (sender, args) => UpdatePaladinTooltip();
                 PaladinElementalResistanceReduction.SettingChanged += (sender, args) => UpdatePaladinTooltip();
 
                 Plugin.Log.LogDebug("[Paladin Config] 이벤트 핸들러 등록 완룄 - 툴팁 자동 업데이트 활성화");
@@ -215,22 +185,7 @@ namespace CaptainSkillTree.SkillTree
         /// 지속 치유 간격 (초)
         /// </summary>
         public static float HealIntervalValue => PaladinHealInterval?.Value ?? 1f;
-        
-        /// <summary>
-        /// Healing Circle 효과 갱신 간격 (초)
-        /// </summary>
-        public static float CircleEffectIntervalValue => PaladinHealCircleEffectInterval?.Value ?? 2f;
-        
-        /// <summary>
-        /// 힐링 수치 표시 여부
-        /// </summary>
-        public static bool ShowHealNumbersValue => PaladinShowHealNumbers?.Value ?? true;
-        
-        /// <summary>
-        /// 지속 힐링 진행률 표시 여부
-        /// </summary>
-        public static bool ShowHealProgressValue => PaladinShowHealProgress?.Value ?? true;
-        
+
         /// <summary>
         /// 물리 및 속성 저항 감소 비율 (%)
         /// </summary>
@@ -240,11 +195,21 @@ namespace CaptainSkillTree.SkillTree
         /// 총 힐 틱 수 계산
         /// </summary>
         public static int TotalHealTicks => (int)(HealDurationValue / HealIntervalValue);
-        
+
         /// <summary>
         /// 아군이 받는 총 힐량 비율 계산 (0-1 범위)
         /// </summary>
         public static float TotalAllyHealPercent => AllyHealPercentValue * TotalHealTicks;
+
+        /// <summary>
+        /// 힐링 숫자 표시 여부
+        /// </summary>
+        public static bool ShowHealNumbersValue => true;
+
+        /// <summary>
+        /// 힐링 진행 상황 표시 여부
+        /// </summary>
+        public static bool ShowHealProgressValue => true;
         
         /// <summary>
         /// 성기사 툴팁용 설명 생성 - 동적 연동 (액티브 + 패시브 효과)

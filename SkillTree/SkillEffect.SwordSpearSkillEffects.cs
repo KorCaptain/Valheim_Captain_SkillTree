@@ -235,9 +235,9 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 삼연창 3연속 공격 체크
+        /// 이연창 2연속 공격 체크 - 버프 지속시간 방식
         /// </summary>
-        public static void CheckSpearTripleCombo(Player player)
+        public static void CheckSpearDualCombo(Player player)
         {
             if (!HasSkill("spear_Step4_triple")) return;
 
@@ -255,14 +255,31 @@ namespace CaptainSkillTree.SkillTree
             }
             spearLastHitTime[player] = now;
 
-            if (spearComboCount[player] >= 3)
+            // 2연속 공격 시 버프 발동
+            if (spearComboCount[player] >= 2)
             {
-                spearTripleComboActive[player] = true;
+                float duration = Spear_Config.SpearDualDurationValue;
+                spearDualBuffExpiry[player] = now + duration;
                 spearComboCount[player] = 0;
 
-                Plugin.Log.LogInfo("[삼연창] 3연속 공격 달성 - 다음 공격에 보너스 적용");
+                DrawFloatingText(player, $"⚡ 이연창! ({duration}초간 공격력 +{Spear_Config.SpearDualDamageBonusValue}%)");
+                Plugin.Log.LogInfo($"[이연창] 2연속 공격 달성 - {duration}초간 공격력 보너스 적용");
             }
         }
+
+        // 이연창 버프 만료시간 추적
+        public static Dictionary<Player, float> spearDualBuffExpiry = new Dictionary<Player, float>();
+
+        /// <summary>
+        /// 이연창 버프가 활성화되어 있는지 확인
+        /// </summary>
+        public static bool IsSpearDualBuffActive(Player player)
+        {
+            return spearDualBuffExpiry.TryGetValue(player, out float expiry) && Time.time < expiry;
+        }
+
+        // 레거시 호환용
+        public static void CheckSpearTripleCombo(Player player) => CheckSpearDualCombo(player);
 
         /// <summary>
         /// 연격창 무기 공격력 +4 패시브 보너스 적용

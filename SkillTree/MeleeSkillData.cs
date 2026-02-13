@@ -447,11 +447,11 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // 4-2단계: 쾌속 창
+            // 4-2단계: 폭발창
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step3_quick",
-                Name = "쾌속 창",
-                Description = "투창 공격력 +40%\n필요조건: 창 착용",
+                Name = "폭발창",
+                Description = $"{Spear_Config.SpearExplosionChanceValue}% 확률로 폭발\n범위 {Spear_Config.SpearExplosionRadiusValue}m, 공격력 +{Spear_Config.SpearExplosionDamageBonusValue}%\n필요조건: 창 착용",
                 RequiredPoints = Spear_Config.SpearStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -464,11 +464,11 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // 5단계: 삼연창
+            // 5단계: 이연창
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step4_triple",
-                Name = "삼연창",
-                Description = "3연속 공격 시 공격력 +20%\n필요조건: 창 착용",
+                Name = "이연창",
+                Description = $"2연속 공격 시 {Spear_Config.SpearDualDurationValue}초 동안 공격력 +{Spear_Config.SpearDualDamageBonusValue}%\n필요조건: 창 착용",
                 RequiredPoints = Spear_Config.SpearStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -654,11 +654,11 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // 6단계: 장창의 제왕
+            // 6단계: 관통 돌격
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step5_king",
-                Name = "장창의 제왕",
-                Description = $"체력 {SkillTreeConfig.PolearmStep5KingHealthThresholdValue}%이상인 적에게 추가 피해 +{SkillTreeConfig.PolearmStep5KingDamageBonusValue}%\n소모: 스태미나 {SkillTreeConfig.PolearmStep5KingStaminaCostValue}%\n스킬유형: 액티브 G키\n무기타입: 폴암\n쿨타임: {SkillTreeConfig.PolearmStep5KingCooldownValue}초",
+                Name = "관통 돌격",
+                Description = $"전방 {Polearm_Config.PolearmPierceChargeDashDistanceValue}m 돌진, 적 관통 시 +{Polearm_Config.PolearmPierceChargePrimaryDamageValue}%\nAOE 넉백: {Polearm_Config.PolearmPierceChargeAoeAngleValue}° {Polearm_Config.PolearmPierceChargeAoeRadiusValue}m +{Polearm_Config.PolearmPierceChargeAoeDamageValue}%\n소모: 스태미나 {Polearm_Config.PolearmPierceChargeStaminaCostValue}\n스킬유형: 액티브 G키\n무기타입: 폴암\n쿨타임: {Polearm_Config.PolearmPierceChargeCooldownValue}초",
                 RequiredPoints = Polearm_Config.PolearmKingRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,

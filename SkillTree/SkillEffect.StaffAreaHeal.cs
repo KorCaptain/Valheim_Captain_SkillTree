@@ -76,11 +76,10 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 범위 내 플레이어에게 힐링 적용 (시전자 제외 - 아군만 힐링)
-                long casterId = caster.GetPlayerID();
                 var allPlayers = Player.GetAllPlayers();
                 var nearbyPlayers = allPlayers
                     .Where(p => p != null &&
-                               p.GetPlayerID() != casterId &&  // 시전자 항상 제외
+                               p != caster &&  // 시전자 항상 제외 (객체 비교)
                                Vector3.Distance(p.transform.position, casterPos) <= healRange &&
                                !p.IsDead())
                     .ToList();

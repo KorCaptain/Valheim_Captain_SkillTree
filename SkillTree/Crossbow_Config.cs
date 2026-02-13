@@ -22,41 +22,41 @@ namespace CaptainSkillTree.SkillTree
 
         #region 석궁 전문가 스킬 기본 설정
 
-        // Tier 1: 석궁 전문가
+        // Tier 0: 석궁 전문가
         public static ConfigEntry<float> CrossbowExpertDamageBonus;
 
-        // Tier 2: 연속 발사
+        // Tier 1: 연속 발사
         public static ConfigEntry<float> CrossbowRapidFireChance;
         public static ConfigEntry<int> CrossbowRapidFireShotCount;
         public static ConfigEntry<float> CrossbowRapidFireDamagePercent;
         public static ConfigEntry<float> CrossbowRapidFireDelay;
         public static ConfigEntry<int> CrossbowRapidFireBoltConsumption;
 
-        // Tier 3: 균형 조준
+        // Tier 2: 균형 조준
         public static ConfigEntry<float> CrossbowBalanceKnockbackChance;
         public static ConfigEntry<float> CrossbowBalanceKnockbackDistance;
 
-        // Tier 3: 고속 장전
+        // Tier 2: 고속 장전
         public static ConfigEntry<float> CrossbowRapidReloadSpeed;
 
-        // Tier 3: 정직한 한 발
+        // Tier 2: 정직한 한 발
         public static ConfigEntry<float> CrossbowMarkDamageBonus;
 
-        // Tier 4: 자동 장전
+        // Tier 3: 자동 장전
         public static ConfigEntry<float> CrossbowAutoReloadChance;
 
-        // Tier 5: 연속 발사 Lv2
+        // Tier 4: 연속 발사 Lv2
         public static ConfigEntry<float> CrossbowRapidFireLv2Chance;
         public static ConfigEntry<int> CrossbowRapidFireLv2ShotCount;
         public static ConfigEntry<float> CrossbowRapidFireLv2DamagePercent;
         public static ConfigEntry<float> CrossbowRapidFireLv2Delay;
         public static ConfigEntry<int> CrossbowRapidFireLv2BoltConsumption;
 
-        // Tier 5: 결전의 일격
+        // Tier 4: 결전의 일격
         public static ConfigEntry<float> CrossbowFinalStrikeHpThreshold;
         public static ConfigEntry<float> CrossbowFinalStrikeDamageBonus;
 
-        // Tier 6: 단 한 발 (액티브)
+        // Tier 5: 단 한 발 (액티브)
         public static ConfigEntry<float> CrossbowOneShotDuration;
         public static ConfigEntry<float> CrossbowOneShotDamageBonus;
         public static ConfigEntry<float> CrossbowOneShotKnockback;
@@ -191,130 +191,125 @@ namespace CaptainSkillTree.SkillTree
 
                 // === 필요 포인트 설정 ===
                 CrossbowExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier1_석궁전문가_필요포인트", 2,
-                    "Tier 1: 석궁 전문가(crossbow_Step1_damage) - 필요 포인트");
+                    "Crossbow Tree", "Tier0_석궁전문가_필요포인트", 2,
+                    "Tier 0: 석궁 전문가(crossbow_expert_damage) - 필요 포인트");
 
                 CrossbowStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier2_연속발사_필요포인트", 2,
-                    "Tier 2: 연속 발사(crossbow_Step2_rapid_fire) - 필요 포인트");
+                    "Crossbow Tree", "Tier1_연속발사_필요포인트", 2,
+                    "Tier 1: 연속 발사(crossbow_Step1_rapid_fire) - 필요 포인트");
 
                 CrossbowStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier3_석궁스킬_필요포인트", 2,
-                    "Tier 3: 석궁 스킬 - 필요 포인트");
+                    "Crossbow Tree", "Tier2_석궁스킬_필요포인트", 2,
+                    "Tier 2: 석궁 스킬 - 필요 포인트");
 
                 CrossbowStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier4_자동장전_필요포인트", 2,
-                    "Tier 4: 자동 장전(crossbow_Step4_re) - 필요 포인트");
+                    "Crossbow Tree", "Tier3_자동장전_필요포인트", 2,
+                    "Tier 3: 자동 장전(crossbow_Step3_re) - 필요 포인트");
 
                 CrossbowStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_석궁스킬_필요포인트", 3,
-                    "Tier 5: 석궁 스킬 - 필요 포인트");
+                    "Crossbow Tree", "Tier4_석궁스킬_필요포인트", 3,
+                    "Tier 4: 석궁 스킬 - 필요 포인트");
 
                 CrossbowOneShotRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier6_단한발_필요포인트", 4,
-                    "Tier 6: 단 한 발(R키 액티브) - 필요 포인트");
+                    "Crossbow Tree", "Tier5_단한발_필요포인트", 4,
+                    "Tier 5: 단 한 발(R키 액티브) - 필요 포인트");
 
-                // === Tier 1: 석궁 전문가 ===
+                // === Tier 0: 석궁 전문가 ===
                 CrossbowExpertDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier1_석궁전문가_데미지보너스", 5f,
-                    "Tier 1: 석궁 전문가(crossbow_Step1_damage) - 석궁 공격력 보너스 (%)");
+                    "Crossbow Tree", "Tier0_석궁전문가_데미지보너스", 5f,
+                    "Tier 0: 석궁 전문가(crossbow_expert_damage) - 석궁 공격력 보너스 (%)");
 
-                // === Tier 2: 연속 발사 ===
+                // === Tier 1: 연속 발사 ===
                 CrossbowRapidFireChance = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier2_연속발사_확률", 15f,
-                    "Tier 2: 연속 발사(crossbow_Step2_rapid_fire) - 연속 발사 발동 확률 (%)");
+                    "Crossbow Tree", "Tier1_연속발사_확률", 15f,
+                    "Tier 1: 연속 발사(crossbow_Step1_rapid_fire) - 연속 발사 발동 확률 (%)");
 
                 CrossbowRapidFireShotCount = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier2_연속발사_발사횟수", 3,
-                    "Tier 2: 연속 발사(crossbow_Step2_rapid_fire) - 총 발사 횟수");
+                    "Crossbow Tree", "Tier1_연속발사_발사횟수", 3,
+                    "Tier 1: 연속 발사(crossbow_Step1_rapid_fire) - 총 발사 횟수");
 
                 CrossbowRapidFireDamagePercent = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier2_연속발사_데미지비율", 75f,
-                    "Tier 2: 연속 발사(crossbow_Step2_rapid_fire) - 각 볼트 데미지 비율 (%)");
+                    "Crossbow Tree", "Tier1_연속발사_데미지비율", 75f,
+                    "Tier 1: 연속 발사(crossbow_Step1_rapid_fire) - 각 볼트 데미지 비율 (%)");
 
                 CrossbowRapidFireDelay = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier2_연속발사_발사간격", 0.33f,
-                    "Tier 2: 연속 발사(crossbow_Step2_rapid_fire) - 볼트 발사 간격 (초)");
+                    "Crossbow Tree", "Tier1_연속발사_발사간격", 0.33f,
+                    "Tier 1: 연속 발사(crossbow_Step1_rapid_fire) - 볼트 발사 간격 (초)");
 
                 CrossbowRapidFireBoltConsumption = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier2_연속발사_볼트소모", 1,
-                    "Tier 2: 연속 발사(crossbow_Step2_rapid_fire) - 소모할 볼트 수량");
+                    "Crossbow Tree", "Tier1_연속발사_볼트소모", 1,
+                    "Tier 1: 연속 발사(crossbow_Step1_rapid_fire) - 소모할 볼트 수량");
 
-                // === Tier 3: 균형 조준 ===
+                // === Tier 2: 균형 조준 ===
                 CrossbowBalanceKnockbackChance = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier3_균형조준_넉백확률", 30f,
-                    "Tier 3: 균형 조준(crossbow_Step2_balance) - 넉백 확률 (%)");
+                    "Crossbow Tree", "Tier2_균형조준_넉백확률", 30f,
+                    "Tier 2: 균형 조준(crossbow_Step2_balance) - 넉백 확률 (%)");
 
                 CrossbowBalanceKnockbackDistance = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier3_균형조준_넉백거리", 3f,
-                    "Tier 3: 균형 조준(crossbow_Step2_balance) - 넉백 거리 (m)");
+                    "Crossbow Tree", "Tier2_균형조준_넉백거리", 3f,
+                    "Tier 2: 균형 조준(crossbow_Step2_balance) - 넉백 거리 (m)");
 
-                // === Tier 3: 고속 장전 ===
+                // === Tier 2: 고속 장전 ===
                 CrossbowRapidReloadSpeed = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier3_고속장전_속도증가", 10f,
-                    "Tier 3: 고속 장전(crossbow_Step3_rapid) - 장전 속도 증가 (%)");
+                    "Crossbow Tree", "Tier2_고속장전_속도증가", 10f,
+                    "Tier 2: 고속 장전(crossbow_Step2_rapid) - 장전 속도 증가 (%)");
 
-                // === Tier 3: 정직한 한 발 ===
+                // === Tier 2: 정직한 한 발 ===
                 CrossbowMarkDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier3_정직한한발_데미지보너스", 35f,
-                    "Tier 3: 정직한 한 발(crossbow_Step3_mark) - 공격력 보너스 (%)");
+                    "Crossbow Tree", "Tier2_정직한한발_데미지보너스", 35f,
+                    "Tier 2: 정직한 한 발(crossbow_Step2_mark) - 공격력 보너스 (%)");
 
-                // === Tier 4: 자동 장전 ===
+                // === Tier 3: 자동 장전 ===
                 CrossbowAutoReloadChance = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier4_자동장전_확률", 30f,
-                    "Tier 4: 자동 장전(crossbow_Step4_re) - 자동 장전 확률 (%)");
+                    "Crossbow Tree", "Tier3_자동장전_확률", 30f,
+                    "Tier 3: 자동 장전(crossbow_Step3_re) - 자동 장전 확률 (%)");
 
-                // === Tier 5: 연속 발사 Lv2 ===
+                // === Tier 4: 연속 발사 Lv2 ===
                 CrossbowRapidFireLv2Chance = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_연속발사Lv2_확률", 30f,
-                    "Tier 5: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 연속 발사 발동 확률 (%)");
+                    "Crossbow Tree", "Tier4_연속발사Lv2_확률", 30f,
+                    "Tier 4: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 연속 발사 발동 확률 (%)");
 
                 CrossbowRapidFireLv2ShotCount = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_연속발사Lv2_발사횟수", 3,
-                    "Tier 5: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 총 발사 횟수");
+                    "Crossbow Tree", "Tier4_연속발사Lv2_발사횟수", 3,
+                    "Tier 4: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 총 발사 횟수");
 
                 CrossbowRapidFireLv2DamagePercent = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_연속발사Lv2_데미지비율", 75f,
-                    "Tier 5: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 각 볼트 데미지 비율 (%)");
+                    "Crossbow Tree", "Tier4_연속발사Lv2_데미지비율", 75f,
+                    "Tier 4: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 각 볼트 데미지 비율 (%)");
 
                 CrossbowRapidFireLv2Delay = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_연속발사Lv2_발사간격", 0.33f,
-                    "Tier 5: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 볼트 발사 간격 (초)");
+                    "Crossbow Tree", "Tier4_연속발사Lv2_발사간격", 0.33f,
+                    "Tier 4: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 볼트 발사 간격 (초)");
 
                 CrossbowRapidFireLv2BoltConsumption = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_연속발사Lv2_볼트소모", 1,
-                    "Tier 5: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 소모할 볼트 수량");
+                    "Crossbow Tree", "Tier4_연속발사Lv2_볼트소모", 1,
+                    "Tier 4: 연속 발사 Lv2(crossbow_Step4_rapid_fire_lv2) - 소모할 볼트 수량");
 
-                // === Tier 5: 결전의 일격 ===
+                // === Tier 4: 결전의 일격 ===
                 CrossbowFinalStrikeHpThreshold = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_결전의일격_체력임계값", 50f,
-                    "Tier 5: 결전의 일격(crossbow_Step5_final) - 체력 임계값 (%)");
+                    "Crossbow Tree", "Tier4_결전의일격_체력임계값", 50f,
+                    "Tier 4: 결전의 일격(crossbow_Step4_final) - 체력 임계값 (%)");
 
                 CrossbowFinalStrikeDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_결전의일격_데미지보너스", 30f,
-                    "Tier 5: 결전의 일격(crossbow_Step5_final) - 추가 피해 (%)");
+                    "Crossbow Tree", "Tier4_결전의일격_데미지보너스", 30f,
+                    "Tier 4: 결전의 일격(crossbow_Step4_final) - 추가 피해 (%)");
 
-                // === Tier 6: 단 한 발 (액티브 스킬) ===
+                // === Tier 5: 단 한 발 (액티브 스킬) ===
                 CrossbowOneShotDuration = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier6_단한발_지속시간", 30f,
-                    "Tier 6: 단 한 발(crossbow_Step6_expert) - 버프 지속 시간 (초)");
+                    "Crossbow Tree", "Tier5_단한발_지속시간", 30f,
+                    "Tier 5: 단 한 발(crossbow_Step5_expert) - 버프 지속 시간 (초)");
 
                 CrossbowOneShotDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier6_단한발_공격력보너스", 120f,
-                    "Tier 6: 단 한 발(crossbow_Step6_expert) - 공격력 보너스 (%)");
+                    "Crossbow Tree", "Tier5_단한발_공격력보너스", 120f,
+                    "Tier 5: 단 한 발(crossbow_Step5_expert) - 공격력 보너스 (%)");
 
                 CrossbowOneShotKnockback = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier6_단한발_넉백거리", 5f,
-                    "Tier 6: 단 한 발(crossbow_Step6_expert) - 넉백 거리 (m)");
+                    "Crossbow Tree", "Tier5_단한발_넉백거리", 5f,
+                    "Tier 5: 단 한 발(crossbow_Step5_expert) - 넉백 거리 (m)");
 
                 CrossbowOneShotCooldown = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier6_단한발_쿨타임", 60f,
-                    "Tier 6: 단 한 발(crossbow_Step6_expert) - 쿨타임 (초)");
-
-                // === 구분선 ===
-                SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "──────────────────────────", "",
-                    "--------------------------");
+                    "Crossbow Tree", "Tier5_단한발_쿨타임", 60f,
+                    "Tier 5: 단 한 발(crossbow_Step5_expert) - 쿨타임 (초)");
 
                 // === 이벤트 핸들러 등록 (툴팁 실시간 업데이트) ===
                 RegisterCrossbowEventHandlers();

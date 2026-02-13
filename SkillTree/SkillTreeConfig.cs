@@ -331,8 +331,13 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep1CritDamageBonus => Spear_Config.SpearStep1CritDamageBonus;
         public static ConfigEntry<float> SpearStep2EvasionDamageBonus => Spear_Config.SpearStep2EvasionDamageBonus;
         public static ConfigEntry<float> SpearStep3PierceDamageBonus => Spear_Config.SpearStep3PierceDamageBonus;
-        public static ConfigEntry<float> SpearStep3QuickDamageBonus => Spear_Config.SpearStep3QuickDamageBonus;
-        public static ConfigEntry<float> SpearStep4TripleDamageBonus => Spear_Config.SpearStep4TripleDamageBonus;
+        // 폭발창
+        public static ConfigEntry<float> SpearExplosionChance => Spear_Config.SpearExplosionChance;
+        public static ConfigEntry<float> SpearExplosionRadius => Spear_Config.SpearExplosionRadius;
+        public static ConfigEntry<float> SpearExplosionDamageBonus => Spear_Config.SpearExplosionDamageBonus;
+        // 이연창
+        public static ConfigEntry<float> SpearDualDamageBonus => Spear_Config.SpearDualDamageBonus;
+        public static ConfigEntry<float> SpearDualDuration => Spear_Config.SpearDualDuration;
         public static ConfigEntry<float> SpearStep5PenetrateCritChance => Spear_Config.SpearStep5PenetrateCritChance;
         public static ConfigEntry<float> SpearStep5ComboCooldown => Spear_Config.SpearStep5ComboCooldown;
         public static ConfigEntry<float> SpearStep5ComboDamage => Spear_Config.SpearStep5ComboDamage;
@@ -349,8 +354,13 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep2CritDamageBonusValue => Spear_Config.SpearStep2CritDamageBonusValue;
         public static float SpearStep3EvasionDamageBonusValue => Spear_Config.SpearStep3EvasionDamageBonusValue;
         public static float SpearStep3PierceDamageBonusValue => Spear_Config.SpearStep3PierceDamageBonusValue;
-        public static float SpearStep4QuickDamageBonusValue => Spear_Config.SpearStep4QuickDamageBonusValue;
-        public static float SpearStep5TripleDamageBonusValue => Spear_Config.SpearStep5TripleDamageBonusValue;
+        // 폭발창 Value
+        public static float SpearExplosionChanceValue => Spear_Config.SpearExplosionChanceValue;
+        public static float SpearExplosionRadiusValue => Spear_Config.SpearExplosionRadiusValue;
+        public static float SpearExplosionDamageBonusValue => Spear_Config.SpearExplosionDamageBonusValue;
+        // 이연창 Value
+        public static float SpearDualDamageBonusValue => Spear_Config.SpearDualDamageBonusValue;
+        public static float SpearDualDurationValue => Spear_Config.SpearDualDurationValue;
         public static float SpearStep6PenetrateCritChanceValue => Spear_Config.SpearStep6PenetrateCritChanceValue;
         public static float SpearStep6ComboCooldownValue => Spear_Config.SpearStep6ComboCooldownValue;
         public static float SpearStep6ComboDamageValue => Spear_Config.SpearStep6ComboDamageValue;
@@ -373,11 +383,15 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PolearmStep4MoonRangeBonus => Polearm_Config.PolearmStep4MoonRangeBonus;
         public static ConfigEntry<float> PolearmStep4MoonStaminaReduction => Polearm_Config.PolearmStep4MoonStaminaReduction;
         public static ConfigEntry<float> PolearmStep4ChargeDamageBonus => Polearm_Config.PolearmStep4ChargeDamageBonus;
-        public static ConfigEntry<float> PolearmStep5KingHealthThreshold => Polearm_Config.PolearmStep5KingHealthThreshold;
-        public static ConfigEntry<float> PolearmStep5KingDamageBonus => Polearm_Config.PolearmStep5KingDamageBonus;
-        public static ConfigEntry<float> PolearmStep5KingStaminaCost => Polearm_Config.PolearmStep5KingStaminaCost;
-        public static ConfigEntry<float> PolearmStep5KingCooldown => Polearm_Config.PolearmStep5KingCooldown;
-        public static ConfigEntry<float> PolearmStep5KingDuration => Polearm_Config.PolearmStep5KingDuration;
+        // 관통 돌격 Config 프록시
+        public static ConfigEntry<float> PolearmPierceChargeDashDistance => Polearm_Config.PolearmPierceChargeDashDistance;
+        public static ConfigEntry<float> PolearmPierceChargePrimaryDamage => Polearm_Config.PolearmPierceChargePrimaryDamage;
+        public static ConfigEntry<float> PolearmPierceChargeAoeDamage => Polearm_Config.PolearmPierceChargeAoeDamage;
+        public static ConfigEntry<float> PolearmPierceChargeAoeAngle => Polearm_Config.PolearmPierceChargeAoeAngle;
+        public static ConfigEntry<float> PolearmPierceChargeAoeRadius => Polearm_Config.PolearmPierceChargeAoeRadius;
+        public static ConfigEntry<float> PolearmPierceChargeKnockbackDistance => Polearm_Config.PolearmPierceChargeKnockbackDistance;
+        public static ConfigEntry<float> PolearmPierceChargeStaminaCost => Polearm_Config.PolearmPierceChargeStaminaCost;
+        public static ConfigEntry<float> PolearmPierceChargeCooldown => Polearm_Config.PolearmPierceChargeCooldown;
 
         public static float PolearmExpertRangeBonusValue => Polearm_Config.PolearmExpertRangeBonusValue;
         public static float PolearmStep1SpinWheelDamageValue => Polearm_Config.PolearmStep1SpinWheelDamageValue;
@@ -389,11 +403,15 @@ namespace CaptainSkillTree.SkillTree
         public static float PolearmStep4MoonRangeBonusValue => Polearm_Config.PolearmStep4MoonRangeBonusValue;
         public static float PolearmStep4MoonStaminaReductionValue => Polearm_Config.PolearmStep4MoonStaminaReductionValue;
         public static float PolearmStep4ChargeDamageBonusValue => Polearm_Config.PolearmStep4ChargeDamageBonusValue;
-        public static float PolearmStep5KingHealthThresholdValue => Polearm_Config.PolearmStep5KingHealthThresholdValue;
-        public static float PolearmStep5KingDamageBonusValue => Polearm_Config.PolearmStep5KingDamageBonusValue;
-        public static float PolearmStep5KingStaminaCostValue => Polearm_Config.PolearmStep5KingStaminaCostValue;
-        public static float PolearmStep5KingCooldownValue => Polearm_Config.PolearmStep5KingCooldownValue;
-        public static float PolearmStep5KingDurationValue => Polearm_Config.PolearmStep5KingDurationValue;
+        // 관통 돌격 Value 프록시
+        public static float PolearmPierceChargeDashDistanceValue => Polearm_Config.PolearmPierceChargeDashDistanceValue;
+        public static float PolearmPierceChargePrimaryDamageValue => Polearm_Config.PolearmPierceChargePrimaryDamageValue;
+        public static float PolearmPierceChargeAoeDamageValue => Polearm_Config.PolearmPierceChargeAoeDamageValue;
+        public static float PolearmPierceChargeAoeAngleValue => Polearm_Config.PolearmPierceChargeAoeAngleValue;
+        public static float PolearmPierceChargeAoeRadiusValue => Polearm_Config.PolearmPierceChargeAoeRadiusValue;
+        public static float PolearmPierceChargeKnockbackDistanceValue => Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
+        public static float PolearmPierceChargeStaminaCostValue => Polearm_Config.PolearmPierceChargeStaminaCostValue;
+        public static float PolearmPierceChargeCooldownValue => Polearm_Config.PolearmPierceChargeCooldownValue;
 
         #endregion
 
@@ -403,31 +421,41 @@ namespace CaptainSkillTree.SkillTree
         {
             DetectServerClientMode();
 
-            // === Config 초기화 (Speed → Bow → Staff → Crossbow 순) ===
-            Speed_Config.Initialize(config);
-            Bow_Config.Initialize(config);
-            Staff_Config.InitConfig(config);
-            Crossbow_Config.InitializeCrossbowConfig(config);
+            // 1. 전문가 트리 (Attack → Speed → Defense → Product 순)
+            Attack_Config.Initialize(config);   // Attack Tree (공격 전문가)
+            Speed_Config.Initialize(config);    // Speed Tree (속도 전문가)
+            Defense_Config.Initialize(config);  // Defense Tree (방어 전문가)
+            Production_Config.Initialize(config);  // Product Tree (생산 전문가)
 
-            // === 전문가 트리 Config 초기화 ===
-            Attack_Config.Initialize(config);
-            Defense_Config.Initialize(config);
+            // === 구분선: 전문가 트리 끝 ===
+            BindServerSync(config, "─────────── 구분선 1 ───────────", "전문가 트리 끝", "", "...");
 
-            // === 근접 무기 Config 초기화 ===
-            Knife_Config.InitializeKnifeConfig(config);
-            Sword_Config.Initialize(config);
+            // 2. 원거리 무기 트리 (Bow → Staff → Crossbow 순)
+            Bow_Config.Initialize(config);                      // Bow Tree (활)
+            Staff_Config.InitConfig(config);                    // Staff Tree (지팡이)
+            Crossbow_Config.InitializeCrossbowConfig(config);   // Crossbow Tree (석궁)
+
+            // === 구분선: 원거리 무기 트리 끝 ===
+            BindServerSync(config, "─────────── 구분선 2 ───────────", "원거리 무기 끝", "", "...");
+
+            // 3. 근접 무기 트리 (Knife → Sword → Mace → Spear → Polearm 순)
+            Knife_Config.InitializeKnifeConfig(config); // Knife Tree (단검)
+            Sword_Config.Initialize(config);            // Sword Tree (검)
             InitializeSwordConfig(config);
-            Mace_Config.Initialize(config);
-            Spear_Config.Initialize(config);
-            Polearm_Config.Initialize(config);
+            Mace_Config.Initialize(config);             // Mace Tree (둔기)
+            Spear_Config.Initialize(config);            // Spear Tree (창)
+            Polearm_Config.Initialize(config);          // Polearm Tree (폴암)
 
-            // === 직업 스킬 Config 초기화 ===
-            Archer_Config.InitializeArcherConfig(config);
-            Mage_Config.InitializeMageConfig(config);
-            Tanker_Config.InitializeTankerConfig(config);
-            Rogue_Config.InitializeRogueConfig(config);
-            Paladin_Config.InitializePaladinConfig();
-            Berserker_Config.InitializeBerserkerConfig();
+            // === 구분선: 근접 무기 트리 끝 ===
+            BindServerSync(config, "─────────── 구분선 3 ───────────", "근접 무기 끝", "", "...");
+
+            // 4. 직업 트리 (최하단 배치)
+            Archer_Config.InitializeArcherConfig(config);       // Archer (궁수)
+            Mage_Config.InitializeMageConfig(config);           // Mage (마법사)
+            Tanker_Config.InitializeTankerConfig(config);       // Tanker (탱커)
+            Rogue_Config.InitializeRogueConfig(config);         // Rogue (로그)
+            Paladin_Config.InitializePaladinConfig();           // Paladin (성기사)
+            Berserker_Config.InitializeBerserkerConfig();       // Berserker (광전사)
 
             _configFile = config;
 

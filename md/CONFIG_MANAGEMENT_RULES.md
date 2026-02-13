@@ -160,37 +160,52 @@ PropertyName = config.Bind(
 ```csharp
 public static void Initialize(ConfigFile config)
 {
-    // 1. 공통 트리 (Tier 기반 공격/속도/생산 트리)
-    Attack_Config.Initialize(config);  // Attack Tree (공격 전문가)
-
-    // 2. 방어 트리 (Attack Tree 바로 아래 배치)
+    // 1. 전문가 트리 (Attack → Speed → Defense -> Product 순)
+    Attack_Config.Initialize(config);   // Attack Tree (공격 전문가)
+    Speed_Config.Initialize(config);    // Speed Tree (속도 전문가)
     Defense_Config.Initialize(config);  // Defense Tree (방어 전문가)
+    Product_Config.Initialize(config);  // Product Tree (생산 전문가)
 
-    // 3. 속도/생산 트리
-    Speed_Config.Initialize(config);      // Speed Tree (속도 전문가)
-    Production_Config.Initialize(config); // Production Tree (생산 전문가)
+    // === 구분선: 전문가 트리 끝 ===
+    BindServerSync(config, "──────────────────────────", "전문가 트리 구분선", "", "...");
 
-    // 4. 무기별 트리 (무기 종류별 순서: 활 → 지팡이 → 단검 → 검 → 둔기 → 창 → 폴암)
-    Bow_Config.Initialize(config);        // Bow Tree (활)
-    Staff_Config.InitConfig(config);      // Staff Tree (지팡이)
+    // 2. 원거리 무기 트리 (Bow → Staff → Crossbow 순)
+    Bow_Config.Initialize(config);                      // Bow Tree (활)
+    Staff_Config.InitConfig(config);                    // Staff Tree (지팡이)
+    Crossbow_Config.InitializeCrossbowConfig(config);   // Crossbow Tree (석궁)
+
+    // === 구분선: 원거리 무기 트리 끝 ===
+    BindServerSync(config, "──────────────────────────", "원거리 무기 트리 구분선", "", "...");
+
+    // 3. 근접 무기 트리 (Knife → Sword → Mace → Spear → Polearm 순)
     Knife_Config.InitializeKnifeConfig(config); // Knife Tree (단검)
-    Sword_Config.Initialize(config);      // Sword Tree (검)
-    Mace_Config.Initialize(config);       // Mace Tree (둔기)
-    Spear_Config.Initialize(config);      // Spear Tree (창)
-    Polearm_Config.Initialize(config);    // Polearm Tree (폴암)
+    Sword_Config.Initialize(config);            // Sword Tree (검)
+    InitializeSwordConfig(config);
+    Mace_Config.Initialize(config);             // Mace Tree (둔기)
+    Spear_Config.Initialize(config);            // Spear Tree (창)
+    Polearm_Config.Initialize(config);          // Polearm Tree (폴암)
 
-    // 5. 직업 트리 (최하단 배치)
-    Archer_Config.InitializeArcherConfig(config);    // Archer (궁수)
-    Mage_Config.InitializeMageConfig(config);        // Mage (마법사)
-    Tanker_Config.InitializeTankerConfig(config);    // Tanker (탱커)
-    Rogue_Config.InitializeRogueConfig(config);      // Rogue (로그)
-    Paladin_Config.InitializePaladinConfig(config);  // Paladin (성기사)
-    Berserker_Config.InitializeBerserkerConfig(config); // Berserker (광전사)
-    // 카테고리: "Berserker Job Skills"
+    // === 구분선: 근접 무기 트리 끝 ===
+    BindServerSync(config, "──────────────────────────", "근접 무기 트리 구분선", "", "...");
+
+    // 4. 직업 트리 (최하단 배치)
+    Archer_Config.InitializeArcherConfig(config);       // Archer (궁수)
+    Mage_Config.InitializeMageConfig(config);           // Mage (마법사)
+    Tanker_Config.InitializeTankerConfig(config);       // Tanker (탱커)
+    Rogue_Config.InitializeRogueConfig(config);         // Rogue (로그)
+    Paladin_Config.InitializePaladinConfig();           // Paladin (성기사)
+    Berserker_Config.InitializeBerserkerConfig();       // Berserker (광전사)
 }
 ```
 
 **순서 변경 금지**: 위 순서를 준수하여 Config 파일에서 일관된 정렬 유지
+
+### 🔲 구분선 규칙
+
+**구분선 위치 규칙**:
+- ✅ 구분선은 **트리 그룹 사이**에 배치 (SkillTreeConfig.cs에서만 추가)
+- ❌ 개별 Config 파일(Crossbow_Config, Defense_Config 등) 안에 구분선 넣지 않음
+- 구분선 카테고리: `"──────────────────────────"` (별도 카테고리로 분리)
 
 ### 🔢 Tier 명명 규칙
 

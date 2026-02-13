@@ -219,15 +219,46 @@ namespace CaptainSkillTree.SkillTree
                 SkillEffect.DrawFloatingText(player, $"🎯 회피 찌르기! (+{SkillTreeConfig.SpearStep3EvasionDamageBonusValue}%)");
             }
 
-            // 삼연창 효과
-            SkillEffect.CheckSpearTripleCombo(player);
-            if (SkillEffect.spearTripleComboActive.TryGetValue(player, out bool tripleActive) && tripleActive)
+            // 이연창 효과 (2연속 공격 시 버프 발동)
+            SkillEffect.CheckSpearDualCombo(player);
+            if (SkillEffect.IsSpearDualBuffActive(player))
             {
-                float bonusPercent = SkillTreeConfig.SpearStep5TripleDamageBonusValue / 100f;
+                float bonusPercent = Spear_Config.SpearDualDamageBonusValue / 100f;
                 hit.m_damage.m_pierce *= (1f + bonusPercent);
-                SkillEffect.spearTripleComboActive[player] = false;
-                SkillEffect.PlaySkillEffect(player, "spear_Step4_triple", hit.m_point);
-                SkillEffect.DrawFloatingText(player, $"🔥 삼연창! (+{SkillTreeConfig.SpearStep5TripleDamageBonusValue}%)");
+            }
+
+            // 폭발창 효과 (확률 기반 폭발)
+            if (SkillEffect.HasSkill("spear_Step3_quick") && target != null)
+            {
+                float explosionChance = Spear_Config.SpearExplosionChanceValue;
+                if (UnityEngine.Random.Range(0f, 100f) < explosionChance)
+                {
+                    float radius = Spear_Config.SpearExplosionRadiusValue;
+                    float damageBonus = Spear_Config.SpearExplosionDamageBonusValue / 100f;
+
+                    // VFX 재생 (fx_shaman_protect - 발헤임 기본 VFX)
+                    VFX.VFXManager.PlayVFXMultiplayer("fx_shaman_protect", "", hit.m_point, UnityEngine.Quaternion.identity);
+
+                    // 범위 내 적에게 폭발 데미지
+                    var nearbyEnemies = Character.GetAllCharacters().Where(c =>
+                        c != null && !c.IsDead() && c != player &&
+                        Vector3.Distance(c.transform.position, hit.m_point) <= radius &&
+                        BaseAI.IsEnemy(player, c));
+
+                    float explosionDamage = hit.m_damage.m_pierce * damageBonus;
+                    foreach (var enemy in nearbyEnemies)
+                    {
+                        if (enemy == target) continue; // 이미 적중한 대상 제외
+                        HitData explosionHit = new HitData();
+                        explosionHit.m_damage.m_pierce = explosionDamage;
+                        explosionHit.m_point = enemy.transform.position;
+                        explosionHit.m_attacker = player.GetZDOID();
+                        enemy.Damage(explosionHit);
+                    }
+
+                    SkillEffect.DrawFloatingText(player, $"💥 폭발창! (+{Spear_Config.SpearExplosionDamageBonusValue}%)");
+                    Plugin.Log.LogDebug($"[폭발창] 폭발 발동 - 범위 {radius}m, 보너스 {Spear_Config.SpearExplosionDamageBonusValue}%");
+                }
             }
 
             // 연격창
@@ -523,10 +554,10 @@ namespace CaptainSkillTree.SkillTree
                 totalSpearBonus += SkillTreeConfig.SpearStep3PierceDamageBonusValue;
             }
 
-            // 삼연창
-            if (SkillEffect.HasSkill("spear_Step4_triple"))
+            // 이연창 (버프 활성 시에만 적용)
+            if (SkillEffect.HasSkill("spear_Step4_triple") && SkillEffect.IsSpearDualBuffActive(player))
             {
-                totalSpearBonus += SkillTreeConfig.SpearStep5TripleDamageBonusValue;
+                totalSpearBonus += Spear_Config.SpearDualDamageBonusValue;
             }
 
             if (totalSpearBonus > 0)

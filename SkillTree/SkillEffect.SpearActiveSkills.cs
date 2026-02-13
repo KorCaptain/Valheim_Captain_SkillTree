@@ -133,7 +133,6 @@ namespace CaptainSkillTree.SkillTree
                 );
 
                 DrawFloatingText(player, $"[연공창] 버프 활성화! ({maxUses}회, +{damageBonus}%)", new Color(1f, 0.8f, 0.2f, 1f));
-                Plugin.Log.LogInfo($"[연공창] 버프 활성화 - 지속시간: {buffDuration}초, 최대 사용 횟수: {maxUses}회");
             }
             catch (Exception ex)
             {
@@ -156,9 +155,6 @@ namespace CaptainSkillTree.SkillTree
                 if (vfx != null)
                 {
                     spearBuffVFXInstances[player] = vfx;
-                    Plugin.Log.LogInfo("[연공창] 버프 VFX 생성됨");
-
-                    // 버프 만료 시 VFX 자동 제거 코루틴 시작
                     player.StartCoroutine(MonitorSpearBuffExpiration(player));
                 }
             }
@@ -178,10 +174,8 @@ namespace CaptainSkillTree.SkillTree
                 // 버프 상태 확인
                 if (!IsSpearComboThrowBuffActive(player))
                 {
-                    // 버프 종료 - VFX 제거
                     RemoveSpearBuffVFX(player);
                     SkillBuffDisplay.Instance?.RemoveBuff("spear_combo_throw");
-                    Plugin.Log.LogInfo("[연공창] 버프 만료 - VFX 제거됨");
                     yield break;
                 }
 
@@ -202,7 +196,6 @@ namespace CaptainSkillTree.SkillTree
                 if (spearBuffVFXInstances.TryGetValue(player, out var vfx) && vfx != null)
                 {
                     UnityEngine.Object.Destroy(vfx);
-                    Plugin.Log.LogInfo("[연공창] 버프 VFX 제거됨");
                 }
                 spearBuffVFXInstances.Remove(player);
             }
@@ -235,8 +228,6 @@ namespace CaptainSkillTree.SkillTree
 
             spearComboThrowUsesRemaining[player]--;
             int remaining = spearComboThrowUsesRemaining[player];
-
-            Plugin.Log.LogInfo($"[연공창] 사용 횟수 감소 - 남은 횟수: {remaining}");
 
             if (remaining <= 0)
             {
@@ -281,21 +272,14 @@ namespace CaptainSkillTree.SkillTree
                 newSpear.m_equipped = false;  // 중요: 장착 상태 초기화
                 if (inventory.AddItem(newSpear))
                 {
-                    // 버프가 아직 남아있으면 VFX 다시 생성
                     if (IsSpearComboThrowBuffActive(player))
                     {
                         CreateSpearBuffVFX(player);
                     }
-
-                    // 자동 장착 (지연 실행으로 인벤토리 동기화 대기)
                     player.StartCoroutine(DelayedEquipSpear(player, spearName));
-
                     DrawFloatingText(player, "[연공창] 창 회수 & 장착!", new Color(0.5f, 1f, 0.5f, 1f));
-                    Plugin.Log.LogInfo($"[연공창] 창 회수 및 장착 성공: {spearName}");
                     return;
                 }
-
-                Plugin.Log.LogWarning($"[연공창] 창 회수 실패: {spearName}");
                 DrawFloatingText(player, "[연공창] 인벤토리 가득!", Color.red);
             }
             catch (Exception ex)
@@ -331,16 +315,9 @@ namespace CaptainSkillTree.SkillTree
             float waitStart = Time.time;
             while (player != null && !player.IsDead() && Time.time - waitStart < waitTimeout)
             {
-                // InAttack, InDodge, IsBlocking 등 행동 중이면 대기
                 bool isBusy = player.InAttack() || player.InDodge() || player.IsBlocking() ||
                               player.IsStaggering() || player.InPlaceMode();
-
-                if (!isBusy)
-                {
-                    Plugin.Log.LogInfo($"[연공창] 플레이어 대기 상태 확인 완료 ({Time.time - waitStart:F2}초 대기)");
-                    break;
-                }
-
+                if (!isBusy) break;
                 yield return new WaitForSeconds(0.05f);
             }
 
@@ -351,13 +328,9 @@ namespace CaptainSkillTree.SkillTree
             var inventory = player.GetInventory();
             if (inventory == null) yield break;
 
-            // 먼저 현재 무기 확인 - 이미 해당 창을 들고 있으면 성공
             var currentCheck = player.GetCurrentWeapon();
             if (currentCheck != null && currentCheck.m_shared.m_name == spearName)
-            {
-                Plugin.Log.LogInfo($"[연공창] 이미 해당 창 장착됨: {spearName}");
                 yield break;
-            }
 
             // 인벤토리에서 창 찾기 (m_equipped 플래그 무시하고 찾기)
             ItemDrop.ItemData spearToEquip = null;
@@ -374,31 +347,22 @@ namespace CaptainSkillTree.SkillTree
             }
 
             if (spearToEquip == null)
-            {
-                Plugin.Log.LogWarning($"[연공창] 인벤토리에서 창을 찾을 수 없음: {spearName}");
                 yield break;
-            }
-
-            Plugin.Log.LogInfo($"[연공창] 장착 시도 시작: {spearName}");
 
             // ★ 최대 3회 재시도 루프
             for (int attempt = 1; attempt <= 3; attempt++)
             {
                 if (player == null || player.IsDead()) yield break;
 
-                // 장착 전 다시 한번 상태 체크
                 if (player.InAttack() || player.InDodge())
                 {
-                    Plugin.Log.LogInfo($"[연공창] 시도 {attempt}: 플레이어 행동 중, 대기...");
                     yield return new WaitForSeconds(0.3f);
                     continue;
                 }
 
-                // 현재 오른손 무기 확인 및 해제
                 var currentWeapon = player.GetCurrentWeapon();
                 if (currentWeapon != null && currentWeapon.m_equipped && currentWeapon != spearToEquip)
                 {
-                    Plugin.Log.LogInfo($"[연공창] 시도 {attempt}: 현재 무기 해제: {currentWeapon.m_shared.m_name}");
                     player.UnequipItem(currentWeapon, false);
                     yield return new WaitForSeconds(0.1f);
                 }
@@ -410,62 +374,36 @@ namespace CaptainSkillTree.SkillTree
                 // m_equipped 상태 강제 초기화
                 spearToEquip.m_equipped = false;
 
-                // EquipItem 시도
                 bool success = false;
                 try
                 {
                     success = player.EquipItem(spearToEquip, true);
-                    Plugin.Log.LogInfo($"[연공창] 시도 {attempt}: EquipItem 결과: {success}");
                 }
-                catch (Exception ex)
-                {
-                    Plugin.Log.LogWarning($"[연공창] 시도 {attempt}: EquipItem 예외: {ex.Message}");
-                }
+                catch { }
 
                 yield return new WaitForSeconds(0.2f);
 
-                // 장착 확인
                 currentWeapon = player.GetCurrentWeapon();
                 if (currentWeapon != null && currentWeapon.m_shared.m_name == spearName)
-                {
-                    Plugin.Log.LogInfo($"[연공창] 창 자동 장착 성공! (시도 {attempt})");
                     yield break;
-                }
 
-                // 실패 시 UseItem으로 재시도
                 if (attempt < 3)
                 {
                     try
                     {
                         spearToEquip.m_equipped = false;
                         player.UseItem(inventory, spearToEquip, false);
-                        Plugin.Log.LogInfo($"[연공창] 시도 {attempt}: UseItem 재시도");
                     }
                     catch { }
 
                     yield return new WaitForSeconds(0.25f);
 
-                    // UseItem 후 장착 확인
                     currentWeapon = player.GetCurrentWeapon();
                     if (currentWeapon != null && currentWeapon.m_shared.m_name == spearName)
-                    {
-                        Plugin.Log.LogInfo($"[연공창] 창 자동 장착 성공! (UseItem, 시도 {attempt})");
                         yield break;
-                    }
                 }
             }
 
-            // 3회 시도 후 최종 확인
-            var finalWeapon = player.GetCurrentWeapon();
-            if (finalWeapon != null && finalWeapon.m_shared.m_name == spearName)
-            {
-                Plugin.Log.LogInfo($"[연공창] 창 자동 장착 최종 성공: {spearName}");
-            }
-            else
-            {
-                string currentName = finalWeapon != null ? finalWeapon.m_shared.m_name : "없음";
-                Plugin.Log.LogWarning($"[연공창] 창 자동 장착 실패 (3회 시도). 현재 무기: {currentName}");
-            }
         }
 
         /// <summary>
@@ -492,11 +430,154 @@ namespace CaptainSkillTree.SkillTree
 
     /// <summary>
     /// 연공창 강화 투사체 태그 컴포넌트
+    /// 이동 중 2m 반경 내 몬스터 자동 적중 및 넉백 처리
     /// </summary>
     public class ComboSpearProjectileTag : MonoBehaviour
     {
         public Player thrower;
         public bool processed = false;
+
+        // 적중 처리된 몬스터 추적 (중복 데미지 방지)
+        private HashSet<Character> hitTargets = new HashSet<Character>();
+
+        // 적중 반경 (2m)
+        private const float HIT_RADIUS = 2f;
+        // 넉백 힘
+        private const float KNOCKBACK_FORCE = 15f;
+        // 체크 간격
+        private float checkInterval = 0.05f;
+        private float lastCheckTime = 0f;
+
+        private Projectile projectile;
+
+        void Start()
+        {
+            projectile = GetComponent<Projectile>();
+        }
+
+        void FixedUpdate()
+        {
+            if (processed || thrower == null) return;
+            if (Time.time - lastCheckTime < checkInterval) return;
+            lastCheckTime = Time.time;
+
+            // 창 현재 위치 기준 2m 반경 내 몬스터 탐색
+            CheckNearbyMonsters(transform.position);
+        }
+
+        /// <summary>
+        /// 주변 몬스터 탐색 및 적중 처리
+        /// </summary>
+        private void CheckNearbyMonsters(Vector3 position)
+        {
+            try
+            {
+                var colliders = Physics.OverlapSphere(position, HIT_RADIUS);
+                foreach (var col in colliders)
+                {
+                    if (col == null) continue;
+
+                    Character target = col.GetComponent<Character>();
+                    if (target == null)
+                        target = col.GetComponentInParent<Character>();
+
+                    if (target == null) continue;
+                    if (target.IsPlayer()) continue;  // 플레이어 제외
+                    if (hitTargets.Contains(target)) continue;  // 이미 적중한 대상 제외
+
+                    // 적중 처리
+                    ApplyHitToMonster(target, position);
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[연공창] 주변 몬스터 탐색 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 몬스터에게 데미지 및 넉백 적용
+        /// </summary>
+        private void ApplyHitToMonster(Character target, Vector3 hitPosition)
+        {
+            try
+            {
+                hitTargets.Add(target);
+
+                // 데미지 계산 (프로젝타일 데미지 사용)
+                if (projectile != null && thrower != null)
+                {
+                    HitData hitData = new HitData();
+                    hitData.m_damage = projectile.m_damage;
+                    hitData.m_point = target.transform.position;
+                    hitData.m_dir = (target.transform.position - thrower.transform.position).normalized;
+                    hitData.m_attacker = thrower.GetZDOID();
+                    hitData.m_skill = Skills.SkillType.Spears;
+
+                    // 넉백 설정
+                    hitData.m_pushForce = KNOCKBACK_FORCE;
+
+                    // 데미지 적용
+                    target.Damage(hitData);
+
+                    SimpleVFX.Play("hit_01", target.transform.position + Vector3.up, 1.5f);
+                    SimpleVFX.Play("flash_star_ellow_purple", target.transform.position + Vector3.up * 0.5f, 2f);
+                    CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("", "fx_crit", target.transform.position, Quaternion.identity, 1f);
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[연공창] 몬스터 적중 처리 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 최종 적중 시 주변 몬스터 전체에 넉백 적용 (땅/벽/몬스터 적중 시)
+        /// </summary>
+        public void ApplyAreaKnockback(Vector3 hitPosition)
+        {
+            try
+            {
+                if (thrower == null) return;
+
+                var colliders = Physics.OverlapSphere(hitPosition, HIT_RADIUS);
+                int knockbackCount = 0;
+
+                foreach (var col in colliders)
+                {
+                    if (col == null) continue;
+
+                    Character target = col.GetComponent<Character>();
+                    if (target == null)
+                        target = col.GetComponentInParent<Character>();
+
+                    if (target == null) continue;
+                    if (target.IsPlayer()) continue;
+
+                    // 이미 적중한 대상도 넉백은 적용 (추가 데미지 없이)
+                    if (!hitTargets.Contains(target))
+                    {
+                        // 아직 데미지를 받지 않은 대상에게 데미지 + 넉백
+                        ApplyHitToMonster(target, hitPosition);
+                    }
+                    else
+                    {
+                        // 이미 데미지를 받은 대상에게는 넉백만 추가
+                        Vector3 knockbackDir = (target.transform.position - hitPosition).normalized;
+                        if (knockbackDir.sqrMagnitude < 0.01f)
+                            knockbackDir = Vector3.up;
+
+                        // Stagger 적용 (넉백 효과)
+                        target.Stagger(knockbackDir);
+                    }
+                    knockbackCount++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[연공창] 범위 넉백 오류: {ex.Message}");
+            }
+        }
     }
 
     /// <summary>
@@ -528,13 +609,11 @@ namespace CaptainSkillTree.SkillTree
                 // 이미 태그가 있으면 무시
                 if (__instance.GetComponent<ComboSpearProjectileTag>() != null) return;
 
-                // 던진 창 정보 저장 (item 파라미터 사용)
                 if (item != null && item.m_shared.m_skillType == Skills.SkillType.Spears)
                 {
                     var clonedSpear = item.Clone();
-                    clonedSpear.m_equipped = false;  // 중요: 장착 상태 초기화
+                    clonedSpear.m_equipped = false;
                     SkillEffect.lastThrownSpear[player] = clonedSpear;
-                    Plugin.Log.LogInfo($"[연공창] 던진 창 저장: {item.m_shared.m_name}");
                 }
 
                 // 태그 추가
@@ -558,10 +637,7 @@ namespace CaptainSkillTree.SkillTree
                 }
                 catch { }
 
-                // 사용 횟수 감소
                 SkillEffect.ConsumeSpearComboThrowUse(player);
-
-                Plugin.Log.LogInfo($"[연공창] 강화 투창 발사! 데미지 배율: {damageMultiplier}x");
             }
             catch (Exception ex)
             {
@@ -573,7 +649,7 @@ namespace CaptainSkillTree.SkillTree
     /// <summary>
     /// 창 투사체 적중 감지 패치 (Projectile.OnHit Postfix) - 시그니처 수정됨
     /// Valheim API: OnHit(Collider collider, Vector3 hitPoint, bool water, Vector3 normal)
-    /// 땅/몬스터/환경 상관없이 무조건 회수
+    /// 땅/몬스터/환경 상관없이 무조건 회수 + 2m 반경 넉백
     /// </summary>
     [HarmonyPatch(typeof(Projectile), "OnHit",
         new Type[] { typeof(Collider), typeof(Vector3), typeof(bool), typeof(Vector3) })]
@@ -591,39 +667,31 @@ namespace CaptainSkillTree.SkillTree
                 if (tag.processed) return;
                 tag.processed = true;
 
-                // hitPoint 파라미터 직접 사용 (정확한 위치)
-
                 // 적중 VFX (물 제외)
                 if (!water)
                 {
                     try
                     {
-                        // 몬스터/땅 상관없이 VFX
+                        // 적중 지점 VFX
                         SimpleVFX.Play("hit_01", hitPoint, 1.5f);
 
-                        // 몬스터 적중 시 추가 VFX
-                        Character hitTarget = null;
+                        // 직접 충돌한 대상 확인
+                        Character directHitTarget = null;
                         if (collider != null)
                         {
-                            hitTarget = collider.GetComponent<Character>();
-                            if (hitTarget == null)
-                                hitTarget = collider.GetComponentInParent<Character>();
+                            directHitTarget = collider.GetComponent<Character>();
+                            if (directHitTarget == null)
+                                directHitTarget = collider.GetComponentInParent<Character>();
                         }
 
-                        if (hitTarget != null && !hitTarget.IsPlayer())
+                        if (directHitTarget != null && !directHitTarget.IsPlayer())
                         {
-                            // 몬스터에게 커스텀 VFX 표시
                             SimpleVFX.Play("flash_star_ellow_purple", hitPoint, 2f);
-
-                            // 몬스터 적중 사운드 (fx_crit)
                             CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("", "fx_crit", hitPoint, Quaternion.identity, 1f);
+                        }
 
-                            Plugin.Log.LogInfo($"[연공창] 몬스터 적중! 위치: {hitPoint}");
-                        }
-                        else
-                        {
-                            Plugin.Log.LogInfo($"[연공창] 지면/환경 적중! 위치: {hitPoint}");
-                        }
+                        // ★ 핵심: 적중 지점 2m 반경 내 모든 몬스터에게 넉백 및 데미지 적용
+                        tag.ApplyAreaKnockback(hitPoint);
                     }
                     catch (Exception vfxEx)
                     {
@@ -661,11 +729,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 var tag = __instance.GetComponent<ComboSpearProjectileTag>();
                 if (tag != null)
-                {
-                    // 연공창 투사체는 드롭 아이템 생성 방지
-                    Plugin.Log.LogInfo("[연공창] 드롭 아이템 생성 방지");
                     return false;
-                }
             }
             catch (Exception ex)
             {
