@@ -37,6 +37,12 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, float> knifeAssassinHeartEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> knifeAssassinHeartCooldownEndTime = new Dictionary<Player, float>();
 
+        // 암살자의 심장 연속 공격 시스템
+        public static Dictionary<Player, int> assassinHeartHitCount = new Dictionary<Player, int>();
+        public static Dictionary<Player, bool> assassinHeartAttackMode = new Dictionary<Player, bool>();
+        public static Dictionary<Player, Character> assassinHeartTarget = new Dictionary<Player, Character>();
+        public static Dictionary<Player, float> assassinHeartAttackSpeedBonus = new Dictionary<Player, float>();
+
         // 검 관련 상태 추적
         public static Dictionary<Player, int> swordComboCount = new Dictionary<Player, int>();
         public static Dictionary<Player, float> swordLastHitTime = new Dictionary<Player, float>();

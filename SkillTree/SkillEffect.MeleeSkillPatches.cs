@@ -661,4 +661,44 @@ namespace CaptainSkillTree.SkillTree
             }
         }
     }
+
+    /// <summary>
+    /// 암살자의 심장 - 적중 카운트 증가 패치
+    /// </summary>
+    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+    public static class AssassinHeart_HitCount_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPriority(Priority.Low)]
+        public static void Postfix(Character __instance, HitData hit)
+        {
+            try
+            {
+                // 플레이어가 공격자인 경우만 처리
+                var attacker = hit.GetAttacker();
+                if (attacker == null || !attacker.IsPlayer()) return;
+                if (__instance.IsPlayer()) return; // 몬스터만 대상
+
+                var player = attacker as Player;
+                if (player == null) return;
+
+                // 암살자의 심장 공격 모드인지 확인
+                if (!SkillEffect.IsAssassinHeartAttackMode(player)) return;
+
+                // 대상 몬스터 확인
+                var target = SkillEffect.GetAssassinHeartTarget(player);
+                if (target == null || target != __instance) return;
+
+                // 단검 사용 중인지 확인
+                if (!SkillEffect.IsUsingDagger(player)) return;
+
+                // 적중 카운트 증가
+                SkillEffect.IncrementAssassinHeartHitCount(player);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[암살자의 심장] 적중 카운트 패치 오류: {ex.Message}");
+            }
+        }
+    }
 }

@@ -150,7 +150,7 @@ namespace CaptainSkillTree.SkillTree
 
             // Tier 6: 관통 돌격 (Pierce Charge) - G키 액티브 스킬
             PolearmPierceChargeDashDistance = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_관통돌격_돌진거리", 8f,
+                "Polearm Tree", "Tier6_관통돌격_돌진거리", 10f,
                 "Tier 6: 관통 돌격(polearm_step5_king) - 전방 돌진 거리 (m)");
 
             PolearmPierceChargePrimaryDamage = SkillTreeConfig.BindServerSync(config,
@@ -162,15 +162,15 @@ namespace CaptainSkillTree.SkillTree
                 "Tier 6: 관통 돌격(polearm_step5_king) - AOE 넉백 공격력 보너스 (%)");
 
             PolearmPierceChargeAoeAngle = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_관통돌격_AOE각도", 40f,
-                "Tier 6: 관통 돌격(polearm_step5_king) - AOE 넉백 각도 (도)");
+                "Polearm Tree", "Tier6_관통돌격_AOE각도", 280f,
+                "Tier 6: 관통 돌격(polearm_step5_king) - AOE 범위 각도 (280 = 전방 80도 제외)");
 
             PolearmPierceChargeAoeRadius = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_관통돌격_AOE반경", 3f,
+                "Polearm Tree", "Tier6_관통돌격_AOE반경", 5f,
                 "Tier 6: 관통 돌격(polearm_step5_king) - AOE 넉백 반경 (m)");
 
             PolearmPierceChargeKnockbackDistance = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_관통돌격_넉백거리", 5f,
+                "Polearm Tree", "Tier6_관통돌격_넉백거리", 8f,
                 "Tier 6: 관통 돌격(polearm_step5_king) - 넉백 거리 (m)");
 
             PolearmPierceChargeStaminaCost = SkillTreeConfig.BindServerSync(config,

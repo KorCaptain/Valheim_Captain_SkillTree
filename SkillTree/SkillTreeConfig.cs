@@ -81,11 +81,6 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SwordStep3OffenseDefenseAttackBonus;
         public static ConfigEntry<float> SwordStep3OffenseDefenseDefenseBonus;
         public static ConfigEntry<float> SwordStep4TrueDuelSpeed;
-        public static ConfigEntry<int> SwordSlashAttackCount;
-        public static ConfigEntry<float> SwordSlashAttackInterval;
-        public static ConfigEntry<float> SwordSlashDamageRatio;
-        public static ConfigEntry<float> SwordSlashStaminaCost;
-        public static ConfigEntry<float> SwordSlashCooldown;
         public static ConfigEntry<float> SwordStep5DefenseSwitchShieldReduction;
         public static ConfigEntry<float> SwordStep5DefenseSwitchNoShieldBonus;
         public static ConfigEntry<float> SwordStep6UltimateSlashMultiplier;
@@ -104,11 +99,6 @@ namespace CaptainSkillTree.SkillTree
         public static float SwordStep3OffenseDefenseAttackBonusValue => GetEffectiveValue("sword_Step3_offense_defense_attack_bonus", SwordStep3OffenseDefenseAttackBonus.Value);
         public static float SwordStep3OffenseDefenseDefenseBonusValue => GetEffectiveValue("sword_Step3_offense_defense_defense_bonus", SwordStep3OffenseDefenseDefenseBonus.Value);
         public static float SwordStep4TrueDuelSpeedValue => GetEffectiveValue("sword_Step4_true_duel_speed", SwordStep4TrueDuelSpeed.Value);
-        public static int SwordSlashAttackCountValue => (int)GetEffectiveValue("sword_slash_attack_count", SwordSlashAttackCount.Value);
-        public static float SwordSlashAttackIntervalValue => GetEffectiveValue("sword_slash_attack_interval", SwordSlashAttackInterval.Value);
-        public static float SwordSlashDamageRatioValue => GetEffectiveValue("sword_slash_damage_ratio", SwordSlashDamageRatio.Value);
-        public static float SwordSlashStaminaCostValue => GetEffectiveValue("sword_slash_stamina_cost", SwordSlashStaminaCost.Value);
-        public static float SwordSlashCooldownValue => GetEffectiveValue("sword_slash_cooldown", SwordSlashCooldown.Value);
         public static float SwordStep5DefenseSwitchShieldReductionValue => GetEffectiveValue("sword_Step5_defense_switch_shield_reduction", SwordStep5DefenseSwitchShieldReduction.Value);
         public static float SwordStep5DefenseSwitchNoShieldBonusValue => GetEffectiveValue("sword_Step5_defense_switch_no_shield_bonus", SwordStep5DefenseSwitchNoShieldBonus.Value);
         public static float SwordStep6UltimateSlashMultiplierValue => GetEffectiveValue("sword_Step6_ultimate_slash_multiplier", SwordStep6UltimateSlashMultiplier.Value);
@@ -428,7 +418,7 @@ namespace CaptainSkillTree.SkillTree
             Production_Config.Initialize(config);  // Product Tree (생산 전문가)
 
             // === 구분선: 전문가 트리 끝 ===
-            BindServerSync(config, "─────────── 구분선 1 ───────────", "전문가 트리 끝", "", "...");
+            BindServerSync(config, "─────────── 공격,속도,생산,방어 트리───────────", "전문가 트리 끝", "", "...");
 
             // 2. 원거리 무기 트리 (Bow → Staff → Crossbow 순)
             Bow_Config.Initialize(config);                      // Bow Tree (활)
@@ -436,7 +426,7 @@ namespace CaptainSkillTree.SkillTree
             Crossbow_Config.InitializeCrossbowConfig(config);   // Crossbow Tree (석궁)
 
             // === 구분선: 원거리 무기 트리 끝 ===
-            BindServerSync(config, "─────────── 구분선 2 ───────────", "원거리 무기 끝", "", "...");
+            BindServerSync(config, "─────────── 원거리 전문가 트리───────────", "원거리 무기 끝", "", "...");
 
             // 3. 근접 무기 트리 (Knife → Sword → Mace → Spear → Polearm 순)
             Knife_Config.InitializeKnifeConfig(config); // Knife Tree (단검)
@@ -447,7 +437,7 @@ namespace CaptainSkillTree.SkillTree
             Polearm_Config.Initialize(config);          // Polearm Tree (폴암)
 
             // === 구분선: 근접 무기 트리 끝 ===
-            BindServerSync(config, "─────────── 구분선 3 ───────────", "근접 무기 끝", "", "...");
+            BindServerSync(config, "─────────── 근접 전문가 트리 ───────────", "근접 무기 끝", "", "...");
 
             // 4. 직업 트리 (최하단 배치)
             Archer_Config.InitializeArcherConfig(config);       // Archer (궁수)
@@ -508,21 +498,6 @@ namespace CaptainSkillTree.SkillTree
 
             SwordStep4TrueDuelSpeed = BindServerSync(config, "Sword Tree", "Tier4_진검승부_공격속도보너스", 7f,
                 "Tier 4: 진검승부(sword_step4_true_duel) - 공격 속도 보너스 (%)");
-
-            SwordSlashAttackCount = BindServerSync(config, "Sword Tree", "Tier_소드슬래시_연속공격횟수", 3,
-                "검 전문가: Sword Slash(sword_slash) - 연속 공격 횟수");
-
-            SwordSlashAttackInterval = BindServerSync(config, "Sword Tree", "Tier_소드슬래시_공격간격", 0.2f,
-                "검 전문가: Sword Slash(sword_slash) - 공격 간격 (초)");
-
-            SwordSlashDamageRatio = BindServerSync(config, "Sword Tree", "Tier_소드슬래시_1회공격력비율", 80f,
-                "검 전문가: Sword Slash(sword_slash) - 1회 공격력 비율 (%)");
-
-            SwordSlashStaminaCost = BindServerSync(config, "Sword Tree", "Tier_소드슬래시_스태미나소모", 15f,
-                "검 전문가: Sword Slash(sword_slash) - 스태미나 소모량");
-
-            SwordSlashCooldown = BindServerSync(config, "Sword Tree", "Tier_소드슬래시_쿨타임", 35f,
-                "검 전문가: Sword Slash(sword_slash) - 쿨타임 (초)");
 
             SwordStep5DefenseSwitchShieldReduction = BindServerSync(config, "Sword Tree", "Tier5_방어전환_방패착용시피해감소", 8f,
                 "Tier 5: 방어 전환(sword_step5_defswitch) - 방패 착용 시 받는 피해 감소 (%)");

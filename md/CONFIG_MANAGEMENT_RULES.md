@@ -160,14 +160,14 @@ PropertyName = config.Bind(
 ```csharp
 public static void Initialize(ConfigFile config)
 {
-    // 1. 전문가 트리 (Attack → Speed → Defense -> Product 순)
+    // 1. 전문가 트리 (Attack → Speed → Defense → Product 순)
     Attack_Config.Initialize(config);   // Attack Tree (공격 전문가)
     Speed_Config.Initialize(config);    // Speed Tree (속도 전문가)
     Defense_Config.Initialize(config);  // Defense Tree (방어 전문가)
-    Product_Config.Initialize(config);  // Product Tree (생산 전문가)
+    Production_Config.Initialize(config);  // Product Tree (생산 전문가)
 
     // === 구분선: 전문가 트리 끝 ===
-    BindServerSync(config, "──────────────────────────", "전문가 트리 구분선", "", "...");
+    BindServerSync(config, "─────────── 공격,속도,생산,방어 트리───────────", "전문가 트리 끝", "", "...");
 
     // 2. 원거리 무기 트리 (Bow → Staff → Crossbow 순)
     Bow_Config.Initialize(config);                      // Bow Tree (활)
@@ -175,7 +175,7 @@ public static void Initialize(ConfigFile config)
     Crossbow_Config.InitializeCrossbowConfig(config);   // Crossbow Tree (석궁)
 
     // === 구분선: 원거리 무기 트리 끝 ===
-    BindServerSync(config, "──────────────────────────", "원거리 무기 트리 구분선", "", "...");
+    BindServerSync(config, "─────────── 원거리 전문가 트리───────────", "원거리 무기 끝", "", "...");
 
     // 3. 근접 무기 트리 (Knife → Sword → Mace → Spear → Polearm 순)
     Knife_Config.InitializeKnifeConfig(config); // Knife Tree (단검)
@@ -186,7 +186,7 @@ public static void Initialize(ConfigFile config)
     Polearm_Config.Initialize(config);          // Polearm Tree (폴암)
 
     // === 구분선: 근접 무기 트리 끝 ===
-    BindServerSync(config, "──────────────────────────", "근접 무기 트리 구분선", "", "...");
+    BindServerSync(config, "─────────── 근접 전문가 트리 ───────────", "근접 무기 끝", "", "...");
 
     // 4. 직업 트리 (최하단 배치)
     Archer_Config.InitializeArcherConfig(config);       // Archer (궁수)
@@ -200,12 +200,24 @@ public static void Initialize(ConfigFile config)
 
 **순서 변경 금지**: 위 순서를 준수하여 Config 파일에서 일관된 정렬 유지
 
-### 🔲 구분선 규칙
+### 🔲 구분선 규칙 (CRITICAL - BepInEx Section 중복 방지)
+
+**핵심 원칙**: BepInEx Config는 **같은 section 이름을 하나로 합침**. 따라서 각 구분선마다 **고유한 section 이름** 필수!
+
+**구분선 형식**:
+| Section (카테고리) | Key | 용도 |
+|-------------------|-----|------|
+| `─────────── 공격,속도,생산,방어 트리───────────` | 전문가 트리 끝 | 전문가 ↔ 원거리 구분 |
+| `─────────── 원거리 전문가 트리───────────` | 원거리 무기 끝 | 원거리 ↔ 근접 구분 |
+| `─────────── 근접 전문가 트리 ───────────` | 근접 무기 끝 | 근접 ↔ 직업 구분 |
 
 **구분선 위치 규칙**:
 - ✅ 구분선은 **트리 그룹 사이**에 배치 (SkillTreeConfig.cs에서만 추가)
+- ✅ **각 구분선은 고유한 section 이름 사용** (중복 시 하나로 합쳐짐)
 - ❌ 개별 Config 파일(Crossbow_Config, Defense_Config 등) 안에 구분선 넣지 않음
-- 구분선 카테고리: `"──────────────────────────"` (별도 카테고리로 분리)
+- ❌ 같은 section 이름으로 여러 구분선 생성 금지
+
+> ⚠️ **주의**: `"──────────────────────────"` 같은 동일한 section 이름을 여러 번 사용하면 BepInEx가 **하나의 카테고리로 합쳐서** Config Manager에서 구분선이 1개만 표시됩니다.
 
 ### 🔢 Tier 명명 규칙
 
@@ -616,5 +628,12 @@ public static float GetDefenseDodgeBonus(Player player)
 ---
 
 **작성일**: 2025-01-29
-**버전**: 1.0
+**최종 수정**: 2026-02-14
+**버전**: 1.1
 **적용 범위**: Rules 7, 7-1, 7-2, 8
+
+### 변경 이력
+| 버전 | 날짜 | 변경 내용 |
+|------|------|----------|
+| 1.0 | 2025-01-29 | 최초 작성 |
+| 1.1 | 2026-02-14 | 구분선 규칙 개선 - BepInEx section 중복 방지를 위한 고유 이름 사용 |

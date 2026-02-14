@@ -46,6 +46,9 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> KnifeAssassinHeartCooldown;
         public static ConfigEntry<float> KnifeAssassinHeartTeleportRange;
         public static ConfigEntry<float> KnifeAssassinHeartTeleportBehind;
+        public static ConfigEntry<float> KnifeAssassinHeartStunDuration;
+        public static ConfigEntry<int> KnifeAssassinHeartAttackCount;
+        public static ConfigEntry<float> KnifeAssassinHeartAttackInterval;
 
         #endregion
 
@@ -86,6 +89,9 @@ namespace CaptainSkillTree.SkillTree
         public static float KnifeAssassinHeartCooldownValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_cooldown", KnifeAssassinHeartCooldown?.Value ?? 60f);
         public static float KnifeAssassinHeartTeleportRangeValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_teleport_range", KnifeAssassinHeartTeleportRange?.Value ?? 7f);
         public static float KnifeAssassinHeartTeleportBehindValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_teleport_behind", KnifeAssassinHeartTeleportBehind?.Value ?? 1f);
+        public static float KnifeAssassinHeartStunDurationValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_stun_duration", KnifeAssassinHeartStunDuration?.Value ?? 1f);
+        public static int KnifeAssassinHeartAttackCountValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_count", (float)(KnifeAssassinHeartAttackCount?.Value ?? 3));
+        public static float KnifeAssassinHeartAttackIntervalValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_interval", KnifeAssassinHeartAttackInterval?.Value ?? 0.3f);
 
         #endregion
 
@@ -225,6 +231,18 @@ namespace CaptainSkillTree.SkillTree
                     "Knife Tree", "Tier8_암살자의심장_순간이동뒤쪽거리", 1f,
                     "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 대상 뒤쪽으로 이동할 거리 (m)");
 
+                KnifeAssassinHeartStunDuration = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree", "Tier8_암살자의심장_스턴지속시간", 1f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 순간이동 후 대상 스턴 지속시간 (초)");
+
+                KnifeAssassinHeartAttackCount = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree", "Tier8_암살자의심장_연속공격횟수", 3,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 순간이동 후 연속 공격 횟수");
+
+                KnifeAssassinHeartAttackInterval = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree", "Tier8_암살자의심장_연속공격간격", 0.3f,
+                    "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 연속 공격 간격 (초)");
+
                 KnifeAssassinHeartRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree", "Tier8_암살자의심장_필요포인트", 3,
                     "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 필요 포인트");
@@ -288,6 +306,9 @@ namespace CaptainSkillTree.SkillTree
                 KnifeAssassinHeartCooldown.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
                 KnifeAssassinHeartTeleportRange.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
                 KnifeAssassinHeartTeleportBehind.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeAssassinHeartStunDuration.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeAssassinHeartAttackCount.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeAssassinHeartAttackInterval.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
 
                 Plugin.Log.LogDebug("[단검 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화");
             }

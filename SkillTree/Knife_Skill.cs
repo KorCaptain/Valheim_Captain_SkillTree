@@ -1,5 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 
@@ -325,6 +326,7 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 암살자의 심장 - G키 액티브 스킬 사용
+        /// 순간이동 + 스턴 + 버프 효과
         /// </summary>
         public static bool UseAssassinHeart(Player player)
         {
@@ -332,6 +334,18 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
+                // 정면의 가장 가까운 적 탐색
+                float searchRange = Knife_Config.KnifeAssassinHeartTeleportRangeValue;
+                Character targetEnemy = FindNearestFrontEnemy(player, searchRange);
+
+                if (targetEnemy == null)
+                {
+                    SkillEffect.ShowSkillEffectText(player,
+                        "대상 없음!",
+                        Color.gray, SkillEffect.SkillEffectTextType.Passive);
+                    return false;
+                }
+
                 // 스태미나 소모
                 float staminaCost = Knife_Config.KnifeAssassinHeartStaminaCostValue;
                 player.UseStamina(staminaCost);
@@ -341,15 +355,27 @@ namespace CaptainSkillTree.SkillTree
                 float cooldown = Knife_Config.KnifeAssassinHeartCooldownValue;
                 JobSkillsUtility.SetCooldown(player, skillName, cooldown);
 
+                // 순간이동 실행 (적 뒤로)
+                TeleportBehindEnemy(player, targetEnemy);
+
+                // 대상 스턴 적용
+                ApplyStunToTarget(targetEnemy, player);
+
                 // 버프 효과 적용
                 ApplyAssassinHeartBuff(player);
 
-                // VFX/SFX 재생
+                // VFX/SFX 재생 (플레이어 위치 + 적 위치)
                 SkillEffect.PlaySkillEffect(player, "knife_step9_assassin_heart", player.transform.position);
+                SimpleVFX.Play("hit_01", targetEnemy.transform.position, 2f);
 
-                SkillEffect.ShowSkillEffectText(player, 
-                    "💀 암살자의 심장 발동!", 
+                SkillEffect.ShowSkillEffectText(player,
+                    "💀 암살자의 심장 발동!",
                     new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
+
+                // 순간이동 후 연속 공격 코루틴 실행
+                player.StartCoroutine(ExecuteAssassinHeartAttacks(player, targetEnemy));
+
+                Plugin.Log.LogDebug($"[암살자의 심장] 순간이동 + 스턴 + 연속공격 시작 - 대상: {targetEnemy.m_name}");
 
                 return true;
             }
@@ -357,6 +383,151 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[암살자의 심장] 스킬 사용 실패: {ex.Message}");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 범위 내 가장 가까운 몬스터 탐색 (더 관대한 조건 - Tamed/Player가 아니면 대상)
+        /// </summary>
+        private static Character FindNearestFrontEnemy(Player player, float range)
+        {
+            if (player == null) return null;
+
+            Character nearest = null;
+            float minDist = range;
+            int checkedCount = 0;
+            int validCount = 0;
+
+            foreach (var c in Character.GetAllCharacters())
+            {
+                if (c == null || c == player) continue;
+                if (c.IsDead()) continue;
+
+                checkedCount++;
+
+                // 더 관대한 조건: Tamed가 아니고 Player가 아니면 공격 대상
+                if (c.IsTamed() || c.IsPlayer()) continue;
+
+                validCount++;
+                float dist = Vector3.Distance(c.transform.position, player.transform.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    nearest = c;
+                }
+            }
+
+            Plugin.Log.LogDebug($"[암살자의 심장] 적 탐색 완료: 전체 {checkedCount}개 확인, 유효 {validCount}개, " +
+                               $"선택={nearest?.m_name ?? "없음"}, 거리={minDist:F1}m");
+            return nearest;
+        }
+
+        /// <summary>
+        /// 카메라 전방 방향 가져오기 (Sword_Skill 방식)
+        /// </summary>
+        private static Vector3 GetCameraForward(Player player)
+        {
+            if (Camera.main != null)
+            {
+                Vector3 forward = Camera.main.transform.forward;
+                forward.y = 0;
+                return forward.normalized;
+            }
+            return player.transform.forward;
+        }
+
+        /// <summary>
+        /// 적 뒤로 순간이동 (카메라 방향 기준)
+        /// </summary>
+        private static void TeleportBehindEnemy(Player player, Character target)
+        {
+            try
+            {
+                float behindDistance = Knife_Config.KnifeAssassinHeartTeleportBehindValue;
+
+                // 카메라 방향 기준으로 적의 뒤쪽 계산
+                // 플레이어 → 적 방향의 반대쪽 = 적의 뒤
+                Vector3 targetPos = target.transform.position;
+                Vector3 cameraForward = GetCameraForward(player);
+
+                // 적의 뒤쪽 = 카메라 방향으로 적을 통과한 위치
+                Vector3 teleportPosition = targetPos + cameraForward * behindDistance;
+
+                // 높이 보정 (지형에 맞춤)
+                float groundHeight;
+                if (ZoneSystem.instance.GetGroundHeight(teleportPosition, out groundHeight))
+                {
+                    teleportPosition.y = groundHeight;
+                }
+
+                // 순간이동 VFX (사라지는 효과)
+                SimpleVFX.Play("debuff", player.transform.position, 2f);
+
+                // 플레이어 이동
+                player.transform.position = teleportPosition;
+
+                // 적을 바라보는 방향으로 회전 (등 뒤에서 적을 바라봄)
+                Vector3 lookDirection = targetPos - teleportPosition;
+                lookDirection.y = 0;
+                if (lookDirection.sqrMagnitude > 0.001f)
+                {
+                    player.transform.rotation = Quaternion.LookRotation(lookDirection);
+                }
+
+                // 순간이동 VFX (나타나는 효과)
+                SimpleVFX.Play("hit_01", teleportPosition, 2f);
+
+                Plugin.Log.LogDebug($"[암살자의 심장] 순간이동 완료 - 카메라 방향 기준 목표 뒤 {behindDistance}m");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살자의 심장] 순간이동 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 대상에게 스턴 적용 (HitData 방식 + Traverse 백업)
+        /// </summary>
+        private static void ApplyStunToTarget(Character target, Player player)
+        {
+            try
+            {
+                float stunDuration = Knife_Config.KnifeAssassinHeartStunDurationValue;
+
+                // 1. 스태거용 HitData 생성 (높은 스태거 배율로 강제 스태거)
+                HitData staggerHit = new HitData();
+                staggerHit.m_damage.m_blunt = 0.1f;  // 최소 데미지
+                staggerHit.m_staggerMultiplier = 100f;  // 높은 스태거 배율
+                staggerHit.m_pushForce = 0f;
+                staggerHit.m_point = target.transform.position;
+                staggerHit.m_dir = -target.transform.forward;
+                staggerHit.SetAttacker(player);
+
+                // 2. 피해 적용 (스태거 유발)
+                target.Damage(staggerHit);
+                Plugin.Log.LogDebug($"[암살자의 심장] HitData 스태거 적용 완료");
+
+                // 3. Traverse로 m_staggerTimer 직접 설정 (백업 - 지속시간 보장)
+                var traverse = Traverse.Create(target);
+                var staggerTimerField = traverse.Field("m_staggerTimer");
+
+                if (staggerTimerField.FieldExists())
+                {
+                    staggerTimerField.SetValue(stunDuration);
+                    Plugin.Log.LogDebug($"[암살자의 심장] m_staggerTimer 설정 성공: {stunDuration}초");
+                }
+
+                // 4. Stagger 직접 호출 (애니메이션 백업)
+                target.Stagger(-target.transform.forward);
+
+                // 5. 스턴 VFX (기절 효과)
+                SimpleVFX.Play("debuff", target.transform.position + Vector3.up, 2f);
+
+                Plugin.Log.LogDebug($"[암살자의 심장] 스턴 적용 완료 - 대상: {target.m_name}, 지속시간: {stunDuration}초");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살자의 심장] 스턴 적용 실패: {ex.Message}");
             }
         }
 
@@ -386,11 +557,100 @@ namespace CaptainSkillTree.SkillTree
                 assassinHeartSE.m_damageModifier = 1f + damageBonus;
                 
                 player.GetSEMan()?.AddStatusEffect(assassinHeartSE);
-                
+
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[암살자의 심장] 버프 적용 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 연속 공격 코루틴
+        /// 순간이동 후 설정된 횟수만큼 연속 공격 실행
+        /// </summary>
+        private static IEnumerator ExecuteAssassinHeartAttacks(Player player, Character target)
+        {
+            // 0.1초 대기 (순간이동 완료 후)
+            yield return new WaitForSeconds(0.1f);
+
+            var weapon = player?.GetCurrentWeapon();
+            if (weapon == null)
+            {
+                Plugin.Log.LogWarning("[암살자의 심장] 무기가 없어 연속 공격 취소");
+                yield break;
+            }
+
+            int attackCount = Knife_Config.KnifeAssassinHeartAttackCountValue;
+            float attackInterval = Knife_Config.KnifeAssassinHeartAttackIntervalValue;
+
+            Plugin.Log.LogDebug($"[암살자의 심장] 연속 공격 시작 - {attackCount}회, {attackInterval}초 간격");
+
+            // 설정된 횟수만큼 연속 공격
+            for (int i = 0; i < attackCount; i++)
+            {
+                // 유효성 검사
+                if (player == null || player.IsDead())
+                {
+                    Plugin.Log.LogDebug("[암살자의 심장] 플레이어 사망으로 연속 공격 중단");
+                    yield break;
+                }
+                if (target == null || target.IsDead())
+                {
+                    Plugin.Log.LogDebug("[암살자의 심장] 대상 사망으로 연속 공격 중단");
+                    yield break;
+                }
+
+                // 공격 애니메이션 트리거 (실패해도 계속 진행)
+                try { player.StartAttack(null, false); } catch { }
+
+                // HitData로 직접 데미지 적용
+                ExecuteAssassinStrike(player, target, weapon, i + 1);
+
+                yield return new WaitForSeconds(attackInterval);
+            }
+
+            Plugin.Log.LogDebug($"[암살자의 심장] 연속 공격 완료 - {attackCount}회");
+        }
+
+        /// <summary>
+        /// 암살자의 심장 개별 타격 실행
+        /// </summary>
+        private static void ExecuteAssassinStrike(Player player, Character target, ItemDrop.ItemData weapon, int strikeNumber)
+        {
+            try
+            {
+                var weaponDamage = weapon.GetDamage();
+                float damageMultiplier = 1.0f + (Knife_Config.KnifeAssassinHeartDamageBonusValue / 100f);
+
+                HitData hit = new HitData();
+                hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
+                hit.m_damage.m_pierce = weaponDamage.m_pierce * damageMultiplier;
+                hit.m_point = target.GetCenterPoint();
+                hit.m_dir = (target.transform.position - player.transform.position).normalized;
+                hit.m_attacker = player.GetZDOID();
+                hit.SetAttacker(player);
+                hit.m_skill = Skills.SkillType.Knives;
+
+                target.Damage(hit);
+
+                // 타격 VFX
+                SimpleVFX.Play("hit_01", target.GetCenterPoint(), 1f);
+
+                // 3번째 타격에 추가 텍스트 표시
+                if (strikeNumber == Knife_Config.KnifeAssassinHeartAttackCountValue)
+                {
+                    SkillEffect.ShowSkillEffectText(player,
+                        $"💀 연속 공격 완료! ({strikeNumber}회)",
+                        new Color(1f, 0.3f, 0.3f), SkillEffect.SkillEffectTextType.Combat);
+                }
+
+                Plugin.Log.LogDebug($"[암살자의 심장] {strikeNumber}번째 타격 - " +
+                                   $"slash:{hit.m_damage.m_slash:F1}, pierce:{hit.m_damage.m_pierce:F1}");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살자의 심장] {strikeNumber}번째 타격 실패: {ex.Message}");
             }
         }
 

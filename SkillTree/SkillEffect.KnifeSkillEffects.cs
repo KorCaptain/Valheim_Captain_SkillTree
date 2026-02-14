@@ -125,16 +125,24 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 플레이어 정면의 몬스터 탐색 (시야각 45도 이내)
+        /// 화면 중앙(카메라 방향) 기준 몬스터 탐색 (시야각 45도 이내)
         /// </summary>
         private static Character FindFrontMonster(Player player, float range, float maxAngle = 45f)
         {
             if (player == null) return null;
 
             Vector3 playerPos = player.transform.position;
-            Vector3 playerForward = player.transform.forward;
 
-            // 정면 시야각 내의 몬스터만 필터링, 거리순 정렬
+            // 카메라 방향 사용 (화면 중앙 기준)
+            Vector3 cameraForward = Vector3.forward;
+            if (GameCamera.instance != null)
+            {
+                cameraForward = GameCamera.instance.transform.forward;
+                cameraForward.y = 0; // 수평 방향만 고려
+                cameraForward.Normalize();
+            }
+
+            // 카메라 방향 시야각 내의 몬스터만 필터링, 거리순 정렬
             var frontMonster = Character.GetAllCharacters()
                 .Where(c => c != null && !c.IsDead() && c != player && !c.IsPlayer())
                 .Where(c => c.GetFaction() != Character.Faction.Players)
@@ -143,8 +151,10 @@ namespace CaptainSkillTree.SkillTree
                 {
                     // 플레이어 → 몬스터 방향 벡터
                     Vector3 dirToMonster = (c.transform.position - playerPos).normalized;
-                    // 플레이어 정면과의 각도 계산
-                    float angle = Vector3.Angle(playerForward, dirToMonster);
+                    dirToMonster.y = 0;
+                    dirToMonster.Normalize();
+                    // 카메라 방향과의 각도 계산
+                    float angle = Vector3.Angle(cameraForward, dirToMonster);
                     return angle <= maxAngle;
                 })
                 .OrderBy(c => Vector3.Distance(playerPos, c.transform.position))
@@ -261,7 +271,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (targetMonster == null)
             {
-                DrawFloatingText(player, "정면에 적 없음!", Color.yellow);
+                DrawFloatingText(player, $"{teleportRange}미터 이내 적이 없습니다", Color.yellow);
                 Plugin.Log.LogDebug($"[암살자의 심장] 취소 - 정면 {teleportRange}m 내 몬스터 없음");
                 return false;
             }
@@ -273,6 +283,9 @@ namespace CaptainSkillTree.SkillTree
                 DrawFloatingText(player, "스태미나 부족!", Color.red);
                 return false;
             }
+
+            // 원래 위치 저장 (공격 후 복귀용)
+            Vector3 originalPosition = player.transform.position;
 
             // 순간이동 실행
             float behindDistance = Knife_Config.KnifeAssassinHeartTeleportBehindValue;
@@ -286,6 +299,12 @@ namespace CaptainSkillTree.SkillTree
 
             // 스태미나 소모
             player.UseStamina(staminaCost);
+
+            // 대상에게 스턴 적용
+            ApplyStunToTargetMonster(player, targetMonster);
+
+            // 연속 공격 코루틴 실행 (원래 위치 전달)
+            player.StartCoroutine(ExecuteAssassinHeartAttacksCoroutine(player, targetMonster, originalPosition));
 
             // 버프 활성화
             float duration = Knife_Config.KnifeAssassinHeartDurationValue;
@@ -378,6 +397,297 @@ namespace CaptainSkillTree.SkillTree
             {
                 stealthMovementBonus[player] = false;
             }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 - 대상 몬스터에게 스턴 적용
+        /// </summary>
+        private static void ApplyStunToTargetMonster(Player player, Character target)
+        {
+            if (player == null || target == null || target.IsDead()) return;
+
+            try
+            {
+                float stunDuration = Knife_Config.KnifeAssassinHeartStunDurationValue;
+
+                // HitData로 강제 스태거
+                HitData staggerHit = new HitData();
+                staggerHit.m_damage.m_blunt = 0.1f;
+                staggerHit.m_staggerMultiplier = 100f;
+                staggerHit.m_pushForce = 0f;
+                staggerHit.m_point = target.transform.position;
+                staggerHit.m_dir = -target.transform.forward;
+                staggerHit.SetAttacker(player);
+                target.Damage(staggerHit);
+
+                // Stagger 호출
+                target.Stagger(-target.transform.forward);
+
+                // VFX
+                SimpleVFX.Play("debuff", target.transform.position + Vector3.up, 2f);
+
+                string targetName = target.GetHoverName() ?? target.name ?? "적";
+                Plugin.Log.LogDebug($"[암살자의 심장] {targetName}에게 스턴 적용 ({stunDuration}초)");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[암살자의 심장] 스턴 적용 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 - 연속 공격 코루틴 (3회 직접 적중 + 원래 위치 복귀)
+        /// </summary>
+        private static IEnumerator ExecuteAssassinHeartAttacksCoroutine(Player player, Character target, Vector3 originalPosition)
+        {
+            // 순간이동 후 약간의 대기
+            yield return new WaitForSeconds(0.15f);
+
+            var weapon = player?.GetCurrentWeapon();
+            if (weapon == null)
+            {
+                Plugin.Log.LogWarning("[암살자의 심장] 무기 없음 - 연속 공격 취소");
+                TeleportToPosition(player, originalPosition); // 복귀
+                yield break;
+            }
+
+            int requiredHits = Knife_Config.KnifeAssassinHeartAttackCountValue; // 3회 적중 필요
+            float attackSpeedBonus = 500f; // 공격속도 500% 증가
+            float attackInterval = 0.15f; // 공격 간격
+
+            // 공격 모드 활성화 + 공격속도 버프 설정
+            assassinHeartAttackMode[player] = true;
+            assassinHeartTarget[player] = target;
+            assassinHeartHitCount[player] = 0;
+            assassinHeartAttackSpeedBonus[player] = attackSpeedBonus;
+
+            Plugin.Log.LogInfo($"[암살자의 심장] 연속 공격 시작 - 목표: {requiredHits}회 적중");
+
+            // 데미지 계산 준비
+            var weaponDamage = weapon.GetDamage();
+            float damageMultiplier = 1.0f + (Knife_Config.KnifeAssassinHeartDamageBonusValue / 100f);
+
+            for (int i = 0; i < requiredHits; i++)
+            {
+                // 플레이어 상태 체크
+                if (player == null || player.IsDead())
+                {
+                    Plugin.Log.LogDebug("[암살자의 심장] 플레이어 사망 - 연속 공격 중단");
+                    break;
+                }
+
+                // 대상 상태 체크
+                if (target == null || target.IsDead())
+                {
+                    Plugin.Log.LogDebug($"[암살자의 심장] 대상 사망 - 연속 공격 완료 ({i}회 적중)");
+                    DrawFloatingText(player, $"💀 암살 완료! ({i}회 적중)", Color.red);
+                    break;
+                }
+
+                // 직접 HitData로 데미지 적용 (StartAttack 없이 - 이중 공격 방지)
+                try
+                {
+                    HitData hit = new HitData();
+                    hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
+                    hit.m_damage.m_pierce = weaponDamage.m_pierce * damageMultiplier;
+                    hit.m_point = target.GetCenterPoint();
+                    hit.m_dir = (target.transform.position - player.transform.position).normalized;
+                    hit.m_attacker = player.GetZDOID();
+                    hit.SetAttacker(player);
+                    hit.m_skill = Skills.SkillType.Knives;
+
+                    target.Damage(hit);
+
+                    // VFX
+                    SimpleVFX.Play("hit_01", target.GetCenterPoint(), 1f);
+                    SimpleVFX.Play("confetti_directional_multicolor", target.GetCenterPoint(), 1.5f);
+
+                    // 적중 카운트 증가
+                    assassinHeartHitCount[player] = i + 1;
+                    DrawFloatingText(player, $"💀 ({i + 1}/{requiredHits})", Color.red);
+
+                    Plugin.Log.LogDebug($"[암살자의 심장] 적중 {i + 1}/{requiredHits}");
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[암살자의 심장] 데미지 적용 실패: {ex.Message}");
+                }
+
+                yield return new WaitForSeconds(attackInterval);
+            }
+
+            // 최종 VFX
+            if (target != null && !target.IsDead())
+            {
+                SimpleVFX.Play("fx_backstab", target.GetCenterPoint(), 2f);
+            }
+
+            // 공격 모드 종료 + 버프 해제
+            assassinHeartAttackMode[player] = false;
+            assassinHeartTarget.Remove(player);
+            assassinHeartAttackSpeedBonus.Remove(player);
+
+            int finalHits = assassinHeartHitCount.TryGetValue(player, out int fh) ? fh : 0;
+            assassinHeartHitCount.Remove(player);
+
+            // 원래 위치로 복귀
+            yield return new WaitForSeconds(0.1f);
+            if (player != null && !player.IsDead())
+            {
+                TeleportToPosition(player, originalPosition);
+                SimpleVFX.Play("vfx_spawn_small", originalPosition, 1.5f);
+                DrawFloatingText(player, $"💀 암살 완료! 복귀!", Color.red);
+                Plugin.Log.LogInfo($"[암살자의 심장] 원래 위치로 복귀 - 총 {finalHits}회 적중");
+            }
+
+            Plugin.Log.LogInfo($"[암살자의 심장] 연속 공격 종료 - 총 {finalHits}회 적중");
+        }
+
+        /// <summary>
+        /// 플레이어가 대상을 바라보도록 강제 회전 (Rigidbody + Transform + 내부 필드)
+        /// </summary>
+        private static void LookAtTarget(Player player, Character target)
+        {
+            if (player == null || target == null) return;
+
+            try
+            {
+                Vector3 direction = (target.transform.position - player.transform.position).normalized;
+                direction.y = 0;
+                if (direction == Vector3.zero) return;
+
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+                // Transform 회전
+                player.transform.rotation = targetRotation;
+
+                // Rigidbody 회전 (네트워크 동기화용)
+                var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
+                if (body != null)
+                {
+                    body.rotation = targetRotation;
+                }
+
+                // 내부 lookDir 설정 (공격 방향 결정에 사용됨)
+                var lookDir = HarmonyLib.Traverse.Create(player).Field("m_lookDir");
+                if (lookDir.FieldExists())
+                {
+                    lookDir.SetValue(direction);
+                }
+
+                // lookYaw 설정
+                float yaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+                var lookYaw = HarmonyLib.Traverse.Create(player).Field("m_lookYaw");
+                if (lookYaw.FieldExists())
+                {
+                    lookYaw.SetValue(yaw);
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogDebug($"[암살자의 심장] LookAtTarget 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 플레이어를 지정된 위치로 순간이동
+        /// </summary>
+        private static void TeleportToPosition(Player player, Vector3 position)
+        {
+            if (player == null) return;
+
+            try
+            {
+                // 지형 높이 조정
+                if (ZoneSystem.instance != null)
+                {
+                    float groundHeight = ZoneSystem.instance.GetGroundHeight(position);
+                    position.y = groundHeight;
+                }
+
+                // VFX (출발점)
+                SimpleVFX.Play("vfx_spawn_small", player.transform.position, 1.5f);
+
+                // Rigidbody 이동
+                var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
+                if (body != null)
+                {
+                    body.velocity = Vector3.zero;
+                    body.angularVelocity = Vector3.zero;
+                    body.position = position;
+                }
+
+                // Transform 이동
+                player.transform.position = position;
+
+                // ZNetView 네트워크 동기화
+                var nview = HarmonyLib.Traverse.Create(player).Field("m_nview").GetValue<ZNetView>();
+                if (nview != null && nview.IsOwner())
+                {
+                    var zdo = nview.GetZDO();
+                    if (zdo != null)
+                    {
+                        zdo.SetPosition(position);
+                    }
+                }
+
+                Plugin.Log.LogDebug($"[암살자의 심장] 위치 이동 완료: {position}");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[암살자의 심장] 위치 이동 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 공격 모드인지 확인
+        /// </summary>
+        public static bool IsAssassinHeartAttackMode(Player player)
+        {
+            return assassinHeartAttackMode.TryGetValue(player, out bool active) && active;
+        }
+
+        /// <summary>
+        /// 암살자의 심장 공격속도 보너스 가져오기
+        /// </summary>
+        public static float GetAssassinHeartAttackSpeedBonus(Player player)
+        {
+            if (assassinHeartAttackSpeedBonus.TryGetValue(player, out float bonus))
+                return bonus;
+            return 0f;
+        }
+
+        /// <summary>
+        /// 암살자의 심장 적중 카운트 증가 (패치에서 호출)
+        /// </summary>
+        public static void IncrementAssassinHeartHitCount(Player player)
+        {
+            if (!assassinHeartAttackMode.TryGetValue(player, out bool active) || !active)
+                return;
+
+            if (!assassinHeartHitCount.ContainsKey(player))
+                assassinHeartHitCount[player] = 0;
+
+            assassinHeartHitCount[player]++;
+            int hits = assassinHeartHitCount[player];
+            int required = Knife_Config.KnifeAssassinHeartAttackCountValue;
+
+            Plugin.Log.LogDebug($"[암살자의 심장] 적중! ({hits}/{required})");
+
+            if (hits < required)
+            {
+                DrawFloatingText(player, $"💀 ({hits}/{required})", Color.red);
+            }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 대상 몬스터 가져오기
+        /// </summary>
+        public static Character GetAssassinHeartTarget(Player player)
+        {
+            if (assassinHeartTarget.TryGetValue(player, out Character target))
+                return target;
+            return null;
         }
     }
 }

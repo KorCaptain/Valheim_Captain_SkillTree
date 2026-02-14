@@ -1,6 +1,6 @@
 # Config 시스템 규칙
 
-> 최종 업데이트: 2026-02-11 (v0.1.415)
+> 최종 업데이트: 2026-02-13 (v0.1.445)
 
 ## 1. Config 키 네이밍 규칙
 
@@ -39,54 +39,67 @@ Legacy_기본이동속도
 `SkillTreeConfig.cs`의 `Initialize()` 메서드에서 정의된 순서:
 
 ```csharp
-// === 전문가 트리 Config 초기화 (Attack → Speed → Defense 순) ===
-Attack_Config.Initialize(config);
-Speed_Config.Initialize(config);
-Defense_Config.Initialize(config);
+// 1. 전문가 트리 (Attack → Speed → Defense → Product 순)
+Attack_Config.Initialize(config);   // Attack Tree (공격 전문가)
+Speed_Config.Initialize(config);    // Speed Tree (속도 전문가)
+Defense_Config.Initialize(config);  // Defense Tree (방어 전문가)
+Production_Config.Initialize(config);  // Product Tree (생산 전문가)
 
 // === 구분선: 전문가 트리 끝 ===
+BindServerSync(config, "─────────── 공격,속도,생산,방어 트리───────────", "전문가 트리 끝", "", "...");
 
-// === 원거리 무기 Config 초기화 (Bow → Staff → Crossbow 순) ===
-Bow_Config.Initialize(config);
-Staff_Config.InitConfig(config);
-Crossbow_Config.InitializeCrossbowConfig(config);
+// 2. 원거리 무기 트리 (Bow → Staff → Crossbow 순)
+Bow_Config.Initialize(config);                      // Bow Tree (활)
+Staff_Config.InitConfig(config);                    // Staff Tree (지팡이)
+Crossbow_Config.InitializeCrossbowConfig(config);   // Crossbow Tree (석궁)
 
 // === 구분선: 원거리 무기 트리 끝 ===
+BindServerSync(config, "─────────── 원거리 전문가 트리───────────", "원거리 무기 끝", "", "...");
 
-// === 근접 무기 Config 초기화 (Knife → Sword → Mace → Spear → Polearm 순) ===
-Knife_Config.InitializeKnifeConfig(config);
-Sword_Config.Initialize(config);
+// 3. 근접 무기 트리 (Knife → Sword → Mace → Spear → Polearm 순)
+Knife_Config.InitializeKnifeConfig(config); // Knife Tree (단검)
+Sword_Config.Initialize(config);            // Sword Tree (검)
 InitializeSwordConfig(config);
-Mace_Config.Initialize(config);
-Spear_Config.Initialize(config);
-Polearm_Config.Initialize(config);
+Mace_Config.Initialize(config);             // Mace Tree (둔기)
+Spear_Config.Initialize(config);            // Spear Tree (창)
+Polearm_Config.Initialize(config);          // Polearm Tree (폴암)
 
 // === 구분선: 근접 무기 트리 끝 ===
+BindServerSync(config, "─────────── 근접 전문가 트리 ───────────", "근접 무기 끝", "", "...");
 
-// === 직업 스킬 Config 초기화 ===
-Archer_Config.InitializeArcherConfig(config);
-Mage_Config.InitializeMageConfig(config);
-Tanker_Config.InitializeTankerConfig(config);
-Rogue_Config.InitializeRogueConfig(config);
-Paladin_Config.InitializePaladinConfig();
-Berserker_Config.InitializeBerserkerConfig();
+// 4. 직업 트리 (최하단 배치)
+Archer_Config.InitializeArcherConfig(config);       // Archer (궁수)
+Mage_Config.InitializeMageConfig(config);           // Mage (마법사)
+Tanker_Config.InitializeTankerConfig(config);       // Tanker (탱커)
+Rogue_Config.InitializeRogueConfig(config);         // Rogue (로그)
+Paladin_Config.InitializePaladinConfig();           // Paladin (성기사)
+Berserker_Config.InitializeBerserkerConfig();       // Berserker (광전사)
 ```
 
 ### 순서 요약
 | 순서 | 카테고리 | Config 파일 |
 |------|----------|-------------|
-| 1 | 전문가 트리 | Attack → Speed → Defense |
-| 2 | (구분선) | ────────────────────────── |
+| 1 | 전문가 트리 | Attack → Speed → Defense → Product |
+| 2 | (구분선) | ─────────── 공격,속도,생산,방어 트리─────────── |
 | 3 | 원거리 무기 | Bow → Staff → Crossbow |
-| 4 | (구분선) | ────────────────────────── |
+| 4 | (구분선) | ─────────── 원거리 전문가 트리─────────── |
 | 5 | 근접 무기 | Knife → Sword → Mace → Spear → Polearm |
-| 6 | (구분선) | ────────────────────────── |
+| 6 | (구분선) | ─────────── 근접 전문가 트리 ─────────── |
 | 7 | 직업 | Archer → Mage → Tanker → Rogue → Paladin → Berserker |
 
-### 구분선 규칙
+### 구분선 규칙 (CRITICAL)
+- **각 구분선은 고유한 section 이름 사용**: BepInEx Config는 같은 section을 하나로 합침
 - **구분선은 트리 밖에 배치**: 각 트리 그룹 사이에 구분선 추가
 - **개별 Config 파일에 구분선 넣지 않음**: SkillTreeConfig.cs에서만 구분선 추가
-- **별도 카테고리로 구분**: 구분선은 "──────────────────────────" 카테고리로 생성
+
+#### 구분선 형식
+| Section (카테고리) | Key |
+|-------------------|-----|
+| `─────────── 공격,속도,생산,방어 트리───────────` | 전문가 트리 끝 |
+| `─────────── 원거리 전문가 트리───────────` | 원거리 무기 끝 |
+| `─────────── 근접 전문가 트리 ───────────` | 근접 무기 끝 |
+
+> ⚠️ **주의**: 같은 section 이름을 사용하면 BepInEx가 하나의 카테고리로 합치므로, 반드시 각 구분선마다 **다른 section 이름**을 사용해야 합니다.
 
 ---
 

@@ -167,6 +167,7 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 관통 돌격 시퀀스 실행 코루틴
+        /// 돌진하면서 공격 → 무기 히트박스로 적중 (게임 기본 시스템)
         /// </summary>
         private static IEnumerator ExecutePierceChargeSequence(Player player)
         {
@@ -184,60 +185,101 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            var weaponDamage = weapon.GetDamage();
             float dashDistance = Polearm_Config.PolearmPierceChargeDashDistanceValue;
-            float moveSpeed = 35f; // 돌진 속도 (m/s) - 빠른 돌격
+            float dashDuration = 0.35f; // 돌진 시간 (공격 모션과 맞추기 위해 약간 늘림)
 
-            // === Phase 0: 전방 몬스터 감지 및 타겟팅 ===
+            // === Phase 0: 돌진 방향 설정 ===
             Vector3 startPos = player.transform.position;
-            Vector3 cameraForward = GetCameraForward(player);
+            Vector3 dashDir = GetCameraForward(player);
 
-            // 전방 원뿔 범위(45도) 내 몬스터 탐색
-            Character targetMonster = FindMonsterInCone(player, cameraForward, dashDistance, 45f);
+            // 플레이어를 돌진 방향으로 회전
+            player.transform.rotation = Quaternion.LookRotation(dashDir);
 
-            Vector3 dashDir;
-            float actualDashDistance = dashDistance;
+            // 목표 위치 계산
+            Vector3 targetPos = startPos + dashDir * dashDistance;
 
-            if (targetMonster != null)
-            {
-                // 몬스터가 있으면 그 방향으로 돌진
-                Vector3 toMonster = targetMonster.transform.position - startPos;
-                toMonster.y = 0;
-                dashDir = toMonster.normalized;
-                actualDashDistance = Mathf.Min(toMonster.magnitude + 1f, dashDistance); // 몬스터까지 거리 + 1m
+            // 시작 지면 높이 저장
+            float groundY = startPos.y;
 
-                // 플레이어를 몬스터 방향으로 회전
-                player.transform.rotation = Quaternion.LookRotation(dashDir);
+            Plugin.Log.LogDebug($"[관통 돌격] 돌진+공격 시작 - 거리: {dashDistance}m");
 
-                Plugin.Log.LogDebug($"[관통 돌격] 타겟 감지: {targetMonster.m_name}, 거리: {toMonster.magnitude:F1}m");
-            }
-            else
-            {
-                // 몬스터가 없으면 카메라 전방으로 돌진
-                dashDir = cameraForward;
-            }
+            // === 공격속도 부스트 적용 (800% = 8배 빠르게) ===
+            SetPlayerAttackSpeedBoost(player, 8.0f);
 
-            // === Phase 1: 전방 돌진 (몬스터 충돌 시 중단) ===
-            Character hitMonster = null;
-            float traveled = 0f;
-            float duration = actualDashDistance / moveSpeed;
+            // Rigidbody 참조 (위치 고정용)
+            var rigidbody = player.GetComponent<Rigidbody>();
+
+            // === Phase 1: 돌진하면서 공격 (동시 진행) ===
             float elapsed = 0f;
+            float hitDistance = 1.5f;
+            Character hitMonster = null;
+            float knockbackDistance = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue; // Config에서 넉백 거리 가져오기
+            Vector3 finalPos = startPos;
 
-            while (elapsed < duration && player != null && !player.IsDead())
+            // 돌진 시작 시 공격 모션 1회만 트리거
+            TriggerMeleeAttack(player, weapon);
+
+            while (elapsed < dashDuration && player != null && !player.IsDead())
             {
                 elapsed += Time.deltaTime;
-                float step = moveSpeed * Time.deltaTime;
-                Vector3 newPos = player.transform.position + dashDir * step;
-                newPos = GetGroundPosition(newPos);
-                player.transform.position = newPos;
-                traveled += step;
+                float t = Mathf.Clamp01(elapsed / dashDuration);
 
-                // 충돌 감지 (1.5m 반경)
-                hitMonster = FindNearestMonsterInRadius(player, 1.5f);
+                // 이징 함수 (EaseOut)
+                float easedT = 1f - Mathf.Pow(1f - t, 2f);
+
+                // 부드러운 위치 보간
+                Vector3 newPos = Vector3.Lerp(startPos, targetPos, easedT);
+                newPos.y = groundY;
+
+                // Rigidbody를 통한 위치 설정 (더 안정적)
+                if (rigidbody != null)
+                {
+                    rigidbody.MovePosition(newPos);
+                }
+                player.transform.position = newPos;
+                finalPos = newPos;
+
+                // 몬스터와 충돌 감지 - 돌격으로 직접 적중
+                hitMonster = FindNearestMonsterInRadius(player, hitDistance);
                 if (hitMonster != null)
                 {
-                    Plugin.Log.LogDebug($"[관통 돌격] 몬스터 충돌 감지: {hitMonster.m_name}");
-                    break; // 돌진 중단
+                    Plugin.Log.LogDebug($"[관통 돌격] 첫 몬스터 적중! - 돌진 멈춤");
+                    finalPos = player.transform.position;
+
+                    // === 첫 몬스터에 직접 데미지 (1회만) ===
+                    float damageMultiplier = 1f + (Polearm_Config.PolearmPierceChargePrimaryDamageValue / 100f);
+                    var weaponDamage = weapon.GetDamage();
+
+                    var hit = new HitData();
+                    hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
+                    hit.m_damage.m_blunt = weaponDamage.m_blunt * damageMultiplier;
+                    hit.m_damage.m_pierce = weaponDamage.m_pierce * damageMultiplier;
+
+                    Vector3 knockDir = (hitMonster.transform.position - player.transform.position).normalized;
+
+                    hit.m_point = hitMonster.GetCenterPoint();
+                    hit.m_dir = knockDir;
+                    hit.m_pushForce = knockbackDistance * 2f;
+                    hit.m_attacker = player.GetZDOID();
+                    hit.SetAttacker(player);
+                    hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
+
+                    hitMonster.Damage(hit);
+                    hitMonster.Stagger(knockDir);
+
+                    // 첫 몬스터 넉백 (10m)
+                    hitMonster.transform.position += knockDir * knockbackDistance;
+
+                    // VFX - 첫 몬스터
+                    VFXManager.PlayVFXMultiplayer("fx_crit", "", hitMonster.GetCenterPoint(), Quaternion.identity, 2f);
+                    SimpleVFX.Play("confetti_blast_multicolor", hitMonster.GetCenterPoint(), 2f);
+
+                    // === 플레이어 위치 중심 5m 반경 내 모든 몬스터 넉백 ===
+                    ApplyAreaKnockback(player, hitMonster, weapon, knockbackDistance);
+
+                    DrawFloatingText(player, $"💥 관통 돌격! (+{Polearm_Config.PolearmPierceChargePrimaryDamageValue}%)");
+
+                    break; // 적중 시 이동 멈춤
                 }
 
                 yield return null;
@@ -245,126 +287,186 @@ namespace CaptainSkillTree.SkillTree
 
             if (player == null || player.IsDead())
             {
+                SetPlayerAttackSpeedBoost(player, 1.0f);
                 CleanupPierceCharge(player);
                 yield break;
             }
 
-            // === Phase 2: 첫 관통 타격 ===
-            if (hitMonster != null && !hitMonster.IsDead())
+            // === 최종 위치 고정 (되돌아오기 방지) ===
+            if (rigidbody != null)
             {
-                // 타겟 방향으로 회전
-                Vector3 lookDir = (hitMonster.transform.position - player.transform.position);
-                lookDir.y = 0;
-                if (lookDir.sqrMagnitude > 0.001f)
-                    player.transform.rotation = Quaternion.LookRotation(lookDir.normalized);
-
-                // 일반 공격 실행 - Attack 직접 트리거
-                TriggerMeleeAttack(player, weapon);
-
-                // 첫 관통 데미지 (+200%)
-                float primaryDamageMultiplier = 1f + (Polearm_Config.PolearmPierceChargePrimaryDamageValue / 100f);
-
-                var hit = new HitData();
-                hit.m_damage.m_slash = weaponDamage.m_slash * primaryDamageMultiplier;
-                hit.m_damage.m_blunt = weaponDamage.m_blunt * primaryDamageMultiplier;
-                hit.m_damage.m_pierce = weaponDamage.m_pierce * primaryDamageMultiplier;
-
-                hit.m_point = hitMonster.GetCenterPoint();
-                hit.m_dir = dashDir;
-                hit.m_attacker = player.GetZDOID();
-                hit.SetAttacker(player);
-                hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
-
-                // 첫 몬스터 넉백 적용
-                float knockbackForce = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
-                Vector3 primaryKnockbackDir = (hitMonster.transform.position - player.transform.position).normalized;
-                hit.m_pushForce = knockbackForce * 3f; // HitData의 pushForce로 넉백
-
-                hitMonster.Damage(hit);
-
-                // 첫 몬스터 스태거 + 물리적 넉백
-                hitMonster.Stagger(primaryKnockbackDir);
-                var monsterBody = hitMonster.GetComponent<Rigidbody>();
-                if (monsterBody != null)
-                {
-                    monsterBody.AddForce(primaryKnockbackDir * knockbackForce * 10f, ForceMode.Impulse);
-                    Plugin.Log.LogDebug($"[관통 돌격] 첫 몬스터 Rigidbody 넉백 적용: {knockbackForce * 10f}");
-                }
-
-                // VFX: 첫 관통 (커스텀 VFX - SimpleVFX)
-                SimpleVFX.Play("confetti_blast_multicolor", hitMonster.GetCenterPoint(), 2f);
-
-                DrawFloatingText(player, $"💥 관통! (+{Polearm_Config.PolearmPierceChargePrimaryDamageValue}%)");
-                Plugin.Log.LogInfo($"[관통 돌격] 첫 타격 성공 - 데미지 +{Polearm_Config.PolearmPierceChargePrimaryDamageValue}%");
-
-                yield return new WaitForSeconds(0.2f);
-
-                // === Phase 3: 후방 AOE 넉백 ===
-                if (player != null && !player.IsDead() && hitMonster != null && !hitMonster.IsDead())
-                {
-                    Vector3 monsterPos = hitMonster.transform.position;
-                    Vector3 knockbackDir = dashDir; // 플레이어 → 몬스터 방향 = 넉백 방향
-                    float aoeRadius = Polearm_Config.PolearmPierceChargeAoeRadiusValue;
-                    float halfAngle = Polearm_Config.PolearmPierceChargeAoeAngleValue / 2f;
-
-                    // AOE 범위 내 적 탐색 (첫 타격 몬스터 뒤쪽)
-                    var aoeTargets = GetEnemiesInConeArea(monsterPos, knockbackDir, aoeRadius, halfAngle, player, hitMonster);
-
-                    if (aoeTargets.Count > 0)
-                    {
-                        float aoeDamageMultiplier = 1f + (Polearm_Config.PolearmPierceChargeAoeDamageValue / 100f);
-                        float knockbackDistance = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
-
-                        foreach (var enemy in aoeTargets)
-                        {
-                            if (enemy == null || enemy.IsDead()) continue;
-
-                            // AOE 데미지 (+150%)
-                            var aoeHit = new HitData();
-                            aoeHit.m_damage.m_slash = weaponDamage.m_slash * aoeDamageMultiplier;
-                            aoeHit.m_damage.m_blunt = weaponDamage.m_blunt * aoeDamageMultiplier;
-                            aoeHit.m_damage.m_pierce = weaponDamage.m_pierce * aoeDamageMultiplier;
-
-                            // 넉백 방향 계산 (몬스터 위치 기준)
-                            Vector3 enemyKnockDir = (enemy.transform.position - monsterPos).normalized;
-                            if (enemyKnockDir.sqrMagnitude < 0.001f)
-                                enemyKnockDir = knockbackDir; // 같은 위치면 기본 방향 사용
-
-                            aoeHit.m_point = enemy.GetCenterPoint();
-                            aoeHit.m_dir = enemyKnockDir;
-                            aoeHit.m_pushForce = knockbackDistance * 3f; // 넉백 거리를 힘으로 변환
-                            aoeHit.m_attacker = player.GetZDOID();
-                            aoeHit.SetAttacker(player);
-                            aoeHit.m_toolTier = (short)weapon.m_shared.m_toolTier;
-
-                            enemy.Damage(aoeHit);
-
-                            // 스태거 + 물리적 넉백 적용
-                            enemy.Stagger(enemyKnockDir);
-                            var rb = enemy.GetComponent<Rigidbody>();
-                            if (rb != null)
-                            {
-                                rb.AddForce(enemyKnockDir * knockbackDistance * 10f, ForceMode.Impulse);
-                            }
-
-                            // VFX: AOE 넉백 (발헤임 기본 VFX - VFXManager) - fx_crit 사용
-                            VFXManager.PlayVFXMultiplayer("fx_crit", "", enemy.GetCenterPoint(), Quaternion.identity, 2f);
-                        }
-
-                        DrawFloatingText(player, $"⚡ AOE 넉백! ({aoeTargets.Count}명, +{Polearm_Config.PolearmPierceChargeAoeDamageValue}%)");
-                        Plugin.Log.LogInfo($"[관통 돌격] AOE 넉백 - {aoeTargets.Count}명 타격");
-                    }
-                }
+                rigidbody.velocity = Vector3.zero;
+                rigidbody.MovePosition(finalPos);
             }
-            else
+            player.transform.position = finalPos;
+
+            // 적중 없이 돌진 완료
+            if (hitMonster == null)
             {
-                // 몬스터 충돌 없이 돌진 완료
-                DrawFloatingText(player, "🔱 돌진 완료 (타격 없음)");
+                DrawFloatingText(player, "🔱 돌진 완료");
+            }
+
+            // 공격속도 복원
+            yield return new WaitForSeconds(0.1f);
+            SetPlayerAttackSpeedBoost(player, 1.0f);
+
+            // 최종 위치 한번 더 확정 (안전장치)
+            if (player != null && rigidbody != null)
+            {
+                rigidbody.MovePosition(finalPos);
+                player.transform.position = finalPos;
             }
 
             // 상태 정리
             CleanupPierceCharge(player);
             yield return null;
+        }
+
+        /// <summary>
+        /// 반경 내 모든 적 탐색 (각도 제한 없음)
+        /// </summary>
+        private static List<Character> GetAllEnemiesInRadius(Vector3 center, float radius, Player excludePlayer)
+        {
+            var enemies = new List<Character>();
+
+            foreach (var c in Character.GetAllCharacters())
+            {
+                if (c == null || c.IsDead() || c == excludePlayer) continue;
+                if (!c.IsMonsterFaction(Time.time)) continue;
+
+                float dist = Vector3.Distance(c.transform.position, center);
+                if (dist <= radius)
+                {
+                    enemies.Add(c);
+                }
+            }
+
+            return enemies;
+        }
+
+        /// <summary>
+        /// 플레이어 위치 중심 반경 5m 내 모든 몬스터 넉백 (첫 몬스터 제외)
+        /// </summary>
+        private static void ApplyAreaKnockback(Player player, Character firstMonster, ItemDrop.ItemData weapon, float knockbackForce)
+        {
+            if (player == null) return;
+
+            // 플레이어 위치 기준 (더 직관적)
+            Vector3 playerPos = player.transform.position;
+            float aoeRadius = Polearm_Config.PolearmPierceChargeAoeRadiusValue; // Config에서 AOE 반경 가져오기
+            float aoeAngle = Polearm_Config.PolearmPierceChargeAoeAngleValue; // Config에서 AOE 각도 가져오기 (280도)
+            float includeHalfAngle = aoeAngle / 2f; // 포함할 전방 반각 (140도) - 앞쪽 280도 범위
+            float aoeDamageMultiplier = 1f + (Polearm_Config.PolearmPierceChargeAoeDamageValue / 100f);
+            var weaponDamage = weapon.GetDamage();
+
+            // 플레이어 전방 방향
+            Vector3 playerForward = player.transform.forward;
+            playerForward.y = 0;
+            playerForward.Normalize();
+
+            int knockbackCount = 0;
+            int totalMonsters = 0;
+
+            Plugin.Log.LogDebug($"[관통 돌격 AOE] 플레이어 위치: {playerPos}, 반경: {aoeRadius}m, 전방 {aoeAngle}도 범위");
+
+            foreach (var enemy in Character.GetAllCharacters())
+            {
+                if (enemy == null || enemy.IsDead() || enemy == player) continue;
+                if (!enemy.IsMonsterFaction(Time.time)) continue;
+
+                // 첫 몬스터는 이미 처리했으므로 제외
+                if (firstMonster != null && enemy == firstMonster) continue;
+
+                totalMonsters++;
+                float dist = Vector3.Distance(enemy.transform.position, playerPos);
+
+                if (dist > aoeRadius) continue;
+
+                // 플레이어 → 몬스터 방향
+                Vector3 toEnemy = (enemy.transform.position - playerPos);
+                toEnemy.y = 0;
+                toEnemy.Normalize();
+
+                // 전방 방향과의 각도 계산
+                float angleToEnemy = Vector3.Angle(playerForward, toEnemy);
+
+                // 280도 범위: 전방 280도(양쪽 140도) 포함 = 각도가 140도 이하인 적만 타격
+                if (angleToEnemy > includeHalfAngle)
+                {
+                    Plugin.Log.LogDebug($"[관통 돌격 AOE] {enemy.name} 제외 - 후방 {angleToEnemy:F1}도 (범위 밖)");
+                    continue;
+                }
+
+                Plugin.Log.LogDebug($"[관통 돌격 AOE] 몬스터: {enemy.name}, 거리: {dist:F2}m, 각도: {angleToEnemy:F1}도 (전방 범위)");
+
+                // 넉백 방향 (플레이어 → 몬스터 = 바깥으로 밀림)
+                Vector3 knockDir = toEnemy;
+                if (knockDir.sqrMagnitude < 0.001f)
+                    knockDir = player.transform.forward;
+
+                // AOE 데미지 적용
+                var aoeHit = new HitData();
+                aoeHit.m_damage.m_slash = weaponDamage.m_slash * aoeDamageMultiplier;
+                aoeHit.m_damage.m_blunt = weaponDamage.m_blunt * aoeDamageMultiplier;
+                aoeHit.m_damage.m_pierce = weaponDamage.m_pierce * aoeDamageMultiplier;
+
+                aoeHit.m_point = enemy.GetCenterPoint();
+                aoeHit.m_dir = knockDir;
+                aoeHit.m_pushForce = 100f;
+                aoeHit.m_attacker = player.GetZDOID();
+                aoeHit.SetAttacker(player);
+                aoeHit.m_toolTier = (short)weapon.m_shared.m_toolTier;
+
+                enemy.Damage(aoeHit);
+                enemy.Stagger(knockDir);
+
+                // 강제 위치 이동 (10m 넉백)
+                Vector3 oldPos = enemy.transform.position;
+                enemy.transform.position += knockDir * knockbackForce;
+
+                Plugin.Log.LogDebug($"[관통 돌격 AOE] {enemy.name} 넉백: {oldPos} → {enemy.transform.position}");
+
+                // VFX
+                VFXManager.PlayVFXMultiplayer("fx_crit", "", enemy.GetCenterPoint(), Quaternion.identity, 1.5f);
+
+                knockbackCount++;
+            }
+
+            Plugin.Log.LogInfo($"[관통 돌격 AOE] 총 몬스터: {totalMonsters}, 범위 내 넉백: {knockbackCount}명");
+        }
+
+        /// <summary>
+        /// 플레이어 공격속도 가져오기
+        /// </summary>
+        private static float GetPlayerAttackSpeed(Player player)
+        {
+            if (player == null) return 1f;
+            // SE_Stats를 통한 공격속도 확인 또는 기본값 반환
+            return 1f;
+        }
+
+        /// <summary>
+        /// 플레이어 공격속도 부스트 설정 (임시)
+        /// </summary>
+        private static void SetPlayerAttackSpeedBoost(Player player, float multiplier)
+        {
+            if (player == null) return;
+
+            try
+            {
+                // 공격속도 부스트를 위한 임시 상태 효과 적용
+                // Animator 속도 조절로 즉각적인 효과
+                var animator = player.GetComponentInChildren<Animator>();
+                if (animator != null)
+                {
+                    animator.speed = multiplier;
+                    Plugin.Log.LogDebug($"[관통 돌격] Animator 속도 설정: {multiplier}x");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogWarning($"[관통 돌격] 공격속도 부스트 설정 실패: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -825,6 +927,8 @@ namespace CaptainSkillTree.SkillTree
             }
         }
     }
+
+    // 관통 돌격 데미지 패치 제거됨 - 코루틴에서 직접 데미지 적용하므로 중복 방지
 
     /// <summary>
     /// 폴암 스킬 정리 (Player 사망/로그아웃 시)

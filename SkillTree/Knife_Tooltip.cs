@@ -179,7 +179,7 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 암살자의 심장 툴팁 생성 (G키 액티브 스킬) - 개선된 상세 툴팁
-        /// 순간이동 + 버프 효과 포함
+        /// 순간이동 + 스턴 + 연속 공격 + 버프 효과 포함
         /// </summary>
         public static string GetKnifeAssassinHeartTooltip()
         {
@@ -192,12 +192,15 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Knife_Config.KnifeAssassinHeartRequiredPointsValue;
             var teleportRange = Knife_Config.KnifeAssassinHeartTeleportRangeValue;
             var teleportBehind = Knife_Config.KnifeAssassinHeartTeleportBehindValue;
+            var stunDuration = Knife_Config.KnifeAssassinHeartStunDurationValue;
+            var attackCount = Knife_Config.KnifeAssassinHeartAttackCountValue;
+            var attackInterval = Knife_Config.KnifeAssassinHeartAttackIntervalValue;
 
             var critDamagePercent = (critDamage - 1) * 100; // 1.3배 → 30% 증가
 
             var data = MeleeTooltipUtils.CreateActiveSkillData(
                 "<color=#FFD700><size=22>암살자의 심장</size></color>",
-                $"정면 {teleportRange}m 내 적의 뒤({teleportBehind}m)로 순간이동\n{duration}초간 피해 +{damageBonus}%, 치명타 확률 +{critChance}%, 치명타 피해 +{critDamagePercent}%",
+                $"{teleportRange}m 이내 적의 뒤({teleportBehind}m)로 순간이동\n대상 {stunDuration}초 스턴 + {attackCount}회 연속 공격\n공격 완료 후 원래 위치로 복귀\n{duration}초간 피해 +{damageBonus}%, 치명타 확률 +{critChance}%",
                 $"{staminaCost}",
                 $"{cooldown}초",
                 MeleeTooltipUtils.WeaponType.Knife,
@@ -206,7 +209,7 @@ namespace CaptainSkillTree.SkillTree
             data.requirement = "단검 또는 클로 착용";
             data.requiredPoints = requiredPoints.ToString();
             data.skillType = "액티브 스킬 - G키";
-            data.confirmation = "같은 무기 전문가 내에서만 다중 습득 가능\n정면에 적 없으면 스킬 취소";
+            data.confirmation = $"같은 무기 전문가 내에서만 다중 습득 가능\n{teleportRange}m 이내 적이 없으면 스킬 취소";
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }

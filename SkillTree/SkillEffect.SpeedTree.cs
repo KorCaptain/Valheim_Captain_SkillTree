@@ -382,6 +382,14 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
+                // 암살자의 심장 공격속도 보너스 (500%)
+                float assassinHeartBonus = GetAssassinHeartAttackSpeedBonus(player);
+                if (assassinHeartBonus > 0f)
+                {
+                    bonus += assassinHeartBonus;
+                    Plugin.Log.LogDebug($"[공속] 암살자의 심장: +{assassinHeartBonus}%");
+                }
+
                 return bonus;
             }
             catch (System.Exception ex)
