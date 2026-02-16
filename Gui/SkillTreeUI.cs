@@ -8,6 +8,7 @@ using CaptainSkillTree.Gui;
 using CaptainSkillTree.Audio;
 using CaptainSkillTree.MMO_System;
 using Jotunn.Managers;
+using L10n = CaptainSkillTree.Localization.LocalizationManager;
 
 namespace CaptainSkillTree.Gui
 {
@@ -48,8 +49,88 @@ namespace CaptainSkillTree.Gui
         // GUIManager.BlockInput 상태 추적 (Jotunn)
         private bool _lastPanelActiveState = false;
 
+        /// <summary>
+        /// MonoBehaviour OnEnable - 언어 변경 이벤트 구독
+        /// </summary>
+        private void OnEnable()
+        {
+            // 언어 변경 이벤트 구독
+            L10n.OnLanguageChanged += RefreshAllText;
+        }
 
-        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin", "성기사" };
+        /// <summary>
+        /// MonoBehaviour OnDisable - 언어 변경 이벤트 구독 해제
+        /// </summary>
+        private void OnDisable()
+        {
+            // 언어 변경 이벤트 구독 해제
+            L10n.OnLanguageChanged -= RefreshAllText;
+        }
+
+        /// <summary>
+        /// 모든 UI 텍스트 갱신 (언어 변경 시)
+        /// </summary>
+        private void RefreshAllText()
+        {
+            try
+            {
+                Plugin.Log.LogInfo("[SkillTreeUI] 언어 변경 감지 - UI 텍스트 갱신 중...");
+
+                // 1. 스킬 포인트 텍스트
+                UpdateSkillPointText();
+
+                // 2. 버튼 텍스트 갱신
+                if (resetPointButton != null)
+                {
+                    var btnText = resetPointButton.GetComponentInChildren<UnityEngine.UI.Text>();
+                    if (btnText != null)
+                    {
+                        btnText.text = L10n.Get("ui_reset_points");
+                    }
+                }
+
+                // 3. Music 버튼 텍스트 갱신
+                if (musicToggleButton != null)
+                {
+                    var musicText = musicToggleButton.GetComponentInChildren<UnityEngine.UI.Text>();
+                    if (musicText != null)
+                    {
+                        bool isBGMEnabled = SkillTreeBGMManager.Instance != null && SkillTreeBGMManager.Instance.IsBGMEnabled;
+                        musicText.text = L10n.Get(isBGMEnabled ? "ui_music_on" : "ui_music_off");
+                    }
+                }
+
+                // 4. 확인 다이얼로그가 열려있으면 텍스트 갱신
+                if (confirmDialog != null && confirmDialog.activeSelf)
+                {
+                    var titleText = confirmDialog.transform.Find("TitleText")?.GetComponent<UnityEngine.UI.Text>();
+                    if (titleText != null)
+                    {
+                        titleText.text = L10n.Get("ui_reset_confirm_title");
+                    }
+
+                    var contentText = confirmDialog.transform.Find("ContentText")?.GetComponent<UnityEngine.UI.Text>();
+                    if (contentText != null)
+                    {
+                        contentText.text = L10n.Get("ui_reset_confirm_message");
+                    }
+                }
+
+                // 5. 툴팁 갱신 (현재 열려있으면)
+                if (tooltipUI != null)
+                {
+                    tooltipUI.RefreshTooltip();
+                }
+
+                Plugin.Log.LogInfo("[SkillTreeUI] ✓ UI 텍스트 갱신 완료");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[SkillTreeUI] UI 텍스트 갱신 실패: {ex.Message}");
+            }
+        }
+
+        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin", "Paladin" };
         private bool IsJobIcon(CaptainSkillTree.SkillTree.SkillNode node)
         {
             string iconName = node.IconName;
@@ -186,7 +267,7 @@ namespace CaptainSkillTree.Gui
             GameObject btnTxtObj = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
             btnTxtObj.transform.SetParent(btnObj.transform, false);
             var btnTxt = btnTxtObj.GetComponent<Text>();
-            btnTxt.text = "포인트 초기화";
+            btnTxt.text = L10n.Get("ui_reset_points");
             btnTxt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             btnTxt.alignment = TextAnchor.MiddleCenter;
             btnTxt.color = Color.white;
@@ -221,7 +302,7 @@ namespace CaptainSkillTree.Gui
 
                         // 직업 아이콘 클릭 후 배경 뒤로 사라지는 문제 방지
                         bool isJobIcon = nodeUI.IsJobIconName(node.IconName ?? node.Id);
-                        bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "성기사";
+                        bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "Paladin";
                         if (isJobIconOrForced) {
                             // 클릭된 직업 아이콘을 다시 최상위로 설정
                             if (nodeUI.nodeObjects.TryGetValue(node.Id, out var nodeObj)) {
@@ -266,7 +347,7 @@ namespace CaptainSkillTree.Gui
             // 1. 사용 가능 포인트 텍스트 (제거 - 기존 텍스트를 사용)
 
             // 2. 확인 버튼 (50% 크기 = 30% + 20% 증가)
-            confirmButton = CreateStyledButton("ConfirmButton", "확인", new Vector2(-62.5f, 0), new Color(0.0f, 0.0f, 0.545f), container.transform, () => {
+            confirmButton = CreateStyledButton("ConfirmButton", L10n.Get("ui_confirm"), new Vector2(-62.5f, 0), new Color(0.0f, 0.0f, 0.545f), container.transform, () => {
                 // 투자 확정 시 이펙트와 효과음
                 PlaySkillInvestmentEffects();
                 
@@ -278,7 +359,7 @@ namespace CaptainSkillTree.Gui
             });
 
             // 3. 취소 버튼 (50% 크기 = 30% + 20% 증가)
-            cancelButton = CreateStyledButton("CancelButton", "취소", new Vector2(62.5f, 0), new Color(0.545f, 0.0f, 0.0f), container.transform, () => {
+            cancelButton = CreateStyledButton("CancelButton", L10n.Get("ui_cancel"), new Vector2(62.5f, 0), new Color(0.545f, 0.0f, 0.0f), container.transform, () => {
                 // 취소 시 취소음
                 PlayCancelSound();
                 
@@ -617,7 +698,7 @@ namespace CaptainSkillTree.Gui
             titleObj.transform.SetParent(dialogPanel.transform, false);
             
             var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
-            titleText.text = "스킬 초기화 확인";
+            titleText.text = L10n.Get("ui_reset_confirm_title");
             titleText.fontSize = 20;
             titleText.color = Color.white;
             titleText.alignment = TextAnchor.MiddleCenter;
@@ -632,7 +713,7 @@ namespace CaptainSkillTree.Gui
             contentObj.transform.SetParent(dialogPanel.transform, false);
             
             var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
-            contentText.text = "정말로 모든 스킬을 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.";
+            contentText.text = L10n.Get("ui_reset_confirm_message");
             contentText.fontSize = 14;
             contentText.color = Color.white;
             contentText.alignment = TextAnchor.MiddleCenter;
@@ -665,39 +746,39 @@ namespace CaptainSkillTree.Gui
             confirmTxtObj.transform.SetParent(confirmBtnObj.transform, false);
             
             var confirmTxt = confirmTxtObj.AddComponent<UnityEngine.UI.Text>();
-            confirmTxt.text = "확인";
+            confirmTxt.text = L10n.Get("ui_confirm");
             confirmTxt.fontSize = 14;
             confirmTxt.color = Color.white;
             confirmTxt.alignment = TextAnchor.MiddleCenter;
             confirmTxt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            
+
             var confirmTxtRect = confirmTxtObj.GetComponent<RectTransform>();
             confirmTxtRect.sizeDelta = new Vector2(120, 40);
             confirmTxtRect.anchoredPosition = Vector2.zero;
-            
+
             // 취소 버튼
             var cancelBtnObj = new GameObject("CancelButton");
             cancelBtnObj.transform.SetParent(dialogPanel.transform, false);
-            
+
             var cancelBtnImage = cancelBtnObj.AddComponent<Image>();
             cancelBtnImage.color = new Color(0.4f, 0.4f, 0.4f, 1f); // 회색
-            
+
             cancelButton = cancelBtnObj.AddComponent<Button>();
             cancelButton.onClick.AddListener(() => {
                 PlayCancelSound();
                 HideResetConfirmDialog();
             });
-            
+
             var cancelBtnRect = cancelBtnObj.GetComponent<RectTransform>();
             cancelBtnRect.sizeDelta = new Vector2(120, 40);
             cancelBtnRect.anchoredPosition = new Vector2(70, -50);
-            
+
             // 취소 버튼 텍스트
             var cancelTxtObj = new GameObject("CancelText");
             cancelTxtObj.transform.SetParent(cancelBtnObj.transform, false);
-            
+
             var cancelTxt = cancelTxtObj.AddComponent<UnityEngine.UI.Text>();
-            cancelTxt.text = "취소";
+            cancelTxt.text = L10n.Get("ui_cancel");
             cancelTxt.fontSize = 14;
             cancelTxt.color = Color.white;
             cancelTxt.alignment = TextAnchor.MiddleCenter;
@@ -761,9 +842,9 @@ namespace CaptainSkillTree.Gui
                 else
                     img.color = new Color(1,1,1,0.5f);
                 // 직업 아이콘 크기 규칙 적용
-                if (IsJobIcon(node) || node.Id == "Mage" || node.Id == "성기사")
+                if (IsJobIcon(node) || node.Id == "Mage" || node.Id == "Paladin")
                 {
-                    // 모든 직업 아이콘을 버서커 크기로 통일 (메이지, 성기사 강제 포함)
+                    // 모든 직업 아이콘을 버서커 크기로 통일 (메이지, Paladin 강제 포함)
                     rect.sizeDelta = isUnlocked ? new Vector2(105, 105) : new Vector2(85, 85);
                     
                     // 언락된 직업 아이콘은 노드선 위에 렌더링
@@ -913,11 +994,11 @@ namespace CaptainSkillTree.Gui
             }
 
             // 2. 직업 스킬은 트로피 체크, 생산 스킬은 아이템 체크, 일반 스킬은 포인트 체크
-            if (node.Id == "성기사" || node.Id == "Tanker" || node.Id == "Berserker" ||
+            if (node.Id == "Paladin" || node.Id == "Tanker" || node.Id == "Berserker" ||
                 node.Id == "Rogue" || node.Id == "Mage" || node.Id == "Archer")
             {
                 // === 직업 중복 선택 방지 (우선 체크) ===
-                string[] jobIds = { "성기사", "Tanker", "Berserker", "Rogue", "Mage", "Archer" };
+                string[] jobIds = { "Paladin", "Tanker", "Berserker", "Rogue", "Mage", "Archer" };
                 foreach (var jobId in jobIds)
                 {
                     if (jobId != node.Id)
@@ -967,9 +1048,9 @@ namespace CaptainSkillTree.Gui
             {
                 // 일반 스킬: 포인트 체크
                 int availablePoints = manager.GetAvailablePoints(true);
-                if (availablePoints < node.RequiredPoints) 
+                if (availablePoints < node.RequiredPoints)
                 {
-                    return new InvestResult(false, $"스킬 포인트가 부족합니다. (필요: {node.RequiredPoints}, 보유: {availablePoints})");
+                    return new InvestResult(false, L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, availablePoints));
                 }
             }
 
@@ -1050,7 +1131,7 @@ namespace CaptainSkillTree.Gui
             }
 
             // 2. 직업 스킬은 트로피 체크, 생산 스킬은 아이템 체크, 일반 스킬은 포인트 체크
-            if (node.Id == "성기사" || node.Id == "Tanker" || node.Id == "Berserker" ||
+            if (node.Id == "Paladin" || node.Id == "Tanker" || node.Id == "Berserker" ||
                 node.Id == "Rogue" || node.Id == "Mage" || node.Id == "Archer")
             {
                 // 직업 스킬: Eikthyr 트로피 체크
@@ -1624,39 +1705,39 @@ namespace CaptainSkillTree.Gui
             confirmTextRect.anchoredPosition = Vector2.zero;
             
             var confirmText = confirmTextObj.GetComponent<UnityEngine.UI.Text>();
-            confirmText.text = "확인";
+            confirmText.text = L10n.Get("ui_confirm");
             confirmText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             confirmText.fontSize = 14;
             confirmText.color = Color.white;
             confirmText.alignment = TextAnchor.MiddleCenter;
-            
+
             // 취소 버튼
             var cancelBtnObj = new GameObject("CancelButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
             cancelBtnObj.transform.SetParent(dialogObj.transform, false);
-            
+
             var cancelRect = cancelBtnObj.GetComponent<RectTransform>();
             cancelRect.sizeDelta = new Vector2(80, 30);
             cancelRect.anchoredPosition = new Vector2(50, -80);
-            
+
             var cancelImage = cancelBtnObj.GetComponent<Image>();
             cancelImage.color = new Color(0.7f, 0.2f, 0.2f, 1f);
-            
+
             var cancelBtn = cancelBtnObj.GetComponent<Button>();
             cancelBtn.onClick.AddListener(() => {
                 onCancel?.Invoke();
                 Destroy(dialogObj);
             });
-            
+
             // 취소 버튼 텍스트
             var cancelTextObj = new GameObject("CancelText", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Text));
             cancelTextObj.transform.SetParent(cancelBtnObj.transform, false);
-            
+
             var cancelTextRect = cancelTextObj.GetComponent<RectTransform>();
             cancelTextRect.sizeDelta = new Vector2(80, 30);
             cancelTextRect.anchoredPosition = Vector2.zero;
-            
+
             var cancelText = cancelTextObj.GetComponent<UnityEngine.UI.Text>();
-            cancelText.text = "취소";
+            cancelText.text = L10n.Get("ui_cancel");
             cancelText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             cancelText.fontSize = 14;
             cancelText.color = Color.white;
@@ -1727,9 +1808,9 @@ namespace CaptainSkillTree.Gui
                     }
                     
                     Debug.LogWarning($"[스킬트리] LevelUpVFX 효과를 찾을 수 없음");
-                    
+
                     // 마지막 대안: 플레이어 메시지로 피드백
-                    player.Message(MessageHud.MessageType.TopLeft, "✅ 스킬 포인트 투자 확정!", 0, null);
+                    player.Message(MessageHud.MessageType.TopLeft, L10n.Get("skill_invest_success"), 0, null);
                 }
             }
             catch (System.Exception ex)
@@ -2231,7 +2312,7 @@ namespace CaptainSkillTree.Gui
                 if (iconName.Contains("Berserker")) return "버서커";
                 if (iconName.Contains("Rogue")) return "로그";
                 if (iconName.Contains("Mage")) return "메이지";
-                if (iconName.Contains("Paladin")) return "성기사";
+                if (iconName.Contains("Paladin")) return "Paladin";
             }
             return "전사"; // 기본값
         }
@@ -2461,7 +2542,7 @@ namespace CaptainSkillTree.Gui
             if (inventory == null) return false;
             
             // 직업 스킬이 아닌 경우 통과
-            if (node.Id != "성기사" && node.Id != "Tanker" && node.Id != "Berserker" && 
+            if (node.Id != "Paladin" && node.Id != "Tanker" && node.Id != "Berserker" && 
                 node.Id != "Rogue" && node.Id != "Mage" && node.Id != "Archer")
             {
                 return true;
@@ -2496,7 +2577,7 @@ namespace CaptainSkillTree.Gui
             if (inventory == null) return;
             
             // 직업 스킬이 아닌 경우 아무것도 소모하지 않음
-            if (node.Id != "성기사" && node.Id != "Tanker" && node.Id != "Berserker" && 
+            if (node.Id != "Paladin" && node.Id != "Tanker" && node.Id != "Berserker" && 
                 node.Id != "Rogue" && node.Id != "Mage" && node.Id != "Archer")
             {
                 return;

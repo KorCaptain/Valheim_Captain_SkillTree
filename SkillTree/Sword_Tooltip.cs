@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -18,35 +19,35 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string GetSwordSlashTooltip()
         {
-            Plugin.Log.LogDebug("[검 툴팁] GetSwordSlashTooltip() 호출됨 (돌진 연속 베기)");
+            Plugin.Log.LogDebug("[Sword Tooltip] GetSwordSlashTooltip() called");
 
             // 컨피그에서 실제 값 가져오기
             var skillData = Sword_Config.GetRushSlashData();
-            var requiredPoints = 3; // MeleeSkillData.cs에서 확인한 값
+            var requiredPoints = 3;
 
-            Plugin.Log.LogDebug($"[검 툴팁] 컨피그 값들 - 1차: {skillData.damage1stRatio}%, 2차: {skillData.damage2ndRatio}%, 3차: {skillData.damage3rdRatio}%, 스태미나: {skillData.staminaCost}, 쿨타임: {skillData.cooldown}초");
+            Plugin.Log.LogDebug($"[Sword Tooltip] Config values - 1st: {skillData.damage1stRatio}%, 2nd: {skillData.damage2ndRatio}%, 3rd: {skillData.damage3rdRatio}%");
 
             // 돌진 연속 베기 설명 구성
-            string description = $"전방 {skillData.initialDistance}m 돌진 후 몬스터 주변을 빠르게 이동하며 3회 연속 베기\n" +
-                                $"<color=#98FB98>1차 베기: 공격력 {skillData.damage1stRatio}%</color>\n" +
-                                $"<color=#FFA500>2차 베기: 공격력 {skillData.damage2ndRatio}%</color>\n" +
-                                $"<color=#FF6B6B>3차 베기 (피니셔): 공격력 {skillData.damage3rdRatio}%</color>";
+            string description = L.Get("sword_desc_rush_slash", skillData.initialDistance) + "\n" +
+                                $"<color=#98FB98>{L.Get("sword_desc_rush_slash_1st", skillData.damage1stRatio)}</color>\n" +
+                                $"<color=#FFA500>{L.Get("sword_desc_rush_slash_2nd", skillData.damage2ndRatio)}</color>\n" +
+                                $"<color=#FF6B6B>{L.Get("sword_desc_rush_slash_3rd", skillData.damage3rdRatio)}</color>";
 
             // MeleeTooltipUtils를 사용한 툴팁 데이터 생성
             var data = MeleeTooltipUtils.CreateActiveSkillData(
-                "<color=#FFD700><size=22>돌진 연속 베기</size></color>",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_rush_slash")}</size></color>",
                 description,
                 $"{skillData.staminaCost}",
-                $"{skillData.cooldown}초",
+                $"{skillData.cooldown}{L.Get("unit_seconds")}",
                 MeleeTooltipUtils.WeaponType.Sword,
-                "같은 무기 전문가 내에서만 다중 습득 가능\n스킬 사용 중 무적 아님",
+                $"{L.Get("tooltip_same_weapon_only")}\n{L.Get("tooltip_not_invincible")}",
                 "",
-                "G키"
+                "G"
             );
             data.requiredPoints = requiredPoints.ToString();
 
             string finalTooltip = MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
-            Plugin.Log.LogDebug($"[검 툴팁] 최종 툴팁 생성 완료 - 길이: {finalTooltip?.Length ?? 0}");
+            Plugin.Log.LogDebug($"[Sword Tooltip] Final tooltip generated - length: {finalTooltip?.Length ?? 0}");
             return finalTooltip;
         }
 
@@ -55,16 +56,16 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string GetSwordExpertTooltip()
         {
-            Plugin.Log.LogDebug("[검 툴팁] GetSwordExpertTooltip() 호출됨");
+            Plugin.Log.LogDebug("[Sword Tooltip] GetSwordExpertTooltip() called");
 
-            var requiredPoints = 2; // 검 전문가 고정값
+            var requiredPoints = 2;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>검 전문가</size></color>",
-                $"검 공격력 +{Sword_Config.SwordExpertDamageValue}%\n2연속 공격력 +{SkillTreeConfig.SwordStep1ExpertComboBonusValue}% ({Sword_Config.SwordStep1ExpertDurationValue}초)",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_expert")}</size></color>",
+                L.Get("sword_desc_expert", Sword_Config.SwordExpertDamageValue, SkillTreeConfig.SwordStep1ExpertComboBonusValue, Sword_Config.SwordStep1ExpertDurationValue),
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = "검 착용";
+            data.requirement = L.Get("requirement_sword_equip");
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
@@ -77,14 +78,14 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetFastSlashTooltip() 호출됨");
 
-            var requiredPoints = 2; // MeleeSkillData.cs에서 확인한 값
+            var requiredPoints = 2;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>빠른 베기</size></color>",
-                $"공격속도 +{SkillTreeConfig.SwordStep1FastSlashSpeedValue}%",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_fast_slash")}</size></color>",
+                L.Get("sword_desc_fast_slash", SkillTreeConfig.SwordStep1FastSlashSpeedValue),
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = "검 착용";
+            data.requirement = L.Get("requirement_sword_equip");
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
@@ -97,14 +98,14 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetCounterTooltip() 호출됨");
 
-            var requiredPoints = 3; // MeleeSkillData.cs에서 확인한 값
+            var requiredPoints = 3;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>반격 자세</size></color>",
-                $"패링 성공 후 {SkillTreeConfig.SwordStep1CounterDurationValue}초동안 방어력 +{SkillTreeConfig.SwordStep1CounterDefenseBonusValue}%",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_counter")}</size></color>",
+                L.Get("sword_desc_counter", SkillTreeConfig.SwordStep1CounterDurationValue, SkillTreeConfig.SwordStep1CounterDefenseBonusValue),
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = "검 착용";
+            data.requirement = L.Get("requirement_sword_equip");
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
@@ -117,14 +118,14 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetComboTooltip() 호출됨");
 
-            var requiredPoints = 2; // MeleeSkillData.cs에서 확인한 값
+            var requiredPoints = 2;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>연속베기</size></color>",
-                $"3연속 공격력 +{SkillTreeConfig.SwordStep2ComboSlashBonusValue}% ({Sword_Config.SwordStep2ComboSlashDurationValue}초)",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_combo")}</size></color>",
+                L.Get("sword_desc_combo", SkillTreeConfig.SwordStep2ComboSlashBonusValue, Sword_Config.SwordStep2ComboSlashDurationValue),
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = "검 착용";
+            data.requirement = L.Get("requirement_sword_equip");
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
@@ -137,15 +138,15 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetRiposteTooltip() 호출됨");
 
-            var requiredPoints = 3; // MeleeSkillData.cs에서 확인한 값
+            var requiredPoints = 3;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "칼날 되치기",
-                $"공격력 +{Sword_Config.SwordRiposteDamageBonusValue}",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_riposte")}</size></color>",
+                L.Get("sword_desc_riposte", Sword_Config.SwordRiposteDamageBonusValue),
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = "검 착용";
-            data.additionalInfo = "검 공격력 향상";
+            data.requirement = L.Get("requirement_sword_equip");
+            data.additionalInfo = L.Get("tooltip_sword_damage_boost");
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
@@ -158,15 +159,15 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetAllInOneTooltip() 호출됨");
 
-            var requiredPoints = 2; // MeleeSkillData.cs에서 확인한 값
+            var requiredPoints = 2;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>공방일체</size></color>",
-                $"양손 무기 착용 시 공격력 +{SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue}%, 방어력 +{SkillTreeConfig.SwordStep3OffenseDefenseDefenseBonusValue}%",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_all_in_one")}</size></color>",
+                L.Get("sword_desc_all_in_one", SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue, SkillTreeConfig.SwordStep3OffenseDefenseDefenseBonusValue),
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = "검 착용";
-            data.additionalInfo = "※ 검 사용 시 효과 발동";
+            data.requirement = L.Get("requirement_sword_equip");
+            data.additionalInfo = L.Get("tooltip_sword_effect_note");
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
@@ -179,15 +180,15 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetDuelTooltip() 호출됨");
 
-            var requiredPoints = 3; // MeleeSkillData.cs에서 확인한 값
+            var requiredPoints = 3;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>진검승부</size></color>",
-                $"공격 속도 +{SkillTreeConfig.SwordStep4TrueDuelSpeedValue}%",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_duel")}</size></color>",
+                L.Get("sword_desc_duel", SkillTreeConfig.SwordStep4TrueDuelSpeedValue),
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = "검 착용";
-            data.additionalInfo = "※ 검 사용 시 효과 발동";
+            data.requirement = L.Get("requirement_sword_equip");
+            data.additionalInfo = L.Get("tooltip_sword_effect_note");
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
@@ -208,19 +209,19 @@ namespace CaptainSkillTree.SkillTree
             float staminaCost = Sword_Config.ParryRushStaminaCostValue;
             float cooldown = Sword_Config.ParryRushCooldownValue;
 
-            string description = $"{duration}초 동안 패링 성공 시 몬스터에게 방패돌격\n" +
-                                $"<color=#98FB98>공격력 +{damageBonus}%</color>\n" +
-                                $"<color=#FFA500>{pushDist}m 밀어내기</color>";
+            string description = L.Get("sword_desc_parry_rush", duration) + "\n" +
+                                $"<color=#98FB98>{L.Get("sword_desc_parry_rush_damage", damageBonus)}</color>\n" +
+                                $"<color=#FFA500>{L.Get("sword_desc_parry_rush_push", pushDist)}</color>";
 
             var data = MeleeTooltipUtils.CreateActiveSkillData(
-                "<color=#FFD700><size=22>패링 돌격</size></color>",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_parry_rush")}</size></color>",
                 description,
                 $"{staminaCost}",
-                $"{cooldown}초",
+                $"{cooldown}{L.Get("unit_seconds")}",
                 MeleeTooltipUtils.WeaponType.Sword,
-                "같은 무기 전문가 내에서만 다중 습득 가능",
-                "방패 착용",
-                "H키"
+                L.Get("tooltip_same_weapon_only"),
+                L.Get("requirement_shield_equip"),
+                "H"
             );
             data.requiredPoints = requiredPoints.ToString();
 
@@ -234,15 +235,15 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetUltimateSlashTooltip() 호출됨");
 
-            var requiredPoints = 3; // Tier 6 스킬
+            var requiredPoints = 3;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>궁극 베기</size></color>",
-                $"모든 검 스킬 효과 +{SkillTreeConfig.SwordStep6UltimateSlashMultiplierValue}%",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_ultimate")}</size></color>",
+                L.Get("sword_desc_ultimate", SkillTreeConfig.SwordStep6UltimateSlashMultiplierValue),
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = "검 착용";
-            data.additionalInfo = "※ 검 사용 시 효과 발동";
+            data.requirement = L.Get("requirement_sword_equip");
+            data.additionalInfo = L.Get("tooltip_sword_effect_note");
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
@@ -294,13 +295,13 @@ namespace CaptainSkillTree.SkillTree
 
                     default:
                         Plugin.Log.LogWarning($"[검 툴팁] 알 수 없는 스킬 ID: {skillId}");
-                        return "검 스킬 정보를 찾을 수 없음";
+                        return L.Get("tooltip_skill_not_found", L.Get("weapon_sword"));
                 }
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[검 툴팁] 일반 툴팁 생성 오류: {ex.Message}");
-                return "툴팁 생성 오류";
+                return L.Get("tooltip_generation_error");
             }
         }
 
@@ -416,15 +417,20 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static string GetSwordSlashFallbackTooltip()
         {
+            string description = L.Get("sword_desc_rush_slash", 5) + "\n" +
+                                $"<color=#98FB98>{L.Get("sword_desc_rush_slash_1st", 70)}</color>\n" +
+                                $"<color=#FFA500>{L.Get("sword_desc_rush_slash_2nd", 80)}</color>\n" +
+                                $"<color=#FF6B6B>{L.Get("sword_desc_rush_slash_3rd", 90)}</color>";
+
             var data = MeleeTooltipUtils.CreateActiveSkillData(
-                "<color=#FFD700><size=22>돌진 연속 베기</size></color>",
-                "전방 5m 돌진 후 몬스터 주변을 이동하며 3회 연속 베기\n1차: 70%, 2차: 80%, 3차: 90%",
+                $"<color=#FFD700><size=22>{L.Get("sword_skill_rush_slash")}</size></color>",
+                description,
                 "30",
-                "25초",
+                $"25{L.Get("unit_seconds")}",
                 MeleeTooltipUtils.WeaponType.Sword,
-                "스킬 사용 중 무적 아님",
+                L.Get("tooltip_not_invincible"),
                 "",
-                "G키"
+                "G"
             );
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);

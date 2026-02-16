@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -45,46 +46,45 @@ namespace CaptainSkillTree.SkillTree
                 var range = Tanker_Config.TankerTauntRangeValue;
                 var stamina = Tanker_Config.TankerTauntStaminaCostValue;
                 var cooldown = Tanker_Config.TankerTauntCooldownValue;
-                
-                // HTML 스타일 구조화된 툴팁 생성 (이미지와 동일한 스타일)
-                var tooltip = "<color=#FFD700><size=22>탱커 - 전장의 함성</size></color>\n\n";
-                
+
+                // HTML 스타일 구조화된 툴팁 생성
+                var tooltip = $"<color=#FFD700><size=22>{L.Get("job_tanker")} - {L.Get("tanker_skill_warcry")}</size></color>\n\n";
+
                 // 액티브 스킬 설명
-                tooltip += "<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>";
-                tooltip += $"{range}m 범위 적을 도발해 {duration}초 동안 나를 공격하게 만듭니다.";
-                tooltip += $"(보스 {bossDuration}초), 시전자는 {buffDuration}초 동안 피해감소 {activeDamageReduction}%";
+                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>";
+                tooltip += L.Get("tanker_desc_warcry", range, duration, bossDuration, buffDuration, activeDamageReduction);
                 tooltip += "</size></color>\n";
-                
+
                 // 범위 정보
-                tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{range}m</size></color>\n";
-                
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{range}m</size></color>\n";
+
                 // 소모 자원
-                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {stamina}</size></color>\n";
-                
-                // 스킬 유형 (Y키 강조: #1E90FF / #ADFF2F)
-                tooltip += "<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>액티브 도발 스킬 - Y키</size></color>\n";
-                
+                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {stamina}</size></color>\n";
+
+                // 스킬 유형 (Y키 강조)
+                tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#ADFF2F><size=16>{L.Get("tanker_skill_type_taunt")}</size></color>\n";
+
                 // 쿨타임
-                tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{cooldown}초</size></color>\n";
-                
+                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{cooldown}{L.Get("unit_seconds")}</size></color>\n";
+
                 // 패시브 효과 추가
-                tooltip += $"<color=#98FB98><size=16>패시브 효과: </size></color><color=#00FF00><size=16>받는 피해량 -{passiveDamageReduction}%</size></color>\n";
-                
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive_effect")}: </size></color><color=#00FF00><size=16>{L.Get("tanker_passive_damage_reduction", passiveDamageReduction)}</size></color>\n";
+
                 // 필요조건
-                tooltip += "<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>방패 착용</size></color>\n";
-                
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_shield_equip")}</size></color>\n";
+
                 // 확인사항
-                tooltip += "<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>직업은 1개만 선택가능, Lv 10 이상</size></color>\n";
-                
+                tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("confirmation_job_only")}</size></color>\n";
+
                 // 필요포인트
-                tooltip += "<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>에이크쉬르 트로피</size></color>";
-                
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{L.Get("item_eikthyr_trophy")}</size></color>";
+
                 return tooltip;
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[탱커 툴팁] GetTankerTooltip 실패: {ex.Message}");
-                return "탱커 스킬 정보를 불러올 수 없음";
+                return L.Get("tooltip_load_error");
             }
         }
 
@@ -97,15 +97,14 @@ namespace CaptainSkillTree.SkillTree
             {
                 var tooltip = "";
 
-                // 스킬 이름 (황금색, 크기 22 - 기존 툴팁과 동일)
+                // 스킬 이름 (황금색, 크기 22)
                 tooltip += $"<color=#FFD700><size=22>{data.skillName}</size></color>\n\n";
 
-                // 설명 섹션 (기존 툴팁 스타일)
+                // 설명 섹션
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{data.description}";
 
-                    // 추가 정보가 있으면 괄호로 추가
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
                         tooltip += $"( {data.additionalInfo} )";
@@ -113,61 +112,60 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += "</size></color>\n";
                 }
 
-                // 범위 섹션 (기존 툴팁 스타일)
-                tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
+                // 범위 섹션
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
 
-                // 소모 섹션 - 구조화된 표시 (기존 툴팁 스타일)
+                // 소모 섹션
                 var consumeParts = new List<string>();
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    consumeParts.Add($"스태미나 {data.consumeStamina}");
+                    consumeParts.Add($"{L.Get("stat_stamina")} {data.consumeStamina}");
                 }
-                if (!string.IsNullOrEmpty(data.consumeArrow) && data.consumeArrow != "없음")
+                if (!string.IsNullOrEmpty(data.consumeArrow) && data.consumeArrow != L.Get("tooltip_none"))
                 {
-                    consumeParts.Add($"화살 {data.consumeArrow} 개");
+                    consumeParts.Add($"{L.Get("stat_arrow")} {data.consumeArrow} {L.Get("unit_pieces")}");
                 }
 
                 if (consumeParts.Count > 0)
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>{string.Join(", ", consumeParts)}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{string.Join(", ", consumeParts)}</size></color>\n";
                 }
 
-                // 스킬 유형 섹션 (Y키 강조: #1E90FF / #ADFF2F)
+                // 스킬 유형 섹션
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#ADFF2F><size=16>{data.skillType}</size></color>\n";
                 }
 
-                // 쿨타임 섹션 (기존 툴팁 스타일)
+                // 쿨타임 섹션
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
-                // 필요조건 섹션 (기존 툴팁 스타일)
+                // 필요조건 섹션
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
-                // 확인사항 섹션 (기존 툴팁 스타일)
+                // 확인사항 섹션
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
-                // 필요포인트 섹션 (기존 툴팁 스타일)
+                // 필요포인트 섹션
                 if (!string.IsNullOrEmpty(data.requiredItem))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
             }
             catch (System.Exception)
             {
-                // Plugin.Log.LogError($"[탱커 툴팁] 생성 실패: {ex.Message}");
-                return "툴팁 생성 오류";
+                return L.Get("tooltip_generation_error");
             }
         }
 
@@ -178,17 +176,17 @@ namespace CaptainSkillTree.SkillTree
         {
             var tooltipData = new TankerTooltipData
             {
-                skillName = "탱커 - 전장의 함성",
-                description = "적을 도발해 5초 동안 나를 공격하게 만듭니다.(보스 1초), 시전자는 피해감소 20%가 5초 지속",
+                skillName = $"{L.Get("job_tanker")} - {L.Get("tanker_skill_warcry")}",
+                description = L.Get("tanker_desc_warcry_fallback"),
                 additionalInfo = "",
                 range = "12m",
                 consumeStamina = "25",
-                consumeArrow = "없음",
-                skillType = "액티브 버프 스킬 - Y키",
-                cooldown = "60초",
-                requirement = "방패 착용",
-                confirmation = "직업은 1개만 선택가능, Lv 10 이상",
-                requiredItem = "에이크쉬르 트로피"
+                consumeArrow = L.Get("tooltip_none"),
+                skillType = L.Get("skill_type_active_key", "Y"),
+                cooldown = $"60{L.Get("unit_seconds")}",
+                requirement = L.Get("requirement_shield_equip"),
+                confirmation = L.Get("confirmation_job_only"),
+                requiredItem = L.Get("item_eikthyr_trophy")
             };
 
             return GenerateTankerTooltip(tooltipData);

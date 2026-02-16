@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using CaptainSkillTree.SkillTree;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -17,8 +18,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 0: 방어 전문가 (루트)
             manager.AddSkill(new SkillNode {
                 Id = "defense_root",
-                Name = "방어 전문가",
-                Description = $"체력 +{Defense_Config.DefenseRootHealthBonusValue}, 방어 +{Defense_Config.DefenseRootArmorBonusValue}",
+                NameKey = "defense_root_name",
+                DescriptionKey = "defense_root_desc",
+                DescriptionArgs = new object[] { Defense_Config.DefenseRootHealthBonusValue, Defense_Config.DefenseRootArmorBonusValue },
                 RequiredPoints = Defense_Config.DefenseRootRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 0,
@@ -30,7 +32,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, $"체력 +{Defense_Config.DefenseRootHealthBonusValue}, 방어 +{Defense_Config.DefenseRootArmorBonusValue}");
+                        SkillEffect.DrawFloatingText(player, L.Get("defense_root_effect", Defense_Config.DefenseRootHealthBonusValue, Defense_Config.DefenseRootArmorBonusValue));
                     }
                 }
             });
@@ -40,8 +42,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 1: 피부경화
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step1_survival",
-                Name = "피부경화",
-                Description = $"체력 +{Defense_Config.SurvivalHealthBonusValue}, 방어 +{Defense_Config.SurvivalArmorBonusValue}",
+                NameKey = "defense_survival_name",
+                DescriptionKey = "defense_survival_desc",
+                DescriptionArgs = new object[] { Defense_Config.SurvivalHealthBonusValue, Defense_Config.SurvivalArmorBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep1RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
@@ -57,8 +60,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 2: 심신단련
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step2_dodge",
-                Name = "심신단련",
-                Description = $"스태미나 최대치 +{Defense_Config.DodgeStaminaBonusValue}, 에이트르 최대치 +{Defense_Config.DodgeEitrBonusValue}",
+                NameKey = "defense_dodge_name",
+                DescriptionKey = "defense_dodge_desc",
+                DescriptionArgs = new object[] { Defense_Config.DodgeStaminaBonusValue, Defense_Config.DodgeEitrBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -74,8 +78,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 2: 체력단련
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step2_health",
-                Name = "체력단련",
-                Description = $"체력 +{Defense_Config.HealthBonusValue}, 방어 +{Defense_Config.HealthArmorBonusValue}",
+                NameKey = "defense_health_name",
+                DescriptionKey = "defense_health_desc",
+                DescriptionArgs = new object[] { Defense_Config.HealthBonusValue, Defense_Config.HealthArmorBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -91,8 +96,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 3: 단전호흡
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step3_breath",
-                Name = "단전호흡",
-                Description = $"에이트르 최대치 +{Defense_Config.BreathEitrBonusValue}",
+                NameKey = "defense_breath_name",
+                DescriptionKey = "defense_breath_desc",
+                DescriptionArgs = new object[] { Defense_Config.BreathEitrBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -108,8 +114,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 3: 회피단련
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step3_agile",
-                Name = "회피단련",
-                Description = $"회피 +{Defense_Config.AgileDodgeBonusValue}%, 구르기 무적시간 +{Defense_Config.AgileInvincibilityBonusValue}%",
+                NameKey = "defense_agile_name",
+                DescriptionKey = "defense_agile_desc",
+                DescriptionArgs = new object[] { Defense_Config.AgileDodgeBonusValue, Defense_Config.AgileInvincibilityBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -125,8 +132,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 3: 체력증강
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step3_boost",
-                Name = "체력증강",
-                Description = $"체력 +{Defense_Config.BoostHealthBonusValue}",
+                NameKey = "defense_boost_name",
+                DescriptionKey = "defense_boost_desc",
+                DescriptionArgs = new object[] { Defense_Config.BoostHealthBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -142,8 +150,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 3: 방패훈련
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step3_shield",
-                Name = "방패훈련",
-                Description = $"방패 방어력 +{Defense_Config.ShieldTrainingBlockPowerBonusValue}",
+                NameKey = "defense_shield_name",
+                DescriptionKey = "defense_shield_desc",
+                DescriptionArgs = new object[] { Defense_Config.ShieldTrainingBlockPowerBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -156,7 +165,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, $"방패 방어력 +{Defense_Config.ShieldTrainingBlockPowerBonusValue}");
+                        SkillEffect.DrawFloatingText(player, L.Get("defense_shield_effect", Defense_Config.ShieldTrainingBlockPowerBonusValue));
                     }
                 }
             });
@@ -164,8 +173,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 4: 충격파방출 (액티브 스킬) - 발구르기와 상호 배타
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step4_mental",
-                Name = "충격파방출",
-                Description = "생명력 45%이하 일시 3미터 이내의 적을 1초간 기절시킴(120초 쿨타임)",
+                NameKey = "defense_mental_name",
+                DescriptionKey = "defense_mental_desc",
+                DescriptionArgs = new object[] { 3, 1, 120 },
                 RequiredPoints = Defense_Config.DefenseStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -182,8 +192,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 4: 발구르기 (자동 발동 패시브 스킬) - 충격파방출과 상호 배타
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step4_instant",
-                Name = "발구르기",
-                Description = "생명력 35%이하 일시 자동으로 주변 적을 3미터 밀어냄 (120초 쿨타임)",
+                NameKey = "defense_instant_name",
+                DescriptionKey = "defense_instant_desc",
+                DescriptionArgs = new object[] { 3, 120 },
                 RequiredPoints = Defense_Config.DefenseStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -200,8 +211,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 4: 바위피부
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step4_tanker",
-                Name = "바위피부",
-                Description = "방어력 +12%",
+                NameKey = "defense_tanker_name",
+                DescriptionKey = "defense_tanker_desc",
+                DescriptionArgs = new object[] { 12 },
                 RequiredPoints = Defense_Config.DefenseStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -217,8 +229,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 5: 지구력
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step5_focus",
-                Name = "지구력",
-                Description = $"달리기 스태미나 -{Defense_Config.FocusRunStaminaReductionValue}%, 점프 스태미나 -{Defense_Config.FocusJumpStaminaReductionValue}%",
+                NameKey = "defense_focus_name",
+                DescriptionKey = "defense_focus_desc",
+                DescriptionArgs = new object[] { Defense_Config.FocusRunStaminaReductionValue, Defense_Config.FocusJumpStaminaReductionValue },
                 RequiredPoints = Defense_Config.DefenseStep5RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -234,8 +247,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 5: 기민함
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step5_stamina",
-                Name = "기민함",
-                Description = $"회피 +{Defense_Config.StaminaDodgeBonusValue}%, 구르기 스태미나 -{Defense_Config.StaminaRollStaminaReductionValue}%",
+                NameKey = "defense_stamina_name",
+                DescriptionKey = "defense_stamina_desc",
+                DescriptionArgs = new object[] { Defense_Config.StaminaDodgeBonusValue, Defense_Config.StaminaRollStaminaReductionValue },
                 RequiredPoints = Defense_Config.DefenseStep5RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -251,8 +265,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 5: 트롤의 재생력
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step5_heal",
-                Name = "트롤의 재생력",
-                Description = $"{Defense_Config.TrollRegenIntervalValue}초마다 체력 +{Defense_Config.TrollRegenBonusValue}",
+                NameKey = "defense_heal_name",
+                DescriptionKey = "defense_heal_desc",
+                DescriptionArgs = new object[] { Defense_Config.TrollRegenIntervalValue, Defense_Config.TrollRegenBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep5RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -268,8 +283,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 5: 막기달인
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step5_parry",
-                Name = "막기달인",
-                Description = $"패링 +{Defense_Config.ParryMasterParryDurationBonusValue}초, 방패 방어력 +{Defense_Config.ParryMasterBlockPowerBonusValue}",
+                NameKey = "defense_parry_name",
+                DescriptionKey = "defense_parry_desc",
+                DescriptionArgs = new object[] { Defense_Config.ParryMasterParryDurationBonusValue, Defense_Config.ParryMasterBlockPowerBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep5RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -282,7 +298,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, $"패링 +{Defense_Config.ParryMasterParryDurationBonusValue}초, 방패 방어력 +{Defense_Config.ParryMasterBlockPowerBonusValue}");
+                        SkillEffect.DrawFloatingText(player, L.Get("defense_parry_effect", Defense_Config.ParryMasterParryDurationBonusValue, Defense_Config.ParryMasterBlockPowerBonusValue));
                     }
                 }
             });
@@ -290,8 +306,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 6: 마인드쉴드
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step6_mind",
-                Name = "마인드쉴드",
-                Description = "방어막 유지 +60초",
+                NameKey = "defense_mind_name",
+                DescriptionKey = "defense_mind_desc",
+                DescriptionArgs = new object[] { 60 },
                 RequiredPoints = Defense_Config.DefenseStep6RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -307,8 +324,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 6: 신경강화
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step6_attack",
-                Name = "신경강화",
-                Description = $"회피 +{Defense_Config.AttackDodgeBonusValue}%",
+                NameKey = "defense_attack_name",
+                DescriptionKey = "defense_attack_desc",
+                DescriptionArgs = new object[] { Defense_Config.AttackDodgeBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep6RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -324,8 +342,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 6: 이단점프 (액티브 스킬)
             manager.AddSkill(new SkillNode {
                 Id = "defense_step6_double_jump",
-                Name = "이단점프",
-                Description = "공중에서 추가로 1회 점프",
+                NameKey = "defense_double_jump_name",
+                DescriptionKey = "defense_double_jump_desc",
+                DescriptionArgs = new object[] { 1 },
                 RequiredPoints = Defense_Config.DefenseStep6RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -341,8 +360,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 6: 요툰의 생명력
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step6_body",
-                Name = "요툰의 생명력",
-                Description = $"체력 최대치 +{Defense_Config.BodyHealthBonusValue}%, 물리/마법 방어력 +{Defense_Config.BodyArmorBonusValue}%",
+                NameKey = "defense_body_name",
+                DescriptionKey = "defense_body_desc",
+                DescriptionArgs = new object[] { Defense_Config.BodyHealthBonusValue, Defense_Config.BodyArmorBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep6RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -355,7 +375,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, $"체력 +{Defense_Config.BodyHealthBonusValue}%, 방어 +{Defense_Config.BodyArmorBonusValue}%");
+                        SkillEffect.DrawFloatingText(player, L.Get("defense_body_effect", Defense_Config.BodyHealthBonusValue, Defense_Config.BodyArmorBonusValue));
                     }
                 }
             });
@@ -363,8 +383,9 @@ namespace CaptainSkillTree.SkillTree
             // Tier 6: 요툰의 방패
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step6_true",
-                Name = "요툰의 방패",
-                Description = $"방패 블럭 스태미나 -{Defense_Config.JotunnShieldBlockStaminaReductionValue}%, 일반 방패 이동속도 +{Defense_Config.JotunnShieldNormalSpeedBonusValue}%, 대형 방패 이동속도 +{Defense_Config.JotunnShieldTowerSpeedBonusValue}%",
+                NameKey = "defense_true_name",
+                DescriptionKey = "defense_true_desc",
+                DescriptionArgs = new object[] { Defense_Config.JotunnShieldBlockStaminaReductionValue, Defense_Config.JotunnShieldNormalSpeedBonusValue, Defense_Config.JotunnShieldTowerSpeedBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep6RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,

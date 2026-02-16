@@ -1,4 +1,5 @@
 using System;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -47,18 +48,18 @@ namespace CaptainSkillTree.SkillTree
                 // 상세 툴팁 데이터 생성
                 var data = new DualCastTooltipData
                 {
-                    skillName = "이중 시전",
-                    description = $"{projectileCount}발 추가 마법 발사체 발사",
-                    additionalInfo = $"좌 -{angleOffset:F0}°, 우 +{angleOffset:F0}° 각도로 분산 발사",
-                    projectileCount = $"{projectileCount}발",
+                    skillName = L.Get("staff_skill_dual_cast"),
+                    description = L.Get("staff_desc_dual_cast", projectileCount),
+                    additionalInfo = L.Get("staff_desc_dual_cast_angle", angleOffset),
+                    projectileCount = $"{projectileCount}{L.Get("unit_pieces")}",
                     damagePercent = $"{damagePercent:F0}%",
-                    angleOffset = $"±{angleOffset:F0}°",
+                    angleOffset = L.Get("staff_desc_dual_cast_angle_unit", angleOffset),
                     eitrCost = $"{eitrCost:F0}",
-                    cooldown = $"{cooldown:F0}초",
-                    skillType = "액티브 스킬 - R키",
-                    requirement = "지팡이 또는 완드 착용",
-                    confirmation = "", // 확인사항 제거
-                    specialNote = $"30초간 버프 유지, 다음 마법 공격 시 자동 발동\n\n<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                    cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
+                    skillType = L.Get("skill_type_active_key", "R"),
+                    requirement = L.Get("requirement_staff_wand"),
+                    confirmation = "",
+                    specialNote = $"{L.Get("staff_desc_dual_cast_note")}\n\n<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
                 };
 
                 string finalTooltip = GenerateDualCastTooltip(data);
@@ -90,7 +91,7 @@ namespace CaptainSkillTree.SkillTree
                 // 2. 설명 (#FFD700 / #E0E0E0)
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{data.description}";
 
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -102,49 +103,49 @@ namespace CaptainSkillTree.SkillTree
                 // 3. 데미지 (#FF6B6B / #FFB6C1)
                 if (!string.IsNullOrEmpty(data.damagePercent))
                 {
-                    tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>지팡이/완드 공격력의 {data.damagePercent}</size></color>\n";
+                    tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("staff_desc_dual_cast_damage", data.damagePercent)}</size></color>\n";
                 }
 
                 // 4. 범위 - 분산 각도 (#87CEEB / #B0E0E6)
                 if (!string.IsNullOrEmpty(data.angleOffset))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>분산 각도: </size></color><color=#B0E0E6><size=16>{data.angleOffset}</size></color>\n";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_dispersion_angle")}: </size></color><color=#B0E0E6><size=16>{data.angleOffset}</size></color>\n";
                 }
 
                 // 5. 소모 (#FFB347 / #FFDAB9)
                 if (!string.IsNullOrEmpty(data.eitrCost))
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>Eitr {data.eitrCost}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_eitr")} {data.eitrCost}</size></color>\n";
                 }
 
                 // 6. 스킬유형 (R키 강조: #9400D3 / #FFD700)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#9400D3><size=16>스킬유형: </size></color><color=#FFD700><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{data.skillType}</size></color>\n";
                 }
 
                 // 7. 쿨타임 (#FFA500 / #FFDB58)
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
                 // 8. 필요조건 (#98FB98 / #00FF00)
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
                 // 9. 확인사항 (#F0E68C / #FFE4B5)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 10. 특별안내 + 필요포인트
                 if (!string.IsNullOrEmpty(data.specialNote))
                 {
-                    tooltip += $"<color=#DDA0DD><size=16>특별안내: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
+                    tooltip += $"<color=#DDA0DD><size=16>{L.Get("tooltip_special_note")}: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
@@ -163,14 +164,14 @@ namespace CaptainSkillTree.SkillTree
         {
             var requiredPoints = Staff_Config.StaffDoubleCastRequiredPointsValue;
 
-            return "<color=#FFD700><size=22>이중 시전</size></color>\n\n" +
-                   "<color=#E0E0E0><size=16>R키: 추가 마법 발사체 2발 발사 (좌 -5°, 우 +5°)\n\n" +
-                   "• 발사체 데미지: 지팡이/완드 공격력의 70%\n" +
-                   "• 소모: Eitr 20\n" +
-                   "• 쿨타임: 30초\n" +
-                   "• 필요조건: 지팡이 또는 완드 착용\n\n" +
-                   "스킬유형: 액티브 버프 스킬(R키)\n\n" +
-                   $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";
+            return $"<color=#FFD700><size=22>{L.Get("staff_skill_dual_cast")}</size></color>\n\n" +
+                   $"<color=#E0E0E0><size=16>{L.Get("skill_type_active_key", "R")}: {L.Get("staff_desc_dual_cast_fallback")}\n\n" +
+                   $"• {L.Get("tooltip_damage")}: {L.Get("staff_desc_dual_cast_damage_fallback")}\n" +
+                   $"• {L.Get("tooltip_cost")}: {L.Get("stat_eitr")} 20\n" +
+                   $"• {L.Get("tooltip_cooldown")}: 30{L.Get("unit_seconds")}\n" +
+                   $"• {L.Get("tooltip_requirements")}: {L.Get("requirement_staff_wand")}\n\n" +
+                   $"{L.Get("tooltip_skill_type")}: {L.Get("skill_type_active_key", "R")}\n\n" +
+                   $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";
         }
 
         /// <summary>

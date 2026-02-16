@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using System;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -228,48 +229,46 @@ namespace CaptainSkillTree.SkillTree
                 var cooldown = CooldownValue;
                 var staminaCost = StaminaCostValue;
                 var eitrCost = EitrCostValue;
-                
+
                 // 메이지 스타일 툴팁 생성
                 var tooltip = "";
 
                 // 스킬 이름 (황금색, 크기 22)
-                tooltip += $"<color=#FFD700><size=22>성기사</size></color>\n\n";
+                tooltip += $"<color=#FFD700><size=22>{L.Get("paladin_name")}</size></color>\n\n";
 
                 // 설명 섹션
-                tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>범위 아군 체력 {allyHealPercent}%/{interval}초 ({duration}초), 자가 {selfHealPercent}% 즉시</size></color>\n";
+                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("paladin_tooltip_desc", allyHealPercent, interval, duration, selfHealPercent)}</size></color>\n";
 
                 // 범위 섹션
-                tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{range}m</size></color>\n";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{range}m</size></color>\n";
 
                 // 소모 섹션
-                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {staminaCost}, 에이트르 {eitrCost}</size></color>\n";
+                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("tooltip_stamina")} {staminaCost}, {L.Get("tooltip_eitr")} {eitrCost}</size></color>\n";
 
                 // 스킬유형 섹션
-                tooltip += $"<color=#DDA0DD><size=16>스킬유형: </size></color><color=#E6E6FA><size=16>직업 액티브 스킬 - Y키</size></color>\n";
+                tooltip += $"<color=#DDA0DD><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#E6E6FA><size=16>{L.Get("tooltip_job_active_y")}</size></color>\n";
 
                 // 패시브 섹션
-                tooltip += $"<color=#98FB98><size=16>패시브: </size></color><color=#ADFF2F><size=16>물리 및 속성 저항 -{resistanceReduction}%</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color><color=#ADFF2F><size=16>{L.Get("paladin_passive_resistance", resistanceReduction)}</size></color>\n";
 
                 // 쿨타임 섹션
-                tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{cooldown}초</size></color>\n";
+                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{cooldown}{L.Get("tooltip_seconds")}</size></color>\n";
 
                 // 필요조건 섹션
-                tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>한손 근접무기 착용, 성기사 직업</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirement")}: </size></color><color=#00FF00><size=16>{L.Get("paladin_requirement")}</size></color>\n";
 
                 // 확인사항 섹션
-                string confirmation = "직업은 1개만 선택가능, 레벨 10 이상";
-                tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{confirmation}</size></color>\n";
+                tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_confirmation")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_job_limit")}</size></color>\n";
 
                 // 필요 아이템 섹션
-                string requiredItem = "에이크쉬르 트로피";
-                tooltip += $"<color=#87CEEB><size=16>필요 아이템: </size></color><color=#FF6B6B><size=16>{requiredItem}</size></color>";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_item")}: </size></color><color=#FF6B6B><size=16>{L.Get("paladin_required_item")}</size></color>";
 
                 return tooltip.TrimEnd('\n');
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[Paladin Config] GetPaladinTooltip 실패: {ex.Message}");
-                return "성기사 스킬 정보를 불러올 수 없음";
+                return L.Get("paladin_tooltip_error");
             }
         }
     }

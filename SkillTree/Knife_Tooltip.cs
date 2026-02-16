@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -23,16 +24,15 @@ namespace CaptainSkillTree.SkillTree
         {
             var backstabBonus = Knife_Config.KnifeExpertBackstabBonusValue;
             var requiredPoints = Knife_Config.KnifeExpertRequiredPointsValue;
-            
+
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>단검 전문가</size></color>",
-                $"적의 뒤에서 공격 시 피해 +{backstabBonus}%",
+                $"<color=#FFD700><size=22>{L.Get("knife_skill_expert")}</size></color>",
+                L.Get("knife_desc_expert", backstabBonus),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
-            data.additionalInfo = "단검의 기본 전문 기술";
-            data.requirement = "단검 또는 클로 착용";
-            
+            data.requirement = L.Get("requirement_knife_claw");
+
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }
 
@@ -45,13 +45,12 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Knife_Config.KnifeEvasionRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>회피 숙련</size></color>",
-                $"회피 확률 +{evasionBonus}%",
+                $"<color=#FFD700><size=22>{L.Get("knife_skill_evasion")}</size></color>",
+                L.Get("knife_desc_evasion", evasionBonus),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
-            data.additionalInfo = "위험한 상황에서의 생존 기술";
-            data.requirement = "단검 또는 클로 착용";
+            data.requirement = L.Get("requirement_knife_claw");
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }
@@ -65,13 +64,12 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Knife_Config.KnifeMoveSpeedRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>빠른 움직임</size></color>",
-                $"이동속도 +{speedBonus}%",
+                $"<color=#FFD700><size=22>{L.Get("knife_skill_move_speed")}</size></color>",
+                L.Get("knife_desc_move_speed", speedBonus),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
-            data.additionalInfo = "빠른 이동으로 전술적 우위 확보";
-            data.requirement = "단검 또는 클로 착용";
+            data.requirement = L.Get("requirement_knife_claw");
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }
@@ -85,13 +83,12 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Knife_Config.KnifeAttackSpeedRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>빠른 공격</size></color>",
-                $"공격력 +{damageBonus}",
+                $"<color=#FFD700><size=22>{L.Get("knife_skill_attack_speed")}</size></color>",
+                L.Get("knife_desc_attack_speed", damageBonus),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
-            data.additionalInfo = "단검 공격력 강화";
-            data.requirement = "단검 또는 클로 착용";
+            data.requirement = L.Get("requirement_knife_claw");
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }
@@ -105,13 +102,12 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Knife_Config.KnifeCritRateRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>치명타 숙련</size></color>",
-                $"치명타 확률 +{critBonus}%",
+                $"<color=#FFD700><size=22>{L.Get("knife_skill_crit_rate")}</size></color>",
+                L.Get("knife_desc_crit_rate", critBonus),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
-            data.additionalInfo = "치명타 확률 증가";
-            data.requirement = "단검 또는 클로 착용";
+            data.requirement = L.Get("requirement_knife_claw");
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }
@@ -125,13 +121,12 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Knife_Config.KnifeCombatDamageRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>치명적 피해</size></color>",
-                $"공격력 +{damageBonus}%",
+                $"<color=#FFD700><size=22>{L.Get("knife_skill_combat_damage")}</size></color>",
+                L.Get("knife_desc_combat_damage", damageBonus),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
-            data.additionalInfo = "단검 공격력 증가";
-            data.requirement = "단검 또는 클로 착용";
+            data.requirement = L.Get("requirement_knife_claw");
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }
@@ -146,13 +141,12 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Knife_Config.KnifeExecutionRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>암살자</size></color>",
-                $"치명타 피해 +{critDamage}%, 비틀거림 공격력 +{staggerBonus}%",
+                $"<color=#FFD700><size=22>{L.Get("knife_skill_execution")}</size></color>",
+                L.Get("knife_desc_execution", critDamage, staggerBonus),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
-            data.additionalInfo = "암살자의 치명적인 공격 능력 강화";
-            data.requirement = "단검 또는 클로 착용";
+            data.requirement = L.Get("requirement_knife_claw");
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }
@@ -166,13 +160,12 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Knife_Config.KnifeAssassinationRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "<color=#FFD700><size=22>암살술</size></color>",
-                $"백스탭 공격력 +{backstabBonus}%",
+                $"<color=#FFD700><size=22>{L.Get("knife_skill_assassination")}</size></color>",
+                L.Get("knife_desc_assassination", backstabBonus),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
-            data.additionalInfo = "적의 뒤에서 강력한 타격";
-            data.requirement = "단검 또는 클로 착용";
+            data.requirement = L.Get("requirement_knife_claw");
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }
@@ -199,17 +192,17 @@ namespace CaptainSkillTree.SkillTree
             var critDamagePercent = (critDamage - 1) * 100; // 1.3배 → 30% 증가
 
             var data = MeleeTooltipUtils.CreateActiveSkillData(
-                "<color=#FFD700><size=22>암살자의 심장</size></color>",
-                $"{teleportRange}m 이내 적의 뒤({teleportBehind}m)로 순간이동\n대상 {stunDuration}초 스턴 + {attackCount}회 연속 공격\n공격 완료 후 원래 위치로 복귀\n{duration}초간 피해 +{damageBonus}%, 치명타 확률 +{critChance}%",
+                $"<color=#FFD700><size=22>{L.Get("knife_skill_assassin")}</size></color>",
+                L.Get("knife_desc_assassin_main", teleportRange, teleportBehind, stunDuration, attackCount, duration, damageBonus, critChance),
                 $"{staminaCost}",
-                $"{cooldown}초",
+                $"{cooldown}{L.Get("unit_seconds")}",
                 MeleeTooltipUtils.WeaponType.Knife,
-                "암살자의 모든 능력을 극한까지 끌어올리는 궁극기"
+                L.Get("knife_desc_assassin_note")
             );
-            data.requirement = "단검 또는 클로 착용";
+            data.requirement = L.Get("requirement_knife_claw");
             data.requiredPoints = requiredPoints.ToString();
-            data.skillType = "액티브 스킬 - G키";
-            data.confirmation = $"같은 무기 전문가 내에서만 다중 습득 가능\n{teleportRange}m 이내 적이 없으면 스킬 취소";
+            data.skillType = L.Get("skill_type_active_key", "G");
+            data.confirmation = $"{L.Get("tooltip_same_weapon_only")}\n{L.Get("knife_desc_assassin_note2", teleportRange)}";
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }

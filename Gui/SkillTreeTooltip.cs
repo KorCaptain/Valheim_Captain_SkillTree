@@ -4,6 +4,7 @@ using TMPro;
 using System;
 using System.Text.RegularExpressions;
 using CaptainSkillTree.SkillTree;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.Gui
 {
@@ -13,6 +14,10 @@ namespace CaptainSkillTree.Gui
         private GameObject? warningObj;
         private Text? warningText;
         private static Canvas? tooltipCanvas = null; // 툴팁 전용 Canvas
+
+        // 현재 표시 중인 노드와 위치 저장 (RefreshTooltip용)
+        private CaptainSkillTree.SkillTree.SkillNode? currentNode = null;
+        private Vector2 currentNodePos = Vector2.zero;
         
         /// <summary>
         /// 이벤트 기반 툴팁 입력 처리 - 키 입력 시에만 실행
@@ -56,7 +61,11 @@ namespace CaptainSkillTree.Gui
             {
                 return;
             }
-            
+
+            // 현재 노드와 위치 저장 (RefreshTooltip용)
+            currentNode = node;
+            currentNodePos = nodePos;
+
             if (dynamicTooltipObj != null)
                 Destroy(dynamicTooltipObj);
                 
@@ -179,7 +188,7 @@ namespace CaptainSkillTree.Gui
             {
                 tooltipText = Berserker_Tooltip.GetBerserkerTooltip();
             }
-            else if (node.Id == "성기사")
+            else if (node.Id == "Paladin")
             {
                 tooltipText = Paladin_Config.GetPaladinTooltip();
             }
@@ -289,8 +298,25 @@ namespace CaptainSkillTree.Gui
                 Destroy(dynamicTooltipObj);
                 dynamicTooltipObj = null;
             }
+
+            // 현재 노드 정보 초기화
+            currentNode = null;
+            currentNodePos = Vector2.zero;
         }
-        
+
+        /// <summary>
+        /// 툴팁 텍스트 갱신 (언어 변경 시)
+        /// </summary>
+        public void RefreshTooltip()
+        {
+            if (currentNode != null && dynamicTooltipObj != null && dynamicTooltipObj.activeInHierarchy)
+            {
+                // 현재 툴팁이 표시 중이면 다시 생성
+                Plugin.Log.LogInfo("[SkillTreeTooltip] 툴팁 갱신 중...");
+                ShowTooltip(currentNode, currentNodePos);
+            }
+        }
+
         /// <summary>
         /// 툴팁이 현재 표시되고 있는지 확인
         /// </summary>
@@ -399,38 +425,37 @@ namespace CaptainSkillTree.Gui
             switch (nodeId)
             {
                 case "attack_root": // 루트 노드 - "모든 데미지 +5%"
-                    result = result.Replace("+5%", string.Format("+{0}%", SkillTreeConfig.AttackRootDamageBonusValue.ToString("F0")));
-                    // Plugin.Log.LogInfo(string.Format("[툴팁] attack_root 적용: {0}", result));
+                    result = L.Get("attack_root_desc", SkillTreeConfig.AttackRootDamageBonusValue);
                     break;
 
                 case "defense_root": // 방어 전문가 루트 노드 - "체력 +5, 방어 +2"
-                    result = $"체력 +{Defense_Config.DefenseRootHealthBonusValue}, 방어 +{Defense_Config.DefenseRootArmorBonusValue}";
+                    result = L.Get("defense_root_desc", Defense_Config.DefenseRootHealthBonusValue, Defense_Config.DefenseRootArmorBonusValue);
                     break;
 
                 // === 둔기 트리 스킬들 ===
                 case "mace_Step1_damage": // 둔기 전문가
-                    result = $"둔기 피해 +{Mace_Config.MaceExpertDamageBonusValue}%, 공격 시 {Mace_Config.MaceExpertStunChanceValue}% 확률로 {Mace_Config.MaceExpertStunDurationValue}초 기절";
+                    result = L.Get("mace_expert_desc2", Mace_Config.MaceExpertDamageBonusValue, Mace_Config.MaceExpertStunChanceValue, Mace_Config.MaceExpertStunDurationValue);
                     break;
                 case "mace_Step2_stun_boost": // 기절 강화
-                    result = $"기절 확률 +{Mace_Config.MaceStep2StunChanceBonusValue}%, 지속시간 +{Mace_Config.MaceStep2StunDurationBonusValue}초";
+                    result = L.Get("mace_stun_boost_desc2", Mace_Config.MaceStep2StunChanceBonusValue, Mace_Config.MaceStep2StunDurationBonusValue);
                     break;
                 case "mace_Step3_branch_guard": // 방어 강화
-                    result = $"방어 +{Mace_Config.MaceStep3GuardArmorBonusValue}%";
+                    result = L.Get("mace_guard_boost_desc2", Mace_Config.MaceStep3GuardArmorBonusValue);
                     break;
                 case "mace_Step3_branch_heavy": // 무거운 타격
-                    result = $"무거운 공격 데미지 +{Mace_Config.MaceStep3HeavyDamageBonusValue}%";
+                    result = L.Get("mace_heavy_strike_desc2", Mace_Config.MaceStep3HeavyDamageBonusValue);
                     break;
                 case "mace_Step4_push": // 밀어내기
-                    result = $"공격 시 {Mace_Config.MaceStep4KnockbackChanceValue}% 확률로 노크백";
+                    result = L.Get("mace_knockback_desc2", Mace_Config.MaceStep4KnockbackChanceValue);
                     break;
                 case "mace_Step5_tank": // 탱커
-                    result = $"체력 +{Mace_Config.MaceStep5TankHealthBonusValue}%, 받는 데미지 -{Mace_Config.MaceStep5TankDamageReductionValue}%";
+                    result = L.Get("mace_tank_desc2", Mace_Config.MaceStep5TankHealthBonusValue, Mace_Config.MaceStep5TankDamageReductionValue);
                     break;
                 case "mace_Step5_dps": // 공격력 강화
-                    result = $"공격력 +{Mace_Config.MaceStep5DpsDamageBonusValue}%, 공격속도 +{Mace_Config.MaceStep5DpsAttackSpeedBonusValue}%";
+                    result = L.Get("mace_dps_desc2", Mace_Config.MaceStep5DpsDamageBonusValue, Mace_Config.MaceStep5DpsAttackSpeedBonusValue);
                     break;
                 case "mace_Step6_grandmaster": // 그랜드마스터
-                    result = $"방어 +{Mace_Config.MaceStep6ArmorBonusValue}%";
+                    result = L.Get("mace_grandmaster_desc2", Mace_Config.MaceStep6ArmorBonusValue);
                     break;
                 case "mace_Step7_fury_hammer": // 분노의 망치 (액티브 스킬)
                     result = Mace_Tooltip.GetMaceStep7FuryHammerTooltip();
@@ -441,71 +466,67 @@ namespace CaptainSkillTree.Gui
 
                 // === 지팡이 트리 스킬들 ===
                 case "staff_Step1_damage": // 지팡이 전문가
-                    result = $"속성 공격 +{Staff_Config.StaffExpertDamageValue}%";
+                    result = L.Get("staff_expert_desc", Staff_Config.StaffExpertDamageValue);
                     break;
                 case "staff_Step2_focus": // 정신 집중
-                    result = $"에이트르 소모 -{Staff_Config.StaffFocusEitrReductionValue}%";
+                    result = L.Get("staff_focus_desc", Staff_Config.StaffFocusEitrReductionValue);
                     break;
                 case "staff_Step2_stream": // 마법 흐름
-                    result = $"최대 에이트르 +{Staff_Config.StaffStreamEitrBonusValue}";
+                    result = L.Get("staff_stream_desc", Staff_Config.StaffStreamEitrBonusValue);
                     break;
                 case "staff_Step3_amp": // 마법 증폭
-                    result = $"속성 공격 +{Staff_Config.StaffAmpDamageValue}%";
+                    result = L.Get("staff_amp_desc", Staff_Config.StaffAmpDamageValue);
                     break;
                 case "staff_Step4_reduction": // 냉기 속성
-                    result = $"냉기 공격 +{Staff_Config.StaffFrostDamageBonusValue}";
+                    result = L.Get("staff_frost_desc", Staff_Config.StaffFrostDamageBonusValue);
                     break;
                 case "staff_Step4_range": // 화염 속성
-                    result = $"화염 공격 +{Staff_Config.StaffFireDamageBonusValue}";
+                    result = L.Get("staff_fire_desc", Staff_Config.StaffFireDamageBonusValue);
                     break;
                 case "staff_Step4_surge": // 번개 속성
-                    result = $"번개 공격 +{Staff_Config.StaffLightningDamageBonusValue}";
+                    result = L.Get("staff_lightning_desc", Staff_Config.StaffLightningDamageBonusValue);
                     break;
                 case "staff_Step5_archmage": // 행운 마력
-                    result = $"{Staff_Config.StaffLuckManaChanceValue}% 확률로 에이트르 소모 없음";
+                    result = L.Get("staff_luck_mana_desc", Staff_Config.StaffLuckManaChanceValue);
                     break;
                 case "staff_Step6_dual_cast": // 이중 시전 (액티브 스킬)
                     result = Staff_Tooltip.GetDualCastTooltip();
                     break;
 
                 // 2단계 노드들
-                case "atk_melee_bonus": // 근접 특화 - "근접 무기 사용 시 20% 확률로 +10% 추가 피해"
-                    result = result.Replace("20%", SkillTreeConfig.AttackMeleeBonusChanceValue.ToString("F0") + "%");
-                    result = result.Replace("+10%", "+" + SkillTreeConfig.AttackMeleeBonusDamageValue.ToString("F0") + "%");
+                case "atk_melee_bonus": // 근접 특화
+                    result = L.Get("atk_melee_bonus_desc", SkillTreeConfig.AttackMeleeBonusChanceValue, SkillTreeConfig.AttackMeleeBonusDamageValue);
                     break;
-                case "atk_bow_bonus": // 활 특화 - "활 사용 시 20% 확률로 +10% 추가 피해"
-                    result = result.Replace("20%", SkillTreeConfig.AttackBowBonusChanceValue.ToString("F0") + "%");
-                    result = result.Replace("+10%", "+" + SkillTreeConfig.AttackBowBonusDamageValue.ToString("F0") + "%");
+                case "atk_bow_bonus": // 활 특화
+                    result = L.Get("atk_bow_bonus_desc", SkillTreeConfig.AttackBowBonusChanceValue, SkillTreeConfig.AttackBowBonusDamageValue);
                     break;
-                case "atk_crossbow_bonus": // 석궁 특화 - "석궁 사용 시 15% 확률로 넉백 발생"
-                    result = result.Replace("15%", SkillTreeConfig.AttackCrossbowBonusChanceValue.ToString("F0") + "%");
-                    // 석궁은 데미지가 아닌 넉백이므로 데미지 값은 적용하지 않음
+                case "atk_crossbow_bonus": // 석궁 특화
+                    result = L.Get("atk_crossbow_bonus_desc", SkillTreeConfig.AttackCrossbowBonusChanceValue);
                     break;
-                case "atk_staff_bonus": // 지팡이 특화 - "지팡이 사용 시 20% 확률로 주변 2마리 적에게 속성 50% 추가 피해"
-                    result = result.Replace("20%", SkillTreeConfig.AttackStaffBonusChanceValue.ToString("F0") + "%");
-                    result = result.Replace("50%", SkillTreeConfig.AttackStaffBonusDamageValue.ToString("F0") + "%");
+                case "atk_staff_bonus": // 지팡이 특화
+                    result = L.Get("atk_staff_bonus_desc", SkillTreeConfig.AttackStaffBonusChanceValue, SkillTreeConfig.AttackStaffBonusDamageValue);
                     break;
-                    
+
                 // 4단계 노드들
-                case "atk_crit_chance": // 정밀 공격 - "치명타 확률 +5%"
-                    result = result.Replace("+5%", "+" + SkillTreeConfig.AttackCritChanceValue.ToString("F0") + "%");
+                case "atk_crit_chance": // 정밀 공격
+                    result = L.Get("atk_crit_chance_desc", SkillTreeConfig.AttackCritChanceValue);
                     break;
-                case "atk_melee_crit": // 한손 강화 - "한손 근접무기 2연속 공격 시 +10% 추가 피해"
-                    result = result.Replace("+10%", "+" + SkillTreeConfig.AttackOneHandedBonusValue.ToString("F0") + "%");
+                case "atk_melee_crit": // 한손 강화
+                    result = L.Get("atk_melee_crit_desc", SkillTreeConfig.AttackOneHandedBonusValue);
                     break;
-                    
+
                 // 6단계 노드들
-                case "atk_crit_dmg": // 약점 공격 - "치명타 피해 +7%"
-                    result = result.Replace("+7%", "+" + SkillTreeConfig.AttackCritDamageBonusValue.ToString("F0") + "%");
+                case "atk_crit_dmg": // 약점 공격
+                    result = L.Get("atk_crit_dmg_desc", SkillTreeConfig.AttackCritDamageBonusValue);
                     break;
-                case "atk_twohand_crush": // 양손 분쇄 - "양손 무기 공격력 +10%"
-                    result = result.Replace("+10%", "+" + SkillTreeConfig.AttackTwoHandedBonusValue.ToString("F0") + "%");
+                case "atk_twohand_crush": // 양손 분쇄
+                    result = L.Get("atk_twohand_crush_desc", SkillTreeConfig.AttackTwoHandedBonusValue);
                     break;
-                case "atk_staff_mage": // 속성 공격 - "지팡이 공격 시 속성 공격 +10%"
-                    result = result.Replace("+10%", "+" + SkillTreeConfig.AttackStaffElementalValue.ToString("F0") + "%");
+                case "atk_staff_mage": // 속성 공격
+                    result = L.Get("atk_staff_mage_desc", SkillTreeConfig.AttackStaffElementalValue);
                     break;
-                case "atk_finisher_melee": // 연속 근접의 대가 - "근접 3연속 공격 시 +10% 추가 피해"
-                    result = result.Replace("+10%", "+" + SkillTreeConfig.AttackFinisherMeleeBonusValue.ToString("F0") + "%");
+                case "atk_finisher_melee": // 연속 근접의 대가
+                    result = L.Get("atk_finisher_melee_desc", SkillTreeConfig.AttackFinisherMeleeBonusValue);
                     break;
                     
                 // === 지팡이 액티브 스킬들 ===
@@ -526,54 +547,54 @@ namespace CaptainSkillTree.Gui
                     break;
 
                 // === 방어 트리 스킬들 ===
-                case "defense_Step1_survival": // 피부경화 - "체력 +?, 방어 +?"
-                    result = $"체력 +{Defense_Config.SurvivalHealthBonusValue}, 방어 +{Defense_Config.SurvivalArmorBonusValue}";
+                case "defense_Step1_survival": // 피부경화
+                    result = L.Get("defense_survival_desc", Defense_Config.SurvivalHealthBonusValue, Defense_Config.SurvivalArmorBonusValue);
                     break;
-                case "defense_Step2_health": // 체력단련 - "체력 +?, 방어 +?"
-                    result = $"체력 +{Defense_Config.HealthBonusValue}, 방어 +{Defense_Config.HealthArmorBonusValue}";
+                case "defense_Step2_health": // 체력단련
+                    result = L.Get("defense_health_desc", Defense_Config.HealthBonusValue, Defense_Config.HealthArmorBonusValue);
                     break;
-                case "defense_Step2_dodge": // 심신단련 - "스태미나 최대치 +?, 에이트르 최대치 +?"
-                    result = $"스태미나 최대치 +{Defense_Config.DodgeStaminaBonusValue}, 에이트르 최대치 +{Defense_Config.DodgeEitrBonusValue}";
+                case "defense_Step2_dodge": // 심신단련
+                    result = L.Get("defense_dodge_desc", Defense_Config.DodgeStaminaBonusValue, Defense_Config.DodgeEitrBonusValue);
                     break;
-                case "defense_Step3_breath": // 단전호흡 - "에이트르 최대치 +?"
-                    result = $"에이트르 최대치 +{Defense_Config.BreathEitrBonusValue}";
+                case "defense_Step3_breath": // 단전호흡
+                    result = L.Get("defense_breath_desc", Defense_Config.BreathEitrBonusValue);
                     break;
-                case "defense_Step3_agile": // 회피단련 - "회피 +7%, 구르기 무적시간 +20%"
-                    result = $"회피 +{Defense_Config.AgileDodgeBonusValue}%, 구르기 무적시간 +{Defense_Config.AgileInvincibilityBonusValue}%";
+                case "defense_Step3_agile": // 회피단련
+                    result = L.Get("defense_agile_desc", Defense_Config.AgileDodgeBonusValue, Defense_Config.AgileInvincibilityBonusValue);
                     break;
-                case "defense_Step3_boost": // 체력증강 - "체력 +?"
-                    result = $"체력 +{Defense_Config.BoostHealthBonusValue}";
+                case "defense_Step3_boost": // 체력증강
+                    result = L.Get("defense_boost_desc", Defense_Config.BoostHealthBonusValue);
                     break;
-                case "defense_Step3_shield": // 방패훈련 - "방패 방어력 +?"
-                    result = $"방패 방어력 +{Defense_Config.ShieldTrainingBlockPowerBonusValue}";
+                case "defense_Step3_shield": // 방패훈련
+                    result = L.Get("defense_shield_desc", Defense_Config.ShieldTrainingBlockPowerBonusValue);
                     break;
-                case "defense_Step4_tanker": // 바위피부 - "방어력 +12%" (Config 추가 전 임시 하드코딩)
-                    result = "방어력 +12%";
+                case "defense_Step4_tanker": // 바위피부
+                    result = L.Get("defense_tanker_desc", 12);
                     break;
-                case "defense_Step5_focus": // 지구력 - "달리기 스태미나 -?, 점프 스태미나 -?"
-                    result = $"달리기 스태미나 -{Defense_Config.FocusRunStaminaReductionValue}%, 점프 스태미나 -{Defense_Config.FocusJumpStaminaReductionValue}%";
+                case "defense_Step5_focus": // 지구력
+                    result = L.Get("defense_focus_desc", Defense_Config.FocusRunStaminaReductionValue, Defense_Config.FocusJumpStaminaReductionValue);
                     break;
-                case "defense_Step5_stamina": // 기민함 - "회피 +12%, 구르기 스태미나 -12%"
-                    result = $"회피 +{Defense_Config.StaminaDodgeBonusValue}%, 구르기 스태미나 -{Defense_Config.StaminaRollStaminaReductionValue}%";
+                case "defense_Step5_stamina": // 기민함
+                    result = L.Get("defense_stamina_desc", Defense_Config.StaminaDodgeBonusValue, Defense_Config.StaminaRollStaminaReductionValue);
                     break;
-                case "defense_Step5_heal": // 트롤의 재생력 - "?초마다 체력 +?"
-                    result = $"{Defense_Config.TrollRegenIntervalValue}초마다 체력 +{Defense_Config.TrollRegenBonusValue}";
+                case "defense_Step5_heal": // 트롤의 재생력
+                    result = L.Get("defense_heal_desc", Defense_Config.TrollRegenIntervalValue, Defense_Config.TrollRegenBonusValue);
                     break;
-                case "defense_Step5_parry": // 막기달인 - "패링 +?초, 방패 방어력 +?"
-                    result = $"패링 +{Defense_Config.ParryMasterParryDurationBonusValue}초, 방패 방어력 +{Defense_Config.ParryMasterBlockPowerBonusValue}";
+                case "defense_Step5_parry": // 막기달인
+                    result = L.Get("defense_parry_desc", Defense_Config.ParryMasterParryDurationBonusValue, Defense_Config.ParryMasterBlockPowerBonusValue);
                     break;
-                case "defense_Step6_attack": // 신경강화 - "회피 +15%"
-                    result = $"회피 +{Defense_Config.AttackDodgeBonusValue}%";
+                case "defense_Step6_attack": // 신경강화
+                    result = L.Get("defense_attack_desc", Defense_Config.AttackDodgeBonusValue);
                     break;
-                case "defense_Step6_body": // 요툰의 생명력 - "체력 최대치 +?%, 물리/마법 방어력 +?%"
-                    result = $"체력 최대치 +{Defense_Config.BodyHealthBonusValue}%, 물리/마법 방어력 +{Defense_Config.BodyArmorBonusValue}%";
+                case "defense_Step6_body": // 요툰의 생명력
+                    result = L.Get("defense_body_desc", Defense_Config.BodyHealthBonusValue, Defense_Config.BodyArmorBonusValue);
                     break;
-                case "defense_Step6_true": // 요툰의 방패 - "방패 블럭 스태미나 -?%, 일반 방패 이동속도 +?%, 대형 방패 이동속도 +?%"
-                    result = $"블럭 스태미나 -{Defense_Config.JotunnShieldBlockStaminaReductionValue}%, 일반 방패 이동속도 +{Defense_Config.JotunnShieldNormalSpeedBonusValue}%, 대형 방패 이동속도 +{Defense_Config.JotunnShieldTowerSpeedBonusValue}%";
+                case "defense_Step6_true": // 요툰의 방패
+                    result = L.Get("defense_true_desc", Defense_Config.JotunnShieldBlockStaminaReductionValue, Defense_Config.JotunnShieldNormalSpeedBonusValue, Defense_Config.JotunnShieldTowerSpeedBonusValue);
                     break;
 
                 // === 직업 스킬들 - 실제 노드 ID 사용 ===
-                case "성기사": // 성기사 - 상세 툴팁 시스템 사용 (컨피그 연동)
+                case "Paladin": // Paladin - 상세 툴팁 시스템 사용 (컨피그 연동)
                     result = Paladin_Config.GetPaladinTooltip();
                     break;
                 case "Tanker": // 탱커 - 상세 툴팁 시스템 사용
@@ -613,28 +634,28 @@ namespace CaptainSkillTree.Gui
             // 설명
             if (!string.IsNullOrEmpty(skillInfo.Description))
             {
-                tooltipText.AppendLine($"<color=#90EE90><size=16>설명: </size></color><color=#E0E0E0><size=16>{skillInfo.Description}</size></color>");
+                tooltipText.AppendLine($"<color=#90EE90><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{skillInfo.Description}</size></color>");
             }
-            
+
             // 범위
             if (!string.IsNullOrEmpty(skillInfo.Range))
             {
-                tooltipText.AppendLine($"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{skillInfo.Range}</size></color>");
+                tooltipText.AppendLine($"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{skillInfo.Range}</size></color>");
             }
-            
+
             // 소모
             if (!string.IsNullOrEmpty(skillInfo.Cost))
             {
-                tooltipText.AppendLine($"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>{skillInfo.Cost}</size></color>");
+                tooltipText.AppendLine($"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{skillInfo.Cost}</size></color>");
             }
-            
+
             // 스킬 유형
-            tooltipText.AppendLine($"<color=#DDA0DD><size=16>스킬유형: </size></color><color=#E6E6FA><size=16>{skillInfo.SkillType}</size></color>");
-            
+            tooltipText.AppendLine($"<color=#DDA0DD><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#E6E6FA><size=16>{skillInfo.SkillType}</size></color>");
+
             // 쿨타임
             if (!string.IsNullOrEmpty(skillInfo.Cooldown))
             {
-                tooltipText.AppendLine($"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{skillInfo.Cooldown}</size></color>");
+                tooltipText.AppendLine($"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{skillInfo.Cooldown}</size></color>");
             }
             
             // 필요조건 처리 (생산 스킬 특별 처리)
@@ -645,7 +666,7 @@ namespace CaptainSkillTree.Gui
             if (isProductionSkill && isUnlocked)
             {
                 // 언락된 생산 스킬: "습득완료"로 표시하고 재료 목록 제거
-                tooltipText.AppendLine($"<color=#98FB98><size=16>필요조건: </size></color><color=#90EE90><size=16>습득완료</size></color>");
+                tooltipText.AppendLine($"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#90EE90><size=16>{L.Get("tooltip_learned")}</size></color>");
             }
             else if (!string.IsNullOrEmpty(skillInfo.Requirements))
             {
@@ -653,34 +674,34 @@ namespace CaptainSkillTree.Gui
                 {
                     // 미언락 생산 스킬: 조건 충족 여부에 따라 색상 변경
                     string coloredRequirements = GetColoredProductionRequirements(node.Id, skillInfo.Requirements);
-                    tooltipText.AppendLine($"<color=#98FB98><size=16>필요조건: </size></color>{coloredRequirements}");
+                    tooltipText.AppendLine($"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>{coloredRequirements}");
                 }
                 else
                 {
                     // 일반 스킬: 기본 색상
-                    tooltipText.AppendLine($"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{skillInfo.Requirements}</size></color>");
+                    tooltipText.AppendLine($"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{skillInfo.Requirements}</size></color>");
                 }
             }
-            
+
             // 확인사항 (직업 제한, 레벨 제한 등)
             if (!string.IsNullOrEmpty(skillInfo.Notice))
             {
-                tooltipText.AppendLine($"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{skillInfo.Notice}</size></color>");
+                tooltipText.AppendLine($"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{skillInfo.Notice}</size></color>");
             }
             
             // 💎 필요 포인트 (직업별 특별 처리)
             tooltipText.AppendLine();
-            
+
             string requiredPointsText;
-            
-            if (node.Id == "성기사")
+
+            if (node.Id == "Paladin")
             {
-                requiredPointsText = "에이크쉬르 트로피";
+                requiredPointsText = L.Get("tooltip_eikthyr_trophy");
             }
-            else if (node.Id == "Tanker" || node.Id == "Berserker" || node.Id == "Rogue" || 
+            else if (node.Id == "Tanker" || node.Id == "Berserker" || node.Id == "Rogue" ||
                      node.Id == "Mage" || node.Id == "Archer")
             {
-                requiredPointsText = "에이크쉬르 트로피";
+                requiredPointsText = L.Get("tooltip_eikthyr_trophy");
             }
             else
             {
@@ -697,9 +718,9 @@ namespace CaptainSkillTree.Gui
                     var requirementText = CaptainSkillTree.SkillTree.ItemManager.GetSkillRequirementsText(node.Id);
                     if (!string.IsNullOrEmpty(requirementText))
                     {
-                        string headerText = "📦 필요조건";
+                        string headerText = $"📦 {L.Get("tooltip_requirements")}";
                         string requirementColor = "#FFEB3B"; // 노란색
-                        
+
                         tooltipText.AppendLine($"<color=#FFD700><size=18>{headerText}:</size></color>");
                         tooltipText.AppendLine($"<color={requirementColor}><size=16>{requirementText}</size></color>");
                     }
@@ -708,7 +729,7 @@ namespace CaptainSkillTree.Gui
             else
             {
                 // 일반 스킬인 경우 필요 포인트 표시
-                tooltipText.AppendLine($"<color=#87CEEB><size=16>💎 필요 포인트: </size></color><color=#FF6B6B><size=16>{requiredPointsText}</size></color>");
+                tooltipText.AppendLine($"<color=#87CEEB><size=16>💎 {L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPointsText}</size></color>");
             }
             
             return tooltipText.ToString().TrimEnd();
@@ -833,45 +854,45 @@ namespace CaptainSkillTree.Gui
             // condLine 처리 - 무기타입으로 통일
             if (!string.IsNullOrEmpty(condLine))
             {
-                if (condLine.Contains("착용"))
+                if (condLine.Contains("착용") || condLine.Contains("equipped"))
                 {
                     string cleanCondLine = condLine.Replace("※", "").Trim();
                     // 기존 "활 착용시 효과발동" -> "활 착용"으로 통일
-                    if (cleanCondLine.Contains("활 착용시 효과발동") || cleanCondLine.Contains("활 착용 시 효과 발동"))
+                    if (cleanCondLine.Contains("활 착용") || cleanCondLine.Contains("Bow equipped"))
                     {
-                        info.Requirements = "활 착용";
+                        info.Requirements = L.Get("requirement_bow_effect");
                     }
-                    else if (cleanCondLine.Contains("석궁 착용시 효과발동") || cleanCondLine.Contains("석궁 착용 시 효과 발동"))
+                    else if (cleanCondLine.Contains("석궁 착용") || cleanCondLine.Contains("Crossbow equipped"))
                     {
-                        info.Requirements = "석궁 착용";
+                        info.Requirements = L.Get("requirement_crossbow_effect");
                     }
-                    else if (cleanCondLine.Contains("지팡이 착용시 효과발동") || cleanCondLine.Contains("지팡이 착용 시 효과 발동"))
+                    else if (cleanCondLine.Contains("지팡이 착용") || cleanCondLine.Contains("Staff equipped"))
                     {
-                        info.Requirements = "지팡이 착용";
+                        info.Requirements = L.Get("requirement_staff_effect");
                     }
-                    else if (cleanCondLine.Contains("검 착용시 효과발동") || cleanCondLine.Contains("검 착용 시 효과 발동"))
+                    else if (cleanCondLine.Contains("검 착용") || cleanCondLine.Contains("Sword equipped"))
                     {
-                        info.Requirements = "검 착용";
+                        info.Requirements = L.Get("requirement_sword_effect");
                     }
-                    else if (cleanCondLine.Contains("도끼 착용시 효과발동") || cleanCondLine.Contains("도끼 착용 시 효과 발동"))
+                    else if (cleanCondLine.Contains("도끼 착용") || cleanCondLine.Contains("Axe equipped"))
                     {
-                        info.Requirements = "도끼 착용";
+                        info.Requirements = L.Get("requirement_axe_effect");
                     }
-                    else if (cleanCondLine.Contains("단검 착용시 효과발동") || cleanCondLine.Contains("단검 착용 시 효과 발동"))
+                    else if (cleanCondLine.Contains("단검 착용") || cleanCondLine.Contains("Knife equipped"))
                     {
-                        info.Requirements = "단검 착용";
+                        info.Requirements = L.Get("requirement_knife_effect");
                     }
-                    else if (cleanCondLine.Contains("창 착용시 효과발동") || cleanCondLine.Contains("창 착용 시 효과 발동"))
+                    else if (cleanCondLine.Contains("창 착용") || cleanCondLine.Contains("Spear equipped"))
                     {
-                        info.Requirements = "창 착용";
+                        info.Requirements = L.Get("requirement_spear_effect");
                     }
-                    else if (cleanCondLine.Contains("둔기 착용시 효과발동") || cleanCondLine.Contains("둔기 착용 시 효과 발동"))
+                    else if (cleanCondLine.Contains("둔기 착용") || cleanCondLine.Contains("Mace equipped"))
                     {
-                        info.Requirements = "둔기 착용";
+                        info.Requirements = L.Get("requirement_mace_effect");
                     }
-                    else if (cleanCondLine.Contains("한손 근접무기 착용"))
+                    else if (cleanCondLine.Contains("한손 근접무기 착용") || cleanCondLine.Contains("One-handed melee"))
                     {
-                        info.Requirements = "한손 근접무기 착용";
+                        info.Requirements = L.Get("requirement_one_hand_melee_effect");
                     }
                     else
                     {
@@ -891,33 +912,33 @@ namespace CaptainSkillTree.Gui
         }
         
         /// <summary>
-        /// 스킬 유형 결정
+        /// 스킬 유형 결정 (다국어 지원)
         /// </summary>
         private string DetermineSkillType(string nodeId, string descMain)
         {
             // 액티브 스킬 키 확인
             if (descMain.Contains("Y키:"))
-                return "액티브스킬 (Y키)";
+                return L.Get("skill_type_active_y");
             if (descMain.Contains("R키:"))
-                return "액티브스킬 (R키)";
+                return L.Get("skill_type_active_r");
             if (descMain.Contains("G키:"))
-                return "액티브스킬 (G키)";
+                return L.Get("skill_type_active_g");
             if (descMain.Contains("H키:"))
-                return "액티브스킬 (H키)";
+                return L.Get("skill_type_active_h");
             if (descMain.Contains("F키:"))
-                return "액티브스킬 (F키)";
-                
+                return L.Get("skill_type_active_key", "F");
+
             // 직업 스킬
-            if (nodeId == "성기사" || nodeId == "Tanker" || nodeId == "Berserker" || 
+            if (nodeId == "Paladin" || nodeId == "Tanker" || nodeId == "Berserker" ||
                 nodeId == "Rogue" || nodeId == "Mage" || nodeId == "Archer")
-                return "직업 액티브스킬 (Y키)";
-                
+                return L.Get("skill_type_job_active");
+
             // 전문가 노드
             if (nodeId.EndsWith("_root"))
-                return "패시브 스킬";
-                
+                return L.Get("skill_type_passive");
+
             // 기본 패시브
-            return "패시브스킬";
+            return L.Get("skill_type_passive");
         }
         
         /// <summary>
@@ -925,77 +946,78 @@ namespace CaptainSkillTree.Gui
         /// </summary>
         private void ProcessSpecialNodes(string nodeId, ref SkillInfo info)
         {
+            string jobLimit = L.Get("tooltip_job_limit");
+            string levelReq = L.Get("tooltip_level_required", 10);
+            string jobNotice = $"{jobLimit}, {levelReq}";
+
             switch (nodeId)
             {
-                case "성기사":
+                case "Paladin":
                     if (string.IsNullOrEmpty(info.Range))
-                        info.Range = "시전자 중심 5m";
+                        info.Range = $"5{L.Get("unit_meter")}";
                     if (string.IsNullOrEmpty(info.Cost))
-                        info.Cost = "에이트르 10, 스태미나 10";
+                        info.Cost = $"{L.Get("stat_eitr")} 10, {L.Get("stat_stamina")} 10";
                     if (string.IsNullOrEmpty(info.Cooldown))
-                        info.Cooldown = "30초";
+                        info.Cooldown = $"30{L.Get("unit_seconds")}";
                     if (string.IsNullOrEmpty(info.Requirements))
-                        info.Requirements = "한손 근접무기 착용, 성기사 직업";
+                        info.Requirements = $"{L.Get("requirement_one_hand_melee")}, {L.Get("job_paladin")}";
                     if (string.IsNullOrEmpty(info.Notice))
-                        info.Notice = "직업은 1개만 선택가능, 레벨 10 이상";
+                        info.Notice = jobNotice;
                     break;
-                    
+
                 case "Tanker":
-                    // 탱커 상세 툴팁 정보 설정 (Tanker_Config 연동)
                     if (string.IsNullOrEmpty(info.Range))
-                        info.Range = $"도발 범위 {Tanker_Config.TankerTauntRangeValue}m";
+                        info.Range = $"{Tanker_Config.TankerTauntRangeValue}{L.Get("unit_meter")}";
                     if (string.IsNullOrEmpty(info.Cost))
-                        info.Cost = $"스태미나 {Tanker_Config.TankerTauntStaminaCostValue}";
+                        info.Cost = $"{L.Get("stat_stamina")} {Tanker_Config.TankerTauntStaminaCostValue}";
                     if (string.IsNullOrEmpty(info.Cooldown))
-                        info.Cooldown = $"{Tanker_Config.TankerTauntCooldownValue}초";
+                        info.Cooldown = $"{Tanker_Config.TankerTauntCooldownValue}{L.Get("unit_seconds")}";
                     if (string.IsNullOrEmpty(info.Requirements))
-                        info.Requirements = "방패 착용, 탱커 직업";
+                        info.Requirements = $"{L.Get("requirement_shield_equip")}, {L.Get("job_tanker")}";
                     if (string.IsNullOrEmpty(info.Notice))
-                        info.Notice = "직업은 1개만 선택가능, 레벨 10 이상";
+                        info.Notice = jobNotice;
                     break;
-                    
+
                 case "Berserker":
-                    // 버서커 상세 툴팁 정보 설정 (Berserker_Config 연동)
                     if (string.IsNullOrEmpty(info.Cost))
-                        info.Cost = $"스태미나 {Berserker_Config.BerserkerRageStaminaCostValue}";
+                        info.Cost = $"{L.Get("stat_stamina")} {Berserker_Config.BerserkerRageStaminaCostValue}";
                     if (string.IsNullOrEmpty(info.Cooldown))
-                        info.Cooldown = $"{Berserker_Config.BerserkerRageCooldownValue}초";
+                        info.Cooldown = $"{Berserker_Config.BerserkerRageCooldownValue}{L.Get("unit_seconds")}";
                     if (string.IsNullOrEmpty(info.Notice))
-                        info.Notice = "직업은 1개만 선택가능, 레벨 10 이상";
+                        info.Notice = jobNotice;
                     break;
-                    
+
                 case "Rogue":
                     if (string.IsNullOrEmpty(info.Cost))
-                        info.Cost = "스태미나 15%";
+                        info.Cost = $"{L.Get("stat_stamina")} 15%";
                     if (string.IsNullOrEmpty(info.Cooldown))
-                        info.Cooldown = "30초";
+                        info.Cooldown = $"30{L.Get("unit_seconds")}";
                     if (string.IsNullOrEmpty(info.Notice))
-                        info.Notice = "직업은 1개만 선택가능, 레벨 10 이상";
+                        info.Notice = jobNotice;
                     break;
-                    
+
                 case "Mage":
                     if (string.IsNullOrEmpty(info.Range))
-                        info.Range = "광역범위 +7m";
+                        info.Range = $"+7{L.Get("unit_meter")}";
                     if (string.IsNullOrEmpty(info.Cost))
-                        info.Cost = "에이트르 10%";
+                        info.Cost = $"{L.Get("stat_eitr")} 10%";
                     if (string.IsNullOrEmpty(info.Cooldown))
-                        info.Cooldown = "30초";
+                        info.Cooldown = $"30{L.Get("unit_seconds")}";
                     if (string.IsNullOrEmpty(info.Notice))
-                        info.Notice = "직업은 1개만 선택가능, 레벨 10 이상";
+                        info.Notice = jobNotice;
                     break;
-                    
+
                 case "Archer":
-                    // 아처 상세 툴팁 정보 설정 (Archer_Config 연동)
                     if (string.IsNullOrEmpty(info.Range))
-                        info.Range = $"화살 {Archer_Config.ArcherMultiShotArrowCountValue}개 발사";
+                        info.Range = L.Get("archer_range_arrows", Archer_Config.ArcherMultiShotArrowCountValue);
                     if (string.IsNullOrEmpty(info.Cost))
-                        info.Cost = $"스태미나 {Archer_Config.ArcherMultiShotStaminaCostValue}";
+                        info.Cost = $"{L.Get("stat_stamina")} {Archer_Config.ArcherMultiShotStaminaCostValue}";
                     if (string.IsNullOrEmpty(info.Cooldown))
-                        info.Cooldown = $"{Archer_Config.ArcherMultiShotCooldownValue}초";
+                        info.Cooldown = $"{Archer_Config.ArcherMultiShotCooldownValue}{L.Get("unit_seconds")}";
                     if (string.IsNullOrEmpty(info.Requirements))
-                        info.Requirements = "활 착용, 아처 직업";
+                        info.Requirements = $"{L.Get("requirement_bow_equip")}, {L.Get("job_archer")}";
                     if (string.IsNullOrEmpty(info.Notice))
-                        info.Notice = "직업은 1개만 선택가능, 레벨 10 이상";
+                        info.Notice = jobNotice;
                     break;
             }
         }
@@ -1083,7 +1105,7 @@ namespace CaptainSkillTree.Gui
                 case "atk_finisher_melee": return "🌟";
                 
                 // === 직업 스킬 아이콘들 - 실제 노드 ID 사용 ===
-                case "성기사": return "⭐";
+                case "Paladin": return "⭐";
                 case "Tanker": return "🛡️";
                 case "Berserker": return "⚔️";
                 case "Rogue": return "🗡️";
@@ -1105,15 +1127,15 @@ namespace CaptainSkillTree.Gui
         {
             if (node.Prerequisites == null || node.Prerequisites.Count == 0)
                 return "";
-                
+
             var manager = SkillTree.SkillTreeManager.Instance;
             if (manager == null) return "";
-            
+
             if (node.Id == "grandmaster_artisan")
             {
-                return "<color=#87CEEB><size=14>🔗 필요: <color=#FFA500>노가다 전문가 + 제작 전문가</color></size></color>";
+                return $"<color=#87CEEB><size=14>{L.Get("prerequisite_label")}: <color=#FFA500>{L.Get("prerequisite_labor_craft")}</color></size></color>";
             }
-            
+
             var prereqNames = new System.Collections.Generic.List<string>();
             foreach (var preId in node.Prerequisites)
             {
@@ -1122,12 +1144,12 @@ namespace CaptainSkillTree.Gui
                     prereqNames.Add(manager.SkillNodes[preId].Name);
                 }
             }
-            
+
             if (prereqNames.Count == 0) return "";
-            
-            string connector = node.Prerequisites.Count > 1 ? " 또는 " : "";
+
+            string connector = node.Prerequisites.Count > 1 ? L.Get("prerequisite_connector_or") : "";
             string joinedNames = string.Join(connector, prereqNames.ToArray());
-            return string.Format("<color=#87CEEB><size=16>🔗 필요: <color=#FFA500>{0}</color></size></color>", joinedNames);
+            return $"<color=#87CEEB><size=16>{L.Get("prerequisite_label")}: <color=#FFA500>{joinedNames}</color></size></color>";
         }
         
         /// <summary>
@@ -1136,35 +1158,35 @@ namespace CaptainSkillTree.Gui
         private string GetSkillStatusInfo(CaptainSkillTree.SkillTree.SkillNode node)
         {
             var statusText = new System.Text.StringBuilder();
-            
+
             // 생산 스킬은 재료, 일반 스킬은 포인트 표시
             if (SkillTree.SkillItemRequirements.IsProductionSkill(node.Id))
             {
                 // 스킬이 언락되었는지 확인
                 var skillManager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
                 bool isUnlocked = skillManager != null && skillManager.GetSkillLevel(node.Id) > 0;
-                
+
                 // 생산 스킬: 필요 재료 표시
                 var requirementsText = CaptainSkillTree.SkillTree.ItemManager.GetSkillRequirementsText(node.Id);
                 if (!string.IsNullOrEmpty(requirementsText) && requirementsText != "필요 재료 없음")
                 {
-                    statusText.Append($"<color=#87CEEB><size=16><b>🔨 필요 재료:</b></size></color>\n");
-                    
+                    statusText.Append($"<color=#87CEEB><size=16><b>🔨 {L.Get("tooltip_requirements")}:</b></size></color>\n");
+
                     // 언락 상태에 따라 색상 변경
                     string materialColor = isUnlocked ? "#90EE90" : "#FFFFFF"; // 언락 시 연두색, 미언락 시 흰색
                     statusText.Append($"<color={materialColor}><size=14>{requirementsText}</size></color>");
                 }
                 else
                 {
-                    statusText.Append("<color=#87CEEB><size=16><b>🔨 필요 재료: 없음</b></size></color>");
+                    statusText.Append($"<color=#87CEEB><size=16><b>🔨 {L.Get("tooltip_requirements")}: -</b></size></color>");
                 }
             }
             else
             {
                 // 일반 스킬: 필요 포인트 표시
-                statusText.Append(string.Format("<color=#87CEEB><size=16><b>💎 필요 포인트: <color=#FF6B6B><b>{0}</b></color></b></size></color>", node.RequiredPoints));
+                statusText.Append(string.Format($"<color=#87CEEB><size=16><b>💎 {L.Get("tooltip_required_points")}: <color=#FF6B6B><b>{{0}}</b></color></b></size></color>", node.RequiredPoints));
             }
-            
+
             // 현재 레벨 정보 (가능하다면)
             var manager = SkillTree.SkillTreeManager.Instance;
             if (manager != null)
@@ -1172,14 +1194,14 @@ namespace CaptainSkillTree.Gui
                 int currentLevel = manager.GetSkillLevel(node.Id);
                 if (currentLevel > 0)
                 {
-                    statusText.Append(string.Format("  <color=#90EE90><size=16>✓ 습득됨 (Lv.{0})</size></color>", currentLevel));
+                    statusText.Append(string.Format($"  <color=#90EE90><size=16>✓ {L.Get("tooltip_learned")} (Lv.{{0}})</size></color>", currentLevel));
                 }
                 else
                 {
-                    statusText.Append("  <color=#FFB347><size=16>🔒 미습득</size></color>");
+                    statusText.Append($"  <color=#FFB347><size=16>🔒</size></color>");
                 }
             }
-            
+
             return statusText.ToString();
         }
         

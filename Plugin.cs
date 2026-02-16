@@ -14,13 +14,14 @@ using CaptainSkillTree.Audio;
 using CaptainSkillTree.Prefab;
 using CaptainSkillTree.VFX;
 using CaptainSkillTree.MMO_System;
+using CaptainSkillTree.Localization;
 using Jotunn.Utils;
 using Jotunn.Entities;
 using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.477")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.508")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -61,11 +62,19 @@ namespace CaptainSkillTree
             CaptainLevelConfig.Bind(Config);
             Log.LogInfo("[Captain Level System] Config 바인딩 완료");
 
+            // ===== 로컬라이제이션 시스템 초기화 (스킬 노드 등록 전에 필수!) =====
+            // 스킬 노드의 Name/Description이 L.Get()을 사용하므로 먼저 초기화해야 함
+            Localization.LocalizationManager.Initialize(Config);
+            Log.LogInfo("[Plugin] ✓ 로컬라이제이션 시스템 초기화 완료");
+
             // Config 시스템 초기화
             SkillTreeConfig.Initialize(Config);
 
             // Staff Tree Config 시스템 초기화 (힐 설정 포함)
             Staff_Config.InitConfig(Config);
+
+            // ===== 로컬라이제이션 시스템 초기화는 Start()로 지연 =====
+            // Valheim의 Localization.instance가 준비된 후 초기화하기 위해 1초 대기
 
             // ===== Captain MMO Bridge 초기화 =====
             // EpicMMO 감지 후 자동으로 시스템 선택
@@ -114,6 +123,24 @@ namespace CaptainSkillTree
             // 핵심 시스템 초기화 완료 표시
             _coreSystemsInitialized = true;
             Log.LogWarning("========== Captain SkillTree Mod 로딩 성공 ==========");
+        }
+
+        /// <summary>
+        /// Start 코루틴 - Valheim 초기화 후 Auto 언어 감지 재시도
+        /// </summary>
+        private IEnumerator Start()
+        {
+            // Valheim의 Localization.instance가 준비될 때까지 대기 (1초)
+            yield return new WaitForSeconds(1f);
+
+            // ===== Auto 언어 감지 재시도 (Valheim 연동) =====
+            // Awake에서 초기화됐지만 Auto 모드일 경우 Valheim 언어로 재설정
+            if (Localization.LocalizationManager.LanguageConfig?.Value?.Equals("Auto", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                Log.LogInfo("[Plugin] Valheim 초기화 완료 - Auto 언어 재감지 시도...");
+                Localization.LocalizationManager.ReloadLanguage();
+                Log.LogInfo("[Plugin] ✓ Auto 언어 재감지 완료");
+            }
         }
 
         /// <summary>

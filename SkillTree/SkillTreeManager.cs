@@ -461,7 +461,7 @@ namespace CaptainSkillTree.SkillTree
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
-            var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "성기사" };
+            var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin" };
 
             // 액티브 스킬이 아니면 제한 없음
             if (!rKeySkills.Contains(skillId) && !gKeyMeleeSkills.Contains(skillId) &&
@@ -607,7 +607,7 @@ namespace CaptainSkillTree.SkillTree
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
-            var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "성기사" };
+            var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin" };
 
             // 액티브 스킬이 아니면 제한 없음
             if (!rKeySkills.Contains(skillId) && !gKeyMeleeSkills.Contains(skillId) &&
@@ -1158,7 +1158,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private bool IsJobSkill(string skillId)
         {
-            return skillId == "성기사" || skillId == "Tanker" || skillId == "Berserker" || 
+            return skillId == "Paladin" || skillId == "Tanker" || skillId == "Berserker" || 
                    skillId == "Rogue" || skillId == "Mage" || skillId == "Archer";
         }
         
@@ -1173,9 +1173,9 @@ namespace CaptainSkillTree.SkillTree
             var inventory = player.GetInventory();
             if (inventory == null) return;
             
-            if (skillId == "성기사")
+            if (skillId == "Paladin")
             {
-                // 성기사: 특별 퀘스트완료 아이템 + 에이크쉬르 트로피 소모
+                // Paladin: 특별 퀘스트완료 아이템 + 에이크쉬르 트로피 소모
                 inventory.RemoveItem("$item_trophy_eikthyr", 1);
                 
                 // 특별 퀘스트완료 아이템 소모 (실제 아이템명으로 변경 필요)

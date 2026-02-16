@@ -1,5 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -96,7 +97,7 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogDebug($"[아처 패시브] {player.GetPlayerName()} 점프 높이 보너스 적용: +{jumpBonus * 100f}% (Y속도: {currentVelocity.y / (1f + jumpBonus):F2} → {currentVelocity.y:F2})");
                         
                         // 시각적 피드백 (선택적)
-                        player.Message(MessageHud.MessageType.TopLeft, $"아처 패시브: 점프 높이 +{jumpBonus * 100f:F0}%");
+                        player.Message(MessageHud.MessageType.TopLeft, L.Get("archer_jump_bonus", (jumpBonus * 100f).ToString("F0")));
                     }
                 }
             }
@@ -247,7 +248,7 @@ namespace CaptainSkillTree.SkillTree
                             Plugin.Log.LogInfo($"[아처 낙사 데미지] {player.GetPlayerName()} 낙사 데미지 감소 적용 - 원래: {originalDamage:F1} → 감소후: {reducedDamage:F1} (감소량: {damageReduced:F1})");
 
                             // 플레이어에게 낙사 데미지 감소 메시지 표시
-                            player.Message(MessageHud.MessageType.TopLeft, $"아처 패시브: -{damageReduced:F0} 낙사 데미지 감소!");
+                            player.Message(MessageHud.MessageType.TopLeft, L.Get("archer_fall_damage_reduced", damageReduced.ToString("F0")));
                         }
                     }
                 }

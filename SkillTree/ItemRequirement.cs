@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -10,16 +11,19 @@ namespace CaptainSkillTree.SkillTree
     public class ItemRequirement
     {
         public string ItemName { get; set; }        // 아이템 이름 (Valheim 내부 이름)
-        public string DisplayName { get; set; }     // 표시될 이름 (한국어)
+        public string DisplayNameKey { get; set; }  // 표시될 이름 (로컬라이제이션 키)
         public int Quantity { get; set; }           // 필요 수량
         public bool IsConsumed { get; set; } = true; // 소모 여부 (기본: 소모)
 
+        // 호환성을 위한 DisplayName 프로퍼티 (L.Get()으로 자동 변환)
+        public string DisplayName => L.Get(DisplayNameKey);
+
         public ItemRequirement() { }
 
-        public ItemRequirement(string itemName, string displayName, int quantity, bool isConsumed = true)
+        public ItemRequirement(string itemName, string displayNameKey, int quantity, bool isConsumed = true)
         {
             ItemName = itemName;
-            DisplayName = displayName;
+            DisplayNameKey = displayNameKey;
             Quantity = quantity;
             IsConsumed = isConsumed;
         }
@@ -27,7 +31,7 @@ namespace CaptainSkillTree.SkillTree
         public override string ToString()
         {
             if (IsConsumed)
-                return $"{DisplayName} x{Quantity}(소모)";
+                return $"{DisplayName} x{Quantity}{L.Get("item_consumed")}";
             else
                 return $"{DisplayName} x{Quantity}";
         }
@@ -48,70 +52,70 @@ namespace CaptainSkillTree.SkillTree
         private static void InitializeRequirements()
         {
             // ===== 생산 전문가 트리만 재료 기반 ===== (dropPrefab.name 형식 사용)
-            AddRequirement("production_root", new ItemRequirement("Wood", "나무", 100));
-            
+            AddRequirement("production_root", new ItemRequirement("Wood", "item_wood", 100));
+
             // 초보 일꾼 (1단계)
-            AddRequirement("novice_worker", new ItemRequirement("Wood", "나무", 100),
-                                          new ItemRequirement("Raspberry", "라즈베리", 20));
-            
+            AddRequirement("novice_worker", new ItemRequirement("Wood", "item_wood", 100),
+                                          new ItemRequirement("Raspberry", "item_raspberry", 20));
+
             // 벌목 Lv2
-            AddRequirement("woodcutting_lv2", new ItemRequirement("Wood", "나무", 150));
-            
-            // 벌목 Lv3  
-            AddRequirement("woodcutting_lv3", new ItemRequirement("Wood", "나무", 200));
-            
+            AddRequirement("woodcutting_lv2", new ItemRequirement("Wood", "item_wood", 150));
+
+            // 벌목 Lv3
+            AddRequirement("woodcutting_lv3", new ItemRequirement("Wood", "item_wood", 200));
+
             // 채집 Lv2
-            AddRequirement("gathering_lv2", new ItemRequirement("Mushroom", "버섯", 50));
-            
+            AddRequirement("gathering_lv2", new ItemRequirement("Mushroom", "item_mushroom", 50));
+
             // 채집 Lv3
-            AddRequirement("gathering_lv3", 
-                new ItemRequirement("Mushroom", "버섯", 30),
-                new ItemRequirement("Raspberry", "라즈베리", 50));
-            
+            AddRequirement("gathering_lv3",
+                new ItemRequirement("Mushroom", "item_mushroom", 30),
+                new ItemRequirement("Raspberry", "item_raspberry", 50));
+
             // 채광 Lv2 - 구리광석으로 변경, 소모형으로 변경
-            AddRequirement("mining_lv2", new ItemRequirement("CopperOre", "구리광석", 20, true)); // 소모
-            
+            AddRequirement("mining_lv2", new ItemRequirement("CopperOre", "item_copper_ore", 20, true)); // 소모
+
             // 채광 Lv3 - 철 광석 30개 소모형으로 변경
-            AddRequirement("mining_lv3", new ItemRequirement("IronOre", "철 광석", 30, true)); // 소모
-            
-            AddRequirement("crafting_lv2", 
-                new ItemEquipConsumeRequirement("SwordBronze", "청동 검"),
-                new ItemEquipConsumeRequirement("HelmetBronze", "청동 헬멧"));
+            AddRequirement("mining_lv3", new ItemRequirement("IronOre", "item_iron_ore", 30, true)); // 소모
+
+            AddRequirement("crafting_lv2",
+                new ItemEquipConsumeRequirement("SwordBronze", "item_bronze_sword"),
+                new ItemEquipConsumeRequirement("HelmetBronze", "item_bronze_helmet"));
 
             AddRequirement("crafting_lv3",
-                new ItemEquipConsumeRequirement("SwordIron", "철 검"),
-                new ItemEquipConsumeRequirement("HelmetIron", "철 헬멧"));
+                new ItemEquipConsumeRequirement("SwordIron", "item_iron_sword"),
+                new ItemEquipConsumeRequirement("HelmetIron", "item_iron_helmet"));
 
-            AddRequirement("woodcutting_lv4", new ItemQuantityRequirement("Wood", "나무", 400));
-            AddRequirement("gathering_lv4", 
-                new ItemRequirement("Mushroom", "버섯", 30),
-                new ItemRequirement("Raspberry", "라즈베리", 30),
-                new ItemRequirement("Blueberries", "블루베리", 50));
-            
+            AddRequirement("woodcutting_lv4", new ItemQuantityRequirement("Wood", "item_wood", 400));
+            AddRequirement("gathering_lv4",
+                new ItemRequirement("Mushroom", "item_mushroom", 30),
+                new ItemRequirement("Raspberry", "item_raspberry", 30),
+                new ItemRequirement("Blueberries", "item_blueberries", 50));
+
             // 채광 Lv4 - 은 광석 25개 소모형으로 변경
-            AddRequirement("mining_lv4", new ItemRequirement("SilverOre", "은 광석", 25, true)); // 소모
+            AddRequirement("mining_lv4", new ItemRequirement("SilverOre", "item_silver_ore", 25, true)); // 소모
             AddRequirement("crafting_lv4",
-                new ItemEquipConsumeRequirement("SwordSilver", "은 검"),
-                new ItemEquipConsumeRequirement("HelmetDrake", "드레이크 헬멧"));
-            
+                new ItemEquipConsumeRequirement("SwordSilver", "item_silver_sword"),
+                new ItemEquipConsumeRequirement("HelmetDrake", "item_drake_helmet"));
+
             // 방어 전문가 트리: 신경강화 - 단검 또는 활 착용 필요 (선택적)
             AddRequirement("defense_Step6_attack",
-                new ItemEquipRequirement("KnifeCopper", "구리 단검"),
-                new ItemEquipRequirement("Bow", "조잡한 활"));
-            
+                new ItemEquipRequirement("KnifeCopper", "item_copper_knife"),
+                new ItemEquipRequirement("Bow", "item_crude_bow"));
+
             // 폴암 전문가 - 창 착용 필요 (확장성: Spear/spear 포함 프리팹 자동 인식)
             // ItemManager.IsSpearWeapon()에서 프리팹명에 "spear" 포함 시 자동 인식
-            AddRequirement("polearm_expert", new ItemEquipRequirement("SpearFlint", "창"));
-            
+            AddRequirement("polearm_expert", new ItemEquipRequirement("SpearFlint", "item_spear"));
+
             // 폴암 전문가 단계별 스킬들 - 창 착용 필요 (확장성 지원)
-            AddRequirement("polearm_step1_spin", new ItemEquipRequirement("SpearFlint", "창"));
-            AddRequirement("polearm_step1_suppress", new ItemEquipRequirement("SpearFlint", "창"));
-            AddRequirement("polearm_step2_hero", new ItemEquipRequirement("SpearFlint", "창"));
-            AddRequirement("polearm_step3_area", new ItemEquipRequirement("SpearFlint", "창"));
-            AddRequirement("polearm_step3_ground", new ItemEquipRequirement("SpearFlint", "창"));
-            AddRequirement("polearm_step4_moon", new ItemEquipRequirement("SpearFlint", "창"));
-            AddRequirement("polearm_step4_charge", new ItemEquipRequirement("SpearFlint", "창"));
-            AddRequirement("polearm_step5_king", new ItemEquipRequirement("SpearFlint", "창"));
+            AddRequirement("polearm_step1_spin", new ItemEquipRequirement("SpearFlint", "item_spear"));
+            AddRequirement("polearm_step1_suppress", new ItemEquipRequirement("SpearFlint", "item_spear"));
+            AddRequirement("polearm_step2_hero", new ItemEquipRequirement("SpearFlint", "item_spear"));
+            AddRequirement("polearm_step3_area", new ItemEquipRequirement("SpearFlint", "item_spear"));
+            AddRequirement("polearm_step3_ground", new ItemEquipRequirement("SpearFlint", "item_spear"));
+            AddRequirement("polearm_step4_moon", new ItemEquipRequirement("SpearFlint", "item_spear"));
+            AddRequirement("polearm_step4_charge", new ItemEquipRequirement("SpearFlint", "item_spear"));
+            AddRequirement("polearm_step5_king", new ItemEquipRequirement("SpearFlint", "item_spear"));
         }
 
         /// <summary>
@@ -179,15 +183,15 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public class ItemQuantityRequirement : ItemRequirement
     {
-        public ItemQuantityRequirement(string itemName, string displayName, int requiredQuantity) 
-            : base(itemName, displayName, requiredQuantity, false)
+        public ItemQuantityRequirement(string itemName, string displayNameKey, int requiredQuantity)
+            : base(itemName, displayNameKey, requiredQuantity, false)
         {
             // 수량 조건은 소모하지 않음
         }
 
         public override string ToString()
         {
-            return $"{DisplayName} {Quantity}개 보유";
+            return L.Get("item_quantity_required", DisplayName, Quantity);
         }
     }
 
@@ -196,15 +200,15 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public class ItemEquipRequirement : ItemRequirement
     {
-        public ItemEquipRequirement(string itemName, string displayName) 
-            : base(itemName, displayName, 1, false)
+        public ItemEquipRequirement(string itemName, string displayNameKey)
+            : base(itemName, displayNameKey, 1, false)
         {
             // 장착 조건은 소모하지 않음
         }
 
         public override string ToString()
         {
-            return $"{DisplayName} 착용";
+            return L.Get("item_equip_required", DisplayName);
         }
     }
 
@@ -213,15 +217,15 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public class ItemEquipConsumeRequirement : ItemRequirement
     {
-        public ItemEquipConsumeRequirement(string itemName, string displayName) 
-            : base(itemName, displayName, 1, true)
+        public ItemEquipConsumeRequirement(string itemName, string displayNameKey)
+            : base(itemName, displayNameKey, 1, true)
         {
             // 장착 후 소모
         }
 
         public override string ToString()
         {
-            return $"{DisplayName} 착용(소모)";
+            return L.Get("item_equip_consume", DisplayName);
         }
     }
 }

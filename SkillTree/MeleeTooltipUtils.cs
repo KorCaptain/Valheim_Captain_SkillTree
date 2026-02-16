@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -42,16 +43,26 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 무기 타입별 한글 이름 매핑
+        /// 무기 타입별 이름 키 매핑 (다국어 지원)
         /// </summary>
-        private static readonly Dictionary<WeaponType, string> WeaponNames = new()
+        private static readonly Dictionary<WeaponType, string> WeaponNameKeys = new()
         {
-            { WeaponType.Knife, "단검" },
-            { WeaponType.Sword, "검" },
-            { WeaponType.Polearm, "폴암" },
-            { WeaponType.Spear, "창" },
-            { WeaponType.Mace, "둔기" }
+            { WeaponType.Knife, "weapon_knife" },
+            { WeaponType.Sword, "weapon_sword" },
+            { WeaponType.Polearm, "weapon_polearm" },
+            { WeaponType.Spear, "weapon_spear" },
+            { WeaponType.Mace, "weapon_mace" }
         };
+
+        /// <summary>
+        /// 무기 타입 이름 가져오기 (다국어)
+        /// </summary>
+        private static string GetWeaponName(WeaponType weaponType)
+        {
+            if (WeaponNameKeys.TryGetValue(weaponType, out var key))
+                return L.Get(key);
+            return L.Get("weapon_sword"); // 기본값
+        }
 
         /// <summary>
         /// 공통 근접 무기 툴팁 생성 함수
@@ -87,69 +98,69 @@ namespace CaptainSkillTree.SkillTree
                 // 2. 설명 섹션 (#FFD700 / #E0E0E0)
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}</size></color>\n";
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{data.description}</size></color>\n";
                 }
 
                 // 3. 데미지/효과 섹션 (#FF6B6B / #FFB6C1) - 빨강 계열로 강조
                 if (!string.IsNullOrEmpty(data.damage))
                 {
-                    tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>{data.damage}</size></color>\n";
+                    tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{data.damage}</size></color>\n";
                 }
 
                 // 4. 범위 섹션 (#87CEEB / #B0E0E6)
                 if (!string.IsNullOrEmpty(data.range))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
                 }
 
                 // 5. 소모 섹션 (#FFB347 / #FFDAB9)
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.consumeStamina}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {data.consumeStamina}</size></color>\n";
                 }
 
                 // 6. 스킬 유형 섹션 (키별 강조색상 적용)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
                     var (labelColor, valueColor) = GetSkillTypeColors(data.skillType);
-                    tooltip += $"<color={labelColor}><size=16>스킬유형: </size></color><color={valueColor}><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color={labelColor}><size=16>{L.Get("tooltip_skill_type")}: </size></color><color={valueColor}><size=16>{data.skillType}</size></color>\n";
                 }
 
                 // 7. 쿨타임 섹션 (#FFA500 / #FFDB58)
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
                 // 8. 필요조건 섹션 (#98FB98 / #00FF00)
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
                 else
                 {
-                    Plugin.Log.LogWarning($"[MeleeTooltip] 필요조건이 비어있음: skillName='{data.skillName}'");
+                    Plugin.Log.LogWarning($"[MeleeTooltip] Requirement empty: skillName='{data.skillName}'");
                 }
 
                 // 9. 확인사항 섹션 (#F0E68C / #FFE4B5)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 10. 필요 포인트 섹션 (#87CEEB / #FF6B6B)
                 if (!string.IsNullOrEmpty(data.requiredPoints))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{data.requiredPoints}</size></color>";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{data.requiredPoints}</size></color>";
                 }
 
-                LogTooltipGeneration(weaponType, "GenerateTooltip", "성공");
+                LogTooltipGeneration(weaponType, "GenerateTooltip", "success");
                 return tooltip.TrimEnd('\n');
             }
             catch (System.Exception ex)
             {
                 LogTooltipError(weaponType, "GenerateTooltip", ex.Message);
-                return "툴팁 생성 오류";
+                return L.Get("tooltip_error");
             }
         }
 
@@ -192,17 +203,17 @@ namespace CaptainSkillTree.SkillTree
                 {
                     var skillNode = manager.SkillNodes[skillId];
                     skillNode.Description = newTooltip;
-                    
-                    Plugin.Log.LogDebug($"[{WeaponNames[weaponType]} 툴팁] {skillId} 업데이트 완료");
+
+                    Plugin.Log.LogDebug($"[{GetWeaponName(weaponType)} Tooltip] {skillId} updated");
                 }
                 else
                 {
-                    Plugin.Log.LogWarning($"[{WeaponNames[weaponType]} 툴팁] {skillId} 스킬 노드를 찾을 수 없음");
+                    Plugin.Log.LogWarning($"[{GetWeaponName(weaponType)} Tooltip] {skillId} skill node not found");
                 }
             }
             catch (System.Exception ex)
             {
-                LogTooltipError(weaponType, "UpdateSkillTooltip", $"{skillId} 업데이트 실패: {ex.Message}");
+                LogTooltipError(weaponType, "UpdateSkillTooltip", $"{skillId} update failed: {ex.Message}");
             }
         }
 
@@ -218,7 +229,7 @@ namespace CaptainSkillTree.SkillTree
                 var manager = SkillTreeManager.Instance;
                 if (manager?.SkillNodes == null)
                 {
-                    Plugin.Log.LogWarning($"[{WeaponNames[weaponType]} 툴팁] SkillTreeManager가 초기화되지 않음");
+                    Plugin.Log.LogWarning($"[{GetWeaponName(weaponType)} Tooltip] SkillTreeManager not initialized");
                     return;
                 }
 
@@ -227,14 +238,14 @@ namespace CaptainSkillTree.SkillTree
                     var skillId = mapping.Key;
                     var tooltipFunc = mapping.Value;
                     var newTooltip = tooltipFunc.Invoke();
-                    
+
                     UpdateSkillTooltip(skillId, newTooltip, weaponType);
                 }
 
             }
             catch (System.Exception ex)
             {
-                LogTooltipError(weaponType, "UpdateMultipleTooltips", $"전체 업데이트 실패: {ex.Message}");
+                LogTooltipError(weaponType, "UpdateMultipleTooltips", $"batch update failed: {ex.Message}");
             }
         }
 
@@ -255,19 +266,19 @@ namespace CaptainSkillTree.SkillTree
                 }
                 else
                 {
-                    Plugin.Log.LogWarning($"[{WeaponNames[weaponType]} 툴팁] 알 수 없는 스킬 ID: {skillId}");
-                    return $"알 수 없는 {WeaponNames[weaponType]} 스킬";
+                    Plugin.Log.LogWarning($"[{GetWeaponName(weaponType)} Tooltip] Unknown skill ID: {skillId}");
+                    return L.Get("tooltip_unknown_skill", GetWeaponName(weaponType));
                 }
             }
             catch (System.Exception ex)
             {
-                LogTooltipError(weaponType, "GetSkillTooltip", $"{skillId} 툴팁 생성 실패: {ex.Message}");
-                return "툴팁 생성 오류";
+                LogTooltipError(weaponType, "GetSkillTooltip", $"{skillId} tooltip generation failed: {ex.Message}");
+                return L.Get("tooltip_error");
             }
         }
 
         /// <summary>
-        /// 무기별 기본 필요조건 생성
+        /// 무기별 기본 필요조건 생성 (다국어 지원)
         /// </summary>
         /// <param name="weaponType">무기 타입</param>
         /// <returns>해당 무기의 필요조건 텍스트</returns>
@@ -275,12 +286,12 @@ namespace CaptainSkillTree.SkillTree
         {
             return weaponType switch
             {
-                WeaponType.Knife => "단검 착용",
-                WeaponType.Sword => "검 착용",
-                WeaponType.Polearm => "폴암 착용",
-                WeaponType.Spear => "창 착용",
-                WeaponType.Mace => "둔기 착용",
-                _ => "무기 착용"
+                WeaponType.Knife => L.Get("requirement_knife_equip"),
+                WeaponType.Sword => L.Get("requirement_sword_equip"),
+                WeaponType.Polearm => L.Get("requirement_polearm_equip"),
+                WeaponType.Spear => L.Get("requirement_spear_equip"),
+                WeaponType.Mace => L.Get("requirement_mace_equip"),
+                _ => L.Get("requirement_weapon_equip")
             };
         }
 
@@ -289,7 +300,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static void LogTooltipGeneration(WeaponType weaponType, string methodName, string status)
         {
-            Plugin.Log.LogDebug($"[{WeaponNames[weaponType]} 툴팁] {methodName}() {status}");
+            Plugin.Log.LogDebug($"[{GetWeaponName(weaponType)} Tooltip] {methodName}() {status}");
         }
 
         /// <summary>
@@ -297,7 +308,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static void LogTooltipError(WeaponType weaponType, string methodName, string errorMessage)
         {
-            Plugin.Log.LogError($"[{WeaponNames[weaponType]} 툴팁] {methodName} 오류: {errorMessage}");
+            Plugin.Log.LogError($"[{GetWeaponName(weaponType)} Tooltip] {methodName} error: {errorMessage}");
         }
 
         /// <summary>
@@ -317,7 +328,7 @@ namespace CaptainSkillTree.SkillTree
                 damage = "",
                 range = "",
                 consumeStamina = "",
-                skillType = "패시브 스킬",
+                skillType = L.Get("skill_type_passive"),
                 cooldown = "",
                 requirement = GetWeaponRequirement(weaponType),
                 requiredPoints = "",
@@ -344,10 +355,10 @@ namespace CaptainSkillTree.SkillTree
             string additionalInfo = "", string confirmation = "", string keyBinding = "",
             string damage = "", string range = "")
         {
-            string skillTypeText = "액티브 스킬";
+            string skillTypeText = L.Get("skill_type_active");
             if (!string.IsNullOrEmpty(keyBinding))
             {
-                skillTypeText = $"액티브 스킬 - {keyBinding}";
+                skillTypeText = L.Get("skill_type_active_key", keyBinding);
             }
 
             return new MeleeTooltipData

@@ -6,6 +6,7 @@ using HarmonyLib;
 using System.Linq;
 using CaptainSkillTree;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -84,8 +85,8 @@ namespace CaptainSkillTree.SkillTree
             
             // 성기사 (컨피그 기반 동적 툴팁)
             manager.AddSkill(new SkillNode {
-                Id = "성기사",
-                Name = "성기사",
+                Id = "Paladin",
+                Name = L.Get("job_skill_paladin"),
                 Description = Paladin_Config.GetPaladinTooltip(),
                 RequiredPoints = 0,
                 MaxLevel = 1,
@@ -203,10 +204,10 @@ namespace CaptainSkillTree.SkillTree
                 
                 // 직접 SkillTreeManager에서 업데이트
                 var manager = SkillTreeManager.Instance;
-                if (manager?.SkillNodes != null && manager.SkillNodes.ContainsKey("성기사"))
+                if (manager?.SkillNodes != null && manager.SkillNodes.ContainsKey("Paladin"))
                 {
                     var newTooltip = Paladin_Config.GetPaladinTooltip();
-                    manager.SkillNodes["성기사"].Description = newTooltip;
+                    manager.SkillNodes["Paladin"].Description = newTooltip;
                     Plugin.Log.LogDebug($"[성기사 툴팁] 직접 업데이트 완료 - 새 툴팁 길이: {newTooltip?.Length ?? 0}");
                 }
                 else
@@ -304,7 +305,7 @@ namespace CaptainSkillTree.SkillTree
             }
 
             // 디버그: 모든 직업 레벨 확인
-            var holyKnightLevel = manager.GetSkillLevel("성기사");
+            var holyKnightLevel = manager.GetSkillLevel("Paladin");
             var tankerLevel = manager.GetSkillLevel("Tanker");
             var berserkerLevel = manager.GetSkillLevel("Berserker");
             var rogueLevel = manager.GetSkillLevel("Rogue");
@@ -350,7 +351,7 @@ namespace CaptainSkillTree.SkillTree
             }
 
             // 직업 미선택 시에만 메시지 (한 번만)
-            ShowMessage(player, "직업을 선택하지 않았습니다.");
+            ShowMessage(player, L.Get("job_no_job_selected"));
         }
 
         // === 개별 직업 스킬 구현 ===
@@ -365,7 +366,7 @@ namespace CaptainSkillTree.SkillTree
             // 한손 근접무기 착용 확인
             if (!IsUsingOneHandedMeleeWeapon(player))
             {
-                ShowMessage(player, "한손 근접무기를 착용해야 합니다!");
+                ShowMessage(player, L.Get("job_one_hand_melee_required"));
                 return;
             }
             
@@ -373,7 +374,7 @@ namespace CaptainSkillTree.SkillTree
             if (currentTime < holyKnightHealCooldownEnd)
             {
                 float remaining = holyKnightHealCooldownEnd - currentTime;
-                ShowMessage(player, $"신성한 치유 쿨타임: {remaining:F1}초");
+                ShowMessage(player, L.Get("job_holy_heal_cooldown", $"{remaining:F1}"));
                 return;
             }
 
@@ -383,13 +384,13 @@ namespace CaptainSkillTree.SkillTree
             
             if (player.GetStamina() < requiredStamina)
             {
-                ShowMessage(player, $"스태미나가 부족합니다 ({requiredStamina} 필요)");
+                ShowMessage(player, L.Get("job_stamina_required", requiredStamina));
                 return;
             }
 
             if (player.GetEitr() < requiredEitr)
             {
-                ShowMessage(player, $"에이트르가 부족합니다 ({requiredEitr} 필요)");
+                ShowMessage(player, L.Get("job_eitr_required", requiredEitr));
                 return;
             }
 
@@ -423,7 +424,7 @@ namespace CaptainSkillTree.SkillTree
             
             if (Paladin_Config.ShowHealNumbersValue)
             {
-                ShowMessage(player, $"✨ 자가 치유: +{selfHealAmount:F0} HP");
+                ShowMessage(player, L.Get("job_self_heal", $"{selfHealAmount:F0}"));
             }
 
             // 4. 범위 내 다른 플레이어들에게 지속 힐링 적용 (컨피그 설정)
@@ -451,7 +452,7 @@ namespace CaptainSkillTree.SkillTree
             // 쿨타임 설정 (컨피그에서 설정)
             holyKnightHealCooldownEnd = currentTime + Paladin_Config.CooldownValue;
             
-            ShowMessage(player, $"⭐ 성기사 신성한 치유! (자가치유 + {healedCount}명 지속힐)");
+            ShowMessage(player, L.Get("job_paladin_heal_success", healedCount));
             
             // 기존 샤먼 이팩트 유지
             PlayJobEffect(player, "fx_greydwarf_shaman_heal", player.transform.position);
@@ -495,7 +496,7 @@ namespace CaptainSkillTree.SkillTree
             
             if (showNumbers)
             {
-                ShowMessage(target, "🌟 지속 치유 시작!");
+                ShowMessage(target, L.Get("job_continuous_heal_start"));
             }
             
             while (elapsed < healDuration && target != null && !target.IsDead())
@@ -510,11 +511,9 @@ namespace CaptainSkillTree.SkillTree
                     // 진행상황 및 수치 표시 (컨피그 설정에 따라)
                     if (showNumbers)
                     {
-                        string message = $"💚 지속 치유: +{healAmount:F0} HP";
-                        if (showProgress)
-                        {
-                            message += $" ({healTicks}/{totalTicks})";
-                        }
+                        string message = showProgress
+                            ? L.Get("job_continuous_heal_progress", $"{healAmount:F0}", healTicks, totalTicks)
+                            : L.Get("job_continuous_heal_tick", $"{healAmount:F0}");
                         ShowMessage(target, message);
                     }
                     
@@ -543,7 +542,7 @@ namespace CaptainSkillTree.SkillTree
             // 지속 힐링 완료
             if (target != null && !target.IsDead() && showNumbers)
             {
-                ShowMessage(target, "✨ 지속 치유 완료!");
+                ShowMessage(target, L.Get("job_continuous_heal_complete"));
                 PlayJobEffect(target, "fx_greydwarf_shaman_heal", target.transform.position); // 치유 효과로 변경
             }
             
@@ -653,7 +652,7 @@ namespace CaptainSkillTree.SkillTree
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[버서커] ExecuteBerserkerRage 실행 중 오류: {ex.Message}");
-                ShowMessage(player, "스킬 시전 중 오류가 발생했습니다.");
+                ShowMessage(player, L.Get("job_skill_error"));
             }
         }
 
@@ -667,14 +666,14 @@ namespace CaptainSkillTree.SkillTree
             if (currentTime < rogueShadowCooldownEnd)
             {
                 float remaining = rogueShadowCooldownEnd - currentTime;
-                ShowMessage(player, $"그림자 일격 쿨타임: {remaining:F1}초");
+                ShowMessage(player, L.Get("rogue_shadow_strike_cooldown", $"{remaining:F1}"));
                 return;
             }
 
             // 자원 확인
             if (player.GetStamina() < player.GetMaxStamina() * RogueShadowStaminaCost)
             {
-                ShowMessage(player, "스태미나가 부족합니다.");
+                ShowMessage(player, L.Get("rogue_stamina_insufficient"));
                 return;
             }
 
@@ -726,7 +725,7 @@ namespace CaptainSkillTree.SkillTree
             // 쿨타임 설정
             rogueShadowCooldownEnd = currentTime + RogueShadowCooldown;
             
-            ShowMessage(player, "🗡️ 그림자 일격! (어그로 제거 + 5초간 데미지 +25%)");
+            ShowMessage(player, L.Get("rogue_shadow_strike_success", 5, 25));
             PlayJobEffect(player, "fx_Lightning", player.transform.position);
         }
 
@@ -740,14 +739,14 @@ namespace CaptainSkillTree.SkillTree
             if (currentTime < mageBurstCooldownEnd)
             {
                 float remaining = mageBurstCooldownEnd - currentTime;
-                ShowMessage(player, $"마법 폭발 쿨타임: {remaining:F1}초");
+                ShowMessage(player, L.Get("mage_explosion_cooldown", $"{remaining:F1}"));
                 return;
             }
 
             // 자원 확인
             if (player.GetEitr() < player.GetMaxEitr() * MageBurstEitrCost)
             {
-                ShowMessage(player, "에이트르가 부족합니다.");
+                ShowMessage(player, L.Get("mage_eitr_insufficient"));
                 return;
             }
 
@@ -760,8 +759,8 @@ namespace CaptainSkillTree.SkillTree
 
             // 쿨타임 설정
             mageBurstCooldownEnd = currentTime + MageBurstCooldown;
-            
-            ShowMessage(player, "🔮 마법 폭발! (10초간 마법 데미지 +10%, 범위 +7m)");
+
+            ShowMessage(player, L.Get("mage_explosion_success", 10, 10, 7));
             PlayJobEffect(player, "fx_fader_meteor_hit", player.transform.position);
         }
 
@@ -822,23 +821,23 @@ namespace CaptainSkillTree.SkillTree
                 berserkerRageActive = false;
                 berserkerRageDamageBonus = 0f;
                 if (player != null)
-                    ShowMessage(player, "버서커의 분노 종료");
+                    ShowMessage(player, L.Get("berserker_rage_end"));
             }
-            
+
             // Rogue 그림자 일격 종료 체크
             if (rogueShadowActive && currentTime > rogueShadowEndTime)
             {
                 rogueShadowActive = false;
                 if (player != null)
-                    ShowMessage(player, "그림자 일격 종료");
+                    ShowMessage(player, L.Get("rogue_shadow_strike_end"));
             }
-            
+
             // Mage 마법 폭발 종료 체크
             if (mageBurstActive && currentTime > mageBurstEndTime)
             {
                 mageBurstActive = false;
                 if (player != null)
-                    ShowMessage(player, "마법 폭발 종료");
+                    ShowMessage(player, L.Get("mage_explosion_end"));
             }
             
             // Archer 멀티샷은 일회성 스킬이므로 상태 업데이트 불필요
@@ -1176,7 +1175,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 성기사가 아니면 무시
                 var manager = SkillTreeManager.Instance;
-                if (manager == null || manager.GetSkillLevel("성기사") <= 0)
+                if (manager == null || manager.GetSkillLevel("Paladin") <= 0)
                     return;
 
                 // 피격자가 몬스터인지 확인 (플레이어는 제외)

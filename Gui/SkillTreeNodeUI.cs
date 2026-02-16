@@ -52,7 +52,7 @@ namespace CaptainSkillTree.Gui
             return null;
         }
         
-        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin", "성기사" };
+        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin", "Paladin" };
         
         public bool IsJobIconName(string iconName)
         {
@@ -150,8 +150,8 @@ namespace CaptainSkillTree.Gui
                 bool isRoot = rootNodeIds.Contains(node.Id);
                 bool isCommon = isFallbackCommon;
                 bool isJobIcon = IsJobIconName(iconName);
-                // 메이지와 성기사는 강제로 직업 아이콘으로 처리 (인식 문제 해결)
-                bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "성기사";
+                // 메이지와 Paladin는 강제로 직업 아이콘으로 처리 (인식 문제 해결)
+                bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "Paladin";
                 
                 // 직업 아이콘인지 확인하여 항상 최상위로 설정 (락/언락 관계없이)
                 if (isJobIconOrForced)
@@ -274,10 +274,10 @@ namespace CaptainSkillTree.Gui
                     bool isRoot = rootNodeIds.Contains(node.Id);
                     bool isCommon = img.sprite != null && img.sprite.name == "all_skill_unlock";
                     bool isJobIcon = IsJobIconName(node.IconName ?? node.Id);
-                    // 메이지와 성기사는 강제로 직업 아이콘으로 처리 (인식 문제 해결)
-                    bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "성기사";
+                    // 메이지와 Paladin는 강제로 직업 아이콘으로 처리 (인식 문제 해결)
+                    bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "Paladin";
                     
-                    // 메이지와 성기사 특별 디버깅
+                    // 메이지와 Paladin 특별 디버깅
                     if (isUnlocked)
                     {
                         // 해제 상태 크기 설정 (localScale 방식 - CLAUDE.md 규칙 #10)
@@ -373,7 +373,7 @@ namespace CaptainSkillTree.Gui
                 if (nodeObjects.TryGetValue(node.Id, out var nodeObj))
                 {
                     bool isJobIcon = IsJobIconName(node.IconName ?? node.Id);
-                    bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "성기사";
+                    bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "Paladin";
                     
                     if (isJobIconOrForced)
                     {

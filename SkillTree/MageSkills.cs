@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -121,7 +122,7 @@ namespace CaptainSkillTree.SkillTree
                     float cooldownRemaining = Mage_Config.MageCooldownValue - (currentTime - lastTime);
                     if (cooldownRemaining > 0)
                     {
-                        player.Message(MessageHud.MessageType.Center, $"메이지 스킬 쿨타임: {cooldownRemaining:F1}초 남음");
+                        player.Message(MessageHud.MessageType.Center, L.Get("mage_cooldown", cooldownRemaining.ToString("F1")));
                         return false;
                     }
                 }
@@ -130,14 +131,14 @@ namespace CaptainSkillTree.SkillTree
                 int eitrCost = Mage_Config.MageEitrCostValue;
                 if (player.GetEitr() < eitrCost)
                 {
-                    player.Message(MessageHud.MessageType.Center, $"Eitr 부족! (필요: {eitrCost})");
+                    player.Message(MessageHud.MessageType.Center, L.Get("eitr_insufficient", eitrCost.ToString()));
                     return false;
                 }
 
                 // 지팡이 착용 체크
                 if (!IsWieldingStaff(player))
                 {
-                    player.Message(MessageHud.MessageType.Center, "지팡이를 착용해야 합니다!");
+                    player.Message(MessageHud.MessageType.Center, L.Get("staff_required"));
                     return false;
                 }
 
@@ -263,7 +264,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (targets.Count == 0)
                 {
-                    player.Message(MessageHud.MessageType.Center, "범위 내에 적이 없습니다!");
+                    player.Message(MessageHud.MessageType.Center, L.Get("no_targets_in_range"));
                     return;
                 }
 
@@ -283,7 +284,7 @@ namespace CaptainSkillTree.SkillTree
                 }
                 
                 // 플레이어에게 피드백
-                player.Message(MessageHud.MessageType.Center, $"메이지 주문 시전! {validTargets}마리 표적 지정!");
+                player.Message(MessageHud.MessageType.Center, L.Get("mage_spell_cast", validTargets.ToString()));
                 
                 Plugin.Log.LogInfo($"[메이지 AOE] {player.GetPlayerName()} - {validTargets}마리에게 지연 폭발 주문 시전");
             }
@@ -362,7 +363,7 @@ namespace CaptainSkillTree.SkillTree
                 // 시전자에게 피드백
                 if (caster is Player player)
                 {
-                    player.Message(MessageHud.MessageType.TopLeft, $"{target.GetHoverName()} 폭발! {finalDamage:F0} 데미지!");
+                    player.Message(MessageHud.MessageType.TopLeft, L.Get("mage_explosion_damage", target.GetHoverName(), finalDamage.ToString("F0")));
                 }
                 
                 Plugin.Log.LogInfo($"[메이지 지연 폭발] {target.GetHoverName()}에게 {finalDamage:F1} 데미지 적용 완료 (2초 지연)");
@@ -465,7 +466,7 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogInfo($"[메이지 속성 저항] {player.GetPlayerName()} 속성 데미지 감소 - 원래: {originalElementalDamage:F1} → 감소후: {reducedElementalDamage:F1} (감소량: {damageReduced:F1})");
                         
                         // 플레이어에게 속성 저항 적용 메시지 표시
-                        player.Message(MessageHud.MessageType.TopLeft, $"메이지 패시브: -{damageReduced:F0} 속성 데미지 감소!");
+                        player.Message(MessageHud.MessageType.TopLeft, L.Get("mage_elemental_resist", damageReduced.ToString("F0")));
                     }
                 }
             }

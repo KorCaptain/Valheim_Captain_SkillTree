@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -13,8 +14,8 @@ namespace CaptainSkillTree.SkillTree
             // ==================== 근접 전문가 루트 노드 ====================
             manager.AddSkill(new SkillNode {
                 Id = "melee_root",
-                Name = "근접 전문가",
-                Description = "근접무기 공격력 +3",
+                NameKey = "melee_skill_expert",
+                DescriptionKey = "melee_desc_expert",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Position = new Vector2(90, 60),
@@ -25,7 +26,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, "근접무기 공격력 +3 (고정값)");
+                        SkillEffect.DrawFloatingText(player, L.Get("melee_root_effect"));
                     }
                 }
             });
@@ -35,8 +36,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "knife_expert_backstab",
-                Name = "<color=#FFD700><size=22>단검 전문가</size></color>",
-                Description = "",
+                NameKey = "knife_skill_expert",
+                DescriptionKey = "knife_desc_expert",
+                DescriptionArgs = new object[] { Knife_Config.KnifeExpertBackstabBonusValue },
                 RequiredPoints = Knife_Config.KnifeExpertRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
@@ -52,8 +54,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "knife_step2_evasion",
-                Name = "<color=#FFD700><size=22>회피 숙련</size></color>",
-                Description = "",
+                NameKey = "knife_skill_evasion",
+                DescriptionKey = "knife_desc_evasion",
+                DescriptionArgs = new object[] { Knife_Config.KnifeEvasionBonusValue },
                 RequiredPoints = Knife_Config.KnifeEvasionRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -69,8 +72,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "knife_step3_move_speed",
-                Name = "<color=#FFD700><size=22>빠른 움직임</size></color>",
-                Description = "",
+                NameKey = "knife_skill_move_speed",
+                DescriptionKey = "knife_desc_move_speed",
+                DescriptionArgs = new object[] { Knife_Config.KnifeMoveSpeedBonusValue },
                 RequiredPoints = Knife_Config.KnifeMoveSpeedRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -86,8 +90,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "knife_step4_attack_damage",
-                Name = "<color=#FFD700><size=22>빠른 공격</size></color>",
-                Description = "",
+                NameKey = "knife_skill_attack_speed",
+                DescriptionKey = "knife_desc_attack_speed",
+                DescriptionArgs = new object[] { Knife_Config.KnifeAttackDamageBonusValue },
                 RequiredPoints = Knife_Config.KnifeAttackSpeedRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -103,8 +108,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "knife_step5_crit_rate",
-                Name = "<color=#FFD700><size=22>치명타 숙련</size></color>",
-                Description = "",
+                NameKey = "knife_skill_crit_rate",
+                DescriptionKey = "knife_desc_crit_rate",
+                DescriptionArgs = new object[] { Knife_Config.KnifeCritRateBonusValue },
                 RequiredPoints = Knife_Config.KnifeCritRateRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -120,8 +126,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "knife_step6_combat_damage",
-                Name = "<color=#FFD700><size=22>치명적 피해</size></color>",
-                Description = "",
+                NameKey = "knife_skill_combat_damage",
+                DescriptionKey = "knife_desc_combat_damage",
+                DescriptionArgs = new object[] { Knife_Config.KnifeCombatDamageBonusValue },
                 RequiredPoints = Knife_Config.KnifeCombatDamageRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -137,8 +144,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "knife_step7_execution",
-                Name = "<color=#FFD700><size=22>암살자</size></color>",
-                Description = "",
+                NameKey = "knife_skill_execution",
+                DescriptionKey = "knife_desc_execution",
+                DescriptionArgs = new object[] { Knife_Config.KnifeExecutionCritDamageValue, Knife_Config.KnifeExecutionStaggerBonusValue },
                 RequiredPoints = Knife_Config.KnifeExecutionRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -154,8 +162,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "knife_step8_assassination",
-                Name = "<color=#FFD700><size=22>암살술</size></color>",
-                Description = "",
+                NameKey = "knife_skill_assassination",
+                DescriptionKey = "knife_desc_assassination",
+                DescriptionArgs = new object[] { Knife_Config.KnifeAssassinationCritMultiplierValue },
                 RequiredPoints = Knife_Config.KnifeAssassinationRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -171,8 +180,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "knife_step9_assassin_heart",
-                Name = "<color=#FFD700><size=22>암살자의 심장</size></color>",
-                Description = "",
+                NameKey = "knife_skill_assassin",
+                DescriptionKey = "knife_desc_assassin_main",
+                DescriptionArgs = new object[] { Knife_Config.KnifeAssassinHeartTeleportRangeValue, Knife_Config.KnifeAssassinHeartTeleportBehindValue, Knife_Config.KnifeAssassinHeartStunDurationValue, 5, Knife_Config.KnifeAssassinHeartDurationValue, Knife_Config.KnifeAssassinHeartDamageBonusValue, Knife_Config.KnifeAssassinHeartCritChanceValue },
                 RequiredPoints = Knife_Config.KnifeAssassinHeartRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -204,8 +214,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_expert",
-                Name = "검 전문가",
-                Description = "",
+                NameKey = "sword_skill_expert",
+                DescriptionKey = "sword_desc_expert",
+                DescriptionArgs = new object[] { SkillTreeConfig.SwordExpertDamageValue, SkillTreeConfig.SwordStep1ExpertComboBonusValue, SkillTreeConfig.SwordStep1ExpertDurationValue },
                 RequiredPoints = Sword_Config.SwordExpertRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
@@ -222,8 +233,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step1_fastslash",
-                Name = "빠른 베기",
-                Description = "",
+                NameKey = "sword_skill_fast_slash",
+                DescriptionKey = "sword_desc_fast_slash",
+                DescriptionArgs = new object[] { SkillTreeConfig.SwordStep1FastSlashSpeedValue },
                 RequiredPoints = Sword_Config.SwordStep1FastSlashRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -240,8 +252,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step1_counter",
-                Name = "반격 자세",
-                Description = "",
+                NameKey = "sword_skill_counter",
+                DescriptionKey = "sword_desc_counter",
+                DescriptionArgs = new object[] { SkillTreeConfig.SwordStep1CounterDurationValue, SkillTreeConfig.SwordStep1CounterDefenseBonusValue },
                 RequiredPoints = Sword_Config.SwordStep1CounterRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -258,8 +271,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step3_riposte",
-                Name = "칼날 되치기",
-                Description = "",
+                NameKey = "sword_skill_riposte",
+                DescriptionKey = "sword_desc_riposte",
+                DescriptionArgs = new object[] { SkillTreeConfig.SwordStep3BladeCounterBonusValue },
                 RequiredPoints = Sword_Config.SwordStep3RiposteRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -275,8 +289,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step2_combo",
-                Name = "연속베기",
-                Description = "",
+                NameKey = "sword_skill_combo",
+                DescriptionKey = "sword_desc_combo",
+                DescriptionArgs = new object[] { SkillTreeConfig.SwordStep2ComboSlashBonusValue, SkillTreeConfig.SwordStep2ComboSlashDurationValue },
                 RequiredPoints = Sword_Config.SwordStep2ComboSlashRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -288,13 +303,14 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "sword_step4_duel" },
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 4단계: 공방일체
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step3_allinone",
-                Name = "공방일체",
-                Description = "",
+                NameKey = "sword_skill_all_in_one",
+                DescriptionKey = "sword_desc_all_in_one",
+                DescriptionArgs = new object[] { SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue, SkillTreeConfig.SwordStep3OffenseDefenseDefenseBonusValue },
                 RequiredPoints = Sword_Config.SwordStep3AllInOneRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -310,8 +326,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step4_duel",
-                Name = "진검승부",
-                Description = "",
+                NameKey = "sword_skill_duel",
+                DescriptionKey = "sword_desc_duel",
+                DescriptionArgs = new object[] { SkillTreeConfig.SwordStep4TrueDuelSpeedValue },
                 RequiredPoints = Sword_Config.SwordStep4TrueDuelRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -327,8 +344,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step5_finalcut",
-                Name = "Sword Slash",
-                Description = "",
+                NameKey = "sword_skill_rush_slash",
+                DescriptionKey = "sword_desc_rush_slash",
+                DescriptionArgs = new object[] { Sword_Config.RushSlashInitialDistanceValue },
                 RequiredPoints = Sword_Config.RushSlashRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -345,8 +363,9 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode
             {
                 Id = "sword_step5_defswitch",
-                Name = "패링 돌격",
-                Description = "",
+                NameKey = "sword_skill_parry_rush",
+                DescriptionKey = "sword_desc_parry_rush",
+                DescriptionArgs = new object[] { Sword_Config.ParryRushDurationValue },
                 RequiredPoints = Sword_Config.SwordStep5DefenseSwitchRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -364,8 +383,9 @@ namespace CaptainSkillTree.SkillTree
             // 1단계: 창 전문가
             manager.AddSkill(new SkillNode {
                 Id = "spear_expert",
-                Name = "창 전문가",
-                Description = $"2연속 공격 시 공격 속도 +{SkillTreeConfig.SpearStep1AttackSpeedValue}%, 공격력 +{SkillTreeConfig.SpearStep1DamageBonusValue}%({SkillTreeConfig.SpearStep1DurationValue}초 동안)\n필요조건: 창 착용",
+                NameKey = "spear_skill_expert",
+                DescriptionKey = "spear_desc_expert",
+                DescriptionArgs = new object[] { SkillTreeConfig.SpearStep1AttackSpeedValue, SkillTreeConfig.SpearStep1DamageBonusValue, SkillTreeConfig.SpearStep1DurationValue },
                 RequiredPoints = Spear_Config.SpearExpertRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
@@ -378,12 +398,13 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "spear_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 2-1단계: 투창 전문가 (패시브)
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step1_throw",
-                Name = "투창 전문가",
-                Description = $"창 던지기 공격력 +{SkillTreeConfig.SpearStep2ThrowDamageValue}% (쿨타임: {SkillTreeConfig.SpearStep2ThrowCooldownValue:F0}초)\n필요조건: 한손 창 착용",
+                NameKey = "spear_skill_throw",
+                DescriptionKey = "spear_desc_throw",
+                DescriptionArgs = new object[] { SkillTreeConfig.SpearStep2ThrowDamageValue },
                 RequiredPoints = Spear_Config.SpearStep1RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -399,8 +420,9 @@ namespace CaptainSkillTree.SkillTree
             // 2-2단계: 급소 찌르기
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step1_crit",
-                Name = "급소 찌르기",
-                Description = "창 공격력 +20%\n필요조건: 창 착용",
+                NameKey = "spear_skill_crit",
+                DescriptionKey = "spear_desc_crit",
+                DescriptionArgs = new object[] { SkillTreeConfig.SpearStep2CritDamageBonusValue },
                 RequiredPoints = Spear_Config.SpearStep1RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -416,8 +438,9 @@ namespace CaptainSkillTree.SkillTree
             // 3단계: 연격창 (티어 순서 변경: 회피찌르기보다 먼저)
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step3_pierce",
-                Name = "연격창",
-                Description = "무기 공격력 +4\n필요조건: 창 착용",
+                NameKey = "spear_skill_pierce",
+                DescriptionKey = "spear_desc_pierce",
+                DescriptionArgs = new object[] { SkillTreeConfig.SpearStep3PierceDamageBonusValue },
                 RequiredPoints = Spear_Config.SpearStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -433,8 +456,9 @@ namespace CaptainSkillTree.SkillTree
             // 4-1단계: 회피 찌르기 (티어 순서 변경: 연격창 다음)
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step2_evasion",
-                Name = "회피 찌르기",
-                Description = "구르기 직후 공격 시 피해 +25%, 공격 스태미나 -8%\n필요조건: 창 착용",
+                NameKey = "spear_skill_evasion",
+                DescriptionKey = "spear_desc_evasion",
+                DescriptionArgs = new object[] { SkillTreeConfig.SpearStep3EvasionDamageBonusValue, Spear_Config.SpearStep3EvasionStaminaReductionValue },
                 RequiredPoints = Spear_Config.SpearStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -450,8 +474,9 @@ namespace CaptainSkillTree.SkillTree
             // 4-2단계: 폭발창
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step3_quick",
-                Name = "폭발창",
-                Description = $"{Spear_Config.SpearExplosionChanceValue}% 확률로 폭발\n범위 {Spear_Config.SpearExplosionRadiusValue}m, 공격력 +{Spear_Config.SpearExplosionDamageBonusValue}%\n필요조건: 창 착용",
+                NameKey = "spear_skill_explosion",
+                DescriptionKey = "spear_desc_explosion",
+                DescriptionArgs = new object[] { Spear_Config.SpearExplosionChanceValue, Spear_Config.SpearExplosionRadiusValue, Spear_Config.SpearExplosionDamageBonusValue },
                 RequiredPoints = Spear_Config.SpearStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -467,8 +492,9 @@ namespace CaptainSkillTree.SkillTree
             // 5단계: 이연창
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step4_triple",
-                Name = "이연창",
-                Description = $"2연속 공격 시 {Spear_Config.SpearDualDurationValue}초 동안 공격력 +{Spear_Config.SpearDualDamageBonusValue}%\n필요조건: 창 착용",
+                NameKey = "spear_skill_dual",
+                DescriptionKey = "spear_desc_dual",
+                DescriptionArgs = new object[] { Spear_Config.SpearDualDurationValue, Spear_Config.SpearDualDamageBonusValue },
                 RequiredPoints = Spear_Config.SpearStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -480,12 +506,13 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 6-1단계: 꿰뚫는 창
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step5_penetrate",
-                Name = "꿰뚫는 창",
-                Description = $"G키: {Spear_Config.SpearStep6PenetrateBuffDurationValue}초간 번개 충격 모드, {Spear_Config.SpearStep6PenetrateComboCountValue}회 연속 적중 시 번개 충격 발동 (데미지 +{Spear_Config.SpearStep6PenetrateLightningDamageValue}%) | 소모: 스태미나 {Spear_Config.SpearStep6PenetrateStaminaCostValue}% | 쿨타임: {Spear_Config.SpearStep6PenetrateCooldownValue}초",
+                NameKey = "spear_skill_penetrate",
+                DescriptionKey = "spear_desc_penetrate",
+                DescriptionArgs = new object[] { Spear_Config.SpearStep6PenetrateBuffDurationValue, Spear_Config.SpearStep6PenetrateComboCountValue },
                 RequiredPoints = Spear_Config.SpearPenetrateRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -497,12 +524,13 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 6-2단계: 연공창
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step5_combo",
-                Name = "연공창",
-                Description = $"투창을 강화하여 창을 던지고 적과 주변 몬스터를 넉백시킴\n데미지 +{SkillTreeConfig.SpearStep6ComboDamageValue}%\n액티브 스킬 - G키",
+                NameKey = "spear_skill_combo",
+                DescriptionKey = "spear_desc_combo",
+                DescriptionArgs = new object[] { SkillTreeConfig.SpearStep6ComboDamageValue },
                 RequiredPoints = Spear_Config.SpearComboRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -520,8 +548,9 @@ namespace CaptainSkillTree.SkillTree
             // 1단계: 폴암 전문가
             manager.AddSkill(new SkillNode {
                 Id = "polearm_expert",
-                Name = "폴암 전문가",
-                Description = $"공격 범위 +{SkillTreeConfig.PolearmExpertRangeBonusValue}%\n필요조건: 폴암 착용",
+                NameKey = "polearm_skill_expert",
+                DescriptionKey = "polearm_desc_expert",
+                DescriptionArgs = new object[] { SkillTreeConfig.PolearmExpertRangeBonusValue },
                 RequiredPoints = Polearm_Config.PolearmExpertRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
@@ -538,8 +567,9 @@ namespace CaptainSkillTree.SkillTree
             // 2단계: 회전베기
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step1_spin",
-                Name = "회전베기",
-                Description = $"휠 마우스 공격력 +{SkillTreeConfig.PolearmStep1SpinWheelDamageValue}%",
+                NameKey = "polearm_skill_spin",
+                DescriptionKey = "polearm_desc_spin",
+                DescriptionArgs = new object[] { SkillTreeConfig.PolearmStep1SpinWheelDamageValue },
                 RequiredPoints = Polearm_Config.PolearmStep1RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -555,8 +585,9 @@ namespace CaptainSkillTree.SkillTree
             // 3-1단계: 폴암강화 (티어 순서 변경: 제압 공격과 교환)
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step4_charge",
-                Name = "폴암강화",
-                Description = "무기 공격력 +5",
+                NameKey = "polearm_skill_charge",
+                DescriptionKey = "polearm_desc_charge",
+                DescriptionArgs = new object[] { SkillTreeConfig.PolearmStep4ChargeDamageBonusValue },
                 RequiredPoints = Polearm_Config.PolearmStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -572,8 +603,9 @@ namespace CaptainSkillTree.SkillTree
             // 3-2단계: 영웅 타격
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step2_hero",
-                Name = "영웅 타격",
-                Description = $"{SkillTreeConfig.PolearmStep2HeroKnockbackChanceValue}% 확률로 넉백",
+                NameKey = "polearm_skill_hero",
+                DescriptionKey = "polearm_desc_hero",
+                DescriptionArgs = new object[] { SkillTreeConfig.PolearmStep2HeroKnockbackChanceValue },
                 RequiredPoints = Polearm_Config.PolearmStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -589,8 +621,9 @@ namespace CaptainSkillTree.SkillTree
             // 4단계: 광역 강타
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step3_area",
-                Name = "광역 강타",
-                Description = $"2연속 공격 시 공격력 +{SkillTreeConfig.PolearmStep3AreaComboBonusValue}%({SkillTreeConfig.PolearmStep3AreaComboDurationValue}초동안)",
+                NameKey = "polearm_skill_area",
+                DescriptionKey = "polearm_desc_area",
+                DescriptionArgs = new object[] { SkillTreeConfig.PolearmStep3AreaComboBonusValue, SkillTreeConfig.PolearmStep3AreaComboDurationValue },
                 RequiredPoints = Polearm_Config.PolearmStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -606,8 +639,9 @@ namespace CaptainSkillTree.SkillTree
             // 5-1단계: 지면 강타
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step3_ground",
-                Name = "지면 강타",
-                Description = $"휠 마우스 공격력 +{SkillTreeConfig.PolearmStep3GroundWheelDamageValue}%",
+                NameKey = "polearm_skill_ground",
+                DescriptionKey = "polearm_desc_ground",
+                DescriptionArgs = new object[] { SkillTreeConfig.PolearmStep3GroundWheelDamageValue },
                 RequiredPoints = Polearm_Config.PolearmStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -623,8 +657,9 @@ namespace CaptainSkillTree.SkillTree
             // 5-2단계: 반달 베기
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step4_moon",
-                Name = "반달 베기",
-                Description = $"공격 범위 +{SkillTreeConfig.PolearmStep4MoonRangeBonusValue}%, 공격 스태미나 -{SkillTreeConfig.PolearmStep4MoonStaminaReductionValue}%",
+                NameKey = "polearm_skill_moon",
+                DescriptionKey = "polearm_desc_moon",
+                DescriptionArgs = new object[] { SkillTreeConfig.PolearmStep4MoonRangeBonusValue, SkillTreeConfig.PolearmStep4MoonStaminaReductionValue },
                 RequiredPoints = Polearm_Config.PolearmStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -640,8 +675,9 @@ namespace CaptainSkillTree.SkillTree
             // 5-3단계: 제압 공격 (티어 순서 변경: 폴암강화와 교환)
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step1_suppress",
-                Name = "제압 공격",
-                Description = $"공격력 +{SkillTreeConfig.PolearmStep1SuppressDamageValue}%",
+                NameKey = "polearm_skill_suppress",
+                DescriptionKey = "polearm_desc_suppress",
+                DescriptionArgs = new object[] { SkillTreeConfig.PolearmStep1SuppressDamageValue },
                 RequiredPoints = Polearm_Config.PolearmStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -657,8 +693,9 @@ namespace CaptainSkillTree.SkillTree
             // 6단계: 관통 돌격
             manager.AddSkill(new SkillNode {
                 Id = "polearm_step5_king",
-                Name = "관통 돌격",
-                Description = $"전방 {Polearm_Config.PolearmPierceChargeDashDistanceValue}m 돌진, 적 관통 시 +{Polearm_Config.PolearmPierceChargePrimaryDamageValue}%\nAOE 넉백: {Polearm_Config.PolearmPierceChargeAoeAngleValue}° {Polearm_Config.PolearmPierceChargeAoeRadiusValue}m +{Polearm_Config.PolearmPierceChargeAoeDamageValue}%\n소모: 스태미나 {Polearm_Config.PolearmPierceChargeStaminaCostValue}\n스킬유형: 액티브 G키\n무기타입: 폴암\n쿨타임: {Polearm_Config.PolearmPierceChargeCooldownValue}초",
+                NameKey = "polearm_skill_king",
+                DescriptionKey = "polearm_desc_king",
+                DescriptionArgs = new object[] { Polearm_Config.PolearmPierceChargeDashDistanceValue },
                 RequiredPoints = Polearm_Config.PolearmKingRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -672,12 +709,13 @@ namespace CaptainSkillTree.SkillTree
             });
             
             // 4. 둔기 스킬 트리 (SkillTreeData.cs와 동일한 구조)
-            
+
             // 1단계: 둔기 전문가
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step1_damage",
-                Name = "둔기 전문가",
-                Description = "둔기 피해 +5%, 공격 시 20% 확률로 0.5초 기절\n필요조건: 둔기 착용",
+                NameKey = "mace_skill_expert",
+                DescriptionKey = "mace_desc_expert",
+                DescriptionArgs = new object[] { Mace_Config.MaceExpertDamageBonusValue, Mace_Config.MaceExpertStunChanceValue, Mace_Config.MaceExpertStunDurationValue },
                 RequiredPoints = Mace_Config.MaceExpertRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
@@ -690,12 +728,13 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "mace_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 2단계: 기절 강화
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step2_stun_boost",
-                Name = "기절 강화",
-                Description = "기절된 적에게 피해 +20%, 20% 확률로 넉백\n필요조건: 둔기 착용",
+                NameKey = "mace_skill_stun_boost",
+                DescriptionKey = "mace_desc_stun_boost",
+                DescriptionArgs = new object[] { Mace_Config.MaceStep2StunChanceBonusValue, Mace_Config.MaceStep2StunDurationBonusValue },
                 RequiredPoints = Mace_Config.MaceStep2RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
@@ -707,12 +746,13 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "mace_Step3_branch_guard", "mace_Step3_branch_heavy" },
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 3-1단계: 방패 진형
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step3_branch_guard",
-                Name = "방패 진형",
-                Description = "한손둔기 착용 시 피해 -10%, 스태미나 소모 -10%\n필요조건: 둔기 착용",
+                NameKey = "mace_skill_guard_boost",
+                DescriptionKey = "mace_desc_guard_boost",
+                DescriptionArgs = new object[] { Mace_Config.MaceStep3GuardArmorBonusValue },
                 RequiredPoints = Mace_Config.MaceStep3GuardRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -724,12 +764,13 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "mace_Step4_push" },
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 3-2단계: 무거운 일격
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step3_branch_heavy",
-                Name = "무거운 일격",
-                Description = "양손둔기 착용 시 피해 +15%, 기절 확률 +10%\n필요조건: 둔기 착용",
+                NameKey = "mace_skill_heavy_strike",
+                DescriptionKey = "mace_desc_heavy_strike",
+                DescriptionArgs = new object[] { Mace_Config.MaceStep3HeavyDamageBonusValue },
                 RequiredPoints = Mace_Config.MaceStep3HeavyRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
@@ -741,12 +782,13 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "mace_Step4_push" },
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 4단계: 3연격 넉백
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step4_push",
-                Name = "3연격 넉백",
-                Description = "3연속 공격 시 적 100% 넉백 (1.5m)\n필요조건: 둔기 착용",
+                NameKey = "mace_skill_knockback",
+                DescriptionKey = "mace_desc_knockback",
+                DescriptionArgs = new object[] { Mace_Config.MaceStep4KnockbackChanceValue },
                 RequiredPoints = Mace_Config.MaceStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
@@ -758,12 +800,13 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "mace_Step5_tank", "mace_Step5_dps" },
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 5-1단계: 방패 제압 (Tank)
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step5_tank",
-                Name = "방패 제압",
-                Description = "한손둔기 착용 시, 방어력 +10 또는 기절 적 피해 +40%\n필요조건: 둔기 착용",
+                NameKey = "mace_skill_tanker",
+                DescriptionKey = "mace_desc_tanker",
+                DescriptionArgs = new object[] { Mace_Config.MaceStep5TankHealthBonusValue, Mace_Config.MaceStep5TankDamageReductionValue },
                 RequiredPoints = Mace_Config.MaceStep5TankRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -775,12 +818,13 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "mace_Step6_grandmaster" },
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 5-2단계: 분쇄자 (DPS)
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step5_dps",
-                Name = "분쇄자",
-                Description = "양손둔기 착용 시, 공격력 +20% 또는 기절 적 피해 +30%\n필요조건: 둔기 착용",
+                NameKey = "mace_skill_dps_boost",
+                DescriptionKey = "mace_desc_dps_boost",
+                DescriptionArgs = new object[] { Mace_Config.MaceStep5DpsDamageBonusValue, Mace_Config.MaceStep5DpsAttackSpeedBonusValue },
                 RequiredPoints = Mace_Config.MaceStep5DpsRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -792,12 +836,13 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "mace_Step6_grandmaster" },
                 ApplyEffect = (lv) => { }
             });
-            
+
             // 6단계: 둔기 마스터
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step6_grandmaster",
-                Name = "둔기 마스터",
-                Description = "둔기 공격력 +3\n필요조건: 둔기 착용",
+                NameKey = "mace_skill_grandmaster",
+                DescriptionKey = "mace_desc_grandmaster",
+                DescriptionArgs = new object[] { Mace_Config.MaceStep6ArmorBonusValue },
                 RequiredPoints = Mace_Config.MaceStep6RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -813,8 +858,9 @@ namespace CaptainSkillTree.SkillTree
             // 7-1단계: 분노의 망치 (G키 액티브)
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step7_fury_hammer",
-                Name = "분노의 망치",
-                Description = "\"G키\" 홀드 1~5초 후 차지 공격: 초당 피해 +20%, +45%, +75%, +120%, +200% (100% 넉백, 포인트 3 소모)\n필요조건: 양손둔기 착용",
+                NameKey = "mace_skill_fury",
+                DescriptionKey = "mace_desc_fury_attack",
+                DescriptionArgs = new object[] { 5 },
                 RequiredPoints = Mace_Config.FuryHammerRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 7,
@@ -830,8 +876,9 @@ namespace CaptainSkillTree.SkillTree
             // 7-2단계: 수호자의 진심 (G키 액티브) - 둔기 마스터 위쪽으로 이동 (x+20, y+10)
             manager.AddSkill(new SkillNode {
                 Id = "mace_Step7_guardian_heart",
-                Name = "수호자의 진심",
-                Description = $"G키로 {Mace_Config.GuardianHeartDurationValue:F0}초 동안 반사 방어막 생성 (방패로 차단 시 몬스터 공격력의 {Mace_Config.GuardianHeartReflectPercentValue:F0}% 반사)\n소모: 스태미나 {Mace_Config.GuardianHeartStaminaCostValue:F0}%\n스킬유형: 액티브 G키\n무기타입: 둔기\n쿨타임: {Mace_Config.GuardianHeartCooldownValue:F0}초\n필요조건: 둔기 + 방패 착용",
+                NameKey = "mace_skill_guardian",
+                DescriptionKey = "mace_desc_guardian_buff",
+                DescriptionArgs = new object[] { Mace_Config.GuardianHeartDurationValue },
                 RequiredPoints = Mace_Config.GuardianHeartRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 7,

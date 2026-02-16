@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -23,11 +24,11 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Mace_Config.MaceExpertRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "둔기 전문가",
-                $"둔기 피해 +{Mace_Config.MaceExpertDamageBonusValue}%, 공격 시 {Mace_Config.MaceExpertStunChanceValue}% 확률로 {Mace_Config.MaceExpertStunDurationValue}초 기절",
+                $"<color=#FFD700><size=22>{L.Get("mace_skill_expert")}</size></color>",
+                L.Get("mace_desc_expert", Mace_Config.MaceExpertDamageBonusValue, Mace_Config.MaceExpertStunChanceValue, Mace_Config.MaceExpertStunDurationValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
-            data.requirement = "둔기 착용";
+            data.requirement = L.Get("requirement_mace_equip");
             data.requiredPoints = requiredPoints.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Mace);
@@ -41,8 +42,8 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep1DamageTooltip() 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "공격력 강화",
-                $"공격력 +{Mace_Config.MaceStep1DamageBonusValue}%",
+                $"<color=#FFD700><size=22>{L.Get("mace_skill_damage_boost")}</size></color>",
+                L.Get("mace_desc_damage_boost", Mace_Config.MaceStep1DamageBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
             data.requiredPoints = "2";
@@ -58,8 +59,8 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep2StunBoostTooltip() 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "기절 강화",
-                $"기절 확률 +{Mace_Config.MaceStep2StunChanceBonusValue}%, 지속시간 +{Mace_Config.MaceStep2StunDurationBonusValue}초",
+                $"<color=#FFD700><size=22>{L.Get("mace_skill_stun_boost")}</size></color>",
+                L.Get("mace_desc_stun_boost", Mace_Config.MaceStep2StunChanceBonusValue, Mace_Config.MaceStep2StunDurationBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
             data.requiredPoints = "3";
@@ -75,8 +76,8 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep3BranchGuardTooltip() 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "방어 강화",
-                $"방어력 +{Mace_Config.MaceStep3GuardArmorBonusValue}",
+                $"<color=#FFD700><size=22>{L.Get("mace_skill_guard_boost")}</size></color>",
+                L.Get("mace_desc_guard_boost", Mace_Config.MaceStep3GuardArmorBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
             data.requiredPoints = "3";
@@ -92,8 +93,8 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep3BranchHeavyTooltip() 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "무거운 타격",
-                $"공격력 +{Mace_Config.MaceStep3HeavyDamageBonusValue}",
+                $"<color=#FFD700><size=22>{L.Get("mace_skill_heavy_strike")}</size></color>",
+                L.Get("mace_desc_heavy_strike", Mace_Config.MaceStep3HeavyDamageBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
             data.requiredPoints = "3";
@@ -109,8 +110,8 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep4PushTooltip() 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "밀어내기",
-                $"공격 시 {Mace_Config.MaceStep4KnockbackChanceValue}% 확률로 넉백",
+                $"<color=#FFD700><size=22>{L.Get("mace_skill_knockback")}</size></color>",
+                L.Get("mace_desc_knockback", Mace_Config.MaceStep4KnockbackChanceValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
             data.requiredPoints = "2";
@@ -126,8 +127,8 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep5TankTooltip() 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "탱커",
-                $"체력 +{Mace_Config.MaceStep5TankHealthBonusValue}%, 받는 데미지 -{Mace_Config.MaceStep5TankDamageReductionValue}%",
+                $"<color=#FFD700><size=22>{L.Get("mace_skill_tanker")}</size></color>",
+                L.Get("mace_desc_tanker", Mace_Config.MaceStep5TankHealthBonusValue, Mace_Config.MaceStep5TankDamageReductionValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
             data.requiredPoints = "3";
@@ -143,8 +144,8 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep5DpsTooltip() 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "공격력 강화",
-                $"공격력 +{Mace_Config.MaceStep5DpsDamageBonusValue}%, 공격속도 +{Mace_Config.MaceStep5DpsAttackSpeedBonusValue}%",
+                $"<color=#FFD700><size=22>{L.Get("mace_skill_dps_boost")}</size></color>",
+                L.Get("mace_desc_dps_boost", Mace_Config.MaceStep5DpsDamageBonusValue, Mace_Config.MaceStep5DpsAttackSpeedBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
             data.requiredPoints = "3";
@@ -160,8 +161,8 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep6GrandmasterTooltip() 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                "그랜드마스터",
-                $"방어 +{Mace_Config.MaceStep6ArmorBonusValue}%",
+                $"<color=#FFD700><size=22>{L.Get("mace_skill_grandmaster")}</size></color>",
+                L.Get("mace_desc_grandmaster", Mace_Config.MaceStep6ArmorBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
             data.requiredPoints = "2";
@@ -215,19 +216,19 @@ namespace CaptainSkillTree.SkillTree
                 // 상세 툴팁 데이터 생성 (간소화)
                 var data = new FuryHammerTooltipData
                 {
-                    skillName = "분노의 망치",
-                    description = $"{attackCount}회 연속 세컨더리 어택 발동",
-                    additionalInfo = $"1~4타: {attackInterval}초 간격, 5타: {attackInterval}초 후 데미지",
-                    attackCount = "", // 제거
-                    baseDamage = $"현재 공격력 × 1~4타: {normalHitMultiplier:F0}%, 5타: {finalHitMultiplier:F0}%",
-                    damageIncrement = "", // 제거
-                    aoeRadius = $"{aoeRadius:F0}m",
-                    attackInterval = "", // 제거 (additionalInfo에 포함)
+                    skillName = L.Get("mace_skill_fury"),
+                    description = L.Get("mace_desc_fury_attack", attackCount),
+                    additionalInfo = L.Get("mace_desc_fury_interval", attackInterval, attackInterval),
+                    attackCount = "",
+                    baseDamage = L.Get("mace_desc_fury_damage", normalHitMultiplier, finalHitMultiplier),
+                    damageIncrement = "",
+                    aoeRadius = $"{aoeRadius:F0}{L.Get("unit_meter")}",
+                    attackInterval = "",
                     staminaCost = $"{staminaCost:F0}",
-                    cooldown = $"{cooldown:F0}초",
-                    skillType = "액티브 스킬 - H키",
-                    requirement = "양손둔기 착용",
-                    confirmation = "같은 무기 전문가 내에서만 다중 습득 가능",
+                    cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
+                    skillType = L.Get("skill_type_active_key", "H"),
+                    requirement = L.Get("requirement_two_hand_mace"),
+                    confirmation = L.Get("tooltip_same_weapon_only"),
                     requiredPoints = "3"
                 };
 
@@ -261,7 +262,7 @@ namespace CaptainSkillTree.SkillTree
                 // 2. 설명 (#FFD700 / #E0E0E0)
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{data.description}";
 
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -273,49 +274,49 @@ namespace CaptainSkillTree.SkillTree
                 // 3. 데미지 (#FF6B6B / #FFB6C1)
                 if (!string.IsNullOrEmpty(data.baseDamage))
                 {
-                    tooltip += $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>{data.baseDamage}</size></color>\n";
+                    tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{data.baseDamage}</size></color>\n";
                 }
 
                 // 4. 범위 (#87CEEB / #B0E0E6) - AOE 범위
                 if (!string.IsNullOrEmpty(data.aoeRadius))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{data.aoeRadius}</size></color>\n";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{data.aoeRadius}</size></color>\n";
                 }
 
                 // 5. 소모 (#FFB347 / #FFDAB9)
                 if (!string.IsNullOrEmpty(data.staminaCost))
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.staminaCost}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {data.staminaCost}</size></color>\n";
                 }
 
                 // 6. 스킬유형 (H키 강조: #FF1493 / #00FFFF)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#FF1493><size=16>스킬유형: </size></color><color=#00FFFF><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#FF1493><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FFFF><size=16>{data.skillType}</size></color>\n";
                 }
 
                 // 7. 쿨타임 (#FFA500 / #FFDB58)
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
                 // 8. 필요조건 (#98FB98 / #00FF00)
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
                 // 9. 확인사항 (#F0E68C / #FFE4B5)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 10. 필요포인트 (#87CEEB / #FF6B6B)
                 if (!string.IsNullOrEmpty(data.requiredPoints))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{data.requiredPoints}</size></color>";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{data.requiredPoints}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
@@ -332,15 +333,15 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static string GetFuryHammerFallbackTooltip()
         {
-            return "<color=#FFD700><size=22>분노의 망치</size></color>\n\n" +
-                   "<color=#E0E0E0><size=16>H키: 5회 연속 세컨더리 어택 발동 (1~4타: 0.8초 간격, 5타: 0.5초 후 데미지)\n\n" +
-                   "• 데미지: 현재 공격력 × 1~4타: 80%, 5타: 150%\n" +
-                   "• AOE 범위: 5m\n" +
-                   "• 소모: 스태미나 40\n" +
-                   "• 쿨타임: 30초\n" +
-                   "• 필요조건: 둔기 착용\n\n" +
-                   "💥 스킬유형: 액티브 스킬 - H키\n\n" +
-                   "확인사항: 같은 무기 전문가 내에서만 다중 습득 가능</size></color>";
+            return $"<color=#FFD700><size=22>{L.Get("mace_skill_fury")}</size></color>\n\n" +
+                   $"<color=#E0E0E0><size=16>H: {L.Get("mace_desc_fury_attack", 5)} ({L.Get("mace_desc_fury_interval", 0.8f, 0.5f)})\n\n" +
+                   $"• {L.Get("tooltip_damage")}: {L.Get("mace_desc_fury_damage", 80, 150)}\n" +
+                   $"• {L.Get("tooltip_range")}: 5{L.Get("unit_meter")}\n" +
+                   $"• {L.Get("tooltip_cost")}: {L.Get("stat_stamina")} 40\n" +
+                   $"• {L.Get("tooltip_cooldown")}: 30{L.Get("unit_seconds")}\n" +
+                   $"• {L.Get("tooltip_requirements")}: {L.Get("requirement_mace_equip")}\n\n" +
+                   $"💥 {L.Get("tooltip_skill_type")}: {L.Get("skill_type_active_key", "H")}\n\n" +
+                   $"{L.Get("tooltip_notice")}: {L.Get("tooltip_same_weapon_only")}</size></color>";
         }
 
         /// <summary>
@@ -382,17 +383,17 @@ namespace CaptainSkillTree.SkillTree
                 // 상세 툴팁 데이터 생성
                 var data = new GuardianHeartTooltipData
                 {
-                    skillName = "수호자의 진심",
-                    description = $"{duration:F0}초간 방어 버프 활성화",
-                    additionalInfo = $"받는 데미지의 {reflectPercent:F0}%를 공격자에게 반사",
-                    duration = $"{duration:F0}초",
+                    skillName = L.Get("mace_skill_guardian"),
+                    description = L.Get("mace_desc_guardian_buff", duration),
+                    additionalInfo = L.Get("mace_desc_guardian_reflect", reflectPercent),
+                    duration = $"{duration:F0}{L.Get("unit_seconds")}",
                     reflectPercent = $"{reflectPercent:F0}%",
                     staminaCost = $"{staminaCost:F0}",
-                    cooldown = $"{cooldown:F0}초",
-                    skillType = "액티브 스킬 - G키",
-                    requirement = "둔기 + 방패 착용",
-                    confirmation = "같은 무기 전문가 내에서만 다중 습득 가능",
-                    specialNote = $"버프 지속 중 방어력 증가 및 데미지 감소 효과 적용\n\n<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                    cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
+                    skillType = L.Get("skill_type_active_key", "G"),
+                    requirement = L.Get("requirement_mace_shield"),
+                    confirmation = L.Get("tooltip_same_weapon_only"),
+                    specialNote = $"{L.Get("mace_desc_guardian_note")}\n\n<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
                 };
 
                 string finalTooltip = GenerateGuardianHeartTooltip(data);
@@ -425,7 +426,7 @@ namespace CaptainSkillTree.SkillTree
                 // 2. 설명 (#FFD700 / #E0E0E0)
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{data.description}";
 
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -439,13 +440,13 @@ namespace CaptainSkillTree.SkillTree
                 {
                     string effectText = "";
                     if (!string.IsNullOrEmpty(data.duration))
-                        effectText += $"버프 {data.duration}";
+                        effectText += $"{L.Get("mace_effect_buff")} {data.duration}";
                     if (!string.IsNullOrEmpty(data.reflectPercent))
                     {
                         if (!string.IsNullOrEmpty(effectText)) effectText += ", ";
-                        effectText += $"데미지 반사 {data.reflectPercent}";
+                        effectText += $"{L.Get("mace_effect_reflect")} {data.reflectPercent}";
                     }
-                    tooltip += $"<color=#FF6B6B><size=16>효과: </size></color><color=#FFB6C1><size=16>{effectText}</size></color>\n";
+                    tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_effect")}: </size></color><color=#FFB6C1><size=16>{effectText}</size></color>\n";
                 }
 
                 // 4. 범위 - 생략 (자기 자신)
@@ -453,37 +454,37 @@ namespace CaptainSkillTree.SkillTree
                 // 5. 소모 (#FFB347 / #FFDAB9)
                 if (!string.IsNullOrEmpty(data.staminaCost))
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.staminaCost}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {data.staminaCost}</size></color>\n";
                 }
 
                 // 6. 스킬유형 (G키 강조: #FF4500 / #00FF00)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#FF4500><size=16>스킬유형: </size></color><color=#00FF00><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FF00><size=16>{data.skillType}</size></color>\n";
                 }
 
                 // 7. 쿨타임 (#FFA500 / #FFDB58)
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
                 // 8. 필요조건 (#98FB98 / #00FF00)
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
                 // 9. 확인사항 (#F0E68C / #FFE4B5)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 10. 필요포인트 - specialNote에 포함되어 있음
                 if (!string.IsNullOrEmpty(data.specialNote))
                 {
-                    tooltip += $"<color=#DDA0DD><size=16>특별안내: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
+                    tooltip += $"<color=#DDA0DD><size=16>{L.Get("tooltip_special_note")}: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');

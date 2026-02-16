@@ -1,14 +1,50 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
     public class SkillNode
     {
         public string Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+
+        // Localization 키 (언어 변경 시 자동 업데이트용)
+        public string NameKey { get; set; }
+        public string DescriptionKey { get; set; }
+        public object[] DescriptionArgs { get; set; }  // Description 포맷 인자
+
+        // 실제 표시되는 텍스트 (동적 getter 또는 캐시된 값)
+        private string _name;
+        private string _description;
+
+        public string Name
+        {
+            get
+            {
+                // NameKey가 있으면 동적으로 번역 반환
+                if (!string.IsNullOrEmpty(NameKey))
+                    return L.Get(NameKey);
+                return _name;
+            }
+            set => _name = value;
+        }
+
+        public string Description
+        {
+            get
+            {
+                // DescriptionKey가 있으면 동적으로 번역 반환
+                if (!string.IsNullOrEmpty(DescriptionKey))
+                {
+                    if (DescriptionArgs != null && DescriptionArgs.Length > 0)
+                        return L.Get(DescriptionKey, DescriptionArgs);
+                    return L.Get(DescriptionKey);
+                }
+                return _description;
+            }
+            set => _description = value;
+        }
         public int RequiredPoints { get; set; }
         public List<ItemRequirement> RequiredItems { get; set; } = new List<ItemRequirement>(); // 필요 아이템 목록
         public List<string> Prerequisites { get; set; } = new List<string>();

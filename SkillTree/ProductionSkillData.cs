@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -15,8 +16,8 @@ namespace CaptainSkillTree.SkillTree
             // === 생산 전문가 루트 ===
             manager.AddSkill(new SkillNode {
                 Id = "production_root",
-                Name = "생산 전문가",
-                Description = "50% 확률로 나무+1",
+                NameKey = "production_skill_expert",
+                DescriptionKey = "production_desc_expert",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Position = new Vector2(0, -95),
@@ -27,7 +28,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, "벌목 수량 +1");
+                        SkillEffect.DrawFloatingText(player, L.Get("production_root_effect"));
                     }
                 }
             });
@@ -35,8 +36,8 @@ namespace CaptainSkillTree.SkillTree
             // 1단계: 초보 일꾼
             manager.AddSkill(new SkillNode {
                 Id = "novice_worker",
-                Name = "초보 일꾼",
-                Description = "25% 확률로 나무+1",
+                NameKey = "novice_worker_name",
+                DescriptionKey = "novice_worker_desc",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 1,
@@ -50,7 +51,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, "🔨 초보 일꾼 습득!",
+                        SkillEffect.ShowSkillEffectText(player, L.Get("novice_worker_effect"),
                             new Color(0.4f, 0.8f, 0.4f), SkillEffect.SkillEffectTextType.Standard);
                     }
                 }
@@ -59,8 +60,8 @@ namespace CaptainSkillTree.SkillTree
             // 2단계: 전문 분야
             manager.AddSkill(new SkillNode {
                 Id = "woodcutting_lv2",
-                Name = "벌목 Lv2",
-                Description = "25% 확률로 나무+1",
+                NameKey = "woodcutting_lv2_name",
+                DescriptionKey = "woodcutting_lv2_desc",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 2,
@@ -74,7 +75,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, "🪓 벌목 Lv2 습득!",
+                        SkillEffect.ShowSkillEffectText(player, L.Get("woodcutting_lv2_effect"),
                             new Color(0.6f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
                     }
                 }
@@ -82,8 +83,8 @@ namespace CaptainSkillTree.SkillTree
 
             manager.AddSkill(new SkillNode {
                 Id = "gathering_lv2",
-                Name = "채집 Lv2",
-                Description = "25% 확률로 채집(나무제외)+1",
+                NameKey = "gathering_lv2_name",
+                DescriptionKey = "gathering_lv2_desc",
                 RequiredPoints = 2,
                 MaxLevel = 1,
                 Tier = 2,
@@ -97,7 +98,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, "🍄 채집 Lv2 습득!",
+                        SkillEffect.ShowSkillEffectText(player, L.Get("gathering_lv2_effect"),
                             new Color(0.2f, 0.8f, 0.4f), SkillEffect.SkillEffectTextType.Standard);
                     }
                 }
@@ -105,8 +106,8 @@ namespace CaptainSkillTree.SkillTree
 
             manager.AddSkill(new SkillNode {
                 Id = "mining_lv2",
-                Name = "채광 Lv2",
-                Description = "25% 확률로 광석+1",
+                NameKey = "mining_lv2_name",
+                DescriptionKey = "mining_lv2_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 2,
@@ -122,8 +123,8 @@ namespace CaptainSkillTree.SkillTree
 
             manager.AddSkill(new SkillNode {
                 Id = "crafting_lv2",
-                Name = "제작 Lv2",
-                Description = "25% 확률로 강화+1, 내구도 최대치 25% 증가",
+                NameKey = "crafting_lv2_name",
+                DescriptionKey = "crafting_lv2_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 2,
@@ -137,7 +138,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, "🔨 제작 Lv2 습득!",
+                        SkillEffect.ShowSkillEffectText(player, L.Get("crafting_lv2_effect"),
                             new Color(0.8f, 0.6f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
                     }
                 }
@@ -146,8 +147,8 @@ namespace CaptainSkillTree.SkillTree
             // 3단계: 새로운 벌목/채집/채광/제작 스킬들
             manager.AddSkill(new SkillNode {
                 Id = "woodcutting_lv3",
-                Name = "벌목 Lv3",
-                Description = "25% 확률로 나무+1",
+                NameKey = "woodcutting_lv3_name",
+                DescriptionKey = "woodcutting_lv3_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 3,
@@ -161,7 +162,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, "🪓 벌목 Lv3 습득!",
+                        SkillEffect.ShowSkillEffectText(player, L.Get("woodcutting_lv3_effect"),
                             new Color(0.6f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
                     }
                 }
@@ -169,8 +170,8 @@ namespace CaptainSkillTree.SkillTree
 
             manager.AddSkill(new SkillNode {
                 Id = "gathering_lv3",
-                Name = "채집 Lv3",
-                Description = "25% 확률로 채집(나무제외)+1",
+                NameKey = "gathering_lv3_name",
+                DescriptionKey = "gathering_lv3_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 3,
@@ -184,7 +185,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, "🍄 채집 Lv3 습득!",
+                        SkillEffect.ShowSkillEffectText(player, L.Get("gathering_lv3_effect"),
                             new Color(0.2f, 0.8f, 0.4f), SkillEffect.SkillEffectTextType.Standard);
                     }
                 }
@@ -192,8 +193,8 @@ namespace CaptainSkillTree.SkillTree
 
             manager.AddSkill(new SkillNode {
                 Id = "mining_lv3",
-                Name = "채광 Lv3",
-                Description = "25% 확률로 광석+1",
+                NameKey = "mining_lv3_name",
+                DescriptionKey = "mining_lv3_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 3,
@@ -207,16 +208,15 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, "⛏️ 채광 Lv3 습득!");
-                        SkillEffect.DrawFloatingText(player, "철 30개 소모 시 광석 추가 획득!");
+                        SkillEffect.DrawFloatingText(player, L.Get("mining_lv3_effect"));
                     }
                 }
             });
 
             manager.AddSkill(new SkillNode {
                 Id = "crafting_lv3",
-                Name = "제작 Lv3",
-                Description = "25% 확률로 강화+1, 내구도 최대치 25% 증가",
+                NameKey = "crafting_lv3_name",
+                DescriptionKey = "crafting_lv3_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 3,
@@ -230,8 +230,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, "🔨 제작 Lv3 습득!");
-                        SkillEffect.DrawFloatingText(player, "철 검+헬멧 보유 시 제작 강화 효과!");
+                        SkillEffect.DrawFloatingText(player, L.Get("crafting_lv3_effect"));
                     }
                 }
             });
@@ -239,8 +238,8 @@ namespace CaptainSkillTree.SkillTree
             // 4단계: 고급 벌목/채집/채광/제작 스킬들 (최종 단계)
             manager.AddSkill(new SkillNode {
                 Id = "woodcutting_lv4",
-                Name = "벌목 Lv4",
-                Description = "25% 확률로 나무+1",
+                NameKey = "woodcutting_lv4_name",
+                DescriptionKey = "woodcutting_lv4_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 4,
@@ -254,16 +253,15 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, "🪓 벌목 Lv4 습득!");
-                        SkillEffect.DrawFloatingText(player, "나무 400개 보유 시 추가 획득!");
+                        SkillEffect.DrawFloatingText(player, L.Get("woodcutting_lv4_effect"));
                     }
                 }
             });
 
             manager.AddSkill(new SkillNode {
                 Id = "gathering_lv4",
-                Name = "채집 Lv4",
-                Description = "채집류 200개 보유 시 25% 확률로 채집+1",
+                NameKey = "gathering_lv4_name",
+                DescriptionKey = "gathering_lv4_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 4,
@@ -277,16 +275,15 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, "🍄 채집 Lv4 습득!");
-                        SkillEffect.DrawFloatingText(player, "채집 200개 보유 시 추가 획득!");
+                        SkillEffect.DrawFloatingText(player, L.Get("gathering_lv4_effect"));
                     }
                 }
             });
 
             manager.AddSkill(new SkillNode {
                 Id = "mining_lv4",
-                Name = "채광 Lv4",
-                Description = "25% 확률로 광석+1",
+                NameKey = "mining_lv4_name",
+                DescriptionKey = "mining_lv4_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 4,
@@ -300,16 +297,15 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, "⛏️ 채광 Lv4 습득!");
-                        SkillEffect.DrawFloatingText(player, "은 25개 소모 시 광석 추가 획득!");
+                        SkillEffect.DrawFloatingText(player, L.Get("mining_lv4_effect"));
                     }
                 }
             });
 
             manager.AddSkill(new SkillNode {
                 Id = "crafting_lv4",
-                Name = "제작 Lv4",
-                Description = "25% 확률로 강화+1, 내구도 최대치 25% 증가",
+                NameKey = "crafting_lv4_name",
+                DescriptionKey = "crafting_lv4_desc",
                 RequiredPoints = 0,
                 MaxLevel = 1,
                 Tier = 4,
@@ -323,8 +319,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, "🔨 제작 Lv4 습득!");
-                        SkillEffect.DrawFloatingText(player, "은 검+헬멧 보유 시 제작 강화 효과!");
+                        SkillEffect.DrawFloatingText(player, L.Get("crafting_lv4_effect"));
                     }
                 }
             });

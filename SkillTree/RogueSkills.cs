@@ -6,6 +6,7 @@ using HarmonyLib;
 using System.Linq;
 using CaptainSkillTree;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -91,15 +92,14 @@ namespace CaptainSkillTree.SkillTree
             {
                 // 쿨타임 남은 시간과 함께 메시지 표시
                 float remainingTime = JobSkillsUtility.GetRemainingCooldown(player, "Rogue");
-                player.Message(MessageHud.MessageType.Center, $"그림자 일격 쿨다운 중! 남은 시간: {remainingTime:F1}초");
-                // Plugin.Log.LogInfo($"[로그 그림자 일격] {player.GetPlayerName()} 쿨다운 중 - 남은 시간: {remainingTime:F1}초");
+                player.Message(MessageHud.MessageType.Center, L.Get("rogue_shadow_strike_cooldown", remainingTime.ToString("F1")));
                 return;
             }
 
             // 단검 착용 체크
             if (!IsUsingDagger(player))
             {
-                JobSkillsUtility.ShowRequirementMessage(player, "단검 또는 클로 착용이 필요합니다");
+                JobSkillsUtility.ShowRequirementMessage(player, L.Get("rogue_dagger_required"));
                 return;
             }
 
@@ -107,7 +107,7 @@ namespace CaptainSkillTree.SkillTree
             float requiredStamina = Rogue_Config.RogueShadowStrikeStaminaCostValue;
             if (player.GetStamina() < requiredStamina)
             {
-                JobSkillsUtility.ShowRequirementMessage(player, "스태미나가 부족합니다");
+                JobSkillsUtility.ShowRequirementMessage(player, L.Get("stamina_insufficient"));
                 return;
             }
 
@@ -127,13 +127,11 @@ namespace CaptainSkillTree.SkillTree
                 // 어그로 해제 결과 메시지 (화면 중앙)
                 if (aggroRemoved > 0)
                 {
-                    player.Message(MessageHud.MessageType.Center, $"그림자 일격! {aggroRemoved}마리 어그로 해제!");
-                    // Plugin.Log.LogInfo($"[로그 그림자 일격] {player.GetPlayerName()} 어그로 해제 메시지 표시: {aggroRemoved}마리");
+                    player.Message(MessageHud.MessageType.Center, L.Get("rogue_shadow_strike_success", aggroRemoved.ToString()));
                 }
                 else
                 {
-                    player.Message(MessageHud.MessageType.Center, "그림자 일격! (주변에 적이 없음)");
-                    // Plugin.Log.LogInfo($"[로그 그림자 일격] {player.GetPlayerName()} 어그로 해제 대상 없음 메시지 표시");
+                    player.Message(MessageHud.MessageType.Center, L.Get("rogue_shadow_strike_no_enemy"));
                 }
 
                 // 공격력 증가 버프 적용
@@ -248,7 +246,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 프리팹 로드 실패 시 메시지만
-                player.Message(MessageHud.MessageType.Center, "💨 연막!");
+                player.Message(MessageHud.MessageType.Center, L.Get("rogue_smoke"));
                 // Plugin.Log.LogWarning("[로그 그림자 일격] smokebomb_explosion 프리팹 없음 - 메시지만 표시");
             }
             catch (System.Exception)
@@ -268,7 +266,7 @@ namespace CaptainSkillTree.SkillTree
                 // CreateSparkleEffect(player);
 
                 // 메시지 표시
-                player.Message(MessageHud.MessageType.Center, "💨 연막!");
+                player.Message(MessageHud.MessageType.Center, L.Get("rogue_smoke"));
                 // Plugin.Log.LogInfo("[로그 그림자 일격] 대체 연막 효과: 메시지만 표시 (sparkle_ellow 비활성화)");
             }
             catch (System.Exception)
@@ -276,7 +274,7 @@ namespace CaptainSkillTree.SkillTree
                 // Plugin.Log.LogError($"[로그 그림자 일격] 대체 연막 효과 실패: {ex.Message}");
                 try
                 {
-                    player.Message(MessageHud.MessageType.Center, "💨 연막!");
+                    player.Message(MessageHud.MessageType.Center, L.Get("rogue_smoke"));
                     // Plugin.Log.LogInfo("[로그 그림자 일격] 메시지 효과로 대체");
                 }
                 catch (System.Exception)
@@ -710,12 +708,11 @@ namespace CaptainSkillTree.SkillTree
             {
                 try
                 {
-                    player.Message(MessageHud.MessageType.Center, "그림자 일격 버프 종료!");
-                    // Plugin.Log.LogInfo($"[로그 그림자 일격] {player.GetPlayerName()} 공격력 버프 종료 알림 표시");
+                    player.Message(MessageHud.MessageType.Center, L.Get("rogue_buff_end"));
                 }
                 catch (Exception)
                 {
-                    // Plugin.Log.LogWarning($"[로그 스킬] 버프 종료 알림 실패 (무시): {ex.Message}");
+                    // 버프 종료 알림 실패 시 무시
                 }
             }
             else
@@ -863,7 +860,7 @@ namespace CaptainSkillTree.SkillTree
                 stealthActive[player] = true;
                 
                 // 플레이어에게 스텔스 시작 알림
-                player.Message(MessageHud.MessageType.Center, $"🌫️ 스텔스 시작! ({stealthDuration}초)");
+                player.Message(MessageHud.MessageType.Center, L.Get("rogue_stealth_start", stealthDuration.ToString()));
                 
                 // 첫 번째 스텔스 사용 시 스텔스 클리너 시작
                 EnsureStealthCleanerRunning();
@@ -943,7 +940,7 @@ namespace CaptainSkillTree.SkillTree
                 }
                 
                 // 플레이어에게 스텔스 해제 알림
-                player.Message(MessageHud.MessageType.Center, $"🌫️ 스텔스 해제! (이유: {reason})");
+                player.Message(MessageHud.MessageType.Center, L.Get("rogue_stealth_end", reason));
                 
                 // Plugin.Log.LogInfo($"[로그 스텔스] {player.GetPlayerName()} 스텔스 해제 완료");
             }
@@ -1240,10 +1237,9 @@ namespace CaptainSkillTree.SkillTree
                     float reducedDamage = hit.m_damage.m_damage;
                     float damageReduced = originalDamage - reducedDamage;
                     
-                    if (damageReduced > 0.1f) // 의미있는 감소량일 때만 로그/메시지
+                    if (damageReduced > 0.1f) // 의미있는 감소량일 때만 메시지
                     {
-                        // Plugin.Log.LogDebug($"[로그 패시브] {player.GetPlayerName()} 낙사 데미지 감소 - 원래: {originalDamage:F1} → 감소후: {reducedDamage:F1}");
-                        player.Message(MessageHud.MessageType.TopLeft, $"로그 패시브: -{damageReduced:F0} 낙사 데미지 감소!");
+                        player.Message(MessageHud.MessageType.TopLeft, L.Get("rogue_passive_fall_damage", damageReduced.ToString("F0")));
                     }
                 }
             }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -49,16 +50,16 @@ namespace CaptainSkillTree.SkillTree
 
                 var data = new BerserkerTooltipData
                 {
-                    skillName = "버서커 분노",
-                    description = $"{duration}초간 분노 상태 발동하여 강력한 공격력 증가",
-                    additionalInfo = $"체력 손실 1%당 데미지 +{damagePerPercent:F0}%, 최대 +{maxDamageBonus:F0}% 한계",
-                    range = "자신",
+                    skillName = L.Get("berserker_skill_rage"),
+                    description = L.Get("berserker_desc_rage", duration),
+                    additionalInfo = L.Get("berserker_desc_rage_detail", damagePerPercent, maxDamageBonus),
+                    range = L.Get("tooltip_self"),
                     consumeStamina = $"{staminaCost:F0}",
-                    consumeArrow = "없음",
-                    skillType = "액티브 스킬 - Y키",
-                    cooldown = $"{cooldown:F0}초",
-                    requirement = "직업 버서커",
-                    confirmation = "직업은 1개만 선택가능",
+                    consumeArrow = L.Get("tooltip_none"),
+                    skillType = L.Get("skill_type_active_key", "Y"),
+                    cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
+                    requirement = L.Get("requirement_job_berserker"),
+                    confirmation = L.Get("confirmation_job_select_only"),
                     requiredItem = ""
                 };
 
@@ -91,7 +92,7 @@ namespace CaptainSkillTree.SkillTree
                 // 설명 섹션
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{data.description}";
 
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -101,59 +102,59 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 분노 효과 섹션
-                tooltip += $"<color=#FF6B6B><size=16>분노 효과: </size></color><color=#FF8C82><size=16>체력 손실 1%당 데미지 +{Berserker_Config.BerserkerRageDamagePerHealthPercentValue}%</size></color>\n";
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("berserker_rage_effect")}: </size></color><color=#FF8C82><size=16>{L.Get("berserker_rage_damage_per_health", Berserker_Config.BerserkerRageDamagePerHealthPercentValue)}</size></color>\n";
 
                 // 패시브 효과 섹션
                 var passiveHealthThreshold = Berserker_Config.BerserkerPassiveHealthThresholdValue;
                 var passiveInvincibilityDuration = Berserker_Config.BerserkerPassiveInvincibilityDurationValue;
                 var passiveCooldown = Berserker_Config.BerserkerPassiveCooldownValue;
-                tooltip += $"<color=#98FB98><size=16>패시브 효과: </size></color><color=#00FF00><size=16>스태미나 재생 +20%, 체력 {passiveHealthThreshold:F0}% 이하 시 {passiveInvincibilityDuration:F0}초간 무적 (쿨타임 {passiveCooldown / 60f:F0}분)</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive_effect")}: </size></color><color=#00FF00><size=16>{L.Get("berserker_passive_desc", passiveHealthThreshold, passiveInvincibilityDuration, passiveCooldown / 60f)}</size></color>\n";
 
                 // 영향 범위 섹션
                 if (!string.IsNullOrEmpty(data.range))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>영향 범위: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_affect_range")}: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
                 }
 
                 // 소모 섹션
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.consumeStamina}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {data.consumeStamina}</size></color>\n";
                 }
 
-                // 스킬 유형 섹션 (Y키 강조: #1E90FF / #ADFF2F)
+                // 스킬 유형 섹션 (Y키 강조)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#ADFF2F><size=16>{data.skillType}</size></color>\n";
                 }
 
                 // 쿨타임 섹션
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
                 // 필요조건 섹션
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
                 // 확인사항 섹션
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 필요포인트 섹션 추가
-                tooltip += $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>에이크쉬르 트로피</size></color>";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{L.Get("item_eikthyr_trophy")}</size></color>";
 
                 return tooltip.TrimEnd('\n');
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[버서커 툴팁] 생성 실패: {ex.Message}");
-                return "툴팁 생성 오류";
+                return L.Get("tooltip_generation_error");
             }
         }
 
@@ -164,16 +165,16 @@ namespace CaptainSkillTree.SkillTree
         {
             var data = new BerserkerTooltipData
             {
-                skillName = "버서커 분노",
-                description = $"{Berserker_Config.BerserkerRageDurationValue}초간 분노 상태 발동하여 강력한 공격력 증가",
-                additionalInfo = $"체력 손실 1%당 데미지 +{Berserker_Config.BerserkerRageDamagePerHealthPercentValue:F0}%, 최대 +{Berserker_Config.BerserkerRageMaxDamageBonusValue:F0}% 한계",
-                range = "자신",
+                skillName = L.Get("berserker_skill_rage"),
+                description = L.Get("berserker_desc_rage", Berserker_Config.BerserkerRageDurationValue),
+                additionalInfo = L.Get("berserker_desc_rage_detail", Berserker_Config.BerserkerRageDamagePerHealthPercentValue, Berserker_Config.BerserkerRageMaxDamageBonusValue),
+                range = L.Get("tooltip_self"),
                 consumeStamina = $"{Berserker_Config.BerserkerRageStaminaCostValue}",
-                consumeArrow = "없음",
-                skillType = "액티브 스킬 - Y키",
-                cooldown = $"{Berserker_Config.BerserkerRageCooldownValue}초",
-                requirement = "직업 버서커",
-                confirmation = "직업은 1개만 선택가능",
+                consumeArrow = L.Get("tooltip_none"),
+                skillType = L.Get("skill_type_active_key", "Y"),
+                cooldown = $"{Berserker_Config.BerserkerRageCooldownValue}{L.Get("unit_seconds")}",
+                requirement = L.Get("requirement_job_berserker"),
+                confirmation = L.Get("confirmation_job_select_only"),
                 requiredItem = ""
             };
 
@@ -187,27 +188,27 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                var tooltip = $"설명: {data.description}\n";
-                
+                var tooltip = $"{L.Get("tooltip_description")}: {data.description}\n";
+
                 if (!string.IsNullOrEmpty(data.additionalInfo))
                 {
-                    tooltip += $"추가: {data.additionalInfo}\n";
+                    tooltip += $"{L.Get("tooltip_additional")}: {data.additionalInfo}\n";
                 }
-                
-                tooltip += $"범위: {data.range}\n";
-                tooltip += $"소모: 스태미나 {data.consumeStamina}";
-                
-                if (data.consumeArrow != "없음")
+
+                tooltip += $"{L.Get("tooltip_range")}: {data.range}\n";
+                tooltip += $"{L.Get("tooltip_cost")}: {L.Get("stat_stamina")} {data.consumeStamina}";
+
+                if (data.consumeArrow != L.Get("tooltip_none"))
                 {
                     tooltip += $", {data.consumeArrow}";
                 }
-                
-                tooltip += $"\n스킬유형: {data.skillType}\n";
-                tooltip += $"쿨타임: {data.cooldown}\n";
-                tooltip += $"필요조건: {data.requirement}\n";
-                tooltip += $"확인사항: {data.confirmation}\n";
-                tooltip += $"필요 아이템: {data.requiredItem}";
-                
+
+                tooltip += $"\n{L.Get("tooltip_skill_type")}: {data.skillType}\n";
+                tooltip += $"{L.Get("tooltip_cooldown")}: {data.cooldown}\n";
+                tooltip += $"{L.Get("tooltip_requirements")}: {data.requirement}\n";
+                tooltip += $"{L.Get("tooltip_notice")}: {data.confirmation}\n";
+                tooltip += $"{L.Get("tooltip_required_item")}: {data.requiredItem}";
+
                 return tooltip;
             }
             catch (Exception ex)
@@ -222,19 +223,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static string CreateDefaultTooltip()
         {
-            return "설명:\n" +
-                   "[액티브 스킬 - Y키]\n" +
-                   "20초 동안 체력의 -1% 비례 데미지 +2%, 체력이 적을수록 더 강한 데미지\n\n" +
-                   "[패시브 스킬]\n" +
-                   "• 스태미나 리젠 +20% (항상 적용)\n" +
-                   "• 체력 10% 이하 시 7초간 무적 (쿨타임 300초)\n\n" +
-                   "추가: 최대 +200% 데미지 한계, 빨간/황금 오라 효과\n" +
-                   "범위: 자신\n" +
-                   "소모: 스태미나 20 (액티브만)\n" +
-                   "쿨타임: 45초 (액티브), 300초 (패시브)\n" +
-                   "필요조건: 직업 버서커\n" +
-                   "확인사항: 직업은 1개만 선택가능, Lv 10 이상\n" +
-                   "필요 아이템: 고대 바크 스피어";
+            return L.Get("berserker_default_tooltip");
         }
 
         /// <summary>
@@ -289,27 +278,25 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                if (player == null) return "플레이어 정보 없음";
+                if (player == null) return L.Get("tooltip_no_player");
 
                 // 현재 분노 상태 확인
                 bool inRage = BerserkerSkills.IsPlayerInRage(player);
                 if (!inRage)
                 {
-                    return "분노 상태가 아님";
+                    return L.Get("berserker_not_in_rage");
                 }
 
                 // 현재 데미지 보너스 계산
                 float damageBonus = BerserkerSkills.GetRageDamageBonus(player);
                 float currentHealthPercent = player.GetHealthPercentage() * 100f;
-                
-                return $"현재 체력: {currentHealthPercent:F1}%\n" +
-                       $"현재 데미지 보너스: +{damageBonus:F1}%\n" +
-                       $"분노 상태: 활성";
+
+                return L.Get("berserker_current_status", currentHealthPercent, damageBonus);
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[버서커 툴팁] GetCurrentDamageBonusTooltip 실패: {ex.Message}");
-                return "계산 오류";
+                return L.Get("tooltip_calculation_error");
             }
         }
 
@@ -323,28 +310,28 @@ namespace CaptainSkillTree.SkillTree
                 var damagePerPercent = Berserker_Config.BerserkerRageDamagePerHealthPercentValue;
                 var maxBonus = Berserker_Config.BerserkerRageMaxDamageBonusValue;
 
-                string simulation = "체력별 데미지 보너스 예상:\n";
-                
+                string simulation = L.Get("berserker_simulation_title") + "\n";
+
                 // 체력 100%, 75%, 50%, 25%, 1%일 때의 보너스 계산
                 int[] healthLevels = { 100, 75, 50, 25, 1 };
-                
+
                 foreach (int health in healthLevels)
                 {
                     float lostHealth = 100f - health;
                     float bonus = lostHealth * damagePerPercent;
                     bonus = Mathf.Min(bonus, maxBonus);
-                    
-                    simulation += $"체력 {health}%: +{bonus:F0}% 데미지\n";
+
+                    simulation += L.Get("berserker_simulation_line", health, bonus) + "\n";
                 }
-                
-                simulation += $"최대 한계: +{maxBonus:F0}%";
-                
+
+                simulation += L.Get("berserker_simulation_max", maxBonus);
+
                 return simulation;
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[버서커 툴팁] GetDamageBonusSimulationTooltip 실패: {ex.Message}");
-                return "시뮬레이션 오류";
+                return L.Get("tooltip_simulation_error");
             }
         }
     }

@@ -1,10 +1,11 @@
 ﻿{
   "name": "CaptainSkillTree",
-  "version_number": "0.1.477",
-  "website_url": "https://github.com/yourusername/CaptainSkillTree",
-  "description": "Valheim Skill Tree Expansion - EpicMMOSystem Expert System",
+  "version_number": "0.1.508",
+  "website_url": "https://discord.gg/W26PTxYhug",
+  "description": "Valheim Skill Tree Mod - Expert Trees, Weapon Trees, Job System with custom BGM | 발헤임 스킬트리 모드 - 전문가/무기/직업 트리 + 전용 BGM",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2200",
-    "blacks7ar-EpicMMOSystem-1.6.9"
+    "ValheimModding-Jotunn-2.20.0",
+    "WackyEpicMMOSystem v1.9.57"
   ]
 }

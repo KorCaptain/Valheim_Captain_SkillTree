@@ -1,4 +1,5 @@
 using System;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.MMO_System
 {
@@ -308,7 +309,7 @@ namespace CaptainSkillTree.MMO_System
 
                     // 사용자에게 메시지 표시
                     MessageHud.instance?.ShowMessage(MessageHud.MessageType.Center,
-                        $"<color=yellow>레벨 데이터 복구 완료!</color>\nLv.{currentLevel} → Lv.{expectedLevel}");
+                        $"<color=yellow>{L.Get("mmo_level_recovery_complete")}</color>\n{L.Get("mmo_level_recovery_detail", currentLevel, expectedLevel)}");
                 }
                 else
                 {
@@ -558,7 +559,7 @@ namespace CaptainSkillTree.MMO_System
                     Plugin.Log.LogInfo($"[CaptainMMOBridge] 마이그레이션 후: Lv.{newEpicLevel}");
 
                     MessageHud.instance?.ShowMessage(MessageHud.MessageType.Center,
-                        $"<color=yellow>Captain -> EpicMMO 마이그레이션 완료!</color>\nLv.{captainLevel} -> Lv.{newEpicLevel}");
+                        $"<color=yellow>{L.Get("mmo_captain_to_epic_complete")}</color>\n{L.Get("mmo_captain_to_epic_detail", captainLevel, newEpicLevel)}");
                 }
                 else
                 {
@@ -632,7 +633,7 @@ namespace CaptainSkillTree.MMO_System
 
                 // 메시지 표시
                 MessageHud.instance?.ShowMessage(MessageHud.MessageType.Center,
-                    $"<color=yellow>스킬포인트 -> EpicMMO 동기화 완료!</color>\nLv.{epicLevel} -> Lv.{newLevel}");
+                    $"<color=yellow>{L.Get("mmo_skillpoint_sync_complete")}</color>\n{L.Get("mmo_skillpoint_sync_detail", epicLevel, newLevel)}");
             }
             catch (Exception ex)
             {
@@ -740,7 +741,7 @@ namespace CaptainSkillTree.MMO_System
                     Plugin.Log.LogInfo($"[CaptainMMOBridge] Captain에 복구: Lv.{backupLevel}, CurrentExp:{currentExp:N0}");
 
                     MessageHud.instance?.ShowMessage(MessageHud.MessageType.Center,
-                        $"<color=yellow>EpicMMO -> Captain 데이터 복구 완료!</color>\nLv.{backupLevel}");
+                        $"<color=yellow>{L.Get("mmo_epic_to_captain_complete")}</color>\n{L.Get("mmo_epic_to_captain_detail", backupLevel)}");
                 }
                 else
                 {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -51,23 +52,22 @@ namespace CaptainSkillTree.SkillTree
                 
                 // 상세 툴팁 데이터 생성
                 var requiredPoints = Staff_Config.StaffHealRequiredPointsValue;
-                string selfHealNote = healSelf ? "시전자 포함 치료" : "시전자는 치료되지 않음 (다른 플레이어만 치료)";
+                string selfHealNote = healSelf ? L.Get("healer_self_heal_included") : L.Get("healer_self_heal_excluded");
 
                 var data = new HealerModeTooltipData
                 {
-                    skillName = "힐",
-                    description = $"시전자 중심 {healRange:F0}m 범위 즉시 힐링",
-                    additionalInfo = $"아군 최대체력의 {healPercentage:F0}% 즉시 회복",
-                    duration = "", // 즉시 힐링이므로 지속시간 없음
-                    cooldown = $"{cooldown:F0}초",
+                    skillName = L.Get("staff_skill_heal"),
+                    description = L.Get("healer_desc_instant", healRange),
+                    additionalInfo = L.Get("healer_desc_heal_percent", healPercentage),
+                    duration = "",
+                    cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
                     consumeEitr = $"{eitrCost:F0}",
                     healPercentage = $"{healPercentage:F0}%",
                     healRange = $"{healRange:F0}m",
-                    // 발사체 수 제거 - 즉시 힐링으로 변경
-                    skillType = "액티브 스킬 - H키",
-                    requirement = "지팡이 또는 완드 착용",
-                    confirmation = "", // 확인사항 제거
-                    specialNote = $"{selfHealNote}\n\n<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                    skillType = L.Get("skill_type_active_key", "H"),
+                    requirement = L.Get("requirement_staff_wand"),
+                    confirmation = "",
+                    specialNote = $"{selfHealNote}\n\n<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
                 };
                 
                 string finalTooltip = GenerateHealerModeTooltip(data);
@@ -100,7 +100,7 @@ namespace CaptainSkillTree.SkillTree
                 // 2. 설명 (#FFD700 / #E0E0E0)
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{data.description}";
 
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -109,43 +109,43 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += "</size></color>\n";
                 }
 
-                // 3. 효과 - 힐링 효과 (#FF6B6B / #FFB6C1) - 초록 대신 빨강 계열로 통일
-                tooltip += $"<color=#98FB98><size=16>힐링 효과: </size></color><color=#00FF00><size=16>아군 최대체력의 {data.healPercentage} 즉시 회복</size></color>\n";
+                // 3. 효과 - 힐링 효과
+                tooltip += $"<color=#98FB98><size=16>{L.Get("healer_healing_effect")}: </size></color><color=#00FF00><size=16>{L.Get("healer_instant_heal", data.healPercentage)}</size></color>\n";
 
-                // 4. 범위 (#87CEEB / #B0E0E6)
-                tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{data.healRange}</size></color>\n";
+                // 4. 범위
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{data.healRange}</size></color>\n";
 
-                // 5. 소모 (#FFB347 / #FFDAB9)
-                tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>Eitr {data.consumeEitr}</size></color>\n";
+                // 5. 소모
+                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_eitr")} {data.consumeEitr}</size></color>\n";
 
-                // 6. 스킬유형 (H키 강조: #FF1493 / #00FFFF)
+                // 6. 스킬유형 (H키 강조)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#FF1493><size=16>스킬유형: </size></color><color=#00FFFF><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#FF1493><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FFFF><size=16>{data.skillType}</size></color>\n";
                 }
 
-                // 7. 쿨타임 (#FFA500 / #FFDB58)
+                // 7. 쿨타임
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
-                // 8. 필요조건 (#98FB98 / #00FF00)
+                // 8. 필요조건
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
-                // 9. 확인사항 (#F0E68C / #FFE4B5)
+                // 9. 확인사항
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 10. 특별안내 + 필요포인트
                 if (!string.IsNullOrEmpty(data.specialNote))
                 {
-                    tooltip += $"<color=#DDA0DD><size=16>특별안내: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
+                    tooltip += $"<color=#DDA0DD><size=16>{L.Get("tooltip_special_note")}: </size></color><color=#E6E6FA><size=16>{data.specialNote}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
@@ -153,7 +153,7 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[힐러모드 툴팁] 생성 실패: {ex.Message}");
-                return "툴팁 생성 오류";
+                return L.Get("tooltip_generation_error");
             }
         }
 
@@ -164,23 +164,22 @@ namespace CaptainSkillTree.SkillTree
         {
             var requiredPoints = Staff_Config.StaffHealRequiredPointsValue;
             var healSelf = Staff_Config.StaffHealSelfValue;
-            string selfHealNote = healSelf ? "시전자 포함 치료" : "시전자는 치료되지 않음 (다른 플레이어만 치료)";
+            string selfHealNote = healSelf ? L.Get("healer_self_heal_included") : L.Get("healer_self_heal_excluded");
 
             var tooltipData = new HealerModeTooltipData
             {
-                skillName = "힐",
-                description = $"시전자 중심 {Staff_Config.StaffHealRangeValue}m 범위 즉시 힐링",
-                additionalInfo = $"아군 최대체력의 {Staff_Config.StaffHealPercentageValue}% 즉시 회복",
-                duration = "", // 즉시 힐링이므로 지속시간 없음
-                cooldown = $"{Staff_Config.StaffHealCooldownValue}초",
+                skillName = L.Get("staff_skill_heal"),
+                description = L.Get("healer_desc_instant", Staff_Config.StaffHealRangeValue),
+                additionalInfo = L.Get("healer_desc_heal_percent", Staff_Config.StaffHealPercentageValue),
+                duration = "",
+                cooldown = $"{Staff_Config.StaffHealCooldownValue}{L.Get("unit_seconds")}",
                 consumeEitr = $"{Staff_Config.StaffHealEitrCostValue}",
                 healPercentage = $"{Staff_Config.StaffHealPercentageValue}%",
                 healRange = $"{Staff_Config.StaffHealRangeValue}m",
-                // 발사체 수 제거 - 즉시 힐링으로 변경
-                skillType = "액티브 스킬 - H키",
-                requirement = "지팡이 또는 완드 착용",
-                confirmation = "", // 확인사항 제거
-                specialNote = $"{selfHealNote}\n\n<color=#87CEEB><size=16>💎 필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                skillType = L.Get("skill_type_active_key", "H"),
+                requirement = L.Get("requirement_staff_wand"),
+                confirmation = "",
+                specialNote = $"{selfHealNote}\n\n<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
             };
 
             return GenerateHealerModeTooltip(tooltipData);

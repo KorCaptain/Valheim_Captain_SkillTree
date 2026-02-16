@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -49,17 +50,17 @@ namespace CaptainSkillTree.SkillTree
             // 상세 툴팁 데이터 생성
             var data = new ArcherTooltipData
             {
-                skillName = "아처",
-                description = $"{arrowCount}발씩 {charges}회 발사, 화살 1발은 활+화살 공격력의 {damagePercent}%",
-                range = $"화살 {arrowCount}개 발사",
+                skillName = L.Get("job_archer"),
+                description = L.Get("archer_desc_multishot", arrowCount, charges, damagePercent),
+                range = L.Get("archer_range_arrows", arrowCount),
                 consumeStamina = $"{stamina}",
                 consumeArrow = $"{arrowConsumption}",
-                skillType = "액티브 스킬 - Y키",
-                cooldown = $"{cooldown}초",
-                requirement = "활 착용, 아처 직업",
-                confirmation = "직업은 1개만 선택가능, 레벨 10 이상",
-                passiveSkills = $"점프 높이 +{jumpHeightBonus}%, 낙사 데미지 -{fallDamageReduction}%",
-                requiredItem = "에이크쉬르 트로피"
+                skillType = L.Get("skill_type_active_key", "Y"),
+                cooldown = $"{cooldown}{L.Get("unit_seconds")}",
+                requirement = L.Get("requirement_archer"),
+                confirmation = L.Get("confirmation_job_only"),
+                passiveSkills = L.Get("archer_passive_skills", jumpHeightBonus, fallDamageReduction),
+                requiredItem = L.Get("item_eikthyr_trophy")
             };
             
             return GenerateArcherTooltip(data);
@@ -80,7 +81,7 @@ namespace CaptainSkillTree.SkillTree
                 // 설명 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{data.description}";
 
                     // 추가 정보가 있으면 괄호로 추가
                     if (!string.IsNullOrEmpty(data.additionalInfo))
@@ -91,66 +92,65 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 범위 섹션 (기존 툴팁 스타일)
-                tooltip += $"<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
 
                 // 소모 섹션 - 구조화된 표시 (기존 툴팁 스타일)
                 var consumeParts = new List<string>();
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    consumeParts.Add($"스태미나 {data.consumeStamina}");
+                    consumeParts.Add($"{L.Get("stat_stamina")} {data.consumeStamina}");
                 }
                 if (!string.IsNullOrEmpty(data.consumeArrow))
                 {
-                    consumeParts.Add($"화살 {data.consumeArrow} 개");
+                    consumeParts.Add($"{L.Get("stat_arrow")} {data.consumeArrow} {L.Get("unit_pieces")}");
                 }
 
                 if (consumeParts.Count > 0)
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>{string.Join(", ", consumeParts)}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{string.Join(", ", consumeParts)}</size></color>\n";
                 }
 
                 // 스킬 유형 섹션 (Y키 강조: #1E90FF / #ADFF2F)
                 if (!string.IsNullOrEmpty(data.skillType))
                 {
-                    tooltip += $"<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>{data.skillType}</size></color>\n";
+                    tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#ADFF2F><size=16>{data.skillType}</size></color>\n";
                 }
 
                 // 패시브 스킬 섹션 (새로 추가)
                 if (!string.IsNullOrEmpty(data.passiveSkills))
                 {
-                    tooltip += $"<color=#98FB98><size=16>패시브: </size></color><color=#ADFF2F><size=16>{data.passiveSkills}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color><color=#ADFF2F><size=16>{data.passiveSkills}</size></color>\n";
                 }
 
                 // 쿨타임 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
                 // 필요조건 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.requirement))
                 {
-                    tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
+                    tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{data.requirement}</size></color>\n";
                 }
 
                 // 확인사항 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
                 // 필요 아이템 섹션 (기존 툴팁 스타일)
                 if (!string.IsNullOrEmpty(data.requiredItem))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>필요 아이템: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_item")}: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
             }
             catch (System.Exception)
             {
-                // Plugin.Log.LogError($"[아처 툴팁] 생성 실패: {ex.Message}");
-                return "툴팁 생성 오류";
+                return L.Get("tooltip_generation_error");
             }
         }
 
@@ -161,18 +161,18 @@ namespace CaptainSkillTree.SkillTree
         {
             var tooltipData = new ArcherTooltipData
             {
-                skillName = "아처 멀티샷",
-                description = "5발씩 2회 발사합니다.",
-                additionalInfo = "화살 1발은 활+화살 공격력의 50%",
-                range = "없음",
+                skillName = L.Get("archer_skill_multishot"),
+                description = L.Get("archer_desc_multishot_fallback"),
+                additionalInfo = L.Get("archer_desc_arrow_damage_fallback"),
+                range = L.Get("tooltip_none"),
                 consumeStamina = "25",
                 consumeArrow = "1",
-                skillType = "액티브 버프 스킬 - Y키",
-                cooldown = "30초",
-                requirement = "활 착용",
-                confirmation = "직업은 1개만 선택가능, Lv 10 이상",
-                requiredItem = "에이크쉬르 트로피",
-                passiveSkills = "점프 높이 +20%, 낙사 데미지 -50%"
+                skillType = L.Get("skill_type_active_key", "Y"),
+                cooldown = $"30{L.Get("unit_seconds")}",
+                requirement = L.Get("requirement_bow_equip"),
+                confirmation = L.Get("confirmation_job_only"),
+                requiredItem = L.Get("item_eikthyr_trophy"),
+                passiveSkills = L.Get("archer_passive_skills", 20, 50)
             };
 
             return GenerateArcherTooltip(tooltipData);

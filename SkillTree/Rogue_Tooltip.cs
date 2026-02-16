@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -57,17 +58,17 @@ namespace CaptainSkillTree.SkillTree
                 // 메이지 스타일 데이터 구조
                 var data = new RogueTooltipData
                 {
-                    skillName = "로그",
-                    description = $"{stealthDuration}초 은신, 어그로 제거 범위 {aggroRange}m",
-                    additionalInfo = $"{buffDuration}초 공격력 +{attackBonus}%",
+                    skillName = L.Get("job_rogue"),
+                    description = L.Get("rogue_desc_shadow_strike", stealthDuration, aggroRange),
+                    additionalInfo = L.Get("rogue_desc_attack_bonus", buffDuration, attackBonus),
                     range = $"{aggroRange}m",
                     consumeStamina = $"{staminaCost:F0}",
                     consumeArrow = "",
-                    skillType = "직업 액티브 스킬 - Y키",
-                    cooldown = $"{cooldown:F0}초",
-                    requirement = "단검 착용, 로그 직업",
-                    confirmation = "직업은 1개만 선택가능, 레벨 10 이상",
-                    requiredItem = "에이크쉬르 트로피",
+                    skillType = L.Get("skill_type_job_active", "Y"),
+                    cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
+                    requirement = L.Get("requirement_rogue"),
+                    confirmation = L.Get("confirmation_job_only"),
+                    requiredItem = L.Get("item_eikthyr_trophy"),
                     specialNote = ""
                 };
 
@@ -92,12 +93,12 @@ namespace CaptainSkillTree.SkillTree
                 var tooltip = "";
 
                 // 스킬 이름 (황금색, 크기 22)
-                tooltip += $"<color=#FFD700><size=22>로그</size></color>\n\n";
+                tooltip += $"<color=#FFD700><size=22>{L.Get("job_rogue")}</size></color>\n\n";
 
                 // 설명 섹션
                 if (!string.IsNullOrEmpty(data.description))
                 {
-                    tooltip += $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>{data.description}";
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{data.description}";
 
                     if (!string.IsNullOrEmpty(data.additionalInfo))
                     {
@@ -109,34 +110,34 @@ namespace CaptainSkillTree.SkillTree
                 // 소모 섹션
                 if (!string.IsNullOrEmpty(data.consumeStamina))
                 {
-                    tooltip += $"<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 {data.consumeStamina}</size></color>\n";
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {data.consumeStamina}</size></color>\n";
                 }
 
-                // 스킬유형 섹션 (Y키 강조: #1E90FF / #ADFF2F)
-                tooltip += $"<color=#1E90FF><size=16>스킬유형: </size></color><color=#ADFF2F><size=16>직업 액티브 스킬 - Y키</size></color>\n";
+                // 스킬유형 섹션 (Y키 강조)
+                tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#ADFF2F><size=16>{L.Get("skill_type_job_active", "Y")}</size></color>\n";
 
                 // 패시브 섹션
-                tooltip += $"<color=#98FB98><size=16>패시브: </size></color><color=#ADFF2F><size=16>은신 스킬 +{stealthSkillBonus:F0}, 은신 속도 +{stealthSpeedBonus:F0}%, 낙하 데미지 -{fallDamageReduction:F0}%</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color><color=#ADFF2F><size=16>{L.Get("rogue_passive_desc", stealthSkillBonus, stealthSpeedBonus, fallDamageReduction)}</size></color>\n";
 
                 // 쿨타임 섹션
                 if (!string.IsNullOrEmpty(data.cooldown))
                 {
-                    tooltip += $"<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{data.cooldown}</size></color>\n";
                 }
 
                 // 필요조건 섹션
-                tooltip += $"<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>단검 착용, 로그 직업</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_rogue")}</size></color>\n";
 
-                // 확인사항 섹션 (비어있으면 표시하지 않음)
+                // 확인사항 섹션
                 if (!string.IsNullOrEmpty(data.confirmation))
                 {
-                    tooltip += $"<color=#F0E68C><size=16>확인사항: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
+                    tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{data.confirmation}</size></color>\n";
                 }
 
-                // 필요 아이템 섹션 (비어있으면 표시하지 않음)
+                // 필요 아이템 섹션
                 if (!string.IsNullOrEmpty(data.requiredItem))
                 {
-                    tooltip += $"<color=#87CEEB><size=16>필요 아이템: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_item")}: </size></color><color=#FF6B6B><size=16>{data.requiredItem}</size></color>";
                 }
 
                 return tooltip.TrimEnd('\n');
@@ -144,7 +145,7 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[로그 툴팁] 생성 실패: {ex.Message}");
-                return "툴팁 생성 오류";
+                return L.Get("tooltip_generation_error");
             }
         }
 
@@ -155,27 +156,27 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                var tooltip = $"설명: {data.description}\n";
-                
+                var tooltip = $"{L.Get("tooltip_description")}: {data.description}\n";
+
                 if (!string.IsNullOrEmpty(data.additionalInfo))
                 {
-                    tooltip += $"추가: {data.additionalInfo}\n";
+                    tooltip += $"{L.Get("tooltip_additional")}: {data.additionalInfo}\n";
                 }
-                
-                tooltip += $"범위: {data.range}\n";
-                tooltip += $"소모: 스태미나 {data.consumeStamina}";
-                
-                if (data.consumeArrow != "없음")
+
+                tooltip += $"{L.Get("tooltip_range")}: {data.range}\n";
+                tooltip += $"{L.Get("tooltip_cost")}: {L.Get("stat_stamina")} {data.consumeStamina}";
+
+                if (data.consumeArrow != L.Get("tooltip_none"))
                 {
                     tooltip += $", {data.consumeArrow}";
                 }
-                
-                tooltip += $"\n스킬유형: {data.skillType}\n";
-                tooltip += $"쿨타임: {data.cooldown}\n";
-                tooltip += $"필요조건: {data.requirement}\n";
-                tooltip += $"확인사항: {data.confirmation}\n";
-                tooltip += $"필요 아이템: {data.requiredItem}";
-                
+
+                tooltip += $"\n{L.Get("tooltip_skill_type")}: {data.skillType}\n";
+                tooltip += $"{L.Get("tooltip_cooldown")}: {data.cooldown}\n";
+                tooltip += $"{L.Get("tooltip_requirements")}: {data.requirement}\n";
+                tooltip += $"{L.Get("tooltip_notice")}: {data.confirmation}\n";
+                tooltip += $"{L.Get("tooltip_required_item")}: {data.requiredItem}";
+
                 return tooltip;
             }
             catch (Exception ex)
@@ -192,17 +193,17 @@ namespace CaptainSkillTree.SkillTree
         {
             var data = new RogueTooltipData
             {
-                skillName = "로그",
-                description = $"{Rogue_Config.RogueShadowStrikeStealthDurationValue}초 은신, 어그로 제거 범위 {Rogue_Config.RogueShadowStrikeAggroRangeValue}m",
-                additionalInfo = $"{Rogue_Config.RogueShadowStrikeBuffDurationValue}초 공격력 +{Rogue_Config.RogueShadowStrikeAttackBonusValue}%",
+                skillName = L.Get("job_rogue"),
+                description = L.Get("rogue_desc_shadow_strike", Rogue_Config.RogueShadowStrikeStealthDurationValue, Rogue_Config.RogueShadowStrikeAggroRangeValue),
+                additionalInfo = L.Get("rogue_desc_attack_bonus", Rogue_Config.RogueShadowStrikeBuffDurationValue, Rogue_Config.RogueShadowStrikeAttackBonusValue),
                 range = $"{Rogue_Config.RogueShadowStrikeAggroRangeValue}m",
                 consumeStamina = $"{Rogue_Config.RogueShadowStrikeStaminaCostValue:F0}",
                 consumeArrow = "",
-                skillType = "직업 액티브 스킬 - Y키",
-                cooldown = $"{Rogue_Config.RogueShadowStrikeCooldownValue:F0}초",
-                requirement = "단검 착용, 로그 직업",
-                confirmation = "직업은 1개만 선택가능, 레벨 10 이상",
-                requiredItem = "에이크쉬르 트로피",
+                skillType = L.Get("skill_type_job_active", "Y"),
+                cooldown = $"{Rogue_Config.RogueShadowStrikeCooldownValue:F0}{L.Get("unit_seconds")}",
+                requirement = L.Get("requirement_rogue"),
+                confirmation = L.Get("confirmation_job_only"),
+                requiredItem = L.Get("item_eikthyr_trophy"),
                 specialNote = ""
             };
 
