@@ -6,6 +6,7 @@ using System.Linq;
 using CaptainSkillTree;
 using CaptainSkillTree.Gui;
 using CaptainSkillTree.SkillTree.CriticalSystem;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -50,7 +51,7 @@ namespace CaptainSkillTree.SkillTree
                             // 시각적 효과 (가끔씩만 표시)
                             if (UnityEngine.Random.Range(0f, 1f) < 0.15f)
                             {
-                                SkillEffect.ShowSkillEffectText(player, $"🔥 분노 +{rageDamageBonus:F0}%!", 
+                                SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("rage_bonus", $"{rageDamageBonus:F0}"),
                                     new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
                             }
                         }
@@ -114,7 +115,7 @@ namespace CaptainSkillTree.SkillTree
                             totalDamageMultiplier *= (1f + bonus);
                             showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "💥 근접 특화!", 
+                            SkillEffect.ShowSkillEffectText(player, "💥 " + L.Get("melee_specialization"),
                                 new Color(1f, 0.3f, 0.3f), SkillEffect.SkillEffectTextType.Combat);
                         }
 
@@ -126,7 +127,7 @@ namespace CaptainSkillTree.SkillTree
                             totalDamageMultiplier *= (1f + bonus);
                             showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "🏹 활 특화!", 
+                            SkillEffect.ShowSkillEffectText(player, "🏹 " + L.Get("bow_specialization"),
                                 new Color(0.2f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
                         }
 
@@ -144,7 +145,7 @@ namespace CaptainSkillTree.SkillTree
                                 totalDamageMultiplier *= critDamageMultiplier;
                                 showEffect = true;
                                 isAttackTreeEffect = true;
-                                SkillEffect.ShowSkillEffectText(player, $"🎯 집중 사격 치명타 x{critDamageMultiplier:F1}!",
+                                SkillEffect.ShowSkillEffectText(player, "🎯 " + L.Get("focus_fire_crit", $"{critDamageMultiplier:F1}"),
                                     new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
                                 Plugin.Log.LogDebug($"[활 집중 사격] 치명타 발동 - 확률: {totalCritChance}%, 배율: {critDamageMultiplier:F1}x");
                             }
@@ -161,7 +162,7 @@ namespace CaptainSkillTree.SkillTree
                             {
                                 showEffect = true;
                                 isAttackTreeEffect = true;
-                                SkillEffect.ShowSkillEffectText(player, $"🏹 기본 활공격 +{SkillTreeConfig.BowStep3SilentShotDamageBonusValue:F0}!",
+                                SkillEffect.ShowSkillEffectText(player, "🏹 " + L.Get("basic_bow_damage", $"{SkillTreeConfig.BowStep3SilentShotDamageBonusValue:F0}"),
                                     new Color(0.6f, 0.3f, 0.8f), SkillEffect.SkillEffectTextType.Combat);
                             }
                         }
@@ -174,7 +175,7 @@ namespace CaptainSkillTree.SkillTree
                             totalDamageMultiplier *= (1f + bonus);
                             showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "⚡ 석궁 특화!", 
+                            SkillEffect.ShowSkillEffectText(player, "⚡ " + L.Get("crossbow_specialization"),
                                 new Color(1f, 0.9f, 0.3f), SkillEffect.SkillEffectTextType.Combat);
                         }
 
@@ -190,7 +191,7 @@ namespace CaptainSkillTree.SkillTree
                                 showEffect = true;
                                 isAttackTreeEffect = true;
 
-                                SkillEffect.ShowSkillEffectText(player, $"🎯 단 한 발! +{Crossbow_Config.CrossbowOneShotDamageBonusValue:F0}%",
+                                SkillEffect.ShowSkillEffectText(player, "🎯 " + L.Get("one_shot", Crossbow_Config.CrossbowOneShotDamageBonusValue),
                                     new Color(1f, 0.8f, 0f), SkillEffect.SkillEffectTextType.Critical);
                             }
                         }
@@ -204,7 +205,7 @@ namespace CaptainSkillTree.SkillTree
                             ApplyStaffAreaDamage(player, hit);
                             showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "🔥 지팡이 특화!", 
+                            SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("staff_specialization"),
                                 new Color(1f, 0.2f, 1f), SkillEffect.SkillEffectTextType.Combat);
                         }
                     }
@@ -219,7 +220,7 @@ namespace CaptainSkillTree.SkillTree
                             totalDamageMultiplier *= 1.3f; // 추가 치명타 보너스
                             showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "💀 정밀 공격!", 
+                            SkillEffect.ShowSkillEffectText(player, "💀 " + L.Get("precision_attack"),
                                 new Color(1f, 0.1f, 0.1f), SkillEffect.SkillEffectTextType.Critical);
                         }
                     }
@@ -271,7 +272,7 @@ namespace CaptainSkillTree.SkillTree
                             if (UnityEngine.Random.Range(0f, 1f) < 0.1f)
                             {
                                 showEffect = true;
-                                SkillEffect.ShowSkillEffectText(player, "🔥 속성 공격!", 
+                                SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("elemental_attack"),
                                     new Color(0.8f, 0.2f, 0.8f), SkillEffect.SkillEffectTextType.Combat);
                             }
                         }
@@ -287,7 +288,7 @@ namespace CaptainSkillTree.SkillTree
                             totalDamageMultiplier *= (1f + bonus);
                             showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "🏹 원거리 강화!", 
+                            SkillEffect.ShowSkillEffectText(player, "🏹 " + L.Get("ranged_enhance"),
                                 new Color(0.2f, 0.8f, 0.8f), SkillEffect.SkillEffectTextType.Combat);
                         }
                     }
@@ -305,7 +306,7 @@ namespace CaptainSkillTree.SkillTree
                         // 특수 효과 표시
                         if (showEffect && isAttackTreeEffect)
                         {
-                            SkillEffect.ShowSkillEffectText(player, "⚔️ 공격 전문가!", 
+                            SkillEffect.ShowSkillEffectText(player, "⚔️ " + L.Get("attack_expert"),
                                 new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
                         }
                         
@@ -355,7 +356,7 @@ namespace CaptainSkillTree.SkillTree
                 isAttackTreeEffect = true;
                 if (AttackTreeTracker.meleeComboCount[player] == 2)
                 {
-                    SkillEffect.ShowSkillEffectText(player, "⚔️ 근접 강화!", 
+                    SkillEffect.ShowSkillEffectText(player, "⚔️ " + L.Get("melee_enhance"),
                         new Color(0.3f, 0.8f, 0.8f), SkillEffect.SkillEffectTextType.Combat);
                 }
             }
@@ -368,7 +369,7 @@ namespace CaptainSkillTree.SkillTree
                 totalDamageMultiplier *= (1f + bonus);
                 if (AttackTreeTracker.meleeComboCount[player] == 3)
                 {
-                    SkillEffect.ShowSkillEffectText(player, "🔥 연속 근접의 대가!", 
+                    SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("consecutive_melee_master"),
                         new Color(1f, 0.5f, 0f), SkillEffect.SkillEffectTextType.Critical);
                 }
             }

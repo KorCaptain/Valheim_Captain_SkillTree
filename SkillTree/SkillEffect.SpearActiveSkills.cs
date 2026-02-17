@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
 using CaptainSkillTree.Gui;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -63,14 +64,14 @@ namespace CaptainSkillTree.SkillTree
                 // 스킬 보유 확인
                 if (!HasSkill("spear_Step5_combo"))
                 {
-                    DrawFloatingText(player, "연공창 스킬이 필요합니다", Color.red);
+                    DrawFloatingText(player, L.Get("combo_spear_skill_required"), Color.red);
                     return;
                 }
 
                 // 창 착용 확인
                 if (!IsUsingSpear(player))
                 {
-                    DrawFloatingText(player, "창을 착용해야 합니다", Color.red);
+                    DrawFloatingText(player, L.Get("spear_equip_required"), Color.red);
                     return;
                 }
 
@@ -79,7 +80,7 @@ namespace CaptainSkillTree.SkillTree
                 if (spearEnhancedThrowCooldowns.ContainsKey(player) && now < spearEnhancedThrowCooldowns[player])
                 {
                     float remaining = spearEnhancedThrowCooldowns[player] - now;
-                    DrawFloatingText(player, $"쿨타임: {Mathf.CeilToInt(remaining)}초", Color.yellow);
+                    DrawFloatingText(player, L.Get("cooldown_seconds", Mathf.CeilToInt(remaining).ToString()), Color.yellow);
                     return;
                 }
 
@@ -88,7 +89,7 @@ namespace CaptainSkillTree.SkillTree
                 float requiredStamina = maxStamina * (SkillTreeConfig.SpearStep2ThrowStaminaCostValue / 100f);
                 if (player.GetStamina() < requiredStamina)
                 {
-                    DrawFloatingText(player, "스태미나 부족", Color.red);
+                    DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
                     return;
                 }
 
@@ -126,13 +127,13 @@ namespace CaptainSkillTree.SkillTree
                 // 버프 UI 표시
                 SkillBuffDisplay.Instance?.ShowBuff(
                     "spear_combo_throw",
-                    $"연공창 ({maxUses}회)",
+                    L.Get("combo_spear_buff_name", maxUses.ToString()),
                     buffDuration,
                     new Color(1f, 0.8f, 0.2f, 1f),
                     "🏹"
                 );
 
-                DrawFloatingText(player, $"[연공창] 버프 활성화! ({maxUses}회, +{damageBonus}%)", new Color(1f, 0.8f, 0.2f, 1f));
+                DrawFloatingText(player, L.Get("combo_spear_buff_activated", maxUses.ToString(), damageBonus.ToString()), new Color(1f, 0.8f, 0.2f, 1f));
             }
             catch (Exception ex)
             {
@@ -234,12 +235,12 @@ namespace CaptainSkillTree.SkillTree
                 // 버프 종료 - VFX도 제거됨
                 spearEnhancedThrowBuffEndTime[player] = 0f;
                 SkillBuffDisplay.Instance?.RemoveBuff("spear_combo_throw");
-                DrawFloatingText(player, "[연공창] 버프 종료", Color.gray);
+                DrawFloatingText(player, L.Get("combo_spear_buff_ended"), Color.gray);
             }
             else
             {
                 // 남은 횟수 텍스트로 표시
-                DrawFloatingText(player, $"[연공창] 남은 횟수: {remaining}회", new Color(1f, 0.8f, 0.2f, 1f));
+                DrawFloatingText(player, L.Get("combo_spear_uses_remaining", remaining.ToString()), new Color(1f, 0.8f, 0.2f, 1f));
             }
         }
 
@@ -259,7 +260,7 @@ namespace CaptainSkillTree.SkillTree
                 if (!lastThrownSpear.ContainsKey(player) || lastThrownSpear[player] == null)
                 {
                     Plugin.Log.LogWarning("[연공창] 회수할 창 정보 없음");
-                    DrawFloatingText(player, "[연공창] 창 회수 실패", Color.red);
+                    DrawFloatingText(player, L.Get("combo_spear_retrieve_failed"), Color.red);
                     return;
                 }
 
@@ -277,10 +278,10 @@ namespace CaptainSkillTree.SkillTree
                         CreateSpearBuffVFX(player);
                     }
                     player.StartCoroutine(DelayedEquipSpear(player, spearName));
-                    DrawFloatingText(player, "[연공창] 창 회수 & 장착!", new Color(0.5f, 1f, 0.5f, 1f));
+                    DrawFloatingText(player, L.Get("combo_spear_retrieved_equipped"), new Color(0.5f, 1f, 0.5f, 1f));
                     return;
                 }
-                DrawFloatingText(player, "[연공창] 인벤토리 가득!", Color.red);
+                DrawFloatingText(player, L.Get("combo_spear_inventory_full"), Color.red);
             }
             catch (Exception ex)
             {

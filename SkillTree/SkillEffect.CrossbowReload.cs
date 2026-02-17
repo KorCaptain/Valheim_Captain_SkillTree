@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using System.Collections.Generic;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -137,7 +138,7 @@ namespace CaptainSkillTree.SkillTree
                 if (autoReloadActive)
                 {
                     SkillEffect.ShowSkillEffectText(player,
-                        $"⚡ 자동 장전! (+{totalSpeedBonus:F0}% 속도)",
+                        $"⚡ {L.Get("crossbow_auto_reload_activated", $"{totalSpeedBonus:F0}")}",
                         new Color(1f, 0.8f, 0f),
                         SkillEffect.SkillEffectTextType.Combat);
                 }

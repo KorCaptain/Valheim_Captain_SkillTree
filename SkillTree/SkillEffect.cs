@@ -9,6 +9,7 @@ using CaptainSkillTree.Gui;
 using CaptainSkillTree.VFX;
 using CaptainSkillTree.SkillTree;
 using CaptainSkillTree.SkillTree.CriticalSystem; // 치명타 시스템
+using CaptainSkillTree.Localization;
 using static CaptainSkillTree.SkillTree.SkillEffect;
 
 namespace CaptainSkillTree.SkillTree
@@ -104,9 +105,9 @@ namespace CaptainSkillTree.SkillTree
             
             // 버프 표시 추가
             SkillBuffDisplay.Instance.ShowBuff(
-                "sword_defense_buff", 
-                string.Format("반격 자세 +{0}%", (bonusPercent * 100).ToString("F0")), 
-                duration, 
+                "sword_defense_buff",
+                L.Get("counter_stance_buff", (bonusPercent * 100).ToString("F0")),
+                duration,
                 new Color(0f, 0.5f, 1f, 1f), // 파란색
                 "🛡️"
             );
@@ -133,9 +134,9 @@ namespace CaptainSkillTree.SkillTree
             
             // 버프 표시 추가
             SkillBuffDisplay.Instance.ShowBuff(
-                "sword_next_attack_boost", 
-                string.Format("칼날 되치기 +{0}%", ((multiplier - 1f) * 100).ToString("F0")), 
-                duration, 
+                "sword_next_attack_boost",
+                L.Get("blade_counter_buff", ((multiplier - 1f) * 100).ToString("F0")),
+                duration,
                 new Color(1f, 0.5f, 0f, 1f), // 주황색
                 "⚔️"
             );
@@ -219,7 +220,7 @@ namespace CaptainSkillTree.SkillTree
             // MessageHud를 통한 간단한 표시
             if (MessageHud.instance != null)
             {
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{skillName} 발동!</color>");
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{L.Get("skill_activated", skillName)}</color>");
             }
         }
 
@@ -371,7 +372,7 @@ namespace CaptainSkillTree.SkillTree
                 float woodcuttingBonus = GetCurrentWoodcuttingBonus();
                 if (woodcuttingBonus > 0)
                 {
-                    tooltip += $"\n<color=#90EE90>🪓 벌목 효율: +{woodcuttingBonus}%</color>";
+                    tooltip += $"\n<color=#90EE90>🪓 {L.Get("woodcutting_efficiency_bonus", woodcuttingBonus)}</color>";
                 }
             }
             
@@ -381,7 +382,7 @@ namespace CaptainSkillTree.SkillTree
                 float miningBonus = GetCurrentMiningBonus();
                 if (miningBonus > 0)
                 {
-                    tooltip += $"\n<color=#FFD700>⛏️ 채광 효율: +{miningBonus}%</color>";
+                    tooltip += $"\n<color=#FFD700>⛏️ {L.Get("mining_efficiency_bonus", miningBonus)}</color>";
                 }
             }
             
@@ -930,7 +931,7 @@ namespace CaptainSkillTree.SkillTree
                                 float afterHP = attacker.GetHealth();
 
                                 // 반사 효과 표시
-                                SkillEffect.DrawFloatingText(player, $"🛡️ 반사 데미지 {reflectionDamage:F0}!", Color.yellow);
+                                SkillEffect.DrawFloatingText(player, "🛡️ " + L.Get("reflect_damage", $"{reflectionDamage:F0}"), Color.yellow);
                                 Plugin.Log.LogInfo($"[구버전 반사] {attacker.name} 체력: {beforeHP:F1} → {afterHP:F1} (피해: {beforeHP - afterHP:F1})");
                             }
                         }
@@ -1121,8 +1122,8 @@ namespace CaptainSkillTree.SkillTree
                 // 건설 시 텍스트 표시 (MMO 방식 DamageText)
                 if (UnityEngine.Random.Range(0f, 1f) < 0.25f) // 빈도 약간 증가
                 {
-                    SkillEffect.DrawFloatingText(Player.m_localPlayer, 
-                        $"🏠 건축 내구도 +{buildingBonus}%", 
+                    SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                        $"🏠 {L.Get("building_durability_bonus", buildingBonus)}",
                         new Color(0.6f, 0.4f, 0.2f, 1f)); // 나무/돌 비슷한 갈색
                 }
             }

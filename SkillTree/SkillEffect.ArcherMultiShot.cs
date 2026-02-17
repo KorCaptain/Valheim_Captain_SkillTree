@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -49,7 +50,7 @@ namespace CaptainSkillTree.SkillTree
                 var weapon = player.GetCurrentWeapon();
                 if (weapon?.m_shared?.m_skillType != Skills.SkillType.Bows)
                 {
-                    ShowSkillEffectText(player, "❌ 활을 착용해야 합니다!", 
+                    ShowSkillEffectText(player, "❌ " + L.Get("bow_equip_required"),
                         Color.red, SkillEffectTextType.Combat);
                     return false;
                 }
@@ -58,7 +59,7 @@ namespace CaptainSkillTree.SkillTree
                 var ammo = GetArcherArrow(player);
                 if (ammo == null || ammo.m_stack <= 0)
                 {
-                    ShowSkillEffectText(player, "❌ 화살이 없습니다!", 
+                    ShowSkillEffectText(player, "❌ " + L.Get("no_arrows"),
                         Color.red, SkillEffectTextType.Combat);
                     return false;
                 }
@@ -67,7 +68,7 @@ namespace CaptainSkillTree.SkillTree
                 var staminaCost = Archer_Config.ArcherMultiShotStaminaCostValue;
                 if (player.GetStamina() < staminaCost)
                 {
-                    ShowSkillEffectText(player, $"❌ 스태미나 부족! ({staminaCost} 필요)", 
+                    ShowSkillEffectText(player, "❌ " + L.Get("stamina_insufficient"),
                         Color.red, SkillEffectTextType.Combat);
                     return false;
                 }
@@ -80,7 +81,7 @@ namespace CaptainSkillTree.SkillTree
                 var charges = Archer_Config.ArcherMultiShotChargesValue;
                 archerMultiShotCharges[player] = charges;
                 
-                ShowSkillEffectText(player, $"🏹 멀티샷 준비완료! ({charges}회 사용 가능)", 
+                ShowSkillEffectText(player, "🏹 " + L.Get("multishot_ready", charges.ToString()),
                     new Color(0.2f, 0.8f, 0.2f), SkillEffectTextType.Combat);
                 
                 // 버프 활성화 VFX/SFX 효과
@@ -104,7 +105,7 @@ namespace CaptainSkillTree.SkillTree
             // 아처 직업 스킬 습득 확인
             if (!HasSkill("Archer"))
             {
-                ShowSkillEffectText(player, "❌ 아처 직업이 필요합니다!", 
+                ShowSkillEffectText(player, "❌ " + L.Get("archer_job_required"),
                     Color.red, SkillEffectTextType.Combat);
                 return false;
             }
@@ -114,7 +115,7 @@ namespace CaptainSkillTree.SkillTree
             var remainingCooldown = cooldown - (Time.time - lastArcherMultiShotTime);
             if (remainingCooldown > 0f)
             {
-                ShowSkillEffectText(player, $"⏳ 쿨다운: {remainingCooldown:F1}초", 
+                ShowSkillEffectText(player, "⏳ " + L.Get("cooldown_format", $"{remainingCooldown:F1}"),
                     Color.yellow, SkillEffectTextType.Combat);
                 return false;
             }
@@ -233,13 +234,13 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogInfo("[아처 멀티샷] 상태 효과 제거 (모든 충전 사용 완료)");
                     }
                     
-                    ShowSkillEffectText(player, "🏹 멀티샷 완료!", 
+                    ShowSkillEffectText(player, "🏹 " + L.Get("multishot_completed"),
                         new Color(0.8f, 0.8f, 0.2f), SkillEffectTextType.Combat);
                     Plugin.Log.LogInfo($"[아처 멀티샷] 모든 충전 사용 완료 - 버프 해제");
                 }
                 else
                 {
-                    ShowSkillEffectText(player, $"🏹 멀티샷! (남은 충전: {newCharges}회)", 
+                    ShowSkillEffectText(player, "🏹 " + L.Get("multishot_remaining_charges", newCharges.ToString()),
                         new Color(0.2f, 0.8f, 0.2f), SkillEffectTextType.Combat);
                 }
                 

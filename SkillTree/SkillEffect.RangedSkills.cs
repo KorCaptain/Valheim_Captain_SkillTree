@@ -5,6 +5,7 @@ using UnityEngine;
 using HarmonyLib;
 using System.Linq;
 using CaptainSkillTree;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -35,14 +36,14 @@ namespace CaptainSkillTree.SkillTree
             if (recentAutoReload)
             {
                 ShowSkillEffectText(player,
-                    $"⚡ 자동 장전 + 연속 발사 모두 발동~! ({shotCount}발)",
+                    $"⚡ {L.Get("crossbow_auto_reload_and_rapid_fire", shotCount)}",
                     new Color(1f, 0.8f, 0f),
                     SkillEffectTextType.Combat);
             }
             else
             {
                 ShowSkillEffectText(player,
-                    $"🎯 연속 발사! ({shotCount}발)",
+                    $"🎯 {L.Get("crossbow_rapid_fire_activated", shotCount)}",
                     new Color(1f, 0.5f, 0f),
                     SkillEffectTextType.Combat);
             }
@@ -649,7 +650,7 @@ namespace CaptainSkillTree.SkillTree
                         v = 0f; // 에이트르 소모 없음
 
                         // 화면 중앙에 알림 표시
-                        __instance.Message(MessageHud.MessageType.Center, "✨ 행운 마력 발동!");
+                        __instance.Message(MessageHud.MessageType.Center, L.Get("luck_magic_activated"));
                     }
                 }
             }
@@ -793,7 +794,7 @@ namespace CaptainSkillTree.SkillTree
                         if (SkillEffect.TryKnockbackOnHit(target, player.transform.position))
                         {
                             SkillEffect.ShowSkillEffectText(player,
-                                "💥 넉백!",
+                                $"💥 {L.Get("knockback_effect")}",
                                 new Color(1f, 0.3f, 0f),
                                 SkillEffect.SkillEffectTextType.Combat);
                         }

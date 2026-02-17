@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -35,18 +36,18 @@ namespace CaptainSkillTree.SkillTree
             if (Time.time - crossbowOneShotCooldown[player] < crossbowOneShotCooldownTime)
             {
                 float remainingCooldown = crossbowOneShotCooldownTime - (Time.time - crossbowOneShotCooldown[player]);
-                DrawFloatingText(player, $"단 한 발 쿨타임: {remainingCooldown:F1}초");
+                DrawFloatingText(player, L.Get("crossbow_oneshot_cooldown", $"{remainingCooldown:F1}"));
                 if (crossbowOneShotCoroutine.ContainsKey(player) && crossbowOneShotCoroutine[player] != null)
                 {
                     player.StopCoroutine(crossbowOneShotCoroutine[player]);
                 }
-                crossbowOneShotCoroutine[player] = player.StartCoroutine(ShowCooldownDisplay(player, remainingCooldown, "단 한 발"));
+                crossbowOneShotCoroutine[player] = player.StartCoroutine(ShowCooldownDisplay(player, remainingCooldown, L.Get("crossbow_oneshot_name")));
                 return;
             }
 
             if (!WeaponHelper.IsUsingCrossbow(player))
             {
-                DrawFloatingText(player, "석궁을 착용해야 합니다!");
+                DrawFloatingText(player, L.Get("crossbow_equip_required"));
                 return;
             }
 
@@ -80,7 +81,7 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[단 한 발 버프] VFX 재생 실패: {buffEffectEx.Message}");
             }
 
-            DrawFloatingText(player, "🎯 단 한 발 준비 완료! (30초)");
+            DrawFloatingText(player, L.Get("crossbow_oneshot_ready"));
         }
 
         private static void StartFollowingBuffEffect(Player player)
@@ -200,7 +201,7 @@ namespace CaptainSkillTree.SkillTree
 
                     if (crossbowOneShotReady[player])
                     {
-                        DrawFloatingText(player, $"🎯 단 한 발 준비됨 ({remainingTime:F0}초)");
+                        DrawFloatingText(player, L.Get("crossbow_oneshot_remaining", $"{remainingTime:F0}"));
                     }
                 }
                 else break;
@@ -211,7 +212,7 @@ namespace CaptainSkillTree.SkillTree
             if (crossbowOneShotReady[player])
             {
                 crossbowOneShotReady[player] = false;
-                DrawFloatingText(player, "단 한 발 버프 만료");
+                DrawFloatingText(player, L.Get("crossbow_oneshot_expired"));
             }
         }
 
@@ -228,7 +229,7 @@ namespace CaptainSkillTree.SkillTree
                 float remaining = cooldownTime - elapsed;
                 if (remaining > 0)
                 {
-                    DrawFloatingText(player, $"{skillName} 쿨타임: {remaining:F1}초");
+                    DrawFloatingText(player, L.Get("skill_cooldown_format", skillName, $"{remaining:F1}"));
                 }
             }
         }
@@ -289,7 +290,7 @@ namespace CaptainSkillTree.SkillTree
                     }
                     catch { }
 
-                    DrawFloatingText(player, "🎯 단 한 발 발동!");
+                    DrawFloatingText(player, L.Get("crossbow_oneshot_activated"));
                     return true;
                 }
 

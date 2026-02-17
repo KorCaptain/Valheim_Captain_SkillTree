@@ -1,6 +1,7 @@
 using UnityEngine;
 using CaptainSkillTree;
 using CaptainSkillTree.SkillTree;
+using CaptainSkillTree.Localization;
 using static CaptainSkillTree.SkillTree.SkillEffect;
 using System.Collections.Generic;
 
@@ -125,8 +126,8 @@ namespace CaptainSkillTree.SkillTree
         {
             if (player != null)
             {
-                player.Message(MessageHud.MessageType.Center, "❌ 지팡이나 완드를 착용해야 합니다!");
-                SkillEffect.DrawFloatingText(player, "❌ 지팡이나 완드를 착용해야 합니다!", Color.red);
+                player.Message(MessageHud.MessageType.Center, L.Get("staff_wand_required"));
+                SkillEffect.DrawFloatingText(player, L.Get("staff_wand_required"), Color.red);
             }
         }
 

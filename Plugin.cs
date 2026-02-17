@@ -21,7 +21,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.508")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.527")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -60,7 +60,7 @@ namespace CaptainSkillTree
 
             // ===== Captain Level System Config (최상단) =====
             CaptainLevelConfig.Bind(Config);
-            Log.LogInfo("[Captain Level System] Config 바인딩 완료");
+            Log.LogDebug("[Captain Level System] Config 바인딩 완료");
 
             // ===== 로컬라이제이션 시스템 초기화 (스킬 노드 등록 전에 필수!) =====
             // 스킬 노드의 Name/Description이 L.Get()을 사용하므로 먼저 초기화해야 함

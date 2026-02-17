@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -55,7 +56,7 @@ namespace CaptainSkillTree.SkillTree
                 nextAttackMultiplier[player] = 1.5f;
                 nextAttackExpiry[player] = now + 5f;
                 PlaySkillEffect(player, "sword_combo");
-                DrawFloatingText(player, "⚔️ 검술 연계 3단!");
+                DrawFloatingText(player, "⚔️ " + L.Get("sword_combo_3hit"));
             }
         }
 
@@ -82,7 +83,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (swordComboCount[player] >= 2)
             {
-                DrawFloatingText(player, $"⚔️ 검 전문가 2연속! (+{SkillTreeConfig.SwordStep1ExpertComboBonusValue}%)");
+                DrawFloatingText(player, "⚔️ " + L.Get("sword_expert_combo", SkillTreeConfig.SwordStep1ExpertComboBonusValue));
 
                 nextAttackBoosted[player] = true;
                 nextAttackMultiplier[player] = 1f + (SkillTreeConfig.SwordStep1ExpertComboBonusValue / 100f);
@@ -113,7 +114,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (swordComboCount[player] >= 3)
             {
-                DrawFloatingText(player, $"⚔️ 연속베기! 3연속 공격력 +{SkillTreeConfig.SwordStep2ComboSlashBonusValue}%");
+                DrawFloatingText(player, "⚔️ " + L.Get("sword_combo_slash", SkillTreeConfig.SwordStep2ComboSlashBonusValue));
 
                 nextAttackBoosted[player] = true;
                 nextAttackMultiplier[player] = 1f + (SkillTreeConfig.SwordStep2ComboSlashBonusValue / 100f);
@@ -132,7 +133,7 @@ namespace CaptainSkillTree.SkillTree
             float duration = SkillTreeConfig.SwordStep1CounterDurationValue;
             swordCounterDefenseEndTime[player] = Time.time + duration;
 
-            DrawFloatingText(player, $"🛡️ 반격 자세! ({duration}초간 방어력 +{SkillTreeConfig.SwordStep1CounterDefenseBonusValue}%)");
+            DrawFloatingText(player, "🛡️ " + L.Get("sword_counter_stance", duration, SkillTreeConfig.SwordStep1CounterDefenseBonusValue));
             Plugin.Log.LogInfo($"[반격 자세] 패링 성공 - {duration}초간 방어력 +{SkillTreeConfig.SwordStep1CounterDefenseBonusValue}% 적용");
         }
 
@@ -146,7 +147,7 @@ namespace CaptainSkillTree.SkillTree
             float duration = SkillTreeConfig.SwordStep3BladeCounterDurationValue;
             swordBladeCounterEndTime[player] = Time.time + duration;
 
-            DrawFloatingText(player, $"⚔️ 칼날 되치기! ({duration}초간 공격력 +{SkillTreeConfig.SwordStep3BladeCounterBonusValue}%)");
+            DrawFloatingText(player, "⚔️ " + L.Get("sword_blade_counter", duration, SkillTreeConfig.SwordStep3BladeCounterBonusValue));
             Plugin.Log.LogInfo($"[칼날 되치기] 패링 성공 - {duration}초간 공격력 +{SkillTreeConfig.SwordStep3BladeCounterBonusValue}% 적용");
         }
 
@@ -160,7 +161,7 @@ namespace CaptainSkillTree.SkillTree
             var currentWeapon = player.GetCurrentWeapon();
             if (currentWeapon != null && currentWeapon.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
             {
-                DrawFloatingText(player, $"⚔️🛡️ 공방일체! (공격력 +{SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue}%, 방어력 +{SkillTreeConfig.SwordStep3OffenseDefenseDefenseBonusValue})");
+                DrawFloatingText(player, "⚔️🛡️ " + L.Get("sword_offense_defense", SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue, SkillTreeConfig.SwordStep3OffenseDefenseDefenseBonusValue));
                 Plugin.Log.LogDebug($"[공방일체] 양손 무기 착용 - 공격력 +{SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue}%, 방어력 +{SkillTreeConfig.SwordStep3OffenseDefenseDefenseBonusValue} 적용");
             }
         }
@@ -208,7 +209,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 spearAfterRoll[player] = false;
                 PlaySkillEffect(player, "spear_evasion");
-                DrawFloatingText(player, "🎯 회피 후 반격!");
+                DrawFloatingText(player, "🎯 " + L.Get("sword_dodge_counter"));
             }
         }
 
@@ -262,7 +263,7 @@ namespace CaptainSkillTree.SkillTree
                 spearDualBuffExpiry[player] = now + duration;
                 spearComboCount[player] = 0;
 
-                DrawFloatingText(player, $"⚡ 이연창! ({duration}초간 공격력 +{Spear_Config.SpearDualDamageBonusValue}%)");
+                DrawFloatingText(player, "⚡ " + L.Get("spear_dual_strike", duration, Spear_Config.SpearDualDamageBonusValue));
                 Plugin.Log.LogInfo($"[이연창] 2연속 공격 달성 - {duration}초간 공격력 보너스 적용");
             }
         }
@@ -319,7 +320,7 @@ namespace CaptainSkillTree.SkillTree
             if (spearPenetrateCooldownEndTime.TryGetValue(player, out float cooldownEnd) && Time.time < cooldownEnd)
             {
                 float remaining = cooldownEnd - Time.time;
-                DrawFloatingText(player, $"꿰뚫는 창 쿨타임 ({remaining:F1}초)", Color.red);
+                DrawFloatingText(player, L.Get("spear_penetrate_cooldown", $"{remaining:F1}"), Color.red);
                 return;
             }
 
@@ -327,7 +328,7 @@ namespace CaptainSkillTree.SkillTree
             float staminaCost = player.GetMaxStamina() * (Spear_Config.SpearStep6PenetrateStaminaCostValue / 100f);
             if (player.GetStamina() < staminaCost)
             {
-                DrawFloatingText(player, "스태미나가 부족합니다!", Color.red);
+                DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
                 return;
             }
 
@@ -355,7 +356,7 @@ namespace CaptainSkillTree.SkillTree
             spearPenetrateBuffEndTime[player] = Time.time + duration;
             spearPenetrateComboCount[player] = 0;
 
-            DrawFloatingText(player, $"⚡ 꿰뚫는 창 발동! ({duration}초)", Color.yellow);
+            DrawFloatingText(player, "⚡ " + L.Get("spear_penetrate_activated", $"{duration}"), Color.yellow);
             Plugin.Log.LogInfo($"[꿰뚫는 창] 버프 활성화 - {duration}초간 지속");
         }
 
@@ -447,7 +448,7 @@ namespace CaptainSkillTree.SkillTree
                     target.Damage(lightningHit);
                 }
 
-                DrawFloatingText(player, $"⚡ 번개 충격! ({lightningDamage:F0})", Color.cyan);
+                DrawFloatingText(player, "⚡ " + L.Get("spear_lightning_shock", $"{lightningDamage:F0}"), Color.cyan);
                 Plugin.Log.LogInfo($"[꿰뚫는 창] 번개 충격 발동 - 데미지: {lightningDamage:F0}");
             }
             catch (System.Exception ex)

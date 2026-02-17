@@ -2,6 +2,7 @@ using HarmonyLib;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -35,7 +36,7 @@ namespace CaptainSkillTree.SkillTree
                 // 1. 스킬 보유 확인
                 if (!HasSkill("bow_Step6_critboost"))
                 {
-                    ShowSkillEffectText(player, "폭발 화살 스킬이 필요합니다", Color.red, SkillEffectTextType.Standard);
+                    ShowSkillEffectText(player, L.Get("explosive_arrow_skill_required"), Color.red, SkillEffectTextType.Standard);
                     Plugin.Log.LogInfo("[폭발 화살] 스킬 미보유");
                     return;
                 }
@@ -47,7 +48,7 @@ namespace CaptainSkillTree.SkillTree
                 if (Time.time - explosiveArrowCooldown[player] < SkillTreeConfig.BowExplosiveArrowCooldownValue)
                 {
                     float remainingCooldown = SkillTreeConfig.BowExplosiveArrowCooldownValue - (Time.time - explosiveArrowCooldown[player]);
-                    ShowSkillEffectText(player, $"쿨타임: {remainingCooldown:F1}초", Color.yellow, SkillEffectTextType.Passive);
+                    ShowSkillEffectText(player, L.Get("cooldown_format", $"{remainingCooldown:F1}"), Color.yellow, SkillEffectTextType.Passive);
                     Plugin.Log.LogInfo($"[폭발 화살] 쿨타임 중 - 남은 시간: {remainingCooldown:F1}초");
                     return;
                 }
@@ -55,7 +56,7 @@ namespace CaptainSkillTree.SkillTree
                 // 3. 활 착용 확인
                 if (!IsUsingBowForExplosive(player))
                 {
-                    ShowSkillEffectText(player, "활을 착용해야 합니다", Color.red, SkillEffectTextType.Standard);
+                    ShowSkillEffectText(player, L.Get("bow_equip_required"), Color.red, SkillEffectTextType.Standard);
                     Plugin.Log.LogInfo("[폭발 화살] 활 미착용");
                     return;
                 }
@@ -65,7 +66,7 @@ namespace CaptainSkillTree.SkillTree
                 float requiredStamina = maxStamina * (SkillTreeConfig.BowExplosiveArrowStaminaCostValue / 100f);
                 if (player.GetStamina() < requiredStamina)
                 {
-                    ShowSkillEffectText(player, "스태미나 부족", Color.red, SkillEffectTextType.Standard);
+                    ShowSkillEffectText(player, L.Get("stamina_insufficient"), Color.red, SkillEffectTextType.Standard);
                     Plugin.Log.LogInfo($"[폭발 화살] 스태미나 부족 - 필요: {requiredStamina:F1}, 현재: {player.GetStamina():F1}");
                     return;
                 }
@@ -81,7 +82,7 @@ namespace CaptainSkillTree.SkillTree
                 PlaySkillEffect(player, "bow_Step6_critboost", player.transform.position);
                 
                 // 성공 메시지 (석궁과 동일한 스타일)
-                ShowSkillEffectText(player, "💥 폭발 화살 준비 완료!", new Color(1f, 0.4f, 0f), SkillEffectTextType.Combat);
+                ShowSkillEffectText(player, "💥 " + L.Get("explosive_arrow_ready"), new Color(1f, 0.4f, 0f), SkillEffectTextType.Combat);
                 Plugin.Log.LogInfo("[폭발 화살] ✅ R키 액티브 스킬 발동 완료 - 다음 한 발 준비됨");
             }
             catch (System.Exception ex)
@@ -115,7 +116,7 @@ namespace CaptainSkillTree.SkillTree
             if (explosiveArrowReady.ContainsKey(player) && explosiveArrowReady[player])
             {
                 explosiveArrowReady[player] = false;
-                ShowSkillEffectText(player, "💥 폭발 화살 발사!", Color.red, SkillEffectTextType.Critical);
+                ShowSkillEffectText(player, "💥 " + L.Get("explosive_arrow_fire"), Color.red, SkillEffectTextType.Critical);
                 Plugin.Log.LogInfo($"[폭발 화살] {player.GetPlayerName()} 폭발 화살 소모됨");
             }
         }
@@ -283,7 +284,7 @@ namespace CaptainSkillTree.SkillTree
                 hit.m_damage.m_fire += explosiveDamage;
                 
                 // 플로팅 텍스트
-                SkillEffect.DrawFloatingText(attacker, $"💥 폭발! +{explosiveDamage:F0}", Color.red);
+                SkillEffect.DrawFloatingText(attacker, "💥 " + L.Get("explosion_damage", $"{explosiveDamage:F0}"), Color.red);
                 
                 Plugin.Log.LogInfo($"[폭발 화살] 원본 히트에 폭발 데미지 {explosiveDamage:F0} 추가 완료");
             }

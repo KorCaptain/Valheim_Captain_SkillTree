@@ -85,7 +85,7 @@ namespace CaptainSkillTree.Localization
                 // ===== Config 변경 이벤트 등록 (실시간 언어 변경) =====
                 LanguageConfig.SettingChanged += (sender, args) =>
                 {
-                    Plugin.Log.LogInfo($"[Localization] Config 변경 감지: '{LanguageConfig.Value}'");
+                    Plugin.Log.LogDebug($"[Localization] Config 변경 감지: '{LanguageConfig.Value}'");
                     ReloadLanguage();
                     OnLanguageChanged?.Invoke();  // UI 갱신 트리거
                 };
@@ -95,40 +95,25 @@ namespace CaptainSkillTree.Localization
 
                 // Detect or set language
                 var configValue = LanguageConfig.Value.Trim();
-                Plugin.Log.LogInfo($"[Localization] Config value: '{configValue}'");
+                Plugin.Log.LogDebug($"[Localization] Config value: '{configValue}'");
 
                 if (configValue.Equals("Auto", StringComparison.OrdinalIgnoreCase))
                 {
-                    Plugin.Log.LogInfo("[Localization] Auto mode enabled - detecting Valheim language...");
+                    Plugin.Log.LogDebug("[Localization] Auto mode enabled - detecting Valheim language...");
                     DetectLanguage();
                 }
                 else
                 {
-                    Plugin.Log.LogInfo($"[Localization] Manual mode - setting language to: '{configValue}'");
                     SetLanguage(configValue);
                 }
 
                 _initialized = true;
 
-                // 최종 상태 확인
-                Plugin.Log.LogInfo("========================================");
-                Plugin.Log.LogInfo($"[Localization] ✓ Initialized Successfully");
-                Plugin.Log.LogInfo($"[Localization]   Current Language: {GetDisplayLanguage(_currentLanguage)} ({_currentLanguage})");
-                Plugin.Log.LogInfo($"[Localization]   Available Languages: {langOptions}");
-                Plugin.Log.LogInfo($"[Localization]   Loaded Translations: {string.Join(", ", _translations.Keys)}");
-
                 // 현재 언어 번역 개수 확인
-                if (_translations.TryGetValue(_currentLanguage, out var currentDict))
+                if (!_translations.ContainsKey(_currentLanguage))
                 {
-                    Plugin.Log.LogInfo($"[Localization]   Current Lang Entries: {currentDict.Count}");
+                    Plugin.Log.LogError($"[Localization] ✗ CRITICAL: Current language '{_currentLanguage}' NOT LOADED!");
                 }
-                else
-                {
-                    Plugin.Log.LogError($"[Localization]   ✗ CRITICAL: Current language '{_currentLanguage}' NOT LOADED!");
-                }
-
-                Plugin.Log.LogInfo($"[Localization] To change: Edit config 'Language' = 'Auto' or '{langOptions}'");
-                Plugin.Log.LogInfo("========================================");
             }
             catch (Exception ex)
             {
@@ -164,9 +149,9 @@ namespace CaptainSkillTree.Localization
             {
                 var fileName = Path.GetFileNameWithoutExtension(file).ToLower();
 
-                // Find matching uppercase code
+                // Find matching uppercase code (use ToList() to avoid collection modification during enumeration)
                 string upperCode = null;
-                foreach (var kvp in LanguageCodeMap)
+                foreach (var kvp in LanguageCodeMap.ToList())
                 {
                     if (kvp.Value == fileName)
                     {
@@ -190,13 +175,18 @@ namespace CaptainSkillTree.Localization
                 if (!_supportedLanguages.Contains(upperCode))
                 {
                     _supportedLanguages.Add(upperCode);
-                    Plugin.Log.LogInfo($"[Localization] Detected language file: {fileName}.json -> {upperCode}");
+                    Plugin.Log.LogDebug($"[Localization] Detected language file: {fileName}.json -> {upperCode}");
                 }
             }
 
-            // Sort languages (KR first, EN second, then alphabetically)
+            // Sort languages (KR first, EN second, major languages, then others alphabetically)
             _supportedLanguages = _supportedLanguages
-                .OrderBy(l => l == "KR" ? 0 : l == "EN" ? 1 : 2)
+                .OrderBy(l => l == "KR" ? 0 :
+                             l == "EN" ? 1 :
+                             l == "CN" ? 2 :
+                             l == "JP" ? 3 :
+                             l == "RU" ? 4 :
+                             l == "EU" ? 5 : 6)
                 .ThenBy(l => l)
                 .ToList();
         }
@@ -206,7 +196,7 @@ namespace CaptainSkillTree.Localization
         /// </summary>
         private static string GetDisplayLanguage(string langCode)
         {
-            foreach (var kvp in LanguageCodeMap)
+            foreach (var kvp in LanguageCodeMap.ToList())
             {
                 if (kvp.Value == langCode)
                     return kvp.Key;
@@ -240,7 +230,8 @@ namespace CaptainSkillTree.Localization
             }
 
             // Load each supported language (convert uppercase display code to lowercase file code)
-            foreach (var displayLang in _supportedLanguages)
+            // Use ToList() to avoid collection modification during enumeration (CreateLanguageTemplate may add to _supportedLanguages)
+            foreach (var displayLang in _supportedLanguages.ToList())
             {
                 var fileLang = GetFileLanguage(displayLang);
                 var filePath = Path.Combine(configPath, $"{fileLang}.json");
@@ -293,7 +284,7 @@ namespace CaptainSkillTree.Localization
                             {
                                 var updatedJson = DictToJson(langData);
                                 File.WriteAllText(filePath, updatedJson);
-                                Plugin.Log.LogInfo($"[Localization] Updated {fileLang}.json with {addedKeys} new keys");
+                                Plugin.Log.LogDebug($"[Localization] Updated {fileLang}.json with {addedKeys} new keys");
                             }
                             catch (Exception writeEx)
                             {
@@ -303,7 +294,7 @@ namespace CaptainSkillTree.Localization
                     }
 
                     _translations[fileLang] = langData;
-                    Plugin.Log.LogInfo($"[Localization] ✓ Loaded {fileLang}.json ({langData.Count} entries)");
+                    Plugin.Log.LogDebug($"[Localization] ✓ Loaded {fileLang}.json ({langData.Count} entries)");
 
                     // 첫 5개 키 샘플 출력 (디버깅용)
                     var sampleKeys = langData.Keys.Take(5).ToArray();
@@ -337,7 +328,7 @@ namespace CaptainSkillTree.Localization
                 var defaultData = lang == "ko" ? DefaultLanguages.GetKorean() : DefaultLanguages.GetEnglish();
                 var json = DictToJson(defaultData);
                 File.WriteAllText(filePath, json);
-                Plugin.Log.LogInfo($"[Localization] Created default {lang}.json");
+                Plugin.Log.LogDebug($"[Localization] Created default {lang}.json");
             }
             catch (Exception ex)
             {
@@ -363,7 +354,7 @@ namespace CaptainSkillTree.Localization
 
                 if (File.Exists(filePath))
                 {
-                    Plugin.Log.LogInfo($"[Localization] {langCode}.json already exists");
+                    Plugin.Log.LogDebug($"[Localization] {langCode}.json already exists");
                     return false;
                 }
 
@@ -381,7 +372,7 @@ namespace CaptainSkillTree.Localization
                         LanguageCodeMap[upperCode] = langCode.ToLower();
                 }
 
-                Plugin.Log.LogInfo($"[Localization] Created {langCode}.json template (based on English)");
+                Plugin.Log.LogDebug($"[Localization] Created {langCode}.json template (based on English)");
                 return true;
             }
             catch (Exception ex)
@@ -406,44 +397,106 @@ namespace CaptainSkillTree.Localization
         {
             try
             {
-                Plugin.Log.LogInfo("========================================");
-                Plugin.Log.LogInfo("[Localization] DetectLanguage() 시작");
+                Plugin.Log.LogDebug("========================================");
+                Plugin.Log.LogDebug("[Localization] DetectLanguage() 시작");
 
                 // 기본값을 Korean으로 변경 (사용자 요청)
-                string valheimLang = "Korean";
+                string valheimLang = null;
+                bool detected = false;
 
-                // Valheim Localization.instance에서 언어 가져오기
-                var localizationType = typeof(Player).Assembly.GetType("Localization");
-                Plugin.Log.LogInfo($"[Localization]   Localization 타입: {localizationType != null}");
-
-                if (localizationType != null)
+                // 방법 1: PlayerPrefs에서 언어 설정 읽기 (가장 신뢰할 수 있음)
+                try
                 {
-                    var instanceProp = localizationType.GetProperty("instance",
-                        System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-                    Plugin.Log.LogInfo($"[Localization]   instance 속성: {instanceProp != null}");
+                    string playerPrefsLang = PlayerPrefs.GetString("language", "");
+                    Plugin.Log.LogDebug($"[Localization]   PlayerPrefs 'language': '{playerPrefsLang}'");
 
-                    if (instanceProp != null)
+                    if (!string.IsNullOrEmpty(playerPrefsLang))
                     {
-                        var locInstance = instanceProp.GetValue(null);
-                        Plugin.Log.LogInfo($"[Localization]   Localization.instance: {(locInstance != null ? "✓ 준비됨" : "✗ NULL (미준비)")}");
+                        valheimLang = playerPrefsLang;
+                        detected = true;
+                        Plugin.Log.LogDebug($"[Localization]   ✓ PlayerPrefs에서 언어 감지: '{valheimLang}'");
+                    }
+                }
+                catch (Exception ppEx)
+                {
+                    Plugin.Log.LogDebug($"[Localization]   PlayerPrefs 읽기 실패: {ppEx.Message}");
+                }
 
-                        if (locInstance != null)
+                // 방법 2: Valheim Localization.instance에서 언어 가져오기
+                if (!detected)
+                {
+                    var localizationType = typeof(Player).Assembly.GetType("Localization");
+                    Plugin.Log.LogDebug($"[Localization]   Localization 타입: {localizationType != null}");
+
+                    if (localizationType != null)
+                    {
+                        // 2-1: Localization.instance.GetSelectedLanguage() 시도
+                        var instanceProp = localizationType.GetProperty("instance",
+                            System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+                        Plugin.Log.LogDebug($"[Localization]   instance 속성: {instanceProp != null}");
+
+                        if (instanceProp != null)
                         {
-                            var getSelectedLanguageMethod = localizationType.GetMethod("GetSelectedLanguage");
-                            if (getSelectedLanguageMethod != null)
+                            var locInstance = instanceProp.GetValue(null);
+                            Plugin.Log.LogDebug($"[Localization]   Localization.instance: {(locInstance != null ? "✓ 준비됨" : "✗ NULL (미준비)")}");
+
+                            if (locInstance != null)
                             {
-                                valheimLang = getSelectedLanguageMethod.Invoke(locInstance, null) as string ?? "Korean";
-                                Plugin.Log.LogInfo($"[Localization]   GetSelectedLanguage() 반환: '{valheimLang}'");
+                                var getSelectedLanguageMethod = localizationType.GetMethod("GetSelectedLanguage");
+                                if (getSelectedLanguageMethod != null)
+                                {
+                                    valheimLang = getSelectedLanguageMethod.Invoke(locInstance, null) as string;
+                                    if (!string.IsNullOrEmpty(valheimLang))
+                                    {
+                                        detected = true;
+                                        Plugin.Log.LogDebug($"[Localization]   ✓ GetSelectedLanguage() 반환: '{valheimLang}'");
+                                    }
+                                }
+
+                                // 2-2: m_language 필드 직접 접근 시도
+                                if (!detected)
+                                {
+                                    var langField = localizationType.GetField("m_language",
+                                        System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                                    if (langField != null)
+                                    {
+                                        valheimLang = langField.GetValue(locInstance) as string;
+                                        if (!string.IsNullOrEmpty(valheimLang))
+                                        {
+                                            detected = true;
+                                            Plugin.Log.LogDebug($"[Localization]   ✓ m_language 필드: '{valheimLang}'");
+                                        }
+                                    }
+                                }
                             }
                         }
-                        else
+
+                        // 2-3: 정적 프로퍼티 Localization.language 시도
+                        if (!detected)
                         {
-                            Plugin.Log.LogWarning("[Localization]   ✗ Localization.instance가 null - 기본값 Korean 사용");
+                            var langProp = localizationType.GetProperty("language",
+                                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+                            if (langProp != null)
+                            {
+                                valheimLang = langProp.GetValue(null) as string;
+                                if (!string.IsNullOrEmpty(valheimLang))
+                                {
+                                    detected = true;
+                                    Plugin.Log.LogDebug($"[Localization]   ✓ Localization.language: '{valheimLang}'");
+                                }
+                            }
                         }
                     }
                 }
 
-                Plugin.Log.LogInfo($"[Localization] Valheim 언어 감지됨: '{valheimLang}'");
+                // 감지 실패 시 기본값 Korean
+                if (!detected || string.IsNullOrEmpty(valheimLang))
+                {
+                    valheimLang = "Korean";
+                    Plugin.Log.LogWarning("[Localization]   ✗ 언어 감지 실패 - 기본값 Korean 사용");
+                }
+
+                Plugin.Log.LogDebug($"[Localization] Valheim 언어 감지됨: '{valheimLang}'");
 
                 // Map Valheim language to our language codes (case-insensitive)
                 var lowerLang = valheimLang.ToLower();
@@ -451,42 +504,42 @@ namespace CaptainSkillTree.Localization
                 if (lowerLang.Contains("korean") || lowerLang.Contains("한국어"))
                 {
                     _currentLanguage = "ko";
-                    Plugin.Log.LogInfo("[Localization] ✓ 자동 감지: 한국어 (KR)");
+                    Plugin.Log.LogDebug("[Localization] ✓ 자동 감지: 한국어 (KR)");
                 }
                 else if (lowerLang.Contains("japanese") || lowerLang.Contains("日本語") || lowerLang.Contains("japan"))
                 {
                     _currentLanguage = _translations.ContainsKey("ja") ? "ja" : "en";
-                    Plugin.Log.LogInfo($"[Localization] Auto-detect: Japanese -> {(_currentLanguage == "ja" ? "JP" : "EN (fallback)")}");
+                    Plugin.Log.LogDebug($"[Localization] Auto-detect: Japanese -> {(_currentLanguage == "ja" ? "JP" : "EN (fallback)")}");
                 }
                 else if (lowerLang.Contains("chinese") || lowerLang.Contains("中文") || lowerLang.Contains("china"))
                 {
                     _currentLanguage = _translations.ContainsKey("zh") ? "zh" : "en";
-                    Plugin.Log.LogInfo($"[Localization] Auto-detect: Chinese -> {(_currentLanguage == "zh" ? "CN" : "EN (fallback)")}");
+                    Plugin.Log.LogDebug($"[Localization] Auto-detect: Chinese -> {(_currentLanguage == "zh" ? "CN" : "EN (fallback)")}");
                 }
                 else if (lowerLang.Contains("german") || lowerLang.Contains("deutsch"))
                 {
                     _currentLanguage = _translations.ContainsKey("de") ? "de" : "en";
-                    Plugin.Log.LogInfo($"[Localization] Auto-detect: German -> {(_currentLanguage == "de" ? "DE" : "EN (fallback)")}");
+                    Plugin.Log.LogDebug($"[Localization] Auto-detect: German -> {(_currentLanguage == "de" ? "DE" : "EN (fallback)")}");
                 }
                 else if (lowerLang.Contains("french") || lowerLang.Contains("français") || lowerLang.Contains("francais"))
                 {
                     _currentLanguage = _translations.ContainsKey("fr") ? "fr" : "en";
-                    Plugin.Log.LogInfo($"[Localization] Auto-detect: French -> {(_currentLanguage == "fr" ? "FR" : "EN (fallback)")}");
+                    Plugin.Log.LogDebug($"[Localization] Auto-detect: French -> {(_currentLanguage == "fr" ? "FR" : "EN (fallback)")}");
                 }
                 else if (lowerLang.Contains("spanish") || lowerLang.Contains("español") || lowerLang.Contains("espanol"))
                 {
                     _currentLanguage = _translations.ContainsKey("es") ? "es" : "en";
-                    Plugin.Log.LogInfo($"[Localization] Auto-detect: Spanish -> {(_currentLanguage == "es" ? "ES" : "EN (fallback)")}");
+                    Plugin.Log.LogDebug($"[Localization] Auto-detect: Spanish -> {(_currentLanguage == "es" ? "ES" : "EN (fallback)")}");
                 }
                 else if (lowerLang.Contains("russian") || lowerLang.Contains("русский"))
                 {
                     _currentLanguage = _translations.ContainsKey("ru") ? "ru" : "en";
-                    Plugin.Log.LogInfo($"[Localization] Auto-detect: Russian -> {(_currentLanguage == "ru" ? "RU" : "EN (fallback)")}");
+                    Plugin.Log.LogDebug($"[Localization] Auto-detect: Russian -> {(_currentLanguage == "ru" ? "RU" : "EN (fallback)")}");
                 }
                 else if (lowerLang.Contains("english"))
                 {
                     _currentLanguage = "en";
-                    Plugin.Log.LogInfo("[Localization] ✓ 자동 감지: 영어 (EN)");
+                    Plugin.Log.LogDebug("[Localization] ✓ 자동 감지: 영어 (EN)");
                 }
                 else
                 {
@@ -495,15 +548,15 @@ namespace CaptainSkillTree.Localization
                     Plugin.Log.LogWarning($"[Localization] 알 수 없는 언어 '{valheimLang}', 한국어(KR)로 기본 설정");
                 }
 
-                Plugin.Log.LogInfo($"[Localization] 최종 언어: {GetDisplayLanguage(_currentLanguage)} ({_currentLanguage})");
-                Plugin.Log.LogInfo("========================================");
+                Plugin.Log.LogDebug($"[Localization] 최종 언어: {GetDisplayLanguage(_currentLanguage)} ({_currentLanguage})");
+                Plugin.Log.LogDebug("========================================");
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[Localization] DetectLanguage 실패: {ex.Message}");
                 // 오류 시 한국어 기본
                 _currentLanguage = "ko";
-                Plugin.Log.LogInfo("[Localization] 오류 시 기본값: 한국어 (KR)");
+                Plugin.Log.LogDebug("[Localization] 오류 시 기본값: 한국어 (KR)");
             }
         }
 
@@ -512,21 +565,21 @@ namespace CaptainSkillTree.Localization
         /// </summary>
         public static void ReloadLanguage()
         {
-            Plugin.Log.LogInfo("[Localization] 언어 재로드 중...");
+            Plugin.Log.LogDebug("[Localization] 언어 재로드 중...");
 
             var configValue = LanguageConfig.Value.Trim();
             if (configValue.Equals("Auto", StringComparison.OrdinalIgnoreCase))
             {
-                Plugin.Log.LogInfo("[Localization] Auto 모드 - 발헤임 언어 감지");
+                Plugin.Log.LogDebug("[Localization] Auto 모드 - 발헤임 언어 감지");
                 DetectLanguage();
             }
             else
             {
-                Plugin.Log.LogInfo($"[Localization] 수동 모드 - '{configValue}'로 설정");
+                Plugin.Log.LogDebug($"[Localization] 수동 모드 - '{configValue}'로 설정");
                 SetLanguage(configValue);
             }
 
-            Plugin.Log.LogInfo($"[Localization] ✓ 언어 재로드 완료: {GetDisplayLanguage(_currentLanguage)}");
+            Plugin.Log.LogDebug($"[Localization] ✓ 언어 재로드 완료: {GetDisplayLanguage(_currentLanguage)}");
         }
 
         /// <summary>
@@ -544,7 +597,7 @@ namespace CaptainSkillTree.Localization
             }
 
             var trimmedCode = langCode.Trim();
-            Plugin.Log.LogInfo($"[Localization] SetLanguage called with: '{trimmedCode}'");
+            Plugin.Log.LogDebug($"[Localization] SetLanguage called with: '{trimmedCode}'");
 
             // Convert to uppercase for comparison
             var upperCode = trimmedCode.ToUpper();
@@ -553,7 +606,7 @@ namespace CaptainSkillTree.Localization
             if (_supportedLanguages.Contains(upperCode))
             {
                 _currentLanguage = GetFileLanguage(upperCode);
-                Plugin.Log.LogInfo($"[Localization] ✓ Language set to: {upperCode} (file: {_currentLanguage})");
+                Plugin.Log.LogDebug($"[Localization] ✓ Language set to: {upperCode} (file: {_currentLanguage})");
                 return;
             }
 
@@ -562,7 +615,7 @@ namespace CaptainSkillTree.Localization
             if (LanguageCodeMap.Values.Contains(lowerCode))
             {
                 _currentLanguage = lowerCode;
-                Plugin.Log.LogInfo($"[Localization] ✓ Language set to: {GetDisplayLanguage(lowerCode)} (file: {lowerCode})");
+                Plugin.Log.LogDebug($"[Localization] ✓ Language set to: {GetDisplayLanguage(lowerCode)} (file: {lowerCode})");
                 return;
             }
 
@@ -586,14 +639,29 @@ namespace CaptainSkillTree.Localization
         {
             if (string.IsNullOrEmpty(key)) return key;
 
-            // If not initialized yet, use default translations directly
+            // If not initialized yet, use default translations directly based on _currentLanguage
             if (!_initialized || _translations.Count == 0)
             {
-                var defaultKo = DefaultLanguages.GetKorean();
-                if (defaultKo.TryGetValue(key, out var defaultText))
+                // Choose correct default language based on current setting
+                var defaultDict = (_currentLanguage == "ko")
+                    ? DefaultLanguages.GetKorean()
+                    : DefaultLanguages.GetEnglish();
+
+                if (defaultDict.TryGetValue(key, out var defaultText))
                 {
                     return args.Length > 0 ? string.Format(defaultText, args) : defaultText;
                 }
+
+                // Fallback to the other language if key not found
+                var fallbackDict = (_currentLanguage == "ko")
+                    ? DefaultLanguages.GetEnglish()
+                    : DefaultLanguages.GetKorean();
+
+                if (fallbackDict.TryGetValue(key, out var earlyFallbackText))
+                {
+                    return args.Length > 0 ? string.Format(earlyFallbackText, args) : earlyFallbackText;
+                }
+
                 Plugin.Log.LogDebug($"[Localization] Key not found (not initialized): '{key}'");
                 return key;
             }
@@ -659,7 +727,7 @@ namespace CaptainSkillTree.Localization
         {
             _translations.Clear();
             LoadLanguageFiles();
-            Plugin.Log.LogInfo("[Localization] Language files reloaded");
+            Plugin.Log.LogDebug("[Localization] Language files reloaded");
         }
 
         #region JSON Parsing (Simple implementation without external dependencies)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -39,7 +40,7 @@ namespace CaptainSkillTree.SkillTree
                 float backstabBonus = Knife_Config.KnifeExpertBackstabBonusValue / 100f;
                 hit.m_damage.m_slash *= (1f + backstabBonus);
                 hit.m_damage.m_pierce *= (1f + backstabBonus);
-                DrawFloatingText(player, $"🗡️ 단검 전문가 백스탭! (+{Knife_Config.KnifeExpertBackstabBonusValue}%)");
+                DrawFloatingText(player, L.Get("knife_expert_backstab", Knife_Config.KnifeExpertBackstabBonusValue.ToString()));
                 Plugin.Log.LogDebug($"[단검 전문가] 백스탭 데미지 +{Knife_Config.KnifeExpertBackstabBonusValue}% 적용");
             }
         }
@@ -55,7 +56,7 @@ namespace CaptainSkillTree.SkillTree
             knifeEvasionEndTime[player] = Time.time + duration;
 
             // 패시브 스킬: 텍스트만 표시
-            DrawFloatingText(player, $"🛡️ 회피 숙련 ({duration}초간 +{Knife_Config.KnifeEvasionBonusValue}% 회피율)");
+            DrawFloatingText(player, L.Get("knife_evasion_buff", duration.ToString(), Knife_Config.KnifeEvasionBonusValue.ToString()));
             Plugin.Log.LogDebug($"[회피 숙련] {duration}초간 회피율 +{Knife_Config.KnifeEvasionBonusValue}% 버프 활성화");
         }
 
@@ -71,7 +72,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 패시브 스킬: MMO 방식 DamageText로 표시
             DrawFloatingText(player,
-                $"💨 빠른 움직임 ({duration}초간 +{Knife_Config.KnifeMoveSpeedBonusValue}% 이동속도)",
+                L.Get("knife_move_speed_buff", duration.ToString(), Knife_Config.KnifeMoveSpeedBonusValue.ToString()),
                 new Color(0.8f, 1f, 0.8f, 1f)); // 연한 초록색 (빠른 움직임)
             Plugin.Log.LogDebug($"[빠른 움직임] {duration}초간 이동속도 +{Knife_Config.KnifeMoveSpeedBonusValue}% 버프 활성화");
         }
@@ -110,7 +111,7 @@ namespace CaptainSkillTree.SkillTree
             hit.m_damage.m_pierce *= (1f + damageBonus);
 
             // 패시브 스킬: 텍스트만 표시
-            DrawFloatingText(player, $"⚔️ 전투 숙련 (+{Knife_Config.KnifeCombatDamageBonusValue}% 공격력)");
+            DrawFloatingText(player, L.Get("knife_combat_mastery", Knife_Config.KnifeCombatDamageBonusValue.ToString()));
             Plugin.Log.LogDebug($"[전투 숙련] 공격력 +{Knife_Config.KnifeCombatDamageBonusValue}% 적용");
         }
 
@@ -261,7 +262,7 @@ namespace CaptainSkillTree.SkillTree
                 currentTime < cooldownEnd)
             {
                 float remainingCooldown = cooldownEnd - currentTime;
-                DrawFloatingText(player, $"암살자의 심장 쿨타임: {remainingCooldown:F1}초", Color.gray);
+                DrawFloatingText(player, L.Get("assassin_heart_cooldown", $"{remainingCooldown:F1}"), Color.gray);
                 return false;
             }
 
@@ -271,7 +272,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (targetMonster == null)
             {
-                DrawFloatingText(player, $"{teleportRange}미터 이내 적이 없습니다", Color.yellow);
+                DrawFloatingText(player, L.Get("no_enemy_in_range", teleportRange.ToString()), Color.yellow);
                 Plugin.Log.LogDebug($"[암살자의 심장] 취소 - 정면 {teleportRange}m 내 몬스터 없음");
                 return false;
             }
@@ -280,7 +281,7 @@ namespace CaptainSkillTree.SkillTree
             float staminaCost = player.GetMaxStamina() * (Knife_Config.KnifeAssassinHeartStaminaCostValue / 100f);
             if (player.GetStamina() < staminaCost)
             {
-                DrawFloatingText(player, "스태미나 부족!", Color.red);
+                DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
                 return false;
             }
 
@@ -293,7 +294,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (!teleportSuccess)
             {
-                DrawFloatingText(player, "순간이동 실패!", Color.red);
+                DrawFloatingText(player, L.Get("teleport_failed"), Color.red);
                 return false;
             }
 
@@ -317,8 +318,8 @@ namespace CaptainSkillTree.SkillTree
             // 액티브 스킬: VFX/SFX 사용
             PlaySkillEffect(player, "knife_step9_assassin_heart", player.transform.position);
 
-            string targetName = targetMonster.GetHoverName() ?? targetMonster.name ?? "적";
-            DrawFloatingText(player, $"💀 암살자의 심장! {targetName} 뒤로 이동!", Color.red);
+            string targetName = targetMonster.GetHoverName() ?? targetMonster.name ?? L.Get("enemy");
+            DrawFloatingText(player, L.Get("assassin_heart_teleport", targetName), Color.red);
 
             Plugin.Log.LogInfo($"[암살자의 심장] 활성화 - {targetName} 뒤로 순간이동, {duration}초간 치명타 확률 +{Knife_Config.KnifeAssassinHeartCritChanceValue}%");
             return true;
@@ -356,7 +357,7 @@ namespace CaptainSkillTree.SkillTree
                     hit.m_damage.m_pierce *= (1f + critDamageBonus);
 
                     PlaySkillEffect(player, "knife_step9_assassin_heart", hit.m_point);
-                    DrawFloatingText(player, $"💥 암살자의 치명타! (+{Knife_Config.KnifeAssassinHeartCritDamageValue}%)", Color.red);
+                    DrawFloatingText(player, L.Get("assassin_heart_crit", Knife_Config.KnifeAssassinHeartCritDamageValue.ToString()), Color.red);
 
                     Plugin.Log.LogDebug($"[암살자의 심장] 치명타 발동! +{Knife_Config.KnifeAssassinHeartCritDamageValue}% 피해");
                 }
@@ -480,7 +481,7 @@ namespace CaptainSkillTree.SkillTree
                 if (target == null || target.IsDead())
                 {
                     Plugin.Log.LogDebug($"[암살자의 심장] 대상 사망 - 연속 공격 완료 ({i}회 적중)");
-                    DrawFloatingText(player, $"💀 암살 완료! ({i}회 적중)", Color.red);
+                    DrawFloatingText(player, L.Get("assassin_complete_hits", i.ToString()), Color.red);
                     break;
                 }
 
@@ -504,7 +505,7 @@ namespace CaptainSkillTree.SkillTree
 
                     // 적중 카운트 증가
                     assassinHeartHitCount[player] = i + 1;
-                    DrawFloatingText(player, $"💀 ({i + 1}/{requiredHits})", Color.red);
+                    DrawFloatingText(player, L.Get("assassin_hit_count", (i + 1).ToString(), requiredHits.ToString()), Color.red);
 
                     Plugin.Log.LogDebug($"[암살자의 심장] 적중 {i + 1}/{requiredHits}");
                 }
@@ -536,7 +537,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 TeleportToPosition(player, originalPosition);
                 SimpleVFX.Play("vfx_spawn_small", originalPosition, 1.5f);
-                DrawFloatingText(player, $"💀 암살 완료! 복귀!", Color.red);
+                DrawFloatingText(player, L.Get("assassin_complete_return"), Color.red);
                 Plugin.Log.LogInfo($"[암살자의 심장] 원래 위치로 복귀 - 총 {finalHits}회 적중");
             }
 
@@ -676,7 +677,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (hits < required)
             {
-                DrawFloatingText(player, $"💀 ({hits}/{required})", Color.red);
+                DrawFloatingText(player, L.Get("assassin_hit_count", hits.ToString(), required.ToString()), Color.red);
             }
         }
 

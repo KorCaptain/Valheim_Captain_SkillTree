@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using HarmonyLib;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -56,7 +57,7 @@ namespace CaptainSkillTree.SkillTree
                         hit.m_damage.m_slash *= 1.3f;
                         hit.m_damage.m_pierce *= 1.3f;
                         SkillEffect.PlaySkillEffect(player, "knife_crit1", hit.m_point);
-                        SkillEffect.DrawFloatingText(player, "⚡ 연속 공격!");
+                        SkillEffect.DrawFloatingText(player, "⚡ " + L.Get("consecutive_attack"));
                     }
                 }
 
@@ -66,7 +67,7 @@ namespace CaptainSkillTree.SkillTree
                     hit.m_damage.m_slash *= 2.0f;
                     hit.m_damage.m_pierce *= 2.0f;
                     SkillEffect.PlaySkillEffect(player, "knife_crit2", hit.m_point);
-                    SkillEffect.DrawFloatingText(player, "💀 치명적 일격!");
+                    SkillEffect.DrawFloatingText(player, "💀 " + L.Get("critical_strike"));
                 }
             }
             catch (Exception ex)
@@ -118,7 +119,7 @@ namespace CaptainSkillTree.SkillTree
                         hit.m_damage.m_pierce *= multiplier;
                         SkillEffect.nextAttackBoosted[player] = false;
                         SkillEffect.PlaySkillEffect(player, "sword_power", hit.m_point);
-                        SkillEffect.DrawFloatingText(player, $"⚔️ 강화된 일격! (+{(multiplier - 1) * 100:F0}%)");
+                        SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("enhanced_strike", $"{(multiplier - 1) * 100:F0}"));
                     }
                     else
                     {
@@ -194,7 +195,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 float bonusPercent = SkillTreeConfig.SpearStep1DamageBonusValue / 100f;
                 hit.m_damage.m_pierce *= (1f + bonusPercent);
-                SkillEffect.DrawFloatingText(player, $"🔥 창 전문가 공격력! (+{SkillTreeConfig.SpearStep1DamageBonusValue}%)");
+                SkillEffect.DrawFloatingText(player, "🔥 " + L.Get("spear_expert_damage", SkillTreeConfig.SpearStep1DamageBonusValue));
             }
 
             // 회피 찌르기 체크
@@ -216,7 +217,7 @@ namespace CaptainSkillTree.SkillTree
                 hit.m_damage.m_pierce *= (1f + bonusPercent);
                 SkillEffect.spearAfterRoll[player] = false;
                 SkillEffect.PlaySkillEffect(player, "spear_Step2_evasion", hit.m_point);
-                SkillEffect.DrawFloatingText(player, $"🎯 회피 찌르기! (+{SkillTreeConfig.SpearStep3EvasionDamageBonusValue}%)");
+                SkillEffect.DrawFloatingText(player, "🎯 " + L.Get("evasion_thrust", SkillTreeConfig.SpearStep3EvasionDamageBonusValue));
             }
 
             // 이연창 효과 (2연속 공격 시 버프 발동)
@@ -256,7 +257,7 @@ namespace CaptainSkillTree.SkillTree
                         enemy.Damage(explosionHit);
                     }
 
-                    SkillEffect.DrawFloatingText(player, $"💥 폭발창! (+{Spear_Config.SpearExplosionDamageBonusValue}%)");
+                    SkillEffect.DrawFloatingText(player, "💥 " + L.Get("explosion_spear", Spear_Config.SpearExplosionDamageBonusValue));
                     Plugin.Log.LogDebug($"[폭발창] 폭발 발동 - 범위 {radius}m, 보너스 {Spear_Config.SpearExplosionDamageBonusValue}%");
                 }
             }
@@ -330,7 +331,7 @@ namespace CaptainSkillTree.SkillTree
                         SkillEffect.spearRollBuffCoroutine[__instance] = __instance.StartCoroutine(ClearSpearRollBuff(__instance));
 
                         Plugin.Log.LogInfo("[회피 찌르기] 구르기 감지 - 2초간 보너스 활성화");
-                        SkillEffect.DrawFloatingText(__instance, "🏃 회피 찌르기 준비!", Color.green);
+                        SkillEffect.DrawFloatingText(__instance, "🏃 " + L.Get("evasion_thrust_ready"), Color.green);
                     }
                 }
 
@@ -360,7 +361,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 SkillEffect.spearAfterRoll[player] = false;
                 Plugin.Log.LogInfo("[회피 찌르기] 버프 자동 해제");
-                SkillEffect.DrawFloatingText(player, "회피 찌르기 종료", Color.gray);
+                SkillEffect.DrawFloatingText(player, L.Get("evasion_thrust_end"), Color.gray);
             }
         }
     }

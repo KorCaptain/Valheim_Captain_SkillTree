@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using CaptainSkillTree.Gui;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -53,11 +54,11 @@ namespace CaptainSkillTree.SkillTree
                     ActivateStaffDualCast(player);
                     return;
                 }
-                DrawFloatingText(player, "지팡이를 장착해야 합니다!", Color.red);
+                DrawFloatingText(player, L.Get("staff_equip_required"), Color.red);
                 return;
             }
 
-            DrawFloatingText(player, "R키 액티브 스킬 조건 부족");
+            DrawFloatingText(player, L.Get("r_key_skill_condition_not_met"));
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!Sword_Skill.IsUsingSword(player))
                 {
-                    DrawFloatingText(player, "검을 장착해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("sword_equip_required"), Color.red);
                     return;
                 }
                 Sword_Skill.ActivateSwordSlash(player);
@@ -86,7 +87,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!WeaponHelper.IsUsingDagger(player))
                 {
-                    DrawFloatingText(player, "단검을 장착해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("dagger_equip_required"), Color.red);
                     return;
                 }
                 ActivateKnifeAssassinHeart(player);
@@ -100,7 +101,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!WeaponHelper.IsUsingSpear(player))
                 {
-                    DrawFloatingText(player, "창을 장착해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("spear_equip_required"), Color.red);
                     return;
                 }
                 ActivateSpearPenetrateLightning(player);
@@ -114,7 +115,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!WeaponHelper.IsUsingPolearm(player))
                 {
-                    DrawFloatingText(player, "폴암을 장착해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("polearm_equip_required"), Color.red);
                     return;
                 }
                 UsePolearmPierceChargeSkill(player);
@@ -128,14 +129,14 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!WeaponHelper.HasShield(player) || !WeaponHelper.IsUsingOneHandedMace(player))
                 {
-                    DrawFloatingText(player, "한손 둔기 + 방패를 장착해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("one_hand_mace_shield_required"), Color.red);
                     return;
                 }
                 ActivateGuardianHeart(player);
                 return;
             }
 
-            DrawFloatingText(player, "G키 액티브 스킬이 필요합니다!", Color.red);
+            DrawFloatingText(player, L.Get("g_key_skill_required"), Color.red);
         }
 
         /// <summary>
@@ -159,7 +160,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!Sword_Skill.IsUsingSword(player))
                 {
-                    DrawFloatingText(player, "검을 장착해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("sword_equip_required"), Color.red);
                     return;
                 }
                 Sword_Skill.ActivateParryRush(player);
@@ -171,7 +172,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!WeaponHelper.IsUsingSpear(player))
                 {
-                    DrawFloatingText(player, "창을 장착해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("spear_equip_required"), Color.red);
                     return;
                 }
                 HandleSpearActiveSkill(player);
@@ -183,7 +184,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!WeaponHelper.IsUsingTwoHandedMace(player))
                 {
-                    DrawFloatingText(player, "양손 둔기를 장착해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("two_hand_mace_required"), Color.red);
                     return;
                 }
                 FuryHammerSkill.HandleHKeyPress(player);
@@ -195,14 +196,14 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!WeaponHelper.IsUsingStaffOrWand(player))
                 {
-                    DrawFloatingText(player, "지팡이를 장착해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("staff_equip_required"), Color.red);
                     return;
                 }
                 ActivateStaffAreaHeal(player);
                 return;
             }
 
-            DrawFloatingText(player, "H키 액티브 스킬이 필요합니다!", Color.red);
+            DrawFloatingText(player, L.Get("h_key_skill_required"), Color.red);
         }
 
         /// <summary>

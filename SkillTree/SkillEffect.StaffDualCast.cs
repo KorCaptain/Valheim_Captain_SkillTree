@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -42,7 +43,7 @@ namespace CaptainSkillTree.SkillTree
                 if (staffDualExplosionCooldowns.ContainsKey(player) && Time.time < staffDualExplosionCooldowns[player])
                 {
                     float remaining = staffDualExplosionCooldowns[player] - Time.time;
-                    DrawFloatingText(player, $"이중시전 쿨타임: {Mathf.CeilToInt(remaining)}초", Color.red);
+                    DrawFloatingText(player, L.Get("staff_dual_cast_cooldown", Mathf.CeilToInt(remaining)), Color.red);
                     return;
                 }
 
@@ -50,7 +51,7 @@ namespace CaptainSkillTree.SkillTree
                 float eitrCost = Staff_Config.StaffDoubleCastEitrCostValue;
                 if (player.GetEitr() < eitrCost)
                 {
-                    DrawFloatingText(player, $"에이트르가 부족합니다 ({eitrCost} 필요)", Color.red);
+                    DrawFloatingText(player, L.Get("staff_eitr_insufficient", eitrCost), Color.red);
                     return;
                 }
 
@@ -79,7 +80,7 @@ namespace CaptainSkillTree.SkillTree
                 var coroutine = SkillTreeInputListener.Instance.StartCoroutine(StaffDualCastBuffTimer(player, buffDuration));
                 staffDualCastBuffCoroutines[player] = coroutine;
 
-                DrawFloatingText(player, $"✨ 이중시전 준비! (30초간)", new Color(0.8f, 0.3f, 1f, 1f));
+                DrawFloatingText(player, "✨ " + L.Get("staff_dual_cast_ready", 30), new Color(0.8f, 0.3f, 1f, 1f));
                 Plugin.Log.LogInfo($"[이중 시전] R키로 버프 활성화 - 지속시간: {buffDuration}초, 에이트르 소모: {eitrCost}");
             }
             catch (Exception ex)
@@ -238,7 +239,7 @@ namespace CaptainSkillTree.SkillTree
                     float remainingTime = staffDualCastExpiry[player] - Time.time;
                     if (remainingTime > 0)
                     {
-                        DrawFloatingText(player, $"✨ 이중 시전 준비됨 ({remainingTime:F0}초)", new Color(0.8f, 0.3f, 1f, 1f));
+                        DrawFloatingText(player, "✨ " + L.Get("staff_dual_cast_remaining", $"{remainingTime:F0}"), new Color(0.8f, 0.3f, 1f, 1f));
                         nextRemindTime = Time.time + 10f;
                     }
                 }
@@ -248,7 +249,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (staffDualCastReady.ContainsKey(player) && staffDualCastReady[player])
             {
-                DrawFloatingText(player, "이중 시전 버프 만료", Color.yellow);
+                DrawFloatingText(player, L.Get("staff_dual_cast_expired"), Color.yellow);
                 ClearStaffDualCastBuff(player);
             }
         }
@@ -328,7 +329,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 ClearStaffDualCastBuff(player);
-                DrawFloatingText(player, $"✨ 이중 시전 발동! 추가 발사체 {projectileCount}개", new Color(0.8f, 0.3f, 1f, 1f));
+                DrawFloatingText(player, "✨ " + L.Get("staff_dual_cast_activated", projectileCount.ToString()), new Color(0.8f, 0.3f, 1f, 1f));
             }
             catch (Exception ex)
             {

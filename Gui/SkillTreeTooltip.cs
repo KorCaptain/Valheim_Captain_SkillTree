@@ -1260,7 +1260,7 @@ namespace CaptainSkillTree.Gui
                 );
                 
                 string color = hasEnough ? "#90EE90" : "#FF0000"; // 연두색 또는 빨간색
-                string statusIcon = hasEnough ? "✓" : "✗";
+                string statusIcon = hasEnough ? "[O]" : "[X]";
                 
                 // 요구사항 텍스트 생성
                 string reqText;

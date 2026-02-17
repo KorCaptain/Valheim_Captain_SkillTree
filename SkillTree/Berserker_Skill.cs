@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -92,7 +93,7 @@ namespace CaptainSkillTree.SkillTree
                 if (state.OnCooldown)
                 {
                     float remaining = state.CooldownEndTime - Time.time;
-                    SkillEffect.ShowSkillEffectText(player, $"쿨다운 중 ({remaining:F0}초)",
+                    SkillEffect.ShowSkillEffectText(player, L.Get("berserker_cooldown", $"{remaining:F0}"),
                         Color.red, SkillEffect.SkillEffectTextType.Critical);
                     return false;
                 }
@@ -101,7 +102,7 @@ namespace CaptainSkillTree.SkillTree
                 float staminaCost = Berserker_Config.BerserkerRageStaminaCostValue;
                 if (player.GetStamina() < staminaCost)
                 {
-                    SkillEffect.ShowSkillEffectText(player, "스태미나 부족!",
+                    SkillEffect.ShowSkillEffectText(player, L.Get("stamina_insufficient_short"),
                         Color.red, SkillEffect.SkillEffectTextType.Critical);
                     return false;
                 }
@@ -109,7 +110,7 @@ namespace CaptainSkillTree.SkillTree
                 // 이미 분노 상태인지 확인
                 if (state.IsActive)
                 {
-                    SkillEffect.ShowSkillEffectText(player, "이미 분노 상태!",
+                    SkillEffect.ShowSkillEffectText(player, L.Get("already_rage_state"),
                         Color.yellow, SkillEffect.SkillEffectTextType.Critical);
                     return false;
                 }
@@ -129,7 +130,7 @@ namespace CaptainSkillTree.SkillTree
                 CreateRageEffect(player);
 
                 // 화면 텍스트
-                SkillEffect.ShowSkillEffectText(player, "🔥 버서커 분노!",
+                SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("berserker_rage"),
                     Color.red, SkillEffect.SkillEffectTextType.XLarge);
 
                 // 분노 시전 성공
@@ -407,7 +408,7 @@ namespace CaptainSkillTree.SkillTree
                 // VFX 효과 (자동 정리)
                 CreatePassiveEffect(player);
 
-                SkillEffect.ShowSkillEffectText(player, "⚡ 죽음의 무시 ⚡",
+                SkillEffect.ShowSkillEffectText(player, "⚡ " + L.Get("death_ignore") + " ⚡",
                     Color.yellow, SkillEffect.SkillEffectTextType.XLarge);
 
                 // 무적 발동 완료

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -369,7 +370,7 @@ namespace CaptainSkillTree.SkillTree
                 SimpleVFX.Play("hit_01", targetEnemy.transform.position, 2f);
 
                 SkillEffect.ShowSkillEffectText(player,
-                    "💀 암살자의 심장 발동!",
+                    "💀 " + L.Get("knife_assassin_heart_activated"),
                     new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
 
                 // 순간이동 후 연속 공격 코루틴 실행

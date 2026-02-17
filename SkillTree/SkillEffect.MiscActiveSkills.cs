@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
 using CaptainSkillTree.Gui;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -78,7 +79,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (hitEnemies.Count > 0)
                 {
-                    player.Message(MessageHud.MessageType.Center, $"발구르기! ({hitEnemies.Count}명 밀어냄)");
+                    player.Message(MessageHud.MessageType.Center, L.Get("ground_stomp_effect", hitEnemies.Count.ToString()));
                 }
             }
             catch (Exception ex)
@@ -145,7 +146,7 @@ namespace CaptainSkillTree.SkillTree
         {
             SkillBuffDisplay.Instance.ShowBuff(
                 "taunt_cooldown",
-                "도발 쿨타임",
+                L.Get("taunt_cooldown_display"),
                 tauntCooldown,
                 new Color(0.8f, 0.8f, 0.8f, 1f),
                 "😤"
@@ -159,7 +160,7 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            DrawFloatingText(player, "도발 준비 완료!", Color.green);
+            DrawFloatingText(player, L.Get("taunt_ready"), Color.green);
             tauntCooldownCoroutine.Remove(player);
         }
 

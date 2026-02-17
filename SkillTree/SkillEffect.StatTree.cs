@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Collections;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -73,7 +74,7 @@ namespace CaptainSkillTree.SkillTree
                     // 효과 적용 시각 피드백 (10% 확률)
                     if (isStatTreeEffect && UnityEngine.Random.Range(0f, 1f) < 0.1f)
                     {
-                        ShowSkillEffectText(player, "⚔️ 공격 증가!",
+                        ShowSkillEffectText(player, $"⚔️ {L.Get("attack_increased")}",
                             new Color(1f, 0.6f, 0.2f), SkillEffectTextType.Combat);
                     }
                 }

@@ -6,6 +6,7 @@ using HarmonyLib;
 using System.Linq;
 using CaptainSkillTree;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -66,7 +67,7 @@ namespace CaptainSkillTree.SkillTree
             // 방패 착용 체크
             if (!IsWearingShield(player))
             {
-                ShowRequirementMessage(player, "방패 착용이 필요합니다");
+                ShowRequirementMessage(player, L.Get("tanker_shield_required"));
                 return;
             }
 
@@ -74,7 +75,7 @@ namespace CaptainSkillTree.SkillTree
             float requiredStamina = Tanker_Config.TankerTauntStaminaCostValue;
             if (player.GetStamina() < requiredStamina)
             {
-                ShowRequirementMessage(player, "스태미나가 부족합니다");
+                ShowRequirementMessage(player, L.Get("stamina_insufficient"));
                 return;
             }
 
@@ -706,7 +707,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyTankerDamageReduction(player, buffDuration);
 
                 // 텍스트 알림
-                player.Message(MessageHud.MessageType.Center, "<color=#FFD700>⚔ 방어 버프 활성화! ⚔</color>");
+                player.Message(MessageHud.MessageType.Center, L.Get("tanker_defense_buff_activated"));
 
                 Plugin.Log.LogDebug($"[탱커 방어 버프] {player.GetPlayerName()} 방어 버프 적용 완료");
             }

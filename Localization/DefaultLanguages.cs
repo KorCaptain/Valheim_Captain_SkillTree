@@ -78,12 +78,38 @@ namespace CaptainSkillTree.Localization
                 ["spear_combo_cooldown"] = "연공창 쿨다운 중! 남은 시간: {0}초",
                 ["spear_combo_success"] = "연공창! {0}회 연속 공격!",
 
+                // === Weapon Equip Required Messages ===
+                ["sword_equip_required"] = "검을 착용해야 합니다!",
+                ["dagger_equip_required"] = "단검을 착용해야 합니다!",
+                ["spear_equip_required"] = "창을 착용해야 합니다!",
+                ["polearm_equip_required"] = "폴암을 착용해야 합니다!",
+                ["one_hand_mace_shield_required"] = "한손 둔기와 방패를 착용해야 합니다!",
+                ["two_hand_mace_required"] = "양손 둔기를 착용해야 합니다!",
+                ["staff_equip_required"] = "지팡이를 착용해야 합니다!",
+                ["r_key_skill_condition_not_met"] = "R키 스킬 조건이 충족되지 않았습니다",
+                ["g_key_skill_required"] = "G키 스킬이 필요합니다",
+                ["h_key_skill_required"] = "H키 스킬이 필요합니다",
+
                 // === Mace Skills ===
                 ["mace_guardian_cooldown"] = "수호자의 진심 쿨다운 중! 남은 시간: {0}초",
                 ["mace_required"] = "둔기를 착용해야 합니다",
                 ["mace_guardian_success"] = "수호자의 진심! 방어력 +{0}%!",
                 ["mace_fury_cooldown"] = "분노의 망치 쿨다운 중! 남은 시간: {0}초",
                 ["mace_fury_success"] = "분노의 망치! {0} 데미지!",
+                ["fury_hammer_cooldown"] = "분노의 망치 쿨다운: {0}초",
+                ["fury_hammer_skill_required"] = "분노의 망치 스킬이 필요합니다",
+                ["fury_hammer_final_hit_ready"] = "🔨 최종 일격 준비!",
+                ["fury_hammer_combo_complete"] = "🔥 분노의 망치 완료! {0}명 적중",
+
+                // === Spear Combo Skills ===
+                ["combo_spear_skill_required"] = "연공창 스킬이 필요합니다",
+                ["cooldown_seconds"] = "쿨다운: {0}초",
+                ["combo_spear_buff_activated"] = "⚡ 연공창 발동! {0}회 사용 가능 (+{1}% 데미지)",
+                ["combo_spear_buff_ended"] = "연공창 효과 종료",
+                ["combo_spear_uses_remaining"] = "🎯 연공창 남은 횟수: {0}",
+                ["combo_spear_retrieve_failed"] = "창 회수 실패",
+                ["combo_spear_retrieved_equipped"] = "✅ 창 회수 및 장착 완료!",
+                ["combo_spear_inventory_full"] = "인벤토리가 가득 찼습니다",
 
                 // === Polearm Skills ===
                 ["polearm_king_cooldown"] = "장창제왕 쿨다운 중! 남은 시간: {0}초",
@@ -103,7 +129,13 @@ namespace CaptainSkillTree.Localization
                 // === Crossbow Skills ===
                 ["crossbow_oneshot_cooldown"] = "단 한 발 쿨다운 중! 남은 시간: {0}초",
                 ["crossbow_required"] = "석궁을 착용해야 합니다",
+                ["crossbow_equip_required"] = "석궁을 착용해야 합니다!",
                 ["crossbow_oneshot_success"] = "단 한 발! {0} 데미지!",
+                ["crossbow_oneshot_ready"] = "🎯 단 한 발 준비 완료!",
+                ["crossbow_oneshot_remaining"] = "단 한 발 남은 시간: {0}초",
+                ["crossbow_oneshot_expired"] = "단 한 발 효과 만료",
+                ["crossbow_oneshot_activated"] = "💥 단 한 발 발동!",
+                ["skill_cooldown_format"] = "{0} 쿨다운: {1}초",
 
                 // === Staff Skills ===
                 ["staff_dual_cast_cooldown"] = "이중 시전 쿨다운 중! 남은 시간: {0}초",
@@ -115,6 +147,14 @@ namespace CaptainSkillTree.Localization
                 // === Job Active Skills (Y Key) ===
                 ["job_skill_activated"] = "{0} 스킬 발동!",
                 ["job_skill_no_job"] = "직업을 먼저 선택해야 합니다",
+
+                // === Buff Display Messages ===
+                ["counter_stance_buff"] = "반격 자세 +{0}%",
+                ["blade_counter_buff"] = "칼날 되치기 +{0}%",
+                ["woodcutting_efficiency_bonus"] = "벌목 효율: +{0}%",
+                ["mining_efficiency_bonus"] = "채광 효율: +{0}%",
+                ["building_durability_bonus"] = "건축 내구도 +{0}%",
+                ["taunt_cooldown_display"] = "도발 쿨타임",
 
                 // === Stealth System ===
                 ["stealth_reason_attack"] = "공격",
@@ -659,6 +699,121 @@ namespace CaptainSkillTree.Localization
                 // === Berserker Skill Messages ===
                 ["berserker_rage_end"] = "버서커의 분노 종료",
 
+                // === Tanker Skill Messages ===
+                ["tanker_defense_buff_activated"] = "<color=#FFD700>⚔ 방어 버프 활성화! ⚔</color>",
+                ["tanker_shield_required"] = "방패 착용이 필요합니다",
+                ["stamina_insufficient"] = "스태미나가 부족합니다",
+
+                // === Rogue Active Skill Messages ===
+                ["rogue_shadow_strike_activate"] = "💥 그림자 일격!",
+
+                // === Skill Effect Messages ===
+                ["skill_activated"] = "{0} 발동!",
+                ["ground_stomp_effect"] = "발구르기! ({0}명 밀어냄)",
+                ["luck_magic_activated"] = "✨ 행운 마력 발동!",
+                ["staff_wand_required"] = "❌ 지팡이나 완드를 착용해야 합니다!",
+
+                // === Combat Effect Messages ===
+                ["consecutive_attack"] = "연속 공격!",
+                ["critical_strike"] = "치명적 일격!",
+                ["enhanced_strike"] = "강화된 일격! (+{0}%)",
+                ["reflect_damage"] = "반사 데미지 {0}!",
+                ["explosion_damage"] = "폭발! +{0}",
+
+                // === Spear Effect Messages ===
+                ["spear_expert_damage"] = "창 전문가 공격력! (+{0}%)",
+                ["evasion_thrust"] = "회피 찌르기! (+{0}%)",
+                ["evasion_thrust_ready"] = "회피 찌르기 준비!",
+                ["evasion_thrust_end"] = "회피 찌르기 종료",
+                ["explosion_spear"] = "폭발창! (+{0}%)",
+
+                // === Polearm Effect Messages ===
+                ["polearm_area_combo"] = "광역 강타! 2연속 공격력 +{0}%",
+                ["polearm_cooldown_remaining"] = "쿨타임: {0}초 남음",
+                ["polearm_stamina_insufficient"] = "스태미나 부족!",
+                ["polearm_required"] = "폴암을 착용해야 합니다!",
+                ["pierce_charge_in_progress"] = "관통 돌격 실행 중",
+                ["pierce_charge"] = "관통 돌격!",
+                ["pierce_charge_damage"] = "관통 돌격! (+{0}%)",
+                ["charge_complete"] = "돌진 완료",
+                ["hero_strike_stagger"] = "영웅 타격! (스태거)",
+                ["wheel_attack"] = "휠 공격 +{0}%!",
+
+                // === Sword Effect Messages ===
+                ["rush_slash_skill_required"] = "돌진 연속 베기 스킬이 필요합니다",
+                ["sword_required"] = "검을 착용해야 합니다",
+                ["cooldown_remaining"] = "쿨타임: {0}초",
+                ["rush_slash_in_progress"] = "돌진 연속 베기 실행 중",
+                ["rush_slash_activate"] = "돌진 연속 베기!",
+                ["rush_slash_complete"] = "돌진 연속 베기 완료! ({0}타격)",
+                ["rush_slash_canceled"] = "돌진 연속 베기 중단됨",
+                ["parry_rush_skill_required"] = "패링 돌격 스킬이 필요합니다",
+                ["shield_required"] = "방패를 착용해야 합니다",
+                ["parry_rush_already_active"] = "패링 돌격 이미 활성 중",
+                ["parry_rush_activate"] = "패링 돌격! ({0}초)",
+                ["parry_rush_damage"] = "패링 돌격! (+{0}%)",
+
+                // === Berserker Effect Messages ===
+                ["berserker_cooldown"] = "쿨다운 중 ({0}초)",
+                ["stamina_insufficient_short"] = "스태미나 부족!",
+                ["already_rage_state"] = "이미 분노 상태!",
+                ["berserker_rage"] = "버서커 분노!",
+                ["death_ignore"] = "죽음의 무시",
+
+                // === Staff Heal Effect Messages ===
+                ["heal_cooldown"] = "힐 쿨타임: {0}초",
+                ["sacred_heal"] = "지팡이 신성한 치유! ({0}명 치료)",
+                ["no_heal_target"] = "치료할 대상이 없습니다",
+
+                // === Resource Consumption Messages ===
+                ["equipment_consumed"] = "장비 소모: {0}",
+                ["material_consumed"] = "재료 소모: {0}",
+
+                // === Skill Tree Manager Messages ===
+                ["cannot_learn_with"] = "{0}과(와) 동시에 배울 수 없습니다",
+                ["multishot_end"] = "멀티샷 종료",
+
+                // === Taunt Messages ===
+                ["taunt_ready"] = "도발 준비 완료!",
+
+                // === Attack Expert Tree Effect Messages ===
+                ["rage_bonus"] = "분노 +{0}%!",
+                ["melee_specialization"] = "근접 특화!",
+                ["bow_specialization"] = "활 특화!",
+                ["focus_fire_crit"] = "집중 사격 치명타 x{0}!",
+                ["basic_bow_damage"] = "기본 활공격 +{0}!",
+                ["crossbow_specialization"] = "석궁 특화!",
+                ["one_shot"] = "단 한 발! +{0}%",
+                ["staff_specialization"] = "지팡이 특화!",
+                ["precision_attack"] = "정밀 공격!",
+                ["elemental_attack"] = "속성 공격!",
+                ["ranged_enhance"] = "원거리 강화!",
+                ["attack_expert"] = "공격 전문가!",
+                ["melee_enhance"] = "근접 강화!",
+                ["consecutive_melee_master"] = "연속 근접의 대가!",
+                ["energizer"] = "에너자이져!",
+                ["attack_increased"] = "공격 증가!",
+                ["attack_expert_acquired"] = "공격 전문가 습득!",
+
+                // === Speed Tree Effect Messages ===
+                ["consecutive_flow"] = "연속의 흐름!",
+                ["bow_expert_mastery"] = "활 숙련자!",
+                ["crossbow_expert_mastery"] = "석궁 숙련자!",
+                ["agility_base"] = "민첩함의 기초! (+{0}% 이동속도)",
+                ["melee_triple_combo"] = "근접 가속 3연속! (+{0}% 공격속도)",
+                ["cast_triple_combo"] = "시전 가속 3연속! (+{0} 에이트르)",
+                ["knockback_effect"] = "넉백!",
+
+                // === Bow/Crossbow Effect Messages ===
+                ["multishot_skill"] = "멀티샷 {0}! (+{1}발)",
+                ["explosive_arrow_skill_required"] = "폭발 화살 스킬이 필요합니다",
+                ["explosive_arrow_ready"] = "폭발 화살 준비 완료!",
+                ["explosive_arrow_fire"] = "폭발 화살 발사!",
+
+                // === JobSkills Messages ===
+                ["archer_multishot_cooldown"] = "멀티샷 쿨타임: {0}초",
+                ["archer_multishot_fired"] = "멀틴샷! ({0}발 발사)",
+
                 // === Level Up Message ===
                 ["level_up"] = "LEVEL UP!",
 
@@ -881,6 +1036,11 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_rapid_fire_lv2_note"] = "※ Lv1과 확률 합산",
                 ["crossbow_final_strike_desc"] = "체력 {0}% 이상 적에게 추가 {1}% 피해",
 
+                // === Crossbow Skill Effect Messages ===
+                ["crossbow_auto_reload_activated"] = "자동 장전! (+{0}% 속도)",
+                ["crossbow_auto_reload_and_rapid_fire"] = "자동 장전 + 연속 발사 모두 발동~! ({0}발)",
+                ["crossbow_rapid_fire_activated"] = "연속 발사! ({0}발)",
+
                 // === Staff Full Descriptions ===
                 ["staff_expert_full_desc"] = "지팡이 속성 공격력 +{0}% 증가\n지팡이와 완드 사용법을 익혀 마법 공격력을 높입니다\n필요조건: 지팡이 또는 완드 착용",
                 ["staff_focus_full_desc"] = "지팡이 사용 시 에이트르 소모량 -{0}% 감소\n정신력 집중으로 마나 효율성을 높입니다\n필요조건: 지팡이 또는 완드 착용",
@@ -898,7 +1058,41 @@ namespace CaptainSkillTree.Localization
                 ["bow_multishot_lv1_effect"] = "🏹 멀티샷 Lv1 습득!",
                 ["bow_multishot_lv2_effect"] = "🏹🏹 멀티샷 Lv2 습득!",
                 ["bow_proficiency_effect"] = "🏹 활 숙련 습득! 활 숙련도 +{0}",
-                ["bow_explosive_desc"] = "폭발 화살 발사\n데미지: 활 공격력의 {0}%\n스태미나 {1}% 소모\n쿨타임: {2}초"
+                ["bow_explosive_desc"] = "폭발 화살 발사\n데미지: 활 공격력의 {0}%\n스태미나 {1}% 소모\n쿨타임: {2}초",
+
+                // === Skill Activation Messages ===
+                ["bow_equip_required"] = "활을 착용해야 합니다!",
+                ["no_arrows"] = "화살이 없습니다!",
+                ["cooldown_format"] = "쿨다운: {0}초",
+                ["multishot_remaining_charges"] = "멀티샷! (남은 충전: {0}회)",
+                ["multishot_cooldown_remaining"] = "멀티샷 쿨타임: {0}초",
+                ["multishot_completed"] = "멀티샷 완료!",
+                ["multishot_ready"] = "멀티샷 준비완료! ({0}회 사용 가능)",
+                ["archer_job_required"] = "아처 직업이 필요합니다!",
+                ["spear_penetrate_cooldown"] = "꿰뚫는 창 쿨타임 ({0}초)",
+                ["spear_penetrate_activated"] = "꿰뚫는 창 발동! ({0}초)",
+                ["staff_dual_cast_activated"] = "이중 시전 발동! 추가 발사체 {0}개",
+                ["knife_assassin_heart_activated"] = "암살자의 심장 발동!",
+
+                // === Sword Skill Messages ===
+                ["sword_combo_3hit"] = "검술 연계 3단!",
+                ["sword_expert_combo"] = "검 전문가 2연속! (+{0}%)",
+                ["sword_combo_slash"] = "연속베기! 3연속 공격력 +{0}%",
+                ["sword_counter_stance"] = "반격 자세! ({0}초간 방어력 +{1}%)",
+                ["sword_blade_counter"] = "칼날 되치기! ({0}초간 공격력 +{1}%)",
+                ["sword_offense_defense"] = "공방일체! (공격력 +{0}%, 방어력 +{1})",
+                ["sword_dodge_counter"] = "회피 후 반격!",
+
+                // === Spear Skill Messages ===
+                ["spear_dual_strike"] = "이연창! ({0}초간 공격력 +{1}%)",
+                ["spear_lightning_shock"] = "번개 충격! ({0})",
+
+                // === Staff Skill Messages ===
+                ["staff_dual_cast_cooldown"] = "이중시전 쿨타임: {0}초",
+                ["staff_eitr_insufficient"] = "에이트르가 부족합니다 ({0} 필요)",
+                ["staff_dual_cast_ready"] = "이중시전 준비! ({0}초간)",
+                ["staff_dual_cast_remaining"] = "이중 시전 준비됨 ({0}초)",
+                ["staff_dual_cast_expired"] = "이중 시전 버프 만료"
             };
         }
 
@@ -938,6 +1132,7 @@ namespace CaptainSkillTree.Localization
                 ["rogue_buff_end"] = "Shadow Strike buff ended!",
                 ["rogue_smoke"] = "Smoke!",
                 ["rogue_passive_fall_damage"] = "Rogue Passive: -{0} fall damage!",
+                ["rogue_shadow_strike_activate"] = "💥 Shadow Strike!",
 
                 // === Tanker Skills ===
                 ["tanker_taunt_cooldown"] = "Taunt on cooldown! Remaining: {0}s",
@@ -945,6 +1140,7 @@ namespace CaptainSkillTree.Localization
                 ["tanker_taunt_success"] = "Taunt! {0} enemies targeting you!",
                 ["tanker_taunt_no_enemy"] = "No enemies to taunt nearby",
                 ["tanker_passive_damage_reduction"] = "Tanker Passive: -{0} damage!",
+                ["tanker_defense_buff_activated"] = "<color=#FFD700>⚔ Defense Buff Activated! ⚔</color>",
 
                 // === Berserker Skills ===
                 ["berserker_rage_cooldown"] = "Rage on cooldown! Remaining: {0}s",
@@ -972,12 +1168,38 @@ namespace CaptainSkillTree.Localization
                 ["spear_combo_cooldown"] = "Combo Spear on cooldown! Remaining: {0}s",
                 ["spear_combo_success"] = "Combo Spear! {0} consecutive hits!",
 
+                // === Weapon Equip Required Messages ===
+                ["sword_equip_required"] = "You must equip a sword!",
+                ["dagger_equip_required"] = "You must equip a dagger!",
+                ["spear_equip_required"] = "You must equip a spear!",
+                ["polearm_equip_required"] = "You must equip a polearm!",
+                ["one_hand_mace_shield_required"] = "You must equip a one-hand mace and shield!",
+                ["two_hand_mace_required"] = "You must equip a two-hand mace!",
+                ["staff_equip_required"] = "You must equip a staff!",
+                ["r_key_skill_condition_not_met"] = "R key skill condition not met",
+                ["g_key_skill_required"] = "G key skill required",
+                ["h_key_skill_required"] = "H key skill required",
+
                 // === Mace Skills ===
                 ["mace_guardian_cooldown"] = "Guardian's Heart on cooldown! Remaining: {0}s",
                 ["mace_required"] = "Mace required",
                 ["mace_guardian_success"] = "Guardian's Heart! Defense +{0}%!",
                 ["mace_fury_cooldown"] = "Fury Hammer on cooldown! Remaining: {0}s",
                 ["mace_fury_success"] = "Fury Hammer! {0} damage!",
+                ["fury_hammer_cooldown"] = "Fury Hammer cooldown: {0}s",
+                ["fury_hammer_skill_required"] = "Fury Hammer skill required",
+                ["fury_hammer_final_hit_ready"] = "🔨 Final hit ready!",
+                ["fury_hammer_combo_complete"] = "🔥 Fury Hammer complete! {0} hit",
+
+                // === Spear Combo Skills ===
+                ["combo_spear_skill_required"] = "Combo Spear skill required",
+                ["cooldown_seconds"] = "Cooldown: {0}s",
+                ["combo_spear_buff_activated"] = "⚡ Combo Spear activated! {0} uses (+{1}% damage)",
+                ["combo_spear_buff_ended"] = "Combo Spear effect ended",
+                ["combo_spear_uses_remaining"] = "🎯 Combo Spear remaining: {0}",
+                ["combo_spear_retrieve_failed"] = "Failed to retrieve spear",
+                ["combo_spear_retrieved_equipped"] = "✅ Spear retrieved and equipped!",
+                ["combo_spear_inventory_full"] = "Inventory is full",
 
                 // === Polearm Skills ===
                 ["polearm_king_cooldown"] = "Spear King on cooldown! Remaining: {0}s",
@@ -997,7 +1219,13 @@ namespace CaptainSkillTree.Localization
                 // === Crossbow Skills ===
                 ["crossbow_oneshot_cooldown"] = "One Shot on cooldown! Remaining: {0}s",
                 ["crossbow_required"] = "Crossbow required",
+                ["crossbow_equip_required"] = "You must equip a crossbow!",
                 ["crossbow_oneshot_success"] = "One Shot! {0} damage!",
+                ["crossbow_oneshot_ready"] = "🎯 One Shot Ready!",
+                ["crossbow_oneshot_remaining"] = "One Shot remaining: {0}s",
+                ["crossbow_oneshot_expired"] = "One Shot expired",
+                ["crossbow_oneshot_activated"] = "💥 One Shot Activated!",
+                ["skill_cooldown_format"] = "{0} cooldown: {1}s",
 
                 // === Staff Skills ===
                 ["staff_dual_cast_cooldown"] = "Dual Cast on cooldown! Remaining: {0}s",
@@ -1009,6 +1237,121 @@ namespace CaptainSkillTree.Localization
                 // === Job Active Skills (Y Key) ===
                 ["job_skill_activated"] = "{0} skill activated!",
                 ["job_skill_no_job"] = "You must select a job first",
+
+                // === Buff Display Messages ===
+                ["counter_stance_buff"] = "Counter Stance +{0}%",
+                ["blade_counter_buff"] = "Blade Counter +{0}%",
+                ["woodcutting_efficiency_bonus"] = "Woodcutting Efficiency: +{0}%",
+                ["mining_efficiency_bonus"] = "Mining Efficiency: +{0}%",
+                ["building_durability_bonus"] = "Building Durability +{0}%",
+                ["taunt_cooldown_display"] = "Taunt Cooldown",
+
+                // === Skill Effect Messages ===
+                ["skill_activated"] = "{0} Activated!",
+                ["ground_stomp_effect"] = "Ground Stomp! ({0} enemies pushed)",
+                ["luck_magic_activated"] = "✨ Luck Magic Activated!",
+                ["staff_wand_required"] = "❌ You must equip a staff or wand!",
+
+                // === Combat Effect Messages ===
+                ["consecutive_attack"] = "Consecutive Attack!",
+                ["critical_strike"] = "Critical Strike!",
+                ["enhanced_strike"] = "Enhanced Strike! (+{0}%)",
+                ["reflect_damage"] = "Reflect Damage {0}!",
+                ["explosion_damage"] = "Explosion! +{0}",
+
+                // === Spear Effect Messages ===
+                ["spear_expert_damage"] = "Spear Expert Damage! (+{0}%)",
+                ["evasion_thrust"] = "Evasion Thrust! (+{0}%)",
+                ["evasion_thrust_ready"] = "Evasion Thrust Ready!",
+                ["evasion_thrust_end"] = "Evasion Thrust Ended",
+                ["explosion_spear"] = "Explosion Spear! (+{0}%)",
+
+                // === Polearm Effect Messages ===
+                ["polearm_area_combo"] = "Area Combo! 2-hit damage +{0}%",
+                ["polearm_cooldown_remaining"] = "Cooldown: {0}s remaining",
+                ["polearm_stamina_insufficient"] = "Stamina Insufficient!",
+                ["polearm_required"] = "You must equip a polearm!",
+                ["pierce_charge_in_progress"] = "Pierce Charge in progress",
+                ["pierce_charge"] = "Pierce Charge!",
+                ["pierce_charge_damage"] = "Pierce Charge! (+{0}%)",
+                ["charge_complete"] = "Charge Complete",
+                ["hero_strike_stagger"] = "Hero Strike! (Stagger)",
+                ["wheel_attack"] = "Wheel Attack +{0}%!",
+
+                // === Sword Effect Messages ===
+                ["rush_slash_skill_required"] = "Rush Slash skill required",
+                ["sword_required"] = "You must equip a sword",
+                ["cooldown_remaining"] = "Cooldown: {0}s",
+                ["rush_slash_in_progress"] = "Rush Slash in progress",
+                ["rush_slash_activate"] = "Rush Slash!",
+                ["rush_slash_complete"] = "Rush Slash Complete! ({0} hits)",
+                ["rush_slash_canceled"] = "Rush Slash Canceled",
+                ["parry_rush_skill_required"] = "Parry Rush skill required",
+                ["shield_required"] = "You must equip a shield",
+                ["parry_rush_already_active"] = "Parry Rush already active",
+                ["parry_rush_activate"] = "Parry Rush! ({0}s)",
+                ["parry_rush_damage"] = "Parry Rush! (+{0}%)",
+
+                // === Berserker Effect Messages ===
+                ["berserker_cooldown"] = "On cooldown ({0}s)",
+                ["stamina_insufficient_short"] = "Stamina Insufficient!",
+                ["already_rage_state"] = "Already in Rage state!",
+                ["berserker_rage"] = "Berserker Rage!",
+                ["death_ignore"] = "Death Ignore",
+
+                // === Staff Heal Effect Messages ===
+                ["heal_cooldown"] = "Heal Cooldown: {0}s",
+                ["sacred_heal"] = "Staff Sacred Heal! ({0} healed)",
+                ["no_heal_target"] = "No target to heal",
+
+                // === Resource Consumption Messages ===
+                ["equipment_consumed"] = "Equipment Consumed: {0}",
+                ["material_consumed"] = "Material Consumed: {0}",
+
+                // === Skill Tree Manager Messages ===
+                ["cannot_learn_with"] = "Cannot learn with {0}",
+                ["multishot_end"] = "Multishot Ended",
+
+                // === Taunt Messages ===
+                ["taunt_ready"] = "Taunt Ready!",
+
+                // === Attack Expert Tree Effect Messages ===
+                ["rage_bonus"] = "Rage +{0}%!",
+                ["melee_specialization"] = "Melee Specialization!",
+                ["bow_specialization"] = "Bow Specialization!",
+                ["focus_fire_crit"] = "Focus Fire Crit x{0}!",
+                ["basic_bow_damage"] = "Basic Bow Damage +{0}!",
+                ["crossbow_specialization"] = "Crossbow Specialization!",
+                ["one_shot"] = "One Shot! +{0}%",
+                ["staff_specialization"] = "Staff Specialization!",
+                ["precision_attack"] = "Precision Attack!",
+                ["elemental_attack"] = "Elemental Attack!",
+                ["ranged_enhance"] = "Ranged Enhance!",
+                ["attack_expert"] = "Attack Expert!",
+                ["melee_enhance"] = "Melee Enhance!",
+                ["consecutive_melee_master"] = "Consecutive Melee Master!",
+                ["energizer"] = "Energizer!",
+                ["attack_increased"] = "Attack Increased!",
+                ["attack_expert_acquired"] = "Attack Expert Acquired!",
+
+                // === Speed Tree Effect Messages ===
+                ["consecutive_flow"] = "Consecutive Flow!",
+                ["bow_expert_mastery"] = "Bow Expert!",
+                ["crossbow_expert_mastery"] = "Crossbow Expert!",
+                ["agility_base"] = "Agility Basics! (+{0}% move speed)",
+                ["melee_triple_combo"] = "Melee Triple Combo! (+{0}% attack speed)",
+                ["cast_triple_combo"] = "Cast Triple Combo! (+{0} Eitr)",
+                ["knockback_effect"] = "Knockback!",
+
+                // === Bow/Crossbow Effect Messages ===
+                ["multishot_skill"] = "Multishot {0}! (+{1} arrows)",
+                ["explosive_arrow_skill_required"] = "Explosive Arrow skill required",
+                ["explosive_arrow_ready"] = "Explosive Arrow Ready!",
+                ["explosive_arrow_fire"] = "Explosive Arrow Fired!",
+
+                // === JobSkills Messages ===
+                ["archer_multishot_cooldown"] = "Multishot Cooldown: {0}s",
+                ["archer_multishot_fired"] = "Multishot! ({0} arrows fired)",
 
                 // === Stealth System ===
                 ["stealth_reason_attack"] = "Attack",
@@ -1775,6 +2118,11 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_rapid_fire_lv2_note"] = "※ Stacks with Lv1 chance",
                 ["crossbow_final_strike_desc"] = "Extra {1}% damage to enemies with {0}%+ HP",
 
+                // === Crossbow Skill Effect Messages ===
+                ["crossbow_auto_reload_activated"] = "Auto Reload! (+{0}% speed)",
+                ["crossbow_auto_reload_and_rapid_fire"] = "Auto Reload + Rapid Fire! ({0} shots)",
+                ["crossbow_rapid_fire_activated"] = "Rapid Fire! ({0} shots)",
+
                 // === Staff Full Descriptions ===
                 ["staff_expert_full_desc"] = "Staff elemental damage +{0}%\nMaster staff and wand usage for higher magic damage\nRequirement: Staff or Wand equipped",
                 ["staff_focus_full_desc"] = "Staff Eitr consumption -{0}%\nMental focus increases mana efficiency\nRequirement: Staff or Wand equipped",
@@ -1792,7 +2140,41 @@ namespace CaptainSkillTree.Localization
                 ["bow_multishot_lv1_effect"] = "Multi-Shot Lv1 acquired!",
                 ["bow_multishot_lv2_effect"] = "Multi-Shot Lv2 acquired!",
                 ["bow_proficiency_effect"] = "Bow Proficiency acquired! Bow skill +{0}",
-                ["bow_explosive_desc"] = "Fire explosive arrow\nDamage: {0}% of bow damage\nStamina cost: {1}%\nCooldown: {2}s"
+                ["bow_explosive_desc"] = "Fire explosive arrow\nDamage: {0}% of bow damage\nStamina cost: {1}%\nCooldown: {2}s",
+
+                // === Skill Activation Messages ===
+                ["bow_equip_required"] = "You must equip a bow!",
+                ["no_arrows"] = "No arrows!",
+                ["cooldown_format"] = "Cooldown: {0}s",
+                ["multishot_remaining_charges"] = "Multishot! (Charges left: {0})",
+                ["multishot_cooldown_remaining"] = "Multishot cooldown: {0}s",
+                ["multishot_completed"] = "Multishot completed!",
+                ["multishot_ready"] = "Multishot ready! ({0} uses available)",
+                ["archer_job_required"] = "Archer job required!",
+                ["spear_penetrate_cooldown"] = "Piercing Spear cooldown ({0}s)",
+                ["spear_penetrate_activated"] = "Piercing Spear activated! ({0}s)",
+                ["staff_dual_cast_activated"] = "Dual Cast activated! {0} extra projectiles",
+                ["knife_assassin_heart_activated"] = "Assassin's Heart activated!",
+
+                // === Sword Skill Messages ===
+                ["sword_combo_3hit"] = "Sword Combo 3-Hit!",
+                ["sword_expert_combo"] = "Sword Expert 2-Combo! (+{0}%)",
+                ["sword_combo_slash"] = "Combo Slash! 3-Hit damage +{0}%",
+                ["sword_counter_stance"] = "Counter Stance! ({0}s defense +{1}%)",
+                ["sword_blade_counter"] = "Blade Counter! ({0}s damage +{1}%)",
+                ["sword_offense_defense"] = "Offense-Defense! (Damage +{0}%, Defense +{1})",
+                ["sword_dodge_counter"] = "Dodge Counter!",
+
+                // === Spear Skill Messages ===
+                ["spear_dual_strike"] = "Dual Strike! ({0}s damage +{1}%)",
+                ["spear_lightning_shock"] = "Lightning Shock! ({0})",
+
+                // === Staff Skill Messages ===
+                ["staff_dual_cast_cooldown"] = "Dual Cast cooldown: {0}s",
+                ["staff_eitr_insufficient"] = "Not enough Eitr ({0} required)",
+                ["staff_dual_cast_ready"] = "Dual Cast ready! ({0}s)",
+                ["staff_dual_cast_remaining"] = "Dual Cast ready ({0}s)",
+                ["staff_dual_cast_expired"] = "Dual Cast buff expired"
             };
         }
     }

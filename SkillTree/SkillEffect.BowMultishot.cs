@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -108,7 +109,7 @@ namespace CaptainSkillTree.SkillTree
                 bowExpertMultishotTriggered[player] = false;
                 
                 // 스킬 효과 텍스트 및 VFX
-                ShowSkillEffectText(player, $"🏹 멀티샷 {skillLevel}! (+{arrowCount}발)", 
+                ShowSkillEffectText(player, $"🏹 {L.Get("multishot_skill", skillLevel, arrowCount)}",
                     new Color(0.2f, 0.8f, 0.2f), SkillEffectTextType.Combat);
                 PlaySkillEffect(player, "bow_multishot", player.transform.position);
             }

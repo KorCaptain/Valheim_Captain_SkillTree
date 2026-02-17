@@ -7,6 +7,7 @@ using System.Linq;
 using CaptainSkillTree;
 using CaptainSkillTree.Gui;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -135,14 +136,14 @@ namespace CaptainSkillTree.SkillTree
                 bool hasSkill = SkillEffect.HasSkill("sword_step5_finalcut") || SkillEffect.HasSkill("sword_slash");
                 if (!hasSkill)
                 {
-                    SkillEffect.DrawFloatingText(player, "돌진 연속 베기 스킬이 필요합니다", Color.red);
+                    SkillEffect.DrawFloatingText(player, L.Get("rush_slash_skill_required"), Color.red);
                     return;
                 }
 
                 // 2. 검 착용 확인
                 if (!IsUsingSword(player))
                 {
-                    SkillEffect.DrawFloatingText(player, "검을 착용해야 합니다", Color.red);
+                    SkillEffect.DrawFloatingText(player, L.Get("sword_required"), Color.red);
                     return;
                 }
 
@@ -151,7 +152,7 @@ namespace CaptainSkillTree.SkillTree
                 if (rushSlashCooldowns.ContainsKey(player) && now < rushSlashCooldowns[player])
                 {
                     float remaining = rushSlashCooldowns[player] - now;
-                    SkillEffect.DrawFloatingText(player, $"쿨타임: {Mathf.CeilToInt(remaining)}초", Color.yellow);
+                    SkillEffect.DrawFloatingText(player, L.Get("cooldown_remaining", Mathf.CeilToInt(remaining)), Color.yellow);
                     return;
                 }
 
@@ -159,14 +160,14 @@ namespace CaptainSkillTree.SkillTree
                 float requiredStamina = Sword_Config.RushSlashStaminaCostValue;
                 if (player.GetStamina() < requiredStamina)
                 {
-                    SkillEffect.DrawFloatingText(player, "스태미나 부족", Color.red);
+                    SkillEffect.DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
                     return;
                 }
 
                 // 5. 이미 스킬 실행 중인지 확인
                 if (rushSlashActive.ContainsKey(player) && rushSlashActive[player])
                 {
-                    SkillEffect.DrawFloatingText(player, "돌진 연속 베기 실행 중", Color.yellow);
+                    SkillEffect.DrawFloatingText(player, L.Get("rush_slash_in_progress"), Color.yellow);
                     return;
                 }
 
@@ -183,7 +184,7 @@ namespace CaptainSkillTree.SkillTree
                 player.UseStamina(requiredStamina);
 
                 // 8. 발동 메시지
-                SkillEffect.DrawFloatingText(player, "⚔️ 돌진 연속 베기!", Color.red);
+                SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("rush_slash_activate"), Color.red);
 
                 // 9. 코루틴 시작
                 if (rushSlashCoroutines.ContainsKey(player) && rushSlashCoroutines[player] != null)
@@ -319,7 +320,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 상태 정리
             CleanupRushSlash(player);
-            SkillEffect.DrawFloatingText(player, $"⚔️ 돌진 연속 베기 완료! ({totalHits}타격)", Color.green);
+            SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("rush_slash_complete", totalHits), Color.green);
 
             yield return null;
         }
@@ -590,7 +591,7 @@ namespace CaptainSkillTree.SkillTree
                     rushSlashCoroutines[player] = null;
                 }
 
-                SkillEffect.DrawFloatingText(player, "돌진 연속 베기 중단됨", Color.yellow);
+                SkillEffect.DrawFloatingText(player, L.Get("rush_slash_canceled"), Color.yellow);
             }
             catch (System.Exception ex)
             {
@@ -735,14 +736,14 @@ namespace CaptainSkillTree.SkillTree
                 // 1. 스킬 보유 확인
                 if (!SkillEffect.HasSkill("sword_step5_defswitch"))
                 {
-                    SkillEffect.DrawFloatingText(player, "패링 돌격 스킬이 필요합니다", Color.red);
+                    SkillEffect.DrawFloatingText(player, L.Get("parry_rush_skill_required"), Color.red);
                     return;
                 }
 
                 // 2. 방패 착용 확인
                 if (!HasShield(player))
                 {
-                    SkillEffect.DrawFloatingText(player, "방패를 착용해야 합니다", Color.red);
+                    SkillEffect.DrawFloatingText(player, L.Get("shield_required"), Color.red);
                     return;
                 }
 
@@ -751,7 +752,7 @@ namespace CaptainSkillTree.SkillTree
                 if (parryRushCooldowns.TryGetValue(player, out float cdEnd) && now < cdEnd)
                 {
                     float remaining = cdEnd - now;
-                    SkillEffect.DrawFloatingText(player, $"쿨타임: {Mathf.CeilToInt(remaining)}초", Color.yellow);
+                    SkillEffect.DrawFloatingText(player, L.Get("cooldown_remaining", Mathf.CeilToInt(remaining)), Color.yellow);
                     return;
                 }
 
@@ -759,14 +760,14 @@ namespace CaptainSkillTree.SkillTree
                 float staminaCost = Sword_Config.ParryRushStaminaCostValue;
                 if (player.GetStamina() < staminaCost)
                 {
-                    SkillEffect.DrawFloatingText(player, "스태미나 부족", Color.red);
+                    SkillEffect.DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
                     return;
                 }
 
                 // 5. 이미 버프 활성 중인지 확인
                 if (IsParryRushActive(player))
                 {
-                    SkillEffect.DrawFloatingText(player, "패링 돌격 이미 활성 중", Color.yellow);
+                    SkillEffect.DrawFloatingText(player, L.Get("parry_rush_already_active"), Color.yellow);
                     return;
                 }
 
@@ -793,7 +794,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 9. 발동 메시지 + VFX
-                SkillEffect.DrawFloatingText(player, $"🛡️ 패링 돌격! ({duration}초)", Color.cyan);
+                SkillEffect.DrawFloatingText(player, "🛡️ " + L.Get("parry_rush_activate", duration), Color.cyan);
                 VFXManager.PlayVFXMultiplayer("vfx_blocked", "", player.transform.position, player.transform.rotation, duration);
 
                 Plugin.Log.LogInfo($"[패링 돌격] 버프 활성화 - {duration}초, 쿨타임 {cooldown}초");
@@ -879,9 +880,20 @@ namespace CaptainSkillTree.SkillTree
                 {
                     newPos.y = groundHit.point.y + 0.1f;
                 }
-                player.transform.position = newPos;
+                // transform.position 직접 설정 시 Rigidbody가 다음 FixedUpdate에서 덮어씌워 제자리 복귀 발생
+                // Traverse로 protected m_body 접근 후 MovePosition으로 물리 엔진에 위치 변경 전달
+                var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
+                if (body != null)
+                {
+                    body.velocity = Vector3.zero;
+                    body.MovePosition(newPos);
+                }
+                else
+                {
+                    player.transform.position = newPos;
+                }
 
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
 
             // 4. 도착 - 데미지 적용
@@ -907,7 +919,7 @@ namespace CaptainSkillTree.SkillTree
                 // VFX: 적중 효과
                 VFXManager.PlayVFXMultiplayer("vfx_sledge_hit", "", target.GetCenterPoint(), Quaternion.identity, 2f);
 
-                SkillEffect.DrawFloatingText(player, $"🛡️ 패링 돌격! (+{Sword_Config.ParryRushDamageBonusValue}%)", Color.cyan);
+                SkillEffect.DrawFloatingText(player, "🛡️ " + L.Get("parry_rush_damage", Sword_Config.ParryRushDamageBonusValue), Color.cyan);
                 Plugin.Log.LogInfo($"[패링 돌격] 돌격 성공! 공격력 +{Sword_Config.ParryRushDamageBonusValue}%, 밀어내기 {Sword_Config.ParryRushPushDistanceValue}m");
             }
 

@@ -29,7 +29,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, "⚔️ 공격 전문가 습득!",
+                        SkillEffect.ShowSkillEffectText(player, $"⚔️ {L.Get("attack_expert_acquired")}",
                             new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
                         Plugin.Log.LogInfo("[공격 전문가] 효과 적용 완료 - 모든 데미지 +5% (Harmony 패치를 통해 자동 적용)");
                     }

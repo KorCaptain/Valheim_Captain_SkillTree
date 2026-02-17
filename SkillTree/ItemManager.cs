@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -221,7 +222,7 @@ namespace CaptainSkillTree.SkillTree
             if (removedItems.Count > 0)
             {
                 var itemText = string.Join(", ", removedItems);
-                SkillEffect.DrawFloatingText(player, $"🔨 장비 소모: {itemText}", new Color(0.9f, 0.7f, 0.3f));
+                SkillEffect.DrawFloatingText(player, $"🔨 {L.Get("equipment_consumed", itemText)}", new Color(0.9f, 0.7f, 0.3f));
                 Plugin.Log.LogInfo($"[ItemManager] 장비 제거 완료: {itemText}");
             }
 
@@ -343,7 +344,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 var hasEnough = inventory != null && HasSufficientItem(inventory, requirement);
                 var colorTag = hasEnough ? "<color=#00FF00>" : "<color=#FF0000>";
-                var statusText = hasEnough ? "✓" : "✗";
+                var statusText = hasEnough ? "[O]" : "[X]";
                 
                 if (requirement is ItemEquipConsumeRequirement)
                 {
@@ -400,7 +401,7 @@ namespace CaptainSkillTree.SkillTree
                     if (consumedItems.Count > 0)
                     {
                         var itemTexts = consumedItems.Select(x => $"{x.DisplayName} x{x.Quantity}").ToList();
-                        SkillEffect.DrawFloatingText(player, $"🔨 재료 소모: {string.Join(", ", itemTexts)}");
+                        SkillEffect.DrawFloatingText(player, $"🔨 {L.Get("material_consumed", string.Join(", ", itemTexts))}");
                     }
                 }
                 return true;

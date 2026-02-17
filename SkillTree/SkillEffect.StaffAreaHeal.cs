@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -25,7 +26,7 @@ namespace CaptainSkillTree.SkillTree
                 if (staffHealCooldowns.ContainsKey(player) && Time.time < staffHealCooldowns[player])
                 {
                     float remaining = staffHealCooldowns[player] - Time.time;
-                    DrawFloatingText(player, $"힐 쿨타임: {Mathf.CeilToInt(remaining)}초", Color.red);
+                    DrawFloatingText(player, L.Get("heal_cooldown", Mathf.CeilToInt(remaining)), Color.red);
                     return;
                 }
 
@@ -33,7 +34,7 @@ namespace CaptainSkillTree.SkillTree
                 float eitrCost = Staff_Config.StaffHealEitrCostValue;
                 if (player.GetEitr() < eitrCost)
                 {
-                    DrawFloatingText(player, $"에이트르가 부족합니다 ({eitrCost} 필요)", Color.red);
+                    DrawFloatingText(player, L.Get("staff_eitr_insufficient", eitrCost), Color.red);
                     return;
                 }
 
@@ -116,11 +117,11 @@ namespace CaptainSkillTree.SkillTree
                 // 시전자 결과 알림
                 if (healedCount > 0)
                 {
-                    DrawFloatingText(caster, $"💚 지팡이 신성한 치유! ({healedCount}명 치료)", Color.green);
+                    DrawFloatingText(caster, "💚 " + L.Get("sacred_heal", healedCount), Color.green);
                 }
                 else
                 {
-                    DrawFloatingText(caster, "💚 치료할 대상이 없습니다", Color.yellow);
+                    DrawFloatingText(caster, "💚 " + L.Get("no_heal_target"), Color.yellow);
                 }
 
                 Plugin.Log.LogInfo($"[지팡이 힐] 총 {healedCount}명 치료 완료");

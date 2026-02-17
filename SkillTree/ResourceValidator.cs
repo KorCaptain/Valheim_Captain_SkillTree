@@ -175,7 +175,7 @@ namespace CaptainSkillTree.SkillTree
                 bool hasEnough = currentCount >= requirement.RequiredQuantity;
                 
                 var colorTag = hasEnough ? "<color=#00FF00>" : "<color=#FF0000>";
-                var statusText = hasEnough ? "✓" : "✗";
+                var statusText = hasEnough ? "[O]" : "[X]";
                 
                 requirementTexts.Add($"{colorTag}{statusText} {requirement.DisplayName} {currentCount}/{requirement.RequiredQuantity}</color>");
             }

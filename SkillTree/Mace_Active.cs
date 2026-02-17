@@ -7,6 +7,7 @@ using System.Linq;
 using CaptainSkillTree;
 using CaptainSkillTree.Gui;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -47,7 +48,7 @@ namespace CaptainSkillTree.SkillTree
                 bool hasSkill = HasSkill("mace_Step7_guardian_heart");
                 if (!hasSkill)
                 {
-                    DrawFloatingText(player, "수호자의 진심 스킬이 필요합니다", Color.red);
+                    DrawFloatingText(player, L.Get("guardian_heart_skill_required"), Color.red);
                     return;
                 }
 
@@ -56,7 +57,7 @@ namespace CaptainSkillTree.SkillTree
                 bool isUsingOneHandedMace = IsUsingOneHandedMace(player);
                 if (!isUsingShield || !isUsingOneHandedMace)
                 {
-                    DrawFloatingText(player, "둔기 + 방패를 착용해야 합니다!", Color.red);
+                    DrawFloatingText(player, L.Get("mace_shield_required"), Color.red);
                     return;
                 }
 
@@ -65,7 +66,7 @@ namespace CaptainSkillTree.SkillTree
                 if (guardianHeartCooldowns.ContainsKey(player) && now < guardianHeartCooldowns[player])
                 {
                     float remaining = guardianHeartCooldowns[player] - now;
-                    DrawFloatingText(player, $"쿨타임: {Mathf.CeilToInt(remaining)}초", Color.yellow);
+                    DrawFloatingText(player, L.Get("cooldown_seconds", Mathf.CeilToInt(remaining).ToString()), Color.yellow);
                     return;
                 }
 
@@ -73,7 +74,7 @@ namespace CaptainSkillTree.SkillTree
                 float requiredStamina = Mace_Config.GuardianHeartStaminaCostValue;
                 if (player.GetStamina() < requiredStamina)
                 {
-                    DrawFloatingText(player, "스태미나 부족", Color.red);
+                    DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
                     return;
                 }
 
@@ -105,14 +106,14 @@ namespace CaptainSkillTree.SkillTree
                 // 2. 버프 표시
                 SkillBuffDisplay.Instance.ShowBuff(
                     "guardian_heart",
-                    "수호자의 진심",
+                    L.Get("guardian_heart_buff_name"),
                     duration,
                     new Color(0.2f, 0.8f, 1f, 1f), // 파란색
                     "🛡️"
                 );
 
                 // 3. 플로팅 텍스트
-                DrawFloatingText(player, "[수호자의 진심] 반사 보호 활성화!", new Color(0.2f, 0.8f, 1f, 1f));
+                DrawFloatingText(player, L.Get("guardian_heart_activated"), new Color(0.2f, 0.8f, 1f, 1f));
 
                 // 3-1. 머리 위 상태 효과 VFX 재생 (45초 지속)
                 PlayGuardianHeartStatusEffect(player);
@@ -229,7 +230,7 @@ namespace CaptainSkillTree.SkillTree
                     {
                         try
                         {
-                            DrawFloatingText(player, $"🛡️ 수호자의 진심: {remaining:F0}초", new Color(0.2f, 0.8f, 1f, 1f));
+                            DrawFloatingText(player, L.Get("guardian_heart_remaining", $"{remaining:F0}"), new Color(0.2f, 0.8f, 1f, 1f));
                         }
                         catch (System.Exception ex)
                         {
@@ -259,7 +260,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogInfo("[수호자의 진심] 버프 종료 - 상태 효과 제거");
                 }
 
-                DrawFloatingText(player, "수호자의 진심 효과 종료", Color.gray);
+                DrawFloatingText(player, L.Get("guardian_heart_ended"), Color.gray);
             }
             catch (System.Exception ex)
             {
@@ -382,7 +383,7 @@ namespace CaptainSkillTree.SkillTree
                 // 반사 효과 표시
                 Plugin.Log.LogInfo($"[수호자의 진심] VFX 재생 직전 - 플레이어 방패 위치");
                 PlayGuardianHeartReflectEffect(player);
-                DrawFloatingText(player, $"⚡ 반사: {reflectDamage:F0}", new Color(1f, 0.5f, 0f, 1f));
+                DrawFloatingText(player, L.Get("guardian_heart_reflect", $"{reflectDamage:F0}"), new Color(1f, 0.5f, 0f, 1f));
             }
             catch (System.Exception ex)
             {

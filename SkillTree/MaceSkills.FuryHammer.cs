@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -35,7 +36,7 @@ namespace CaptainSkillTree.SkillTree
             // 양손둔기 착용 체크
             if (!SkillEffect.IsUsingTwoHandedMace(player))
             {
-                SkillEffect.DrawFloatingText(player, "양손둔기를 착용해야 합니다!", Color.red);
+                SkillEffect.DrawFloatingText(player, L.Get("two_hand_mace_required"), Color.red);
                 return;
             }
 
@@ -51,11 +52,11 @@ namespace CaptainSkillTree.SkillTree
             else if (canFuryHammer)
             {
                 float remainingCooldown = cooldown - (nowG - lastMaceSkillTime);
-                SkillEffect.DrawFloatingText(player, $"분노의 망치 쿨타임: {remainingCooldown:F1}초", Color.yellow);
+                SkillEffect.DrawFloatingText(player, L.Get("fury_hammer_cooldown", $"{remainingCooldown:F1}"), Color.yellow);
             }
             else
             {
-                SkillEffect.DrawFloatingText(player, "분노의 망치 스킬이 필요합니다!", Color.red);
+                SkillEffect.DrawFloatingText(player, L.Get("fury_hammer_skill_required"), Color.red);
             }
         }
 
@@ -183,7 +184,7 @@ namespace CaptainSkillTree.SkillTree
                 if (isLastAttack)
                 {
                     Plugin.Log.LogInfo($"[분노의 망치 디버그] 5타 - 0.5초 대기 시작 (플레이어 Health: {player.GetHealth():F1})");
-                    SkillEffect.DrawFloatingText(player, $"⚡ 최종타 준비!", new Color(1f, 0.3f, 0f));
+                    SkillEffect.DrawFloatingText(player, L.Get("fury_hammer_final_hit_ready"), new Color(1f, 0.3f, 0f));
 
                     yield return new WaitForSeconds(0.5f);
 
@@ -281,7 +282,7 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogInfo($"[분노의 망치 디버그] {i + 1}타 데미지 적용 완료 - 적중: {hitCount}명, 총 적중: {totalHits}명");
 
                 // 플로팅 텍스트 (데미지 단계별)
-                string comboText = $"🔥 {i + 1}타! (데미지 {damageMultiplier:P0}, 적중: {hitCount})";
+                string comboText = L.Get("fury_hammer_combo_hit", (i + 1).ToString(), $"{damageMultiplier:P0}", hitCount.ToString());
                 SkillEffect.DrawFloatingText(player, comboText, Color.red);
 
                 Plugin.Log.LogInfo($"[분노의 망치 디버그] {i + 1}타 완료 - 데미지: {totalDamage:F0}, 배율: {damageMultiplier:F2}x, 적중: {hitCount}명");
@@ -305,7 +306,7 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogInfo("[분노의 망치 디버그] ========== 5연타 루프 완료 ==========");
 
             // 최종 완료 메시지
-            SkillEffect.DrawFloatingText(player, $"💥 5연타 완료! (총 {totalHits}명 타격)", new Color(1f, 0.5f, 0f));
+            SkillEffect.DrawFloatingText(player, L.Get("fury_hammer_combo_complete", totalHits.ToString()), new Color(1f, 0.5f, 0f));
             Plugin.Log.LogInfo($"[분노의 망치 디버그] 5연타 완료 - 총 적중: {totalHits}명");
 
             // 코루틴 정상 종료 시 Dictionary에서 제거

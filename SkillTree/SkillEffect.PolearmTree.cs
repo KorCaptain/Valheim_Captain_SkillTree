@@ -6,6 +6,7 @@ using HarmonyLib;
 using System.Linq;
 using CaptainSkillTree;
 using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -83,7 +84,7 @@ namespace CaptainSkillTree.SkillTree
             if (polearmAreaComboCount[player] >= 2)
             {
                 // 패시브 스킬: 텍스트 표시만 (VFX/SFX 금지)
-                DrawFloatingText(player, $"⚔️ 광역 강타! 2연속 공격력 +{SkillTreeConfig.PolearmStep3AreaComboBonusValue}%");
+                DrawFloatingText(player, "⚔️ " + L.Get("polearm_area_combo", SkillTreeConfig.PolearmStep3AreaComboBonusValue));
 
                 Plugin.Log.LogInfo($"[광역 강타] 2연속 공격 달성 - 공격력 +{SkillTreeConfig.PolearmStep3AreaComboBonusValue}% 보너스 적용");
 
@@ -116,7 +117,7 @@ namespace CaptainSkillTree.SkillTree
                 if (timeSinceLastUse < cooldown)
                 {
                     float remainingCooldown = cooldown - timeSinceLastUse;
-                    DrawFloatingText(player, $"⏳ 쿨타임: {remainingCooldown:F1}초 남음");
+                    DrawFloatingText(player, "⏳ " + L.Get("polearm_cooldown_remaining", $"{remainingCooldown:F1}"));
                     return false;
                 }
             }
@@ -125,21 +126,21 @@ namespace CaptainSkillTree.SkillTree
             float staminaCost = Polearm_Config.PolearmPierceChargeStaminaCostValue;
             if (player.GetStamina() < staminaCost)
             {
-                DrawFloatingText(player, "❌ 스태미나 부족!");
+                DrawFloatingText(player, "❌ " + L.Get("polearm_stamina_insufficient"));
                 return false;
             }
 
             // 폴암 착용 확인
             if (!IsUsingPolearm(player))
             {
-                DrawFloatingText(player, "❌ 폴암을 착용해야 합니다!");
+                DrawFloatingText(player, "❌ " + L.Get("polearm_required"));
                 return false;
             }
 
             // 이미 스킬 실행 중인지 확인
             if (polearmPierceChargeActive.ContainsKey(player) && polearmPierceChargeActive[player])
             {
-                DrawFloatingText(player, "⚠️ 관통 돌격 실행 중");
+                DrawFloatingText(player, "⚠️ " + L.Get("pierce_charge_in_progress"));
                 return false;
             }
 
@@ -159,7 +160,7 @@ namespace CaptainSkillTree.SkillTree
             var coroutine = ExecutePierceChargeSequence(player);
             polearmPierceChargeCoroutines[player] = player.StartCoroutine(coroutine);
 
-            DrawFloatingText(player, "🔱 관통 돌격!");
+            DrawFloatingText(player, "🔱 " + L.Get("pierce_charge"));
             Plugin.Log.LogInfo($"[관통 돌격] 스킬 사용 - 돌진 거리: {Polearm_Config.PolearmPierceChargeDashDistanceValue}m");
 
             return true;
@@ -277,7 +278,7 @@ namespace CaptainSkillTree.SkillTree
                     // === 플레이어 위치 중심 5m 반경 내 모든 몬스터 넉백 ===
                     ApplyAreaKnockback(player, hitMonster, weapon, knockbackDistance);
 
-                    DrawFloatingText(player, $"💥 관통 돌격! (+{Polearm_Config.PolearmPierceChargePrimaryDamageValue}%)");
+                    DrawFloatingText(player, "💥 " + L.Get("pierce_charge_damage", Polearm_Config.PolearmPierceChargePrimaryDamageValue));
 
                     break; // 적중 시 이동 멈춤
                 }
@@ -303,7 +304,7 @@ namespace CaptainSkillTree.SkillTree
             // 적중 없이 돌진 완료
             if (hitMonster == null)
             {
-                DrawFloatingText(player, "🔱 돌진 완료");
+                DrawFloatingText(player, "🔱 " + L.Get("charge_complete"));
             }
 
             // 공격속도 복원
@@ -809,7 +810,7 @@ namespace CaptainSkillTree.SkillTree
                 __instance.Stagger(knockbackDir);
 
                 // 패시브 스킬: 텍스트 표시만 (VFX/SFX 금지)
-                SkillEffect.DrawFloatingText(player, $"⚔️ 영웅 타격! (스태거)");
+                SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("hero_strike_stagger"));
                 Plugin.Log.LogInfo($"[영웅 타격] 스태거 발동 - {__instance.name}");
             }
             catch (System.Exception ex)
@@ -918,7 +919,7 @@ namespace CaptainSkillTree.SkillTree
                 hit.m_damage.m_blunt *= multiplier;
 
                 // 패시브 스킬: 텍스트 표시만 (VFX/SFX 금지)
-                SkillEffect.DrawFloatingText(player, $"🌀 휠 공격 +{wheelBonus}%!");
+                SkillEffect.DrawFloatingText(player, "🌀 " + L.Get("wheel_attack", wheelBonus));
                 Plugin.Log.LogInfo($"[폴암 휠 공격] 데미지 보너스 +{wheelBonus}% 적용");
             }
             catch (System.Exception ex)

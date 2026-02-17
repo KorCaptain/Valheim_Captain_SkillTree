@@ -5,6 +5,7 @@ using UnityEngine;
 using HarmonyLib;
 using System.Linq;
 using CaptainSkillTree;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -109,8 +110,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 meleeComboSpeedEndTime[player] = currentTime + SkillTreeConfig.SpeedMeleeComboDurationValue;
                 PlaySkillEffect(player, "melee_combo");
-                ShowSkillEffectText(player, 
-                    $"⚔️ 연속의 흐름!", 
+                ShowSkillEffectText(player,
+                    $"⚔️ {L.Get("consecutive_flow")}",
                     new Color(0.3f, 0.7f, 1f), SkillEffectTextType.Combat);
                 speedMeleeComboCount[player] = 0; // 리셋
             }
@@ -147,8 +148,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 bowExpertStaminaEndTime[player] = currentTime + SkillTreeConfig.SpeedBowExpertDurationValue;
                 PlaySkillEffect(player, "bow_speed2");
-                ShowSkillEffectText(player, 
-                    "🏹 활 숙련자!", 
+                ShowSkillEffectText(player,
+                    $"🏹 {L.Get("bow_expert_mastery")}",
                     new Color(0.4f, 0.8f, 1f), SkillEffectTextType.Combat);
                 bowComboCount[player] = 0; // 리셋
             }
@@ -165,8 +166,8 @@ namespace CaptainSkillTree.SkillTree
             crossbowExpertSpeedEndTime[player] = currentTime + SkillTreeConfig.SpeedCrossbowExpertDurationValue;
             
             PlaySkillEffect(player, "crossbow_reload2");
-            ShowSkillEffectText(player, 
-                "⚡ 석궁 숙련자!", 
+            ShowSkillEffectText(player,
+                $"⚡ {L.Get("crossbow_expert_mastery")}",
                 new Color(0.2f, 0.9f, 1f), SkillEffectTextType.Combat);
         }
 
@@ -477,7 +478,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (UnityEngine.Random.Range(0f, 1f) < 0.3f)
                     {
-                        SkillEffect.ShowSkillEffectText(__instance, "⚡ 에너자이져!", 
+                        SkillEffect.ShowSkillEffectText(__instance, $"⚡ {L.Get("energizer")}",
                             new Color(0.5f, 0.8f, 1f), SkillEffect.SkillEffectTextType.Combat);
                     }
                 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -69,7 +70,7 @@ namespace CaptainSkillTree.SkillTree
                 if (consumedItems.Count > 0)
                 {
                     var itemText = string.Join(", ", consumedItems);
-                    SkillEffect.DrawFloatingText(player, $"🔨 재료 소모: {itemText}");
+                    SkillEffect.DrawFloatingText(player, $"🔨 {L.Get("material_consumed", itemText)}");
                     Plugin.Log.LogInfo($"[자원 소모] 스킬 학습 완료: {skillId} - 소모된 재료: {itemText}");
                 }
 
@@ -234,7 +235,7 @@ namespace CaptainSkillTree.SkillTree
                             {
                                 continue;
                             }
-                            costTexts.Add($"🔹 {line.Replace("✓", "").Replace("✗", "").Trim()} (보유 필요)");
+                            costTexts.Add($"🔹 {line.Replace("[O]", "").Replace("[X]", "").Trim()} (보유 필요)");
                         }
                     }
                 }

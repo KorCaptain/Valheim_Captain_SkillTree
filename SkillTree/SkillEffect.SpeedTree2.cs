@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using HarmonyLib;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -56,7 +57,7 @@ namespace CaptainSkillTree.SkillTree
             dodgeSpeedEndTime[player] = Time.time + duration;
 
             ShowSkillEffectText(player,
-                $"🏃 민첩함의 기초! (+{SkillTreeConfig.SpeedBaseDodgeMoveSpeedValue}% 이동속도)",
+                $"🏃 {L.Get("agility_base", SkillTreeConfig.SpeedBaseDodgeMoveSpeedValue)}",
                 new Color(0.2f, 0.9f, 1f), SkillEffectTextType.Combat);
         }
 
@@ -103,7 +104,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 tier8MeleeComboEndTime[player] = currentTime + 3f; // 3초간 유지
                 ShowSkillEffectText(player,
-                    $"⚡ 근접 가속 3연속! (+{SkillTreeConfig.SpeedMeleeComboTripleBonusValue}% 공격속도)",
+                    $"⚡ {L.Get("melee_triple_combo", SkillTreeConfig.SpeedMeleeComboTripleBonusValue)}",
                     new Color(1f, 0.5f, 0.2f), SkillEffectTextType.Combat);
                 tier8MeleeComboCount[player] = 0;
             }
@@ -156,7 +157,7 @@ namespace CaptainSkillTree.SkillTree
                 player.AddEitr(recoveryAmount);
 
                 ShowSkillEffectText(player,
-                    $"✨ 시전 가속 3연속! (+{recoveryAmount:F0} 에이트르)",
+                    $"✨ {L.Get("cast_triple_combo", $"{recoveryAmount:F0}")}",
                     new Color(0.6f, 0.3f, 1f), SkillEffectTextType.Combat);
                 staffComboCount[player] = 0;
             }

@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Text;
 using CaptainSkillTree.MMO_System;
+using CaptainSkillTree.Localization;
 // using Newtonsoft.Json; // BepInEx 환경에서 제거
 #if !NO_JOTUNN
 using Jotunn.Managers;
@@ -1089,7 +1090,7 @@ namespace CaptainSkillTree.SkillTree
                         if ((System.Object)Player.m_localPlayer != null)
                         {
                             string exclusiveSkillName = SkillNodes.ContainsKey(exclusiveSkillId) ? SkillNodes[exclusiveSkillId].Name : exclusiveSkillId;
-                            SkillEffect.DrawFloatingText(Player.m_localPlayer, $"⚠️ {exclusiveSkillName}과(와) 동시에 배울 수 없습니다", Color.red);
+                            SkillEffect.DrawFloatingText(Player.m_localPlayer, "⚠️ " + L.Get("cannot_learn_with", exclusiveSkillName), Color.red);
                         }
                         Plugin.Log.LogDebug($"[상호 배타적 스킬] {skillId} 투자 차단: 이미 {exclusiveSkillId}에 투자됨");
                         return;
@@ -1553,7 +1554,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 bowMultiShotActive = false;
                 Debug.Log("[SkillTreeManager] 멀티샷 종료");
-                SkillEffect.DrawFloatingText(Player.m_localPlayer, "멀티샷 종료");
+                SkillEffect.DrawFloatingText(Player.m_localPlayer, L.Get("multishot_end"));
             }
         }
 
