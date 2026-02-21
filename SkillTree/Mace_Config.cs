@@ -344,252 +344,252 @@ namespace CaptainSkillTree.SkillTree
             // Tier 0: 둔기 전문가 (Mace Expert)
             MaceExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier0_둔기전문가_필요포인트",
+                "Tier0_MaceExpert_RequiredPoints",
                 2,
-                "Tier 0: 둔기 전문가 - 필요 포인트"
+                "Tier 0: Mace Expert (mace_expert) - Required Points"
             );
 
             MaceExpertDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier0_둔기전문가_피해증가",
+                "Tier0_MaceExpert_DamageBonus",
                 5f,
-                "Tier 0: 둔기 전문가 - 피해 증가 (%)"
+                "Tier 0: Mace Expert (mace_expert) - Damage Bonus (%)"
             );
 
             MaceExpertStunChance = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier0_둔기전문가_기절확률",
+                "Tier0_MaceExpert_StunChance",
                 20f,
-                "Tier 0: 둔기 전문가 - 기절 확률 (%)"
+                "Tier 0: Mace Expert (mace_expert) - Stun Chance (%)"
             );
 
             MaceExpertStunDuration = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier0_둔기전문가_기절지속시간",
+                "Tier0_MaceExpert_StunDuration",
                 0.5f,
-                "Tier 0: 둔기 전문가 - 기절 지속시간 (초)"
+                "Tier 0: Mace Expert (mace_expert) - Stun Duration (sec)"
             );
 
             // Tier 1: 둔기 공격력 강화
             MaceStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier1_둔기전문가_필요포인트",
+                "Tier1_MaceExpert_RequiredPoints",
                 1,
-                "Tier 1: 둔기 전문가(mace_Step1_damage) - 필요 포인트"
+                "Tier 1: Mace Expert (mace_Step1_damage) - Required Points"
             );
 
             MaceStep1DamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier1_둔기전문가_공격력보너스",
+                "Tier1_MaceExpert_DamageBonus",
                 10f,
-                "Tier 1: 둔기 전문가(mace_Step1_damage) - 둔기 공격력 보너스 (%)"
+                "Tier 1: Mace Expert (mace_Step1_damage) - Mace Damage Bonus (%)"
             );
 
             // Tier 2: 기절 강화
             MaceStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier2_기절강화_필요포인트",
+                "Tier2_StunBoost_RequiredPoints",
                 1,
-                "Tier 2: 기절 강화(mace_Step2_stun_boost) - 필요 포인트"
+                "Tier 2: Stun Boost (mace_Step2_stun_boost) - Required Points"
             );
 
             MaceStep2StunChanceBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier2_기절강화_기절확률보너스",
+                "Tier2_StunBoost_StunChanceBonus",
                 15f,
-                "Tier 2: 기절 강화(mace_Step2_stun_boost) - 기절 확률 보너스 (%)"
+                "Tier 2: Stun Boost (mace_Step2_stun_boost) - Stun Chance Bonus (%)"
             );
 
             MaceStep2StunDurationBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier2_기절강화_기절지속시간보너스",
+                "Tier2_StunBoost_StunDurationBonus",
                 0.5f,
-                "Tier 2: 기절 강화(mace_Step2_stun_boost) - 기절 지속시간 보너스 (초)"
+                "Tier 2: Stun Boost (mace_Step2_stun_boost) - Stun Duration Bonus (sec)"
             );
 
             // Tier 3: 방어 강화
             MaceStep3GuardRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier3_방어강화_필요포인트",
+                "Tier3_Guard_RequiredPoints",
                 1,
-                "Tier 3: 방어 강화(mace_Step3_branch_guard) - 필요 포인트"
+                "Tier 3: Guard (mace_Step3_branch_guard) - Required Points"
             );
 
             MaceStep3GuardArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier3_방어강화_방어력보너스",
+                "Tier3_Guard_ArmorBonus",
                 3f,
-                "Tier 3: 방어 강화(mace_Step3_branch_guard) - 방어력 보너스 (고정값)"
+                "Tier 3: Guard (mace_Step3_branch_guard) - Armor Bonus (flat)"
             );
 
             // Tier 3: 무거운 타격
             MaceStep3HeavyRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier3_무거운타격_필요포인트",
+                "Tier3_HeavyStrike_RequiredPoints",
                 1,
-                "Tier 3: 무거운 타격(mace_Step3_branch_heavy) - 필요 포인트"
+                "Tier 3: Heavy Strike (mace_Step3_branch_heavy) - Required Points"
             );
 
             MaceStep3HeavyDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier3_무거운타격_데미지보너스",
+                "Tier3_HeavyStrike_DamageBonus",
                 3f,
-                "Tier 3: 무거운 타격(mace_Step3_branch_heavy) - 공격력 보너스 (고정값)"
+                "Tier 3: Heavy Strike (mace_Step3_branch_heavy) - Damage Bonus (flat)"
             );
 
             // Tier 4: 밀어내기
             MaceStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier4_밀어내기_필요포인트",
+                "Tier4_Push_RequiredPoints",
                 1,
-                "Tier 4: 밀어내기(mace_Step4_push) - 필요 포인트"
+                "Tier 4: Push (mace_Step4_push) - Required Points"
             );
 
             MaceStep4KnockbackChance = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier4_밀어내기_노크백확률",
+                "Tier4_Push_KnockbackChance",
                 30f,
-                "Tier 4: 밀어내기(mace_Step4_push) - 넉백 확률 (%)"
+                "Tier 4: Push (mace_Step4_push) - Knockback Chance (%)"
             );
 
             // Tier 5: 탱커
             MaceStep5TankRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier5_탱커_필요포인트",
+                "Tier5_Tank_RequiredPoints",
                 1,
-                "Tier 5: 탱커(mace_Step5_tank) - 필요 포인트"
+                "Tier 5: Tank (mace_Step5_tank) - Required Points"
             );
 
             MaceStep5TankHealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier5_탱커_체력보너스",
+                "Tier5_Tank_HealthBonus",
                 25f,
-                "Tier 5: 탱커(mace_Step5_tank) - 체력 보너스 (%)"
+                "Tier 5: Tank (mace_Step5_tank) - Health Bonus (%)"
             );
 
             MaceStep5TankDamageReduction = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier5_탱커_데미지감소",
+                "Tier5_Tank_DamageReduction",
                 10f,
-                "Tier 5: 탱커(mace_Step5_tank) - 받는 데미지 감소 (%)"
+                "Tier 5: Tank (mace_Step5_tank) - Incoming Damage Reduction (%)"
             );
 
             // Tier 5: 공격력 강화
             MaceStep5DpsRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier5_공격력강화_필요포인트",
+                "Tier5_DPS_RequiredPoints",
                 1,
-                "Tier 5: 공격력 강화(mace_Step5_dps) - 필요 포인트"
+                "Tier 5: DPS (mace_Step5_dps) - Required Points"
             );
 
             MaceStep5DpsDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier5_공격력강화_공격력보너스",
+                "Tier5_DPS_DamageBonus",
                 20f,
-                "Tier 5: 공격력 강화(mace_Step5_dps) - 공격력 보너스 (%)"
+                "Tier 5: DPS (mace_Step5_dps) - Damage Bonus (%)"
             );
 
             MaceStep5DpsAttackSpeedBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier5_공격력강화_공격속도보너스",
+                "Tier5_DPS_AttackSpeedBonus",
                 10f,
-                "Tier 5: 공격력 강화(mace_Step5_dps) - 공격속도 보너스 (%)"
+                "Tier 5: DPS (mace_Step5_dps) - Attack Speed Bonus (%)"
             );
 
             // Tier 6: 그랜드마스터
             MaceStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier6_그랜드마스터_필요포인트",
+                "Tier6_Grandmaster_RequiredPoints",
                 1,
-                "Tier 6: 그랜드마스터(mace_Step6_grandmaster) - 필요 포인트"
+                "Tier 6: Grandmaster (mace_Step6_grandmaster) - Required Points"
             );
 
             MaceStep6ArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier6_그랜드마스터_방어력보너스",
+                "Tier6_Grandmaster_ArmorBonus",
                 20f,
-                "Tier 6: 그랜드마스터(mace_Step6_grandmaster) - 방어력 보너스 (%)"
+                "Tier 6: Grandmaster (mace_Step6_grandmaster) - Armor Bonus (%)"
             );
 
             // Tier 7: 분노의 망치 (Fury Hammer)
             FuryHammerRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_분노의망치_필요포인트",
+                "Tier7_FuryHammer_RequiredPoints",
                 3,
-                "Tier 7: 분노의 망치(mace_step7_fury_hammer) - 필요 포인트"
+                "Tier 7: Fury Hammer (mace_step7_fury_hammer) - Required Points"
             );
 
             FuryHammerNormalHitMultiplier = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_분노의망치_1~4타배율",
+                "Tier7_FuryHammer_NormalHitMultiplier",
                 80f,
-                "Tier 7: 분노의 망치(mace_step7_fury_hammer) - 1~4타 데미지 배율 (%) - 현재 공격력 기준"
+                "Tier 7: Fury Hammer (mace_step7_fury_hammer) - Hits 1-4 Damage Multiplier (%) - Based on Current Attack"
             );
 
             FuryHammerFinalHitMultiplier = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_분노의망치_5타배율",
+                "Tier7_FuryHammer_FinalHitMultiplier",
                 150f,
-                "Tier 7: 분노의 망치(mace_step7_fury_hammer) - 5타(최종타) 데미지 배율 (%) - 현재 공격력 기준"
+                "Tier 7: Fury Hammer (mace_step7_fury_hammer) - Hit 5 (Final) Damage Multiplier (%) - Based on Current Attack"
             );
 
             // 연속공격횟수와 공격간딜레이는 하드코딩 (5타, 0.5초 고정) - MaceSkills.FuryHammer.cs 참조
 
             FuryHammerStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_분노의망치_스태미나소모",
+                "Tier7_FuryHammer_StaminaCost",
                 40f,
-                "Tier 7: 분노의 망치(mace_step7_fury_hammer) - 스태미나 소모"
+                "Tier 7: Fury Hammer (mace_step7_fury_hammer) - Stamina Cost"
             );
 
             FuryHammerCooldown = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_분노의망치_쿨타임",
+                "Tier7_FuryHammer_Cooldown",
                 30f,
-                "Tier 7: 분노의 망치(mace_step7_fury_hammer) - 쿨타임 (초)"
+                "Tier 7: Fury Hammer (mace_step7_fury_hammer) - Cooldown (sec)"
             );
 
             FuryHammerAoeRadius = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_분노의망치_AOE범위",
+                "Tier7_FuryHammer_AoeRadius",
                 5f,
-                "Tier 7: 분노의 망치(mace_step7_fury_hammer) - AOE 범위 (미터)"
+                "Tier 7: Fury Hammer (mace_step7_fury_hammer) - AOE Radius (meters)"
             );
 
             // Tier 7: 수호자의 진심 (Guardian Heart)
             GuardianHeartCooldown = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_수호자의진심_쿨타임",
+                "Tier7_GuardianHeart_Cooldown",
                 120f,
-                "Tier 7: 수호자의 진심(mace_step7_guardian_heart) - 쿨타임 (초)"
+                "Tier 7: Guardian Heart (mace_step7_guardian_heart) - Cooldown (sec)"
             );
 
             GuardianHeartStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_수호자의진심_스태미나소모",
+                "Tier7_GuardianHeart_StaminaCost",
                 25f,
-                "Tier 7: 수호자의 진심(mace_step7_guardian_heart) - 스태미나 소모"
+                "Tier 7: Guardian Heart (mace_step7_guardian_heart) - Stamina Cost"
             );
 
             GuardianHeartDuration = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_수호자의진심_버프지속시간",
+                "Tier7_GuardianHeart_Duration",
                 45f,
-                "Tier 7: 수호자의 진심(mace_step7_guardian_heart) - 버프 지속시간 (초)"
+                "Tier 7: Guardian Heart (mace_step7_guardian_heart) - Buff Duration (sec)"
             );
 
             GuardianHeartReflectPercent = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_수호자의진심_반사데미지비율",
+                "Tier7_GuardianHeart_ReflectPercent",
                 6f,
-                "Tier 7: 수호자의 진심(mace_step7_guardian_heart) - 반사 데미지 비율 (%)"
+                "Tier 7: Guardian Heart (mace_step7_guardian_heart) - Reflect Damage Percentage (%)"
             );
 
             GuardianHeartRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_수호자의진심_필요포인트",
+                "Tier7_GuardianHeart_RequiredPoints",
                 3,
-                "Tier 7: 수호자의 진심(mace_step7_guardian_heart) - 필요 포인트"
+                "Tier 7: Guardian Heart (mace_step7_guardian_heart) - Required Points"
             );
         }
     }

@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using CaptainSkillTree.Localization;
+using CaptainSkillTree.VFX;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -13,9 +14,13 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static partial class SkillEffect
     {
-        // === 폭발 화살 관련 변수 (석궁 단 한발과 동일) ===
+        // === 폭발 화살 관련 변수 ===
         private static Dictionary<Player, float> explosiveArrowCooldown = new Dictionary<Player, float>();
         private static Dictionary<Player, bool> explosiveArrowReady = new Dictionary<Player, bool>();
+
+        // 버프 상태 VFX 관리 (머리 위 statusailment_01_aura)
+        private static Dictionary<Player, GameObject> explosiveArrowStatusEffects = new Dictionary<Player, GameObject>();
+        private static GameObject cachedExplosiveArrowStatusPrefab = null;
         
         /// <summary>
         /// 폭발 화살 R키 액티브 스킬 실행 (석궁 단 한발과 동일)
@@ -74,13 +79,13 @@ namespace CaptainSkillTree.SkillTree
                 // 5. 스킬 발동 (석궁 단 한발과 동일 - 즉시 준비 상태)
                 explosiveArrowCooldown[player] = Time.time;
                 explosiveArrowReady[player] = true;
-                
+
                 // 스태미나 소모
                 player.UseStamina(requiredStamina);
-                
-                // VFX 효과
-                PlaySkillEffect(player, "bow_Step6_critboost", player.transform.position);
-                
+
+                // VFX/SFX 효과 (석궁 단 한발과 동일한 방식)
+                PlayExplosiveArrowActivationEffects(player);
+
                 // 성공 메시지 (석궁과 동일한 스타일)
                 ShowSkillEffectText(player, "💥 " + L.Get("explosive_arrow_ready"), new Color(1f, 0.4f, 0f), SkillEffectTextType.Combat);
                 Plugin.Log.LogInfo("[폭발 화살] ✅ R키 액티브 스킬 발동 완료 - 다음 한 발 준비됨");
@@ -91,6 +96,89 @@ namespace CaptainSkillTree.SkillTree
             }
         }
         
+        /// <summary>
+        /// 폭발 화살 R키 활성화 시 VFX/SFX 효과 (아처 멀티샷과 동일한 방식)
+        /// </summary>
+        private static void PlayExplosiveArrowActivationEffects(Player player)
+        {
+            try
+            {
+                // 1. 버프 활성화 VFX (buff_01) - 발밑 효과, 2초간
+                var buff01Prefab = VFXManager.GetVFXPrefab("buff_01");
+                if (buff01Prefab != null)
+                {
+                    var buff01Effect = UnityEngine.Object.Instantiate(
+                        buff01Prefab,
+                        player.transform.position + Vector3.up * 0.5f,
+                        player.transform.rotation
+                    );
+                    buff01Effect.transform.SetParent(player.transform, false);
+                    buff01Effect.transform.localPosition = Vector3.up * 0.5f;
+                    buff01Effect.transform.localScale = Vector3.one * 0.8f;
+
+                    // 2초 후 제거
+                    UnityEngine.Object.Destroy(buff01Effect, 2f);
+                }
+
+                // 2. 버프 상태 VFX (statusailment_01_aura) - 머리 위 효과, 화살 발사까지 지속
+                PlayExplosiveArrowStatusEffect(player);
+
+                // 3. 버프 활성화 사운드 (sfx_reload_dverger_done)
+                VFXManager.PlaySound("sfx_reload_dverger_done", player.transform.position, 5f);
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[폭발 화살] 활성화 효과 재생 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 폭발 화살 상태 효과 VFX (statusailment_01_aura - 머리 위, 화살 발사까지 지속)
+        /// </summary>
+        private static void PlayExplosiveArrowStatusEffect(Player player)
+        {
+            try
+            {
+                // 캐시된 프리팹이 없으면 한 번만 로드
+                if (cachedExplosiveArrowStatusPrefab == null)
+                {
+                    cachedExplosiveArrowStatusPrefab = VFXManager.GetVFXPrefab("statusailment_01_aura");
+                    if (cachedExplosiveArrowStatusPrefab == null)
+                    {
+                        Plugin.Log.LogWarning("[폭발 화살] statusailment_01_aura 프리팹을 찾을 수 없음");
+                        return;
+                    }
+                }
+
+                // 기존 상태 효과가 있으면 제거
+                if (explosiveArrowStatusEffects.ContainsKey(player) && explosiveArrowStatusEffects[player] != null)
+                {
+                    UnityEngine.Object.Destroy(explosiveArrowStatusEffects[player]);
+                    explosiveArrowStatusEffects.Remove(player);
+                }
+
+                // statusailment_01_aura 효과 생성 (머리 위 2미터)
+                var headPosition = player.transform.position + Vector3.up * 2.0f;
+                var statusInstance = UnityEngine.Object.Instantiate(
+                    cachedExplosiveArrowStatusPrefab,
+                    headPosition,
+                    Quaternion.identity
+                );
+
+                // 캐릭터를 따라다니도록 부모 설정
+                statusInstance.transform.SetParent(player.transform, false);
+                statusInstance.transform.localPosition = Vector3.up * 2.0f;
+                statusInstance.transform.localScale = Vector3.one * 0.6f;
+
+                // 상태 효과 인스턴스 저장 (화살 발사 시 제거하기 위해)
+                explosiveArrowStatusEffects[player] = statusInstance;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[폭발 화살] 상태 효과 재생 실패: {ex.Message}");
+            }
+        }
+
         /// <summary>
         /// 폭발 화살 준비 상태 확인 (석궁 단 한발과 동일)
         /// </summary>
@@ -109,15 +197,22 @@ namespace CaptainSkillTree.SkillTree
         }
         
         /// <summary>
-        /// 폭발 화살 사용 처리 (발사 후 호출) - 석궁 단 한발과 동일
+        /// 폭발 화살 사용 처리 (발사 후 호출)
         /// </summary>
         public static void ConsumeExplosiveArrow(Player player)
         {
             if (explosiveArrowReady.ContainsKey(player) && explosiveArrowReady[player])
             {
                 explosiveArrowReady[player] = false;
+
+                // 상태 효과 제거 (statusailment_01_aura)
+                if (explosiveArrowStatusEffects.ContainsKey(player) && explosiveArrowStatusEffects[player] != null)
+                {
+                    UnityEngine.Object.Destroy(explosiveArrowStatusEffects[player]);
+                    explosiveArrowStatusEffects.Remove(player);
+                }
+
                 ShowSkillEffectText(player, "💥 " + L.Get("explosive_arrow_fire"), Color.red, SkillEffectTextType.Critical);
-                Plugin.Log.LogInfo($"[폭발 화살] {player.GetPlayerName()} 폭발 화살 소모됨");
             }
         }
         
@@ -135,7 +230,6 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 폭발 화살 정리 메서드 (플레이어 사망 시 호출)
-        /// Dictionary 정리
         /// </summary>
         public static void CleanupExplosiveArrowOnDeath(Player player)
         {
@@ -143,6 +237,21 @@ namespace CaptainSkillTree.SkillTree
             {
                 explosiveArrowCooldown.Remove(player);
                 explosiveArrowReady.Remove(player);
+
+                // 상태 효과 GameObject 제거 (statusailment_01_aura)
+                if (explosiveArrowStatusEffects.ContainsKey(player))
+                {
+                    var statusEffect = explosiveArrowStatusEffects[player];
+                    if (statusEffect != null)
+                    {
+                        try
+                        {
+                            UnityEngine.Object.Destroy(statusEffect);
+                        }
+                        catch { }
+                    }
+                    explosiveArrowStatusEffects.Remove(player);
+                }
             }
             catch (Exception ex)
             {
@@ -295,101 +404,35 @@ namespace CaptainSkillTree.SkillTree
         }
         
         /// <summary>
-        /// 폭발 VFX/SFX 효과 - 실제 Valheim 프리팹 사용
+        /// 폭발 VFX/SFX 효과 - VFXManager 사용 (발헤임 기본 VFX)
         /// </summary>
         private static void PlayExplosionEffects(Vector3 position)
         {
             try
             {
                 Plugin.Log.LogInfo($"[폭발 화살] 폭발 이팩트 생성 시작 - 위치: {position}");
-                
-                // 1. 주 폭발 효과 (라바 블롭 폭발)
-                CreateExplosionEffect("fx_blobLava_explosion", position);
-                
-                // 2. 추가 폭발 효과 (공성 폭탄 폭발)
-                CreateExplosionEffect("fx_siegebomb_explosion", position + Vector3.up * 0.5f);
-                
-                // 3. 폭발 사운드 효과
-                PlayExplosionSound("sfx_blobLava_explosion", position);
-                PlayExplosionSound("sfx_unstablerock_explosion", position);
-                
+
+                // 1. 주 폭발 효과 (라바 블롭 폭발) - VFXManager 사용
+                VFXManager.PlayVFXAtPosition("fx_blobLava_explosion", position, 5f, 1f);
+
+                // 2. 추가 폭발 효과 (공성 폭탄 폭발) - VFXManager 사용
+                VFXManager.PlayVFXAtPosition("fx_siegebomb_explosion", position + Vector3.up * 0.5f, 5f, 1f);
+
+                // 3. 폭발 사운드 효과 (VFXManager 사운드 메서드 사용)
+                VFXManager.PlaySound("sfx_blobLava_explosion", position, 5f);
+                VFXManager.PlaySound("sfx_unstablerock_explosion", position, 5f);
+
                 // 4. 간단한 빛 효과 추가 (보조)
                 CreateLightEffect(position);
-                
-                Plugin.Log.LogInfo("[폭발 화살] ✅ 실제 Valheim 폭발 이팩트 생성 완료");
+
+                Plugin.Log.LogInfo("[폭발 화살] ✅ VFXManager로 폭발 이팩트 생성 완료");
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[폭발 이팩트] 오류: {ex.Message}");
             }
         }
-        
-        /// <summary>
-        /// 실제 Valheim 폭발 이팩트 생성
-        /// </summary>
-        private static void CreateExplosionEffect(string effectName, Vector3 position)
-        {
-            try
-            {
-                var prefab = ZNetScene.instance?.GetPrefab(effectName);
-                if (prefab != null)
-                {
-                    var effect = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
 
-                    // ✅ ZNetView 즉시 제거 (무한 로딩 방지)
-                    var znetView = effect.GetComponent<ZNetView>();
-                    if (znetView != null)
-                    {
-                        UnityEngine.Object.DestroyImmediate(znetView);
-                    }
-
-                    UnityEngine.Object.Destroy(effect, 5f); // 5초 후 삭제
-                    Plugin.Log.LogDebug($"[폭발 화살] {effectName} 이팩트 생성 성공");
-                }
-                else
-                {
-                    Plugin.Log.LogWarning($"[폭발 화살] {effectName} 프리팹을 찾을 수 없음");
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[폭발 이팩트 생성] {effectName} 오류: {ex.Message}");
-            }
-        }
-        
-        /// <summary>
-        /// 폭발 사운드 재생
-        /// </summary>
-        private static void PlayExplosionSound(string soundName, Vector3 position)
-        {
-            try
-            {
-                var prefab = ZNetScene.instance?.GetPrefab(soundName);
-                if (prefab != null)
-                {
-                    var sound = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
-
-                    // ✅ ZNetView 즉시 제거 (무한 로딩 방지)
-                    var znetView = sound.GetComponent<ZNetView>();
-                    if (znetView != null)
-                    {
-                        UnityEngine.Object.DestroyImmediate(znetView);
-                    }
-
-                    UnityEngine.Object.Destroy(sound, 5f); // 5초 후 삭제
-                    Plugin.Log.LogDebug($"[폭발 화살] {soundName} 사운드 재생 성공");
-                }
-                else
-                {
-                    Plugin.Log.LogWarning($"[폭발 화살] {soundName} 사운드 프리팹을 찾을 수 없음");
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[폭발 사운드] {soundName} 오류: {ex.Message}");
-            }
-        }
-        
         /// <summary>
         /// 보조 빛 효과 생성
         /// </summary>

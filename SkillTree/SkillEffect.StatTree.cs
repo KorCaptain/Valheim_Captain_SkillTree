@@ -404,28 +404,17 @@ namespace CaptainSkillTree.SkillTree
                     var manager = SkillTreeManager.Instance;
                     if (manager != null)
                     {
-                        float totalSpeedBonus = 0f;
-
-                        // speed_1: 속도 전문가 트리
+                        // speed_1: 민첩 스탯 (speed_1) - 이동속도 +2%
                         if (manager.GetSkillLevel("speed_1") > 0)
                         {
-                            totalSpeedBonus += SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue / 100f;
+                            float speedBonus = SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue / 100f;
+                            m_speedModifier = 1f + speedBonus;
+                            m_tooltip = $"이동속도 +{speedBonus * 100f:F1}%";
+                            Plugin.Log.LogInfo($"[이동속도] StatusEffect 적용: {player.GetPlayerName()} +{speedBonus * 100f:F1}%");
                         }
-
-                        // knife_step3_move_speed: 단검 빠른 움직임 (조건부 - 단검 착용 시만)
-                        if (manager.GetSkillLevel("knife_step3_move_speed") > 0 &&
-                            SkillEffect.IsUsingDagger(player))
+                        else
                         {
-                            totalSpeedBonus += Knife_Config.KnifeMoveSpeedBonusValue / 100f;
-                        }
-
-                        if (totalSpeedBonus > 0f)
-                        {
-                            m_speedModifier = 1f + totalSpeedBonus;
-                            m_tooltip = $"이동속도 +{totalSpeedBonus * 100f:F1}%";
-
-                            Plugin.Log.LogInfo($"[이동속도] StatusEffect 적용: {player.GetPlayerName()} " +
-                                $"+{totalSpeedBonus * 100f:F1}% (배율: {m_speedModifier:F3})");
+                            m_speedModifier = 1f;
                         }
                     }
                 }
@@ -445,36 +434,20 @@ namespace CaptainSkillTree.SkillTree
                         return;
                     }
 
-                    float totalSpeedBonus = 0f;
+                    // SE 유지 조건: speed_1 보유 여부만 확인
+                    bool hasSpeed1 = manager.GetSkillLevel("speed_1") > 0;
 
-                    // speed_1: 속도 전문가 트리
-                    if (manager.GetSkillLevel("speed_1") > 0)
-                    {
-                        totalSpeedBonus += SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue / 100f;
-                    }
-
-                    // knife_step3_move_speed: 단검 빠른 움직임 (조건부 - 단검 착용 시만)
-                    if (manager.GetSkillLevel("knife_step3_move_speed") > 0 &&
-                        SkillEffect.IsUsingDagger(player))
-                    {
-                        totalSpeedBonus += Knife_Config.KnifeMoveSpeedBonusValue / 100f;
-                    }
-
-                    // 모든 이동속도 스킬 해제 시 StatusEffect 제거
-                    if (totalSpeedBonus <= 0f)
+                    if (!hasSpeed1)
                     {
                         m_character.GetSEMan()?.RemoveStatusEffect(this);
+                        Plugin.Log.LogInfo($"[이동속도 SE] speed_1 미보유 - SE 제거");
                         return;
                     }
 
-                    float newModifier = 1f + totalSpeedBonus;
-
-                    if (Mathf.Abs(m_speedModifier - newModifier) > 0.001f)
-                    {
-                        m_speedModifier = newModifier;
-                        m_tooltip = $"이동속도 +{totalSpeedBonus * 100f:F1}%";
-                        Plugin.Log.LogDebug($"[이동속도] StatusEffect 업데이트: +{totalSpeedBonus * 100f:F1}%");
-                    }
+                    // speed_1: 민첩 스탯 - 이동속도 +2%
+                    float speedBonus = SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue / 100f;
+                    m_speedModifier = 1f + speedBonus;
+                    m_tooltip = $"이동속도 +{speedBonus * 100f:F1}%";
                 }
             }
         }
@@ -504,6 +477,16 @@ namespace CaptainSkillTree.SkillTree
                         var se = ScriptableObject.CreateInstance<SE_StatTreeSpeed>();
                         seMan.AddStatusEffect(se);
                         Plugin.Log.LogInfo($"[스탯 트리] StatusEffect 활성화: {player.GetPlayerName()}");
+                    }
+                    else if (hasSpeed1 && hasEffect)
+                    {
+                        // 기존 SE가 있으면 강제로 업데이트 (스킬 배운 직후 즉시 반영)
+                        var existingSE = seMan.GetStatusEffect(hash) as SE_StatTreeSpeed;
+                        if (existingSE != null)
+                        {
+                            existingSE.UpdateStatusEffect(0f);
+                            Plugin.Log.LogDebug($"[스탯 트리] StatusEffect 강제 업데이트");
+                        }
                     }
                     else if (!hasSpeed1 && hasEffect)
                     {
@@ -595,6 +578,40 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 무기 장착 시 이동속도 SE 재적용 (단검 재장착 복구용)
+        /// </summary>
+        [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.EquipItem))]
+        public static class StatTree_Humanoid_EquipItem_Patch
+        {
+            [HarmonyPriority(Priority.Low)]
+            public static void Postfix(Humanoid __instance, bool __result)
+            {
+                if (!__result) return;
+                if (__instance is Player player && player == Player.m_localPlayer)
+                {
+                    StatTreeStatusEffectManager.ApplyStatTreeSpeedEffect(player);
+                    SkillEffect.NotifyKnifeMoveSpeedActive(player);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 무기 해제 시 이동속도 SE 업데이트
+        /// </summary>
+        [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.UnequipItem))]
+        public static class StatTree_Humanoid_UnequipItem_Patch
+        {
+            [HarmonyPriority(Priority.Low)]
+            public static void Postfix(Humanoid __instance)
+            {
+                if (__instance is Player player && player == Player.m_localPlayer)
+                {
+                    StatTreeStatusEffectManager.ApplyStatTreeSpeedEffect(player);
+                }
+            }
+        }
+
+        /// <summary>
         /// 방어 트리 회피율 재계산 (스킬 변경 시 호출)
         /// </summary>
         public static void UpdateDefenseDodgeRate(Player player)
@@ -645,6 +662,14 @@ namespace CaptainSkillTree.SkillTree
                 float knifeEvasionBonus = Knife_Config.KnifeEvasionBonusValue / 100f;
                 totalDodge += knifeEvasionBonus;
                 Plugin.Log.LogDebug($"[회피 숙련] 단검 회피율 +{Knife_Config.KnifeEvasionBonusValue}%");
+            }
+
+            // knife_step5_crit_rate: 공격과 회피 (2연속 공격 시 일시적 회피율 증가)
+            float attackEvasionBonus = GetKnifeAttackEvasionBonus(player);
+            if (attackEvasionBonus > 0f)
+            {
+                totalDodge += attackEvasionBonus / 100f;
+                Plugin.Log.LogDebug($"[공격과 회피] 단검 임시 회피율 +{attackEvasionBonus}%");
             }
 
             player.SetCustomDodgeChance(totalDodge);

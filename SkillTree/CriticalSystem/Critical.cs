@@ -107,25 +107,12 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                 Plugin.Log.LogDebug("[치명타] 구 버전 단검 스킬: +15%");
             }
 
-            // Tier 5: 치명타 숙련 (시간 기반 버프)
-            if (SkillEffect.HasSkill("knife_step5_crit_rate"))
+            // Tier 6: 암살자 - 치명타 확률 +12%
+            if (SkillEffect.HasSkill("knife_step7_execution"))
             {
-                if (SkillEffect.knifeCritRateEndTime.TryGetValue(player, out float endTime)
-                    && Time.time < endTime)
-                {
-                    float tierBonus = Knife_Config.KnifeCritRateBonusValue;
-                    bonus += tierBonus;
-                    float remainingTime = endTime - Time.time;
-                    Plugin.Log.LogDebug($"[치명타] Tier 5 치명타 숙련: +{tierBonus}% (남은 시간: {remainingTime:F1}초)");
-                }
-            }
-
-            // Tier 9: 암살자의 심장 (G키 액티브)
-            if (SkillEffect.IsKnifeAssassinHeartActive(player))
-            {
-                float tierBonus = Knife_Config.KnifeAssassinHeartCritChanceValue;
+                float tierBonus = Knife_Config.KnifeExecutionCritChanceValue;
                 bonus += tierBonus;
-                Plugin.Log.LogDebug($"[치명타] Tier 9 암살자의 심장 (액티브): +{tierBonus}%");
+                Plugin.Log.LogDebug($"[단검 치명타] 암살자 패시브: +{tierBonus}%");
             }
 
             if (bonus > 0f)

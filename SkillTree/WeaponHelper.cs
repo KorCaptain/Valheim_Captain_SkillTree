@@ -29,10 +29,26 @@ namespace CaptainSkillTree.SkillTree
             IsUsingWeapon(player, Skills.SkillType.Swords);
 
         /// <summary>
-        /// 둔기 사용 여부 확인
+        /// 둔기 사용 여부 확인 (프리팹명에 Sledge/sledge 포함 시에도 인식)
         /// </summary>
-        public static bool IsUsingMace(Player player) =>
-            IsUsingWeapon(player, Skills.SkillType.Clubs);
+        public static bool IsUsingMace(Player player)
+        {
+            if (player == null) return false;
+
+            var weapon = player.GetCurrentWeapon();
+            if (weapon?.m_shared == null) return false;
+
+            // 1. SkillType이 Clubs면 둔기
+            if (weapon.m_shared.m_skillType == Skills.SkillType.Clubs)
+                return true;
+
+            // 2. 프리팹명에 Sledge/sledge 포함 시에도 둔기로 인식
+            string prefabName = weapon.m_dropPrefab?.name ?? "";
+            if (prefabName.Contains("Sledge") || prefabName.Contains("sledge"))
+                return true;
+
+            return false;
+        }
 
         /// <summary>
         /// 창 사용 여부 확인
@@ -47,10 +63,31 @@ namespace CaptainSkillTree.SkillTree
             IsUsingWeapon(player, Skills.SkillType.Polearms);
 
         /// <summary>
-        /// 단검 사용 여부 확인
+        /// 단검 사용 여부 확인 (프리팹명에 Claw/claw/Dagger/dagger 포함 시에도 인식)
         /// </summary>
-        public static bool IsUsingKnife(Player player) =>
-            IsUsingWeapon(player, Skills.SkillType.Knives);
+        public static bool IsUsingKnife(Player player)
+        {
+            if (player == null) return false;
+
+            var weapon = player.GetCurrentWeapon();
+            if (weapon?.m_shared == null) return false;
+
+            // 1. SkillType이 Knives면 단검
+            if (weapon.m_shared.m_skillType == Skills.SkillType.Knives)
+                return true;
+
+            // 2. 프리팹명에 Dagger/dagger 포함 시에도 단검으로 인식
+            string prefabName = weapon.m_dropPrefab?.name ?? "";
+            if (prefabName.Contains("Dagger") || prefabName.Contains("dagger"))
+                return true;
+
+            // 3. 프리팹명에 Claw/claw 포함 시에도 단검으로 인식 (클로 무기)
+            // Unarmed 타입일 수 있지만 단검 전문가 트리에서 인식하도록 함
+            if (prefabName.Contains("Claw") || prefabName.Contains("claw"))
+                return true;
+
+            return false;
+        }
 
         /// <summary>
         /// 활 사용 여부 확인

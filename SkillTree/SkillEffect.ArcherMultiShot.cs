@@ -83,11 +83,10 @@ namespace CaptainSkillTree.SkillTree
                 
                 ShowSkillEffectText(player, "🏹 " + L.Get("multishot_ready", charges.ToString()),
                     new Color(0.2f, 0.8f, 0.2f), SkillEffectTextType.Combat);
-                
+
                 // 버프 활성화 VFX/SFX 효과
                 PlayArcherMultiShotBuffActivationEffects(player);
-                
-                Plugin.Log.LogInfo($"[아처 멀티샷] Y키로 멀틴샷 버프 활성화 - 충전: {charges}회, 화살수: {ARCHER_MULTISHOT_ARROWS}발, 데미지: {Archer_Config.ArcherMultiShotDamagePercentValue}%");
+
                 return true;
             }
             catch (System.Exception ex)
@@ -139,7 +138,6 @@ namespace CaptainSkillTree.SkillTree
                 var arrows = inventory.GetAmmoItem("bow", "");
                 if (arrows != null && arrows.m_stack > 0 && ValidateArrowProjectile(arrows))
                 {
-                    Plugin.Log.LogDebug($"[아처 멀티샷] 화살 발견: {arrows.m_shared.m_name} (스택: {arrows.m_stack})");
                     return arrows;
                 }
                 
@@ -147,10 +145,9 @@ namespace CaptainSkillTree.SkillTree
                 var allItems = inventory.GetAllItems();
                 foreach (var item in allItems)
                 {
-                    if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Ammo && 
+                    if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Ammo &&
                         item.m_stack > 0 && ValidateArrowProjectile(item))
                     {
-                        Plugin.Log.LogDebug($"[아처 멀티샷] 대체 화살 발견: {item.m_shared.m_name}");
                         return item;
                     }
                 }
@@ -196,7 +193,6 @@ namespace CaptainSkillTree.SkillTree
 
                 var arrowCount = ARCHER_MULTISHOT_ARROWS; // 5발 고정
                 var currentCharges = GetArcherMultiShotCharges(player);
-                Plugin.Log.LogInfo($"[아처 멀티샷] {arrowCount}발 멀티샷 시작 (남은 충전: {currentCharges}회)");
 
                 // 부채꼴 각도 계산 (5발 고정)
                 var angles = CalculateMultiShotAngles(arrowCount);
@@ -210,9 +206,7 @@ namespace CaptainSkillTree.SkillTree
                 // 충전 횟수 차감
                 var newCharges = currentCharges - 1;
                 archerMultiShotCharges[player] = newCharges;
-                
-                Plugin.Log.LogInfo($"[아처 멀티샷] 충전 차감: {currentCharges} → {newCharges}");
-                
+
                 if (newCharges <= 0)
                 {
                     // 모든 충전 사용 완료 - 버프 해제 및 효과 제거
@@ -223,20 +217,17 @@ namespace CaptainSkillTree.SkillTree
                     {
                         UnityEngine.Object.Destroy(archerMultiShotBuffEffects[player]);
                         archerMultiShotBuffEffects.Remove(player);
-                        Plugin.Log.LogInfo("[아처 멀티샷] 버프 효과 제거 (모든 충전 사용 완료)");
                     }
-                    
+
                     // 상태 효과 제거 (statusailment_01_aura)
                     if (archerMultiShotStatusEffects.ContainsKey(player) && archerMultiShotStatusEffects[player] != null)
                     {
                         UnityEngine.Object.Destroy(archerMultiShotStatusEffects[player]);
                         archerMultiShotStatusEffects.Remove(player);
-                        Plugin.Log.LogInfo("[아처 멀티샷] 상태 효과 제거 (모든 충전 사용 완료)");
                     }
-                    
+
                     ShowSkillEffectText(player, "🏹 " + L.Get("multishot_completed"),
                         new Color(0.8f, 0.8f, 0.2f), SkillEffectTextType.Combat);
-                    Plugin.Log.LogInfo($"[아처 멀티샷] 모든 충전 사용 완료 - 버프 해제");
                 }
                 else
                 {
@@ -246,8 +237,6 @@ namespace CaptainSkillTree.SkillTree
                 
                 // 멀티샷 발동 VFX/SFX 효과
                 PlayArcherMultiShotLaunchEffect(player);
-
-                Plugin.Log.LogInfo($"[아처 멀티샷] {arrowCount}발 발사 완료 - 남은 충전: {newCharges}회");
             }
             catch (System.Exception ex)
             {
@@ -258,13 +247,11 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 개별 화살 발사 (BowMultishot FireAdditionalArrow 방식)
         /// </summary>
-        private static void FireArcherArrow(Player player, ItemDrop.ItemData weapon, ItemDrop.ItemData ammo, 
+        private static void FireArcherArrow(Player player, ItemDrop.ItemData weapon, ItemDrop.ItemData ammo,
             Vector3 baseDirection, float angleOffset, int arrowIndex)
         {
             try
             {
-                Plugin.Log.LogInfo($"[아처 멀티샷] 화살 {arrowIndex + 1} 발사 - 각도: {angleOffset:F1}°");
-                
                 // 발사 방향 계산
                 var fireDirection = baseDirection;
                 if (angleOffset != 0f)
@@ -330,13 +317,7 @@ namespace CaptainSkillTree.SkillTree
                     
                     // Projectile Setup 호출 (Valheim 표준)
                     projectile.Setup(player, velocity, bowAttack.m_projectileAccuracy, hitData, ammo, weapon);
-                    
-                    // 아처 멀티샷 프로젝타일 태그 추가 (적중 효과용)
-                    var archerTag = projectileObj.AddComponent<ArcherMultiShotProjectileTag>();
-                    archerTag.shooterPlayerId = player.GetPlayerID();
-                    
-                    Plugin.Log.LogInfo($"[아처 멀티샷] 프로젝타일 태그 추가됨 - PlayerID: {player.GetPlayerID()}");
-                    
+
                     // 물리 엔진 활성화
                     var rigidbody = projectileObj.GetComponent<Rigidbody>();
                     if (rigidbody != null)
@@ -345,8 +326,6 @@ namespace CaptainSkillTree.SkillTree
                         rigidbody.isKinematic = false;
                         rigidbody.useGravity = true;
                     }
-                    
-                    Plugin.Log.LogInfo($"[아처 멀티샷] 화살 {arrowIndex + 1}/{ARCHER_MULTISHOT_ARROWS} 발사 완료 - 데미지: {hitData.GetTotalDamage():F1}, 속도: {velocity.magnitude:F1}");
                 }
                 else
                 {
@@ -395,8 +374,7 @@ namespace CaptainSkillTree.SkillTree
                     angles[i] = -maxSpread / 2 + i * step;
                 }
             }
-            
-            Plugin.Log.LogInfo($"[아처 멀티샷] {arrowCount}발 각도: [{string.Join(", ", angles.Select(a => $"{a:F1}°"))}]");
+
             return angles;
         }
         
@@ -408,11 +386,9 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 var consumeCount = Archer_Config.ArcherMultiShotArrowConsumptionValue;
-                Plugin.Log.LogInfo($"[아처 멀티샷] 화살 소모 시작 - 설정값: {consumeCount}, 현재 스택: {ammo.m_stack}, 화살: {ammo.m_shared.m_name}");
-                
+
                 if (consumeCount <= 0)
                 {
-                    Plugin.Log.LogInfo("[아처 멀티샷] 화살 소모량 0 - 화살 소모 안 함");
                     return;
                 }
                 
@@ -429,27 +405,19 @@ namespace CaptainSkillTree.SkillTree
                 if (ammo.m_stack >= consumeCount)
                 {
                     ammo.m_stack -= consumeCount;
-                    Plugin.Log.LogInfo($"[아처 멀티샷] 화살 {consumeCount}개 소모 - 이전: {originalStack} → 현재: {ammo.m_stack}");
-                    
+
                     // 스택이 0이 되면 인벤토리에서 제거
                     if (ammo.m_stack <= 0)
                     {
                         inventory.RemoveItem(ammo);
-                        Plugin.Log.LogInfo("[아처 멀티샷] 화살 스택 소진으로 인벤토리에서 제거");
-                    }
-                    else
-                    {
-                        Plugin.Log.LogInfo($"[아처 멀티샷] 화살 소모 완료 - 남은 화살: {ammo.m_stack}");
                     }
                 }
                 else
                 {
                     Plugin.Log.LogWarning($"[아처 멀티샷] 화살 부족 - 필요: {consumeCount}, 보유: {ammo.m_stack}");
                     // 부족하더라도 가진 만큼만 소모
-                    var consumedCount = ammo.m_stack;
                     ammo.m_stack = 0;
                     inventory.RemoveItem(ammo);
-                    Plugin.Log.LogInfo($"[아처 멀티샷] 보유한 화살 {consumedCount}개 모두 소모하고 제거");
                 }
             }
             catch (System.Exception ex)
@@ -470,8 +438,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[아처 멀티샷] 화살 프로젝타일 없음: {arrow?.m_shared?.m_name ?? "Unknown"}");
                     return false;
                 }
-                
-                Plugin.Log.LogDebug($"[아처 멀티샷] 화살 프로젝타일 검증 성공: {arrow.m_shared.m_name}");
+
                 return true;
             }
             catch (System.Exception ex)
@@ -517,8 +484,6 @@ namespace CaptainSkillTree.SkillTree
                 
                 // 3. sfx_StaffLightning_charge 사운드 효과
                 PlayArcherMultiShotActivationSound(player);
-                
-                Plugin.Log.LogInfo("[아처 멀티샷] buff_02a(발밑) + statusailment_01_aura(머리위) + sfx_StaffLightning_charge 활성화 효과 재생 완료");
             }
             catch (System.Exception ex)
             {
@@ -540,11 +505,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     // VFXManager를 통해 buff_02a 프리팹 로드
                     cachedArcherBuffEffectPrefab = VFXManager.GetVFXPrefab("buff_02a");
-                    if (cachedArcherBuffEffectPrefab != null)
-                    {
-                        Plugin.Log.LogInfo("[아처 멀티샷] VFXManager를 통해 buff_02a 프리팹 캐시됨");
-                    }
-                    else
+                    if (cachedArcherBuffEffectPrefab == null)
                     {
                         Plugin.Log.LogWarning("[아처 멀티샷] VFXManager에서 buff_02a를 찾을 수 없음");
                         return;
@@ -556,9 +517,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     UnityEngine.Object.Destroy(archerMultiShotBuffEffects[player]);
                     archerMultiShotBuffEffects.Remove(player);
-                    Plugin.Log.LogInfo("[아처 멀티샷] 기존 버프 효과 제거");
                 }
-                
+
                 // buff_02a 효과 실행 (캐릭터를 따라다니며 2회 사용 후 사라짐)
                 if (cachedArcherBuffEffectPrefab != null)
                 {
@@ -578,8 +538,6 @@ namespace CaptainSkillTree.SkillTree
                     
                     // 버프 효과 인스턴스 저장 (2회 사용 후 제거하기 위해)
                     archerMultiShotBuffEffects[player] = effectInstance;
-                    
-                    Plugin.Log.LogInfo("[아처 멀티샷] buff_02a 버프 효과 재생 완료 (캐릭터 추적, 40% 크기, 15% 투명도, 발밑 위치, 2회 사용 후 제거)");
                 }
             }
             catch (System.Exception ex)
@@ -600,11 +558,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     // VFXManager를 통해 statusailment_01_aura 프리팹 로드
                     cachedArcherStatusEffectPrefab = VFXManager.GetVFXPrefab("statusailment_01_aura");
-                    if (cachedArcherStatusEffectPrefab != null)
-                    {
-                        Plugin.Log.LogInfo("[아처 멀티샷] VFXManager를 통해 statusailment_01_aura 프리팹 캐시됨");
-                    }
-                    else
+                    if (cachedArcherStatusEffectPrefab == null)
                     {
                         Plugin.Log.LogWarning("[아처 멀티샷] VFXManager에서 statusailment_01_aura를 찾을 수 없음");
                         return;
@@ -616,9 +570,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     UnityEngine.Object.Destroy(archerMultiShotStatusEffects[player]);
                     archerMultiShotStatusEffects.Remove(player);
-                    Plugin.Log.LogInfo("[아처 멀티샷] 기존 상태 효과 제거");
                 }
-                
+
                 // statusailment_01_aura 효과 실행 (캐릭터 머리 위에서 멀티샷 완료까지 지속)
                 if (cachedArcherStatusEffectPrefab != null)
                 {
@@ -635,8 +588,6 @@ namespace CaptainSkillTree.SkillTree
                     
                     // 상태 효과 인스턴스 저장 (멀티샷 모두 사용 후 제거하기 위해)
                     archerMultiShotStatusEffects[player] = statusInstance;
-                    
-                    Plugin.Log.LogInfo("[아처 멀티샷] statusailment_01_aura 상태 효과 재생 완료 (캐릭터 추적, 60% 크기, 머리 위 위치, 멀티샷 완료까지 지속)");
                 }
             }
             catch (System.Exception ex)
@@ -679,7 +630,6 @@ namespace CaptainSkillTree.SkillTree
         private static void PlayArcherMultiShotLaunchEffect(Player player)
         {
             // 아처 멀티샷은 별도 발사 효과 없음 - buff_02a가 2회 사용 후 사라지는 것으로 충분
-            Plugin.Log.LogDebug("[아처 멀티샷] 발사 효과 없음 - buff_02a가 메인 효과");
         }
         
         /// <summary>
@@ -705,8 +655,6 @@ namespace CaptainSkillTree.SkillTree
                 
                 // SimpleVFX로 hit_01 효과 재생
                 SimpleVFX.PlayWithSound("hit_01", "arrow_hit", headPosition, 1.5f);
-                
-                Plugin.Log.LogInfo($"[아처 멀티샷] hit_01 VFX 효과 재생 완료 - 타겟: {target.name}, 위치: {headPosition}");
             }
             catch (Exception ex)
             {
@@ -779,8 +727,6 @@ namespace CaptainSkillTree.SkillTree
                         main.startColor = startColor;
                     }
                 }
-                
-                Plugin.Log.LogInfo($"[아처 멀티샷] 버프 효과 투명도 {alpha * 100}% 설정 완료 (Renderer: {renderers.Length}, ParticleSystem: {particleSystems.Length})");
             }
             catch (System.Exception ex)
             {
@@ -853,7 +799,7 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
-    /// 아처 멀티샷 적중 효과를 위한 Projectile 패치
+    /// 아처 멀티샷 적중 효과를 위한 Projectile 패치 (성능 최적화를 위해 비활성화)
     /// </summary>
     [HarmonyPatch(typeof(Projectile), nameof(Projectile.OnHit))]
     [HarmonyPriority(Priority.Low)]
@@ -862,68 +808,8 @@ namespace CaptainSkillTree.SkillTree
         [HarmonyPrefix]
         private static void Prefix(Projectile __instance, Collider collider, bool water)
         {
-            try
-            {
-                // 물에 떨어진 경우는 무시
-                if (water)
-                {
-                    Plugin.Log.LogDebug($"[아처 멀티샷] 물에 떨어짐 - 무시: {__instance?.name}");
-                    return;
-                }
-                
-                // 아처 멀티샷 프로젝타일인지 확인
-                var archerTag = __instance?.GetComponent<ArcherMultiShotProjectileTag>();
-                if (archerTag == null) 
-                {
-                    return; // 아처 멀티샷 프로젝타일이 아니므로 조용히 반환
-                }
-                
-                Plugin.Log.LogInfo($"[아처 멀티샷] 아처 프로젝타일 적중 감지! PlayerID: {archerTag.shooterPlayerId}");
-                
-                // 적중 위치 계산
-                var hitPosition = __instance.transform.position;
-                
-                // 적중한 대상이 캐릭터인지 확인
-                Character target = null;
-                if (collider != null)
-                {
-                    target = collider.GetComponent<Character>();
-                    if (target == null)
-                    {
-                        target = collider.GetComponentInParent<Character>();
-                    }
-                    
-                    Plugin.Log.LogDebug($"[아처 멀티샷] 충돌체 감지: {collider.name}, 타겟: {target?.name ?? "없음"}");
-                }
-                
-                // 몬스터나 적 캐릭터 적중 시에만 효과 재생 (플레이어 제외)
-                if (target != null && target != Player.m_localPlayer)
-                {
-                    // 적이나 몬스터인지 확인 (중립 동물도 포함)
-                    bool isValidTarget = target.IsMonsterFaction(Time.time) || target.IsPlayer() || 
-                                       target.name.Contains("Deer") || target.name.Contains("Boar") ||
-                                       target.name.Contains("Neck") || target.name.Contains("Greyling");
-                    
-                    if (isValidTarget)
-                    {
-                        SkillEffect.PlayArcherMultiShotHitEffect(hitPosition, target);
-                        Plugin.Log.LogInfo($"[아처 멀티샷] 유효한 타겟 적중 - 타겟: {target.name}, 위치: {hitPosition}");
-                    }
-                    else
-                    {
-                        Plugin.Log.LogDebug($"[아처 멀티샷] 무효한 타겟: {target.name}");
-                    }
-                }
-                else if (collider != null)
-                {
-                    // 캐릭터가 아닌 물체에 적중 (나무, 바위 등)
-                    Plugin.Log.LogDebug($"[아처 멀티샷] 물체 적중: {collider.name}");
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[아처 멀티샷] 적중 패치 오류: {ex.Message}");
-            }
+            // 성능 최적화: 적중 감지 비활성화 (랙 방지)
+            return;
         }
     }
 }

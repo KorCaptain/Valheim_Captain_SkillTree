@@ -34,6 +34,52 @@ namespace CaptainSkillTree.SkillTree
         private static FileSystemWatcher _configWatcher = null;
         private static ConfigFile _configFile = null;
 
+        // === Language Detection for Config Manager (BepInEx F1 Menu) ===
+        private static string _detectedConfigLanguage = "ko";
+
+        /// <summary>
+        /// Configuration Manager 표시 언어 감지
+        /// BepInEx ConfigDescription은 초기화 시점에 고정되므로 게임 시작 시에만 감지
+        /// </summary>
+        private static string DetectConfigLanguage()
+        {
+            try
+            {
+                // LocalizationManager가 초기화된 경우
+                string currentLang = Localization.LocalizationManager.GetCurrentLanguage();
+                if (!string.IsNullOrEmpty(currentLang))
+                {
+                    return (currentLang == "en") ? "en" : "ko";
+                }
+
+                // PlayerPrefs 직접 읽기 fallback
+                string valheimLang = UnityEngine.PlayerPrefs.GetString("language", "");
+                return valheimLang.ToLower() == "english" ? "en" : "ko";
+            }
+            catch
+            {
+                return "ko"; // 실패 시 한국어 기본값
+            }
+        }
+
+        /// <summary>
+        /// 카테고리 로컬라이제이션 (Config Manager F1 메뉴)
+        /// </summary>
+        internal static string GetLocalizedCategory(string categoryKey)
+        {
+            var translations = Localization.ConfigTranslations.GetCategoryTranslations(_detectedConfigLanguage);
+            return translations.ContainsKey(categoryKey) ? translations[categoryKey] : categoryKey;
+        }
+
+        /// <summary>
+        /// 설명 로컬라이제이션 (Config Manager F1 메뉴)
+        /// </summary>
+        internal static string GetLocalizedDescription(string descriptionKey)
+        {
+            var translations = Localization.ConfigTranslations.GetDescriptionTranslations(_detectedConfigLanguage);
+            return translations.ContainsKey(descriptionKey) ? translations[descriptionKey] : descriptionKey;
+        }
+
         #region === Config 바인드 헬퍼 메서드 ===
 
         public static ConfigEntry<float> BindServerSync(ConfigFile config, string section, string key, float defaultValue, string description)
@@ -63,6 +109,22 @@ namespace CaptainSkillTree.SkillTree
                 new ConfigDescription(description, null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }
+
+        #endregion
+
+        #region === Skill_Tree_Base 핵심 설정 ===
+
+        // 언어 설정
+        public static ConfigEntry<string> Language;
+
+        // 이동속도/공격속도 최대치 제한
+        public static ConfigEntry<float> MoveSpeedMaxBonus;
+        public static ConfigEntry<float> AttackSpeedMaxBonus;
+
+        // 동적 값 접근 프로퍼티
+        public static string LanguageValue => Language?.Value ?? "Korean";
+        public static float MoveSpeedMaxBonusValue => GetEffectiveValue("move_speed_max_bonus", MoveSpeedMaxBonus?.Value ?? 70f);
+        public static float AttackSpeedMaxBonusValue => GetEffectiveValue("attack_speed_max_bonus", AttackSpeedMaxBonus?.Value ?? 70f);
 
         #endregion
 
@@ -409,7 +471,46 @@ namespace CaptainSkillTree.SkillTree
 
         public static void Initialize(ConfigFile config)
         {
+            // === STEP 1: 언어 감지 (Config Manager 로컬라이제이션용) ===
+            _detectedConfigLanguage = DetectConfigLanguage();
+            Plugin.Log.LogInfo($"[SkillTreeConfig] Config Manager language detected: {_detectedConfigLanguage}");
+
             DetectServerClientMode();
+
+            // === Skill_Tree_Base: 핵심 설정 ===
+            Language = config.Bind(
+                "Skill_Tree_Base",
+                "Language",
+                "Auto",
+                "Language setting:\n" +
+                "  - 'Auto' = Auto-detect from Valheim settings (Recommended)\n" +
+                "  - Manual codes: KR, EN, JA, ZH, ES, FR, DE, IT\n" +
+                "  - Example: 'KR' for Korean, 'EN' for English"
+            );
+
+            MoveSpeedMaxBonus = config.Bind(
+                "Skill_Tree_Base",
+                "MoveSpeed_MaxBonus",
+                70f,
+                new ConfigDescription(
+                    "Maximum move speed bonus from skill tree (%) - 스킬트리 이동속도 최대 보너스 (%)",
+                    new AcceptableValueRange<float>(0f, 200f),
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }
+                )
+            );
+
+            AttackSpeedMaxBonus = config.Bind(
+                "Skill_Tree_Base",
+                "AttackSpeed_MaxBonus",
+                70f,
+                new ConfigDescription(
+                    "Maximum attack speed bonus from skill tree (%) - 스킬트리 공격속도 최대 보너스 (%)",
+                    new AcceptableValueRange<float>(0f, 200f),
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }
+                )
+            );
+
+            Plugin.Log.LogDebug("[SkillTreeConfig] Skill_Tree_Base 설정 초기화 완료");
 
             // 1. 전문가 트리 (Attack → Speed → Defense → Product 순)
             Attack_Config.Initialize(config);   // Attack Tree (공격 전문가)
@@ -417,27 +518,26 @@ namespace CaptainSkillTree.SkillTree
             Defense_Config.Initialize(config);  // Defense Tree (방어 전문가)
             Production_Config.Initialize(config);  // Product Tree (생산 전문가)
 
-            // === 구분선: 전문가 트리 끝 ===
-            BindServerSync(config, "─────────── 공격,속도,생산,방어 트리───────────", "전문가 트리 끝", "", "...");
+            // === Separator: End of Expert Trees ===
+            BindServerSync(config, "─────────── Attack, Speed, Production, Defense Trees ───────────", "End of Expert Trees", "", "...");
 
             // 2. 원거리 무기 트리 (Bow → Staff → Crossbow 순)
             Bow_Config.Initialize(config);                      // Bow Tree (활)
             Staff_Config.InitConfig(config);                    // Staff Tree (지팡이)
             Crossbow_Config.InitializeCrossbowConfig(config);   // Crossbow Tree (석궁)
 
-            // === 구분선: 원거리 무기 트리 끝 ===
-            BindServerSync(config, "─────────── 원거리 전문가 트리───────────", "원거리 무기 끝", "", "...");
+            // === Separator: End of Ranged Weapons ===
+            BindServerSync(config, "─────────── Ranged Expert Trees ───────────", "End of Ranged Weapons", "", "...");
 
             // 3. 근접 무기 트리 (Knife → Sword → Mace → Spear → Polearm 순)
             Knife_Config.InitializeKnifeConfig(config); // Knife Tree (단검)
             Sword_Config.Initialize(config);            // Sword Tree (검)
-            InitializeSwordConfig(config);
             Mace_Config.Initialize(config);             // Mace Tree (둔기)
             Spear_Config.Initialize(config);            // Spear Tree (창)
             Polearm_Config.Initialize(config);          // Polearm Tree (폴암)
 
-            // === 구분선: 근접 무기 트리 끝 ===
-            BindServerSync(config, "─────────── 근접 전문가 트리 ───────────", "근접 무기 끝", "", "...");
+            // === Separator: End of Melee Weapons ===
+            BindServerSync(config, "─────────── Melee Expert Trees ───────────", "End of Melee Weapons", "", "...");
 
             // 4. 직업 트리 (최하단 배치)
             Archer_Config.InitializeArcherConfig(config);       // Archer (궁수)
@@ -449,6 +549,9 @@ namespace CaptainSkillTree.SkillTree
 
             _configFile = config;
 
+            // === Config 변경 이벤트 등록 ===
+            RegisterConfigChangeEvents();
+
             if (_isServer)
             {
                 BroadcastConfigToClients();
@@ -458,58 +561,45 @@ namespace CaptainSkillTree.SkillTree
             InitializeJotunnSyncEvents();
         }
 
-        private static void InitializeSwordConfig(ConfigFile config)
+        /// <summary>
+        /// Config 변경 시 경고 상태 초기화 및 효과 갱신
+        /// </summary>
+        private static void RegisterConfigChangeEvents()
         {
-            SwordExpertDamage = BindServerSync(config, "Sword Tree", "Tier0_검전문가_공격력보너스", 10f,
-                "Tier 0: 검 전문가(sword_expert) - 기본 공격력 보너스 (%)");
+            try
+            {
+                // 이동속도 최대치 변경 시
+                MoveSpeedMaxBonus.SettingChanged += (sender, args) =>
+                {
+                    Plugin.Log.LogInfo($"[Config] 이동속도 최대치 변경: {MoveSpeedMaxBonus.Value}%");
 
-            SwordStep1ExpertComboBonus = BindServerSync(config, "Sword Tree", "Tier1_검전문가_2연속공격력보너스", 7f,
-                "Tier 1: 검 전문가(sword_step1_expert) - 2연속 공격력 보너스 (%)");
+                    // 모든 플레이어의 경고 상태 초기화
+                    if (Player.m_localPlayer != null)
+                    {
+                        ImprovedMoveSpeedPatch.ClearWarningState(Player.m_localPlayer);
+                    }
+                };
 
-            SwordStep1ExpertDuration = BindServerSync(config, "Sword Tree", "Tier1_검전문가_2연속공격버프지속시간", 4f,
-                "Tier 1: 검 전문가(sword_step1_expert) - 2연속 공격 버프 지속시간 (초)");
+                // 공격속도 최대치 변경 시
+                AttackSpeedMaxBonus.SettingChanged += (sender, args) =>
+                {
+                    Plugin.Log.LogInfo($"[Config] 공격속도 최대치 변경: {AttackSpeedMaxBonus.Value}%");
 
-            SwordStep1FastSlashSpeed = BindServerSync(config, "Sword Tree", "Tier1_빠른베기_공격속도보너스", 5f,
-                "Tier 1: 빠른 베기(sword_step1_fast_slash) - 공격속도 보너스 (%)");
+                    // 모든 플레이어의 경고 상태 초기화
+                    if (Player.m_localPlayer != null)
+                    {
+                        CaptainSkillTree.AttackSpeedHandler_Game_Awake_Patch.ClearAttackSpeedWarningState(Player.m_localPlayer);
+                    }
+                };
 
-            SwordStep1CounterDefenseBonus = BindServerSync(config, "Sword Tree", "Tier1_반격자세_패링성공후방어력보너스", 20f,
-                "Tier 1: 반격 자세(sword_step1_counter) - 패링 성공 후 방어력 보너스 (%)");
-
-            SwordStep1CounterDuration = BindServerSync(config, "Sword Tree", "Tier1_반격자세_패링성공후버프지속시간", 5f,
-                "Tier 1: 반격 자세(sword_step1_counter) - 패링 성공 후 버프 지속시간 (초)");
-
-            SwordStep2ComboSlashBonus = BindServerSync(config, "Sword Tree", "Tier2_연속베기_3연속공격력보너스", 13f,
-                "Tier 2: 연속베기(sword_step2_combo_slash) - 3연속 공격력 보너스 (%)");
-
-            SwordStep2ComboSlashDuration = BindServerSync(config, "Sword Tree", "Tier2_연속베기_3연속공격버프지속시간", 4f,
-                "Tier 2: 연속베기(sword_step2_combo_slash) - 3연속 공격 버프 지속시간 (초)");
-
-            SwordStep3BladeCounterBonus = BindServerSync(config, "Sword Tree", "Tier3_칼날되치기_공격력보너스", 3f,
-                "Tier 3: 칼날 되치기(sword_step3_riposte) - 공격력 보너스 (고정값)");
-
-            SwordStep3BladeCounterDuration = BindServerSync(config, "Sword Tree", "Tier3_칼날되치기_사용안함", 5f,
-                "Tier 3: 칼날 되치기(sword_step3_riposte) - 사용 안 함 (패시브 스킬)");
-
-            SwordStep3OffenseDefenseAttackBonus = BindServerSync(config, "Sword Tree", "Tier3_공방일체_양손무기착용시공격력보너스", 20f,
-                "Tier 3: 공방일체(sword_step3_offense_defense) - 양손 무기 착용시 공격력 보너스 (%)");
-
-            SwordStep3OffenseDefenseDefenseBonus = BindServerSync(config, "Sword Tree", "Tier3_공방일체_양손무기착용시방어력보너스", 10f,
-                "Tier 3: 공방일체(sword_step3_offense_defense) - 양손 무기 착용시 방어력 보너스 (%)");
-
-            SwordStep4TrueDuelSpeed = BindServerSync(config, "Sword Tree", "Tier4_진검승부_공격속도보너스", 7f,
-                "Tier 4: 진검승부(sword_step4_true_duel) - 공격 속도 보너스 (%)");
-
-            SwordStep5DefenseSwitchShieldReduction = BindServerSync(config, "Sword Tree", "Tier5_방어전환_방패착용시피해감소", 8f,
-                "Tier 5: 방어 전환(sword_step5_defswitch) - 방패 착용 시 받는 피해 감소 (%)");
-
-            SwordStep5DefenseSwitchNoShieldBonus = BindServerSync(config, "Sword Tree", "Tier5_방어전환_방패미착용시공격력보너스", 30f,
-                "Tier 5: 방어 전환(sword_step5_defswitch) - 방패 미착용 시 공격력 보너스 (%)");
-
-            SwordStep6UltimateSlashMultiplier = BindServerSync(config, "Sword Tree", "Tier6_일도양단_액티브스킬공격력보너스", 100f,
-                "Tier 6: 일도양단(sword_step6_ultimate_slash) - 액티브 스킬 공격력 보너스 (%)");
-
-            Plugin.Log.LogDebug("[SkillTreeConfig] 검 전문가 트리 설정 초기화 완료");
+                Plugin.Log.LogDebug("[SkillTreeConfig] Config 변경 이벤트 등록 완료");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[SkillTreeConfig] Config 변경 이벤트 등록 실패: {ex.Message}");
+            }
         }
+
 
         #endregion
 

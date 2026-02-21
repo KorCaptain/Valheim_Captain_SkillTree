@@ -61,20 +61,18 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 빠른 움직임 - 이동속도 증가
+        /// 빠른 움직임 - 단검 장착 시 이동속도 패시브 알림
+        /// 실제 효과는 SE_StatTreeSpeed.UpdateStatusEffect에서 처리
         /// </summary>
-        public static void ActivateKnifeMoveSpeed(Player player)
+        public static void NotifyKnifeMoveSpeedActive(Player player)
         {
             if (!HasSkill("knife_step3_move_speed") || !IsUsingDagger(player)) return;
 
-            float duration = Knife_Config.KnifeMoveSpeedDurationValue;
-            knifeMoveSpeedEndTime[player] = Time.time + duration;
-
-            // 패시브 스킬: MMO 방식 DamageText로 표시
+            // 패시브 스킬: 텍스트 표시만 (VFX/SFX 사용 금지)
             DrawFloatingText(player,
-                L.Get("knife_move_speed_buff", duration.ToString(), Knife_Config.KnifeMoveSpeedBonusValue.ToString()),
-                new Color(0.8f, 1f, 0.8f, 1f)); // 연한 초록색 (빠른 움직임)
-            Plugin.Log.LogDebug($"[빠른 움직임] {duration}초간 이동속도 +{Knife_Config.KnifeMoveSpeedBonusValue}% 버프 활성화");
+                L.Get("knife_move_speed_buff", Knife_Config.KnifeMoveSpeedBonusValue.ToString()),
+                new Color(0.8f, 1f, 0.8f, 1f)); // 연한 초록색
+            Plugin.Log.LogDebug($"[빠른 움직임] 패시브 활성화 알림: 이동속도 +{Knife_Config.KnifeMoveSpeedBonusValue}%");
         }
 
         /// <summary>
@@ -89,14 +87,44 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 치명타 숙련 - 패시브 스킬로 변경됨
-        /// ⚠️ Critical 시스템에서 자동 처리됩니다.
+        /// 공격과 회피 - 2연속 공격 시 회피율 증가 체크 (쿨타임 30초)
         /// </summary>
-        [Obsolete("패시브 스킬로 변경되어 Critical 시스템에서 자동 적용됩니다.")]
-        public static void ActivateKnifeCritRate(Player player)
+        public static void CheckStep5AttackEvasion(Player player)
         {
-            // 더 이상 사용되지 않음
-            return;
+            if (!HasSkill("knife_step5_crit_rate") || !IsUsingDagger(player)) return;
+
+            float now = Time.time;
+
+            // 쿨타임 체크
+            if (knifeAttackEvasionCooldownEndTime.TryGetValue(player, out float cooldownEnd) &&
+                now < cooldownEnd) return;
+
+            float duration = Knife_Config.KnifeAttackEvasionDurationValue;
+            float cooldown = Knife_Config.KnifeAttackEvasionCooldownValue;
+            float bonus = Knife_Config.KnifeAttackEvasionBonusValue;
+
+            knifeAttackEvasionEndTime[player] = now + duration;
+            knifeAttackEvasionCooldownEndTime[player] = now + cooldown;
+
+            // 회피율 재계산 (UpdateDefenseDodgeRate 호출)
+            UpdateDefenseDodgeRate(player);
+
+            // 패시브 스킬: 텍스트만 표시 (VFX/SFX 금지)
+            DrawFloatingText(player,
+                L.Get("knife_attack_evasion_buff", bonus.ToString(), duration.ToString()),
+                new Color(0.5f, 1f, 1f, 1f));
+            Plugin.Log.LogDebug($"[공격과 회피] 2연속 공격 - 회피율 +{bonus}% {duration}초간 활성화");
+        }
+
+        /// <summary>
+        /// 공격과 회피 현재 보너스 반환
+        /// </summary>
+        public static float GetKnifeAttackEvasionBonus(Player player)
+        {
+            if (!HasSkill("knife_step5_crit_rate") || !IsUsingDagger(player)) return 0f;
+            if (knifeAttackEvasionEndTime.TryGetValue(player, out float endTime) && Time.time < endTime)
+                return Knife_Config.KnifeAttackEvasionBonusValue;
+            return 0f;
         }
 
         /// <summary>
@@ -321,7 +349,7 @@ namespace CaptainSkillTree.SkillTree
             string targetName = targetMonster.GetHoverName() ?? targetMonster.name ?? L.Get("enemy");
             DrawFloatingText(player, L.Get("assassin_heart_teleport", targetName), Color.red);
 
-            Plugin.Log.LogInfo($"[암살자의 심장] 활성화 - {targetName} 뒤로 순간이동, {duration}초간 치명타 확률 +{Knife_Config.KnifeAssassinHeartCritChanceValue}%");
+            Plugin.Log.LogInfo($"[암살자의 심장] 활성화 - {targetName} 뒤로 순간이동, {duration}초간 치명타 피해 {Knife_Config.KnifeAssassinHeartCritDamageValue}배");
             return true;
         }
 
@@ -343,25 +371,32 @@ namespace CaptainSkillTree.SkillTree
 
             if (IsKnifeAssassinHeartActive(player))
             {
-                // 공격력 보너스 적용
-                float damageBonus = Knife_Config.KnifeAssassinHeartDamageBonusValue / 100f;
-                hit.m_damage.m_slash *= (1f + damageBonus);
-                hit.m_damage.m_pierce *= (1f + damageBonus);
+                // 치명타 데미지 배수만 적용 (피해 보너스, 치명타 확률 제거됨)
+                float critDamageMultiplier = Knife_Config.KnifeAssassinHeartCritDamageValue;
+                hit.m_damage.m_slash *= critDamageMultiplier;
+                hit.m_damage.m_pierce *= critDamageMultiplier;
 
-                // 치명타 확률 체크
-                float critChance = Knife_Config.KnifeAssassinHeartCritChanceValue / 100f;
-                if (UnityEngine.Random.Range(0f, 1f) <= critChance)
-                {
-                    float critDamageBonus = Knife_Config.KnifeAssassinHeartCritDamageValue / 100f;
-                    hit.m_damage.m_slash *= (1f + critDamageBonus);
-                    hit.m_damage.m_pierce *= (1f + critDamageBonus);
+                PlaySkillEffect(player, "knife_step9_assassin_heart", hit.m_point);
+                DrawFloatingText(player, L.Get("assassin_heart_crit", Knife_Config.KnifeAssassinHeartCritDamageValue.ToString()), Color.red);
 
-                    PlaySkillEffect(player, "knife_step9_assassin_heart", hit.m_point);
-                    DrawFloatingText(player, L.Get("assassin_heart_crit", Knife_Config.KnifeAssassinHeartCritDamageValue.ToString()), Color.red);
-
-                    Plugin.Log.LogDebug($"[암살자의 심장] 치명타 발동! +{Knife_Config.KnifeAssassinHeartCritDamageValue}% 피해");
-                }
+                Plugin.Log.LogDebug($"[암살자의 심장] 치명타 발동! {Knife_Config.KnifeAssassinHeartCritDamageValue}배 피해");
             }
+        }
+
+        /// <summary>
+        /// 연속 공격 횟수 반환
+        /// </summary>
+        public static int GetConsecutiveHits(Player player)
+        {
+            return consecutiveHits.TryGetValue(player, out int hits) ? hits : 0;
+        }
+
+        /// <summary>
+        /// 연속 공격 횟수 초기화
+        /// </summary>
+        public static void ResetConsecutiveHits(Player player)
+        {
+            consecutiveHits[player] = 0;
         }
 
         /// <summary>
@@ -466,7 +501,6 @@ namespace CaptainSkillTree.SkillTree
 
             // 데미지 계산 준비
             var weaponDamage = weapon.GetDamage();
-            float damageMultiplier = 1.0f + (Knife_Config.KnifeAssassinHeartDamageBonusValue / 100f);
 
             for (int i = 0; i < requiredHits; i++)
             {
@@ -489,8 +523,8 @@ namespace CaptainSkillTree.SkillTree
                 try
                 {
                     HitData hit = new HitData();
-                    hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
-                    hit.m_damage.m_pierce = weaponDamage.m_pierce * damageMultiplier;
+                    hit.m_damage.m_slash = weaponDamage.m_slash;
+                    hit.m_damage.m_pierce = weaponDamage.m_pierce;
                     hit.m_point = target.GetCenterPoint();
                     hit.m_dir = (target.transform.position - player.transform.position).normalized;
                     hit.m_attacker = player.GetZDOID();

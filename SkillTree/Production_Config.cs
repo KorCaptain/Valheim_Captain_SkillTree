@@ -95,99 +95,99 @@ namespace CaptainSkillTree.SkillTree
         {
             // === 필요 포인트 설정 ===
             ProductionRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier0_생산전문가_필요포인트", 2,
-                "Tier 0: 생산 전문가(production_root) - 필요 포인트");
+                "Production Tree", "Tier0_ProductionExpert_RequiredPoints", 2,
+                "Tier 0: Production Expert (production_root) - Required Points");
 
             ProductionStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier1_초보일꾼_필요포인트", 2,
-                "Tier 1: 초보 일꾼(novice_worker) - 필요 포인트");
+                "Production Tree", "Tier1_NoviceWorker_RequiredPoints", 2,
+                "Tier 1: Novice Worker (novice_worker) - Required Points");
 
             ProductionStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier2_전문분야_필요포인트", 2,
-                "Tier 2: 벌목/채집/채광/제작 Lv2 - 필요 포인트");
+                "Production Tree", "Tier2_Specialization_RequiredPoints", 2,
+                "Tier 2: Woodcutting/Gathering/Mining/Crafting Lv2 - Required Points");
 
             ProductionStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier3_중급스킬_필요포인트", 2,
-                "Tier 3: 벌목/채집/채광/제작 Lv3 - 필요 포인트");
+                "Production Tree", "Tier3_IntermediateSkill_RequiredPoints", 2,
+                "Tier 3: Woodcutting/Gathering/Mining/Crafting Lv3 - Required Points");
 
             ProductionStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier4_고급스킬_필요포인트", 3,
-                "Tier 4: 벌목/채집/채광/제작 Lv4 - 필요 포인트");
+                "Production Tree", "Tier4_AdvancedSkill_RequiredPoints", 3,
+                "Tier 4: Woodcutting/Gathering/Mining/Crafting Lv4 - Required Points");
 
             // === Tier 0: 생산 전문가 ===
             ProductionRootWoodBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier0_생산전문가_나무추가확률", 50,
-                "Tier 0: 생산 전문가 - 나무 +1 확률 (%)");
+                "Production Tree", "Tier0_ProductionExpert_WoodBonusChance", 50,
+                "Tier 0: Production Expert - Wood +1 Chance (%)");
 
             // === Tier 1: 초보 일꾼 ===
             NoviceWorkerWoodBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier1_초보일꾼_나무추가확률", 25,
-                "Tier 1: 초보 일꾼 - 나무 +1 확률 (%)");
+                "Production Tree", "Tier1_NoviceWorker_WoodBonusChance", 25,
+                "Tier 1: Novice Worker - Wood +1 Chance (%)");
 
             // === Tier 2: 전문 분야 ===
             WoodcuttingLv2BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier2_벌목Lv2_추가확률", 25,
-                "Tier 2: 벌목 Lv2 - 나무 +1 확률 (%)");
+                "Production Tree", "Tier2_WoodcuttingLv2_BonusChance", 25,
+                "Tier 2: Woodcutting Lv2 - Wood +1 Chance (%)");
 
             GatheringLv2BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier2_채집Lv2_추가확률", 25,
-                "Tier 2: 채집 Lv2 - 채집물 +1 확률 (%)");
+                "Production Tree", "Tier2_GatheringLv2_BonusChance", 25,
+                "Tier 2: Gathering Lv2 - Item +1 Chance (%)");
 
             MiningLv2BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier2_채광Lv2_추가확률", 25,
-                "Tier 2: 채광 Lv2 - 광석 +1 확률 (%)");
+                "Production Tree", "Tier2_MiningLv2_BonusChance", 25,
+                "Tier 2: Mining Lv2 - Ore +1 Chance (%)");
 
             CraftingLv2UpgradeChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier2_제작Lv2_강화확률", 25,
-                "Tier 2: 제작 Lv2 - 강화 +1 확률 (%)");
+                "Production Tree", "Tier2_CraftingLv2_UpgradeChance", 25,
+                "Tier 2: Crafting Lv2 - Upgrade +1 Chance (%)");
 
             CraftingLv2DurabilityBonus = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier2_제작Lv2_내구도보너스", 25,
-                "Tier 2: 제작 Lv2 - 내구도 최대치 증가 (%)");
+                "Production Tree", "Tier2_CraftingLv2_DurabilityBonus", 25,
+                "Tier 2: Crafting Lv2 - Durability Max Increase (%)");
 
             // === Tier 3: 중급 스킬 ===
             WoodcuttingLv3BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier3_벌목Lv3_추가확률", 25,
-                "Tier 3: 벌목 Lv3 - 나무 +1 확률 (%)");
+                "Production Tree", "Tier3_WoodcuttingLv3_BonusChance", 25,
+                "Tier 3: Woodcutting Lv3 - Wood +1 Chance (%)");
 
             GatheringLv3BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier3_채집Lv3_추가확률", 25,
-                "Tier 3: 채집 Lv3 - 채집물 +1 확률 (%)");
+                "Production Tree", "Tier3_GatheringLv3_BonusChance", 25,
+                "Tier 3: Gathering Lv3 - Item +1 Chance (%)");
 
             MiningLv3BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier3_채광Lv3_추가확률", 25,
-                "Tier 3: 채광 Lv3 - 광석 +1 확률 (%)");
+                "Production Tree", "Tier3_MiningLv3_BonusChance", 25,
+                "Tier 3: Mining Lv3 - Ore +1 Chance (%)");
 
             CraftingLv3UpgradeChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier3_제작Lv3_강화확률", 25,
-                "Tier 3: 제작 Lv3 - 강화 +1 확률 (%)");
+                "Production Tree", "Tier3_CraftingLv3_UpgradeChance", 25,
+                "Tier 3: Crafting Lv3 - Upgrade +1 Chance (%)");
 
             CraftingLv3DurabilityBonus = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier3_제작Lv3_내구도보너스", 25,
-                "Tier 3: 제작 Lv3 - 내구도 최대치 증가 (%)");
+                "Production Tree", "Tier3_CraftingLv3_DurabilityBonus", 25,
+                "Tier 3: Crafting Lv3 - Durability Max Increase (%)");
 
             // === Tier 4: 고급 스킬 ===
             WoodcuttingLv4BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier4_벌목Lv4_추가확률", 25,
-                "Tier 4: 벌목 Lv4 - 나무 +1 확률 (%)");
+                "Production Tree", "Tier4_WoodcuttingLv4_BonusChance", 25,
+                "Tier 4: Woodcutting Lv4 - Wood +1 Chance (%)");
 
             GatheringLv4BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier4_채집Lv4_추가확률", 25,
-                "Tier 4: 채집 Lv4 - 채집물 +1 확률 (%)");
+                "Production Tree", "Tier4_GatheringLv4_BonusChance", 25,
+                "Tier 4: Gathering Lv4 - Item +1 Chance (%)");
 
             MiningLv4BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier4_채광Lv4_추가확률", 25,
-                "Tier 4: 채광 Lv4 - 광석 +1 확률 (%)");
+                "Production Tree", "Tier4_MiningLv4_BonusChance", 25,
+                "Tier 4: Mining Lv4 - Ore +1 Chance (%)");
 
             CraftingLv4UpgradeChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier4_제작Lv4_강화확률", 25,
-                "Tier 4: 제작 Lv4 - 강화 +1 확률 (%)");
+                "Production Tree", "Tier4_CraftingLv4_UpgradeChance", 25,
+                "Tier 4: Crafting Lv4 - Upgrade +1 Chance (%)");
 
             CraftingLv4DurabilityBonus = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier4_제작Lv4_내구도보너스", 25,
-                "Tier 4: 제작 Lv4 - 내구도 최대치 증가 (%)");
+                "Production Tree", "Tier4_CraftingLv4_DurabilityBonus", 25,
+                "Tier 4: Crafting Lv4 - Durability Max Increase (%)");
 
-            Plugin.Log.LogDebug("[Production_Config] 생산 전문가 트리 설정 초기화 완료");
+            Plugin.Log.LogDebug("[Production_Config] Production Expert tree config initialized");
         }
     }
 }

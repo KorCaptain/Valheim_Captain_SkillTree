@@ -1,0 +1,38 @@
+### 핵심 시스템 (필수 참조)
+- @CaptainSkillTree/DAMAGE_SYSTEM_RULES.md - 데미지 계산 규칙
+- @CaptainSkillTree/HEALTH_SYSTEM_RULES.md - 체력 시스템 규칙
+- @CaptainSkillTree/CRITICAL_SYSTEM_RULES.md - 크리티컬 시스템 규칙
+- @CaptainSkillTree/ATTACK_SPEED_SYSTEM_RULES.md - 공격속도 시스템 규칙
+- @CaptainSkillTree/EVASION_SYSTEM_RULES.md - 회피 시스템 규칙
+- @CaptainSkillTree/ARMOR_BLOCK_SYSTEM_RULES.md - 방어/블록 시스템 규칙
+- @CaptainSkillTree/CONFIG_MANAGEMENT_RULES.md - 설정 관리 규칙
+- @CaptainSkillTree/UI_SYSTEM_RULES.md - UI 시스템 규칙
+- @CaptainSkillTree/EITR_STAGGER_SYSTEM_RULES.md - Eitr/스태거 시스템 규칙
+- @CaptainSkillTree/ZNETSCENE_VFX_RULES.md - ZNetScene VFX 규칙
+
+### 구현 가이드 (필수 참조)
+- @CaptainSkillTree/MMO_INTEGRATION_GUIDE.md - MMO 시스템 통합 패턴
+- @CaptainSkillTree/ACTIVE_SKILL_SYSTEM.md - 키 바인딩 및 제한 시스템
+- @CaptainSkillTree/VFX_SOUND_INFINITE_LOADING_FIX.md - VFX/사운드 무한로딩 수정
+- @CaptainSkillTree/WEAPON_DETECTION_EXTENSIBILITY_GUIDE.md - 무기 감지 확장 가이드
+- @CaptainSkillTree/SKILL_NAMING_RULES.md - 스킬 명명 규칙
+- @CaptainSkillTree/CORE_PROTECTION_README.md - 코어 보호 규칙
+
+### 개발 워크플로우
+- @CaptainSkillTree/QUICK_REFERENCE.md - 빠른 참조
+- @CaptainSkillTree/SKILL_DEVELOPMENT_WORKFLOW.md - 스킬 개발 워크플로우
+- @CaptainSkillTree/DEVELOPMENT_PATTERNS.md - 개발 패턴
+- @CaptainSkillTree/valheim_all_api.md - Valheim API 전체 참조
+
+### 참고 문서 (필요시 참조)
+- CaptainSkillTree/BUILD_ERRORS_GUIDE.md - 빌드 오류 가이드
+- CaptainSkillTree/PRODUCTION_DAMAGE_TEXT_IMPLEMENTATION.md - 생산 데미지 텍스트 구현
+- CaptainSkillTree/SKILL_EFFECT_TEXT_STANDARD.md - 스킬 효과 텍스트 표준
+- CaptainSkillTree/SPEED_EXPERT_VALHEIM_API_IMPLEMENTATION.md - 속도 전문가 API 구현
+- CaptainSkillTree/CROSSBOW_SKILL_STATUS.md - 석궁 스킬 상태
+- CaptainSkillTree/STAGGER_VERIFICATION_GUIDE.md - 스태거 검증 가이드
+
+---
+
+## MCP 설정
+MCP 설치 및 설정은 @CaptainSkillTree/MCP_PROJECT_SETUP.md 참조

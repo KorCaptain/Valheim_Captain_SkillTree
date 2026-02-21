@@ -48,27 +48,15 @@ namespace CaptainSkillTree.SkillTree
                 // 암살자의 심장 - G키 액티브 스킬 치명타 효과
                 SkillEffect.ApplyKnifeAssassinHeartCrit(player, hit);
 
-                // 연속 공격 치명타 (3회 연속 공격 시)
+                // 공격과 회피 - 2연속 공격 시 회피율 증가 (쿨타임 30초)
                 var consecutiveHits = SkillEffect.consecutiveHits.TryGetValue(player, out var hits) ? hits : 0;
-                if (consecutiveHits >= 3)
+                if (consecutiveHits >= 2)
                 {
-                    if (SkillEffect.HasSkill("knife_step5_crit_rate"))
-                    {
-                        hit.m_damage.m_slash *= 1.3f;
-                        hit.m_damage.m_pierce *= 1.3f;
-                        SkillEffect.PlaySkillEffect(player, "knife_crit1", hit.m_point);
-                        SkillEffect.DrawFloatingText(player, "⚡ " + L.Get("consecutive_attack"));
-                    }
+                    SkillEffect.CheckStep5AttackEvasion(player);
                 }
 
-                // 치명적 일격 (5회 연속 공격 시)
-                if (consecutiveHits >= 5 && SkillEffect.HasSkill("knife_step8_assassination"))
-                {
-                    hit.m_damage.m_slash *= 2.0f;
-                    hit.m_damage.m_pierce *= 2.0f;
-                    SkillEffect.PlaySkillEffect(player, "knife_crit2", hit.m_point);
-                    SkillEffect.DrawFloatingText(player, "💀 " + L.Get("critical_strike"));
-                }
+                // 암살술 - 3연속 공격 시 스태거 발동
+                Knife_Skill.ApplyKnifeAssassinationBonus(player, __instance);
             }
             catch (Exception ex)
             {
@@ -342,9 +330,6 @@ namespace CaptainSkillTree.SkillTree
                     SkillEffect.knifeAfterRoll[__instance] = true;
 
                     SkillEffect.CheckKnifeEvasion(__instance);
-                    SkillEffect.ActivateKnifeMoveSpeed(__instance);
-
-                    Plugin.Log.LogInfo("[단검 구르기] 모든 단검 버프 스킬 활성화");
                 }
             }
             catch (Exception ex)
@@ -443,14 +428,6 @@ namespace CaptainSkillTree.SkillTree
                 result.m_slash *= multiplier;
                 result.m_pierce *= multiplier;
                 result.m_blunt *= multiplier;
-            }
-
-            // 암살자의 심장 - 피해 +50%
-            if (SkillEffect.IsKnifeAssassinHeartActive(player))
-            {
-                float heartDamageBonus = Knife_Config.KnifeAssassinHeartDamageBonusValue / 100f;
-                result.m_slash *= (1f + heartDamageBonus);
-                result.m_pierce *= (1f + heartDamageBonus);
             }
 
             // 로그 직업: 그림자 일격 버프
@@ -621,7 +598,8 @@ namespace CaptainSkillTree.SkillTree
                 knifeEvasionEndTime.Remove(player);
                 knifeMoveSpeedEndTime.Remove(player);
                 knifeDamageBonusEndTime.Remove(player);
-                knifeCritRateEndTime.Remove(player);
+                knifeAttackEvasionEndTime.Remove(player);
+                knifeAttackEvasionCooldownEndTime.Remove(player);
                 knifeLastRollTime.Remove(player);
                 knifeAfterRoll.Remove(player);
                 knifeAssassinHeartEndTime.Remove(player);

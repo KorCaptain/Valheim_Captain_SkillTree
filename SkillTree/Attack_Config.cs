@@ -93,132 +93,132 @@ namespace CaptainSkillTree.SkillTree
         {
             // === 필요 포인트 설정 ===
             AttackRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier0_공격전문가_필요포인트", 2,
-                "Tier 0: 공격 전문가(attack_root) - 필요 포인트");
+                "Attack Tree", "Tier0_AttackExpert_RequiredPoints", 2,
+                "Tier 0: Attack Expert (attack_root) - Required Points");
 
             AttackStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier1_기본공격_필요포인트", 2,
-                "Tier 1: 기본 공격(atk_base) - 필요 포인트");
+                "Attack Tree", "Tier1_BaseAttack_RequiredPoints", 2,
+                "Tier 1: Base Attack (atk_base) - Required Points");
 
             AttackStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_무기특화_필요포인트", 2,
-                "Tier 2: 무기별 특화 스킬 - 필요 포인트");
+                "Attack Tree", "Tier2_WeaponSpec_RequiredPoints", 2,
+                "Tier 2: Weapon Specialization Skills - Required Points");
 
             AttackStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier3_공격증가_필요포인트", 2,
-                "Tier 3: 공격 증가(atk_twohand_drain) - 필요 포인트");
+                "Attack Tree", "Tier3_AttackBoost_RequiredPoints", 2,
+                "Tier 3: Attack Boost (atk_twohand_drain) - Required Points");
 
             AttackStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier4_세부강화_필요포인트", 2,
-                "Tier 4: 세부 강화(근접/정밀) - 필요 포인트");
+                "Attack Tree", "Tier4_DetailEnhance_RequiredPoints", 2,
+                "Tier 4: Detail Enhancement (Melee/Precision) - Required Points");
 
             AttackStep4RangedRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier4_원거리강화_필요포인트", 3,
-                "Tier 4: 원거리 강화(atk_ranged_enhance) - 필요 포인트");
+                "Attack Tree", "Tier4_RangedEnhance_RequiredPoints", 3,
+                "Tier 4: Ranged Enhancement (atk_ranged_enhance) - Required Points");
 
             AttackStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier5_특수화스탯_필요포인트", 2,
-                "Tier 5: 특수화 스탯(atk_special) - 필요 포인트");
+                "Attack Tree", "Tier5_SpecialStat_RequiredPoints", 2,
+                "Tier 5: Specialized Stats (atk_special) - Required Points");
 
             AttackStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier6_최종특화_필요포인트", 3,
-                "Tier 6: 최종 특화 스킬들 - 필요 포인트");
+                "Attack Tree", "Tier6_FinalSpec_RequiredPoints", 3,
+                "Tier 6: Final Specialization Skills - Required Points");
 
-            // === Tier 0: 공격 전문가 ===
+            // === Tier 0: Attack Expert ===
             AttackRootDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier0_공격전문가_모든데미지보너스", 10f,
-                "[서버동기화] Tier 0: 공격 전문가(attack_root) - 모든 데미지 보너스 (%)");
+                "Attack Tree", "Tier0_AttackExpert_AllDamageBonus", 10f,
+                "[Server Sync] Tier 0: Attack Expert (attack_root) - All Damage Bonus (%)");
 
-            // === Tier 2: 무기 특화 ===
+            // === Tier 2: Weapon Specialization ===
             AttackMeleeBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_근접특화_추가피해발동확률", 20f,
-                "Tier 2: 근접 특화(attack_step2_melee) - 추가 피해 발동 확률 (%)");
+                "Attack Tree", "Tier2_MeleeSpec_BonusTriggerChance", 20f,
+                "Tier 2: Melee Spec (attack_step2_melee) - Bonus Trigger Chance (%)");
 
             AttackMeleeBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_근접특화_근접공격력", 10f,
-                "Tier 2: 근접 특화(attack_step2_melee) - 근접 공격력 (%)");
+                "Attack Tree", "Tier2_MeleeSpec_MeleeDamage", 10f,
+                "Tier 2: Melee Spec (attack_step2_melee) - Melee Damage (%)");
 
             AttackBowBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_활특화_추가피해발동확률", 20f,
-                "Tier 2: 활 특화(attack_step2_bow) - 추가 피해 발동 확률 (%)");
+                "Attack Tree", "Tier2_BowSpec_BonusTriggerChance", 20f,
+                "Tier 2: Bow Spec (attack_step2_bow) - Bonus Trigger Chance (%)");
 
             AttackBowBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_활특화_활공격력", 8f,
-                "Tier 2: 활 특화(attack_step2_bow) - 활 공격력 (%)");
+                "Attack Tree", "Tier2_BowSpec_BowDamage", 8f,
+                "Tier 2: Bow Spec (attack_step2_bow) - Bow Damage (%)");
 
             AttackCrossbowBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_석궁특화_강화발동확률", 15f,
-                "Tier 2: 석궁 특화(attack_step2_crossbow) - 강화 발동 확률 (%)");
+                "Attack Tree", "Tier2_CrossbowSpec_EnhanceTriggerChance", 15f,
+                "Tier 2: Crossbow Spec (attack_step2_crossbow) - Enhance Trigger Chance (%)");
 
             AttackCrossbowBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_석궁특화_석궁공격력", 9f,
-                "Tier 2: 석궁 특화(attack_step2_crossbow) - 석궁 공격력 (%)");
+                "Attack Tree", "Tier2_CrossbowSpec_CrossbowDamage", 9f,
+                "Tier 2: Crossbow Spec (attack_step2_crossbow) - Crossbow Damage (%)");
 
             AttackStaffBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_지팡이특화_속성피해발동확률", 20f,
-                "Tier 2: 지팡이 특화(attack_step2_staff) - 속성 피해 발동 확률 (%)");
+                "Attack Tree", "Tier2_StaffSpec_ElementalTriggerChance", 20f,
+                "Tier 2: Staff Spec (attack_step2_staff) - Elemental Trigger Chance (%)");
 
             AttackStaffBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_지팡이특화_지팡이공격력", 8f,
-                "Tier 2: 지팡이 특화(attack_step2_staff) - 지팡이 공격력 (%)");
+                "Attack Tree", "Tier2_StaffSpec_StaffDamage", 8f,
+                "Tier 2: Staff Spec (attack_step2_staff) - Staff Damage (%)");
 
-            // === Tier 3: 기본 공격 ===
+            // === Tier 3: Base Attack ===
             AttackBasePhysicalDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier3_기본공격_물리공격력보너스", 2f,
-                "Tier 3: 기본 공격(attack_step3_base) - 물리 공격력 보너스");
+                "Attack Tree", "Tier3_BaseAttack_PhysicalDamageBonus", 2f,
+                "Tier 3: Base Attack (attack_step3_base) - Physical Damage Bonus");
 
             AttackBaseElementalDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier3_기본공격_속성공격력보너스", 2f,
-                "Tier 3: 기본 공격(attack_step3_base) - 속성 공격력 보너스");
+                "Attack Tree", "Tier3_BaseAttack_ElementalDamageBonus", 2f,
+                "Tier 3: Base Attack (attack_step3_base) - Elemental Damage Bonus");
 
             AttackStatBonus = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier3_공격증가_힘지능보너스", 5f,
-                "Tier 3: 공격 증가(atk_twohand_drain) - 힘과 지능 보너스");
+                "Attack Tree", "Tier3_AttackBoost_StrIntBonus", 5f,
+                "Tier 3: Attack Boost (atk_twohand_drain) - Strength & Intelligence Bonus");
 
             AttackTwoHandDrainPhysicalDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier3_공격증가_물리공격력보너스", 10f,
-                "Tier 3: 공격 증가(atk_twohand_drain) - 물리 공격력 보너스");
+                "Attack Tree", "Tier3_AttackBoost_PhysicalDamageBonus", 10f,
+                "Tier 3: Attack Boost (atk_twohand_drain) - Physical Damage Bonus");
 
             AttackTwoHandDrainElementalDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier3_공격증가_속성공격력보너스", 10f,
-                "Tier 3: 공격 증가(atk_twohand_drain) - 속성 공격력 보너스");
+                "Attack Tree", "Tier3_AttackBoost_ElementalDamageBonus", 10f,
+                "Tier 3: Attack Boost (atk_twohand_drain) - Elemental Damage Bonus");
 
-            // === Tier 4: 전투 강화 ===
+            // === Tier 4: Combat Enhancement ===
             AttackCritChance = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier4_정밀공격_치명타확률", 5f,
-                "Tier 4: 정밀 공격(attack_step4_crit) - 치명타 확률 (%)");
+                "Attack Tree", "Tier4_PrecisionAttack_CritChance", 5f,
+                "Tier 4: Precision Attack (attack_step4_crit) - Crit Chance (%)");
 
             AttackMeleeEnhancement = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier4_근접강화_2연속공격추가피해", 10f,
-                "Tier 4: 근접 강화(attack_step4_melee_enhance) - 2연속 공격 추가 피해 (%)");
+                "Attack Tree", "Tier4_MeleeEnhance_2HitComboBonus", 10f,
+                "Tier 4: Melee Enhancement (attack_step4_melee_enhance) - 2-Hit Combo Bonus (%)");
 
             AttackRangedEnhancement = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier4_원거리강화_원거리무기공격력", 5f,
-                "Tier 4: 원거리 강화(attack_step4_ranged_enhance) - 원거리 무기 공격력 (%)");
+                "Attack Tree", "Tier4_RangedEnhance_RangedDamageBonus", 5f,
+                "Tier 4: Ranged Enhancement (attack_step4_ranged_enhance) - Ranged Damage Bonus (%)");
 
-            // === Tier 5: 특수화 스탯 ===
+            // === Tier 5: Specialized Stats ===
             AttackSpecialStat = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier5_특수화스탯_특수화보너스", 5f,
-                "Tier 5: 특수화 스탯(attack_step5_special) - 특수화 보너스");
+                "Attack Tree", "Tier5_SpecialStat_SpecBonus", 5f,
+                "Tier 5: Specialized Stats (attack_step5_special) - Specialization Bonus");
 
-            // === Tier 6: 최종 강화 ===
+            // === Tier 6: Final Enhancement ===
             AttackCritDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier6_약점공격_치명타피해보너스", 12f,
-                "Tier 6: 약점 공격(attack_step6_crit_damage) - 치명타 피해 보너스 (%)");
+                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus", 12f,
+                "Tier 6: Weak Point Attack (attack_step6_crit_damage) - Crit Damage Bonus (%)");
 
             AttackTwoHandedBonus = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier6_양손분쇄_양손무기공격력보너스", 10f,
-                "Tier 6: 양손 분쇄(attack_step6_twohanded) - 양손 무기 공격력 보너스 (%)");
+                "Attack Tree", "Tier6_TwoHandCrush_TwoHandDamageBonus", 10f,
+                "Tier 6: Two-Hand Crush (attack_step6_twohanded) - Two-Handed Weapon Damage Bonus (%)");
 
             AttackStaffElemental = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier6_속성공격_속성공격보너스", 10f,
-                "Tier 6: 속성 공격(attack_step6_elemental) - 속성 공격 보너스 (활, 지팡이) (%)");
+                "Attack Tree", "Tier6_ElementalAttack_ElementalBonus", 10f,
+                "Tier 6: Elemental Attack (attack_step6_elemental) - Elemental Bonus (Bow, Staff) (%)");
 
             AttackFinisherMeleeBonus = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier6_연속근접의대가_3연속공격보너스", 15f,
-                "Tier 6: 연속 근접의 대가(attack_step6_finisher) - 3연속 공격 보너스 (%)");
+                "Attack Tree", "Tier6_ComboFinisher_3HitComboBonus", 15f,
+                "Tier 6: Combo Finisher (attack_step6_finisher) - 3-Hit Combo Bonus (%)");
 
-            Plugin.Log.LogDebug("[Attack_Config] 공격 전문가 트리 설정 초기화 완료");
+            Plugin.Log.LogDebug("[Attack_Config] Attack Expert tree config initialized");
         }
     }
 }

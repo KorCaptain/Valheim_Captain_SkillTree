@@ -35,28 +35,28 @@ namespace CaptainSkillTree.SkillTree
                 "Paladin Job Skills",
                 "Paladin_Active_Cooldown",
                 30f,
-                "성기사 신성한 치유 쿨타임 (초)"
+                "성기사 신성한 치유 쿨타임 (초) / Paladin Holy Healing - Cooldown (sec)"
             );
 
             PaladinHealRange = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
                 "Paladin_Active_Range",
                 5f,
-                "성기사 신성한 치유 범위 (미터)"
+                "성기사 신성한 치유 범위 (미터) / Paladin Holy Healing - Range (m)"
             );
 
             PaladinHealEitrCost = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
                 "Paladin_Active_EitrCost",
                 10f,
-                "성기사 신성한 치유 에이트르 소모량"
+                "성기사 신성한 치유 에이트르 소모량 / Paladin Holy Healing - Eitr Cost"
             );
 
             PaladinHealStaminaCost = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
                 "Paladin_Active_StaminaCost",
                 10f,
-                "성기사 신성한 치유 스태미나 소모량"
+                "성기사 신성한 치유 스태미나 소모량 / Paladin Holy Healing - Stamina Cost"
             );
 
             // === 액티브 힐링 효과 설정 ===
@@ -64,28 +64,28 @@ namespace CaptainSkillTree.SkillTree
                 "Paladin Job Skills",
                 "Paladin_Active_SelfHealPercent",
                 15f,
-                "성기사 자가 치유 비율 (최대 체력의 %)"
+                "성기사 자가 치유 비율 (최대 체력의 %) / Paladin Self Heal Ratio (% of Max HP)"
             );
 
             PaladinHealAllyPercentOverTime = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
                 "Paladin_Active_AllyHealPercentOverTime",
                 2f,
-                "성기사 아군 지속 치유 비율 (최대 체력의 %, 매초)"
+                "성기사 아군 지속 치유 비율 (최대 체력의 %, 매초) / Paladin Ally HoT Ratio (% of Max HP, per sec)"
             );
 
             PaladinHealDuration = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
                 "Paladin_Active_Duration",
                 10f,
-                "성기사 지속 치유 지속 시간 (초)"
+                "성기사 지속 치유 지속 시간 (초) / Paladin HoT Duration (sec)"
             );
 
             PaladinHealInterval = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills",
                 "Paladin_Active_Interval",
                 1f,
-                "성기사 지속 치유 간격 (초)"
+                "성기사 지속 치유 간격 (초) / Paladin HoT Interval (sec)"
             );
 
             // === 패시브 효과 설정 ===
@@ -93,7 +93,7 @@ namespace CaptainSkillTree.SkillTree
                 "Paladin Job Skills",
                 "Paladin_Passive_ElementalResistanceReduction",
                 8f,
-                "성기사 물리 및 속성 저항 감소 비율 (%)"
+                "성기사 물리 및 속성 저항 감소 비율 (%) / Paladin Physical & Elemental Resistance Reduction (%)"
             );
             
             // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===

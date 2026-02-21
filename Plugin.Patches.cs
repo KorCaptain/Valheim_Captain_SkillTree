@@ -24,11 +24,14 @@ namespace CaptainSkillTree
         {
             public static void Prefix(Character __instance, ref bool showDamageText, ref HitData hit)
             {
-                if (Player.m_localPlayer == null) return;
-                var weapon = Player.m_localPlayer.GetCurrentWeapon();
+                // 공격자가 플레이어인지 확인 (피격자 아님!)
+                var attacker = hit.GetAttacker();
+                if (attacker == null || !(attacker is Player)) return;
+
+                var player = attacker as Player;
+                var weapon = player.GetCurrentWeapon();
                 if (weapon == null) return;
 
-                var player = Player.m_localPlayer;
                 var weaponType = weapon.m_shared.m_skillType;
 
                 // === 창 연공창 액티브 스킬 (G키) - 280% 데미지 ===
@@ -577,6 +580,17 @@ namespace CaptainSkillTree
                     Plugin.Log.LogWarning($"[스킬 정리] 실패 (무시): {ex.Message}");
                 }
 
+                // ✅ 2-1. 속도 제한 경고 상태 초기화
+                try
+                {
+                    ImprovedMoveSpeedPatch.ClearWarningState(__instance);
+                    AttackSpeedHandler_Game_Awake_Patch.ClearAttackSpeedWarningState(__instance);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[속도 경고 정리] 실패 (무시): {ex.Message}");
+                }
+
                 // ✅ 3. 마지막으로 코루틴 중지 (모든 정리 완료 후)
                 Plugin.Log.LogInfo("[플레이어 사망] 모든 정리 완료 후 코루틴 중지");
                 Plugin.Instance.StopAllCoroutines();
@@ -593,6 +607,9 @@ namespace CaptainSkillTree
     public static class AttackSpeedHandler_Game_Awake_Patch
     {
         private static bool _attackSpeedHandlerRegistered = false;
+
+        // 경고 표시 여부 추적 (플레이어당 한 번만 표시)
+        private static Dictionary<Player, bool> _attackSpeedWarningShown = new Dictionary<Player, bool>();
 
         [HarmonyPostfix]
         public static void Postfix()
@@ -615,9 +632,34 @@ namespace CaptainSkillTree
                         // 공격속도 보너스 계산 (원래 speed를 기반으로 곱산)
                         float attackSpeedBonus = SkillEffect.GetTotalAttackSpeedBonus(player);
 
+                        // 디버그: 공격속도 보너스 계산 확인
                         if (attackSpeedBonus > 0f)
                         {
+                            Plugin.Log.LogDebug($"[공격속도] {player.GetPlayerName()}: 보너스 {attackSpeedBonus:F1}%, 입력 speed={speed:F3}");
+                        }
+
+                        if (attackSpeedBonus > 0f)
+                        {
+                            // 최대치 제한 적용 (v0.1.226+)
+                            float maxBonus = SkillTreeConfig.AttackSpeedMaxBonusValue;
+                            if (attackSpeedBonus > maxBonus)
+                            {
+                                // 한 번만 경고
+                                if (!_attackSpeedWarningShown.ContainsKey(player) || !_attackSpeedWarningShown[player])
+                                {
+                                    Plugin.Log.LogWarning($"[공격속도] {player.GetPlayerName()} 보너스 제한: {attackSpeedBonus:F1}% → {maxBonus}%");
+
+                                    player.Message(MessageHud.MessageType.Center,
+                                        $"공격속도 제한을 {maxBonus}%를 넘길 수 없습니다.");
+
+                                    _attackSpeedWarningShown[player] = true;
+                                }
+
+                                attackSpeedBonus = maxBonus;
+                            }
+
                             double bonusMultiplier = 1.0 + (attackSpeedBonus / 100.0);
+                            Plugin.Log.LogDebug($"[공격속도] {player.GetPlayerName()}: 기본={speed:F3} × {bonusMultiplier:F3} = {speed * bonusMultiplier:F3}");
                             return speed * bonusMultiplier;
                         }
 
@@ -632,6 +674,15 @@ namespace CaptainSkillTree
             {
                 Plugin.Log.LogError($"[공격 속도] AnimationSpeedManager 등록 실패: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// 플레이어 로그아웃/사망 시 경고 상태 정리
+        /// </summary>
+        public static void ClearAttackSpeedWarningState(Player player)
+        {
+            if (_attackSpeedWarningShown.ContainsKey(player))
+                _attackSpeedWarningShown.Remove(player);
         }
     }
 }

@@ -157,7 +157,7 @@ namespace CaptainSkillTree
                     // 암살술: 경직 상태 적 공격 시 데미지 보너스
                     if (SkillTreeManager.Instance?.GetSkillLevel("knife_step8_assassination") > 0)
                     {
-                        Knife_Skill.ApplyKnifeAssassinationBonus(attackerPlayer, ref hit, __instance);
+                        Knife_Skill.ApplyKnifeAssassinationBonus(attackerPlayer, __instance);
                     }
                 }
 

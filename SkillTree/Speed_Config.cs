@@ -151,220 +151,220 @@ namespace CaptainSkillTree.SkillTree
         {
             // === 필요 포인트 설정 ===
             SpeedRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier0_속도전문가_필요포인트", 2,
-                "Tier 0: 속도 전문가(speed_root) - 필요 포인트");
+                "Speed Tree", "Tier0_SpeedExpert_RequiredPoints", 2,
+                "Tier 0: Speed Expert (speed_root) - Required Points");
 
             SpeedStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier1_민첩함의기초_필요포인트", 2,
-                "Tier 1: 민첩함의 기초(speed_base) - 필요 포인트");
+                "Speed Tree", "Tier1_AgilityBase_RequiredPoints", 2,
+                "Tier 1: Agility Base (speed_base) - Required Points");
 
             SpeedStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_무기특화_필요포인트", 2,
-                "Tier 2: 무기별 특화 스킬 - 필요 포인트");
+                "Speed Tree", "Tier2_WeaponSpec_RequiredPoints", 2,
+                "Tier 2: Weapon Specialization Skills - Required Points");
 
             SpeedStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier3_수련자_필요포인트", 2,
-                "Tier 3: 수련자 스킬 - 필요 포인트");
+                "Speed Tree", "Tier3_Practitioner_RequiredPoints", 2,
+                "Tier 3: Practitioner Skills - Required Points");
 
             SpeedStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier4_마스터_필요포인트", 2,
-                "Tier 4: 마스터 스킬 - 필요 포인트");
+                "Speed Tree", "Tier4_Master_RequiredPoints", 2,
+                "Tier 4: Master Skills - Required Points");
 
             SpeedStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier5_점프숙련자_필요포인트", 3,
-                "Tier 5: 점프 숙련자(agility_peak) - 필요 포인트");
+                "Speed Tree", "Tier5_JumpMaster_RequiredPoints", 3,
+                "Tier 5: Jump Master (agility_peak) - Required Points");
 
             SpeedStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier6_스탯_필요포인트", 2,
-                "Tier 6: 스탯 스킬 - 필요 포인트");
+                "Speed Tree", "Tier6_Stats_RequiredPoints", 2,
+                "Tier 6: Stats Skills - Required Points");
 
             SpeedStep7RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier7_숙련자_필요포인트", 3,
-                "Tier 7: 숙련자(all_master) - 필요 포인트");
+                "Speed Tree", "Tier7_Master_RequiredPoints", 3,
+                "Tier 7: Master (all_master) - Required Points");
 
             SpeedStep8RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier8_최종가속_필요포인트", 2,
-                "Tier 8: 최종 가속 스킬 - 필요 포인트");
+                "Speed Tree", "Tier8_FinalAcceleration_RequiredPoints", 2,
+                "Tier 8: Final Acceleration Skills - Required Points");
 
             // === 티어0: 속도 전문가 ===
             SpeedRootMoveSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier0_속도전문가_이동속도", 5f,
-                "티어0: 속도 전문가 - 이동속도 보너스 (%)");
+                "Speed Tree", "Tier0_SpeedExpert_MoveSpeedBonus", 5f,
+                "Tier 0: Speed Expert - Move Speed Bonus (%)");
 
             // === 티어1: 민첩함의 기초 ===
             SpeedBaseDodgeMoveSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier1_민첩함의기초_구르기후이동속도", 15f,
-                "티어1: 민첩함의 기초 - 구르기 후 이동속도 보너스 (%)");
+                "Speed Tree", "Tier1_AgilityBase_DodgeMoveSpeedBonus", 15f,
+                "Tier 1: Agility Base - Move Speed Bonus After Dodge (%)");
 
             SpeedBaseDodgeDuration = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier1_민첩함의기초_버프지속시간", 2f,
-                "티어1: 민첩함의 기초 - 구르기 버프 지속시간 (초)");
+                "Speed Tree", "Tier1_AgilityBase_BuffDuration", 2f,
+                "Tier 1: Agility Base - Dodge Buff Duration (sec)");
 
             // === 티어2: 무기별 특화 ===
             SpeedMeleeComboAttackSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_연속의흐름_공격속도보너스", 8f,
-                "티어2: 연속의 흐름 - 근접 2연속 적중 시 공격속도 보너스 (%)");
+                "Speed Tree", "Tier2_MeleeFlow_AttackSpeedBonus", 8f,
+                "Tier 2: Melee Flow - Attack Speed Bonus on 2-Hit Combo (%)");
 
             SpeedMeleeComboStamina = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_연속의흐름_스태미나감소", 12f,
-                "티어2: 연속의 흐름 - 근접 2연속 적중 시 스태미나 감소 (%)");
+                "Speed Tree", "Tier2_MeleeFlow_StaminaReduction", 12f,
+                "Tier 2: Melee Flow - Stamina Reduction on 2-Hit Combo (%)");
 
             SpeedMeleeComboDuration = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_연속의흐름_지속시간", 3f,
-                "티어2: 연속의 흐름 - 버프 지속시간 (초)");
+                "Speed Tree", "Tier2_MeleeFlow_Duration", 3f,
+                "Tier 2: Melee Flow - Buff Duration (sec)");
 
             SpeedCrossbowExpertSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_석궁숙련자_이동속도보너스", 12f,
-                "티어2: 석궁 숙련자 - 석궁 적중 시 이동속도 보너스 (%)");
+                "Speed Tree", "Tier2_CrossbowExpert_MoveSpeedBonus", 12f,
+                "Tier 2: Crossbow Expert - Move Speed Bonus on Hit (%)");
 
             SpeedCrossbowExpertDuration = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_석궁숙련자_버프지속시간", 4f,
-                "티어2: 석궁 숙련자 - 버프 지속시간 (초)");
+                "Speed Tree", "Tier2_CrossbowExpert_BuffDuration", 4f,
+                "Tier 2: Crossbow Expert - Buff Duration (sec)");
 
             SpeedCrossbowExpertReload = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_석궁숙련자_재장전속도보너스", 10f,
-                "티어2: 석궁 숙련자 - 버프 중 재장전 속도 보너스 (%)");
+                "Speed Tree", "Tier2_CrossbowExpert_ReloadSpeedBonus", 10f,
+                "Tier 2: Crossbow Expert - Reload Speed Bonus During Buff (%)");
 
             SpeedBowExpertStamina = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_활숙련자_스태미나감소", 10f,
-                "티어2: 활 숙련자 - 활 2연속 적중 시 스태미나 감소 (%)");
+                "Speed Tree", "Tier2_BowExpert_StaminaReduction", 10f,
+                "Tier 2: Bow Expert - Stamina Reduction on 2-Hit Combo (%)");
 
             SpeedBowExpertDrawSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_활숙련자_다음장전속도보너스", 15f,
-                "티어2: 활 숙련자 - 다음 화살 장전 속도 보너스 (%)");
+                "Speed Tree", "Tier2_BowExpert_NextDrawSpeedBonus", 15f,
+                "Tier 2: Bow Expert - Next Arrow Draw Speed Bonus (%)");
 
             SpeedStaffCastMoveSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_이동시전_이동속도보너스", 8f,
-                "티어2: 이동 시전 - 마법 시전 중 이동속도 보너스 (%)");
+                "Speed Tree", "Tier2_MobileCast_MoveSpeedBonus", 8f,
+                "Tier 2: Mobile Cast - Move Speed Bonus While Casting (%)");
 
             SpeedStaffCastEitrReduction = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_이동시전_에이트르감소", 10f,
-                "티어2: 이동 시전 - 에이트르 소모 감소 (%)");
+                "Speed Tree", "Tier2_MobileCast_EitrReduction", 10f,
+                "Tier 2: Mobile Cast - Eitr Cost Reduction (%)");
 
             // === 티어3: 수련자 ===
             SpeedEx1MeleeSkill = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier3_수련자1_근접숙련보너스", 8f,
-                "티어3: 수련자1 - 근접무기 숙련 보너스");
+                "Speed Tree", "Tier3_Practitioner1_MeleeSkillBonus", 8f,
+                "Tier 3: Practitioner 1 - Melee Weapon Skill Bonus");
 
             SpeedEx1CrossbowSkill = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier3_수련자1_석궁숙련보너스", 8f,
-                "티어3: 수련자1 - 석궁 숙련 보너스");
+                "Speed Tree", "Tier3_Practitioner1_CrossbowSkillBonus", 8f,
+                "Tier 3: Practitioner 1 - Crossbow Skill Bonus");
 
             SpeedEx2StaffSkill = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier3_수련자2_지팡이숙련보너스", 8f,
-                "티어3: 수련자2 - 지팡이 숙련 보너스");
+                "Speed Tree", "Tier3_Practitioner2_StaffSkillBonus", 8f,
+                "Tier 3: Practitioner 2 - Staff Skill Bonus");
 
             SpeedEx2BowSkill = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier3_수련자2_활숙련보너스", 8f,
-                "티어3: 수련자2 - 활 숙련 보너스");
+                "Speed Tree", "Tier3_Practitioner2_BowSkillBonus", 8f,
+                "Tier 3: Practitioner 2 - Bow Skill Bonus");
 
             // === 티어4: 마스터 ===
             SpeedFoodEfficiency = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier4_에너자이져_음식소모감소", 15f,
-                "티어4: 에너자이져 - 음식 소모 속도 감소 (%)");
+                "Speed Tree", "Tier4_Energizer_FoodConsumptionReduction", 15f,
+                "Tier 4: Energizer - Food Consumption Rate Reduction (%)");
 
             SpeedShipBonus = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier4_선장_배속도증가", 15f,
-                "티어4: 선장 - 배 운전 속도 증가 (%)");
+                "Speed Tree", "Tier4_Captain_ShipSpeedBonus", 15f,
+                "Tier 4: Captain - Ship Speed Bonus (%)");
 
             // === 티어5: 점프 숙련자 ===
             JumpSkillLevelBonus = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier5_점프숙련자_점프숙련보너스", 10f,
-                "티어5: 점프 숙련자 - 점프 숙련 보너스");
+                "Speed Tree", "Tier5_JumpMaster_JumpSkillBonus", 10f,
+                "Tier 5: Jump Master - Jump Skill Bonus");
 
             JumpStaminaReduction = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier5_점프숙련자_점프스태미나감소", 10f,
-                "티어5: 점프 숙련자 - 점프 스태미나 감소 (%)");
+                "Speed Tree", "Tier5_JumpMaster_JumpStaminaReduction", 10f,
+                "Tier 5: Jump Master - Jump Stamina Reduction (%)");
 
             // === 티어6: 스탯 ===
             SpeedDexterityAttackSpeedBonus = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier6_민첩_근접공격속도보너스", 5f,
-                "티어6: 민첩 - 근접 공격속도 보너스 (%)");
+                "Speed Tree", "Tier6_Dexterity_MeleeAttackSpeedBonus", 5f,
+                "Tier 6: Dexterity - Melee Attack Speed Bonus (%)");
 
             SpeedDexterityMoveSpeedBonus = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier6_민첩_이동속도보너스", 5f,
-                "티어6: 민첩 - 이동속도 보너스 (%)");
+                "Speed Tree", "Tier6_Dexterity_MoveSpeedBonus", 5f,
+                "Tier 6: Dexterity - Move Speed Bonus (%)");
 
             SpeedEnduranceStaminaBonus = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier6_지구력_스태미나최대치", 25f,
-                "티어6: 지구력 - 스태미나 최대치 보너스");
+                "Speed Tree", "Tier6_Endurance_StaminaMaxBonus", 25f,
+                "Tier 6: Endurance - Max Stamina Bonus");
 
             SpeedIntellectEitrBonus = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier6_지능_에이트르최대치", 35f,
-                "티어6: 지능 - 에이트르 최대치 보너스");
+                "Speed Tree", "Tier6_Intellect_EitrMaxBonus", 35f,
+                "Tier 6: Intellect - Max Eitr Bonus");
 
             // === 티어7: 숙련자 ===
             AllMasterRunSkill = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier7_숙련자_이동숙련보너스", 8f,
-                "티어7: 숙련자 - 이동 숙련 보너스");
+                "Speed Tree", "Tier7_Master_RunSkillBonus", 8f,
+                "Tier 7: Master - Run Skill Bonus");
 
             AllMasterJumpSkill = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier7_숙련자_점프숙련보너스", 8f,
-                "티어7: 숙련자 - 점프 숙련 보너스");
+                "Speed Tree", "Tier7_Master_JumpSkillBonus", 8f,
+                "Tier 7: Master - Jump Skill Bonus");
 
             // === 티어8: 최종 가속 ===
             SpeedMeleeAttackSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier8_근접가속_공격속도보너스", 7f,
-                "티어8: 근접 가속 - 근접 공격속도 보너스 (%)");
+                "Speed Tree", "Tier8_MeleeAccel_AttackSpeedBonus", 7f,
+                "Tier 8: Melee Acceleration - Melee Attack Speed Bonus (%)");
 
             SpeedMeleeComboTripleBonus = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier8_근접가속_3연속보너스", 25f,
-                "티어8: 근접 가속 - 3연속 적중 시 다음 공격속도 보너스 (%)");
+                "Speed Tree", "Tier8_MeleeAccel_TripleComboBonus", 25f,
+                "Tier 8: Melee Acceleration - Next Attack Speed Bonus on 3-Hit Combo (%)");
 
             SpeedCrossbowDrawSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier8_석궁가속_재장전속도", 30f,
-                "티어8: 석궁 가속 - 석궁 재장전 속도 보너스 (%)");
+                "Speed Tree", "Tier8_CrossbowAccel_ReloadSpeed", 30f,
+                "Tier 8: Crossbow Acceleration - Reload Speed Bonus (%)");
 
             SpeedCrossbowReloadMoveSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier8_석궁가속_재장전중이동속도", 25f,
-                "티어8: 석궁 가속 - 재장전 중 이동속도 보너스 (%)");
+                "Speed Tree", "Tier8_CrossbowAccel_ReloadMoveSpeed", 25f,
+                "Tier 8: Crossbow Acceleration - Move Speed During Reload (%)");
 
             SpeedBowDrawSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier8_활가속_장전속도", 15f,
-                "티어8: 활 가속 - 활 장전 속도 보너스 (%)");
+                "Speed Tree", "Tier8_BowAccel_DrawSpeed", 15f,
+                "Tier 8: Bow Acceleration - Draw Speed Bonus (%)");
 
             SpeedBowDrawMoveSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier8_활가속_장전중이동속도", 15f,
-                "티어8: 활 가속 - 장전 중 이동속도 보너스 (%)");
+                "Speed Tree", "Tier8_BowAccel_DrawMoveSpeed", 15f,
+                "Tier 8: Bow Acceleration - Move Speed While Drawing (%)");
 
             SpeedStaffCastSpeedFinal = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier8_시전가속_마법공격속도", 6f,
-                "티어8: 시전 가속 - 마법 공격속도 보너스 (%)");
+                "Speed Tree", "Tier8_CastAccel_MagicAttackSpeed", 6f,
+                "Tier 8: Cast Acceleration - Magic Attack Speed Bonus (%)");
 
             SpeedStaffTripleEitrRecovery = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier8_시전가속_3연속에이트르회복", 12f,
-                "티어8: 시전 가속 - 3연속 적중 시 에이트르 최대치의 회복률 (%)");
+                "Speed Tree", "Tier8_CastAccel_TripleEitrRecovery", 12f,
+                "Tier 8: Cast Acceleration - Eitr Max Recovery Rate on 3-Hit Combo (%)");
 
             // === 티어0~2 추가 설정 ===
             SpeedBaseAttackSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier1_민첩함의기초_공격속도", 5f,
-                "티어1: 민첩함의 기초 - 공격속도 보너스 (%)");
+                "Speed Tree", "Tier1_AgilityBase_AttackSpeedBonus", 5f,
+                "Tier 1: Agility Base - Attack Speed Bonus (%)");
 
             SpeedBaseDodgeSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier1_민첩함의기초_구르기속도", 10f,
-                "티어1: 민첩함의 기초 - 구르기 속도 보너스 (%)");
+                "Speed Tree", "Tier1_AgilityBase_DodgeSpeedBonus", 10f,
+                "Tier 1: Agility Base - Dodge Speed Bonus (%)");
 
             SpeedBaseMoveSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier0_속도전문가_기본이동속도", 3f,
-                "티어0: 속도 전문가 - 기본 이동속도 보너스 (%)");
+                "Speed Tree", "Tier0_SpeedExpert_BaseMoveSpeedBonus", 3f,
+                "Tier 0: Speed Expert - Base Move Speed Bonus (%)");
 
             SpeedMeleeComboSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_연속의흐름_콤보속도", 5f,
-                "티어2: 연속의 흐름 - 근접 콤보 속도 보너스 (%)");
+                "Speed Tree", "Tier2_MeleeFlow_ComboSpeedBonus", 5f,
+                "Tier 2: Melee Flow - Melee Combo Speed Bonus (%)");
 
             SpeedBowExpertDuration = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_활숙련자_버프지속시간", 5f,
-                "티어2: 활 숙련자 버프 지속시간 (초)");
+                "Speed Tree", "Tier2_BowExpert_BuffDuration", 5f,
+                "Tier 2: Bow Expert - Buff Duration (sec)");
 
             SpeedStaffCastSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier2_이동시전_시전속도", 4f,
-                "티어2: 이동 시전 - 지팡이 시전 중 이동속도 (%)");
+                "Speed Tree", "Tier2_MobileCast_CastMoveSpeed", 4f,
+                "Tier 2: Mobile Cast - Move Speed While Staff Casting (%)");
 
             SpeedCooldownReduction = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier0_속도전문가_쿨타임감소", 1f,
-                "티어0: 속도 전문가 - 쿨타임 감소 (초)");
+                "Speed Tree", "Tier0_SpeedExpert_CooldownReduction", 1f,
+                "Tier 0: Speed Expert - Cooldown Reduction (sec)");
 
-            Plugin.Log.LogDebug("[Speed_Config] 속도 전문가 트리 설정 초기화 완료");
+            Plugin.Log.LogDebug("[Speed_Config] Speed Expert tree config initialized");
         }
     }
 }

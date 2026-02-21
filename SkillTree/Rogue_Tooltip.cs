@@ -49,9 +49,9 @@ namespace CaptainSkillTree.SkillTree
                 var aggroRange = Rogue_Config.RogueShadowStrikeAggroRangeValue;
 
                 // 로그 패시브 스킬 컨피그 값 가져오기
-                var stealthSkillBonus = Rogue_Config.RogueSneakSkillBonusValue;
-                var stealthSpeedBonus = Rogue_Config.RogueSneakSpeedBonusValue;
-                var fallDamageReduction = Rogue_Config.RogueFallDamageReductionValue;
+                var attackSpeedBonus = Rogue_Config.RogueAttackSpeedBonusValue;
+                var staminaReduction = Rogue_Config.RogueStaminaReductionValue;
+                var elementalDebuff = Rogue_Config.RogueElementalResistanceDebuffValue;
 
                 Plugin.Log.LogDebug($"[로그 툴팁] 컨피그 값들 - 은신시간: {stealthDuration}초, 공격력: +{attackBonus}%, 쿨타임: {cooldown}초, 스태미나: {staminaCost}");
 
@@ -72,7 +72,7 @@ namespace CaptainSkillTree.SkillTree
                     specialNote = ""
                 };
 
-                string finalTooltip = GenerateRogueTooltip(data, stealthSkillBonus, stealthSpeedBonus, fallDamageReduction);
+                string finalTooltip = GenerateRogueTooltip(data, attackSpeedBonus, staminaReduction, elementalDebuff);
                 Plugin.Log.LogDebug($"[로그 툴팁] 최종 툴팁 생성 완료 - 길이: {finalTooltip?.Length ?? 0}");
                 return finalTooltip;
             }
@@ -86,7 +86,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 로그 툴팁 생성 (메이지 스타일)
         /// </summary>
-        public static string GenerateRogueTooltip(RogueTooltipData data, float stealthSkillBonus, float stealthSpeedBonus, float fallDamageReduction)
+        public static string GenerateRogueTooltip(RogueTooltipData data, float attackSpeedBonus, float staminaReduction, float elementalDebuff)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#ADFF2F><size=16>{L.Get("skill_type_job_active", "Y")}</size></color>\n";
 
                 // 패시브 섹션
-                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color><color=#ADFF2F><size=16>{L.Get("rogue_passive_desc", stealthSkillBonus, stealthSpeedBonus, fallDamageReduction)}</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color><color=#ADFF2F><size=16>{L.Get("rogue_passive_desc", attackSpeedBonus, staminaReduction, elementalDebuff)}</size></color>\n";
 
                 // 쿨타임 섹션
                 if (!string.IsNullOrEmpty(data.cooldown))
@@ -207,7 +207,7 @@ namespace CaptainSkillTree.SkillTree
                 specialNote = ""
             };
 
-            return GenerateRogueTooltip(data, Rogue_Config.RogueSneakSkillBonusValue, Rogue_Config.RogueSneakSpeedBonusValue, Rogue_Config.RogueFallDamageReductionValue);
+            return GenerateRogueTooltip(data, Rogue_Config.RogueAttackSpeedBonusValue, Rogue_Config.RogueStaminaReductionValue, Rogue_Config.RogueElementalResistanceDebuffValue);
         }
 
         /// <summary>

@@ -20,9 +20,9 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> RogueShadowStrikeStealthDuration; // 스텔스 지속시간 (초)
         
         // === 로그 패시브 스킬 효과 ===
-        public static ConfigEntry<float> RogueSneakSkillBonus;           // 은신 스킬 레벨 보너스
-        public static ConfigEntry<float> RogueSneakSpeedBonus;           // 은신 시 이동속도 보너스 (%)
-        public static ConfigEntry<float> RogueFallDamageReduction;       // 낙사 데미지 감소 (%)
+        public static ConfigEntry<float> RogueAttackSpeedBonus;          // 공격 속도 보너스 (%)
+        public static ConfigEntry<float> RogueStaminaReduction;          // 공격 시 스태미나 감소 (%)
+        public static ConfigEntry<float> RogueElementalResistanceDebuff; // 속성 저항 감소 (%)
 
         // === 동적 값 접근자 (MMO 시스템 연동) ===
         public static float RogueShadowStrikeCooldownValue => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_Cooldown", RogueShadowStrikeCooldown?.Value ?? 30f);
@@ -34,9 +34,9 @@ namespace CaptainSkillTree.SkillTree
         public static float RogueShadowStrikeStealthDurationValue => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_StealthDuration", RogueShadowStrikeStealthDuration?.Value ?? 8f);
         
         // === 로그 패시브 스킬 동적 값 접근자 ===
-        public static float RogueSneakSkillBonusValue => SkillTreeConfig.GetEffectiveValue("Rogue_SneakSkill_Bonus", RogueSneakSkillBonus?.Value ?? 20f);
-        public static float RogueSneakSpeedBonusValue => SkillTreeConfig.GetEffectiveValue("Rogue_SneakSpeed_Bonus", RogueSneakSpeedBonus?.Value ?? 20f);
-        public static float RogueFallDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Rogue_FallDamage_Reduction", RogueFallDamageReduction?.Value ?? 50f);
+        public static float RogueAttackSpeedBonusValue => SkillTreeConfig.GetEffectiveValue("Rogue_AttackSpeed_Bonus", RogueAttackSpeedBonus?.Value ?? 10f);
+        public static float RogueStaminaReductionValue => SkillTreeConfig.GetEffectiveValue("Rogue_Stamina_Reduction", RogueStaminaReduction?.Value ?? 15f);
+        public static float RogueElementalResistanceDebuffValue => SkillTreeConfig.GetEffectiveValue("Rogue_ElementalResistance_Debuff", RogueElementalResistanceDebuff?.Value ?? 10f);
         
         /// <summary>
         /// Rogue 컨피그 초기화 (SkillTreeConfig에서 호출)
@@ -50,74 +50,74 @@ namespace CaptainSkillTree.SkillTree
                 
                 // === 그림자 일격 기본 설정 ===
                 RogueShadowStrikeCooldown = SkillTreeConfig.BindServerSync(config,
-                    "Rogue Job Skills", 
-                    "Rogue_ShadowStrike_Cooldown", 
-                    30f, 
-                    "그림자 일격 - 쿨타임 (초)"
+                    "Rogue Job Skills",
+                    "Rogue_ShadowStrike_Cooldown",
+                    30f,
+                    "그림자 일격 - 쿨타임 (초) / Shadow Strike - Cooldown (sec)"
                 );
                 
                 RogueShadowStrikeStaminaCost = SkillTreeConfig.BindServerSync(config,
-                    "Rogue Job Skills", 
-                    "Rogue_ShadowStrike_StaminaCost", 
-                    25f, 
-                    "그림자 일격 - 스태미나 소모"
+                    "Rogue Job Skills",
+                    "Rogue_ShadowStrike_StaminaCost",
+                    25f,
+                    "그림자 일격 - 스태미나 소모 / Shadow Strike - Stamina Cost"
                 );
                 
                 RogueShadowStrikeAttackBonus = SkillTreeConfig.BindServerSync(config,
-                    "Rogue Job Skills", 
-                    "Rogue_ShadowStrike_AttackBonus", 
-                    35f, 
-                    "그림자 일격 - 공격력 증가 (%)"
+                    "Rogue Job Skills",
+                    "Rogue_ShadowStrike_AttackBonus",
+                    35f,
+                    "그림자 일격 - 공격력 증가 (%) / Shadow Strike - Attack Power Increase (%)"
                 );
                 
                 RogueShadowStrikeBuffDuration = SkillTreeConfig.BindServerSync(config,
-                    "Rogue Job Skills", 
-                    "Rogue_ShadowStrike_BuffDuration", 
-                    8f, 
-                    "그림자 일격 - 공격력 버프 지속시간 (초)"
+                    "Rogue Job Skills",
+                    "Rogue_ShadowStrike_BuffDuration",
+                    8f,
+                    "그림자 일격 - 공격력 버프 지속시간 (초) / Shadow Strike - Attack Buff Duration (sec)"
                 );
                 
                 RogueShadowStrikeSmokeScale = SkillTreeConfig.BindServerSync(config,
-                    "Rogue Job Skills", 
-                    "Rogue_ShadowStrike_SmokeScale", 
-                    2.0f, 
-                    "그림자 일격 - 연막 효과 크기 배율"
+                    "Rogue Job Skills",
+                    "Rogue_ShadowStrike_SmokeScale",
+                    2.0f,
+                    "그림자 일격 - 연막 효과 크기 배율 / Shadow Strike - Smoke Effect Scale"
                 );
                 
                 RogueShadowStrikeAggroRange = SkillTreeConfig.BindServerSync(config,
-                    "Rogue Job Skills", 
-                    "Rogue_ShadowStrike_AggroRange", 
-                    15f, 
-                    "그림자 일격 - 어그로 제거 범위 (m)"
+                    "Rogue Job Skills",
+                    "Rogue_ShadowStrike_AggroRange",
+                    15f,
+                    "그림자 일격 - 어그로 제거 범위 (m) / Shadow Strike - Aggro Clear Range (m)"
                 );
                 
                 RogueShadowStrikeStealthDuration = SkillTreeConfig.BindServerSync(config,
-                    "Rogue Job Skills", 
-                    "Rogue_ShadowStrike_StealthDuration", 
-                    8f, 
-                    "그림자 일격 - 스텔스 지속시간 (초)"
+                    "Rogue Job Skills",
+                    "Rogue_ShadowStrike_StealthDuration",
+                    8f,
+                    "그림자 일격 - 스텔스 지속시간 (초) / Shadow Strike - Stealth Duration (sec)"
                 );
                 
                 // === 로그 패시브 스킬 설정 ===
-                RogueSneakSkillBonus = SkillTreeConfig.BindServerSync(config,
+                RogueAttackSpeedBonus = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
-                    "Rogue_SneakSkill_Bonus",
-                    20f,
-                    "로그 패시브 - 은신 스킬 레벨 보너스"
+                    "Rogue_AttackSpeed_Bonus",
+                    10f,
+                    "로그 패시브 - 공격 속도 보너스 (%) / Rogue Passive - Attack Speed Bonus (%)"
                 );
-                
-                RogueSneakSpeedBonus = SkillTreeConfig.BindServerSync(config,
+
+                RogueStaminaReduction = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
-                    "Rogue_SneakSpeed_Bonus",
-                    20f,
-                    "로그 패시브 - 은신 시 이동속도 보너스 (%)"
+                    "Rogue_Stamina_Reduction",
+                    15f,
+                    "로그 패시브 - 공격 시 스태미나 사용량 감소 (%) / Rogue Passive - Attack Stamina Usage Reduction (%)"
                 );
-                
-                RogueFallDamageReduction = SkillTreeConfig.BindServerSync(config,
+
+                RogueElementalResistanceDebuff = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
-                    "Rogue_FallDamage_Reduction",
-                    50f,
-                    "로그 패시브 - 낙사 데미지 감소 (%)"
+                    "Rogue_ElementalResistance_Debuff",
+                    10f,
+                    "로그 패시브 - 속성 저항 증가 (%) - 속성 피해 감소 / Rogue Passive - Elemental Resistance Increase (%) - Reduce Elemental Damage"
                 );
                 
                 Plugin.Log.LogDebug("[로그 컨피그] 설정 항목 생성 완료 (그림자 일격 + 패시브 효과)");
@@ -149,9 +149,9 @@ namespace CaptainSkillTree.SkillTree
                 RogueShadowStrikeStealthDuration.SettingChanged += (sender, args) => Rogue_Tooltip.UpdateRogueTooltip();
                 
                 // 로그 패시브 스킬 이벤트 핸들러
-                RogueSneakSkillBonus.SettingChanged += (sender, args) => Rogue_Tooltip.UpdateRogueTooltip();
-                RogueSneakSpeedBonus.SettingChanged += (sender, args) => Rogue_Tooltip.UpdateRogueTooltip();
-                RogueFallDamageReduction.SettingChanged += (sender, args) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueAttackSpeedBonus.SettingChanged += (sender, args) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueStaminaReduction.SettingChanged += (sender, args) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueElementalResistanceDebuff.SettingChanged += (sender, args) => Rogue_Tooltip.UpdateRogueTooltip();
 
                 Plugin.Log.LogDebug("[로그 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화 (그림자 일격 + 패시브 효과)");
             }
@@ -177,9 +177,9 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogInfo($"[로그 컨피그] 어그로 제거 범위: {RogueShadowStrikeAggroRangeValue}m");
                 Plugin.Log.LogInfo($"[로그 컨피그] 스텔스 지속시간: {RogueShadowStrikeStealthDurationValue}초");
                 Plugin.Log.LogInfo($"[로그 컨피그] === 패시브 효과 ===");
-                Plugin.Log.LogInfo($"[로그 컨피그] 은신 스킬 보너스: +{RogueSneakSkillBonusValue}");
-                Plugin.Log.LogInfo($"[로그 컨피그] 은신 시 이동속도: +{RogueSneakSpeedBonusValue}%");
-                Plugin.Log.LogInfo($"[로그 컨피그] 낙사 데미지 감소: -{RogueFallDamageReductionValue}%");
+                Plugin.Log.LogInfo($"[로그 컨피그] 공격 속도 보너스: +{RogueAttackSpeedBonusValue}%");
+                Plugin.Log.LogInfo($"[로그 컨피그] 스태미나 사용량 감소: -{RogueStaminaReductionValue}%");
+                Plugin.Log.LogInfo($"[로그 컨피그] 속성 저항 증가: +{RogueElementalResistanceDebuffValue}%");
             }
             catch (Exception ex)
             {

@@ -94,16 +94,18 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 치명타 숙련 툴팁 생성 - 개선된 상세 툴팁
+        /// 공격과 회피 툴팁 생성
         /// </summary>
         public static string GetKnifeCritRateTooltip()
         {
-            var critBonus = Knife_Config.KnifeCritRateBonusValue;
+            var evasionBonus = Knife_Config.KnifeAttackEvasionBonusValue;
+            var evasionDuration = Knife_Config.KnifeAttackEvasionDurationValue;
+            var evasionCooldown = Knife_Config.KnifeAttackEvasionCooldownValue;
             var requiredPoints = Knife_Config.KnifeCritRateRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("knife_skill_crit_rate")}</size></color>",
-                L.Get("knife_desc_crit_rate", critBonus),
+                L.Get("knife_desc_attack_evasion", evasionBonus, evasionDuration),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
@@ -137,12 +139,12 @@ namespace CaptainSkillTree.SkillTree
         public static string GetKnifeExecutionTooltip()
         {
             var critDamage = Knife_Config.KnifeExecutionCritDamageValue;
-            var staggerBonus = Knife_Config.KnifeExecutionStaggerBonusValue;
+            var critChance = Knife_Config.KnifeExecutionCritChanceValue;
             var requiredPoints = Knife_Config.KnifeExecutionRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("knife_skill_execution")}</size></color>",
-                L.Get("knife_desc_execution", critDamage, staggerBonus),
+                L.Get("knife_desc_execution", critDamage, critChance),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
@@ -156,12 +158,13 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string GetKnifeAssassinationTooltip()
         {
-            var backstabBonus = Knife_Config.KnifeAssassinationCritMultiplierValue;
+            var staggerChance = Knife_Config.KnifeAssassinationStaggerChanceValue;
+            var requiredHits = Knife_Config.KnifeAssassinationRequiredHitsValue;
             var requiredPoints = Knife_Config.KnifeAssassinationRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("knife_skill_assassination")}</size></color>",
-                L.Get("knife_desc_assassination", backstabBonus),
+                L.Get("knife_desc_assassination", staggerChance, requiredHits),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();
@@ -176,8 +179,6 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string GetKnifeAssassinHeartTooltip()
         {
-            var damageBonus = Knife_Config.KnifeAssassinHeartDamageBonusValue;
-            var critChance = Knife_Config.KnifeAssassinHeartCritChanceValue;
             var critDamage = Knife_Config.KnifeAssassinHeartCritDamageValue;
             var duration = Knife_Config.KnifeAssassinHeartDurationValue;
             var staminaCost = Knife_Config.KnifeAssassinHeartStaminaCostValue;
@@ -187,13 +188,10 @@ namespace CaptainSkillTree.SkillTree
             var teleportBehind = Knife_Config.KnifeAssassinHeartTeleportBehindValue;
             var stunDuration = Knife_Config.KnifeAssassinHeartStunDurationValue;
             var attackCount = Knife_Config.KnifeAssassinHeartAttackCountValue;
-            var attackInterval = Knife_Config.KnifeAssassinHeartAttackIntervalValue;
-
-            var critDamagePercent = (critDamage - 1) * 100; // 1.3배 → 30% 증가
 
             var data = MeleeTooltipUtils.CreateActiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("knife_skill_assassin")}</size></color>",
-                L.Get("knife_desc_assassin_main", teleportRange, teleportBehind, stunDuration, attackCount, duration, damageBonus, critChance),
+                L.Get("knife_desc_assassin_main", teleportRange, teleportBehind, stunDuration, attackCount, duration, critDamage),
                 $"{staminaCost}",
                 $"{cooldown}{L.Get("unit_seconds")}",
                 MeleeTooltipUtils.WeaponType.Knife,

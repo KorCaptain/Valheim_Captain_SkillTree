@@ -151,20 +151,14 @@ namespace CaptainSkillTree.SkillTree
                             }
                         }
 
-                        // 기본 활공격 - 공격력 증가 (고정값)
+                        // 기본 활공격 - 공격력 증가 (고정값) - 패시브 스킬
                         if (isBow && manager.GetSkillLevel("bow_Step3_silentshot") > 0)
                         {
                             // 활의 주 데미지 타입인 pierce에 고정값 추가
                             hit.m_damage.m_pierce += SkillTreeConfig.BowStep3SilentShotDamageBonusValue;
 
-                            // 10% 확률로 시각 효과
-                            if (UnityEngine.Random.Range(0f, 1f) < 0.1f)
-                            {
-                                showEffect = true;
-                                isAttackTreeEffect = true;
-                                SkillEffect.ShowSkillEffectText(player, "🏹 " + L.Get("basic_bow_damage", $"{SkillTreeConfig.BowStep3SilentShotDamageBonusValue:F0}"),
-                                    new Color(0.6f, 0.3f, 0.8f), SkillEffect.SkillEffectTextType.Combat);
-                            }
+                            // 패시브 스킬이므로 메시지 표시 안 함 (CLAUDE.md 규칙 준수)
+                            isAttackTreeEffect = true;
                         }
 
                         // 석궁 특화 (공격력 증가)

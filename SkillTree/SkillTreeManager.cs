@@ -415,7 +415,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (GetSkillLevel(exclusiveSkillId) > 0)
                     {
-                        Plugin.Log.LogWarning($"[SkillTreeManager] 상호 배타적 스킬 제한: {skillId}는 {exclusiveSkillId}와 함께 배울 수 없습니다.");
+                        Plugin.Log.LogWarning($"[SkillTreeManager] Mutually exclusive skill restriction: {skillId} cannot be learned with {exclusiveSkillId}.");
                         return false;
                     }
                 }
@@ -477,7 +477,7 @@ namespace CaptainSkillTree.SkillTree
                 var existingRKeySkills = rKeySkills.Where(skill => skill != skillId && GetSkillLevel(skill) > 0).ToList();
                 if (existingRKeySkills.Count > 0)
                 {
-                    restrictionMessage = $"원거리 액티브 스킬은 1개만 선택 가능 (현재: {string.Join(", ", existingRKeySkills)})";
+                    restrictionMessage = $"Only 1 ranged active skill allowed (current: {string.Join(", ", existingRKeySkills)})";
                     return false;
                 }
                 return true;
@@ -525,7 +525,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (conflictSkills.Count > 0)
                 {
-                    restrictionMessage = $"다른 무기의 근접 액티브 스킬이 이미 습득됨 (현재: {string.Join(", ", conflictSkills)})";
+                    restrictionMessage = $"Melee active skill from another weapon already learned (current: {string.Join(", ", conflictSkills)})";
                     return false;
                 }
 
@@ -551,7 +551,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (conflictSkills.Count > 0)
                 {
-                    restrictionMessage = $"다른 무기의 보조 액티브 스킬이 이미 습득됨 (현재: {string.Join(", ", conflictSkills)})";
+                    restrictionMessage = $"Sub active skill from another weapon already learned (current: {string.Join(", ", conflictSkills)})";
                     return false;
                 }
 
@@ -564,7 +564,7 @@ namespace CaptainSkillTree.SkillTree
                 var existingJobSkills = yKeySkills.Where(skill => skill != skillId && GetSkillLevel(skill) > 0).ToList();
                 if (existingJobSkills.Count > 0)
                 {
-                    restrictionMessage = $"직업 스킬은 1개만 선택 가능 (현재: {string.Join(", ", existingJobSkills)})";
+                    restrictionMessage = $"Only 1 job skill allowed (current: {string.Join(", ", existingJobSkills)})";
                     return false;
                 }
             }
@@ -623,7 +623,7 @@ namespace CaptainSkillTree.SkillTree
                 var existingRKeySkills = rKeySkills.Where(skill => skill != skillId && HasSkillOrPending(skill)).ToList();
                 if (existingRKeySkills.Count > 0)
                 {
-                    restrictionMessage = $"원거리 액티브는 1개만 선택 가능";
+                    restrictionMessage = $"Only 1 ranged active skill allowed";
                     return false;
                 }
                 return true;
@@ -671,7 +671,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (conflictSkills.Count > 0)
                 {
-                    restrictionMessage = $"다른 무기 액티브가 이미 선택됨";
+                    restrictionMessage = $"Active skill from another weapon already selected";
                     return false;
                 }
 
@@ -697,7 +697,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (conflictSkills.Count > 0)
                 {
-                    restrictionMessage = $"다른 무기 액티브가 이미 선택됨";
+                    restrictionMessage = $"Active skill from another weapon already selected";
                     return false;
                 }
 
@@ -710,7 +710,7 @@ namespace CaptainSkillTree.SkillTree
                 var existingJobSkills = yKeySkills.Where(skill => skill != skillId && HasSkillOrPending(skill)).ToList();
                 if (existingJobSkills.Count > 0)
                 {
-                    restrictionMessage = $"직업은 1개만 선택 가능";
+                    restrictionMessage = $"Only 1 job class allowed";
                     return false;
                 }
             }
@@ -828,65 +828,44 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                Plugin.Log.LogInfo($"[생산 스킬 검증] 시작: {skillId}");
-                
                 var player = Player.m_localPlayer;
-                if (player == null) 
-                {
-                    Plugin.Log.LogInfo($"[생산 스킬 검증] 플레이어 null");
-                    return false;
-                }
+                if (player == null) return false;
 
                 // 1. ItemRequirement 시스템을 통한 요구사항 확인
                 if (SkillItemRequirements.IsProductionSkill(skillId))
                 {
-                    Plugin.Log.LogInfo($"[생산 스킬 검증] {skillId}는 생산 스킬임");
-                    
                     var requirements = SkillItemRequirements.GetRequirements(skillId);
-                    Plugin.Log.LogInfo($"[생산 스킬 검증] {skillId} 요구사항 개수: {requirements.Count}");
-                    
+
                     if (requirements.Count > 0)
                     {
                         var inventory = player.GetInventory();
-                        if (inventory == null) 
-                        {
-                            Plugin.Log.LogInfo($"[생산 스킬 검증] 인벤토리 null");
-                            return false;
-                        }
-                        
+                        if (inventory == null) return false;
+
                         // 각 요구사항 확인
                         foreach (var req in requirements)
                         {
-                            Plugin.Log.LogInfo($"[생산 스킬 검증] 요구사항 확인: {req.ItemName} x{req.Quantity} ({req.GetType().Name})");
-                            
                             if (req is ItemEquipRequirement equipReq)
                             {
                                 // 장착 조건 확인
                                 if (!IsItemEquipped(player, equipReq.ItemName))
                                 {
-                                    Plugin.Log.LogInfo($"[생산 스킬] 장착 조건 미충족 ({skillId}): {equipReq.DisplayName} 착용 필요");
                                     return false;
                                 }
-                                Plugin.Log.LogInfo($"[생산 스킬 검증] 장착 조건 충족: {equipReq.DisplayName}");
                             }
                             else if (req is ItemEquipConsumeRequirement equipConsumeReq)
                             {
                                 // 장착 후 소모 조건 확인 - 착용 여부만 체크 (소모는 스킬 학습 시)
                                 if (!IsItemEquipped(player, equipConsumeReq.ItemName))
                                 {
-                                    Plugin.Log.LogInfo($"[생산 스킬] 장착 후 소모 조건 미충족 ({skillId}): {equipConsumeReq.DisplayName} 착용 필요");
                                     return false;
                                 }
-                                Plugin.Log.LogInfo($"[생산 스킬 검증] 장착 후 소모 조건 충족: {equipConsumeReq.DisplayName}");
                             }
                             else if (req is ItemQuantityRequirement qtyReq)
                             {
                                 // 수량 조건 확인 - 스택된 아이템 올바르게 집계
                                 int ownedCount = CountUnequippedItems(inventory, qtyReq.ItemName);
-                                Plugin.Log.LogInfo($"[생산 스킬 검증] 수량 확인: {qtyReq.ItemName} 보유량 {ownedCount}, 필요량 {qtyReq.Quantity}");
                                 if (ownedCount < qtyReq.Quantity)
                                 {
-                                    Plugin.Log.LogInfo($"[생산 스킬] 수량 조건 미충족 ({skillId}): {qtyReq.DisplayName} {ownedCount}/{qtyReq.Quantity}");
                                     return false;
                                 }
                             }
@@ -894,85 +873,40 @@ namespace CaptainSkillTree.SkillTree
                             {
                                 // 일반 아이템 조건 확인 - ItemManager의 메서드 사용하여 스택된 아이템 올바르게 집계
                                 int ownedCount = CountUnequippedItems(inventory, req.ItemName);
-                                Plugin.Log.LogInfo($"[생산 스킬 검증] 일반 아이템 확인: '{req.ItemName}' (표시명: {req.DisplayName}) 보유량 {ownedCount}, 필요량 {req.Quantity}");
-                                
-                                // 인벤토리의 모든 아이템 확인 (디버깅용)
-                                var allItems = inventory.GetAllItems();
-                                Plugin.Log.LogInfo($"[생산 스킬 검증] 인벤토리 총 아이템 수: {allItems.Count}");
-                                foreach (var item in allItems)
-                                {
-                                    if (item?.m_dropPrefab?.name != null)
-                                    {
-                                        Plugin.Log.LogInfo($"[생산 스킬 검증] 인벤토리 아이템: '{item.m_dropPrefab.name}' x{item.m_stack} (공유 이름: {item.m_shared?.m_name})");
-                                        
-                                        // Wood 관련 아이템 특별 체크
-                                        if (item.m_dropPrefab.name.Contains("Wood") || item.m_dropPrefab.name.Contains("wood") || 
-                                            (item.m_shared?.m_name != null && (item.m_shared.m_name.Contains("Wood") || item.m_shared.m_name.Contains("나무"))))
-                                        {
-                                            Plugin.Log.LogInfo($"[생산 스킬 검증] ★ Wood 관련 아이템 발견: '{item.m_dropPrefab.name}' x{item.m_stack}");
-                                        }
-                                    }
-                                }
-                                
+
                                 if (ownedCount < req.Quantity)
                                 {
-                                    Plugin.Log.LogInfo($"[생산 스킬] 아이템 조건 미충족 ({skillId}): {req.DisplayName} {ownedCount}/{req.Quantity}");
                                     return false;
                                 }
                             }
                         }
-                        Plugin.Log.LogInfo($"[생산 스킬 검증] 모든 아이템 요구사항 충족");
                     }
                 }
-                else
-                {
-                    Plugin.Log.LogInfo($"[생산 스킬 검증] {skillId}는 일반 스킬임");
-                }
 
-                if (!SkillNodes.ContainsKey(skillId))
-                {
-                    Plugin.Log.LogInfo($"[생산 스킬 검증] 스킬 노드를 찾을 수 없음: {skillId}");
-                    return false;
-                }
-                
+                if (!SkillNodes.ContainsKey(skillId)) return false;
+
                 var node = SkillNodes[skillId];
-                
+
                 // 2. 최대 레벨 체크
                 int currentLevel = GetSkillLevel(skillId);
-                Plugin.Log.LogInfo($"[생산 스킬 검증] 현재 레벨: {currentLevel}, 최대 레벨: {node.MaxLevel}");
-                if (currentLevel >= node.MaxLevel) 
-                {
-                    Plugin.Log.LogInfo($"[생산 스킬 검증] 최대 레벨 도달");
-                    return false;
-                }
-                
+                if (currentLevel >= node.MaxLevel) return false;
+
                 // 3. 전제조건 체크
                 if (node.Prerequisites != null && node.Prerequisites.Count > 0)
                 {
-                    Plugin.Log.LogInfo($"[생산 스킬 검증] 전제조건 확인: {node.Prerequisites.Count}개");
                     bool hasAnyPrerequisite = false;
                     foreach (var preId in node.Prerequisites)
                     {
                         int preLevel = GetSkillLevel(preId);
-                        Plugin.Log.LogInfo($"[생산 스킬 검증] 전제조건 {preId}: 레벨 {preLevel}");
                         if (preLevel > 0)
                         {
                             hasAnyPrerequisite = true;
                             break;
                         }
                     }
-                    if (!hasAnyPrerequisite) 
-                    {
-                        Plugin.Log.LogInfo($"[생산 스킬 검증] 전제조건 미충족");
-                        return false;
-                    }
+                    if (!hasAnyPrerequisite) return false;
                 }
-                else
-                {
-                    Plugin.Log.LogInfo($"[생산 스킬 검증] 전제조건 없음");
-                }
-                
-                Plugin.Log.LogInfo($"[생산 스킬 검증] 모든 조건 충족: {skillId}");
+
                 return true;
             }
             catch (System.Exception ex)

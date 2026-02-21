@@ -50,14 +50,15 @@ namespace CaptainSkillTree.SkillTree
         
         /// <summary>
         /// 프리팹 이름에 단검 관련 키워드가 포함되어 있는지 확인
+        /// Claw/claw, Dagger/dagger 포함
         /// </summary>
         private static bool ContainsDaggerKeyword(string name)
         {
             if (string.IsNullOrEmpty(name)) return false;
-            
-            string[] daggerKeywords = { "knives", "knife", "dagger" };
+
+            string[] daggerKeywords = { "knives", "knife", "dagger", "claw" };
             string lowerName = name.ToLower();
-            
+
             foreach (string keyword in daggerKeywords)
             {
                 if (lowerName.Contains(keyword))
@@ -65,7 +66,7 @@ namespace CaptainSkillTree.SkillTree
                     return true;
                 }
             }
-            
+
             return false;
         }
 
@@ -252,33 +253,36 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 암살술 - 백스탭 공격력 증가
+        /// 암살술 - 3연속 공격 시 스태거 발동
         /// </summary>
-        public static void ApplyKnifeAssassinationBonus(Player player, ref HitData hit, Character targetCharacter)
+        public static void ApplyKnifeAssassinationBonus(Player player, Character target)
         {
             if (!SkillEffect.HasSkill("knife_step8_assassination") || !IsUsingDagger(player)) return;
+            if (target == null || target.IsDead()) return;
 
             try
             {
-                // 백스탭 조건 확인 (적의 뒤에서 공격)
-                bool isBackstab = SkillEffect.IsBackstab(player, targetCharacter);
+                int hitCount = SkillEffect.GetConsecutiveHits(player);
+                int required = Knife_Config.KnifeAssassinationRequiredHitsValue;
 
-                if (isBackstab)
+                if (hitCount >= required)
                 {
-                    float backstabBonus = Knife_Config.KnifeAssassinationCritMultiplierValue / 100f;
-                    hit.m_damage.m_slash *= (1f + backstabBonus);
-                    hit.m_damage.m_pierce *= (1f + backstabBonus);
-
-                    SkillEffect.ShowSkillEffectText(player,
-                        $"🗡️ 암살술 - 백스탭! (+{Knife_Config.KnifeAssassinationCritMultiplierValue}%)",
-                        Color.magenta, SkillEffect.SkillEffectTextType.Combat);
-
-                    Plugin.Log.LogDebug($"[암살술] 백스탭 공격 - 데미지 +{Knife_Config.KnifeAssassinationCritMultiplierValue}%");
+                    SkillEffect.ResetConsecutiveHits(player);
+                    float chance = Knife_Config.KnifeAssassinationStaggerChanceValue / 100f;
+                    if (UnityEngine.Random.value < chance)
+                    {
+                        Vector3 dir = (target.transform.position - player.transform.position).normalized;
+                        target.Stagger(dir);
+                        SkillEffect.ShowSkillEffectText(player,
+                            CaptainSkillTree.Localization.L.Get("knife_text_assassination_stagger"),
+                            Color.cyan, SkillEffect.SkillEffectTextType.Combat);
+                        Plugin.Log.LogDebug($"[암살술] {required}연속 공격 - 스태거 발동 ({Knife_Config.KnifeAssassinationStaggerChanceValue}% 확률)");
+                    }
                 }
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[암살술] 백스탭 보너스 적용 실패: {ex.Message}");
+                Plugin.Log.LogError($"[암살술] 스태거 적용 실패: {ex.Message}");
             }
         }
 
@@ -540,23 +544,17 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 float duration = Knife_Config.KnifeAssassinHeartDurationValue;
-                
+
                 // 기존 버프 제거
                 var hash = "KnifeAssassinHeartBuff".GetStableHashCode();
                 player.GetSEMan()?.RemoveStatusEffect(hash);
-                
-                // 새로운 버프 적용
+
+                // 새로운 버프 적용 (치명타 피해 배수만 유지)
                 var assassinHeartSE = ScriptableObject.CreateInstance<SE_Stats>();
                 assassinHeartSE.m_name = "암살자의 심장";
-                assassinHeartSE.m_tooltip = $"데미지 +{Knife_Config.KnifeAssassinHeartDamageBonusValue}%, " +
-                                           $"치명타 확률 +{Knife_Config.KnifeAssassinHeartCritChanceValue}%, " +
-                                           $"치명타 데미지 {Knife_Config.KnifeAssassinHeartCritDamageValue}배";
+                assassinHeartSE.m_tooltip = $"치명타 데미지 {Knife_Config.KnifeAssassinHeartCritDamageValue}배";
                 assassinHeartSE.m_ttl = duration;
-                
-                // 데미지 보너스 적용 (간단한 구현)
-                float damageBonus = Knife_Config.KnifeAssassinHeartDamageBonusValue / 100f;
-                assassinHeartSE.m_damageModifier = 1f + damageBonus;
-                
+
                 player.GetSEMan()?.AddStatusEffect(assassinHeartSE);
 
             }
@@ -622,11 +620,10 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 var weaponDamage = weapon.GetDamage();
-                float damageMultiplier = 1.0f + (Knife_Config.KnifeAssassinHeartDamageBonusValue / 100f);
 
                 HitData hit = new HitData();
-                hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
-                hit.m_damage.m_pierce = weaponDamage.m_pierce * damageMultiplier;
+                hit.m_damage.m_slash = weaponDamage.m_slash;
+                hit.m_damage.m_pierce = weaponDamage.m_pierce;
                 hit.m_point = target.GetCenterPoint();
                 hit.m_dir = (target.transform.position - player.transform.position).normalized;
                 hit.m_attacker = player.GetZDOID();
@@ -736,65 +733,5 @@ namespace CaptainSkillTree.SkillTree
         }
 
         #endregion
-
-        #region 비틀거림 보너스
-
-        /// <summary>
-        /// 암살자 스킬 비틀거림 공격력 보너스 가져오기
-        /// </summary>
-        public static float GetKnifeStaggerBonus(Player player)
-        {
-            if (!SkillEffect.HasSkill("knife_step7_execution") || !IsUsingDagger(player)) return 0f;
-
-            return Knife_Config.KnifeExecutionStaggerBonusValue / 100f;
-        }
-
-        /// <summary>
-        /// HitData에 비틀거림 보너스 적용
-        /// </summary>
-        public static void ApplyKnifeStaggerBonus(Player player, ref HitData hit)
-        {
-            if (player == null || hit == null) return;
-
-            float staggerBonus = GetKnifeStaggerBonus(player);
-            if (staggerBonus > 0f)
-            {
-                hit.m_staggerMultiplier *= (1f + staggerBonus);
-            }
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// 단검 암살자 스킬 - 비틀거림 공격력 보너스 패치
-    /// </summary>
-    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
-    public static class Knife_Character_Damage_StaggerPatch
-    {
-        /// <summary>
-        /// Character.Damage 실행 전 - 단검 비틀거림 보너스 적용
-        /// </summary>
-        static void Prefix(Character __instance, ref HitData hit)
-        {
-            try
-            {
-                if (hit == null) return;
-
-                // 공격자가 플레이어인지 확인
-                var attacker = hit.GetAttacker();
-                if (attacker == null || !(attacker is Player player)) return;
-
-                // 단검 사용 중인지 확인
-                if (!Knife_Skill.IsUsingDagger(player)) return;
-
-                // 비틀거림 보너스 적용
-                Knife_Skill.ApplyKnifeStaggerBonus(player, ref hit);
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[암살자] 비틀거림 보너스 적용 실패: {ex.Message}");
-            }
-        }
     }
 }

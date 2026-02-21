@@ -17,6 +17,7 @@ namespace CaptainSkillTree.SkillTree
         // === 정적 필드 ===
         public static bool isChargingFuryHammer = false;
         private static Dictionary<Player, Coroutine> furyHammerCoroutine = new Dictionary<Player, Coroutine>();
+        private static Dictionary<Player, bool> furyHammer1stHitBuff = new Dictionary<Player, bool>(); // 1타 공격속도 버프
         private static float lastMaceSkillTime = 0f;
 
         // === 하드코딩 상수 (수정 불가) ===
@@ -92,6 +93,25 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 분노의 망치 1타 공격속도 버프 활성 상태 확인
+        /// AnimationSpeedManager와 통합 사용
+        /// </summary>
+        public static bool IsFuryHammer1stHitBuffActive(Player player)
+        {
+            if (player == null) return false;
+            return furyHammer1stHitBuff.ContainsKey(player) && furyHammer1stHitBuff[player];
+        }
+
+        /// <summary>
+        /// 분노의 망치 1타 공격속도 버프 보너스 (%)
+        /// AnimationSpeedManager가 GetTotalAttackSpeedBonus()를 통해 자동 적용
+        /// </summary>
+        public static float GetFuryHammer1stHitSpeedBonus(Player player)
+        {
+            return IsFuryHammer1stHitBuffActive(player) ? 200f : 0f;
+        }
+
+        /// <summary>
         /// 분노의 망치 스킬 효과 적용 (5연타)
         /// VFX 규칙 준수: VFXManager.PlayVFXMultiplayer 사용
         /// </summary>
@@ -135,13 +155,17 @@ namespace CaptainSkillTree.SkillTree
 
             int totalHits = 0;
 
-            // 1. 세컨더리 공격 모션 1회 재생 (두손 둔기 내려찍기)
-            player.StartAttack(null, true);
-            Plugin.Log.LogInfo("[분노의 망치 디버그] 세컨더리 공격 모션 시작");
+            // 1. 1타 공격속도 버프 활성화 (AnimationSpeedManager가 자동 적용)
+            furyHammer1stHitBuff[player] = true;
+            Plugin.Log.LogInfo("[분노의 망치] 1타 공격속도 버프 활성화 (+200%)");
 
-            // ✅ 세컨더리 공격 모션 완료 대기 (내려찍기 모션 완료 시점에 1타 시작)
-            Plugin.Log.LogInfo("[분노의 망치] 세컨더리 공격 모션 완료 대기 (0.8초)...");
-            yield return new WaitForSeconds(0.8f);
+            // 2. 세컨더리 공격 모션 1회 재생 (AnimationSpeedManager가 3배속 적용)
+            player.StartAttack(null, true);
+            Plugin.Log.LogInfo("[분노의 망치] 세컨더리 공격 모션 시작 (버프 적용됨)");
+
+            // ✅ 세컨더리 공격 모션 완료 대기 (3배 빠르므로 0.8 / 3 = 0.27초)
+            Plugin.Log.LogInfo("[분노의 망치] 세컨더리 공격 모션 완료 대기 (0.27초)...");
+            yield return new WaitForSeconds(0.27f);
 
             // 모션 완료 후 사망 체크
             if (player == null || player.IsDead())
@@ -150,15 +174,22 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
+            // 3. 1타 공격속도 버프 비활성화 (세컨더리 공격 모션 완료)
+            if (furyHammer1stHitBuff.ContainsKey(player))
+            {
+                furyHammer1stHitBuff[player] = false;
+                Plugin.Log.LogInfo("[분노의 망치] 1타 공격속도 버프 비활성화");
+            }
+
             Plugin.Log.LogInfo("[분노의 망치] 세컨더리 공격 모션 완료 - 5연타 시작!");
 
             // 2. 데미지 5회 자동 적용 (각 타격마다 VFX)
             Plugin.Log.LogInfo("[분노의 망치 디버그] ========== 5연타 루프 시작 ==========");
 
-            // ✅ 스킬 시작 위치 고정 (VFX가 이 위치에서 순차적으로 표시)
-            Vector3 fixedVfxOffset = player.transform.forward * 2f;
+            // ✅ 스킬 시작 위치: 화면 중앙 카메라 방향
+            Vector3 fixedVfxOffset = player.GetLookDir() * 2f;
             Vector3 fixedVfxPosition = player.transform.position + fixedVfxOffset;
-            Plugin.Log.LogInfo($"[분노의 망치] 스킬 시작 위치 고정: {fixedVfxPosition}");
+            Plugin.Log.LogInfo($"[분노의 망치] 스킬 시작 위치 (카메라 방향): {fixedVfxPosition}");
 
             for (int i = 0; i < attackCount; i++)
             {
@@ -281,18 +312,27 @@ namespace CaptainSkillTree.SkillTree
 
                 Plugin.Log.LogInfo($"[분노의 망치 디버그] {i + 1}타 데미지 적용 완료 - 적중: {hitCount}명, 총 적중: {totalHits}명");
 
+                // ✅ 1타에만 중력효과 적용
+                if (i == 0)
+                {
+                    int pulledCount = ApplyGravityEffect(player, aoeRadius, 500f, fixedVfxPosition);
+                    SkillEffect.DrawFloatingText(player, $"🌀 중력! {pulledCount}마리 끌어당김", new Color(0.6f, 0.4f, 1f));
+                    Plugin.Log.LogInfo($"[분노의 망치] 1타 중력효과: {pulledCount}마리 끌어당김");
+                }
+
                 // 플로팅 텍스트 (데미지 단계별)
                 string comboText = L.Get("fury_hammer_combo_hit", (i + 1).ToString(), $"{damageMultiplier:P0}", hitCount.ToString());
                 SkillEffect.DrawFloatingText(player, comboText, Color.red);
 
                 Plugin.Log.LogInfo($"[분노의 망치 디버그] {i + 1}타 완료 - 데미지: {totalDamage:F0}, 배율: {damageMultiplier:F2}x, 적중: {hitCount}명");
 
-                // 데미지 간 딜레이 (1~4타: 0.8초 간격, 마지막 데미지 후에는 딜레이 없음)
+                // 데미지 간 딜레이 (모든 타격 동일)
                 if (i < attackCount - 1)
                 {
-                    Plugin.Log.LogInfo($"[분노의 망치 디버그] {i + 1}타 → {i + 2}타 딜레이 0.8초 시작 (플레이어 Health: {player.GetHealth():F1})");
-                    yield return new WaitForSeconds(0.8f); // 1~4타 간격: 0.8초
-                    Plugin.Log.LogInfo($"[분노의 망치 디버그] {i + 1}타 → {i + 2}타 딜레이 0.8초 완료");
+                    float delayTime = ATTACK_INTERVAL; // 0.5초 고정
+                    Plugin.Log.LogInfo($"[분노의 망치 디버그] {i + 1}타 → {i + 2}타 딜레이 {delayTime}초 시작 (플레이어 Health: {player.GetHealth():F1})");
+                    yield return new WaitForSeconds(delayTime);
+                    Plugin.Log.LogInfo($"[분노의 망치 디버그] {i + 1}타 → {i + 2}타 딜레이 {delayTime}초 완료");
 
                     // ✅ 대기 직후 사망 체크 (메이지 패턴)
                     if (player == null || player.IsDead())
@@ -353,10 +393,68 @@ namespace CaptainSkillTree.SkillTree
                 {
                     isChargingFuryHammer = false;
                 }
+
+                // 3. 1타 공격속도 버프 정리
+                if (furyHammer1stHitBuff.ContainsKey(player))
+                {
+                    furyHammer1stHitBuff.Remove(player);
+                    Plugin.Log.LogInfo("[분노의 망치] 1타 공격속도 버프 정리 완료");
+                }
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[분노의 망치] 정리 실패: {ex.Message}\n{ex.StackTrace}");
+            }
+        }
+
+        /// <summary>
+        /// 중력효과: 주변 몬스터를 지정 위치로 끌어당김 (1타 전용)
+        /// </summary>
+        private static int ApplyGravityEffect(Player player, float radius, float force, Vector3 pullTarget)
+        {
+            try
+            {
+                Vector3 playerPos = player.transform.position;
+
+                // 범위 내 몬스터 탐지
+                var mobs = Character.GetAllCharacters()
+                    .Where(c => c.IsMonsterFaction(0f) && !c.IsDead())
+                    .Where(c => Vector3.Distance(c.transform.position, playerPos) <= radius)
+                    .ToList();
+
+                int pulledCount = 0;
+
+                foreach (var mob in mobs)
+                {
+                    // Rigidbody 가져오기
+                    var rb = mob.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        // 끌어당기는 방향 계산
+                        Vector3 pullDirection = (pullTarget - mob.transform.position).normalized;
+
+                        // 힘 적용 (ForceMode.Impulse - 순간 충격)
+                        rb.AddForce(pullDirection * force, ForceMode.Impulse);
+                        pulledCount++;
+                        Plugin.Log.LogDebug($"[중력효과] {mob.GetHoverName()} - AddForce {pullDirection * force}");
+                    }
+                    else
+                    {
+                        // Fallback: Rigidbody 없는 몬스터는 직접 이동
+                        Vector3 newPosition = Vector3.Lerp(mob.transform.position, pullTarget, 0.5f);
+                        mob.transform.position = newPosition;
+                        pulledCount++;
+                        Plugin.Log.LogDebug($"[중력효과] {mob.GetHoverName()} - Lerp 이동");
+                    }
+                }
+
+                Plugin.Log.LogInfo($"[중력효과] {pulledCount}마리 끌어당김 완료");
+                return pulledCount;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[중력효과] 오류: {ex.Message}");
+                return 0;
             }
         }
     }

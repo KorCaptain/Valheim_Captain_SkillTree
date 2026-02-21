@@ -47,42 +47,42 @@ namespace CaptainSkillTree.SkillTree
                     "Archer Job Skills",
                     "Archer_MultiShot_ArrowCount",
                     5,
-                    "아처 멀티샷 - 발사할 화살 수"
+                    "아처 멀티샷 - 발사할 화살 수 / Archer Multishot - Arrows to Fire"
                 );
 
                 ArcherMultiShotArrowConsumption = SkillTreeConfig.BindServerSync(config,
-                    "Archer Job Skills", 
+                    "Archer Job Skills",
                     "Archer_MultiShot_ArrowConsumption",
                     1,
-                    "아처 멀티샷 - 화살 소모량"
+                    "아처 멀티샷 - 화살 소모량 / Archer Multishot - Arrow Consumption"
                 );
 
                 ArcherMultiShotDamagePercent = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
-                    "Archer_MultiShot_DamagePercent", 
+                    "Archer_MultiShot_DamagePercent",
                     50.0f,
-                    "아처 멀티샷 - 화살당 데미지 비율 (%)"
+                    "아처 멀티샷 - 화살당 데미지 비율 (%) / Archer Multishot - Damage Per Arrow (%)"
                 );
 
                 ArcherMultiShotCooldown = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
                     "Archer_MultiShot_Cooldown",
                     30.0f,
-                    "아처 멀티샷 - 쿨타임 (초)"
+                    "아처 멀티샷 - 쿨타임 (초) / Archer Multishot - Cooldown (sec)"
                 );
 
                 ArcherMultiShotCharges = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
                     "Archer_MultiShot_Charges",
                     2,
-                    "아처 멀티샷 - 발사 회수"
+                    "아처 멀티샷 - 발사 회수 / Archer Multishot - Shot Charges"
                 );
 
                 ArcherMultiShotStaminaCost = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
                     "Archer_MultiShot_StaminaCost",
                     25.0f,
-                    "아처 멀티샷 - 소모 스태미나"
+                    "아처 멀티샷 - 소모 스태미나 / Archer Multishot - Stamina Cost"
                 );
 
                 // === 아처 패시브 스킬 설정 ===
@@ -90,14 +90,14 @@ namespace CaptainSkillTree.SkillTree
                     "Archer Job Skills",
                     "Archer_JumpHeightBonus",
                     20.0f,
-                    "아처 패시브 - 점프 높이 보너스 (%)"
+                    "아처 패시브 - 점프 높이 보너스 (%) / Archer Passive - Jump Height Bonus (%)"
                 );
 
                 ArcherFallDamageReduction = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
                     "Archer_FallDamageReduction",
                     50.0f,
-                    "아처 패시브 - 낙사 데미지 감소 (%)"
+                    "아처 패시브 - 낙사 데미지 감소 (%) / Archer Passive - Fall Damage Reduction (%)"
                 );
 
                 Plugin.Log.LogDebug("[아처 컨피그] 설정 항목 생성 완료 (액티브 + 패시브)");

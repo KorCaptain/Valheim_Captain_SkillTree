@@ -109,7 +109,7 @@ namespace CaptainSkillTree.SkillTree
             if (speedMeleeComboCount[player] >= 2)
             {
                 meleeComboSpeedEndTime[player] = currentTime + SkillTreeConfig.SpeedMeleeComboDurationValue;
-                PlaySkillEffect(player, "melee_combo");
+                // 패시브 스킬: VFX/SFX 사용 금지 (CLAUDE.md 규칙)
                 ShowSkillEffectText(player,
                     $"⚔️ {L.Get("consecutive_flow")}",
                     new Color(0.3f, 0.7f, 1f), SkillEffectTextType.Combat);
@@ -147,7 +147,7 @@ namespace CaptainSkillTree.SkillTree
             if (bowComboCount[player] >= 2)
             {
                 bowExpertStaminaEndTime[player] = currentTime + SkillTreeConfig.SpeedBowExpertDurationValue;
-                PlaySkillEffect(player, "bow_speed2");
+                // 패시브 스킬: VFX/SFX 사용 금지 (CLAUDE.md 규칙)
                 ShowSkillEffectText(player,
                     $"🏹 {L.Get("bow_expert_mastery")}",
                     new Color(0.4f, 0.8f, 1f), SkillEffectTextType.Combat);
@@ -164,8 +164,8 @@ namespace CaptainSkillTree.SkillTree
             
             float currentTime = Time.time;
             crossbowExpertSpeedEndTime[player] = currentTime + SkillTreeConfig.SpeedCrossbowExpertDurationValue;
-            
-            PlaySkillEffect(player, "crossbow_reload2");
+
+            // 패시브 스킬: VFX/SFX 사용 금지 (CLAUDE.md 규칙)
             ShowSkillEffectText(player,
                 $"⚡ {L.Get("crossbow_expert_mastery")}",
                 new Color(0.2f, 0.9f, 1f), SkillEffectTextType.Combat);
@@ -262,14 +262,18 @@ namespace CaptainSkillTree.SkillTree
                 {
                     float speedBaseValue = SkillTreeConfig.SpeedBaseAttackSpeedValue;
                     bonus += speedBaseValue;
+                    Plugin.Log.LogDebug($"[공속] speed_base: +{speedBaseValue}%");
                 }
 
                 // 검 빠른 베기 (sword_step1_fastslash) - 검 착용 시만
                 if (HasSkill("sword_step1_fastslash"))
                 {
+                    Plugin.Log.LogDebug($"[공속] sword_step1_fastslash 스킬 보유, 무기타입: {weapon.m_shared.m_skillType}");
                     if (weapon.m_shared.m_skillType == Skills.SkillType.Swords)
                     {
-                        bonus += SkillTreeConfig.SwordStep1FastSlashSpeedValue;
+                        float swordSpeedValue = SkillTreeConfig.SwordStep1FastSlashSpeedValue;
+                        bonus += swordSpeedValue;
+                        Plugin.Log.LogDebug($"[공속] 검 빠른 베기: +{swordSpeedValue}%");
                     }
                 }
 
@@ -389,6 +393,21 @@ namespace CaptainSkillTree.SkillTree
                 {
                     bonus += assassinHeartBonus;
                     Plugin.Log.LogDebug($"[공속] 암살자의 심장: +{assassinHeartBonus}%");
+                }
+
+                // 로그 직업 패시브 공격속도 보너스 (AnimationSpeedManager 통합)
+                if (RogueSkills.IsRogue(player))
+                {
+                    float rogueBonus = Rogue_Config.RogueAttackSpeedBonusValue;
+                    bonus += rogueBonus;
+                    Plugin.Log.LogDebug($"[공속] 로그 패시브: +{rogueBonus}%");
+                }
+
+
+                // 최종 보너스 로그 출력
+                if (bonus > 0f)
+                {
+                    Plugin.Log.LogDebug($"[공속] 최종 보너스: {bonus:F1}% (무기: {weapon.m_shared.m_name})");
                 }
 
                 return bonus;

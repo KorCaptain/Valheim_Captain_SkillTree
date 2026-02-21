@@ -48,77 +48,77 @@ namespace CaptainSkillTree.SkillTree
                 
                 // === 전장의 함성 기본 설정 ===
                 TankerTauntCooldown = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Taunt_Cooldown", 
-                    60f, 
-                    "전장의 함성 - 쿨타임 (초)"
+                    "Tanker Job Skills",
+                    "Tanker_Taunt_Cooldown",
+                    60f,
+                    "전장의 함성 - 쿨타임 (초) / War Cry - Cooldown (sec)"
                 );
                 
                 TankerTauntStaminaCost = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Taunt_StaminaCost", 
-                    25f, 
-                    "전장의 함성 - 스태미나 소모"
+                    "Tanker Job Skills",
+                    "Tanker_Taunt_StaminaCost",
+                    25f,
+                    "전장의 함성 - 스태미나 소모 / War Cry - Stamina Cost"
                 );
                 
                 TankerTauntRange = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Taunt_Range", 
-                    12f, 
-                    "전장의 함성 - 도발 범위 (m)"
+                    "Tanker Job Skills",
+                    "Tanker_Taunt_Range",
+                    12f,
+                    "전장의 함성 - 도발 범위 (m) / War Cry - Taunt Range (m)"
                 );
                 
                 // === 도발 지속시간 설정 ===
                 TankerTauntDuration = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Taunt_Duration", 
-                    5f, 
-                    "전장의 함성 - 일반 몬스터 도발 지속시간 (초)"
+                    "Tanker Job Skills",
+                    "Tanker_Taunt_Duration",
+                    5f,
+                    "전장의 함성 - 일반 몬스터 도발 지속시간 (초) / War Cry - Normal Monster Taunt Duration (sec)"
                 );
                 
                 TankerTauntBossDuration = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Taunt_BossDuration", 
-                    1f, 
-                    "전장의 함성 - 보스 도발 지속시간 (초)"
+                    "Tanker Job Skills",
+                    "Tanker_Taunt_BossDuration",
+                    1f,
+                    "전장의 함성 - 보스 도발 지속시간 (초) / War Cry - Boss Taunt Duration (sec)"
                 );
                 
                 // === 피해 감소 효과 설정 ===
                 TankerTauntDamageReduction = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Taunt_DamageReduction", 
-                    20f, 
-                    "전장의 함성 - 자신이 받는 피해 감소 (%)"
+                    "Tanker Job Skills",
+                    "Tanker_Taunt_DamageReduction",
+                    20f,
+                    "전장의 함성 - 자신이 받는 피해 감소 (%) / War Cry - Self Damage Reduction (%)"
                 );
                 
                 TankerTauntBuffDuration = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Taunt_BuffDuration", 
-                    5f, 
-                    "전장의 함성 - 피해 감소 버프 지속시간 (초)"
+                    "Tanker Job Skills",
+                    "Tanker_Taunt_BuffDuration",
+                    5f,
+                    "전장의 함성 - 피해 감소 버프 지속시간 (초) / War Cry - Damage Reduction Buff Duration (sec)"
                 );
                 
                 // === 시각 효과 설정 ===
                 TankerTauntEffectHeight = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Taunt_EffectHeight", 
-                    2.0f, 
-                    "전장의 함성 - 몬스터 머리위 taunt 효과 높이 (m)"
+                    "Tanker Job Skills",
+                    "Tanker_Taunt_EffectHeight",
+                    2.0f,
+                    "전장의 함성 - 몬스터 머리위 taunt 효과 높이 (m) / War Cry - Taunt Effect Height Above Monster (m)"
                 );
                 
                 TankerTauntEffectScale = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Taunt_EffectScale", 
-                    0.3f, 
-                    "전장의 함성 - taunt 효과 크기 배율 (30% 크기)"
+                    "Tanker Job Skills",
+                    "Tanker_Taunt_EffectScale",
+                    0.3f,
+                    "전장의 함성 - taunt 효과 크기 배율 (30% 크기) / War Cry - Taunt Effect Scale (30% size)"
                 );
                 
                 // === 패시브 효과 설정 ===
                 TankerPassiveDamageReduction = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills", 
-                    "Tanker_Passive_DamageReduction", 
-                    15f, 
-                    "탱커 패시브 - 받는 피해량 감소 (%)"
+                    "Tanker Job Skills",
+                    "Tanker_Passive_DamageReduction",
+                    15f,
+                    "탱커 패시브 - 받는 피해량 감소 (%) / Tanker Passive - Damage Taken Reduction (%)"
                 );
                 
                 Plugin.Log.LogDebug("[탱커 컨피그] 설정 항목 생성 완료");

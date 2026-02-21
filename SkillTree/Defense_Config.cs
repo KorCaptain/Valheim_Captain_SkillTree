@@ -410,283 +410,283 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             DefenseRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier0_방어전문가_필요포인트", 2,
-                "Tier 0: 방어 전문가(defense_root) - 필요 포인트");
+                "Defense Tree", "Tier0_DefenseExpert_RequiredPoints", 2,
+                "Tier 0: Defense Expert (defense_root) - Required Points");
 
             DefenseStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier1_피부경화_필요포인트", 2,
-                "Tier 1: 피부경화(defense_Step1_survival) - 필요 포인트");
+                "Defense Tree", "Tier1_SkinHardening_RequiredPoints", 2,
+                "Tier 1: Skin Hardening (defense_Step1_survival) - Required Points");
 
             DefenseStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier2_심신체력_필요포인트", 2,
-                "Tier 2: 심신단련/체력단련 - 필요 포인트");
+                "Defense Tree", "Tier2_MindBodyHealth_RequiredPoints", 2,
+                "Tier 2: Mind-Body Training / Health Training - Required Points");
 
             DefenseStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier3_단전회피체력방패_필요포인트", 3,
-                "Tier 3: 단전호흡/회피단련/체력증강/방패훈련 - 필요 포인트");
+                "Defense Tree", "Tier3_CoreDodgeBoostShield_RequiredPoints", 3,
+                "Tier 3: Core Breathing / Dodge Training / Health Boost / Shield Training - Required Points");
 
             DefenseStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier4_충격발구바위_필요포인트", 3,
-                "Tier 4: 충격파방출/발구르기/바위피부 - 필요 포인트");
+                "Defense Tree", "Tier4_ShockwaveStompRock_RequiredPoints", 3,
+                "Tier 4: Shockwave Release / Ground Stomp / Rock Skin - Required Points");
 
             DefenseStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier5_지구기민트롤막기_필요포인트", 3,
-                "Tier 5: 지구력/기민함/트롤의재생력/막기달인 - 필요 포인트");
+                "Defense Tree", "Tier5_EndureAgileRegenParry_RequiredPoints", 3,
+                "Tier 5: Endurance / Agility / Troll Regen / Block Master - Required Points");
 
             DefenseStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier6_최종스킬_필요포인트", 4,
-                "Tier 6: 최종 스킬들 - 필요 포인트");
+                "Defense Tree", "Tier6_FinalSkills_RequiredPoints", 4,
+                "Tier 6: Final Skills - Required Points");
 
             // ===========================================
-            // Tier 0: 방어 전문가
+            // Tier 0: Defense Expert
             // ===========================================
 
             DefenseRootHealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier0_방어전문가_체력보너스",
+                "Tier0_DefenseExpert_HPBonus",
                 5f,
-                "Tier 0: 방어 전문가(defense_root) - 체력 보너스"
+                "Tier 0: Defense Expert (defense_root) - Health Bonus"
             );
 
             DefenseRootArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier0_방어전문가_방어력보너스",
+                "Tier0_DefenseExpert_ArmorBonus",
                 2f,
-                "Tier 0: 방어 전문가(defense_root) - 방어력 보너스"
+                "Tier 0: Defense Expert (defense_root) - Armor Bonus"
             );
 
             // ===========================================
-            // Tier 1: 피부경화
+            // Tier 1: Skin Hardening
             // ===========================================
 
             SurvivalHealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier1_피부경화_체력보너스",
+                "Tier1_SkinHardening_HPBonus",
                 5f,
-                "Tier 1: 피부경화(defense_Step1_survival) - 체력 보너스"
+                "Tier 1: Skin Hardening (defense_Step1_survival) - Health Bonus"
             );
 
             SurvivalArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier1_피부경화_방어력보너스",
+                "Tier1_SkinHardening_ArmorBonus",
                 5f,
-                "Tier 1: 피부경화(defense_Step1_survival) - 방어력 보너스"
+                "Tier 1: Skin Hardening (defense_Step1_survival) - Armor Bonus"
             );
 
             // ===========================================
-            // Tier 2: 심신단련, 체력단련
+            // Tier 2: Mind-Body Training, Health Training
             // ===========================================
 
             DodgeStaminaBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier2_심신단련_스태미나보너스",
+                "Tier2_MindBodyTraining_StaminaBonus",
                 25f,
-                "Tier 2: 심신단련(defense_Step2_dodge) - 스태미나 보너스"
+                "Tier 2: Mind-Body Training (defense_Step2_dodge) - Stamina Bonus"
             );
 
             DodgeEitrBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier2_심신단련_에이트르보너스",
+                "Tier2_MindBodyTraining_EitrBonus",
                 25f,
-                "Tier 2: 심신단련(defense_Step2_dodge) - 에이트르 보너스"
+                "Tier 2: Mind-Body Training (defense_Step2_dodge) - Eitr Bonus"
             );
 
             HealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier2_체력단련_체력보너스",
+                "Tier2_HealthTraining_HPBonus",
                 20f,
-                "Tier 2: 체력단련(defense_Step2_health) - 체력 보너스"
+                "Tier 2: Health Training (defense_Step2_health) - Health Bonus"
             );
 
             HealthArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier2_체력단련_방어력보너스",
+                "Tier2_HealthTraining_ArmorBonus",
                 5f,
-                "Tier 2: 체력단련(defense_Step2_health) - 방어력 보너스"
+                "Tier 2: Health Training (defense_Step2_health) - Armor Bonus"
             );
 
             // ===========================================
-            // Tier 3: 단전호흡, 회피단련, 체력증강, 방패훈련
+            // Tier 3: Core Breathing, Evasion Training, Health Boost, Shield Training
             // ===========================================
 
             BreathEitrBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier3_단전호흡_에이트르보너스",
+                "Tier3_CoreBreathing_EitrBonus",
                 10f,
-                "Tier 3: 단전호흡(defense_Step3_breath) - 에이트르 보너스"
+                "Tier 3: Core Breathing (defense_Step3_breath) - Eitr Bonus"
             );
 
             AgileDodgeBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier3_회피단련_회피율보너스",
+                "Tier3_EvasionTraining_DodgeBonus",
                 5f,
-                "Tier 3: 회피단련(defense_Step3_agile) - 회피율 보너스 (%)"
+                "Tier 3: Evasion Training (defense_Step3_agile) - Dodge Rate Bonus (%)"
             );
 
             AgileInvincibilityBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier3_회피단련_무적시간증가",
+                "Tier3_EvasionTraining_InvincibilityBonus",
                 20f,
-                "Tier 3: 회피단련(defense_Step3_agile) - 구르기 무적시간 증가 (%)"
+                "Tier 3: Evasion Training (defense_Step3_agile) - Roll Invincibility Bonus (%)"
             );
 
             BoostHealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier3_체력증강_체력보너스",
+                "Tier3_HealthBoost_HPBonus",
                 15f,
-                "Tier 3: 체력증강(defense_Step3_boost) - 체력 보너스"
+                "Tier 3: Health Boost (defense_Step3_boost) - Health Bonus"
             );
 
             ShieldTrainingBlockPowerBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier3_방패훈련_방패방어력보너스",
+                "Tier3_ShieldTraining_BlockPowerBonus",
                 100f,
-                "Tier 3: 방패훈련(defense_Step3_shield) - 방패 방어력 보너스"
+                "Tier 3: Shield Training (defense_Step3_shield) - Shield Block Power Bonus"
             );
 
             // ===========================================
-            // Tier 4: 발구르기 (자동 발동 패시브)
+            // Tier 4: Ground Stomp (auto-trigger passive)
             // ===========================================
 
             StompRadius = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier4_발구르기_효과범위",
+                "Tier4_GroundStomp_Radius",
                 3.0f,
-                "Tier 4: 발구르기(defense_Step4_instant) - 효과 범위 (미터)"
+                "Tier 4: Ground Stomp (defense_Step4_instant) - Effect Radius (meters)"
             );
 
             StompKnockback = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier4_발구르기_넉백힘",
+                "Tier4_GroundStomp_KnockbackForce",
                 20f,
-                "Tier 4: 발구르기(defense_Step4_instant) - 넉백 힘"
+                "Tier 4: Ground Stomp (defense_Step4_instant) - Knockback Force"
             );
 
             StompCooldown = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier4_발구르기_쿨타임",
+                "Tier4_GroundStomp_Cooldown",
                 120f,
-                "Tier 4: 발구르기(defense_Step4_instant) - 쿨타임 (초)"
+                "Tier 4: Ground Stomp (defense_Step4_instant) - Cooldown (seconds)"
             );
 
             StompHealthThreshold = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier4_발구르기_체력임계값",
+                "Tier4_GroundStomp_HPThreshold",
                 0.35f,
-                "Tier 4: 발구르기(defense_Step4_instant) - 자동 발동 체력 임계값 (0.35 = 35%)"
+                "Tier 4: Ground Stomp (defense_Step4_instant) - Auto-trigger HP Threshold (0.35 = 35%)"
             );
 
             StompVFXDuration = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier4_발구르기_VFX지속시간",
+                "Tier4_GroundStomp_VFXDuration",
                 1.0f,
-                "Tier 4: 발구르기(defense_Step4_instant) - VFX 지속시간 (초)"
+                "Tier 4: Ground Stomp (defense_Step4_instant) - VFX Duration (seconds)"
             );
 
             // ===========================================
-            // Tier 5: 지구력, 기민함, 트롤의 재생력, 막기달인
+            // Tier 5: Endurance, Agility, Troll Regen, Block Master
             // ===========================================
 
             FocusRunStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier5_지구력_달리기스태미나감소",
+                "Tier5_Endurance_RunStaminaReduction",
                 10f,
-                "Tier 5: 지구력(defense_Step5_focus) - 달리기 스태미나 감소 (%)"
+                "Tier 5: Endurance (defense_Step5_focus) - Run Stamina Reduction (%)"
             );
 
             FocusJumpStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier5_지구력_점프스태미나감소",
+                "Tier5_Endurance_JumpStaminaReduction",
                 10f,
-                "Tier 5: 지구력(defense_Step5_focus) - 점프 스태미나 감소 (%)"
+                "Tier 5: Endurance (defense_Step5_focus) - Jump Stamina Reduction (%)"
             );
 
             StaminaDodgeBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier5_기민함_회피율보너스",
+                "Tier5_Agility_DodgeBonus",
                 5f,
-                "Tier 5: 기민함(defense_Step5_stamina) - 회피율 보너스 (%)"
+                "Tier 5: Agility (defense_Step5_stamina) - Dodge Rate Bonus (%)"
             );
 
             StaminaRollStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier5_기민함_구르기스태미나감소",
+                "Tier5_Agility_RollStaminaReduction",
                 12f,
-                "Tier 5: 기민함(defense_Step5_stamina) - 구르기 스태미나 감소 (%)"
+                "Tier 5: Agility (defense_Step5_stamina) - Roll Stamina Reduction (%)"
             );
 
             TrollRegenBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier5_트롤의재생력_체력재생보너스",
+                "Tier5_TrollRegen_HPRegenBonus",
                 5f,
-                "Tier 5: 트롤의 재생력(defense_Step5_heal) - 체력 재생 보너스 (초당)"
+                "Tier 5: Troll's Regeneration (defense_Step5_heal) - HP Regen Bonus (per second)"
             );
 
             TrollRegenInterval = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier5_트롤의재생력_재생간격",
+                "Tier5_TrollRegen_RegenInterval",
                 2f,
-                "Tier 5: 트롤의 재생력(defense_Step5_heal) - 재생 간격 (초)"
+                "Tier 5: Troll's Regeneration (defense_Step5_heal) - Regen Interval (seconds)"
             );
 
             ParryMasterBlockPowerBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier5_막기달인_방패방어력보너스",
+                "Tier5_BlockMaster_ShieldBlockPowerBonus",
                 100f,
-                "Tier 5: 막기달인(defense_Step5_parry) - 방패 방어력 보너스"
+                "Tier 5: Block Master (defense_Step5_parry) - Shield Block Power Bonus"
             );
 
             ParryMasterParryDurationBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier5_막기달인_패링지속시간보너스",
+                "Tier5_BlockMaster_ParryDurationBonus",
                 1f,
-                "Tier 5: 막기달인(defense_Step5_parry) - 패링 지속시간 보너스 (초)"
+                "Tier 5: Block Master (defense_Step5_parry) - Parry Duration Bonus (seconds)"
             );
 
             // ===========================================
-            // Tier 6: 신경강화, 요툰의 생명력, 요툰의 방패
+            // Tier 6: Nerve Enhancement, Jotunn's Vitality, Jotunn's Shield
             // ===========================================
 
             AttackDodgeBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier6_신경강화_회피율보너스",
+                "Tier6_NerveEnhancement_DodgeBonus",
                 5f,
-                "Tier 6: 신경강화(defense_Step6_attack) - 회피율 보너스 (영구, %)"
+                "Tier 6: Nerve Enhancement (defense_Step6_attack) - Dodge Rate Bonus (permanent, %)"
             );
 
             BodyHealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier6_요툰의생명력_체력보너스",
+                "Tier6_JotunnVitality_HPBonus",
                 30f,
-                "Tier 6: 요툰의 생명력(defense_Step6_body) - 체력 보너스 (%)"
+                "Tier 6: Jotunn's Vitality (defense_Step6_body) - Health Bonus (%)"
             );
 
             BodyArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier6_요툰의생명력_방어력보너스",
+                "Tier6_JotunnVitality_ArmorBonus",
                 10f,
-                "Tier 6: 요툰의 생명력(defense_Step6_body) - 방어력 보너스 (%)"
+                "Tier 6: Jotunn's Vitality (defense_Step6_body) - Armor Bonus (%)"
             );
 
             JotunnShieldBlockStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier6_요툰의방패_블럭스태미나감소",
+                "Tier6_JotunnShield_BlockStaminaReduction",
                 25f,
-                "Tier 6: 요툰의 방패(defense_Step6_true) - 방패 블럭 스태미나 감소 (%)"
+                "Tier 6: Jotunn's Shield (defense_Step6_true) - Block Stamina Reduction (%)"
             );
 
             JotunnShieldNormalSpeedBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier6_요툰의방패_일반방패이동속도보상",
+                "Tier6_JotunnShield_NormalShieldMoveSpeedBonus",
                 5f,
-                "Tier 6: 요툰의 방패(defense_Step6_true) - 일반 방패 이동속도 보상 (%)"
+                "Tier 6: Jotunn's Shield (defense_Step6_true) - Normal Shield Move Speed Bonus (%)"
             );
 
             JotunnShieldTowerSpeedBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
-                "Tier6_요툰의방패_대형방패이동속도보상",
+                "Tier6_JotunnShield_TowerShieldMoveSpeedBonus",
                 10f,
-                "Tier 6: 요툰의 방패(defense_Step6_true) - Tower/대형 방패 이동속도 보상 (%)"
+                "Tier 6: Jotunn's Shield (defense_Step6_true) - Tower Shield Move Speed Bonus (%)"
             );
         }
     }

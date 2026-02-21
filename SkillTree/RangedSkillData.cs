@@ -292,11 +292,11 @@ namespace CaptainSkillTree.SkillTree
                 }
             });
 
-            // Step 3-1: 기본 활공격
+            // Step 3-1: 관통
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step3_silentshot",
-                NameKey = "bow_basic_attack_name",
-                DescriptionKey = "bow_basic_attack_desc",
+                NameKey = "bow_penetration_name",
+                DescriptionKey = "bow_penetration_desc",
                 DescriptionArgs = new object[] { Bow_Config.BowStep3SilentShotDamageBonusValue },
                 RequiredPoints = Bow_Config.BowStep3RequiredPointsValue,
                 MaxLevel = 1,

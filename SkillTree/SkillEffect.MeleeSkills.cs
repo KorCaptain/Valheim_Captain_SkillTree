@@ -29,7 +29,8 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, float> knifeEvasionEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> knifeMoveSpeedEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> knifeDamageBonusEndTime = new Dictionary<Player, float>();
-        public static Dictionary<Player, float> knifeCritRateEndTime = new Dictionary<Player, float>();
+        public static Dictionary<Player, float> knifeAttackEvasionEndTime = new Dictionary<Player, float>();
+        public static Dictionary<Player, float> knifeAttackEvasionCooldownEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> knifeLastRollTime = new Dictionary<Player, float>();
         public static Dictionary<Player, bool> knifeAfterRoll = new Dictionary<Player, bool>();
 
@@ -172,7 +173,7 @@ namespace CaptainSkillTree.SkillTree
         // === 근접 무기 확인 헬퍼 함수들 ===
 
         /// <summary>
-        /// 플레이어가 단검을 사용 중인지 확인
+        /// 플레이어가 단검을 사용 중인지 확인 (Claw/claw 포함)
         /// </summary>
         public static bool IsUsingDagger(Player player)
         {
@@ -184,11 +185,13 @@ namespace CaptainSkillTree.SkillTree
 
             string prefabName = weapon.m_dropPrefab?.name ?? "";
             if (prefabName.Contains("Dagger") || prefabName.Contains("dagger") ||
-                prefabName.Contains("Knife") || prefabName.Contains("knife"))
+                prefabName.Contains("Knife") || prefabName.Contains("knife") ||
+                prefabName.Contains("Claw") || prefabName.Contains("claw"))
                 return true;
 
             string weaponName = weapon.m_shared.m_name?.ToLower() ?? "";
-            if (weaponName.Contains("단검") || weaponName.Contains("dagger") || weaponName.Contains("knife"))
+            if (weaponName.Contains("단검") || weaponName.Contains("dagger") ||
+                weaponName.Contains("knife") || weaponName.Contains("claw"))
                 return true;
 
             return false;

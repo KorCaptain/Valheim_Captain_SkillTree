@@ -31,26 +31,29 @@ public static ConfigEntry<float> BowStep6CritBoostDurationValue;
 
 public static void Initialize(ConfigFile config)
 {
-    BowStep6CritBoostCritChanceValue = config.Bind(
-        "Bow Tree",
-        "Tier6_크리티컬부스트_치명타확률",
+    BowStep6CritBoostCritChanceValue = SkillTreeConfig.BindServerSync(config,
+        "Bow Tree",  // 1차 항목 - 영어 고정
+        "Tier6_CritBoost_CritChance",  // 2차 항목 - 영어 Tier 기반
         100f,
-        "Tier 6: 크리티컬 부스트(bow_Step6_critboost) - 치명타 확률 보너스 (%)"
+        "Tier 6: Crit Boost (bow_Step6_critboost) - Crit Chance Bonus (%)"  // 영어 설명
     );
 
-    BowStep6CritBoostDurationValue = config.Bind(
+    BowStep6CritBoostDurationValue = SkillTreeConfig.BindServerSync(config,
         "Bow Tree",
-        "Tier6_크리티컬부스트_지속시간",
+        "Tier6_CritBoost_Duration",
         5f,
-        "Tier 6: 크리티컬 부스트(bow_Step6_critboost) - 효과 지속 시간 (초)"
+        "Tier 6: Crit Boost (bow_Step6_critboost) - Effect Duration (sec)"
     );
 }
 ```
 
 **Config 작성 규칙**:
-- 카테고리: `"[Tree Name] Tree"` 형식 (예: "Bow Tree", "Mace Tree")
-- 키: `"TierX_스킬명_속성명"` 형식 (Tier 번호 포함 필수)
-- 설명: `"Tier X: 스킬명(skill_id) - 속성 설명"` 형식
+- 카테고리: `"[Tree Name] Tree"` 형식 (예: "Bow Tree", "Mace Tree") - **영어 고정**
+- 키: `"TierX_{SkillName}_{PropertyName}"` 형식 (영어, Tier 번호 포함 필수)
+  - 예시: `"Tier6_CritBoost_CritChance"`, `"Tier0_SwordExpert_RequiredPoints"`
+  - 참조: Speed_Config.cs (모범 구현)
+- 설명: `"Tier X: {SkillName} ({skill_id}) - {PropertyDescription}"` 형식 - **영어 기본**
+  - 예시: `"Tier 6: Crit Boost (bow_Step6_critboost) - Crit Chance Bonus (%)"`
 
 #### 2단계: 툴팁 연동
 **위치**: `{WeaponType}SkillData.cs`
@@ -159,8 +162,11 @@ PropertyName = config.Bind(
 **필수 준수 순서**:
 ```csharp
 public static void Initialize(ConfigFile config)
-{
-    // 1. 전문가 트리 (Attack → Speed → Defense → Product 순)
+{    
+    // 1. - Captain Level System -
+    // 2. - Skill_Tree_Base -
+    //         -> kill_Tree_Base안에 (Languge -> MoveSpeed_Max -> AttackSpeed_Max 순) 
+    // 3. 전문가 트리 (Attack → Speed → Defense → Product 순)
     Attack_Config.Initialize(config);   // Attack Tree (공격 전문가)
     Speed_Config.Initialize(config);    // Speed Tree (속도 전문가)
     Defense_Config.Initialize(config);  // Defense Tree (방어 전문가)
@@ -169,7 +175,7 @@ public static void Initialize(ConfigFile config)
     // === 구분선: 전문가 트리 끝 ===
     BindServerSync(config, "─────────── 공격,속도,생산,방어 트리───────────", "전문가 트리 끝", "", "...");
 
-    // 2. 원거리 무기 트리 (Bow → Staff → Crossbow 순)
+    // 4. 원거리 무기 트리 (Bow → Staff → Crossbow 순)
     Bow_Config.Initialize(config);                      // Bow Tree (활)
     Staff_Config.InitConfig(config);                    // Staff Tree (지팡이)
     Crossbow_Config.InitializeCrossbowConfig(config);   // Crossbow Tree (석궁)
@@ -177,7 +183,7 @@ public static void Initialize(ConfigFile config)
     // === 구분선: 원거리 무기 트리 끝 ===
     BindServerSync(config, "─────────── 원거리 전문가 트리───────────", "원거리 무기 끝", "", "...");
 
-    // 3. 근접 무기 트리 (Knife → Sword → Mace → Spear → Polearm 순)
+    // 5. 근접 무기 트리 (Knife → Sword → Mace → Spear → Polearm 순)
     Knife_Config.InitializeKnifeConfig(config); // Knife Tree (단검)
     Sword_Config.Initialize(config);            // Sword Tree (검)
     InitializeSwordConfig(config);
@@ -188,7 +194,7 @@ public static void Initialize(ConfigFile config)
     // === 구분선: 근접 무기 트리 끝 ===
     BindServerSync(config, "─────────── 근접 전문가 트리 ───────────", "근접 무기 끝", "", "...");
 
-    // 4. 직업 트리 (최하단 배치)
+    // 6. 직업 트리 (최하단 배치)
     Archer_Config.InitializeArcherConfig(config);       // Archer (궁수)
     Mage_Config.InitializeMageConfig(config);           // Mage (마법사)
     Tanker_Config.InitializeTankerConfig(config);       // Tanker (탱커)
@@ -207,9 +213,9 @@ public static void Initialize(ConfigFile config)
 **구분선 형식**:
 | Section (카테고리) | Key | 용도 |
 |-------------------|-----|------|
-| `─────────── 공격,속도,생산,방어 트리───────────` | 전문가 트리 끝 | 전문가 ↔ 원거리 구분 |
-| `─────────── 원거리 전문가 트리───────────` | 원거리 무기 끝 | 원거리 ↔ 근접 구분 |
-| `─────────── 근접 전문가 트리 ───────────` | 근접 무기 끝 | 근접 ↔ 직업 구분 |
+| `─────────── Attack, Speed, Production, Defense Trees ───────────` | End of Expert Trees | Expert ↔ Ranged |
+| `─────────── Ranged Expert Trees ───────────` | End of Ranged Weapons | Ranged ↔ Melee |
+| `─────────── Melee Expert Trees ───────────` | End of Melee Weapons | Melee ↔ Job |
 
 **구분선 위치 규칙**:
 - ✅ 구분선은 **트리 그룹 사이**에 배치 (SkillTreeConfig.cs에서만 추가)
@@ -218,6 +224,87 @@ public static void Initialize(ConfigFile config)
 - ❌ 같은 section 이름으로 여러 구분선 생성 금지
 
 > ⚠️ **주의**: `"──────────────────────────"` 같은 동일한 section 이름을 여러 번 사용하면 BepInEx가 **하나의 카테고리로 합쳐서** Config Manager에서 구분선이 1개만 표시됩니다.
+
+### 🌐 영어 Tier 기반 명명 규칙 (English Tier-based Naming Convention)
+
+**Rule 7-1.5: 영어 Tier 기반 명명 규칙**
+
+#### 📋 목적
+다국어 환경에서 Config Manager의 일관성 유지 및 코드 가독성 향상
+
+#### 🎯 핵심 원칙
+1. **1차 항목 (카테고리)**: 영어로 고정
+2. **2차 항목 (Config 키)**: Tier 기반 영어 명명
+3. **설명 (마우스 오버)**: 영어 기본, DefaultLanguages.cs로 다국어 지원 (선택사항)
+
+#### 📖 명명 규칙
+
+**1차 항목 (카테고리) - 영어 고정**
+```
+Attack Tree, Speed Tree, Defense Tree, Product Tree
+Bow Tree, Staff Tree, Crossbow Tree
+Knife Tree, Sword Tree, Mace Tree, Spear Tree, Polearm Tree
+Archer Job Skills, Mage Job Skills, Tanker Job Skills, Rogue Job Skills, Paladin Job Skills, Berserker Job Skills
+```
+
+**2차 항목 (Config 키) - Tier 기반 영어**
+```
+Format: Tier{N}_{SkillName}_{Property}
+
+예시:
+- Tier0_AttackExpert_AllDamageBonus
+- Tier0_AttackExpert_RequiredPoints
+- Tier5_MultiShot_TriggerChance
+- Tier5_MultiShot_ArrowCount
+- Active_MultiShot_ArrowConsumption
+- Passive_FallDamageReduction
+```
+
+**설명 (Description) - 영어 기본**
+```
+Format: "Tier {N}: {SkillName} ({skill_id}) - {Property Description}"
+
+예시:
+- "Tier 0: Attack Expert (attack_root) - All Damage Bonus (%)"
+- "Tier 5: Multi Shot (bow_step5_multishot) - Trigger Chance (%)"
+```
+
+#### ✅ 참조 구현: Speed_Config.cs
+
+**모범 패턴**:
+```csharp
+SpeedRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
+    "Speed Tree",  // 1차 항목 - 영어 고정
+    "Tier0_SpeedExpert_RequiredPoints",  // 2차 항목 - 영어 Tier 기반
+    2,
+    "Tier 0: Speed Expert (speed_root) - Required Points"  // 영어 설명
+);
+```
+
+#### ❌ 금지 패턴
+
+```csharp
+// ❌ 한국어 키 사용
+config.Bind("Speed Tree", "Tier0_속도전문가_필요포인트", 2, "...");
+
+// ❌ GetLocalizedCategory/Description 사용
+config.Bind(
+    SkillTreeConfig.GetLocalizedCategory("Speed Tree"),
+    SkillTreeConfig.GetLocalizedDescription("Tier0_SpeedExpert_RequiredPoints"),
+    2, "...");
+
+// ❌ Tier 번호 누락
+config.Bind("Speed Tree", "SpeedExpert_RequiredPoints", 2, "...");
+```
+
+#### 📊 로컬라이제이션 전략 (선택사항)
+
+Config Manager (F1 메뉴)에서 설명 번역이 필요한 경우:
+1. Config 키는 **항상 영어 고정**
+2. DefaultLanguages.cs에 번역 추가
+3. GetLocalizedDescription() 함수 사용 (카테고리는 사용 금지)
+
+**현재 기본 전략**: 설명도 영어로 작성, 번역은 선택사항
 
 ### 🔢 Tier 명명 규칙
 
@@ -274,32 +361,32 @@ public static class Defense_Config
     public static void Initialize(ConfigFile config)
     {
         // === 단일 카테고리 "Defense Tree" 사용 ===
-        DefenseRootHealthBonusValue = config.Bind(
-            "Defense Tree",  // 단일 카테고리
-            "Tier0_방어전문가_체력보너스",  // Tier 포함 키
+        DefenseRootHealthBonusValue = SkillTreeConfig.BindServerSync(config,
+            "Defense Tree",  // 1차 항목 - 영어 고정
+            "Tier0_DefenseExpert_HealthBonus",  // 2차 항목 - 영어 Tier 기반
             20f,
-            "Tier 0: 방어 전문가(defense_root) - 체력 보너스"  // Tier 포함 설명
+            "Tier 0: Defense Expert (defense_root) - Health Bonus"  // 영어 설명
         );
 
-        DefenseRootArmorBonusValue = config.Bind(
+        DefenseRootArmorBonusValue = SkillTreeConfig.BindServerSync(config,
             "Defense Tree",
-            "Tier0_방어전문가_방어력보너스",
+            "Tier0_DefenseExpert_ArmorBonus",
             5f,
-            "Tier 0: 방어 전문가(defense_root) - 방어력 보너스"
+            "Tier 0: Defense Expert (defense_root) - Armor Bonus"
         );
 
-        AgileDodgeBonusValue = config.Bind(
+        AgileDodgeBonusValue = SkillTreeConfig.BindServerSync(config,
             "Defense Tree",
-            "Tier3_회피단련_회피율",
+            "Tier3_Agile_DodgeRate",
             10f,
-            "Tier 3: 회피단련(defense_Step3_agile) - 회피율 보너스 (%)"
+            "Tier 3: Agile (defense_Step3_agile) - Dodge Rate Bonus (%)"
         );
 
-        AgileInvincibilityBonusValue = config.Bind(
+        AgileInvincibilityBonusValue = SkillTreeConfig.BindServerSync(config,
             "Defense Tree",
-            "Tier3_회피단련_무적시간",
+            "Tier3_Agile_InvincibilityTime",
             20f,
-            "Tier 3: 회피단련(defense_Step3_agile) - 구르기 무적시간 보너스 (%)"
+            "Tier 3: Agile (defense_Step3_agile) - Roll Invincibility Bonus (%)"
         );
     }
 }

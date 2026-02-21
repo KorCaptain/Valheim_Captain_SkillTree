@@ -365,9 +365,10 @@ namespace CaptainSkillTree
                 GameObject prefab = null;
                 bool isCustom = IsCustomVFX(vfxName);
 
-                // 1. 캐시에서 찾기
-                if (_cachedPrefabs.TryGetValue(vfxName, out prefab) && prefab != null)
+                // 1. 캐시에서 찾기 (null 캐시 포함 - 반복 탐색 방지)
+                if (_cachedPrefabs.TryGetValue(vfxName, out prefab))
                 {
+                    if (prefab == null) return null; // null 캐시 → 즉시 반환
                     return InstantiateVFX(prefab, position, duration, vfxName);
                 }
 
@@ -375,9 +376,9 @@ namespace CaptainSkillTree
                 if (isCustom)
                 {
                     prefab = FindPrefabInResources(vfxName);
+                    _cachedPrefabs[vfxName] = prefab; // null이어도 저장 (반복 탐색 방지)
                     if (prefab != null)
                     {
-                        _cachedPrefabs[vfxName] = prefab;
                         return InstantiateVFX(prefab, position, duration, vfxName);
                     }
                 }
@@ -535,12 +536,12 @@ namespace CaptainSkillTree
         /// </summary>
         private static GameObject GetOrFindPrefab(string vfxName)
         {
-            if (_cachedPrefabs.TryGetValue(vfxName, out var prefab) && prefab != null)
-                return prefab;
+            // null 캐시 포함하여 확인 (반복 탐색 방지)
+            if (_cachedPrefabs.TryGetValue(vfxName, out var prefab))
+                return prefab; // null이면 null 반환 (재탐색 안 함)
 
             prefab = FindPrefabInResources(vfxName);
-            if (prefab != null)
-                _cachedPrefabs[vfxName] = prefab;
+            _cachedPrefabs[vfxName] = prefab; // null이어도 저장
 
             return prefab;
         }

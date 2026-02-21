@@ -37,18 +37,20 @@ namespace CaptainSkillTree.SkillTree
                     if (hitData?.GetAttacker() != Player.m_localPlayer) return;
                     if (Player.m_localPlayer == null) return;
 
+                    // 생산 전문가 스킬이 없으면 전체 로직 건너뛰기 (최적화)
+                    var manager = SkillTreeManager.Instance;
+                    if (manager == null || manager.GetSkillLevel("production_root") <= 0) return;
+
                     // 중복 처리 방지
                     int treeId = __instance.GetInstanceID();
                     float currentTime = Time.time;
-                    if (processedTrees.ContainsKey(treeId) && 
+                    if (processedTrees.ContainsKey(treeId) &&
                         currentTime - processedTrees[treeId] < TREE_COOLDOWN) return;
-                    
+
                     processedTrees[treeId] = currentTime;
 
                     // 실제 드롭 위치에서 보너스 아이템 생성 (EpicLoot 방식)
                     TryDropExtraWood(hitData.GetAttacker(), __instance.m_dropWhenDestroyed, __instance.transform.position);
-                    
-                    Plugin.Log.LogInfo($"[생산 효과] TreeLog 파괴됨 - 드롭 시점 보너스 체크 완료");
                 }
                 catch (System.Exception ex)
                 {
@@ -73,21 +75,23 @@ namespace CaptainSkillTree.SkillTree
                     if (hit?.GetAttacker() != Player.m_localPlayer) return;
                     if (Player.m_localPlayer == null) return;
 
+                    // 생산 전문가 스킬이 없으면 전체 로직 건너뛰기 (최적화)
+                    var manager = SkillTreeManager.Instance;
+                    if (manager == null || manager.GetSkillLevel("production_root") <= 0) return;
+
                     // 나무가 파괴되었는지 확인 (체력이 0 이하)
                     if (__instance.m_health > 0) return; // 아직 파괴되지 않음
 
                     // 중복 처리 방지
                     int treeId = __instance.GetInstanceID();
                     float currentTime = Time.time;
-                    if (processedTrees.ContainsKey(treeId) && 
+                    if (processedTrees.ContainsKey(treeId) &&
                         currentTime - processedTrees[treeId] < TREE_COOLDOWN) return;
-                    
+
                     processedTrees[treeId] = currentTime;
 
                     // 실제 드롭 위치에서 보너스 아이템 생성 (EpicLoot 방식)
                     TryDropExtraWood(hit.GetAttacker(), __instance.m_dropWhenDestroyed, __instance.transform.position);
-                    
-                    Plugin.Log.LogInfo($"[생산 효과] TreeBase 파괴됨 - 드롭 시점 보너스 체크 완료");
                 }
                 catch (System.Exception ex)
                 {
@@ -109,15 +113,17 @@ namespace CaptainSkillTree.SkillTree
                 try
                 {
                     if (Player.m_localPlayer == null) return;
-                    
+
+                    // 생산 전문가 스킬이 없으면 전체 로직 건너뛰기 (최적화)
+                    var manager = SkillTreeManager.Instance;
+                    if (manager == null || manager.GetSkillLevel("production_root") <= 0) return;
+
                     // 채집한 아이템 이름 확인
                     string resourceName = GetPickableResourceName(__instance);
                     if (string.IsNullOrEmpty(resourceName)) return;
-                    
+
                     // 채집 보너스 시도
                     TryDropExtraResource(resourceName, __instance.transform.position, "gathering");
-                    
-                    Plugin.Log.LogInfo($"[생산 효과] 채집 완료: {resourceName} - 보너스 체크 완료");
                 }
                 catch (System.Exception ex)
                 {
@@ -141,20 +147,23 @@ namespace CaptainSkillTree.SkillTree
                     // 플레이어가 공격했고, 광석이 파괴되었는지 확인
                     if (hit?.GetAttacker() != Player.m_localPlayer) return;
                     if (Player.m_localPlayer == null) return;
+
+                    // 생산 전문가 스킬이 없으면 전체 로직 건너뛰기 (최적화)
+                    var manager = SkillTreeManager.Instance;
+                    if (manager == null || manager.GetSkillLevel("production_root") <= 0) return;
+
                     if (__instance.m_health > 0) return; // 아직 파괴되지 않음
 
                     // 중복 처리 방지
                     int rockId = __instance.GetInstanceID();
                     float currentTime = Time.time;
-                    if (processedTrees.ContainsKey(rockId) && 
+                    if (processedTrees.ContainsKey(rockId) &&
                         currentTime - processedTrees[rockId] < TREE_COOLDOWN) return;
-                    
+
                     processedTrees[rockId] = currentTime;
 
                     // 채광 보너스 적용 (광석 종류에 따라 다름)
                     TryDropExtraMiningResource(__instance.m_dropItems, __instance.transform.position);
-                    
-                    Plugin.Log.LogInfo($"[생산 효과] MineRock 파괴됨 - 보너스 체크 완료");
                 }
                 catch (System.Exception ex)
                 {
@@ -178,20 +187,23 @@ namespace CaptainSkillTree.SkillTree
                     // 플레이어가 공격했고, 광석이 파괴되었는지 확인
                     if (hit?.GetAttacker() != Player.m_localPlayer) return;
                     if (Player.m_localPlayer == null) return;
+
+                    // 생산 전문가 스킬이 없으면 전체 로직 건너뛰기 (최적화)
+                    var manager = SkillTreeManager.Instance;
+                    if (manager == null || manager.GetSkillLevel("production_root") <= 0) return;
+
                     if (__instance.m_health > 0) return; // 아직 파괴되지 않음
 
                     // 중복 처리 방지
                     int rockId = __instance.GetInstanceID();
                     float currentTime = Time.time;
-                    if (processedTrees.ContainsKey(rockId) && 
+                    if (processedTrees.ContainsKey(rockId) &&
                         currentTime - processedTrees[rockId] < TREE_COOLDOWN) return;
-                    
+
                     processedTrees[rockId] = currentTime;
 
                     // 채광 보너스 적용
                     TryDropExtraMiningResource(__instance.m_dropItems, __instance.transform.position);
-                    
-                    Plugin.Log.LogInfo($"[생산 효과] MineRock5 파괴됨 - 보너스 체크 완료");
                 }
                 catch (System.Exception ex)
                 {
@@ -215,14 +227,19 @@ namespace CaptainSkillTree.SkillTree
                     // 플레이어가 공격했고, 오브젝트가 파괴되었는지 확인
                     if (hit?.GetAttacker() != Player.m_localPlayer) return;
                     if (Player.m_localPlayer == null) return;
+
+                    // 생산 전문가 스킬이 없으면 전체 로직 건너뛰기 (최적화)
+                    var manager = SkillTreeManager.Instance;
+                    if (manager == null || manager.GetSkillLevel("production_root") <= 0) return;
+
                     if (__instance.m_health > 0) return; // 아직 파괴되지 않음
 
                     // 중복 처리 방지
                     int objId = __instance.GetInstanceID();
                     float currentTime = Time.time;
-                    if (processedTrees.ContainsKey(objId) && 
+                    if (processedTrees.ContainsKey(objId) &&
                         currentTime - processedTrees[objId] < TREE_COOLDOWN) return;
-                    
+
                     processedTrees[objId] = currentTime;
 
                     // 파괴 가능한 광석인지 확인 후 보너스 적용
@@ -234,8 +251,6 @@ namespace CaptainSkillTree.SkillTree
                             TryDropExtraMiningResource(dropComponent.m_dropWhenDestroyed, __instance.transform.position);
                         }
                     }
-                    
-                    Plugin.Log.LogInfo($"[생산 효과] Destructible 파괴됨 - 보너스 체크 완료");
                 }
                 catch (System.Exception ex)
                 {
@@ -257,27 +272,15 @@ namespace CaptainSkillTree.SkillTree
             if (Player.m_localPlayer == null) return;
 
             var manager = SkillTreeManager.Instance;
-            if (manager == null) 
-            {
-                Plugin.Log.LogWarning($"[생산 효과] SkillTreeManager가 null입니다");
-                return;
-            }
+            if (manager == null) return;
 
             float totalChance = 0f;
             string effectSource = "";
 
             // 생산 전문가 (production_root) - 50% 확률
-            if (manager.GetSkillLevel("production_root") > 0)
-            {
-                totalChance += PRODUCTION_ROOT_CHANCE;
-                effectSource = "생산 전문가";
-                Plugin.Log.LogInfo($"[생산 효과] 생산 전문가 스킬 감지됨 - 현재 확률: {totalChance * 100}%");
-            }
-            else
-            {
-                Plugin.Log.LogInfo($"[생산 효과] 생산 전문가 스킬이 없습니다");
-                return;
-            }
+            // ※ 패치 메서드에서 이미 체크했으므로 여기서는 무조건 보유
+            totalChance += PRODUCTION_ROOT_CHANCE;
+            effectSource = "생산 전문가";
 
             // 초보 일꾼 - 25% 확률 (누적)
             if (manager.GetSkillLevel("novice_worker") > 0)

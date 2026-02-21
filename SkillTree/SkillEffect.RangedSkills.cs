@@ -139,9 +139,8 @@ namespace CaptainSkillTree.SkillTree
                     var fullDamage = weapon.GetDamage();
                     fullDamage.Add(ammo.GetDamage());
 
-                    var skillFactor = player.GetSkillFactor(Skills.SkillType.Crossbows);
-                    fullDamage.Modify(1f + skillFactor * 0.5f);
-
+                    // 석궁 스킬 보너스 제거 - 컨피그 설정 데미지만 적용
+                    // 패시브 스킬은 컨피그 값이 최종 데미지
                     // 데미지 비율 적용 (파라미터로 전달받음)
                     fullDamage.Modify(damagePercent / 100f);
 
@@ -515,11 +514,12 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogDebug($"[활 전문가] +{SkillTreeConfig.BowStep1ExpertDamageBonusValue}%");
                     }
 
-                    // Tier 3: 조용한 사냥 - 정조준 화살 데미지 보너스
+                    // Tier 3: 관통 - 활 공격력 고정값 증가 (패시브)
                     if (SkillEffect.HasSkill("bow_Step3_silentshot"))
                     {
-                        totalBowBonus += SkillTreeConfig.BowStep3SilentShotDamageBonusValue;
-                        Plugin.Log.LogDebug($"[조용한 사냥] +{SkillTreeConfig.BowStep3SilentShotDamageBonusValue}%");
+                        // 고정값 +3을 pierce 데미지에 직접 추가
+                        __result.m_pierce += SkillTreeConfig.BowStep3SilentShotDamageBonusValue;
+                        Plugin.Log.LogDebug($"[관통] +{SkillTreeConfig.BowStep3SilentShotDamageBonusValue} (고정값)");
                     }
 
                     // Tier 6: 크리티컬 부스트 (R키 액티브) - 데미지 +50%
@@ -537,7 +537,7 @@ namespace CaptainSkillTree.SkillTree
                     if (totalBowBonus > 0)
                     {
                         GetDamageHelper.ApplyPhysicalDamageBonus(ref __result, totalBowBonus);
-                        Plugin.Log.LogInfo($"[활 스킬] 총 데미지 +{totalBowBonus}%");
+                        Plugin.Log.LogDebug($"[활 스킬] 총 데미지 +{totalBowBonus}%");
                     }
                 }
 
@@ -810,6 +810,45 @@ namespace CaptainSkillTree.SkillTree
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[석궁 스킬] Projectile.OnHit 패치 오류: {ex.Message}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 활 아이템 툴팁에 스킬 보너스 표시
+    /// </summary>
+    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip),
+        new[] { typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int) })]
+    public static class BowSkills_ItemData_GetTooltip_Patch
+    {
+        [HarmonyPostfix]
+        private static void Postfix(ItemDrop.ItemData item, int qualityLevel, bool crafting, float worldLevel, int stackOverride, ref string __result)
+        {
+            try
+            {
+                // 활 아이템만 처리
+                if (item?.m_shared?.m_skillType != Skills.SkillType.Bows) return;
+
+                // 크래프팅 화면이 아닐 때만 표시
+                if (crafting) return;
+
+                // 플레이어 확인
+                var player = Player.m_localPlayer;
+                if (player == null) return;
+
+                // 관통 스킬 보유 확인
+                if (!SkillEffect.HasSkill("bow_Step3_silentshot")) return;
+
+                // 툴팁에 추가 정보 표시
+                float damageBonus = Bow_Config.BowStep3SilentShotDamageBonusValue;
+                string bonusText = $"\n<color=#00ff00>관통: 공격력 +{damageBonus}</color>";
+
+                __result += bonusText;
+                Plugin.Log.LogDebug($"[활 툴팁] 관통 보너스 표시: +{damageBonus}");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[활 툴팁] GetTooltip 패치 오류: {ex.Message}");
             }
         }
     }

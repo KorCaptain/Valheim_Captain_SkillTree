@@ -1204,174 +1204,205 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
-    /// 로그 패시브 스킬 패치
-    /// Character.Damage에서 은신 스킬 보너스, 이동속도 증가, 낙하 데미지 감소 적용
+    /// 로그 패시브 - 속성 저항 증가 패치
+    /// 로그가 받는 속성 피해(불/냉기/번개/독/정령)를 감소시킴 (장점)
     /// </summary>
     [HarmonyPatch(typeof(Character), "Damage")]
     public static class RoguePassivePatch
     {
-        /// <summary>
-        /// Character.Damage 실행 전 호출 - 로그 패시브 효과 적용
-        /// </summary>
         static void Prefix(Character __instance, ref HitData hit)
         {
             try
             {
-                // 플레이어가 아니면 무시
-                if (!(__instance is Player player))
-                    return;
+                // 피격 대상이 플레이어이고 로그인 경우만 처리
+                if (!(__instance is Player player)) return;
+                if (!RogueSkills.IsRogue(player)) return;
 
-                // 로그가 아니면 무시
-                if (!RogueSkills.IsRogue(player))
-                    return;
+                float resist = Rogue_Config.RogueElementalResistanceDebuffValue / 100f;
 
-                // 낙사 데미지 감소 적용
-                if (hit.m_damage.m_damage > 0f)
-                {
-                    float fallDamageReduction = Rogue_Config.RogueFallDamageReductionValue / 100f;
-                    float originalDamage = hit.m_damage.m_damage;
-                    
-                    // 낙사 데미지 감소 (50% 감소)
-                    hit.m_damage.m_damage *= (1f - fallDamageReduction);
-                    
-                    float reducedDamage = hit.m_damage.m_damage;
-                    float damageReduced = originalDamage - reducedDamage;
-                    
-                    if (damageReduced > 0.1f) // 의미있는 감소량일 때만 메시지
-                    {
-                        player.Message(MessageHud.MessageType.TopLeft, L.Get("rogue_passive_fall_damage", damageReduced.ToString("F0")));
-                    }
-                }
+                // 속성 피해 감소 (저항 증가 = 덜 받음)
+                hit.m_damage.m_fire      *= (1f - resist);
+                hit.m_damage.m_frost     *= (1f - resist);
+                hit.m_damage.m_lightning *= (1f - resist);
+                hit.m_damage.m_poison    *= (1f - resist);
+                hit.m_damage.m_spirit    *= (1f - resist);
             }
             catch (System.Exception)
             {
-                // Plugin.Log.LogError($"[로그 패시브] Damage 패치 오류: {ex.Message}");
+                // Plugin.Log.LogError($"[로그 패시브] 속성 저항 패치 오류: {ex.Message}");
             }
         }
     }
 
+    // [로그 패시브] 공격 속도 보너스: Player.GetAttackSpeedFactor는 현재 Valheim에 없음.
+    // → 공격속도 보너스는 GetTotalAttackSpeedBonus() (SkillEffect.SpeedTree.cs)에서 처리됨.
+
     /// <summary>
-    /// 로그 은신 스킬 팩터 보너스 패치
-    /// Skills.GetSkillFactor에서 은신 스킬 효과 증가 적용
+    /// 로그 패시브 - 스태미나 사용량 감소 패치
+    /// Player.UseStamina에서 공격 스태미나 -15% 적용
     /// </summary>
-    [HarmonyPatch(typeof(Skills), nameof(Skills.GetSkillFactor))]
-    public static class RogueSkillBonusPatch
+    [HarmonyPatch(typeof(Player), nameof(Player.UseStamina))]
+    public static class RogueStaminaReductionPatch
     {
-        /// <summary>
-        /// GetSkillFactor 실행 후 호출 - 로그 은신 스킬 보너스 적용
-        /// </summary>
-        static void Postfix(Skills __instance, Skills.SkillType skillType, ref float __result)
+        static void Prefix(Player __instance, ref float v)
         {
             try
             {
-                // 로컬 플레이어만 처리
-                var player = Player.m_localPlayer;
-                if (player == null) return;
-                
-                // 해당 플레이어의 Skills인지 확인
-                if (__instance != player.GetSkills()) return;
-
-                // 로그가 아니면 무시
-                if (!RogueSkills.IsRogue(player))
-                    return;
-
-                // 은신 스킬(Sneak)이 아니면 무시
-                if (skillType != Skills.SkillType.Sneak)
-                    return;
-
-                // 은신 스킬 팩터 보너스 적용 (20% → 0.2f 추가)
-                float skillFactorBonus = Rogue_Config.RogueSneakSkillBonusValue / 100f; // 20 → 0.2f
-                __result += skillFactorBonus;
-                
-                // 최대 1.0을 넘지 않도록 제한
-                __result = Mathf.Min(__result, 1.0f);
-
-                // Plugin.Log.LogDebug($"[로그 패시브] {player.GetPlayerName()} 은신 스킬 팩터 보너스 적용: +{skillFactorBonus:F2} (총 팩터: {__result:F2})");
+                if (!RogueSkills.IsRogue(__instance)) return;
+                if (!__instance.InAttack()) return; // 공격 시에만 스태미나 감소 적용
+                float reduction = Rogue_Config.RogueStaminaReductionValue / 100f;
+                v *= (1f - reduction);
             }
             catch (System.Exception)
             {
-                // Plugin.Log.LogError($"[로그 패시브] 스킬 팩터 패치 오류: {ex.Message}");
+                // Plugin.Log.LogError($"[로그 패시브] 스태미나 감소 패치 오류: {ex.Message}");
             }
         }
     }
 
     /// <summary>
-    /// 통합 이동속도 보너스 패치 (속도 전문가 + 로그 패시브 + 요툰의 방패)
-    /// Player.GetJogSpeedFactor에서 모든 이동속도 보너스 적용
+    /// 통합 이동속도 보너스 패치 - 배율 곱셈 방식 (v0.1.226+)
+    /// 공식: 최종 속도 = (발헤임 기본 + 다른 모드) × (1 + 스킬트리 보너스%)
     /// </summary>
     [HarmonyPatch(typeof(Player), "GetJogSpeedFactor")]
-    public static class RogueSpeedBonusPatch
+    public static class ImprovedMoveSpeedPatch
     {
-        /// <summary>
-        /// GetJogSpeedFactor 실행 후 호출 - 속도 전문가, 로그 패시브, 요툰의 방패 이동속도 보너스 적용
-        /// </summary>
-        static void Postfix(Player __instance, ref float __result)
+        // 경고 표시 여부 추적 (플레이어당 한 번만 표시)
+        private static Dictionary<Player, bool> _moveSpeedWarningShown = new Dictionary<Player, bool>();
+
+        [HarmonyPostfix]
+        [HarmonyPriority(Priority.Last)] // 다른 모드 이후 실행
+        public static void Postfix(Player __instance, ref float __result)
         {
             try
             {
                 var manager = SkillTreeManager.Instance;
                 if (manager == null) return;
 
-                // === 1. 속도 전문가: 기본 이동속도 보너스 ===
-                float speedExpertBonus = 0f;
+                // 1. 현재 속도 = (발헤임 기본 + 다른 모드들)
+                float baseSpeed = __result;
 
-                // speed_root: 모든 이동속도 +5%
+                // 2. 스킬트리 보너스 계산 (백분율 누적)
+                float totalBonus = 0f;
+
+                // speed_root: 속도 전문가 +5%
                 if (manager.GetSkillLevel("speed_root") > 0)
                 {
-                    speedExpertBonus += SkillTreeConfig.SpeedRootMoveSpeedValue / 100f;
-                    Plugin.Log.LogDebug($"[속도 전문가] speed_root: +{SkillTreeConfig.SpeedRootMoveSpeedValue}%");
+                    totalBonus += SkillTreeConfig.SpeedRootMoveSpeedValue;
+                    Plugin.Log.LogDebug($"[이동속도] speed_root: +{SkillTreeConfig.SpeedRootMoveSpeedValue}%");
                 }
 
-                // speed_base: 민첩함의 기초 - 이동속도 +3%
+                // speed_base: 민첩함의 기초 +3%
                 if (manager.GetSkillLevel("speed_base") > 0)
                 {
-                    speedExpertBonus += SkillTreeConfig.SpeedBaseMoveSpeedValue / 100f;
-                    Plugin.Log.LogDebug($"[속도 전문가] speed_base: +{SkillTreeConfig.SpeedBaseMoveSpeedValue}%");
+                    totalBonus += SkillTreeConfig.SpeedBaseMoveSpeedValue;
+                    Plugin.Log.LogDebug($"[이동속도] speed_base: +{SkillTreeConfig.SpeedBaseMoveSpeedValue}%");
                 }
 
-                if (speedExpertBonus > 0f)
+                // speed_1: 민첩 스탯 +5%
+                if (manager.GetSkillLevel("speed_1") > 0)
                 {
-                    __result += speedExpertBonus;
-                    Plugin.Log.LogDebug($"[속도 전문가] {__instance.GetPlayerName()} 총 보너스: +{speedExpertBonus * 100f:F1}%");
+                    totalBonus += SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue;
+                    Plugin.Log.LogDebug($"[이동속도] speed_1(민첩): +{SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue}%");
                 }
 
-                // === 2. 로그 패시브: 이동속도 보너스 ===
-                if (RogueSkills.IsRogue(__instance))
+                // knife_step3_move_speed: 단검 빠른 움직임 +5% (단검 착용 시만)
+                if (manager.GetSkillLevel("knife_step3_move_speed") > 0 && WeaponHelper.IsUsingDagger(__instance))
                 {
-                    float rogueBonus = Rogue_Config.RogueSneakSpeedBonusValue / 100f;
-                    __result *= (1f + rogueBonus);
-                    // Plugin.Log.LogDebug($"[로그 패시브] {__instance.GetPlayerName()} 이동속도 보너스 적용: +{rogueBonus * 100}% (총 배수: {__result})");
+                    totalBonus += Knife_Config.KnifeMoveSpeedBonusValue;
+                    Plugin.Log.LogDebug($"[이동속도] 단검 빠른 움직임: +{Knife_Config.KnifeMoveSpeedBonusValue}%");
                 }
 
-                // === 3. 요툰의 방패: 방패 이동속도 패널티 무시 (보상) ===
+                // defense_Step6_true: 요툰의 방패 (방패 착용 시)
                 if (manager.GetSkillLevel("defense_Step6_true") > 0)
                 {
-                    // 방패 장착 확인
-                    var inventory = __instance.GetInventory();
-                    if (inventory != null)
+                    var shieldBonus = GetJotunnShieldBonus(__instance);
+                    if (shieldBonus > 0f)
                     {
-                        var shieldItem = inventory.GetEquippedItems().FirstOrDefault(item =>
-                            item.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield);
-
-                        if (shieldItem != null)
-                        {
-                            // Tower/대형 방패 여부 판별 (아이템명에 "tower" 포함)
-                            bool isTowerShield = shieldItem.m_shared.m_name.ToLower().Contains("tower");
-                            float shieldSpeedBonus = isTowerShield
-                                ? Defense_Config.JotunnShieldTowerSpeedBonusValue / 100f  // Tower: 10%
-                                : Defense_Config.JotunnShieldNormalSpeedBonusValue / 100f; // 일반: 5%
-
-                            __result += shieldSpeedBonus;
-
-                            Plugin.Log.LogDebug($"[요툰의 방패] {__instance.GetPlayerName()} 방패 이동속도 보상: " +
-                                $"{(isTowerShield ? "Tower/대형" : "일반")} +{shieldSpeedBonus * 100f:F1}% (최종: {__result:F3})");
-                        }
+                        totalBonus += shieldBonus;
+                        Plugin.Log.LogDebug($"[이동속도] 요툰의 방패: +{shieldBonus}%");
                     }
+                }
+
+                // 조건부 보너스 (구르기, 석궁 숙련자 등) - Speed.cs에서 처리
+                float conditionalBonus = Speed.GetConditionalSpeedBonus(__instance);
+                if (conditionalBonus > 0f)
+                {
+                    totalBonus += conditionalBonus * 100f; // 백분율로 변환
+                    Plugin.Log.LogDebug($"[이동속도] 조건부 보너스: +{conditionalBonus * 100f:F1}%");
+                }
+
+                // 3. 최대치 제한 적용
+                float maxBonus = SkillTreeConfig.MoveSpeedMaxBonusValue;
+                if (totalBonus > maxBonus)
+                {
+                    // 한 번만 경고 (플레이어당)
+                    if (!_moveSpeedWarningShown.ContainsKey(__instance) || !_moveSpeedWarningShown[__instance])
+                    {
+                        Plugin.Log.LogWarning($"[이동속도] {__instance.GetPlayerName()} 보너스 제한: {totalBonus:F1}% → {maxBonus}%");
+
+                        // 화면 메시지 표시
+                        __instance.Message(MessageHud.MessageType.Center,
+                            $"이동속도 제한을 {maxBonus}%를 넘길 수 없습니다.");
+
+                        _moveSpeedWarningShown[__instance] = true;
+                    }
+
+                    totalBonus = maxBonus;
+                }
+
+                // 4. 배율 적용 (핵심!)
+                if (totalBonus > 0f)
+                {
+                    __result = baseSpeed * (1f + totalBonus / 100f);
+                    Plugin.Log.LogDebug(
+                        $"[이동속도] {__instance.GetPlayerName()}: " +
+                        $"기본={baseSpeed:F3} × (1+{totalBonus:F1}%) = {__result:F3}"
+                    );
                 }
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[이동속도 패치] 통합 패치 오류: {ex.Message}");
+                Plugin.Log.LogError($"[이동속도 패치] 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 플레이어 로그아웃/사망 시 경고 상태 정리
+        /// </summary>
+        public static void ClearWarningState(Player player)
+        {
+            if (_moveSpeedWarningShown.ContainsKey(player))
+                _moveSpeedWarningShown.Remove(player);
+        }
+
+        /// <summary>
+        /// 요툰의 방패 이동속도 보너스 계산
+        /// </summary>
+        private static float GetJotunnShieldBonus(Player player)
+        {
+            try
+            {
+                var inventory = player.GetInventory();
+                if (inventory == null) return 0f;
+
+                var shieldItem = inventory.GetEquippedItems().FirstOrDefault(item =>
+                    item.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield);
+
+                if (shieldItem != null)
+                {
+                    // Tower/대형 방패 여부 판별
+                    bool isTowerShield = shieldItem.m_shared.m_name.ToLower().Contains("tower");
+                    return isTowerShield
+                        ? Defense_Config.JotunnShieldTowerSpeedBonusValue  // 10%
+                        : Defense_Config.JotunnShieldNormalSpeedBonusValue; // 5%
+                }
+                return 0f;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[요툰의 방패] 보너스 계산 오류: {ex.Message}");
+                return 0f;
             }
         }
     }

@@ -306,213 +306,213 @@ namespace CaptainSkillTree.SkillTree
             // Tier 0: 검 전문가 (Sword Expert)
             SwordExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier0_검전문가_필요포인트",
+                "Tier0_SwordExpert_RequiredPoints",
                 2,
-                "Tier 0: 검 전문가 - 필요 포인트"
+                "Tier 0: Sword Expert (sword_expert) - Required Points"
             );
 
             SwordExpertDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier0_검전문가_피해증가",
+                "Tier0_SwordExpert_DamageBonus",
                 10f,
-                "Tier 0: 검 전문가 - 피해 증가 (%)"
+                "Tier 0: Sword Expert (sword_expert) - Damage Bonus (%)"
             );
 
             // Tier 1: 빠른 베기
             SwordStep1FastSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier1_빠른베기_필요포인트",
+                "Tier1_FastSlash_RequiredPoints",
                 2,
-                "Tier 1: 빠른 베기(sword_step1_fastslash) - 필요 포인트"
+                "Tier 1: Fast Slash (sword_step1_fastslash) - Required Points"
             );
 
             // Tier 1: 반격 자세
             SwordStep1CounterRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier1_반격자세_필요포인트",
+                "Tier1_CounterStance_RequiredPoints",
                 3,
-                "Tier 1: 반격 자세(sword_step1_counter) - 필요 포인트"
+                "Tier 1: Counter Stance (sword_step1_counter) - Required Points"
             );
 
             SwordStep1FastSlashSpeed = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier1_빠른베기_공격속도보너스",
+                "Tier1_FastSlash_AttackSpeedBonus",
                 10f,
-                "Tier 1: 빠른 베기(sword_step1_fastslash) - 공격속도 보너스 (%)"
+                "Tier 1: Fast Slash (sword_step1_fastslash) - Attack Speed Bonus (%)"
             );
 
             // Tier 2: 연속 베기
             SwordStep2ComboSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier2_연속베기_필요포인트",
+                "Tier2_ComboSlash_RequiredPoints",
                 1,
-                "Tier 2: 연속 베기(sword_step2_combo_slash) - 필요 포인트"
+                "Tier 2: Combo Slash (sword_step2_comboslash) - Required Points"
             );
 
             SwordStep2ComboSlashBonus = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier2_연속베기_보너스",
+                "Tier2_ComboSlash_DamageBonus",
                 15f,
-                "Tier 2: 연속 베기(sword_step2_combo_slash) - 연속 공격 보너스 (%)"
+                "Tier 2: Combo Slash (sword_step2_comboslash) - Damage Bonus (%)"
             );
 
             SwordStep2ComboSlashDuration = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier2_연속베기_지속시간",
+                "Tier2_ComboSlash_BuffDuration",
                 5f,
-                "Tier 2: 연속 베기(sword_step2_combo_slash) - 버프 지속시간 (초)"
+                "Tier 2: Combo Slash (sword_step2_comboslash) - Buff Duration (sec)"
             );
 
             // Tier 3: 칼날 되치기
             SwordStep3RiposteRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier3_칼날되치기_필요포인트",
+                "Tier3_Riposte_RequiredPoints",
                 1,
-                "Tier 3: 칼날 되치기(sword_step3_riposte) - 필요 포인트"
+                "Tier 3: Riposte (sword_step3_riposte) - Required Points"
             );
 
             SwordStep3RiposteDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier3_칼날되치기_공격력보너스",
+                "Tier3_Riposte_DamageBonus",
                 5f,
-                "Tier 3: 칼날 되치기(sword_step3_riposte) - 공격력 보너스 (고정값)"
+                "Tier 3: Riposte (sword_step3_riposte) - Damage Bonus (flat)"
             );
 
             // Tier 4: 공방일체
             SwordStep3AllInOneRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier4_공방일체_필요포인트",
+                "Tier4_AllInOne_RequiredPoints",
                 2,
-                "Tier 4: 공방일체(sword_step3_allinone) - 필요 포인트"
+                "Tier 4: All-In-One (sword_step3_allinone) - Required Points"
             );
 
-            // Tier 5: 진검승부
+            // Tier 4: 진검승부
             SwordStep4TrueDuelRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_진검승부_필요포인트",
+                "Tier4_TrueDuel_RequiredPoints",
                 3,
-                "Tier 5: 진검승부(sword_step4_duel) - 필요 포인트"
+                "Tier 4: True Duel (sword_step4_trueduel) - Required Points"
             );
 
             SwordStep4TrueDuelSpeed = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_진검승부_공격속도보너스",
+                "Tier4_TrueDuel_AttackSpeedBonus",
                 15f,
-                "Tier 5: 진검승부(sword_step4_duel) - 공격속도 보너스 (%)"
+                "Tier 4: True Duel (sword_step4_trueduel) - Attack Speed Bonus (%)"
             );
 
             // Tier 5: 패링 돌격 (Parry Rush)
             SwordStep5DefenseSwitchRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_패링돌격_필요포인트",
+                "Tier5_ParryRush_RequiredPoints",
                 3,
-                "Tier 5: 패링 돌격(sword_step5_defswitch) - 필요 포인트"
+                "Tier 5: Parry Rush (sword_step5_defswitch) - Required Points"
             );
 
             ParryRushDuration = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_패링돌격_버프지속시간",
+                "Tier5_ParryRush_BuffDuration",
                 30f,
-                "Tier 5: 패링 돌격 - 버프 지속시간 (초)"
+                "Tier 5: Parry Rush (sword_step5_defswitch) - Buff Duration (sec)"
             );
 
             ParryRushDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_패링돌격_공격력보너스",
+                "Tier5_ParryRush_DamageBonus",
                 100f,
-                "Tier 5: 패링 돌격 - 패링 성공 시 돌격 공격력 보너스 (%)"
+                "Tier 5: Parry Rush (sword_step5_defswitch) - Damage Bonus (%)"
             );
 
             ParryRushPushDistance = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_패링돌격_밀어내기거리",
+                "Tier5_ParryRush_PushDistance",
                 4f,
-                "Tier 5: 패링 돌격 - 밀어내기 거리 (m)"
+                "Tier 5: Parry Rush (sword_step5_defswitch) - Push Distance (meters)"
             );
 
             ParryRushStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_패링돌격_스태미나소모",
+                "Tier5_ParryRush_StaminaCost",
                 10f,
-                "Tier 5: 패링 돌격 - G키 버프 활성화 스태미나 소모"
+                "Tier 5: Parry Rush (sword_step5_defswitch) - Stamina Cost"
             );
 
             ParryRushCooldown = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_패링돌격_쿨타임",
+                "Tier5_ParryRush_Cooldown",
                 60f,
-                "Tier 5: 패링 돌격 - 쿨타임 (초)"
+                "Tier 5: Parry Rush (sword_step5_defswitch) - Cooldown (sec)"
             );
 
             // Tier 6: 돌진 연속 베기 (Rush Slash) 액티브 스킬
             RushSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_필요포인트",
+                "Tier6_RushSlash_RequiredPoints",
                 3,
-                "Tier 6: 돌진 연속 베기(sword_step5_finalcut) - 필요 포인트"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Required Points"
             );
 
             RushSlash1stDamageRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_1차공격력비율",
+                "Tier6_RushSlash_Hit1DamageRatio",
                 70f,
-                "Tier 6: 돌진 연속 베기 - 1차 공격력 비율 (%)"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Hit 1 Damage Ratio (%)"
             );
 
             RushSlash2ndDamageRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_2차공격력비율",
+                "Tier6_RushSlash_Hit2DamageRatio",
                 80f,
-                "Tier 6: 돌진 연속 베기 - 2차 공격력 비율 (%)"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Hit 2 Damage Ratio (%)"
             );
 
             RushSlash3rdDamageRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_3차공격력비율",
+                "Tier6_RushSlash_Hit3DamageRatio",
                 90f,
-                "Tier 6: 돌진 연속 베기 - 3차 공격력 비율 (%)"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Hit 3 Damage Ratio (%)"
             );
 
             RushSlashInitialDistance = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_초기돌진거리",
+                "Tier6_RushSlash_InitialDistance",
                 5f,
-                "Tier 6: 돌진 연속 베기 - 초기 돌진 거리 (m)"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Initial Dash Distance (meters)"
             );
 
             RushSlashSideDistance = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_측면이동거리",
+                "Tier6_RushSlash_SideDistance",
                 3f,
-                "Tier 6: 돌진 연속 베기 - 측면 이동 거리 (m)"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Side Movement Distance (meters)"
             );
 
             RushSlashStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_스태미나소모",
+                "Tier6_RushSlash_StaminaCost",
                 30f,
-                "Tier 6: 돌진 연속 베기 - 스태미나 소모량"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Stamina Cost"
             );
 
             RushSlashCooldown = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_쿨타임",
+                "Tier6_RushSlash_Cooldown",
                 25f,
-                "Tier 6: 돌진 연속 베기 - 쿨타임 (초)"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Cooldown (sec)"
             );
 
             RushSlashMoveSpeed = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_이동속도",
+                "Tier6_RushSlash_MoveSpeed",
                 20f,
-                "Tier 6: 돌진 연속 베기 - 이동 속도 (m/s)"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Movement Speed (m/s)"
             );
 
             RushSlashAttackSpeedBonus = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_공격속도보너스",
+                "Tier6_RushSlash_AttackSpeedBonus",
                 220f,
-                "Tier 6: 돌진 연속 베기 - 공격 속도 보너스 (%, 기본 대비). 스킬 중 다른 트리 공격속도 무시"
+                "Tier 6: Rush Slash (sword_step5_finalcut) - Attack Speed Bonus (%)"
             );
 
             Plugin.Log.LogDebug("[Sword Config] 검 스킬 Config 초기화 완료");

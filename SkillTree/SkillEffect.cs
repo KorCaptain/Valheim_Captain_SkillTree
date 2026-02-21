@@ -1238,7 +1238,14 @@ namespace CaptainSkillTree.SkillTree
                         bonus += (int)(SkillTreeConfig.SpeedBaseMoveSpeedValue * 2f); // 3% * 2 = +6 Agility
                         Plugin.Log.LogDebug($"[속도 전문가] speed_base - MMO Agility 증가: +6 (이동속도 +3%)");
                     }
-                    
+
+                    // knife_step3_move_speed: 단검 빠른 움직임 (패시브 - 단검 착용 시)
+                    if (SkillEffect.HasSkill("knife_step3_move_speed") && WeaponHelper.IsUsingDagger(player))
+                    {
+                        bonus += (int)(Knife_Config.KnifeMoveSpeedBonusValue * 2f); // 5% * 2 = +10 Agility
+                        Plugin.Log.LogDebug($"[단검 스킬] knife_step3_move_speed - MMO Agility 증가: +{(int)(Knife_Config.KnifeMoveSpeedBonusValue * 2f)} (이동속도 +{Knife_Config.KnifeMoveSpeedBonusValue}%)");
+                    }
+
                     // 속도 마스터 - 추가 보너스 (있는 경우)
                     if (SkillEffect.HasSkill("speed_master"))
                     {
@@ -1341,6 +1348,47 @@ namespace CaptainSkillTree.SkillTree
 
             if (damage.m_slash > 0) damage.m_slash *= multiplier;
             if (damage.m_pierce > 0) damage.m_pierce *= multiplier;
+        }
+    }
+
+    /// <summary>
+    /// 플레이어 사망 시 모든 스킬 효과 정리 패치
+    /// ZNetScene NullReferenceException 무한 에러 방지
+    /// Character.Damage Postfix에서 사망 체크
+    /// </summary>
+    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+    [HarmonyPriority(Priority.VeryLow)]  // 데미지 처리 후 실행
+    public static class Player_Death_CleanupSkills_Patch
+    {
+        public static void Postfix(Character __instance, HitData hit)
+        {
+            try
+            {
+                // 플레이어만 처리
+                if (!(__instance is Player player))
+                    return;
+
+                // 사망 체크
+                if (!player.IsDead())
+                    return;
+
+                Plugin.Log.LogInfo($"[스킬 정리] {player.GetPlayerName()} 사망 감지 - 모든 스킬 효과 정리 시작");
+
+                // 1. 아처 멀티샷 정리 (buff_02a + statusailment_01_aura GameObject 제거)
+                SkillEffect.CleanupArcherMultiShotOnDeath(player);
+
+                // 2. 폭발 화살 정리 (Dictionary 정리)
+                SkillEffect.CleanupExplosiveArrowOnDeath(player);
+
+                // 3. 기타 활성화된 스킬 효과 정리 (필요 시 추가)
+                // 예: 버서커 분노, 성기사 버프 등
+
+                Plugin.Log.LogInfo($"[스킬 정리] {player.GetPlayerName()} 모든 스킬 효과 정리 완료");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[스킬 정리] Damage 패치 오류: {ex.Message}");
+            }
         }
     }
 }

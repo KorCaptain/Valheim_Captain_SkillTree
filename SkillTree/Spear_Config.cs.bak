@@ -100,216 +100,146 @@ namespace CaptainSkillTree.SkillTree
         {
             // === 필요 포인트 설정 ===
             SpearExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier0_SpearExpert_RequiredPoints",
-                2,
-                "Tier 0: Spear Expert (spear_expert) - Required Points");
+                "Spear Tree", "Tier0_SpearExpert_RequiredPoints", 2,
+                "Tier 0: 창 전문가(spear_expert) - 필요 포인트 / Spear Expert - Required Points");
 
             SpearStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier1_QuickStrike_RequiredPoints",
-                2,
-                "Tier 1: Quick Strike (spear_step1_quickstrike) - Required Points");
+                "Spear Tree", "Tier1_SpearStep1_RequiredPoints", 2,
+                "Tier 1: 창 스킬 - 필요 포인트 / Spear Skill - Required Points");
 
             SpearStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier2_Throw_RequiredPoints",
-                2,
-                "Tier 2: Spear Throw (spear_step2_throw) - Required Points");
+                "Spear Tree", "Tier2_SpearStep2_RequiredPoints", 2,
+                "Tier 2: 창 스킬 - 필요 포인트 / Spear Skill - Required Points");
 
             SpearStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier3_Pierce_RequiredPoints",
-                2,
-                "Tier 3: Pierce (spear_step3_pierce) - Required Points");
+                "Spear Tree", "Tier3_SpearStep3_RequiredPoints", 2,
+                "Tier 3: 창 스킬 - 필요 포인트 / Spear Skill - Required Points");
 
             SpearStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier4_Evasion_RequiredPoints",
-                2,
-                "Tier 4: Evasion Master (spear_step4_evasion) - Required Points");
+                "Spear Tree", "Tier4_SpearStep4_RequiredPoints", 2,
+                "Tier 4: 창 스킬 - 필요 포인트 / Spear Skill - Required Points");
 
             SpearPenetrateRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Penetrate_RequiredPoints",
-                3,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Required Points");
+                "Spear Tree", "Tier5_Penetrate_RequiredPoints", 3,
+                "Tier 5: 꿰뚫는 창(G키 액티브) - 필요 포인트 / Penetrating Spear (G-Key Active) - Required Points");
 
             SpearComboRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Combo_RequiredPoints",
-                3,
-                "Tier 5: Combo Spear (spear_step5_combo) - Required Points");
+                "Spear Tree", "Tier5_Combo_RequiredPoints", 3,
+                "Tier 5: 연공창(H키 액티브) - 필요 포인트 / Combo Spear (H-Key Active) - Required Points");
 
             SpearStep1AttackSpeed = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier0_SpearExpert_2HitAttackSpeed",
-                10f,
-                "Tier 0: Spear Expert (spear_expert) - Attack Speed Bonus on 2-Hit (%)");
+                "Spear Tree", "Tier0_SpearExpert_2HitAttackSpeed", 10f,
+                "Tier 0: 창 전문가(spear_expert) - 2연속 공격 속도 보너스 (%) / Spear Expert - 2-Hit Attack Speed Bonus (%)");
 
             SpearStep1DamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier0_SpearExpert_2HitDamageBonus",
-                7f,
-                "Tier 0: Spear Expert (spear_expert) - Damage Bonus on 2-Hit (%)");
+                "Spear Tree", "Tier0_SpearExpert_2HitDamageBonus", 7f,
+                "Tier 0: 창 전문가(spear_expert) - 2연속 공격력 보너스 (%) / Spear Expert - 2-Hit Damage Bonus (%)");
 
             SpearStep1Duration = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier0_SpearExpert_EffectDuration",
-                4f,
-                "Tier 0: Spear Expert (spear_expert) - Buff Duration (sec)");
+                "Spear Tree", "Tier0_SpearExpert_EffectDuration", 4f,
+                "Tier 0: 창 전문가(spear_expert) - 효과 지속시간 (초) / Spear Expert - Effect Duration (sec)");
 
             SpearStep1ThrowCooldown = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier2_Throw_Cooldown",
-                30f,
-                "Tier 2: Spear Throw (spear_step2_throw) - Cooldown (sec)");
+                "Spear Tree", "Tier1_Throw_Cooldown", 30f,
+                "Tier 1: 투창 전문가(spear_step1_throw) - 투창 쿨타임 (초) / Throwing Spear Expert - Throwing Cooldown (sec)");
 
             SpearStep1ThrowDamage = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier2_Throw_DamageMultiplier",
-                120f,
-                "Tier 2: Spear Throw (spear_step2_throw) - Damage Multiplier (%)");
+                "Spear Tree", "Tier1_Throw_DamageMultiplier", 120f,
+                "Tier 1: 투창 전문가(spear_step1_throw) - 투창 데미지 배율 (%) / Throwing Spear Expert - Throwing Damage Multiplier (%)");
 
             SpearStep1ThrowBuffDuration = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier2_Throw_BuffDuration_NotUsed",
-                15f,
-                "Tier 2: Spear Throw (spear_step2_throw) - Buff Duration (NOT USED)");
+                "Spear Tree", "Tier1_Throw_BuffDuration_NotUsed", 15f,
+                "Tier 1: 투창 전문가(spear_step1_throw) - 사용 안 함 (패시브 스킬로 변경됨) / Throwing Spear Expert - Not Used (Changed to Passive)");
 
             SpearStep1CritDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier1_VitalStrike_DamageBonus",
-                20f,
-                "Tier 1: Vital Strike (spear_step1_vitalstrike) - Critical Damage Bonus (%)");
+                "Spear Tree", "Tier1_VitalStrike_DamageBonus", 20f,
+                "Tier 1: 급소 찌르기(spear_step1_crit) - 창 공격력 보너스 (%) / Vital Strike - Spear Damage Bonus (%)");
 
             SpearStep3PierceDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier3_Rapid_DamageBonus",
-                4f,
-                "Tier 3: Rapid Pierce (spear_step3_rapid) - Damage Bonus (flat)");
+                "Spear Tree", "Tier3_Rapid_DamageBonus", 4f,
+                "Tier 3: 연격창(spear_Step3_pierce) - 무기 공격력 보너스 (고정 수치) / Rapid Spear - Weapon Damage Bonus (Fixed Value)");
 
             SpearStep2EvasionDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier4_Evasion_DamageBonus",
-                25f,
-                "Tier 4: Evasion Master (spear_step4_evasion) - Damage Bonus (%)");
+                "Spear Tree", "Tier4_Evasion_DamageBonus", 25f,
+                "Tier 4: 회피 찌르기(spear_step2_evasion) - 구르기 직후 공격 피해 보너스 (%) / Evasion Strike - Damage Bonus After Dodge (%)");
 
             SpearStep2EvasionStaminaReduction = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier4_Evasion_StaminaReduction",
-                8f,
-                "Tier 4: Evasion Master (spear_step4_evasion) - Stamina Reduction (%)");
+                "Spear Tree", "Tier4_Evasion_StaminaReduction", 8f,
+                "Tier 4: 회피 찌르기(spear_step2_evasion) - 공격 스태미나 감소 (%) / Evasion Strike - Attack Stamina Reduction (%)");
 
             // === 폭발창 설정 ===
             SpearExplosionChance = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier3_Explosion_Chance",
-                30f,
-                "Tier 3: Explosive Spear (spear_step3_explosion) - Activation Chance (%)");
+                "Spear Tree", "Tier3_Explosion_Chance", 30f,
+                "Tier 3: 폭발창(spear_step3_explosion) - 폭발 발동 확률 (%) / Explosive Spear - Explosion Chance (%)");
 
             SpearExplosionRadius = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier3_Explosion_Radius",
-                5f,
-                "Tier 3: Explosive Spear (spear_step3_explosion) - Explosion Radius (meters)");
+                "Spear Tree", "Tier3_Explosion_Radius", 5f,
+                "Tier 3: 폭발창(spear_step3_explosion) - 폭발 범위 (m) / Explosive Spear - Explosion Radius (m)");
 
             SpearExplosionDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier3_Explosion_DamageBonus",
-                30f,
-                "Tier 3: Explosive Spear (spear_step3_explosion) - Explosion Damage Bonus (%)");
+                "Spear Tree", "Tier3_Explosion_DamageBonus", 30f,
+                "Tier 3: 폭발창(spear_step3_explosion) - 폭발 공격력 보너스 (%) / Explosive Spear - Explosion Damage Bonus (%)");
 
             // === 이연창 설정 ===
             SpearDualDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier4_Dual_DamageBonus",
-                20f,
-                "Tier 4: Dual Spear (spear_step4_dual) - Damage Bonus (%)");
+                "Spear Tree", "Tier4_Dual_DamageBonus", 20f,
+                "Tier 4: 이연창(spear_step4_dual) - 2연속 공격 시 공격력 보너스 (%) / Dual Spear - 2-Hit Damage Bonus (%)");
 
             SpearDualDuration = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier4_Dual_Duration",
-                10f,
-                "Tier 4: Dual Spear (spear_step4_dual) - Buff Duration (sec)");
+                "Spear Tree", "Tier4_Dual_Duration", 10f,
+                "Tier 4: 이연창(spear_step4_dual) - 버프 지속시간 (초) / Dual Spear - Buff Duration (sec)");
 
             SpearStep5PenetrateCritChance = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Penetrate_CritChance_NotUsed",
-                12f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Critical Chance (NOT USED)");
+                "Spear Tree", "Tier5_Penetrate_CritChance_NotUsed", 12f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - 미사용 (번개 충격으로 변경됨) / Penetrating Spear - Not Used (Changed to Lightning Strike)");
 
             SpearStep5PenetrateBuffDuration = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Penetrate_BuffDuration",
-                30f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Buff Duration (sec)");
+                "Spear Tree", "Tier5_Penetrate_BuffDuration", 30f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - 버프 지속시간 (초) / Penetrating Spear - Buff Duration (sec)");
 
             SpearStep5PenetrateLightningDamage = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Penetrate_LightningDamage",
-                260f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Lightning Damage (%)");
+                "Spear Tree", "Tier5_Penetrate_LightningDamage", 260f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - 번개 충격 데미지 배율 (%) / Penetrating Spear - Lightning Strike Damage Multiplier (%)");
 
             SpearStep5PenetrateComboCount = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Penetrate_HitCount",
-                3,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Required Hit Count");
+                "Spear Tree", "Tier5_Penetrate_HitCount", 3,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - 번개 발동 연속 적중 횟수 / Penetrating Spear - Lightning Trigger Combo Hits");
 
             SpearStep5PenetrateCooldown = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Penetrate_GKey_Cooldown",
-                60f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - G-Key Cooldown (sec)");
+                "Spear Tree", "Tier5_Penetrate_GKey_Cooldown", 60f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - G키 액티브 쿨타임 (초) / Penetrating Spear - G-Key Active Cooldown (sec)");
 
             SpearStep5PenetrateStaminaCost = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Penetrate_GKey_StaminaCost",
-                25f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - G-Key Stamina Cost");
+                "Spear Tree", "Tier5_Penetrate_GKey_StaminaCost", 25f,
+                "Tier 5: 꿰뚫는 창(spear_step5_penetrate) - G키 액티브 스태미나 소모 (%) / Penetrating Spear - G-Key Active Stamina Cost (%)");
 
             SpearStep5ComboCooldown = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Combo_HKey_Cooldown",
-                25f,
-                "Tier 5: Combo Spear (spear_step5_combo) - H-Key Cooldown (sec)");
+                "Spear Tree", "Tier5_Combo_HKey_Cooldown", 25f,
+                "Tier 5: 연공창(spear_step5_combo_active) - G키 액티브 쿨타임 (초) / Combo Spear - G-Key Active Cooldown (sec)");
 
             SpearStep5ComboDamage = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Combo_HKey_DamageMultiplier",
-                280f,
-                "Tier 5: Combo Spear (spear_step5_combo) - H-Key Damage Multiplier (%)");
+                "Spear Tree", "Tier5_Combo_HKey_DamageMultiplier", 280f,
+                "Tier 5: 연공창(spear_step5_combo_active) - G키 액티브 데미지 배율 (%) / Combo Spear - G-Key Active Damage Multiplier (%)");
 
             SpearStep5ComboStaminaCost = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Combo_HKey_StaminaCost",
-                20f,
-                "Tier 5: Combo Spear (spear_step5_combo) - H-Key Stamina Cost");
+                "Spear Tree", "Tier5_Combo_HKey_StaminaCost", 20f,
+                "Tier 5: 연공창(spear_step5_combo_active) - G키 액티브 스태미나 소모 (%) / Combo Spear - G-Key Active Stamina Cost (%)");
 
             SpearStep5ComboKnockbackRadius = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Combo_HKey_KnockbackRange",
-                3f,
-                "Tier 5: Combo Spear (spear_step5_combo) - H-Key Knockback Range (meters)");
+                "Spear Tree", "Tier5_Combo_HKey_KnockbackRange", 3f,
+                "Tier 5: 연공창(spear_step5_combo_active) - G키 액티브 넉백 범위 (m) / Combo Spear - G-Key Active Knockback Radius (m)");
 
             SpearStep5ComboRange = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Combo_ActiveRange",
-                3f,
-                "Tier 5: Combo Spear (spear_step5_combo) - Active Range (meters)");
+                "Spear Tree", "Tier5_Combo_ActiveRange", 3f,
+                "Tier 5: 연공창(spear_step5_combo_active) - 액티브 효과 범위 (m) / Combo Spear - Active Effect Range (m)");
 
             SpearStep5ComboBuffDuration = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Combo_BuffDuration",
-                30f,
-                "Tier 5: Combo Spear (spear_step5_combo) - Buff Duration (sec)");
+                "Spear Tree", "Tier5_Combo_BuffDuration", 30f,
+                "Tier 5: 연공창(spear_step5_combo) - H키 버프 지속시간 (초) / Combo Spear - H-Key Buff Duration (sec)");
 
             SpearStep5ComboMaxUses = SkillTreeConfig.BindServerSync(config,
-                "Spear Tree",
-                "Tier5_Combo_MaxUses",
-                3,
-                "Tier 5: Combo Spear (spear_step5_combo) - Max Uses");
+                "Spear Tree", "Tier5_Combo_MaxUses", 3,
+                "Tier 5: 연공창(spear_step5_combo) - 버프 중 최대 강화 투창 횟수 / Combo Spear - Max Enhanced Throws During Buff");
 
             Plugin.Log.LogDebug("[Spear_Config] 창 전문가 트리 설정 초기화 완료");
         }

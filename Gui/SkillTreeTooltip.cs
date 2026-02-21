@@ -312,7 +312,6 @@ namespace CaptainSkillTree.Gui
             if (currentNode != null && dynamicTooltipObj != null && dynamicTooltipObj.activeInHierarchy)
             {
                 // 현재 툴팁이 표시 중이면 다시 생성
-                Plugin.Log.LogInfo("[SkillTreeTooltip] 툴팁 갱신 중...");
                 ShowTooltip(currentNode, currentNodePos);
             }
         }

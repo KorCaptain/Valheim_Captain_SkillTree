@@ -18,8 +18,8 @@ namespace CaptainSkillTree.Localization
         private static string _currentLanguage = "ko";
         private static bool _initialized = false;
 
-        // Config entry for language selection
-        public static ConfigEntry<string> LanguageConfig;
+        // Config entry for language selection (references SkillTreeConfig)
+        public static ConfigEntry<string> LanguageConfig => SkillTree.SkillTreeConfig.Language;
 
         // ===== 언어 변경 이벤트 =====
         /// <summary>
@@ -66,26 +66,11 @@ namespace CaptainSkillTree.Localization
                 // First, detect available language files to build supported languages list
                 DetectAvailableLanguages();
 
-                // Build acceptable values string for config description
-                var langOptions = string.Join(", ", _supportedLanguages);
-                var langDesc = $"Language setting:\n" +
-                               $"  - 'Auto' = Auto-detect from Valheim settings (Recommended)\n" +
-                               $"  - Manual codes: {langOptions}\n" +
-                               $"  - Example: 'KR' for Korean, 'EN' for English\n" +
-                               $"  - Case-insensitive: 'kr', 'KR', 'Kr' all work";
-
-                // Bind language config with "Language" category
-                LanguageConfig = config.Bind(
-                    "Language",
-                    "Language",
-                    "Auto",
-                    langDesc
-                );
-
-                // ===== Config 변경 이벤트 등록 (실시간 언어 변경) =====
-                LanguageConfig.SettingChanged += (sender, args) =>
+                // LanguageConfig는 이미 SkillTreeConfig에서 초기화됨
+                // Config 변경 이벤트만 등록
+                SkillTree.SkillTreeConfig.Language.SettingChanged += (sender, args) =>
                 {
-                    Plugin.Log.LogDebug($"[Localization] Config 변경 감지: '{LanguageConfig.Value}'");
+                    Plugin.Log.LogDebug($"[Localization] Config 변경 감지: '{SkillTree.SkillTreeConfig.Language.Value}'");
                     ReloadLanguage();
                     OnLanguageChanged?.Invoke();  // UI 갱신 트리거
                 };
@@ -264,10 +249,12 @@ namespace CaptainSkillTree.Localization
                     var json = File.ReadAllText(filePath);
                     var langData = ParseJsonToDict(json);
 
-                    // Merge missing keys from DefaultLanguages (for ko and en only)
+                    // Merge/update keys from DefaultLanguages (for ko and en only)
+                    // DefaultLanguages is authoritative: adds missing keys AND updates changed format strings
                     if (defaultData != null)
                     {
                         int addedKeys = 0;
+                        int updatedKeys = 0;
                         foreach (var kvp in defaultData)
                         {
                             if (!langData.ContainsKey(kvp.Key))
@@ -275,16 +262,23 @@ namespace CaptainSkillTree.Localization
                                 langData[kvp.Key] = kvp.Value;
                                 addedKeys++;
                             }
+                            else if (langData[kvp.Key] != kvp.Value)
+                            {
+                                // Update stale format strings from DefaultLanguages
+                                // This prevents FormatException when format placeholders change between versions
+                                langData[kvp.Key] = kvp.Value;
+                                updatedKeys++;
+                            }
                         }
 
-                        // If new keys were added, update the JSON file
-                        if (addedKeys > 0)
+                        // If keys were added or updated, write back to disk
+                        if (addedKeys > 0 || updatedKeys > 0)
                         {
                             try
                             {
                                 var updatedJson = DictToJson(langData);
                                 File.WriteAllText(filePath, updatedJson);
-                                Plugin.Log.LogDebug($"[Localization] Updated {fileLang}.json with {addedKeys} new keys");
+                                Plugin.Log.LogDebug($"[Localization] Updated {fileLang}.json: {addedKeys} new, {updatedKeys} refreshed keys");
                             }
                             catch (Exception writeEx)
                             {

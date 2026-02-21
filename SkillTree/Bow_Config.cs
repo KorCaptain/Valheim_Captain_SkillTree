@@ -89,142 +89,210 @@ namespace CaptainSkillTree.SkillTree
         {
             // === 필요 포인트 설정 ===
             BowExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier1_활전문가_필요포인트", 2,
-                "Tier 1: 활 전문가(bow_Step1_damage) - 필요 포인트");
+                "Bow Tree",
+                "Tier0_BowExpert_RequiredPoints",
+                2,
+                "Tier 0: Bow Expert (bow_expert) - Required Points");
 
             BowStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier2_집중사격_필요포인트", 2,
-                "Tier 2: 집중 사격(bow_Step2_focus) - 필요 포인트");
+                "Bow Tree",
+                "Tier1_FocusedShot_RequiredPoints",
+                2,
+                "Tier 1: Focused Shot (bow_step2_focus) - Required Points");
 
             BowMultishotRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier2_멀티샷_필요포인트", 2,
-                "Tier 2: 멀티샷 Lv1(bow_Step2_multishot) - 필요 포인트");
+                "Bow Tree",
+                "Tier2_MultishotLv1_RequiredPoints",
+                2,
+                "Tier 2: Multishot Lv1 (bow_step2_multishot) - Required Points");
 
             BowStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier3_활숙련_필요포인트", 2,
-                "Tier 3: 활 숙련(bow_Step3_speedshot) - 필요 포인트");
+                "Bow Tree",
+                "Tier3_BowMastery_RequiredPoints",
+                2,
+                "Tier 3: Bow Mastery (bow_step3_speedshot) - Required Points");
 
             BowStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier4_멀티샷Lv2_필요포인트", 3,
-                "Tier 4: 멀티샷 Lv2(bow_Step4_multishot2) - 필요 포인트");
+                "Bow Tree",
+                "Tier4_MultishotLv2_RequiredPoints",
+                3,
+                "Tier 4: Multishot Lv2 (bow_step4_multishot_lv2) - Required Points");
 
             BowStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_정조준_필요포인트", 3,
-                "Tier 5: 정조준(bow_Step5_master) - 필요 포인트");
+                "Bow Tree",
+                "Tier5_PrecisionAim_RequiredPoints",
+                3,
+                "Tier 5: Precision Aim (bow_step5_precision) - Required Points");
 
             BowExplosiveArrowRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_폭발화살_필요포인트", 4,
-                "Tier 6: 폭발 화살(R키 액티브) - 필요 포인트");
+                "Bow Tree",
+                "Tier6_ExplosiveArrow_RequiredPoints",
+                4,
+                "Tier 6: Explosive Arrow (bow_step6_explosive) - Required Points");
 
             // === Bow Tree: 멀티샷 패시브 ===
             BowMultishotLv1Chance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier2_멀티샷Lv1_발동확률", 15f,
-                "Tier 2: 멀티샷 Lv1(bow_multishot_lv1) - 발동 확률 (%)");
+                "Bow Tree",
+                "Tier2_MultishotLv1_ActivationChance",
+                15f,
+                "Tier 2: Multishot Lv1 (bow_step2_multishot) - Activation Chance (%)");
 
             BowMultishotLv2Chance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier4_멀티샷Lv2_발동확률", 36f,
-                "Tier 4: 멀티샷 Lv2(bow_multishot_lv2) - 발동 확률 (%)");
+                "Bow Tree",
+                "Tier4_MultishotLv2_ActivationChance",
+                36f,
+                "Tier 4: Multishot Lv2 (bow_step4_multishot_lv2) - Activation Chance (%)");
 
             BowMultishotArrowCount = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier2_멀티샷_추가화살수", 2,
-                "Tier 2: 멀티샷 - 추가 발사 화살 수");
+                "Bow Tree",
+                "Tier2_Multishot_AdditionalArrows",
+                2,
+                "Tier 2: Multishot - Additional Arrows Count");
 
             BowMultishotArrowConsumption = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier2_멀티샷_화살소모량", 0,
-                "Tier 2: 멀티샷 - 화살 소모량");
+                "Bow Tree",
+                "Tier2_Multishot_ArrowConsumption",
+                0,
+                "Tier 2: Multishot - Arrow Consumption (0=no extra consumption)");
 
             BowMultishotDamagePercent = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier2_멀티샷_화살데미지비율", 70f,
-                "Tier 2: 멀티샷 - 화살당 데미지 비율 (%)");
+                "Bow Tree",
+                "Tier2_Multishot_DamagePerArrow",
+                70f,
+                "Tier 2: Multishot - Damage Per Additional Arrow (%)");
 
             // === Bow Tree: 공격 스킬 ===
             BowStep1ExpertDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier1_활전문가_활공격력보너스", 5f,
-                "Tier 1: 활 전문가(bow_Step1_damage) - 활 공격력 보너스 (%)");
+                "Bow Tree",
+                "Tier0_BowExpert_DamageBonus",
+                5f,
+                "Tier 0: Bow Expert (bow_expert) - Damage Bonus (%)");
 
             BowStep2FocusCritBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier2_집중사격_치명타확률보너스", 7f,
-                "Tier 2: 집중 사격(bow_step2_focus) - 치명타 확률 보너스 (%)");
+                "Bow Tree",
+                "Tier1_FocusedShot_CritBonus",
+                7f,
+                "Tier 1: Focused Shot (bow_step2_focus) - Critical Bonus (%)");
 
             BowStep3SpeedShotSkillBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier3_활숙련_활기술숙련도보너스", 10f,
-                "Tier 3: 활 숙련(bow_step3_speedshot) - 활 기술(숙련도) 보너스");
+                "Bow Tree",
+                "Tier3_SpeedShot_SkillBonus",
+                10f,
+                "Tier 3: Speed Shot (bow_step3_speedshot) - Bow Skill Bonus");
 
             BowStep3SilentShotDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier3_기본활공격_공격력증가", 3f,
-                "Tier 3: 기본 활공격(bow_step3_silentshot) - 활 공격력 증가 (고정값)");
+                "Bow Tree",
+                "Tier3_SilentShot_DamageBonus",
+                3f,
+                "Tier 3: Silent Shot (bow_step3_silentshot) - Damage Bonus (flat)");
 
             BowStep3SpecialArrowChance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier3_특수화살_발사확률", 30f,
-                "Tier 3: 특수 화살(bow_step3_special_arrow) - 특수 화살 발사 확률 (%)");
+                "Bow Tree",
+                "Tier3_SpecialArrow_Chance",
+                30f,
+                "Tier 3: Special Arrow (bow_step3_special) - Activation Chance (%)");
 
             BowStep4PowerShotKnockbackChance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier4_강력한한발_강한넉백확률", 35f,
-                "Tier 4: 강력한 한 발(bow_step4_powershot) - 강한 넉백 확률 (%)");
+                "Bow Tree",
+                "Tier4_PowerShot_KnockbackChance",
+                35f,
+                "Tier 4: Power Shot (bow_step4_powershot) - Knockback Chance (%)");
 
             BowStep4PowerShotKnockbackPower = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier4_강력한한발_넉백거리", 5f,
-                "Tier 4: 강력한 한 발(bow_step4_powershot) - 넉백 거리 (m)");
+                "Bow Tree",
+                "Tier4_PowerShot_KnockbackDistance",
+                5f,
+                "Tier 4: Power Shot (bow_step4_powershot) - Knockback Distance (meters)");
 
             BowStep5ArrowRainChance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_화살비_화살3개발사확률", 29f,
-                "Tier 5: 화살비(bow_step5_arrow_rain) - 화살 3개 발사 확률 (%)");
+                "Bow Tree",
+                "Tier5_ArrowRain_Chance",
+                29f,
+                "Tier 5: Arrow Rain (bow_step5_arrowrain) - Activation Chance (%)");
 
             BowStep5ArrowRainCount = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_화살비_발사할화살개수", 3,
-                "Tier 5: 화살비(bow_step5_arrow_rain) - 발사할 화살 개수");
+                "Bow Tree",
+                "Tier5_ArrowRain_ArrowCount",
+                3,
+                "Tier 5: Arrow Rain (bow_step5_arrowrain) - Additional Arrows Count");
 
             BowStep5BackstepShotCritBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_백스텝샷_구르기후치명타확률보너스", 25f,
-                "Tier 5: 백스텝 샷(bow_step5_backstep_shot) - 구르기 후 치명타 확률 보너스 (%)");
+                "Bow Tree",
+                "Tier5_BackstepShot_CritBonus",
+                25f,
+                "Tier 5: Backstep Shot (bow_step5_backstep) - Critical Bonus (%)");
 
             BowStep5BackstepShotWindow = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_백스텝샷_구르기후효과지속시간", 3f,
-                "Tier 5: 백스텝 샷(bow_step5_backstep_shot) - 구르기 후 효과 지속시간 (초)");
+                "Bow Tree",
+                "Tier5_BackstepShot_Duration",
+                3f,
+                "Tier 5: Backstep Shot (bow_step5_backstep) - Buff Duration (sec)");
 
             BowStep5InstinctCritBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_사냥본능_치명타확률보너스", 10f,
-                "Tier 5: 사냥 본능(bow_step5_instinct) - 치명타 확률 보너스 (%)");
+                "Bow Tree",
+                "Tier5_HuntingInstinct_CritBonus",
+                10f,
+                "Tier 5: Hunting Instinct (bow_step5_instinct) - Critical Bonus (%)");
 
             BowStep5MasterCritDamage = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_정조준_크리티컬데미지보너스", 30f,
-                "Tier 5: 정조준(bow_step5_master) - 크리티컬 데미지 보너스 (%)");
+                "Bow Tree",
+                "Tier5_PrecisionAim_CritDamage",
+                30f,
+                "Tier 5: Precision Aim (bow_step5_precision) - Critical Damage (%)");
 
             BowStep6CritBoostDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_R키액티브데미지보너스", 50f,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 데미지 보너스 (%)");
+                "Bow Tree",
+                "Tier6_CritBoost_DamageBonus",
+                50f,
+                "Tier 6: Crit Boost (bow_step6_critboost) - Damage Bonus (%)");
 
             BowStep6CritBoostCritChance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_R키액티브치명타확률", 100f,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 치명타 확률 (%)");
+                "Bow Tree",
+                "Tier6_CritBoost_CritChance",
+                100f,
+                "Tier 6: Crit Boost (bow_step6_critboost) - Critical Chance (%)");
 
             BowStep6CritBoostArrowCount = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_R키액티브화살개수", 5,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 화살 개수");
+                "Bow Tree",
+                "Tier6_CritBoost_ArrowCount",
+                5,
+                "Tier 6: Crit Boost (bow_step6_critboost) - Arrow Count");
 
             BowStep6CritBoostCooldown = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_R키액티브쿨타임", 45f,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 쿨타임 (초)");
+                "Bow Tree",
+                "Tier6_CritBoost_Cooldown",
+                45f,
+                "Tier 6: Crit Boost (bow_step6_critboost) - Cooldown (sec)");
 
             BowStep6CritBoostStaminaCost = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_크리티컬부스트_R키액티브스태미나소모", 25f,
-                "Tier 6: 크리티컬 부스트(bow_step6_critboost) - R키 액티브 스킬 스태미나 소모 (%)");
+                "Bow Tree",
+                "Tier6_CritBoost_StaminaCost",
+                25f,
+                "Tier 6: Crit Boost (bow_step6_critboost) - Stamina Cost");
 
             BowExplosiveArrowDamage = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_폭발화살_R키액티브데미지배율", 120f,
-                "Tier 6: 폭발 화살(bow_step6_explosive) - R키 액티브 스킬 데미지 배율 (%)");
+                "Bow Tree",
+                "Tier6_ExplosiveArrow_DamageMultiplier",
+                120f,
+                "Tier 6: Explosive Arrow (bow_step6_explosive) - Damage Multiplier (%)");
 
             BowExplosiveArrowCooldown = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_폭발화살_R키액티브쿨타임", 20f,
-                "Tier 6: 폭발 화살(bow_step6_explosive) - R키 액티브 스킬 쿨타임 (초)");
+                "Bow Tree",
+                "Tier6_ExplosiveArrow_Cooldown",
+                20f,
+                "Tier 6: Explosive Arrow (bow_step6_explosive) - Cooldown (sec)");
 
             BowExplosiveArrowStaminaCost = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_폭발화살_R키액티브스태미나소모", 15f,
-                "Tier 6: 폭발 화살(bow_step6_explosive) - R키 액티브 스킬 스태미나 소모 (%)");
+                "Bow Tree",
+                "Tier6_ExplosiveArrow_StaminaCost",
+                15f,
+                "Tier 6: Explosive Arrow (bow_step6_explosive) - Stamina Cost");
 
             BowExplosiveArrowRadius = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_폭발화살_폭발범위", 4f,
-                "Tier 6: 폭발 화살(bow_step6_explosive) - 폭발 범위 (m)");
+                "Bow Tree",
+                "Tier6_ExplosiveArrow_Radius",
+                4f,
+                "Tier 6: Explosive Arrow (bow_step6_explosive) - Explosion Radius (meters)");
 
             Plugin.Log.LogDebug("[Bow_Config] 활 전문가 트리 설정 초기화 완료");
         }

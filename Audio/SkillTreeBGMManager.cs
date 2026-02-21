@@ -43,9 +43,6 @@ namespace CaptainSkillTree.Audio
         private bool isInitialized = false;
         private static readonly string BGM_RESOURCE_NAME = "CaptainSkillTree.asset.Resources.Skill_Tree_BGM";
 
-        // 발헤임 음악 제어
-        private float originalValheimVolume = 1.0f;
-
         // 일시정지/재개 기능
         private float pausedTime = 0f; // BGM 일시정지 시 재생 위치 저장
         #endregion
@@ -501,34 +498,30 @@ namespace CaptainSkillTree.Audio
         {
             try
             {
-                // MusicMan이 존재하는지 확인
-                if (MusicMan.instance != null)
-                {
-                    // 1. 원본 볼륨 저장
-                    originalValheimVolume = MusicMan.m_masterMusicVolume;
-
-                    // 2. 볼륨을 0으로 설정하여 음소거
-                    MusicMan.m_masterMusicVolume = 0f;
-
-                    // 3. AudioSource 직접 Pause (Reflection 사용)
-                    var musicSourceField = typeof(MusicMan).GetField("m_musicSource",
-                        BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (musicSourceField != null)
-                    {
-                        var audioSource = musicSourceField.GetValue(MusicMan.instance) as AudioSource;
-                        if (audioSource != null && audioSource.isPlaying)
-                        {
-                            audioSource.Pause();
-                            Plugin.Log.LogDebug("[BGM 관리자] MusicMan AudioSource 일시정지 완료");
-                        }
-                    }
-
-                    Plugin.Log.LogDebug("[BGM 관리자] 발헤임 음악 일시정지 완료 (볼륨 0 + AudioSource.Pause)");
-                }
-                else
+                if (MusicMan.instance == null)
                 {
                     Plugin.Log.LogDebug("[BGM 관리자] MusicMan.instance가 아직 초기화되지 않음 (게임 로딩 중)");
+                    return;
                 }
+
+                // 1. MusicMan Update() 비활성화 → 새 음악 자동 시작 차단
+                MusicMan.instance.enabled = false;
+                Plugin.Log.LogDebug("[BGM 관리자] MusicMan.enabled = false (새 음악 자동 시작 차단)");
+
+                // 2. AudioSource Pause (볼륨 직접 조작 금지 - 사용자 설정 볼륨 보호)
+                var musicSourceField = typeof(MusicMan).GetField("m_musicSource",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+                if (musicSourceField != null)
+                {
+                    var audioSource = musicSourceField.GetValue(MusicMan.instance) as AudioSource;
+                    if (audioSource != null && audioSource.isPlaying)
+                    {
+                        audioSource.Pause();
+                        Plugin.Log.LogDebug("[BGM 관리자] MusicMan AudioSource 일시정지 완료");
+                    }
+                }
+
+                Plugin.Log.LogDebug("[BGM 관리자] 발헤임 음악 일시정지 완료 (MusicMan.enabled=false + AudioSource.Pause)");
             }
             catch (Exception ex)
             {
@@ -543,50 +536,34 @@ namespace CaptainSkillTree.Audio
         {
             try
             {
-                // MusicMan이 존재하는지 확인
-                if (MusicMan.instance != null)
-                {
-                    // 1. AudioSource UnPause (Reflection 사용)
-                    var musicSourceField = typeof(MusicMan).GetField("m_musicSource",
-                        BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (musicSourceField != null)
-                    {
-                        var audioSource = musicSourceField.GetValue(MusicMan.instance) as AudioSource;
-                        if (audioSource != null)
-                        {
-                            audioSource.UnPause();
-                            Plugin.Log.LogDebug("[BGM 관리자] MusicMan AudioSource 재개 완료");
-                        }
-                    }
-
-                    // 2. 볼륨 복원
-                    MusicMan.m_masterMusicVolume = originalValheimVolume > 0 ? originalValheimVolume : 1.0f;
-
-                    Plugin.Log.LogDebug($"[BGM 관리자] 발헤임 음악 복원 완료 (볼륨: {MusicMan.m_masterMusicVolume})");
-                }
-                else
+                if (MusicMan.instance == null)
                 {
                     Plugin.Log.LogWarning("[BGM 관리자] MusicMan.instance가 null입니다 - 게임 로딩 중일 수 있음");
+                    return;
                 }
 
-                // 3. 상태 초기화 (항상 수행)
-                originalValheimVolume = 1.0f;
+                // 1. 먼저 AudioSource UnPause (볼륨 직접 조작 금지 - 사용자 설정 볼륨 보호)
+                var musicSourceField = typeof(MusicMan).GetField("m_musicSource",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+                if (musicSourceField != null)
+                {
+                    var audioSource = musicSourceField.GetValue(MusicMan.instance) as AudioSource;
+                    if (audioSource != null)
+                    {
+                        audioSource.UnPause();
+                        Plugin.Log.LogDebug("[BGM 관리자] MusicMan AudioSource 재개 완료");
+                    }
+                }
+
+                // 2. MusicMan Update() 재활성화
+                MusicMan.instance.enabled = true;
+                Plugin.Log.LogDebug("[BGM 관리자] MusicMan.enabled = true (자동 음악 관리 복원)");
+
+                Plugin.Log.LogDebug("[BGM 관리자] 발헤임 음악 복원 완료 (AudioSource.UnPause + MusicMan.enabled=true)");
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[BGM 관리자] 발헤임 음악 복원 실패: {ex.Message}");
-
-                // 예외 발생 시에도 최소한 볼륨은 복원 시도
-                try
-                {
-                    if (MusicMan.instance != null)
-                    {
-                        MusicMan.m_masterMusicVolume = 1.0f;
-                    }
-                }
-                catch { }
-
-                originalValheimVolume = 1.0f;
             }
         }
         #endregion

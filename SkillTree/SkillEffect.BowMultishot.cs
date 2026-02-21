@@ -15,8 +15,8 @@ namespace CaptainSkillTree.SkillTree
     public static partial class SkillEffect
     {
         // === 멀티샷 상태 추적 ===
-        private static Dictionary<Player, bool> isMultishotProcessing = new Dictionary<Player, bool>();
-        private static Dictionary<Player, bool> bowExpertMultishotTriggered = new Dictionary<Player, bool>();
+        internal static Dictionary<Player, bool> isMultishotProcessing = new Dictionary<Player, bool>();
+        internal static Dictionary<Player, bool> bowExpertMultishotTriggered = new Dictionary<Player, bool>();
         
         /// <summary>
         /// 멀티샷 확률 체크 및 추가 화살 발사 (누적 확률 시스템)
@@ -41,72 +41,46 @@ namespace CaptainSkillTree.SkillTree
                 
                 isMultishotProcessing[player] = true;
                 
-                // 스킬 보유 여부 확인 및 누적 확률 계산
+                // 스킬 보유 여부 확인
                 bool hasLv1 = HasSkill("bow_Step2_multishot");
                 bool hasLv2 = HasSkill("bow_Step4_multishot2");
-                
+
                 if (!hasLv1 && !hasLv2)
                 {
                     Plugin.Log.LogDebug("[멀티샷] 멀티샷 스킬 미보유");
                     return;
                 }
-                
-                // 컨피그에서 값 가져오기
-                var lv1Chance = SkillTreeConfig.BowMultishotLv1ChanceValue / 100f;  // 15% -> 0.15
-                var lv2Chance = SkillTreeConfig.BowMultishotLv2ChanceValue / 100f;  // 36% -> 0.36
-                var arrowCount = SkillTreeConfig.BowMultishotArrowCountValue;       // 2발
-                var consumeCount = SkillTreeConfig.BowMultishotArrowConsumptionValue; // 0개
-                
-                // 누적 확률 계산 (둘 다 보유 시 합산)
-                float totalChance = 0f;
-                string skillLevel = "";
-                
-                if (hasLv1 && hasLv2)
+
+                // 스킬 레벨 결정 (확률 체크는 FireProjectileBurst 패치에서 이미 완료됨)
+                string skillLevel = (hasLv1 && hasLv2) ? "Lv1+Lv2" : (hasLv2 ? "Lv2" : "Lv1");
+
+                // 컨피그에서 화살 수 및 소모량 가져오기
+                var arrowCount = SkillTreeConfig.BowMultishotArrowCountValue;
+                var consumeCount = SkillTreeConfig.BowMultishotArrowConsumptionValue;
+
+                // 화살 미리 조회 (1회만) - player.GetAmmoItem()이 현재 무기에 맞는 탄약 반환
+                var ammo = player.GetAmmoItem();
+                if (ammo == null)
                 {
-                    totalChance = lv1Chance + lv2Chance; // 15% + 36% = 51%
-                    skillLevel = "Lv1+Lv2";
-                }
-                else if (hasLv2)
-                {
-                    totalChance = lv2Chance; // 36%
-                    skillLevel = "Lv2";
-                }
-                else if (hasLv1)
-                {
-                    totalChance = lv1Chance; // 15%
-                    skillLevel = "Lv1";
-                }
-                
-                Plugin.Log.LogDebug($"[멀티샷] 확률 계산 - {skillLevel}: {totalChance * 100:F1}%");
-                
-                // 확률 체크
-                if (UnityEngine.Random.Range(0f, 1f) >= totalChance)
-                {
-                    Plugin.Log.LogDebug("[멀티샷] 확률 실패");
+                    Plugin.Log.LogWarning("[멀티샷] 화살이 없음 - 발사 중단");
                     return;
                 }
-                
-                // 멀티샷 발동 - 설정된 화살 수만큼 발사
-                Plugin.Log.LogInfo($"[멀티샷] {skillLevel} 발동! - 추가 {arrowCount}발 발사");
-                
+
                 // 화살 소모 처리
                 if (consumeCount > 0)
                 {
                     ConsumeMultishotArrows(player, consumeCount);
                 }
-                
+
                 // 멀티샷 트리거 상태 설정 (기본 화살 차단용)
                 bowExpertMultishotTriggered[player] = true;
-                
+
                 // 기본 3발 (-3°, 0°, 3°) 발사
                 var angles = new float[] { -3f, 0f, 3f };
                 for (int i = 0; i < angles.Length; i++)
                 {
-                    FireAdditionalArrow(player, weapon, attackDir, angles[i]);
+                    FireAdditionalArrow(player, weapon, ammo, attackDir, angles[i]);
                 }
-                
-                // 멀티샷 트리거 상태 해제
-                bowExpertMultishotTriggered[player] = false;
                 
                 // 스킬 효과 텍스트 및 VFX
                 ShowSkillEffectText(player, $"🏹 {L.Get("multishot_skill", skillLevel, arrowCount)}",
@@ -120,26 +94,17 @@ namespace CaptainSkillTree.SkillTree
             finally
             {
                 isMultishotProcessing[player] = false;
+                bowExpertMultishotTriggered[player] = false;
             }
         }
         
         /// <summary>
         /// 추가 화살 발사 (Valheim 네이티브 방식으로 개선)
         /// </summary>
-        private static void FireAdditionalArrow(Player player, ItemDrop.ItemData weapon, Vector3 baseDirection, float angleOffset)
+        private static void FireAdditionalArrow(Player player, ItemDrop.ItemData weapon, ItemDrop.ItemData ammo, Vector3 baseDirection, float angleOffset)
         {
             try
             {
-                // 화살 정보 가져오기
-                var ammo = GetEquippedArrow(player);
-                if (ammo == null)
-                {
-                    Plugin.Log.LogWarning("[활 전문가 멀티샷] 화살이 없음");
-                    return;
-                }
-                
-                Plugin.Log.LogInfo($"[활 전문가 멀티샷] FireAdditionalArrow 시작 - 각도: {angleOffset}°");
-                
                 // 발사 방향 계산 (각도 편차 적용)
                 var fireDirection = baseDirection;
                 if (angleOffset != 0f)
@@ -165,12 +130,10 @@ namespace CaptainSkillTree.SkillTree
                 }
                 
                 // Valheim의 표준 프로젝타일 발사 방식 사용
-                var spawnPoint = player.transform.position + 
-                    player.transform.up * 1.5f + 
+                var spawnPoint = player.transform.position +
+                    player.transform.up * 1.5f +
                     fireDirection * 0.5f;
-                
-                Plugin.Log.LogInfo($"[활 전문가 멀티샷] 발사 위치: {spawnPoint}, 방향: {fireDirection}");
-                
+
                 // 프로젝타일 직접 생성 및 설정 (화살의 프로젝타일 사용)
                 var projectileObj = UnityEngine.Object.Instantiate(
                     ammoAttack.m_attackProjectile, 
@@ -192,12 +155,9 @@ namespace CaptainSkillTree.SkillTree
                     var hitData = new HitData();
                     var fullDamage = weapon.GetDamage();
                     fullDamage.Add(ammo.GetDamage());
-                    
-                    // Player 스킬 보너스 적용
-                    var skillFactor = player.GetSkillFactor(Skills.SkillType.Bows);
-                    fullDamage.Modify(1f + skillFactor * 0.5f);
-                    
-                    // 컨피그 설정 데미지 비율 적용 (기본 70%)
+
+                    // 활 스킬 보너스 제거 - 컨피그 설정 데미지만 적용
+                    // 패시브 스킬은 컨피그 값(70%)이 최종 데미지
                     var damagePercent = SkillTreeConfig.BowMultishotDamagePercentValue / 100f;
                     fullDamage.Modify(damagePercent);
                     
@@ -213,13 +173,10 @@ namespace CaptainSkillTree.SkillTree
                     
                     // Projectile Setup 호출 (Valheim 표준)
                     projectile.Setup(player, velocity, bowAttack.m_projectileAccuracy, hitData, ammo, weapon);
-                    
-                    // 활 전문가 멀티샷 프로젝타일 태그 추가 (적중 효과용)
-                    var bowExpertTag = projectileObj.AddComponent<BowExpertMultiShotProjectileTag>();
-                    bowExpertTag.shooterPlayerId = player.GetPlayerID();
-                    
-                    Plugin.Log.LogInfo($"[활 전문가 멀티샷] 프로젝타일 태그 추가됨 - PlayerID: {player.GetPlayerID()}");
-                    
+
+                    // 적중 감지 및 VFX 제거 (성능 문제로 삭제)
+                    // 프로젝타일 태그 추가 코드 제거됨
+
                     // 물리 엔진 활성화 강제
                     var rigidbody = projectileObj.GetComponent<Rigidbody>();
                     if (rigidbody != null)
@@ -228,8 +185,6 @@ namespace CaptainSkillTree.SkillTree
                         rigidbody.isKinematic = false;
                         rigidbody.useGravity = true;
                     }
-                    
-                    Plugin.Log.LogInfo($"[활 전문가 멀티샷] 화살 발사 완료 - 각도: {angleOffset}°, 속도: {velocity.magnitude:F1}, 데미지: {hitData.GetTotalDamage():F1}");
                 }
                 else
                 {
@@ -306,18 +261,14 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning("[멀티샷] 화살이 없음");
                     return;
                 }
-                
-                Plugin.Log.LogInfo($"[멀티샷] 화살 소모 시작 - 소모량: {consumeCount}, 현재 스택: {ammo.m_stack}");
-                
+
                 if (ammo.m_stack >= consumeCount)
                 {
                     ammo.m_stack -= consumeCount;
-                    Plugin.Log.LogInfo($"[멀티샷] 화살 {consumeCount}개 소모 - 남은 수: {ammo.m_stack}");
-                    
+
                     if (ammo.m_stack <= 0)
                     {
                         inventory.RemoveItem(ammo);
-                        Plugin.Log.LogInfo("[멀티샷] 화살 스택 소진으로 제거");
                     }
                 }
                 else
@@ -342,144 +293,18 @@ namespace CaptainSkillTree.SkillTree
         }
         
         // ValidateArrowProjectile 메서드는 SkillEffect.ArcherMultiShot.cs에서 이미 정의됨
-        
-        /// <summary>
-        /// 활 전문가 멀티샷 적중 효과 (hit_01 사용)
-        /// </summary>
-        public static void PlayBowExpertMultiShotHitEffect(Vector3 hitPosition, Character target)
-        {
-            try
-            {
-                // 타겟이 있으면 타겟의 머리 위치 계산, 없으면 기본 적중 위치 사용
-                Vector3 effectPosition = hitPosition;
-                if (target != null)
-                {
-                    // 캐릭터의 머리 위치 계산 (몸통 중심에서 위쪽으로 올린 위치)
-                    var characterCenter = target.GetCenterPoint();
-                    effectPosition = new Vector3(characterCenter.x, characterCenter.y + 0.5f, characterCenter.z);
-                }
-                
-                // SimpleVFX로 hit_01 효과 재생
-                SimpleVFX.PlayWithSound("hit_01", "arrow_hit", effectPosition, 1.5f);
-                Plugin.Log.LogDebug($"[활 전문가 멀티샷] hit_01 효과 재생 완료 - 타겟: {target?.name ?? "Unknown"}, 위치: {effectPosition}");
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[활 전문가 멀티샷] 적중 효과 재생 실패: {ex.Message}");
-            }
-        }
+
+        // 적중 감지 및 VFX 재생 코드 제거 (성능 문제로 삭제)
+        // - PlayBowExpertMultiShotHitEffect 메서드 제거
+        // - BowExpertMultiShotProjectileTag 클래스 제거
+        // - BowExpertMultiShot_ProjectileHit_Patch 패치 제거
+        // 패시브 스킬이므로 VFX/사운드 효과 불필요 (CLAUDE.md 규칙 준수)
     }
 
-    /// <summary>
-    /// 활 전문가 멀티샷 프로젝타일 태그 컴포넌트 (적중 효과 감지용)
-    /// </summary>
-    public class BowExpertMultiShotProjectileTag : MonoBehaviour
-    {
-        public long shooterPlayerId;
-    }
-    
-    /// <summary>
-    /// 활 전문가 멀티샷 적중 효과를 위한 Projectile 패치
-    /// </summary>
-    [HarmonyPatch(typeof(Projectile), nameof(Projectile.OnHit))]
-    [HarmonyPriority(Priority.Normal)]
-    public static class BowExpertMultiShot_ProjectileHit_Patch
-    {
-        [HarmonyPrefix]
-        private static void Prefix(Projectile __instance, Collider collider, bool water)
-        {
-            try
-            {
-                // 물에 떨어진 경우는 무시
-                if (water) return;
-                
-                // 활 전문가 멀티샷 프로젝타일인지 확인
-                var bowExpertTag = __instance?.GetComponent<BowExpertMultiShotProjectileTag>();
-                if (bowExpertTag == null) return;
-                
-                Plugin.Log.LogInfo($"[활 전문가 멀티샷] 프로젝타일 적중 감지! PlayerID: {bowExpertTag.shooterPlayerId}");
-                
-                // 적중 위치 계산
-                var hitPosition = __instance.transform.position;
-                
-                // 적중한 대상이 캐릭터인지 확인
-                Character target = null;
-                if (collider != null)
-                {
-                    target = collider.GetComponent<Character>();
-                    if (target == null)
-                    {
-                        target = collider.GetComponentInParent<Character>();
-                    }
-                }
-                
-                // 몬스터나 적 캐릭터 적중 시에만 효과 재생 (플레이어 제외)
-                if (target != null && target != Player.m_localPlayer)
-                {
-                    // 적이나 몬스터인지 확인
-                    bool isValidTarget = target.IsMonsterFaction(Time.time) || target.IsPlayer() || 
-                                       target.name.Contains("Deer") || target.name.Contains("Boar") ||
-                                       target.name.Contains("Neck") || target.name.Contains("Greyling");
-                    
-                    if (isValidTarget)
-                    {
-                        SkillEffect.PlayBowExpertMultiShotHitEffect(hitPosition, target);
-                        Plugin.Log.LogInfo($"[활 전문가 멀티샷] 유효한 타겟 적중 - 타겟: {target.name}, 위치: {hitPosition}");
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[활 전문가 멀티샷] 적중 패치 오류: {ex.Message}");
-            }
-        }
-    }
-
-    /// <summary>
-    /// Attack.OnAttackTrigger 패치 - Valheim API 방식으로 활 공격 감지
-    /// </summary>
-    [HarmonyPatch(typeof(Attack), nameof(Attack.OnAttackTrigger))]
-    [HarmonyPriority(Priority.Low)]
-    public static class BowMultishot_Attack_OnAttackTrigger_Patch
-    {
-        [HarmonyPostfix]
-        private static void Postfix(Attack __instance)
-        {
-            try
-            {
-                if (__instance == null) return;
-                
-                // Attack에서 Character 정보 가져올 수 없으므로 Player.m_localPlayer 사용
-                var player = Player.m_localPlayer;
-                if (player == null) return;
-                
-                // 활 공격인지 확인
-                var currentWeapon = player.GetCurrentWeapon();
-                if (currentWeapon?.m_shared?.m_skillType != Skills.SkillType.Bows) return;
-                
-                // 공격 방향 계산 (Player API 방식)
-                Vector3 attackDir = player.GetLookDir();
-                
-                Plugin.Log.LogInfo($"[멀티샷] Attack.OnAttackTrigger로 활 공격 감지");
-                
-                // 1. 아커 멀티샷 버프 활성화 상태 확인 (우선순위)
-                // FireProjectileBurst 패치에서 이미 처리되므로 OnAttackTrigger에서는 실행하지 않음
-                if (SkillEffect.IsArcherMultiShotReady(player))
-                {
-                    Plugin.Log.LogInfo($"[아처 멀티샷] 버프 활성화 상태 - FireProjectileBurst에서 이미 처리됨, OnAttackTrigger에서는 스킵");
-                    return; // FireProjectileBurst에서 이미 실행했으므로 여기서는 실행하지 않음
-                }
-                
-                // 2. 일반 활 전문가 멀티샷 체크 및 실행 (아처 멀티샷이 없을 때만)
-                // OnAttackTrigger에서는 실행하지 않음 - FireProjectileBurst에서 처리
-                // SkillEffect.CheckAndFireMultishot(player, currentWeapon, attackDir);
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[멀티샷] OnAttackTrigger 패치 오류: {ex.Message}");
-            }
-        }
-    }
+    // ===== OnAttackTrigger 패치 제거 =====
+    // FireProjectileBurst 패치만으로 충분함
+    // OnAttackTrigger는 화살 발사 외에도 모든 Attack 이벤트에서 호출되어 버그 발생
+    // (화살 미발사 시, 몬스터에게 맞을 때도 로그 출력되는 문제)
     
     /// <summary>
     /// 활 전문가 멀티샷용 FireProjectileBurst 패치 - 기본 화살 차단 및 멀티샷 발사
@@ -493,9 +318,16 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
+                // ✅ CRITICAL: 플레이어 공격만 처리 (몬스터/NPC 차단)
                 var player = Player.m_localPlayer;
                 if (player == null) return true;
-                
+
+                // ✅ 재귀 호출 방지 - 멀티샷 처리 중이면 무시
+                if (SkillEffect.isMultishotProcessing.ContainsKey(player) && SkillEffect.isMultishotProcessing[player])
+                {
+                    return true; // 멀티샷이 추가로 발사한 화살은 다시 멀티샷 발동 안 함
+                }
+
                 // 활 공격인지 확인
                 var currentWeapon = player.GetCurrentWeapon();
                 if (currentWeapon?.m_shared?.m_skillType != Skills.SkillType.Bows) return true;
@@ -544,8 +376,6 @@ namespace CaptainSkillTree.SkillTree
                     // 확률 체크
                     if (UnityEngine.Random.Range(0f, 1f) < totalChance)
                     {
-                        Plugin.Log.LogInfo($"[활 전문가 멀티샷] 발동! - 기본 화살 대신 멀티샷 3발 발사");
-                        
                         // 멀티샷 발사 처리
                         SkillEffect.CheckAndFireMultishot(player, currentWeapon, bowAttackDir);
                         

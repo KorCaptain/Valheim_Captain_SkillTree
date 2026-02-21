@@ -466,13 +466,13 @@ namespace CaptainSkillTree.Gui
                 {
                     // 스킬포인트 기반 레벨 모드: Lv.34 스킬포인트 05 / 150
                     // (사용: 102, 2pt/Lv) - 줄바꿈 후 흰색 표시
-                    skillPointText.text = $"<color=#00BFFF>Lv.{levelInfo.level}</color> 스킬포인트 <color=#FF0000>{availablePoints:00}</color><color=#FFFFFF> / </color><color=#000000>{maxPoints}</color>\n<color=#FFFFFF>(사용: {levelInfo.usedPoints}, {levelInfo.pointsPerLevel}pt/Lv)</color>";
+                    skillPointText.text = $"<color=#00BFFF>Lv.{levelInfo.level}</color> {L10n.Get("skill_points")} <color=#FF0000>{availablePoints:00}</color><color=#FFFFFF> / </color><color=#000000>{maxPoints}</color>\n<color=#FFFFFF>({L10n.Get("ui_skill_used")}: {levelInfo.usedPoints}, {levelInfo.pointsPerLevel}{L10n.Get("ui_pt_per_level")})</color>";
                 }
                 else
                 {
                     // 기존 모드: 스킬트리 사용가능 포인트 05 / 150
                     int currentLevel = CaptainMMOBridge.GetLevel();
-                    skillPointText.text = $"<color=#00BFFF>Lv.{currentLevel}</color> 스킬포인트 <color=#FF0000>{availablePoints:00}</color><color=#FFFFFF> / </color><color=#000000>{maxPoints:00}</color>";
+                    skillPointText.text = $"<color=#00BFFF>Lv.{currentLevel}</color> {L10n.Get("skill_points")} <color=#FF0000>{availablePoints:00}</color><color=#FFFFFF> / </color><color=#000000>{maxPoints:00}</color>";
                 }
             }
         }
@@ -980,7 +980,7 @@ namespace CaptainSkillTree.Gui
                 int currentPlayerLevel = CaptainMMOBridge.GetLevel();
                 if (currentPlayerLevel < node.RequiredPlayerLevel)
                 {
-                    return new InvestResult(false, $"플레이어 레벨 {node.RequiredPlayerLevel} 이상이 필요합니다. (현재: {currentPlayerLevel})");
+                    return new InvestResult(false, L10n.Get("player_level_required", node.RequiredPlayerLevel.ToString(), currentPlayerLevel.ToString()));
                 }
             }
             
@@ -1007,7 +1007,7 @@ namespace CaptainSkillTree.Gui
                         int existingPending = manager.pendingInvestments.ContainsKey(jobId) ? manager.pendingInvestments[jobId] : 0;
                         if (existingLevel > 0 || existingPending > 0)
                         {
-                            return new InvestResult(false, "⚠️ 전직 직업은 1개만 가능합니다");
+                            return new InvestResult(false, L10n.Get("job_class_one_only"));
                         }
                     }
                 }
@@ -1016,13 +1016,13 @@ namespace CaptainSkillTree.Gui
                 var player = Player.m_localPlayer;
                 if (player == null)
                 {
-                    return new InvestResult(false, "플레이어 정보를 가져올 수 없습니다.");
+                    return new InvestResult(false, L10n.Get("player_info_unavailable"));
                 }
 
                 var inventory = player.GetInventory();
                 if (inventory == null)
                 {
-                    return new InvestResult(false, "인벤토리 정보를 가져올 수 없습니다.");
+                    return new InvestResult(false, L10n.Get("inventory_unavailable"));
                 }
 
                 // 이미 전직한 경우는 트로피 체크 없이 통과
@@ -1032,7 +1032,7 @@ namespace CaptainSkillTree.Gui
                     bool hasEikthyrTrophy = inventory.HaveItem("$item_trophy_eikthyr");
                     if (!hasEikthyrTrophy)
                     {
-                        return new InvestResult(false, "에이크쉬르 트로피가 필요합니다.");
+                        return new InvestResult(false, L10n.Get("trophy_eikthyr_required"));
                     }
                 }
             }
@@ -1041,7 +1041,7 @@ namespace CaptainSkillTree.Gui
                 // 생산 스킬: 아이템 요구사항 체크
                 if (!manager.CanLearnProductionSkill(node.Id))
                 {
-                    return new InvestResult(false, "필요한 아이템이 부족합니다.");
+                    return new InvestResult(false, L10n.Get("items_insufficient"));
                 }
             }
             else
@@ -1073,7 +1073,7 @@ namespace CaptainSkillTree.Gui
                     }
                     if (missingPrereqs.Count > 0)
                     {
-                        return new InvestResult(false, $"모든 선행 스킬이 필요합니다: {string.Join(", ", missingPrereqs)}");
+                        return new InvestResult(false, L10n.Get("skill_prerequisite_all_required", string.Join(", ", missingPrereqs)));
                     }
                 }
                 else
@@ -1098,12 +1098,13 @@ namespace CaptainSkillTree.Gui
                     }
                     if (!hasAnyPrerequisite)
                     {
-                        return new InvestResult(false, $"선행 스킬이 필요합니다: {string.Join(" 또는 ", availablePrereqs)}");
+                        string orSeparator = L10n.Get("or_separator");
+                        return new InvestResult(false, L10n.Get("skill_prerequisite_any_required", string.Join($" {orSeparator} ", availablePrereqs)));
                     }
                 }
             }
 
-            return new InvestResult(true, "투자 가능");
+            return new InvestResult(true, L10n.Get("can_invest"));
         }
 
         // 포인트 투자 조건 체크(실제 구현)
@@ -1433,7 +1434,7 @@ namespace CaptainSkillTree.Gui
             // 플레이어 레벨 조건 강조
             if (node.RequiredPlayerLevel > 0)
             {
-                tooltipText += $"<color=#FFD700><b>플레이어 레벨 {node.RequiredPlayerLevel} 이상 필요</b></color>\n";
+                tooltipText += $"<color=#FFD700><b>{L10n.Get("player_level_required_short", node.RequiredPlayerLevel.ToString())}</b></color>\n";
             }
 
             // Prerequisites 조건 표시 (특히 장인 노드용)
@@ -1445,7 +1446,7 @@ namespace CaptainSkillTree.Gui
                 if (node.Id == "grandmaster_artisan")
                 {
                     // 장인 노드는 특별히 한국어 이름으로 표시 (AND 조건)
-                    prerequisiteText = "<size=18>필요 조건 : <color=#FFA500>노가다 전문가 + 제작 전문가</color></size>\n";
+                    prerequisiteText = $"<size=18>{L10n.Get("prerequisite_label")} <color=#FFA500>{L10n.Get("req_grind_expert")} + {L10n.Get("req_craft_expert")}</color></size>\n";
                 }
                 else if (node.Prerequisites.Count > 1)
                 {
@@ -1460,7 +1461,7 @@ namespace CaptainSkillTree.Gui
                     }
                     if (prereqNames.Count > 0)
                     {
-                        prerequisiteText = $"<size=18>필요 조건 : <color=#FFA500>{string.Join(" 또는 ", prereqNames)}</color></size>\n";
+                        prerequisiteText = $"<size=18>{L10n.Get("prerequisite_label")} <color=#FFA500>{string.Join($" {L10n.Get("or_separator")} ", prereqNames)}</color></size>\n";
                     }
                 }
                 else
@@ -1469,7 +1470,7 @@ namespace CaptainSkillTree.Gui
                     var preId = node.Prerequisites[0];
                     if (manager.SkillNodes.ContainsKey(preId))
                     {
-                        prerequisiteText = $"<size=18>필요 조건 : <color=#FFA500>{manager.SkillNodes[preId].Name}</color></size>\n";
+                        prerequisiteText = $"<size=18>{L10n.Get("prerequisite_label")} <color=#FFA500>{manager.SkillNodes[preId].Name}</color></size>\n";
                     }
                 }
                 
@@ -1479,7 +1480,7 @@ namespace CaptainSkillTree.Gui
                 }
             }
 
-            tooltipText += $"<size=18>필요 포인트 : <color=#FF0000>{node.RequiredPoints}</color></size>";
+            tooltipText += $"<size=18>{L10n.Get("required_points_label")} <color=#FF0000>{node.RequiredPoints}</color></size>";
             txt.supportRichText = true;
             txt.text = tooltipText;
             // 마우스 위치를 Canvas 로컬 좌표로 변환
