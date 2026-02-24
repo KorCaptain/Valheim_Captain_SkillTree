@@ -331,7 +331,7 @@ BepInEx/config/CaptainSkillTree.cfg
 
 ## Support / 지원
 
-- Discord: KorCaptainSkillTree_MOD_Server - https://discord.gg/PyEvu6c8
+- Discord: KorCaptainSkillTree_MOD_Server -  https://discord.gg/W26PTxYhug
 - E-mail : ssunyme@naver.com
 - Issues: Report bugs and suggestions on Discord
 
