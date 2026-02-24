@@ -1,7 +1,5 @@
 ﻿# CaptainSkillTree - Valheim Skill Tree Mod
 
-![Version] - 0.1.447
-
 **[The English description is below](#-English)**
 
 ---
