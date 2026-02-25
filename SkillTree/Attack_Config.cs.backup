@@ -1,0 +1,224 @@
+using BepInEx.Configuration;
+
+namespace CaptainSkillTree.SkillTree
+{
+    /// <summary>
+    /// 공격 전문가 스킬트리 Config 설정
+    /// </summary>
+    public static class Attack_Config
+    {
+        // === 필요 포인트 설정 ===
+        public static ConfigEntry<int> AttackRootRequiredPoints;
+        public static ConfigEntry<int> AttackStep1RequiredPoints;
+        public static ConfigEntry<int> AttackStep2RequiredPoints;
+        public static ConfigEntry<int> AttackStep3RequiredPoints;
+        public static ConfigEntry<int> AttackStep4RequiredPoints;
+        public static ConfigEntry<int> AttackStep4RangedRequiredPoints;
+        public static ConfigEntry<int> AttackStep5RequiredPoints;
+        public static ConfigEntry<int> AttackStep6RequiredPoints;
+
+        // === 공격 전문가 노드 설정 ===
+        // 루트 (공격 전문가)
+        public static ConfigEntry<float> AttackRootDamageBonus;
+
+        // 2단계 (4가지)
+        public static ConfigEntry<float> AttackMeleeBonusChance;
+        public static ConfigEntry<float> AttackMeleeBonusDamage;
+        public static ConfigEntry<float> AttackBowBonusChance;
+        public static ConfigEntry<float> AttackBowBonusDamage;
+        public static ConfigEntry<float> AttackCrossbowBonusChance;
+        public static ConfigEntry<float> AttackCrossbowBonusDamage;
+        public static ConfigEntry<float> AttackStaffBonusChance;
+        public static ConfigEntry<float> AttackStaffBonusDamage;
+
+        // 3단계 (기본 공격)
+        public static ConfigEntry<float> AttackBasePhysicalDamage;
+        public static ConfigEntry<float> AttackBaseElementalDamage;
+        public static ConfigEntry<float> AttackStatBonus;
+        public static ConfigEntry<float> AttackTwoHandDrainPhysicalDamage;
+        public static ConfigEntry<float> AttackTwoHandDrainElementalDamage;
+
+        // 4단계 (3가지)
+        public static ConfigEntry<float> AttackCritChance;
+        public static ConfigEntry<float> AttackMeleeEnhancement;
+        public static ConfigEntry<float> AttackRangedEnhancement;
+
+        // 5단계 (특수화 스탯)
+        public static ConfigEntry<float> AttackSpecialStat;
+
+        // 6단계 (4가지)
+        public static ConfigEntry<float> AttackCritDamageBonus;
+        public static ConfigEntry<float> AttackTwoHandedBonus;
+        public static ConfigEntry<float> AttackStaffElemental;
+        public static ConfigEntry<float> AttackFinisherMeleeBonus;
+
+        // === 필요 포인트 접근 프로퍼티 ===
+        public static int AttackRootRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_root_required_points", AttackRootRequiredPoints?.Value ?? 2);
+        public static int AttackStep1RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step1_required_points", AttackStep1RequiredPoints?.Value ?? 2);
+        public static int AttackStep2RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step2_required_points", AttackStep2RequiredPoints?.Value ?? 2);
+        public static int AttackStep3RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step3_required_points", AttackStep3RequiredPoints?.Value ?? 2);
+        public static int AttackStep4RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step4_required_points", AttackStep4RequiredPoints?.Value ?? 2);
+        public static int AttackStep4RangedRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step4_ranged_required_points", AttackStep4RangedRequiredPoints?.Value ?? 3);
+        public static int AttackStep5RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step5_required_points", AttackStep5RequiredPoints?.Value ?? 2);
+        public static int AttackStep6RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("attack_step6_required_points", AttackStep6RequiredPoints?.Value ?? 3);
+
+        // === 공격 전문가 접근 프로퍼티들 ===
+        public static float AttackRootDamageBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_Expert_Damage", AttackRootDamageBonus.Value);
+        public static float AttackMeleeBonusChanceValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_MeleeBonusChance", AttackMeleeBonusChance.Value);
+        public static float AttackMeleeBonusDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_MeleeBonusDamage", AttackMeleeBonusDamage.Value);
+        public static float AttackBowBonusChanceValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_BowBonusChance", AttackBowBonusChance.Value);
+        public static float AttackBowBonusDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_BowBonusDamage", AttackBowBonusDamage.Value);
+        public static float AttackCrossbowBonusChanceValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_CrossbowBonusChance", AttackCrossbowBonusChance.Value);
+        public static float AttackCrossbowBonusDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_CrossbowBonusDamage", AttackCrossbowBonusDamage.Value);
+        public static float AttackStaffBonusChanceValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_StaffBonusChance", AttackStaffBonusChance.Value);
+        public static float AttackStaffBonusDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_StaffBonusDamage", AttackStaffBonusDamage.Value);
+        public static float AttackBasePhysicalDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_PhysicalDamage", AttackBasePhysicalDamage.Value);
+        public static float AttackBaseElementalDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_ElementalDamage", AttackBaseElementalDamage.Value);
+        public static float AttackStatBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_StatBonus", AttackStatBonus.Value);
+        public static float AttackTwoHandDrainPhysicalDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_TwoHandPhysical", AttackTwoHandDrainPhysicalDamage.Value);
+        public static float AttackTwoHandDrainElementalDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_TwoHandElemental", AttackTwoHandDrainElementalDamage.Value);
+        public static float AttackCritChanceValue => SkillTreeConfig.GetEffectiveValue("Attack_Step4_CritChance", AttackCritChance.Value);
+        public static float AttackMeleeEnhancementValue => SkillTreeConfig.GetEffectiveValue("Attack_Step4_MeleeEnhancement", AttackMeleeEnhancement.Value);
+        public static float AttackRangedEnhancementValue => SkillTreeConfig.GetEffectiveValue("Attack_Step4_RangedEnhancement", AttackRangedEnhancement.Value);
+        public static float AttackSpecialStatValue => SkillTreeConfig.GetEffectiveValue("Attack_Step5_SpecialStat", AttackSpecialStat.Value);
+        public static float AttackCritDamageBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus", AttackCritDamageBonus.Value);
+        public static float AttackTwoHandedBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_Step6_TwoHandedBonus", AttackTwoHandedBonus.Value);
+        public static float AttackStaffElementalValue => SkillTreeConfig.GetEffectiveValue("Attack_Step6_StaffElemental", AttackStaffElemental.Value);
+        public static float AttackFinisherMeleeBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_Step6_FinisherMeleeBonus", AttackFinisherMeleeBonus.Value);
+
+        // 레거시 호환 프로퍼티
+        public static float AttackOneHandedBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_OneHandedBonus", 5f);
+
+        public static void Initialize(ConfigFile config)
+        {
+            // === 필요 포인트 설정 ===
+            AttackRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier0_AttackExpert_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier0_AttackExpert_RequiredPoints"));
+
+            AttackStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier1_BaseAttack_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier1_BaseAttack_RequiredPoints"));
+
+            AttackStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_WeaponSpec_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier2_required_points"));
+
+            AttackStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier3_AttackBoost_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier3_required_points"));
+
+            AttackStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier4_DetailEnhance_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier4_required_points"));
+
+            AttackStep4RangedRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier4_RangedEnhance_RequiredPoints", 3,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier4_ranged_required_points"));
+
+            AttackStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier5_SpecialStat_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier5_required_points"));
+
+            AttackStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_FinalSpec_RequiredPoints", 3,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier6_required_points"));
+
+            // === Tier 0: Attack Expert ===
+            AttackRootDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier0_AttackExpert_AllDamageBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier0_damage_bonus"));
+
+            // === Tier 2: Weapon Specialization ===
+            AttackMeleeBonusChance = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_MeleeSpec_BonusTriggerChance", 20f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier2_melee_chance"));
+
+            AttackMeleeBonusDamage = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_MeleeSpec_MeleeDamage", 10f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier2_melee_damage"));
+
+            AttackBowBonusChance = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_BowSpec_BonusTriggerChance", 20f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier2_bow_chance"));
+
+            AttackBowBonusDamage = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_BowSpec_BowDamage", 8f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier2_bow_damage"));
+
+            AttackCrossbowBonusChance = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_CrossbowSpec_EnhanceTriggerChance", 15f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier2_crossbow_chance"));
+
+            AttackCrossbowBonusDamage = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_CrossbowSpec_CrossbowDamage", 9f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier2_crossbow_damage"));
+
+            AttackStaffBonusChance = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_StaffSpec_ElementalTriggerChance", 20f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier2_staff_chance"));
+
+            AttackStaffBonusDamage = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier2_StaffSpec_StaffDamage", 8f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier2_staff_damage"));
+
+            // === Tier 3: Base Attack ===
+            AttackBasePhysicalDamage = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier3_BaseAttack_PhysicalDamageBonus", 2f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier3_physical_damage"));
+
+            AttackBaseElementalDamage = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier3_BaseAttack_ElementalDamageBonus", 2f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier3_elemental_damage"));
+
+            AttackStatBonus = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier3_AttackBoost_StrIntBonus", 5f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier3_stat_bonus"));
+
+            AttackTwoHandDrainPhysicalDamage = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier3_AttackBoost_PhysicalDamageBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier3_twohand_physical"));
+
+            AttackTwoHandDrainElementalDamage = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier3_AttackBoost_ElementalDamageBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier3_twohand_elemental"));
+
+            // === Tier 4: Combat Enhancement ===
+            AttackCritChance = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier4_PrecisionAttack_CritChance", 5f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier4_crit_chance"));
+
+            AttackMeleeEnhancement = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier4_MeleeEnhance_2HitComboBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier4_melee_combo"));
+
+            AttackRangedEnhancement = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier4_RangedEnhance_RangedDamageBonus", 5f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier4_ranged_damage"));
+
+            // === Tier 5: Specialized Stats ===
+            AttackSpecialStat = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier5_SpecialStat_SpecBonus", 5f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier5_special_stat"));
+
+            // === Tier 6: Final Enhancement ===
+            AttackCritDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus", 12f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier6_crit_damage"));
+
+            AttackTwoHandedBonus = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_TwoHandCrush_TwoHandDamageBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier6_twohand_bonus"));
+
+            AttackStaffElemental = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_ElementalAttack_ElementalBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier6_elemental"));
+
+            AttackFinisherMeleeBonus = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_ComboFinisher_3HitComboBonus", 15f,
+                SkillTreeConfig.GetConfigDescription("config_attack_tier6_finisher"));
+
+            Plugin.Log.LogDebug("[Attack_Config] Attack Expert tree config initialized");
+        }
+    }
+}
