@@ -403,6 +403,13 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug($"[공속] 로그 패시브: +{rogueBonus}%");
                 }
 
+                // 분노의 망치 1타 공격속도 버프 (+200%)
+                float furyHammerBonus = FuryHammerSkill.GetFuryHammer1stHitSpeedBonus(player);
+                if (furyHammerBonus > 0f)
+                {
+                    bonus += furyHammerBonus;
+                    Plugin.Log.LogDebug($"[공속] 분노의 망치 1타 버프: +{furyHammerBonus}%");
+                }
 
                 // 최종 보너스 로그 출력
                 if (bonus > 0f)

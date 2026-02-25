@@ -83,13 +83,13 @@ namespace CaptainSkillTree
                     CaptainSkillTree.SkillTree.SkillEffect.HandleGKeyUpSkills(player);
                 }
                 
-                // H키 눌림 - 보조형 액티브 스킬 (연공창, 분노의 망치)
+                // H키 눌림 - 보조형 액티브 스킬 (연공창, 분노의 망치 즉시 발동)
                 if (Input.GetKeyDown(KeyCode.H))
                 {
                     CaptainSkillTree.SkillTree.SkillEffect.HandleHKeySkills(player);
                 }
 
-                // H키 해제 - 분노의 망치 차지 해제
+                // H키 해제 - 사용하지 않음 (분노의 망치는 즉시 발동)
                 if (Input.GetKeyUp(KeyCode.H))
                 {
                     CaptainSkillTree.SkillTree.SkillEffect.HandleHKeyUpSkills(player);

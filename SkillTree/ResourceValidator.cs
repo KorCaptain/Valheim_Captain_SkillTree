@@ -32,14 +32,7 @@ namespace CaptainSkillTree.SkillTree
                 new ResourceRequirement("Raspberry", "산딸기", 50),
                 new ResourceRequirement("Mushroom", "버섯", 50)
             },
-            
-            // 채집 Lv4: 채집류 200개 보유 (베리 + 버섯 합계)
-            ["gathering_lv4"] = new List<ResourceRequirement>
-            {
-                new ResourceRequirement("Blueberries", "블루베리", 100),
-                new ResourceRequirement("Mushroom", "버섯", 100)
-            },
-            
+
             // 채광 Lv2: 구리 20개 소모
             ["mining_lv2"] = new List<ResourceRequirement>
             {

@@ -50,13 +50,13 @@ namespace CaptainSkillTree.SkillTree
         
         /// <summary>
         /// 프리팹 이름에 단검 관련 키워드가 포함되어 있는지 확인
-        /// Claw/claw, Dagger/dagger 포함
+        /// Claw/claw, Dagger/dagger, Fist/fist 포함
         /// </summary>
         private static bool ContainsDaggerKeyword(string name)
         {
             if (string.IsNullOrEmpty(name)) return false;
 
-            string[] daggerKeywords = { "knives", "knife", "dagger", "claw" };
+            string[] daggerKeywords = { "knives", "knife", "dagger", "claw", "fist" };
             string lowerName = name.ToLower();
 
             foreach (string keyword in daggerKeywords)

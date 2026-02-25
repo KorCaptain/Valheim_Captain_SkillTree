@@ -103,6 +103,9 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
+                // 0. 장전 시작 사운드 (sfx_reload_start) - 철컹하는 장전 소리
+                VFXManager.PlaySound("sfx_reload_start", player.transform.position, 5f);
+
                 // 1. 버프 활성화 VFX (buff_01) - 발밑 효과, 2초간
                 var buff01Prefab = VFXManager.GetVFXPrefab("buff_01");
                 if (buff01Prefab != null)

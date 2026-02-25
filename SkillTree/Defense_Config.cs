@@ -153,7 +153,12 @@ namespace CaptainSkillTree.SkillTree
         // =====================================================
         // Tier 4: 바위피부 (defense_Step4_tanker)
         // =====================================================
-        // Config 추가 필요 (현재 12% 고정) - 추후 추가 가능
+
+        /// <summary>
+        /// defense_Step4_tanker: 바위피부 - 방어력 증폭 (%)
+        /// 투구/흉갑/각반/방패 방어력에 각각 적용
+        /// </summary>
+        public static ConfigEntry<float> TankerArmorBonus;
 
         // =====================================================
         // Tier 5: 지구력 (defense_Step5_focus)
@@ -330,6 +335,10 @@ namespace CaptainSkillTree.SkillTree
         public static float ShieldTrainingBlockPowerBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_ShieldTraining_BlockPower", ShieldTrainingBlockPowerBonus?.Value ?? 100f);
 
+        // === Tier 4: 바위피부 ===
+        public static float TankerArmorBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_Tanker_ArmorBonus", TankerArmorBonus?.Value ?? 12f);
+
         // === Tier 4: 발구르기 ===
         public static float StompRadiusValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_Stomp_Radius", StompRadius?.Value ?? 3.0f);
@@ -411,31 +420,31 @@ namespace CaptainSkillTree.SkillTree
 
             DefenseRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier0_DefenseExpert_RequiredPoints", 2,
-                "Tier 0: Defense Expert (defense_root) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier0_DefenseExpert_RequiredPoints"));
 
             DefenseStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier1_SkinHardening_RequiredPoints", 2,
-                "Tier 1: Skin Hardening (defense_Step1_survival) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier1_SkinHardening_RequiredPoints"));
 
             DefenseStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier2_MindBodyHealth_RequiredPoints", 2,
-                "Tier 2: Mind-Body Training / Health Training - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier2_MindBodyHealth_RequiredPoints"));
 
             DefenseStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier3_CoreDodgeBoostShield_RequiredPoints", 3,
-                "Tier 3: Core Breathing / Dodge Training / Health Boost / Shield Training - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier3_CoreDodgeBoostShield_RequiredPoints"));
 
             DefenseStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier4_ShockwaveStompRock_RequiredPoints", 3,
-                "Tier 4: Shockwave Release / Ground Stomp / Rock Skin - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier4_ShockwaveStompRock_RequiredPoints"));
 
             DefenseStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier5_EndureAgileRegenParry_RequiredPoints", 3,
-                "Tier 5: Endurance / Agility / Troll Regen / Block Master - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier5_EndureAgileRegenParry_RequiredPoints"));
 
             DefenseStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier6_FinalSkills_RequiredPoints", 4,
-                "Tier 6: Final Skills - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier6_FinalSkills_RequiredPoints"));
 
             // ===========================================
             // Tier 0: Defense Expert
@@ -445,14 +454,14 @@ namespace CaptainSkillTree.SkillTree
                 "Defense Tree",
                 "Tier0_DefenseExpert_HPBonus",
                 5f,
-                "Tier 0: Defense Expert (defense_root) - Health Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier0_DefenseExpert_HPBonus")
             );
 
             DefenseRootArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier0_DefenseExpert_ArmorBonus",
                 2f,
-                "Tier 0: Defense Expert (defense_root) - Armor Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier0_DefenseExpert_ArmorBonus")
             );
 
             // ===========================================
@@ -463,14 +472,14 @@ namespace CaptainSkillTree.SkillTree
                 "Defense Tree",
                 "Tier1_SkinHardening_HPBonus",
                 5f,
-                "Tier 1: Skin Hardening (defense_Step1_survival) - Health Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier1_SkinHardening_HPBonus")
             );
 
             SurvivalArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier1_SkinHardening_ArmorBonus",
                 5f,
-                "Tier 1: Skin Hardening (defense_Step1_survival) - Armor Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier1_SkinHardening_ArmorBonus")
             );
 
             // ===========================================
@@ -481,28 +490,28 @@ namespace CaptainSkillTree.SkillTree
                 "Defense Tree",
                 "Tier2_MindBodyTraining_StaminaBonus",
                 25f,
-                "Tier 2: Mind-Body Training (defense_Step2_dodge) - Stamina Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier2_MindBodyTraining_StaminaBonus")
             );
 
             DodgeEitrBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier2_MindBodyTraining_EitrBonus",
                 25f,
-                "Tier 2: Mind-Body Training (defense_Step2_dodge) - Eitr Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier2_MindBodyTraining_EitrBonus")
             );
 
             HealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier2_HealthTraining_HPBonus",
                 20f,
-                "Tier 2: Health Training (defense_Step2_health) - Health Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier2_HealthTraining_HPBonus")
             );
 
             HealthArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier2_HealthTraining_ArmorBonus",
                 5f,
-                "Tier 2: Health Training (defense_Step2_health) - Armor Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier2_HealthTraining_ArmorBonus")
             );
 
             // ===========================================
@@ -513,35 +522,35 @@ namespace CaptainSkillTree.SkillTree
                 "Defense Tree",
                 "Tier3_CoreBreathing_EitrBonus",
                 10f,
-                "Tier 3: Core Breathing (defense_Step3_breath) - Eitr Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier3_CoreBreathing_EitrBonus")
             );
 
             AgileDodgeBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier3_EvasionTraining_DodgeBonus",
                 5f,
-                "Tier 3: Evasion Training (defense_Step3_agile) - Dodge Rate Bonus (%)"
+                SkillTreeConfig.GetConfigDescription("Tier3_EvasionTraining_DodgeBonus")
             );
 
             AgileInvincibilityBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier3_EvasionTraining_InvincibilityBonus",
                 20f,
-                "Tier 3: Evasion Training (defense_Step3_agile) - Roll Invincibility Bonus (%)"
+                SkillTreeConfig.GetConfigDescription("Tier3_EvasionTraining_InvincibilityBonus")
             );
 
             BoostHealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier3_HealthBoost_HPBonus",
                 15f,
-                "Tier 3: Health Boost (defense_Step3_boost) - Health Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier3_HealthBoost_HPBonus")
             );
 
             ShieldTrainingBlockPowerBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier3_ShieldTraining_BlockPowerBonus",
                 100f,
-                "Tier 3: Shield Training (defense_Step3_shield) - Shield Block Power Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier3_ShieldTraining_BlockPowerBonus")
             );
 
             // ===========================================
@@ -552,35 +561,46 @@ namespace CaptainSkillTree.SkillTree
                 "Defense Tree",
                 "Tier4_GroundStomp_Radius",
                 3.0f,
-                "Tier 4: Ground Stomp (defense_Step4_instant) - Effect Radius (meters)"
+                SkillTreeConfig.GetConfigDescription("Tier4_GroundStomp_Radius")
             );
 
             StompKnockback = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier4_GroundStomp_KnockbackForce",
                 20f,
-                "Tier 4: Ground Stomp (defense_Step4_instant) - Knockback Force"
+                SkillTreeConfig.GetConfigDescription("Tier4_GroundStomp_KnockbackForce")
             );
 
             StompCooldown = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier4_GroundStomp_Cooldown",
                 120f,
-                "Tier 4: Ground Stomp (defense_Step4_instant) - Cooldown (seconds)"
+                SkillTreeConfig.GetConfigDescription("Tier4_GroundStomp_Cooldown")
             );
 
             StompHealthThreshold = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier4_GroundStomp_HPThreshold",
                 0.35f,
-                "Tier 4: Ground Stomp (defense_Step4_instant) - Auto-trigger HP Threshold (0.35 = 35%)"
+                SkillTreeConfig.GetConfigDescription("Tier4_GroundStomp_HPThreshold")
             );
 
             StompVFXDuration = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier4_GroundStomp_VFXDuration",
                 1.0f,
-                "Tier 4: Ground Stomp (defense_Step4_instant) - VFX Duration (seconds)"
+                SkillTreeConfig.GetConfigDescription("Tier4_GroundStomp_VFXDuration")
+            );
+
+            // ===========================================
+            // Tier 4: Rock Skin (바위피부)
+            // ===========================================
+
+            TankerArmorBonus = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree",
+                "Tier4_RockSkin_ArmorBonus",
+                12f,
+                SkillTreeConfig.GetConfigDescription("Tier4_RockSkin_ArmorBonus")
             );
 
             // ===========================================
@@ -591,56 +611,56 @@ namespace CaptainSkillTree.SkillTree
                 "Defense Tree",
                 "Tier5_Endurance_RunStaminaReduction",
                 10f,
-                "Tier 5: Endurance (defense_Step5_focus) - Run Stamina Reduction (%)"
+                SkillTreeConfig.GetConfigDescription("Tier5_Endurance_RunStaminaReduction")
             );
 
             FocusJumpStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier5_Endurance_JumpStaminaReduction",
                 10f,
-                "Tier 5: Endurance (defense_Step5_focus) - Jump Stamina Reduction (%)"
+                SkillTreeConfig.GetConfigDescription("Tier5_Endurance_JumpStaminaReduction")
             );
 
             StaminaDodgeBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier5_Agility_DodgeBonus",
                 5f,
-                "Tier 5: Agility (defense_Step5_stamina) - Dodge Rate Bonus (%)"
+                SkillTreeConfig.GetConfigDescription("Tier5_Agility_DodgeBonus")
             );
 
             StaminaRollStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier5_Agility_RollStaminaReduction",
                 12f,
-                "Tier 5: Agility (defense_Step5_stamina) - Roll Stamina Reduction (%)"
+                SkillTreeConfig.GetConfigDescription("Tier5_Agility_RollStaminaReduction")
             );
 
             TrollRegenBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier5_TrollRegen_HPRegenBonus",
                 5f,
-                "Tier 5: Troll's Regeneration (defense_Step5_heal) - HP Regen Bonus (per second)"
+                SkillTreeConfig.GetConfigDescription("Tier5_TrollRegen_HPRegenBonus")
             );
 
             TrollRegenInterval = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier5_TrollRegen_RegenInterval",
                 2f,
-                "Tier 5: Troll's Regeneration (defense_Step5_heal) - Regen Interval (seconds)"
+                SkillTreeConfig.GetConfigDescription("Tier5_TrollRegen_RegenInterval")
             );
 
             ParryMasterBlockPowerBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier5_BlockMaster_ShieldBlockPowerBonus",
                 100f,
-                "Tier 5: Block Master (defense_Step5_parry) - Shield Block Power Bonus"
+                SkillTreeConfig.GetConfigDescription("Tier5_BlockMaster_ShieldBlockPowerBonus")
             );
 
             ParryMasterParryDurationBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier5_BlockMaster_ParryDurationBonus",
                 1f,
-                "Tier 5: Block Master (defense_Step5_parry) - Parry Duration Bonus (seconds)"
+                SkillTreeConfig.GetConfigDescription("Tier5_BlockMaster_ParryDurationBonus")
             );
 
             // ===========================================
@@ -651,42 +671,42 @@ namespace CaptainSkillTree.SkillTree
                 "Defense Tree",
                 "Tier6_NerveEnhancement_DodgeBonus",
                 5f,
-                "Tier 6: Nerve Enhancement (defense_Step6_attack) - Dodge Rate Bonus (permanent, %)"
+                SkillTreeConfig.GetConfigDescription("Tier6_NerveEnhancement_DodgeBonus")
             );
 
             BodyHealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier6_JotunnVitality_HPBonus",
                 30f,
-                "Tier 6: Jotunn's Vitality (defense_Step6_body) - Health Bonus (%)"
+                SkillTreeConfig.GetConfigDescription("Tier6_JotunnVitality_HPBonus")
             );
 
             BodyArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier6_JotunnVitality_ArmorBonus",
                 10f,
-                "Tier 6: Jotunn's Vitality (defense_Step6_body) - Armor Bonus (%)"
+                SkillTreeConfig.GetConfigDescription("Tier6_JotunnVitality_ArmorBonus")
             );
 
             JotunnShieldBlockStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier6_JotunnShield_BlockStaminaReduction",
                 25f,
-                "Tier 6: Jotunn's Shield (defense_Step6_true) - Block Stamina Reduction (%)"
+                SkillTreeConfig.GetConfigDescription("Tier6_JotunnShield_BlockStaminaReduction")
             );
 
             JotunnShieldNormalSpeedBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier6_JotunnShield_NormalShieldMoveSpeedBonus",
                 5f,
-                "Tier 6: Jotunn's Shield (defense_Step6_true) - Normal Shield Move Speed Bonus (%)"
+                SkillTreeConfig.GetConfigDescription("Tier6_JotunnShield_NormalShieldMoveSpeedBonus")
             );
 
             JotunnShieldTowerSpeedBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree",
                 "Tier6_JotunnShield_TowerShieldMoveSpeedBonus",
                 10f,
-                "Tier 6: Jotunn's Shield (defense_Step6_true) - Tower Shield Move Speed Bonus (%)"
+                SkillTreeConfig.GetConfigDescription("Tier6_JotunnShield_TowerShieldMoveSpeedBonus")
             );
         }
     }

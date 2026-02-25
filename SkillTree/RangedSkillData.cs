@@ -449,7 +449,11 @@ namespace CaptainSkillTree.SkillTree
                 Id = "staff_Step3_amp",
                 NameKey = "staff_amp_name",
                 DescriptionKey = "staff_amp_full_desc",
-                DescriptionArgs = new object[] { Staff_Config.StaffAmpDamageValue },
+                DescriptionArgs = new object[] {
+                    Staff_Config.StaffAmpChanceValue,              // {0} = 38%
+                    Staff_Config.StaffAmpDamageValue,              // {1} = 35%
+                    Staff_Config.StaffAmpEitrCostIncreaseValue     // {2} = 20%
+                },
                 RequiredPoints = Staff_Config.StaffAmpRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,

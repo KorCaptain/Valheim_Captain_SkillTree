@@ -43,35 +43,35 @@ namespace CaptainSkillTree.SkillTree
                     "Mage Job Skills",
                     "Mage_AOE_Range",
                     12.0f,
-                    "메이지 액티브 스킬 - 범위 (m) / Mage Active Skill - Range (m)"
+                    SkillTreeConfig.GetConfigDescription("Mage_AOE_Range")
                 );
 
                 MageEitrCost = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills",
                     "Mage_Eitr_Cost",
                     35,
-                    "메이지 액티브 스킬 - Eitr 소모량 / Mage Active Skill - Eitr Cost"
+                    SkillTreeConfig.GetConfigDescription("Mage_Eitr_Cost")
                 );
 
                 MageDamageMultiplier = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills",
                     "Mage_Damage_Multiplier",
                     300.0f,
-                    "메이지 액티브 스킬 - 공격 데미지 배수 (%) / Mage Active Skill - Damage Multiplier (%)"
+                    SkillTreeConfig.GetConfigDescription("Mage_Damage_Multiplier")
                 );
 
                 MageCooldown = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills",
                     "Mage_Cooldown",
                     180.0f,
-                    "메이지 액티브 스킬 - 쿨타임 (초) / Mage Active Skill - Cooldown (sec)"
+                    SkillTreeConfig.GetConfigDescription("Mage_Cooldown")
                 );
 
                 MageVFXName = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills",
                     "Mage_VFX_Name",
                     "",
-                    "메이지 액티브 스킬 - VFX 효과명 / Mage Active Skill - VFX Effect Name"
+                    SkillTreeConfig.GetConfigDescription("Mage_VFX_Name")
                 );
 
                 // === 메이지 패시브 스킬 설정 ===
@@ -79,7 +79,7 @@ namespace CaptainSkillTree.SkillTree
                     "Mage Job Skills",
                     "Mage_Elemental_Resistance",
                     15.0f,
-                    "메이지 패시브 - 마법 속성 저항 (%) - 화염/냉기/번개/독/영혼 (물리 제외) / Mage Passive - Elemental Resistance (%) - Fire/Frost/Lightning/Poison/Spirit (Physical excluded)"
+                    SkillTreeConfig.GetConfigDescription("Mage_Elemental_Resistance")
                 );
 
                 Plugin.Log.LogDebug("[메이지 컨피그] 설정 항목 생성 완료 (액티브 + 패시브)");

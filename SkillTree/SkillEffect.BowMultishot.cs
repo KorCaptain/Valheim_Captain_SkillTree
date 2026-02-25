@@ -322,15 +322,18 @@ namespace CaptainSkillTree.SkillTree
                 var player = Player.m_localPlayer;
                 if (player == null) return true;
 
+                // ✅ CRITICAL: 현재 Attack이 플레이어의 무기에서 발생한 것인지 검증
+                var currentWeapon = player.GetCurrentWeapon();
+                if (currentWeapon?.m_shared?.m_attack != __instance) return true;
+
+                // 활 공격인지 확인
+                if (currentWeapon?.m_shared?.m_skillType != Skills.SkillType.Bows) return true;
+
                 // ✅ 재귀 호출 방지 - 멀티샷 처리 중이면 무시
                 if (SkillEffect.isMultishotProcessing.ContainsKey(player) && SkillEffect.isMultishotProcessing[player])
                 {
                     return true; // 멀티샷이 추가로 발사한 화살은 다시 멀티샷 발동 안 함
                 }
-
-                // 활 공격인지 확인
-                var currentWeapon = player.GetCurrentWeapon();
-                if (currentWeapon?.m_shared?.m_skillType != Skills.SkillType.Bows) return true;
                 
                 // 1. 아커 멀티샷 버프 활성화 상태 확인 (최우선순위)
                 if (SkillEffect.IsArcherMultiShotReady(player))

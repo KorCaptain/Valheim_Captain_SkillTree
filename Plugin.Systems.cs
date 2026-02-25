@@ -400,7 +400,6 @@ namespace CaptainSkillTree
 
             Log.LogInfo("=== 현재 속도 전문가 설정 ===");
             Log.LogInfo($"속도 루트 이동속도: {SkillTreeConfig.SpeedRootMoveSpeedValue}%");
-            Log.LogInfo($"기초 이동속도: {SkillTreeConfig.SpeedBaseMoveSpeedValue}%");
             Log.LogInfo($"구르기 속도: {SkillTreeConfig.SpeedBaseDodgeSpeedValue}%");
             Log.LogInfo($"근접 콤보 보너스: {SkillTreeConfig.SpeedMeleeComboBonusValue}%");
             Log.LogInfo($"근접 콤보 지속시간: {SkillTreeConfig.SpeedMeleeComboDurationValue}초");
@@ -410,7 +409,6 @@ namespace CaptainSkillTree
             Log.LogInfo($"지팡이 시전 속도: {SkillTreeConfig.SpeedStaffCastSpeedValue}%");
             Log.LogInfo($"음식 효율: {SkillTreeConfig.SpeedFoodEfficiencyValue}%");
             Log.LogInfo($"배 속도: {SkillTreeConfig.SpeedShipBonusValue}%");
-            Log.LogInfo($"쿨타임 감소: {SkillTreeConfig.SpeedCooldownReductionValue}초");
             Log.LogInfo($"근접 공격속도: {SkillTreeConfig.SpeedMeleeAttackSpeedValue}%");
             Log.LogInfo($"석궁 장전속도: {SkillTreeConfig.SpeedCrossbowDrawSpeedValue}%");
             Log.LogInfo($"활 장전속도: {SkillTreeConfig.SpeedBowDrawSpeedValue}%");

@@ -62,7 +62,7 @@ namespace CaptainSkillTree.SkillTree
             AddRequirement("woodcutting_lv2", new ItemRequirement("Wood", "item_wood", 150));
 
             // 벌목 Lv3
-            AddRequirement("woodcutting_lv3", new ItemRequirement("Wood", "item_wood", 200));
+            AddRequirement("woodcutting_lv3", new ItemRequirement("FineWood", "item_finewood", 150));
 
             // 채집 Lv2
             AddRequirement("gathering_lv2", new ItemRequirement("Mushroom", "item_mushroom", 50));
@@ -75,8 +75,8 @@ namespace CaptainSkillTree.SkillTree
             // 채광 Lv2 - 구리광석으로 변경, 소모형으로 변경
             AddRequirement("mining_lv2", new ItemRequirement("CopperOre", "item_copper_ore", 20, true)); // 소모
 
-            // 채광 Lv3 - 철 광석 30개 소모형으로 변경
-            AddRequirement("mining_lv3", new ItemRequirement("IronOre", "item_iron_ore", 30, true)); // 소모
+            // 채광 Lv3 - 고철 30개 소모형으로 변경
+            AddRequirement("mining_lv3", new ItemRequirement("IronScrap", "item_iron_scrap", 30, true)); // 소모
 
             AddRequirement("crafting_lv2",
                 new ItemEquipConsumeRequirement("SwordBronze", "item_bronze_sword"),
@@ -86,7 +86,7 @@ namespace CaptainSkillTree.SkillTree
                 new ItemEquipConsumeRequirement("SwordIron", "item_iron_sword"),
                 new ItemEquipConsumeRequirement("HelmetIron", "item_iron_helmet"));
 
-            AddRequirement("woodcutting_lv4", new ItemQuantityRequirement("Wood", "item_wood", 400));
+            AddRequirement("woodcutting_lv4", new ItemRequirement("ElderBark", "item_elderbark", 150));
             AddRequirement("gathering_lv4",
                 new ItemRequirement("Mushroom", "item_mushroom", 30),
                 new ItemRequirement("Raspberry", "item_raspberry", 30),

@@ -213,7 +213,7 @@ namespace CaptainSkillTree.SkillTree
                 Id = "defense_Step4_tanker",
                 NameKey = "defense_tanker_name",
                 DescriptionKey = "defense_tanker_desc",
-                DescriptionArgs = new object[] { 12 },
+                DescriptionArgs = new object[] { Defense_Config.TankerArmorBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep4RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,

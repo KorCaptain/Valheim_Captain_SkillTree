@@ -109,195 +109,195 @@ namespace CaptainSkillTree.SkillTree
                     "Knife Tree",
                     "Tier0_KnifeExpert_BackstabBonus",
                     35f,
-                    "Tier 0: Knife Expert (knife_expert) - Backstab Damage Bonus (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier0_KnifeExpert_BackstabBonus"));
 
                 KnifeExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier0_KnifeExpert_RequiredPoints",
                     2,
-                    "Tier 0: Knife Expert (knife_expert) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier0_KnifeExpert_RequiredPoints"));
 
                 // === Tier 1: 회피 숙련 ===
                 KnifeEvasionBonus = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier1_Evasion_Chance",
                     20f,
-                    "Tier 1: Evasion Mastery (knife_step2_evasion) - Evasion Chance (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier1_Evasion_Chance"));
 
                 KnifeEvasionDuration = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier1_Evasion_Duration",
                     3f,
-                    "Tier 1: Evasion Mastery (knife_step2_evasion) - Invincibility Duration (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier1_Evasion_Duration"));
 
                 KnifeEvasionRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier1_Evasion_RequiredPoints",
                     2,
-                    "Tier 1: Evasion Mastery (knife_step2_evasion) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier1_Evasion_RequiredPoints"));
 
                 // === Tier 2: 빠른 움직임 ===
                 KnifeMoveSpeedBonus = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier2_FastMove_MoveSpeedBonus",
-                    5f,
-                    "Tier 2: Fast Movement (knife_step3_movespeed) - Movement Speed Bonus (%)");
+                    12f,
+                    SkillTreeConfig.GetConfigDescription("Tier2_FastMove_MoveSpeedBonus"));
 
                 KnifeMoveSpeedRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier2_FastMove_RequiredPoints",
                     2,
-                    "Tier 2: Fast Movement (knife_step3_movespeed) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier2_FastMove_RequiredPoints"));
 
                 // === Tier 3: 전투 숙련 ===
                 KnifeAttackDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier3_CombatMastery_DamageBonus",
                     2f,
-                    "Tier 3: Combat Mastery (knife_step4_attackspeed) - Damage Bonus (flat)");
+                    SkillTreeConfig.GetConfigDescription("Tier3_CombatMastery_DamageBonus"));
 
                 KnifeAttackDamageDuration = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier3_CombatMastery_BuffDuration",
                     10f,
-                    "Tier 3: Combat Mastery (knife_step4_attackspeed) - Buff Duration (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier3_CombatMastery_BuffDuration"));
 
                 KnifeAttackSpeedRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier3_CombatMastery_RequiredPoints",
                     2,
-                    "Tier 3: Combat Mastery (knife_step4_attackspeed) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier3_CombatMastery_RequiredPoints"));
 
                 // === Tier 4: 공격과 회피 ===
                 KnifeAttackEvasionBonus = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier4_AttackEvasion_EvasionBonus",
                     25f,
-                    "Tier 4: Attack & Evasion (knife_step5_critrate) - Evasion Rate Bonus (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier4_AttackEvasion_EvasionBonus"));
 
                 KnifeAttackEvasionDuration = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier4_AttackEvasion_BuffDuration",
                     10f,
-                    "Tier 4: Attack & Evasion (knife_step5_critrate) - Buff Duration (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier4_AttackEvasion_BuffDuration"));
 
                 KnifeAttackEvasionCooldown = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier4_AttackEvasion_Cooldown",
                     30f,
-                    "Tier 4: Attack & Evasion (knife_step5_critrate) - Cooldown (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier4_AttackEvasion_Cooldown"));
 
                 KnifeCritRateRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier4_AttackEvasion_RequiredPoints",
                     3,
-                    "Tier 4: Attack & Evasion (knife_step5_critrate) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier4_AttackEvasion_RequiredPoints"));
 
                 // === Tier 5: 치명적 피해 ===
                 KnifeCombatDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier5_CriticalDamage_DamageBonus",
                     25f,
-                    "Tier 5: Critical Damage (knife_step6_combatdamage) - Damage Bonus (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier5_CriticalDamage_DamageBonus"));
 
                 KnifeCombatDamageRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier5_CriticalDamage_RequiredPoints",
                     2,
-                    "Tier 5: Critical Damage (knife_step6_combatdamage) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier5_CriticalDamage_RequiredPoints"));
 
                 // === Tier 6: 암살자 ===
                 KnifeExecutionCritDamage = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier6_Assassin_CritDamageBonus",
                     25f,
-                    "Tier 6: Assassin (knife_step7_execution) - Critical Damage Bonus (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier6_Assassin_CritDamageBonus"));
 
                 KnifeExecutionCritChance = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier6_Assassin_CritChanceBonus",
                     12f,
-                    "Tier 6: Assassin (knife_step7_execution) - Critical Chance Bonus (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier6_Assassin_CritChanceBonus"));
 
                 KnifeExecutionRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier6_Assassin_RequiredPoints",
                     2,
-                    "Tier 6: Assassin (knife_step7_execution) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier6_Assassin_RequiredPoints"));
 
                 // === Tier 7: 암살술 ===
                 KnifeAssassinationStaggerChance = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier7_Assassination_StaggerChance",
                     38f,
-                    "Tier 7: Assassination (knife_step8_assassination) - Stagger Chance (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier7_Assassination_StaggerChance"));
 
                 KnifeAssassinationRequiredHits = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier7_Assassination_RequiredComboHits",
                     3,
-                    "Tier 7: Assassination (knife_step8_assassination) - Required Combo Hits");
+                    SkillTreeConfig.GetConfigDescription("Tier7_Assassination_RequiredComboHits"));
 
                 KnifeAssassinationRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier7_Assassination_RequiredPoints",
                     2,
-                    "Tier 7: Assassination (knife_step8_assassination) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier7_Assassination_RequiredPoints"));
 
                 // === Tier 8: 암살자의 심장 (G키 액티브) ===
                 KnifeAssassinHeartCritDamage = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_CritDamageMultiplier",
                     1.3f,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Critical Damage Multiplier");
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_CritDamageMultiplier"));
 
                 KnifeAssassinHeartDuration = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_Duration",
                     7f,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Buff Duration (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_Duration"));
 
                 KnifeAssassinHeartStaminaCost = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_StaminaCost",
                     20f,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Stamina Cost");
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_StaminaCost"));
 
                 KnifeAssassinHeartCooldown = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_Cooldown",
                     40f,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Cooldown (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_Cooldown"));
 
                 KnifeAssassinHeartTeleportRange = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_TeleportRange",
-                    7f,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Teleport Search Range (meters)");
+                    8f,
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_TeleportRange"));
 
                 KnifeAssassinHeartTeleportBehind = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_TeleportBackDistance",
                     1f,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Teleport Behind Distance (meters)");
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_TeleportBackDistance"));
 
                 KnifeAssassinHeartStunDuration = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_StunDuration",
                     1f,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Stun Duration (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_StunDuration"));
 
                 KnifeAssassinHeartAttackCount = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_ComboAttackCount",
                     3,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Combo Attack Count");
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_ComboAttackCount"));
 
                 KnifeAssassinHeartAttackInterval = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_AttackInterval",
                     0.3f,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Attack Interval (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_AttackInterval"));
 
                 KnifeAssassinHeartRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",

@@ -34,6 +34,7 @@ namespace CaptainSkillTree.SkillTree
                     float totalDamageMultiplier = 1f;
                     bool showEffect = false;
                     bool isAttackTreeEffect = false; // 공격 전문가 스킬 효과인지 추적
+                    bool showAttackRootEffect = false; // attack_root 스킬 전용 효과 표시 플래그
 
                     // === 버서커 분노 데미지 보너스 ===
                     if (BerserkerSkills.IsPlayerInRage(player))
@@ -44,10 +45,10 @@ namespace CaptainSkillTree.SkillTree
                             float rageMultiplier = 1f + (rageDamageBonus / 100f);
                             totalDamageMultiplier *= rageMultiplier;
                             showEffect = true;
-                            
+
                             // 몬스터 적중시 flash_round_ellow 이팩트 생성
                             BerserkerSkills.CreateMonsterHitEffect(__instance);
-                            
+
                             // 시각적 효과 (가끔씩만 표시)
                             if (UnityEngine.Random.Range(0f, 1f) < 0.15f)
                             {
@@ -57,12 +58,13 @@ namespace CaptainSkillTree.SkillTree
                         }
                     }
 
-                    // 공격 전문가 루트: 모든 데미지 +[CONFIG]%
+                    // 공격 전문가 루트: 모든 공격력 +[CONFIG]% (물리, 속성)
                     if (manager.GetSkillLevel("attack_root") > 0)
                     {
                         float bonus = SkillTreeConfig.AttackRootDamageBonusValue / 100f;
                         totalDamageMultiplier *= (1f + bonus);
                         isAttackTreeEffect = true;
+                        showAttackRootEffect = true; // attack_root 전용 플래그 설정
                     }
 
                     // 1단계: 기본 공격 - 물리/속성 데미지 직접 증가 (MMO 독립)
@@ -204,6 +206,27 @@ namespace CaptainSkillTree.SkillTree
                         }
                     }
 
+                    // 3단계: 공격 증가 (물리 공격력 +[CONFIG]%, 속성 공격력 +[CONFIG]%)
+                    if (manager.GetSkillLevel("atk_twohand_drain") > 0)
+                    {
+                        float physicalBonus = SkillTreeConfig.AttackTwoHandDrainPhysicalDamageValue / 100f;
+                        float elementalBonus = SkillTreeConfig.AttackTwoHandDrainElementalDamageValue / 100f;
+
+                        // 물리 데미지 증가
+                        hit.m_damage.m_blunt *= (1f + physicalBonus);
+                        hit.m_damage.m_slash *= (1f + physicalBonus);
+                        hit.m_damage.m_pierce *= (1f + physicalBonus);
+
+                        // 속성 데미지 증가
+                        hit.m_damage.m_fire *= (1f + elementalBonus);
+                        hit.m_damage.m_frost *= (1f + elementalBonus);
+                        hit.m_damage.m_lightning *= (1f + elementalBonus);
+                        hit.m_damage.m_poison *= (1f + elementalBonus);
+                        hit.m_damage.m_spirit *= (1f + elementalBonus);
+
+                        isAttackTreeEffect = true;
+                    }
+
                     // 4단계: 정밀 공격 (치명타 확률 +5%) - Valheim 표준 치명타 시스템 활용
                     if (manager.GetSkillLevel("atk_crit_chance") > 0)
                     {
@@ -297,8 +320,8 @@ namespace CaptainSkillTree.SkillTree
                         hit.m_damage.m_chop *= totalDamageMultiplier;
                         hit.m_damage.m_pickaxe *= totalDamageMultiplier;
 
-                        // 특수 효과 표시
-                        if (showEffect && isAttackTreeEffect)
+                        // attack_root 스킬 전용 효과 표시 (배운 경우에만)
+                        if (showAttackRootEffect && UnityEngine.Random.Range(0f, 1f) < 0.1f)
                         {
                             SkillEffect.ShowSkillEffectText(player, "⚔️ " + L.Get("attack_expert"),
                                 new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
@@ -481,6 +504,71 @@ namespace CaptainSkillTree.SkillTree
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[스킬트리→발하임] GetDamage 양손분쇄 패치 오류: {ex.Message}");
+            }
+        }
+    }
+
+    // 공격 전문가 스킬 툴팁 표시 패치
+    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip),
+        new[] { typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int) })]
+    public static class AttackTree_ItemData_GetTooltip_Patch
+    {
+        [HarmonyPostfix]
+        private static void Postfix(ItemDrop.ItemData item, int qualityLevel, bool crafting, float worldLevel, int stackOverride, ref string __result)
+        {
+            try
+            {
+                // 무기 아이템만 처리
+                if (item?.m_shared == null) return;
+                if (item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.OneHandedWeapon &&
+                    item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.TwoHandedWeapon &&
+                    item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.TwoHandedWeaponLeft &&
+                    item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Bow &&
+                    item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Torch) return;
+
+                // 크래프팅 화면이 아닐 때만 표시
+                if (crafting) return;
+
+                // 플레이어 확인
+                var player = Player.m_localPlayer;
+                if (player == null) return;
+
+                var manager = SkillTreeManager.Instance;
+                if (manager == null) return;
+
+                string bonusText = "";
+
+                // 공격 전문가 루트: 모든 공격력 +[CONFIG]%
+                if (manager.GetSkillLevel("attack_root") > 0)
+                {
+                    float bonus = SkillTreeConfig.AttackRootDamageBonusValue;
+                    bonusText += $"\n<color=#ffd700>⚔️ 공격 전문가: 모든 공격력 +{bonus}%</color>";
+                }
+
+                // 기본 공격: 물리 공격력 +[CONFIG], 속성 공격력 +[CONFIG]
+                if (manager.GetSkillLevel("atk_base") > 0)
+                {
+                    float physicalBonus = SkillTreeConfig.AttackBasePhysicalDamageValue;
+                    float elementalBonus = SkillTreeConfig.AttackBaseElementalDamageValue;
+                    bonusText += $"\n<color=#00ff00>💪 기본 공격: 물리 +{physicalBonus}, 속성 +{elementalBonus}</color>";
+                }
+
+                // 공격 증가: 물리 공격력 +[CONFIG]%, 속성 공격력 +[CONFIG]%
+                if (manager.GetSkillLevel("atk_twohand_drain") > 0)
+                {
+                    float physicalBonus = SkillTreeConfig.AttackTwoHandDrainPhysicalDamageValue;
+                    float elementalBonus = SkillTreeConfig.AttackTwoHandDrainElementalDamageValue;
+                    bonusText += $"\n<color=#ff8c00>🔥 공격 증가: 물리 +{physicalBonus}%, 속성 +{elementalBonus}%</color>";
+                }
+
+                if (!string.IsNullOrEmpty(bonusText))
+                {
+                    __result += bonusText;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[공격 전문가 툴팁] GetTooltip 패치 오류: {ex.Message}");
             }
         }
     }

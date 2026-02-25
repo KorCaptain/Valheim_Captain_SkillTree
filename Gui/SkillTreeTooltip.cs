@@ -474,7 +474,10 @@ namespace CaptainSkillTree.Gui
                     result = L.Get("staff_stream_desc", Staff_Config.StaffStreamEitrBonusValue);
                     break;
                 case "staff_Step3_amp": // 마법 증폭
-                    result = L.Get("staff_amp_desc", Staff_Config.StaffAmpDamageValue);
+                    result = L.Get("staff_amp_full_desc",
+                        Staff_Config.StaffAmpChanceValue,
+                        Staff_Config.StaffAmpDamageValue,
+                        Staff_Config.StaffAmpEitrCostIncreaseValue);
                     break;
                 case "staff_Step4_reduction": // 냉기 속성
                     result = L.Get("staff_frost_desc", Staff_Config.StaffFrostDamageBonusValue);

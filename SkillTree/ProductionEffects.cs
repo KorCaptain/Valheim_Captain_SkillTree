@@ -296,46 +296,93 @@ namespace CaptainSkillTree.SkillTree
                 effectSource = "벌목 Lv2";
             }
 
-            // 벌목 Lv3 - 30% 확률 (누적)
+            // 벌목 Lv3 - 35% 확률 (누적)
             if (manager.GetSkillLevel("woodcutting_lv3") > 0)
             {
-                totalChance += 0.3f;
+                totalChance += 0.35f;
                 effectSource = "벌목 Lv3";
+            }
+
+            // 벌목 Lv4 - 45% 확률 (누적)
+            if (manager.GetSkillLevel("woodcutting_lv4") > 0)
+            {
+                totalChance += 0.45f;
+                effectSource = "벌목 Lv4";
             }
 
             // 확률 체크 및 월드에 아이템 드롭
             float randomValue = UnityEngine.Random.Range(0f, 1f);
             Plugin.Log.LogInfo($"[생산 효과] 확률 체크: 롤링값 {randomValue:F3}, 필요값 {totalChance:F3}");
-            
+
             if (totalChance > 0 && randomValue < totalChance)
             {
                 Plugin.Log.LogInfo($"[생산 효과] 벌목 보너스 발동! {effectSource}");
-                
-                // 월드에 나무 아이템 드롭 (EpicLoot 방식)
-                var woodPrefab = ZNetScene.instance.GetPrefab("Wood");
+
+                // 드롭 개수 결정: Lv3/Lv4는 +2, 나머지는 +1
+                int dropCount = (manager.GetSkillLevel("woodcutting_lv3") > 0 ||
+                                manager.GetSkillLevel("woodcutting_lv4") > 0) ? 2 : 1;
+
+                // DropTable에서 실제 드롭되는 나무 종류 확인
+                string woodItemName = "Wood"; // 기본값
+                GameObject woodPrefab = null;
+
+                if (dropTable?.m_drops != null && dropTable.m_drops.Count > 0)
+                {
+                    // 첫 번째 드롭 아이템을 확인 (보통 나무 종류)
+                    var firstDrop = dropTable.m_drops[0];
+                    if (firstDrop.m_item != null)
+                    {
+                        woodItemName = firstDrop.m_item.name;
+                        woodPrefab = firstDrop.m_item.gameObject;
+                        Plugin.Log.LogInfo($"[생산 효과] DropTable에서 발견한 나무 종류: {woodItemName}");
+                    }
+                }
+
+                // DropTable에서 찾지 못한 경우 기본 Wood 사용
+                if (woodPrefab == null)
+                {
+                    woodPrefab = ZNetScene.instance.GetPrefab("Wood");
+                    Plugin.Log.LogInfo($"[생산 효과] 기본 Wood 프리팹 사용");
+                }
+
                 if (woodPrefab != null)
                 {
-                    // 드롭 위치를 약간 랜덤하게 조정 (겹치지 않도록)
-                    Vector3 randomOffset = UnityEngine.Random.insideUnitSphere * 0.5f;
-                    randomOffset.y = 0f; // 높이는 고정
-                    Vector3 finalDropPosition = dropPosition + randomOffset;
-
-                    // ItemDrop 생성하여 월드에 배치
-                    var itemDrop = woodPrefab.GetComponent<ItemDrop>();
-                    if (itemDrop != null)
+                    // 나무 종류별 한국어 이름 매핑
+                    string displayName = woodItemName switch
                     {
-                        GameObject droppedItem = UnityEngine.Object.Instantiate(woodPrefab, finalDropPosition, Quaternion.identity);
-                        
-                        // 플레이어 머리 위에 메시지 표시 (MMO 방식 DamageText)
-                        SkillEffect.DrawFloatingText(Player.m_localPlayer, 
-                            "🪓 나무 +1", 
-                            new Color(0.4f, 0.8f, 0.2f, 1f)); // 자연스러운 초록색
-                        
-                        // 벌목 효율 텍스트도 실제 나무 획득 시에만 표시
-                        ShowWoodcuttingEfficiencyText();
-                        
-                        Plugin.Log.LogInfo($"[생산 효과] 벌목 보너스 발동 성공: {effectSource} - 나무 +1 월드에 드롭됨");
+                        "Wood" => "나무",
+                        "FineWood" => "질 좋은 나무",
+                        "RoundLog" => "둥근 통나무",
+                        "ElderBark" => "고대의 나무껍질",
+                        "YggdrasilWood" => "위그드라실 나무",
+                        "CoreWood" => "코어 우드",
+                        _ => woodItemName
+                    };
+
+                    for (int i = 0; i < dropCount; i++)
+                    {
+                        // 드롭 위치를 약간 랜덤하게 조정 (겹치지 않도록)
+                        Vector3 randomOffset = UnityEngine.Random.insideUnitSphere * 0.5f;
+                        randomOffset.y = 0f; // 높이는 고정
+                        Vector3 finalDropPosition = dropPosition + randomOffset;
+
+                        // ItemDrop 생성하여 월드에 배치
+                        var itemDrop = woodPrefab.GetComponent<ItemDrop>();
+                        if (itemDrop != null)
+                        {
+                            GameObject droppedItem = UnityEngine.Object.Instantiate(woodPrefab, finalDropPosition, Quaternion.identity);
+                        }
                     }
+
+                    // 플레이어 머리 위에 메시지 표시 (MMO 방식 DamageText)
+                    SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                        $"🪓 {displayName} +{dropCount}",
+                        new Color(0.4f, 0.8f, 0.2f, 1f)); // 자연스러운 초록색
+
+                    // 벌목 효율 텍스트도 실제 나무 획득 시에만 표시
+                    ShowWoodcuttingEfficiencyText();
+
+                    Plugin.Log.LogInfo($"[생산 효과] 벌목 보너스 발동 성공: {effectSource} - {displayName} +{dropCount} 월드에 드롭됨");
                 }
             }
             else
@@ -386,8 +433,13 @@ namespace CaptainSkillTree.SkillTree
                 }
                 if (manager.GetSkillLevel("gathering_lv3") > 0)
                 {
-                    totalChance += 0.3f;
+                    totalChance += 0.35f;
                     effectSource = "채집 Lv3";
+                }
+                if (manager.GetSkillLevel("gathering_lv4") > 0)
+                {
+                    totalChance += 0.40f;
+                    effectSource = "채집 Lv4";
                 }
             }
 

@@ -1232,13 +1232,6 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogDebug($"[속도 전문가] speed_root - MMO Agility 증가: +10 (이동속도 +5%)");
                     }
                     
-                    // 민첩함의 기초 - 추가 이동속도 보너스
-                    if (SkillEffect.HasSkill("speed_base"))
-                    {
-                        bonus += (int)(SkillTreeConfig.SpeedBaseMoveSpeedValue * 2f); // 3% * 2 = +6 Agility
-                        Plugin.Log.LogDebug($"[속도 전문가] speed_base - MMO Agility 증가: +6 (이동속도 +3%)");
-                    }
-
                     // knife_step3_move_speed: 단검 빠른 움직임 (패시브 - 단검 착용 시)
                     if (SkillEffect.HasSkill("knife_step3_move_speed") && WeaponHelper.IsUsingDagger(player))
                     {

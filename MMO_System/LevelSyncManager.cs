@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using CaptainSkillTree.SkillTree;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.MMO_System
 {
@@ -238,14 +239,12 @@ namespace CaptainSkillTree.MMO_System
             if (isGameStart)
             {
                 // 게임 시작 시 (첫 접속/로드) - EpicMMO 연동 메시지
-                ShowNotification($"<color=green>EpicMMO 모드와 레벨 연동~!</color>\n" +
-                                 $"+{addedPoints} 스킬포인트 (Lv.{newLevel})");
+                ShowNotification(string.Format(L.Get("mmo_level_sync_message"), addedPoints, newLevel));
             }
             else
             {
                 // 실제 레벨업 시
-                ShowNotification($"<color=green>레벨 업!</color>\n" +
-                                 $"+{addedPoints} 스킬포인트 (Lv.{newLevel})");
+                ShowNotification(string.Format(L.Get("level_up_message"), addedPoints, newLevel));
             }
 
             // 이벤트 발생

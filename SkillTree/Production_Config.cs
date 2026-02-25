@@ -70,9 +70,9 @@ namespace CaptainSkillTree.SkillTree
             (int)SkillTreeConfig.GetEffectiveValue("crafting_lv2_durability", CraftingLv2DurabilityBonus?.Value ?? 25);
         // Tier 3
         public static int WoodcuttingLv3BonusChanceValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("woodcutting_lv3_chance", WoodcuttingLv3BonusChance?.Value ?? 25);
+            (int)SkillTreeConfig.GetEffectiveValue("woodcutting_lv3_chance", WoodcuttingLv3BonusChance?.Value ?? 35);
         public static int GatheringLv3BonusChanceValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("gathering_lv3_chance", GatheringLv3BonusChance?.Value ?? 25);
+            (int)SkillTreeConfig.GetEffectiveValue("gathering_lv3_chance", GatheringLv3BonusChance?.Value ?? 35);
         public static int MiningLv3BonusChanceValue =>
             (int)SkillTreeConfig.GetEffectiveValue("mining_lv3_chance", MiningLv3BonusChance?.Value ?? 25);
         public static int CraftingLv3UpgradeChanceValue =>
@@ -81,9 +81,9 @@ namespace CaptainSkillTree.SkillTree
             (int)SkillTreeConfig.GetEffectiveValue("crafting_lv3_durability", CraftingLv3DurabilityBonus?.Value ?? 25);
         // Tier 4
         public static int WoodcuttingLv4BonusChanceValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("woodcutting_lv4_chance", WoodcuttingLv4BonusChance?.Value ?? 25);
+            (int)SkillTreeConfig.GetEffectiveValue("woodcutting_lv4_chance", WoodcuttingLv4BonusChance?.Value ?? 45);
         public static int GatheringLv4BonusChanceValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("gathering_lv4_chance", GatheringLv4BonusChance?.Value ?? 25);
+            (int)SkillTreeConfig.GetEffectiveValue("gathering_lv4_chance", GatheringLv4BonusChance?.Value ?? 40);
         public static int MiningLv4BonusChanceValue =>
             (int)SkillTreeConfig.GetEffectiveValue("mining_lv4_chance", MiningLv4BonusChance?.Value ?? 25);
         public static int CraftingLv4UpgradeChanceValue =>
@@ -96,96 +96,96 @@ namespace CaptainSkillTree.SkillTree
             // === 필요 포인트 설정 ===
             ProductionRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier0_ProductionExpert_RequiredPoints", 2,
-                "Tier 0: Production Expert (production_root) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier0_ProductionExpert_RequiredPoints"));
 
             ProductionStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier1_NoviceWorker_RequiredPoints", 2,
-                "Tier 1: Novice Worker (novice_worker) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier1_NoviceWorker_RequiredPoints"));
 
             ProductionStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier2_Specialization_RequiredPoints", 2,
-                "Tier 2: Woodcutting/Gathering/Mining/Crafting Lv2 - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier2_Specialization_RequiredPoints"));
 
             ProductionStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier3_IntermediateSkill_RequiredPoints", 2,
-                "Tier 3: Woodcutting/Gathering/Mining/Crafting Lv3 - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier3_IntermediateSkill_RequiredPoints"));
 
             ProductionStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier4_AdvancedSkill_RequiredPoints", 3,
-                "Tier 4: Woodcutting/Gathering/Mining/Crafting Lv4 - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier4_AdvancedSkill_RequiredPoints"));
 
             // === Tier 0: 생산 전문가 ===
             ProductionRootWoodBonusChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier0_ProductionExpert_WoodBonusChance", 50,
-                "Tier 0: Production Expert - Wood +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier0_ProductionExpert_WoodBonusChance"));
 
             // === Tier 1: 초보 일꾼 ===
             NoviceWorkerWoodBonusChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier1_NoviceWorker_WoodBonusChance", 25,
-                "Tier 1: Novice Worker - Wood +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier1_NoviceWorker_WoodBonusChance"));
 
             // === Tier 2: 전문 분야 ===
             WoodcuttingLv2BonusChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier2_WoodcuttingLv2_BonusChance", 25,
-                "Tier 2: Woodcutting Lv2 - Wood +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier2_WoodcuttingLv2_BonusChance"));
 
             GatheringLv2BonusChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier2_GatheringLv2_BonusChance", 25,
-                "Tier 2: Gathering Lv2 - Item +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier2_GatheringLv2_BonusChance"));
 
             MiningLv2BonusChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier2_MiningLv2_BonusChance", 25,
-                "Tier 2: Mining Lv2 - Ore +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier2_MiningLv2_BonusChance"));
 
             CraftingLv2UpgradeChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier2_CraftingLv2_UpgradeChance", 25,
-                "Tier 2: Crafting Lv2 - Upgrade +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier2_CraftingLv2_UpgradeChance"));
 
             CraftingLv2DurabilityBonus = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier2_CraftingLv2_DurabilityBonus", 25,
-                "Tier 2: Crafting Lv2 - Durability Max Increase (%)");
+                SkillTreeConfig.GetConfigDescription("Tier2_CraftingLv2_DurabilityBonus"));
 
             // === Tier 3: 중급 스킬 ===
             WoodcuttingLv3BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier3_WoodcuttingLv3_BonusChance", 25,
-                "Tier 3: Woodcutting Lv3 - Wood +1 Chance (%)");
+                "Production Tree", "Tier3_WoodcuttingLv3_BonusChance", 35,
+                SkillTreeConfig.GetConfigDescription("Tier3_WoodcuttingLv3_BonusChance"));
 
             GatheringLv3BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier3_GatheringLv3_BonusChance", 25,
-                "Tier 3: Gathering Lv3 - Item +1 Chance (%)");
+                "Production Tree", "Tier3_GatheringLv3_BonusChance", 35,
+                SkillTreeConfig.GetConfigDescription("Tier3_GatheringLv3_BonusChance"));
 
             MiningLv3BonusChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier3_MiningLv3_BonusChance", 25,
-                "Tier 3: Mining Lv3 - Ore +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier3_MiningLv3_BonusChance"));
 
             CraftingLv3UpgradeChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier3_CraftingLv3_UpgradeChance", 25,
-                "Tier 3: Crafting Lv3 - Upgrade +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier3_CraftingLv3_UpgradeChance"));
 
             CraftingLv3DurabilityBonus = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier3_CraftingLv3_DurabilityBonus", 25,
-                "Tier 3: Crafting Lv3 - Durability Max Increase (%)");
+                SkillTreeConfig.GetConfigDescription("Tier3_CraftingLv3_DurabilityBonus"));
 
             // === Tier 4: 고급 스킬 ===
             WoodcuttingLv4BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier4_WoodcuttingLv4_BonusChance", 25,
-                "Tier 4: Woodcutting Lv4 - Wood +1 Chance (%)");
+                "Production Tree", "Tier4_WoodcuttingLv4_BonusChance", 45,
+                SkillTreeConfig.GetConfigDescription("Tier4_WoodcuttingLv4_BonusChance"));
 
             GatheringLv4BonusChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier4_GatheringLv4_BonusChance", 25,
-                "Tier 4: Gathering Lv4 - Item +1 Chance (%)");
+                "Production Tree", "Tier4_GatheringLv4_BonusChance", 40,
+                SkillTreeConfig.GetConfigDescription("Tier4_GatheringLv4_BonusChance"));
 
             MiningLv4BonusChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier4_MiningLv4_BonusChance", 25,
-                "Tier 4: Mining Lv4 - Ore +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier4_MiningLv4_BonusChance"));
 
             CraftingLv4UpgradeChance = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier4_CraftingLv4_UpgradeChance", 25,
-                "Tier 4: Crafting Lv4 - Upgrade +1 Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier4_CraftingLv4_UpgradeChance"));
 
             CraftingLv4DurabilityBonus = SkillTreeConfig.BindServerSync(config,
                 "Production Tree", "Tier4_CraftingLv4_DurabilityBonus", 25,
-                "Tier 4: Crafting Lv4 - Durability Max Increase (%)");
+                SkillTreeConfig.GetConfigDescription("Tier4_CraftingLv4_DurabilityBonus"));
 
             Plugin.Log.LogDebug("[Production_Config] Production Expert tree config initialized");
         }

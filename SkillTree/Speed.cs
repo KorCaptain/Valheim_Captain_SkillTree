@@ -35,12 +35,6 @@ namespace CaptainSkillTree.SkillTree
                     totalBonus += SkillTreeConfig.SpeedRootMoveSpeedValue / 100f;
                 }
                 
-                // 속도 트리 1단계: 민첩함의 기초 - 이동속도 +3%, 구르기 +10%
-                if (SkillTreeManager.Instance?.GetSkillLevel("speed_base") > 0)
-                {
-                    totalBonus += SkillTreeConfig.SpeedBaseMoveSpeedValue / 100f;
-                }
-                
                 Plugin.Log.LogDebug($"[Speed] 기본 속도 보너스: +{totalBonus * 100f:F1}%");
                 return totalBonus;
             }

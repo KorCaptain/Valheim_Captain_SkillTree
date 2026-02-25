@@ -1580,10 +1580,10 @@ namespace CaptainSkillTree.Gui
             }
             
             // 확인 다이얼로그 생성
-            string dialogMessage = $"<color=#FFD700><size=18>{node.Name} 습득</size></color>\n\n";
-            dialogMessage += $"<color=#87CEEB><size=16>소모될 재료:</size></color>\n";
+            string dialogMessage = $"<color=#FFD700><size=18>{L10n.Get("skill_acquire_title", node.Name)}</size></color>\n\n";
+            dialogMessage += $"<color=#87CEEB><size=16>{L10n.Get("skill_acquire_materials")}</size></color>\n";
             dialogMessage += $"<color=#FFEB3B><size=14>{fullRequirementText}</size></color>\n\n";
-            dialogMessage += "<color=#FFA500><size=16>정말로 습득하시겠습니까?</size></color>";
+            dialogMessage += $"<color=#FFA500><size=16>{L10n.Get("skill_acquire_confirm")}</size></color>";
             
             CreateConfirmDialog(dialogMessage, 
                 () => { // 확인 버튼

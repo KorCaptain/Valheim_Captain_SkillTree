@@ -103,213 +103,213 @@ namespace CaptainSkillTree.SkillTree
                 "Spear Tree",
                 "Tier0_SpearExpert_RequiredPoints",
                 2,
-                "Tier 0: Spear Expert (spear_expert) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier0_SpearExpert_RequiredPoints"));
 
             SpearStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier1_QuickStrike_RequiredPoints",
                 2,
-                "Tier 1: Quick Strike (spear_step1_quickstrike) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier1_QuickStrike_RequiredPoints"));
 
             SpearStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier2_Throw_RequiredPoints",
                 2,
-                "Tier 2: Spear Throw (spear_step2_throw) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier2_Throw_RequiredPoints"));
 
             SpearStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier3_Pierce_RequiredPoints",
                 2,
-                "Tier 3: Pierce (spear_step3_pierce) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier3_Pierce_RequiredPoints"));
 
             SpearStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier4_Evasion_RequiredPoints",
                 2,
-                "Tier 4: Evasion Master (spear_step4_evasion) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier4_Evasion_RequiredPoints"));
 
             SpearPenetrateRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_RequiredPoints",
                 3,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_RequiredPoints"));
 
             SpearComboRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_RequiredPoints",
                 3,
-                "Tier 5: Combo Spear (spear_step5_combo) - Required Points");
+                SkillTreeConfig.GetConfigDescription("Tier5_Combo_RequiredPoints"));
 
             SpearStep1AttackSpeed = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier0_SpearExpert_2HitAttackSpeed",
                 10f,
-                "Tier 0: Spear Expert (spear_expert) - Attack Speed Bonus on 2-Hit (%)");
+                SkillTreeConfig.GetConfigDescription("Tier0_SpearExpert_2HitAttackSpeed"));
 
             SpearStep1DamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier0_SpearExpert_2HitDamageBonus",
                 7f,
-                "Tier 0: Spear Expert (spear_expert) - Damage Bonus on 2-Hit (%)");
+                SkillTreeConfig.GetConfigDescription("Tier0_SpearExpert_2HitDamageBonus"));
 
             SpearStep1Duration = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier0_SpearExpert_EffectDuration",
                 4f,
-                "Tier 0: Spear Expert (spear_expert) - Buff Duration (sec)");
+                SkillTreeConfig.GetConfigDescription("Tier0_SpearExpert_EffectDuration"));
 
             SpearStep1ThrowCooldown = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier2_Throw_Cooldown",
                 30f,
-                "Tier 2: Spear Throw (spear_step2_throw) - Cooldown (sec)");
+                SkillTreeConfig.GetConfigDescription("Tier2_Throw_Cooldown"));
 
             SpearStep1ThrowDamage = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier2_Throw_DamageMultiplier",
                 120f,
-                "Tier 2: Spear Throw (spear_step2_throw) - Damage Multiplier (%)");
+                SkillTreeConfig.GetConfigDescription("Tier2_Throw_DamageMultiplier"));
 
             SpearStep1ThrowBuffDuration = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier2_Throw_BuffDuration_NotUsed",
                 15f,
-                "Tier 2: Spear Throw (spear_step2_throw) - Buff Duration (NOT USED)");
+                SkillTreeConfig.GetConfigDescription("Tier2_Throw_BuffDuration_NotUsed"));
 
             SpearStep1CritDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier1_VitalStrike_DamageBonus",
                 20f,
-                "Tier 1: Vital Strike (spear_step1_vitalstrike) - Critical Damage Bonus (%)");
+                SkillTreeConfig.GetConfigDescription("Tier1_VitalStrike_DamageBonus"));
 
             SpearStep3PierceDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier3_Rapid_DamageBonus",
                 4f,
-                "Tier 3: Rapid Pierce (spear_step3_rapid) - Damage Bonus (flat)");
+                SkillTreeConfig.GetConfigDescription("Tier3_Rapid_DamageBonus"));
 
             SpearStep2EvasionDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier4_Evasion_DamageBonus",
                 25f,
-                "Tier 4: Evasion Master (spear_step4_evasion) - Damage Bonus (%)");
+                SkillTreeConfig.GetConfigDescription("Tier4_Evasion_DamageBonus"));
 
             SpearStep2EvasionStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier4_Evasion_StaminaReduction",
                 8f,
-                "Tier 4: Evasion Master (spear_step4_evasion) - Stamina Reduction (%)");
+                SkillTreeConfig.GetConfigDescription("Tier4_Evasion_StaminaReduction"));
 
             // === 폭발창 설정 ===
             SpearExplosionChance = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier3_Explosion_Chance",
                 30f,
-                "Tier 3: Explosive Spear (spear_step3_explosion) - Activation Chance (%)");
+                SkillTreeConfig.GetConfigDescription("Tier3_Explosion_Chance"));
 
             SpearExplosionRadius = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier3_Explosion_Radius",
                 5f,
-                "Tier 3: Explosive Spear (spear_step3_explosion) - Explosion Radius (meters)");
+                SkillTreeConfig.GetConfigDescription("Tier3_Explosion_Radius"));
 
             SpearExplosionDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier3_Explosion_DamageBonus",
                 30f,
-                "Tier 3: Explosive Spear (spear_step3_explosion) - Explosion Damage Bonus (%)");
+                SkillTreeConfig.GetConfigDescription("Tier3_Explosion_DamageBonus"));
 
             // === 이연창 설정 ===
             SpearDualDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier4_Dual_DamageBonus",
                 20f,
-                "Tier 4: Dual Spear (spear_step4_dual) - Damage Bonus (%)");
+                SkillTreeConfig.GetConfigDescription("Tier4_Dual_DamageBonus"));
 
             SpearDualDuration = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier4_Dual_Duration",
                 10f,
-                "Tier 4: Dual Spear (spear_step4_dual) - Buff Duration (sec)");
+                SkillTreeConfig.GetConfigDescription("Tier4_Dual_Duration"));
 
             SpearStep5PenetrateCritChance = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_CritChance_NotUsed",
                 12f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Critical Chance (NOT USED)");
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_CritChance_NotUsed"));
 
             SpearStep5PenetrateBuffDuration = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_BuffDuration",
                 30f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Buff Duration (sec)");
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_BuffDuration"));
 
             SpearStep5PenetrateLightningDamage = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_LightningDamage",
                 260f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Lightning Damage (%)");
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_LightningDamage"));
 
             SpearStep5PenetrateComboCount = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_HitCount",
                 3,
-                "Tier 5: Penetrate (spear_step5_penetrate) - Required Hit Count");
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_HitCount"));
 
             SpearStep5PenetrateCooldown = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_GKey_Cooldown",
                 60f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - G-Key Cooldown (sec)");
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_GKey_Cooldown"));
 
             SpearStep5PenetrateStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_GKey_StaminaCost",
                 25f,
-                "Tier 5: Penetrate (spear_step5_penetrate) - G-Key Stamina Cost");
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_GKey_StaminaCost"));
 
             SpearStep5ComboCooldown = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_HKey_Cooldown",
                 25f,
-                "Tier 5: Combo Spear (spear_step5_combo) - H-Key Cooldown (sec)");
+                SkillTreeConfig.GetConfigDescription("Tier5_Combo_HKey_Cooldown"));
 
             SpearStep5ComboDamage = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_HKey_DamageMultiplier",
                 280f,
-                "Tier 5: Combo Spear (spear_step5_combo) - H-Key Damage Multiplier (%)");
+                SkillTreeConfig.GetConfigDescription("Tier5_Combo_HKey_DamageMultiplier"));
 
             SpearStep5ComboStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_HKey_StaminaCost",
                 20f,
-                "Tier 5: Combo Spear (spear_step5_combo) - H-Key Stamina Cost");
+                SkillTreeConfig.GetConfigDescription("Tier5_Combo_HKey_StaminaCost"));
 
             SpearStep5ComboKnockbackRadius = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_HKey_KnockbackRange",
                 3f,
-                "Tier 5: Combo Spear (spear_step5_combo) - H-Key Knockback Range (meters)");
+                SkillTreeConfig.GetConfigDescription("Tier5_Combo_HKey_KnockbackRange"));
 
             SpearStep5ComboRange = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_ActiveRange",
                 3f,
-                "Tier 5: Combo Spear (spear_step5_combo) - Active Range (meters)");
+                SkillTreeConfig.GetConfigDescription("Tier5_Combo_ActiveRange"));
 
             SpearStep5ComboBuffDuration = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_BuffDuration",
                 30f,
-                "Tier 5: Combo Spear (spear_step5_combo) - Buff Duration (sec)");
+                SkillTreeConfig.GetConfigDescription("Tier5_Combo_BuffDuration"));
 
             SpearStep5ComboMaxUses = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_MaxUses",
                 3,
-                "Tier 5: Combo Spear (spear_step5_combo) - Max Uses");
+                SkillTreeConfig.GetConfigDescription("Tier5_Combo_MaxUses"));
 
             Plugin.Log.LogDebug("[Spear_Config] 창 전문가 트리 설정 초기화 완료");
         }

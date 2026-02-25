@@ -61,6 +61,14 @@ namespace CaptainSkillTree.SkillTree
                     {
                         __result += blockPowerBonus;
                     }
+
+                    // defense_Step4_tanker: 바위피부 - 방패 방어력 +X%
+                    if (manager.GetSkillLevel("defense_Step4_tanker") > 0)
+                    {
+                        float multiplier = Defense_Config.TankerArmorBonusValue / 100f;
+                        __result += __result * multiplier;
+                        Plugin.Log.LogDebug($"[방어 트리] 바위피부 방패 방어력 +{Defense_Config.TankerArmorBonusValue}% 적용 (총: {__result})");
+                    }
                 }
                 catch (System.Exception ex)
                 {

@@ -182,7 +182,7 @@ namespace CaptainSkillTree.SkillTree
                 Id = "knife_step9_assassin_heart",
                 NameKey = "knife_skill_assassin",
                 DescriptionKey = "knife_desc_assassin_main",
-                DescriptionArgs = new object[] { Knife_Config.KnifeAssassinHeartTeleportRangeValue, Knife_Config.KnifeAssassinHeartTeleportBehindValue, Knife_Config.KnifeAssassinHeartStunDurationValue, Knife_Config.KnifeAssassinHeartAttackCountValue, Knife_Config.KnifeAssassinHeartDurationValue, Knife_Config.KnifeAssassinHeartCritDamageValue },
+                DescriptionArgs = new object[] { Knife_Config.KnifeAssassinHeartTeleportRangeValue, Knife_Config.KnifeAssassinHeartTeleportBehindValue, Knife_Config.KnifeAssassinHeartStunDurationValue, Knife_Config.KnifeAssassinHeartAttackCountValue },
                 RequiredPoints = Knife_Config.KnifeAssassinHeartRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,

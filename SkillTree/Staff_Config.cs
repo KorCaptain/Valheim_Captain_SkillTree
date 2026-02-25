@@ -20,7 +20,9 @@ namespace CaptainSkillTree.SkillTree
         private static ConfigEntry<int> StaffStreamRequiredPoints;
 
         // === Step 3 설정 ===
+        private static ConfigEntry<float> StaffAmpChance;
         private static ConfigEntry<float> StaffAmpDamage;
+        private static ConfigEntry<float> StaffAmpEitrCostIncrease;
         private static ConfigEntry<int> StaffAmpRequiredPoints;
 
         // === Step 4 설정: 속성 강화 스킬 ===
@@ -61,121 +63,129 @@ namespace CaptainSkillTree.SkillTree
                 // === Tier 0: 지팡이 전문가 ===
                 StaffExpertDamage = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier0_StaffExpert_ElementalDamageBonus", 12f,
-                    "Tier 0: Staff Expert (staff_expert_damage) - Elemental Damage Bonus (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier0_StaffExpert_ElementalDamageBonus"));
 
                 StaffExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier0_StaffExpert_RequiredPoints", 2,
-                    "Tier 0: Staff Expert (staff_expert_damage) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier0_StaffExpert_RequiredPoints"));
 
                 // === Tier 1 ===
                 StaffFocusEitrReduction = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier1_MindFocus_EitrReduction", 15f,
-                    "Tier 1: Mind Focus (staff_step2_focus) - Eitr Cost Reduction (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier1_MindFocus_EitrReduction"));
 
                 StaffFocusRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier1_MindFocus_RequiredPoints", 2,
-                    "Tier 1: Mind Focus (staff_step2_focus) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier1_MindFocus_RequiredPoints"));
 
                 StaffStreamCastSpeed = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier1_MagicFlow_EitrBonus", 30f,
-                    "Tier 1: Magic Flow (staff_step2_stream) - Max Eitr Bonus");
+                    SkillTreeConfig.GetConfigDescription("Tier1_MagicFlow_EitrBonus"));
 
                 StaffStreamRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier1_MagicFlow_RequiredPoints", 2,
-                    "Tier 1: Magic Flow (staff_step2_stream) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier1_MagicFlow_RequiredPoints"));
 
                 // === Tier 2 ===
+                StaffAmpChance = SkillTreeConfig.BindServerSync(config,
+                    "Staff Tree", "Tier2_MagicAmplify_Chance", 38f,
+                    SkillTreeConfig.GetConfigDescription("Tier2_MagicAmplify_Chance"));
+
                 StaffAmpDamage = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier2_MagicAmplify_DamageBonus", 10f,
-                    "Tier 2: Magic Amplify (staff_step3_amp) - Additional Damage Bonus (%)");
+                    "Staff Tree", "Tier2_MagicAmplify_DamageBonus", 35f,
+                    SkillTreeConfig.GetConfigDescription("Tier2_MagicAmplify_DamageBonus"));
+
+                StaffAmpEitrCostIncrease = SkillTreeConfig.BindServerSync(config,
+                    "Staff Tree", "Tier2_MagicAmplify_EitrCostIncrease", 20f,
+                    SkillTreeConfig.GetConfigDescription("Tier2_MagicAmplify_EitrCostIncrease"));
 
                 StaffAmpRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier2_MagicAmplify_RequiredPoints", 3,
-                    "Tier 2: Magic Amplify (staff_step3_amp) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier2_MagicAmplify_RequiredPoints"));
 
                 // === Tier 3: 속성 강화 스킬 ===
                 StaffFrostDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier3_FrostElement_DamageBonus", 3f,
-                    "Tier 3: Frost Element (staff_Step4_reduction) - Frost Attack Bonus (flat)");
+                    SkillTreeConfig.GetConfigDescription("Tier3_FrostElement_DamageBonus"));
 
                 StaffFrostRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier3_FrostElement_RequiredPoints", 2,
-                    "Tier 3: Frost Element (staff_Step4_reduction) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier3_FrostElement_RequiredPoints"));
 
                 StaffFireDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier3_FireElement_DamageBonus", 3f,
-                    "Tier 3: Fire Element (staff_Step4_range) - Fire Attack Bonus (flat)");
+                    SkillTreeConfig.GetConfigDescription("Tier3_FireElement_DamageBonus"));
 
                 StaffFireRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier3_FireElement_RequiredPoints", 2,
-                    "Tier 3: Fire Element (staff_Step4_range) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier3_FireElement_RequiredPoints"));
 
                 StaffLightningDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier3_LightningElement_DamageBonus", 3f,
-                    "Tier 3: Lightning Element (staff_Step4_surge) - Lightning Attack Bonus (flat)");
+                    SkillTreeConfig.GetConfigDescription("Tier3_LightningElement_DamageBonus"));
 
                 StaffLightningRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier3_LightningElement_RequiredPoints", 2,
-                    "Tier 3: Lightning Element (staff_Step4_surge) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier3_LightningElement_RequiredPoints"));
 
                 // === Tier 4: 행운 마력 ===
                 StaffLuckManaChance = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier4_LuckyMana_Chance", 35f,
-                    "Tier 4: Lucky Mana (staff_step5_archmage) - Zero Eitr Cost Chance (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier4_LuckyMana_Chance"));
 
                 StaffLuckManaRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier4_LuckyMana_RequiredPoints", 3,
-                    "Tier 4: Lucky Mana (staff_step5_archmage) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier4_LuckyMana_RequiredPoints"));
 
                 // === Tier 5-1: 이중시전 (R키 액티브) ===
                 StaffDoubleCastProjectileCount = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_DoubleCast_AdditionalProjectileCount", 2,
-                    "Tier 5: Double Cast (staff_step6_double_cast) - Additional Projectile Count");
+                    SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_AdditionalProjectileCount"));
 
                 StaffDoubleCastDamagePercent = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 70f,
-                    "Tier 5: Double Cast (staff_step6_double_cast) - Projectile Damage Percent (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_ProjectileDamagePercent"));
 
                 StaffDoubleCastAngleOffset = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_DoubleCast_AngleOffset", 5f,
-                    "Tier 5: Double Cast (staff_step6_double_cast) - Projectile Angle Offset (deg)");
+                    SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_AngleOffset"));
 
                 StaffDoubleCastEitrCost = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_DoubleCast_EitrCost", 20f,
-                    "Tier 5: Double Cast (staff_step6_double_cast) - Activation Eitr Cost");
+                    SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_EitrCost"));
 
                 StaffDoubleCastCooldown = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_DoubleCast_Cooldown", 30f,
-                    "Tier 5: Double Cast (staff_step6_double_cast) - Cooldown (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_Cooldown"));
 
                 StaffDoubleCastRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_DoubleCast_RequiredPoints", 3,
-                    "Tier 5: Double Cast (staff_step6_double_cast) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_RequiredPoints"));
 
                 // === Tier 5-2: 즉시 범위 힐 (H키 액티브) ===
                 StaffHealCooldown = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_InstantAreaHeal_Cooldown", 30f,
-                    "Tier 5: Instant Area Heal (staff_step6_heal) - Cooldown (sec)");
+                    SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_Cooldown"));
 
                 StaffHealEitrCost = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_InstantAreaHeal_EitrCost", 30f,
-                    "Tier 5: Instant Area Heal (staff_step6_heal) - Eitr Cost on Cast");
+                    SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_EitrCost"));
 
                 StaffHealPercentage = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_InstantAreaHeal_HealPercent", 25f,
-                    "Tier 5: Instant Area Heal (staff_step6_heal) - Heal Percent of Max HP (%)");
+                    SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_HealPercent"));
 
                 StaffHealRange = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_InstantAreaHeal_Range", 12f,
-                    "Tier 5: Instant Area Heal (staff_step6_heal) - Heal Range (m)");
+                    SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_Range"));
 
                 StaffHealSelf = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_InstantAreaHeal_SelfHeal", false,
-                    "Tier 5: Instant Area Heal (staff_step6_heal) - Allow Self Heal");
+                    SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_SelfHeal"));
 
                 StaffHealRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_InstantAreaHeal_RequiredPoints", 3,
-                    "Tier 5: Instant Area Heal (staff_step6_heal) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_RequiredPoints"));
 
                 // === 이벤트 핸들러 등록 ===
                 RegisterStaffEventHandlers();
@@ -213,7 +223,9 @@ namespace CaptainSkillTree.SkillTree
                 StaffExpertDamage.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffFocusEitrReduction.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffStreamCastSpeed.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffAmpChance.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffAmpDamage.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffAmpEitrCostIncrease.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffFrostDamageBonus.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffFireDamageBonus.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffLightningDamageBonus.SettingChanged += (sender, args) => OnStaffConfigChanged();
@@ -253,7 +265,9 @@ namespace CaptainSkillTree.SkillTree
         public static int StaffStreamRequiredPointsValue => StaffStreamRequiredPoints?.Value ?? 2;
 
         // Step 3
-        public static float StaffAmpDamageValue => StaffAmpDamage?.Value ?? 10f;
+        public static float StaffAmpChanceValue => StaffAmpChance?.Value ?? 38f;
+        public static float StaffAmpDamageValue => StaffAmpDamage?.Value ?? 35f;
+        public static float StaffAmpEitrCostIncreaseValue => StaffAmpEitrCostIncrease?.Value ?? 20f;
         public static int StaffAmpRequiredPointsValue => StaffAmpRequiredPoints?.Value ?? 3;
 
         // Step 4: 속성 강화

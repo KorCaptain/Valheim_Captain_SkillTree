@@ -88,6 +88,9 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 2. defense_root ~ defense_Step3: 방어력 직접 증가
         /// Character.GetBodyArmor 패치를 통한 방어력 보너스
+        /// defense_root: 투구 방어력 +2
+        /// defense_Step1_survival: 흉갑 방어력 +5
+        /// defense_Step2_health: 레깅스 방어력 +5
         /// </summary>
         [HarmonyPatch(typeof(Character), nameof(Character.GetBodyArmor))]
         public static class Character_GetBodyArmor_StatTree_Patch
@@ -107,28 +110,49 @@ namespace CaptainSkillTree.SkillTree
 
                     float armorBonus = 0f;
 
-                    // defense_root: 방어력 +2
-                    if (manager.GetSkillLevel("defense_root") > 0)
+                    // Humanoid로 캐스팅하여 아이템 슬롯 접근
+                    var humanoid = player as Humanoid;
+                    if (humanoid == null) return;
+
+                    // Traverse를 사용하여 private 필드 접근
+                    var helmetItem = Traverse.Create(humanoid).Field("m_helmetItem").GetValue<ItemDrop.ItemData>();
+                    var chestItem = Traverse.Create(humanoid).Field("m_chestItem").GetValue<ItemDrop.ItemData>();
+                    var legItem = Traverse.Create(humanoid).Field("m_legItem").GetValue<ItemDrop.ItemData>();
+
+                    // defense_root: 투구 방어력 +2
+                    if (manager.GetSkillLevel("defense_root") > 0 && helmetItem != null)
                     {
                         armorBonus += Defense_Config.DefenseRootArmorBonusValue;
+                        Plugin.Log.LogDebug($"[스탯 트리] 방어 전문가 - 투구 방어력 +{Defense_Config.DefenseRootArmorBonusValue}");
                     }
 
-                    // defense_Step1_survival: 방어력 +3
-                    if (manager.GetSkillLevel("defense_Step1_survival") > 0)
+                    // defense_Step1_survival: 흉갑 방어력 +5
+                    if (manager.GetSkillLevel("defense_Step1_survival") > 0 && chestItem != null)
                     {
                         armorBonus += Defense_Config.SurvivalArmorBonusValue;
+                        Plugin.Log.LogDebug($"[스탯 트리] 피부경화 - 흉갑 방어력 +{Defense_Config.SurvivalArmorBonusValue}");
                     }
 
-                    // defense_Step2_health: 방어력 +4
-                    if (manager.GetSkillLevel("defense_Step2_health") > 0)
+                    // defense_Step2_health: 레깅스 방어력 +5
+                    if (manager.GetSkillLevel("defense_Step2_health") > 0 && legItem != null)
                     {
                         armorBonus += Defense_Config.HealthArmorBonusValue;
+                        Plugin.Log.LogDebug($"[스탯 트리] 체력단련 - 레깅스 방어력 +{Defense_Config.HealthArmorBonusValue}");
                     }
 
                     if (armorBonus > 0)
                     {
                         __result += armorBonus;
-                        Plugin.Log.LogDebug($"[스탯 트리] 방어력 보너스 적용: +{armorBonus} (총 방어력: {__result})");
+                        Plugin.Log.LogDebug($"[스탯 트리] 방어력 보너스 적용: +{armorBonus} (합계 전: {__result})");
+                    }
+
+                    // defense_Step4_tanker: 바위피부 - 전체 방어력 +X%
+                    if (manager.GetSkillLevel("defense_Step4_tanker") > 0)
+                    {
+                        float multiplier = Defense_Config.TankerArmorBonusValue / 100f;
+                        float rockBonus = __result * multiplier;
+                        __result += rockBonus;
+                        Plugin.Log.LogDebug($"[스탯 트리] 바위피부 방어력 +{Defense_Config.TankerArmorBonusValue}% 적용 (총 방어력: {__result})");
                     }
                 }
                 catch (System.Exception ex)

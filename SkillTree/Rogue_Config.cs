@@ -53,71 +53,71 @@ namespace CaptainSkillTree.SkillTree
                     "Rogue Job Skills",
                     "Rogue_ShadowStrike_Cooldown",
                     30f,
-                    "그림자 일격 - 쿨타임 (초) / Shadow Strike - Cooldown (sec)"
+                    SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_Cooldown")
                 );
-                
+
                 RogueShadowStrikeStaminaCost = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
                     "Rogue_ShadowStrike_StaminaCost",
                     25f,
-                    "그림자 일격 - 스태미나 소모 / Shadow Strike - Stamina Cost"
+                    SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_StaminaCost")
                 );
-                
+
                 RogueShadowStrikeAttackBonus = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
                     "Rogue_ShadowStrike_AttackBonus",
                     35f,
-                    "그림자 일격 - 공격력 증가 (%) / Shadow Strike - Attack Power Increase (%)"
+                    SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_AttackBonus")
                 );
-                
+
                 RogueShadowStrikeBuffDuration = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
                     "Rogue_ShadowStrike_BuffDuration",
                     8f,
-                    "그림자 일격 - 공격력 버프 지속시간 (초) / Shadow Strike - Attack Buff Duration (sec)"
+                    SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_BuffDuration")
                 );
-                
+
                 RogueShadowStrikeSmokeScale = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
                     "Rogue_ShadowStrike_SmokeScale",
                     2.0f,
-                    "그림자 일격 - 연막 효과 크기 배율 / Shadow Strike - Smoke Effect Scale"
+                    SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_SmokeScale")
                 );
-                
+
                 RogueShadowStrikeAggroRange = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
                     "Rogue_ShadowStrike_AggroRange",
                     15f,
-                    "그림자 일격 - 어그로 제거 범위 (m) / Shadow Strike - Aggro Clear Range (m)"
+                    SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_AggroRange")
                 );
-                
+
                 RogueShadowStrikeStealthDuration = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
                     "Rogue_ShadowStrike_StealthDuration",
                     8f,
-                    "그림자 일격 - 스텔스 지속시간 (초) / Shadow Strike - Stealth Duration (sec)"
+                    SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_StealthDuration")
                 );
-                
+
                 // === 로그 패시브 스킬 설정 ===
                 RogueAttackSpeedBonus = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
                     "Rogue_AttackSpeed_Bonus",
                     10f,
-                    "로그 패시브 - 공격 속도 보너스 (%) / Rogue Passive - Attack Speed Bonus (%)"
+                    SkillTreeConfig.GetConfigDescription("Rogue_AttackSpeed_Bonus")
                 );
 
                 RogueStaminaReduction = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
                     "Rogue_Stamina_Reduction",
                     15f,
-                    "로그 패시브 - 공격 시 스태미나 사용량 감소 (%) / Rogue Passive - Attack Stamina Usage Reduction (%)"
+                    SkillTreeConfig.GetConfigDescription("Rogue_Stamina_Reduction")
                 );
 
                 RogueElementalResistanceDebuff = SkillTreeConfig.BindServerSync(config,
                     "Rogue Job Skills",
                     "Rogue_ElementalResistance_Debuff",
                     10f,
-                    "로그 패시브 - 속성 저항 증가 (%) - 속성 피해 감소 / Rogue Passive - Elemental Resistance Increase (%) - Reduce Elemental Damage"
+                    SkillTreeConfig.GetConfigDescription("Rogue_ElementalResistance_Debuff")
                 );
                 
                 Plugin.Log.LogDebug("[로그 컨피그] 설정 항목 생성 완료 (그림자 일격 + 패시브 효과)");

@@ -1,0 +1,230 @@
+{
+  "main": {
+    "id": "e5c238e94a7a6963",
+    "type": "split",
+    "children": [
+      {
+        "id": "a2f8e901ec56c9e4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "10281304b5597117",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Untitled.canvas",
+                "viewState": {
+                  "x": 0,
+                  "y": 0,
+                  "zoom": 0
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "Untitled"
+            }
+          },
+          {
+            "id": "a29646e8f927b1cd",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "그래프 뷰"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d40b415918722fc5",
+    "type": "split",
+    "children": [
+      {
+        "id": "86367c715ea1ea97",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "81ee836f130c694a",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": true
+              },
+              "icon": "lucide-folder-closed",
+              "title": "파일 탐색기"
+            }
+          },
+          {
+            "id": "afba1e93c930c8eb",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "검색"
+            }
+          },
+          {
+            "id": "14f457f8b13e8cf6",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "d20a187b79b5c940",
+    "type": "split",
+    "children": [
+      {
+        "id": "f7b4385b0f9bc673",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cd8017c80421e6af",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": true,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "백링크"
+            }
+          },
+          {
+            "id": "e5aa170d52e34973",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Untitled.canvas",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Untitled"
+            }
+          },
+          {
+            "id": "5eecd83bb4097c5d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "5fdc28215a0738c8",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "4a8af2decd842f5c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Untitled.canvas",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Untitled"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:빠른 전환기 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 일일 노트 열기": false,
+      "templates:템플릿 삽입": false,
+      "command-palette:명령어 팔레트 열기": false,
+      "bases:새 베이스 생성하기": false
+    }
+  },
+  "active": "cd8017c80421e6af",
+  "lastOpenFiles": [
+    "ZNETSCENE_VFX_RULES.md",
+    "WEAPON_DETECTION_EXTENSIBILITY_GUIDE.md",
+    "VFX_SOUND_INFINITE_LOADING_FIX.md",
+    "valheim_all_api.md",
+    "UI_SYSTEM_RULES.md",
+    "TOOLTIP_COLOR_STANDARD.md",
+    "STAGGER_VERIFICATION_GUIDE.md",
+    "Speed_tree-edit.txt",
+    "SPEED_EXPERT_VALHEIM_API_IMPLEMENTATION.md",
+    "SKILL_PROFICIENCY_SYSTEM.md",
+    "SKILL_NAMING_RULES.md",
+    "SKILL_EFFECT_TEXT_STANDARD.md",
+    "SKILL_DEVELOPMENT_WORKFLOW.md",
+    "SECONDARY_ATTACK_SPEED_BUG.md",
+    "QUICK_REFERENCE.md",
+    "PRODUCTION_DAMAGE_TEXT_IMPLEMENTATION.md",
+    "PARRY_DETECTION_SYSTEM.md",
+    "overview.canvas",
+    "MMO_INTEGRATION_GUIDE.md",
+    "MCP_PROJECT_SETUP.md",
+    "LOCALIZATION_GUIDE.md",
+    "HEALTH_SYSTEM_RULES.md",
+    "HARMONY_PATCH_TARGET_RULES.md",
+    "EVASION_SYSTEM_RULES.md",
+    "EITR_STAGGER_SYSTEM_RULES.md",
+    "DEVELOPMENT_PATTERNS.md",
+    "DAMAGE_SYSTEM_RULES.md",
+    "CROSSBOW_SKILL_STATUS.md",
+    "Untitled.canvas"
+  ]
+}

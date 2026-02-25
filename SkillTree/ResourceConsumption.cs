@@ -103,7 +103,6 @@ namespace CaptainSkillTree.SkillTree
                     break;
 
                 case "gathering_lv3":
-                case "gathering_lv4":
                     // 채집 스킬: 채집물은 소모하지 않고 보유 조건만 확인
                     Plugin.Log.LogInfo($"[자원 소모] {skillId}: 채집물 보유량 확인 완료 (소모하지 않음)");
                     break;

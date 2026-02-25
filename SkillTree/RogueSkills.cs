@@ -200,9 +200,9 @@ namespace CaptainSkillTree.SkillTree
         {
             if (string.IsNullOrEmpty(name)) return false;
             
-            string[] daggerKeywords = { "knives", "knife", "dagger", "claw" };
+            string[] daggerKeywords = { "knives", "knife", "dagger", "claw", "fist" };
             string lowerName = name.ToLower();
-            
+
             foreach (string keyword in daggerKeywords)
             {
                 if (lowerName.Contains(keyword))
@@ -210,7 +210,7 @@ namespace CaptainSkillTree.SkillTree
                     return true;
                 }
             }
-            
+
             return false;
         }
 
@@ -808,7 +808,7 @@ namespace CaptainSkillTree.SkillTree
                 // 실패시 플레이어에게 메시지로 대체
                 try
                 {
-                    player.Message(MessageHud.MessageType.TopLeft, "💥 그림자 일격!");
+                    player.Message(MessageHud.MessageType.TopLeft, L.Get("rogue_shadow_strike_activate"));
                     // Plugin.Log.LogInfo($"[로그 그림자 일격] {player.GetPlayerName()} 사운드 재생 실패 - 메시지로 대체");
                 }
                 catch (System.Exception)
@@ -1290,13 +1290,6 @@ namespace CaptainSkillTree.SkillTree
                 {
                     totalBonus += SkillTreeConfig.SpeedRootMoveSpeedValue;
                     Plugin.Log.LogDebug($"[이동속도] speed_root: +{SkillTreeConfig.SpeedRootMoveSpeedValue}%");
-                }
-
-                // speed_base: 민첩함의 기초 +3%
-                if (manager.GetSkillLevel("speed_base") > 0)
-                {
-                    totalBonus += SkillTreeConfig.SpeedBaseMoveSpeedValue;
-                    Plugin.Log.LogDebug($"[이동속도] speed_base: +{SkillTreeConfig.SpeedBaseMoveSpeedValue}%");
                 }
 
                 // speed_1: 민첩 스탯 +5%

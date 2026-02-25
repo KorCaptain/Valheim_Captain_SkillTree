@@ -204,6 +204,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 돌진 연속 베기 시퀀스 실행 코루틴
         /// 전방 돌진 후 몬스터 주변을 빠르게 이동하며 3회 연속 베기
+        /// 스킬 종료 후 원래 위치로 복귀
         /// </summary>
         private static IEnumerator ExecuteRushSlashSequence(Player player)
         {
@@ -211,6 +212,9 @@ namespace CaptainSkillTree.SkillTree
             {
                 yield break;
             }
+
+            // 원래 위치 저장 (스킬 종료 후 복귀용)
+            Vector3 originalPosition = player.transform.position;
 
             var skillData = Sword_Config.GetRushSlashData();
             float moveSpeed = skillData.moveSpeed;
@@ -307,15 +311,13 @@ namespace CaptainSkillTree.SkillTree
             rushSlashAttackCount[player] = 3;
             yield return new WaitForSeconds(0.35f);
 
-            // === 마무리: 몬스터 뒤쪽 이동 (공격 없음) ===
+            // === 마무리: 원래 위치로 복귀 ===
             if (player != null && !player.IsDead())
             {
-                if (target != null && !target.IsDead())
-                {
-                    targetPos = target.transform.position;
-                }
-                Vector3 backPos = CalculateBackPosition(player, targetPos, sideDist);
-                yield return MoveToPosition(player, backPos, sideDist, moveSpeed);
+                float returnDistance = Vector3.Distance(player.transform.position, originalPosition);
+                yield return MoveToPosition(player, originalPosition, returnDistance, moveSpeed);
+
+                SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("rush_slash_return"), Color.cyan);
             }
 
             // 상태 정리

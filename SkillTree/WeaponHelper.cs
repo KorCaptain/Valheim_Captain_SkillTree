@@ -86,6 +86,10 @@ namespace CaptainSkillTree.SkillTree
             if (prefabName.Contains("Claw") || prefabName.Contains("claw"))
                 return true;
 
+            // 4. 프리팹명에 Fist/fist 포함 시에도 단검으로 인식 (주먹 무기)
+            if (prefabName.Contains("Fist") || prefabName.Contains("fist"))
+                return true;
+
             return false;
         }
 

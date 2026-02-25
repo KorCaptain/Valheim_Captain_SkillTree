@@ -153,7 +153,16 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "melee_combo", "crossbow_reload2" },
                 NextNodes = new List<string> { "speed_master", "ship_master" },
-                ApplyEffect = (lv) => { }
+                ApplyEffect = (lv) => {
+                    var player = Player.m_localPlayer;
+                    if (player != null) {
+                        float skillLevelBonus = Speed_Config.SpeedEx1MeleeSkillValue;
+                        SkillEffect.ShowSkillEffectText(player,
+                            L.Get("speed_ex1_effect", skillLevelBonus),
+                            new Color(0.2f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
+                        Plugin.Log.LogInfo($"[수련자1] 근접/석궁 숙련도 +{skillLevelBonus} 보너스 활성화");
+                    }
+                }
             });
 
             manager.AddSkill(new SkillNode {
@@ -171,7 +180,16 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "bow_speed2", "moving_cast" },
                 NextNodes = new List<string> { "speed_master", "ship_master" },
-                ApplyEffect = (lv) => { }
+                ApplyEffect = (lv) => {
+                    var player = Player.m_localPlayer;
+                    if (player != null) {
+                        float skillLevelBonus = Speed_Config.SpeedEx2StaffSkillValue;
+                        SkillEffect.ShowSkillEffectText(player,
+                            L.Get("speed_ex2_effect", skillLevelBonus),
+                            new Color(0.2f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
+                        Plugin.Log.LogInfo($"[수련자2] 지팡이/활 숙련도 +{skillLevelBonus} 보너스 활성화");
+                    }
+                }
             });
 
             // 티어4: 마스터 (2개)
@@ -229,18 +247,12 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "speed_1", "speed_2", "speed_3" },
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
-                    if (player == null) return;
-                    var skills = player.GetSkills();
-                    if (skills == null) return;
-                    float skillLevelBonus = Speed_Config.JumpSkillLevelBonusValue;
-                    float previousLevel = skills.GetSkillLevel(Skills.SkillType.Jump);
-                    try {
-                        skills.CheatRaiseSkill("Jump", skillLevelBonus, true);
-                        float newLevel = skills.GetSkillLevel(Skills.SkillType.Jump);
-                        SkillEffect.ShowSkillEffectText(player, L.Get("agility_peak_effect", skillLevelBonus, previousLevel, newLevel),
-                            new Color(0.3f, 0.9f, 0.3f), SkillEffect.SkillEffectTextType.Critical);
-                    } catch (System.Exception ex) {
-                        Plugin.Log.LogError($"[점프 숙련자] 실패: {ex.Message}");
+                    if (player != null) {
+                        float skillLevelBonus = Speed_Config.JumpSkillLevelBonusValue;
+                        SkillEffect.ShowSkillEffectText(player,
+                            L.Get("agility_peak_effect", skillLevelBonus),
+                            new Color(0.2f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
+                        Plugin.Log.LogInfo($"[점프 숙련자] 점프 숙련도 +{skillLevelBonus} 보너스 활성화");
                     }
                 }
             });
@@ -316,7 +328,16 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "speed_1", "speed_2", "speed_3" },
                 NextNodes = new List<string> { "melee_speed1", "crossbow_draw1", "bow_draw1", "staff_speed1" },
-                ApplyEffect = (lv) => { }
+                ApplyEffect = (lv) => {
+                    var player = Player.m_localPlayer;
+                    if (player != null) {
+                        float skillLevelBonus = Speed_Config.AllMasterRunSkillValue;
+                        SkillEffect.ShowSkillEffectText(player,
+                            L.Get("all_master_effect", skillLevelBonus),
+                            new Color(0.2f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
+                        Plugin.Log.LogInfo($"[숙련자] 달리기/점프 숙련도 +{skillLevelBonus} 보너스 활성화");
+                    }
+                }
             });
 
             // 티어8: 최종 가속 스킬들 (4개)

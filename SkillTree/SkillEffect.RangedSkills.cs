@@ -578,16 +578,24 @@ namespace CaptainSkillTree.SkillTree
                     if (__result.m_spirit > 0) __result.m_spirit *= damageMultiplier;
                 }
 
-                // staff_Step3_amp: 마법 증폭 공격력 증가 (착용 기반 최적화)
+                // staff_Step3_amp: 마법 증폭 공격력 증가 (확률 기반, 에이트르 소비)
                 if (player != null && SkillEffect.HasSkill("staff_Step3_amp") &&
-                    StaffEquipmentDetector.IsWieldingStaffOrWand(player))
+                    StaffEquipmentDetector.IsWieldingStaffOrWand(player) &&
+                    player.GetEitr() >= 1f)
                 {
-                    float damageMultiplier = 1.0f + (Staff_Config.StaffAmpDamageValue / 100f);
-                    if (__result.m_fire > 0) __result.m_fire *= damageMultiplier;
-                    if (__result.m_frost > 0) __result.m_frost *= damageMultiplier;
-                    if (__result.m_lightning > 0) __result.m_lightning *= damageMultiplier;
-                    if (__result.m_poison > 0) __result.m_poison *= damageMultiplier;
-                    if (__result.m_spirit > 0) __result.m_spirit *= damageMultiplier;
+                    float randomValue = UnityEngine.Random.Range(0f, 100f);
+                    if (randomValue < Staff_Config.StaffAmpChanceValue)
+                    {
+                        float damageMultiplier = 1.0f + (Staff_Config.StaffAmpDamageValue / 100f);
+                        if (__result.m_fire > 0) __result.m_fire *= damageMultiplier;
+                        if (__result.m_frost > 0) __result.m_frost *= damageMultiplier;
+                        if (__result.m_lightning > 0) __result.m_lightning *= damageMultiplier;
+                        if (__result.m_poison > 0) __result.m_poison *= damageMultiplier;
+                        if (__result.m_spirit > 0) __result.m_spirit *= damageMultiplier;
+
+                        // 텍스트 표시 (패시브이므로 VFX 없음)
+                        player.Message(MessageHud.MessageType.Center, L.Get("staff_amp_activated"));
+                    }
                 }
 
                 // staff_Step4_range: 화염 속성 (화염 공격 +[CONFIG])
@@ -639,6 +647,13 @@ namespace CaptainSkillTree.SkillTree
                 {
                     float reductionPercent = Staff_Config.StaffFocusEitrReductionValue / 100f;
                     v *= (1.0f - reductionPercent);
+                }
+
+                // staff_Step3_amp: 마법 증폭 - 에이트르 소모 증가 (디버프)
+                if (SkillEffect.HasSkill("staff_Step3_amp") && StaffEquipmentDetector.IsWieldingStaffOrWand(__instance))
+                {
+                    float increasePercent = Staff_Config.StaffAmpEitrCostIncreaseValue / 100f;
+                    v *= (1.0f + increasePercent);
                 }
 
                 // staff_Step5_archmage: 행운 마력 - 확률로 에이트르 무소모 (착용 기반 최적화)
@@ -703,10 +718,14 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
+                // ✅ CRITICAL: 플레이어 공격만 처리 (몬스터/NPC 차단)
                 var player = Player.m_localPlayer;
                 if (player == null) return true;
 
+                // ✅ CRITICAL: 현재 Attack이 플레이어의 무기에서 발생한 것인지 검증
                 var weapon = player.GetCurrentWeapon();
+                if (weapon?.m_shared?.m_attack != __instance) return true;
+
                 if (weapon?.m_shared?.m_skillType != Skills.SkillType.Crossbows)
                     return true;
 

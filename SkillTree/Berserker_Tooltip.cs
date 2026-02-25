@@ -108,7 +108,8 @@ namespace CaptainSkillTree.SkillTree
                 var passiveHealthThreshold = Berserker_Config.BerserkerPassiveHealthThresholdValue;
                 var passiveInvincibilityDuration = Berserker_Config.BerserkerPassiveInvincibilityDurationValue;
                 var passiveCooldown = Berserker_Config.BerserkerPassiveCooldownValue;
-                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive_effect")}: </size></color><color=#00FF00><size=16>{L.Get("berserker_passive_desc", passiveHealthThreshold, passiveInvincibilityDuration, passiveCooldown / 60f)}</size></color>\n";
+                var passiveHealthBonus = Berserker_Config.BerserkerPassiveHealthBonusValue;
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive_effect")}: </size></color><color=#00FF00><size=16>{L.Get("berserker_passive_desc", passiveHealthThreshold, passiveInvincibilityDuration, passiveCooldown / 60f, passiveHealthBonus)}</size></color>\n";
 
                 // 영향 범위 섹션
                 if (!string.IsNullOrEmpty(data.range))

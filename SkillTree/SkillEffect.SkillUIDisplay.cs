@@ -150,13 +150,13 @@ namespace CaptainSkillTree.SkillTree
 
                 string trimmed = text.Trim();
 
-                // 이미 우리 모드가 수정한 텍스트인지 확인 (빨간색 태그)
+                // 이미 우리 모드가 수정한 텍스트인지 확인 (빨간색 태그만 허용)
                 if (trimmed.Contains("#FF3333") || trimmed.Contains("#ff3333"))
                 {
-                    continue; // 이미 처리됨, 건너뛰기
+                    continue; // 이미 우리가 처리한 텍스트, 건너뛰기
                 }
 
-                // 색상 태그 모두 제거
+                // 색상 태그 모두 제거 (다른 모드가 적용한 파란색, 초록색 등 모두 제거)
                 string cleanText = System.Text.RegularExpressions.Regex.Replace(trimmed, "<.*?>", "");
 
                 // 숫자만 포함된 텍스트 (순수 레벨)
@@ -233,6 +233,8 @@ namespace CaptainSkillTree.SkillTree
             levelText.richText = true;
             levelText.enableVertexGradient = false;
             levelText.overflowMode = TextOverflowModes.Overflow;
+            // 기본 텍스트 색상을 흰색으로 설정 (richText 태그만 색상 적용되도록)
+            levelText.color = Color.white;
             levelText.text = formattedText;
             levelText.ForceMeshUpdate();
 

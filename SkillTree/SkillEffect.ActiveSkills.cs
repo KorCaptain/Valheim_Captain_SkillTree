@@ -207,12 +207,12 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// H키 해제 처리 (분노의 망치 차지 해제)
+        /// H키 해제 처리 (사용하지 않음 - 분노의 망치는 즉시 발동 방식)
         /// </summary>
         public static void HandleHKeyUpSkills(Player player)
         {
             if (player == null || player.IsDead()) return;
-            FuryHammerSkill.HandleHKeyRelease(player);
+            FuryHammerSkill.HandleHKeyRelease(player); // 빈 메서드 (호환성 유지)
         }
 
         // === 무기 감지 헬퍼 함수들 - WeaponHelper.cs로 통합됨 ===

@@ -572,6 +572,34 @@ namespace CaptainSkillTree.SkillTree
         #region Harmony Patches
 
         /// <summary>
+        /// 버서커 패시브: 최대 체력 +100% (모든 효과 합산 기준)
+        /// defense_Step6_body(요툰의 생명력)와 동일한 비율→고정값 변환 방식
+        /// Priority.Last: 음식, MMO, 다른 스킬트리 패치 이후 최종 적용
+        /// </summary>
+        [HarmonyPatch(typeof(Player), "GetTotalFoodValue")]
+        public static class Berserker_Player_GetTotalFoodValue_HealthBonus_Patch
+        {
+            [HarmonyPriority(Priority.Last)]
+            public static void Postfix(Player __instance, ref float hp)
+            {
+                try
+                {
+                    if (!HasBerserkerSkill(__instance)) return;
+
+                    float bonusPercent = Berserker_Config.BerserkerPassiveHealthBonusValue / 100f;
+                    float bonusHealth = hp * bonusPercent;
+                    hp += bonusHealth;
+
+                    Plugin.Log.LogDebug($"[버서커 패시브→음식] 최대 체력 +{Berserker_Config.BerserkerPassiveHealthBonusValue}%: {hp - bonusHealth:F0} * {bonusPercent:F2} = +{bonusHealth:F0}, 최종: {hp:F0}");
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[버서커 패시브] 체력 패치 오류: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
         /// 데미지 패치 - 분노 보너스 및 패시브 무적
         /// </summary>
         [HarmonyPatch(typeof(Character), nameof(Character.Damage))]

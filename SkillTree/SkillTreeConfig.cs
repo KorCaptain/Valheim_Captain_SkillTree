@@ -17,6 +17,7 @@ namespace CaptainSkillTree.SkillTree
         public bool? Browsable;
         public string Category;
         public int? Order;
+        public string DispName;  // F1 메뉴 2차 항목 표시명 (키 이름 번역)
     }
 
     /// <summary>
@@ -45,19 +46,39 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // LocalizationManager가 초기화된 경우
-                string currentLang = Localization.LocalizationManager.GetCurrentLanguage();
-                if (!string.IsNullOrEmpty(currentLang))
+                // 우선순위 1: SkillTreeConfig.Language 설정 (사용자가 직접 설정한 경우)
+                if (Language != null && Language.Value != "Auto")
                 {
+                    string configLang = Language.Value.ToLower();
+                    string result = (configLang == "en") ? "en" : "ko";
+                    Plugin.Log.LogDebug($"[SkillTreeConfig] Using config language: {Language.Value} -> {result}");
+                    return result;
+                }
+
+                // 우선순위 2: PlayerPrefs 직접 읽기 (Valheim 게임 설정)
+                string valheimLang = UnityEngine.PlayerPrefs.GetString("language", "");
+                if (!string.IsNullOrEmpty(valheimLang))
+                {
+                    string result = valheimLang.ToLower() == "english" ? "en" : "ko";
+                    Plugin.Log.LogDebug($"[SkillTreeConfig] Using Valheim language: {valheimLang} -> {result}");
+                    return result;
+                }
+
+                // 우선순위 3: LocalizationManager (fallback, 이미 초기화된 경우)
+                string currentLang = Localization.LocalizationManager.GetCurrentLanguage();
+                if (!string.IsNullOrEmpty(currentLang) && currentLang != "ko")
+                {
+                    Plugin.Log.LogDebug($"[SkillTreeConfig] Using LocalizationManager: {currentLang}");
                     return (currentLang == "en") ? "en" : "ko";
                 }
 
-                // PlayerPrefs 직접 읽기 fallback
-                string valheimLang = UnityEngine.PlayerPrefs.GetString("language", "");
-                return valheimLang.ToLower() == "english" ? "en" : "ko";
+                // 기본값: 한국어
+                Plugin.Log.LogDebug("[SkillTreeConfig] Using default language: ko");
+                return "ko";
             }
-            catch
+            catch (System.Exception ex)
             {
+                Plugin.Log.LogError($"[SkillTreeConfig] DetectConfigLanguage failed: {ex.Message}");
                 return "ko"; // 실패 시 한국어 기본값
             }
         }
@@ -80,34 +101,71 @@ namespace CaptainSkillTree.SkillTree
             return translations.ContainsKey(descriptionKey) ? translations[descriptionKey] : descriptionKey;
         }
 
+        /// <summary>
+        /// 키 이름 로컬라이제이션 (Config Manager F1 메뉴 2차 항목)
+        /// </summary>
+        internal static string GetLocalizedKeyName(string keyName)
+        {
+            var translations = Localization.ConfigTranslations.GetKeyNameTranslations(_detectedConfigLanguage);
+            return translations.ContainsKey(keyName) ? translations[keyName] : keyName;
+        }
+
         #region === Config 바인드 헬퍼 메서드 ===
 
         public static ConfigEntry<float> BindServerSync(ConfigFile config, string section, string key, float defaultValue, string description)
         {
-            return config.Bind(section, key, defaultValue,
+            // 카테고리명 자동 번역 (Config Manager 표시용)
+            string localizedSection = GetLocalizedCategory(section);
+            // 키 이름 자동 번역 (Config Manager F1 메뉴 2차 항목)
+            string localizedKeyName = GetLocalizedKeyName(key);
+            return config.Bind(localizedSection, key, defaultValue,
                 new ConfigDescription(description, null,
-                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+                    new ConfigurationManagerAttributes {
+                        IsAdminOnly = true,
+                        DispName = localizedKeyName
+                    }));
         }
 
         public static ConfigEntry<int> BindServerSync(ConfigFile config, string section, string key, int defaultValue, string description)
         {
-            return config.Bind(section, key, defaultValue,
+            // 카테고리명 자동 번역 (Config Manager 표시용)
+            string localizedSection = GetLocalizedCategory(section);
+            // 키 이름 자동 번역 (Config Manager F1 메뉴 2차 항목)
+            string localizedKeyName = GetLocalizedKeyName(key);
+            return config.Bind(localizedSection, key, defaultValue,
                 new ConfigDescription(description, null,
-                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+                    new ConfigurationManagerAttributes {
+                        IsAdminOnly = true,
+                        DispName = localizedKeyName
+                    }));
         }
 
         public static ConfigEntry<bool> BindServerSync(ConfigFile config, string section, string key, bool defaultValue, string description)
         {
-            return config.Bind(section, key, defaultValue,
+            // 카테고리명 자동 번역 (Config Manager 표시용)
+            string localizedSection = GetLocalizedCategory(section);
+            // 키 이름 자동 번역 (Config Manager F1 메뉴 2차 항목)
+            string localizedKeyName = GetLocalizedKeyName(key);
+            return config.Bind(localizedSection, key, defaultValue,
                 new ConfigDescription(description, null,
-                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+                    new ConfigurationManagerAttributes {
+                        IsAdminOnly = true,
+                        DispName = localizedKeyName
+                    }));
         }
 
         public static ConfigEntry<string> BindServerSync(ConfigFile config, string section, string key, string defaultValue, string description)
         {
-            return config.Bind(section, key, defaultValue,
+            // 카테고리명 자동 번역 (Config Manager 표시용)
+            string localizedSection = GetLocalizedCategory(section);
+            // 키 이름 자동 번역 (Config Manager F1 메뉴 2차 항목)
+            string localizedKeyName = GetLocalizedKeyName(key);
+            return config.Bind(localizedSection, key, defaultValue,
                 new ConfigDescription(description, null,
-                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+                    new ConfigurationManagerAttributes {
+                        IsAdminOnly = true,
+                        DispName = localizedKeyName
+                    }));
         }
 
         #endregion
@@ -147,23 +205,23 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SwordStep5DefenseSwitchNoShieldBonus;
         public static ConfigEntry<float> SwordStep6UltimateSlashMultiplier;
 
-        // 검 전문가 접근 프로퍼티들
-        public static float SwordExpertDamageValue => GetEffectiveValue("sword_expert_damage", SwordExpertDamage.Value);
-        public static float SwordStep1ExpertComboBonusValue => GetEffectiveValue("sword_expert_combo_bonus", SwordStep1ExpertComboBonus.Value);
-        public static float SwordStep1ExpertDurationValue => GetEffectiveValue("sword_expert_duration", SwordStep1ExpertDuration.Value);
-        public static float SwordStep1FastSlashSpeedValue => GetEffectiveValue("sword_Step1_fast_slash_speed", SwordStep1FastSlashSpeed.Value);
-        public static float SwordStep1CounterDefenseBonusValue => GetEffectiveValue("sword_Step1_counter_defense_bonus", SwordStep1CounterDefenseBonus.Value);
-        public static float SwordStep1CounterDurationValue => GetEffectiveValue("sword_Step1_counter_duration", SwordStep1CounterDuration.Value);
-        public static float SwordStep2ComboSlashBonusValue => GetEffectiveValue("sword_Step2_combo_slash_bonus", SwordStep2ComboSlashBonus.Value);
-        public static float SwordStep2ComboSlashDurationValue => GetEffectiveValue("sword_Step2_combo_slash_duration", SwordStep2ComboSlashDuration.Value);
-        public static float SwordStep3BladeCounterBonusValue => GetEffectiveValue("sword_Step3_blade_counter_bonus", SwordStep3BladeCounterBonus.Value);
-        public static float SwordStep3BladeCounterDurationValue => GetEffectiveValue("sword_Step3_blade_counter_duration", SwordStep3BladeCounterDuration.Value);
-        public static float SwordStep3OffenseDefenseAttackBonusValue => GetEffectiveValue("sword_Step3_offense_defense_attack_bonus", SwordStep3OffenseDefenseAttackBonus.Value);
-        public static float SwordStep3OffenseDefenseDefenseBonusValue => GetEffectiveValue("sword_Step3_offense_defense_defense_bonus", SwordStep3OffenseDefenseDefenseBonus.Value);
-        public static float SwordStep4TrueDuelSpeedValue => GetEffectiveValue("sword_Step4_true_duel_speed", SwordStep4TrueDuelSpeed.Value);
-        public static float SwordStep5DefenseSwitchShieldReductionValue => GetEffectiveValue("sword_Step5_defense_switch_shield_reduction", SwordStep5DefenseSwitchShieldReduction.Value);
-        public static float SwordStep5DefenseSwitchNoShieldBonusValue => GetEffectiveValue("sword_Step5_defense_switch_no_shield_bonus", SwordStep5DefenseSwitchNoShieldBonus.Value);
-        public static float SwordStep6UltimateSlashMultiplierValue => GetEffectiveValue("sword_Step6_ultimate_slash_multiplier", SwordStep6UltimateSlashMultiplier.Value);
+        // 검 전문가 접근 프로퍼티들 (Sword_Config 참조로 변경)
+        public static float SwordExpertDamageValue => Sword_Config.SwordExpertDamageValue;
+        public static float SwordStep1ExpertComboBonusValue => Sword_Config.SwordStep2ComboSlashBonusValue;
+        public static float SwordStep1ExpertDurationValue => Sword_Config.SwordStep1ExpertDurationValue;
+        public static float SwordStep1FastSlashSpeedValue => Sword_Config.SwordStep1FastSlashSpeedValue;
+        public static float SwordStep1CounterDefenseBonusValue => Sword_Config.SwordStep1CounterDefenseBonusValue;
+        public static float SwordStep1CounterDurationValue => Sword_Config.SwordStep1CounterDurationValue;
+        public static float SwordStep2ComboSlashBonusValue => Sword_Config.SwordStep2ComboSlashBonusValue;
+        public static float SwordStep2ComboSlashDurationValue => Sword_Config.SwordStep2ComboSlashDurationValue;
+        public static float SwordStep3BladeCounterBonusValue => Sword_Config.SwordRiposteDamageBonusValue;
+        public static float SwordStep3BladeCounterDurationValue => 0f; // Deprecated - no longer used
+        public static float SwordStep3OffenseDefenseAttackBonusValue => Sword_Config.SwordStep3AllInOneAttackBonusValue;
+        public static float SwordStep3OffenseDefenseDefenseBonusValue => Sword_Config.SwordStep3AllInOneDefenseBonusValue;
+        public static float SwordStep4TrueDuelSpeedValue => Sword_Config.SwordStep4TrueDuelSpeedValue;
+        public static float SwordStep5DefenseSwitchShieldReductionValue => 0f; // Deprecated - no longer used
+        public static float SwordStep5DefenseSwitchNoShieldBonusValue => 0f; // Deprecated - no longer used
+        public static float SwordStep6UltimateSlashMultiplierValue => 0f; // Deprecated - no longer used
 
         #endregion
 
@@ -255,13 +313,11 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpeedBowDrawMoveSpeed => Speed_Config.SpeedBowDrawMoveSpeed;
         public static ConfigEntry<float> SpeedStaffCastSpeedFinal => Speed_Config.SpeedStaffCastSpeedFinal;
         public static ConfigEntry<float> SpeedStaffTripleEitrRecovery => Speed_Config.SpeedStaffTripleEitrRecovery;
-        public static ConfigEntry<float> SpeedBaseMoveSpeed => Speed_Config.SpeedBaseMoveSpeed;
         public static ConfigEntry<float> SpeedBaseAttackSpeed => Speed_Config.SpeedBaseAttackSpeed;
         public static ConfigEntry<float> SpeedBaseDodgeSpeed => Speed_Config.SpeedBaseDodgeSpeed;
         public static ConfigEntry<float> SpeedMeleeComboSpeed => Speed_Config.SpeedMeleeComboSpeed;
         public static ConfigEntry<float> SpeedBowExpertDuration => Speed_Config.SpeedBowExpertDuration;
         public static ConfigEntry<float> SpeedStaffCastSpeed => Speed_Config.SpeedStaffCastSpeed;
-        public static ConfigEntry<float> SpeedCooldownReduction => Speed_Config.SpeedCooldownReduction;
 
         public static float SpeedRootMoveSpeedValue => Speed_Config.SpeedRootMoveSpeedValue;
         public static float SpeedBaseDodgeMoveSpeedValue => Speed_Config.SpeedBaseDodgeMoveSpeedValue;
@@ -298,13 +354,11 @@ namespace CaptainSkillTree.SkillTree
         public static float SpeedBowDrawMoveSpeedValue => Speed_Config.SpeedBowDrawMoveSpeedValue;
         public static float SpeedStaffCastSpeedFinalValue => Speed_Config.SpeedStaffCastSpeedFinalValue;
         public static float SpeedStaffTripleEitrRecoveryValue => Speed_Config.SpeedStaffTripleEitrRecoveryValue;
-        public static float SpeedBaseMoveSpeedValue => Speed_Config.SpeedBaseMoveSpeedValue;
         public static float SpeedBaseAttackSpeedValue => Speed_Config.SpeedBaseAttackSpeedValue;
         public static float SpeedBaseDodgeSpeedValue => Speed_Config.SpeedBaseDodgeSpeedValue;
         public static float SpeedMeleeComboSpeedValue => Speed_Config.SpeedMeleeComboSpeedValue;
         public static float SpeedBowExpertDurationValue => Speed_Config.SpeedBowExpertDurationValue;
         public static float SpeedStaffCastSpeedValue => Speed_Config.SpeedStaffCastSpeedValue;
-        public static float SpeedCooldownReductionValue => Speed_Config.SpeedCooldownReductionValue;
         public static float SpeedMeleeComboBonusValue => Speed_Config.SpeedMeleeComboBonusValue;
         public static float SpeedCrossbowReloadSpeedValue => Speed_Config.SpeedCrossbowReloadSpeedValue;
         public static float SpeedBowHitBonusValue => Speed_Config.SpeedBowHitBonusValue;
@@ -482,11 +536,32 @@ namespace CaptainSkillTree.SkillTree
                 "Skill_Tree_Base",
                 "Language",
                 "Auto",
-                "Language setting:\n" +
-                "  - 'Auto' = Auto-detect from Valheim settings (Recommended)\n" +
-                "  - Manual codes: KR, EN, JA, ZH, ES, FR, DE, IT\n" +
-                "  - Example: 'KR' for Korean, 'EN' for English"
+                new ConfigDescription(
+                    "Language setting:\n" +
+                    "  - 'Auto' = Auto-detect from Valheim settings (Recommended)\n" +
+                    "  - 'KR' = Korean\n" +
+                    "  - 'EN' = English\n\n" +
+                    "⚠️ IMPORTANT: Game restart required after changing this setting!\n" +
+                    "   Config Manager (F1) descriptions are set at game startup.\n\n" +
+                    "⚠️ 중요: 이 설정 변경 후 게임 재시작이 필요합니다!\n" +
+                    "   Config Manager (F1) 설명은 게임 시작 시 설정됩니다.",
+                    new AcceptableValueList<string>("Auto", "KR", "EN")
+                )
             );
+
+            // Language 변경 감지 - 재시작 안내
+            Language.SettingChanged += (sender, args) =>
+            {
+                string newLang = Language.Value;
+                Plugin.Log.LogWarning("========================================");
+                Plugin.Log.LogWarning("[SkillTreeConfig] Language changed to: " + newLang);
+                Plugin.Log.LogWarning("⚠️ GAME RESTART REQUIRED for Config Manager (F1) to update!");
+                Plugin.Log.LogWarning("⚠️ 게임 재시작이 필요합니다 (F1 메뉴 업데이트)!");
+                Plugin.Log.LogWarning("========================================");
+
+                // UI 언어는 즉시 변경 (스킬트리 UI)
+                Localization.LocalizationManager.ReloadLanguage();
+            };
 
             MoveSpeedMaxBonus = config.Bind(
                 "Skill_Tree_Base",
@@ -554,7 +629,9 @@ namespace CaptainSkillTree.SkillTree
 
             if (_isServer)
             {
-                BroadcastConfigToClients();
+                // ❌ 초기화 단계에서는 BroadcastConfigToClients() 호출 제거
+                // ZRoutedRpc.instance가 아직 null일 수 있음
+                // Plugin.Patches.cs의 DelayedConfigBroadcast()에서 2초 후 안전하게 호출됨
                 StartConfigFileWatcher(config);
             }
 
@@ -652,47 +729,91 @@ namespace CaptainSkillTree.SkillTree
             return localValue;
         }
 
+        /// <summary>
+        /// Get localized config description for Config Manager (F1 menu)
+        /// Uses ConfigTranslations.cs instead of DefaultLanguages.cs
+        /// </summary>
+        /// <param name="configKey">Config key (e.g., "Tier0_SwordExpert_RequiredPoints")</param>
+        /// <returns>Localized description string</returns>
+        public static string GetConfigDescription(string configKey)
+        {
+            if (string.IsNullOrEmpty(configKey))
+                return "";
+
+            try
+            {
+                // Use GetLocalizedDescription which queries ConfigTranslations.cs
+                // This is for Config Manager (F1 menu) display, not in-game UI
+                string result = GetLocalizedDescription(configKey);
+
+                // If not found in ConfigTranslations, return readable fallback
+                if (result == configKey)
+                {
+                    // Convert key to readable format: "Tier0_SwordExpert_RequiredPoints" -> "Tier 0: Sword Expert - Required Points"
+                    return configKey.Replace("_", " ");
+                }
+
+                return result;
+            }
+            catch
+            {
+                // If any error occurs, return the config key as fallback
+                return configKey.Replace("_", " ");
+            }
+        }
+
         public static void BroadcastConfigToClients()
         {
             if (!_isServer) return;
 
-            var configData = new Dictionary<string, float>
+            try
             {
-                // Attack Tree
-                ["Attack_Expert_Damage"] = Attack_Config.AttackRootDamageBonus.Value,
-                ["Attack_Step2_MeleeBonusChance"] = Attack_Config.AttackMeleeBonusChance.Value,
-                ["Attack_Step2_MeleeBonusDamage"] = Attack_Config.AttackMeleeBonusDamage.Value,
-                ["Attack_Step4_CritChance"] = Attack_Config.AttackCritChance.Value,
+                var configData = new Dictionary<string, float>
+                {
+                    // Attack Tree
+                    ["Attack_Expert_Damage"] = Attack_Config.AttackRootDamageBonus.Value,
+                    ["Attack_Step2_MeleeBonusChance"] = Attack_Config.AttackMeleeBonusChance.Value,
+                    ["Attack_Step2_MeleeBonusDamage"] = Attack_Config.AttackMeleeBonusDamage.Value,
+                    ["Attack_Step4_CritChance"] = Attack_Config.AttackCritChance.Value,
 
-                // Speed Tree
-                ["Speed_Expert_MoveSpeed"] = Speed_Config.SpeedRootMoveSpeed.Value,
-                ["Speed_Step8_MeleeAttackSpeed"] = Speed_Config.SpeedMeleeAttackSpeed.Value,
-                ["Speed_Step8_BowDrawSpeed"] = Speed_Config.SpeedBowDrawSpeed.Value,
+                    // Speed Tree
+                    ["Speed_Expert_MoveSpeed"] = Speed_Config.SpeedRootMoveSpeed.Value,
+                    ["Speed_Step8_MeleeAttackSpeed"] = Speed_Config.SpeedMeleeAttackSpeed.Value,
+                    ["Speed_Step8_BowDrawSpeed"] = Speed_Config.SpeedBowDrawSpeed.Value,
 
-                // Bow Tree
-                ["Bow_MultiShot_Lv1_Chance"] = Bow_Config.BowMultishotLv1Chance.Value,
-                ["Bow_MultiShot_Lv2_Chance"] = Bow_Config.BowMultishotLv2Chance.Value,
+                    // Bow Tree
+                    ["Bow_MultiShot_Lv1_Chance"] = Bow_Config.BowMultishotLv1Chance.Value,
+                    ["Bow_MultiShot_Lv2_Chance"] = Bow_Config.BowMultishotLv2Chance.Value,
 
-                // Spear Tree
-                ["spear_Step1_attack_speed"] = Spear_Config.SpearStep1AttackSpeed.Value,
-                ["spear_Step1_damage_bonus"] = Spear_Config.SpearStep1DamageBonus.Value,
+                    // Spear Tree
+                    ["spear_Step1_attack_speed"] = Spear_Config.SpearStep1AttackSpeed.Value,
+                    ["spear_Step1_damage_bonus"] = Spear_Config.SpearStep1DamageBonus.Value,
 
-                // Polearm Tree
-                ["polearm_step4_charge_damage"] = Polearm_Config.PolearmStep4ChargeDamageBonus.Value,
+                    // Polearm Tree
+                    ["polearm_step4_charge_damage"] = Polearm_Config.PolearmStep4ChargeDamageBonus.Value,
 
-                // Defense Tree
-                ["Defense_Stomp_Radius"] = Defense_Config.StompRadius.Value,
-                ["Defense_Stomp_Cooldown"] = Defense_Config.StompCooldown.Value,
+                    // Defense Tree
+                    ["Defense_Stomp_Radius"] = Defense_Config.StompRadius.Value,
+                    ["Defense_Stomp_Cooldown"] = Defense_Config.StompCooldown.Value,
 
-                // Sword Tree
-                ["sword_expert_damage"] = SwordExpertDamage.Value,
-            };
+                    // Sword Tree
+                    ["sword_expert_damage"] = Sword_Config.SwordExpertDamageBonus.Value,
+                };
 
-            var configString = SerializeConfigData(configData);
-            if (ZNet.instance != null)
+                var configString = SerializeConfigData(configData);
+                if (ZNet.instance != null && ZRoutedRpc.instance != null)
+                {
+                    ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, "CaptainSkillTree.SkillTreeMod_ConfigSync", configString);
+                    Plugin.Log.LogInfo("[SkillTreeConfig] 서버 설정을 모든 클라이언트에게 전송");
+                }
+                else
+                {
+                    Plugin.Log.LogWarning("[SkillTreeConfig] ZNet 또는 ZRoutedRpc가 아직 초기화되지 않아 Config 전송을 건너뜁니다.");
+                }
+            }
+            catch (Exception ex)
             {
-                ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, "CaptainSkillTree.SkillTreeMod_ConfigSync", configString);
-                Plugin.Log.LogInfo("[SkillTreeConfig] 서버 설정을 모든 클라이언트에게 전송");
+                Plugin.Log.LogError($"[SkillTreeConfig] BroadcastConfigToClients 실패: {ex.Message}\n{ex.StackTrace}");
             }
         }
 

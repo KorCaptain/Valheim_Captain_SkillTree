@@ -179,8 +179,6 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string GetKnifeAssassinHeartTooltip()
         {
-            var critDamage = Knife_Config.KnifeAssassinHeartCritDamageValue;
-            var duration = Knife_Config.KnifeAssassinHeartDurationValue;
             var staminaCost = Knife_Config.KnifeAssassinHeartStaminaCostValue;
             var cooldown = Knife_Config.KnifeAssassinHeartCooldownValue;
             var requiredPoints = Knife_Config.KnifeAssassinHeartRequiredPointsValue;
@@ -191,7 +189,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreateActiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("knife_skill_assassin")}</size></color>",
-                L.Get("knife_desc_assassin_main", teleportRange, teleportBehind, stunDuration, attackCount, duration, critDamage),
+                L.Get("knife_desc_assassin_main", teleportRange, teleportBehind, stunDuration, attackCount),
                 $"{staminaCost}",
                 $"{cooldown}{L.Get("unit_seconds")}",
                 MeleeTooltipUtils.WeaponType.Knife,

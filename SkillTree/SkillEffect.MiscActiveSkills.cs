@@ -339,12 +339,15 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
+                // ✅ CRITICAL: 플레이어 공격만 처리 (몬스터/NPC 차단)
                 var player = Player.m_localPlayer;
                 if (player == null) return true;
 
                 if (!StaffEquipmentDetector.IsWieldingStaffOrWand(player)) return true;
 
+                // ✅ CRITICAL: 현재 Attack이 플레이어의 무기에서 발생한 것인지 검증
                 var currentWeapon = player.GetCurrentWeapon();
+                if (currentWeapon?.m_shared?.m_attack != __instance) return true;
 
                 if (!SkillEffect.IsStaffDualCastReady(player)) return true;
 
