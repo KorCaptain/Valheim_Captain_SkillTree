@@ -1,7 +1,5 @@
 ﻿# CaptainSkillTree - Valheim Skill Tree Mod
 
-![Version] - 0.1.447
-
 **[The English description is below](#-English)**
 
 ---
@@ -333,7 +331,7 @@ BepInEx/config/CaptainSkillTree.cfg
 
 ## Support / 지원
 
-- Discord: KorCaptainSkillTree_MOD_Server - https://discord.gg/PyEvu6c8
+- Discord: KorCaptainSkillTree_MOD_Server -  https://discord.gg/W26PTxYhug
 - E-mail : ssunyme@naver.com
 - Issues: Report bugs and suggestions on Discord
 
