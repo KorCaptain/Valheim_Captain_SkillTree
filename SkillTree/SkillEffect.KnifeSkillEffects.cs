@@ -62,7 +62,7 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 빠른 움직임 - 단검 장착 시 이동속도 패시브 알림
-        /// 실제 효과는 SE_StatTreeSpeed.UpdateStatusEffect에서 처리
+        /// 실제 효과는 GetJogSpeedFactor 패치 (RogueSkills.cs)에서 처리
         /// </summary>
         public static void NotifyKnifeMoveSpeedActive(Player player)
         {

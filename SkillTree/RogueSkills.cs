@@ -1292,11 +1292,11 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug($"[이동속도] speed_root: +{SkillTreeConfig.SpeedRootMoveSpeedValue}%");
                 }
 
-                // speed_1: 민첩 스탯 +5%
+                // speed_1: 민첩 +이동속도%
                 if (manager.GetSkillLevel("speed_1") > 0)
                 {
                     totalBonus += SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue;
-                    Plugin.Log.LogDebug($"[이동속도] speed_1(민첩): +{SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue}%");
+                    Plugin.Log.LogDebug($"[이동속도] speed_1 민첩: +{SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue}%");
                 }
 
                 // knife_step3_move_speed: 단검 빠른 움직임 +5% (단검 착용 시만)
@@ -1306,18 +1306,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug($"[이동속도] 단검 빠른 움직임: +{Knife_Config.KnifeMoveSpeedBonusValue}%");
                 }
 
-                // defense_Step6_true: 요툰의 방패 (방패 착용 시)
-                if (manager.GetSkillLevel("defense_Step6_true") > 0)
-                {
-                    var shieldBonus = GetJotunnShieldBonus(__instance);
-                    if (shieldBonus > 0f)
-                    {
-                        totalBonus += shieldBonus;
-                        Plugin.Log.LogDebug($"[이동속도] 요툰의 방패: +{shieldBonus}%");
-                    }
-                }
-
-                // 조건부 보너스 (구르기, 석궁 숙련자 등) - Speed.cs에서 처리
+                // 조건부 보너스 (구르기, 석궁 숙련자 등, 요툰의 방패 포함) - Speed.cs에서 처리
                 float conditionalBonus = Speed.GetConditionalSpeedBonus(__instance);
                 if (conditionalBonus > 0f)
                 {
@@ -1369,33 +1358,54 @@ namespace CaptainSkillTree.SkillTree
                 _moveSpeedWarningShown.Remove(player);
         }
 
-        /// <summary>
-        /// 요툰의 방패 이동속도 보너스 계산
-        /// </summary>
-        private static float GetJotunnShieldBonus(Player player)
+    }
+
+    /// <summary>
+    /// 달리기(Shift키) 이동속도 보너스 패치 - GetJogSpeedFactor와 동일한 보너스 적용
+    /// </summary>
+    [HarmonyPatch(typeof(Player), "GetRunSpeedFactor")]
+    public static class ImprovedRunSpeedPatch
+    {
+        [HarmonyPostfix]
+        [HarmonyPriority(Priority.Last)]
+        public static void Postfix(Player __instance, ref float __result)
         {
             try
             {
-                var inventory = player.GetInventory();
-                if (inventory == null) return 0f;
+                var manager = SkillTreeManager.Instance;
+                if (manager == null) return;
 
-                var shieldItem = inventory.GetEquippedItems().FirstOrDefault(item =>
-                    item.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield);
+                float baseSpeed = __result;
+                float totalBonus = 0f;
 
-                if (shieldItem != null)
-                {
-                    // Tower/대형 방패 여부 판별
-                    bool isTowerShield = shieldItem.m_shared.m_name.ToLower().Contains("tower");
-                    return isTowerShield
-                        ? Defense_Config.JotunnShieldTowerSpeedBonusValue  // 10%
-                        : Defense_Config.JotunnShieldNormalSpeedBonusValue; // 5%
-                }
-                return 0f;
+                // speed_root: 속도 전문가 +5%
+                if (manager.GetSkillLevel("speed_root") > 0)
+                    totalBonus += SkillTreeConfig.SpeedRootMoveSpeedValue;
+
+                // speed_1: 민첩 +이동속도%
+                if (manager.GetSkillLevel("speed_1") > 0)
+                    totalBonus += SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue;
+
+                // knife_step3_move_speed: 단검 착용 시만
+                if (manager.GetSkillLevel("knife_step3_move_speed") > 0 && WeaponHelper.IsUsingDagger(__instance))
+                    totalBonus += Knife_Config.KnifeMoveSpeedBonusValue;
+
+                // 조건부 보너스 (구르기, 석궁 숙련자, 요툰의 방패 등) - Speed.cs에서 처리
+                float conditionalBonus = Speed.GetConditionalSpeedBonus(__instance);
+                if (conditionalBonus > 0f)
+                    totalBonus += conditionalBonus * 100f;
+
+                // 최대치 제한
+                float maxBonus = SkillTreeConfig.MoveSpeedMaxBonusValue;
+                if (totalBonus > maxBonus)
+                    totalBonus = maxBonus;
+
+                if (totalBonus > 0f)
+                    __result = baseSpeed * (1f + totalBonus / 100f);
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[요툰의 방패] 보너스 계산 오류: {ex.Message}");
-                return 0f;
+                Plugin.Log.LogError($"[달리기속도 패치] 오류: {ex.Message}");
             }
         }
     }

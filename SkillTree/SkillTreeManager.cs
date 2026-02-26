@@ -1135,6 +1135,16 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        // 생산 전문가 스킬 ID 집합
+        private static readonly HashSet<string> ProductionSkillIds = new HashSet<string>
+        {
+            "production_root", "novice_worker",
+            "woodcutting_lv2", "woodcutting_lv3", "woodcutting_lv4",
+            "gathering_lv2", "gathering_lv3", "gathering_lv4",
+            "mining_lv2", "mining_lv3", "mining_lv4",
+            "crafting_lv2", "crafting_lv3", "crafting_lv4"
+        };
+
         // 스킬 포인트 초기화 로직
         public void ResetAllSkillLevels()
         {
@@ -1148,6 +1158,32 @@ namespace CaptainSkillTree.SkillTree
 
             // 방어 스킬 초기화 시 회피율 리셋 (중요!)
             SkillEffect.UpdateDefenseDodgeRate(Player.m_localPlayer);
+        }
+
+        // 생산 전문가를 제외한 스킬 초기화 (UI 초기화 버튼용)
+        public void ResetAllSkillLevelsExceptProduction()
+        {
+            if (Player.m_localPlayer == null) return;
+            foreach (var node in SkillNodes.Values)
+            {
+                if (ProductionSkillIds.Contains(node.Id)) continue;
+                string key = $"CaptainSkillTree_{node.Id}";
+                Player.m_localPlayer.m_customData[key] = "0";
+            }
+            pendingInvestments.Clear();
+            SkillEffect.UpdateDefenseDodgeRate(Player.m_localPlayer);
+        }
+
+        // 생산 전문가 스킬만 초기화
+        public void ResetProductionSkillLevels()
+        {
+            if (Player.m_localPlayer == null) return;
+            foreach (var nodeId in ProductionSkillIds)
+            {
+                string key = $"CaptainSkillTree_{nodeId}";
+                Player.m_localPlayer.m_customData[key] = "0";
+            }
+            pendingInvestments.Clear();
         }
 
         // 전체 투자 포인트 합계 반환

@@ -512,6 +512,9 @@ namespace CaptainSkillTree.Localization
                 ["ui_cancel"] = "취소",
                 ["ui_reset_confirm_title"] = "스킬 초기화 확인",
                 ["ui_reset_confirm_message"] = "정말로 모든 스킬을 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.",
+                ["ui_reset_production"] = "생산 초기화",
+                ["ui_reset_production_confirm_title"] = "생산 전문가 초기화 확인",
+                ["ui_reset_production_confirm_message"] = "생산 전문가 스킬을 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.",
                 ["ui_music_on"] = "Music On",
                 ["ui_music_off"] = "Music Off",
 
@@ -1854,6 +1857,9 @@ namespace CaptainSkillTree.Localization
                 ["ui_cancel"] = "Cancel",
                 ["ui_reset_confirm_title"] = "Reset Skills Confirm",
                 ["ui_reset_confirm_message"] = "Are you sure you want to reset all skills?\nThis action cannot be undone.",
+                ["ui_reset_production"] = "Reset Production",
+                ["ui_reset_production_confirm_title"] = "Reset Production Expert Confirm",
+                ["ui_reset_production_confirm_message"] = "Are you sure you want to reset Production Expert skills?\nThis action cannot be undone.",
                 ["ui_music_on"] = "Music On",
                 ["ui_music_off"] = "Music Off",
 

@@ -708,12 +708,6 @@ namespace CaptainSkillTree.SkillTree
         private static void RefreshAllSkillEffects()
         {
             if (Player.m_localPlayer == null) return;
-            try
-            {
-                var statusEffect = Player.m_localPlayer.GetSEMan()?.GetStatusEffect("SE_StatTreeSpeed".GetHashCode());
-                statusEffect?.ResetTime();
-            }
-            catch (Exception ex) { Plugin.Log.LogWarning($"[SkillTreeConfig] StatusEffect 업데이트 중 오류: {ex.Message}"); }
         }
 
         private static void DetectServerClientMode()

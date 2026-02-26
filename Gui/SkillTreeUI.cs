@@ -32,6 +32,7 @@ namespace CaptainSkillTree.Gui
         public GameObject? panel;
         private UnityEngine.UI.Text? skillPointText;
         private Button? resetPointButton;
+        private Button? resetProductionButton;
         private Button? musicToggleButton;
         private Dictionary<string, GameObject> nodeObjects = new Dictionary<string, GameObject>();
         private Dictionary<(string from, string to), Image> connectionLines = new Dictionary<(string, string), Image>();
@@ -89,7 +90,15 @@ namespace CaptainSkillTree.Gui
                     }
                 }
 
-                // 3. Music 버튼 텍스트 갱신
+                // 3. 생산 초기화 버튼 텍스트 갱신
+                if (resetProductionButton != null)
+                {
+                    var btnText = resetProductionButton.GetComponentInChildren<UnityEngine.UI.Text>();
+                    if (btnText != null)
+                        btnText.text = L10n.Get("ui_reset_production");
+                }
+
+                // 4. Music 버튼 텍스트 갱신
                 if (musicToggleButton != null)
                 {
                     var musicText = musicToggleButton.GetComponentInChildren<UnityEngine.UI.Text>();
@@ -100,7 +109,7 @@ namespace CaptainSkillTree.Gui
                     }
                 }
 
-                // 4. 확인 다이얼로그가 열려있으면 텍스트 갱신
+                // 5. 확인 다이얼로그가 열려있으면 텍스트 갱신
                 if (confirmDialog != null && confirmDialog.activeSelf)
                 {
                     var titleText = confirmDialog.transform.Find("TitleText")?.GetComponent<UnityEngine.UI.Text>();
@@ -116,7 +125,7 @@ namespace CaptainSkillTree.Gui
                     }
                 }
 
-                // 5. 툴팁 갱신 (현재 열려있으면)
+                // 6. 툴팁 갱신 (현재 열려있으면)
                 if (tooltipUI != null)
                 {
                     tooltipUI.RefreshTooltip();
@@ -273,6 +282,33 @@ namespace CaptainSkillTree.Gui
             btnTxt.color = Color.white;
             btnTxt.rectTransform.sizeDelta = btnRect.sizeDelta;
             btnTxt.rectTransform.anchoredPosition = Vector2.zero;
+
+            // [생산 전문가 초기화] 버튼 생성 (포인트 초기화 버튼 아래)
+            GameObject prodBtnObj = new GameObject("ResetProductionButton",
+                typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+            prodBtnObj.transform.SetParent(panel.transform, false);
+            var prodBtnRect = prodBtnObj.GetComponent<RectTransform>();
+            prodBtnRect.sizeDelta = new Vector2(100, 32);
+            prodBtnRect.anchorMin = new Vector2(0.5f, 1f);
+            prodBtnRect.anchorMax = new Vector2(0.5f, 1f);
+            prodBtnRect.pivot = new Vector2(0.5f, 1f);
+            prodBtnRect.anchoredPosition = new Vector2(220, -76);
+            var prodBtnImg = prodBtnObj.GetComponent<Image>();
+            prodBtnImg.color = new Color(0.1f, 0.35f, 0.1f, 1f);
+            resetProductionButton = prodBtnObj.GetComponent<Button>();
+            resetProductionButton.onClick.AddListener(() => ResetProductionSkillPoints());
+            // 버튼 텍스트
+            GameObject prodBtnTxtObj = new GameObject("Text",
+                typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
+            prodBtnTxtObj.transform.SetParent(prodBtnObj.transform, false);
+            var prodBtnTxt = prodBtnTxtObj.GetComponent<Text>();
+            prodBtnTxt.text = L10n.Get("ui_reset_production");
+            prodBtnTxt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            prodBtnTxt.alignment = TextAnchor.MiddleCenter;
+            prodBtnTxt.color = Color.white;
+            prodBtnTxt.fontSize = 11;
+            prodBtnTxt.rectTransform.sizeDelta = prodBtnRect.sizeDelta;
+            prodBtnTxt.rectTransform.anchoredPosition = Vector2.zero;
 
             // Music On/Off 토글 버튼 생성 (포인트 초기화 버튼 오른쪽)
             CreateMusicToggleButton(panel);
@@ -640,7 +676,7 @@ namespace CaptainSkillTree.Gui
         private void ResetSkillPoints()
         {
             // 확인 다이얼로그 표시
-            ShowResetConfirmDialog();
+            ShowResetConfirmDialog("ui_reset_confirm_title", "ui_reset_confirm_message", ExecuteResetSkillPoints);
         }
         
         /// <summary>
@@ -649,18 +685,34 @@ namespace CaptainSkillTree.Gui
         private void ExecuteResetSkillPoints()
         {
             var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
-            // 1. 모든 스킬트리 투자/레벨 0으로 초기화 (새로운 함수 호출)
-            manager.ResetAllSkillLevels();
+            // 1. 생산 전문가 제외 모든 스킬트리 투자/레벨 0으로 초기화
+            manager.ResetAllSkillLevelsExceptProduction();
             
             // 2. UI 갱신
             RefreshUI(); // RefreshUI가 내부적으로 UpdateSkillPointText를 호출하므로 중복 호출 필요 없음
             Debug.Log($"[SkillTreeUI] 스킬포인트가 초기화되었습니다.");
         }
         
+        private void ResetProductionSkillPoints()
+        {
+            ShowResetConfirmDialog(
+                "ui_reset_production_confirm_title",
+                "ui_reset_production_confirm_message",
+                ExecuteResetProductionSkillPoints);
+        }
+
+        private void ExecuteResetProductionSkillPoints()
+        {
+            var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
+            manager.ResetProductionSkillLevels();
+            RefreshUI();
+            Debug.Log("[SkillTreeUI] 생산 전문가 스킬이 초기화되었습니다.");
+        }
+
         /// <summary>
         /// 스킬 초기화 확인 다이얼로그 표시
         /// </summary>
-        private void ShowResetConfirmDialog()
+        private void ShowResetConfirmDialog(string titleKey, string messageKey, System.Action onConfirm)
         {
             // 기존 다이얼로그가 있으면 제거
             if (confirmDialog != null)
@@ -698,7 +750,7 @@ namespace CaptainSkillTree.Gui
             titleObj.transform.SetParent(dialogPanel.transform, false);
             
             var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
-            titleText.text = L10n.Get("ui_reset_confirm_title");
+            titleText.text = L10n.Get(titleKey);
             titleText.fontSize = 20;
             titleText.color = Color.white;
             titleText.alignment = TextAnchor.MiddleCenter;
@@ -713,7 +765,7 @@ namespace CaptainSkillTree.Gui
             contentObj.transform.SetParent(dialogPanel.transform, false);
             
             var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
-            contentText.text = L10n.Get("ui_reset_confirm_message");
+            contentText.text = L10n.Get(messageKey);
             contentText.fontSize = 14;
             contentText.color = Color.white;
             contentText.alignment = TextAnchor.MiddleCenter;
@@ -734,7 +786,7 @@ namespace CaptainSkillTree.Gui
             confirmButton.onClick.AddListener(() => {
                 PlayConfirmSound();
                 HideResetConfirmDialog();
-                ExecuteResetSkillPoints();
+                onConfirm();
             });
             
             var confirmBtnRect = confirmBtnObj.GetComponent<RectTransform>();
