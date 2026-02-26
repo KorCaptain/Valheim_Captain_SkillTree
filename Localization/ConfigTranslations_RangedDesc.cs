@@ -1,0 +1,883 @@
+using System.Collections.Generic;
+
+namespace CaptainSkillTree.Localization
+{
+    public static partial class ConfigTranslations
+    {
+        private static Dictionary<string, string> GetRangedDescriptions_KO()
+        {
+            return new Dictionary<string, string>
+            {
+                // ========================================
+                // Staff Tree (지팡이 트리)
+                // ========================================
+
+
+
+
+
+
+
+
+
+
+
+                // === Tier 0: 지팡이 전문가 (Staff Expert) ===
+                ["Tier0_StaffExpert_ElementalDamageBonus"] =
+                "【속성 데미지 보너스 (%)】\n" +
+                "지팡이의 속성 데미지(불, 얼음, 번개)를 증가시킵니다.\n" +
+                "마법 공격의 기본이 되는 핵심 스킬입니다.\n" +
+                "권장값: 10-15%",
+
+                // === Tier 1: 정신 집중 & 마력 흐름 ===
+                ["Tier1_MindFocus_EitrReduction"] =
+                "【Eitr 소모 감소 (%)】\n" +
+                "정신 집중으로 지팡이 주문의 Eitr 소모를 줄입니다.\n" +
+                "더 많은 마법을 사용할 수 있습니다.\n" +
+                "권장값: 12-20%",
+
+                ["Tier1_MagicFlow_EitrBonus"] =
+                "【최대 Eitr 보너스 (고정값)】\n" +
+                "마력 흐름으로 최대 Eitr를 증가시킵니다.\n" +
+                "권장값: 25-35",
+
+                // === Tier 2: 마법 증폭 (Magic Amplify) ===
+                ["Tier2_MagicAmplify_Chance"] =
+                "【마법 증폭 발동 확률 (%)】\n" +
+                "속성 공격이 증폭될 확률입니다.\n" +
+                "권장값: 30-50%",
+
+                ["Tier2_MagicAmplify_DamageBonus"] =
+                "【마법 증폭 속성 공격 보너스 (%)】\n" +
+                "발동 시 속성 데미지 증가량입니다.\n" +
+                "권장값: 30-40%",
+
+                ["Tier2_MagicAmplify_EitrCostIncrease"] =
+                "【마법 증폭 에이트르 소모 증가 (%)】\n" +
+                "마법 시전 시 에이트르 소모량이 증가합니다.\n" +
+                "강력한 마법의 대가로 작용합니다.\n" +
+                "권장값: 15-25%",
+
+                // === Tier 3: 속성 강화 (Elemental Enhancement) ===
+                ["Tier3_FrostElement_DamageBonus"] =
+                "【얼음 공격력 보너스 (고정값)】\n" +
+                "얼음 속성 마법의 데미지를 고정값으로 증가시킵니다.\n" +
+                "권장값: 2-5",
+
+                ["Tier3_FireElement_DamageBonus"] =
+                "【불 공격력 보너스 (고정값)】\n" +
+                "불 속성 마법의 데미지를 고정값으로 증가시킵니다.\n" +
+                "권장값: 2-5",
+
+                ["Tier3_LightningElement_DamageBonus"] =
+                "【번개 공격력 보너스 (고정값)】\n" +
+                "번개 속성 마법의 데미지를 고정값으로 증가시킵니다.\n" +
+                "권장값: 2-5",
+
+                // === Tier 4: 행운의 마력 (Lucky Mana) ===
+                ["Tier4_LuckyMana_Chance"] =
+                "【Eitr 무소모 발동 확률 (%)】\n" +
+                "주문 사용 시 Eitr를 소모하지 않을 확률입니다.\n" +
+                "행운의 마력으로 무한 시전이 가능합니다.\n" +
+                "권장값: 30-40%",
+
+                // === Tier 5-1: 이중 시전 (Double Cast - R키 액티브) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] =
+                "【추가 투사체 개수】\n" +
+                "이중 시전 시 추가로 발사되는 투사체 개수입니다.\n" +
+                "권장값: 1-3개",
+
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] =
+                "【투사체 데미지 비율 (%)】\n" +
+                "추가 투사체의 데미지 비율입니다.\n" +
+                "권장값: 60-80%",
+
+                ["Tier5_DoubleCast_AngleOffset"] =
+                "【투사체 각도 오프셋 (도)】\n" +
+                "투사체가 퍼지는 각도입니다.\n" +
+                "권장값: 3-8도",
+
+                ["Tier5_DoubleCast_EitrCost"] =
+                "【Eitr 소모량】\n" +
+                "스킬 활성화 시 소모되는 Eitr입니다.\n" +
+                "권장값: 15-25",
+
+                ["Tier5_DoubleCast_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 25-40초",
+
+                // === Tier 5-2: 즉시 범위 힐 (Instant Area Heal - H키 액티브) ===
+                ["Tier5_InstantAreaHeal_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 25-40초",
+
+                ["Tier5_InstantAreaHeal_EitrCost"] =
+                "【Eitr 소모량】\n" +
+                "스킬 사용 시 소모되는 Eitr입니다.\n" +
+                "권장값: 25-35",
+
+                ["Tier5_InstantAreaHeal_HealPercent"] =
+                "【회복량 (최대 HP 대비 %)】\n" +
+                "최대 체력 대비 회복되는 비율입니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier5_InstantAreaHeal_Range"] =
+                "【치유 범위 (미터)】\n" +
+                "힐이 적용되는 범위입니다.\n" +
+                "권장값: 10-15m",
+
+                ["Tier5_InstantAreaHeal_SelfHeal"] =
+                "【자가 치유 허용】\n" +
+                "true로 설정하면 자신도 치유됩니다.\n" +
+                "권장값: false (아군만 치유)",
+
+                // === Crossbow Tree ===
+                // === Tier 0: 석궁 전문가 (Crossbow Expert) ===
+
+                ["Tier0_CrossbowExpert_DamageBonus"] =
+                "【석궁 공격력 보너스 (%)】\n" +
+                "석궁 및 볼트 무기의 기본 공격력을 증가시킵니다.\n" +
+                "권장값: 8-12%",
+
+                // === Tier 1: 연발 (Rapid Fire) ===
+
+                ["Tier1_RapidFire_Chance"] =
+                "【연발 발동 확률 (%)】\n" +
+                "석궁 발사 시 연발이 발동될 확률입니다.\n" +
+                "연발 발동 시 여러 발을 빠르게 발사합니다.\n" +
+                "권장값: 15-25%",
+
+                ["Tier1_RapidFire_ShotCount"] =
+                "【연발 발사 횟수】\n" +
+                "연발 발동 시 추가로 발사되는 볼트 개수입니다.\n" +
+                "권장값: 2-4발",
+
+                ["Tier1_RapidFire_DamagePercent"] =
+                "【연발 데미지 비율 (%)】\n" +
+                "연발로 발사되는 볼트의 데미지 비율입니다.\n" +
+                "원래 공격력 대비 비율입니다.\n" +
+                "권장값: 60-80%",
+
+                ["Tier1_RapidFire_Delay"] =
+                "【연발 간격 (초)】\n" +
+                "연발 시 각 볼트 발사 사이의 시간 간격입니다.\n" +
+                "짧을수록 빠르게 발사됩니다.\n" +
+                "권장값: 0.1-0.3초",
+
+                ["Tier1_RapidFire_BoltConsumption"] =
+                "【연발 볼트 소모량】\n" +
+                "연발 시 소모되는 볼트 개수입니다.\n" +
+                "권장값: 1-2개",
+
+
+                // === Tier 2: 균형잡힌 조준 (Balanced Aim) ===
+
+                ["Tier2_BalancedAim_KnockbackChance"] =
+                "【넉백 발동 확률 (%)】\n" +
+                "석궁 명중 시 적을 밀어낼 확률입니다.\n" +
+                "균형잡힌 자세에서 안정적인 충격을 줍니다.\n" +
+                "권장값: 20-35%",
+
+                ["Tier2_BalancedAim_KnockbackDistance"] =
+                "【넉백 거리 (미터)】\n" +
+                "넉백 발동 시 적을 밀어내는 거리입니다.\n" +
+                "권장값: 2-4m",
+
+                // === Tier 2: 신속 장전 (Rapid Reload) ===
+
+                ["Tier2_RapidReload_SpeedIncrease"] =
+                "【장전 속도 증가 (%)】\n" +
+                "석궁 재장전 속도를 증가시킵니다.\n" +
+                "더 빠르게 다음 볼트를 장전할 수 있습니다.\n" +
+                "권장값: 10-20%",
+
+                // === Tier 2: 정직한 사격 (Honest Shot) ===
+
+                ["Tier2_HonestShot_DamageBonus"] =
+                "【기본 데미지 보너스 (%)】\n" +
+                "석궁의 기본 공격력을 추가로 증가시킵니다.\n" +
+                "권장값: 10-18%",
+
+                // === Tier 3: 자동 재장전 (Auto Reload) ===
+
+                ["Tier3_AutoReload_Chance"] =
+                "【자동 장전 발동 확률 (%)】\n" +
+                "석궁 명중 시 다음 재장전 속도가 200%로 증가할 확률입니다.\n" +
+                "연속 공격 흐름을 유지하는 데 도움을 줍니다.\n" +
+                "권장값: 20-35%",
+
+                // === Tier 4: 연발 Lv2 (Rapid Fire Lv2) ===
+
+
+                ["Tier4_RapidFireLv2_Chance"] =
+                "【연발 Lv2 발동 확률 (%)】\n" +
+                "강화된 연발이 발동될 확률입니다.\n" +
+                "Tier 1 연발과 확률이 합산됩니다.\n" +
+                "권장값: 20-35%",
+
+                ["Tier4_RapidFireLv2_ShotCount"] =
+                "【연발 Lv2 발사 횟수】\n" +
+                "강화된 연발의 추가 볼트 개수입니다.\n" +
+                "Tier 1 연발보다 더 많이 발사됩니다.\n" +
+                "권장값: 4-6발",
+
+                ["Tier4_RapidFireLv2_DamagePercent"] =
+                "【연발 Lv2 데미지 비율 (%)】\n" +
+                "강화된 연발 볼트의 데미지 비율입니다.\n" +
+                "Tier 1보다 데미지가 증가합니다.\n" +
+                "권장값: 75-90%",
+
+                ["Tier4_RapidFireLv2_Delay"] =
+                "【연발 Lv2 발사 간격 (초)】\n" +
+                "강화된 연발 시 각 볼트 발사 사이의 시간 간격입니다.\n" +
+                "권장값: 0.1-0.3초",
+
+                ["Tier4_RapidFireLv2_BoltConsumption"] =
+                "【연발 Lv2 볼트 소모량】\n" +
+                "강화된 연발 시 소모되는 볼트 개수입니다.\n" +
+                "권장값: 1-2개",
+
+                // === Tier 4: 최후의 일격 (Final Strike) ===
+
+                ["Tier4_FinalStrike_HpThreshold"] =
+                "【적 체력 임계값 (%)】\n" +
+                "이 체력 이상인 적에게 추가 데미지를 줍니다.\n" +
+                "높은 체력의 적을 상대할 때 효과적입니다.\n" +
+                "권장값: 40-60%",
+
+                ["Tier4_FinalStrike_DamageBonus"] =
+                "【추가 데미지 보너스 (%)】\n" +
+                "임계값 이상 체력의 적에게 주는 추가 데미지입니다.\n" +
+                "권장값: 20-40%",
+
+                // === Tier 5: 원샷 (One Shot - R키 액티브) ===
+
+                ["Tier5_OneShot_Duration"] =
+                "【버프 지속시간 (초)】\n" +
+                "원샷 버프가 유지되는 시간입니다.\n" +
+                "이 시간 동안 강화된 한 발을 발사할 수 있습니다.\n" +
+                "권장값: 8-12초",
+
+                ["Tier5_OneShot_DamageBonus"] =
+                "【원샷 데미지 보너스 (%)】\n" +
+                "원샷 발사 시 추가되는 데미지 보너스입니다.\n" +
+                "치명적인 한 발의 위력입니다.\n" +
+                "권장값: 150-250%",
+
+                ["Tier5_OneShot_KnockbackDistance"] =
+                "【넉백 거리 (미터)】\n" +
+                "원샷 명중 시 적을 밀어내는 거리입니다.\n" +
+                "강력한 충격으로 적을 밀어냅니다.\n" +
+                "권장값: 5-10m",
+
+                ["Tier5_OneShot_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 25-40초",
+
+                // === Bow Tree ===
+                // === Tier 0: 활 전문가 (Bow Expert) ===
+
+                ["Tier0_BowExpert_DamageBonus"] =
+                "【활 공격력 보너스 (%)】\n" +
+                "활과 화살 무기의 기본 공격력을 증가시킵니다.\n" +
+                "권장값: 8-12%",
+
+                // === Tier 1: 집중 사격 (Focused Shot) ===
+
+                ["Tier1_FocusedShot_CritBonus"] =
+                "【치명타 확률 보너스 (%)】\n" +
+                "집중 사격으로 크리티컬 확률을 증가시킵니다.\n" +
+                "조준에 집중할수록 치명타 기회가 높아집니다.\n" +
+                "권장값: 5-10%",
+
+                // === Tier 2: 멀티샷 Lv1 ===
+
+                ["Tier2_MultishotLv1_ActivationChance"] =
+                "【멀티샷 Lv1 발동 확률 (%)】\n" +
+                "활 공격 시 멀티샷이 발동될 확률입니다.\n" +
+                "발동 시 여러 화살을 동시에 발사합니다.\n" +
+                "권장값: 15-25%",
+
+                ["Tier2_Multishot_AdditionalArrows"] =
+                "【추가 화살 개수】\n" +
+                "멀티샷 발동 시 추가로 발사되는 화살 개수입니다.\n" +
+                "권장값: 2-4개",
+
+                ["Tier2_Multishot_ArrowConsumption"] =
+                "【화살 소모량】\n" +
+                "멀티샷 발동 시 소모되는 화살 개수입니다.\n" +
+                "권장값: 1-2개",
+
+                ["Tier2_Multishot_DamagePerArrow"] =
+                "【화살당 데미지 비율 (%)】\n" +
+                "멀티샷으로 발사되는 각 화살의 데미지 비율입니다.\n" +
+                "권장값: 50-70%",
+
+                // === Tier 3: 활 숙련 (Bow Mastery) ===
+
+                ["Tier3_SpeedShot_SkillBonus"] =
+                "【활 숙련도 보너스 (고정값)】\n" +
+                "활 기술 레벨을 고정값으로 증가시킵니다.\n" +
+                "숙련도가 높아질수록 더 강력해집니다.\n" +
+                "권장값: 5-10",
+
+                ["Tier3_SilentShot_DamageBonus"] =
+                "【관통 데미지 보너스 (고정값)】\n" +
+                "활 공격력을 고정 수치로 증가시킵니다.\n" +
+                "화살이 적을 관통하여 더 큰 피해를 입힙니다.\n" +
+                "권장값: 3-8",
+
+                ["Tier3_SpecialArrow_Chance"] =
+                "【특수 화살 발동 확률 (%)】\n" +
+                "특수 효과를 가진 화살이 발사될 확률입니다.\n" +
+                "독, 불, 얼음 등의 상태이상 화살이 발사됩니다.\n" +
+                "권장값: 25-35%",
+
+                // === Tier 4: 멀티샷 Lv2 ===
+
+                ["Tier4_MultishotLv2_ActivationChance"] =
+                "【멀티샷 Lv2 발동 확률 (%)】\n" +
+                "강화된 멀티샷의 발동 확률입니다.\n" +
+                "Lv1보다 많은 화살을 발사합니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier4_PowerShot_KnockbackChance"] =
+                "【강력한 넉백 확률 (%)】\n" +
+                "활 공격 시 적을 강하게 밀어낼 확률입니다.\n" +
+                "거리 유지와 적 제어에 유용합니다.\n" +
+                "권장값: 30-40%",
+
+                ["Tier4_PowerShot_KnockbackDistance"] =
+                "【넉백 거리 (미터)】\n" +
+                "적이 밀려나는 거리입니다.\n" +
+                "권장값: 4-8m",
+
+                // === Tier 5: 정조준 및 고급 스킬 ===
+
+                ["Tier5_PrecisionAim_CritDamage"] =
+                "【크리티컬 데미지 보너스 (%)】\n" +
+                "정조준으로 치명타 피해를 증가시킵니다.\n" +
+                "약점을 노려 더 큰 피해를 입힙니다.\n" +
+                "권장값: 25-40%",
+
+                ["Tier5_ArrowRain_Chance"] =
+                "【화살비 발동 확률 (%)】\n" +
+                "여러 화살을 빠르게 연속 발사할 확률입니다.\n" +
+                "화살의 비처럼 쏟아집니다.\n" +
+                "권장값: 25-35%",
+
+                ["Tier5_ArrowRain_ArrowCount"] =
+                "【화살비 발사 개수】\n" +
+                "화살비 발동 시 발사되는 화살 개수입니다.\n" +
+                "권장값: 3-5개",
+
+                ["Tier5_BackstepShot_CritBonus"] =
+                "【회피 후 치명타 보너스 (%)】\n" +
+                "구르기(회피) 직후 치명타 확률이 증가합니다.\n" +
+                "백스텝 후 빠른 역습이 가능합니다.\n" +
+                "권장값: 20-35%",
+
+                ["Tier5_BackstepShot_Duration"] =
+                "【회피 후 버프 지속시간 (초)】\n" +
+                "구르기 후 효과가 유지되는 시간입니다.\n" +
+                "권장값: 2-4초",
+
+                ["Tier5_HuntingInstinct_CritBonus"] =
+                "【사냥 본능 치명타 보너스 (%)】\n" +
+                "사냥꾼의 본능으로 크리티컬 확률이 증가합니다.\n" +
+                "권장값: 8-15%",
+
+                // === Tier 6: 폭발 화살 (R키 액티브) ===
+
+                ["Tier6_ExplosiveArrow_DamageMultiplier"] =
+                "【폭발 화살 데미지 배율 (%)】\n" +
+                "R키 액티브 스킬 - 폭발 화살의 데미지 배율입니다.\n" +
+                "범위 피해를 입히는 강력한 화살입니다.\n" +
+                "권장값: 100-150%",
+
+                ["Tier6_ExplosiveArrow_Radius"] =
+                "【폭발 범위 (미터)】\n" +
+                "폭발 화살의 피해 범위입니다.\n" +
+                "권장값: 3-6m",
+
+                ["Tier6_ExplosiveArrow_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 15-25초",
+
+                ["Tier6_ExplosiveArrow_StaminaCost"] =
+                "【스태미나 소모 (%)】\n" +
+                "스킬 사용 시 소모되는 스태미나 비율입니다.\n" +
+                "권장값: 10-20%",
+
+                // === Tier 6: 크리티컬 부스트 ===
+                ["Tier6_CritBoost_DamageBonus"] =
+                "【크리티컬 부스트 데미지 (%)】\n" +
+                "크리티컬 히트 시 추가 데미지 보너스입니다.\n" +
+                "권장값: 40-60%",
+
+                ["Tier6_CritBoost_CritChance"] =
+                "【크리티컬 부스트 확률 (%)】\n" +
+                "치명타 확률을 대폭 증가시킵니다.\n" +
+                "권장값: 80-100%",
+
+                ["Tier6_CritBoost_ArrowCount"] =
+                "【크리티컬 부스트 화살 개수】\n" +
+                "크리티컬 부스트 발동 시 발사되는 화살 개수입니다.\n" +
+                "권장값: 3-7개",
+
+                ["Tier6_CritBoost_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 35-50초",
+
+                ["Tier6_CritBoost_StaminaCost"] =
+                "【스태미나 소모 (%)】\n" +
+                "스킬 사용 시 소모되는 스태미나 비율입니다.\n" +
+                "권장값: 20-30%",
+
+            };
+        }
+
+        private static Dictionary<string, string> GetRangedDescriptions_EN()
+        {
+            return new Dictionary<string, string>
+            {
+                // ========================================
+                // Staff Tree
+                // ========================================
+
+
+
+
+
+
+
+
+
+
+
+                // === Tier 0: Staff Expert ===
+                ["Tier0_StaffExpert_ElementalDamageBonus"] =
+                "【Elemental Damage Bonus (%)】\n" +
+                "Increases elemental damage (fire, frost, lightning) of staves.\n" +
+                "Foundation of magical attacks.\n" +
+                "Recommended: 10-15%",
+
+                // === Tier 1: Mind Focus & Magic Flow ===
+                ["Tier1_MindFocus_EitrReduction"] =
+                "【Eitr Cost Reduction (%)】\n" +
+                "Mind focus reduces Eitr cost of staff spells.\n" +
+                "Allows more magic usage.\n" +
+                "Recommended: 12-20%",
+
+                ["Tier1_MagicFlow_EitrBonus"] =
+                "【Max Eitr Bonus (Flat)】\n" +
+                "Magic flow increases maximum Eitr.\n" +
+                "Recommended: 25-35",
+
+                // === Tier 2: Magic Amplify ===
+                ["Tier2_MagicAmplify_Chance"] =
+                "【Magic Amplification Activation Chance (%)】\n" +
+                "Chance to amplify elemental damage.\n" +
+                "Recommended: 30-50%",
+
+                ["Tier2_MagicAmplify_DamageBonus"] =
+                "【Magic Amplification Elemental Damage Bonus (%)】\n" +
+                "Elemental damage increase on activation.\n" +
+                "Recommended: 30-40%",
+
+                ["Tier2_MagicAmplify_EitrCostIncrease"] =
+                "【Magic Amplification Eitr Cost Increase (%)】\n" +
+                "Increases Eitr consumption when casting spells.\n" +
+                "Price of powerful magic.\n" +
+                "Recommended: 15-25%",
+
+                // === Tier 3: Elemental Enhancement ===
+                ["Tier3_FrostElement_DamageBonus"] =
+                "【Frost Attack Bonus (Flat)】\n" +
+                "Increases frost elemental magic damage by a flat amount.\n" +
+                "Recommended: 2-5",
+
+                ["Tier3_FireElement_DamageBonus"] =
+                "【Fire Attack Bonus (Flat)】\n" +
+                "Increases fire elemental magic damage by a flat amount.\n" +
+                "Recommended: 2-5",
+
+                ["Tier3_LightningElement_DamageBonus"] =
+                "【Lightning Attack Bonus (Flat)】\n" +
+                "Increases lightning elemental magic damage by a flat amount.\n" +
+                "Recommended: 2-5",
+
+                // === Tier 4: Lucky Mana ===
+                ["Tier4_LuckyMana_Chance"] =
+                "【Zero Eitr Cost Chance (%)】\n" +
+                "Chance to cast spells without consuming Eitr.\n" +
+                "Lucky mana enables infinite casting.\n" +
+                "Recommended: 30-40%",
+
+                // === Tier 5-1: Double Cast (R-key Active) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] =
+                "【Additional Projectile Count】\n" +
+                "Number of extra projectiles fired during double cast.\n" +
+                "Recommended: 1-3",
+
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] =
+                "【Projectile Damage Percent (%)】\n" +
+                "Damage percentage of additional projectiles.\n" +
+                "Recommended: 60-80%",
+
+                ["Tier5_DoubleCast_AngleOffset"] =
+                "【Projectile Angle Offset (degrees)】\n" +
+                "Spread angle of projectiles.\n" +
+                "Recommended: 3-8°",
+
+                ["Tier5_DoubleCast_EitrCost"] =
+                "【Eitr Cost】\n" +
+                "Eitr consumed when activating the skill.\n" +
+                "Recommended: 15-25",
+
+                ["Tier5_DoubleCast_Cooldown"] =
+                "【Cooldown (seconds)】\n" +
+                "Skill reuse wait time.\n" +
+                "Recommended: 25-40s",
+
+                // === Tier 5-2: Instant Area Heal (H-key Active) ===
+                ["Tier5_InstantAreaHeal_Cooldown"] =
+                "【Cooldown (seconds)】\n" +
+                "Skill reuse wait time.\n" +
+                "Recommended: 25-40s",
+
+                ["Tier5_InstantAreaHeal_EitrCost"] =
+                "【Eitr Cost】\n" +
+                "Eitr consumed when using the skill.\n" +
+                "Recommended: 25-35",
+
+                ["Tier5_InstantAreaHeal_HealPercent"] =
+                "【Heal Amount (% of Max HP)】\n" +
+                "Healing percentage relative to maximum health.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier5_InstantAreaHeal_Range"] =
+                "【Heal Range (meters)】\n" +
+                "Range where healing is applied.\n" +
+                "Recommended: 10-15m",
+
+                ["Tier5_InstantAreaHeal_SelfHeal"] =
+                "【Allow Self Heal】\n" +
+                "If true, also heals the caster.\n" +
+                "Recommended: false (allies only)",
+
+                // === Crossbow Tree ===
+                // === Tier 0: Crossbow Expert ===
+
+                ["Tier0_CrossbowExpert_DamageBonus"] =
+                "【Crossbow Damage Bonus (%)】\n" +
+                "Increases base damage of crossbows and bolts.\n" +
+                "Recommended: 8-12%",
+
+                // === Tier 1: Rapid Fire ===
+
+                ["Tier1_RapidFire_Chance"] =
+                "【Rapid Fire Trigger Chance (%)】\n" +
+                "Chance to trigger rapid fire when shooting crossbow.\n" +
+                "Fires multiple bolts rapidly when triggered.\n" +
+                "Recommended: 15-25%",
+
+                ["Tier1_RapidFire_ShotCount"] =
+                "【Rapid Fire Shot Count】\n" +
+                "Number of additional bolts fired during rapid fire.\n" +
+                "Recommended: 2-4 shots",
+
+                ["Tier1_RapidFire_DamagePercent"] =
+                "【Rapid Fire Damage Percent (%)】\n" +
+                "Damage percentage of rapid fire bolts.\n" +
+                "Relative to original attack power.\n" +
+                "Recommended: 60-80%",
+
+                ["Tier1_RapidFire_Delay"] =
+                "【Rapid Fire Interval (seconds)】\n" +
+                "Time interval between each bolt during rapid fire.\n" +
+                "Shorter means faster firing.\n" +
+                "Recommended: 0.1-0.3s",
+
+                ["Tier1_RapidFire_BoltConsumption"] =
+                "【Rapid Fire Bolt Consumption】\n" +
+                "Number of bolts consumed during rapid fire.\n" +
+                "Recommended: 1-2",
+
+
+                // === Tier 2: Balanced Aim ===
+
+                ["Tier2_BalancedAim_KnockbackChance"] =
+                "【Knockback Trigger Chance (%)】\n" +
+                "Chance to knock back enemies on crossbow hit.\n" +
+                "Stable stance delivers reliable impact.\n" +
+                "Recommended: 20-35%",
+
+                ["Tier2_BalancedAim_KnockbackDistance"] =
+                "【Knockback Distance (meters)】\n" +
+                "Distance enemies are pushed back when knockback triggers.\n" +
+                "Recommended: 2-4m",
+
+                // === Tier 2: Rapid Reload ===
+
+                ["Tier2_RapidReload_SpeedIncrease"] =
+                "【Reload Speed Increase (%)】\n" +
+                "Increases crossbow reload speed.\n" +
+                "Load the next bolt faster.\n" +
+                "Recommended: 10-20%",
+
+                // === Tier 2: Honest Shot ===
+
+                ["Tier2_HonestShot_DamageBonus"] =
+                "【Base Damage Bonus (%)】\n" +
+                "Further increases crossbow base attack power.\n" +
+                "Recommended: 10-18%",
+
+                // === Tier 3: Auto Reload ===
+
+                ["Tier3_AutoReload_Chance"] =
+                "【Auto Reload Trigger Chance (%)】\n" +
+                "Chance for next reload to be performed at 200% speed on hit.\n" +
+                "Helps maintain continuous attack momentum.\n" +
+                "Recommended: 20-35%",
+
+                // === Tier 4: Rapid Fire Lv2 ===
+
+
+                ["Tier4_RapidFireLv2_Chance"] =
+                "【Rapid Fire Lv2 Trigger Chance (%)】\n" +
+                "Chance to trigger enhanced rapid fire.\n" +
+                "Stacks with Tier 1 rapid fire chance.\n" +
+                "Recommended: 20-35%",
+
+                ["Tier4_RapidFireLv2_ShotCount"] =
+                "【Rapid Fire Lv2 Shot Count】\n" +
+                "Number of additional bolts in enhanced rapid fire.\n" +
+                "Fires more than Tier 1 rapid fire.\n" +
+                "Recommended: 4-6 shots",
+
+                ["Tier4_RapidFireLv2_DamagePercent"] =
+                "【Rapid Fire Lv2 Damage Percent (%)】\n" +
+                "Damage percentage of enhanced rapid fire bolts.\n" +
+                "Higher damage than Tier 1.\n" +
+                "Recommended: 75-90%",
+
+                ["Tier4_RapidFireLv2_Delay"] =
+                "【Rapid Fire Lv2 Interval (seconds)】\n" +
+                "Time between each bolt in enhanced rapid fire.\n" +
+                "Recommended: 0.1-0.3s",
+
+                ["Tier4_RapidFireLv2_BoltConsumption"] =
+                "【Rapid Fire Lv2 Bolt Consumption】\n" +
+                "Number of bolts consumed during enhanced rapid fire.\n" +
+                "Recommended: 1-2",
+
+                // === Tier 4: Final Strike ===
+
+                ["Tier4_FinalStrike_HpThreshold"] =
+                "【Enemy HP Threshold (%)】\n" +
+                "Deals bonus damage to enemies at or above this HP percentage.\n" +
+                "Effective against high-HP targets.\n" +
+                "Recommended: 40-60%",
+
+                ["Tier4_FinalStrike_DamageBonus"] =
+                "【Bonus Damage (%)】\n" +
+                "Extra damage dealt to enemies above the HP threshold.\n" +
+                "Recommended: 20-40%",
+
+                // === Tier 5: One Shot (R-key Active) ===
+
+                ["Tier5_OneShot_Duration"] =
+                "【Buff Duration (seconds)】\n" +
+                "Duration the One Shot buff lasts.\n" +
+                "Can fire one enhanced shot during this time.\n" +
+                "Recommended: 8-12s",
+
+                ["Tier5_OneShot_DamageBonus"] =
+                "【One Shot Damage Bonus (%)】\n" +
+                "Additional damage bonus when firing One Shot.\n" +
+                "Power of the devastating shot.\n" +
+                "Recommended: 150-250%",
+
+                ["Tier5_OneShot_KnockbackDistance"] =
+                "【Knockback Distance (meters)】\n" +
+                "Distance enemies are knocked back on hit.\n" +
+                "Powerful impact pushes enemies away.\n" +
+                "Recommended: 5-10m",
+
+                ["Tier5_OneShot_Cooldown"] =
+                "【Cooldown (seconds)】\n" +
+                "Skill reuse wait time.\n" +
+                "Recommended: 25-40s",
+
+                // === Bow Tree ===
+                // === Tier 0: Bow Expert ===
+
+                ["Tier0_BowExpert_DamageBonus"] =
+                "【Bow Damage Bonus (%)】\n" +
+                "Increases base damage of bows and arrows.\n" +
+                "Recommended: 8-12%",
+
+                // === Tier 1: Focused Shot ===
+
+                ["Tier1_FocusedShot_CritBonus"] =
+                "【Critical Chance Bonus (%)】\n" +
+                "Focused shot increases critical hit chance.\n" +
+                "Higher focus leads to more critical opportunities.\n" +
+                "Recommended: 5-10%",
+
+                // === Tier 2: Multishot Lv1 ===
+
+                ["Tier2_MultishotLv1_ActivationChance"] =
+                "【Multishot Lv1 Trigger Chance (%)】\n" +
+                "Chance to trigger multishot when attacking with bow.\n" +
+                "Fires multiple arrows simultaneously when triggered.\n" +
+                "Recommended: 15-25%",
+
+                ["Tier2_Multishot_AdditionalArrows"] =
+                "【Additional Arrow Count】\n" +
+                "Number of extra arrows fired during multishot.\n" +
+                "Recommended: 2-4",
+
+                ["Tier2_Multishot_ArrowConsumption"] =
+                "【Arrow Consumption】\n" +
+                "Number of arrows consumed during multishot.\n" +
+                "Recommended: 1-2",
+
+                ["Tier2_Multishot_DamagePerArrow"] =
+                "【Damage Per Arrow (%)】\n" +
+                "Damage percentage for each multishot arrow.\n" +
+                "Recommended: 50-70%",
+
+                // === Tier 3: Bow Mastery ===
+
+                ["Tier3_SpeedShot_SkillBonus"] =
+                "【Bow Proficiency Bonus (Flat)】\n" +
+                "Increases bow skill level by a flat amount.\n" +
+                "Higher proficiency means stronger attacks.\n" +
+                "Recommended: 5-10",
+
+                ["Tier3_SilentShot_DamageBonus"] =
+                "【Penetration Damage Bonus (Flat)】\n" +
+                "Increases bow damage by a flat amount.\n" +
+                "Arrows penetrate enemies dealing more damage.\n" +
+                "Recommended: 3-8",
+
+                ["Tier3_SpecialArrow_Chance"] =
+                "【Special Arrow Trigger Chance (%)】\n" +
+                "Chance to fire special effect arrows.\n" +
+                "Can apply poison, fire, frost, or other status effects.\n" +
+                "Recommended: 25-35%",
+
+                // === Tier 4: Multishot Lv2 ===
+
+                ["Tier4_MultishotLv2_ActivationChance"] =
+                "【Multishot Lv2 Trigger Chance (%)】\n" +
+                "Enhanced multishot trigger chance.\n" +
+                "Fires more arrows than Lv1.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier4_PowerShot_KnockbackChance"] =
+                "【Strong Knockback Chance (%)】\n" +
+                "Chance to knock back enemies strongly with bow attacks.\n" +
+                "Useful for maintaining distance and crowd control.\n" +
+                "Recommended: 30-40%",
+
+                ["Tier4_PowerShot_KnockbackDistance"] =
+                "【Knockback Distance (meters)】\n" +
+                "Distance enemies are pushed back.\n" +
+                "Recommended: 4-8m",
+
+                // === Tier 5: Precision Aim & Advanced Skills ===
+
+                ["Tier5_PrecisionAim_CritDamage"] =
+                "【Critical Damage Bonus (%)】\n" +
+                "Precision aim increases critical hit damage.\n" +
+                "Target weak points for massive damage.\n" +
+                "Recommended: 25-40%",
+
+                ["Tier5_ArrowRain_Chance"] =
+                "【Arrow Rain Trigger Chance (%)】\n" +
+                "Chance to rapidly fire multiple arrows in succession.\n" +
+                "Rains arrows like a storm.\n" +
+                "Recommended: 25-35%",
+
+                ["Tier5_ArrowRain_ArrowCount"] =
+                "【Arrow Rain Count】\n" +
+                "Number of arrows fired during arrow rain.\n" +
+                "Recommended: 3-5",
+
+                ["Tier5_BackstepShot_CritBonus"] =
+                "【Post-Dodge Crit Bonus (%)】\n" +
+                "Critical chance increases after dodging.\n" +
+                "Quick counterattack after backstep.\n" +
+                "Recommended: 20-35%",
+
+                ["Tier5_BackstepShot_Duration"] =
+                "【Post-Dodge Buff Duration (seconds)】\n" +
+                "Duration the effect lasts after dodging.\n" +
+                "Recommended: 2-4s",
+
+                ["Tier5_HuntingInstinct_CritBonus"] =
+                "【Hunting Instinct Crit Bonus (%)】\n" +
+                "Hunter's instinct increases critical chance.\n" +
+                "Recommended: 8-15%",
+
+                // === Tier 6: Explosive Arrow (R-key Active) ===
+
+                ["Tier6_ExplosiveArrow_DamageMultiplier"] =
+                "【Explosive Arrow Damage (%)】\n" +
+                "R-key active skill - Explosive arrow damage multiplier.\n" +
+                "Powerful arrow that deals area damage.\n" +
+                "Recommended: 100-150%",
+
+                ["Tier6_ExplosiveArrow_Radius"] =
+                "【Explosion Radius (meters)】\n" +
+                "Damage radius of explosive arrow.\n" +
+                "Recommended: 3-6m",
+
+                ["Tier6_ExplosiveArrow_Cooldown"] =
+                "【Cooldown (seconds)】\n" +
+                "Skill reuse wait time.\n" +
+                "Recommended: 15-25s",
+
+                ["Tier6_ExplosiveArrow_StaminaCost"] =
+                "【Stamina Cost (%)】\n" +
+                "Stamina percentage consumed when using skill.\n" +
+                "Recommended: 10-20%",
+
+                // === Tier 6: Critical Boost ===
+                ["Tier6_CritBoost_DamageBonus"] =
+                "【Critical Boost Damage (%)】\n" +
+                "Additional damage bonus on critical hits.\n" +
+                "Recommended: 40-60%",
+
+                ["Tier6_CritBoost_CritChance"] =
+                "【Critical Boost Chance (%)】\n" +
+                "Greatly increases critical hit chance.\n" +
+                "Recommended: 80-100%",
+
+                ["Tier6_CritBoost_ArrowCount"] =
+                "【Critical Boost Arrow Count】\n" +
+                "Number of arrows fired during critical boost.\n" +
+                "Recommended: 3-7",
+
+                ["Tier6_CritBoost_Cooldown"] =
+                "【Cooldown (seconds)】\n" +
+                "Skill reuse wait time.\n" +
+                "Recommended: 35-50s",
+
+                ["Tier6_CritBoost_StaminaCost"] =
+                "【Stamina Cost (%)】\n" +
+                "Stamina percentage consumed when using skill.\n" +
+                "Recommended: 20-30%",
+
+            };
+        }
+    }
+}

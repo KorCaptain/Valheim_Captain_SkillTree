@@ -1,6 +1,6 @@
 # Config 통합 가이드
 
-> 최종 업데이트: 2026-02-25 (CONFIG_RULES.md + CONFIG_MANAGEMENT_RULES.md 완전 통합)
+> 최종 업데이트: 2026-02-27 (섹션 9 추가: 서브티어 분리 패턴 - Attack Tree Tier 2/4/6)
 > **CONFIG_RULES.md**, **CONFIG_MANAGEMENT_RULES.md** 통합본 (단일 소스). CLAUDE.md 설정이 최신 기준.
 
 ---
@@ -440,6 +440,118 @@ Archer_Config.Initialize(config);  // 반드시 최하단으로
 | `Tier_멀티샷_추가화살수` | `Tier2_멀티샷_추가화살수` |
 | `Tier_멀티샷_화살소모량` | `Tier2_멀티샷_화살소모량` |
 | `Tier_멀티샷_화살데미지비율` | `Tier2_멀티샷_화살데미지비율` |
+
+---
+
+## 9. 서브티어 분리 패턴 (Attack Tree 기준, 2026-02-27)
+
+하나의 Tier에 여러 스킬이 있는 경우, RequiredPoints를 공유 1개로 묶지 않고 **스킬별 독립 Config**로 분리한다.
+
+### 언제 적용하는가
+- 같은 Tier 안에 **2개 이상 서로 다른 무기/역할의 스킬**이 존재할 때
+- F1 Config Manager에서 "Tier 2" 하나로 뭉쳐 보여 구분이 어려울 때
+
+### F1 표시명 규칙
+
+```
+Tier N-X: [스킬그룹명] 속성명
+```
+
+| 예시 | KO | EN |
+|------|----|----|
+| Tier 2-1 근접 특화 발동 확률 | `"Tier 2-1: [근접 특화] 발동 확률 (%)"` | `"Tier 2-1: [Melee Spec] Trigger Chance (%)"` |
+| Tier 2-1 근접 특화 필요 포인트 | `"Tier 2-1: [근접 특화] 필요 포인트"` | `"Tier 2-1: [Melee Spec] Required Points"` |
+| Tier 4-2 정밀 공격 치명타 확률 | `"Tier 4-2: [정밀 공격] 치명타 확률 (%)"` | `"Tier 4-2: [Precision Attack] Crit Chance (%)"` |
+
+### Attack_Config.cs 구현 패턴
+
+#### 필드 선언 (공유 1개 → 스킬별 N개)
+```csharp
+// ❌ 이전 방식 - 모든 Tier 2 스킬이 하나의 RequiredPoints 공유
+public static ConfigEntry<int> AttackStep2RequiredPoints;
+
+// ✅ 신규 방식 - 스킬별 독립
+public static ConfigEntry<int> AttackStep2MeleeRequiredPoints;
+public static ConfigEntry<int> AttackStep2BowRequiredPoints;
+public static ConfigEntry<int> AttackStep2CrossbowRequiredPoints;
+public static ConfigEntry<int> AttackStep2StaffRequiredPoints;
+```
+
+#### Value 프로퍼티
+```csharp
+public static int AttackStep2MeleeRequiredPointsValue =>
+    (int)SkillTreeConfig.GetEffectiveValue("attack_step2_melee_required_points",
+        AttackStep2MeleeRequiredPoints?.Value ?? 2);
+```
+
+#### Initialize() - order 서브티어별 분리
+```csharp
+// === Tier 2-1: Melee Specialization ===
+AttackMeleeBonusChance = SkillTreeConfig.BindServerSync(config,
+    "Attack Tree", "Tier2_MeleeSpec_BonusTriggerChance", 20f,
+    SkillTreeConfig.GetConfigDescription("Tier2_MeleeSpec_BonusTriggerChance"), order: 48);
+AttackMeleeBonusDamage = SkillTreeConfig.BindServerSync(config,
+    "Attack Tree", "Tier2_MeleeSpec_MeleeDamage", 10f,
+    SkillTreeConfig.GetConfigDescription("Tier2_MeleeSpec_MeleeDamage"), order: 48);
+AttackStep2MeleeRequiredPoints = SkillTreeConfig.BindServerSync(config,
+    "Attack Tree", "Tier2_MeleeSpec_RequiredPoints", 2,
+    SkillTreeConfig.GetConfigDescription("Tier2_MeleeSpec_RequiredPoints"), order: 47);
+
+// === Tier 2-2: Bow Specialization ===
+// ... order: 46 / 46 / 45 순으로
+```
+
+**order 배치 규칙 (서브티어 내림차순)**:
+
+| 서브티어 | 값 order | RequiredPoints order |
+|---------|----------|----------------------|
+| N-1 (첫 번째) | 최상위 | 최상위 - 1 |
+| N-2 | N-1 - 2 | N-1 - 3 |
+| N-3 | N-2 - 2 | N-2 - 3 |
+| N-4 | N-3 - 2 | N-3 - 3 |
+
+### Attack Tree 서브티어 order 목록 (현재 적용 값)
+
+| 티어 | 서브티어 | 스킬 키 | 값 order | RP order |
+|------|---------|--------|----------|----------|
+| Tier 2 | 2-1 근접 특화 | `Tier2_MeleeSpec_*` | 48 | 47 |
+| Tier 2 | 2-2 활 특화 | `Tier2_BowSpec_*` | 46 | 45 |
+| Tier 2 | 2-3 석궁 특화 | `Tier2_CrossbowSpec_*` | 44 | 43 |
+| Tier 2 | 2-4 지팡이 특화 | `Tier2_StaffSpec_*` | 42 | 41 |
+| Tier 4 | 4-1 근접 강화 | `Tier4_MeleeEnhance_*` | 28 | 27 |
+| Tier 4 | 4-2 정밀 공격 | `Tier4_PrecisionAttack_*` | 26 | 25 |
+| Tier 4 | 4-3 원거리 강화 | `Tier4_RangedEnhance_*` | 24 | 23 |
+| Tier 6 | 6-1 약점 공격 | `Tier6_WeakPointAttack_*` | 8 | 7 |
+| Tier 6 | 6-2 연속 근접 | `Tier6_ComboFinisher_*` | 6 | 5 |
+| Tier 6 | 6-3 양손 분쇄 | `Tier6_TwoHandCrush_*` | 4 | 3 |
+| Tier 6 | 6-4 속성 공격 | `Tier6_ElementalAttack_*` | 2 | 1 |
+
+### SkillData.cs 참조 변경
+
+```csharp
+// ❌ 이전 - 공유 RequiredPoints
+RequiredPoints = Attack_Config.AttackStep2RequiredPointsValue,
+
+// ✅ 신규 - 스킬별 독립
+// atk_melee_bonus
+RequiredPoints = Attack_Config.AttackStep2MeleeRequiredPointsValue,
+// atk_bow_bonus
+RequiredPoints = Attack_Config.AttackStep2BowRequiredPointsValue,
+// atk_crossbow_bonus
+RequiredPoints = Attack_Config.AttackStep2CrossbowRequiredPointsValue,
+// atk_staff_bonus
+RequiredPoints = Attack_Config.AttackStep2StaffRequiredPointsValue,
+```
+
+### 서브티어 분리 체크리스트
+
+- [ ] `*_Config.cs` 필드 선언: 공유 필드 제거 → 스킬별 독립 필드 추가
+- [ ] `*_Config.cs` Value 프로퍼티: 동일하게 분리
+- [ ] `*_Config.cs` Initialize(): 서브티어별 코멘트 + order 분리
+- [ ] `*SkillData.cs`: RequiredPoints 참조를 독립 프로퍼티로 교체
+- [ ] `ConfigTranslations_KeyNames_KO.cs`: 기존 표시명 수정 + RequiredPoints 키 추가
+- [ ] `ConfigTranslations_KeyNames_EN.cs`: 동일 (영문)
+- [ ] 빌드 성공 확인 (경고 0, 오류 0)
 
 ---
 

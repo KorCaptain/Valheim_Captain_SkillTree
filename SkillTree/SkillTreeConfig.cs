@@ -97,6 +97,11 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         internal static string GetLocalizedDescription(string descriptionKey)
         {
+            // _RequiredPoints 키는 런타임에 처리 (ConfigTranslations에서 제거됨)
+            if (descriptionKey.EndsWith("_RequiredPoints"))
+                return _detectedConfigLanguage == "en"
+                    ? "【Required Points】\nPoints required to unlock this node."
+                    : "【필요 포인트】\n이 노드를 해금하기 위해 필요한 스킬 포인트 개수입니다.";
             var translations = Localization.ConfigTranslations.GetDescriptionTranslations(_detectedConfigLanguage);
             return translations.ContainsKey(descriptionKey) ? translations[descriptionKey] : descriptionKey;
         }
@@ -106,13 +111,21 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         internal static string GetLocalizedKeyName(string keyName)
         {
+            // _RequiredPoints 키는 런타임에 처리 (ConfigTranslations에서 제거됨)
+            if (keyName.EndsWith("_RequiredPoints"))
+            {
+                var tierPart = keyName.Split('_')[0]; // "TierX" or "Knife" 등
+                return _detectedConfigLanguage == "en"
+                    ? $"{tierPart}: Required Points"
+                    : $"{tierPart}: 필요 포인트";
+            }
             var translations = Localization.ConfigTranslations.GetKeyNameTranslations(_detectedConfigLanguage);
             return translations.ContainsKey(keyName) ? translations[keyName] : keyName;
         }
 
         #region === Config 바인드 헬퍼 메서드 ===
 
-        public static ConfigEntry<float> BindServerSync(ConfigFile config, string section, string key, float defaultValue, string description)
+        public static ConfigEntry<float> BindServerSync(ConfigFile config, string section, string key, float defaultValue, string description, int order = 0)
         {
             // 카테고리명 자동 번역 (Config Manager 표시용)
             string localizedSection = GetLocalizedCategory(section);
@@ -122,11 +135,12 @@ namespace CaptainSkillTree.SkillTree
                 new ConfigDescription(description, null,
                     new ConfigurationManagerAttributes {
                         IsAdminOnly = true,
-                        DispName = localizedKeyName
+                        DispName = localizedKeyName,
+                        Order = order
                     }));
         }
 
-        public static ConfigEntry<int> BindServerSync(ConfigFile config, string section, string key, int defaultValue, string description)
+        public static ConfigEntry<int> BindServerSync(ConfigFile config, string section, string key, int defaultValue, string description, int order = 0)
         {
             // 카테고리명 자동 번역 (Config Manager 표시용)
             string localizedSection = GetLocalizedCategory(section);
@@ -136,11 +150,12 @@ namespace CaptainSkillTree.SkillTree
                 new ConfigDescription(description, null,
                     new ConfigurationManagerAttributes {
                         IsAdminOnly = true,
-                        DispName = localizedKeyName
+                        DispName = localizedKeyName,
+                        Order = order
                     }));
         }
 
-        public static ConfigEntry<bool> BindServerSync(ConfigFile config, string section, string key, bool defaultValue, string description)
+        public static ConfigEntry<bool> BindServerSync(ConfigFile config, string section, string key, bool defaultValue, string description, int order = 0)
         {
             // 카테고리명 자동 번역 (Config Manager 표시용)
             string localizedSection = GetLocalizedCategory(section);
@@ -150,11 +165,12 @@ namespace CaptainSkillTree.SkillTree
                 new ConfigDescription(description, null,
                     new ConfigurationManagerAttributes {
                         IsAdminOnly = true,
-                        DispName = localizedKeyName
+                        DispName = localizedKeyName,
+                        Order = order
                     }));
         }
 
-        public static ConfigEntry<string> BindServerSync(ConfigFile config, string section, string key, string defaultValue, string description)
+        public static ConfigEntry<string> BindServerSync(ConfigFile config, string section, string key, string defaultValue, string description, int order = 0)
         {
             // 카테고리명 자동 번역 (Config Manager 표시용)
             string localizedSection = GetLocalizedCategory(section);
@@ -164,7 +180,8 @@ namespace CaptainSkillTree.SkillTree
                 new ConfigDescription(description, null,
                     new ConfigurationManagerAttributes {
                         IsAdminOnly = true,
-                        DispName = localizedKeyName
+                        DispName = localizedKeyName,
+                        Order = order
                     }));
         }
 
