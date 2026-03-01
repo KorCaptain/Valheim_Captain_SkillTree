@@ -83,12 +83,6 @@ namespace CaptainSkillTree.Localization
                 "모든 무기의 속성 데미지(불, 얼음, 번개 등)를 고정값으로 증가시킵니다.\n" +
                 "권장값: 1-3",
 
-                ["Tier3_AttackBoost_StrIntBonus"] =
-                "【힘/지능 스탯 보너스】\n" +
-                "근접 무기는 힘, 마법 무기는 지능을 증가시킵니다.\n" +
-                "스탯 증가는 데미지에 직접적인 영향을 줍니다.\n" +
-                "권장값: 3-8",
-
                 ["Tier3_AttackBoost_PhysicalDamageBonus"] =
                 "【양손 무기 물리 데미지 보너스 (%)】\n" +
                 "양손 무기 사용 시 물리 데미지가 증가합니다.\n" +
@@ -323,8 +317,8 @@ namespace CaptainSkillTree.Localization
                 "권장값: 25-40%",
 
                 ["Tier6_JotunnVitality_ArmorBonus"] =
-                "【방어력 보너스 (%)】\n" +
-                "요툰의 갑옷으로 방어력이 비율로 증가합니다.\n" +
+                "【물리/속성 저항 (%)】\n" +
+                "요툰의 생명력으로 모든 물리/속성 데미지가 감소합니다.\n" +
                 "권장값: 8-15%",
 
                 ["Tier6_JotunnShield_BlockStaminaReduction"] =
@@ -513,6 +507,27 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_CastAccel_MagicAttackSpeed"] = "【마법 공격속도 보너스 (%)】\n마법 공격 속도의 최종 부스트입니다.\n권장값: 5-10%",
                 ["Tier8_CastAccel_TripleEitrRecovery"] = "【3연타 시 Eitr 최대 회복률 (%)】\n3회 주문 콤보 후 Eitr 재생 속도가 증가합니다.\n권장값: 10-15%",
 
+                // === Speed Tree: 필요 포인트 설명 ===
+                ["Tier0_SpeedExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier1_AgilityBase_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_MeleeFlow_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_CrossbowExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_BowExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_MobileCast_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier3_Practitioner1_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier3_Practitioner2_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_Energizer_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_Captain_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier5_JumpMaster_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_Dexterity_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_Endurance_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_Intellect_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier7_Master_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier8_MeleeAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier8_CrossbowAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier8_BowAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier8_CastAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+
             };
         }
 
@@ -594,12 +609,6 @@ namespace CaptainSkillTree.Localization
                 "【Elemental Damage Bonus (Flat)】\n" +
                 "Increases elemental damage (fire, frost, lightning) of all weapons by a flat amount.\n" +
                 "Recommended: 1-3",
-
-                ["Tier3_AttackBoost_StrIntBonus"] =
-                "【Strength/Intelligence Stat Bonus】\n" +
-                "Increases Strength for melee weapons, Intelligence for magic weapons.\n" +
-                "Stat increases directly impact damage output.\n" +
-                "Recommended: 3-8",
 
                 ["Tier3_AttackBoost_PhysicalDamageBonus"] =
                 "【Two-Hand Physical Damage Bonus (%)】\n" +
@@ -835,8 +844,8 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 25-40%",
 
                 ["Tier6_JotunnVitality_ArmorBonus"] =
-                "【Armor Bonus (%)】\n" +
-                "Jotunn's armor increases armor percentage.\n" +
+                "【Physical/Elemental Resistance (%)】\n" +
+                "Reduces all physical and elemental damage received.\n" +
                 "Recommended: 8-15%",
 
                 ["Tier6_JotunnShield_BlockStaminaReduction"] =
@@ -1024,6 +1033,27 @@ namespace CaptainSkillTree.Localization
                 // === Speed Tree: Tier 8 Cast Acceleration (2개) ===
                 ["Tier8_CastAccel_MagicAttackSpeed"] = "【Magic Attack Speed Bonus (%)】\nFinal boost to magic attack speed.\nRecommended: 5-10%",
                 ["Tier8_CastAccel_TripleEitrRecovery"] = "【Eitr Max Recovery Rate on 3-Hit Combo (%)】\nBoosts Eitr regeneration rate after a 3-spell combo.\nRecommended: 10-15%",
+
+                // === Speed Tree: Required Points ===
+                ["Tier0_SpeedExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier1_AgilityBase_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_MeleeFlow_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_CrossbowExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_BowExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_MobileCast_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier3_Practitioner1_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier3_Practitioner2_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_Energizer_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_Captain_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier5_JumpMaster_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_Dexterity_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_Endurance_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_Intellect_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier7_Master_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier8_MeleeAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier8_CrossbowAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier8_BowAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier8_CastAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
 
             };
         }

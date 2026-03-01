@@ -495,6 +495,11 @@ namespace CaptainSkillTree.Gui
                     result = Staff_Tooltip.GetDualCastTooltip();
                     break;
 
+                // 1단계 노드들
+                case "atk_base": // 기본 공격
+                    result = L.Get("atk_base_desc", SkillTreeConfig.AttackBasePhysicalDamageValue);
+                    break;
+
                 // 2단계 노드들
                 case "atk_melee_bonus": // 근접 특화
                     result = L.Get("atk_melee_bonus_desc", SkillTreeConfig.AttackMeleeBonusChanceValue, SkillTreeConfig.AttackMeleeBonusDamageValue);

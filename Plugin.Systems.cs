@@ -70,7 +70,7 @@ namespace CaptainSkillTree
                     // 회피 적용
                     float dodgeChance = player.GetCustomDodgeChance();
 
-                    if (dodgeChance > 0)
+                    if (dodgeChance > 0 && !player.IsBlocking())
                     {
                         float roll = UnityEngine.Random.Range(0f, 1f);
 

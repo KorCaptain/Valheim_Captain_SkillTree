@@ -17,7 +17,7 @@ namespace CaptainSkillTree.Localization
         /// </summary>
         public static Dictionary<string, string> GetCategoryTranslations(string lang)
         {
-            return (lang == "en") ? GetEnglishCategories() : GetKoreanCategories();
+            return (lang == "ko") ? GetKoreanCategories() : GetEnglishCategories();
         }
 
         /// <summary>
@@ -25,16 +25,16 @@ namespace CaptainSkillTree.Localization
         /// </summary>
         public static Dictionary<string, string> GetDescriptionTranslations(string lang)
         {
-            return (lang == "en") ? GetEnglishDescriptions() : GetKoreanDescriptions();
+            return (lang == "ko") ? GetKoreanDescriptions() : GetEnglishDescriptions();
         }
 
         /// <summary>
         /// Config 키 이름 번역 가져오기 (F1 메뉴 2차 항목 표시명)
-        /// BepInEx 제약으로 실제 적용 불가, 참조용으로만 유지
+        /// BindServerSync → GetLocalizedKeyName()에서 호출되어 ConfigurationManagerAttributes { DispName }에 실제 적용됨
         /// </summary>
         public static Dictionary<string, string> GetKeyNameTranslations(string lang)
         {
-            return (lang == "en") ? GetEnglishKeyNames() : GetKoreanKeyNames();
+            return (lang == "ko") ? GetKoreanKeyNames() : GetEnglishKeyNames();
         }
 
         // ============================================

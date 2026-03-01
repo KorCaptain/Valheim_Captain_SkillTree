@@ -1,6 +1,6 @@
 # Config 통합 가이드
 
-> 최종 업데이트: 2026-02-27 (섹션 9 추가: 서브티어 분리 패턴 - Attack Tree Tier 2/4/6)
+> 최종 업데이트: 2026-02-28 (중복/충돌 내용 정리 — Section 1/4/5/7 일관성 확보, 파일 분리 구조 명시)
 > **CONFIG_RULES.md**, **CONFIG_MANAGEMENT_RULES.md** 통합본 (단일 소스). CLAUDE.md 설정이 최신 기준.
 
 ---
@@ -9,14 +9,17 @@
 
 ### 기본 형식
 ```
-TierN_SkillName_PropertyName
+Tier N_[SkillName]_PropertyName
 ```
+** 실제 효과 구현 되지 않은건 컨피그에 항목에 추가하지 말고 개발자에게 효과 구현되지 않은 항목이 있다고 안내한다.
 
 | 항목 | 규칙 | 예시 |
 |------|------|------|
 | **카테고리(1차)** | 영어 고정, `"X Tree"` 형식 | `"Bow Tree"`, `"Defense Tree"` |
-| **키(2차)** | 영어, Tier 번호 필수 | `Tier0_BowExpert_RequiredPoints` |
+| **키(2차)** | 영어, Tier 번호 필수 | `Tier 0_[스킬명]_효과`, `Tier 0_[스킬명]_쿨타임`, `Tier 0_[스킬명]_RequiredPoints` |
 | **설명** | `GetConfigDescription()` 사용 **필수** | 하드코딩된 영어 문자열 금지 |
+
+> 키(2차) 정렬 순서: 효과 → 수량 → 범위 → 쿨타임 → 필요조건 (RequiredPoints는 같은 Tier 내 최하단)
 
 ### 카테고리 목록
 ```
@@ -26,12 +29,61 @@ Knife Tree, Sword Tree, Mace Tree, Spear Tree, Polearm Tree
 Archer Job Skills, Mage Job Skills, Tanker Job Skills
 Rogue Job Skills, Paladin Job Skills, Berserker Job Skills
 ```
+### 티어 구분
+1. 구분1
+- 다음 티어 배울수 있는 조건 같으면 같은티어 
+티어 표시 예시 : Tier 2-1, Tier 2-2, Tier 2-3  같은티어 다른 스킬 구분함
+2. 구분2
+- 다음 티어 배울수 있는 조건이 다르지만 현재 티어를 배워야 다음 티어를 배울 수 있는 경우 
+티어 표시 예시 :  Tier 2-1, Tier 2-2, Tier 2-3  같은티어 다른 스킬 구분함
+
+### 티어 구분이 특별한 스킬트리
+1. 생산 전문가 트리구조 및 순서
+- Tier 0 : 생산 전문가
+- Tier 1 : 기초 일꾼
+- Tier 2-1 : 벌목 Lv2
+- Tier 2-2 : 채집 Lv2
+- Tier 2-3 : 채광 Lv2
+- Tier 2-4 : 제작 Lv2
+- Tier 3-1 : 벌목 Lv3
+- Tier 3-2 : 채집 Lv3
+- Tier 3-3 : 채광 Lv3
+- Tier 3-4 : 제작 Lv3
+- Tier 4-1 : 벌목 Lv4
+- Tier 4-2 : 채집 Lv4
+- Tier 4-3 : 채광 Lv4
+- Tier 4-4 : 제작 Lv4 
+
+2. 방어 전문가 트리구조 및 순서
+- Tier 0 : 방어 전문가
+- Tier 1 : 피부 경화
+- Tier 2-1 : 심신단련
+- Tier 2-2 : 체력단련
+- Tier 3-1 : 단전호흡
+- Tier 3-2 : 회피단련
+- Tier 3-3 : 체력증강
+- Tier 3-4 : 방패훈련
+- Tier 4-1 : 충격파방출
+- Tier 4-2 : 발구르기
+- Tier 4-3 : 바위피부
+- Tier 5-1 : 지구력
+- Tier 5-2 : 기민함
+- Tier 5-3 : 트롤의 재생력
+- Tier 5-4 : 막기달인
+- Tier 6-1 : 마인드쉴드
+- Tier 6-2 : 신경강화
+- Tier 6-3 : 이단점프
+- Tier 6-4 : 요툰의 생명력
+- Tier 6-5 : 요툰의 방패
 
 ### Tier 번호 규칙
 | Tier | 용도 | 예시 |
 |------|------|------|
-| Tier0 | 전문가 루트 스킬 | `Tier0_AttackExpert_AllDamageBonus` |
-| Tier1~9 | 일반 스킬 단계 | `Tier5_MultiShot_TriggerChance` |
+| Tier 0 | 전문가 루트 스킬 | `Tier 0_[BowExpert]_AllDamageBonus` |
+| Tier 1~9 | 일반 스킬 단계 | `Tier 3_[MultiShot]_TriggerChance` |
+| Tier 1~9 | 일반 스킬 단계 | `Tier 4-1_[집중 공격]_공격력(%)` |
+| Tier 1~9 | 일반 스킬 단계 | `Tier 4-2_[치명타]_TriggerChance` |
+| Tier 1~9 | 일반 스킬 단계 | `Tier 5_[정조준]_크리티컬 데미지(%)` |
 | Active_ | 액티브 스킬 속성 | `Active_MultiShot_ArrowConsumption` |
 | Passive_ | 패시브 특수 속성 | `Passive_FallDamageReduction` |
 | Legacy_ | 더 이상 사용하지 않는 설정 | `Legacy_구르기속도` |
@@ -68,10 +120,10 @@ Rogue Job Skills, Paladin Job Skills, Berserker Job Skills
 
 ```csharp
 // ✅ 올바른 구분선 (각각 다른 section)
-BindServerSync(config, "─ Attack, Speed, Production, Defense Trees ─", "End", "", "");
-BindServerSync(config, "─ Ranged Expert Trees ────", "End", "", "");
-BindServerSync(config, "─ Melee Expert Trees ────", "End", "", "");
-BindServerSync(config, "─ Job Skill Trees ", "End", "", "");
+BindServerSync(config, "─ Atk, Spd, Production, Def Trees ─", "End", "", "");
+BindServerSync(config, "─ Ranged Expert Trees ──────", "End", "", "");
+BindServerSync(config, "─ Melee Expert Trees   ──────", "End", "", "");
+BindServerSync(config, "─ Job Skill Trees ─────────", "End", "", "");
 ```
 
 ---
@@ -112,7 +164,7 @@ float damage = Sword_Config.RushSlash1stDamageRatio.Value;
 
 ---
 
-## 4. 스킬 변경 3단계 워크플로우
+## 4. 스킬 변경 5종 세트 워크플로우
 
 스킬 추가/수정 시 반드시 다음 순서로 진행:
 
@@ -135,27 +187,38 @@ Description = $"효과 +{Config.PropertyValue}%"   // ✅ Config 동적 참조
 ```
 
 ### 3단계: 효과 구현
-- **방법 A (권장)**: MMO getParameter 패치 (기본 스탯은 반드시 이 방법)
+- **방법 A (권장)**: Valheim api 맞게 패치 
 - **방법 B (예외)**: 직접 패치 (MMO가 지원하지 않는 특수 효과만)
 
-### 3단계 체크리스트
+### 완료 체크리스트 (5종 세트)
 - [ ] Config 파일에 설정값 정의
 - [ ] 툴팁에 `{Config.Value}` 동적 참조
 - [ ] 효과에 `GetEffectiveValue()` 사용
-- [ ] UI 설명과 실제 효과가 같은 Config 값 사용
-- [ ] LogDebug로 추적 로그 추가
+- [ ] UI 설명(툴팁)과 실제 효과가 같은 Config 값 사용
+- [ ] LogDebug로 추적 로그 추가하고 개발 완료시 제거
+- [ ] `DefaultLanguages.cs`에 KO+EN 키 등록 (스킬 노드 이름/설명)
+- [ ] `ConfigTranslations.cs`에 DispName + Description 등록 (F1 Config Manager 표시)
 
 ---
 
 ## 5. Config 다국어 번역 시스템 (최신 - 2026-02-25)
 
 ### 번역 파일 분리 원칙
+
 | 파일 | 용도 |
 |------|------|
-| `Localization/DefaultLanguages.cs` | 스킬트리 UI 전용 (노드, 툴팁, 버프) |
-| `Localization/ConfigTranslations.cs` | F1 Config Manager 전용 (카테고리 + 설명 + 2차 항목명) |
+| `Localization/DefaultLanguages.cs` | 스킬트리 UI 전용 (노드 이름, 툴팁, 버프) |
+| `Localization/ConfigTranslations.cs` | F1 Config Manager 전용 — **partial class 디스패처** (아래 분리 파일들을 호출) |
+| `Localization/ConfigTranslations_KeyNames_KO.cs` | 한국어 2차 항목 표시명 (DispName) |
+| `Localization/ConfigTranslations_KeyNames_EN.cs` | 영어 2차 항목 표시명 (DispName) |
+| `Localization/ConfigTranslations_ExpertDesc.cs` | 전문가 트리 마우스오버 설명 (Description) |
+| `Localization/ConfigTranslations_RangedDesc.cs` | 원거리(Bow/Staff/Crossbow) 마우스오버 설명 |
+| `Localization/ConfigTranslations_SwordKnifeDesc.cs` | Sword/Knife 마우스오버 설명 |
+| `Localization/ConfigTranslations_HeavyMeleeDesc.cs` | 근접무기(Mace/Spear/Polearm) 마우스오버 설명 |
+| `Localization/ConfigTranslations_JobDesc.cs` | 직업 트리 마우스오버 설명 |
 
 > ❌ DefaultLanguages.cs에 Config 키 추가 금지!
+> ℹ️ 새 번역 추가 시: DispName은 `_KeyNames_KO/EN.cs`, Description은 해당 무기/직업 Desc 파일에 추가
 
 ---
 
@@ -163,20 +226,20 @@ Description = $"효과 +{Config.PropertyValue}%"   // ✅ Config 동적 참조
 
 F1 Config Manager에는 **3개의 독립적인 번역 레이어**가 있으며, 새 트리 추가 시 **모두 업데이트 필수**:
 
-| 레이어 | 딕셔너리 메서드 | F1 메뉴 표시 위치 | 누락 시 증상 |
-|--------|----------------|------------------|-------------|
-| **1차 카테고리** | `GetCategoryTranslations()` | 섹션 헤더 | 영어로 표시 |
-| **마우스오버 설명** | `GetDescriptionTranslations()` | 항목 호버 시 툴팁 | 영어/키 이름으로 표시 |
-| **2차 항목 표시명** | `GetKoreanKeyNames()` / `GetEnglishKeyNames()` | 항목 이름(DispName) | 내부 키 코드(`Tier0_BowExpert_...`)가 그대로 노출 |
+| 레이어 | 딕셔너리 메서드 | F1 메뉴 표시 위치 | 작업 필요 여부 |
+|--------|----------------|------------------|----------------|
+| **1차 카테고리** | `GetCategoryTranslations()` | 섹션 헤더 | **영어 고정 — 추가 수정 불필요** |
+| **마우스오버 설명** | `GetDescriptionTranslations()` | 항목 호버 시 툴팁 | ✅ 필수 — 누락 시 영어/키 이름 노출 |
+| **2차 항목 표시명** | `GetKoreanKeyNames()` / `GetEnglishKeyNames()` | 항목 이름(DispName) | ✅ 필수 — 누락 시 `Tier0_BowExpert_...` 원시 키 노출 |
 
 > ⚠️ **흔한 실수**: Description만 추가하고 `GetKoreanKeyNames()`/`GetEnglishKeyNames()` 누락 → 2차 항목이 `Tier1_RapidFire_Chance` 같은 원시 키로 표시됨
 
 ---
 
-### 레이어 1: 카테고리 번역
+### 레이어 1: 카테고리 (영어 고정 — 추가 작업 불필요)
 ```csharp
 // GetKoreanCategories() / GetEnglishCategories() 내부
-// BepInEx 제약으로 카테고리는 영어 고정!
+// BepInEx 제약으로 카테고리는 영어 고정 — 새 트리 추가 시도 영어만 사용!
 ["Speed Tree"] = "Speed Tree"   // ✅ 영어 통일
 ["Speed Tree"] = "속도 트리"    // ❌ 한국어 사용 금지
 ```
@@ -215,22 +278,22 @@ F1 Config Manager에는 **3개의 독립적인 번역 레이어**가 있으며, 
 
 ```csharp
 // GetKoreanKeyNames() 내부 - 한국어 표시명
-["Tier1_RapidFire_Chance"] = "Tier 1: 연발 발동 확률 (%)",
-["Tier1_RapidFire_ShotCount"] = "Tier 1: 연발 발사 횟수",
-["Tier5_DoubleCast_Cooldown"] = "Tier 5: 쿨타임 (초)",
+["Tier1_RapidFire_Chance"] = "Tier 1: [스킬이름]연발 발동 확률 (%)",
+["Tier1_RapidFire_ShotCount"] = "Tier 1: [스킬이름]연발 발사 횟수",
+["Tier5_DoubleCast_Cooldown"] = "Tier 5: [스킬이름]쿨타임 (초)",
 
 // GetEnglishKeyNames() 내부 - 영어 표시명
-["Tier1_RapidFire_Chance"] = "Tier 1: Rapid Fire Trigger Chance (%)",
-["Tier1_RapidFire_ShotCount"] = "Tier 1: Rapid Fire Shot Count",
-["Tier5_DoubleCast_Cooldown"] = "Tier 5: Cooldown (sec)",
+["Tier1_RapidFire_Chance"] = "Tier 1: [SkillName]Rapid Fire Trigger Chance (%)",
+["Tier1_RapidFire_ShotCount"] = "Tier 1: [SkillName]Rapid Fire Shot Count",
+["Tier5_DoubleCast_Cooldown"] = "Tier 5: [SkillName]Cooldown (sec)",
 ```
 
 **표시명 작성 패턴:**
 ```
-필요 포인트:  "Tier N: 필요 포인트"  /  "Tier N: Required Points"
+필요 포인트:  "Tier N: [스킬명]필요 포인트"  /  "Tier N: [SkillName]Required Points"
 능력치 (수치): "Tier N: 설명 (단위)" /  "Tier N: Description (unit)"
-예) "Tier 1: 연발 발동 확률 (%)"   /  "Tier 1: Rapid Fire Trigger Chance (%)"
-예) "Tier 5: 쿨타임 (초)"          /  "Tier 5: Cooldown (sec)"
+예) "Tier 1: [스킬명]연발 발동 확률 (%)"   /  "Tier 1: [SkillName]Rapid Fire Trigger Chance (%)"
+예) "Tier 5: [스킬명]쿨타임 (초)"          /  "Tier 5: [SkillName]Cooldown (sec)"
 ```
 
 ---
@@ -320,15 +383,14 @@ Description = $"블럭 스태미나 -{Config.A}%, 일반방패 이동속도 +{Co
 
 ### 효과 구현 시 GetEffectiveValue 사용
 ```csharp
-// ✅ 멀티플레이어 호환 - 서버 Config 우선 적용
-float bonus = SkillTreeConfig.GetEffectiveValue(
-    Defense_Config.AgileDodgeBonusValue,
-    "DefenseAgileDodge"
-);
+// ✅ 올바름 - Value 프로퍼티 사용 (내부적으로 서버 Config 우선 적용)
+float bonus = Defense_Config.AgileDodgeBonusValue;
 
-// ❌ 금지 - 클라이언트 로컬값만 참조
-float bonus = Defense_Config.AgileDodgeBonusValue.Value;
+// ❌ 금지 - ConfigEntry 직접 접근 (클라이언트 로컬값만 참조)
+float bonus = Defense_Config.AgileDodgeBonus.Value;
 ```
+
+> ℹ️ `AgileDodgeBonusValue`는 `float` 프로퍼티로, 내부에서 `GetEffectiveValue("key", localValue)`를 호출하여 서버 Config를 자동으로 우선 적용합니다.
 
 ### 새 Config 추가 후 동기화 체크리스트
 - [ ] `BroadcastConfigToClients()` 딕셔너리에 새 Config 추가
@@ -432,14 +494,50 @@ Archer_Config.Initialize(config);  // 반드시 최하단으로
 | `Common_지팡이시전속도` | `Legacy_지팡이시전속도` |
 | `Common_쿨타임감소` | `Legacy_쿨타임감소` |
 
-#### Bow_Config.cs 네이밍 수정
-| 변경 전 | 변경 후 |
-|---------|---------|
-| `Tier_멀티샷Lv1_발동확률` | `Tier2_멀티샷Lv1_발동확률` |
-| `Tier_멀티샷Lv2_발동확률` | `Tier4_멀티샷Lv2_발동확률` |
-| `Tier_멀티샷_추가화살수` | `Tier2_멀티샷_추가화살수` |
-| `Tier_멀티샷_화살소모량` | `Tier2_멀티샷_화살소모량` |
-| `Tier_멀티샷_화살데미지비율` | `Tier2_멀티샷_화살데미지비율` |
+#### Bow_Config.cs 전체 재구성 (2026-02-27) — 서브티어 분리 패턴 적용
+
+**제거된 필드** (실제 스킬에 없던 항목):
+| 제거 필드 | 비고 |
+|----------|------|
+| `BowStep4PowerShotKnockbackChance` | RangedSkillData에 미사용 |
+| `BowStep4PowerShotKnockbackPower` | RangedSkillData에 미사용 |
+
+SkillTreeConfig.cs의 프록시 프로퍼티도 동시 제거.
+
+**Config 키 전체 리네이밍** (Tier 번호 조정):
+| 변경 전 키 | 변경 후 키 |
+|-----------|-----------|
+| `Tier2_MultishotLv1_ActivationChance` | `Tier1_MultishotLv1_ActivationChance` |
+| `Tier2_Multishot_AdditionalArrows` | `Tier1_MultishotLv1_AdditionalArrows` |
+| `Tier2_Multishot_ArrowConsumption` | `Tier1_MultishotLv1_ArrowConsumption` |
+| `Tier2_Multishot_DamagePerArrow` | `Tier1_MultishotLv1_DamagePerArrow` |
+| `Tier2_MultishotLv1_RequiredPoints` | `Tier1_MultishotLv1_RequiredPoints` |
+| `Tier3_SpeedShot_SkillBonus` | `Tier2_BowMastery_SkillBonus` |
+| `Tier3_SpecialArrow_Chance` | `Tier2_BowMastery_SpecialArrowChance` |
+| `Tier3_BowMastery_RequiredPoints` *(신규)* | `Tier2_BowMastery_RequiredPoints` |
+| `Tier3_SilentShot_DamageBonus` | `Tier3_SilentStrike_DamageBonus` |
+| `Tier4_MultishotLv2_ActivationChance` | `Tier3_MultishotLv2_ActivationChance` |
+| `Tier4_PowerShot_KnockbackChance` | 제거 |
+| `Tier4_PowerShot_KnockbackDistance` | 제거 |
+| `Tier4_MultishotLv2_RequiredPoints` | `Tier3_MultishotLv2_RequiredPoints` |
+| `Tier5_HuntingInstinct_CritBonus` | `Tier3_HuntingInstinct_CritBonus` |
+| `Tier5_PrecisionAim_CritDamage` | `Tier4_PrecisionAim_CritDamage` |
+| `Tier5_ArrowRain_Chance` | `Tier4_ArrowRain_Chance` |
+| `Tier5_ArrowRain_ArrowCount` | `Tier4_ArrowRain_ArrowCount` |
+| `Tier5_BackstepShot_CritBonus` | `Tier4_BackstepShot_CritBonus` |
+| `Tier5_BackstepShot_Duration` | `Tier4_BackstepShot_Duration` |
+| `Tier5_PrecisionAim_RequiredPoints` | `Tier4_PrecisionAim_RequiredPoints` |
+| `Tier6_ExplosiveArrow_*` | `Tier5_ExplosiveArrow_*` |
+| `Tier6_CritBoost_*` | `Tier5_CritBoost_*` |
+
+**신규 추가된 RequiredPoints 필드**:
+| 필드명 | Config 키 | 대응 노드 |
+|--------|----------|----------|
+| `BowFocusShotRequiredPoints` | `Tier1_FocusedShot_RequiredPoints` | bow_Step2_focus |
+| `BowSilentStrikeRequiredPoints` | `Tier3_SilentStrike_RequiredPoints` | bow_Step3_silentshot |
+| `BowHuntingInstinctRequiredPoints` | `Tier3_HuntingInstinct_RequiredPoints` | bow_Step5_instinct |
+
+> ⚠️ 기존 사용자 Config 값 리셋됨 (키 이름 변경). 개발 단계에서만 허용.
 
 ---
 
@@ -454,14 +552,37 @@ Archer_Config.Initialize(config);  // 반드시 최하단으로
 ### F1 표시명 규칙
 
 ```
-Tier N-X: [스킬그룹명] 속성명
+Tier N-X: [스킬명] 속성명
 ```
+
+**[스킬명]은 반드시 해당 SkillNode의 NameKey 표시명과 동일하게 작성해야 한다.**
+DefaultLanguages.cs의 NameKey 값을 기준으로 KO/EN 모두 확인 후 작성.
+
+```
+// 확인 경로: RangedSkillData.cs → NameKey = "bow_xxx_name"
+//           DefaultLanguages.cs → ["bow_xxx_name"] = "실제 스킬명"
+```
+
+| ❌ 틀린 예 | ✅ 올바른 예 | 이유 |
+|-----------|------------|------|
+| `[Multishot Lv1]` | `[Multi-Shot Lv1]` | 툴팁 표기는 하이픈 포함 |
+| `[Bow Mastery]` | `[Bow Proficiency]` | 툴팁 NameKey = "Bow Proficiency" |
+| `[Silent Strike]` | `[Silent Shot]` | 툴팁 NameKey = "Silent Shot" |
+| `[Hunting Instinct]` | `[Hunter's Instinct]` | 툴팁 NameKey = "Hunter's Instinct" |
+
+> ℹ️ 단일 스킬 노드의 **서브 이펙트** (화살비, 백스텝샷, 크리부스트 등)는 자체 NameKey가 없으므로
+> 효과를 설명하는 짧은 이름으로 작성 가능 (예: `[화살비]`, `[Crit Boost]`)
 
 | 예시 | KO | EN |
 |------|----|----|
+| Tier 0 공격 전문가 필요 포인트 | `"Tier 0: [공격 전문가] 필요 포인트"` | `"Tier 0: [Attack Expert] Required Points"` |
 | Tier 2-1 근접 특화 발동 확률 | `"Tier 2-1: [근접 특화] 발동 확률 (%)"` | `"Tier 2-1: [Melee Spec] Trigger Chance (%)"` |
 | Tier 2-1 근접 특화 필요 포인트 | `"Tier 2-1: [근접 특화] 필요 포인트"` | `"Tier 2-1: [Melee Spec] Required Points"` |
 | Tier 4-2 정밀 공격 치명타 확률 | `"Tier 4-2: [정밀 공격] 치명타 확률 (%)"` | `"Tier 4-2: [Precision Attack] Crit Chance (%)"` |
+
+> ⚠️ **주의**: Tier 0, 1, 3, 5처럼 단일 스킬만 있는 Tier의 RequiredPoints도 `GetLocalizedKeyName` fallback에 의존하면 안 됨.
+> fallback은 `"Tier0: Required Points"` (공백 없음, 스킬명 없음) 형식으로 표시되므로
+> **반드시 `ConfigTranslations_KeyNames_KO.cs` / `_EN.cs`에 명시적으로 등록해야 한다.**
 
 ### Attack_Config.cs 구현 패턴
 
@@ -510,6 +631,20 @@ AttackStep2MeleeRequiredPoints = SkillTreeConfig.BindServerSync(config,
 | N-3 | N-2 - 2 | N-2 - 3 |
 | N-4 | N-3 - 2 | N-3 - 3 |
 
+### Bow Tree 서브티어 order 목록 (2026-02-27 재구성)
+
+| 티어 | 서브티어 | 스킬 키 접두사 | 값 order | RP order |
+|------|---------|-------------|----------|----------|
+| Tier 0 | 단일 | `Tier0_BowExpert_*` | 60 | 59 |
+| Tier 1 | 1-1 집중 사격 | `Tier1_FocusedShot_*` | 50 | 49 |
+| Tier 1 | 1-2 멀티샷 Lv1 | `Tier1_MultishotLv1_*` | 48 | 47 |
+| Tier 2 | 단일 | `Tier2_BowMastery_*` | 40 | 39 |
+| Tier 3 | 3-1 침묵의 일격 | `Tier3_SilentStrike_*` | 32 | 31 |
+| Tier 3 | 3-2 멀티샷 Lv2 | `Tier3_MultishotLv2_*` | 30 | 29 |
+| Tier 3 | 3-3 사냥 본능 | `Tier3_HuntingInstinct_*` | 28 | 27 |
+| Tier 4 | 단일 | `Tier4_PrecisionAim_*`, `Tier4_ArrowRain_*`, `Tier4_BackstepShot_*` | 20 | 19 |
+| Tier 5 | 단일 | `Tier5_ExplosiveArrow_*`, `Tier5_CritBoost_*` | 10 | 9 |
+
 ### Attack Tree 서브티어 order 목록 (현재 적용 값)
 
 | 티어 | 서브티어 | 스킬 키 | 값 order | RP order |
@@ -548,9 +683,12 @@ RequiredPoints = Attack_Config.AttackStep2StaffRequiredPointsValue,
 - [ ] `*_Config.cs` 필드 선언: 공유 필드 제거 → 스킬별 독립 필드 추가
 - [ ] `*_Config.cs` Value 프로퍼티: 동일하게 분리
 - [ ] `*_Config.cs` Initialize(): 서브티어별 코멘트 + order 분리
+- [ ] `SkillTreeConfig.cs`: 제거된 필드의 프록시 프로퍼티 동시 제거
 - [ ] `*SkillData.cs`: RequiredPoints 참조를 독립 프로퍼티로 교체
 - [ ] `ConfigTranslations_KeyNames_KO.cs`: 기존 표시명 수정 + RequiredPoints 키 추가
-- [ ] `ConfigTranslations_KeyNames_EN.cs`: 동일 (영문)
+- [ ] `ConfigTranslations_KeyNames_EN.cs`: 동일 (영문, **[스킬명]은 EN 툴팁명 기준**)
+- [ ] `ConfigTranslations_RangedDesc.cs` (또는 해당 Desc 파일): 키 이름 변경 반영 + 신규 RequiredPoints 설명 추가
+- [ ] [스킬명] 툴팁 일치 검증: DefaultLanguages.cs NameKey와 Config 표시명 대조
 - [ ] 빌드 성공 확인 (경고 0, 오류 0)
 
 ---

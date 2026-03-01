@@ -156,19 +156,6 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                 Plugin.Log.LogDebug($"[치명타 피해] Tier 5 정조준 (패시브): +{tierBonus}%");
             }
 
-            // Tier 6: 크리티컬 부스트 - R키 액티브 데미지 보너스 +50%
-            if (SkillEffect.HasSkill("bow_Step6_critboost"))
-            {
-                if (SkillEffect.bowCritBoostEndTime.TryGetValue(player, out float endTime)
-                    && Time.time < endTime)
-                {
-                    float tierBonus = SkillTreeConfig.BowStep6CritBoostDamageBonusValue;
-                    bonus += tierBonus;
-                    float remainingTime = endTime - Time.time;
-                    Plugin.Log.LogDebug($"[치명타 피해] Tier 6 크리티컬 부스트 (R키 액티브): +{tierBonus}% (남은 시간: {remainingTime:F1}초)");
-                }
-            }
-
             if (bonus > 0f)
             {
                 Plugin.Log.LogInfo($"[활 치명타 피해] 총 보너스: +{bonus}%");

@@ -8,12 +8,23 @@ namespace CaptainSkillTree.SkillTree
     public static class Bow_Config
     {
         // === 필요 포인트 설정 ===
+        // Tier 0: 활 전문가
         public static ConfigEntry<int> BowExpertRequiredPoints;
-        public static ConfigEntry<int> BowStep2RequiredPoints;
+        // Tier 1-1: 집중 사격
+        public static ConfigEntry<int> BowFocusShotRequiredPoints;
+        // Tier 1-2: 멀티샷 Lv1
         public static ConfigEntry<int> BowMultishotRequiredPoints;
+        // Tier 2: 활 숙련
         public static ConfigEntry<int> BowStep3RequiredPoints;
+        // Tier 3-1: 침묵의 일격
+        public static ConfigEntry<int> BowSilentStrikeRequiredPoints;
+        // Tier 3-2: 멀티샷 Lv2
         public static ConfigEntry<int> BowStep4RequiredPoints;
+        // Tier 3-3: 사냥 본능
+        public static ConfigEntry<int> BowHuntingInstinctRequiredPoints;
+        // Tier 4: 정조준
         public static ConfigEntry<int> BowStep5RequiredPoints;
+        // Tier 5: 폭발 화살
         public static ConfigEntry<int> BowExplosiveArrowRequiredPoints;
 
         // === 활 전문가 멀티샷 패시브 스킬 설정 ===
@@ -29,19 +40,8 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> BowStep3SpeedShotSkillBonus;
         public static ConfigEntry<float> BowStep3SilentShotDamageBonus;
         public static ConfigEntry<float> BowStep3SpecialArrowChance;
-        public static ConfigEntry<float> BowStep4PowerShotKnockbackChance;
-        public static ConfigEntry<float> BowStep4PowerShotKnockbackPower;
         public static ConfigEntry<float> BowStep5InstinctCritBonus;
         public static ConfigEntry<float> BowStep5MasterCritDamage;
-        public static ConfigEntry<float> BowStep5ArrowRainChance;
-        public static ConfigEntry<int> BowStep5ArrowRainCount;
-        public static ConfigEntry<float> BowStep5BackstepShotCritBonus;
-        public static ConfigEntry<float> BowStep5BackstepShotWindow;
-        public static ConfigEntry<float> BowStep6CritBoostDamageBonus;
-        public static ConfigEntry<float> BowStep6CritBoostCritChance;
-        public static ConfigEntry<int> BowStep6CritBoostArrowCount;
-        public static ConfigEntry<float> BowStep6CritBoostCooldown;
-        public static ConfigEntry<float> BowStep6CritBoostStaminaCost;
         public static ConfigEntry<float> BowExplosiveArrowDamage;
         public static ConfigEntry<float> BowExplosiveArrowCooldown;
         public static ConfigEntry<float> BowExplosiveArrowStaminaCost;
@@ -49,10 +49,12 @@ namespace CaptainSkillTree.SkillTree
 
         // === 필요 포인트 접근 프로퍼티 ===
         public static int BowExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_expert_required_points", BowExpertRequiredPoints?.Value ?? 2);
-        public static int BowStep2RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step2_required_points", BowStep2RequiredPoints?.Value ?? 2);
+        public static int BowFocusShotRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_focusshot_required_points", BowFocusShotRequiredPoints?.Value ?? 2);
         public static int BowMultishotRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_multishot_required_points", BowMultishotRequiredPoints?.Value ?? 2);
         public static int BowStep3RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step3_required_points", BowStep3RequiredPoints?.Value ?? 2);
+        public static int BowSilentStrikeRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_silentstrike_required_points", BowSilentStrikeRequiredPoints?.Value ?? 2);
         public static int BowStep4RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step4_required_points", BowStep4RequiredPoints?.Value ?? 3);
+        public static int BowHuntingInstinctRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_huntinginstinct_required_points", BowHuntingInstinctRequiredPoints?.Value ?? 3);
         public static int BowStep5RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step5_required_points", BowStep5RequiredPoints?.Value ?? 3);
         public static int BowExplosiveArrowRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_explosive_required_points", BowExplosiveArrowRequiredPoints?.Value ?? 4);
 
@@ -67,19 +69,8 @@ namespace CaptainSkillTree.SkillTree
         public static float BowStep3SpeedShotSkillBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step3_speedshot_skill_bonus", BowStep3SpeedShotSkillBonus.Value);
         public static float BowStep3SilentShotDamageBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step3_silentshot_damage_bonus", BowStep3SilentShotDamageBonus.Value);
         public static float BowStep3SpecialArrowChanceValue => SkillTreeConfig.GetEffectiveValue("bow_Step3_special_arrow_chance", BowStep3SpecialArrowChance.Value);
-        public static float BowStep4PowerShotKnockbackChanceValue => SkillTreeConfig.GetEffectiveValue("bow_Step4_powershot_knockback_chance", BowStep4PowerShotKnockbackChance.Value);
-        public static float BowStep4PowerShotKnockbackPowerValue => SkillTreeConfig.GetEffectiveValue("bow_Step4_powershot_knockback_power", BowStep4PowerShotKnockbackPower.Value);
-        public static float BowStep5ArrowRainChanceValue => SkillTreeConfig.GetEffectiveValue("bow_Step5_arrow_rain_chance", BowStep5ArrowRainChance.Value);
-        public static int BowStep5ArrowRainCountValue => (int)SkillTreeConfig.GetEffectiveValue("bow_Step5_arrow_rain_count", (float)BowStep5ArrowRainCount.Value);
-        public static float BowStep5BackstepShotCritBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step5_backstep_shot_crit_bonus", BowStep5BackstepShotCritBonus.Value);
-        public static float BowStep5BackstepShotWindowValue => SkillTreeConfig.GetEffectiveValue("bow_Step5_backstep_shot_window", BowStep5BackstepShotWindow.Value);
         public static float BowStep5InstinctCritBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step5_instinct_crit_bonus", BowStep5InstinctCritBonus.Value);
         public static float BowStep5MasterCritDamageValue => SkillTreeConfig.GetEffectiveValue("bow_Step5_master_crit_damage", BowStep5MasterCritDamage.Value);
-        public static float BowStep6CritBoostDamageBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_critboost_damage_bonus", BowStep6CritBoostDamageBonus.Value);
-        public static float BowStep6CritBoostCritChanceValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_critboost_crit_chance", BowStep6CritBoostCritChance.Value);
-        public static int BowStep6CritBoostArrowCountValue => (int)SkillTreeConfig.GetEffectiveValue("bow_Step6_critboost_arrow_count", (float)BowStep6CritBoostArrowCount.Value);
-        public static float BowStep6CritBoostCooldownValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_critboost_cooldown", BowStep6CritBoostCooldown.Value);
-        public static float BowStep6CritBoostStaminaCostValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_critboost_stamina_cost", BowStep6CritBoostStaminaCost.Value);
         public static float BowExplosiveArrowDamageValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_damage", BowExplosiveArrowDamage.Value);
         public static float BowExplosiveArrowCooldownValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_cooldown", BowExplosiveArrowCooldown.Value);
         public static float BowExplosiveArrowStaminaCostValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_stamina_cost", BowExplosiveArrowStaminaCost.Value);
@@ -87,212 +78,114 @@ namespace CaptainSkillTree.SkillTree
 
         public static void Initialize(ConfigFile config)
         {
-            // === 필요 포인트 설정 ===
+            // === Tier 0: 활 전문가 ===
+            BowStep1ExpertDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier0_BowExpert_DamageBonus", 5f,
+                SkillTreeConfig.GetConfigDescription("Tier0_BowExpert_DamageBonus"), order: 60);
+
             BowExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier0_BowExpert_RequiredPoints",
-                2,
-                SkillTreeConfig.GetConfigDescription("Tier0_BowExpert_RequiredPoints"));
+                "Bow Tree", "Tier0_BowExpert_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier0_BowExpert_RequiredPoints"), order: 59);
 
-            BowStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier1_FocusedShot_RequiredPoints",
-                2,
-                SkillTreeConfig.GetConfigDescription("Tier1_FocusedShot_RequiredPoints"));
+            // === Tier 1-1: [집중 사격] ===
+            BowStep2FocusCritBonus = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier1_FocusedShot_CritBonus", 7f,
+                SkillTreeConfig.GetConfigDescription("Tier1_FocusedShot_CritBonus"), order: 50);
 
-            BowMultishotRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier2_MultishotLv1_RequiredPoints",
-                2,
-                SkillTreeConfig.GetConfigDescription("Tier2_MultishotLv1_RequiredPoints"));
+            BowFocusShotRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier1_FocusedShot_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier1_FocusedShot_RequiredPoints"), order: 49);
 
-            BowStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier3_BowMastery_RequiredPoints",
-                2,
-                SkillTreeConfig.GetConfigDescription("Tier3_BowMastery_RequiredPoints"));
-
-            BowStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier4_MultishotLv2_RequiredPoints",
-                3,
-                SkillTreeConfig.GetConfigDescription("Tier4_MultishotLv2_RequiredPoints"));
-
-            BowStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier5_PrecisionAim_RequiredPoints",
-                3,
-                SkillTreeConfig.GetConfigDescription("Tier5_PrecisionAim_RequiredPoints"));
-
-            BowExplosiveArrowRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_ExplosiveArrow_RequiredPoints",
-                4,
-                SkillTreeConfig.GetConfigDescription("Tier6_ExplosiveArrow_RequiredPoints"));
-
-            // === Bow Tree: 멀티샷 패시브 ===
+            // === Tier 1-2: [멀티샷 Lv1] ===
             BowMultishotLv1Chance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier2_MultishotLv1_ActivationChance",
-                15f,
-                SkillTreeConfig.GetConfigDescription("Tier2_MultishotLv1_ActivationChance"));
-
-            BowMultishotLv2Chance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier4_MultishotLv2_ActivationChance",
-                36f,
-                SkillTreeConfig.GetConfigDescription("Tier4_MultishotLv2_ActivationChance"));
+                "Bow Tree", "Tier1_MultishotLv1_ActivationChance", 15f,
+                SkillTreeConfig.GetConfigDescription("Tier1_MultishotLv1_ActivationChance"), order: 48);
 
             BowMultishotArrowCount = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier2_Multishot_AdditionalArrows",
-                2,
-                SkillTreeConfig.GetConfigDescription("Tier2_Multishot_AdditionalArrows"));
+                "Bow Tree", "Tier1_MultishotLv1_AdditionalArrows", 2,
+                SkillTreeConfig.GetConfigDescription("Tier1_MultishotLv1_AdditionalArrows"), order: 48);
 
             BowMultishotArrowConsumption = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier2_Multishot_ArrowConsumption",
-                0,
-                SkillTreeConfig.GetConfigDescription("Tier2_Multishot_ArrowConsumption"));
+                "Bow Tree", "Tier1_MultishotLv1_ArrowConsumption", 0,
+                SkillTreeConfig.GetConfigDescription("Tier1_MultishotLv1_ArrowConsumption"), order: 48);
 
             BowMultishotDamagePercent = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier2_Multishot_DamagePerArrow",
-                70f,
-                SkillTreeConfig.GetConfigDescription("Tier2_Multishot_DamagePerArrow"));
+                "Bow Tree", "Tier1_MultishotLv1_DamagePerArrow", 70f,
+                SkillTreeConfig.GetConfigDescription("Tier1_MultishotLv1_DamagePerArrow"), order: 48);
 
-            // === Bow Tree: 공격 스킬 ===
-            BowStep1ExpertDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier0_BowExpert_DamageBonus",
-                5f,
-                SkillTreeConfig.GetConfigDescription("Tier0_BowExpert_DamageBonus"));
+            BowMultishotRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier1_MultishotLv1_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier1_MultishotLv1_RequiredPoints"), order: 47);
 
-            BowStep2FocusCritBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier1_FocusedShot_CritBonus",
-                7f,
-                SkillTreeConfig.GetConfigDescription("Tier1_FocusedShot_CritBonus"));
-
+            // === Tier 2: [활 숙련] ===
             BowStep3SpeedShotSkillBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier3_SpeedShot_SkillBonus",
-                10f,
-                SkillTreeConfig.GetConfigDescription("Tier3_SpeedShot_SkillBonus"));
-
-            BowStep3SilentShotDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier3_SilentShot_DamageBonus",
-                3f,
-                SkillTreeConfig.GetConfigDescription("Tier3_SilentShot_DamageBonus"));
+                "Bow Tree", "Tier2_BowMastery_SkillBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("Tier2_BowMastery_SkillBonus"), order: 40);
 
             BowStep3SpecialArrowChance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier3_SpecialArrow_Chance",
-                30f,
-                SkillTreeConfig.GetConfigDescription("Tier3_SpecialArrow_Chance"));
+                "Bow Tree", "Tier2_BowMastery_SpecialArrowChance", 30f,
+                SkillTreeConfig.GetConfigDescription("Tier2_BowMastery_SpecialArrowChance"), order: 40);
 
-            BowStep4PowerShotKnockbackChance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier4_PowerShot_KnockbackChance",
-                35f,
-                SkillTreeConfig.GetConfigDescription("Tier4_PowerShot_KnockbackChance"));
+            BowStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier2_BowMastery_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier2_BowMastery_RequiredPoints"), order: 39);
 
-            BowStep4PowerShotKnockbackPower = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier4_PowerShot_KnockbackDistance",
-                5f,
-                SkillTreeConfig.GetConfigDescription("Tier4_PowerShot_KnockbackDistance"));
+            // === Tier 3-1: [침묵의 일격] ===
+            BowStep3SilentShotDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier3_SilentStrike_DamageBonus", 3f,
+                SkillTreeConfig.GetConfigDescription("Tier3_SilentStrike_DamageBonus"), order: 32);
 
-            BowStep5ArrowRainChance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier5_ArrowRain_Chance",
-                29f,
-                SkillTreeConfig.GetConfigDescription("Tier5_ArrowRain_Chance"));
+            BowSilentStrikeRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier3_SilentStrike_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier3_SilentStrike_RequiredPoints"), order: 31);
 
-            BowStep5ArrowRainCount = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier5_ArrowRain_ArrowCount",
-                3,
-                SkillTreeConfig.GetConfigDescription("Tier5_ArrowRain_ArrowCount"));
+            // === Tier 3-2: [멀티샷 Lv2] ===
+            BowMultishotLv2Chance = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier3_MultishotLv2_ActivationChance", 36f,
+                SkillTreeConfig.GetConfigDescription("Tier3_MultishotLv2_ActivationChance"), order: 30);
 
-            BowStep5BackstepShotCritBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier5_BackstepShot_CritBonus",
-                25f,
-                SkillTreeConfig.GetConfigDescription("Tier5_BackstepShot_CritBonus"));
+            BowStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier3_MultishotLv2_RequiredPoints", 3,
+                SkillTreeConfig.GetConfigDescription("Tier3_MultishotLv2_RequiredPoints"), order: 29);
 
-            BowStep5BackstepShotWindow = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier5_BackstepShot_Duration",
-                3f,
-                SkillTreeConfig.GetConfigDescription("Tier5_BackstepShot_Duration"));
-
+            // === Tier 3-3: [사냥 본능] ===
             BowStep5InstinctCritBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier5_HuntingInstinct_CritBonus",
-                10f,
-                SkillTreeConfig.GetConfigDescription("Tier5_HuntingInstinct_CritBonus"));
+                "Bow Tree", "Tier3_HuntingInstinct_CritBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("Tier3_HuntingInstinct_CritBonus"), order: 28);
 
+            BowHuntingInstinctRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier3_HuntingInstinct_RequiredPoints", 3,
+                SkillTreeConfig.GetConfigDescription("Tier3_HuntingInstinct_RequiredPoints"), order: 27);
+
+            // === Tier 4: [정조준] ===
             BowStep5MasterCritDamage = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier5_PrecisionAim_CritDamage",
-                30f,
-                SkillTreeConfig.GetConfigDescription("Tier5_PrecisionAim_CritDamage"));
+                "Bow Tree", "Tier4_PrecisionAim_CritDamage", 30f,
+                SkillTreeConfig.GetConfigDescription("Tier4_PrecisionAim_CritDamage"), order: 20);
 
-            BowStep6CritBoostDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_CritBoost_DamageBonus",
-                50f,
-                SkillTreeConfig.GetConfigDescription("Tier6_CritBoost_DamageBonus"));
+            BowStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier4_PrecisionAim_RequiredPoints", 3,
+                SkillTreeConfig.GetConfigDescription("Tier4_PrecisionAim_RequiredPoints"), order: 19);
 
-            BowStep6CritBoostCritChance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_CritBoost_CritChance",
-                100f,
-                SkillTreeConfig.GetConfigDescription("Tier6_CritBoost_CritChance"));
-
-            BowStep6CritBoostArrowCount = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_CritBoost_ArrowCount",
-                5,
-                SkillTreeConfig.GetConfigDescription("Tier6_CritBoost_ArrowCount"));
-
-            BowStep6CritBoostCooldown = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_CritBoost_Cooldown",
-                45f,
-                SkillTreeConfig.GetConfigDescription("Tier6_CritBoost_Cooldown"));
-
-            BowStep6CritBoostStaminaCost = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_CritBoost_StaminaCost",
-                25f,
-                SkillTreeConfig.GetConfigDescription("Tier6_CritBoost_StaminaCost"));
-
+            // === Tier 5: [폭발 화살] (R키 액티브) ===
             BowExplosiveArrowDamage = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_ExplosiveArrow_DamageMultiplier",
-                120f,
-                SkillTreeConfig.GetConfigDescription("Tier6_ExplosiveArrow_DamageMultiplier"));
-
-            BowExplosiveArrowCooldown = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_ExplosiveArrow_Cooldown",
-                20f,
-                SkillTreeConfig.GetConfigDescription("Tier6_ExplosiveArrow_Cooldown"));
-
-            BowExplosiveArrowStaminaCost = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_ExplosiveArrow_StaminaCost",
-                15f,
-                SkillTreeConfig.GetConfigDescription("Tier6_ExplosiveArrow_StaminaCost"));
+                "Bow Tree", "Tier5_ExplosiveArrow_DamageMultiplier", 120f,
+                SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_DamageMultiplier"), order: 10);
 
             BowExplosiveArrowRadius = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree",
-                "Tier6_ExplosiveArrow_Radius",
-                4f,
-                SkillTreeConfig.GetConfigDescription("Tier6_ExplosiveArrow_Radius"));
+                "Bow Tree", "Tier5_ExplosiveArrow_Radius", 4f,
+                SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_Radius"), order: 10);
+
+            BowExplosiveArrowCooldown = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier5_ExplosiveArrow_Cooldown", 20f,
+                SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_Cooldown"), order: 10);
+
+            BowExplosiveArrowStaminaCost = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier5_ExplosiveArrow_StaminaCost", 15f,
+                SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_StaminaCost"), order: 10);
+
+            BowExplosiveArrowRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier5_ExplosiveArrow_RequiredPoints", 4,
+                SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_RequiredPoints"), order: 9);
 
             Plugin.Log.LogDebug("[Bow_Config] 활 전문가 트리 설정 초기화 완료");
         }

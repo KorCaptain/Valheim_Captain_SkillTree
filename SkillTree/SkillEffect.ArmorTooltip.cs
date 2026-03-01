@@ -115,7 +115,9 @@ namespace CaptainSkillTree.SkillTree
                             if (colonIdx < 0) break;
                             string label = line.Substring(0, colonIdx + 1);
 
+                            SkillEffect_DefenseTree.ItemData_GetArmor_DefenseTree_Patch.SuppressPatch = true;
                             float baseArmor = item.GetArmor(qualityLevel, worldLevel);
+                            SkillEffect_DefenseTree.ItemData_GetArmor_DefenseTree_Patch.SuppressPatch = false;
 
                             lines[i] = BuildLine(label, baseArmor, flatBonus,
                                                   rockSkinActive, rockSkinPct, rockSkinMult);

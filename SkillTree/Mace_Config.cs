@@ -342,13 +342,6 @@ namespace CaptainSkillTree.SkillTree
         public static void Initialize(ConfigFile config)
         {
             // Tier 0: 둔기 전문가 (Mace Expert)
-            MaceExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Mace Tree",
-                "Tier0_MaceExpert_RequiredPoints",
-                2,
-                SkillTreeConfig.GetConfigDescription("Tier0_MaceExpert_RequiredPoints")
-            );
-
             MaceExpertDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier0_MaceExpert_DamageBonus",
@@ -370,14 +363,14 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier0_MaceExpert_StunDuration")
             );
 
-            // Tier 1: 둔기 공격력 강화
-            MaceStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
+            MaceExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier1_MaceExpert_RequiredPoints",
-                1,
-                SkillTreeConfig.GetConfigDescription("Tier1_MaceExpert_RequiredPoints")
+                "Tier0_MaceExpert_RequiredPoints",
+                2,
+                SkillTreeConfig.GetConfigDescription("Tier0_MaceExpert_RequiredPoints")
             );
 
+            // Tier 1: 둔기 강화
             MaceStep1DamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier1_MaceExpert_DamageBonus",
@@ -385,14 +378,14 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier1_MaceExpert_DamageBonus")
             );
 
-            // Tier 2: 기절 강화
-            MaceStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+            MaceStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier2_StunBoost_RequiredPoints",
+                "Tier1_MaceExpert_RequiredPoints",
                 1,
-                SkillTreeConfig.GetConfigDescription("Tier2_StunBoost_RequiredPoints")
+                SkillTreeConfig.GetConfigDescription("Tier1_MaceExpert_RequiredPoints")
             );
 
+            // Tier 2: 기절 강화
             MaceStep2StunChanceBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier2_StunBoost_StunChanceBonus",
@@ -407,14 +400,14 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_StunBoost_StunDurationBonus")
             );
 
-            // Tier 3: 방어 강화
-            MaceStep3GuardRequiredPoints = SkillTreeConfig.BindServerSync(config,
+            MaceStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier3_Guard_RequiredPoints",
+                "Tier2_StunBoost_RequiredPoints",
                 1,
-                SkillTreeConfig.GetConfigDescription("Tier3_Guard_RequiredPoints")
+                SkillTreeConfig.GetConfigDescription("Tier2_StunBoost_RequiredPoints")
             );
 
+            // Tier 3: 방어 강화
             MaceStep3GuardArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier3_Guard_ArmorBonus",
@@ -422,14 +415,14 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier3_Guard_ArmorBonus")
             );
 
-            // Tier 3: 무거운 타격
-            MaceStep3HeavyRequiredPoints = SkillTreeConfig.BindServerSync(config,
+            MaceStep3GuardRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier3_HeavyStrike_RequiredPoints",
+                "Tier3_Guard_RequiredPoints",
                 1,
-                SkillTreeConfig.GetConfigDescription("Tier3_HeavyStrike_RequiredPoints")
+                SkillTreeConfig.GetConfigDescription("Tier3_Guard_RequiredPoints")
             );
 
+            // Tier 3: 무거운 일격
             MaceStep3HeavyDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier3_HeavyStrike_DamageBonus",
@@ -437,14 +430,14 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier3_HeavyStrike_DamageBonus")
             );
 
-            // Tier 4: 밀어내기
-            MaceStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+            MaceStep3HeavyRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier4_Push_RequiredPoints",
+                "Tier3_HeavyStrike_RequiredPoints",
                 1,
-                SkillTreeConfig.GetConfigDescription("Tier4_Push_RequiredPoints")
+                SkillTreeConfig.GetConfigDescription("Tier3_HeavyStrike_RequiredPoints")
             );
 
+            // Tier 4: 밀어내기
             MaceStep4KnockbackChance = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier4_Push_KnockbackChance",
@@ -452,14 +445,14 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier4_Push_KnockbackChance")
             );
 
-            // Tier 5: 탱커
-            MaceStep5TankRequiredPoints = SkillTreeConfig.BindServerSync(config,
+            MaceStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier5_Tank_RequiredPoints",
+                "Tier4_Push_RequiredPoints",
                 1,
-                SkillTreeConfig.GetConfigDescription("Tier5_Tank_RequiredPoints")
+                SkillTreeConfig.GetConfigDescription("Tier4_Push_RequiredPoints")
             );
 
+            // Tier 5: 탱커
             MaceStep5TankHealthBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier5_Tank_HealthBonus",
@@ -474,14 +467,14 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier5_Tank_DamageReduction")
             );
 
-            // Tier 5: 공격력 강화
-            MaceStep5DpsRequiredPoints = SkillTreeConfig.BindServerSync(config,
+            MaceStep5TankRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier5_DPS_RequiredPoints",
+                "Tier5_Tank_RequiredPoints",
                 1,
-                SkillTreeConfig.GetConfigDescription("Tier5_DPS_RequiredPoints")
+                SkillTreeConfig.GetConfigDescription("Tier5_Tank_RequiredPoints")
             );
 
+            // Tier 5: 데미지 강화
             MaceStep5DpsDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier5_DPS_DamageBonus",
@@ -496,14 +489,14 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier5_DPS_AttackSpeedBonus")
             );
 
-            // Tier 6: 그랜드마스터
-            MaceStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
+            MaceStep5DpsRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier6_Grandmaster_RequiredPoints",
+                "Tier5_DPS_RequiredPoints",
                 1,
-                SkillTreeConfig.GetConfigDescription("Tier6_Grandmaster_RequiredPoints")
+                SkillTreeConfig.GetConfigDescription("Tier5_DPS_RequiredPoints")
             );
 
+            // Tier 6: 그랜드마스터
             MaceStep6ArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier6_Grandmaster_ArmorBonus",
@@ -511,14 +504,14 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier6_Grandmaster_ArmorBonus")
             );
 
-            // Tier 7: 분노의 망치 (Fury Hammer)
-            FuryHammerRequiredPoints = SkillTreeConfig.BindServerSync(config,
+            MaceStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_FuryHammer_RequiredPoints",
-                3,
-                SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_RequiredPoints")
+                "Tier6_Grandmaster_RequiredPoints",
+                1,
+                SkillTreeConfig.GetConfigDescription("Tier6_Grandmaster_RequiredPoints")
             );
 
+            // Tier 7: 분노의 망치 (Fury Hammer)
             FuryHammerNormalHitMultiplier = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_FuryHammer_NormalHitMultiplier",
@@ -554,6 +547,13 @@ namespace CaptainSkillTree.SkillTree
                 "Tier7_FuryHammer_AoeRadius",
                 5f,
                 SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_AoeRadius")
+            );
+
+            FuryHammerRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier7_FuryHammer_RequiredPoints",
+                3,
+                SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_RequiredPoints")
             );
 
             // Tier 7: 수호자의 진심 (Guardian Heart)

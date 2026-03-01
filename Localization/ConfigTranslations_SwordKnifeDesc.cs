@@ -178,7 +178,20 @@ namespace CaptainSkillTree.Localization
                 "모든 검류에 적용됩니다.\n" +
                 "권장값: 10-20%",
 
+                ["Tier0_SwordExpert_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
 
+                ["Tier1_FastSlash_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
+
+                ["Tier1_CounterStance_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
 
                 ["Tier1_FastSlash_AttackSpeedBonus"] =
                 "【공격속도 보너스 (%)】\n" +
@@ -186,6 +199,11 @@ namespace CaptainSkillTree.Localization
                 "빠른 연속 공격이 가능합니다.\n" +
                 "권장값: 10-20%",
 
+
+                ["Tier2_ComboSlash_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
 
                 ["Tier2_ComboSlash_DamageBonus"] =
                 "【연속 공격 보너스 (%)】\n" +
@@ -200,6 +218,11 @@ namespace CaptainSkillTree.Localization
                 "권장값: 3-5초",
 
 
+                ["Tier3_Riposte_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
+
                 ["Tier3_Riposte_DamageBonus"] =
                 "【공격력 보너스 (고정값)】\n" +
                 "칼날 되치기 공격력을 고정 수치로 증가시킵니다.\n" +
@@ -208,12 +231,39 @@ namespace CaptainSkillTree.Localization
 
 
 
+                ["Tier4_AllInOne_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
+
+                ["Tier4_AllInOne_AttackBonus"] =
+                "【공격력 보너스 (%)】\n" +
+                "공격과 방어를 동시에 강화합니다.\n" +
+                "균형 잡힌 전투 스타일에 유용합니다.\n" +
+                "권장값: 10-20%",
+
+                ["Tier4_AllInOne_DefenseBonus"] =
+                "【방어력 보너스 (고정값)】\n" +
+                "공방일체 자세의 방어력 보너스입니다.\n" +
+                "공격하면서도 강한 방어가 가능합니다.\n" +
+                "권장값: 15-30",
+
+                ["Tier4_TrueDuel_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
+
                 ["Tier4_TrueDuel_AttackSpeedBonus"] =
                 "【공격속도 보너스 (%)】\n" +
                 "1:1 전투에 특화된 공격속도 보너스입니다.\n" +
                 "빠른 연타로 적을 압도합니다.\n" +
                 "권장값: 15-30%",
 
+
+                ["Tier5_ParryRush_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
 
                 ["Tier5_ParryRush_BuffDuration"] =
                 "【버프 지속시간 (초)】\n" +
@@ -245,6 +295,11 @@ namespace CaptainSkillTree.Localization
                 "짧을수록 자주 사용할 수 있습니다.\n" +
                 "권장값: 30-60초",
 
+
+                ["Tier6_RushSlash_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
 
                 ["Tier6_RushSlash_Hit1DamageRatio"] =
                 "【1차 공격력 비율 (%)】\n" +
@@ -443,6 +498,53 @@ namespace CaptainSkillTree.Localization
                 "빠를수록 순식간에 공격합니다.\n" +
                 "권장값: 0.2-0.5초",
 
+
+
+                // === Knife Tree: RequiredPoints Descriptions (KO) ===
+                ["Tier0_KnifeExpert_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
+
+                ["Tier1_Evasion_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
+
+                ["Tier2_FastMove_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
+
+                ["Tier3_CombatMastery_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1-3",
+
+                ["Tier4_AttackEvasion_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2-4",
+
+                ["Tier5_CriticalDamage_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2-4",
+
+                ["Tier6_Assassin_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2-4",
+
+                ["Tier7_Assassination_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2-4",
+
+                ["Tier8_AssassinHeart_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 3-5",
 
 
                 // === Knife Tree: 단검 전문가 (1개) ===
@@ -663,7 +765,15 @@ namespace CaptainSkillTree.Localization
                 "Applies to all sword types.\n" +
                 "Recommended: 10-20%",
 
+                ["Tier0_SwordExpert_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
 
+                ["Tier1_FastSlash_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
 
                 ["Tier1_FastSlash_AttackSpeedBonus"] =
                 "【Attack Speed Bonus (%)】\n" +
@@ -671,6 +781,15 @@ namespace CaptainSkillTree.Localization
                 "Enables rapid consecutive attacks.\n" +
                 "Recommended: 10-20%",
 
+                ["Tier1_CounterStance_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
+
+                ["Tier2_ComboSlash_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
 
                 ["Tier2_ComboSlash_DamageBonus"] =
                 "【Combo Attack Bonus (%)】\n" +
@@ -685,6 +804,11 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 3-5 sec",
 
 
+                ["Tier3_Riposte_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
+
                 ["Tier3_Riposte_DamageBonus"] =
                 "【Attack Power Bonus (flat)】\n" +
                 "Increases riposte attack power by a flat amount.\n" +
@@ -693,12 +817,27 @@ namespace CaptainSkillTree.Localization
 
 
 
+                ["Tier4_AllInOne_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
+
+                ["Tier4_TrueDuel_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
+
                 ["Tier4_TrueDuel_AttackSpeedBonus"] =
                 "【Attack Speed Bonus (%)】\n" +
                 "Attack speed bonus specialized for 1v1 combat.\n" +
                 "Overwhelm opponents with rapid strikes.\n" +
                 "Recommended: 15-30%",
 
+
+                ["Tier5_ParryRush_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
 
                 ["Tier5_ParryRush_BuffDuration"] =
                 "【Buff Duration (sec)】\n" +
@@ -730,6 +869,11 @@ namespace CaptainSkillTree.Localization
                 "Shorter cooldown allows more frequent use.\n" +
                 "Recommended: 30-60 sec",
 
+
+                ["Tier6_RushSlash_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
 
                 ["Tier6_RushSlash_Hit1DamageRatio"] =
                 "【1st Hit Damage Ratio (%)】\n" +
@@ -944,6 +1088,53 @@ namespace CaptainSkillTree.Localization
                 "Time between combo attacks.\n" +
                 "Shorter = faster DPS.\n" +
                 "Recommended: 0.1-0.3 sec",
+
+                // === Knife Tree: RequiredPoints Descriptions (EN) ===
+                ["Tier0_KnifeExpert_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
+
+                ["Tier1_Evasion_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
+
+                ["Tier2_FastMove_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
+
+                ["Tier3_CombatMastery_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 1-3",
+
+                ["Tier4_AttackEvasion_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 2-4",
+
+                ["Tier5_CriticalDamage_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 2-4",
+
+                ["Tier6_Assassin_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 2-4",
+
+                ["Tier7_Assassination_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 2-4",
+
+                ["Tier8_AssassinHeart_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 3-5",
+
 
                 // === Knife Tree: Dagger Expert (1개) ===
                 ["Knife_Expert_BackstabDamageBonus"] = "Tier 0: Dagger Expert - Backstab Damage Bonus (%)",

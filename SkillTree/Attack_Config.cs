@@ -44,7 +44,6 @@ namespace CaptainSkillTree.SkillTree
         // 3단계 (기본 공격)
         public static ConfigEntry<float> AttackBasePhysicalDamage;
         public static ConfigEntry<float> AttackBaseElementalDamage;
-        public static ConfigEntry<float> AttackStatBonus;
         public static ConfigEntry<float> AttackTwoHandDrainPhysicalDamage;
         public static ConfigEntry<float> AttackTwoHandDrainElementalDamage;
 
@@ -94,7 +93,6 @@ namespace CaptainSkillTree.SkillTree
         public static float AttackStaffBonusDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step2_StaffBonusDamage", AttackStaffBonusDamage.Value);
         public static float AttackBasePhysicalDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_PhysicalDamage", AttackBasePhysicalDamage.Value);
         public static float AttackBaseElementalDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_ElementalDamage", AttackBaseElementalDamage.Value);
-        public static float AttackStatBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_StatBonus", AttackStatBonus.Value);
         public static float AttackTwoHandDrainPhysicalDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_TwoHandPhysical", AttackTwoHandDrainPhysicalDamage.Value);
         public static float AttackTwoHandDrainElementalDamageValue => SkillTreeConfig.GetEffectiveValue("Attack_Step3_TwoHandElemental", AttackTwoHandDrainElementalDamage.Value);
         public static float AttackCritChanceValue => SkillTreeConfig.GetEffectiveValue("Attack_Step4_CritChance", AttackCritChance.Value);
@@ -113,7 +111,7 @@ namespace CaptainSkillTree.SkillTree
         {
             // === Tier 0: Attack Expert ===
             AttackRootDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier0_AttackExpert_AllDamageBonus", 10f,
+                "Attack Tree", "Tier0_AttackExpert_AllDamageBonus", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier0_AttackExpert_AllDamageBonus"), order: 60);
 
             AttackRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -122,11 +120,11 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 1: Base Attack ===
             AttackBasePhysicalDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier1_BaseAttack_PhysicalDamageBonus", 2f,
+                "Attack Tree", "Tier1_BaseAttack_PhysicalDamageBonus", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier1_BaseAttack_PhysicalDamageBonus"), order: 50);
 
             AttackBaseElementalDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier1_BaseAttack_ElementalDamageBonus", 2f,
+                "Attack Tree", "Tier1_BaseAttack_ElementalDamageBonus", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier1_BaseAttack_ElementalDamageBonus"), order: 50);
 
             AttackStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -135,7 +133,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 2-1: Melee Specialization ===
             AttackMeleeBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_MeleeSpec_BonusTriggerChance", 20f,
+                "Attack Tree", "Tier2_MeleeSpec_BonusTriggerChance", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier2_MeleeSpec_BonusTriggerChance"), order: 48);
 
             AttackMeleeBonusDamage = SkillTreeConfig.BindServerSync(config,
@@ -148,7 +146,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 2-2: Bow Specialization ===
             AttackBowBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_BowSpec_BonusTriggerChance", 20f,
+                "Attack Tree", "Tier2_BowSpec_BonusTriggerChance", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier2_BowSpec_BonusTriggerChance"), order: 46);
 
             AttackBowBonusDamage = SkillTreeConfig.BindServerSync(config,
@@ -161,7 +159,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 2-3: Crossbow Specialization ===
             AttackCrossbowBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_CrossbowSpec_EnhanceTriggerChance", 15f,
+                "Attack Tree", "Tier2_CrossbowSpec_EnhanceTriggerChance", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier2_CrossbowSpec_EnhanceTriggerChance"), order: 44);
 
             AttackCrossbowBonusDamage = SkillTreeConfig.BindServerSync(config,
@@ -174,7 +172,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 2-4: Staff Specialization ===
             AttackStaffBonusChance = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_StaffSpec_ElementalTriggerChance", 20f,
+                "Attack Tree", "Tier2_StaffSpec_ElementalTriggerChance", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier2_StaffSpec_ElementalTriggerChance"), order: 42);
 
             AttackStaffBonusDamage = SkillTreeConfig.BindServerSync(config,
@@ -187,16 +185,12 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 3: Attack Boost ===
             AttackTwoHandDrainPhysicalDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier3_AttackBoost_PhysicalDamageBonus", 10f,
+                "Attack Tree", "Tier3_AttackBoost_PhysicalDamageBonus", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier3_AttackBoost_PhysicalDamageBonus"), order: 30);
 
             AttackTwoHandDrainElementalDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier3_AttackBoost_ElementalDamageBonus", 10f,
+                "Attack Tree", "Tier3_AttackBoost_ElementalDamageBonus", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier3_AttackBoost_ElementalDamageBonus"), order: 30);
-
-            AttackStatBonus = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier3_AttackBoost_StrIntBonus", 5f,
-                SkillTreeConfig.GetConfigDescription("Tier3_AttackBoost_StrIntBonus"), order: 30);
 
             AttackStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Attack Tree", "Tier3_AttackBoost_RequiredPoints", 2,

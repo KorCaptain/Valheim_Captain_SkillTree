@@ -41,7 +41,7 @@ namespace CaptainSkillTree.SkillTree
                 Id = "atk_base",
                 NameKey = "atk_base_name",
                 DescriptionKey = "atk_base_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackBasePhysicalDamageValue, SkillTreeConfig.AttackBaseElementalDamageValue },
+                DescriptionArgs = new object[] { SkillTreeConfig.AttackBasePhysicalDamageValue },
                 RequiredPoints = Attack_Config.AttackStep1RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
@@ -161,7 +161,7 @@ namespace CaptainSkillTree.SkillTree
                     if (player != null) {
                         SkillEffect.ShowSkillEffectText(player, L.Get("atk_twohand_drain_effect"),
                             new Color(0.9f, 0.7f, 0.3f), SkillEffect.SkillEffectTextType.Standard);
-                        Plugin.Log.LogInfo($"[공격 증가] 효과 적용 완료 - 힘+{SkillTreeConfig.AttackStatBonusValue}, 지능+{SkillTreeConfig.AttackStatBonusValue}");
+                        Plugin.Log.LogInfo("[공격 증가] 효과 적용 완료 - 물리/속성 공격력 증가");
                     }
                 }
             });

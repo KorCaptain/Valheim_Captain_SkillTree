@@ -255,48 +255,48 @@ namespace CaptainSkillTree.SkillTree
         // === 설정값 접근자들 ===
 
         // 지팡이 전문가
-        public static float StaffExpertDamageValue => StaffExpertDamage?.Value ?? 12f;
-        public static int StaffExpertRequiredPointsValue => StaffExpertRequiredPoints?.Value ?? 2;
+        public static float StaffExpertDamageValue => SkillTreeConfig.GetEffectiveValue("staff_tier0_expert_damage", StaffExpertDamage?.Value ?? 12f);
+        public static int StaffExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier0_expert_rp", StaffExpertRequiredPoints?.Value ?? 2);
 
         // Step 2
-        public static float StaffFocusEitrReductionValue => StaffFocusEitrReduction?.Value ?? 15f;
-        public static int StaffFocusRequiredPointsValue => StaffFocusRequiredPoints?.Value ?? 2;
-        public static float StaffStreamEitrBonusValue => StaffStreamCastSpeed?.Value ?? 30f;
-        public static int StaffStreamRequiredPointsValue => StaffStreamRequiredPoints?.Value ?? 2;
+        public static float StaffFocusEitrReductionValue => SkillTreeConfig.GetEffectiveValue("staff_tier1_focus_eitr", StaffFocusEitrReduction?.Value ?? 15f);
+        public static int StaffFocusRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier1_focus_rp", StaffFocusRequiredPoints?.Value ?? 2);
+        public static float StaffStreamEitrBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier1_flow_eitr", StaffStreamCastSpeed?.Value ?? 30f);
+        public static int StaffStreamRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier1_flow_rp", StaffStreamRequiredPoints?.Value ?? 2);
 
         // Step 3
-        public static float StaffAmpChanceValue => StaffAmpChance?.Value ?? 38f;
-        public static float StaffAmpDamageValue => StaffAmpDamage?.Value ?? 35f;
-        public static float StaffAmpEitrCostIncreaseValue => StaffAmpEitrCostIncrease?.Value ?? 20f;
-        public static int StaffAmpRequiredPointsValue => StaffAmpRequiredPoints?.Value ?? 3;
+        public static float StaffAmpChanceValue => SkillTreeConfig.GetEffectiveValue("staff_tier2_amp_chance", StaffAmpChance?.Value ?? 38f);
+        public static float StaffAmpDamageValue => SkillTreeConfig.GetEffectiveValue("staff_tier2_amp_damage", StaffAmpDamage?.Value ?? 35f);
+        public static float StaffAmpEitrCostIncreaseValue => SkillTreeConfig.GetEffectiveValue("staff_tier2_amp_eitr", StaffAmpEitrCostIncrease?.Value ?? 20f);
+        public static int StaffAmpRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier2_amp_rp", StaffAmpRequiredPoints?.Value ?? 3);
 
         // Step 4: 속성 강화
-        public static float StaffFrostDamageBonusValue => StaffFrostDamageBonus?.Value ?? 3f;
-        public static int StaffFrostRequiredPointsValue => StaffFrostRequiredPoints?.Value ?? 2;
-        public static float StaffFireDamageBonusValue => StaffFireDamageBonus?.Value ?? 3f;
-        public static int StaffFireRequiredPointsValue => StaffFireRequiredPoints?.Value ?? 2;
-        public static float StaffLightningDamageBonusValue => StaffLightningDamageBonus?.Value ?? 3f;
-        public static int StaffLightningRequiredPointsValue => StaffLightningRequiredPoints?.Value ?? 2;
+        public static float StaffFrostDamageBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier3_frost_damage", StaffFrostDamageBonus?.Value ?? 3f);
+        public static int StaffFrostRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier3_frost_rp", StaffFrostRequiredPoints?.Value ?? 2);
+        public static float StaffFireDamageBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier3_fire_damage", StaffFireDamageBonus?.Value ?? 3f);
+        public static int StaffFireRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier3_fire_rp", StaffFireRequiredPoints?.Value ?? 2);
+        public static float StaffLightningDamageBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier3_lightning_damage", StaffLightningDamageBonus?.Value ?? 3f);
+        public static int StaffLightningRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier3_lightning_rp", StaffLightningRequiredPoints?.Value ?? 2);
 
         // Step 5: 행운 마력
-        public static float StaffLuckManaChanceValue => StaffLuckManaChance?.Value ?? 35f;
-        public static int StaffLuckManaRequiredPointsValue => StaffLuckManaRequiredPoints?.Value ?? 3;
+        public static float StaffLuckManaChanceValue => SkillTreeConfig.GetEffectiveValue("staff_tier4_luck_chance", StaffLuckManaChance?.Value ?? 35f);
+        public static int StaffLuckManaRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier4_luck_rp", StaffLuckManaRequiredPoints?.Value ?? 3);
 
         // Step 6-1: 이중시전
-        public static int StaffDoubleCastProjectileCountValue => StaffDoubleCastProjectileCount?.Value ?? 2;
-        public static float StaffDoubleCastDamagePercentValue => StaffDoubleCastDamagePercent?.Value ?? 70f;
-        public static float StaffDoubleCastAngleOffsetValue => StaffDoubleCastAngleOffset?.Value ?? 5f;
-        public static float StaffDoubleCastEitrCostValue => StaffDoubleCastEitrCost?.Value ?? 20f;
-        public static float StaffDoubleCastCooldownValue => StaffDoubleCastCooldown?.Value ?? 30f;
-        public static int StaffDoubleCastRequiredPointsValue => StaffDoubleCastRequiredPoints?.Value ?? 3;
+        public static int StaffDoubleCastProjectileCountValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_count", StaffDoubleCastProjectileCount?.Value ?? 2);
+        public static float StaffDoubleCastDamagePercentValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_damage", StaffDoubleCastDamagePercent?.Value ?? 70f);
+        public static float StaffDoubleCastAngleOffsetValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_angle", StaffDoubleCastAngleOffset?.Value ?? 5f);
+        public static float StaffDoubleCastEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_eitr", StaffDoubleCastEitrCost?.Value ?? 20f);
+        public static float StaffDoubleCastCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_cd", StaffDoubleCastCooldown?.Value ?? 30f);
+        public static int StaffDoubleCastRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_rp", StaffDoubleCastRequiredPoints?.Value ?? 3);
 
         // Step 6-2: 즉시 범위 힐
-        public static float StaffHealCooldownValue => StaffHealCooldown?.Value ?? 30f;
-        public static float StaffHealEitrCostValue => StaffHealEitrCost?.Value ?? 30f;
-        public static float StaffHealPercentageValue => StaffHealPercentage?.Value ?? 25f;
-        public static float StaffHealRangeValue => StaffHealRange?.Value ?? 12f;
-        public static bool StaffHealSelfValue => StaffHealSelf?.Value ?? false;
-        public static int StaffHealRequiredPointsValue => StaffHealRequiredPoints?.Value ?? 3;
+        public static float StaffHealCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_cd", StaffHealCooldown?.Value ?? 30f);
+        public static float StaffHealEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_eitr", StaffHealEitrCost?.Value ?? 30f);
+        public static float StaffHealPercentageValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_percent", StaffHealPercentage?.Value ?? 25f);
+        public static float StaffHealRangeValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_range", StaffHealRange?.Value ?? 12f);
+        public static bool StaffHealSelfValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_self", StaffHealSelf?.Value ?? false ? 1f : 0f) > 0.5f;
+        public static int StaffHealRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_rp", StaffHealRequiredPoints?.Value ?? 3);
 
         /// <summary>
         /// 현재 설정값 디버그 출력

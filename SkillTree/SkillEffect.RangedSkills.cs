@@ -522,17 +522,6 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogDebug($"[관통] +{SkillTreeConfig.BowStep3SilentShotDamageBonusValue} (고정값)");
                     }
 
-                    // Tier 6: 크리티컬 부스트 (R키 액티브) - 데미지 +50%
-                    if (player != null && SkillEffect.HasSkill("bow_Step6_critboost"))
-                    {
-                        if (SkillEffect.bowCritBoostEndTime.TryGetValue(player, out float endTime) &&
-                            Time.time < endTime)
-                        {
-                            totalBowBonus += SkillTreeConfig.BowStep6CritBoostDamageBonusValue;
-                            Plugin.Log.LogDebug($"[크리티컬 부스트] R키 액티브 +{SkillTreeConfig.BowStep6CritBoostDamageBonusValue}% (버프 중)");
-                        }
-                    }
-
                     // GetDamageHelper를 사용하여 물리 데미지 보너스 적용
                     if (totalBowBonus > 0)
                     {
@@ -719,12 +708,14 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 // ✅ CRITICAL: 플레이어 공격만 처리 (몬스터/NPC 차단)
+                // Attack.m_character로 실제 공격자가 로컬 플레이어인지 검증
+                var attacker = Traverse.Create(__instance).Field("m_character").GetValue<Character>();
+                if (attacker == null || attacker != Player.m_localPlayer) return true;
+
                 var player = Player.m_localPlayer;
                 if (player == null) return true;
 
-                // ✅ CRITICAL: 현재 Attack이 플레이어의 무기에서 발생한 것인지 검증
                 var weapon = player.GetCurrentWeapon();
-                if (weapon?.m_shared?.m_attack != __instance) return true;
 
                 if (weapon?.m_shared?.m_skillType != Skills.SkillType.Crossbows)
                     return true;

@@ -23,13 +23,6 @@ namespace CaptainSkillTree.SkillTree
         // 트롤의 재생력: 타이머 추적
         public static Dictionary<Player, float> trollRegenTimers = new Dictionary<Player, float>();
 
-        // === 활 치명타 버프 추적 (Bow Critical Buffs) ===
-        // 백스텝 샷: 구르기 후 치명타 확률 증가 (Tier 5)
-        public static Dictionary<Player, float> bowBackstepShotEndTime = new Dictionary<Player, float>();
-
-        // 크리티컬 부스트: R키 액티브 치명타 확률 100% (Tier 6)
-        public static Dictionary<Player, float> bowCritBoostEndTime = new Dictionary<Player, float>();
-
         // static constructor - 원거리 스킬 이펙트 등록
         static SkillEffect()
         {
@@ -792,16 +785,7 @@ namespace CaptainSkillTree.SkillTree
                     int allMasterLv2 = SkillTreeManager.Instance.GetSkillLevel("all_master");
                     if (allMasterLv2 > 0) __result += 2 * allMasterLv2;
 
-                    // defense_Step6_body: 요툰의 생명력 - 방어력 +10%
-                    if (SkillTreeManager.Instance.GetSkillLevel("defense_Step6_body") > 0)
-                    {
-                        // MMO Body 스탯을 통해 물리/마법 방어력 증가
-                        // Body 스탯은 MMO에서 방어력과 체력에 영향을 줌
-                        // 10% 방어력 = +5 Body 스탯으로 계산
-                        int bodyBonus = (int)(Defense_Config.BodyArmorBonusValue * 0.5f);
-                        __result += bodyBonus;
-                        Plugin.Log.LogDebug($"[요툰의 생명력] Body 보너스 적용: +{bodyBonus} (방어력 +{Defense_Config.BodyArmorBonusValue}%)");
-                    }
+                    // defense_Step6_body: 요툰의 생명력 - 저항 효과는 Character.Damage 패치에서 처리 (SkillEffect.DefenseTree.cs)
                 }
             }
             catch (System.Exception ex)

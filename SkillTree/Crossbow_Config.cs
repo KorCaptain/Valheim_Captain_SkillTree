@@ -13,9 +13,14 @@ namespace CaptainSkillTree.SkillTree
 
         public static ConfigEntry<int> CrossbowExpertRequiredPoints;
         public static ConfigEntry<int> CrossbowStep2RequiredPoints;
-        public static ConfigEntry<int> CrossbowStep3RequiredPoints;
+        // Tier 2 서브티어별 독립 RequiredPoints
+        public static ConfigEntry<int> CrossbowBalancedAimRequiredPoints;
+        public static ConfigEntry<int> CrossbowRapidReloadRequiredPoints;
+        public static ConfigEntry<int> CrossbowHonestShotRequiredPoints;
         public static ConfigEntry<int> CrossbowStep4RequiredPoints;
-        public static ConfigEntry<int> CrossbowStep5RequiredPoints;
+        // Tier 4 서브티어별 독립 RequiredPoints
+        public static ConfigEntry<int> CrossbowRapidFireLv2RequiredPoints;
+        public static ConfigEntry<int> CrossbowFinalStrikeRequiredPoints;
         public static ConfigEntry<int> CrossbowOneShotRequiredPoints;
 
         #endregion
@@ -75,17 +80,31 @@ namespace CaptainSkillTree.SkillTree
             (int)SkillTreeConfig.GetEffectiveValue("crossbow_step2_required_points",
             CrossbowStep2RequiredPoints?.Value ?? 2);
 
-        public static int CrossbowStep3RequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("crossbow_step3_required_points",
-            CrossbowStep3RequiredPoints?.Value ?? 2);
+        // Tier 2 서브티어별 독립 RequiredPoints Value
+        public static int CrossbowBalancedAimRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_balanced_aim_required_points",
+            CrossbowBalancedAimRequiredPoints?.Value ?? 2);
+
+        public static int CrossbowRapidReloadRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_rapid_reload_required_points",
+            CrossbowRapidReloadRequiredPoints?.Value ?? 2);
+
+        public static int CrossbowHonestShotRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_honest_shot_required_points",
+            CrossbowHonestShotRequiredPoints?.Value ?? 2);
 
         public static int CrossbowStep4RequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("crossbow_step4_required_points",
             CrossbowStep4RequiredPoints?.Value ?? 2);
 
-        public static int CrossbowStep5RequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("crossbow_step5_required_points",
-            CrossbowStep5RequiredPoints?.Value ?? 3);
+        // Tier 4 서브티어별 독립 RequiredPoints Value
+        public static int CrossbowRapidFireLv2RequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_rapid_fire_lv2_required_points",
+            CrossbowRapidFireLv2RequiredPoints?.Value ?? 3);
+
+        public static int CrossbowFinalStrikeRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_final_strike_required_points",
+            CrossbowFinalStrikeRequiredPoints?.Value ?? 3);
 
         public static int CrossbowOneShotRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("crossbow_oneshot_required_points",
@@ -109,10 +128,12 @@ namespace CaptainSkillTree.SkillTree
             CrossbowRapidFireDamagePercent?.Value ?? 75f);
 
         public static float CrossbowRapidFireDelayValue =>
-            CrossbowRapidFireDelay?.Value ?? 0.33f;
+            SkillTreeConfig.GetEffectiveValue("crossbow_rapid_fire_delay",
+            CrossbowRapidFireDelay?.Value ?? 0.33f);
 
         public static int CrossbowRapidFireBoltConsumptionValue =>
-            CrossbowRapidFireBoltConsumption?.Value ?? 1;
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_rapid_fire_bolt_consumption",
+            CrossbowRapidFireBoltConsumption?.Value ?? 1);
 
         public static float CrossbowBalanceKnockbackChanceValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_balance_knockback_chance",
@@ -147,10 +168,12 @@ namespace CaptainSkillTree.SkillTree
             CrossbowRapidFireLv2DamagePercent?.Value ?? 75f);
 
         public static float CrossbowRapidFireLv2DelayValue =>
-            CrossbowRapidFireLv2Delay?.Value ?? 0.33f;
+            SkillTreeConfig.GetEffectiveValue("crossbow_rapid_fire_lv2_delay",
+            CrossbowRapidFireLv2Delay?.Value ?? 0.33f);
 
         public static int CrossbowRapidFireLv2BoltConsumptionValue =>
-            CrossbowRapidFireLv2BoltConsumption?.Value ?? 1;
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_rapid_fire_lv2_bolt_consumption",
+            CrossbowRapidFireLv2BoltConsumption?.Value ?? 1);
 
         public static float CrossbowFinalStrikeHpThresholdValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_final_strike_hp_threshold",
@@ -189,127 +212,138 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogDebug("[Crossbow_Config] Config initialization started");
 
-                // === 필요 포인트 설정 ===
-                CrossbowExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier0_CrossbowExpert_RequiredPoints", 2,
-                    SkillTreeConfig.GetConfigDescription("Tier0_CrossbowExpert_RequiredPoints"));
-
-                CrossbowStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier1_RapidFire_RequiredPoints", 2,
-                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_RequiredPoints"));
-
-                CrossbowStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier2_CrossbowSkills_RequiredPoints", 2,
-                    SkillTreeConfig.GetConfigDescription("Tier2_CrossbowSkills_RequiredPoints"));
-
-                CrossbowStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier3_AutoReload_RequiredPoints", 2,
-                    SkillTreeConfig.GetConfigDescription("Tier3_AutoReload_RequiredPoints"));
-
-                CrossbowStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier4_CrossbowSkills_RequiredPoints", 3,
-                    SkillTreeConfig.GetConfigDescription("Tier4_CrossbowSkills_RequiredPoints"));
-
-                CrossbowOneShotRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_OneShot_RequiredPoints", 4,
-                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_RequiredPoints"));
-
                 // === Tier 0: 석궁 전문가 ===
                 CrossbowExpertDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier0_CrossbowExpert_DamageBonus", 5f,
-                    SkillTreeConfig.GetConfigDescription("Tier0_CrossbowExpert_DamageBonus"));
+                    SkillTreeConfig.GetConfigDescription("Tier0_CrossbowExpert_DamageBonus"), order: 60);
+
+                CrossbowExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier0_CrossbowExpert_RequiredPoints", 2,
+                    SkillTreeConfig.GetConfigDescription("Tier0_CrossbowExpert_RequiredPoints"), order: 59);
 
                 // === Tier 1: 연속 발사 ===
                 CrossbowRapidFireChance = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier1_RapidFire_Chance", 15f,
-                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_Chance"));
+                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_Chance"), order: 50);
 
                 CrossbowRapidFireShotCount = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier1_RapidFire_ShotCount", 3,
-                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_ShotCount"));
+                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_ShotCount"), order: 50);
 
                 CrossbowRapidFireDamagePercent = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier1_RapidFire_DamagePercent", 75f,
-                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_DamagePercent"));
+                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_DamagePercent"), order: 50);
 
                 CrossbowRapidFireDelay = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier1_RapidFire_Delay", 0.33f,
-                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_Delay"));
+                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_Delay"), order: 50);
 
                 CrossbowRapidFireBoltConsumption = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier1_RapidFire_BoltConsumption", 1,
-                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_BoltConsumption"));
+                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_BoltConsumption"), order: 50);
 
-                // === Tier 2: 균형 조준 ===
+                CrossbowStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier1_RapidFire_RequiredPoints", 2,
+                    SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_RequiredPoints"), order: 49);
+
+                // === Tier 2-1: 균형 조준 ===
                 CrossbowBalanceKnockbackChance = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier2_BalancedAim_KnockbackChance", 30f,
-                    SkillTreeConfig.GetConfigDescription("Tier2_BalancedAim_KnockbackChance"));
+                    SkillTreeConfig.GetConfigDescription("Tier2_BalancedAim_KnockbackChance"), order: 48);
 
                 CrossbowBalanceKnockbackDistance = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier2_BalancedAim_KnockbackDistance", 3f,
-                    SkillTreeConfig.GetConfigDescription("Tier2_BalancedAim_KnockbackDistance"));
+                    SkillTreeConfig.GetConfigDescription("Tier2_BalancedAim_KnockbackDistance"), order: 48);
 
-                // === Tier 2: 고속 장전 ===
+                CrossbowBalancedAimRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier2_BalancedAim_RequiredPoints", 2,
+                    SkillTreeConfig.GetConfigDescription("Tier2_BalancedAim_RequiredPoints"), order: 47);
+
+                // === Tier 2-2: 고속 장전 ===
                 CrossbowRapidReloadSpeed = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier2_RapidReload_SpeedIncrease", 10f,
-                    SkillTreeConfig.GetConfigDescription("Tier2_RapidReload_SpeedIncrease"));
+                    SkillTreeConfig.GetConfigDescription("Tier2_RapidReload_SpeedIncrease"), order: 46);
 
-                // === Tier 2: 정직한 한 발 ===
+                CrossbowRapidReloadRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier2_RapidReload_RequiredPoints", 2,
+                    SkillTreeConfig.GetConfigDescription("Tier2_RapidReload_RequiredPoints"), order: 45);
+
+                // === Tier 2-3: 정직한 한 발 ===
                 CrossbowMarkDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier2_HonestShot_DamageBonus", 35f,
-                    SkillTreeConfig.GetConfigDescription("Tier2_HonestShot_DamageBonus"));
+                    SkillTreeConfig.GetConfigDescription("Tier2_HonestShot_DamageBonus"), order: 44);
+
+                CrossbowHonestShotRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier2_HonestShot_RequiredPoints", 2,
+                    SkillTreeConfig.GetConfigDescription("Tier2_HonestShot_RequiredPoints"), order: 43);
 
                 // === Tier 3: 자동 장전 ===
                 CrossbowAutoReloadChance = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier3_AutoReload_Chance", 30f,
-                    SkillTreeConfig.GetConfigDescription("Tier3_AutoReload_Chance"));
+                    SkillTreeConfig.GetConfigDescription("Tier3_AutoReload_Chance"), order: 40);
 
-                // === Tier 4: 연속 발사 Lv2 ===
+                CrossbowStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier3_AutoReload_RequiredPoints", 2,
+                    SkillTreeConfig.GetConfigDescription("Tier3_AutoReload_RequiredPoints"), order: 39);
+
+                // === Tier 4-1: 연속 발사 Lv2 ===
                 CrossbowRapidFireLv2Chance = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier4_RapidFireLv2_Chance", 30f,
-                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_Chance"));
+                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_Chance"), order: 30);
 
                 CrossbowRapidFireLv2ShotCount = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier4_RapidFireLv2_ShotCount", 3,
-                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_ShotCount"));
+                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_ShotCount"), order: 30);
 
                 CrossbowRapidFireLv2DamagePercent = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier4_RapidFireLv2_DamagePercent", 75f,
-                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_DamagePercent"));
+                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_DamagePercent"), order: 30);
 
                 CrossbowRapidFireLv2Delay = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier4_RapidFireLv2_Delay", 0.33f,
-                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_Delay"));
+                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_Delay"), order: 30);
 
                 CrossbowRapidFireLv2BoltConsumption = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier4_RapidFireLv2_BoltConsumption", 1,
-                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_BoltConsumption"));
+                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_BoltConsumption"), order: 30);
 
-                // === Tier 4: 결전의 일격 ===
+                CrossbowRapidFireLv2RequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier4_RapidFireLv2_RequiredPoints", 3,
+                    SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_RequiredPoints"), order: 29);
+
+                // === Tier 4-2: 결전의 일격 ===
                 CrossbowFinalStrikeHpThreshold = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier4_FinalStrike_HpThreshold", 50f,
-                    SkillTreeConfig.GetConfigDescription("Tier4_FinalStrike_HpThreshold"));
+                    SkillTreeConfig.GetConfigDescription("Tier4_FinalStrike_HpThreshold"), order: 28);
 
                 CrossbowFinalStrikeDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier4_FinalStrike_DamageBonus", 30f,
-                    SkillTreeConfig.GetConfigDescription("Tier4_FinalStrike_DamageBonus"));
+                    SkillTreeConfig.GetConfigDescription("Tier4_FinalStrike_DamageBonus"), order: 28);
+
+                CrossbowFinalStrikeRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier4_FinalStrike_RequiredPoints", 3,
+                    SkillTreeConfig.GetConfigDescription("Tier4_FinalStrike_RequiredPoints"), order: 27);
 
                 // === Tier 5: 단 한 발 (액티브 스킬) ===
                 CrossbowOneShotDuration = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier5_OneShot_Duration", 30f,
-                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_Duration"));
+                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_Duration"), order: 20);
 
                 CrossbowOneShotDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier5_OneShot_DamageBonus", 120f,
-                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_DamageBonus"));
+                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_DamageBonus"), order: 20);
 
                 CrossbowOneShotKnockback = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier5_OneShot_KnockbackDistance", 5f,
-                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_KnockbackDistance"));
+                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_KnockbackDistance"), order: 20);
 
                 CrossbowOneShotCooldown = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier5_OneShot_Cooldown", 60f,
-                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_Cooldown"));
+                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_Cooldown"), order: 20);
+
+                CrossbowOneShotRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier5_OneShot_RequiredPoints", 4,
+                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_RequiredPoints"), order: 19);
 
                 // === 이벤트 핸들러 등록 (툴팁 실시간 업데이트) ===
                 RegisterCrossbowEventHandlers();

@@ -153,32 +153,6 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                 Plugin.Log.LogDebug($"[치명타] Tier 5 사냥 본능 (패시브): +{tierBonus}%");
             }
 
-            // Tier 5: 백스텝 샷 - 구르기 후 치명타 확률 +25% (3초)
-            if (SkillEffect.HasSkill("bow_Step5_backstep_shot"))
-            {
-                if (SkillEffect.bowBackstepShotEndTime.TryGetValue(player, out float endTime)
-                    && Time.time < endTime)
-                {
-                    float tierBonus = SkillTreeConfig.BowStep5BackstepShotCritBonusValue;
-                    bonus += tierBonus;
-                    float remainingTime = endTime - Time.time;
-                    Plugin.Log.LogDebug($"[치명타] Tier 5 백스텝 샷 (시간 버프): +{tierBonus}% (남은 시간: {remainingTime:F1}초)");
-                }
-            }
-
-            // Tier 6: 크리티컬 부스트 - R키 액티브 (100% 치명타)
-            if (SkillEffect.HasSkill("bow_Step6_critboost"))
-            {
-                if (SkillEffect.bowCritBoostEndTime.TryGetValue(player, out float endTime)
-                    && Time.time < endTime)
-                {
-                    float tierBonus = SkillTreeConfig.BowStep6CritBoostCritChanceValue;
-                    bonus += tierBonus;
-                    float remainingTime = endTime - Time.time;
-                    Plugin.Log.LogDebug($"[치명타] Tier 6 크리티컬 부스트 (R키 액티브): +{tierBonus}% (남은 시간: {remainingTime:F1}초)");
-                }
-            }
-
             if (bonus > 0f)
             {
                 Plugin.Log.LogInfo($"[활 치명타] 총 확률: {bonus}%");

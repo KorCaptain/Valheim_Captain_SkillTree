@@ -643,14 +643,14 @@ namespace CaptainSkillTree.Localization
                 ["defense_heal_desc"] = "{0}초마다 체력 +{1}",
                 ["defense_parry_desc"] = "패링 +{0}초, 방패 방어력 +{1}",
                 ["defense_attack_desc"] = "회피 +{0}%",
-                ["defense_body_desc"] = "체력 최대치 +{0}%, 물리/마법 방어력 +{1}%",
+                ["defense_body_desc"] = "체력 최대치 +{0}%, 물리/속성 저항 +{1}%",
                 ["defense_true_desc"] = "블럭 스태미나 -{0}%, 일반 방패 이동속도 +{1}%, 대형 방패 이동속도 +{2}%",
 
                 // Defense Expert Tree - Effect Texts
                 ["defense_root_effect"] = "🛡️ 방어 전문가! 체력 +{0}, 방어 +{1}",
                 ["defense_shield_effect"] = "🛡️ 방패훈련! 방패 방어력 +{0}",
                 ["defense_parry_effect"] = "🛡️ 막기달인! 패링 +{0}초, 방패 방어력 +{1}",
-                ["defense_body_effect"] = "🛡️ 요툰의 생명력! 체력 +{0}%, 방어력 +{1}%",
+                ["defense_body_effect"] = "🛡️ 요툰의 생명력! 체력 +{0}%, 저항 +{1}%",
 
                 // Staff Expert Tree
                 ["staff_expert_desc"] = "속성 공격 +{0}%",
@@ -926,7 +926,7 @@ namespace CaptainSkillTree.Localization
                 ["atk_staff_mage_name"] = "속성 공격",
 
                 // === Attack Expert Tree - Skill Descriptions ===
-                ["atk_base_desc"] = "물리 공격력 +{0}, 속성 공격력 +{1}",
+                ["atk_base_desc"] = "관통 공격 +{0}, 화염 속성 +1",
                 ["atk_twohand_drain_desc"] = "물리 공격력 +{0}%, 속성 공격력 +{1}%",
                 ["atk_ranged_enhance_desc"] = "원거리 무기 공격력 +{0}% (석궁, 활, 지팡이)",
                 ["atk_special_desc"] = "치명타 확률 +{0}%",
@@ -1988,14 +1988,14 @@ namespace CaptainSkillTree.Localization
                 ["defense_heal_desc"] = "Health +{1} every {0}s",
                 ["defense_parry_desc"] = "Parry +{0}s, Shield block power +{1}",
                 ["defense_attack_desc"] = "Dodge +{0}%",
-                ["defense_body_desc"] = "Max health +{0}%, Physical/Magic defense +{1}%",
+                ["defense_body_desc"] = "Max health +{0}%, Physical/Elemental resistance +{1}%",
                 ["defense_true_desc"] = "Block stamina -{0}%, Normal shield speed +{1}%, Tower shield speed +{2}%",
 
                 // Defense Expert Tree - Effect Texts (English)
                 ["defense_root_effect"] = "🛡️ Defense Expert! Health +{0}, Defense +{1}",
                 ["defense_shield_effect"] = "🛡️ Shield Training! Shield block power +{0}",
                 ["defense_parry_effect"] = "🛡️ Parry Master! Parry +{0}s, Shield block power +{1}",
-                ["defense_body_effect"] = "🛡️ Jotunn's Vitality! Health +{0}%, Defense +{1}%",
+                ["defense_body_effect"] = "🛡️ Jotunn's Vitality! Health +{0}%, Resistance +{1}%",
 
                 // Staff Expert Tree
                 ["staff_expert_desc"] = "Elemental damage +{0}%",
@@ -2155,7 +2155,7 @@ namespace CaptainSkillTree.Localization
                 ["atk_staff_mage_name"] = "Elemental Strike",
 
                 // === Attack Expert Tree - Skill Descriptions (English) ===
-                ["atk_base_desc"] = "Physical attack +{0}, Elemental attack +{1}",
+                ["atk_base_desc"] = "Pierce attack +{0}, Fire attribute +1",
                 ["atk_twohand_drain_desc"] = "Physical attack +{0}%, Elemental attack +{1}%",
                 ["atk_ranged_enhance_desc"] = "Ranged weapon damage +{0}% (Crossbow, Bow, Staff)",
                 ["atk_special_desc"] = "Crit chance +{0}%",

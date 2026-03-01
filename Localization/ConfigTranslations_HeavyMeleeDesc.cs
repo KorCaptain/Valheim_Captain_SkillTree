@@ -200,6 +200,11 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 0: 둔기 전문가 (Mace Expert) ===
 
+                ["Tier0_MaceExpert_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "둔기 전문가 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
                 ["Tier0_MaceExpert_DamageBonus"] =
                 "【둔기 피해 보너스 (%)】\n" +
                 "둔기 무기의 기본 공격력을 증가시킵니다.\n" +
@@ -218,12 +223,17 @@ namespace CaptainSkillTree.Localization
                 "긴 지속시간으로 안전한 딜 타이밍을 확보할 수 있습니다.\n" +
                 "권장값: 0.3-1초",
 
-                // === Tier 1: 둔기 공격력 강화 ===
+                // === Tier 1: 둔기 강화 ===
 
                 ["Tier1_MaceExpert_DamageBonus"] =
                 "【둔기 공격력 보너스 (%)】\n" +
                 "둔기 무기의 추가 공격력 보너스입니다.\n" +
                 "권장값: 8-15%",
+
+                ["Tier1_MaceExpert_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "둔기 강화 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1",
 
                 // === Tier 2: 기절 강화 (Stun Boost) ===
 
@@ -239,6 +249,11 @@ namespace CaptainSkillTree.Localization
                 "더 긴 딜 타이밍 확보가 가능합니다.\n" +
                 "권장값: 0.3-0.8초",
 
+                ["Tier2_StunBoost_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "기절 강화 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1",
+
                 // === Tier 3: 방어 강화 (Guard) ===
 
                 ["Tier3_Guard_ArmorBonus"] =
@@ -247,13 +262,23 @@ namespace CaptainSkillTree.Localization
                 "탱커 빌드에 유용합니다.\n" +
                 "권장값: 2-5",
 
-                // === Tier 3: 무거운 타격 (Heavy Strike) ===
+                ["Tier3_Guard_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "방어 강화 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1",
+
+                // === Tier 3: 무거운 일격 (Heavy Strike) ===
 
                 ["Tier3_HeavyStrike_DamageBonus"] =
                 "【공격력 보너스 (고정값)】\n" +
                 "둔기 공격력을 고정 수치로 증가시킵니다.\n" +
                 "퍼센트 보너스와 함께 적용됩니다.\n" +
                 "권장값: 2-5",
+
+                ["Tier3_HeavyStrike_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "무거운 일격 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1",
 
                 // === Tier 4: 밀어내기 (Push) ===
 
@@ -262,6 +287,11 @@ namespace CaptainSkillTree.Localization
                 "공격 시 적을 밀어내는 확률입니다.\n" +
                 "거리 유지와 전장 제어에 유용합니다.\n" +
                 "권장값: 25-35%",
+
+                ["Tier4_Push_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "밀어내기 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1",
 
                 // === Tier 5: 탱커 (Tank) ===
 
@@ -277,7 +307,12 @@ namespace CaptainSkillTree.Localization
                 "방어력과 함께 적용되어 탱커 역할에 최적입니다.\n" +
                 "권장값: 8-15%",
 
-                // === Tier 5: 공격력 강화 (DPS) ===
+                ["Tier5_Tank_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "탱커 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1",
+
+                // === Tier 5: 데미지 강화 (DPS) ===
 
                 ["Tier5_DPS_DamageBonus"] =
                 "【공격력 보너스 (%)】\n" +
@@ -291,6 +326,11 @@ namespace CaptainSkillTree.Localization
                 "느린 둔기의 약점을 보완합니다.\n" +
                 "권장값: 8-15%",
 
+                ["Tier5_DPS_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "데미지 강화 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1",
+
                 // === Tier 6: 그랜드마스터 (Grandmaster) ===
 
                 ["Tier6_Grandmaster_ArmorBonus"] =
@@ -298,6 +338,11 @@ namespace CaptainSkillTree.Localization
                 "퍼센트 기반 방어력 보너스입니다.\n" +
                 "고급 방어구와 시너지가 좋습니다.\n" +
                 "권장값: 15-25%",
+
+                ["Tier6_Grandmaster_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "그랜드마스터 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 1",
 
                 // === Tier 7: 분노의 망치 (Fury Hammer - H키 액티브) ===
 
@@ -332,6 +377,11 @@ namespace CaptainSkillTree.Localization
                 "넓을수록 더 많은 적을 공격할 수 있습니다.\n" +
                 "권장값: 4-7m",
 
+                ["Tier7_FuryHammer_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "분노의 망치 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 3",
+
                 // === Tier 7: 수호자의 진심 (Guardian Heart - G키 액티브) ===
                 ["Tier7_GuardianHeart_Cooldown"] =
                 "【쿨타임 (초)】\n" +
@@ -356,6 +406,11 @@ namespace CaptainSkillTree.Localization
                 "받은 피해를 공격자에게 반사하는 비율입니다.\n" +
                 "탱커로서 적에게 피해를 돌려줄 수 있습니다.\n" +
                 "권장값: 5-8%",
+
+                ["Tier7_GuardianHeart_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "수호자의 진심 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 3",
 
 
                 // ========================================
@@ -684,6 +739,11 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 0: Mace Expert ===
 
+                ["Tier0_MaceExpert_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Mace Expert node.\n" +
+                "Recommended: 2",
+
                 ["Tier0_MaceExpert_DamageBonus"] =
                 "【Mace Damage Bonus (%)】\n" +
                 "Increases base damage of mace weapons.\n" +
@@ -702,12 +762,17 @@ namespace CaptainSkillTree.Localization
                 "Longer duration provides safe damage windows.\n" +
                 "Recommended: 0.3-1 sec",
 
-                // === Tier 1: Mace Damage Enhancement ===
+                // === Tier 1: Mace Damage Boost ===
 
                 ["Tier1_MaceExpert_DamageBonus"] =
                 "【Mace Damage Bonus (%)】\n" +
                 "Additional damage bonus for mace weapons.\n" +
                 "Recommended: 8-15%",
+
+                ["Tier1_MaceExpert_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Mace Damage Boost node.\n" +
+                "Recommended: 1",
 
                 // === Tier 2: Stun Boost ===
 
@@ -723,6 +788,11 @@ namespace CaptainSkillTree.Localization
                 "Provides even longer damage windows.\n" +
                 "Recommended: 0.3-0.8 sec",
 
+                ["Tier2_StunBoost_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Stun Boost node.\n" +
+                "Recommended: 1",
+
                 // === Tier 3: Guard ===
 
                 ["Tier3_Guard_ArmorBonus"] =
@@ -730,6 +800,11 @@ namespace CaptainSkillTree.Localization
                 "Increases base armor by a fixed amount.\n" +
                 "Useful for tank builds.\n" +
                 "Recommended: 2-5",
+
+                ["Tier3_Guard_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Guard node.\n" +
+                "Recommended: 1",
 
                 // === Tier 3: Heavy Strike ===
 
@@ -739,6 +814,11 @@ namespace CaptainSkillTree.Localization
                 "Applies alongside percentage bonuses.\n" +
                 "Recommended: 2-5",
 
+                ["Tier3_HeavyStrike_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Heavy Strike node.\n" +
+                "Recommended: 1",
+
                 // === Tier 4: Push ===
 
                 ["Tier4_Push_KnockbackChance"] =
@@ -746,6 +826,11 @@ namespace CaptainSkillTree.Localization
                 "Chance to knock back enemies on attack.\n" +
                 "Useful for distance control and battlefield management.\n" +
                 "Recommended: 25-35%",
+
+                ["Tier4_Push_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Push node.\n" +
+                "Recommended: 1",
 
                 // === Tier 5: Tank ===
 
@@ -761,6 +846,11 @@ namespace CaptainSkillTree.Localization
                 "Works with armor for optimal tanking.\n" +
                 "Recommended: 8-15%",
 
+                ["Tier5_Tank_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Tank node.\n" +
+                "Recommended: 1",
+
                 // === Tier 5: DPS ===
 
                 ["Tier5_DPS_DamageBonus"] =
@@ -775,6 +865,11 @@ namespace CaptainSkillTree.Localization
                 "Compensates for slow mace attacks.\n" +
                 "Recommended: 8-15%",
 
+                ["Tier5_DPS_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the DPS Boost node.\n" +
+                "Recommended: 1",
+
                 // === Tier 6: Grandmaster ===
 
                 ["Tier6_Grandmaster_ArmorBonus"] =
@@ -782,6 +877,11 @@ namespace CaptainSkillTree.Localization
                 "Percentage-based armor bonus.\n" +
                 "Great synergy with high-tier armor.\n" +
                 "Recommended: 15-25%",
+
+                ["Tier6_Grandmaster_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Grandmaster node.\n" +
+                "Recommended: 1",
 
                 // === Tier 7: Fury Hammer (H-Key Active) ===
 
@@ -816,6 +916,11 @@ namespace CaptainSkillTree.Localization
                 "Larger radius hits more enemies.\n" +
                 "Recommended: 4-7m",
 
+                ["Tier7_FuryHammer_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Fury Hammer node.\n" +
+                "Recommended: 3",
+
                 // === Tier 7: Guardian Heart (G-Key Active) ===
                 ["Tier7_GuardianHeart_Cooldown"] =
                 "【Cooldown (sec)】\n" +
@@ -840,6 +945,11 @@ namespace CaptainSkillTree.Localization
                 "Percentage of received damage reflected to attacker.\n" +
                 "Deals damage back to enemies as a tank.\n" +
                 "Recommended: 5-8%",
+
+                ["Tier7_GuardianHeart_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Guardian Heart node.\n" +
+                "Recommended: 3",
 
 
                 // ========================================

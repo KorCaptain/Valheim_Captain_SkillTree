@@ -14,12 +14,6 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static readonly Dictionary<string, List<ResourceRequirement>> ResourceRequirements = new Dictionary<string, List<ResourceRequirement>>
         {
-            // 벌목 Lv3: 나무 200개 보유
-            ["woodcutting_lv3"] = new List<ResourceRequirement>
-            {
-                new ResourceRequirement("Wood", "나무", 200)
-            },
-            
             // 벌목 Lv4: 나무 400개 보유
             ["woodcutting_lv4"] = new List<ResourceRequirement>
             {

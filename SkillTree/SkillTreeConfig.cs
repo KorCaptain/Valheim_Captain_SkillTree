@@ -50,7 +50,7 @@ namespace CaptainSkillTree.SkillTree
                 if (Language != null && Language.Value != "Auto")
                 {
                     string configLang = Language.Value.ToLower();
-                    string result = (configLang == "en") ? "en" : "ko";
+                    string result = (configLang == "ko" || configLang == "kr") ? "ko" : "en";
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using config language: {Language.Value} -> {result}");
                     return result;
                 }
@@ -59,7 +59,7 @@ namespace CaptainSkillTree.SkillTree
                 string valheimLang = UnityEngine.PlayerPrefs.GetString("language", "");
                 if (!string.IsNullOrEmpty(valheimLang))
                 {
-                    string result = valheimLang.ToLower() == "english" ? "en" : "ko";
+                    string result = valheimLang.ToLower() == "korean" ? "ko" : "en";
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using Valheim language: {valheimLang} -> {result}");
                     return result;
                 }
@@ -69,7 +69,7 @@ namespace CaptainSkillTree.SkillTree
                 if (!string.IsNullOrEmpty(currentLang) && currentLang != "ko")
                 {
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using LocalizationManager: {currentLang}");
-                    return (currentLang == "en") ? "en" : "ko";
+                    return (currentLang == "ko") ? "ko" : "en";
                 }
 
                 // 기본값: 한국어
@@ -111,7 +111,9 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         internal static string GetLocalizedKeyName(string keyName)
         {
-            // _RequiredPoints 키는 런타임에 처리 (ConfigTranslations에서 제거됨)
+            var translations = Localization.ConfigTranslations.GetKeyNameTranslations(_detectedConfigLanguage);
+            if (translations.ContainsKey(keyName)) return translations[keyName];
+            // _RequiredPoints 키는 dict에 없을 경우 런타임 자동 생성 (fallback)
             if (keyName.EndsWith("_RequiredPoints"))
             {
                 var tierPart = keyName.Split('_')[0]; // "TierX" or "Knife" 등
@@ -119,8 +121,7 @@ namespace CaptainSkillTree.SkillTree
                     ? $"{tierPart}: Required Points"
                     : $"{tierPart}: 필요 포인트";
             }
-            var translations = Localization.ConfigTranslations.GetKeyNameTranslations(_detectedConfigLanguage);
-            return translations.ContainsKey(keyName) ? translations[keyName] : keyName;
+            return keyName;
         }
 
         #region === Config 바인드 헬퍼 메서드 ===
@@ -255,7 +256,6 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> AttackStaffBonusDamage => Attack_Config.AttackStaffBonusDamage;
         public static ConfigEntry<float> AttackBasePhysicalDamage => Attack_Config.AttackBasePhysicalDamage;
         public static ConfigEntry<float> AttackBaseElementalDamage => Attack_Config.AttackBaseElementalDamage;
-        public static ConfigEntry<float> AttackStatBonus => Attack_Config.AttackStatBonus;
         public static ConfigEntry<float> AttackTwoHandDrainPhysicalDamage => Attack_Config.AttackTwoHandDrainPhysicalDamage;
         public static ConfigEntry<float> AttackTwoHandDrainElementalDamage => Attack_Config.AttackTwoHandDrainElementalDamage;
         public static ConfigEntry<float> AttackCritChance => Attack_Config.AttackCritChance;
@@ -278,7 +278,6 @@ namespace CaptainSkillTree.SkillTree
         public static float AttackStaffBonusDamageValue => Attack_Config.AttackStaffBonusDamageValue;
         public static float AttackBasePhysicalDamageValue => Attack_Config.AttackBasePhysicalDamageValue;
         public static float AttackBaseElementalDamageValue => Attack_Config.AttackBaseElementalDamageValue;
-        public static float AttackStatBonusValue => Attack_Config.AttackStatBonusValue;
         public static float AttackTwoHandDrainPhysicalDamageValue => Attack_Config.AttackTwoHandDrainPhysicalDamageValue;
         public static float AttackTwoHandDrainElementalDamageValue => Attack_Config.AttackTwoHandDrainElementalDamageValue;
         public static float AttackCritChanceValue => Attack_Config.AttackCritChanceValue;
@@ -395,19 +394,8 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> BowStep3SpeedShotSkillBonus => Bow_Config.BowStep3SpeedShotSkillBonus;
         public static ConfigEntry<float> BowStep3SilentShotDamageBonus => Bow_Config.BowStep3SilentShotDamageBonus;
         public static ConfigEntry<float> BowStep3SpecialArrowChance => Bow_Config.BowStep3SpecialArrowChance;
-        public static ConfigEntry<float> BowStep4PowerShotKnockbackChance => Bow_Config.BowStep4PowerShotKnockbackChance;
-        public static ConfigEntry<float> BowStep4PowerShotKnockbackPower => Bow_Config.BowStep4PowerShotKnockbackPower;
         public static ConfigEntry<float> BowStep5InstinctCritBonus => Bow_Config.BowStep5InstinctCritBonus;
         public static ConfigEntry<float> BowStep5MasterCritDamage => Bow_Config.BowStep5MasterCritDamage;
-        public static ConfigEntry<float> BowStep5ArrowRainChance => Bow_Config.BowStep5ArrowRainChance;
-        public static ConfigEntry<int> BowStep5ArrowRainCount => Bow_Config.BowStep5ArrowRainCount;
-        public static ConfigEntry<float> BowStep5BackstepShotCritBonus => Bow_Config.BowStep5BackstepShotCritBonus;
-        public static ConfigEntry<float> BowStep5BackstepShotWindow => Bow_Config.BowStep5BackstepShotWindow;
-        public static ConfigEntry<float> BowStep6CritBoostDamageBonus => Bow_Config.BowStep6CritBoostDamageBonus;
-        public static ConfigEntry<float> BowStep6CritBoostCritChance => Bow_Config.BowStep6CritBoostCritChance;
-        public static ConfigEntry<int> BowStep6CritBoostArrowCount => Bow_Config.BowStep6CritBoostArrowCount;
-        public static ConfigEntry<float> BowStep6CritBoostCooldown => Bow_Config.BowStep6CritBoostCooldown;
-        public static ConfigEntry<float> BowStep6CritBoostStaminaCost => Bow_Config.BowStep6CritBoostStaminaCost;
         public static ConfigEntry<float> BowExplosiveArrowDamage => Bow_Config.BowExplosiveArrowDamage;
         public static ConfigEntry<float> BowExplosiveArrowCooldown => Bow_Config.BowExplosiveArrowCooldown;
         public static ConfigEntry<float> BowExplosiveArrowStaminaCost => Bow_Config.BowExplosiveArrowStaminaCost;
@@ -423,19 +411,8 @@ namespace CaptainSkillTree.SkillTree
         public static float BowStep3SpeedShotSkillBonusValue => Bow_Config.BowStep3SpeedShotSkillBonusValue;
         public static float BowStep3SilentShotDamageBonusValue => Bow_Config.BowStep3SilentShotDamageBonusValue;
         public static float BowStep3SpecialArrowChanceValue => Bow_Config.BowStep3SpecialArrowChanceValue;
-        public static float BowStep4PowerShotKnockbackChanceValue => Bow_Config.BowStep4PowerShotKnockbackChanceValue;
-        public static float BowStep4PowerShotKnockbackPowerValue => Bow_Config.BowStep4PowerShotKnockbackPowerValue;
-        public static float BowStep5ArrowRainChanceValue => Bow_Config.BowStep5ArrowRainChanceValue;
-        public static int BowStep5ArrowRainCountValue => Bow_Config.BowStep5ArrowRainCountValue;
-        public static float BowStep5BackstepShotCritBonusValue => Bow_Config.BowStep5BackstepShotCritBonusValue;
-        public static float BowStep5BackstepShotWindowValue => Bow_Config.BowStep5BackstepShotWindowValue;
         public static float BowStep5InstinctCritBonusValue => Bow_Config.BowStep5InstinctCritBonusValue;
         public static float BowStep5MasterCritDamageValue => Bow_Config.BowStep5MasterCritDamageValue;
-        public static float BowStep6CritBoostDamageBonusValue => Bow_Config.BowStep6CritBoostDamageBonusValue;
-        public static float BowStep6CritBoostCritChanceValue => Bow_Config.BowStep6CritBoostCritChanceValue;
-        public static int BowStep6CritBoostArrowCountValue => Bow_Config.BowStep6CritBoostArrowCountValue;
-        public static float BowStep6CritBoostCooldownValue => Bow_Config.BowStep6CritBoostCooldownValue;
-        public static float BowStep6CritBoostStaminaCostValue => Bow_Config.BowStep6CritBoostStaminaCostValue;
         public static float BowExplosiveArrowDamageValue => Bow_Config.BowExplosiveArrowDamageValue;
         public static float BowExplosiveArrowCooldownValue => Bow_Config.BowExplosiveArrowCooldownValue;
         public static float BowExplosiveArrowStaminaCostValue => Bow_Config.BowExplosiveArrowStaminaCostValue;
@@ -557,12 +534,13 @@ namespace CaptainSkillTree.SkillTree
                     "Language setting:\n" +
                     "  - 'Auto' = Auto-detect from Valheim settings (Recommended)\n" +
                     "  - 'KR' = Korean\n" +
-                    "  - 'EN' = English\n\n" +
+                    "  - 'EN' = English\n" +
+                    "  - 'RU' = Russian\n\n" +
                     "⚠️ IMPORTANT: Game restart required after changing this setting!\n" +
                     "   Config Manager (F1) descriptions are set at game startup.\n\n" +
                     "⚠️ 중요: 이 설정 변경 후 게임 재시작이 필요합니다!\n" +
                     "   Config Manager (F1) 설명은 게임 시작 시 설정됩니다.",
-                    new AcceptableValueList<string>("Auto", "KR", "EN")
+                    new AcceptableValueList<string>("Auto", "KR", "EN", "RU")
                 )
             );
 
@@ -605,33 +583,28 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[SkillTreeConfig] Skill_Tree_Base 설정 초기화 완료");
 
             // 1. 전문가 트리 (Attack → Speed → Defense → Product 순)
+            BindServerSync(config, "──── Atk, Spd, Prod, Def Trees ────", "End", "", "");
             Attack_Config.Initialize(config);   // Attack Tree (공격 전문가)
             Speed_Config.Initialize(config);    // Speed Tree (속도 전문가)
             Defense_Config.Initialize(config);  // Defense Tree (방어 전문가)
             Production_Config.Initialize(config);  // Product Tree (생산 전문가)
 
-            // === Separator: End of Expert Trees ===
-            BindServerSync(config, "─────────── Attack, Speed, Production, Defense Trees ───────────", "End of Expert Trees", "", "...");
-
             // 2. 원거리 무기 트리 (Bow → Staff → Crossbow 순)
+            BindServerSync(config, "─────── Ranged Expert Trees ───────", "End", "", "");
             Bow_Config.Initialize(config);                      // Bow Tree (활)
             Staff_Config.InitConfig(config);                    // Staff Tree (지팡이)
             Crossbow_Config.InitializeCrossbowConfig(config);   // Crossbow Tree (석궁)
 
-            // === Separator: End of Ranged Weapons ===
-            BindServerSync(config, "─────────── Ranged Expert Trees ───────────", "End of Ranged Weapons", "", "...");
-
             // 3. 근접 무기 트리 (Knife → Sword → Mace → Spear → Polearm 순)
+            BindServerSync(config, "─────── Melee Expert Trees ────────", "End", "", "");
             Knife_Config.InitializeKnifeConfig(config); // Knife Tree (단검)
             Sword_Config.Initialize(config);            // Sword Tree (검)
             Mace_Config.Initialize(config);             // Mace Tree (둔기)
             Spear_Config.Initialize(config);            // Spear Tree (창)
             Polearm_Config.Initialize(config);          // Polearm Tree (폴암)
 
-            // === Separator: End of Melee Weapons ===
-            BindServerSync(config, "─────────── Melee Expert Trees ───────────", "End of Melee Weapons", "", "...");
-
             // 4. 직업 트리 (최하단 배치)
+            BindServerSync(config, "───────── Job Skill Trees ─────────", "End", "", "");
             Archer_Config.InitializeArcherConfig(config);       // Archer (궁수)
             Mage_Config.InitializeMageConfig(config);           // Mage (마법사)
             Tanker_Config.InitializeTankerConfig(config);       // Tanker (탱커)

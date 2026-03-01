@@ -197,7 +197,7 @@ namespace CaptainSkillTree.SkillTree
                 KnifeCombatDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier5_CriticalDamage_DamageBonus",
-                    25f,
+                    5f,
                     SkillTreeConfig.GetConfigDescription("Tier5_CriticalDamage_DamageBonus"));
 
                 KnifeCombatDamageRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -303,7 +303,7 @@ namespace CaptainSkillTree.SkillTree
                     "Knife Tree",
                     "Tier8_AssassinHeart_RequiredPoints",
                     3,
-                    "Tier 8: Assassin's Heart (knife_step9_assassin_heart) - Required Points");
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_RequiredPoints"));
 
                 Plugin.Log.LogDebug("[단검 컨피그] 모든 설정 로드 완료");
 

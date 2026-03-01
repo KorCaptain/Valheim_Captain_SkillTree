@@ -145,16 +145,8 @@ namespace CaptainSkillTree.Localization
                     }
                 }
 
-                // If no mapping exists, create one from filename (e.g., "eu" -> "EU")
-                if (upperCode == null)
-                {
-                    upperCode = fileName.ToUpper();
-                    if (!LanguageCodeMap.ContainsKey(upperCode))
-                    {
-                        // Add dynamic mapping
-                        LanguageCodeMap[upperCode] = fileName;
-                    }
-                }
+                // LanguageCodeMap에 없는 파일(MonsterExp.json, LevelExp.json 등)은 무시
+                if (upperCode == null) continue;
 
                 // Add to supported languages if not already present
                 if (!_supportedLanguages.Contains(upperCode))
@@ -229,18 +221,24 @@ namespace CaptainSkillTree.Localization
                 else
                     defaultData = DefaultLanguages.GetEnglish(); // All non-Korean languages use English as base
 
-                // Create default file if not exists
+                // 파일이 없으면: 임베디드 리소스 시도 → DefaultLanguages 폴백
                 if (!File.Exists(filePath))
                 {
-                    if (displayLang == "KR" || displayLang == "EN")
+                    var embeddedData = LoadFromEmbeddedResource(fileLang);
+                    if (embeddedData != null)
                     {
-                        CreateDefaultLanguageFile(fileLang, filePath);
+                        foreach (var kvp in (defaultData ?? new Dictionary<string, string>()))
+                            if (!embeddedData.ContainsKey(kvp.Key))
+                                embeddedData[kvp.Key] = kvp.Value;
+                        _translations[fileLang] = embeddedData;
+                        Plugin.Log.LogDebug($"[Localization] {fileLang}: 임베디드 리소스 로드 ({embeddedData.Count} entries)");
                     }
                     else
                     {
-                        // For custom languages (eu, de, fr, etc.), create from English template
-                        CreateLanguageTemplate(fileLang);
+                        _translations[fileLang] = defaultData ?? new Dictionary<string, string>();
+                        Plugin.Log.LogDebug($"[Localization] {fileLang}: 파일 없음 - DefaultLanguages 메모리 사용 ({_translations[fileLang].Count} entries)");
                     }
+                    continue;
                 }
 
                 // Load the file
@@ -271,19 +269,10 @@ namespace CaptainSkillTree.Localization
                             }
                         }
 
-                        // If keys were added or updated, write back to disk
+                        // 파일에 쓰지 않음 - 메모리에서만 키 머지 사용
                         if (addedKeys > 0 || updatedKeys > 0)
                         {
-                            try
-                            {
-                                var updatedJson = DictToJson(langData);
-                                File.WriteAllText(filePath, updatedJson);
-                                Plugin.Log.LogDebug($"[Localization] Updated {fileLang}.json: {addedKeys} new, {updatedKeys} refreshed keys");
-                            }
-                            catch (Exception writeEx)
-                            {
-                                Plugin.Log.LogWarning($"[Localization] Failed to update {fileLang}.json: {writeEx.Message}");
-                            }
+                            Plugin.Log.LogDebug($"[Localization] {fileLang}.json 메모리 업데이트: {addedKeys} new, {updatedKeys} refreshed keys");
                         }
                     }
 
@@ -808,6 +797,27 @@ namespace CaptainSkillTree.Localization
 
             sb.AppendLine("}");
             return sb.ToString();
+        }
+
+        /// <summary>임베디드 리소스에서 언어 파일 로드 (ru.json 등)</summary>
+        private static Dictionary<string, string> LoadFromEmbeddedResource(string lang)
+        {
+            try
+            {
+                var resourceName = $"CaptainSkillTree.Localization.{lang}.json";
+                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    if (stream == null) return null;
+                    using (var reader = new System.IO.StreamReader(stream))
+                        return ParseJsonToDict(reader.ReadToEnd());
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogDebug($"[Localization] {lang} 임베디드 리소스 로드 실패: {ex.Message}");
+                return null;
+            }
         }
 
         #endregion

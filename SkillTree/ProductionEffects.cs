@@ -60,10 +60,12 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 벌목 시 추가 나무 획득 처리 (TreeBase 파괴 시 - 드롭 시점)
-        /// EpicLoot 방식 참고: 실제 아이템 드롭 시점에 보너스 적용
+        /// 벌목 시 추가 나무 획득 처리 (TreeBase 파괴 시)
+        /// RPC_Damage를 패치해야 실제 체력 감소 후 파괴 여부 확인 가능.
+        /// Damage()는 단순 RPC 호출 래퍼라 패치 의미 없음.
+        /// 실제 체력은 m_health 필드가 아닌 ZDO에서 읽어야 함.
         /// </summary>
-        [HarmonyPatch(typeof(TreeBase), nameof(TreeBase.Damage))]
+        [HarmonyPatch(typeof(TreeBase), "RPC_Damage")]
         public static class TreeBase_Damage_Patch
         {
             [HarmonyPriority(Priority.Low)]
@@ -71,16 +73,17 @@ namespace CaptainSkillTree.SkillTree
             {
                 try
                 {
-                    // 플레이어가 공격했는지 확인
                     if (hit?.GetAttacker() != Player.m_localPlayer) return;
                     if (Player.m_localPlayer == null) return;
 
-                    // 생산 전문가 스킬이 없으면 전체 로직 건너뛰기 (최적화)
                     var manager = SkillTreeManager.Instance;
                     if (manager == null || manager.GetSkillLevel("production_root") <= 0) return;
 
-                    // 나무가 파괴되었는지 확인 (체력이 0 이하)
-                    if (__instance.m_health > 0) return; // 아직 파괴되지 않음
+                    // ZDO에서 실제 남은 체력 확인 (m_health는 기본값 필드라 의미 없음)
+                    var nview = __instance.GetComponent<ZNetView>();
+                    if (nview == null || !nview.IsValid()) return;
+                    float health = nview.GetZDO().GetFloat(ZDOVars.s_health, __instance.m_health);
+                    if (health > 0f) return; // 아직 파괴 안 됨
 
                     // 중복 처리 방지
                     int treeId = __instance.GetInstanceID();
@@ -90,7 +93,6 @@ namespace CaptainSkillTree.SkillTree
 
                     processedTrees[treeId] = currentTime;
 
-                    // 실제 드롭 위치에서 보너스 아이템 생성 (EpicLoot 방식)
                     TryDropExtraWood(hit.GetAttacker(), __instance.m_dropWhenDestroyed, __instance.transform.position);
                 }
                 catch (System.Exception ex)
@@ -107,9 +109,24 @@ namespace CaptainSkillTree.SkillTree
         [HarmonyPatch(typeof(Pickable), "RPC_Pick")]
         public static class Pickable_Pick_Patch
         {
+            // 수확 가능 상태였던 Pickable ID 추적 (빈 덤불 E키 오발동 방지)
+            private static readonly HashSet<int> pendingPickIds = new HashSet<int>();
+
+            [HarmonyPriority(Priority.Low)]
+            public static void Prefix(Pickable __instance)
+            {
+                // 수확 전: ZDO 기반 수확 상태 확인 (GetPicked() = false일 때만 등록)
+                // GetPicked() = true → 이미 수확된 빈 덤불 → 등록 안 함 (E키 오발동 방지)
+                if (!__instance.GetPicked() && __instance.m_itemPrefab != null)
+                    pendingPickIds.Add(__instance.GetInstanceID());
+            }
+
             [HarmonyPriority(Priority.Low)]
             public static void Postfix(Pickable __instance)
             {
+                int id = __instance.GetInstanceID();
+                if (!pendingPickIds.Remove(id)) return; // 아이템 없었으면 조기 리턴
+
                 try
                 {
                     if (Player.m_localPlayer == null) return;
@@ -264,7 +281,8 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 나무 추가 드롭 시도 (EpicLoot 방식 참고)
-        /// 실제 아이템이 월드에 드롭되는 위치에 보너스 아이템 생성
+        /// +1 그룹(Lv0~2 누적, 최대 100%)과 +2 그룹(Lv3~4 독립)을 각각 판정.
+        /// 동시 발동 시 합산: +1 + +2 = +3
         /// </summary>
         private static void TryDropExtraWood(Character attacker, DropTable dropTable, Vector3 dropPosition)
         {
@@ -274,53 +292,40 @@ namespace CaptainSkillTree.SkillTree
             var manager = SkillTreeManager.Instance;
             if (manager == null) return;
 
-            float totalChance = 0f;
-            string effectSource = "";
-
-            // 생산 전문가 (production_root) - 50% 확률
-            // ※ 패치 메서드에서 이미 체크했으므로 여기서는 무조건 보유
-            totalChance += PRODUCTION_ROOT_CHANCE;
-            effectSource = "생산 전문가";
-
-            // 초보 일꾼 - 25% 확률 (누적)
+            // === +1 그룹: Lv0~Lv2 누적 확률 (Lv2까지 다 찍으면 100%) ===
+            float plusOneChance = 0f;
+            // production_root (Lv0) - 50%
+            plusOneChance += PRODUCTION_ROOT_CHANCE;
+            // novice_worker (Lv1) - +25%
             if (manager.GetSkillLevel("novice_worker") > 0)
-            {
-                totalChance += NOVICE_WORKER_CHANCE;
-                effectSource = "초보 일꾼";
-            }
-
-            // 벌목 Lv2 - 25% 확률 (누적)
+                plusOneChance += NOVICE_WORKER_CHANCE;
+            // woodcutting_lv2 (Lv2) - +25% → 합산 100%
             if (manager.GetSkillLevel("woodcutting_lv2") > 0)
-            {
-                totalChance += WOODCUTTING_LV2_CHANCE;
-                effectSource = "벌목 Lv2";
-            }
+                plusOneChance += WOODCUTTING_LV2_CHANCE;
+            plusOneChance = Mathf.Min(plusOneChance, 1.0f); // 100% 상한
 
-            // 벌목 Lv3 - 35% 확률 (누적)
+            // === +2 그룹: Lv3~Lv4 독립 누적 확률 ===
+            float plusTwoChance = 0f;
+            // woodcutting_lv3 (Lv3) - 35%
             if (manager.GetSkillLevel("woodcutting_lv3") > 0)
-            {
-                totalChance += 0.35f;
-                effectSource = "벌목 Lv3";
-            }
-
-            // 벌목 Lv4 - 45% 확률 (누적)
+                plusTwoChance += 0.35f;
+            // woodcutting_lv4 (Lv4) - +35% → 합산 최대 70%
             if (manager.GetSkillLevel("woodcutting_lv4") > 0)
+                plusTwoChance += 0.35f;
+
+            // === 각각 독립 판정 ===
+            bool plusOneHit = plusOneChance > 0f && UnityEngine.Random.Range(0f, 1f) < plusOneChance;
+            bool plusTwoHit = plusTwoChance > 0f && UnityEngine.Random.Range(0f, 1f) < plusTwoChance;
+
+            int dropCount = (plusOneHit ? 1 : 0) + (plusTwoHit ? 2 : 0);
+
+            Plugin.Log.LogInfo($"[생산 효과] 벌목 판정 - +1그룹: {plusOneChance*100:F0}%={plusOneHit}, +2그룹: {plusTwoChance*100:F0}%={plusTwoHit}, 총 드롭: {dropCount}");
+
+            if (dropCount > 0)
             {
-                totalChance += 0.45f;
-                effectSource = "벌목 Lv4";
-            }
-
-            // 확률 체크 및 월드에 아이템 드롭
-            float randomValue = UnityEngine.Random.Range(0f, 1f);
-            Plugin.Log.LogInfo($"[생산 효과] 확률 체크: 롤링값 {randomValue:F3}, 필요값 {totalChance:F3}");
-
-            if (totalChance > 0 && randomValue < totalChance)
-            {
-                Plugin.Log.LogInfo($"[생산 효과] 벌목 보너스 발동! {effectSource}");
-
-                // 드롭 개수 결정: Lv3/Lv4는 +2, 나머지는 +1
-                int dropCount = (manager.GetSkillLevel("woodcutting_lv3") > 0 ||
-                                manager.GetSkillLevel("woodcutting_lv4") > 0) ? 2 : 1;
+                string effectSource = plusOneHit && plusTwoHit ? "벌목 Lv0~4 동시발동"
+                                    : plusTwoHit ? "벌목 Lv3~4"
+                                    : "벌목 Lv0~2";
 
                 // DropTable에서 실제 드롭되는 나무 종류 확인
                 string woodItemName = "Wood"; // 기본값
@@ -379,15 +384,8 @@ namespace CaptainSkillTree.SkillTree
                         $"🪓 {displayName} +{dropCount}",
                         new Color(0.4f, 0.8f, 0.2f, 1f)); // 자연스러운 초록색
 
-                    // 벌목 효율 텍스트도 실제 나무 획득 시에만 표시
-                    ShowWoodcuttingEfficiencyText();
-
                     Plugin.Log.LogInfo($"[생산 효과] 벌목 보너스 발동 성공: {effectSource} - {displayName} +{dropCount} 월드에 드롭됨");
                 }
-            }
-            else
-            {
-                Plugin.Log.LogInfo($"[생산 효과] 벌목 보너스 미발동 - 확률: {totalChance * 100:F1}%, 롤링: {randomValue * 100:F1}%");
             }
         }
 
@@ -402,46 +400,33 @@ namespace CaptainSkillTree.SkillTree
             var manager = SkillTreeManager.Instance;
             if (manager == null) return;
 
+            // production_root는 진입 조건만 (확률 합산 제외 - 나무 벌목 전용 50% 효과)
+            if (manager.GetSkillLevel("production_root") <= 0) return;
+
             float totalChance = 0f;
             string effectSource = "";
 
-            // 생산 전문가 기본 확률
-            if (manager.GetSkillLevel("production_root") > 0)
-            {
-                totalChance += PRODUCTION_ROOT_CHANCE;
-                effectSource = "생산 전문가";
-            }
-            else
-            {
-                return; // 생산 전문가 스킬이 없으면 보너스 없음
-            }
-
-            // 초보 일꾼 보너스
-            if (manager.GetSkillLevel("novice_worker") > 0)
-            {
-                totalChance += NOVICE_WORKER_CHANCE;
-                effectSource = "초보 일꾼";
-            }
-
-            // 채집 관련 스킬 보너스
+            // 채집 전용 스킬 확률 (나무 제외 자원에만 적용)
             if (activityType == "gathering")
             {
                 if (manager.GetSkillLevel("gathering_lv2") > 0)
                 {
-                    totalChance += GATHERING_LV2_CHANCE;
+                    totalChance += GATHERING_LV2_CHANCE; // 25%
                     effectSource = "채집 Lv2";
                 }
                 if (manager.GetSkillLevel("gathering_lv3") > 0)
                 {
-                    totalChance += 0.35f;
+                    totalChance += 0.35f; // +35% (누적 최대 60%)
                     effectSource = "채집 Lv3";
                 }
                 if (manager.GetSkillLevel("gathering_lv4") > 0)
                 {
-                    totalChance += 0.40f;
+                    totalChance += 0.25f; // +25% (누적 최대 85%)
                     effectSource = "채집 Lv4";
                 }
             }
+
+            if (totalChance <= 0f) return;
 
             // 확률 체크 및 드롭
             if (UnityEngine.Random.Range(0f, 1f) < totalChance)
@@ -681,44 +666,5 @@ namespace CaptainSkillTree.SkillTree
                    objectName.Contains("Obsidian");
         }
 
-        /// <summary>
-        /// 벌목 효율 텍스트를 실제 나무 획득 시에만 표시
-        /// </summary>
-        private static void ShowWoodcuttingEfficiencyText()
-        {
-            var manager = SkillTreeManager.Instance;
-            if (manager == null || Player.m_localPlayer == null) return;
-
-            // 벌목 효율 스킬을 학습했는지 확인
-            int efficiencyBonus = 0;
-            
-            // 벌목 Lv2: +20% 효율
-            if (manager.GetSkillLevel("woodcutting_lv2") > 0)
-            {
-                efficiencyBonus = 20;
-            }
-            
-            // 벌목 Lv3: +30% 효율
-            if (manager.GetSkillLevel("woodcutting_lv3") > 0)
-            {
-                efficiencyBonus = 30;
-            }
-            
-            // 벌목 Lv4: +40% 효율
-            if (manager.GetSkillLevel("woodcutting_lv4") > 0)
-            {
-                efficiencyBonus = 40;
-            }
-            
-            // 벌목 효율 스킬이 있을 때만 텍스트 표시 (8% 확률)
-            if (efficiencyBonus > 0 && UnityEngine.Random.Range(0f, 1f) < 0.08f)
-            {
-                SkillEffect.DrawFloatingText(Player.m_localPlayer, 
-                    $"🪓 벌목 효율 +{efficiencyBonus}%", 
-                    new Color(0.8f, 0.6f, 0.2f, 1f)); // 나무 비슷한 갈색
-                
-                Plugin.Log.LogInfo($"[생산 효과] 벌목 효율 텍스트 표시: +{efficiencyBonus}% (실제 나무 획득 시)");
-            }
-        }
     }
 }

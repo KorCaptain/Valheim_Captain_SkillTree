@@ -124,6 +124,79 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 방어구 실제 방어력 보너스 패치
+        /// (defense_root/Step1_survival/Step2_health/Step4_tanker)
+        /// SuppressPatch 플래그로 ArmorTooltip 패치의 중복 적용 방지
+        /// </summary>
+        [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetArmor),
+            new Type[] { typeof(int), typeof(float) })]
+        public static class ItemData_GetArmor_DefenseTree_Patch
+        {
+            internal static bool SuppressPatch = false;
+
+            [HarmonyPriority(Priority.Low)]
+            public static void Postfix(ItemDrop.ItemData __instance, int quality, float worldLevel, ref float __result)
+            {
+                if (SuppressPatch) return;
+
+                try
+                {
+                    var itemType = __instance.m_shared.m_itemType;
+                    if (itemType != ItemDrop.ItemData.ItemType.Helmet &&
+                        itemType != ItemDrop.ItemData.ItemType.Chest &&
+                        itemType != ItemDrop.ItemData.ItemType.Legs)
+                        return;
+
+                    var player = Player.m_localPlayer;
+                    if (player == null) return;
+
+                    var tr = Traverse.Create(player);
+                    ItemDrop.ItemData equipped = null;
+                    if (itemType == ItemDrop.ItemData.ItemType.Helmet)
+                        equipped = tr.Field("m_helmetItem").GetValue<ItemDrop.ItemData>();
+                    else if (itemType == ItemDrop.ItemData.ItemType.Chest)
+                        equipped = tr.Field("m_chestItem").GetValue<ItemDrop.ItemData>();
+                    else if (itemType == ItemDrop.ItemData.ItemType.Legs)
+                        equipped = tr.Field("m_legItem").GetValue<ItemDrop.ItemData>();
+
+                    if (equipped != __instance) return;
+
+                    var manager = SkillTreeManager.Instance;
+                    if (manager == null) return;
+
+                    float flat = 0f;
+                    switch (itemType)
+                    {
+                        case ItemDrop.ItemData.ItemType.Helmet:
+                            if (manager.GetSkillLevel("defense_root") > 0)
+                                flat = Defense_Config.DefenseRootArmorBonusValue;
+                            break;
+                        case ItemDrop.ItemData.ItemType.Chest:
+                            if (manager.GetSkillLevel("defense_Step1_survival") > 0)
+                                flat = Defense_Config.SurvivalArmorBonusValue;
+                            break;
+                        case ItemDrop.ItemData.ItemType.Legs:
+                            if (manager.GetSkillLevel("defense_Step2_health") > 0)
+                                flat = Defense_Config.HealthArmorBonusValue;
+                            break;
+                    }
+
+                    __result += flat;
+
+                    if (manager.GetSkillLevel("defense_Step4_tanker") > 0)
+                    {
+                        float mult = Defense_Config.TankerArmorBonusValue / 100f;
+                        __result += __result * mult;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[방어 트리] GetArmor 패치 오류: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
         /// 구르기 스태미나 감소 및 무적시간 증가
         /// </summary>
         [HarmonyPatch(typeof(Player), "Dodge")]
@@ -230,6 +303,42 @@ namespace CaptainSkillTree.SkillTree
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[방어 트리] ModifyBlockStaminaUsage 패치 오류: {ex.Message}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 요툰의 생명력: 물리/속성 저항 +10%
+    /// Character.Damage 패치 (Prefix)
+    /// </summary>
+    [HarmonyPatch(typeof(Character), "Damage")]
+    public static class Character_Damage_JotunnVitality_Patch
+    {
+        static void Prefix(Character __instance, ref HitData hit)
+        {
+            try
+            {
+                if (__instance != Player.m_localPlayer) return;
+                var manager = SkillTreeManager.Instance;
+                if (manager == null || manager.GetSkillLevel("defense_Step6_body") <= 0) return;
+
+                float resistance = Defense_Config.BodyArmorBonusValue / 100f;
+                float mult = 1f - resistance;
+
+                // 물리 저항
+                hit.m_damage.m_blunt   *= mult;
+                hit.m_damage.m_slash   *= mult;
+                hit.m_damage.m_pierce  *= mult;
+                // 속성 저항
+                hit.m_damage.m_fire      *= mult;
+                hit.m_damage.m_frost     *= mult;
+                hit.m_damage.m_lightning *= mult;
+                hit.m_damage.m_poison    *= mult;
+                hit.m_damage.m_spirit    *= mult;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[요툰의 생명력] Damage 패치 오류: {ex.Message}");
             }
         }
     }

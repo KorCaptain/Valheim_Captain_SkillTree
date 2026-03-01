@@ -153,16 +153,6 @@ namespace CaptainSkillTree.SkillTree
                             }
                         }
 
-                        // 기본 활공격 - 공격력 증가 (고정값) - 패시브 스킬
-                        if (isBow && manager.GetSkillLevel("bow_Step3_silentshot") > 0)
-                        {
-                            // 활의 주 데미지 타입인 pierce에 고정값 추가
-                            hit.m_damage.m_pierce += SkillTreeConfig.BowStep3SilentShotDamageBonusValue;
-
-                            // 패시브 스킬이므로 메시지 표시 안 함 (CLAUDE.md 규칙 준수)
-                            isAttackTreeEffect = true;
-                        }
-
                         // 석궁 특화 (공격력 증가)
                         if (isCrossbow && manager.GetSkillLevel("atk_crossbow_bonus") > 0 && 
                             UnityEngine.Random.Range(0f, 100f) < SkillTreeConfig.AttackCrossbowBonusChanceValue)
@@ -513,6 +503,41 @@ namespace CaptainSkillTree.SkillTree
         new[] { typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int) })]
     public static class AttackTree_ItemData_GetTooltip_Patch
     {
+        private const string COL_TOTAL = "orange";
+        private const string COL_BASE  = "white";
+        private const string COL_BONUS = "#4FC3F7";
+        private const string COL_GRAY  = "#808080";
+
+        private static string BuildDmgLine(string line, float baseVal, float flatBonus, float pctBonus)
+        {
+            int colonIdx = line.IndexOf(':');
+            if (colonIdx < 0) return line;
+            string label = line.Substring(0, colonIdx + 1);
+
+            bool hasFlat = flatBonus > 0f;
+            bool hasPct  = pctBonus  > 0f;
+            if (!hasFlat && !hasPct) return line;
+
+            float total = (baseVal + flatBonus) * (1f + pctBonus / 100f);
+
+            if (hasFlat && !hasPct)
+                return $"{label} <color={COL_TOTAL}>{total:F0}</color> " +
+                       $"<color={COL_GRAY}>(</color><color={COL_BASE}>{baseVal:F0}</color>" +
+                       $"<color={COL_GRAY}> + </color><color={COL_BONUS}>{flatBonus:F0}</color>" +
+                       $"<color={COL_GRAY}>)</color>";
+
+            string inner = hasFlat
+                ? $"<color={COL_GRAY}>(</color><color={COL_BASE}>{baseVal:F0}</color>" +
+                  $"<color={COL_GRAY}> + </color><color={COL_BONUS}>{flatBonus:F0}</color>" +
+                  $"<color={COL_GRAY}>)</color>"
+                : $"<color={COL_BASE}>{baseVal:F0}</color>";
+
+            return $"{label} <color={COL_TOTAL}>{total:F0}</color> " +
+                   $"<color={COL_GRAY}>({inner} * </color>" +
+                   $"<color={COL_BONUS}>{pctBonus:F0}%</color>" +
+                   $"<color={COL_GRAY}>)</color>";
+        }
+
         [HarmonyPostfix]
         private static void Postfix(ItemDrop.ItemData item, int qualityLevel, bool crafting, float worldLevel, int stackOverride, ref string __result)
         {
@@ -537,34 +562,72 @@ namespace CaptainSkillTree.SkillTree
                 if (manager == null) return;
 
                 string bonusText = "";
+                float physFixed = 0f, elemFixed = 0f;
+                float physPct   = 0f, elemPct   = 0f;
 
-                // 공격 전문가 루트: 모든 공격력 +[CONFIG]%
+                // 보너스 수집
                 if (manager.GetSkillLevel("attack_root") > 0)
                 {
-                    float bonus = SkillTreeConfig.AttackRootDamageBonusValue;
-                    bonusText += $"\n<color=#ffd700>⚔️ 공격 전문가: 모든 공격력 +{bonus}%</color>";
+                    float pct = SkillTreeConfig.AttackRootDamageBonusValue;
+                    physPct += pct;
+                    elemPct += pct;
+                    bonusText += $"\n<color=#ffd700>⚔️ 공격 전문가: 모든 공격력 +{pct}%</color>";
                 }
 
-                // 기본 공격: 물리 공격력 +[CONFIG], 속성 공격력 +[CONFIG]
                 if (manager.GetSkillLevel("atk_base") > 0)
                 {
-                    float physicalBonus = SkillTreeConfig.AttackBasePhysicalDamageValue;
-                    float elementalBonus = SkillTreeConfig.AttackBaseElementalDamageValue;
-                    bonusText += $"\n<color=#00ff00>💪 기본 공격: 물리 +{physicalBonus}, 속성 +{elementalBonus}</color>";
+                    float p = SkillTreeConfig.AttackBasePhysicalDamageValue;
+                    float e = SkillTreeConfig.AttackBaseElementalDamageValue;
+                    physFixed += p;
+                    elemFixed += e;
+                    bonusText += $"\n<color=#00ff00>💪 기본 공격: 관통 +{p}, 화염 +1</color>";
                 }
 
-                // 공격 증가: 물리 공격력 +[CONFIG]%, 속성 공격력 +[CONFIG]%
                 if (manager.GetSkillLevel("atk_twohand_drain") > 0)
                 {
-                    float physicalBonus = SkillTreeConfig.AttackTwoHandDrainPhysicalDamageValue;
-                    float elementalBonus = SkillTreeConfig.AttackTwoHandDrainElementalDamageValue;
-                    bonusText += $"\n<color=#ff8c00>🔥 공격 증가: 물리 +{physicalBonus}%, 속성 +{elementalBonus}%</color>";
+                    float p = SkillTreeConfig.AttackTwoHandDrainPhysicalDamageValue;
+                    float e = SkillTreeConfig.AttackTwoHandDrainElementalDamageValue;
+                    physPct += p;
+                    elemPct += e;
+                    bonusText += $"\n<color=#ff8c00>🔥 공격 증가: 물리 +{p}%, 속성 +{e}%</color>";
+                }
+
+                // 보너스가 있으면 단일 패스로 수치 라인 교체
+                if (physFixed > 0f || elemFixed > 0f || physPct > 0f || elemPct > 0f)
+                {
+                    // DEBUG: 툴팁 원시 내용 로그 (확인 후 제거)
+                    Plugin.Log.LogInfo($"[ATK_DBG] raw tooltip lines:");
+                    foreach (var dbgLine in __result.Split('\n'))
+                        if (dbgLine.Contains("dmg") || dbgLine.Contains("관통") || dbgLine.Contains("slash") || dbgLine.Contains("pierce") || dbgLine.Contains("$item"))
+                            Plugin.Log.LogInfo($"[ATK_DBG]  >> {dbgLine}");
+                    var dmg = item.GetDamage(qualityLevel, worldLevel);
+                    Plugin.Log.LogInfo($"[ATK_DBG] dmg.m_pierce={dmg.m_pierce} m_slash={dmg.m_slash} m_blunt={dmg.m_blunt}");
+                    string[] lines = __result.Split('\n');
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        string l = lines[i];
+                        if      (dmg.m_slash     > 0 && l.Contains("$item_dmg_slash"))
+                            lines[i] = BuildDmgLine(l, dmg.m_slash,     physFixed, physPct);
+                        else if (dmg.m_blunt     > 0 && l.Contains("$item_dmg_blunt"))
+                            lines[i] = BuildDmgLine(l, dmg.m_blunt,     physFixed, physPct);
+                        else if (dmg.m_pierce    > 0 && l.Contains("$item_dmg_pierce"))
+                            lines[i] = BuildDmgLine(l, dmg.m_pierce,    physFixed, physPct);
+                        else if (dmg.m_fire      > 0 && l.Contains("$item_dmg_fire"))
+                            lines[i] = BuildDmgLine(l, dmg.m_fire,      elemFixed, elemPct);
+                        else if (dmg.m_frost     > 0 && l.Contains("$item_dmg_frost"))
+                            lines[i] = BuildDmgLine(l, dmg.m_frost,     elemFixed, elemPct);
+                        else if (dmg.m_lightning > 0 && l.Contains("$item_dmg_lightning"))
+                            lines[i] = BuildDmgLine(l, dmg.m_lightning, elemFixed, elemPct);
+                        else if (dmg.m_poison    > 0 && l.Contains("$item_dmg_poison"))
+                            lines[i] = BuildDmgLine(l, dmg.m_poison,    elemFixed, elemPct);
+                        else if (dmg.m_spirit    > 0 && l.Contains("$item_dmg_spirit"))
+                            lines[i] = BuildDmgLine(l, dmg.m_spirit,    elemFixed, elemPct);
+                    }
+                    __result = string.Join("\n", lines);
                 }
 
                 if (!string.IsNullOrEmpty(bonusText))
-                {
                     __result += bonusText;
-                }
             }
             catch (System.Exception ex)
             {

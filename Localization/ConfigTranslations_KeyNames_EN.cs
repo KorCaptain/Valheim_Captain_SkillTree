@@ -9,12 +9,18 @@ namespace CaptainSkillTree.Localization
             return new Dictionary<string, string>
             {
                 // ============================================
-                // Attack Tree - 31 Keys
+                // Attack Tree - 33 Keys
                 // ============================================
 
 
-                // === Tier 0: Attack Expert (1) ===
-                ["Tier0_AttackExpert_AllDamageBonus"] = "Tier 0: All Damage Bonus (%)",
+                // === Tier 0: Attack Expert (2) ===
+                ["Tier0_AttackExpert_AllDamageBonus"] = "Tier 0: [Attack Expert] All Damage Bonus (%)",
+                ["Tier0_AttackExpert_RequiredPoints"] = "Tier 0: [Attack Expert] Required Points",
+
+                // === Tier 1: Base Attack (3) ===
+                ["Tier1_BaseAttack_PhysicalDamageBonus"] = "Tier 1: [Base Attack] Physical Damage Bonus (%)",
+                ["Tier1_BaseAttack_ElementalDamageBonus"] = "Tier 1: [Base Attack] Elemental Damage Bonus (%)",
+                ["Tier1_BaseAttack_RequiredPoints"] = "Tier 1: [Base Attack] Required Points",
 
                 // === Tier 2: Weapon Specialization (12) ===
                 ["Tier2_MeleeSpec_BonusTriggerChance"] = "Tier 2-1: [Melee Spec] Trigger Chance (%)",
@@ -30,25 +36,22 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_StaffSpec_StaffDamage"] = "Tier 2-4: [Staff Spec] Bonus Damage",
                 ["Tier2_StaffSpec_RequiredPoints"] = "Tier 2-4: [Staff Spec] Required Points",
 
-                // === Tier 1: Base Attack (2) ===
-                ["Tier1_BaseAttack_PhysicalDamageBonus"] = "Tier 1: Physical Damage Bonus",
-                ["Tier1_BaseAttack_ElementalDamageBonus"] = "Tier 1: Elemental Damage Bonus",
-
                 // === Tier 3: Attack Boost (3) ===
-                ["Tier3_AttackBoost_StrIntBonus"] = "Tier 3: Strength/Intelligence Bonus",
-                ["Tier3_AttackBoost_PhysicalDamageBonus"] = "Tier 3: Two-Hand Physical Damage Bonus (%)",
-                ["Tier3_AttackBoost_ElementalDamageBonus"] = "Tier 3: Two-Hand Elemental Damage Bonus (%)",
+                ["Tier3_AttackBoost_PhysicalDamageBonus"] = "Tier 3: [Attack Boost] Physical Damage Bonus (%)",
+                ["Tier3_AttackBoost_ElementalDamageBonus"] = "Tier 3: [Attack Boost] Elemental Damage Bonus (%)",
+                ["Tier3_AttackBoost_RequiredPoints"] = "Tier 3: [Attack Boost] Required Points",
 
                 // === Tier 4: Combat Enhancement (6) ===
                 ["Tier4_MeleeEnhance_2HitComboBonus"] = "Tier 4-1: [Melee Enhance] 2-Hit Combo Bonus (%)",
                 ["Tier4_MeleeEnhance_RequiredPoints"] = "Tier 4-1: [Melee Enhance] Required Points",
                 ["Tier4_PrecisionAttack_CritChance"] = "Tier 4-2: [Precision Attack] Crit Chance (%)",
                 ["Tier4_PrecisionAttack_RequiredPoints"] = "Tier 4-2: [Precision Attack] Required Points",
-                ["Tier4_RangedEnhance_RangedDamageBonus"] = "Tier 4-3: [Ranged Enhance] Damage Bonus",
+                ["Tier4_RangedEnhance_RangedDamageBonus"] = "Tier 4-3: [Ranged Enhance] Damage Bonus (%)",
                 ["Tier4_RangedEnhance_RequiredPoints"] = "Tier 4-3: [Ranged Enhance] Required Points",
 
-                // === Tier 5: Specialized Stats (1) ===
-                ["Tier5_SpecialStat_SpecBonus"] = "Tier 5: Weapon Specialization Bonus",
+                // === Tier 5: Specialized Stats (2) ===
+                ["Tier5_SpecialStat_SpecBonus"] = "Tier 5: [Specialized Stats] Weapon Specialization Bonus",
+                ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [Specialized Stats] Required Points",
 
                 // === Tier 6: Final Enhancement (8) ===
                 ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [Weak Point] Crit Damage Bonus (%)",
@@ -65,75 +68,102 @@ namespace CaptainSkillTree.Localization
                 // ============================================
 
 
-                // === Tier 0: Speed Expert (1개) ===
-                ["Tier0_SpeedExpert_MoveSpeedBonus"] = "Tier 0: Move Speed Bonus (%)",
+                // === Tier 0: Speed Expert (2) ===
+                ["Tier0_SpeedExpert_MoveSpeedBonus"] = "Tier 0: [Speed Expert] Move Speed Bonus (%)",
+                ["Tier0_SpeedExpert_RequiredPoints"] = "Tier 0: [Speed Expert] Required Points",
 
-                // === Tier 1: Agility Base (4개) ===
-                ["Tier1_AgilityBase_DodgeMoveSpeedBonus"] = "Tier 1: Post-Dodge Move Speed Bonus (%)",
-                ["Tier1_AgilityBase_BuffDuration"] = "Tier 1: Buff Duration (sec)",
-                ["Tier1_AgilityBase_AttackSpeedBonus"] = "Tier 1: Attack Speed Bonus (%)",
-                ["Tier1_AgilityBase_DodgeSpeedBonus"] = "Tier 1: Dodge Speed Bonus (%)",
+                // === Tier 1: Agility Foundation (5) ===
+                ["Tier1_AgilityBase_DodgeMoveSpeedBonus"] = "Tier 1: [Agility Foundation] Post-Dodge Move Speed Bonus (%)",
+                ["Tier1_AgilityBase_BuffDuration"] = "Tier 1: [Agility Foundation] Buff Duration (sec)",
+                ["Tier1_AgilityBase_AttackSpeedBonus"] = "Tier 1: [Agility Foundation] Attack Speed Bonus (%)",
+                ["Tier1_AgilityBase_DodgeSpeedBonus"] = "Tier 1: [Agility Foundation] Dodge Speed Bonus (%)",
+                ["Tier1_AgilityBase_RequiredPoints"] = "Tier 1: [Agility Foundation] Required Points",
 
-                // === Tier 2: Melee Flow (4개) ===
-                ["Tier2_MeleeFlow_AttackSpeedBonus"] = "Tier 2: Attack Speed Bonus on 2-Hit (%)",
-                ["Tier2_MeleeFlow_StaminaReduction"] = "Tier 2: Stamina Reduction (%)",
-                ["Tier2_MeleeFlow_Duration"] = "Tier 2: Buff Duration (sec)",
-                ["Tier2_MeleeFlow_ComboSpeedBonus"] = "Tier 2: Combo Speed Bonus (%)",
+                // === Tier 2-1: Continuous Flow (5) ===
+                ["Tier2_MeleeFlow_AttackSpeedBonus"] = "Tier 2-1: [Continuous Flow] Attack Speed Bonus on 2-Hit (%)",
+                ["Tier2_MeleeFlow_StaminaReduction"] = "Tier 2-1: [Continuous Flow] Stamina Reduction (%)",
+                ["Tier2_MeleeFlow_Duration"] = "Tier 2-1: [Continuous Flow] Buff Duration (sec)",
+                ["Tier2_MeleeFlow_ComboSpeedBonus"] = "Tier 2-1: [Continuous Flow] Combo Speed Bonus (%)",
+                ["Tier2_MeleeFlow_RequiredPoints"] = "Tier 2-1: [Continuous Flow] Required Points",
 
-                // === Tier 2: Crossbow Expert (3개) ===
-                ["Tier2_CrossbowExpert_MoveSpeedBonus"] = "Tier 2: Move Speed Bonus on Hit (%)",
-                ["Tier2_CrossbowExpert_BuffDuration"] = "Tier 2: Buff Duration (sec)",
-                ["Tier2_CrossbowExpert_ReloadSpeedBonus"] = "Tier 2: Reload Speed Bonus During Buff (%)",
+                // === Tier 2-2: Crossbow Expert (4) ===
+                ["Tier2_CrossbowExpert_MoveSpeedBonus"] = "Tier 2-2: [Crossbow Expert] Move Speed Bonus on Hit (%)",
+                ["Tier2_CrossbowExpert_BuffDuration"] = "Tier 2-2: [Crossbow Expert] Buff Duration (sec)",
+                ["Tier2_CrossbowExpert_ReloadSpeedBonus"] = "Tier 2-2: [Crossbow Expert] Reload Speed Bonus During Buff (%)",
+                ["Tier2_CrossbowExpert_RequiredPoints"] = "Tier 2-2: [Crossbow Expert] Required Points",
 
-                // === Tier 2: Bow Expert (3개) ===
-                ["Tier2_BowExpert_StaminaReduction"] = "Tier 2: Stamina Reduction on 2-Hit Combo (%)",
-                ["Tier2_BowExpert_NextDrawSpeedBonus"] = "Tier 2: Next Arrow Draw Speed Bonus (%)",
-                ["Tier2_BowExpert_BuffDuration"] = "Tier 2: Buff Duration (sec)",
+                // === Tier 2-3: Bow Expert (4) ===
+                ["Tier2_BowExpert_StaminaReduction"] = "Tier 2-3: [Bow Expert] Stamina Reduction on 2-Hit Combo (%)",
+                ["Tier2_BowExpert_NextDrawSpeedBonus"] = "Tier 2-3: [Bow Expert] Next Arrow Draw Speed Bonus (%)",
+                ["Tier2_BowExpert_BuffDuration"] = "Tier 2-3: [Bow Expert] Buff Duration (sec)",
+                ["Tier2_BowExpert_RequiredPoints"] = "Tier 2-3: [Bow Expert] Required Points",
 
-                // === Tier 2: Mobile Cast (3개) ===
-                ["Tier2_MobileCast_MoveSpeedBonus"] = "Tier 2: Move Speed Bonus While Casting (%)",
-                ["Tier2_MobileCast_EitrReduction"] = "Tier 2: Eitr Cost Reduction (%)",
-                ["Tier2_MobileCast_CastMoveSpeed"] = "Tier 2: Move Speed While Staff Casting (%)",
+                // === Tier 2-4: Mobile Cast (4) ===
+                ["Tier2_MobileCast_MoveSpeedBonus"] = "Tier 2-4: [Mobile Cast] Move Speed Bonus While Casting (%)",
+                ["Tier2_MobileCast_EitrReduction"] = "Tier 2-4: [Mobile Cast] Eitr Cost Reduction (%)",
+                ["Tier2_MobileCast_CastMoveSpeed"] = "Tier 2-4: [Mobile Cast] Move Speed While Staff Casting (%)",
+                ["Tier2_MobileCast_RequiredPoints"] = "Tier 2-4: [Mobile Cast] Required Points",
 
-                // === Tier 3: Practitioner (4개) ===
-                ["Tier3_Practitioner1_MeleeSkillBonus"] = "Tier 3: Melee Weapon Skill Bonus",
-                ["Tier3_Practitioner1_CrossbowSkillBonus"] = "Tier 3: Crossbow Skill Bonus",
-                ["Tier3_Practitioner2_StaffSkillBonus"] = "Tier 3: Staff Skill Bonus",
-                ["Tier3_Practitioner2_BowSkillBonus"] = "Tier 3: Bow Skill Bonus",
+                // === Tier 3-1: Practitioner 1 (3) ===
+                ["Tier3_Practitioner1_MeleeSkillBonus"] = "Tier 3-1: [Practitioner 1] Melee Proficiency Bonus",
+                ["Tier3_Practitioner1_CrossbowSkillBonus"] = "Tier 3-1: [Practitioner 1] Crossbow Proficiency Bonus",
+                ["Tier3_Practitioner1_RequiredPoints"] = "Tier 3-1: [Practitioner 1] Required Points",
 
-                // === Tier 4: Master (2개) ===
-                ["Tier4_Energizer_FoodConsumptionReduction"] = "Tier 4: Food Consumption Rate Reduction (%)",
-                ["Tier4_Captain_ShipSpeedBonus"] = "Tier 4: Ship Speed Bonus (%)",
+                // === Tier 3-2: Practitioner 2 (3) ===
+                ["Tier3_Practitioner2_StaffSkillBonus"] = "Tier 3-2: [Practitioner 2] Staff Proficiency Bonus",
+                ["Tier3_Practitioner2_BowSkillBonus"] = "Tier 3-2: [Practitioner 2] Bow Proficiency Bonus",
+                ["Tier3_Practitioner2_RequiredPoints"] = "Tier 3-2: [Practitioner 2] Required Points",
 
-                // === Tier 5: Jump Master (2개) ===
-                ["Tier5_JumpMaster_JumpSkillBonus"] = "Tier 5: Jump Skill Bonus",
-                ["Tier5_JumpMaster_JumpStaminaReduction"] = "Tier 5: Jump Stamina Reduction (%)",
+                // === Tier 4-1: Energizer (2) ===
+                ["Tier4_Energizer_FoodConsumptionReduction"] = "Tier 4-1: [Energizer] Food Consumption Rate Reduction (%)",
+                ["Tier4_Energizer_RequiredPoints"] = "Tier 4-1: [Energizer] Required Points",
 
-                // === Tier 6: Stats (4개) ===
-                ["Tier6_Dexterity_MeleeAttackSpeedBonus"] = "Tier 6: Melee Attack Speed Bonus (%)",
-                ["Tier6_Dexterity_MoveSpeedBonus"] = "Tier 6: Move Speed Bonus (%)",
-                ["Tier6_Endurance_StaminaMaxBonus"] = "Tier 6: Max Stamina Bonus",
-                ["Tier6_Intellect_EitrMaxBonus"] = "Tier 6: Max Eitr Bonus",
+                // === Tier 4-2: Captain (2) ===
+                ["Tier4_Captain_ShipSpeedBonus"] = "Tier 4-2: [Captain] Ship Speed Bonus (%)",
+                ["Tier4_Captain_RequiredPoints"] = "Tier 4-2: [Captain] Required Points",
 
-                // === Tier 7: Master (2개) ===
-                ["Tier7_Master_RunSkillBonus"] = "Tier 7: Run Skill Bonus",
-                ["Tier7_Master_JumpSkillBonus"] = "Tier 7: Jump Skill Bonus",
+                // === Tier 5: Jump Master (3) ===
+                ["Tier5_JumpMaster_JumpSkillBonus"] = "Tier 5: [Jump Master] Jump Proficiency Bonus",
+                ["Tier5_JumpMaster_JumpStaminaReduction"] = "Tier 5: [Jump Master] Jump Stamina Reduction (%)",
+                ["Tier5_JumpMaster_RequiredPoints"] = "Tier 5: [Jump Master] Required Points",
 
-                // === Tier 8: Melee Acceleration (2개) ===
-                ["Tier8_MeleeAccel_AttackSpeedBonus"] = "Tier 8: Melee Attack Speed Bonus (%)",
-                ["Tier8_MeleeAccel_TripleComboBonus"] = "Tier 8: Next Attack Speed Bonus on 3-Hit Combo (%)",
+                // === Tier 6-1: Dexterity (3) ===
+                ["Tier6_Dexterity_MeleeAttackSpeedBonus"] = "Tier 6-1: [Dexterity] Melee Attack Speed Bonus (%)",
+                ["Tier6_Dexterity_MoveSpeedBonus"] = "Tier 6-1: [Dexterity] Move Speed Bonus (%)",
+                ["Tier6_Dexterity_RequiredPoints"] = "Tier 6-1: [Dexterity] Required Points",
 
-                // === Tier 8: Crossbow Acceleration (2개) ===
-                ["Tier8_CrossbowAccel_ReloadSpeed"] = "Tier 8: Reload Speed Bonus (%)",
-                ["Tier8_CrossbowAccel_ReloadMoveSpeed"] = "Tier 8: Move Speed During Reload (%)",
+                // === Tier 6-2: Endurance (2) ===
+                ["Tier6_Endurance_StaminaMaxBonus"] = "Tier 6-2: [Endurance] Max Stamina Bonus",
+                ["Tier6_Endurance_RequiredPoints"] = "Tier 6-2: [Endurance] Required Points",
 
-                // === Tier 8: Bow Acceleration (2개) ===
-                ["Tier8_BowAccel_DrawSpeed"] = "Tier 8: Draw Speed Bonus (%)",
-                ["Tier8_BowAccel_DrawMoveSpeed"] = "Tier 8: Move Speed While Drawing (%)",
+                // === Tier 6-3: Intellect (2) ===
+                ["Tier6_Intellect_EitrMaxBonus"] = "Tier 6-3: [Intellect] Max Eitr Bonus",
+                ["Tier6_Intellect_RequiredPoints"] = "Tier 6-3: [Intellect] Required Points",
 
-                // === Tier 8: Cast Acceleration (2개) ===
-                ["Tier8_CastAccel_MagicAttackSpeed"] = "Tier 8: Magic Attack Speed Bonus (%)",
-                ["Tier8_CastAccel_TripleEitrRecovery"] = "Tier 8: Eitr Max Recovery Rate on 3-Hit Combo (%)",
+                // === Tier 7: Master (3) ===
+                ["Tier7_Master_RunSkillBonus"] = "Tier 7: [Master] Run Proficiency Bonus",
+                ["Tier7_Master_JumpSkillBonus"] = "Tier 7: [Master] Jump Proficiency Bonus",
+                ["Tier7_Master_RequiredPoints"] = "Tier 7: [Master] Required Points",
+
+                // === Tier 8-1: Melee Acceleration (3) ===
+                ["Tier8_MeleeAccel_AttackSpeedBonus"] = "Tier 8-1: [Melee Accel] Melee Attack Speed Bonus (%)",
+                ["Tier8_MeleeAccel_TripleComboBonus"] = "Tier 8-1: [Melee Accel] Next Attack Speed Bonus on 3-Hit Combo (%)",
+                ["Tier8_MeleeAccel_RequiredPoints"] = "Tier 8-1: [Melee Accel] Required Points",
+
+                // === Tier 8-2: Crossbow Acceleration (3) ===
+                ["Tier8_CrossbowAccel_ReloadSpeed"] = "Tier 8-2: [Crossbow Accel] Reload Speed Bonus (%)",
+                ["Tier8_CrossbowAccel_ReloadMoveSpeed"] = "Tier 8-2: [Crossbow Accel] Move Speed During Reload (%)",
+                ["Tier8_CrossbowAccel_RequiredPoints"] = "Tier 8-2: [Crossbow Accel] Required Points",
+
+                // === Tier 8-3: Bow Acceleration (3) ===
+                ["Tier8_BowAccel_DrawSpeed"] = "Tier 8-3: [Bow Accel] Draw Speed Bonus (%)",
+                ["Tier8_BowAccel_DrawMoveSpeed"] = "Tier 8-3: [Bow Accel] Move Speed While Drawing (%)",
+                ["Tier8_BowAccel_RequiredPoints"] = "Tier 8-3: [Bow Accel] Required Points",
+
+                // === Tier 8-4: Cast Acceleration (3) ===
+                ["Tier8_CastAccel_MagicAttackSpeed"] = "Tier 8-4: [Cast Accel] Magic Attack Speed Bonus (%)",
+                ["Tier8_CastAccel_TripleEitrRecovery"] = "Tier 8-4: [Cast Accel] Eitr Max Recovery Rate on 3-Hit Combo (%)",
+                ["Tier8_CastAccel_RequiredPoints"] = "Tier 8-4: [Cast Accel] Required Points",
 
                 // ============================================
                 // Defense Tree - 39 Keys
@@ -182,7 +212,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 6: Final Defense Skills (6) ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6: Permanent Dodge Bonus (%)",
                 ["Tier6_JotunnVitality_HPBonus"] = "Tier 6: HP Bonus (%)",
-                ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6: Armor Bonus (%)",
+                ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6: Physical/Elemental Resistance (%)",
                 ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6: Block Stamina Reduction (%)",
                 ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6: Normal Shield Move Speed Bonus (%)",
                 ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6: Tower Shield Move Speed Bonus (%)",
@@ -220,50 +250,52 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_CraftingLv4_DurabilityBonus"] = "Tier 4: Crafting Lv4 - Max Durability Increase (%)",
 
                 // ============================================
-                // Bow Tree - 31 Keys
+                // Bow Tree - 34 Keys
                 // ============================================
 
 
-                // === Tier 0: Bow Expert (1) ===
-                ["Tier0_BowExpert_DamageBonus"] = "Tier 0: Bow Damage Bonus (%)",
+                // === Tier 0: Bow Expert (2) ===
+                ["Tier0_BowExpert_DamageBonus"] = "Tier 0: [Bow Expert] Bow Damage Bonus (%)",
+                ["Tier0_BowExpert_RequiredPoints"] = "Tier 0: [Bow Expert] Required Points",
 
-                // === Tier 1: Focused Shot (1) ===
-                ["Tier1_FocusedShot_CritBonus"] = "Tier 1: Critical Chance Bonus (%)",
+                // === Tier 1-1: [Focused Shot] (2) ===
+                ["Tier1_FocusedShot_CritBonus"] = "Tier 1-1: [Focused Shot] Crit Chance Bonus (%)",
+                ["Tier1_FocusedShot_RequiredPoints"] = "Tier 1-1: [Focused Shot] Required Points",
 
-                // === Tier 2: Multishot Lv1 (5) ===
-                ["Tier2_MultishotLv1_ActivationChance"] = "Tier 2: Multishot Lv1 Activation Chance (%)",
-                ["Tier2_Multishot_AdditionalArrows"] = "Tier 2: Additional Arrows",
-                ["Tier2_Multishot_ArrowConsumption"] = "Tier 2: Arrow Consumption",
-                ["Tier2_Multishot_DamagePerArrow"] = "Tier 2: Damage Per Arrow (%)",
+                // === Tier 1-2: [Multi-Shot Lv1] (5) ===
+                ["Tier1_MultishotLv1_ActivationChance"] = "Tier 1-2: [Multi-Shot Lv1] Activation Chance (%)",
+                ["Tier1_MultishotLv1_AdditionalArrows"] = "Tier 1-2: [Multi-Shot Lv1] Additional Arrows",
+                ["Tier1_MultishotLv1_ArrowConsumption"] = "Tier 1-2: [Multi-Shot Lv1] Arrow Consumption",
+                ["Tier1_MultishotLv1_DamagePerArrow"] = "Tier 1-2: [Multi-Shot Lv1] Damage Per Arrow (%)",
+                ["Tier1_MultishotLv1_RequiredPoints"] = "Tier 1-2: [Multi-Shot Lv1] Required Points",
 
-                // === Tier 3: Bow Mastery (3) ===
-                ["Tier3_SpeedShot_SkillBonus"] = "Tier 3: Bow Skill Bonus",
-                ["Tier3_SilentShot_DamageBonus"] = "Tier 3: Penetration Damage Increase",
-                ["Tier3_SpecialArrow_Chance"] = "Tier 3: Special Arrow Chance (%)",
+                // === Tier 2: [Bow Proficiency] (3) ===
+                ["Tier2_BowMastery_SkillBonus"] = "Tier 2: [Bow Proficiency] Bow Skill Bonus",
+                ["Tier2_BowMastery_SpecialArrowChance"] = "Tier 2: [Bow Proficiency] Special Arrow Chance (%)",
+                ["Tier2_BowMastery_RequiredPoints"] = "Tier 2: [Bow Proficiency] Required Points",
 
-                // === Tier 4: Multishot Lv2 & Power Shot (3) ===
-                ["Tier4_MultishotLv2_ActivationChance"] = "Tier 4: Multishot Lv2 Activation Chance (%)",
-                ["Tier4_PowerShot_KnockbackChance"] = "Tier 4: Strong Knockback Chance (%)",
-                ["Tier4_PowerShot_KnockbackDistance"] = "Tier 4: Knockback Distance (m)",
+                // === Tier 3-1: [Silent Shot] (2) ===
+                ["Tier3_SilentStrike_DamageBonus"] = "Tier 3-1: [Silent Shot] Damage Increase",
+                ["Tier3_SilentStrike_RequiredPoints"] = "Tier 3-1: [Silent Shot] Required Points",
 
-                // === Tier 5: Precision Aim & Advanced Skills (6) ===
-                ["Tier5_PrecisionAim_CritDamage"] = "Tier 5: Critical Damage Bonus (%)",
-                ["Tier5_ArrowRain_Chance"] = "Tier 5: Arrow Rain Chance (%)",
-                ["Tier5_ArrowRain_ArrowCount"] = "Tier 5: Arrow Rain Count",
-                ["Tier5_BackstepShot_CritBonus"] = "Tier 5: Post-Dodge Crit Chance (%)",
-                ["Tier5_BackstepShot_Duration"] = "Tier 5: Post-Dodge Duration (sec)",
-                ["Tier5_HuntingInstinct_CritBonus"] = "Tier 5: Hunting Instinct Crit Chance (%)",
+                // === Tier 3-2: [Multi-Shot Lv2] (2) ===
+                ["Tier3_MultishotLv2_ActivationChance"] = "Tier 3-2: [Multi-Shot Lv2] Activation Chance (%)",
+                ["Tier3_MultishotLv2_RequiredPoints"] = "Tier 3-2: [Multi-Shot Lv2] Required Points",
 
-                // === Tier 6: Explosive Arrow & Crit Boost (9) ===
-                ["Tier6_ExplosiveArrow_DamageMultiplier"] = "Tier 6: Explosive Arrow Damage (%)",
-                ["Tier6_ExplosiveArrow_Radius"] = "Tier 6: Explosive Arrow Radius (m)",
-                ["Tier6_ExplosiveArrow_Cooldown"] = "Tier 6: Explosive Arrow Cooldown (sec)",
-                ["Tier6_ExplosiveArrow_StaminaCost"] = "Tier 6: Explosive Arrow Stamina Cost (%)",
-                ["Tier6_CritBoost_DamageBonus"] = "Tier 6: Crit Boost Damage (%)",
-                ["Tier6_CritBoost_CritChance"] = "Tier 6: Crit Boost Chance (%)",
-                ["Tier6_CritBoost_ArrowCount"] = "Tier 6: Crit Boost Arrow Count",
-                ["Tier6_CritBoost_Cooldown"] = "Tier 6: Crit Boost Cooldown (sec)",
-                ["Tier6_CritBoost_StaminaCost"] = "Tier 6: Crit Boost Stamina Cost (%)",
+                // === Tier 3-3: [Hunter's Instinct] (2) ===
+                ["Tier3_HuntingInstinct_CritBonus"] = "Tier 3-3: [Hunter's Instinct] Crit Chance (%)",
+                ["Tier3_HuntingInstinct_RequiredPoints"] = "Tier 3-3: [Hunter's Instinct] Required Points",
+
+                // === Tier 4: [Precision Aim] (2) ===
+                ["Tier4_PrecisionAim_CritDamage"] = "Tier 4: [Precision Aim] Crit Damage Bonus (%)",
+                ["Tier4_PrecisionAim_RequiredPoints"] = "Tier 4: [Precision Aim] Required Points",
+
+                // === Tier 5: [Explosive Arrow] (10) ===
+                ["Tier5_ExplosiveArrow_DamageMultiplier"] = "Tier 5: [Explosive Arrow] Damage Multiplier (%)",
+                ["Tier5_ExplosiveArrow_Radius"] = "Tier 5: [Explosive Arrow] Explosion Radius (m)",
+                ["Tier5_ExplosiveArrow_Cooldown"] = "Tier 5: [Explosive Arrow] Cooldown (sec)",
+                ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [Explosive Arrow] Stamina Cost (%)",
+                ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [Explosive Arrow] Required Points",
 
                 // ============================================
                 // Sword Tree - 30 Keys
@@ -360,221 +392,273 @@ namespace CaptainSkillTree.Localization
                 // ============================================
 
 
-                // === Tier 0: Staff Expert (1) ===
-                ["Tier0_StaffExpert_ElementalDamageBonus"] = "Tier 0: Elemental Damage Bonus (%)",
+                // === Tier 0: Staff Expert (2) ===
+                ["Tier0_StaffExpert_ElementalDamageBonus"] = "Tier 0: [Staff Expert] Elemental Damage Bonus (%)",
+                ["Tier0_StaffExpert_RequiredPoints"] = "Tier 0: [Staff Expert] Required Points",
 
-                // === Tier 1: Mind Focus & Magic Flow (2) ===
-                ["Tier1_MindFocus_EitrReduction"] = "Tier 1: Eitr Cost Reduction (%)",
-                ["Tier1_MagicFlow_EitrBonus"] = "Tier 1: Max Eitr Bonus",
+                // === Tier 1-1: Mental Focus (2) ===
+                ["Tier1_MindFocus_EitrReduction"] = "Tier 1-1: [Mental Focus] Eitr Cost Reduction (%)",
+                ["Tier1_MindFocus_RequiredPoints"] = "Tier 1-1: [Mental Focus] Required Points",
 
-                // === Tier 2: Magic Amplify (3) ===
-                ["Tier2_MagicAmplify_Chance"] = "Tier 2: Magic Amplify Trigger Chance (%)",
-                ["Tier2_MagicAmplify_DamageBonus"] = "Tier 2: Amplified Elemental Damage Bonus (%)",
-                ["Tier2_MagicAmplify_EitrCostIncrease"] = "Tier 2: Eitr Cost Increase (%)",
+                // === Tier 1-2: Magic Flow (2) ===
+                ["Tier1_MagicFlow_EitrBonus"] = "Tier 1-2: [Magic Flow] Max Eitr Bonus",
+                ["Tier1_MagicFlow_RequiredPoints"] = "Tier 1-2: [Magic Flow] Required Points",
 
-                // === Tier 3: Elemental Mastery (3) ===
-                ["Tier3_FrostElement_DamageBonus"] = "Tier 3: Frost Damage Bonus",
-                ["Tier3_FireElement_DamageBonus"] = "Tier 3: Fire Damage Bonus",
-                ["Tier3_LightningElement_DamageBonus"] = "Tier 3: Lightning Damage Bonus",
+                // === Tier 2: Magic Amplification (4) ===
+                ["Tier2_MagicAmplify_Chance"] = "Tier 2: [Magic Amplification] Trigger Chance (%)",
+                ["Tier2_MagicAmplify_DamageBonus"] = "Tier 2: [Magic Amplification] Elemental Damage Bonus (%)",
+                ["Tier2_MagicAmplify_EitrCostIncrease"] = "Tier 2: [Magic Amplification] Eitr Cost Increase (%)",
+                ["Tier2_MagicAmplify_RequiredPoints"] = "Tier 2: [Magic Amplification] Required Points",
 
-                // === Tier 4: Lucky Mana (1) ===
-                ["Tier4_LuckyMana_Chance"] = "Tier 4: Free Cast Trigger Chance (%)",
+                // === Tier 3-1: Frost Element (2) ===
+                ["Tier3_FrostElement_DamageBonus"] = "Tier 3-1: [Frost Element] Damage Bonus",
+                ["Tier3_FrostElement_RequiredPoints"] = "Tier 3-1: [Frost Element] Required Points",
 
-                // === Tier 5-1: Double Cast - R-Key Active (5) ===
-                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5: Additional Projectile Count",
-                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5: Projectile Damage Percent (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5: Projectile Angle Offset (deg)",
-                ["Tier5_DoubleCast_EitrCost"] = "Tier 5: Eitr Cost",
-                ["Tier5_DoubleCast_Cooldown"] = "Tier 5: Cooldown (sec)",
+                // === Tier 3-2: Fire Element (2) ===
+                ["Tier3_FireElement_DamageBonus"] = "Tier 3-2: [Fire Element] Damage Bonus",
+                ["Tier3_FireElement_RequiredPoints"] = "Tier 3-2: [Fire Element] Required Points",
 
-                // === Tier 5-2: Instant Area Heal - H-Key Active (5) ===
-                ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5: Cooldown (sec)",
-                ["Tier5_InstantAreaHeal_EitrCost"] = "Tier 5: Eitr Cost",
-                ["Tier5_InstantAreaHeal_HealPercent"] = "Tier 5: Heal Amount (% of Max HP)",
-                ["Tier5_InstantAreaHeal_Range"] = "Tier 5: Heal Range (m)",
-                ["Tier5_InstantAreaHeal_SelfHeal"] = "Tier 5: Allow Self Heal",
+                // === Tier 3-3: Lightning Element (2) ===
+                ["Tier3_LightningElement_DamageBonus"] = "Tier 3-3: [Lightning Element] Damage Bonus",
+                ["Tier3_LightningElement_RequiredPoints"] = "Tier 3-3: [Lightning Element] Required Points",
+
+                // === Tier 4: Lucky Mana (2) ===
+                ["Tier4_LuckyMana_Chance"] = "Tier 4: [Lucky Mana] Free Cast Trigger Chance (%)",
+                ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [Lucky Mana] Required Points",
+
+                // === Tier 5-1: Dual Cast - R-Key Active (6) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Dual Cast] Additional Projectile Count",
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Dual Cast] Projectile Damage Percent (%)",
+                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Dual Cast] Projectile Angle Offset (deg)",
+                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Dual Cast] Eitr Cost",
+                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Dual Cast] Cooldown (sec)",
+                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Dual Cast] Required Points",
+
+                // === Tier 5-2: Instant Area Heal - H-Key Active (6) ===
+                ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [Heal] Cooldown (sec)",
+                ["Tier5_InstantAreaHeal_EitrCost"] = "Tier 5-2: [Heal] Eitr Cost",
+                ["Tier5_InstantAreaHeal_HealPercent"] = "Tier 5-2: [Heal] Heal Amount (% of Max HP)",
+                ["Tier5_InstantAreaHeal_Range"] = "Tier 5-2: [Heal] Heal Range (m)",
+                ["Tier5_InstantAreaHeal_SelfHeal"] = "Tier 5-2: [Heal] Allow Self Heal",
+                ["Tier5_InstantAreaHeal_RequiredPoints"] = "Tier 5-2: [Heal] Required Points",
 
                 // ============================================
-                // Crossbow Tree - 28 Keys
+                // Crossbow Tree - 34 Keys
                 // ============================================
 
 
-                // === Tier 0: Crossbow Expert (1) ===
-                ["Tier0_CrossbowExpert_DamageBonus"] = "Tier 0: Crossbow Damage Bonus (%)",
+                // === Tier 0: Crossbow Expert (2) ===
+                ["Tier0_CrossbowExpert_DamageBonus"] = "Tier 0: [Crossbow Expert] Crossbow Damage Bonus (%)",
+                ["Tier0_CrossbowExpert_RequiredPoints"] = "Tier 0: [Crossbow Expert] Required Points",
 
-                // === Tier 1: Rapid Fire (5) ===
-                ["Tier1_RapidFire_Chance"] = "Tier 1: Rapid Fire Trigger Chance (%)",
-                ["Tier1_RapidFire_ShotCount"] = "Tier 1: Rapid Fire Shot Count",
-                ["Tier1_RapidFire_DamagePercent"] = "Tier 1: Rapid Fire Damage Percent (%)",
-                ["Tier1_RapidFire_Delay"] = "Tier 1: Rapid Fire Shot Delay (sec)",
-                ["Tier1_RapidFire_BoltConsumption"] = "Tier 1: Rapid Fire Bolt Consumption",
+                // === Tier 1: Rapid Fire (6) ===
+                ["Tier1_RapidFire_Chance"] = "Tier 1: [Rapid Fire] Trigger Chance (%)",
+                ["Tier1_RapidFire_ShotCount"] = "Tier 1: [Rapid Fire] Shot Count",
+                ["Tier1_RapidFire_DamagePercent"] = "Tier 1: [Rapid Fire] Damage Percent (%)",
+                ["Tier1_RapidFire_Delay"] = "Tier 1: [Rapid Fire] Shot Delay (sec)",
+                ["Tier1_RapidFire_BoltConsumption"] = "Tier 1: [Rapid Fire] Bolt Consumption",
+                ["Tier1_RapidFire_RequiredPoints"] = "Tier 1: [Rapid Fire] Required Points",
 
-                // === Tier 2: Balanced Aim (2) ===
-                ["Tier2_BalancedAim_KnockbackChance"] = "Tier 2: Knockback Trigger Chance (%)",
-                ["Tier2_BalancedAim_KnockbackDistance"] = "Tier 2: Knockback Distance (m)",
+                // === Tier 2-1: Balanced Aim / 2-2: Quick Reload / 2-3: True Shot (8) ===
+                ["Tier2_BalancedAim_KnockbackChance"] = "Tier 2-1: [Balanced Aim] Knockback Trigger Chance (%)",
+                ["Tier2_BalancedAim_KnockbackDistance"] = "Tier 2-1: [Balanced Aim] Knockback Distance (m)",
+                ["Tier2_BalancedAim_RequiredPoints"] = "Tier 2-1: [Balanced Aim] Required Points",
+                ["Tier2_RapidReload_SpeedIncrease"] = "Tier 2-2: [Quick Reload] Reload Speed Increase (%)",
+                ["Tier2_RapidReload_RequiredPoints"] = "Tier 2-2: [Quick Reload] Required Points",
+                ["Tier2_HonestShot_DamageBonus"] = "Tier 2-3: [True Shot] Damage Bonus (%)",
+                ["Tier2_HonestShot_RequiredPoints"] = "Tier 2-3: [True Shot] Required Points",
 
-                // === Tier 2: Rapid Reload (1) ===
-                ["Tier2_RapidReload_SpeedIncrease"] = "Tier 2: Reload Speed Increase (%)",
+                // === Tier 3: Auto Reload (2) ===
+                ["Tier3_AutoReload_Chance"] = "Tier 3: [Auto Reload] Trigger Chance (%)",
+                ["Tier3_AutoReload_RequiredPoints"] = "Tier 3: [Auto Reload] Required Points",
 
-                // === Tier 2: Honest Shot (1) ===
-                ["Tier2_HonestShot_DamageBonus"] = "Tier 2: Base Damage Bonus (%)",
+                // === Tier 4-1: Rapid Fire Lv2 / 4-2: Final Strike (9) ===
+                ["Tier4_RapidFireLv2_Chance"] = "Tier 4-1: [Rapid Fire Lv2] Trigger Chance (%)",
+                ["Tier4_RapidFireLv2_ShotCount"] = "Tier 4-1: [Rapid Fire Lv2] Shot Count",
+                ["Tier4_RapidFireLv2_DamagePercent"] = "Tier 4-1: [Rapid Fire Lv2] Damage Percent (%)",
+                ["Tier4_RapidFireLv2_Delay"] = "Tier 4-1: [Rapid Fire Lv2] Shot Delay (sec)",
+                ["Tier4_RapidFireLv2_BoltConsumption"] = "Tier 4-1: [Rapid Fire Lv2] Bolt Consumption",
+                ["Tier4_RapidFireLv2_RequiredPoints"] = "Tier 4-1: [Rapid Fire Lv2] Required Points",
+                ["Tier4_FinalStrike_HpThreshold"] = "Tier 4-2: [Final Strike] Enemy HP Threshold (%)",
+                ["Tier4_FinalStrike_DamageBonus"] = "Tier 4-2: [Final Strike] Bonus Damage (%)",
+                ["Tier4_FinalStrike_RequiredPoints"] = "Tier 4-2: [Final Strike] Required Points",
 
-                // === Tier 3: Auto Reload (1) ===
-                ["Tier3_AutoReload_Chance"] = "Tier 3: Auto Reload Trigger Chance (%)",
-
-                // === Tier 4: Rapid Fire Lv2 (5) ===
-                ["Tier4_RapidFireLv2_Chance"] = "Tier 4: Rapid Fire Lv2 Trigger Chance (%)",
-                ["Tier4_RapidFireLv2_ShotCount"] = "Tier 4: Rapid Fire Lv2 Shot Count",
-                ["Tier4_RapidFireLv2_DamagePercent"] = "Tier 4: Rapid Fire Lv2 Damage Percent (%)",
-                ["Tier4_RapidFireLv2_Delay"] = "Tier 4: Rapid Fire Lv2 Shot Delay (sec)",
-                ["Tier4_RapidFireLv2_BoltConsumption"] = "Tier 4: Rapid Fire Lv2 Bolt Consumption",
-
-                // === Tier 4: Final Strike (2) ===
-                ["Tier4_FinalStrike_HpThreshold"] = "Tier 4: Enemy HP Threshold (%)",
-                ["Tier4_FinalStrike_DamageBonus"] = "Tier 4: Bonus Damage (%)",
-
-                // === Tier 5: One Shot - R-Key Active (4) ===
-                ["Tier5_OneShot_Duration"] = "Tier 5: Buff Duration (sec)",
-                ["Tier5_OneShot_DamageBonus"] = "Tier 5: One Shot Damage Bonus (%)",
-                ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: Knockback Distance (m)",
-                ["Tier5_OneShot_Cooldown"] = "Tier 5: Cooldown (sec)",
+                // === Tier 5: One Shot - R-Key Active (5) ===
+                ["Tier5_OneShot_Duration"] = "Tier 5: [One Shot] Buff Duration (sec)",
+                ["Tier5_OneShot_DamageBonus"] = "Tier 5: [One Shot] Damage Bonus (%)",
+                ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [One Shot] Knockback Distance (m)",
+                ["Tier5_OneShot_Cooldown"] = "Tier 5: [One Shot] Cooldown (sec)",
+                ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [One Shot] Required Points",
 
                 // ============================================
                 // Knife Tree - 32 Keys
                 // ============================================
 
                 // === Tier 0: Knife Expert (2) ===
-                ["Tier0_KnifeExpert_BackstabBonus"] = "Tier 0: Backstab Bonus (%)",
+                ["Tier0_KnifeExpert_BackstabBonus"] = "Tier 0: [Knife Expert] Backstab Bonus (%)",
+                ["Tier0_KnifeExpert_RequiredPoints"] = "Tier 0: [Knife Expert] Required Points",
 
                 // === Tier 1: Evasion Mastery (3) ===
-                ["Tier1_Evasion_Chance"] = "Tier 1: Evasion Trigger Chance (%)",
-                ["Tier1_Evasion_Duration"] = "Tier 1: Evasion Duration (sec)",
+                ["Tier1_Evasion_Chance"] = "Tier 1: [Evasion Mastery] Trigger Chance (%)",
+                ["Tier1_Evasion_Duration"] = "Tier 1: [Evasion Mastery] Duration (sec)",
+                ["Tier1_Evasion_RequiredPoints"] = "Tier 1: [Evasion Mastery] Required Points",
 
-                // === Tier 2: Fast Movement (2) ===
-                ["Tier2_FastMove_MoveSpeedBonus"] = "Tier 2: Move Speed Bonus (%)",
+                // === Tier 2: Quick Movement (2) ===
+                ["Tier2_FastMove_MoveSpeedBonus"] = "Tier 2: [Quick Movement] Move Speed Bonus (%)",
+                ["Tier2_FastMove_RequiredPoints"] = "Tier 2: [Quick Movement] Required Points",
 
-                // === Tier 3: Combat Mastery (3) ===
-                ["Tier3_CombatMastery_DamageBonus"] = "Tier 3: Damage Bonus",
-                ["Tier3_CombatMastery_BuffDuration"] = "Tier 3: Buff Duration (sec)",
+                // === Tier 3: Quick Attack (3) ===
+                ["Tier3_CombatMastery_DamageBonus"] = "Tier 3: [Quick Attack] Damage Bonus",
+                ["Tier3_CombatMastery_BuffDuration"] = "Tier 3: [Quick Attack] Buff Duration (sec)",
+                ["Tier3_CombatMastery_RequiredPoints"] = "Tier 3: [Quick Attack] Required Points",
 
-                // === Tier 4: Attack & Evasion (4) ===
-                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: Evasion Bonus (%)",
-                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: Buff Duration (sec)",
-                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: Cooldown (sec)",
+                // === Tier 4: Critical Mastery (4) ===
+                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: [Critical Mastery] Evasion Bonus (%)",
+                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: [Critical Mastery] Buff Duration (sec)",
+                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: [Critical Mastery] Cooldown (sec)",
+                ["Tier4_AttackEvasion_RequiredPoints"] = "Tier 4: [Critical Mastery] Required Points",
 
-                // === Tier 5: Critical Damage (2) ===
-                ["Tier5_CriticalDamage_DamageBonus"] = "Tier 5: Critical Damage Bonus (%)",
+                // === Tier 5: Lethal Damage (2) ===
+                ["Tier5_CriticalDamage_DamageBonus"] = "Tier 5: [Lethal Damage] Damage Bonus (%)",
+                ["Tier5_CriticalDamage_RequiredPoints"] = "Tier 5: [Lethal Damage] Required Points",
 
                 // === Tier 6: Assassin (3) ===
-                ["Tier6_Assassin_CritDamageBonus"] = "Tier 6: Crit Damage Bonus (%)",
-                ["Tier6_Assassin_CritChanceBonus"] = "Tier 6: Crit Chance Bonus (%)",
+                ["Tier6_Assassin_CritDamageBonus"] = "Tier 6: [Assassin] Crit Damage Bonus (%)",
+                ["Tier6_Assassin_CritChanceBonus"] = "Tier 6: [Assassin] Crit Chance Bonus (%)",
+                ["Tier6_Assassin_RequiredPoints"] = "Tier 6: [Assassin] Required Points",
 
                 // === Tier 7: Assassination (3) ===
-                ["Tier7_Assassination_StaggerChance"] = "Tier 7: Stagger Trigger Chance (%)",
-                ["Tier7_Assassination_RequiredComboHits"] = "Tier 7: Required Combo Hits",
+                ["Tier7_Assassination_StaggerChance"] = "Tier 7: [Assassination] Stagger Trigger Chance (%)",
+                ["Tier7_Assassination_RequiredComboHits"] = "Tier 7: [Assassination] Required Combo Hits",
+                ["Tier7_Assassination_RequiredPoints"] = "Tier 7: [Assassination] Required Points",
 
                 // === Tier 8: Assassin's Heart - G-Key Active (10) ===
-                ["Tier8_AssassinHeart_CritDamageMultiplier"] = "Tier 8: Crit Damage Multiplier",
-                ["Tier8_AssassinHeart_Duration"] = "Tier 8: Buff Duration (sec)",
-                ["Tier8_AssassinHeart_StaminaCost"] = "Tier 8: Stamina Cost",
-                ["Tier8_AssassinHeart_Cooldown"] = "Tier 8: Cooldown (sec)",
-                ["Tier8_AssassinHeart_TeleportRange"] = "Tier 8: Teleport Range (m)",
-                ["Tier8_AssassinHeart_TeleportBackDistance"] = "Tier 8: Teleport Behind Distance (m)",
-                ["Tier8_AssassinHeart_StunDuration"] = "Tier 8: Stun Duration (sec)",
-                ["Tier8_AssassinHeart_ComboAttackCount"] = "Tier 8: Combo Attack Count",
-                ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: Attack Interval (sec)",
+                ["Tier8_AssassinHeart_CritDamageMultiplier"] = "Tier 8: [Assassin's Heart] Crit Damage Multiplier",
+                ["Tier8_AssassinHeart_Duration"] = "Tier 8: [Assassin's Heart] Buff Duration (sec)",
+                ["Tier8_AssassinHeart_StaminaCost"] = "Tier 8: [Assassin's Heart] Stamina Cost",
+                ["Tier8_AssassinHeart_Cooldown"] = "Tier 8: [Assassin's Heart] Cooldown (sec)",
+                ["Tier8_AssassinHeart_TeleportRange"] = "Tier 8: [Assassin's Heart] Teleport Range (m)",
+                ["Tier8_AssassinHeart_TeleportBackDistance"] = "Tier 8: [Assassin's Heart] Behind Target Distance (m)",
+                ["Tier8_AssassinHeart_StunDuration"] = "Tier 8: [Assassin's Heart] Stun Duration (sec)",
+                ["Tier8_AssassinHeart_ComboAttackCount"] = "Tier 8: [Assassin's Heart] Combo Attack Count",
+                ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: [Assassin's Heart] Attack Interval (sec)",
+                ["Tier8_AssassinHeart_RequiredPoints"] = "Tier 8: [Assassin's Heart] Required Points",
 
                 // ============================================
                 // Sword Tree - 33 Keys (new key format)
                 // ============================================
 
                 // === Tier 0: Sword Expert (2) ===
-                ["Tier0_SwordExpert_DamageBonus"] = "Tier 0: Sword Damage Bonus (%)",
+                ["Tier0_SwordExpert_DamageBonus"] = "Tier 0: [Sword Expert] Sword Damage Bonus (%)",
+                ["Tier0_SwordExpert_RequiredPoints"] = "Tier 0: [Sword Expert] Required Points",
 
-                // === Tier 1: Fast Slash & Counter Stance (5) ===
-                ["Tier1_FastSlash_AttackSpeedBonus"] = "Tier 1: Fast Slash - Attack Speed Bonus (%)",
-                ["Tier1_CounterStance_Duration"] = "Tier 1: Counter Stance - Buff Duration (sec)",
-                ["Tier1_CounterStance_DefenseBonus"] = "Tier 1: Counter Stance - Defense Bonus (%)",
+                // === Tier 1-1: Fast Slash (2) ===
+                ["Tier1_FastSlash_RequiredPoints"] = "Tier 1-1: [Fast Slash] Required Points",
+                ["Tier1_FastSlash_AttackSpeedBonus"] = "Tier 1-1: [Fast Slash] Attack Speed Bonus (%)",
+
+                // === Tier 1-2: Counter Stance (3) ===
+                ["Tier1_CounterStance_RequiredPoints"] = "Tier 1-2: [Counter Stance] Required Points",
+                ["Tier1_CounterStance_Duration"] = "Tier 1-2: [Counter Stance] Buff Duration (sec)",
+                ["Tier1_CounterStance_DefenseBonus"] = "Tier 1-2: [Counter Stance] Defense Bonus (%)",
 
                 // === Tier 2: Combo Slash (3) ===
-                ["Tier2_ComboSlash_DamageBonus"] = "Tier 2: Combo Attack Bonus (%)",
-                ["Tier2_ComboSlash_BuffDuration"] = "Tier 2: Buff Duration (sec)",
+                ["Tier2_ComboSlash_RequiredPoints"] = "Tier 2: [Combo Slash] Required Points",
+                ["Tier2_ComboSlash_DamageBonus"] = "Tier 2: [Combo Slash] Damage Bonus (%)",
+                ["Tier2_ComboSlash_BuffDuration"] = "Tier 2: [Combo Slash] Buff Duration (sec)",
 
                 // === Tier 3: Riposte (2) ===
-                ["Tier3_Riposte_DamageBonus"] = "Tier 3: Damage Bonus",
+                ["Tier3_Riposte_RequiredPoints"] = "Tier 3: [Riposte] Required Points",
+                ["Tier3_Riposte_DamageBonus"] = "Tier 3: [Riposte] Damage Bonus",
 
-                // === Tier 4: All-In-One & True Duel (5) ===
-                ["Tier4_AllInOne_AttackBonus"] = "Tier 4: All-In-One - Attack Bonus (%)",
-                ["Tier4_AllInOne_DefenseBonus"] = "Tier 4: All-In-One - Defense Bonus",
-                ["Tier4_TrueDuel_AttackSpeedBonus"] = "Tier 4: True Duel - Attack Speed Bonus (%)",
+                // === Tier 4-1: All-In-One (3) ===
+                ["Tier4_AllInOne_RequiredPoints"] = "Tier 4-1: [All-In-One] Required Points",
+                ["Tier4_AllInOne_AttackBonus"] = "Tier 4-1: [All-In-One] Attack Bonus (%)",
+                ["Tier4_AllInOne_DefenseBonus"] = "Tier 4-1: [All-In-One] Defense Bonus",
+
+                // === Tier 4-2: True Duel (2) ===
+                ["Tier4_TrueDuel_RequiredPoints"] = "Tier 4-2: [True Duel] Required Points",
+                ["Tier4_TrueDuel_AttackSpeedBonus"] = "Tier 4-2: [True Duel] Attack Speed Bonus (%)",
 
                 // === Tier 5: Parry Rush - G-Key Active (6) ===
-                ["Tier5_ParryRush_BuffDuration"] = "Tier 5: Buff Duration (sec)",
-                ["Tier5_ParryRush_DamageBonus"] = "Tier 5: Damage Bonus (%)",
-                ["Tier5_ParryRush_PushDistance"] = "Tier 5: Push Distance (m)",
-                ["Tier5_ParryRush_StaminaCost"] = "Tier 5: Stamina Cost",
-                ["Tier5_ParryRush_Cooldown"] = "Tier 5: Cooldown (sec)",
+                ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [Parry Rush] Required Points",
+                ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [Parry Rush] Buff Duration (sec)",
+                ["Tier5_ParryRush_DamageBonus"] = "Tier 5: [Parry Rush] Damage Bonus (%)",
+                ["Tier5_ParryRush_PushDistance"] = "Tier 5: [Parry Rush] Push Distance (m)",
+                ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [Parry Rush] Stamina Cost",
+                ["Tier5_ParryRush_Cooldown"] = "Tier 5: [Parry Rush] Cooldown (sec)",
 
                 // === Tier 6: Rush Slash - G-Key Active (10) ===
-                ["Tier6_RushSlash_Hit1DamageRatio"] = "Tier 6: Hit 1 Damage Ratio (%)",
-                ["Tier6_RushSlash_Hit2DamageRatio"] = "Tier 6: Hit 2 Damage Ratio (%)",
-                ["Tier6_RushSlash_Hit3DamageRatio"] = "Tier 6: Hit 3 Damage Ratio (%)",
-                ["Tier6_RushSlash_InitialDistance"] = "Tier 6: Initial Dash Distance (m)",
-                ["Tier6_RushSlash_SideDistance"] = "Tier 6: Side Movement Distance (m)",
-                ["Tier6_RushSlash_StaminaCost"] = "Tier 6: Stamina Cost",
-                ["Tier6_RushSlash_Cooldown"] = "Tier 6: Cooldown (sec)",
-                ["Tier6_RushSlash_MoveSpeed"] = "Tier 6: Move Speed (m/s)",
-                ["Tier6_RushSlash_AttackSpeedBonus"] = "Tier 6: Attack Speed Bonus (%)",
+                ["Tier6_RushSlash_RequiredPoints"] = "Tier 6: [Rush Slash] Required Points",
+                ["Tier6_RushSlash_Hit1DamageRatio"] = "Tier 6: [Rush Slash] 1st Hit Damage Ratio (%)",
+                ["Tier6_RushSlash_Hit2DamageRatio"] = "Tier 6: [Rush Slash] 2nd Hit Damage Ratio (%)",
+                ["Tier6_RushSlash_Hit3DamageRatio"] = "Tier 6: [Rush Slash] 3rd Hit Damage Ratio (%)",
+                ["Tier6_RushSlash_InitialDistance"] = "Tier 6: [Rush Slash] Initial Dash Distance (m)",
+                ["Tier6_RushSlash_SideDistance"] = "Tier 6: [Rush Slash] Side Move Distance (m)",
+                ["Tier6_RushSlash_StaminaCost"] = "Tier 6: [Rush Slash] Stamina Cost",
+                ["Tier6_RushSlash_Cooldown"] = "Tier 6: [Rush Slash] Cooldown (sec)",
+                ["Tier6_RushSlash_MoveSpeed"] = "Tier 6: [Rush Slash] Move Speed (m/s)",
+                ["Tier6_RushSlash_AttackSpeedBonus"] = "Tier 6: [Rush Slash] Attack Speed Bonus (%)",
 
                 // ============================================
                 // Mace Tree - 34 Keys
                 // ============================================
 
 
-                // === Tier 0: Mace Expert (3) ===
-                ["Tier0_MaceExpert_DamageBonus"] = "Tier 0: Mace Damage Bonus (%)",
-                ["Tier0_MaceExpert_StunChance"] = "Tier 0: Stun Chance (%)",
-                ["Tier0_MaceExpert_StunDuration"] = "Tier 0: Stun Duration (sec)",
+                // === Tier 0: Mace Expert (4) ===
+                ["Tier0_MaceExpert_DamageBonus"] = "Tier 0: [Mace Expert] Damage Bonus (%)",
+                ["Tier0_MaceExpert_StunChance"] = "Tier 0: [Mace Expert] Stun Chance (%)",
+                ["Tier0_MaceExpert_StunDuration"] = "Tier 0: [Mace Expert] Stun Duration (sec)",
+                ["Tier0_MaceExpert_RequiredPoints"] = "Tier 0: [Mace Expert] Required Points",
 
-                // === Tier 1: Mace Damage Boost (1) ===
-                ["Tier1_MaceExpert_DamageBonus"] = "Tier 1: Mace Damage Bonus (%)",
+                // === Tier 1: Mace Damage Boost (2) ===
+                ["Tier1_MaceExpert_DamageBonus"] = "Tier 1: [Mace Damage Boost] Damage Bonus (%)",
+                ["Tier1_MaceExpert_RequiredPoints"] = "Tier 1: [Mace Damage Boost] Required Points",
 
-                // === Tier 2: Stun Boost (2) ===
-                ["Tier2_StunBoost_StunChanceBonus"] = "Tier 2: Stun Chance Bonus (%)",
-                ["Tier2_StunBoost_StunDurationBonus"] = "Tier 2: Stun Duration Bonus (sec)",
+                // === Tier 2: Stun Boost (3) ===
+                ["Tier2_StunBoost_StunChanceBonus"] = "Tier 2: [Stun Boost] Stun Chance Bonus (%)",
+                ["Tier2_StunBoost_StunDurationBonus"] = "Tier 2: [Stun Boost] Stun Duration Bonus (sec)",
+                ["Tier2_StunBoost_RequiredPoints"] = "Tier 2: [Stun Boost] Required Points",
 
-                // === Tier 3: Guard (1) ===
-                ["Tier3_Guard_ArmorBonus"] = "Tier 3: Armor Bonus",
+                // === Tier 3: Guard (2) ===
+                ["Tier3_Guard_ArmorBonus"] = "Tier 3: [Guard] Armor Bonus",
+                ["Tier3_Guard_RequiredPoints"] = "Tier 3: [Guard] Required Points",
 
-                // === Tier 3: Heavy Strike (1) ===
-                ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3: Damage Bonus",
+                // === Tier 3: Heavy Strike (2) ===
+                ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3: [Heavy Strike] Damage Bonus",
+                ["Tier3_HeavyStrike_RequiredPoints"] = "Tier 3: [Heavy Strike] Required Points",
 
-                // === Tier 4: Push (1) ===
-                ["Tier4_Push_KnockbackChance"] = "Tier 4: Knockback Chance (%)",
+                // === Tier 4: Push (2) ===
+                ["Tier4_Push_KnockbackChance"] = "Tier 4: [Push] Knockback Chance (%)",
+                ["Tier4_Push_RequiredPoints"] = "Tier 4: [Push] Required Points",
 
-                // === Tier 5: Tank (2) ===
-                ["Tier5_Tank_HealthBonus"] = "Tier 5: Health Bonus (%)",
-                ["Tier5_Tank_DamageReduction"] = "Tier 5: Incoming Damage Reduction (%)",
+                // === Tier 5: Tank (3) ===
+                ["Tier5_Tank_HealthBonus"] = "Tier 5: [Tank] Health Bonus (%)",
+                ["Tier5_Tank_DamageReduction"] = "Tier 5: [Tank] Incoming Damage Reduction (%)",
+                ["Tier5_Tank_RequiredPoints"] = "Tier 5: [Tank] Required Points",
 
-                // === Tier 5: DPS (2) ===
-                ["Tier5_DPS_DamageBonus"] = "Tier 5: Damage Bonus (%)",
-                ["Tier5_DPS_AttackSpeedBonus"] = "Tier 5: Attack Speed Bonus (%)",
+                // === Tier 5: DPS Boost (3) ===
+                ["Tier5_DPS_DamageBonus"] = "Tier 5: [DPS Boost] Damage Bonus (%)",
+                ["Tier5_DPS_AttackSpeedBonus"] = "Tier 5: [DPS Boost] Attack Speed Bonus (%)",
+                ["Tier5_DPS_RequiredPoints"] = "Tier 5: [DPS Boost] Required Points",
 
-                // === Tier 6: Grandmaster (1) ===
-                ["Tier6_Grandmaster_ArmorBonus"] = "Tier 6: Armor Bonus (%)",
+                // === Tier 6: Grandmaster (2) ===
+                ["Tier6_Grandmaster_ArmorBonus"] = "Tier 6: [Grandmaster] Armor Bonus (%)",
+                ["Tier6_Grandmaster_RequiredPoints"] = "Tier 6: [Grandmaster] Required Points",
 
-                // === Tier 7: Fury Hammer - G-Key Active (5) ===
-                ["Tier7_FuryHammer_NormalHitMultiplier"] = "Tier 7: Hits 1-4 Damage Multiplier (%)",
-                ["Tier7_FuryHammer_FinalHitMultiplier"] = "Tier 7: Hit 5 Final Damage Multiplier (%)",
-                ["Tier7_FuryHammer_StaminaCost"] = "Tier 7: Stamina Cost",
-                ["Tier7_FuryHammer_Cooldown"] = "Tier 7: Cooldown (sec)",
-                ["Tier7_FuryHammer_AoeRadius"] = "Tier 7: AOE Radius (m)",
+                // === Tier 7: Fury Hammer - H-Key Active (6) ===
+                ["Tier7_FuryHammer_NormalHitMultiplier"] = "Tier 7: [Fury Hammer] Hits 1-4 Damage Multiplier (%)",
+                ["Tier7_FuryHammer_FinalHitMultiplier"] = "Tier 7: [Fury Hammer] Hit 5 Final Damage Multiplier (%)",
+                ["Tier7_FuryHammer_StaminaCost"] = "Tier 7: [Fury Hammer] Stamina Cost",
+                ["Tier7_FuryHammer_Cooldown"] = "Tier 7: [Fury Hammer] Cooldown (sec)",
+                ["Tier7_FuryHammer_AoeRadius"] = "Tier 7: [Fury Hammer] AOE Radius (m)",
+                ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7: [Fury Hammer] Required Points",
 
-                // === Tier 7: Guardian Heart - H-Key Active (4) ===
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7: Cooldown (sec)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7: Stamina Cost",
-                ["Tier7_GuardianHeart_Duration"] = "Tier 7: Buff Duration (sec)",
-                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7: Reflect Damage Percent (%)",
+                // === Tier 7: Guardian Heart - G-Key Active (5) ===
+                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7: [Guardian Heart] Cooldown (sec)",
+                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7: [Guardian Heart] Stamina Cost",
+                ["Tier7_GuardianHeart_Duration"] = "Tier 7: [Guardian Heart] Buff Duration (sec)",
+                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7: [Guardian Heart] Reflect Damage Percent (%)",
+                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7: [Guardian Heart] Required Points",
 
                 // ========================================
                 // Polearm Tree (25 keys)

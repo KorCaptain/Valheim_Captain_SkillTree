@@ -245,9 +245,9 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> BodyHealthBonus;
 
         /// <summary>
-        /// defense_Step6_body: 요툰의 생명력 - 방어력 보너스 (%)
+        /// defense_Step6_body: 요툰의 생명력 - 물리/속성 저항 (%)
         /// </summary>
-        public static ConfigEntry<float> BodyArmorBonus;
+        public static ConfigEntry<float> BodyArmorBonus;  // 변수명 유지 (config key 호환)
 
         // =====================================================
         // Tier 6: 요툰의 방패 (defense_Step6_true)
