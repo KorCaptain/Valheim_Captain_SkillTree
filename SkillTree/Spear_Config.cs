@@ -173,9 +173,9 @@ namespace CaptainSkillTree.SkillTree
 
             SpearStep1ThrowBuffDuration = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
-                "Tier2_Throw_BuffDuration_NotUsed",
+                "Legacy_Throw_BuffDuration",
                 15f,
-                SkillTreeConfig.GetConfigDescription("Tier2_Throw_BuffDuration_NotUsed"));
+                SkillTreeConfig.GetConfigDescription("Legacy_Throw_BuffDuration"));
 
             SpearStep1CritDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
@@ -235,9 +235,9 @@ namespace CaptainSkillTree.SkillTree
 
             SpearStep5PenetrateCritChance = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
-                "Tier5_Penetrate_CritChance_NotUsed",
+                "Legacy_Penetrate_CritChance",
                 12f,
-                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_CritChance_NotUsed"));
+                SkillTreeConfig.GetConfigDescription("Legacy_Penetrate_CritChance"));
 
             SpearStep5PenetrateBuffDuration = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",

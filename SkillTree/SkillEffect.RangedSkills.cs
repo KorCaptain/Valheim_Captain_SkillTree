@@ -567,26 +567,6 @@ namespace CaptainSkillTree.SkillTree
                     if (__result.m_spirit > 0) __result.m_spirit *= damageMultiplier;
                 }
 
-                // staff_Step3_amp: 마법 증폭 공격력 증가 (확률 기반, 에이트르 소비)
-                if (player != null && SkillEffect.HasSkill("staff_Step3_amp") &&
-                    StaffEquipmentDetector.IsWieldingStaffOrWand(player) &&
-                    player.GetEitr() >= 1f)
-                {
-                    float randomValue = UnityEngine.Random.Range(0f, 100f);
-                    if (randomValue < Staff_Config.StaffAmpChanceValue)
-                    {
-                        float damageMultiplier = 1.0f + (Staff_Config.StaffAmpDamageValue / 100f);
-                        if (__result.m_fire > 0) __result.m_fire *= damageMultiplier;
-                        if (__result.m_frost > 0) __result.m_frost *= damageMultiplier;
-                        if (__result.m_lightning > 0) __result.m_lightning *= damageMultiplier;
-                        if (__result.m_poison > 0) __result.m_poison *= damageMultiplier;
-                        if (__result.m_spirit > 0) __result.m_spirit *= damageMultiplier;
-
-                        // 텍스트 표시 (패시브이므로 VFX 없음)
-                        player.Message(MessageHud.MessageType.Center, L.Get("staff_amp_activated"));
-                    }
-                }
-
                 // staff_Step4_range: 화염 속성 (화염 공격 +[CONFIG])
                 if (player != null && SkillEffect.HasSkill("staff_Step4_range") &&
                     StaffEquipmentDetector.IsWieldingStaffOrWand(player))
@@ -664,7 +644,43 @@ namespace CaptainSkillTree.SkillTree
             }
         }
     }
-    
+
+    /// <summary>
+    /// 마법 증폭 실제 공격 시 발동 패치 (Character.Damage 기반 - UI 오발 방지)
+    /// </summary>
+    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+    public static class StaffSkills_MagicAmplify_Damage_Patch
+    {
+        [HarmonyPrefix]
+        public static void Prefix(Character __instance, ref HitData hit)
+        {
+            try
+            {
+                if (!(hit.GetAttacker() is Player player)) return;
+                if (!SkillEffect.HasSkill("staff_Step3_amp")) return;
+                if (!StaffEquipmentDetector.IsWieldingStaffOrWand(player)) return;
+                if (player.GetEitr() < 1f) return;
+
+                float randomValue = UnityEngine.Random.Range(0f, 100f);
+                if (randomValue < Staff_Config.StaffAmpChanceValue)
+                {
+                    float damageMultiplier = 1.0f + (Staff_Config.StaffAmpDamageValue / 100f);
+                    if (hit.m_damage.m_fire > 0) hit.m_damage.m_fire *= damageMultiplier;
+                    if (hit.m_damage.m_frost > 0) hit.m_damage.m_frost *= damageMultiplier;
+                    if (hit.m_damage.m_lightning > 0) hit.m_damage.m_lightning *= damageMultiplier;
+                    if (hit.m_damage.m_poison > 0) hit.m_damage.m_poison *= damageMultiplier;
+                    if (hit.m_damage.m_spirit > 0) hit.m_damage.m_spirit *= damageMultiplier;
+
+                    player.Message(MessageHud.MessageType.Center, L.Get("staff_amp_activated"));
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[마법 증폭] Character.Damage 패치 오류: {ex.Message}");
+            }
+        }
+    }
+
     /// <summary>
     /// 지팡이 공격 속도 증가 패치 (마법 흐름 스킬)
     /// 간단한 스태미나 기반 구현

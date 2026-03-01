@@ -126,6 +126,36 @@ namespace CaptainSkillTree.SkillTree
                     }
 
                     __result = string.Join("\n", lines);
+
+                    // bonusText 수집
+                    string bonusText = "";
+
+                    switch (itemType)
+                    {
+                        case ItemDrop.ItemData.ItemType.Helmet:
+                            if (flatBonus > 0f)
+                                bonusText += $"\n<color=#ffd700>🛡️ 방어 전문가: 방어력 +{flatBonus:F0}</color>";
+                            break;
+                        case ItemDrop.ItemData.ItemType.Chest:
+                            if (flatBonus > 0f)
+                                bonusText += $"\n<color=#00ff00>💪 피부경화: 방어력 +{flatBonus:F0}</color>";
+                            break;
+                        case ItemDrop.ItemData.ItemType.Legs:
+                            if (flatBonus > 0f)
+                                bonusText += $"\n<color=#00bfff>🦵 체력단련: 방어력 +{flatBonus:F0}</color>";
+                            break;
+                        case ItemDrop.ItemData.ItemType.Shield:
+                            if (manager.GetSkillLevel("defense_Step3_shield") > 0)
+                                bonusText += $"\n<color=#00ff00>🛡 방패훈련: 가드 방어력 +{Defense_Config.ShieldTrainingBlockPowerBonusValue:F0}</color>";
+                            if (manager.GetSkillLevel("defense_Step5_parry") > 0)
+                                bonusText += $"\n<color=#00bfff>⚔️ 막기달인: 가드 방어력 +{Defense_Config.ParryMasterBlockPowerBonusValue:F0}</color>";
+                            break;
+                    }
+                    if (rockSkinActive)
+                        bonusText += $"\n<color=#ff8c00>🪨 바위피부: 방어력 +{rockSkinPct:F0}%</color>";
+
+                    if (!string.IsNullOrEmpty(bonusText))
+                        __result += bonusText;
                 }
                 catch (System.Exception ex)
                 {

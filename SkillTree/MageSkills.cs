@@ -190,7 +190,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 메이지 AOE 스킬 실행 - 시전시 vfx_GodExplosion + 몬스터에 vfx_HealthUpgrade 2초 후 300% 데미지
+        /// 메이지 AOE 스킬 실행 - 시전시 vfx_GodExplosion + 몬스터에 vfx_HealthUpgrade 2초 후 150% 데미지
         /// </summary>
         private static void ExecuteMageAOESkill(Player player)
         {
@@ -325,7 +325,7 @@ namespace CaptainSkillTree.SkillTree
         }
         
         /// <summary>
-        /// 지연된 데미지 적용 - 2초 후 300% 공격 효과
+        /// 지연된 데미지 적용 - 2초 후 150% 공격 효과
         /// </summary>
         private static void ApplyDelayedDamage(Player caster, Character target)
         {

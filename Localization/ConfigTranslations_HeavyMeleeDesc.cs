@@ -19,7 +19,12 @@ namespace CaptainSkillTree.Localization
 
 
 
-                // === Spear Tree: Tier 0 - 창 전문가 (3개) ===
+                // === Spear Tree: Tier 0 - 창 전문가 (4개) ===
+                ["Tier0_SpearExpert_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "창 전문가 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
                 ["Tier0_SpearExpert_2HitAttackSpeed"] =
                 "【2연타 후 공격속도 보너스 (%)】\n" +
                 "창으로 2회 연속 공격 후 공격속도가 증가합니다.\n" +
@@ -38,14 +43,24 @@ namespace CaptainSkillTree.Localization
                 "긴 지속시간으로 안정적인 전투가 가능합니다.\n" +
                 "권장값: 4-8초",
 
-                // === Spear Tree: Tier 1 - 급소 찌르기 (1개) ===
+                // === Spear Tree: Tier 1 - 급소 찌르기 (2개) ===
+                ["Tier1_QuickStrike_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "급소 찌르기 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 3",
+
                 ["Tier1_VitalStrike_DamageBonus"] =
                 "【치명타 피해 보너스 (%)】\n" +
                 "창 공격의 치명타 피해를 증가시킵니다.\n" +
                 "급소를 노리는 정밀 공격에 특화됩니다.\n" +
                 "권장값: 20-40%",
 
-                // === Spear Tree: Tier 2 - 투창 (3개) ===
+                // === Spear Tree: Tier 2 - 투창 (3개 + Legacy 1개) ===
+                ["Tier2_Throw_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "투창 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 5",
+
                 ["Tier2_Throw_Cooldown"] =
                 "【투창 쿨타임 (초)】\n" +
                 "투창 스킬 재사용 대기시간입니다.\n" +
@@ -58,12 +73,17 @@ namespace CaptainSkillTree.Localization
                 "원거리 공격 위력을 결정합니다.\n" +
                 "권장값: 100-150%",
 
-                ["Tier2_Throw_BuffDuration_NotUsed"] =
+                ["Legacy_Throw_BuffDuration"] =
                 "【사용 안 함】\n" +
                 "이 설정은 현재 사용되지 않습니다.\n" +
                 "패시브 스킬로 변경되었습니다.",
 
-                // === Spear Tree: Tier 3 - 연격창 (1개) ===
+                // === Spear Tree: Tier 3 - 연격창 (2개) ===
+                ["Tier3_Pierce_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "연격창 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 8",
+
                 ["Tier3_Rapid_DamageBonus"] =
                 "【무기 공격력 보너스 (고정값)】\n" +
                 "창의 기본 공격력을 고정값으로 증가시킵니다.\n" +
@@ -89,7 +109,12 @@ namespace CaptainSkillTree.Localization
                 "광역 딜링의 핵심입니다.\n" +
                 "권장값: 25-40%",
 
-                // === Spear Tree: Tier 4 - 회피 찌르기 (2개) ===
+                // === Spear Tree: Tier 4 - 회피 찌르기 (3개) ===
+                ["Tier4_Evasion_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "회피 찌르기 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 12",
+
                 ["Tier4_Evasion_DamageBonus"] =
                 "【회피 후 공격력 보너스 (%)】\n" +
                 "구르기(회피) 직후 창 공격의 피해가 증가합니다.\n" +
@@ -115,8 +140,13 @@ namespace CaptainSkillTree.Localization
                 "긴 지속시간으로 안정적인 딜링이 가능합니다.\n" +
                 "권장값: 8-15초",
 
-                // === Spear Tree: Tier 5 - 꿰뚫는 창 (G키 액티브, 6개) ===
-                ["Tier5_Penetrate_CritChance_NotUsed"] =
+                // === Spear Tree: Tier 5 - 꿰뚫는 창 (G키 액티브, 6개 + Legacy 1개) ===
+                ["Tier5_Penetrate_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "꿰뚫는 창 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 15",
+
+                ["Legacy_Penetrate_CritChance"] =
                 "【사용 안 함】\n" +
                 "이 설정은 현재 사용되지 않습니다.\n" +
                 "번개 충격 효과로 변경되었습니다.",
@@ -151,7 +181,12 @@ namespace CaptainSkillTree.Localization
                 "스태미나 관리가 중요합니다.\n" +
                 "권장값: 20-35",
 
-                // === Spear Tree: Tier 5 - 연공창 (H키 액티브, 7개) ===
+                // === Spear Tree: Tier 5 - 연공창 (H키 액티브, 8개) ===
+                ["Tier5_Combo_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "연공창 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 15",
+
                 ["Tier5_Combo_HKey_Cooldown"] =
                 "【H키 스킬 쿨타임 (초)】\n" +
                 "연공창(H키) 재사용 대기시간입니다.\n" +
@@ -414,7 +449,7 @@ namespace CaptainSkillTree.Localization
 
 
                 // ========================================
-                // Polearm Tree (Tier 0~6, 25 keys)
+                // Polearm Tree (Tier 0~5, 37 keys)
                 // ========================================
 
 
@@ -424,28 +459,55 @@ namespace CaptainSkillTree.Localization
 
 
 
-                // === Polearm Tree: Tier 0 - 폴암 전문가 (1개) ===
+                // === Polearm Tree: Tier 0 - 폴암 전문가 (2개) ===
                 ["Tier0_PolearmExpert_AttackRangeBonus"] =
                 "【공격 범위 보너스 (%)】\n" +
                 "폴암(장창, 창날도끼 등)의 공격 범위를 증가시킵니다.\n" +
                 "긴 리치로 안전 거리를 유지하며 공격할 수 있습니다.\n" +
                 "권장값: 10-20%",
 
-                // === Polearm Tree: Tier 1 - 회전베기 (1개) ===
+                ["Tier0_PolearmExpert_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "폴암 전문가 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 2",
+
+                // === Polearm Tree: Tier 1 - 회전베기 (2개) ===
                 ["Tier1_SpinWheel_WheelAttackDamageBonus"] =
                 "【회전 공격 피해 보너스 (%)】\n" +
                 "회전 공격 시 추가 피해를 가합니다.\n" +
                 "다수의 적을 상대할 때 유용합니다.\n" +
                 "권장값: 50-80%",
 
-                // === Polearm Tree: Tier 2 - 영웅 타격 (1개) ===
-                ["Tier2_HeroStrike_KnockbackChance"] =
+                ["Tier1_SpinWheel_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "회전베기 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 2",
+
+                // === Polearm Tree: Tier 2-1 - 폴암강화 (2개) ===
+                ["Tier2-1_PolearmBoost_WeaponDamageBonus"] =
+                "【무기 공격력 보너스 (고정값)】\n" +
+                "폴암의 기본 공격력을 고정값으로 증가시킵니다.\n" +
+                "모든 폴암 공격에 적용됩니다.\n" +
+                "권장값: 4-7",
+
+                ["Tier2-1_PolearmBoost_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "폴암강화 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 2",
+
+                // === Polearm Tree: Tier 2-2 - 영웅 타격 (2개) ===
+                ["Tier2-2_HeroStrike_KnockbackChance"] =
                 "【넉백 확률 (%)】\n" +
                 "공격 시 적을 밀쳐낼 확률입니다.\n" +
                 "전장 제어에 유용합니다.\n" +
                 "권장값: 20-35%",
 
-                // === Polearm Tree: Tier 3 - 광역 강타 (2개) ===
+                ["Tier2-2_HeroStrike_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "영웅 타격 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 2",
+
+                // === Polearm Tree: Tier 3 - 광역 강타 (3개) ===
                 ["Tier3_AreaCombo_DoubleHitBonus"] =
                 "【2연타 피해 보너스 (%)】\n" +
                 "2회 연속 공격 시 추가 피해를 가합니다.\n" +
@@ -458,88 +520,106 @@ namespace CaptainSkillTree.Localization
                 "긴 지속시간으로 안정적인 콤보가 가능합니다.\n" +
                 "권장값: 4-8초",
 
-                // === Polearm Tree: Tier 3 - 지면 강타 (1개) ===
-                ["Tier3_GroundWheel_WheelAttackDamageBonus"] =
+                ["Tier3_AreaCombo_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "광역 강타 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 2",
+
+                // === Polearm Tree: Tier 4-1 - 지면 강타 (2개) ===
+                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] =
                 "【회전 공격 피해 보너스 (%)】\n" +
                 "지면을 강타하는 회전 공격의 피해를 증가시킵니다.\n" +
                 "광역 딜링 핵심 스킬입니다.\n" +
                 "권장값: 70-100%",
 
-                // === Polearm Tree: Tier 3 - 폴암 강화 (1개) ===
-                ["Tier3_PolearmBoost_WeaponDamageBonus"] =
-                "【무기 공격력 보너스 (고정값)】\n" +
-                "폴암의 기본 공격력을 고정값으로 증가시킵니다.\n" +
-                "모든 폴암 공격에 적용됩니다.\n" +
-                "권장값: 4-7",
+                ["Tier4-1_GroundWheel_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "지면 강타 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 2",
 
-                // === Polearm Tree: Tier 4 - 반달 베기 (2개) ===
-                ["Tier4_MoonSlash_AttackRangeBonus"] =
+                // === Polearm Tree: Tier 4-2 - 반달 베기 (3개) ===
+                ["Tier4-2_MoonSlash_AttackRangeBonus"] =
                 "【공격 범위 보너스 (%)】\n" +
                 "반달 베기의 공격 범위를 증가시킵니다.\n" +
                 "더 넓은 범위의 적을 공격할 수 있습니다.\n" +
                 "권장값: 12-20%",
 
-                ["Tier4_MoonSlash_StaminaReduction"] =
+                ["Tier4-2_MoonSlash_StaminaReduction"] =
                 "【스태미나 소모 감소 (%)】\n" +
                 "반달 베기 사용 시 스태미나 소모가 감소합니다.\n" +
                 "지속적인 전투가 가능합니다.\n" +
                 "권장값: 12-20%",
 
-                // === Polearm Tree: Tier 5 - 제압 공격 (1개) ===
-                ["Tier5_Suppress_DamageBonus"] =
+                ["Tier4-2_MoonSlash_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "반달 베기 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 2",
+
+                // === Polearm Tree: Tier 4-3 - 제압 공격 (2개) ===
+                ["Tier4-3_Suppress_DamageBonus"] =
                 "【제압 공격 피해 보너스 (%)】\n" +
                 "제압 공격 시 추가 피해를 가합니다.\n" +
                 "적을 억압하며 전투 주도권을 장악합니다.\n" +
                 "권장값: 25-40%",
 
-                // === Polearm Tree: Tier 6 - 관통 돌격 (G키 액티브, 8개) ===
-                ["Tier6_PierceCharge_DashDistance"] =
+                ["Tier4-3_Suppress_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "제압 공격 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 3",
+
+                // === Polearm Tree: Tier 5 - 관통 돌격 (G키 액티브, 9개) ===
+                ["Tier5_PierceCharge_DashDistance"] =
                 "【돌진 거리 (m)】\n" +
                 "관통 돌격 시 돌진하는 거리입니다.\n" +
                 "긴 거리로 적진을 뚫고 들어갑니다.\n" +
                 "권장값: 8-12m",
 
-                ["Tier6_PierceCharge_FirstHitDamageBonus"] =
+                ["Tier5_PierceCharge_FirstHitDamageBonus"] =
                 "【첫 타격 피해 보너스 (%)】\n" +
                 "돌격 중 첫 타격의 피해 배율입니다.\n" +
                 "강력한 첫 타격으로 적을 제압합니다.\n" +
                 "권장값: 180-250%",
 
-                ["Tier6_PierceCharge_AoeDamageBonus"] =
+                ["Tier5_PierceCharge_AoeDamageBonus"] =
                 "【광역 넉백 피해 보너스 (%)】\n" +
                 "돌격 종료 후 광역 넉백 공격의 피해 배율입니다.\n" +
                 "주변 적들을 밀쳐내며 피해를 가합니다.\n" +
                 "권장값: 130-180%",
 
-                ["Tier6_PierceCharge_AoeAngle"] =
+                ["Tier5_PierceCharge_AoeAngle"] =
                 "【광역 각도 (도)】\n" +
                 "광역 넉백 효과의 각도입니다.\n" +
                 "280도 = 전방 80도 제외한 후방/측면 범위입니다.\n" +
                 "권장값: 250-300도",
 
-                ["Tier6_PierceCharge_AoeRadius"] =
+                ["Tier5_PierceCharge_AoeRadius"] =
                 "【광역 반경 (m)】\n" +
                 "광역 넉백 효과의 반경입니다.\n" +
                 "넓을수록 더 많은 적을 밀쳐냅니다.\n" +
                 "권장값: 4-7m",
 
-                ["Tier6_PierceCharge_KnockbackDistance"] =
+                ["Tier5_PierceCharge_KnockbackDistance"] =
                 "【넉백 거리 (m)】\n" +
                 "적을 밀쳐내는 거리입니다.\n" +
                 "전장 제어에 유용합니다.\n" +
                 "권장값: 6-10m",
 
-                ["Tier6_PierceCharge_StaminaCost"] =
+                ["Tier5_PierceCharge_StaminaCost"] =
                 "【스태미나 소모】\n" +
                 "G키 스킬 사용 시 소모되는 스태미나입니다.\n" +
                 "스태미나 관리가 중요합니다.\n" +
                 "권장값: 18-25",
 
-                ["Tier6_PierceCharge_Cooldown"] =
+                ["Tier5_PierceCharge_Cooldown"] =
                 "【쿨타임 (초)】\n" +
                 "G키 스킬 재사용 대기 시간입니다.\n" +
                 "짧을수록 자주 사용할 수 있습니다.\n" +
                 "권장값: 25-40초",
+
+                ["Tier5_PierceCharge_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "관통 돌격 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 3",
 
             };
         }
@@ -559,7 +639,12 @@ namespace CaptainSkillTree.Localization
 
 
 
-                // === Spear Tree: Tier 0 - Spear Expert (3 keys) ===
+                // === Spear Tree: Tier 0 - Spear Expert (4 keys) ===
+                ["Tier0_SpearExpert_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Spear Expert node.\n" +
+                "Recommended: 2",
+
                 ["Tier0_SpearExpert_2HitAttackSpeed"] =
                 "【Attack Speed Bonus After 2-Hit (%)】\n" +
                 "Attack speed increases after 2 consecutive spear hits.\n" +
@@ -578,14 +663,24 @@ namespace CaptainSkillTree.Localization
                 "Longer duration enables stable combat.\n" +
                 "Recommended: 4-8 sec",
 
-                // === Spear Tree: Tier 1 - Vital Strike (1 key) ===
+                // === Spear Tree: Tier 1 - Vital Strike (2 keys) ===
+                ["Tier1_QuickStrike_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Vital Strike node.\n" +
+                "Recommended: 3",
+
                 ["Tier1_VitalStrike_DamageBonus"] =
                 "【Critical Damage Bonus (%)】\n" +
                 "Increases spear critical hit damage.\n" +
                 "Specialized for precision vital strikes.\n" +
                 "Recommended: 20-40%",
 
-                // === Spear Tree: Tier 2 - Throw (3 keys) ===
+                // === Spear Tree: Tier 2 - Throw (3 keys + Legacy 1) ===
+                ["Tier2_Throw_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Throw Spear node.\n" +
+                "Recommended: 5",
+
                 ["Tier2_Throw_Cooldown"] =
                 "【Throw Cooldown (sec)】\n" +
                 "Skill reactivation wait time for spear throw.\n" +
@@ -598,12 +693,17 @@ namespace CaptainSkillTree.Localization
                 "Determines ranged attack power.\n" +
                 "Recommended: 100-150%",
 
-                ["Tier2_Throw_BuffDuration_NotUsed"] =
+                ["Legacy_Throw_BuffDuration"] =
                 "【Not Used】\n" +
                 "This setting is currently unused.\n" +
                 "Changed to passive skill.",
 
-                // === Spear Tree: Tier 3 - Rapid Pierce (1 key) ===
+                // === Spear Tree: Tier 3 - Rapid Pierce (2 keys) ===
+                ["Tier3_Pierce_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Rapid Pierce node.\n" +
+                "Recommended: 8",
+
                 ["Tier3_Rapid_DamageBonus"] =
                 "【Weapon Damage Bonus (Flat)】\n" +
                 "Flat damage increase to base spear damage.\n" +
@@ -629,7 +729,12 @@ namespace CaptainSkillTree.Localization
                 "Core of area-of-effect damage.\n" +
                 "Recommended: 25-40%",
 
-                // === Spear Tree: Tier 4 - Evasion Strike (2 keys) ===
+                // === Spear Tree: Tier 4 - Evasion Strike (3 keys) ===
+                ["Tier4_Evasion_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Evasion Strike node.\n" +
+                "Recommended: 12",
+
                 ["Tier4_Evasion_DamageBonus"] =
                 "【Damage Bonus After Dodge (%)】\n" +
                 "Spear damage increases immediately after dodging.\n" +
@@ -655,8 +760,13 @@ namespace CaptainSkillTree.Localization
                 "Longer duration for stable damage output.\n" +
                 "Recommended: 8-15 sec",
 
-                // === Spear Tree: Tier 5 - Penetrating Spear (G-Key Active, 6 keys) ===
-                ["Tier5_Penetrate_CritChance_NotUsed"] =
+                // === Spear Tree: Tier 5 - Penetrating Spear (G-Key Active, 6 keys + Legacy 1) ===
+                ["Tier5_Penetrate_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Penetrating Spear node.\n" +
+                "Recommended: 15",
+
+                ["Legacy_Penetrate_CritChance"] =
                 "【Not Used】\n" +
                 "This setting is currently unused.\n" +
                 "Changed to lightning strike effect.",
@@ -691,7 +801,12 @@ namespace CaptainSkillTree.Localization
                 "Stamina management is critical.\n" +
                 "Recommended: 20-35",
 
-                // === Spear Tree: Tier 5 - Combo Spear (H-Key Active, 7 keys) ===
+                // === Spear Tree: Tier 5 - Combo Spear (H-Key Active, 8 keys) ===
+                ["Tier5_Combo_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Combo Spear node.\n" +
+                "Recommended: 15",
+
                 ["Tier5_Combo_HKey_Cooldown"] =
                 "【H-Key Skill Cooldown (sec)】\n" +
                 "Reactivation time for Combo Spear (H-key).\n" +
@@ -953,7 +1068,7 @@ namespace CaptainSkillTree.Localization
 
 
                 // ========================================
-                // Polearm Tree (Tier 0~6, 25 keys)
+                // Polearm Tree (Tier 0~5, 37 keys)
                 // ========================================
 
 
@@ -963,28 +1078,55 @@ namespace CaptainSkillTree.Localization
 
 
 
-                // === Polearm Tree: Tier 0 - Polearm Expert (1 key) ===
+                // === Polearm Tree: Tier 0 - Polearm Expert (2 keys) ===
                 ["Tier0_PolearmExpert_AttackRangeBonus"] =
                 "【Attack Range Bonus (%)】\n" +
                 "Increases attack range of polearms (halberds, glaives, etc.).\n" +
                 "Long reach allows safe distance attacks.\n" +
                 "Recommended: 10-20%",
 
-                // === Polearm Tree: Tier 1 - Spin Wheel (1 key) ===
+                ["Tier0_PolearmExpert_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Polearm Expert node.\n" +
+                "Recommended: 2",
+
+                // === Polearm Tree: Tier 1 - Spin Slash (2 keys) ===
                 ["Tier1_SpinWheel_WheelAttackDamageBonus"] =
                 "【Spinning Attack Damage Bonus (%)】\n" +
                 "Additional damage on spinning attacks.\n" +
                 "Useful against multiple enemies.\n" +
                 "Recommended: 50-80%",
 
-                // === Polearm Tree: Tier 2 - Hero Strike (1 key) ===
-                ["Tier2_HeroStrike_KnockbackChance"] =
+                ["Tier1_SpinWheel_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Spin Slash node.\n" +
+                "Recommended: 2",
+
+                // === Polearm Tree: Tier 2-1 - Polearm Enhancement (2 keys) ===
+                ["Tier2-1_PolearmBoost_WeaponDamageBonus"] =
+                "【Weapon Damage Bonus (Flat)】\n" +
+                "Flat damage increase to base polearm damage.\n" +
+                "Applies to all polearm attacks.\n" +
+                "Recommended: 4-7",
+
+                ["Tier2-1_PolearmBoost_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Polearm Enhancement node.\n" +
+                "Recommended: 2",
+
+                // === Polearm Tree: Tier 2-2 - Hero Strike (2 keys) ===
+                ["Tier2-2_HeroStrike_KnockbackChance"] =
                 "【Knockback Chance (%)】\n" +
                 "Probability of pushing enemies back on hit.\n" +
                 "Useful for battlefield control.\n" +
                 "Recommended: 20-35%",
 
-                // === Polearm Tree: Tier 3 - Area Combo (2 keys) ===
+                ["Tier2-2_HeroStrike_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Hero Strike node.\n" +
+                "Recommended: 2",
+
+                // === Polearm Tree: Tier 3 - Wide Slash (3 keys) ===
                 ["Tier3_AreaCombo_DoubleHitBonus"] =
                 "【2-Hit Damage Bonus (%)】\n" +
                 "Additional damage on 2 consecutive hits.\n" +
@@ -997,88 +1139,106 @@ namespace CaptainSkillTree.Localization
                 "Longer duration for stable combos.\n" +
                 "Recommended: 4-8 sec",
 
-                // === Polearm Tree: Tier 3 - Ground Wheel (1 key) ===
-                ["Tier3_GroundWheel_WheelAttackDamageBonus"] =
+                ["Tier3_AreaCombo_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Wide Slash node.\n" +
+                "Recommended: 2",
+
+                // === Polearm Tree: Tier 4-1 - Ground Pound (2 keys) ===
+                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] =
                 "【Spinning Attack Damage Bonus (%)】\n" +
                 "Increases ground-smashing spinning attack damage.\n" +
                 "Core area damage skill.\n" +
                 "Recommended: 70-100%",
 
-                // === Polearm Tree: Tier 3 - Polearm Boost (1 key) ===
-                ["Tier3_PolearmBoost_WeaponDamageBonus"] =
-                "【Weapon Damage Bonus (Flat)】\n" +
-                "Flat damage increase to base polearm damage.\n" +
-                "Applies to all polearm attacks.\n" +
-                "Recommended: 4-7",
+                ["Tier4-1_GroundWheel_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Ground Pound node.\n" +
+                "Recommended: 2",
 
-                // === Polearm Tree: Tier 4 - Moon Slash (2 keys) ===
-                ["Tier4_MoonSlash_AttackRangeBonus"] =
+                // === Polearm Tree: Tier 4-2 - Crescent Slash (3 keys) ===
+                ["Tier4-2_MoonSlash_AttackRangeBonus"] =
                 "【Attack Range Bonus (%)】\n" +
-                "Increases Moon Slash attack range.\n" +
+                "Increases Crescent Slash attack range.\n" +
                 "Hit more enemies in wider arc.\n" +
                 "Recommended: 12-20%",
 
-                ["Tier4_MoonSlash_StaminaReduction"] =
+                ["Tier4-2_MoonSlash_StaminaReduction"] =
                 "【Stamina Cost Reduction (%)】\n" +
-                "Reduces stamina cost when using Moon Slash.\n" +
+                "Reduces stamina cost when using Crescent Slash.\n" +
                 "Enables sustained combat.\n" +
                 "Recommended: 12-20%",
 
-                // === Polearm Tree: Tier 5 - Suppress Attack (1 key) ===
-                ["Tier5_Suppress_DamageBonus"] =
+                ["Tier4-2_MoonSlash_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Crescent Slash node.\n" +
+                "Recommended: 2",
+
+                // === Polearm Tree: Tier 4-3 - Suppress Attack (2 keys) ===
+                ["Tier4-3_Suppress_DamageBonus"] =
                 "【Suppress Attack Damage Bonus (%)】\n" +
                 "Additional damage on suppress attacks.\n" +
                 "Dominate enemies and seize combat initiative.\n" +
                 "Recommended: 25-40%",
 
-                // === Polearm Tree: Tier 6 - Pierce Charge (G-Key Active, 8 keys) ===
-                ["Tier6_PierceCharge_DashDistance"] =
+                ["Tier4-3_Suppress_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Suppress Attack node.\n" +
+                "Recommended: 3",
+
+                // === Polearm Tree: Tier 5 - Pierce Charge (G-Key Active, 9 keys) ===
+                ["Tier5_PierceCharge_DashDistance"] =
                 "【Dash Distance (m)】\n" +
                 "Charge distance during Pierce Charge.\n" +
                 "Long dash to penetrate enemy lines.\n" +
                 "Recommended: 8-12 m",
 
-                ["Tier6_PierceCharge_FirstHitDamageBonus"] =
+                ["Tier5_PierceCharge_FirstHitDamageBonus"] =
                 "【First Hit Damage Bonus (%)】\n" +
                 "Damage multiplier for initial charge hit.\n" +
                 "Powerful opening strike to suppress enemies.\n" +
                 "Recommended: 180-250%",
 
-                ["Tier6_PierceCharge_AoeDamageBonus"] =
+                ["Tier5_PierceCharge_AoeDamageBonus"] =
                 "【AOE Knockback Damage Bonus (%)】\n" +
                 "Damage multiplier for AOE knockback after charge.\n" +
                 "Push back and damage surrounding enemies.\n" +
                 "Recommended: 130-180%",
 
-                ["Tier6_PierceCharge_AoeAngle"] =
+                ["Tier5_PierceCharge_AoeAngle"] =
                 "【AOE Angle (degrees)】\n" +
                 "Angle of AOE knockback effect.\n" +
                 "280 degrees = rear/side area excluding front 80 degrees.\n" +
                 "Recommended: 250-300 degrees",
 
-                ["Tier6_PierceCharge_AoeRadius"] =
+                ["Tier5_PierceCharge_AoeRadius"] =
                 "【AOE Radius (m)】\n" +
                 "Radius of AOE knockback effect.\n" +
                 "Larger radius pushes more enemies.\n" +
                 "Recommended: 4-7 m",
 
-                ["Tier6_PierceCharge_KnockbackDistance"] =
+                ["Tier5_PierceCharge_KnockbackDistance"] =
                 "【Knockback Distance (m)】\n" +
                 "Distance enemies are pushed back.\n" +
                 "Useful for battlefield control.\n" +
                 "Recommended: 6-10 m",
 
-                ["Tier6_PierceCharge_StaminaCost"] =
+                ["Tier5_PierceCharge_StaminaCost"] =
                 "【Stamina Cost】\n" +
                 "Stamina consumed when using G-key skill.\n" +
                 "Stamina management is important.\n" +
                 "Recommended: 18-25",
 
-                ["Tier6_PierceCharge_Cooldown"] =
+                ["Tier5_PierceCharge_Cooldown"] =
                 "【Cooldown (sec)】\n" +
                 "G-key skill reactivation wait time.\n" +
                 "Shorter allows more frequent use.\n" +
                 "Recommended: 25-40 sec",
+
+                ["Tier5_PierceCharge_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Pierce Charge node.\n" +
+                "Recommended: 3",
 
             };
         }

@@ -140,7 +140,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> MaceStep6ArmorBonus;
 
-        // ===== 분노의 망치 (Fury Hammer) - G키 액티브 스킬 =====
+        // ===== 분노의 망치 (Fury Hammer) - H키 액티브 스킬 =====
 
         /// <summary>
         /// 분노의 망치 - 필요 포인트

@@ -1008,7 +1008,7 @@ namespace CaptainSkillTree.SkillTree
             int currentLevel = GetSkillLevel(skillId) + (pendingInvestments.ContainsKey(skillId) ? pendingInvestments[skillId] : 0);
             if (currentLevel >= node.MaxLevel) return;
 
-            if (GetAvailablePoints(true) <= 0) return;
+            if (node.RequiredPoints > 0 && GetAvailablePoints(true) < node.RequiredPoints) return;
 
             // === 상호 배타적 스킬 체크 ===
             if (node.MutuallyExclusive != null && node.MutuallyExclusive.Count > 0)
@@ -1194,6 +1194,9 @@ namespace CaptainSkillTree.SkillTree
             int totalPoints = 0;
             foreach (var node in SkillNodes.Values)
             {
+                // 생산 전문가 스킬은 자원 소모 방식이므로 포인트 계산에서 제외
+                if (SkillItemRequirements.IsProductionSkill(node.Id)) continue;
+
                 int level = GetSkillLevel(node.Id);
                 if (level > 0)
                 {

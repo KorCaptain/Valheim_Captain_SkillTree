@@ -595,32 +595,26 @@ namespace CaptainSkillTree.SkillTree
                 // 보너스가 있으면 단일 패스로 수치 라인 교체
                 if (physFixed > 0f || elemFixed > 0f || physPct > 0f || elemPct > 0f)
                 {
-                    // DEBUG: 툴팁 원시 내용 로그 (확인 후 제거)
-                    Plugin.Log.LogInfo($"[ATK_DBG] raw tooltip lines:");
-                    foreach (var dbgLine in __result.Split('\n'))
-                        if (dbgLine.Contains("dmg") || dbgLine.Contains("관통") || dbgLine.Contains("slash") || dbgLine.Contains("pierce") || dbgLine.Contains("$item"))
-                            Plugin.Log.LogInfo($"[ATK_DBG]  >> {dbgLine}");
                     var dmg = item.GetDamage(qualityLevel, worldLevel);
-                    Plugin.Log.LogInfo($"[ATK_DBG] dmg.m_pierce={dmg.m_pierce} m_slash={dmg.m_slash} m_blunt={dmg.m_blunt}");
                     string[] lines = __result.Split('\n');
                     for (int i = 0; i < lines.Length; i++)
                     {
                         string l = lines[i];
-                        if      (dmg.m_slash     > 0 && l.Contains("$item_dmg_slash"))
+                        if      (dmg.m_slash     > 0 && l.Contains("$inventory_slash"))
                             lines[i] = BuildDmgLine(l, dmg.m_slash,     physFixed, physPct);
-                        else if (dmg.m_blunt     > 0 && l.Contains("$item_dmg_blunt"))
+                        else if (dmg.m_blunt     > 0 && l.Contains("$inventory_blunt"))
                             lines[i] = BuildDmgLine(l, dmg.m_blunt,     physFixed, physPct);
-                        else if (dmg.m_pierce    > 0 && l.Contains("$item_dmg_pierce"))
+                        else if (dmg.m_pierce    > 0 && l.Contains("$inventory_pierce"))
                             lines[i] = BuildDmgLine(l, dmg.m_pierce,    physFixed, physPct);
-                        else if (dmg.m_fire      > 0 && l.Contains("$item_dmg_fire"))
+                        else if (dmg.m_fire      > 0 && l.Contains("$inventory_fire"))
                             lines[i] = BuildDmgLine(l, dmg.m_fire,      elemFixed, elemPct);
-                        else if (dmg.m_frost     > 0 && l.Contains("$item_dmg_frost"))
+                        else if (dmg.m_frost     > 0 && l.Contains("$inventory_frost"))
                             lines[i] = BuildDmgLine(l, dmg.m_frost,     elemFixed, elemPct);
-                        else if (dmg.m_lightning > 0 && l.Contains("$item_dmg_lightning"))
+                        else if (dmg.m_lightning > 0 && l.Contains("$inventory_lightning"))
                             lines[i] = BuildDmgLine(l, dmg.m_lightning, elemFixed, elemPct);
-                        else if (dmg.m_poison    > 0 && l.Contains("$item_dmg_poison"))
+                        else if (dmg.m_poison    > 0 && l.Contains("$inventory_poison"))
                             lines[i] = BuildDmgLine(l, dmg.m_poison,    elemFixed, elemPct);
-                        else if (dmg.m_spirit    > 0 && l.Contains("$item_dmg_spirit"))
+                        else if (dmg.m_spirit    > 0 && l.Contains("$inventory_spirit"))
                             lines[i] = BuildDmgLine(l, dmg.m_spirit,    elemFixed, elemPct);
                     }
                     __result = string.Join("\n", lines);

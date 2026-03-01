@@ -218,35 +218,49 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6: 타워 실드 이동속도 보너스 (%)",
 
                 // ============================================
-                // Production Tree (생산 트리) - 22개
+                // Production Tree (생산 트리) - 36개
                 // ============================================
 
 
-                // === Tier 0: 생산 전문가 (1개) ===
+                // === Tier 0: 생산 전문가 (2개) ===
                 ["Tier0_ProductionExpert_WoodBonusChance"] = "Tier 0: 나무 +1 보너스 확률 (%)",
+                ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [생산 전문가] 필요 포인트",
 
-                // === Tier 1: 초보 일꾼 (1개) ===
+                // === Tier 1: 초보 일꾼 (2개) ===
                 ["Tier1_NoviceWorker_WoodBonusChance"] = "Tier 1: 나무 +1 보너스 확률 (%)",
+                ["Tier1_NoviceWorker_RequiredPoints"] = "Tier 1: [기초 일꾼] 필요 포인트",
 
-                // === Tier 2: 전문 분야 (5개) ===
+                // === Tier 2: 전문 분야 (9개) ===
                 ["Tier2_WoodcuttingLv2_BonusChance"] = "Tier 2: 벌목 Lv2 - 나무 +1 보너스 확률 (%)",
+                ["Tier2_WoodcuttingLv2_RequiredPoints"] = "Tier 2-1: [벌목 Lv2] 필요 포인트",
                 ["Tier2_GatheringLv2_BonusChance"] = "Tier 2: 채집 Lv2 - 아이템 +1 보너스 확률 (%)",
+                ["Tier2_GatheringLv2_RequiredPoints"] = "Tier 2-2: [채집 Lv2] 필요 포인트",
                 ["Tier2_MiningLv2_BonusChance"] = "Tier 2: 채광 Lv2 - 광석 +1 보너스 확률 (%)",
+                ["Tier2_MiningLv2_RequiredPoints"] = "Tier 2-3: [채광 Lv2] 필요 포인트",
                 ["Tier2_CraftingLv2_UpgradeChance"] = "Tier 2: 제작 Lv2 - 업그레이드 +1 보너스 확률 (%)",
+                ["Tier2_CraftingLv2_RequiredPoints"] = "Tier 2-4: [제작 Lv2] 필요 포인트",
                 ["Tier2_CraftingLv2_DurabilityBonus"] = "Tier 2: 제작 Lv2 - 내구도 최대치 증가 (%)",
 
-                // === Tier 3: 중급 스킬 (5개) ===
+                // === Tier 3: 중급 스킬 (9개) ===
                 ["Tier3_WoodcuttingLv3_BonusChance"] = "Tier 3: 벌목 Lv3 - 나무 +2 보너스 확률 (%)",
+                ["Tier3_WoodcuttingLv3_RequiredPoints"] = "Tier 3-1: [벌목 Lv3] 필요 포인트",
                 ["Tier3_GatheringLv3_BonusChance"] = "Tier 3: 채집 Lv3 - 아이템 +1 보너스 확률 (%)",
+                ["Tier3_GatheringLv3_RequiredPoints"] = "Tier 3-2: [채집 Lv3] 필요 포인트",
                 ["Tier3_MiningLv3_BonusChance"] = "Tier 3: 채광 Lv3 - 광석 +1 보너스 확률 (%)",
+                ["Tier3_MiningLv3_RequiredPoints"] = "Tier 3-3: [채광 Lv3] 필요 포인트",
                 ["Tier3_CraftingLv3_UpgradeChance"] = "Tier 3: 제작 Lv3 - 업그레이드 +1 보너스 확률 (%)",
+                ["Tier3_CraftingLv3_RequiredPoints"] = "Tier 3-4: [제작 Lv3] 필요 포인트",
                 ["Tier3_CraftingLv3_DurabilityBonus"] = "Tier 3: 제작 Lv3 - 내구도 최대치 증가 (%)",
 
-                // === Tier 4: 고급 스킬 (5개) ===
+                // === Tier 4: 고급 스킬 (9개) ===
                 ["Tier4_WoodcuttingLv4_BonusChance"] = "Tier 4: 벌목 Lv4 - 나무 +2 보너스 확률 (%)",
+                ["Tier4_WoodcuttingLv4_RequiredPoints"] = "Tier 4-1: [벌목 Lv4] 필요 포인트",
                 ["Tier4_GatheringLv4_BonusChance"] = "Tier 4: 채집 Lv4 - 아이템 +1 보너스 확률 (%)",
+                ["Tier4_GatheringLv4_RequiredPoints"] = "Tier 4-2: [채집 Lv4] 필요 포인트",
                 ["Tier4_MiningLv4_BonusChance"] = "Tier 4: 채광 Lv4 - 광석 +1 보너스 확률 (%)",
+                ["Tier4_MiningLv4_RequiredPoints"] = "Tier 4-3: [채광 Lv4] 필요 포인트",
                 ["Tier4_CraftingLv4_UpgradeChance"] = "Tier 4: 제작 Lv4 - 업그레이드 +1 보너스 확률 (%)",
+                ["Tier4_CraftingLv4_RequiredPoints"] = "Tier 4-4: [제작 Lv4] 필요 포인트",
                 ["Tier4_CraftingLv4_DurabilityBonus"] = "Tier 4: 제작 Lv4 - 내구도 최대치 증가 (%)",
 
                 // ============================================
@@ -340,56 +354,58 @@ namespace CaptainSkillTree.Localization
                 // Spear Tree (창 트리) - 35개
                 // ============================================
 
+                // === Spear Tree: 창 전문가 (4개) ===
+                ["Tier0_SpearExpert_RequiredPoints"] = "Tier 0: [창 전문가] 필요 포인트",
+                ["Tier0_SpearExpert_2HitAttackSpeed"] = "Tier 0: [창 전문가] 2연속 공격속도 보너스 (%)",
+                ["Tier0_SpearExpert_2HitDamageBonus"] = "Tier 0: [창 전문가] 2연속 공격력 보너스 (%)",
+                ["Tier0_SpearExpert_EffectDuration"] = "Tier 0: [창 전문가] 효과 지속시간 (초)",
 
-                // === Spear Tree: 창 전문가 (3개) ===
-                ["Tier0_SpearExpert_2HitAttackSpeed"] = "Tier 0: 2연속 공격 속도 보너스 (%)",
-                ["Tier0_SpearExpert_2HitDamageBonus"] = "Tier 0: 2연속 공격력 보너스 (%)",
-                ["Tier0_SpearExpert_EffectDuration"] = "Tier 0: 효과 지속시간 (초)",
+                // === Spear Tree: 급소 찌르기 (2개) ===
+                ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [급소 찌르기] 필요 포인트",
+                ["Tier1_VitalStrike_DamageBonus"] = "Tier 1: [급소 찌르기] 치명타 피해 보너스 (%)",
 
-                // === Spear Tree: 투창 전문가 (3개) ===
-                ["Tier2_Throw_Cooldown"] = "Tier 2: 투창 쿨타임 (초)",
-                ["Tier2_Throw_DamageMultiplier"] = "Tier 2: 투창 데미지 배율 (%)",
-                ["Tier2_Throw_BuffDuration_NotUsed"] = "Tier 2: 사용 안 함",
+                // === Spear Tree: 투창 (3개 + Legacy 1개) ===
+                ["Tier2_Throw_RequiredPoints"] = "Tier 2: [투창] 필요 포인트",
+                ["Tier2_Throw_Cooldown"] = "Tier 2: [투창] 쿨타임 (초)",
+                ["Tier2_Throw_DamageMultiplier"] = "Tier 2: [투창] 데미지 배율 (%)",
+                ["Legacy_Throw_BuffDuration"] = "레거시: 미사용",
 
-                // === Spear Tree: 급소 찌르기 (1개) ===
-                ["Tier1_VitalStrike_DamageBonus"] = "Tier 1: 창 공격력 보너스 (%)",
-
-                // === Spear Tree: 연격창 (1개) ===
-                ["Tier3_Rapid_DamageBonus"] = "Tier 3: 무기 공격력 보너스",
-
-                // === Spear Tree: 회피 찌르기 (2개) ===
-                ["Tier4_Evasion_DamageBonus"] = "Tier 4: 구르기 후 공격 피해 보너스 (%)",
-                ["Tier4_Evasion_StaminaReduction"] = "Tier 4: 공격 스태미나 감소 (%)",
+                // === Spear Tree: 연격창 (2개) ===
+                ["Tier3_Pierce_RequiredPoints"] = "Tier 3-1: [연격창] 필요 포인트",
+                ["Tier3_Rapid_DamageBonus"] = "Tier 3-1: [연격창] 무기 공격력 보너스",
 
                 // === Spear Tree: 폭발창 (3개) ===
-                ["Tier3_Explosion_Chance"] = "Tier 3: 폭발 발동 확률 (%)",
-                ["Tier3_Explosion_Radius"] = "Tier 3: 폭발 범위 (m)",
-                ["Tier3_Explosion_DamageBonus"] = "Tier 3: 폭발 공격력 보너스 (%)",
+                ["Tier3_Explosion_Chance"] = "Tier 3-2: [폭발창] 발동 확률 (%)",
+                ["Tier3_Explosion_Radius"] = "Tier 3-2: [폭발창] 폭발 범위 (m)",
+                ["Tier3_Explosion_DamageBonus"] = "Tier 3-2: [폭발창] 공격력 보너스 (%)",
+
+                // === Spear Tree: 회피 찌르기 (3개) ===
+                ["Tier4_Evasion_RequiredPoints"] = "Tier 4-1: [회피 찌르기] 필요 포인트",
+                ["Tier4_Evasion_DamageBonus"] = "Tier 4-1: [회피 찌르기] 구르기 후 공격력 보너스 (%)",
+                ["Tier4_Evasion_StaminaReduction"] = "Tier 4-1: [회피 찌르기] 스태미나 소모 감소 (%)",
 
                 // === Spear Tree: 이연창 (2개) ===
-                ["Tier4_Dual_DamageBonus"] = "Tier 4: 2연속 공격 공격력 보너스 (%)",
-                ["Tier4_Dual_Duration"] = "Tier 4: 버프 지속시간 (초)",
+                ["Tier4_Dual_DamageBonus"] = "Tier 4-2: [이연창] 2연속 공격력 보너스 (%)",
+                ["Tier4_Dual_Duration"] = "Tier 4-2: [이연창] 버프 지속시간 (초)",
 
-                // === Spear Tree: 꿰뚫는 창 (6개) ===
-                ["Tier5_Penetrate_CritChance_NotUsed"] = "Tier 5: 미사용",
-                ["Tier5_Penetrate_BuffDuration"] = "Tier 5: 버프 지속시간 (초)",
-                ["Tier5_Penetrate_LightningDamage"] = "Tier 5: 번개 충격 데미지 배율 (%)",
-                ["Tier5_Penetrate_HitCount"] = "Tier 5: 번개 발동 연속 적중 횟수",
-                ["Tier5_Penetrate_GKey_Cooldown"] = "Tier 5: G키 액티브 쿨타임 (초)",
-                ["Tier5_Penetrate_GKey_StaminaCost"] = "Tier 5: G키 액티브 스태미나 소모 (%)",
+                // === Spear Tree: 꿰뚫는 창 (6개 + Legacy 1개) ===
+                ["Tier5_Penetrate_RequiredPoints"] = "Tier 5-1: [꿰뚫는 창] 필요 포인트",
+                ["Legacy_Penetrate_CritChance"] = "레거시: 미사용",
+                ["Tier5_Penetrate_BuffDuration"] = "Tier 5-1: [꿰뚫는 창] 버프 지속시간 (초)",
+                ["Tier5_Penetrate_LightningDamage"] = "Tier 5-1: [꿰뚫는 창] 번개 충격 데미지 배율 (%)",
+                ["Tier5_Penetrate_HitCount"] = "Tier 5-1: [꿰뚫는 창] 번개 발동 연속 적중 횟수",
+                ["Tier5_Penetrate_GKey_Cooldown"] = "Tier 5-1: [꿰뚫는 창] G키 쿨타임 (초)",
+                ["Tier5_Penetrate_GKey_StaminaCost"] = "Tier 5-1: [꿰뚫는 창] G키 스태미나 소모",
 
-                // === Spear Tree: 연공창 (7개) ===
-                ["Tier5_Combo_HKey_Cooldown"] = "Tier 5: H키 액티브 쿨타임 (초)",
-                ["Tier5_Combo_HKey_DamageMultiplier"] = "Tier 5: H키 액티브 데미지 배율 (%)",
-                ["Tier5_Combo_HKey_StaminaCost"] = "Tier 5: H키 액티브 스태미나 소모 (%)",
-                ["Tier5_Combo_HKey_KnockbackRange"] = "Tier 5: H키 액티브 넉백 범위 (m)",
-                ["Tier5_Combo_ActiveRange"] = "Tier 5: 액티브 효과 범위 (m)",
-                ["Tier5_Combo_BuffDuration"] = "Tier 5: H키 버프 지속시간 (초)",
-                ["Tier5_Combo_MaxUses"] = "Tier 5: 버프 중 최대 강화 투창 횟수",
-
-                // ============================================
-                // Mace Tree (둔기 트리) - 27개
-                // ============================================
+                // === Spear Tree: 연공창 (8개) ===
+                ["Tier5_Combo_RequiredPoints"] = "Tier 5-2: [연공창] 필요 포인트",
+                ["Tier5_Combo_HKey_Cooldown"] = "Tier 5-2: [연공창] H키 쿨타임 (초)",
+                ["Tier5_Combo_HKey_DamageMultiplier"] = "Tier 5-2: [연공창] H키 데미지 배율 (%)",
+                ["Tier5_Combo_HKey_StaminaCost"] = "Tier 5-2: [연공창] H키 스태미나 소모",
+                ["Tier5_Combo_HKey_KnockbackRange"] = "Tier 5-2: [연공창] H키 넉백 범위 (m)",
+                ["Tier5_Combo_ActiveRange"] = "Tier 5-2: [연공창] 액티브 효과 범위 (m)",
+                ["Tier5_Combo_BuffDuration"] = "Tier 5-2: [연공창] 버프 지속시간 (초)",
+                ["Tier5_Combo_MaxUses"] = "Tier 5-2: [연공창] 최대 강화 투창 횟수",
 
                 // ============================================
                 // Staff Tree (지팡이 트리) - 30개
@@ -623,83 +639,95 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_StunBoost_StunDurationBonus"] = "Tier 2: [기절 강화] 기절 지속시간 보너스 (초)",
                 ["Tier2_StunBoost_RequiredPoints"] = "Tier 2: [기절 강화] 필요 포인트",
 
-                // === Tier 3: 방어 강화 (2개) ===
-                ["Tier3_Guard_ArmorBonus"] = "Tier 3: [방어 강화] 방어력 보너스",
-                ["Tier3_Guard_RequiredPoints"] = "Tier 3: [방어 강화] 필요 포인트",
+                // === Tier 3-1: 방어 강화 (2개) ===
+                ["Tier3_Guard_ArmorBonus"] = "Tier 3-1: [방어 강화] 방어력 보너스",
+                ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [방어 강화] 필요 포인트",
 
-                // === Tier 3: 무거운 일격 (2개) ===
-                ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3: [무거운 일격] 공격력 보너스",
-                ["Tier3_HeavyStrike_RequiredPoints"] = "Tier 3: [무거운 일격] 필요 포인트",
+                // === Tier 3-2: 무거운 일격 (2개) ===
+                ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3-2: [무거운 일격] 공격력 보너스",
+                ["Tier3_HeavyStrike_RequiredPoints"] = "Tier 3-2: [무거운 일격] 필요 포인트",
 
                 // === Tier 4: 밀어내기 (2개) ===
                 ["Tier4_Push_KnockbackChance"] = "Tier 4: [밀어내기] 넉백 확률 (%)",
                 ["Tier4_Push_RequiredPoints"] = "Tier 4: [밀어내기] 필요 포인트",
 
-                // === Tier 5: 탱커 (3개) ===
-                ["Tier5_Tank_HealthBonus"] = "Tier 5: [탱커] 체력 보너스 (%)",
-                ["Tier5_Tank_DamageReduction"] = "Tier 5: [탱커] 받는 데미지 감소 (%)",
-                ["Tier5_Tank_RequiredPoints"] = "Tier 5: [탱커] 필요 포인트",
+                // === Tier 5-1: 탱커 (3개) ===
+                ["Tier5_Tank_HealthBonus"] = "Tier 5-1: [탱커] 체력 보너스 (%)",
+                ["Tier5_Tank_DamageReduction"] = "Tier 5-1: [탱커] 받는 데미지 감소 (%)",
+                ["Tier5_Tank_RequiredPoints"] = "Tier 5-1: [탱커] 필요 포인트",
 
-                // === Tier 5: 데미지 강화 (3개) ===
-                ["Tier5_DPS_DamageBonus"] = "Tier 5: [데미지 강화] 공격력 보너스 (%)",
-                ["Tier5_DPS_AttackSpeedBonus"] = "Tier 5: [데미지 강화] 공격속도 보너스 (%)",
-                ["Tier5_DPS_RequiredPoints"] = "Tier 5: [데미지 강화] 필요 포인트",
+                // === Tier 5-2: 데미지 강화 (3개) ===
+                ["Tier5_DPS_DamageBonus"] = "Tier 5-2: [데미지 강화] 공격력 보너스 (%)",
+                ["Tier5_DPS_AttackSpeedBonus"] = "Tier 5-2: [데미지 강화] 공격속도 보너스 (%)",
+                ["Tier5_DPS_RequiredPoints"] = "Tier 5-2: [데미지 강화] 필요 포인트",
 
                 // === Tier 6: 그랜드마스터 (2개) ===
                 ["Tier6_Grandmaster_ArmorBonus"] = "Tier 6: [그랜드마스터] 방어력 보너스 (%)",
                 ["Tier6_Grandmaster_RequiredPoints"] = "Tier 6: [그랜드마스터] 필요 포인트",
 
-                // === Tier 7: 분노의 망치 - H키 액티브 (6개) ===
-                ["Tier7_FuryHammer_NormalHitMultiplier"] = "Tier 7: [분노의 망치] 1-4타 데미지 배율 (%)",
-                ["Tier7_FuryHammer_FinalHitMultiplier"] = "Tier 7: [분노의 망치] 5타 최종타 데미지 배율 (%)",
-                ["Tier7_FuryHammer_StaminaCost"] = "Tier 7: [분노의 망치] 스태미나 소모",
-                ["Tier7_FuryHammer_Cooldown"] = "Tier 7: [분노의 망치] 쿨타임 (초)",
-                ["Tier7_FuryHammer_AoeRadius"] = "Tier 7: [분노의 망치] AOE 범위 (m)",
-                ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7: [분노의 망치] 필요 포인트",
+                // === Tier 7-1: 분노의 망치 - H키 액티브 (6개) ===
+                ["Tier7_FuryHammer_NormalHitMultiplier"] = "Tier 7-1: [분노의 망치] 1-4타 데미지 배율 (%)",
+                ["Tier7_FuryHammer_FinalHitMultiplier"] = "Tier 7-1: [분노의 망치] 5타 최종타 데미지 배율 (%)",
+                ["Tier7_FuryHammer_StaminaCost"] = "Tier 7-1: [분노의 망치] 스태미나 소모",
+                ["Tier7_FuryHammer_Cooldown"] = "Tier 7-1: [분노의 망치] 쿨타임 (초)",
+                ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [분노의 망치] AOE 범위 (m)",
+                ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [분노의 망치] 필요 포인트",
 
-                // === Tier 7: 수호자의 진심 - G키 액티브 (5개) ===
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7: [수호자의 진심] 쿨타임 (초)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7: [수호자의 진심] 스태미나 소모",
-                ["Tier7_GuardianHeart_Duration"] = "Tier 7: [수호자의 진심] 버프 지속시간 (초)",
-                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7: [수호자의 진심] 반사 데미지 비율 (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7: [수호자의 진심] 필요 포인트",
+                // === Tier 7-2: 수호자의 진심 - G키 액티브 (5개) ===
+                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [수호자의 진심] 쿨타임 (초)",
+                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [수호자의 진심] 스태미나 소모",
+                ["Tier7_GuardianHeart_Duration"] = "Tier 7-2: [수호자의 진심] 버프 지속시간 (초)",
+                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7-2: [수호자의 진심] 반사 데미지 비율 (%)",
+                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [수호자의 진심] 필요 포인트",
 
                 // ========================================
-                // Polearm Tree (25개 키)
+                // Polearm Tree (37개 키)
                 // ========================================
 
+                // === Tier 0 - 폴암 전문가 (2개) ===
+                ["Tier0_PolearmExpert_AttackRangeBonus"] = "Tier 0: [폴암 전문가] 공격 범위 보너스 (%)",
+                ["Tier0_PolearmExpert_RequiredPoints"] = "Tier 0: [폴암 전문가] 필요 포인트",
 
-                // === Tier 0 - 폴암 전문가 (1개) ===
-                ["Tier0_PolearmExpert_AttackRangeBonus"] = "Tier 0: 공격 범위 보너스 (%)",
+                // === Tier 1 - 회전베기 (2개) ===
+                ["Tier1_SpinWheel_WheelAttackDamageBonus"] = "Tier 1: [회전베기] 회전 공격 피해 보너스 (%)",
+                ["Tier1_SpinWheel_RequiredPoints"] = "Tier 1: [회전베기] 필요 포인트",
 
-                // === Tier 1 - 회전베기 (1개) ===
-                ["Tier1_SpinWheel_WheelAttackDamageBonus"] = "Tier 1: 회전 공격 피해 보너스 (%)",
+                // === Tier 2-1 - 폴암강화 (2개) ===
+                ["Tier2-1_PolearmBoost_WeaponDamageBonus"] = "Tier 2-1: [폴암강화] 무기 공격력 보너스 (고정값)",
+                ["Tier2-1_PolearmBoost_RequiredPoints"] = "Tier 2-1: [폴암강화] 필요 포인트",
 
-                // === Tier 2 - 영웅 타격 (1개) ===
-                ["Tier2_HeroStrike_KnockbackChance"] = "Tier 2: 넉백 확률 (%)",
+                // === Tier 2-2 - 영웅 타격 (2개) ===
+                ["Tier2-2_HeroStrike_KnockbackChance"] = "Tier 2-2: [영웅 타격] 넉백 확률 (%)",
+                ["Tier2-2_HeroStrike_RequiredPoints"] = "Tier 2-2: [영웅 타격] 필요 포인트",
 
-                // === Tier 3 (4개) ===
-                ["Tier3_AreaCombo_DoubleHitBonus"] = "Tier 3: 2연타 피해 보너스 (%)",
-                ["Tier3_AreaCombo_DoubleHitDuration"] = "Tier 3: 2연타 버프 지속시간 (초)",
-                ["Tier3_GroundWheel_WheelAttackDamageBonus"] = "Tier 3: 회전 공격 피해 보너스 (%)",
-                ["Tier3_PolearmBoost_WeaponDamageBonus"] = "Tier 3: 무기 공격력 보너스 (고정값)",
+                // === Tier 3 - 광역 강타 (3개) ===
+                ["Tier3_AreaCombo_DoubleHitBonus"] = "Tier 3: [광역 강타] 2연타 피해 보너스 (%)",
+                ["Tier3_AreaCombo_DoubleHitDuration"] = "Tier 3: [광역 강타] 2연타 버프 지속시간 (초)",
+                ["Tier3_AreaCombo_RequiredPoints"] = "Tier 3: [광역 강타] 필요 포인트",
 
-                // === Tier 4 - 반달 베기 (2개) ===
-                ["Tier4_MoonSlash_AttackRangeBonus"] = "Tier 4: 공격 범위 보너스 (%)",
-                ["Tier4_MoonSlash_StaminaReduction"] = "Tier 4: 스태미나 소모 감소 (%)",
+                // === Tier 4-1 - 지면 강타 (2개) ===
+                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] = "Tier 4-1: [지면 강타] 회전 공격 피해 보너스 (%)",
+                ["Tier4-1_GroundWheel_RequiredPoints"] = "Tier 4-1: [지면 강타] 필요 포인트",
 
-                // === Tier 5 - 제압 공격 (1개) ===
-                ["Tier5_Suppress_DamageBonus"] = "Tier 5: 제압 공격 피해 보너스 (%)",
+                // === Tier 4-2 - 반달 베기 (3개) ===
+                ["Tier4-2_MoonSlash_AttackRangeBonus"] = "Tier 4-2: [반달 베기] 공격 범위 보너스 (%)",
+                ["Tier4-2_MoonSlash_StaminaReduction"] = "Tier 4-2: [반달 베기] 스태미나 소모 감소 (%)",
+                ["Tier4-2_MoonSlash_RequiredPoints"] = "Tier 4-2: [반달 베기] 필요 포인트",
 
-                // === Tier 6 - 관통 돌격 (8개) ===
-                ["Tier6_PierceCharge_DashDistance"] = "Tier 6: 돌진 거리 (m)",
-                ["Tier6_PierceCharge_FirstHitDamageBonus"] = "Tier 6: 첫 타격 피해 보너스 (%)",
-                ["Tier6_PierceCharge_AoeDamageBonus"] = "Tier 6: 광역 넉백 피해 보너스 (%)",
-                ["Tier6_PierceCharge_AoeAngle"] = "Tier 6: 광역 각도 (도)",
-                ["Tier6_PierceCharge_AoeRadius"] = "Tier 6: 광역 반경 (m)",
-                ["Tier6_PierceCharge_KnockbackDistance"] = "Tier 6: 넉백 거리 (m)",
-                ["Tier6_PierceCharge_StaminaCost"] = "Tier 6: 스태미나 소모",
-                ["Tier6_PierceCharge_Cooldown"] = "Tier 6: 쿨타임 (초)",
+                // === Tier 4-3 - 제압 공격 (2개) ===
+                ["Tier4-3_Suppress_DamageBonus"] = "Tier 4-3: [제압 공격] 피해 보너스 (%)",
+                ["Tier4-3_Suppress_RequiredPoints"] = "Tier 4-3: [제압 공격] 필요 포인트",
+
+                // === Tier 5 - 관통 돌격 (9개) ===
+                ["Tier5_PierceCharge_DashDistance"] = "Tier 5: [관통 돌격] 돌진 거리 (m)",
+                ["Tier5_PierceCharge_FirstHitDamageBonus"] = "Tier 5: [관통 돌격] 첫 타격 피해 보너스 (%)",
+                ["Tier5_PierceCharge_AoeDamageBonus"] = "Tier 5: [관통 돌격] 광역 넉백 피해 보너스 (%)",
+                ["Tier5_PierceCharge_AoeAngle"] = "Tier 5: [관통 돌격] 광역 각도 (도)",
+                ["Tier5_PierceCharge_AoeRadius"] = "Tier 5: [관통 돌격] 광역 반경 (m)",
+                ["Tier5_PierceCharge_KnockbackDistance"] = "Tier 5: [관통 돌격] 넉백 거리 (m)",
+                ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [관통 돌격] 스태미나 소모",
+                ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [관통 돌격] 쿨타임 (초)",
+                ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [관통 돌격] 필요 포인트",
 
                 // ============================================
                 // Archer Job Skills (아처 직업 스킬) - 8개

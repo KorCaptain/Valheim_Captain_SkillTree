@@ -159,12 +159,12 @@ namespace CaptainSkillTree.SkillTree
             var tooltipData = new MageTooltipData
             {
                 skillName = L.Get("job_mage"),
-                description = L.Get("mage_desc_aoe", 300),
+                description = L.Get("mage_desc_aoe", 150),
                 additionalInfo = "",
                 range = "12m",
                 consumeEitr = "35",
                 skillType = L.Get("skill_type_job_active", "Y"),
-                cooldown = $"180{L.Get("unit_seconds")}",
+                cooldown = $"90{L.Get("unit_seconds")}",
                 requirement = L.Get("requirement_mage"),
                 confirmation = L.Get("confirmation_job_only"),
                 requiredItem = L.Get("item_eikthyr_trophy"),

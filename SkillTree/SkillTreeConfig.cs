@@ -583,7 +583,7 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[SkillTreeConfig] Skill_Tree_Base 설정 초기화 완료");
 
             // 1. 전문가 트리 (Attack → Speed → Defense → Product 순)
-            BindServerSync(config, "──── Atk, Spd, Prod, Def Trees ────", "End", "", "");
+            BindServerSync(config, "─────── Atk, Spd, Prod, Def ───────", "End", "", "");
             Attack_Config.Initialize(config);   // Attack Tree (공격 전문가)
             Speed_Config.Initialize(config);    // Speed Tree (속도 전문가)
             Defense_Config.Initialize(config);  // Defense Tree (방어 전문가)

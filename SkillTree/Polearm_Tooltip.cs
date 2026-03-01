@@ -21,15 +21,13 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[폴암 툴팁] GetPolearmExpertTooltip() 호출됨");
 
-            var requiredPoints = 2;
-
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("polearm_skill_expert")}</size></color>",
                 L.Get("polearm_desc_expert", SkillTreeConfig.PolearmExpertRangeBonusValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
             data.requirement = L.Get("requirement_polearm_equip");
-            data.requiredPoints = requiredPoints.ToString();
+            data.requiredPoints = Polearm_Config.PolearmExpertRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Polearm);
         }
@@ -46,13 +44,13 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("polearm_desc_spin", SkillTreeConfig.PolearmStep1SpinWheelDamageValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
-            data.requiredPoints = "2";
+            data.requiredPoints = Polearm_Config.PolearmSpinWheelRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Polearm);
         }
 
         /// <summary>
-        /// 제압 공격 툴팁 생성 (Tier 5 - 폴암강화와 티어 교환)
+        /// 제압 공격 툴팁 생성 (Tier 4-3)
         /// </summary>
         public static string GetPolearmStep1SuppressTooltip()
         {
@@ -63,7 +61,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("polearm_desc_suppress", SkillTreeConfig.PolearmStep1SuppressDamageValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Polearm_Config.PolearmSuppressRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Polearm);
         }
@@ -80,7 +78,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("polearm_desc_hero", SkillTreeConfig.PolearmStep2HeroKnockbackChanceValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
-            data.requiredPoints = "2";
+            data.requiredPoints = Polearm_Config.PolearmHeroStrikeRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Polearm);
         }
@@ -97,7 +95,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("polearm_desc_area", SkillTreeConfig.PolearmStep3AreaComboBonusValue, SkillTreeConfig.PolearmStep3AreaComboDurationValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Polearm_Config.PolearmAreaComboRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Polearm);
         }
@@ -114,7 +112,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("polearm_desc_ground", SkillTreeConfig.PolearmStep3GroundWheelDamageValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Polearm_Config.PolearmGroundWheelRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Polearm);
         }
@@ -131,13 +129,13 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("polearm_desc_moon", SkillTreeConfig.PolearmStep4MoonRangeBonusValue, SkillTreeConfig.PolearmStep4MoonStaminaReductionValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Polearm_Config.PolearmMoonSlashRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Polearm);
         }
 
         /// <summary>
-        /// 폴암강화 툴팁 생성 (Tier 3 - 제압 공격과 티어 교환)
+        /// 폴암강화 툴팁 생성 (Tier 2-1)
         /// </summary>
         public static string GetPolearmStep4ChargeTooltip()
         {
@@ -148,7 +146,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("polearm_desc_charge", SkillTreeConfig.PolearmStep4ChargeDamageBonusValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
-            data.requiredPoints = "2";
+            data.requiredPoints = Polearm_Config.PolearmPolearmBoostRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Polearm);
         }
@@ -206,7 +204,7 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
 
                 // 11. 필요포인트 (#87CEEB / #FF6B6B)
-                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>3</size></color>";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Polearm_Config.PolearmKingRequiredPointsValue}</size></color>";
 
                 Plugin.Log.LogDebug($"[관통 돌격 툴팁] 최종 툴팁 생성 완료 - 길이: {tooltip?.Length ?? 0}");
                 return tooltip.TrimEnd('\n');

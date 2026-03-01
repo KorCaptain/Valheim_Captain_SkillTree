@@ -9,10 +9,12 @@ namespace CaptainSkillTree.SkillTree
     {
         // === 필요 포인트 설정 ===
         public static ConfigEntry<int> PolearmExpertRequiredPoints;
-        public static ConfigEntry<int> PolearmStep1RequiredPoints;
-        public static ConfigEntry<int> PolearmStep2RequiredPoints;
-        public static ConfigEntry<int> PolearmStep3RequiredPoints;
-        public static ConfigEntry<int> PolearmStep4RequiredPoints;
+        public static ConfigEntry<int> PolearmSpinWheelRequiredPoints;
+        public static ConfigEntry<int> PolearmPolearmBoostRequiredPoints;
+        public static ConfigEntry<int> PolearmHeroStrikeRequiredPoints;
+        public static ConfigEntry<int> PolearmAreaComboRequiredPoints;
+        public static ConfigEntry<int> PolearmGroundWheelRequiredPoints;
+        public static ConfigEntry<int> PolearmMoonSlashRequiredPoints;
         public static ConfigEntry<int> PolearmSuppressRequiredPoints;
         public static ConfigEntry<int> PolearmKingRequiredPoints;
 
@@ -40,10 +42,12 @@ namespace CaptainSkillTree.SkillTree
 
         // === 필요 포인트 접근 프로퍼티 ===
         public static int PolearmExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_expert_required_points", PolearmExpertRequiredPoints?.Value ?? 2);
-        public static int PolearmStep1RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step1_required_points", PolearmStep1RequiredPoints?.Value ?? 2);
-        public static int PolearmStep2RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step2_required_points", PolearmStep2RequiredPoints?.Value ?? 2);
-        public static int PolearmStep3RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step3_required_points", PolearmStep3RequiredPoints?.Value ?? 2);
-        public static int PolearmStep4RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step4_required_points", PolearmStep4RequiredPoints?.Value ?? 2);
+        public static int PolearmSpinWheelRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step1_required_points", PolearmSpinWheelRequiredPoints?.Value ?? 2);
+        public static int PolearmPolearmBoostRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step2a_required_points", PolearmPolearmBoostRequiredPoints?.Value ?? 2);
+        public static int PolearmHeroStrikeRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step2b_required_points", PolearmHeroStrikeRequiredPoints?.Value ?? 2);
+        public static int PolearmAreaComboRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step3_required_points", PolearmAreaComboRequiredPoints?.Value ?? 2);
+        public static int PolearmGroundWheelRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step4a_required_points", PolearmGroundWheelRequiredPoints?.Value ?? 2);
+        public static int PolearmMoonSlashRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step4b_required_points", PolearmMoonSlashRequiredPoints?.Value ?? 2);
         public static int PolearmSuppressRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_suppress_required_points", PolearmSuppressRequiredPoints?.Value ?? 3);
         public static int PolearmKingRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_king_required_points", PolearmKingRequiredPoints?.Value ?? 3);
 
@@ -76,29 +80,37 @@ namespace CaptainSkillTree.SkillTree
                 "Polearm Tree", "Tier0_PolearmExpert_RequiredPoints", 2,
                 SkillTreeConfig.GetConfigDescription("Tier0_PolearmExpert_RequiredPoints"));
 
-            PolearmStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier1_PolearmSkill_RequiredPoints", 2,
-                SkillTreeConfig.GetConfigDescription("Tier1_PolearmSkill_RequiredPoints"));
+            PolearmSpinWheelRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier1_SpinWheel_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier1_SpinWheel_RequiredPoints"));
 
-            PolearmStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier2_PolearmSkill_RequiredPoints", 2,
-                SkillTreeConfig.GetConfigDescription("Tier2_PolearmSkill_RequiredPoints"));
+            PolearmPolearmBoostRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier2-1_PolearmBoost_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier2-1_PolearmBoost_RequiredPoints"));
 
-            PolearmStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier3_PolearmSkill_RequiredPoints", 2,
-                SkillTreeConfig.GetConfigDescription("Tier3_PolearmSkill_RequiredPoints"));
+            PolearmHeroStrikeRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier2-2_HeroStrike_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier2-2_HeroStrike_RequiredPoints"));
 
-            PolearmStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier4_PolearmSkill_RequiredPoints", 2,
-                SkillTreeConfig.GetConfigDescription("Tier4_PolearmSkill_RequiredPoints"));
+            PolearmAreaComboRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier3_AreaCombo_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier3_AreaCombo_RequiredPoints"));
+
+            PolearmGroundWheelRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier4-1_GroundWheel_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier4-1_GroundWheel_RequiredPoints"));
+
+            PolearmMoonSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier4-2_MoonSlash_RequiredPoints", 2,
+                SkillTreeConfig.GetConfigDescription("Tier4-2_MoonSlash_RequiredPoints"));
 
             PolearmSuppressRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier5_Suppress_RequiredPoints", 3,
-                SkillTreeConfig.GetConfigDescription("Tier5_Suppress_RequiredPoints"));
+                "Polearm Tree", "Tier4-3_Suppress_RequiredPoints", 3,
+                SkillTreeConfig.GetConfigDescription("Tier4-3_Suppress_RequiredPoints"));
 
             PolearmKingRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_PierceCharge_RequiredPoints", 3,
-                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_RequiredPoints"));
+                "Polearm Tree", "Tier5_PierceCharge_RequiredPoints", 3,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_RequiredPoints"));
 
             // Tier 0: 폴암 전문가
             PolearmExpertRangeBonus = SkillTreeConfig.BindServerSync(config,
@@ -110,15 +122,15 @@ namespace CaptainSkillTree.SkillTree
                 "Polearm Tree", "Tier1_SpinWheel_WheelAttackDamageBonus", 60f,
                 SkillTreeConfig.GetConfigDescription("Tier1_SpinWheel_WheelAttackDamageBonus"));
 
-            // Tier 5: 제압 공격 (티어 순서 변경: 폴암강화와 교환)
+            // Tier 4-3: 제압 공격
             PolearmStep1SuppressDamage = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier5_Suppress_DamageBonus", 30f,
-                SkillTreeConfig.GetConfigDescription("Tier5_Suppress_DamageBonus"));
+                "Polearm Tree", "Tier4-3_Suppress_DamageBonus", 30f,
+                SkillTreeConfig.GetConfigDescription("Tier4-3_Suppress_DamageBonus"));
 
-            // Tier 2: 영웅 타격
+            // Tier 2-2: 영웅 타격
             PolearmStep2HeroKnockbackChance = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier2_HeroStrike_KnockbackChance", 27f,
-                SkillTreeConfig.GetConfigDescription("Tier2_HeroStrike_KnockbackChance"));
+                "Polearm Tree", "Tier2-2_HeroStrike_KnockbackChance", 27f,
+                SkillTreeConfig.GetConfigDescription("Tier2-2_HeroStrike_KnockbackChance"));
 
             // Tier 3: 광역 강타
             PolearmStep3AreaComboBonus = SkillTreeConfig.BindServerSync(config,
@@ -129,57 +141,57 @@ namespace CaptainSkillTree.SkillTree
                 "Polearm Tree", "Tier3_AreaCombo_DoubleHitDuration", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier3_AreaCombo_DoubleHitDuration"));
 
-            // Tier 3: 지면 강타
+            // Tier 4-1: 지면 강타
             PolearmStep3GroundWheelDamage = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier3_GroundWheel_WheelAttackDamageBonus", 80f,
-                SkillTreeConfig.GetConfigDescription("Tier3_GroundWheel_WheelAttackDamageBonus"));
+                "Polearm Tree", "Tier4-1_GroundWheel_WheelAttackDamageBonus", 80f,
+                SkillTreeConfig.GetConfigDescription("Tier4-1_GroundWheel_WheelAttackDamageBonus"));
 
-            // Tier 4: 반달 베기
+            // Tier 4-2: 반달 베기
             PolearmStep4MoonRangeBonus = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier4_MoonSlash_AttackRangeBonus", 15f,
-                SkillTreeConfig.GetConfigDescription("Tier4_MoonSlash_AttackRangeBonus"));
+                "Polearm Tree", "Tier4-2_MoonSlash_AttackRangeBonus", 15f,
+                SkillTreeConfig.GetConfigDescription("Tier4-2_MoonSlash_AttackRangeBonus"));
 
             PolearmStep4MoonStaminaReduction = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier4_MoonSlash_StaminaReduction", 15f,
-                SkillTreeConfig.GetConfigDescription("Tier4_MoonSlash_StaminaReduction"));
+                "Polearm Tree", "Tier4-2_MoonSlash_StaminaReduction", 15f,
+                SkillTreeConfig.GetConfigDescription("Tier4-2_MoonSlash_StaminaReduction"));
 
-            // Tier 3: 폴암강화 (티어 순서 변경: 제압 공격과 교환)
+            // Tier 2-1: 폴암강화
             PolearmStep4ChargeDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier3_PolearmBoost_WeaponDamageBonus", 5f,
-                SkillTreeConfig.GetConfigDescription("Tier3_PolearmBoost_WeaponDamageBonus"));
+                "Polearm Tree", "Tier2-1_PolearmBoost_WeaponDamageBonus", 5f,
+                SkillTreeConfig.GetConfigDescription("Tier2-1_PolearmBoost_WeaponDamageBonus"));
 
-            // Tier 6: 관통 돌격 (Pierce Charge) - G키 액티브 스킬
+            // Tier 5: 관통 돌격 (Pierce Charge) - G키 액티브 스킬
             PolearmPierceChargeDashDistance = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_PierceCharge_DashDistance", 10f,
-                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_DashDistance"));
+                "Polearm Tree", "Tier5_PierceCharge_DashDistance", 10f,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_DashDistance"));
 
             PolearmPierceChargePrimaryDamage = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_PierceCharge_FirstHitDamageBonus", 200f,
-                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_FirstHitDamageBonus"));
+                "Polearm Tree", "Tier5_PierceCharge_FirstHitDamageBonus", 200f,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_FirstHitDamageBonus"));
 
             PolearmPierceChargeAoeDamage = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_PierceCharge_AoeDamageBonus", 150f,
-                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_AoeDamageBonus"));
+                "Polearm Tree", "Tier5_PierceCharge_AoeDamageBonus", 150f,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_AoeDamageBonus"));
 
             PolearmPierceChargeAoeAngle = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_PierceCharge_AoeAngle", 280f,
-                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_AoeAngle"));
+                "Polearm Tree", "Tier5_PierceCharge_AoeAngle", 280f,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_AoeAngle"));
 
             PolearmPierceChargeAoeRadius = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_PierceCharge_AoeRadius", 5f,
-                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_AoeRadius"));
+                "Polearm Tree", "Tier5_PierceCharge_AoeRadius", 5f,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_AoeRadius"));
 
             PolearmPierceChargeKnockbackDistance = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_PierceCharge_KnockbackDistance", 8f,
-                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_KnockbackDistance"));
+                "Polearm Tree", "Tier5_PierceCharge_KnockbackDistance", 8f,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_KnockbackDistance"));
 
             PolearmPierceChargeStaminaCost = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_PierceCharge_StaminaCost", 20f,
-                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_StaminaCost"));
+                "Polearm Tree", "Tier5_PierceCharge_StaminaCost", 20f,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_StaminaCost"));
 
             PolearmPierceChargeCooldown = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_PierceCharge_Cooldown", 30f,
-                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_Cooldown"));
+                "Polearm Tree", "Tier5_PierceCharge_Cooldown", 30f,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_Cooldown"));
 
             Plugin.Log.LogDebug("[Polearm_Config] Polearm Expert tree config initialized");
         }

@@ -56,14 +56,14 @@ namespace CaptainSkillTree.SkillTree
                 MageDamageMultiplier = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills",
                     "Mage_Damage_Multiplier",
-                    300.0f,
+                    150.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Damage_Multiplier")
                 );
 
                 MageCooldown = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills",
                     "Mage_Cooldown",
-                    180.0f,
+                    90.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Cooldown")
                 );
 
