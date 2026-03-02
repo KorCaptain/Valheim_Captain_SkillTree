@@ -25,7 +25,9 @@ namespace CaptainSkillTree.Localization
         /// </summary>
         public static Dictionary<string, string> GetDescriptionTranslations(string lang)
         {
-            return (lang == "ko") ? GetKoreanDescriptions() : GetEnglishDescriptions();
+            if (lang == "ko") return GetKoreanDescriptions();
+            if (lang == "ru") return GetRussianDescriptions();
+            return GetEnglishDescriptions();
         }
 
         /// <summary>
@@ -34,7 +36,9 @@ namespace CaptainSkillTree.Localization
         /// </summary>
         public static Dictionary<string, string> GetKeyNameTranslations(string lang)
         {
-            return (lang == "ko") ? GetKoreanKeyNames() : GetEnglishKeyNames();
+            if (lang == "ko") return GetKoreanKeyNames();
+            if (lang == "ru") return GetRussianKeyNames();
+            return GetEnglishKeyNames();
         }
 
         // ============================================
@@ -113,12 +117,27 @@ namespace CaptainSkillTree.Localization
             return dict;
         }
 
+        // ============================================
+        // 설명 번역 집합 (러시아어) - 각 파일의 부분 메서드를 합산
+        // ============================================
+        private static Dictionary<string, string> GetRussianDescriptions()
+        {
+            var dict = new Dictionary<string, string>();
+            foreach (var kv in GetExpertDescriptions_RU())     dict[kv.Key] = kv.Value;
+            foreach (var kv in GetRangedDescriptions_RU())     dict[kv.Key] = kv.Value;
+            foreach (var kv in GetSwordKnifeDescriptions_RU()) dict[kv.Key] = kv.Value;
+            foreach (var kv in GetHeavyMeleeDescriptions_RU()) dict[kv.Key] = kv.Value;
+            foreach (var kv in GetJobDescriptions_RU())         dict[kv.Key] = kv.Value;
+            return dict;
+        }
+
         // GetKoreanKeyNames()  → ConfigTranslations_KeyNames_KO.cs
         // GetEnglishKeyNames() → ConfigTranslations_KeyNames_EN.cs
-        // GetExpertDescriptions_KO/EN()    → ConfigTranslations_ExpertDesc.cs
-        // GetRangedDescriptions_KO/EN()    → ConfigTranslations_RangedDesc.cs
-        // GetSwordKnifeDescriptions_KO/EN() → ConfigTranslations_SwordKnifeDesc.cs
-        // GetHeavyMeleeDescriptions_KO/EN() → ConfigTranslations_HeavyMeleeDesc.cs
-        // GetJobDescriptions_KO/EN()        → ConfigTranslations_JobDesc.cs
+        // GetRussianKeyNames() → ConfigTranslations_KeyNames_RU.cs
+        // GetExpertDescriptions_KO/EN/RU()    → ConfigTranslations_ExpertDesc.cs / *_RU.cs
+        // GetRangedDescriptions_KO/EN/RU()    → ConfigTranslations_RangedDesc.cs / *_RU.cs
+        // GetSwordKnifeDescriptions_KO/EN/RU() → ConfigTranslations_SwordKnifeDesc.cs / *_RU.cs
+        // GetHeavyMeleeDescriptions_KO/EN/RU() → ConfigTranslations_HeavyMeleeDesc.cs / *_RU.cs
+        // GetJobDescriptions_KO/EN/RU()        → ConfigTranslations_JobDesc.cs / *_RU.cs
     }
 }
