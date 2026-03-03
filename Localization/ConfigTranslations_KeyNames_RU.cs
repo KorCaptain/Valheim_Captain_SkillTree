@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -113,53 +113,7 @@ namespace CaptainSkillTree.Localization
 
                 // ============================================
                 // Defense Tree - 56 ключей
-                // ============================================
-
-                // === Ур. 0: Эксперт Защиты (3) ===
-                ["Tier0_DefenseExpert_HPBonus"] = "Ур.0: Бонус к здоровью",
-                ["Tier0_DefenseExpert_ArmorBonus"] = "Ур.0: Бонус к броне",
-                ["Tier0_DefenseExpert_RequiredPoints"] = "Ур.0: [Эксп. Защиты] Необходимые очки",
-
-                // === Ур. 1: Закалка Кожи (3) ===
-                ["Tier1_SkinHardening_HPBonus"] = "Ур.1: Бонус к здоровью",
-                ["Tier1_SkinHardening_ArmorBonus"] = "Ур.1: Бонус к броне",
-                ["Tier1_SkinHardening_RequiredPoints"] = "Ур.1: [Закалка кожи] Необходимые очки",
-
-                // === Ур. 2-1: Тренировка Тела и Духа (3) ===
-                ["Tier2_MindBodyTraining_StaminaBonus"] = "Ур.2: Бонус макс. выносливости",
-                ["Tier2_MindBodyTraining_EitrBonus"] = "Ур.2: Бонус макс. Эйтра",
-                ["Tier2_MindTraining_RequiredPoints"] = "Ур.2-1: [Тело и дух] Необходимые очки",
-
-                // === Ур. 2-2: Тренировка Здоровья (3) ===
-                ["Tier2_HealthTraining_HPBonus"] = "Ур.2: Бонус к здоровью",
-                ["Tier2_HealthTraining_ArmorBonus"] = "Ур.2: Бонус к броне",
-                ["Tier2_HealthTraining_RequiredPoints"] = "Ур.2-2: [Трен. здоровья] Необходимые очки",
-
-                // === Ур. 3-1: Дыхание Ядра (2) ===
-                ["Tier3_CoreBreathing_EitrBonus"] = "Ур.3: Бонус к Эйтру",
-                ["Tier3_CoreBreathing_RequiredPoints"] = "Ур.3-1: [Дыхание ядра] Необходимые очки",
-
-                // === Ур. 3-2: Тренировка Уклонения (3) ===
-                ["Tier3_EvasionTraining_DodgeBonus"] = "Ур.3: Бонус уклонения (%)",
-                ["Tier3_EvasionTraining_InvincibilityBonus"] = "Ур.3: Увеличение неуязв. при перекате (%)",
-                ["Tier3_EvasionTraining_RequiredPoints"] = "Ур.3-2: [Трен. уклонения] Необходимые очки",
-
-                // === Ур. 3-3: Усиление Здоровья (2) ===
-                ["Tier3_HealthBoost_HPBonus"] = "Ур.3: Бонус к здоровью",
-                ["Tier3_HealthBoost_RequiredPoints"] = "Ур.3-3: [Усил. здоровья] Необходимые очки",
-
-                // === Ур. 3-4: Тренировка Щита (2) ===
-                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Ур.3: Бонус силы блока щита",
-                ["Tier3_ShieldTraining_RequiredPoints"] = "Ур.3-4: [Трен. щита] Необходимые очки",
-
-                // === Ур. 4-1: Ударная Волна (4) ===
-                ["Tier4_Shockwave_Radius"] = "Ур.4-1: [Удар. волна] Радиус",
-                ["Tier4_Shockwave_StunDuration"] = "Ур.4-1: [Удар. волна] Длит. оглушения",
-                ["Tier4_Shockwave_Cooldown"] = "Ур.4-1: [Удар. волна] Перезарядка",
-                ["Tier4_Shockwave_RequiredPoints"] = "Ур.4-1: [Удар. волна] Необходимые очки",
-
-                // === Ур. 4-2: Удар о Землю (6) ===
-                ["Tier4_GroundStomp_Radius"] = "Ур.4: Радиус эффекта (м)",
+                // =====================================                ["Tier4_GroundStomp_Radius"] = "Ур.4: Радиус эффекта (м)",
                 ["Tier4_GroundStomp_KnockbackForce"] = "Ур.4: Сила откидывания",
                 ["Tier4_GroundStomp_Cooldown"] = "Ур.4: Перезарядка (сек)",
                 ["Tier4_GroundStomp_HPThreshold"] = "Ур.4: Порог ХП для авто-срабатывания",
