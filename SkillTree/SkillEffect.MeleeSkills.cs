@@ -52,6 +52,8 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, bool> nextAttackBoosted = new Dictionary<Player, bool>();
         public static Dictionary<Player, float> nextAttackMultiplier = new Dictionary<Player, float>();
         public static Dictionary<Player, float> nextAttackExpiry = new Dictionary<Player, float>();
+        // true = 강화된 일격 메시지 표시, false = 연속베기 등 이미 메시지 표시된 경우 생략
+        public static Dictionary<Player, bool> nextAttackShowMessage = new Dictionary<Player, bool>();
 
         // 검 신규 스킬 상태 추적
         public static Dictionary<Player, float> swordCounterDefenseEndTime = new Dictionary<Player, float>();

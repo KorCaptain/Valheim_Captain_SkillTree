@@ -43,6 +43,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 쿨타임 적용
                 staffHealCooldowns[player] = Time.time + Staff_Config.StaffHealCooldownValue;
+                ActiveSkillCooldownRegistry.SetCooldown("H", Staff_Config.StaffHealCooldownValue);
 
                 // 범위 힐 실행
                 ExecuteAreaHeal(player);

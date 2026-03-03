@@ -55,6 +55,7 @@ namespace CaptainSkillTree.SkillTree
                 nextAttackBoosted[player] = true;
                 nextAttackMultiplier[player] = 1.5f;
                 nextAttackExpiry[player] = now + 5f;
+                nextAttackShowMessage[player] = true;
                 PlaySkillEffect(player, "sword_combo");
                 DrawFloatingText(player, "⚔️ " + L.Get("sword_combo_3hit"));
             }
@@ -88,6 +89,7 @@ namespace CaptainSkillTree.SkillTree
                 nextAttackBoosted[player] = true;
                 nextAttackMultiplier[player] = 1f + (SkillTreeConfig.SwordStep1ExpertComboBonusValue / 100f);
                 nextAttackExpiry[player] = now + SkillTreeConfig.SwordStep1ExpertDurationValue;
+                nextAttackShowMessage[player] = true;
             }
         }
 
@@ -119,6 +121,7 @@ namespace CaptainSkillTree.SkillTree
                 nextAttackBoosted[player] = true;
                 nextAttackMultiplier[player] = 1f + (SkillTreeConfig.SwordStep2ComboSlashBonusValue / 100f);
                 nextAttackExpiry[player] = now + SkillTreeConfig.SwordStep2ComboSlashDurationValue;
+                nextAttackShowMessage[player] = false; // 연속베기 메시지 이미 표시됨
                 swordComboCount[player] = 0;
             }
         }

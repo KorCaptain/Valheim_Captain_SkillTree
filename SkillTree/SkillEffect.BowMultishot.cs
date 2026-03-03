@@ -10,7 +10,7 @@ namespace CaptainSkillTree.SkillTree
     /// <summary>
     /// 활 멀티샷 패시브 스킬 시스템
     /// bow_Step2_multishot: 15% 확률로 화살 2개 발사
-    /// bow_Step4_multishot2: 36% 확률로 추가 화살 1발 발사 (+3도 각도)
+    /// bow_Step4_multishot2: 15% 확률로 추가 화살 1발 발사 (+3도 각도)
     /// </summary>
     public static partial class SkillEffect
     {

@@ -107,7 +107,8 @@ namespace CaptainSkillTree.SkillTree
                         hit.m_damage.m_pierce *= multiplier;
                         SkillEffect.nextAttackBoosted[player] = false;
                         SkillEffect.PlaySkillEffect(player, "sword_power", hit.m_point);
-                        SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("enhanced_strike", $"{(multiplier - 1) * 100:F0}"));
+                        if (!SkillEffect.nextAttackShowMessage.TryGetValue(player, out var showMsg) || showMsg)
+                            SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("enhanced_strike", $"{(multiplier - 1) * 100:F0}"));
                     }
                     else
                     {
@@ -616,6 +617,7 @@ namespace CaptainSkillTree.SkillTree
                 nextAttackBoosted.Remove(player);
                 nextAttackMultiplier.Remove(player);
                 nextAttackExpiry.Remove(player);
+                nextAttackShowMessage.Remove(player);
                 swordCounterDefenseEndTime.Remove(player);
                 swordBladeCounterEndTime.Remove(player);
 

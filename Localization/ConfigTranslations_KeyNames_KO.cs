@@ -9,6 +9,16 @@ namespace CaptainSkillTree.Localization
             return new Dictionary<string, string>
             {
                 // ============================================
+                // Skill_Tree_Base - 키 바인딩
+                // ============================================
+                ["HotKey_Y"] = "직업 스킬 키",
+                ["HotKey_R"] = "원거리 스킬 키",
+                ["HotKey_G"] = "근접 메인 스킬 키",
+                ["HotKey_H"] = "보조 스킬 키",
+                ["HUD_PosX"] = "HUD X 위치",
+                ["HUD_PosY"] = "HUD Y 위치",
+
+                // ============================================
                 // Attack Tree (공격 트리) - 33개
                 // ============================================
 
@@ -166,102 +176,152 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_CastAccel_RequiredPoints"] = "Tier 8-4: [시전 가속] 필요 포인트",
 
                 // ============================================
-                // Defense Tree (방어 트리) - 39개
+                // Defense Tree (방어 트리) - 59개
+                // ============================================
+
+                // === Tier 0: 방어 전문가 (3개) ===
+                ["Tier0_DefenseExpert_HPBonus"] = "Tier 0: [방어 전문가] 체력 보너스",
+                ["Tier0_DefenseExpert_ArmorBonus"] = "Tier 0: [방어 전문가] 방어력 보너스",
+                ["Tier0_DefenseExpert_RequiredPoints"] = "Tier 0: [방어 전문가] 필요 포인트",
+
+                // === Tier 1: 피부 경화 (3개) ===
+                ["Tier1_SkinHardening_HPBonus"] = "Tier 1: [피부 경화] 체력 보너스",
+                ["Tier1_SkinHardening_ArmorBonus"] = "Tier 1: [피부 경화] 방어력 보너스",
+                ["Tier1_SkinHardening_RequiredPoints"] = "Tier 1: [피부 경화] 필요 포인트",
+
+                // === Tier 2-1: 심신단련 (3개) ===
+                ["Tier2_MindBodyTraining_StaminaBonus"] = "Tier 2-1: [심신단련] 최대 스태미나 보너스",
+                ["Tier2_MindBodyTraining_EitrBonus"] = "Tier 2-1: [심신단련] 최대 Eitr 보너스",
+                ["Tier2_MindTraining_RequiredPoints"] = "Tier 2-1: [심신단련] 필요 포인트",
+
+                // === Tier 2-2: 체력단련 (3개) ===
+                ["Tier2_HealthTraining_HPBonus"] = "Tier 2-2: [체력단련] 체력 보너스",
+                ["Tier2_HealthTraining_ArmorBonus"] = "Tier 2-2: [체력단련] 방어력 보너스",
+                ["Tier2_HealthTraining_RequiredPoints"] = "Tier 2-2: [체력단련] 필요 포인트",
+
+                // === Tier 3-1: 단전호흡 (2개) ===
+                ["Tier3_CoreBreathing_EitrBonus"] = "Tier 3-1: [단전호흡] Eitr 보너스",
+                ["Tier3_CoreBreathing_RequiredPoints"] = "Tier 3-1: [단전호흡] 필요 포인트",
+
+                // === Tier 3-2: 회피단련 (3개) ===
+                ["Tier3_EvasionTraining_DodgeBonus"] = "Tier 3-2: [회피단련] 회피율 보너스 (%)",
+                ["Tier3_EvasionTraining_InvincibilityBonus"] = "Tier 3-2: [회피단련] 구르기 무적시간 증가 (%)",
+                ["Tier3_EvasionTraining_RequiredPoints"] = "Tier 3-2: [회피단련] 필요 포인트",
+
+                // === Tier 3-3: 체력증강 (2개) ===
+                ["Tier3_HealthBoost_HPBonus"] = "Tier 3-3: [체력증강] 체력 보너스",
+                ["Tier3_HealthBoost_RequiredPoints"] = "Tier 3-3: [체력증강] 필요 포인트",
+
+                // === Tier 3-4: 방패훈련 (2개) ===
+                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [방패훈련] 방패 방어력 보너스",
+                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [방패훈련] 필요 포인트",
+
+                // === Tier 4-1: 충격파방출 (4개) ===
+                ["Tier4_Shockwave_Radius"] = "Tier 4-1: [충격파방출] 효과 범위",
+                ["Tier4_Shockwave_StunDuration"] = "Tier 4-1: [충격파방출] 기절 지속시간",
+                ["Tier4_Shockwave_Cooldown"] = "Tier 4-1: [충격파방출] 쿨타임",
+                ["Tier4_Shockwave_RequiredPoints"] = "Tier 4-1: [충격파방출] 필요 포인트",
+
+                // === Tier 4-2: 발구르기 (6개) ===
+                ["Tier4_GroundStomp_Radius"] = "Tier 4-2: [발구르기] 효과 반경 (미터)",
+                ["Tier4_GroundStomp_KnockbackForce"] = "Tier 4-2: [발구르기] 넉백 강도",
+                ["Tier4_GroundStomp_Cooldown"] = "Tier 4-2: [발구르기] 쿨타임 (초)",
+                ["Tier4_GroundStomp_HPThreshold"] = "Tier 4-2: [발구르기] 자동 발동 체력 임계값",
+                ["Tier4_GroundStomp_VFXDuration"] = "Tier 4-2: [발구르기] VFX 지속시간 (초)",
+                ["Tier4_GroundStomp_RequiredPoints"] = "Tier 4-2: [발구르기] 필요 포인트",
+
+                // === Tier 4-3: 바위피부 (2개) ===
+                ["Tier4_RockSkin_ArmorBonus"] = "Tier 4-3: [바위피부] 방어력 증폭 (%)",
+                ["Tier4_RockSkin_RequiredPoints"] = "Tier 4-3: [바위피부] 필요 포인트",
+
+                // === Tier 5-1: 지구력 (3개) ===
+                ["Tier5_Endurance_RunStaminaReduction"] = "Tier 5-1: [지구력] 달리기 스태미나 감소 (%)",
+                ["Tier5_Endurance_JumpStaminaReduction"] = "Tier 5-1: [지구력] 점프 스태미나 감소 (%)",
+                ["Tier5_Endurance_RequiredPoints"] = "Tier 5-1: [지구력] 필요 포인트",
+
+                // === Tier 5-2: 기민함 (3개) ===
+                ["Tier5_Agility_DodgeBonus"] = "Tier 5-2: [기민함] 회피율 보너스 (%)",
+                ["Tier5_Agility_RollStaminaReduction"] = "Tier 5-2: [기민함] 구르기 스태미나 감소 (%)",
+                ["Tier5_Agility_RequiredPoints"] = "Tier 5-2: [기민함] 필요 포인트",
+
+                // === Tier 5-3: 트롤의 재생력 (3개) ===
+                ["Tier5_TrollRegen_HPRegenBonus"] = "Tier 5-3: [트롤의 재생력] 체력 재생 보너스 (초당)",
+                ["Tier5_TrollRegen_RegenInterval"] = "Tier 5-3: [트롤의 재생력] 재생 간격 (초)",
+                ["Tier5_TrollRegen_RequiredPoints"] = "Tier 5-3: [트롤의 재생력] 필요 포인트",
+
+                // === Tier 5-4: 막기달인 (3개) ===
+                ["Tier5_BlockMaster_ShieldBlockPowerBonus"] = "Tier 5-4: [막기달인] 방패 방어력 보너스",
+                ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5-4: [막기달인] 패링 지속시간 보너스 (초)",
+                ["Tier5_BlockMaster_RequiredPoints"] = "Tier 5-4: [막기달인] 필요 포인트",
+
+                // === Tier 6-1: 마인드쉴드 (1개) ===
+                ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [마인드쉴드] 필요 포인트",
+
+                // === Tier 6-2: 신경강화 (2개) ===
+                ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [신경강화] 회피율 영구 보너스 (%)",
+                ["Tier6_NerveEnhancement_RequiredPoints"] = "Tier 6-2: [신경강화] 필요 포인트",
+
+                // === Tier 6-3: 이단점프 (1개) ===
+                ["Tier6_DoubleJump_RequiredPoints"] = "Tier 6-3: [이단점프] 필요 포인트",
+
+                // === Tier 6-4: 요툰의 생명력 (3개) ===
+                ["Tier6_JotunnVitality_HPBonus"] = "Tier 6-4: [요툰의 생명력] 체력 보너스 (%)",
+                ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6-4: [요툰의 생명력] 물리/속성 저항 (%)",
+                ["Tier6_JotunnVitality_RequiredPoints"] = "Tier 6-4: [요툰의 생명력] 필요 포인트",
+
+                // === Tier 6-5: 요툰의 방패 (4개) ===
+                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6-5: [요툰의 방패] 방어 스태미나 감소 (%)",
+                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6-5: [요툰의 방패] 일반 방패 이동속도 보너스 (%)",
+                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6-5: [요툰의 방패] 타워 실드 이동속도 보너스 (%)",
+                ["Tier6_JotunnShield_RequiredPoints"] = "Tier 6-5: [요툰의 방패] 필요 포인트",
+
+                // ============================================
+                // Production Tree (생산 트리) - 22개
                 // ============================================
 
 
-                // === Tier 0: 방어 전문가 (2개) ===
-                ["Tier0_DefenseExpert_HPBonus"] = "Tier 0: 체력 보너스",
-                ["Tier0_DefenseExpert_ArmorBonus"] = "Tier 0: 방어력 보너스",
-
-                // === Tier 1: 피부경화 (2개) ===
-                ["Tier1_SkinHardening_HPBonus"] = "Tier 1: 체력 보너스",
-                ["Tier1_SkinHardening_ArmorBonus"] = "Tier 1: 방어력 보너스",
-
-                // === Tier 2: 심신단련 & 체력단련 (4개) ===
-                ["Tier2_MindBodyTraining_StaminaBonus"] = "Tier 2: 최대 스태미나 보너스",
-                ["Tier2_MindBodyTraining_EitrBonus"] = "Tier 2: 최대 Eitr 보너스",
-                ["Tier2_HealthTraining_HPBonus"] = "Tier 2: 체력 보너스",
-                ["Tier2_HealthTraining_ArmorBonus"] = "Tier 2: 방어력 보너스",
-
-                // === Tier 3: 다양한 방어 기술 (5개) ===
-                ["Tier3_CoreBreathing_EitrBonus"] = "Tier 3: Eitr 보너스",
-                ["Tier3_EvasionTraining_DodgeBonus"] = "Tier 3: 회피율 보너스 (%)",
-                ["Tier3_EvasionTraining_InvincibilityBonus"] = "Tier 3: 구르기 무적시간 증가 (%)",
-                ["Tier3_HealthBoost_HPBonus"] = "Tier 3: 체력 보너스",
-                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3: 방패 방어력 보너스",
-
-                // === Tier 4: 충격파 발산 (5개) ===
-                ["Tier4_GroundStomp_Radius"] = "Tier 4: 효과 반경 (미터)",
-                ["Tier4_GroundStomp_KnockbackForce"] = "Tier 4: 넉백 강도",
-                ["Tier4_GroundStomp_Cooldown"] = "Tier 4: 쿨타임 (초)",
-                ["Tier4_GroundStomp_HPThreshold"] = "Tier 4: 자동 발동 체력 임계값",
-                ["Tier4_GroundStomp_VFXDuration"] = "Tier 4: VFX 지속시간 (초)",
-                ["Tier4_RockSkin_ArmorBonus"] = "Tier 4: 방어력 증폭 (%)",
-
-                // === Tier 5: 인내 & 민첩 & 회복 & 방어 숙련 (8개) ===
-                ["Tier5_Endurance_RunStaminaReduction"] = "Tier 5: 달리기 스태미나 감소 (%)",
-                ["Tier5_Endurance_JumpStaminaReduction"] = "Tier 5: 점프 스태미나 감소 (%)",
-                ["Tier5_Agility_DodgeBonus"] = "Tier 5: 회피율 보너스 (%)",
-                ["Tier5_Agility_RollStaminaReduction"] = "Tier 5: 구르기 스태미나 감소 (%)",
-                ["Tier5_TrollRegen_HPRegenBonus"] = "Tier 5: 체력 재생 보너스 (초당)",
-                ["Tier5_TrollRegen_RegenInterval"] = "Tier 5: 재생 간격 (초)",
-                ["Tier5_BlockMaster_ShieldBlockPowerBonus"] = "Tier 5: 방패 방어력 보너스",
-                ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5: 패링 지속시간 보너스 (초)",
-
-                // === Tier 6: 최종 방어 기술 (6개) ===
-                ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6: 회피율 영구 보너스 (%)",
-                ["Tier6_JotunnVitality_HPBonus"] = "Tier 6: 체력 보너스 (%)",
-                ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6: 물리/속성 저항 (%)",
-                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6: 방어 스태미나 감소 (%)",
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6: 일반 방패 이동속도 보너스 (%)",
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6: 타워 실드 이동속도 보너스 (%)",
-
-                // ============================================
-                // Production Tree (생산 트리) - 36개
-                // ============================================
-
-
-                // === Tier 0: 생산 전문가 (2개) ===
+                // === Tier 0: 생산 전문가 (1개) ===
                 ["Tier0_ProductionExpert_WoodBonusChance"] = "Tier 0: 나무 +1 보너스 확률 (%)",
-                ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [생산 전문가] 필요 포인트",
 
-                // === Tier 1: 초보 일꾼 (2개) ===
+                // === Tier 1: 초보 일꾼 (1개) ===
                 ["Tier1_NoviceWorker_WoodBonusChance"] = "Tier 1: 나무 +1 보너스 확률 (%)",
-                ["Tier1_NoviceWorker_RequiredPoints"] = "Tier 1: [기초 일꾼] 필요 포인트",
 
-                // === Tier 2: 전문 분야 (9개) ===
+                // === Tier 2: 전문 분야 (5개) ===
                 ["Tier2_WoodcuttingLv2_BonusChance"] = "Tier 2: 벌목 Lv2 - 나무 +1 보너스 확률 (%)",
-                ["Tier2_WoodcuttingLv2_RequiredPoints"] = "Tier 2-1: [벌목 Lv2] 필요 포인트",
                 ["Tier2_GatheringLv2_BonusChance"] = "Tier 2: 채집 Lv2 - 아이템 +1 보너스 확률 (%)",
-                ["Tier2_GatheringLv2_RequiredPoints"] = "Tier 2-2: [채집 Lv2] 필요 포인트",
                 ["Tier2_MiningLv2_BonusChance"] = "Tier 2: 채광 Lv2 - 광석 +1 보너스 확률 (%)",
-                ["Tier2_MiningLv2_RequiredPoints"] = "Tier 2-3: [채광 Lv2] 필요 포인트",
                 ["Tier2_CraftingLv2_UpgradeChance"] = "Tier 2: 제작 Lv2 - 업그레이드 +1 보너스 확률 (%)",
-                ["Tier2_CraftingLv2_RequiredPoints"] = "Tier 2-4: [제작 Lv2] 필요 포인트",
                 ["Tier2_CraftingLv2_DurabilityBonus"] = "Tier 2: 제작 Lv2 - 내구도 최대치 증가 (%)",
 
-                // === Tier 3: 중급 스킬 (9개) ===
+                // === Tier 3: 중급 스킬 (5개) ===
                 ["Tier3_WoodcuttingLv3_BonusChance"] = "Tier 3: 벌목 Lv3 - 나무 +2 보너스 확률 (%)",
-                ["Tier3_WoodcuttingLv3_RequiredPoints"] = "Tier 3-1: [벌목 Lv3] 필요 포인트",
                 ["Tier3_GatheringLv3_BonusChance"] = "Tier 3: 채집 Lv3 - 아이템 +1 보너스 확률 (%)",
-                ["Tier3_GatheringLv3_RequiredPoints"] = "Tier 3-2: [채집 Lv3] 필요 포인트",
                 ["Tier3_MiningLv3_BonusChance"] = "Tier 3: 채광 Lv3 - 광석 +1 보너스 확률 (%)",
-                ["Tier3_MiningLv3_RequiredPoints"] = "Tier 3-3: [채광 Lv3] 필요 포인트",
                 ["Tier3_CraftingLv3_UpgradeChance"] = "Tier 3: 제작 Lv3 - 업그레이드 +1 보너스 확률 (%)",
-                ["Tier3_CraftingLv3_RequiredPoints"] = "Tier 3-4: [제작 Lv3] 필요 포인트",
                 ["Tier3_CraftingLv3_DurabilityBonus"] = "Tier 3: 제작 Lv3 - 내구도 최대치 증가 (%)",
 
-                // === Tier 4: 고급 스킬 (9개) ===
+                // === Tier 4: 고급 스킬 (5개) ===
                 ["Tier4_WoodcuttingLv4_BonusChance"] = "Tier 4: 벌목 Lv4 - 나무 +2 보너스 확률 (%)",
-                ["Tier4_WoodcuttingLv4_RequiredPoints"] = "Tier 4-1: [벌목 Lv4] 필요 포인트",
                 ["Tier4_GatheringLv4_BonusChance"] = "Tier 4: 채집 Lv4 - 아이템 +1 보너스 확률 (%)",
-                ["Tier4_GatheringLv4_RequiredPoints"] = "Tier 4-2: [채집 Lv4] 필요 포인트",
                 ["Tier4_MiningLv4_BonusChance"] = "Tier 4: 채광 Lv4 - 광석 +1 보너스 확률 (%)",
-                ["Tier4_MiningLv4_RequiredPoints"] = "Tier 4-3: [채광 Lv4] 필요 포인트",
                 ["Tier4_CraftingLv4_UpgradeChance"] = "Tier 4: 제작 Lv4 - 업그레이드 +1 보너스 확률 (%)",
-                ["Tier4_CraftingLv4_RequiredPoints"] = "Tier 4-4: [제작 Lv4] 필요 포인트",
                 ["Tier4_CraftingLv4_DurabilityBonus"] = "Tier 4: 제작 Lv4 - 내구도 최대치 증가 (%)",
+
+                // === Production Tree: RequiredPoints (14개) ===
+                ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [생산 전문가] 필요 포인트",
+                ["Tier1_NoviceWorker_RequiredPoints"] = "Tier 1: [초보 일꾼] 필요 포인트",
+                ["Tier2_WoodcuttingLv2_RequiredPoints"] = "Tier 2: [벌목 Lv2] 필요 포인트",
+                ["Tier2_GatheringLv2_RequiredPoints"] = "Tier 2: [채집 Lv2] 필요 포인트",
+                ["Tier2_MiningLv2_RequiredPoints"] = "Tier 2: [채광 Lv2] 필요 포인트",
+                ["Tier2_CraftingLv2_RequiredPoints"] = "Tier 2: [제작 Lv2] 필요 포인트",
+                ["Tier3_WoodcuttingLv3_RequiredPoints"] = "Tier 3: [벌목 Lv3] 필요 포인트",
+                ["Tier3_GatheringLv3_RequiredPoints"] = "Tier 3: [채집 Lv3] 필요 포인트",
+                ["Tier3_MiningLv3_RequiredPoints"] = "Tier 3: [채광 Lv3] 필요 포인트",
+                ["Tier3_CraftingLv3_RequiredPoints"] = "Tier 3: [제작 Lv3] 필요 포인트",
+                ["Tier4_WoodcuttingLv4_RequiredPoints"] = "Tier 4: [벌목 Lv4] 필요 포인트",
+                ["Tier4_GatheringLv4_RequiredPoints"] = "Tier 4: [채집 Lv4] 필요 포인트",
+                ["Tier4_MiningLv4_RequiredPoints"] = "Tier 4: [채광 Lv4] 필요 포인트",
+                ["Tier4_CraftingLv4_RequiredPoints"] = "Tier 4: [제작 Lv4] 필요 포인트",
 
                 // ============================================
                 // Bow Tree (활 트리) - 34개
@@ -805,6 +865,11 @@ namespace CaptainSkillTree.Localization
                 ["Beserker_Passive_InvincibilityDuration"] = "죽음의 도전: 무적 지속시간 (초)",
                 ["Beserker_Passive_Cooldown"] = "죽음의 도전: 쿨타임 (초)",
                 ["Berserker_Passive_HealthBonus"] = "패시브: 최대 체력 보너스 (%)",
+
+                // ============================================
+                // Sword Tree (검 트리) - 경로 히트 추가분
+                // ============================================
+                ["Tier6_RushSlash_PathWidth"] = "Tier 6: [돌진 연속 베기] 경로 베기 너비 (m)",
 
             };
         }

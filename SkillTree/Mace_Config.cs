@@ -307,7 +307,7 @@ namespace CaptainSkillTree.SkillTree
         /// 수호자의 진심 쿨타임 값 (서버 우선)
         /// </summary>
         public static float GuardianHeartCooldownValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_Cooldown", GuardianHeartCooldown?.Value ?? 120f);
+            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_Cooldown", GuardianHeartCooldown?.Value ?? 75f);
 
         /// <summary>
         /// 수호자의 진심 스태미나 소모 값 (서버 우선)
@@ -560,7 +560,7 @@ namespace CaptainSkillTree.SkillTree
             GuardianHeartCooldown = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_GuardianHeart_Cooldown",
-                120f,
+                75f,
                 SkillTreeConfig.GetConfigDescription("Tier7_GuardianHeart_Cooldown")
             );
 

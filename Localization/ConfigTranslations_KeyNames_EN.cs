@@ -9,6 +9,16 @@ namespace CaptainSkillTree.Localization
             return new Dictionary<string, string>
             {
                 // ============================================
+                // Skill_Tree_Base - Key Bindings
+                // ============================================
+                ["HotKey_Y"] = "Job Skill Key",
+                ["HotKey_R"] = "Ranged Skill Key",
+                ["HotKey_G"] = "Melee Main Skill Key",
+                ["HotKey_H"] = "Secondary Skill Key",
+                ["HUD_PosX"] = "HUD X Position",
+                ["HUD_PosY"] = "HUD Y Position",
+
+                // ============================================
                 // Attack Tree - 33 Keys
                 // ============================================
 
@@ -166,102 +176,152 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_CastAccel_RequiredPoints"] = "Tier 8-4: [Cast Accel] Required Points",
 
                 // ============================================
-                // Defense Tree - 39 Keys
+                // Defense Tree - 59 Keys
+                // ============================================
+
+                // === Tier 0: Defense Expert (3) ===
+                ["Tier0_DefenseExpert_HPBonus"] = "Tier 0: [Defense Expert] HP Bonus",
+                ["Tier0_DefenseExpert_ArmorBonus"] = "Tier 0: [Defense Expert] Armor Bonus",
+                ["Tier0_DefenseExpert_RequiredPoints"] = "Tier 0: [Defense Expert] Required Points",
+
+                // === Tier 1: Skin Hardening (3) ===
+                ["Tier1_SkinHardening_HPBonus"] = "Tier 1: [Skin Hardening] HP Bonus",
+                ["Tier1_SkinHardening_ArmorBonus"] = "Tier 1: [Skin Hardening] Armor Bonus",
+                ["Tier1_SkinHardening_RequiredPoints"] = "Tier 1: [Skin Hardening] Required Points",
+
+                // === Tier 2-1: Mind-Body Training (3) ===
+                ["Tier2_MindBodyTraining_StaminaBonus"] = "Tier 2-1: [Mind-Body Training] Max Stamina Bonus",
+                ["Tier2_MindBodyTraining_EitrBonus"] = "Tier 2-1: [Mind-Body Training] Max Eitr Bonus",
+                ["Tier2_MindTraining_RequiredPoints"] = "Tier 2-1: [Mind-Body Training] Required Points",
+
+                // === Tier 2-2: Health Training (3) ===
+                ["Tier2_HealthTraining_HPBonus"] = "Tier 2-2: [Health Training] HP Bonus",
+                ["Tier2_HealthTraining_ArmorBonus"] = "Tier 2-2: [Health Training] Armor Bonus",
+                ["Tier2_HealthTraining_RequiredPoints"] = "Tier 2-2: [Health Training] Required Points",
+
+                // === Tier 3-1: Core Breathing (2) ===
+                ["Tier3_CoreBreathing_EitrBonus"] = "Tier 3-1: [Core Breathing] Eitr Bonus",
+                ["Tier3_CoreBreathing_RequiredPoints"] = "Tier 3-1: [Core Breathing] Required Points",
+
+                // === Tier 3-2: Evasion Training (3) ===
+                ["Tier3_EvasionTraining_DodgeBonus"] = "Tier 3-2: [Evasion Training] Dodge Bonus (%)",
+                ["Tier3_EvasionTraining_InvincibilityBonus"] = "Tier 3-2: [Evasion Training] Roll Invincibility Increase (%)",
+                ["Tier3_EvasionTraining_RequiredPoints"] = "Tier 3-2: [Evasion Training] Required Points",
+
+                // === Tier 3-3: Health Boost (2) ===
+                ["Tier3_HealthBoost_HPBonus"] = "Tier 3-3: [Health Boost] HP Bonus",
+                ["Tier3_HealthBoost_RequiredPoints"] = "Tier 3-3: [Health Boost] Required Points",
+
+                // === Tier 3-4: Shield Training (2) ===
+                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [Shield Training] Shield Block Power Bonus",
+                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [Shield Training] Required Points",
+
+                // === Tier 4-1: Shockwave (4) ===
+                ["Tier4_Shockwave_Radius"] = "Tier 4-1: [Shockwave] Radius",
+                ["Tier4_Shockwave_StunDuration"] = "Tier 4-1: [Shockwave] Stun Duration",
+                ["Tier4_Shockwave_Cooldown"] = "Tier 4-1: [Shockwave] Cooldown",
+                ["Tier4_Shockwave_RequiredPoints"] = "Tier 4-1: [Shockwave] Required Points",
+
+                // === Tier 4-2: Ground Stomp (6) ===
+                ["Tier4_GroundStomp_Radius"] = "Tier 4-2: [Ground Stomp] Effect Radius (m)",
+                ["Tier4_GroundStomp_KnockbackForce"] = "Tier 4-2: [Ground Stomp] Knockback Force",
+                ["Tier4_GroundStomp_Cooldown"] = "Tier 4-2: [Ground Stomp] Cooldown (sec)",
+                ["Tier4_GroundStomp_HPThreshold"] = "Tier 4-2: [Ground Stomp] Auto-Trigger HP Threshold",
+                ["Tier4_GroundStomp_VFXDuration"] = "Tier 4-2: [Ground Stomp] VFX Duration (sec)",
+                ["Tier4_GroundStomp_RequiredPoints"] = "Tier 4-2: [Ground Stomp] Required Points",
+
+                // === Tier 4-3: Rock Skin (2) ===
+                ["Tier4_RockSkin_ArmorBonus"] = "Tier 4-3: [Rock Skin] Armor Amplification (%)",
+                ["Tier4_RockSkin_RequiredPoints"] = "Tier 4-3: [Rock Skin] Required Points",
+
+                // === Tier 5-1: Endurance (3) ===
+                ["Tier5_Endurance_RunStaminaReduction"] = "Tier 5-1: [Endurance] Run Stamina Reduction (%)",
+                ["Tier5_Endurance_JumpStaminaReduction"] = "Tier 5-1: [Endurance] Jump Stamina Reduction (%)",
+                ["Tier5_Endurance_RequiredPoints"] = "Tier 5-1: [Endurance] Required Points",
+
+                // === Tier 5-2: Agility (3) ===
+                ["Tier5_Agility_DodgeBonus"] = "Tier 5-2: [Agility] Dodge Bonus (%)",
+                ["Tier5_Agility_RollStaminaReduction"] = "Tier 5-2: [Agility] Roll Stamina Reduction (%)",
+                ["Tier5_Agility_RequiredPoints"] = "Tier 5-2: [Agility] Required Points",
+
+                // === Tier 5-3: Troll Regen (3) ===
+                ["Tier5_TrollRegen_HPRegenBonus"] = "Tier 5-3: [Troll Regen] HP Regen Bonus (per sec)",
+                ["Tier5_TrollRegen_RegenInterval"] = "Tier 5-3: [Troll Regen] Regen Interval (sec)",
+                ["Tier5_TrollRegen_RequiredPoints"] = "Tier 5-3: [Troll Regen] Required Points",
+
+                // === Tier 5-4: Block Master (3) ===
+                ["Tier5_BlockMaster_ShieldBlockPowerBonus"] = "Tier 5-4: [Block Master] Shield Block Power Bonus",
+                ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5-4: [Block Master] Parry Duration Bonus (sec)",
+                ["Tier5_BlockMaster_RequiredPoints"] = "Tier 5-4: [Block Master] Required Points",
+
+                // === Tier 6-1: Mind Shield (1) ===
+                ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [Mind Shield] Required Points",
+
+                // === Tier 6-2: Nerve Enhancement (2) ===
+                ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [Nerve Enhancement] Permanent Dodge Bonus (%)",
+                ["Tier6_NerveEnhancement_RequiredPoints"] = "Tier 6-2: [Nerve Enhancement] Required Points",
+
+                // === Tier 6-3: Double Jump (1) ===
+                ["Tier6_DoubleJump_RequiredPoints"] = "Tier 6-3: [Double Jump] Required Points",
+
+                // === Tier 6-4: Jotunn's Vitality (3) ===
+                ["Tier6_JotunnVitality_HPBonus"] = "Tier 6-4: [Jotunn's Vitality] HP Bonus (%)",
+                ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6-4: [Jotunn's Vitality] Physical/Elemental Resistance (%)",
+                ["Tier6_JotunnVitality_RequiredPoints"] = "Tier 6-4: [Jotunn's Vitality] Required Points",
+
+                // === Tier 6-5: Jotunn's Shield (4) ===
+                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6-5: [Jotunn's Shield] Block Stamina Reduction (%)",
+                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6-5: [Jotunn's Shield] Normal Shield Move Speed Bonus (%)",
+                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6-5: [Jotunn's Shield] Tower Shield Move Speed Bonus (%)",
+                ["Tier6_JotunnShield_RequiredPoints"] = "Tier 6-5: [Jotunn's Shield] Required Points",
+
+                // ============================================
+                // Production Tree - 22 Keys
                 // ============================================
 
 
-                // === Tier 0: Defense Expert (2) ===
-                ["Tier0_DefenseExpert_HPBonus"] = "Tier 0: HP Bonus",
-                ["Tier0_DefenseExpert_ArmorBonus"] = "Tier 0: Armor Bonus",
-
-                // === Tier 1: Skin Hardening (2) ===
-                ["Tier1_SkinHardening_HPBonus"] = "Tier 1: HP Bonus",
-                ["Tier1_SkinHardening_ArmorBonus"] = "Tier 1: Armor Bonus",
-
-                // === Tier 2: Mind & Body Training (4) ===
-                ["Tier2_MindBodyTraining_StaminaBonus"] = "Tier 2: Max Stamina Bonus",
-                ["Tier2_MindBodyTraining_EitrBonus"] = "Tier 2: Max Eitr Bonus",
-                ["Tier2_HealthTraining_HPBonus"] = "Tier 2: HP Bonus",
-                ["Tier2_HealthTraining_ArmorBonus"] = "Tier 2: Armor Bonus",
-
-                // === Tier 3: Defense Techniques (5) ===
-                ["Tier3_CoreBreathing_EitrBonus"] = "Tier 3: Eitr Bonus",
-                ["Tier3_EvasionTraining_DodgeBonus"] = "Tier 3: Dodge Bonus (%)",
-                ["Tier3_EvasionTraining_InvincibilityBonus"] = "Tier 3: Roll Invincibility Increase (%)",
-                ["Tier3_HealthBoost_HPBonus"] = "Tier 3: HP Bonus",
-                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3: Shield Block Power Bonus",
-
-                // === Tier 4: Ground Stomp (5) ===
-                ["Tier4_GroundStomp_Radius"] = "Tier 4: Effect Radius (m)",
-                ["Tier4_GroundStomp_KnockbackForce"] = "Tier 4: Knockback Force",
-                ["Tier4_GroundStomp_Cooldown"] = "Tier 4: Cooldown (sec)",
-                ["Tier4_GroundStomp_HPThreshold"] = "Tier 4: Auto-Trigger HP Threshold",
-                ["Tier4_GroundStomp_VFXDuration"] = "Tier 4: VFX Duration (sec)",
-                ["Tier4_RockSkin_ArmorBonus"] = "Tier 4: Armor Amplification (%)",
-
-                // === Tier 5: Endurance & Agility & Regen & Block Master (8) ===
-                ["Tier5_Endurance_RunStaminaReduction"] = "Tier 5: Run Stamina Reduction (%)",
-                ["Tier5_Endurance_JumpStaminaReduction"] = "Tier 5: Jump Stamina Reduction (%)",
-                ["Tier5_Agility_DodgeBonus"] = "Tier 5: Dodge Bonus (%)",
-                ["Tier5_Agility_RollStaminaReduction"] = "Tier 5: Roll Stamina Reduction (%)",
-                ["Tier5_TrollRegen_HPRegenBonus"] = "Tier 5: HP Regen Bonus (per sec)",
-                ["Tier5_TrollRegen_RegenInterval"] = "Tier 5: Regen Interval (sec)",
-                ["Tier5_BlockMaster_ShieldBlockPowerBonus"] = "Tier 5: Shield Block Power Bonus",
-                ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5: Parry Duration Bonus (sec)",
-
-                // === Tier 6: Final Defense Skills (6) ===
-                ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6: Permanent Dodge Bonus (%)",
-                ["Tier6_JotunnVitality_HPBonus"] = "Tier 6: HP Bonus (%)",
-                ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6: Physical/Elemental Resistance (%)",
-                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6: Block Stamina Reduction (%)",
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6: Normal Shield Move Speed Bonus (%)",
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6: Tower Shield Move Speed Bonus (%)",
-
-                // ============================================
-                // Production Tree - 36 Keys
-                // ============================================
-
-
-                // === Tier 0: Production Expert (2) ===
+                // === Tier 0: Production Expert (1) ===
                 ["Tier0_ProductionExpert_WoodBonusChance"] = "Tier 0: Wood +1 Bonus Chance (%)",
-                ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [Production Expert] Required Points",
 
-                // === Tier 1: Novice Worker (2) ===
+                // === Tier 1: Novice Worker (1) ===
                 ["Tier1_NoviceWorker_WoodBonusChance"] = "Tier 1: Wood +1 Bonus Chance (%)",
-                ["Tier1_NoviceWorker_RequiredPoints"] = "Tier 1: [Novice Worker] Required Points",
 
-                // === Tier 2: Specialization (9) ===
+                // === Tier 2: Specialization (5) ===
                 ["Tier2_WoodcuttingLv2_BonusChance"] = "Tier 2: Woodcutting Lv2 - Wood +1 Bonus Chance (%)",
-                ["Tier2_WoodcuttingLv2_RequiredPoints"] = "Tier 2-1: [Woodcutting Lv2] Required Points",
                 ["Tier2_GatheringLv2_BonusChance"] = "Tier 2: Gathering Lv2 - Item +1 Bonus Chance (%)",
-                ["Tier2_GatheringLv2_RequiredPoints"] = "Tier 2-2: [Gathering Lv2] Required Points",
                 ["Tier2_MiningLv2_BonusChance"] = "Tier 2: Mining Lv2 - Ore +1 Bonus Chance (%)",
-                ["Tier2_MiningLv2_RequiredPoints"] = "Tier 2-3: [Mining Lv2] Required Points",
                 ["Tier2_CraftingLv2_UpgradeChance"] = "Tier 2: Crafting Lv2 - Upgrade +1 Bonus Chance (%)",
-                ["Tier2_CraftingLv2_RequiredPoints"] = "Tier 2-4: [Crafting Lv2] Required Points",
                 ["Tier2_CraftingLv2_DurabilityBonus"] = "Tier 2: Crafting Lv2 - Max Durability Increase (%)",
 
-                // === Tier 3: Intermediate Skills (9) ===
+                // === Tier 3: Intermediate Skills (5) ===
                 ["Tier3_WoodcuttingLv3_BonusChance"] = "Tier 3: Woodcutting Lv3 - Wood +2 Bonus Chance (%)",
-                ["Tier3_WoodcuttingLv3_RequiredPoints"] = "Tier 3-1: [Woodcutting Lv3] Required Points",
                 ["Tier3_GatheringLv3_BonusChance"] = "Tier 3: Gathering Lv3 - Item +1 Bonus Chance (%)",
-                ["Tier3_GatheringLv3_RequiredPoints"] = "Tier 3-2: [Gathering Lv3] Required Points",
                 ["Tier3_MiningLv3_BonusChance"] = "Tier 3: Mining Lv3 - Ore +1 Bonus Chance (%)",
-                ["Tier3_MiningLv3_RequiredPoints"] = "Tier 3-3: [Mining Lv3] Required Points",
                 ["Tier3_CraftingLv3_UpgradeChance"] = "Tier 3: Crafting Lv3 - Upgrade +1 Bonus Chance (%)",
-                ["Tier3_CraftingLv3_RequiredPoints"] = "Tier 3-4: [Crafting Lv3] Required Points",
                 ["Tier3_CraftingLv3_DurabilityBonus"] = "Tier 3: Crafting Lv3 - Max Durability Increase (%)",
 
-                // === Tier 4: Advanced Skills (9) ===
+                // === Tier 4: Advanced Skills (5) ===
                 ["Tier4_WoodcuttingLv4_BonusChance"] = "Tier 4: Woodcutting Lv4 - Wood +2 Bonus Chance (%)",
-                ["Tier4_WoodcuttingLv4_RequiredPoints"] = "Tier 4-1: [Woodcutting Lv4] Required Points",
                 ["Tier4_GatheringLv4_BonusChance"] = "Tier 4: Gathering Lv4 - Item +1 Bonus Chance (%)",
-                ["Tier4_GatheringLv4_RequiredPoints"] = "Tier 4-2: [Gathering Lv4] Required Points",
                 ["Tier4_MiningLv4_BonusChance"] = "Tier 4: Mining Lv4 - Ore +1 Bonus Chance (%)",
-                ["Tier4_MiningLv4_RequiredPoints"] = "Tier 4-3: [Mining Lv4] Required Points",
                 ["Tier4_CraftingLv4_UpgradeChance"] = "Tier 4: Crafting Lv4 - Upgrade +1 Bonus Chance (%)",
-                ["Tier4_CraftingLv4_RequiredPoints"] = "Tier 4-4: [Crafting Lv4] Required Points",
                 ["Tier4_CraftingLv4_DurabilityBonus"] = "Tier 4: Crafting Lv4 - Max Durability Increase (%)",
+
+                // === Production Tree: RequiredPoints (14) ===
+                ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [Production Expert] Required Points",
+                ["Tier1_NoviceWorker_RequiredPoints"] = "Tier 1: [Novice Worker] Required Points",
+                ["Tier2_WoodcuttingLv2_RequiredPoints"] = "Tier 2: [Woodcutting Lv2] Required Points",
+                ["Tier2_GatheringLv2_RequiredPoints"] = "Tier 2: [Gathering Lv2] Required Points",
+                ["Tier2_MiningLv2_RequiredPoints"] = "Tier 2: [Mining Lv2] Required Points",
+                ["Tier2_CraftingLv2_RequiredPoints"] = "Tier 2: [Crafting Lv2] Required Points",
+                ["Tier3_WoodcuttingLv3_RequiredPoints"] = "Tier 3: [Woodcutting Lv3] Required Points",
+                ["Tier3_GatheringLv3_RequiredPoints"] = "Tier 3: [Gathering Lv3] Required Points",
+                ["Tier3_MiningLv3_RequiredPoints"] = "Tier 3: [Mining Lv3] Required Points",
+                ["Tier3_CraftingLv3_RequiredPoints"] = "Tier 3: [Crafting Lv3] Required Points",
+                ["Tier4_WoodcuttingLv4_RequiredPoints"] = "Tier 4: [Woodcutting Lv4] Required Points",
+                ["Tier4_GatheringLv4_RequiredPoints"] = "Tier 4: [Gathering Lv4] Required Points",
+                ["Tier4_MiningLv4_RequiredPoints"] = "Tier 4: [Mining Lv4] Required Points",
+                ["Tier4_CraftingLv4_RequiredPoints"] = "Tier 4: [Crafting Lv4] Required Points",
 
                 // ============================================
                 // Bow Tree - 34 Keys
@@ -805,6 +865,11 @@ namespace CaptainSkillTree.Localization
                 ["Beserker_Passive_InvincibilityDuration"] = "Death Defiance: Invincibility Duration (sec)",
                 ["Beserker_Passive_Cooldown"] = "Death Defiance: Cooldown (sec)",
                 ["Berserker_Passive_HealthBonus"] = "Passive: Max HP Bonus (%)",
+
+                // ============================================
+                // Sword Tree - Path Hit addition
+                // ============================================
+                ["Tier6_RushSlash_PathWidth"] = "Tier 6: [Rush Slash] Path Hit Width (m)",
             };
         }
     }

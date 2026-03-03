@@ -451,7 +451,8 @@ namespace CaptainSkillTree.SkillTree
 
             // 쿨타임 설정 (컨피그에서 설정)
             holyKnightHealCooldownEnd = currentTime + Paladin_Config.CooldownValue;
-            
+            ActiveSkillCooldownRegistry.SetCooldown("Y", Paladin_Config.CooldownValue);
+
             ShowMessage(player, L.Get("job_paladin_heal_success", healedCount));
             
             // 기존 샤먼 이팩트 유지
@@ -724,7 +725,8 @@ namespace CaptainSkillTree.SkillTree
 
             // 쿨타임 설정
             rogueShadowCooldownEnd = currentTime + RogueShadowCooldown;
-            
+            ActiveSkillCooldownRegistry.SetCooldown("Y", RogueShadowCooldown);
+
             ShowMessage(player, L.Get("rogue_shadow_strike_success", 5, 25));
             PlayJobEffect(player, "fx_Lightning", player.transform.position);
         }
@@ -759,6 +761,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 쿨타임 설정
             mageBurstCooldownEnd = currentTime + MageBurstCooldown;
+            ActiveSkillCooldownRegistry.SetCooldown("Y", MageBurstCooldown);
 
             ShowMessage(player, L.Get("mage_explosion_success", 10, 10, 7));
             PlayJobEffect(player, "fx_fader_meteor_hit", player.transform.position);

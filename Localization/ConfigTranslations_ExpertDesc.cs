@@ -336,6 +336,122 @@ namespace CaptainSkillTree.Localization
                 "타워 실드 들고 있을 때 이동 속도가 증가합니다.\n" +
                 "권장값: 8-15%",
 
+                // === RequiredPoints Descriptions ===
+                ["Tier0_DefenseExpert_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier1_SkinHardening_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier2_MindTraining_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier2_HealthTraining_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_CoreBreathing_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_EvasionTraining_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_HealthBoost_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_ShieldTraining_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier4_Shockwave_Radius"] =
+                "【충격파방출 범위】\n" +
+                "충격파방출 스킬의 효과 반경(미터)입니다.\n" +
+                "권장값: 3",
+
+                ["Tier4_Shockwave_StunDuration"] =
+                "【충격파방출 기절시간】\n" +
+                "기절 효과 지속시간(초)입니다.\n" +
+                "권장값: 1",
+
+                ["Tier4_Shockwave_Cooldown"] =
+                "【충격파방출 쿨타임】\n" +
+                "스킬 재사용 대기시간(초)입니다.\n" +
+                "권장값: 120",
+
+                ["Tier4_Shockwave_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier4_GroundStomp_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier4_RockSkin_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier5_Endurance_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier5_Agility_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier5_TrollRegen_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier5_BlockMaster_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_MindShield_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_NerveEnhancement_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_DoubleJump_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_JotunnVitality_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_JotunnShield_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
                 // ========================================
                 // Production Tree (생산 트리)
                 // ========================================
@@ -352,21 +468,11 @@ namespace CaptainSkillTree.Localization
                 "생산의 기본이 되는 핵심 스킬입니다.\n" +
                 "권장값: 40-60%",
 
-                ["Tier0_ProductionExpert_RequiredPoints"] =
-                "【생산 전문가 - 필요 포인트】\n" +
-                "생산 전문가 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
-
                 // === Tier 1: 초보 일꾼 (Novice Worker) ===
                 ["Tier1_NoviceWorker_WoodBonusChance"] =
                 "【나무 +1 보너스 확률 (%)】\n" +
                 "나무를 벨 때 추가로 1개를 더 얻을 확률이 증가합니다.\n" +
                 "권장값: 20-30%",
-
-                ["Tier1_NoviceWorker_RequiredPoints"] =
-                "【기초 일꾼 - 필요 포인트】\n" +
-                "기초 일꾼 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
 
                 // === Tier 2: 전문 분야 (Specialization) ===
                 ["Tier2_WoodcuttingLv2_BonusChance"] =
@@ -374,40 +480,20 @@ namespace CaptainSkillTree.Localization
                 "벌목 Lv2 - 나무를 벨 때 추가 보너스 확률입니다.\n" +
                 "권장값: 20-30%",
 
-                ["Tier2_WoodcuttingLv2_RequiredPoints"] =
-                "【벌목 Lv2 - 필요 포인트】\n" +
-                "벌목 Lv2 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
-
                 ["Tier2_GatheringLv2_BonusChance"] =
                 "【아이템 +1 보너스 확률 (%)】\n" +
                 "채집 Lv2 - 베리, 버섯 등 채집 시 추가 보너스 확률입니다.\n" +
                 "권장값: 20-30%",
-
-                ["Tier2_GatheringLv2_RequiredPoints"] =
-                "【채집 Lv2 - 필요 포인트】\n" +
-                "채집 Lv2 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
 
                 ["Tier2_MiningLv2_BonusChance"] =
                 "【광석 +1 보너스 확률 (%)】\n" +
                 "채광 Lv2 - 광석 채집 시 추가 보너스 확률입니다.\n" +
                 "권장값: 20-30%",
 
-                ["Tier2_MiningLv2_RequiredPoints"] =
-                "【채광 Lv2 - 필요 포인트】\n" +
-                "채광 Lv2 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
-
                 ["Tier2_CraftingLv2_UpgradeChance"] =
                 "【업그레이드 +1 보너스 확률 (%)】\n" +
                 "제작 Lv2 - 아이템 제작/업그레이드 시 추가 업그레이드 레벨을 얻을 확률입니다.\n" +
                 "권장값: 20-30%",
-
-                ["Tier2_CraftingLv2_RequiredPoints"] =
-                "【제작 Lv2 - 필요 포인트】\n" +
-                "제작 Lv2 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
 
                 ["Tier2_CraftingLv2_DurabilityBonus"] =
                 "【내구도 최대치 증가 (%)】\n" +
@@ -420,40 +506,20 @@ namespace CaptainSkillTree.Localization
                 "벌목 Lv3 - 나무를 벨 때 2개를 더 얻을 확률입니다.\n" +
                 "권장값: 30-40%",
 
-                ["Tier3_WoodcuttingLv3_RequiredPoints"] =
-                "【벌목 Lv3 - 필요 포인트】\n" +
-                "벌목 Lv3 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
-
                 ["Tier3_GatheringLv3_BonusChance"] =
                 "【아이템 +1 보너스 확률 (%)】\n" +
                 "채집 Lv3 - 채집 시 추가 보너스 확률이 증가합니다.\n" +
                 "권장값: 20-30%",
-
-                ["Tier3_GatheringLv3_RequiredPoints"] =
-                "【채집 Lv3 - 필요 포인트】\n" +
-                "채집 Lv3 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
 
                 ["Tier3_MiningLv3_BonusChance"] =
                 "【광석 +1 보너스 확률 (%)】\n" +
                 "채광 Lv3 - 광석 채집 시 추가 보너스 확률이 증가합니다.\n" +
                 "권장값: 20-30%",
 
-                ["Tier3_MiningLv3_RequiredPoints"] =
-                "【채광 Lv3 - 필요 포인트】\n" +
-                "채광 Lv3 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
-
                 ["Tier3_CraftingLv3_UpgradeChance"] =
                 "【업그레이드 +1 보너스 확률 (%)】\n" +
                 "제작 Lv3 - 아이템 제작/업그레이드 시 추가 업그레이드 확률이 증가합니다.\n" +
                 "권장값: 20-30%",
-
-                ["Tier3_CraftingLv3_RequiredPoints"] =
-                "【제작 Lv3 - 필요 포인트】\n" +
-                "제작 Lv3 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
 
                 ["Tier3_CraftingLv3_DurabilityBonus"] =
                 "【내구도 최대치 증가 (%)】\n" +
@@ -466,40 +532,20 @@ namespace CaptainSkillTree.Localization
                 "벌목 Lv4 - 나무를 벨 때 2개를 더 얻을 확률이 대폭 증가합니다.\n" +
                 "권장값: 40-50%",
 
-                ["Tier4_WoodcuttingLv4_RequiredPoints"] =
-                "【벌목 Lv4 - 필요 포인트】\n" +
-                "벌목 Lv4 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
-
                 ["Tier4_GatheringLv4_BonusChance"] =
                 "【아이템 +1 보너스 확률 (%)】\n" +
                 "채집 Lv4 - 채집 시 추가 보너스 확률이 최대로 증가합니다.\n" +
                 "권장값: 20-30%",
-
-                ["Tier4_GatheringLv4_RequiredPoints"] =
-                "【채집 Lv4 - 필요 포인트】\n" +
-                "채집 Lv4 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
 
                 ["Tier4_MiningLv4_BonusChance"] =
                 "【광석 +1 보너스 확률 (%)】\n" +
                 "채광 Lv4 - 광석 채집 시 추가 보너스 확률이 최대로 증가합니다.\n" +
                 "권장값: 20-30%",
 
-                ["Tier4_MiningLv4_RequiredPoints"] =
-                "【채광 Lv4 - 필요 포인트】\n" +
-                "채광 Lv4 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
-
                 ["Tier4_CraftingLv4_UpgradeChance"] =
                 "【업그레이드 +1 보너스 확률 (%)】\n" +
                 "제작 Lv4 - 아이템 제작/업그레이드 시 추가 업그레이드 확률이 최대로 증가합니다.\n" +
                 "권장값: 20-30%",
-
-                ["Tier4_CraftingLv4_RequiredPoints"] =
-                "【제작 Lv4 - 필요 포인트】\n" +
-                "제작 Lv4 스킬을 선택하는 데 필요한 스킬 포인트입니다.\n" +
-                "권장값: 2",
 
                 ["Tier4_CraftingLv4_DurabilityBonus"] =
                 "【내구도 최대치 증가 (%)】\n" +
@@ -597,6 +643,39 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_CrossbowAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier8_BowAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier8_CastAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+
+                // === Attack Tree: 필요 포인트 설명 ===
+                ["Tier0_AttackExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier1_BaseAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_MeleeSpec_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_BowSpec_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_CrossbowSpec_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_StaffSpec_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier3_AttackBoost_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_MeleeEnhance_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_PrecisionAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_RangedEnhance_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier5_SpecialStat_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_WeakPointAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_ComboFinisher_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_TwoHandCrush_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_ElementalAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+
+                // === Production Tree: 필요 포인트 설명 ===
+                ["Tier0_ProductionExpert_RequiredPoints"] = "【필요 포인트 - 생산 전문가】\n생산 전문가 해금에 필요한 스킬 포인트 수입니다.\n권장값: 2",
+                ["Tier1_NoviceWorker_RequiredPoints"] = "【필요 포인트 - 초보 일꾼】\n초보 일꾼 해금에 필요한 스킬 포인트 수입니다.\n권장값: 2",
+                ["Tier2_WoodcuttingLv2_RequiredPoints"] = "【필요 포인트 - 벌목 Lv2】\n권장값: 2",
+                ["Tier2_GatheringLv2_RequiredPoints"] = "【필요 포인트 - 채집 Lv2】\n권장값: 2",
+                ["Tier2_MiningLv2_RequiredPoints"] = "【필요 포인트 - 채광 Lv2】\n권장값: 2",
+                ["Tier2_CraftingLv2_RequiredPoints"] = "【필요 포인트 - 제작 Lv2】\n권장값: 2",
+                ["Tier3_WoodcuttingLv3_RequiredPoints"] = "【필요 포인트 - 벌목 Lv3】\n권장값: 2",
+                ["Tier3_GatheringLv3_RequiredPoints"] = "【필요 포인트 - 채집 Lv3】\n권장값: 2",
+                ["Tier3_MiningLv3_RequiredPoints"] = "【필요 포인트 - 채광 Lv3】\n권장값: 2",
+                ["Tier3_CraftingLv3_RequiredPoints"] = "【필요 포인트 - 제작 Lv3】\n권장값: 2",
+                ["Tier4_WoodcuttingLv4_RequiredPoints"] = "【필요 포인트 - 벌목 Lv4】\n권장값: 2",
+                ["Tier4_GatheringLv4_RequiredPoints"] = "【필요 포인트 - 채집 Lv4】\n권장값: 2",
+                ["Tier4_MiningLv4_RequiredPoints"] = "【필요 포인트 - 채광 Lv4】\n권장값: 2",
+                ["Tier4_CraftingLv4_RequiredPoints"] = "【필요 포인트 - 제작 Lv4】\n권장값: 2",
 
             };
         }
@@ -933,6 +1012,122 @@ namespace CaptainSkillTree.Localization
                 "Increases movement speed while holding tower shield.\n" +
                 "Recommended: 8-15%",
 
+                // === RequiredPoints Descriptions ===
+                ["Tier0_DefenseExpert_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier1_SkinHardening_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier2_MindTraining_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier2_HealthTraining_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_CoreBreathing_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_EvasionTraining_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_HealthBoost_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_ShieldTraining_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier4_Shockwave_Radius"] =
+                "【Shockwave Radius】\n" +
+                "Effect radius of the Shockwave skill in meters.\n" +
+                "Recommended: 3",
+
+                ["Tier4_Shockwave_StunDuration"] =
+                "【Shockwave Stun Duration】\n" +
+                "Stun effect duration in seconds.\n" +
+                "Recommended: 1",
+
+                ["Tier4_Shockwave_Cooldown"] =
+                "【Shockwave Cooldown】\n" +
+                "Skill reuse cooldown in seconds.\n" +
+                "Recommended: 120",
+
+                ["Tier4_Shockwave_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier4_GroundStomp_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier4_RockSkin_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier5_Endurance_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier5_Agility_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier5_TrollRegen_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier5_BlockMaster_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_MindShield_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_NerveEnhancement_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_DoubleJump_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_JotunnVitality_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_JotunnShield_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
                 // ========================================
                 // Production Tree
                 // ========================================
@@ -949,21 +1144,11 @@ namespace CaptainSkillTree.Localization
                 "Foundation of production skills.\n" +
                 "Recommended: 40-60%",
 
-                ["Tier0_ProductionExpert_RequiredPoints"] =
-                "【Production Expert - Required Points】\n" +
-                "Skill points required to unlock Production Expert.\n" +
-                "Recommended: 2",
-
                 // === Tier 1: Novice Worker ===
                 ["Tier1_NoviceWorker_WoodBonusChance"] =
                 "【Wood +1 Bonus Chance (%)】\n" +
                 "Increases chance to gain extra wood when chopping.\n" +
                 "Recommended: 20-30%",
-
-                ["Tier1_NoviceWorker_RequiredPoints"] =
-                "【Novice Worker - Required Points】\n" +
-                "Skill points required to unlock Novice Worker.\n" +
-                "Recommended: 2",
 
                 // === Tier 2: Specialization ===
                 ["Tier2_WoodcuttingLv2_BonusChance"] =
@@ -971,40 +1156,20 @@ namespace CaptainSkillTree.Localization
                 "Woodcutting Lv2 - Extra wood bonus chance.\n" +
                 "Recommended: 20-30%",
 
-                ["Tier2_WoodcuttingLv2_RequiredPoints"] =
-                "【Woodcutting Lv2 - Required Points】\n" +
-                "Skill points required to unlock Woodcutting Lv2.\n" +
-                "Recommended: 2",
-
                 ["Tier2_GatheringLv2_BonusChance"] =
                 "【Item +1 Bonus Chance (%)】\n" +
                 "Gathering Lv2 - Extra item bonus when gathering berries, mushrooms, etc.\n" +
                 "Recommended: 20-30%",
-
-                ["Tier2_GatheringLv2_RequiredPoints"] =
-                "【Gathering Lv2 - Required Points】\n" +
-                "Skill points required to unlock Gathering Lv2.\n" +
-                "Recommended: 2",
 
                 ["Tier2_MiningLv2_BonusChance"] =
                 "【Ore +1 Bonus Chance (%)】\n" +
                 "Mining Lv2 - Extra ore bonus when mining.\n" +
                 "Recommended: 20-30%",
 
-                ["Tier2_MiningLv2_RequiredPoints"] =
-                "【Mining Lv2 - Required Points】\n" +
-                "Skill points required to unlock Mining Lv2.\n" +
-                "Recommended: 2",
-
                 ["Tier2_CraftingLv2_UpgradeChance"] =
                 "【Upgrade +1 Bonus Chance (%)】\n" +
                 "Crafting Lv2 - Chance to gain extra upgrade level when crafting/upgrading.\n" +
                 "Recommended: 20-30%",
-
-                ["Tier2_CraftingLv2_RequiredPoints"] =
-                "【Crafting Lv2 - Required Points】\n" +
-                "Skill points required to unlock Crafting Lv2.\n" +
-                "Recommended: 2",
 
                 ["Tier2_CraftingLv2_DurabilityBonus"] =
                 "【Max Durability Increase (%)】\n" +
@@ -1017,40 +1182,20 @@ namespace CaptainSkillTree.Localization
                 "Woodcutting Lv3 - Chance to gain 2 extra wood.\n" +
                 "Recommended: 30-40%",
 
-                ["Tier3_WoodcuttingLv3_RequiredPoints"] =
-                "【Woodcutting Lv3 - Required Points】\n" +
-                "Skill points required to unlock Woodcutting Lv3.\n" +
-                "Recommended: 2",
-
                 ["Tier3_GatheringLv3_BonusChance"] =
                 "【Item +1 Bonus Chance (%)】\n" +
                 "Gathering Lv3 - Increased extra item bonus chance.\n" +
                 "Recommended: 20-30%",
-
-                ["Tier3_GatheringLv3_RequiredPoints"] =
-                "【Gathering Lv3 - Required Points】\n" +
-                "Skill points required to unlock Gathering Lv3.\n" +
-                "Recommended: 2",
 
                 ["Tier3_MiningLv3_BonusChance"] =
                 "【Ore +1 Bonus Chance (%)】\n" +
                 "Mining Lv3 - Increased extra ore bonus chance.\n" +
                 "Recommended: 20-30%",
 
-                ["Tier3_MiningLv3_RequiredPoints"] =
-                "【Mining Lv3 - Required Points】\n" +
-                "Skill points required to unlock Mining Lv3.\n" +
-                "Recommended: 2",
-
                 ["Tier3_CraftingLv3_UpgradeChance"] =
                 "【Upgrade +1 Bonus Chance (%)】\n" +
                 "Crafting Lv3 - Increased extra upgrade chance.\n" +
                 "Recommended: 20-30%",
-
-                ["Tier3_CraftingLv3_RequiredPoints"] =
-                "【Crafting Lv3 - Required Points】\n" +
-                "Skill points required to unlock Crafting Lv3.\n" +
-                "Recommended: 2",
 
                 ["Tier3_CraftingLv3_DurabilityBonus"] =
                 "【Max Durability Increase (%)】\n" +
@@ -1063,40 +1208,20 @@ namespace CaptainSkillTree.Localization
                 "Woodcutting Lv4 - Significantly increased chance for 2 extra wood.\n" +
                 "Recommended: 40-50%",
 
-                ["Tier4_WoodcuttingLv4_RequiredPoints"] =
-                "【Woodcutting Lv4 - Required Points】\n" +
-                "Skill points required to unlock Woodcutting Lv4.\n" +
-                "Recommended: 2",
-
                 ["Tier4_GatheringLv4_BonusChance"] =
                 "【Item +1 Bonus Chance (%)】\n" +
                 "Gathering Lv4 - Maximized extra item bonus chance.\n" +
                 "Recommended: 20-30%",
-
-                ["Tier4_GatheringLv4_RequiredPoints"] =
-                "【Gathering Lv4 - Required Points】\n" +
-                "Skill points required to unlock Gathering Lv4.\n" +
-                "Recommended: 2",
 
                 ["Tier4_MiningLv4_BonusChance"] =
                 "【Ore +1 Bonus Chance (%)】\n" +
                 "Mining Lv4 - Maximized extra ore bonus chance.\n" +
                 "Recommended: 20-30%",
 
-                ["Tier4_MiningLv4_RequiredPoints"] =
-                "【Mining Lv4 - Required Points】\n" +
-                "Skill points required to unlock Mining Lv4.\n" +
-                "Recommended: 2",
-
                 ["Tier4_CraftingLv4_UpgradeChance"] =
                 "【Upgrade +1 Bonus Chance (%)】\n" +
                 "Crafting Lv4 - Maximized extra upgrade chance.\n" +
                 "Recommended: 20-30%",
-
-                ["Tier4_CraftingLv4_RequiredPoints"] =
-                "【Crafting Lv4 - Required Points】\n" +
-                "Skill points required to unlock Crafting Lv4.\n" +
-                "Recommended: 2",
 
                 ["Tier4_CraftingLv4_DurabilityBonus"] =
                 "【Max Durability Increase (%)】\n" +
@@ -1194,6 +1319,39 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_CrossbowAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier8_BowAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier8_CastAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+
+                // === Attack Tree: Required Points ===
+                ["Tier0_AttackExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier1_BaseAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_MeleeSpec_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_BowSpec_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_CrossbowSpec_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_StaffSpec_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier3_AttackBoost_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_MeleeEnhance_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_PrecisionAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_RangedEnhance_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier5_SpecialStat_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_WeakPointAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_ComboFinisher_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_TwoHandCrush_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_ElementalAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+
+                // === Production Tree: Required Points ===
+                ["Tier0_ProductionExpert_RequiredPoints"] = "【Required Points - Production Expert】\nSkill points needed to unlock Production Expert.\nRecommended: 2",
+                ["Tier1_NoviceWorker_RequiredPoints"] = "【Required Points - Novice Worker】\nSkill points needed to unlock Novice Worker.\nRecommended: 2",
+                ["Tier2_WoodcuttingLv2_RequiredPoints"] = "【Required Points - Woodcutting Lv2】\nRecommended: 2",
+                ["Tier2_GatheringLv2_RequiredPoints"] = "【Required Points - Gathering Lv2】\nRecommended: 2",
+                ["Tier2_MiningLv2_RequiredPoints"] = "【Required Points - Mining Lv2】\nRecommended: 2",
+                ["Tier2_CraftingLv2_RequiredPoints"] = "【Required Points - Crafting Lv2】\nRecommended: 2",
+                ["Tier3_WoodcuttingLv3_RequiredPoints"] = "【Required Points - Woodcutting Lv3】\nRecommended: 2",
+                ["Tier3_GatheringLv3_RequiredPoints"] = "【Required Points - Gathering Lv3】\nRecommended: 2",
+                ["Tier3_MiningLv3_RequiredPoints"] = "【Required Points - Mining Lv3】\nRecommended: 2",
+                ["Tier3_CraftingLv3_RequiredPoints"] = "【Required Points - Crafting Lv3】\nRecommended: 2",
+                ["Tier4_WoodcuttingLv4_RequiredPoints"] = "【Required Points - Woodcutting Lv4】\nRecommended: 2",
+                ["Tier4_GatheringLv4_RequiredPoints"] = "【Required Points - Gathering Lv4】\nRecommended: 2",
+                ["Tier4_MiningLv4_RequiredPoints"] = "【Required Points - Mining Lv4】\nRecommended: 2",
+                ["Tier4_CraftingLv4_RequiredPoints"] = "【Required Points - Crafting Lv4】\nRecommended: 2",
 
             };
         }

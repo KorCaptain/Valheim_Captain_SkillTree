@@ -75,6 +75,7 @@ namespace CaptainSkillTree.SkillTree
                 
                 // Y키로 멀티샷 버프 활성화 (컨피그 설정 충전 횟수)
                 lastArcherMultiShotTime = Time.time;
+                ActiveSkillCooldownRegistry.SetCooldown("R", Archer_Config.ArcherMultiShotCooldownValue);
                 player.UseStamina(staminaCost);
                 
                 // 멀티샷 충전 횟수 설정 (컨피그에서 가져옴)

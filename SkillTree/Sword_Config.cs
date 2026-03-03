@@ -188,6 +188,12 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> RushSlashAttackSpeedBonus;
 
+        /// <summary>
+        /// 돌진 연속 베기 - 경로 히트 너비 (m)
+        /// 이동 중 이 반경 내 몬스터를 모두 적중
+        /// </summary>
+        public static ConfigEntry<float> RushSlashPathWidth;
+
         // ===== 동적 값 프로퍼티 (서버 동기화 지원) =====
 
         // === Tier 0: 검 전문가 ===
@@ -271,6 +277,8 @@ namespace CaptainSkillTree.SkillTree
             SkillTreeConfig.GetEffectiveValue("Rush_Slash_MoveSpeed", RushSlashMoveSpeed?.Value ?? 20f);
         public static float RushSlashAttackSpeedBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Rush_Slash_AttackSpeedBonus", RushSlashAttackSpeedBonus?.Value ?? 220f);
+        public static float RushSlashPathWidthValue =>
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_PathWidth", RushSlashPathWidth?.Value ?? 1.5f);
 
         // ===== 호환성 래퍼 (기존 코드 지원) =====
 
@@ -569,6 +577,13 @@ namespace CaptainSkillTree.SkillTree
                 "Tier6_RushSlash_AttackSpeedBonus",
                 220f,
                 SkillTreeConfig.GetConfigDescription("Tier6_RushSlash_AttackSpeedBonus")
+            );
+
+            RushSlashPathWidth = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier6_RushSlash_PathWidth",
+                1.5f,
+                SkillTreeConfig.GetConfigDescription("Tier6_RushSlash_PathWidth")
             );
 
             Plugin.Log.LogDebug("[Sword Config] 검 스킬 Config 초기화 완료");

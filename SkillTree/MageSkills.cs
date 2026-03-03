@@ -338,7 +338,7 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
                 
-                // 기본 공격력 계산 + 300% 데미지 배수 적용
+                // 기본 공격력 계산 + 150% 데미지 배수 적용
                 float baseDamage = CalculatePlayerBaseDamage(caster);
                 float damageMultiplier = Mage_Config.MageDamageMultiplierValue / 100f;
                 float finalDamage = baseDamage * damageMultiplier;

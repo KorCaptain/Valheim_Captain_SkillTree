@@ -1,5 +1,7 @@
 using HarmonyLib;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace CaptainSkillTree.SkillTree
@@ -205,6 +207,72 @@ namespace CaptainSkillTree.SkillTree
         public static int GetTauntedMonsterCount()
         {
             return tauntedMonsters.Count;
+        }
+
+        /// <summary>
+        /// 몬스터가 현재 도발 중인지 확인 (EnemyHud 패치에서 사용)
+        /// </summary>
+        public static bool IsMonsterTaunted(Character c)
+            => c != null && tauntedMonsters.ContainsKey(c) && Time.time <= tauntedMonsters[c].expiry;
+    }
+
+    /// <summary>
+    /// 도발 중인 몬스터의 발헤임 기본 느낌표(!) 숨김
+    /// EnemyHud.UpdateHuds Postfix로 매 프레임 비활성화
+    /// </summary>
+    [HarmonyPatch(typeof(EnemyHud), "UpdateHuds")]
+    public static class TankerTauntHudPatch
+    {
+        private static FieldInfo _hudsField;
+        private static FieldInfo _guiField;
+        private static FieldInfo _alertedField;
+        private static bool _alertedFieldChecked;
+
+        static void Postfix(EnemyHud __instance)
+        {
+            try
+            {
+                if (_hudsField == null)
+                    _hudsField = typeof(EnemyHud).GetField("m_huds",
+                        BindingFlags.NonPublic | BindingFlags.Instance);
+
+                var hudsDict = _hudsField?.GetValue(__instance) as IDictionary;
+                if (hudsDict == null) return;
+
+                foreach (DictionaryEntry entry in hudsDict)
+                {
+                    var c = entry.Key as Character;
+                    if (c == null || !TankerTauntAIPatch.IsMonsterTaunted(c)) continue;
+
+                    // m_gui 가져오기
+                    if (_guiField == null)
+                        _guiField = entry.Value.GetType().GetField("m_gui",
+                            BindingFlags.Public | BindingFlags.Instance);
+                    var gui = _guiField?.GetValue(entry.Value) as GameObject;
+                    if (gui == null) continue;
+
+                    // 1순위: m_alerted 필드 (Component)
+                    if (!_alertedFieldChecked)
+                    {
+                        _alertedField = entry.Value.GetType().GetField("m_alerted",
+                            BindingFlags.Public | BindingFlags.Instance);
+                        _alertedFieldChecked = true;
+                    }
+                    var alertComp = _alertedField?.GetValue(entry.Value) as Component;
+                    if (alertComp != null)
+                    {
+                        alertComp.gameObject.SetActive(false);
+                        continue;
+                    }
+
+                    // 2순위: 이름으로 탐색
+                    var byName = gui.transform.Find("Alerted")
+                              ?? gui.transform.Find("alert")
+                              ?? gui.transform.Find("Alert");
+                    byName?.gameObject.SetActive(false);
+                }
+            }
+            catch { }
         }
     }
 }

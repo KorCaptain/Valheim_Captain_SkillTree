@@ -261,7 +261,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 6-4: Elemental Attack ===
             AttackStaffElemental = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier6_ElementalAttack_ElementalBonus", 10f,
+                "Attack Tree", "Tier6_ElementalAttack_ElementalBonus", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier6_ElementalAttack_ElementalBonus"), order: 2);
 
             AttackStep6StaffRequiredPoints = SkillTreeConfig.BindServerSync(config,

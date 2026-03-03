@@ -416,6 +416,46 @@ namespace CaptainSkillTree
         }
 
         /// <summary>
+        /// 대상 Transform을 따라다니는 커스텀 VFX 재생 (PlayOnPlayer 방식)
+        /// parent로 Instantiate → 몬스터 이동 시 VFX도 자동으로 따라다님
+        /// </summary>
+        public static GameObject PlayFollowing(string vfxName, Transform followTarget, Vector3 localOffset, float duration = 5f)
+        {
+            if (string.IsNullOrEmpty(vfxName) || followTarget == null) return null;
+
+            try
+            {
+                GameObject prefab = null;
+
+                if (_cachedPrefabs.TryGetValue(vfxName, out prefab))
+                {
+                    if (prefab == null) return null;
+                }
+                else
+                {
+                    prefab = FindPrefabInResources(vfxName);
+                    _cachedPrefabs[vfxName] = prefab;
+                    if (prefab == null) return null;
+                }
+
+                // followTarget에 부착 → 자동으로 따라다님
+                var vfxObj = UnityEngine.Object.Instantiate(prefab, followTarget);
+                if (vfxObj != null)
+                {
+                    vfxObj.transform.localPosition = localOffset;
+                    UnityEngine.Object.Destroy(vfxObj, duration);
+                }
+
+                return vfxObj;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log?.LogError($"[SimpleVFX] PlayFollowing({vfxName}) 실패: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Resources에서 프리팹 찾기 (ZNetScene 사용 금지)
         /// WackyEpicMMOSystem 방식: 프리팹만 필터링 (씬 인스턴스 제외)
         /// </summary>

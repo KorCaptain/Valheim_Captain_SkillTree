@@ -355,6 +355,11 @@ namespace CaptainSkillTree.Localization
                 "다른 트리의 공격속도는 무시되고 이 값만 적용됩니다.\n" +
                 "권장값: 150-250%",
 
+                ["Tier6_RushSlash_PathWidth"] =
+                "【돌진 연속 베기】이동 경로 히트 너비(m).\n" +
+                "경로 중 이 범위 내 몬스터를 모두 적중합니다.\n" +
+                "권장값: 1-3m",
+
                 // === Knife Tree ===
                 // === Tier 0: 단검 전문가 (Knife Expert) ===
                 ["Tier0_KnifeExpert_BackstabBonus"] =
@@ -546,47 +551,6 @@ namespace CaptainSkillTree.Localization
                 "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3-5",
 
-
-                // === Knife Tree: 단검 전문가 (1개) ===
-                ["Knife_Expert_BackstabDamageBonus"] = "Tier 0: 단검 전문가(knife_expert_damage) - 백스탭 데미지 보너스 (%)",
-
-                // === Knife Tree: 회피 숙련 (2개) ===
-                ["Knife_Evasion_Chance"] = "Tier 1: 회피 숙련(knife_step2_evasion) - 회피 확률 (%)",
-                ["Knife_Evasion_InvincibilityDuration"] = "Tier 1: 회피 숙련(knife_step2_evasion) - 회피 후 무적 시간 (초)",
-
-                // === Knife Tree: 빠른 움직임 (1개) ===
-                ["Knife_FastMove_MovementSpeedIncrease"] = "Tier 2: 빠른 움직임(knife_step3_move_speed) - 이동속도 증가 (%)",
-
-                // === Knife Tree: 전투 숙련 (2개) ===
-                ["Knife_CombatMastery_DamageIncrease"] = "Tier 3: 전투 숙련(knife_step4_attack_damage) - 적 처치 시 단검 데미지 증가 (고정값)",
-                ["Knife_CombatMastery_EffectDuration"] = "Tier 3: 전투 숙련(knife_step4_attack_damage) - 효과 지속시간 (초)",
-
-                // === Knife Tree: 공격과 회피 (3개) ===
-                ["Knife_AttackEvasion_EvasionRateIncrease"] = "Tier 4: 공격과 회피(knife_step5_crit_rate) - 2연속 공격 시 회피율 증가 (%)",
-                ["Knife_AttackEvasion_EffectDuration"] = "Tier 4: 공격과 회피(knife_step5_crit_rate) - 효과 지속시간 (초)",
-                ["Knife_AttackEvasion_Cooldown"] = "Tier 4: 공격과 회피(knife_step5_crit_rate) - 쿨타임 (초)",
-
-                // === Knife Tree: 치명적 피해 (1개) ===
-                ["Knife_CriticalDamage_DamageIncrease"] = "Tier 5: 치명적 피해(knife_step6_combat_damage) - 공격력 증가 (%)",
-
-                // === Knife Tree: 암살자 (2개) ===
-                ["Knife_Assassin_CritDamageIncrease"] = "Tier 6: 암살자(knife_step7_execution) - 치명타 피해 증가 (%)",
-                ["Knife_Assassin_CritChanceIncrease"] = "Tier 6: 암살자(knife_step7_execution) - 치명타 확률 증가 (%)",
-
-                // === Knife Tree: 암살술 (2개) ===
-                ["Knife_AssassinSkill_StaggerChance"] = "Tier 7: 암살술(knife_step8_assassination) - 3연속 공격 시 스태거 확률 (%)",
-                ["Knife_AssassinSkill_RequiredComboHits"] = "Tier 7: 암살술(knife_step8_assassination) - 스태거 발동에 필요한 연속 공격 횟수",
-
-                // === Knife Tree: 암살자의 심장 (9개) ===
-                ["Knife_AssassinHeart_CritDamageMultiplier"] = "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 치명타 데미지 배수",
-                ["Knife_AssassinHeart_EffectDuration"] = "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 효과 지속시간 (초)",
-                ["Knife_AssassinHeart_StaminaCost"] = "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 스태미나 소모량",
-                ["Knife_AssassinHeart_Cooldown"] = "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 쿨타임 (초)",
-                ["Knife_AssassinHeart_TeleportSearchRange"] = "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 순간이동 대상 탐색 범위 (m)",
-                ["Knife_AssassinHeart_TeleportBackDistance"] = "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 대상 뒤쪽으로 이동할 거리 (m)",
-                ["Knife_AssassinHeart_StunDuration"] = "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 순간이동 후 대상 스턴 지속시간 (초)",
-                ["Knife_AssassinHeart_ComboAttackCount"] = "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 순간이동 후 연속 공격 횟수",
-                ["Knife_AssassinHeart_AttackInterval"] = "Tier 8: 암살자의 심장(knife_step9_assassin_heart) - 연속 공격 간격 (초)",
 
             };
         }
@@ -929,6 +893,11 @@ namespace CaptainSkillTree.Localization
                 "Other tree bonuses are ignored, only this value applies.\n" +
                 "Recommended: 150-250%",
 
+                ["Tier6_RushSlash_PathWidth"] =
+                "【Rush Slash】Path hit width (m).\n" +
+                "Hits all monsters within this range along the movement path.\n" +
+                "Recommended: 1-3m",
+
                 // ========================================
                 // Knife Tree (Tier 0~8, 32 keys)
                 // ========================================
@@ -1135,47 +1104,6 @@ namespace CaptainSkillTree.Localization
                 "Skill points needed to unlock this node.\n" +
                 "Recommended: 3-5",
 
-
-                // === Knife Tree: Dagger Expert (1개) ===
-                ["Knife_Expert_BackstabDamageBonus"] = "Tier 0: Dagger Expert - Backstab Damage Bonus (%)",
-
-                // === Knife Tree: Evasion Mastery (2개) ===
-                ["Knife_Evasion_Chance"] = "Tier 1: Evasion Mastery - Evasion Chance (%)",
-                ["Knife_Evasion_InvincibilityDuration"] = "Tier 1: Evasion Mastery - Invincibility Duration After Dodge (sec)",
-
-                // === Knife Tree: Swift Movement (1개) ===
-                ["Knife_FastMove_MovementSpeedIncrease"] = "Tier 2: Swift Movement - Move Speed Increase (%)",
-
-                // === Knife Tree: Combat Mastery (2개) ===
-                ["Knife_CombatMastery_DamageIncrease"] = "Tier 3: Combat Mastery - Dagger Damage Increase On Kill (Fixed Value)",
-                ["Knife_CombatMastery_EffectDuration"] = "Tier 3: Combat Mastery - Effect Duration (sec)",
-
-                // === Knife Tree: Attack & Evasion (3개) ===
-                ["Knife_AttackEvasion_EvasionRateIncrease"] = "Tier 4: Attack & Evasion - Evasion Rate Increase on 2-Hit Combo (%)",
-                ["Knife_AttackEvasion_EffectDuration"] = "Tier 4: Attack & Evasion - Effect Duration (sec)",
-                ["Knife_AttackEvasion_Cooldown"] = "Tier 4: Attack & Evasion - Cooldown (sec)",
-
-                // === Knife Tree: Lethal Damage (1개) ===
-                ["Knife_CriticalDamage_DamageIncrease"] = "Tier 5: Lethal Damage - Damage Increase (%)",
-
-                // === Knife Tree: Assassin (2개) ===
-                ["Knife_Assassin_CritDamageIncrease"] = "Tier 6: Assassin - Critical Damage Increase (%)",
-                ["Knife_Assassin_CritChanceIncrease"] = "Tier 6: Assassin - Critical Chance Increase (%)",
-
-                // === Knife Tree: Assassination Art (2개) ===
-                ["Knife_AssassinSkill_StaggerChance"] = "Tier 7: Assassination Art - Stagger Chance on 3-Hit Combo (%)",
-                ["Knife_AssassinSkill_RequiredComboHits"] = "Tier 7: Assassination Art - Required Consecutive Hits for Stagger",
-
-                // === Knife Tree: Assassin's Heart (9개) ===
-                ["Knife_AssassinHeart_CritDamageMultiplier"] = "Tier 8: Assassin's Heart - Critical Damage Multiplier",
-                ["Knife_AssassinHeart_EffectDuration"] = "Tier 8: Assassin's Heart - Effect Duration (sec)",
-                ["Knife_AssassinHeart_StaminaCost"] = "Tier 8: Assassin's Heart - Stamina Cost",
-                ["Knife_AssassinHeart_Cooldown"] = "Tier 8: Assassin's Heart - Cooldown (sec)",
-                ["Knife_AssassinHeart_TeleportSearchRange"] = "Tier 8: Assassin's Heart - Teleport Target Detection Range (m)",
-                ["Knife_AssassinHeart_TeleportBackDistance"] = "Tier 8: Assassin's Heart - Distance Behind Target (m)",
-                ["Knife_AssassinHeart_StunDuration"] = "Tier 8: Assassin's Heart - Target Stun Duration After Teleport (sec)",
-                ["Knife_AssassinHeart_ComboAttackCount"] = "Tier 8: Assassin's Heart - Consecutive Attacks After Teleport",
-                ["Knife_AssassinHeart_AttackInterval"] = "Tier 8: Assassin's Heart - Attack Interval (sec)",
 
             };
         }

@@ -11,8 +11,8 @@ namespace CaptainSkillTree.SkillTree
         // === 메이지 액티브 스킬 컨피그 엔트리들 ===
         public static ConfigEntry<float> MageAOERange;                   // 범위 (기본: 12m)
         public static ConfigEntry<int> MageEitrCost;                     // Eitr 소모량 (기본: 35)
-        public static ConfigEntry<float> MageDamageMultiplier;           // 공격 데미지 배수 (기본: 300%)
-        public static ConfigEntry<float> MageCooldown;                   // 쿨타임 (기본: 180초)
+        public static ConfigEntry<float> MageDamageMultiplier;           // 공격 데미지 배수 (기본: 150%)
+        public static ConfigEntry<float> MageCooldown;                   // 쿨타임 (기본: 90초)
         public static ConfigEntry<string> MageVFXName;                   // VFX 이름 (기본: "vfx_HealthUpgrade")
 
         // === 메이지 패시브 스킬 컨피그 엔트리들 ===

@@ -125,6 +125,7 @@ namespace CaptainSkillTree.SkillTree
                 state.EndTime = Time.time + duration;
                 state.CooldownEndTime = Time.time + cooldown;
                 state.LastDamageTier = -1;
+                ActiveSkillCooldownRegistry.SetCooldown("Y", cooldown);
 
                 // VFX 효과 생성 (자동 정리, 사운드 포함)
                 CreateRageEffect(player);

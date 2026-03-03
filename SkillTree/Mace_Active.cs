@@ -83,6 +83,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 6. 쿨타임 및 스태미나 소모 적용
                 guardianHeartCooldowns[player] = now + Mace_Config.GuardianHeartCooldownValue;
+                ActiveSkillCooldownRegistry.SetCooldown("G", Mace_Config.GuardianHeartCooldownValue);
                 player.UseStamina(requiredStamina);
             }
             catch (System.Exception ex)

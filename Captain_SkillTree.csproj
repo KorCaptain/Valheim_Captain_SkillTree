@@ -20,7 +20,7 @@
     <UseSharedCompilation>false</UseSharedCompilation>
     <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
     <!-- 🔧 버전 관리 시스템 -->
-    <Version>0.1.755</Version>
+    <Version>0.1.783</Version>
     <AutoIncrementVersion>true</AutoIncrementVersion>
   </PropertyGroup>
   <ItemGroup>

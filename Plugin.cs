@@ -21,7 +21,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.755")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "0.1.783")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -114,6 +114,11 @@ namespace CaptainSkillTree
 
             // 프리팹 레지스트리 초기화
             InitializePrefabSystem();
+
+            // ActiveSkillHUD 초기화
+            var hudGO = new GameObject("ActiveSkillHUD");
+            hudGO.AddComponent<Gui.ActiveSkillHUD>();
+            DontDestroyOnLoad(hudGO);
 
             // NOTE: AnimationSpeedManager 핸들러는 Game.Awake Postfix에서 등록됨 (Rule 14-3)
             // Plugin.Patches.cs의 AttackSpeedHandler_Game_Awake_Patch 참조

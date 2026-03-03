@@ -4,6 +4,7 @@ using BepInEx.Configuration;
 using System.IO;
 using System.Text;
 using Jotunn.Managers;
+using UnityEngine;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -50,7 +51,9 @@ namespace CaptainSkillTree.SkillTree
                 if (Language != null && Language.Value != "Auto")
                 {
                     string configLang = Language.Value.ToLower();
-                    string result = (configLang == "ko" || configLang == "kr") ? "ko" : "en";
+                    string result = (configLang == "ko" || configLang == "kr") ? "ko"
+                                  : (configLang == "ru") ? "ru"
+                                  : "en";
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using config language: {Language.Value} -> {result}");
                     return result;
                 }
@@ -59,7 +62,10 @@ namespace CaptainSkillTree.SkillTree
                 string valheimLang = UnityEngine.PlayerPrefs.GetString("language", "");
                 if (!string.IsNullOrEmpty(valheimLang))
                 {
-                    string result = valheimLang.ToLower() == "korean" ? "ko" : "en";
+                    string langLow = valheimLang.ToLower();
+                    string result = (langLow == "korean") ? "ko"
+                                  : (langLow == "russian") ? "ru"
+                                  : "en";
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using Valheim language: {valheimLang} -> {result}");
                     return result;
                 }
@@ -69,7 +75,9 @@ namespace CaptainSkillTree.SkillTree
                 if (!string.IsNullOrEmpty(currentLang) && currentLang != "ko")
                 {
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using LocalizationManager: {currentLang}");
-                    return (currentLang == "ko") ? "ko" : "en";
+                    return (currentLang == "ko") ? "ko"
+                         : (currentLang == "ru") ? "ru"
+                         : "en";
                 }
 
                 // 기본값: 한국어
@@ -99,9 +107,11 @@ namespace CaptainSkillTree.SkillTree
         {
             // _RequiredPoints 키는 런타임에 처리 (ConfigTranslations에서 제거됨)
             if (descriptionKey.EndsWith("_RequiredPoints"))
-                return _detectedConfigLanguage == "en"
-                    ? "【Required Points】\nPoints required to unlock this node."
-                    : "【필요 포인트】\n이 노드를 해금하기 위해 필요한 스킬 포인트 개수입니다.";
+                return _detectedConfigLanguage == "ru"
+                    ? "【Необходимые очки】\nОчки навыков для разблокировки этого узла."
+                    : _detectedConfigLanguage == "en"
+                        ? "【Required Points】\nPoints required to unlock this node."
+                        : "【필요 포인트】\n이 노드를 해금하기 위해 필요한 스킬 포인트 개수입니다.";
             var translations = Localization.ConfigTranslations.GetDescriptionTranslations(_detectedConfigLanguage);
             return translations.ContainsKey(descriptionKey) ? translations[descriptionKey] : descriptionKey;
         }
@@ -117,9 +127,11 @@ namespace CaptainSkillTree.SkillTree
             if (keyName.EndsWith("_RequiredPoints"))
             {
                 var tierPart = keyName.Split('_')[0]; // "TierX" or "Knife" 등
-                return _detectedConfigLanguage == "en"
-                    ? $"{tierPart}: Required Points"
-                    : $"{tierPart}: 필요 포인트";
+                return _detectedConfigLanguage == "ru"
+                    ? $"{tierPart}: Необходимые очки"
+                    : _detectedConfigLanguage == "en"
+                        ? $"{tierPart}: Required Points"
+                        : $"{tierPart}: 필요 포인트";
             }
             return keyName;
         }
@@ -197,10 +209,32 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> MoveSpeedMaxBonus;
         public static ConfigEntry<float> AttackSpeedMaxBonus;
 
+        // 액티브 스킬 키 바인딩 (클라이언트 로컬)
+        public static ConfigEntry<string> HotKeyY;
+        public static ConfigEntry<string> HotKeyR;
+        public static ConfigEntry<string> HotKeyG;
+        public static ConfigEntry<string> HotKeyH;
+
+        // HUD 위치 Config
+        public static ConfigEntry<int> HudPosX;
+        public static ConfigEntry<int> HudPosY;
+
         // 동적 값 접근 프로퍼티
         public static string LanguageValue => Language?.Value ?? "Korean";
         public static float MoveSpeedMaxBonusValue => GetEffectiveValue("move_speed_max_bonus", MoveSpeedMaxBonus?.Value ?? 70f);
         public static float AttackSpeedMaxBonusValue => GetEffectiveValue("attack_speed_max_bonus", AttackSpeedMaxBonus?.Value ?? 70f);
+
+        /// <summary>
+        /// ConfigEntry<string> 키 이름을 KeyCode로 변환합니다.
+        /// 실패 시 fallback 반환.
+        /// </summary>
+        public static KeyCode GetHotKeyCode(ConfigEntry<string> entry, KeyCode fallback)
+        {
+            if (entry == null) return fallback;
+            if (System.Enum.TryParse<KeyCode>(entry.Value, true, out KeyCode result))
+                return result;
+            return fallback;
+        }
 
         #endregion
 
@@ -577,6 +611,74 @@ namespace CaptainSkillTree.SkillTree
                     "Maximum attack speed bonus from skill tree (%) - 스킬트리 공격속도 최대 보너스 (%)",
                     new AcceptableValueRange<float>(0f, 200f),
                     new ConfigurationManagerAttributes { IsAdminOnly = true }
+                )
+            );
+
+            var keyAcceptable = new AcceptableValueList<string>("Y", "R", "G", "H", "Z", "X", "C", "V", "F", "Q", "E", "T", "U", "I", "O", "P");
+
+            HotKeyY = config.Bind(
+                "Skill_Tree_Base",
+                "HotKey_Y",
+                "Y",
+                new ConfigDescription(
+                    GetConfigDescription("HotKey_Y"),
+                    keyAcceptable,
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HotKey_Y"), Order = -10 }
+                )
+            );
+
+            HotKeyR = config.Bind(
+                "Skill_Tree_Base",
+                "HotKey_R",
+                "R",
+                new ConfigDescription(
+                    GetConfigDescription("HotKey_R"),
+                    keyAcceptable,
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HotKey_R"), Order = -11 }
+                )
+            );
+
+            HotKeyG = config.Bind(
+                "Skill_Tree_Base",
+                "HotKey_G",
+                "G",
+                new ConfigDescription(
+                    GetConfigDescription("HotKey_G"),
+                    keyAcceptable,
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HotKey_G"), Order = -12 }
+                )
+            );
+
+            HotKeyH = config.Bind(
+                "Skill_Tree_Base",
+                "HotKey_H",
+                "H",
+                new ConfigDescription(
+                    GetConfigDescription("HotKey_H"),
+                    keyAcceptable,
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HotKey_H"), Order = -13 }
+                )
+            );
+
+            HudPosX = config.Bind(
+                "Skill_Tree_Base",
+                "HUD_PosX",
+                315,
+                new ConfigDescription(
+                    GetConfigDescription("HUD_PosX"),
+                    new AcceptableValueRange<int>(0, 1920),
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HUD_PosX"), Order = -14 }
+                )
+            );
+
+            HudPosY = config.Bind(
+                "Skill_Tree_Base",
+                "HUD_PosY",
+                110,
+                new ConfigDescription(
+                    GetConfigDescription("HUD_PosY"),
+                    new AcceptableValueRange<int>(0, 1080),
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HUD_PosY"), Order = -15 }
                 )
             );
 

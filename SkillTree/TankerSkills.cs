@@ -91,6 +91,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 쿨다운 설정
                 SetCooldown(player, "Tanker", Tanker_Config.TankerTauntCooldownValue);
+                ActiveSkillCooldownRegistry.SetCooldown("Y", Tanker_Config.TankerTauntCooldownValue);
 
                 // 스킬 발동 효과
                 PlayTankerEffects(player);
@@ -598,22 +599,12 @@ namespace CaptainSkillTree.SkillTree
 
                 Plugin.Log.LogDebug($"[Tanker 도발] {monsterName} 머리 위 도발 효과 생성 - 높이: {dynamicHeight}m");
 
-                // taunt 프리팹 - 순수 Instantiate만 (발헤임이 알아서 정리)
-                var znetScene = ZNetScene.instance;
-                if (znetScene != null)
-                {
-                    var tauntVFX = znetScene.GetPrefab("taunt");
-                    if (tauntVFX != null)
-                    {
-                        // ✅ 순수 Instantiate만 - SetParent/Destroy 금지!
-                        UnityEngine.Object.Instantiate(tauntVFX, headPosition, Quaternion.identity);
-                        Plugin.Log.LogDebug($"[taunt 이펙트] {monsterName} 순수 표현 완료");
-                        return;
-                    }
-                }
-
-                // 프리팹 없으면 메시지만
-                Plugin.Log.LogDebug($"[taunt 이펙트] {monsterName} taunt 프리팹 없음");
+                // 커스텀 VFX "taunt" - 몬스터 Transform에 부착하여 이동 시 따라다님
+                var instance = SimpleVFX.PlayFollowing("taunt", monster.transform, Vector3.up * dynamicHeight, duration);
+                if (instance != null)
+                    Plugin.Log.LogDebug($"[taunt 이펙트] {monsterName} 커스텀 VFX 추적 표시 완료 ({duration}초)");
+                else
+                    Plugin.Log.LogDebug($"[taunt 이펙트] {monsterName} 커스텀 VFX 로드 실패");
             }
             catch (System.Exception ex)
             {

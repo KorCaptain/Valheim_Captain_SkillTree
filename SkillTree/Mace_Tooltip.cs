@@ -508,7 +508,7 @@ namespace CaptainSkillTree.SkillTree
                    "• 버프 지속시간: 45초\n" +
                    "• 데미지 반사: 6%\n" +
                    "• 소모: 스태미나 25\n" +
-                   "• 쿨타임: 120초\n" +
+                   "• 쿨타임: 75초\n" +
                    "• 필요조건: 둔기 착용\n\n" +
                    "스킬유형: 액티브 스킬 - G키\n\n" +
                    $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";

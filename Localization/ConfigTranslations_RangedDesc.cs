@@ -479,6 +479,52 @@ namespace CaptainSkillTree.Localization
                 "스킬 사용 시 소모되는 스태미나 비율입니다.\n" +
                 "권장값: 10-20%",
 
+                // === Bow Tree RequiredPoints ===
+                ["Tier0_BowExpert_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "활 전문가 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier1_FocusedShot_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "집중 사격 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier1_MultishotLv1_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "멀티샷 Lv1 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier2_BowMastery_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "활 마스터리 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 3",
+
+                ["Tier3_SilentStrike_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "은밀한 일격 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_MultishotLv2_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "멀티샷 Lv2 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_HuntingInstinct_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "사냥 본능 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier4_PrecisionAim_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "정조준 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 3",
+
+                ["Tier5_ExplosiveArrow_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "폭발 화살 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 4",
+
 
             };
         }
@@ -957,6 +1003,52 @@ namespace CaptainSkillTree.Localization
                 "【Stamina Cost (%)】\n" +
                 "Stamina percentage consumed when using skill.\n" +
                 "Recommended: 10-20%",
+
+                // === Bow Tree RequiredPoints ===
+                ["Tier0_BowExpert_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Bow Expert node.\n" +
+                "Recommended: 2",
+
+                ["Tier1_FocusedShot_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Focused Shot node.\n" +
+                "Recommended: 2",
+
+                ["Tier1_MultishotLv1_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Multi-Shot Lv1 node.\n" +
+                "Recommended: 2",
+
+                ["Tier2_BowMastery_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Bow Mastery node.\n" +
+                "Recommended: 3",
+
+                ["Tier3_SilentStrike_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Silent Strike node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_MultishotLv2_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Multi-Shot Lv2 node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_HuntingInstinct_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Hunting Instinct node.\n" +
+                "Recommended: 2",
+
+                ["Tier4_PrecisionAim_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Precision Aim node.\n" +
+                "Recommended: 3",
+
+                ["Tier5_ExplosiveArrow_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Explosive Arrow node.\n" +
+                "Recommended: 4",
 
 
             };

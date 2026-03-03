@@ -54,6 +54,7 @@ namespace CaptainSkillTree.SkillTree
             crossbowOneShotCooldown[player] = Time.time;
             crossbowOneShotReady[player] = true;
             crossbowOneShotExpiry[player] = Time.time + crossbowOneShotDuration;
+            ActiveSkillCooldownRegistry.SetCooldown("R", crossbowOneShotCooldownTime);
 
             if (crossbowOneShotCoroutine.ContainsKey(player) && crossbowOneShotCoroutine[player] != null)
             {

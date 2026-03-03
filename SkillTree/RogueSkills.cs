@@ -142,6 +142,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 쿨다운 설정
                 JobSkillsUtility.SetCooldown(player, "Rogue", Rogue_Config.RogueShadowStrikeCooldownValue);
+                ActiveSkillCooldownRegistry.SetCooldown("Y", Rogue_Config.RogueShadowStrikeCooldownValue);
 
                 // 스킬 발동 효과
                 PlayRogueEffects(player);

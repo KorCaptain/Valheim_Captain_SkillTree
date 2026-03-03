@@ -98,6 +98,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 쿨타임 및 스태미나 소모 적용
                 spearEnhancedThrowCooldowns[player] = now + Spear_Config.SpearStep6ComboCooldownValue;
+                ActiveSkillCooldownRegistry.SetCooldown("H", Spear_Config.SpearStep6ComboCooldownValue);
                 player.UseStamina(requiredStamina);
             }
             catch (Exception ex)

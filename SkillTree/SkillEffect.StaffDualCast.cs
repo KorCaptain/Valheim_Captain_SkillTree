@@ -60,6 +60,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 쿨타임 적용
                 staffDualExplosionCooldowns[player] = Time.time + Staff_Config.StaffDoubleCastCooldownValue;
+                ActiveSkillCooldownRegistry.SetCooldown("R", Staff_Config.StaffDoubleCastCooldownValue);
 
                 // 버프 활성화 (30초간 지속)
                 float buffDuration = 30f;

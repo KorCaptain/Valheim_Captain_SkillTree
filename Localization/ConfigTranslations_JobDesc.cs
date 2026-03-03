@@ -9,6 +9,39 @@ namespace CaptainSkillTree.Localization
             return new Dictionary<string, string>
             {
                 // ========================================
+                // Skill_Tree_Base - 키 바인딩 설명
+                // ========================================
+                ["HotKey_Y"] =
+                "【직업 스킬 키】\n" +
+                "직업 액티브 스킬을 발동하는 키입니다.\n" +
+                "기본값: Y",
+
+                ["HotKey_R"] =
+                "【원거리 스킬 키】\n" +
+                "원거리 액티브 스킬(멀티샷, 이중시전 등)을 발동하는 키입니다.\n" +
+                "기본값: R",
+
+                ["HotKey_G"] =
+                "【근접 메인 스킬 키】\n" +
+                "근접 메인 액티브 스킬(돌진 베기 등)을 발동하는 키입니다.\n" +
+                "기본값: G",
+
+                ["HotKey_H"] =
+                "【보조 스킬 키】\n" +
+                "보조 액티브 스킬(연공창, 수호자의 진심 등)을 발동하는 키입니다.\n" +
+                "기본값: H",
+
+                ["HUD_PosX"] =
+                "【HUD X 위치】\n" +
+                "액티브 스킬 HUD의 좌우 위치입니다.\n" +
+                "기본값: 200 (화면 왼쪽 기준)",
+
+                ["HUD_PosY"] =
+                "【HUD Y 위치】\n" +
+                "액티브 스킬 HUD의 상하 위치입니다.\n" +
+                "기본값: 80 (화면 아래 기준)",
+
+                // ========================================
                 // Archer Job (Y-Key Active, 8 keys)
                 // ========================================
 
@@ -329,6 +362,12 @@ namespace CaptainSkillTree.Localization
                 "패시브 무적 효과의 재발동 대기시간입니다.\n" +
                 "기본값: 180초 (3분)\n" +
                 "권장값: 120-300초",
+
+                // === Berserker Job: 패시브 HP 보너스 (대소문자 수정 키) ===
+                ["Berserker_Passive_HealthBonus"] =
+                "【최대 체력 보너스 (%)】\n" +
+                "버서커 패시브: 최대 체력을 증가시킵니다.\n" +
+                "권장값: 100%",
             };
         }
 
@@ -336,6 +375,39 @@ namespace CaptainSkillTree.Localization
         {
             return new Dictionary<string, string>
             {
+                // ========================================
+                // Skill_Tree_Base - Key Binding Descriptions
+                // ========================================
+                ["HotKey_Y"] =
+                "【Job Skill Key】\n" +
+                "Key to activate your job's active skill.\n" +
+                "Default: Y",
+
+                ["HotKey_R"] =
+                "【Ranged Skill Key】\n" +
+                "Key to activate ranged active skills (Multishot, Dual Cast, etc.).\n" +
+                "Default: R",
+
+                ["HotKey_G"] =
+                "【Melee Main Skill Key】\n" +
+                "Key to activate melee main active skills (Rush Slash, etc.).\n" +
+                "Default: G",
+
+                ["HotKey_H"] =
+                "【Secondary Skill Key】\n" +
+                "Key to activate secondary active skills (Combo Spear, Guardian Heart, etc.).\n" +
+                "Default: H",
+
+                ["HUD_PosX"] =
+                "【HUD X Position】\n" +
+                "Horizontal position of the active skill HUD.\n" +
+                "Default: 200 (from screen left)",
+
+                ["HUD_PosY"] =
+                "【HUD Y Position】\n" +
+                "Vertical position of the active skill HUD.\n" +
+                "Default: 80 (from screen bottom)",
+
                 // ========================================
                 // Archer Job (Y-Key Active, 8 keys)
                 // ========================================
@@ -657,6 +729,12 @@ namespace CaptainSkillTree.Localization
                 "Cooldown before the passive invincibility can trigger again.\n" +
                 "Default: 180 sec (3 minutes)\n" +
                 "Recommended: 120-300 sec",
+
+                // === Berserker Job: Passive HP Bonus (case-corrected key) ===
+                ["Berserker_Passive_HealthBonus"] =
+                "【Max Health Bonus (%)】\n" +
+                "Berserker passive: increases maximum health.\n" +
+                "Recommended: 100%",
             };
         }
     }

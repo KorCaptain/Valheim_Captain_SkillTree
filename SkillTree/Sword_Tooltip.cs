@@ -31,7 +31,8 @@ namespace CaptainSkillTree.SkillTree
             string description = L.Get("sword_desc_rush_slash", skillData.initialDistance) + "\n" +
                                 $"<color=#98FB98>{L.Get("sword_desc_rush_slash_1st", skillData.damage1stRatio)}</color>\n" +
                                 $"<color=#FFA500>{L.Get("sword_desc_rush_slash_2nd", skillData.damage2ndRatio)}</color>\n" +
-                                $"<color=#FF6B6B>{L.Get("sword_desc_rush_slash_3rd", skillData.damage3rdRatio)}</color>";
+                                $"<color=#FF6B6B>{L.Get("sword_desc_rush_slash_3rd", skillData.damage3rdRatio)}</color>\n" +
+                                $"<color=#87CEEB>{L.Get("sword_desc_rush_slash_path")}</color>";
 
             // MeleeTooltipUtils를 사용한 툴팁 데이터 생성
             var data = MeleeTooltipUtils.CreateActiveSkillData(
@@ -420,7 +421,8 @@ namespace CaptainSkillTree.SkillTree
             string description = L.Get("sword_desc_rush_slash", 5) + "\n" +
                                 $"<color=#98FB98>{L.Get("sword_desc_rush_slash_1st", 70)}</color>\n" +
                                 $"<color=#FFA500>{L.Get("sword_desc_rush_slash_2nd", 80)}</color>\n" +
-                                $"<color=#FF6B6B>{L.Get("sword_desc_rush_slash_3rd", 90)}</color>";
+                                $"<color=#FF6B6B>{L.Get("sword_desc_rush_slash_3rd", 90)}</color>\n" +
+                                $"<color=#87CEEB>{L.Get("sword_desc_rush_slash_path")}</color>";
 
             var data = MeleeTooltipUtils.CreateActiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("sword_skill_rush_slash")}</size></color>",

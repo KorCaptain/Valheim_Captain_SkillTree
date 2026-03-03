@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -113,9 +114,10 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static void UpdateWeaponDescriptions(SkillTreeManager manager)
         {
-            string weapon = null;
             foreach (var node in manager.SkillNodes.Values)
             {
+                // 각 노드마다 weapon을 독립적으로 판단 (기존 버그: 한번 설정 후 리셋 안 됨)
+                string weapon = null;
                 if (node.Id.StartsWith("knife_expert")) weapon = "단검";
                 else if (node.Id.StartsWith("sword_expert")) weapon = "검";
                 else if (node.Id.StartsWith("spear_expert")) weapon = "창";
@@ -125,18 +127,27 @@ namespace CaptainSkillTree.SkillTree
                 else if (node.Id.StartsWith("bow")) weapon = "활";
                 else if (node.Id.StartsWith("crossbow")) weapon = "석궁";
 
-                if (weapon != null && !string.IsNullOrEmpty(node.Description))
+                if (weapon == null) continue;
+
+                try
                 {
-                    // 기존 조건 라인 패턴을 찾아서 교체
-                    node.Description = Regex.Replace(node.Description,
-                        @"\\n<color=#00BFFF><size=14>※ [^<\n]+착용 ?시 효과발동<\/size><\/color>", "");
-                    node.Description = Regex.Replace(node.Description,
-                        @"\\n<color=#00BFFF><size=14>※ [^<\n]+착용 ?시 효과 발동<\/size><\/color>", "");
-                    node.Description = Regex.Replace(node.Description,
-                        @"\\n?※ [^<\n]+착용 ?시 효과발동", "");
-                    node.Description = Regex.Replace(node.Description,
-                        @"\\n?※ [^<\n]+착용 ?시 효과 발동", "");
-                    node.Description = node.Description.Trim();
+                    if (!string.IsNullOrEmpty(node.Description))
+                    {
+                        // 기존 조건 라인 패턴을 찾아서 교체
+                        node.Description = Regex.Replace(node.Description,
+                            @"\\n<color=#00BFFF><size=14>※ [^<\n]+착용 ?시 효과발동<\/size><\/color>", "");
+                        node.Description = Regex.Replace(node.Description,
+                            @"\\n<color=#00BFFF><size=14>※ [^<\n]+착용 ?시 효과 발동<\/size><\/color>", "");
+                        node.Description = Regex.Replace(node.Description,
+                            @"\\n?※ [^<\n]+착용 ?시 효과발동", "");
+                        node.Description = Regex.Replace(node.Description,
+                            @"\\n?※ [^<\n]+착용 ?시 효과 발동", "");
+                        node.Description = node.Description.Trim();
+                    }
+                }
+                catch (FormatException ex)
+                {
+                    Plugin.Log.LogWarning($"[SkillTreeData] 스킬 설명 업데이트 실패 ({node.Id}): {ex.Message}");
                 }
             }
         }

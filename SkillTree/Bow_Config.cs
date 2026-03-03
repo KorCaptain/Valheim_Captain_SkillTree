@@ -141,7 +141,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 3-2: [멀티샷 Lv2] ===
             BowMultishotLv2Chance = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier3_MultishotLv2_ActivationChance", 36f,
+                "Bow Tree", "Tier3_MultishotLv2_ActivationChance", 15f,
                 SkillTreeConfig.GetConfigDescription("Tier3_MultishotLv2_ActivationChance"), order: 30);
 
             BowStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,

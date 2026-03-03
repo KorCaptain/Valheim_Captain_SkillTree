@@ -15,6 +15,12 @@ namespace CaptainSkillTree.Localization
         {
             return new Dictionary<string, string>
             {
+                // === Active Skill HUD Slots ===
+                ["hud_slot_y"] = "직업",
+                ["hud_slot_r"] = "원거리",
+                ["hud_slot_g"] = "근접",
+                ["hud_slot_h"] = "보조",
+
                 // === Common Messages ===
                 ["cooldown_remaining"] = "{0} 쿨다운 중! 남은 시간: {1}초",
                 ["skill_cooldown"] = "{0} 스킬 쿨타임: {1}초 남음",
@@ -308,6 +314,8 @@ namespace CaptainSkillTree.Localization
                 ["sword_desc_rush_slash_1st"] = "1차 베기: 공격력 {0}%",
                 ["sword_desc_rush_slash_2nd"] = "2차 베기: 공격력 {0}%",
                 ["sword_desc_rush_slash_3rd"] = "3차 베기 (피니셔): 공격력 {0}%",
+                ["sword_desc_rush_slash_path"] = "이동 경로의 모든 몬스터 적중",
+                ["rush_slash_path_hit"] = "경로 베기!",
                 ["sword_desc_fast_slash"] = "공격속도 +{0}%",
                 ["sword_desc_counter"] = "패링 성공 후 {0}초동안 방어력 +{1}%",
                 ["sword_desc_combo"] = "3연속 공격력 +{0}% ({1}초)",
@@ -631,7 +639,7 @@ namespace CaptainSkillTree.Localization
                 // Defense Expert Tree - Descriptions
                 ["defense_root_desc"] = "체력 +{0}, 투구 방어력 +{1}",
                 ["defense_survival_desc"] = "체력 +{0}, 흉갑 방어력 +{1}",
-                ["defense_health_desc"] = "체력 +{0}, 각반(하의) +{1}",
+                ["defense_health_desc"] = "체력 +{0}, 각반 방어력 +{1}",
                 ["defense_dodge_desc"] = "스태미나 최대치 +{0}, 에이트르 최대치 +{1}",
                 ["defense_breath_desc"] = "에이트르 최대치 +{0}",
                 ["defense_agile_desc"] = "회피 +{0}%, 구르기 무적시간 +{1}%",
@@ -1250,6 +1258,12 @@ namespace CaptainSkillTree.Localization
         {
             return new Dictionary<string, string>
             {
+                // === Active Skill HUD Slots ===
+                ["hud_slot_y"] = "Job",
+                ["hud_slot_r"] = "Ranged",
+                ["hud_slot_g"] = "Melee",
+                ["hud_slot_h"] = "Secondary",
+
                 // === Common Messages ===
                 ["cooldown_remaining"] = "{0} on cooldown! Remaining: {1}s",
                 ["skill_cooldown"] = "{0} skill cooldown: {1}s remaining",
@@ -1653,6 +1667,8 @@ namespace CaptainSkillTree.Localization
                 ["sword_desc_rush_slash_1st"] = "1st slash: {0}% damage",
                 ["sword_desc_rush_slash_2nd"] = "2nd slash: {0}% damage",
                 ["sword_desc_rush_slash_3rd"] = "3rd slash (Finisher): {0}% damage",
+                ["sword_desc_rush_slash_path"] = "Hits all monsters along movement path",
+                ["rush_slash_path_hit"] = "Path Slash!",
                 ["sword_desc_fast_slash"] = "Attack speed +{0}%",
                 ["sword_desc_counter"] = "Defense +{1}% for {0}s after successful parry",
                 ["sword_desc_combo"] = "3-hit combo damage +{0}% ({1}s)",

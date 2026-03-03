@@ -592,6 +592,20 @@ namespace CaptainSkillTree.SkillTree
                     bonusText += $"\n<color=#ff8c00>🔥 공격 증가: 물리 +{p}%, 속성 +{e}%</color>";
                 }
 
+                // 치명타 정보 추가
+                var weaponType = item.m_shared.m_skillType;
+                float critChance = Critical.CalculateCritChance(player, weaponType);
+                float critDmg    = CriticalDamage.CalculateCritDamageMultiplier(player, weaponType);
+
+                if (critChance > 0f || critDmg > 0f)
+                {
+                    string critInfo = "💥 치명타:";
+                    if (critChance > 0f) critInfo += $" +{critChance:F0}% 확률";
+                    if (critChance > 0f && critDmg > 0f) critInfo += ",";
+                    if (critDmg    > 0f) critInfo += $" +{critDmg:F0}% 피해";
+                    bonusText += $"\n<color=#ff6b6b>{critInfo}</color>";
+                }
+
                 // 보너스가 있으면 단일 패스로 수치 라인 교체
                 if (physFixed > 0f || elemFixed > 0f || physPct > 0f || elemPct > 0f)
                 {

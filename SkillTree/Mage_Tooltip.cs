@@ -17,12 +17,12 @@ namespace CaptainSkillTree.SkillTree
         public struct MageTooltipData
         {
             public string skillName;          // 스킬명 (예: "초월적 마법 폭발")
-            public string description;        // 설명 (예: "12m 내의 모든 몬스터 vfx_HealthUpgrade 이팩트를 사용하고 3초뒤 공격 데미지 300%적용")
+            public string description;        // 설명 (예: "12m 내의 모든 몬스터 vfx_HealthUpgrade 이팩트를 사용하고 3초뒤 공격 데미지 150%적용")
             public string additionalInfo;     // 추가 정보
             public string range;             // 범위 (예: "12m")
             public string consumeEitr;       // Eitr 소모 (예: "35")
             public string skillType;         // 스킬 유형 (예: "액티브 스킬(Y)")
-            public string cooldown;          // 쿨타임 (예: "180초")
+            public string cooldown;          // 쿨타임 (예: "90초")
             public string requirement;       // 필요조건 (예: "지팡이 착용")
             public string confirmation;      // 확인사항 (예: "직업은 1개만 선택가능, Lv 10 이상")
             public string requiredItem;      // 필요 아이템

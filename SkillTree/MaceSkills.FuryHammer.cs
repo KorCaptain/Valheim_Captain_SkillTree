@@ -58,6 +58,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 새 코루틴 시작
                 lastMaceSkillTime = Time.time;
+                ActiveSkillCooldownRegistry.SetCooldown("H", cooldown);
                 var coroutine = SkillTreeInputListener.Instance.StartCoroutine(ApplyFuryHammer(player, 0f));
                 furyHammerCoroutine[player] = coroutine;
             }

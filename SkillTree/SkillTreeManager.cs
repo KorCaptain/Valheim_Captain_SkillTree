@@ -116,11 +116,12 @@ namespace CaptainSkillTree.SkillTree
         // 스킬 노드 복제 (백업용)
         private SkillNode CloneSkillNode(SkillNode original)
         {
-            return new SkillNode
+            var clone = new SkillNode
             {
                 Id = original.Id,
-                Name = original.Name,
-                Description = original.Description,
+                NameKey = original.NameKey,
+                DescriptionKey = original.DescriptionKey,
+                DescriptionArgs = original.DescriptionArgs,
                 RequiredPoints = original.RequiredPoints,
                 Prerequisites = new List<string>(original.Prerequisites ?? new List<string>()),
                 MaxLevel = original.MaxLevel,
@@ -132,6 +133,12 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = original.IconNameUnlocked,
                 NextNodes = new List<string>(original.NextNodes ?? new List<string>())
             };
+            // NameKey/DescriptionKey 없는 경우에만 정적 값 복사 (getter 안전 호출)
+            if (string.IsNullOrEmpty(original.NameKey))
+                clone.Name = original.Name;
+            if (string.IsNullOrEmpty(original.DescriptionKey))
+                clone.Description = original.Description;
+            return clone;
         }
 
         // 데이터 무결성 검증 및 복구

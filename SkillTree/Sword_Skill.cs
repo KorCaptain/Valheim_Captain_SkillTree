@@ -15,7 +15,7 @@ namespace CaptainSkillTree.SkillTree
     /// 검 스킬 전용 로직 시스템
     /// 돌진 연속 베기 (Rush Slash) 액티브 스킬 및 검 관련 모든 스킬 구현
     /// </summary>
-    public static class Sword_Skill
+    public static partial class Sword_Skill
     {
         // === 돌진 연속 베기 (Rush Slash) 액티브 스킬 관련 변수 ===
         private static Dictionary<Player, float> rushSlashCooldowns = new Dictionary<Player, float>();
@@ -179,6 +179,7 @@ namespace CaptainSkillTree.SkillTree
                 rushSlashEndTime[player] = now + duration;
                 rushSlashCooldowns[player] = now + cooldown;
                 rushSlashAttackCount[player] = 0;
+                ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
 
                 // 7. 스태미나 소모
                 player.UseStamina(requiredStamina);
@@ -233,6 +234,7 @@ namespace CaptainSkillTree.SkillTree
             // 무기 기본 데미지
             var weaponDamage = weapon.GetDamage();
             int totalHits = 0;
+            var alreadyHitInPath = new HashSet<int>();
 
             // === 타겟 몬스터 탐지 (10m 내 가장 가까운 몬스터) ===
             Character target = FindNearestMonster(player, 10f);
@@ -241,7 +243,8 @@ namespace CaptainSkillTree.SkillTree
 
             // === 1차: 전방 돌진 + 베기 ===
             Vector3 dashTarget = player.transform.position + GetCameraForward(player) * initialDist;
-            yield return MoveToPosition(player, dashTarget, initialDist, moveSpeed);
+            yield return MoveToPositionWithPathHit(player, dashTarget, initialDist, moveSpeed,
+                weapon, weaponDamage, skillData.damage1stRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
 
             if (player == null || player.IsDead() || !rushSlashActive.ContainsKey(player) || !rushSlashActive[player])
             {
@@ -269,7 +272,8 @@ namespace CaptainSkillTree.SkillTree
             }
 
             Vector3 rightPos = CalculateSidePosition(player, targetPos, sideDist, true);
-            yield return MoveToPosition(player, rightPos, sideDist, moveSpeed);
+            yield return MoveToPositionWithPathHit(player, rightPos, sideDist, moveSpeed,
+                weapon, weaponDamage, skillData.damage2ndRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
 
             if (player == null || player.IsDead() || !rushSlashActive.ContainsKey(player) || !rushSlashActive[player])
             {
@@ -297,7 +301,8 @@ namespace CaptainSkillTree.SkillTree
             }
 
             Vector3 leftPos = CalculateSidePosition(player, targetPos, sideDist, false);
-            yield return MoveToPosition(player, leftPos, sideDist, moveSpeed);
+            yield return MoveToPositionWithPathHit(player, leftPos, sideDist, moveSpeed,
+                weapon, weaponDamage, skillData.damage3rdRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
 
             if (player == null || player.IsDead() || !rushSlashActive.ContainsKey(player) || !rushSlashActive[player])
             {
@@ -780,6 +785,7 @@ namespace CaptainSkillTree.SkillTree
                 parryRushActive[player] = true;
                 parryRushExpiry[player] = now + duration;
                 parryRushCooldowns[player] = now + cooldown;
+                ActiveSkillCooldownRegistry.SetCooldown("H", cooldown);
 
                 // 7. 스태미나 소모
                 player.UseStamina(staminaCost);
