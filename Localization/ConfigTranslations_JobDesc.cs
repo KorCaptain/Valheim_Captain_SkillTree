@@ -124,11 +124,11 @@ namespace CaptainSkillTree.Localization
                 "강력한 스킬이므로 긴 쿨타임을 가집니다.\n" +
                 "권장값: 150-200초",
 
-                ["Mage_VFX_Name"] =
-                "【VFX 효과명】\n" +
-                "스킬 사용 시 표시되는 시각 효과 이름입니다.\n" +
-                "비워두면 기본 효과를 사용합니다.\n" +
-                "권장값: 기본값 사용",
+                ["Mage_AOE_Max_Targets"] =
+                "【최대 타겟 수】\n" +
+                "AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
+                "가까운 순서로 선택됩니다. 높을수록 랙이 발생할 수 있습니다.\n" +
+                "권장값: 4-8마리",
 
                 // === Mage Job: 패시브 스킬 (1개) ===
                 ["Mage_Elemental_Resistance"] =
@@ -491,11 +491,11 @@ namespace CaptainSkillTree.Localization
                 "Long cooldown due to powerful effect.\n" +
                 "Recommended: 150-200 sec",
 
-                ["Mage_VFX_Name"] =
-                "【VFX Effect Name】\n" +
-                "Visual effect name displayed on skill use.\n" +
-                "Leave empty to use default effect.\n" +
-                "Recommended: Use default",
+                ["Mage_AOE_Max_Targets"] =
+                "[Max Target Count]\n" +
+                "Maximum number of monsters the AOE skill can hit simultaneously.\n" +
+                "Targets are selected by proximity. Higher values may cause lag.\n" +
+                "Recommended: 4-8 targets",
 
                 // === Mage Job: Passive Skill (1 key) ===
                 ["Mage_Elemental_Resistance"] =

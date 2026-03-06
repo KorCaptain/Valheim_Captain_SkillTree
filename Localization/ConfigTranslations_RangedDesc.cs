@@ -83,19 +83,18 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 5-1: 이중 시전 (Double Cast - R키 액티브) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] =
-                "【추가 투사체 개수】\n" +
-                "이중 시전 시 추가로 발사되는 투사체 개수입니다.\n" +
-                "권장값: 1-3개",
+                "【추가 발사체 개수】\n" +
+                "연속 발사 시 추가로 발사되는 마법 발사체 수입니다.\n" +
+                "권장값: 5~10발",
 
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] =
                 "【투사체 데미지 비율 (%)】\n" +
-                "추가 투사체의 데미지 비율입니다.\n" +
-                "권장값: 60-80%",
+                "추가 발사체의 데미지 비율입니다.\n" +
+                "권장값: 10-20%",
 
                 ["Tier5_DoubleCast_AngleOffset"] =
-                "【투사체 각도 오프셋 (도)】\n" +
-                "투사체가 퍼지는 각도입니다.\n" +
-                "권장값: 3-8도",
+                "【각도 오프셋 (미사용)】\n" +
+                "현재 버전에서 사용되지 않습니다. 동일 방향으로 고정됨.",
 
                 ["Tier5_DoubleCast_EitrCost"] =
                 "【Eitr 소모량】\n" +
@@ -127,11 +126,6 @@ namespace CaptainSkillTree.Localization
                 "【치유 범위 (미터)】\n" +
                 "힐이 적용되는 범위입니다.\n" +
                 "권장값: 10-15m",
-
-                ["Tier5_InstantAreaHeal_SelfHeal"] =
-                "【자가 치유 허용】\n" +
-                "true로 설정하면 자신도 치유됩니다.\n" +
-                "권장값: false (아군만 치유)",
 
                 // === Staff Tree RequiredPoints ===
                 ["Tier0_StaffExpert_RequiredPoints"] =
@@ -176,7 +170,7 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【필요 포인트】\n" +
-                "이중시전 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "연속 발사 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3",
 
                 ["Tier5_InstantAreaHeal_RequiredPoints"] =
@@ -319,7 +313,7 @@ namespace CaptainSkillTree.Localization
                 "강화된 연발 시 소모되는 볼트 개수입니다.\n" +
                 "권장값: 1-2개",
 
-                // === Tier 4: 최후의 일격 (Final Strike) ===
+                // === Tier 4: 최후의 일격 (First Strike) ===
 
                 ["Tier4_FinalStrike_HpThreshold"] =
                 "【적 체력 임계값 (%)】\n" +
@@ -460,7 +454,7 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_ExplosiveArrow_DamageMultiplier"] =
                 "【폭발 화살 데미지 배율 (%)】\n" +
-                "R키 액티브 스킬 - 폭발 화살의 데미지 배율입니다.\n" +
+                "Z키 액티브 스킬 - 폭발 화살의 데미지 배율입니다.\n" +
                 "범위 피해를 입히는 강력한 화살입니다.\n" +
                 "권장값: 100-150%",
 
@@ -608,19 +602,18 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 5-1: Double Cast (R-key Active) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] =
-                "【Additional Projectile Count】\n" +
-                "Number of extra projectiles fired during double cast.\n" +
-                "Recommended: 1-3",
+                "【Extra Projectile Count】\n" +
+                "Additional magic projectiles fired per rapid barrage.\n" +
+                "Recommended: 5~10",
 
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] =
                 "【Projectile Damage Percent (%)】\n" +
                 "Damage percentage of additional projectiles.\n" +
-                "Recommended: 60-80%",
+                "Recommended: 10-20%",
 
                 ["Tier5_DoubleCast_AngleOffset"] =
-                "【Projectile Angle Offset (degrees)】\n" +
-                "Spread angle of projectiles.\n" +
-                "Recommended: 3-8°",
+                "【Angle Offset (Unused)】\n" +
+                "Not used in current version. Fixed to same direction.",
 
                 ["Tier5_DoubleCast_EitrCost"] =
                 "【Eitr Cost】\n" +
@@ -652,11 +645,6 @@ namespace CaptainSkillTree.Localization
                 "【Heal Range (meters)】\n" +
                 "Range where healing is applied.\n" +
                 "Recommended: 10-15m",
-
-                ["Tier5_InstantAreaHeal_SelfHeal"] =
-                "【Allow Self Heal】\n" +
-                "If true, also heals the caster.\n" +
-                "Recommended: false (allies only)",
 
                 // === Staff Tree RequiredPoints ===
                 ["Tier0_StaffExpert_RequiredPoints"] =
@@ -701,7 +689,7 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【Required Points】\n" +
-                "Skill points required to unlock the Dual Cast node.\n" +
+                "Skill points required to unlock the Rapid Barrage node.\n" +
                 "Recommended: 3",
 
                 ["Tier5_InstantAreaHeal_RequiredPoints"] =
@@ -844,7 +832,7 @@ namespace CaptainSkillTree.Localization
                 "Number of bolts consumed during enhanced rapid fire.\n" +
                 "Recommended: 1-2",
 
-                // === Tier 4: Final Strike ===
+                // === Tier 4: First Strike ===
 
                 ["Tier4_FinalStrike_HpThreshold"] =
                 "【Enemy HP Threshold (%)】\n" +
@@ -864,7 +852,7 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier4_FinalStrike_RequiredPoints"] =
                 "【Required Points】\n" +
-                "Skill points required to unlock the Final Strike node.\n" +
+                "Skill points required to unlock the First Strike node.\n" +
                 "Recommended: 3",
 
                 // === Tier 5: One Shot (R-key Active) ===

@@ -630,7 +630,7 @@ namespace CaptainSkillTree.SkillTree
                 var existingRKeySkills = rKeySkills.Where(skill => skill != skillId && HasSkillOrPending(skill)).ToList();
                 if (existingRKeySkills.Count > 0)
                 {
-                    restrictionMessage = $"Only 1 ranged active skill allowed";
+                    restrictionMessage = L.Get("active_skill_ranged_only_one");
                     return false;
                 }
                 return true;
@@ -678,7 +678,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (conflictSkills.Count > 0)
                 {
-                    restrictionMessage = $"Active skill from another weapon already selected";
+                    restrictionMessage = L.Get("active_skill_weapon_conflict");
                     return false;
                 }
 
@@ -704,7 +704,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (conflictSkills.Count > 0)
                 {
-                    restrictionMessage = $"Active skill from another weapon already selected";
+                    restrictionMessage = L.Get("active_skill_weapon_conflict");
                     return false;
                 }
 
@@ -717,7 +717,7 @@ namespace CaptainSkillTree.SkillTree
                 var existingJobSkills = yKeySkills.Where(skill => skill != skillId && HasSkillOrPending(skill)).ToList();
                 if (existingJobSkills.Count > 0)
                 {
-                    restrictionMessage = $"Only 1 job class allowed";
+                    restrictionMessage = L.Get("active_skill_job_only_one");
                     return false;
                 }
             }

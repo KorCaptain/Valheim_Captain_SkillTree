@@ -461,18 +461,14 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep1Duration => Spear_Config.SpearStep1Duration;
         public static ConfigEntry<float> SpearStep1ThrowCooldown => Spear_Config.SpearStep1ThrowCooldown;
         public static ConfigEntry<float> SpearStep1ThrowDamage => Spear_Config.SpearStep1ThrowDamage;
-        public static ConfigEntry<float> SpearStep1ThrowBuffDuration => Spear_Config.SpearStep1ThrowBuffDuration;
         public static ConfigEntry<float> SpearStep1CritDamageBonus => Spear_Config.SpearStep1CritDamageBonus;
         public static ConfigEntry<float> SpearStep2EvasionDamageBonus => Spear_Config.SpearStep2EvasionDamageBonus;
         public static ConfigEntry<float> SpearStep3PierceDamageBonus => Spear_Config.SpearStep3PierceDamageBonus;
-        // 폭발창
-        public static ConfigEntry<float> SpearExplosionChance => Spear_Config.SpearExplosionChance;
-        public static ConfigEntry<float> SpearExplosionRadius => Spear_Config.SpearExplosionRadius;
-        public static ConfigEntry<float> SpearExplosionDamageBonus => Spear_Config.SpearExplosionDamageBonus;
+        // 빠른창
+        public static ConfigEntry<float> SpearQuickAttackSpeed => Spear_Config.SpearQuickAttackSpeed;
         // 이연창
         public static ConfigEntry<float> SpearDualDamageBonus => Spear_Config.SpearDualDamageBonus;
         public static ConfigEntry<float> SpearDualDuration => Spear_Config.SpearDualDuration;
-        public static ConfigEntry<float> SpearStep5PenetrateCritChance => Spear_Config.SpearStep5PenetrateCritChance;
         public static ConfigEntry<float> SpearStep5ComboCooldown => Spear_Config.SpearStep5ComboCooldown;
         public static ConfigEntry<float> SpearStep5ComboDamage => Spear_Config.SpearStep5ComboDamage;
         public static ConfigEntry<float> SpearStep5ComboStaminaCost => Spear_Config.SpearStep5ComboStaminaCost;
@@ -484,18 +480,14 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep1DurationValue => Spear_Config.SpearStep1DurationValue;
         public static float SpearStep2ThrowCooldownValue => Spear_Config.SpearStep2ThrowCooldownValue;
         public static float SpearStep2ThrowDamageValue => Spear_Config.SpearStep2ThrowDamageValue;
-        public static float SpearStep2ThrowBuffDurationValue => Spear_Config.SpearStep2ThrowBuffDurationValue;
         public static float SpearStep2CritDamageBonusValue => Spear_Config.SpearStep2CritDamageBonusValue;
         public static float SpearStep3EvasionDamageBonusValue => Spear_Config.SpearStep3EvasionDamageBonusValue;
         public static float SpearStep3PierceDamageBonusValue => Spear_Config.SpearStep3PierceDamageBonusValue;
-        // 폭발창 Value
-        public static float SpearExplosionChanceValue => Spear_Config.SpearExplosionChanceValue;
-        public static float SpearExplosionRadiusValue => Spear_Config.SpearExplosionRadiusValue;
-        public static float SpearExplosionDamageBonusValue => Spear_Config.SpearExplosionDamageBonusValue;
+        // 빠른창 Value
+        public static float SpearQuickAttackSpeedValue => Spear_Config.SpearQuickAttackSpeedValue;
         // 이연창 Value
         public static float SpearDualDamageBonusValue => Spear_Config.SpearDualDamageBonusValue;
         public static float SpearDualDurationValue => Spear_Config.SpearDualDurationValue;
-        public static float SpearStep6PenetrateCritChanceValue => Spear_Config.SpearStep6PenetrateCritChanceValue;
         public static float SpearStep6ComboCooldownValue => Spear_Config.SpearStep6ComboCooldownValue;
         public static float SpearStep6ComboDamageValue => Spear_Config.SpearStep6ComboDamageValue;
         public static float SpearStep6ComboStaminaCostValue => Spear_Config.SpearStep6ComboStaminaCostValue;
@@ -630,7 +622,7 @@ namespace CaptainSkillTree.SkillTree
             HotKeyR = config.Bind(
                 "Skill_Tree_Base",
                 "HotKey_R",
-                "R",
+                "Z",
                 new ConfigDescription(
                     GetConfigDescription("HotKey_R"),
                     keyAcceptable,

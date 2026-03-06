@@ -85,29 +85,16 @@ namespace CaptainSkillTree.Localization
                 "권장값: 8",
 
                 ["Tier3_Rapid_DamageBonus"] =
-                "【무기 공격력 보너스 (고정값)】\n" +
-                "창의 기본 공격력을 고정값으로 증가시킵니다.\n" +
+                "【관통 공격력 보너스 (고정값)】\n" +
+                "창의 관통 공격력을 고정값으로 증가시킵니다.\n" +
                 "빠른 연속 공격에 유리합니다.\n" +
                 "권장값: 3-6",
 
-                // === Spear Tree: Tier 3 - 폭발창 (3개) ===
-                ["Tier3_Explosion_Chance"] =
-                "【폭발 발동 확률 (%)】\n" +
-                "창 공격 시 폭발 효과가 발동할 확률입니다.\n" +
-                "광역 피해를 가할 수 있습니다.\n" +
-                "권장값: 20-40%",
-
-                ["Tier3_Explosion_Radius"] =
-                "【폭발 범위 (m)】\n" +
-                "폭발 피해가 미치는 반경입니다.\n" +
-                "넓을수록 다수의 적에게 피해를 줍니다.\n" +
-                "권장값: 4-7m",
-
-                ["Tier3_Explosion_DamageBonus"] =
-                "【폭발 피해 보너스 (%)】\n" +
-                "폭발 시 추가되는 피해량입니다.\n" +
-                "광역 딜링의 핵심입니다.\n" +
-                "권장값: 25-40%",
+                // === Spear Tree: Tier 3 - 빠른창 (1개) ===
+                ["Tier3_QuickSpear_AttackSpeed"] =
+                "【공격 속도 보너스 (%)】\n" +
+                "창/폴암 착용 시 공격 속도가 증가합니다.\n" +
+                "권장값: 15-25%",
 
                 // === Spear Tree: Tier 4 - 회피 찌르기 (3개) ===
                 ["Tier4_Evasion_RequiredPoints"] =
@@ -305,8 +292,8 @@ namespace CaptainSkillTree.Localization
                 // === Tier 3: 무거운 일격 (Heavy Strike) ===
 
                 ["Tier3_HeavyStrike_DamageBonus"] =
-                "【공격력 보너스 (고정값)】\n" +
-                "둔기 공격력을 고정 수치로 증가시킵니다.\n" +
+                "【타격 보너스 (고정값)】\n" +
+                "둔기 타격 데미지를 고정 수치로 증가시킵니다.\n" +
                 "퍼센트 보너스와 함께 적용됩니다.\n" +
                 "권장값: 2-5",
 
@@ -485,8 +472,8 @@ namespace CaptainSkillTree.Localization
 
                 // === Polearm Tree: Tier 2-1 - 폴암강화 (2개) ===
                 ["Tier2-1_PolearmBoost_WeaponDamageBonus"] =
-                "【무기 공격력 보너스 (고정값)】\n" +
-                "폴암의 기본 공격력을 고정값으로 증가시킵니다.\n" +
+                "【관통 공격력 보너스 (고정값)】\n" +
+                "폴암의 관통 공격력을 고정값으로 증가시킵니다.\n" +
                 "모든 폴암 공격에 적용됩니다.\n" +
                 "권장값: 4-7",
 
@@ -705,29 +692,16 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 8",
 
                 ["Tier3_Rapid_DamageBonus"] =
-                "【Weapon Damage Bonus (Flat)】\n" +
-                "Flat damage increase to base spear damage.\n" +
+                "【Pierce Damage Bonus (Flat)】\n" +
+                "Flat pierce damage increase to spear attacks.\n" +
                 "Favors rapid consecutive attacks.\n" +
                 "Recommended: 3-6",
 
-                // === Spear Tree: Tier 3 - Explosive Spear (3 keys) ===
-                ["Tier3_Explosion_Chance"] =
-                "【Explosion Trigger Chance (%)】\n" +
-                "Probability of explosion effect on spear hit.\n" +
-                "Deals area damage.\n" +
-                "Recommended: 20-40%",
-
-                ["Tier3_Explosion_Radius"] =
-                "【Explosion Radius (m)】\n" +
-                "Radius of explosion damage.\n" +
-                "Larger radius damages multiple enemies.\n" +
-                "Recommended: 4-7 m",
-
-                ["Tier3_Explosion_DamageBonus"] =
-                "【Explosion Damage Bonus (%)】\n" +
-                "Additional damage from explosion.\n" +
-                "Core of area-of-effect damage.\n" +
-                "Recommended: 25-40%",
+                // === Spear Tree: Tier 3 - Fast Spear (1 key) ===
+                ["Tier3_QuickSpear_AttackSpeed"] =
+                "【Attack Speed Bonus (%)】\n" +
+                "Increases attack speed when using spear or polearm.\n" +
+                "Recommended: 15-25%",
 
                 // === Spear Tree: Tier 4 - Evasion Strike (3 keys) ===
                 ["Tier4_Evasion_RequiredPoints"] =
@@ -924,8 +898,8 @@ namespace CaptainSkillTree.Localization
                 // === Tier 3: Heavy Strike ===
 
                 ["Tier3_HeavyStrike_DamageBonus"] =
-                "【Damage Bonus (Fixed Value)】\n" +
-                "Increases mace damage by a fixed amount.\n" +
+                "【Blunt Bonus (Fixed Value)】\n" +
+                "Increases mace blunt damage by a fixed amount.\n" +
                 "Applies alongside percentage bonuses.\n" +
                 "Recommended: 2-5",
 
@@ -1104,8 +1078,8 @@ namespace CaptainSkillTree.Localization
 
                 // === Polearm Tree: Tier 2-1 - Polearm Enhancement (2 keys) ===
                 ["Tier2-1_PolearmBoost_WeaponDamageBonus"] =
-                "【Weapon Damage Bonus (Flat)】\n" +
-                "Flat damage increase to base polearm damage.\n" +
+                "【Pierce Damage Bonus (Flat)】\n" +
+                "Flat pierce damage increase to polearm attacks.\n" +
                 "Applies to all polearm attacks.\n" +
                 "Recommended: 4-7",
 
@@ -1116,8 +1090,8 @@ namespace CaptainSkillTree.Localization
 
                 // === Polearm Tree: Tier 2-2 - Hero Strike (2 keys) ===
                 ["Tier2-2_HeroStrike_KnockbackChance"] =
-                "【Knockback Chance (%)】\n" +
-                "Probability of pushing enemies back on hit.\n" +
+                "【Stagger Chance (%)】\n" +
+                "Probability of staggering enemies on hit.\n" +
                 "Useful for battlefield control.\n" +
                 "Recommended: 20-35%",
 

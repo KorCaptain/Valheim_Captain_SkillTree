@@ -483,7 +483,7 @@ namespace CaptainSkillTree.SkillTree
             ParryRushDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_DamageBonus",
-                100f,
+                30f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_DamageBonus")
             );
 

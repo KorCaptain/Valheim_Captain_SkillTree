@@ -88,8 +88,8 @@ namespace CaptainSkillTree.MMO_System
 
             try
             {
-                // 현재 레벨로 초기화
-                _lastKnownLevel = CaptainMMOBridge.GetLevel();
+                // 첫 접속 감지를 위해 0으로 초기화 (Update에서 EpicMMO 확인 후 처리)
+                _lastKnownLevel = 0;
                 _lastCheckTime = Time.time;
 
                 // 이벤트 핸들러 등록
@@ -137,8 +137,26 @@ namespace CaptainSkillTree.MMO_System
             {
                 int currentLevel = CaptainMMOBridge.GetLevel();
 
-                // 레벨 변화 감지 (이전 레벨이 0보다 큰 경우에만)
-                if (currentLevel != _lastKnownLevel && _lastKnownLevel > 0)
+                if (_lastKnownLevel == 0)
+                {
+                    // 첫 접속: EpicMMO 연동 확인
+                    if (CaptainMMOBridge.UseEpicMMO)
+                    {
+                        if (!EpicMMOReflectionHelper.HasInstance()) return; // EpicMMO 준비 대기
+                        // EpicMMO 연동 확인 완료 → 메시지 표시
+                        _lastKnownLevel = currentLevel;
+                        ShowFirstConnectionMessage(currentLevel);
+                    }
+                    else
+                    {
+                        // EpicMMO 없음 → 조용히 초기화 (메시지 없음)
+                        _lastKnownLevel = currentLevel;
+                    }
+                    return;
+                }
+
+                // 일반 레벨 변화 감지
+                if (currentLevel != _lastKnownLevel)
                 {
                     HandleLevelChange(_lastKnownLevel, currentLevel);
                 }
@@ -232,20 +250,8 @@ namespace CaptainSkillTree.MMO_System
             int pointsPerLevel = CaptainLevelConfig.SkillPointsPerLevel?.Value ?? 2;
             int addedPoints = (newLevel - oldLevel) * pointsPerLevel;
 
-            // MessageHud를 통한 알림
-            // 게임 시작 시 (oldLevel이 0 또는 1이고 newLevel이 크게 점프한 경우) vs 실제 레벨업 구분
-            bool isGameStart = (oldLevel <= 1 && (newLevel - oldLevel) > 1);
-
-            if (isGameStart)
-            {
-                // 게임 시작 시 (첫 접속/로드) - EpicMMO 연동 메시지
-                ShowNotification(string.Format(L.Get("mmo_level_sync_message"), addedPoints, newLevel));
-            }
-            else
-            {
-                // 실제 레벨업 시
-                ShowNotification(string.Format(L.Get("level_up_message"), addedPoints, newLevel));
-            }
+            // 실제 레벨업 메시지만 표시 (첫 접속은 Update()에서 처리)
+            ShowNotification(string.Format(L.Get("level_up_message"), addedPoints, newLevel));
 
             // 이벤트 발생
             OnLevelIncreased?.Invoke(newLevel);
@@ -253,7 +259,7 @@ namespace CaptainSkillTree.MMO_System
             // UI 갱신
             RefreshUI();
 
-            Plugin.Log.LogInfo($"[LevelSyncManager] 레벨 증가: Lv.{oldLevel} → Lv.{newLevel} (+{addedPoints} SP) [게임시작: {isGameStart}]");
+            Plugin.Log.LogInfo($"[LevelSyncManager] 레벨 증가: Lv.{oldLevel} → Lv.{newLevel} (+{addedPoints} SP)");
         }
 
         #endregion
@@ -279,6 +285,17 @@ namespace CaptainSkillTree.MMO_System
         #endregion
 
         #region === Utility ===
+
+        /// <summary>
+        /// 첫 접속 시 EpicMMO 연동 확인 메시지 표시
+        /// </summary>
+        private void ShowFirstConnectionMessage(int level)
+        {
+            var manager = SkillTreeManager.Instance;
+            int availablePoints = manager?.GetAvailablePoints() ?? 0;
+            ShowNotification(string.Format(L.Get("mmo_level_sync_message"), level, availablePoints));
+            Plugin.Log.LogInfo($"[LevelSyncManager] EpicMMO 연동 확인 완료 - Lv.{level}, 사용가능 SP: {availablePoints}");
+        }
 
         /// <summary>
         /// MessageHud를 통한 알림 표시

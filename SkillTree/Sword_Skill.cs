@@ -726,6 +726,7 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, float> parryRushCooldowns = new Dictionary<Player, float>();
         private static Dictionary<Player, bool> parryRushActive = new Dictionary<Player, bool>();
         private static Dictionary<Player, float> parryRushExpiry = new Dictionary<Player, float>();
+        private static HashSet<Player> parryRushCharging = new HashSet<Player>(); // 코루틴 중복 실행 방지
 
         /// <summary>
         /// G키로 패링 돌격 30초 버프 활성화
@@ -822,12 +823,14 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (player == null || player.IsDead() || attacker == null || attacker.IsDead()) return;
                 if (!IsParryRushActive(player)) return;
+                if (parryRushCharging.Contains(player)) return; // 이미 코루틴 실행 중
 
                 // 무기 확인 (방패 패링 중 GetCurrentWeapon이 방패를 반환할 수 있으므로 장비 목록에서 검 확인)
                 var weapon = GetEquippedSword(player);
                 if (weapon == null) return;
 
                 // 돌격 코루틴 시작
+                parryRushCharging.Add(player);
                 var coroutine = ExecuteParryRushCharge(player, attacker, weapon);
                 player.StartCoroutine(coroutine);
             }
@@ -842,7 +845,11 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static IEnumerator ExecuteParryRushCharge(Player player, Character target, ItemDrop.ItemData weapon)
         {
-            if (player == null || target == null) yield break;
+            if (player == null || target == null)
+            {
+                parryRushCharging.Remove(player);
+                yield break;
+            }
 
             // 1. blocking 모션 시작
             var zanim = player.GetComponentInChildren<ZSyncAnimation>();
@@ -869,7 +876,11 @@ namespace CaptainSkillTree.SkillTree
 
             while (elapsed < moveDuration)
             {
-                if (player == null || player.IsDead()) yield break;
+                if (player == null || player.IsDead())
+                {
+                    parryRushCharging.Remove(player);
+                    yield break;
+                }
 
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / moveDuration);
@@ -937,6 +948,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 zanim.SetBool("blocking", false);
             }
+
+            parryRushCharging.Remove(player);
         }
 
         /// <summary>
@@ -957,6 +970,7 @@ namespace CaptainSkillTree.SkillTree
             if (player == null) return;
             parryRushActive.Remove(player);
             parryRushExpiry.Remove(player);
+            parryRushCharging.Remove(player);
 
             if (Gui.SkillBuffDisplay.Instance != null)
             {
@@ -974,6 +988,7 @@ namespace CaptainSkillTree.SkillTree
                 parryRushCooldowns.Remove(player);
                 parryRushActive.Remove(player);
                 parryRushExpiry.Remove(player);
+                parryRushCharging.Remove(player);
             }
             catch (Exception ex)
             {

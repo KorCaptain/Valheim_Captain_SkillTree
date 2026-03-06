@@ -84,7 +84,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("knife_skill_attack_speed")}</size></color>",
-                L.Get("knife_desc_attack_speed", damageBonus),
+                L.Get("knife_desc_attack_speed", damageBonus, damageBonus),
                 MeleeTooltipUtils.WeaponType.Knife
             );
             data.requiredPoints = requiredPoints.ToString();

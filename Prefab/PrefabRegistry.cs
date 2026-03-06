@@ -74,9 +74,6 @@ namespace CaptainSkillTree.Prefab
         /// </summary>
         private static readonly Dictionary<string, VFXConfig> vfxConfigurations = new Dictionary<string, VFXConfig>
         {
-            // AOE 슬래시 효과 (작동하지 않는 파일들 제거됨)
-            ["aoe slash blue"] = new VFXConfig(VFXType.Hit, UnityEngine.Color.blue, 2f),
-            
             // 영역 효과
             ["area_circles_blue"] = new VFXConfig(VFXType.Magic, UnityEngine.Color.blue, 4f),
             ["area_fire_red"] = new VFXConfig(VFXType.Explosion, UnityEngine.Color.red, 3f),
@@ -85,7 +82,6 @@ namespace CaptainSkillTree.Prefab
             ["area_star_ellow"] = new VFXConfig(VFXType.Special, UnityEngine.Color.yellow, 3f),
             
             // 버프/디버프 효과
-            ["attack_buff"] = new VFXConfig(VFXType.Buff, UnityEngine.Color.red, 2f),
             ["buff_01"] = new VFXConfig(VFXType.Buff, UnityEngine.Color.blue, 2.5f),
             ["buff_02a"] = new VFXConfig(VFXType.Buff, UnityEngine.Color.green, 3f),
             ["buff_03a"] = new VFXConfig(VFXType.Buff, UnityEngine.Color.blue, 3f),
@@ -113,11 +109,6 @@ namespace CaptainSkillTree.Prefab
             ["flash_star_ellow_green"] = new VFXConfig(VFXType.Special, new UnityEngine.Color(0.8f, 1f, 0.5f), 1.5f),
             ["flash_star_ellow_purple"] = new VFXConfig(VFXType.Special, new UnityEngine.Color(1f, 0.8f, 1f), 1.5f),
             
-            // 특수 지면 효과 (삭제된 파일들 제거)
-            ["freeze circle"] = new VFXConfig(VFXType.Debuff, UnityEngine.Color.cyan, 4f),
-            ["magic circle"] = new VFXConfig(VFXType.Magic, UnityEngine.Color.blue, 4f),
-            ["magic circle 2"] = new VFXConfig(VFXType.Magic, UnityEngine.Color.magenta, 4f),
-            
             // 방어/치료 효과
             ["guard_01"] = new VFXConfig(VFXType.Special, new UnityEngine.Color(0f, 0.8f, 1f), 2f),
             ["healing"] = new VFXConfig(VFXType.Heal, UnityEngine.Color.green, 3f),
@@ -128,13 +119,7 @@ namespace CaptainSkillTree.Prefab
             ["hit_03"] = new VFXConfig(VFXType.Hit, new UnityEngine.Color(1f, 0.5f, 0f), 1.5f),
             ["hit_04"] = new VFXConfig(VFXType.Hit, UnityEngine.Color.red, 2f),
             
-            // 레이저/마법 효과 (lightning aura 제거 - 사용하지 않음)
-            ["laser aoe"] = new VFXConfig(VFXType.Magic, UnityEngine.Color.cyan, 4f),
             // ["lightning aura"] 제거 - 사용하지 않음
-            ["meteors aoe"] = new VFXConfig(VFXType.Explosion, UnityEngine.Color.red, 6f),
-            
-            // 러브/오라 효과
-            ["love aura"] = new VFXConfig(VFXType.Buff, new UnityEngine.Color(1f, 0.7f, 0.8f), 4f),
             // ["star aura"] 제거 - 사용하지 않음
             
             // 플렉서스 효과 제거 - 사용하지 않음
@@ -243,7 +228,7 @@ namespace CaptainSkillTree.Prefab
                 "area_magic_multicolor", "area_star_ellow",
                 
                 // 버프/디버프 효과
-                "attack_buff", "buff_01", "Buff_01", "buff_02a", "buff_03a", "buff_03a_aura",
+                "buff_01", "buff_02a", "buff_03a", "buff_03a_aura",
                 "debuff", "debuff_03", "debuff_03_aura", "statusailment_01", "statusailment_01_aura",
                 
                 // 색종이 효과
@@ -261,7 +246,7 @@ namespace CaptainSkillTree.Prefab
                 "guard_01", "healing",
                 
                 // 타격 효과
-                "hit_01", "hit_02", "hit_03", "hit_04", "archer_hit", "berserker_hit",
+                "hit_01", "hit_02", "hit_03", "hit_04",
                 
                 // 플렉서스 효과
                 "plexus",
@@ -280,8 +265,6 @@ namespace CaptainSkillTree.Prefab
                 // 물폭발 효과들  
                 "water_blast_blue", "water_blast_green",
                 
-                // 기타 효과들 (확장된 목록)
-                "vfx_Smoked", "star hit", "stones hit", "healing circle"
             };
             
             foreach (string resourceName in resourceNames)

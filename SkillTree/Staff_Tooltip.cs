@@ -38,7 +38,6 @@ namespace CaptainSkillTree.SkillTree
                 // Staff_Config에서 동적 설정값 가져오기
                 int projectileCount = Staff_Config.StaffDoubleCastProjectileCountValue;
                 float damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue;
-                float angleOffset = Staff_Config.StaffDoubleCastAngleOffsetValue;
                 float eitrCost = Staff_Config.StaffDoubleCastEitrCostValue;
                 float cooldown = Staff_Config.StaffDoubleCastCooldownValue;
 
@@ -50,13 +49,13 @@ namespace CaptainSkillTree.SkillTree
                 {
                     skillName = L.Get("staff_skill_dual_cast"),
                     description = L.Get("staff_desc_dual_cast", projectileCount),
-                    additionalInfo = L.Get("staff_desc_dual_cast_angle", angleOffset),
+                    additionalInfo = L.Get("staff_desc_dual_cast_angle"),
                     projectileCount = $"{projectileCount}{L.Get("unit_pieces")}",
                     damagePercent = $"{damagePercent:F0}%",
-                    angleOffset = L.Get("staff_desc_dual_cast_angle_unit", angleOffset),
+                    angleOffset = "",
                     eitrCost = $"{eitrCost:F0}",
                     cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
-                    skillType = L.Get("skill_type_active_key", "R"),
+                    skillType = L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z"),
                     requirement = L.Get("requirement_staff_wand"),
                     confirmation = "",
                     specialNote = $"{L.Get("staff_desc_dual_cast_note")}\n\n<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
@@ -165,12 +164,12 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = Staff_Config.StaffDoubleCastRequiredPointsValue;
 
             return $"<color=#FFD700><size=22>{L.Get("staff_skill_dual_cast")}</size></color>\n\n" +
-                   $"<color=#E0E0E0><size=16>{L.Get("skill_type_active_key", "R")}: {L.Get("staff_desc_dual_cast_fallback")}\n\n" +
+                   $"<color=#E0E0E0><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z")}: {L.Get("staff_desc_dual_cast_fallback")}\n\n" +
                    $"• {L.Get("tooltip_damage")}: {L.Get("staff_desc_dual_cast_damage_fallback")}\n" +
                    $"• {L.Get("tooltip_cost")}: {L.Get("stat_eitr")} 20\n" +
                    $"• {L.Get("tooltip_cooldown")}: 30{L.Get("unit_seconds")}\n" +
                    $"• {L.Get("tooltip_requirements")}: {L.Get("requirement_staff_wand")}\n\n" +
-                   $"{L.Get("tooltip_skill_type")}: {L.Get("skill_type_active_key", "R")}\n\n" +
+                   $"{L.Get("tooltip_skill_type")}: {L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z")}\n\n" +
                    $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";
         }
 
@@ -210,9 +209,8 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 Plugin.Log.LogInfo("[이중 시전 툴팁] 현재 컨피그 기반 툴팁 설정:");
-                Plugin.Log.LogInfo($"  - 추가 발사체 수: {Staff_Config.StaffDoubleCastProjectileCountValue}개");
-                Plugin.Log.LogInfo($"  - 발사체 데미지: {Staff_Config.StaffDoubleCastDamagePercentValue}%");
-                Plugin.Log.LogInfo($"  - 각도 오프셋: ±{Staff_Config.StaffDoubleCastAngleOffsetValue}°");
+                Plugin.Log.LogInfo($"  - 발사체 수: {Staff_Config.StaffDoubleCastProjectileCountValue}발");
+                Plugin.Log.LogInfo($"  - 발사 데미지: {Staff_Config.StaffDoubleCastDamagePercentValue}%");
                 Plugin.Log.LogInfo($"  - 에이트르 소모: {Staff_Config.StaffDoubleCastEitrCostValue}");
                 Plugin.Log.LogInfo($"  - 쿨타임: {Staff_Config.StaffDoubleCastCooldownValue}초");
             }

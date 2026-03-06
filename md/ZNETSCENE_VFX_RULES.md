@@ -10,7 +10,7 @@
 
 ## ⚠️ 중요: 이 문서는 VFX 프리팹 목록 참고용입니다
 내부 VFX 프리팹은 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\VFX 의 Valheim_prefab.txt 참고
-외부 VFX 폴더 위치 -  C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\asset\VFX
+외부(커스텀) VFX 폴더 위치 -  C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\asset\VFX
 
 
 ** VFX 재생 방법은 VFX_SOUND_INFINITE_LOADING_FIX.md 를 따르세요.**
@@ -32,9 +32,10 @@ fx_shaman_protect - 푸른 회오리 이팩트
 fx_shield_start - 쉴드 및 버프 시작 이팩트
 fx_shieldgenerator_domehit - 그린 방어 이팩트
 staff_greenroots_projectile - 그린 볼 뿌리 소환
-fx_Fader_Spin - 광역 원 푸른 
+fx_Fader_Spin - 광역 푸른 둥근 보기좋은 굿
+dvergerstaffheal_aoe 좁은 범위 힐(자신 빼고?)
 
-## 📦 등록된 VFX 프리팹 목록
+## 📦 등록된 커스텀 VFX 프리팹 목록(탱커 사용중)
 
 ### 버프/디버프 효과
 - `buff_02a` - 아처 멀티샷 활성화 버프
@@ -44,9 +45,9 @@ fx_Fader_Spin - 광역 원 푸른
 - `debuff_03` - ㅣ ㅣ ㅣ ㅣ 하얀색 버프? 비슷 - 종료코드 필요
 - `debuff_03_aura` - 오라 타입 디버프
 - `statusailment_01` - 상태 이상 효과 1
-- `statusailment_01_aura` - 스킬 시전 캐릭터 머리 표시(종료 필요)
-- buff_01 - 공격력 증가 버프
-- fx_Fader_Spin - 광역 푸른 둥근 보기좋은 굿
+- `statusailment_01_aura` - 스킬 시전 캐릭터 머리 표시(종료 필요) - 캐릭터 버프형 VFX 사용중
+- 'buff_01' - 공격력 증가 버프
+
 
 ### 타격/전투 효과
 - `hit_01` - 기본 타격 효과 1
@@ -60,8 +61,6 @@ fx_Fader_Spin - 광역 원 푸른
 - `taunt` - 도발 효과 - 몬스터 머리위에 표시 필요
 
 ### 오라/지속 효과
- - StatusAilment_01_Aura    스킬 시전동안 (종료 필요)
-                                     캐릭터 머리위에 별 버프 모양 - "단 한 발" 스킬 이팩트
 - `plexus` - 플렉서스 효과 - 번개 파란색 라운드  - 반복됨 종료 코드 필요(종료 코드는 버서커 이팩티 종료 참고)
 
 ### MMO 호환 효과
@@ -73,13 +72,10 @@ area_fire_red - 원기둥형 붉은 빛 줄기 위로 올라감
 area_heal_green - 원기둥형 빛 십자모양 위로 올라감 힐?
 area_magic_multicolor - 원기둥형 빛 원 모양 위로 올라감
 area_star_ellow - 원기둥형 빛 노란 줄 올라감
-
 shine_blue - 빛 흰,블루 광역 - 종료 코드 필요
 shine_pink - 
 shine_ellow
-
 sparkle_ellow - 흐린 뿌연 노란 빛 - 로그 사용
-
 confetti_blast_multicolor - 히트 효과 - 여러 모양 히트 주로 노란색?
 confetti_directional_multicolor - 히트효과? 중앙에서 왼쪽 오른쪽 각 각 히트여러모양 퍼져나감
 flash_blue_purple - 히트 블루 퍼플
@@ -91,7 +87,6 @@ flash_round_ellow - 히트 노랑 크게 히트 - 쓸만함
 flash_star_ellow_purple - 히트 폭발 스타 ... - 중하
 water_blast_blue - 푸른 물폭파
 water_blast_green - 그린 물폭파
-
 guard_01 - 막기 효과 파란색 원 물파장
 dust_permanently_blue - 둥근 여러 모양 푸른색으로 뭉개 뭉개 광역
 
@@ -271,7 +266,7 @@ UnityEngine.Object.Instantiate(Resources.Load("buff_02a"), position, rotation);
 
 1. **Captain_SkillTree.csproj에 EmbeddedResource 추가**
 ```xml
-<EmbeddedResource Include="asset/Resources/새효과명" />
+<EmbeddedResource Include="asset/VFX/새효과명" />
 ```
 
 2. **Plugin.cs의 resourceBundles에 등록**

@@ -224,8 +224,8 @@ namespace CaptainSkillTree.Localization
                 "권장값: 1-3",
 
                 ["Tier3_Riposte_DamageBonus"] =
-                "【공격력 보너스 (고정값)】\n" +
-                "칼날 되치기 공격력을 고정 수치로 증가시킵니다.\n" +
+                "【베기 공격력 보너스 (고정값)】\n" +
+                "칼날 되치기 베기 공격력을 고정 수치로 증가시킵니다.\n" +
                 "패링 후 강력한 반격이 가능합니다.\n" +
                 "권장값: 5-15",
 
@@ -392,9 +392,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 3: 전투 숙련 (Combat Mastery) ===
                 ["Tier3_CombatMastery_DamageBonus"] =
-                "【데미지 보너스 (고정값)】\n" +
-                "공격 시 고정 데미지를 추가합니다.\n" +
-                "권장값: 1-4",
+                "【베기/관통 공격력 보너스 (고정값)】\n" +
+                "공격 시 베기와 관통 공격력에 각각 고정 데미지를 추가합니다.\n" +
+                "권장값: 1-2",
 
                 ["Tier3_CombatMastery_BuffDuration"] =
                 "【버프 지속시간 (초)】\n" +
@@ -774,8 +774,8 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 1-3",
 
                 ["Tier3_Riposte_DamageBonus"] =
-                "【Attack Power Bonus (flat)】\n" +
-                "Increases riposte attack power by a flat amount.\n" +
+                "【Slash Damage Bonus (flat)】\n" +
+                "Increases riposte slash damage by a flat amount.\n" +
                 "Enables powerful counterattacks after parrying.\n" +
                 "Recommended: 5-15",
 
@@ -940,10 +940,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Knife Tree: Tier 3 - Combat Mastery (2 keys) ===
                 ["Tier3_CombatMastery_DamageBonus"] =
-                "【Knife Damage Bonus (%)】\n" +
-                "Increases knife weapon damage.\n" +
-                "Core damage scaling stat.\n" +
-                "Recommended: 15-30%",
+                "【Slash/Pierce Damage Bonus (flat)】\n" +
+                "Adds flat damage to both slash and pierce on each attack.\n" +
+                "Recommended: 1-2",
 
                 ["Tier3_CombatMastery_BuffDuration"] =
                 "【Buff Duration (sec)】\n" +

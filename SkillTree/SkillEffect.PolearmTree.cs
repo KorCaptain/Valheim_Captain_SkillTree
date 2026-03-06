@@ -700,7 +700,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 영웅 타격 넉백/스태거 확률 (polearm_step2_hero)
+        /// 영웅 타격 스태거 확률 (polearm_step2_hero)
         /// 27% 확률로 적을 스태거
         /// </summary>
         public static float GetPolearmHeroKnockbackChance()

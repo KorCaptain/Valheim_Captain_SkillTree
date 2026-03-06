@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using UnityEngine;
 using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.MMO_System
@@ -32,6 +34,9 @@ namespace CaptainSkillTree.MMO_System
 
         // 레벨 마이그레이션 완료 플래그 (일회성)
         private const string KEY_LEVEL_MIGRATION_DONE = "CaptainSkillTree_LevelMigration_v1";
+
+        // 시작 알림 일회성 표시 플래그
+        private static bool _startupNotificationShown = false;
 
         #endregion
 
@@ -486,6 +491,33 @@ namespace CaptainSkillTree.MMO_System
             else
             {
                 CaptainLevelSystem.Instance.Save();
+            }
+        }
+
+        public static void ShowStartupNotification()
+        {
+            if (_startupNotificationShown) return;
+            if (!UseEpicMMO) return;
+            _startupNotificationShown = true;
+
+            // EpicMMO 자체 Center 메시지 이후에 표시하기 위해 2초 지연
+            Hud.instance?.StartCoroutine(ShowNotificationDelayed());
+        }
+
+        private static IEnumerator ShowNotificationDelayed()
+        {
+            yield return new WaitForSeconds(2f);
+            try
+            {
+                MessageHud.instance?.ShowMessage(
+                    MessageHud.MessageType.Center,
+                    $"<color=#00BFFF>{L.Get("epicmmo_connected_title")}</color>\n{L.Get("epicmmo_connected_detail")}"
+                );
+                Plugin.Log.LogInfo("[CaptainMMOBridge] EpicMMO 연동 알림 표시 완료");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogDebug($"[CaptainMMOBridge] 알림 표시 오류: {ex.Message}");
             }
         }
 

@@ -29,6 +29,10 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, bool> stealthActive = new Dictionary<Player, bool>();
         private static Dictionary<Player, Coroutine> stealthDurationCoroutine = new Dictionary<Player, Coroutine>();
 
+        // === 어그로 제거 독립 상태 (공격 시 스텔스 해제 후에도 유지) ===
+        private static Dictionary<Player, float> aggroRemovalEndTime = new Dictionary<Player, float>();
+        private static Dictionary<Player, bool> aggroRemovalActive = new Dictionary<Player, bool>();
+
         // === 버프 VFX 시스템 ===
         private static Dictionary<Player, GameObject> rogueBuffVFXInstances = new Dictionary<Player, GameObject>();
 
@@ -140,6 +144,11 @@ namespace CaptainSkillTree.SkillTree
                 // 스텔스 적용 (8초간 몬스터가 타겟팅하지 못함)
                 ApplyStealthState(player);
 
+                // 어그로 제거 독립 상태 설정 (공격 시 스텔스 해제 후에도 어그로 보호 유지)
+                float aggroProtectionDuration = Rogue_Config.RogueShadowStrikeStealthDurationValue;
+                aggroRemovalEndTime[player] = Time.time + aggroProtectionDuration;
+                aggroRemovalActive[player] = true;
+
                 // 쿨다운 설정
                 JobSkillsUtility.SetCooldown(player, "Rogue", Rogue_Config.RogueShadowStrikeCooldownValue);
                 ActiveSkillCooldownRegistry.SetCooldown("Y", Rogue_Config.RogueShadowStrikeCooldownValue);
@@ -216,39 +225,14 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 연막 효과 생성 (발하임 기본 smokebomb_explosion 사용)
+        /// 연막 효과 생성 (발헤임 기본 fx_greenroots_projectile_hit 사용)
         /// </summary>
         private static void CreateSmokeEffect(Player player)
         {
             try
             {
                 Vector3 playerPos = player.transform.position;
-
-                // 발헤임 기본 smokebomb_explosion 프리팹 (데미지 컴포넌트 비활성화)
-                var znetScene = ZNetScene.instance;
-                if (znetScene != null)
-                {
-                    var smokePrefab = znetScene.GetPrefab("smokebomb_explosion");
-                    if (smokePrefab != null)
-                    {
-                        GameObject smokeInstance = UnityEngine.Object.Instantiate(smokePrefab, playerPos, Quaternion.identity);
-
-                        // AOE 데미지 컴포넌트 비활성화 (질식 데미지 제거)
-                        Aoe aoeComponent = smokeInstance.GetComponentInChildren<Aoe>();
-                        if (aoeComponent != null)
-                        {
-                            aoeComponent.enabled = false;
-                            // Plugin.Log.LogDebug("[로그 그림자 일격] smokebomb_explosion AOE 데미지 비활성화");
-                        }
-
-                        // Plugin.Log.LogDebug($"[로그 그림자 일격] smokebomb_explosion 연막 효과 생성 (데미지 없음)");
-                        return;
-                    }
-                }
-
-                // 프리팹 로드 실패 시 메시지만
-                player.Message(MessageHud.MessageType.Center, L.Get("rogue_smoke"));
-                // Plugin.Log.LogWarning("[로그 그림자 일격] smokebomb_explosion 프리팹 없음 - 메시지만 표시");
+                VFX.VFXManager.PlayVFXMultiplayer("fx_greenroots_projectile_hit", "", playerPos, Quaternion.identity, 1f);
             }
             catch (System.Exception)
             {
@@ -472,6 +456,14 @@ namespace CaptainSkillTree.SkillTree
                             Plugin.Log.LogInfo($"[안전한 어그로 제거] {enemyName} m_hunt 필드 해제 성공");
                             success = true;
                         }
+
+                        // MonsterAI State를 Idle(0)으로 강제 복귀
+                        var stateField = typeof(MonsterAI).GetField("m_state", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (stateField != null)
+                        {
+                            stateField.SetValue(monsterAI, 0); // 0 = State.Idle
+                            Plugin.Log.LogInfo($"[안전한 어그로 제거] {enemyName} MonsterAI State → Idle 복귀");
+                        }
                     }
                     catch (System.Exception huntEx)
                     {
@@ -517,12 +509,14 @@ namespace CaptainSkillTree.SkillTree
                 // 4단계: 강제 상태 초기화 - 완전한 리셋
                 try
                 {
-                    // alerted 상태 해제
-                    var alertedField = ai.GetType().GetField("m_alerted", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (alertedField != null)
+                    // alerted 상태 해제 - SetAlerted(false) 메서드 호출로 정상 경로 사용
+                    var setAlertedMethod = ai.GetType().GetMethod("SetAlerted",
+                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
+                        null, new[] { typeof(bool) }, null);
+                    if (setAlertedMethod != null)
                     {
-                        alertedField.SetValue(ai, false);
-                        Plugin.Log.LogInfo($"[안전한 어그로 제거] {enemyName} alerted 상태 해제");
+                        setAlertedMethod.Invoke(ai, new object[] { false });
+                        Plugin.Log.LogInfo($"[안전한 어그로 제거] {enemyName} SetAlerted(false) 호출 성공");
                         success = true;
                     }
                     
@@ -979,6 +973,24 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 어그로 제거 상태인지 확인 (스텔스와 독립, 공격 시에도 유지)
+        /// </summary>
+        public static bool IsAggroRemoved(Player player)
+        {
+            if (player == null) return false;
+            if (!aggroRemovalActive.TryGetValue(player, out bool active) || !active) return false;
+            if (!aggroRemovalEndTime.TryGetValue(player, out float endTime)) return false;
+            if (Time.time >= endTime)
+            {
+                aggroRemovalActive[player] = false;
+                aggroRemovalEndTime.Remove(player);
+                player.Message(MessageHud.MessageType.Center, L.Get("rogue_aggro_protection_end"));
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 스텔스 시스템 상태 정리 (플레이어 로그아웃 시)
         /// </summary>
         public static void CleanupStealthState(Player player)
@@ -1099,6 +1111,10 @@ namespace CaptainSkillTree.SkillTree
                     // 스텔스 상태 정리
                     stealthEndTime.Remove(player);
                     stealthActive.Remove(player);
+
+                    // 어그로 제거 상태 정리
+                    aggroRemovalEndTime.Remove(player);
+                    aggroRemovalActive.Remove(player);
                 }
                 catch (Exception ex)
                 {

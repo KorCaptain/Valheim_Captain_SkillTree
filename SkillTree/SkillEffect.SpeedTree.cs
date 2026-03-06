@@ -296,6 +296,16 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
+                // 빠른창 (spear_Step3_quick) - 공격 속도 +20% - 창 착용 시만
+                if (HasSkill("spear_Step3_quick"))
+                {
+                    if (weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
+                        weapon.m_shared.m_skillType == Skills.SkillType.Polearms)
+                    {
+                        bonus += SkillTreeConfig.SpearQuickAttackSpeedValue;
+                    }
+                }
+
                 // 민첩 스탯 (speed_1) - 공격속도 보너스 - 모든 무기
                 if (HasSkill("speed_1"))
                 {

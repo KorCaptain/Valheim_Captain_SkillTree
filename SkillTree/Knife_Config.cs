@@ -69,7 +69,7 @@ namespace CaptainSkillTree.SkillTree
         public static float KnifeEvasionBonusValue => SkillTreeConfig.GetEffectiveValue("knife_step2_evasion_bonus", KnifeEvasionBonus?.Value ?? 30f);
         public static float KnifeEvasionDurationValue => SkillTreeConfig.GetEffectiveValue("knife_step2_evasion_duration", KnifeEvasionDuration?.Value ?? 3f);
         public static float KnifeMoveSpeedBonusValue => SkillTreeConfig.GetEffectiveValue("knife_step3_move_speed_bonus", KnifeMoveSpeedBonus?.Value ?? 20f);
-        public static float KnifeAttackDamageBonusValue => SkillTreeConfig.GetEffectiveValue("knife_step4_attack_damage_bonus", KnifeAttackDamageBonus?.Value ?? 2f);
+        public static float KnifeAttackDamageBonusValue => SkillTreeConfig.GetEffectiveValue("knife_step4_attack_damage_bonus", KnifeAttackDamageBonus?.Value ?? 1f);
         public static float KnifeAttackDamageDurationValue => SkillTreeConfig.GetEffectiveValue("knife_step4_attack_damage_duration", KnifeAttackDamageDuration?.Value ?? 10f);
         public static float KnifeAttackEvasionBonusValue => SkillTreeConfig.GetEffectiveValue("knife_step5_attack_evasion_bonus", KnifeAttackEvasionBonus?.Value ?? 25f);
         public static float KnifeAttackEvasionDurationValue => SkillTreeConfig.GetEffectiveValue("knife_step5_attack_evasion_duration", KnifeAttackEvasionDuration?.Value ?? 10f);
@@ -153,7 +153,7 @@ namespace CaptainSkillTree.SkillTree
                 KnifeAttackDamageBonus = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier3_CombatMastery_DamageBonus",
-                    2f,
+                    1f,
                     SkillTreeConfig.GetConfigDescription("Tier3_CombatMastery_DamageBonus"));
 
                 KnifeAttackDamageDuration = SkillTreeConfig.BindServerSync(config,

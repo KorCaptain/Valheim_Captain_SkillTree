@@ -432,12 +432,10 @@ namespace CaptainSkillTree.Localization
 
                 // === Spear Tree: 연격창 (2개) ===
                 ["Tier3_Pierce_RequiredPoints"] = "Tier 3-1: [연격창] 필요 포인트",
-                ["Tier3_Rapid_DamageBonus"] = "Tier 3-1: [연격창] 무기 공격력 보너스",
+                ["Tier3_Rapid_DamageBonus"] = "Tier 3-1: [연격창] 관통 공격력 보너스",
 
-                // === Spear Tree: 폭발창 (3개) ===
-                ["Tier3_Explosion_Chance"] = "Tier 3-2: [폭발창] 발동 확률 (%)",
-                ["Tier3_Explosion_Radius"] = "Tier 3-2: [폭발창] 폭발 범위 (m)",
-                ["Tier3_Explosion_DamageBonus"] = "Tier 3-2: [폭발창] 공격력 보너스 (%)",
+                // === Spear Tree: 빠른창 (1개) ===
+                ["Tier3_QuickSpear_AttackSpeed"] = "Tier 3-2: [빠른창] 공격 속도 (%)",
 
                 // === Spear Tree: 회피 찌르기 (3개) ===
                 ["Tier4_Evasion_RequiredPoints"] = "Tier 4-1: [회피 찌르기] 필요 포인트",
@@ -506,20 +504,19 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [행운 마력] Eitr 무소모 발동 확률 (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [행운 마력] 필요 포인트",
 
-                // === Tier 5-1: 이중시전 - R키 액티브 (6개) ===
-                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [이중시전] 추가 투사체 개수",
-                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [이중시전] 투사체 데미지 비율 (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [이중시전] 투사체 각도 오프셋 (도)",
-                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [이중시전] Eitr 소모량",
-                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [이중시전] 쿨타임 (초)",
-                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [이중시전] 필요 포인트",
+                // === Tier 5-1: 연속 발사 - R키 액티브 (6개) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [연속 발사] 추가 발사체 개수",
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [연속 발사] 발사체 데미지 비율 (%)",
+                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [연속 발사] 각도 오프셋 (미사용)",
+                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [연속 발사] Eitr 소모량",
+                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [연속 발사] 쿨타임 (초)",
+                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [연속 발사] 필요 포인트",
 
                 // === Tier 5-2: 즉시 범위 힐 - H키 액티브 (6개) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [힐] 쿨타임 (초)",
                 ["Tier5_InstantAreaHeal_EitrCost"] = "Tier 5-2: [힐] Eitr 소모량",
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Tier 5-2: [힐] 회복량 (최대 HP 대비 %)",
                 ["Tier5_InstantAreaHeal_Range"] = "Tier 5-2: [힐] 치유 범위 (미터)",
-                ["Tier5_InstantAreaHeal_SelfHeal"] = "Tier 5-2: [힐] 자가 치유 허용",
                 ["Tier5_InstantAreaHeal_RequiredPoints"] = "Tier 5-2: [힐] 필요 포인트",
 
                 // ============================================
@@ -588,7 +585,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_FastMove_RequiredPoints"] = "Tier 2: [빠른 움직임] 필요 포인트",
 
                 // === Tier 3: 빠른 공격 ===
-                ["Tier3_CombatMastery_DamageBonus"] = "Tier 3: [빠른 공격] 공격력 보너스",
+                ["Tier3_CombatMastery_DamageBonus"] = "Tier 3: [빠른 공격] 베기/관통 공격력 보너스",
                 ["Tier3_CombatMastery_BuffDuration"] = "Tier 3: [빠른 공격] 버프 지속시간 (초)",
                 ["Tier3_CombatMastery_RequiredPoints"] = "Tier 3: [빠른 공격] 필요 포인트",
 
@@ -648,7 +645,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 3: 칼날 되치기 (2개) ===
                 ["Tier3_Riposte_RequiredPoints"] = "Tier 3: [칼날 되치기] 필요 포인트",
-                ["Tier3_Riposte_DamageBonus"] = "Tier 3: [칼날 되치기] 공격력 보너스",
+                ["Tier3_Riposte_DamageBonus"] = "Tier 3: [칼날 되치기] 베기 공격력 보너스",
 
                 // === Tier 4-1: 공방일체 (3개) ===
                 ["Tier4_AllInOne_RequiredPoints"] = "Tier 4-1: [공방일체] 필요 포인트",
@@ -704,7 +701,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [방어 강화] 필요 포인트",
 
                 // === Tier 3-2: 무거운 일격 (2개) ===
-                ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3-2: [무거운 일격] 공격력 보너스",
+                ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3-2: [무거운 일격] 타격 보너스",
                 ["Tier3_HeavyStrike_RequiredPoints"] = "Tier 3-2: [무거운 일격] 필요 포인트",
 
                 // === Tier 4: 밀어내기 (2개) ===
@@ -753,11 +750,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_SpinWheel_RequiredPoints"] = "Tier 1: [회전베기] 필요 포인트",
 
                 // === Tier 2-1 - 폴암강화 (2개) ===
-                ["Tier2-1_PolearmBoost_WeaponDamageBonus"] = "Tier 2-1: [폴암강화] 무기 공격력 보너스 (고정값)",
+                ["Tier2-1_PolearmBoost_WeaponDamageBonus"] = "Tier 2-1: [폴암강화] 관통 공격력 보너스 (고정값)",
                 ["Tier2-1_PolearmBoost_RequiredPoints"] = "Tier 2-1: [폴암강화] 필요 포인트",
 
                 // === Tier 2-2 - 영웅 타격 (2개) ===
-                ["Tier2-2_HeroStrike_KnockbackChance"] = "Tier 2-2: [영웅 타격] 넉백 확률 (%)",
+                ["Tier2-2_HeroStrike_KnockbackChance"] = "Tier 2-2: [영웅 타격] 스태거 확률 (%)",
                 ["Tier2-2_HeroStrike_RequiredPoints"] = "Tier 2-2: [영웅 타격] 필요 포인트",
 
                 // === Tier 3 - 광역 강타 (3개) ===
@@ -805,10 +802,10 @@ namespace CaptainSkillTree.Localization
                 // Mage Job Skills (메이지 직업 스킬) - 6개
                 // ============================================
                 ["Mage_AOE_Range"] = "액티브: 범위 (m)",
+                ["Mage_AOE_Max_Targets"] = "액티브: 최대 타겟 수",
                 ["Mage_Eitr_Cost"] = "액티브: 에이트르 소모",
                 ["Mage_Damage_Multiplier"] = "액티브: 데미지 배수 (%)",
                 ["Mage_Cooldown"] = "액티브: 쿨타임 (초)",
-                ["Mage_VFX_Name"] = "액티브: VFX 효과명",
                 ["Mage_Elemental_Resistance"] = "패시브: 속성 저항 (%)",
 
                 // ============================================

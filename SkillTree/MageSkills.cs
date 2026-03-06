@@ -197,13 +197,12 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 float range = Mage_Config.MageAOERangeValue;
-                string vfxName = Mage_Config.MageVFXNameValue;
-                
+
                 Vector3 playerPos = player.transform.position;
 
                 // SimpleVFX로 VFX 재생
                 SimpleVFX.Play("vfx_GodExplosion", playerPos, 3f);
-                
+
                 // 범위 내 모든 몬스터 찾기 (개선된 검색 로직)
                 List<Character> targets = new List<Character>();
                 Collider[] colliders = Physics.OverlapSphere(playerPos, range);
@@ -268,6 +267,13 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
+                // 가까운 순서로 정렬 후 최대 N마리로 제한 (Config 연동)
+                int maxTargets = Mage_Config.MageAOEMaxTargetsValue;
+                targets = targets
+                    .OrderBy(c => Vector3.Distance(playerPos, c.transform.position))
+                    .Take(maxTargets)
+                    .ToList();
+
                 // 각 몬스터에게 개별적으로 vfx_HealthUpgrade 효과를 적용하고 2초 후 데미지 적용
                 int validTargets = 0;
                 
@@ -275,11 +281,11 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (target != null && !target.IsDead())
                     {
-                        // 각 몬스터별로 따라다니는 vfx_HealthUpgrade 효과 시작
-                        Plugin.Instance?.StartCoroutine(AttachVFXToMonster(player, target, vfxName, 2f));
+                        // 각 몬스터별로 지연 데미지 적용 시작
+                        Plugin.Instance?.StartCoroutine(AttachVFXToMonster(player, target, 2f));
                         validTargets++;
                         
-                        Plugin.Log.LogDebug($"[메이지 지연 폭발] {target.GetHoverName()}에게 따라다니는 vfx_HealthUpgrade 적용, 2초 후 폭발 예정");
+                        Plugin.Log.LogDebug($"[메이지 지연 폭발] {target.GetHoverName()}에게 2초 후 폭발 예정");
                     }
                 }
                 
@@ -298,7 +304,7 @@ namespace CaptainSkillTree.SkillTree
         /// 몬스터에 VFX 재생 후 지연 데미지 적용
         /// ✅ EpicMMOSystem 방식으로 단순화 - while 루프 제거
         /// </summary>
-        private static IEnumerator AttachVFXToMonster(Player caster, Character target, string vfxName, float duration)
+        private static IEnumerator AttachVFXToMonster(Player caster, Character target, float duration)
         {
             if (caster == null || target == null) yield break;
 
@@ -306,7 +312,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 Vector3 targetPos = target.transform.position + Vector3.up * 1.5f;
-                SimpleVFX.Play(vfxName, targetPos, duration);
+                SimpleVFX.Play("vfx_HealthUpgrade", targetPos, duration);
             }
             catch (System.Exception ex)
             {
@@ -348,7 +354,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // SimpleVFX로 VFX + 사운드 재생
                 SimpleVFX.PlayWithSound("fx_siegebomb_explosion", "sfx_GiantDemolisher_rock_destroyed", targetPos, 2f);
-                
+
                 // 데미지 적용
                 HitData hitData = new HitData();
                 hitData.m_damage.m_damage = finalDamage;

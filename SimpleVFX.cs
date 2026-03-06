@@ -677,6 +677,8 @@ namespace CaptainSkillTree
             {
                 // SimpleVFX 전체 초기화 (debuff 번들 로드 + Valheim VFX 캐싱)
                 SimpleVFX.Initialize();
+                // ZNetScene에 커스텀 VFX 프리팹 등록 (spawn 명령어 사용 가능)
+                CaptainSkillTree.Prefab.PrefabRegistry.RegisterToZNetScene();
                 Plugin.Log?.LogInfo($"[SimpleVFX] 초기화 결과 - PlayerVFX: {(SimpleVFX.PlayerVFX != null ? "로드됨" : "null")}, MonsterVFX: {(SimpleVFX.MonsterVFX != null ? "로드됨" : "null")}");
             }
             catch (Exception ex)

@@ -217,40 +217,6 @@ namespace CaptainSkillTree.SkillTree
                 hit.m_damage.m_pierce *= (1f + bonusPercent);
             }
 
-            // 폭발창 효과 (확률 기반 폭발)
-            if (SkillEffect.HasSkill("spear_Step3_quick") && target != null)
-            {
-                float explosionChance = Spear_Config.SpearExplosionChanceValue;
-                if (UnityEngine.Random.Range(0f, 100f) < explosionChance)
-                {
-                    float radius = Spear_Config.SpearExplosionRadiusValue;
-                    float damageBonus = Spear_Config.SpearExplosionDamageBonusValue / 100f;
-
-                    // VFX 재생 (fx_shaman_protect - 발헤임 기본 VFX)
-                    VFX.VFXManager.PlayVFXMultiplayer("fx_shaman_protect", "", hit.m_point, UnityEngine.Quaternion.identity);
-
-                    // 범위 내 적에게 폭발 데미지
-                    var nearbyEnemies = Character.GetAllCharacters().Where(c =>
-                        c != null && !c.IsDead() && c != player &&
-                        Vector3.Distance(c.transform.position, hit.m_point) <= radius &&
-                        BaseAI.IsEnemy(player, c));
-
-                    float explosionDamage = hit.m_damage.m_pierce * damageBonus;
-                    foreach (var enemy in nearbyEnemies)
-                    {
-                        if (enemy == target) continue; // 이미 적중한 대상 제외
-                        HitData explosionHit = new HitData();
-                        explosionHit.m_damage.m_pierce = explosionDamage;
-                        explosionHit.m_point = enemy.transform.position;
-                        explosionHit.m_attacker = player.GetZDOID();
-                        enemy.Damage(explosionHit);
-                    }
-
-                    SkillEffect.DrawFloatingText(player, "💥 " + L.Get("explosion_spear", Spear_Config.SpearExplosionDamageBonusValue));
-                    Plugin.Log.LogDebug($"[폭발창] 폭발 발동 - 범위 {radius}m, 보너스 {Spear_Config.SpearExplosionDamageBonusValue}%");
-                }
-            }
-
             // 연격창
             SkillEffect.CheckDoubleAttack(player, target, hit);
 
@@ -413,11 +379,12 @@ namespace CaptainSkillTree.SkillTree
         {
             if (item.m_shared.m_skillType != Skills.SkillType.Knives) return;
 
-            // 빠른 공격 - 베기 데미지 +2
+            // 빠른 공격 - 베기/관통 공격력 각 +1
             float knifeDamageBonus = Knife_Skill.GetKnifeAttackDamageBonus(player);
             if (knifeDamageBonus > 0)
             {
                 if (result.m_slash > 0) result.m_slash += knifeDamageBonus;
+                if (result.m_pierce > 0) result.m_pierce += knifeDamageBonus;
             }
 
             // 치명적 피해 - 공격력 +25%
@@ -484,7 +451,7 @@ namespace CaptainSkillTree.SkillTree
                 totalMaceBonusPercent += Mace_Config.MaceStep1DamageBonusValue;
             }
 
-            // 무거운 타격 - 공격력 +3
+            // 무거운 일격 - 타격 +3
             if (SkillEffect.HasSkill("mace_Step3_branch_heavy"))
             {
                 totalMaceBonusFixed += Mace_Config.MaceStep3HeavyDamageBonusValue;
@@ -527,10 +494,10 @@ namespace CaptainSkillTree.SkillTree
                 totalSpearBonus += SkillTreeConfig.SpearStep3EvasionDamageBonusValue;
             }
 
-            // 연격창
+            // 연격창 - 관통 공격력 전용
             if (SkillEffect.HasSkill("spear_Step3_pierce"))
             {
-                totalSpearBonus += SkillTreeConfig.SpearStep3PierceDamageBonusValue;
+                result.m_pierce += SkillTreeConfig.SpearStep3PierceDamageBonusValue;
             }
 
             // 이연창 (버프 활성 시에만 적용)
@@ -558,7 +525,7 @@ namespace CaptainSkillTree.SkillTree
                 totalPolearmBonusPercent += SkillTreeConfig.PolearmStep1SuppressDamageValue;
             }
 
-            // 폴암강화 - 무기 공격력 +5
+            // 폴암강화 - 관통 공격력 +5
             if (SkillEffect.HasSkill("polearm_step4_charge"))
             {
                 totalPolearmBonusFixed += SkillTreeConfig.PolearmStep4ChargeDamageBonusValue;

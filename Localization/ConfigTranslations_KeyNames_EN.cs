@@ -428,16 +428,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_Throw_RequiredPoints"] = "Tier 2: [Throw Spear] Required Points",
                 ["Tier2_Throw_Cooldown"] = "Tier 2: [Throw Spear] Cooldown (sec)",
                 ["Tier2_Throw_DamageMultiplier"] = "Tier 2: [Throw Spear] Damage Multiplier (%)",
-                ["Legacy_Throw_BuffDuration"] = "Legacy: Not Used",
 
                 // === Spear Tree: Rapid Pierce (2 keys) ===
                 ["Tier3_Pierce_RequiredPoints"] = "Tier 3-1: [Rapid Pierce] Required Points",
-                ["Tier3_Rapid_DamageBonus"] = "Tier 3-1: [Rapid Pierce] Weapon Damage Bonus",
+                ["Tier3_Rapid_DamageBonus"] = "Tier 3-1: [Rapid Pierce] Pierce Damage Bonus",
 
-                // === Spear Tree: Explosive Spear (3 keys) ===
-                ["Tier3_Explosion_Chance"] = "Tier 3-2: [Explosive Spear] Trigger Chance (%)",
-                ["Tier3_Explosion_Radius"] = "Tier 3-2: [Explosive Spear] Explosion Radius (m)",
-                ["Tier3_Explosion_DamageBonus"] = "Tier 3-2: [Explosive Spear] Damage Bonus (%)",
+                // === Spear Tree: Fast Spear (1 key) ===
+                ["Tier3_QuickSpear_AttackSpeed"] = "Tier 3-2: [Fast Spear] Attack Speed (%)",
 
                 // === Spear Tree: Evasion Strike (3 keys) ===
                 ["Tier4_Evasion_RequiredPoints"] = "Tier 4-1: [Evasion Strike] Required Points",
@@ -450,7 +447,6 @@ namespace CaptainSkillTree.Localization
 
                 // === Spear Tree: Penetrating Spear (6 keys + Legacy 1) ===
                 ["Tier5_Penetrate_RequiredPoints"] = "Tier 5-1: [Penetrating Spear] Required Points",
-                ["Legacy_Penetrate_CritChance"] = "Legacy: Not Used",
                 ["Tier5_Penetrate_BuffDuration"] = "Tier 5-1: [Penetrating Spear] Buff Duration (sec)",
                 ["Tier5_Penetrate_LightningDamage"] = "Tier 5-1: [Penetrating Spear] Lightning Damage Multiplier (%)",
                 ["Tier5_Penetrate_HitCount"] = "Tier 5-1: [Penetrating Spear] Lightning Trigger Hit Count",
@@ -506,20 +502,19 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [Lucky Mana] Free Cast Trigger Chance (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [Lucky Mana] Required Points",
 
-                // === Tier 5-1: Dual Cast - R-Key Active (6) ===
-                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Dual Cast] Additional Projectile Count",
-                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Dual Cast] Projectile Damage Percent (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Dual Cast] Projectile Angle Offset (deg)",
-                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Dual Cast] Eitr Cost",
-                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Dual Cast] Cooldown (sec)",
-                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Dual Cast] Required Points",
+                // === Tier 5-1: Rapid Barrage - R-Key Active (6) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Rapid Barrage] Extra Projectile Count",
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Rapid Barrage] Projectile Damage Percent (%)",
+                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Rapid Barrage] Angle Offset (Unused)",
+                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Rapid Barrage] Eitr Cost",
+                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Rapid Barrage] Cooldown (sec)",
+                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Rapid Barrage] Required Points",
 
                 // === Tier 5-2: Instant Area Heal - H-Key Active (6) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [Heal] Cooldown (sec)",
                 ["Tier5_InstantAreaHeal_EitrCost"] = "Tier 5-2: [Heal] Eitr Cost",
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Tier 5-2: [Heal] Heal Amount (% of Max HP)",
                 ["Tier5_InstantAreaHeal_Range"] = "Tier 5-2: [Heal] Heal Range (m)",
-                ["Tier5_InstantAreaHeal_SelfHeal"] = "Tier 5-2: [Heal] Allow Self Heal",
                 ["Tier5_InstantAreaHeal_RequiredPoints"] = "Tier 5-2: [Heal] Required Points",
 
                 // ============================================
@@ -552,16 +547,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_AutoReload_Chance"] = "Tier 3: [Auto Reload] Trigger Chance (%)",
                 ["Tier3_AutoReload_RequiredPoints"] = "Tier 3: [Auto Reload] Required Points",
 
-                // === Tier 4-1: Rapid Fire Lv2 / 4-2: Final Strike (9) ===
+                // === Tier 4-1: Rapid Fire Lv2 / 4-2: First Strike (9) ===
                 ["Tier4_RapidFireLv2_Chance"] = "Tier 4-1: [Rapid Fire Lv2] Trigger Chance (%)",
                 ["Tier4_RapidFireLv2_ShotCount"] = "Tier 4-1: [Rapid Fire Lv2] Shot Count",
                 ["Tier4_RapidFireLv2_DamagePercent"] = "Tier 4-1: [Rapid Fire Lv2] Damage Percent (%)",
                 ["Tier4_RapidFireLv2_Delay"] = "Tier 4-1: [Rapid Fire Lv2] Shot Delay (sec)",
                 ["Tier4_RapidFireLv2_BoltConsumption"] = "Tier 4-1: [Rapid Fire Lv2] Bolt Consumption",
                 ["Tier4_RapidFireLv2_RequiredPoints"] = "Tier 4-1: [Rapid Fire Lv2] Required Points",
-                ["Tier4_FinalStrike_HpThreshold"] = "Tier 4-2: [Final Strike] Enemy HP Threshold (%)",
-                ["Tier4_FinalStrike_DamageBonus"] = "Tier 4-2: [Final Strike] Bonus Damage (%)",
-                ["Tier4_FinalStrike_RequiredPoints"] = "Tier 4-2: [Final Strike] Required Points",
+                ["Tier4_FinalStrike_HpThreshold"] = "Tier 4-2: [First Strike] Enemy HP Threshold (%)",
+                ["Tier4_FinalStrike_DamageBonus"] = "Tier 4-2: [First Strike] Bonus Damage (%)",
+                ["Tier4_FinalStrike_RequiredPoints"] = "Tier 4-2: [First Strike] Required Points",
 
                 // === Tier 5: One Shot - R-Key Active (5) ===
                 ["Tier5_OneShot_Duration"] = "Tier 5: [One Shot] Buff Duration (sec)",
@@ -588,7 +583,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_FastMove_RequiredPoints"] = "Tier 2: [Quick Movement] Required Points",
 
                 // === Tier 3: Quick Attack (3) ===
-                ["Tier3_CombatMastery_DamageBonus"] = "Tier 3: [Quick Attack] Damage Bonus",
+                ["Tier3_CombatMastery_DamageBonus"] = "Tier 3: [Quick Attack] Slash/Pierce Damage Bonus",
                 ["Tier3_CombatMastery_BuffDuration"] = "Tier 3: [Quick Attack] Buff Duration (sec)",
                 ["Tier3_CombatMastery_RequiredPoints"] = "Tier 3: [Quick Attack] Required Points",
 
@@ -648,7 +643,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 3: Riposte (2) ===
                 ["Tier3_Riposte_RequiredPoints"] = "Tier 3: [Riposte] Required Points",
-                ["Tier3_Riposte_DamageBonus"] = "Tier 3: [Riposte] Damage Bonus",
+                ["Tier3_Riposte_DamageBonus"] = "Tier 3: [Riposte] Slash Damage Bonus",
 
                 // === Tier 4-1: All-In-One (3) ===
                 ["Tier4_AllInOne_RequiredPoints"] = "Tier 4-1: [All-In-One] Required Points",
@@ -704,7 +699,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [Guard] Required Points",
 
                 // === Tier 3-2: Heavy Strike (2) ===
-                ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3-2: [Heavy Strike] Damage Bonus",
+                ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3-2: [Heavy Strike] Blunt Bonus",
                 ["Tier3_HeavyStrike_RequiredPoints"] = "Tier 3-2: [Heavy Strike] Required Points",
 
                 // === Tier 4: Push (2) ===
@@ -753,11 +748,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_SpinWheel_RequiredPoints"] = "Tier 1: [Spin Slash] Required Points",
 
                 // === Tier 2-1 - Polearm Enhancement (2) ===
-                ["Tier2-1_PolearmBoost_WeaponDamageBonus"] = "Tier 2-1: [Polearm Enhancement] Weapon Damage Bonus (flat)",
+                ["Tier2-1_PolearmBoost_WeaponDamageBonus"] = "Tier 2-1: [Polearm Enhancement] Pierce Damage Bonus (flat)",
                 ["Tier2-1_PolearmBoost_RequiredPoints"] = "Tier 2-1: [Polearm Enhancement] Required Points",
 
                 // === Tier 2-2 - Hero Strike (2) ===
-                ["Tier2-2_HeroStrike_KnockbackChance"] = "Tier 2-2: [Hero Strike] Knockback Chance (%)",
+                ["Tier2-2_HeroStrike_KnockbackChance"] = "Tier 2-2: [Hero Strike] Stagger Chance (%)",
                 ["Tier2-2_HeroStrike_RequiredPoints"] = "Tier 2-2: [Hero Strike] Required Points",
 
                 // === Tier 3 - Wide Slash (3) ===
@@ -805,10 +800,10 @@ namespace CaptainSkillTree.Localization
                 // Mage Job Skills - 6 Keys
                 // ============================================
                 ["Mage_AOE_Range"] = "Active: Range (m)",
+                ["Mage_AOE_Max_Targets"] = "Active: Max Target Count",
                 ["Mage_Eitr_Cost"] = "Active: Eitr Cost",
                 ["Mage_Damage_Multiplier"] = "Active: Damage Multiplier (%)",
                 ["Mage_Cooldown"] = "Active: Cooldown (sec)",
-                ["Mage_VFX_Name"] = "Active: VFX Effect Name",
                 ["Mage_Elemental_Resistance"] = "Passive: Elemental Resistance (%)",
 
                 // ============================================

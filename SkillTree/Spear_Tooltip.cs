@@ -116,15 +116,15 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 폭발창 툴팁 생성
+        /// 빠른창 툴팁 생성
         /// </summary>
         public static string GetSpearStep3QuickTooltip()
         {
-            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep3QuickTooltip() (폭발창) 호출됨");
+            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep3QuickTooltip() (빠른창) 호출됨");
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("spear_skill_explosion")}</size></color>",
-                L.Get("spear_desc_explosion", Spear_Config.SpearExplosionChanceValue, Spear_Config.SpearExplosionRadiusValue, Spear_Config.SpearExplosionDamageBonusValue),
+                L.Get("spear_desc_explosion", Spear_Config.SpearQuickAttackSpeedValue),
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requiredPoints = "3";

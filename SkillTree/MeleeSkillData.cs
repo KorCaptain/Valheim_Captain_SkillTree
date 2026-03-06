@@ -471,12 +471,12 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // 4-2단계: 폭발창
+            // 4-2단계: 빠른창
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step3_quick",
                 NameKey = "spear_skill_explosion",
                 DescriptionKey = "spear_desc_explosion",
-                DescriptionArgs = new object[] { Spear_Config.SpearExplosionChanceValue, Spear_Config.SpearExplosionRadiusValue, Spear_Config.SpearExplosionDamageBonusValue },
+                DescriptionArgs = new object[] { Spear_Config.SpearQuickAttackSpeedValue },
                 RequiredPoints = Spear_Config.SpearStep3RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,

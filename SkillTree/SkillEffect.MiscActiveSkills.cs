@@ -5,6 +5,7 @@ using UnityEngine;
 using HarmonyLib;
 using CaptainSkillTree.Gui;
 using CaptainSkillTree.Localization;
+using CaptainSkillTree.VFX;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -85,6 +86,65 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[발구르기] 실행 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 충격파방출 스킬 실행 (자동 발동 패시브 - HP 45% 이하)
+        /// </summary>
+        public static void ExecuteShockwaveSkill(Player player)
+        {
+            try
+            {
+                if (player == null || player.IsDead()) return;
+                if (!HasSkill("defense_Step4_mental")) return;
+
+                float radius = Defense_Config.ShockwaveRadiusValue;
+                float stunDuration = Defense_Config.ShockwaveStunDurationValue;
+                Vector3 playerPos = player.transform.position;
+
+                Collider[] hitColliders = Physics.OverlapSphere(playerPos, radius);
+                List<Character> hitEnemies = new List<Character>();
+
+                foreach (var collider in hitColliders)
+                {
+                    if (collider == null) continue;
+                    Character enemy = collider.GetComponentInParent<Character>();
+                    if (enemy == null || enemy == player || enemy.IsDead()) continue;
+                    if (!BaseAI.IsEnemy(player, enemy)) continue;
+                    if (hitEnemies.Contains(enemy)) continue;
+
+                    Vector3 dir = (enemy.transform.position - playerPos).normalized;
+
+                    // 스태거 적용 (3단계)
+                    HitData staggerHit = new HitData();
+                    staggerHit.m_damage.m_blunt = 0.1f;
+                    staggerHit.m_staggerMultiplier = 100f;
+                    staggerHit.m_pushForce = 0f;
+                    staggerHit.m_point = enemy.transform.position;
+                    staggerHit.m_dir = dir;
+                    staggerHit.SetAttacker(player);
+                    enemy.Damage(staggerHit);
+
+                    var traverse = Traverse.Create(enemy);
+                    if (traverse.Field("m_staggerTimer").FieldExists())
+                        traverse.Field("m_staggerTimer").SetValue(stunDuration);
+
+                    enemy.Stagger(dir);
+
+                    hitEnemies.Add(enemy);
+                }
+
+                VFXManager.PlayVFXMultiplayer("fx_Fader_CorpseExplosion", "", playerPos);
+                player.StartCoroutine(PlayStompSFX(playerPos));
+
+                if (hitEnemies.Count > 0)
+                    player.Message(MessageHud.MessageType.Center,
+                        L.Get("shockwave_effect", hitEnemies.Count.ToString()));
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[충격파방출] 실행 오류: {ex.Message}");
             }
         }
 

@@ -819,7 +819,7 @@ namespace CaptainSkillTree.Gui
                         string cleanLine = trimmedLine;
                         
                         // 키 정보 제거 (Y키:, R키:, G키:, H키:, F키: 등)
-                        cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"[YRGHF]키:\s*", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
+                        cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"[A-Z]키:\s*", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
                         
                         // 쿨타임 정보 제거
                         cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"\(쿨타임\s*\d+초\)", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
@@ -923,15 +923,20 @@ namespace CaptainSkillTree.Gui
         /// </summary>
         private string DetermineSkillType(string nodeId, string descMain)
         {
+            string rKey = SkillTreeConfig.HotKeyR?.Value ?? "Z";
+            string gKey = SkillTreeConfig.HotKeyG?.Value ?? "G";
+            string hKey = SkillTreeConfig.HotKeyH?.Value ?? "H";
+            string yKey = SkillTreeConfig.HotKeyY?.Value ?? "Y";
+
             // 액티브 스킬 키 확인
-            if (descMain.Contains("Y키:"))
-                return L.Get("skill_type_active_y");
-            if (descMain.Contains("R키:"))
-                return L.Get("skill_type_active_r");
-            if (descMain.Contains("G키:"))
-                return L.Get("skill_type_active_g");
-            if (descMain.Contains("H키:"))
-                return L.Get("skill_type_active_h");
+            if (descMain.Contains("Y키:") || descMain.Contains($"{yKey}키:"))
+                return L.Get("skill_type_active_key", yKey);
+            if (descMain.Contains("R키:") || descMain.Contains("Z키:") || descMain.Contains($"{rKey}키:"))
+                return L.Get("skill_type_active_key", rKey);
+            if (descMain.Contains("G키:") || descMain.Contains($"{gKey}키:"))
+                return L.Get("skill_type_active_key", gKey);
+            if (descMain.Contains("H키:") || descMain.Contains($"{hKey}키:"))
+                return L.Get("skill_type_active_key", hKey);
             if (descMain.Contains("F키:"))
                 return L.Get("skill_type_active_key", "F");
 
@@ -1063,7 +1068,7 @@ namespace CaptainSkillTree.Gui
                 @"\(쿨타임\s*\d+초\)",      // (쿨타임 30초) 형태
                 @",?\s*쿨타임\s*\d+초",     // , 쿨타임 30초 형태
                 @"쿨타임\s*\d+초",          // 쿨타임 30초 형태
-                @"[YRGHF]키:\s*"           // Y키:, R키:, G키:, H키:, F키: 제거
+                @"[A-Z]키:\s*"           // Y키:, R키:, G키:, H키:, F키: 제거
             };
             
             // 단순 텍스트 패턴 제거

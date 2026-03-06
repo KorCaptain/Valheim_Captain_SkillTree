@@ -245,6 +245,20 @@ namespace CaptainSkillTree.MMO_System
             }
         }
 
+        [HarmonyPatch(typeof(Game), "SpawnPlayer")]
+        [HarmonyPostfix]
+        public static void Game_SpawnPlayer_Postfix()
+        {
+            try
+            {
+                CaptainMMOBridge.ShowStartupNotification();
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[CaptainMMOPatches] Game_SpawnPlayer 알림 오류: {ex.Message}");
+            }
+        }
+
         #endregion
 
         #region === Console Commands ===

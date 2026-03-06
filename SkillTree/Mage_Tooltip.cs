@@ -20,6 +20,7 @@ namespace CaptainSkillTree.SkillTree
             public string description;        // 설명 (예: "12m 내의 모든 몬스터 vfx_HealthUpgrade 이팩트를 사용하고 3초뒤 공격 데미지 150%적용")
             public string additionalInfo;     // 추가 정보
             public string range;             // 범위 (예: "12m")
+            public string maxTargets;        // 최대 타겟 수 (예: "6")
             public string consumeEitr;       // Eitr 소모 (예: "35")
             public string skillType;         // 스킬 유형 (예: "액티브 스킬(Y)")
             public string cooldown;          // 쿨타임 (예: "90초")
@@ -41,19 +42,20 @@ namespace CaptainSkillTree.SkillTree
             var eitrCost = Mage_Config.MageEitrCostValue;
             var damageMultiplier = Mage_Config.MageDamageMultiplierValue;
             var cooldown = Mage_Config.MageCooldownValue;
-            var vfxName = Mage_Config.MageVFXNameValue;
-            
-            Plugin.Log.LogDebug($"[메이지 툴팁] 컨피그 값들 - 범위: {range}, Eitr: {eitrCost}, 데미지: {damageMultiplier}%, 쿨타임: {cooldown}초");
-            
+            var maxTargets = Mage_Config.MageAOEMaxTargetsValue;
+
+            Plugin.Log.LogDebug($"[메이지 툴팁] 컨피그 값들 - 범위: {range}, 최대타겟: {maxTargets}, Eitr: {eitrCost}, 데미지: {damageMultiplier}%, 쿨타임: {cooldown}초");
+
             // 패시브 스킬 값 가져오기
             var elementalResistance = Mage_Config.MageElementalResistanceValue;
-            
+
             // 상세 툴팁 데이터 생성
             var data = new MageTooltipData
             {
                 skillName = L.Get("job_mage"),
                 description = L.Get("mage_desc_aoe", damageMultiplier),
                 range = $"{range}m",
+                maxTargets = $"{maxTargets}",
                 consumeEitr = $"{eitrCost}",
                 skillType = L.Get("skill_type_job_active", "Y"),
                 cooldown = $"{cooldown}{L.Get("unit_seconds")}",
@@ -94,6 +96,12 @@ namespace CaptainSkillTree.SkillTree
 
                 // 범위 섹션
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{data.range}</size></color>\n";
+
+                // 최대 타겟 섹션
+                if (!string.IsNullOrEmpty(data.maxTargets))
+                {
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_max_targets")}: </size></color><color=white><size=16>{data.maxTargets}{L.Get("tooltip_targets_unit")}</size></color>\n";
+                }
 
                 // 소모 섹션
                 var consumeParts = new List<string>();
@@ -162,6 +170,7 @@ namespace CaptainSkillTree.SkillTree
                 description = L.Get("mage_desc_aoe", 150),
                 additionalInfo = "",
                 range = "12m",
+                maxTargets = "6",
                 consumeEitr = "35",
                 skillType = L.Get("skill_type_job_active", "Y"),
                 cooldown = $"90{L.Get("unit_seconds")}",

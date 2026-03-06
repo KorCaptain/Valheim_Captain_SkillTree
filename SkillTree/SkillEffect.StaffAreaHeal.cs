@@ -70,7 +70,10 @@ namespace CaptainSkillTree.SkillTree
                 // VFX 재생 (하드코딩)
                 try
                 {
-                    SimpleVFX.PlayWithSound("shaman_heal_aoe", "sfx_dverger_heal_finish", casterPos, 3f);
+                    // buff_03a_aura: 시전자 캐릭터에 부착 → 따라다니며 3초 후 자동 종료
+                    SimpleVFX.PlayOnPlayer(caster, "buff_03a_aura", 3f);
+                    // 사운드는 고정 위치 재생
+                    SimpleVFX.Play("sfx_dverger_heal_finish", casterPos, 2f);
                 }
                 catch (Exception ex)
                 {
@@ -100,8 +103,7 @@ namespace CaptainSkillTree.SkillTree
                         // 개별 힐 이펙트 (하드코딩)
                         try
                         {
-                            SimpleVFX.Play("vfx_spawn_small", targetPlayer.transform.position, 1f);
-                            // 힐 받는 캐릭터 발밑에 buff_03a VFX 추가
+                            // buff_03a: 힐 대상 발 밑에 부착 → 따라다니며 2초 후 자동 종료
                             SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a", 2f, new Vector3(0f, 0f, 0f));
                         }
                         catch { }

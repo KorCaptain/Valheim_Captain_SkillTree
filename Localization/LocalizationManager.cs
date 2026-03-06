@@ -17,6 +17,7 @@ namespace CaptainSkillTree.Localization
         private static Dictionary<string, Dictionary<string, string>> _translations = new Dictionary<string, Dictionary<string, string>>();
         private static string _currentLanguage = "ko";
         private static bool _initialized = false;
+        private static readonly HashSet<string> _warnedMissingKeys = new HashSet<string>();
 
         // Config entry for language selection (references SkillTreeConfig)
         public static ConfigEntry<string> LanguageConfig => SkillTree.SkillTreeConfig.Language;
@@ -687,7 +688,8 @@ namespace CaptainSkillTree.Localization
             }
 
             // Return key as fallback
-            Plugin.Log.LogWarning($"[Localization] ✗ Key not found in any language: '{key}'");
+            if (_warnedMissingKeys.Add(key))
+                Plugin.Log.LogWarning($"[Localization] ✗ Key not found in any language: '{key}'");
             return key;
         }
 

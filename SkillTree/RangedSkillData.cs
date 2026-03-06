@@ -543,7 +543,7 @@ namespace CaptainSkillTree.SkillTree
                 Id = "staff_Step6_dual_cast",
                 NameKey = "staff_dual_cast_name",
                 DescriptionKey = "staff_dual_cast_full_desc",
-                DescriptionArgs = new object[] { Staff_Config.StaffDoubleCastProjectileCountValue, Staff_Config.StaffDoubleCastAngleOffsetValue, Staff_Config.StaffDoubleCastDamagePercentValue, Staff_Config.StaffDoubleCastEitrCostValue, Staff_Config.StaffDoubleCastCooldownValue },
+                DescriptionArgs = new object[] { Staff_Config.StaffDoubleCastProjectileCountValue, Staff_Config.StaffDoubleCastDamagePercentValue, Staff_Config.StaffDoubleCastEitrCostValue, Staff_Config.StaffDoubleCastCooldownValue },
                 RequiredPoints = Staff_Config.StaffDoubleCastRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -656,7 +656,7 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_percent_format", Bow_Config.BowExplosiveArrowStaminaCostValue)}</size></color>\n";
 
             // 6. 스킬유형 (R키 강조)
-            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_key", "R")}</size></color>\n";
+            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z")}</size></color>\n";
 
             // 7. 쿨타임
             tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Bow_Config.BowExplosiveArrowCooldownValue)}</size></color>\n";
@@ -694,7 +694,7 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_format", 20)}</size></color>\n";
 
             // 6. 스킬유형 (R키 강조)
-            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_key", "R")}</size></color>\n";
+            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z")}</size></color>\n";
 
             // 7. 쿨타임
             tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Crossbow_Config.CrossbowOneShotCooldownValue)}</size></color>\n";

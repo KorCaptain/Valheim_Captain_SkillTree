@@ -45,14 +45,13 @@ namespace CaptainSkillTree.SkillTree
                 var eitrCost = Staff_Config.StaffHealEitrCostValue;
                 var healPercentage = Staff_Config.StaffHealPercentageValue;
                 var healRange = Staff_Config.StaffHealRangeValue;
-                var healSelf = Staff_Config.StaffHealSelfValue;
                 // 발사체 관련 변수 제거 - 즉시 힐링으로 변경
 
-                Plugin.Log.LogDebug($"[힐러모드 툴팁] 컨피그 값들 - 쿨타임: {cooldown}초, 힐링: {healPercentage}%, 범위: {healRange}m, 자힐: {healSelf}");
-                
+                Plugin.Log.LogDebug($"[힐러모드 툴팁] 컨피그 값들 - 쿨타임: {cooldown}초, 힐링: {healPercentage}%, 범위: {healRange}m");
+
                 // 상세 툴팁 데이터 생성
                 var requiredPoints = Staff_Config.StaffHealRequiredPointsValue;
-                string selfHealNote = healSelf ? L.Get("healer_self_heal_included") : L.Get("healer_self_heal_excluded");
+                string selfHealNote = L.Get("healer_self_heal_excluded");
 
                 var data = new HealerModeTooltipData
                 {
@@ -163,8 +162,7 @@ namespace CaptainSkillTree.SkillTree
         private static string GetHealerModeFallbackTooltip()
         {
             var requiredPoints = Staff_Config.StaffHealRequiredPointsValue;
-            var healSelf = Staff_Config.StaffHealSelfValue;
-            string selfHealNote = healSelf ? L.Get("healer_self_heal_included") : L.Get("healer_self_heal_excluded");
+            string selfHealNote = L.Get("healer_self_heal_excluded");
 
             var tooltipData = new HealerModeTooltipData
             {

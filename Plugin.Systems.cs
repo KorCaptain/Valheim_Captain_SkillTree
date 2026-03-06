@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
 using CaptainSkillTree.SkillTree;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree
 {
@@ -174,11 +175,12 @@ namespace CaptainSkillTree
                     TryApplyDodgeAndSpeedBuff(attacker as Player);
                 }
 
-                // 로직 3: 내가 공격을 받았을 때 - 발구르기 자동 발동 체크
+                // 로직 3: 내가 공격을 받았을 때 - 발구르기/충격파 자동 발동 체크
                 if (__instance.IsPlayer())
                 {
                     var player = __instance as Player;
                     CheckStompAutoTrigger(player);
+                    CheckShockwaveAutoTrigger(player);
                 }
             }
 
@@ -186,6 +188,7 @@ namespace CaptainSkillTree
             /// 발구르기 자동 발동 체크 (체력 35% 이하, 120초 쿨타임)
             /// </summary>
             private static Dictionary<Player, float> stompCooldowns = new Dictionary<Player, float>();
+            private static Dictionary<Player, float> shockwaveCooldowns = new Dictionary<Player, float>();
 
             private static void CheckStompAutoTrigger(Player player)
             {
@@ -228,6 +231,34 @@ namespace CaptainSkillTree
 
                 // 쿨타임 기록
                 stompCooldowns[player] = Time.time;
+            }
+
+            /// <summary>
+            /// 충격파방출 자동 발동 체크 (체력 45% 이하, 120초 쿨타임)
+            /// </summary>
+            private static void CheckShockwaveAutoTrigger(Player player)
+            {
+                if (player == null || player.IsDead()) return;
+                if (SkillTreeManager.Instance?.GetSkillLevel("defense_Step4_mental") <= 0) return;
+
+                float healthPercent = player.GetHealthPercentage();
+                if (healthPercent > 0.45f) return;
+
+                float cooldown = Defense_Config.ShockwaveCooldownValue;
+                if (shockwaveCooldowns.ContainsKey(player))
+                {
+                    float elapsed = Time.time - shockwaveCooldowns[player];
+                    if (elapsed < cooldown)
+                    {
+                        float remaining = cooldown - elapsed;
+                        player.Message(MessageHud.MessageType.Center,
+                            L.Get("shockwave_cooldown", remaining.ToString("F0")));
+                        return;
+                    }
+                }
+
+                SkillEffect.ExecuteShockwaveSkill(player);
+                shockwaveCooldowns[player] = Time.time;
             }
         }
     }

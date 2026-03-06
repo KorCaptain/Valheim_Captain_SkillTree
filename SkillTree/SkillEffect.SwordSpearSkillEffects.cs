@@ -245,9 +245,16 @@ namespace CaptainSkillTree.SkillTree
         {
             if (!HasSkill("spear_Step4_triple")) return;
 
+            // [Fix 1] 버프가 이미 활성 중이면 재발동 없음
+            if (IsSpearDualBuffActive(player)) return;
+
             float now = Time.time;
             if (!spearComboCount.ContainsKey(player))
                 spearComboCount[player] = 0;
+
+            // [Fix 2] 0.05초 이내 중복 히트 무시 (폭발창 AoE 다중 히트 대응)
+            if (spearLastHitTime.ContainsKey(player) && now - spearLastHitTime[player] < 0.05f)
+                return;
 
             if (spearLastHitTime.ContainsKey(player) && now - spearLastHitTime[player] < 3f)
             {

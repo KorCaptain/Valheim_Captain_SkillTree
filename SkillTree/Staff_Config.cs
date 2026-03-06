@@ -50,7 +50,6 @@ namespace CaptainSkillTree.SkillTree
         private static ConfigEntry<float> StaffHealEitrCost;
         private static ConfigEntry<float> StaffHealPercentage;
         private static ConfigEntry<float> StaffHealRange;
-        private static ConfigEntry<bool> StaffHealSelf;
         private static ConfigEntry<int> StaffHealRequiredPoints;
 
         /// <summary>
@@ -139,11 +138,11 @@ namespace CaptainSkillTree.SkillTree
 
                 // === Tier 5-1: 이중시전 (R키 액티브) ===
                 StaffDoubleCastProjectileCount = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_DoubleCast_AdditionalProjectileCount", 2,
+                    "Staff Tree", "Tier5_DoubleCast_AdditionalProjectileCount", 7,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_AdditionalProjectileCount"));
 
                 StaffDoubleCastDamagePercent = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 70f,
+                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 15f,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_ProjectileDamagePercent"));
 
                 StaffDoubleCastAngleOffset = SkillTreeConfig.BindServerSync(config,
@@ -179,10 +178,6 @@ namespace CaptainSkillTree.SkillTree
                     "Staff Tree", "Tier5_InstantAreaHeal_Range", 12f,
                     SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_Range"));
 
-                StaffHealSelf = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_InstantAreaHeal_SelfHeal", false,
-                    SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_SelfHeal"));
-
                 StaffHealRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_InstantAreaHeal_RequiredPoints", 3,
                     SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_RequiredPoints"));
@@ -217,7 +212,6 @@ namespace CaptainSkillTree.SkillTree
                 StaffHealEitrCost.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffHealPercentage.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffHealRange.SettingChanged += (sender, args) => OnStaffConfigChanged();
-                StaffHealSelf.SettingChanged += (sender, args) => OnStaffConfigChanged();
 
                 // 기타 스킬 이벤트
                 StaffExpertDamage.SettingChanged += (sender, args) => OnStaffConfigChanged();
@@ -283,8 +277,8 @@ namespace CaptainSkillTree.SkillTree
         public static int StaffLuckManaRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier4_luck_rp", StaffLuckManaRequiredPoints?.Value ?? 3);
 
         // Step 6-1: 이중시전
-        public static int StaffDoubleCastProjectileCountValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_count", StaffDoubleCastProjectileCount?.Value ?? 2);
-        public static float StaffDoubleCastDamagePercentValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_damage", StaffDoubleCastDamagePercent?.Value ?? 70f);
+        public static int StaffDoubleCastProjectileCountValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_count", StaffDoubleCastProjectileCount?.Value ?? 7);
+        public static float StaffDoubleCastDamagePercentValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_damage", StaffDoubleCastDamagePercent?.Value ?? 15f);
         public static float StaffDoubleCastAngleOffsetValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_angle", StaffDoubleCastAngleOffset?.Value ?? 5f);
         public static float StaffDoubleCastEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_eitr", StaffDoubleCastEitrCost?.Value ?? 20f);
         public static float StaffDoubleCastCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_cd", StaffDoubleCastCooldown?.Value ?? 30f);
@@ -295,7 +289,6 @@ namespace CaptainSkillTree.SkillTree
         public static float StaffHealEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_eitr", StaffHealEitrCost?.Value ?? 30f);
         public static float StaffHealPercentageValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_percent", StaffHealPercentage?.Value ?? 25f);
         public static float StaffHealRangeValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_range", StaffHealRange?.Value ?? 12f);
-        public static bool StaffHealSelfValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_self", StaffHealSelf?.Value ?? false ? 1f : 0f) > 0.5f;
         public static int StaffHealRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_rp", StaffHealRequiredPoints?.Value ?? 3);
 
         /// <summary>
@@ -307,8 +300,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogInfo("[Staff_Config] 현재 설정값:");
                 Plugin.Log.LogInfo($"  - 지팡이 전문가 공격력: +{StaffExpertDamageValue}%");
-                Plugin.Log.LogInfo($"  - 이중시전: 발사체 {StaffDoubleCastProjectileCountValue}개, 쿨타임 {StaffDoubleCastCooldownValue}초");
-                Plugin.Log.LogInfo($"  - 즉시 범위 힐: 힐량 {StaffHealPercentageValue}%, 범위 {StaffHealRangeValue}m, 쿨타임 {StaffHealCooldownValue}초, 자기치료 {StaffHealSelfValue}");
+                Plugin.Log.LogInfo($"  - 연속 발사: {StaffDoubleCastProjectileCountValue}발, {StaffDoubleCastDamagePercentValue}%, 쿨타임 {StaffDoubleCastCooldownValue}초");
+                Plugin.Log.LogInfo($"  - 즉시 범위 힐: 힐량 {StaffHealPercentageValue}%, 범위 {StaffHealRangeValue}m, 쿨타임 {StaffHealCooldownValue}초");
             }
             catch (Exception ex)
             {

@@ -8,15 +8,15 @@ using CaptainSkillTree.Localization;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 지팡이 이중 시전 액티브 스킬 시스템
-    /// R키로 버프 활성화 후 30초 내 마법 공격 시 추가 발사체 2개 발사
+    /// 지팡이 연속 발사 액티브 스킬 시스템
+    /// R키로 버프 활성화 후 30초 내 마법 공격 시 0.25초 간격으로 7발 추가 발사
     /// </summary>
     public static partial class SkillEffect
     {
-        // === 이중 시전 쿨타임 관리 ===
+        // === 연속 발사 쿨타임 관리 ===
         private static Dictionary<Player, float> staffDualExplosionCooldowns = new Dictionary<Player, float>();
 
-        // === 이중 시전 버프 상태 관리 ===
+        // === 연속 발사 버프 상태 관리 ===
         private static Dictionary<Player, bool> staffDualCastReady = new Dictionary<Player, bool>();
         private static Dictionary<Player, float> staffDualCastExpiry = new Dictionary<Player, float>();
         private static Dictionary<Player, Coroutine> staffDualCastBuffCoroutines = new Dictionary<Player, Coroutine>();
@@ -82,11 +82,11 @@ namespace CaptainSkillTree.SkillTree
                 staffDualCastBuffCoroutines[player] = coroutine;
 
                 DrawFloatingText(player, "✨ " + L.Get("staff_dual_cast_ready", 30), new Color(0.8f, 0.3f, 1f, 1f));
-                Plugin.Log.LogInfo($"[이중 시전] R키로 버프 활성화 - 지속시간: {buffDuration}초, 에이트르 소모: {eitrCost}");
+                Plugin.Log.LogInfo($"[연속 발사] R키로 버프 활성화 - 지속시간: {buffDuration}초, 에이트르 소모: {eitrCost}");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[이중 시전] 버프 활성화 오류: {ex.Message}");
+                Plugin.Log.LogError($"[연속 발사] 버프 활성화 오류: {ex.Message}");
             }
         }
 
@@ -104,7 +104,7 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[이중 시전] 버프 활성화 효과 재생 실패: {ex.Message}");
+                Plugin.Log.LogError($"[연속 발사] 버프 활성화 효과 재생 실패: {ex.Message}");
             }
         }
 
@@ -137,7 +137,7 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[이중 시전] 버프 효과 재생 실패: {ex.Message}");
+                Plugin.Log.LogError($"[연속 발사] 버프 효과 재생 실패: {ex.Message}");
             }
         }
 
@@ -169,7 +169,7 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[이중 시전] 상태 효과 재생 실패: {ex.Message}");
+                Plugin.Log.LogError($"[연속 발사] 상태 효과 재생 실패: {ex.Message}");
             }
         }
 
@@ -189,7 +189,7 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[이중 시전] 활성화 사운드 재생 오류: {ex.Message}");
+                Plugin.Log.LogError($"[연속 발사] 활성화 사운드 재생 오류: {ex.Message}");
             }
         }
 
@@ -296,12 +296,12 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[이중 시전] 버프 정리 오류: {ex.Message}");
+                Plugin.Log.LogError($"[연속 발사] 버프 정리 오류: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 이중 시전 실제 실행 (마법 공격 시 추가 발사체 2개 발사)
+        /// 연속 발사 실제 실행 (0.25초 간격으로 발사체 연속 발사)
         /// </summary>
         public static void PerformStaffDualCastAttack(Player player, ItemDrop.ItemData weapon, Vector3 baseDirection)
         {
@@ -309,66 +309,69 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!IsStaffDualCastReady(player)) return;
 
-                int projectileCount = Staff_Config.StaffDoubleCastProjectileCountValue;
-                float angleOffset = Staff_Config.StaffDoubleCastAngleOffsetValue;
-                float damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue / 100f;
-
-                Plugin.Log.LogInfo($"[이중 시전] Config 값 - 발사체: {projectileCount}개, 각도: {angleOffset}°, 데미지: {damagePercent * 100}%");
-
-                // 발사체 수에 따라 각도를 균등 분배
-                // 예: 2개 → -5°, +5° / 4개 → -15°, -5°, +5°, +15°
-                float totalSpread = angleOffset * 2f; // 전체 각도 범위
-                float angleStep = projectileCount > 1 ? totalSpread / (projectileCount - 1) : 0f;
-                float startAngle = -angleOffset;
-
-                for (int i = 0; i < projectileCount; i++)
-                {
-                    float angle = projectileCount > 1 ? startAngle + (angleStep * i) : 0f;
-                    Vector3 direction = Quaternion.Euler(0, angle, 0) * baseDirection;
-                    CreateValheimProjectile(player, weapon, direction, damagePercent, i + 1);
-                    Plugin.Log.LogDebug($"[이중 시전] 발사체 {i + 1}/{projectileCount} 생성, 각도: {angle:F1}°");
-                }
+                int shotCount = Staff_Config.StaffDoubleCastProjectileCountValue;
+                float damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue;
 
                 ClearStaffDualCastBuff(player);
-                DrawFloatingText(player, "✨ " + L.Get("staff_dual_cast_activated", projectileCount.ToString()), new Color(0.8f, 0.3f, 1f, 1f));
+
+                SkillTreeInputListener.Instance.StartCoroutine(
+                    StaffRapidFireCoroutine(player, weapon, baseDirection, shotCount, damagePercent));
+                DrawFloatingText(player, "✨ " + L.Get("staff_dual_cast_activated", shotCount.ToString()), new Color(0.8f, 0.3f, 1f));
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[이중 시전] 실제 실행 오류: {ex.Message}");
+                Plugin.Log.LogError($"[연속 발사] 실행 오류: {ex.Message}");
             }
         }
 
-        private static void CreateValheimProjectile(Player player, ItemDrop.ItemData weapon, Vector3 direction, float damagePercent, int projectileIndex)
+        private static IEnumerator StaffRapidFireCoroutine(Player player, ItemDrop.ItemData weapon,
+            Vector3 fireDirection, int shotCount, float damagePercent)
+        {
+            for (int i = 0; i < shotCount; i++)
+            {
+                if (player == null || player.IsDead() || player.GetCurrentWeapon() != weapon)
+                    yield break;
+
+                if (i > 0)
+                    yield return new WaitForSeconds(0.25f);
+
+                FireSingleStaffProjectile(player, weapon, fireDirection, damagePercent);
+            }
+        }
+
+        private static void FireSingleStaffProjectile(Player player, ItemDrop.ItemData weapon,
+            Vector3 fireDirection, float damagePercent)
         {
             try
             {
-                var attack = weapon.m_shared.m_attack;
-                if (attack.m_attackProjectile == null) return;
+                var weaponAttack = weapon.m_shared.m_attack;
+                if (weaponAttack.m_attackProjectile == null) return;
 
-                Vector3 startPos = player.transform.position + Vector3.up * 1.5f + player.transform.forward * 1.0f;
-                GameObject projectile = UnityEngine.Object.Instantiate(attack.m_attackProjectile, startPos, Quaternion.LookRotation(direction));
+                var spawnPoint = player.transform.position + player.transform.forward * 0.5f + Vector3.up * 1.4f;
 
-                if (projectile != null)
-                {
-                    var projectileComp = projectile.GetComponent<Projectile>();
-                    if (projectileComp != null)
-                    {
-                        projectileComp.m_damage = weapon.GetDamage();
-                        projectileComp.m_damage.Modify(damagePercent);
+                var projectileObj = UnityEngine.Object.Instantiate(
+                    weaponAttack.m_attackProjectile,
+                    spawnPoint,
+                    Quaternion.LookRotation(fireDirection));
 
-                        var rb = projectile.GetComponent<Rigidbody>();
-                        if (rb != null)
-                        {
-                            rb.velocity = direction.normalized * attack.m_projectileVel;
-                        }
+                var projectile = projectileObj.GetComponent<Projectile>();
+                if (projectile == null) return;
 
-                        projectileComp.Setup(player, direction * attack.m_projectileVel, -1f, null, weapon, null);
-                    }
-                }
+                var hitData = new HitData();
+                hitData.m_damage = weapon.GetDamage();
+                hitData.m_damage.Modify(damagePercent / 100f);
+                hitData.m_point = spawnPoint;
+                hitData.m_dir = fireDirection;
+                hitData.m_attacker = player.GetZDOID();
+                hitData.m_skill = Skills.SkillType.ElementalMagic;
+                hitData.SetAttacker(player);
+
+                float vel = weaponAttack.m_projectileVel > 0 ? weaponAttack.m_projectileVel : 60f;
+                projectile.Setup(player, fireDirection * vel, weaponAttack.m_projectileAccuracy, hitData, null, weapon);
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[이중 시전] 발사체 생성 오류: {ex.Message}");
+                Plugin.Log.LogError($"[연속 발사] 발사체 생성 오류: {ex.Message}");
             }
         }
 
@@ -388,7 +391,7 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogWarning($"[이중 시전] 정리 실패: {ex.Message}");
+                Plugin.Log.LogWarning($"[연속 발사] 정리 실패: {ex.Message}");
             }
         }
 
@@ -413,7 +416,7 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogDebug($"[이중시전 버프 VFX] 생성 실패: {ex.Message}");
+                Plugin.Log.LogDebug($"[연속 발사 버프 VFX] 생성 실패: {ex.Message}");
             }
         }
 
