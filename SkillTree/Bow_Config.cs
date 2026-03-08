@@ -110,7 +110,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier1_MultishotLv1_ArrowConsumption"), order: 48);
 
             BowMultishotDamagePercent = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier1_MultishotLv1_DamagePerArrow", 70f,
+                "Bow Tree", "Tier1_MultishotLv1_DamagePerArrow", 35f,
                 SkillTreeConfig.GetConfigDescription("Tier1_MultishotLv1_DamagePerArrow"), order: 48);
 
             BowMultishotRequiredPoints = SkillTreeConfig.BindServerSync(config,

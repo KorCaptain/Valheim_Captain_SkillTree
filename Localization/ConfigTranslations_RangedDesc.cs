@@ -27,7 +27,7 @@ namespace CaptainSkillTree.Localization
                 "【속성 데미지 보너스 (%)】\n" +
                 "지팡이의 속성 데미지(불, 얼음, 번개)를 증가시킵니다.\n" +
                 "마법 공격의 기본이 되는 핵심 스킬입니다.\n" +
-                "권장값: 10-15%",
+                "권장값: 3-7%",
 
                 // === Tier 1: 정신 집중 & 마력 흐름 ===
                 ["Tier1_MindFocus_EitrReduction"] =
@@ -546,7 +546,7 @@ namespace CaptainSkillTree.Localization
                 "【Elemental Damage Bonus (%)】\n" +
                 "Increases elemental damage (fire, frost, lightning) of staves.\n" +
                 "Foundation of magical attacks.\n" +
-                "Recommended: 10-15%",
+                "Recommended: 3-7%",
 
                 // === Tier 1: Mind Focus & Magic Flow ===
                 ["Tier1_MindFocus_EitrReduction"] =

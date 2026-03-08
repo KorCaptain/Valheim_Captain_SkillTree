@@ -120,7 +120,7 @@ namespace CaptainSkillTree.Localization
                 ["combo_spear_uses_remaining"] = "🎯 연공창 남은 횟수: {0}",
                 ["combo_spear_retrieve_failed"] = "창 회수 실패",
                 ["combo_spear_retrieved_equipped"] = "✅ 창 회수 및 장착 완료!",
-                ["combo_spear_inventory_full"] = "인벤토리가 가득 찼습니다",
+                ["combo_spear_inventory_full"] = "인벤토리가 가득 차서 창이 앞에 떨어졌습니다",
 
                 // === Polearm Skills ===
                 ["polearm_king_cooldown"] = "장창제왕 쿨다운 중! 남은 시간: {0}초",
@@ -414,7 +414,7 @@ namespace CaptainSkillTree.Localization
                 ["combo_spear_uses_remaining"] = "🎯 Combo Spear remaining: {0}",
                 ["combo_spear_retrieve_failed"] = "Failed to retrieve spear",
                 ["combo_spear_retrieved_equipped"] = "✅ Spear retrieved and equipped!",
-                ["combo_spear_inventory_full"] = "Inventory is full",
+                ["combo_spear_inventory_full"] = "Inventory full - spear dropped in front of you",
 
                 // === Polearm Skills ===
                 ["polearm_king_cooldown"] = "Spear King on cooldown! Remaining: {0}s",

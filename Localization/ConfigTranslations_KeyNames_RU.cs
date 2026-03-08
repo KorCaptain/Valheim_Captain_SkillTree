@@ -9,6 +9,11 @@ namespace CaptainSkillTree.Localization
             return new Dictionary<string, string>
             {
                 // ============================================
+                // Skill_Tree_Base
+                // ============================================
+                ["PassiveMessageDisplay"] = "Отображение пассивных сообщений",
+
+                // ============================================
                 // Attack Tree - 33 ключа
                 // ============================================
                 ["Tier0_AttackExpert_AllDamageBonus"] = "Ур.0: [Мастер Атаки] Бонус ко всему урону (%)",

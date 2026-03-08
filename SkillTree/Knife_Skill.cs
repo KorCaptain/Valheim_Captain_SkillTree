@@ -360,8 +360,23 @@ namespace CaptainSkillTree.SkillTree
                 float cooldown = Knife_Config.KnifeAssassinHeartCooldownValue;
                 JobSkillsUtility.SetCooldown(player, skillName, cooldown);
 
-                // 순간이동 실행 (적 뒤로)
-                TeleportBehindEnemy(player, targetEnemy);
+                // 순간이동 전 원래 위치 저장
+                Vector3 originalPosition = player.transform.position;
+
+                bool inDungeon = originalPosition.y > 4000f;
+
+                if (!inDungeon)
+                {
+                    // 외부: 몬스터 뒤로 순간이동
+                    TeleportBehindEnemy(player, targetEnemy);
+                }
+                else
+                {
+                    // 던전 내부: 이동 없이 VFX만 재생 (출구 트리거 발동 방지)
+                    SimpleVFX.Play("debuff", player.transform.position, 2f);
+                    SimpleVFX.Play("hit_01", targetEnemy.transform.position, 2f);
+                    Plugin.Log.LogDebug("[암살자의 심장] 던전 내부 - 이동 없이 VFX만 재생");
+                }
 
                 // 대상 스턴 적용
                 ApplyStunToTarget(targetEnemy, player);
@@ -377,8 +392,8 @@ namespace CaptainSkillTree.SkillTree
                     "💀 " + L.Get("knife_assassin_heart_activated"),
                     new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
 
-                // 순간이동 후 연속 공격 코루틴 실행
-                player.StartCoroutine(ExecuteAssassinHeartAttacks(player, targetEnemy));
+                // 순간이동 후 연속 공격 코루틴 실행 (원래 위치 전달)
+                player.StartCoroutine(ExecuteAssassinHeartAttacks(player, targetEnemy, originalPosition));
 
                 Plugin.Log.LogDebug($"[암살자의 심장] 순간이동 + 스턴 + 연속공격 시작 - 대상: {targetEnemy.m_name}");
 
@@ -442,27 +457,63 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 적 뒤로 순간이동 (카메라 방향 기준)
+        /// 적 뒤로 순간이동 (플레이어→몬스터 방향 기준, 단계적 벽 감지)
         /// </summary>
         private static void TeleportBehindEnemy(Player player, Character target)
         {
             try
             {
                 float behindDistance = Knife_Config.KnifeAssassinHeartTeleportBehindValue;
-
-                // 카메라 방향 기준으로 적의 뒤쪽 계산
-                // 플레이어 → 적 방향의 반대쪽 = 적의 뒤
                 Vector3 targetPos = target.transform.position;
-                Vector3 cameraForward = GetCameraForward(player);
 
-                // 적의 뒤쪽 = 카메라 방향으로 적을 통과한 위치
-                Vector3 teleportPosition = targetPos + cameraForward * behindDistance;
+                // 카메라 방향 대신 플레이어→몬스터 방향 기준으로 뒤쪽 계산
+                Vector3 playerToEnemy = targetPos - player.transform.position;
+                playerToEnemy.y = 0;
+                Vector3 backDir = playerToEnemy.sqrMagnitude > 0.001f
+                    ? playerToEnemy.normalized
+                    : GetCameraForward(player);
 
-                // 높이 보정 (지형에 맞춤)
-                float groundHeight;
-                if (ZoneSystem.instance.GetGroundHeight(teleportPosition, out groundHeight))
+                // character 계열 제외한 모든 레이어에서 벽 감지 (던전 벽 포함)
+                int wallMask = ~LayerMask.GetMask("character", "character_net", "character_trigger", "Water", "Ignore Raycast");
+
+                // 안전한 위치 탐색 (단계적 거리 줄이기)
+                Vector3 teleportPosition = targetPos + backDir * behindDistance;
+                bool foundSafe = false;
+                for (float dist = behindDistance; dist >= 0.5f; dist -= 0.5f)
                 {
-                    teleportPosition.y = groundHeight;
+                    Vector3 candidate = targetPos + backDir * dist;
+                    if (!Physics.Linecast(targetPos + Vector3.up * 0.5f, candidate + Vector3.up * 0.5f, wallMask))
+                    {
+                        teleportPosition = candidate;
+                        foundSafe = true;
+                        if (dist < behindDistance)
+                            Plugin.Log.LogDebug($"[암살자의 심장] 벽 감지 - {dist}m로 축소");
+                        break;
+                    }
+                }
+                if (!foundSafe)
+                {
+                    teleportPosition = targetPos + backDir * 0.3f;
+                    Plugin.Log.LogDebug("[암살자의 심장] 모든 후보 차단 - 최소 거리 사용");
+                }
+
+                // 높이 보정 (던전 내부 여부에 따라 다른 방식 사용)
+                if (teleportPosition.y > 4000f)
+                {
+                    // 던전 내(Y>4000): ZoneSystem은 외부 지형만 반환하므로 레이어 무관 Raycast 사용
+                    if (Physics.Raycast(teleportPosition + Vector3.up * 3f, Vector3.down, out RaycastHit dungeonHit, 8f))
+                    {
+                        teleportPosition.y = dungeonHit.point.y + 0.1f;
+                    }
+                    // 감지 실패 시 기존 Y 유지 (던전 내부이므로 이미 올바른 높이)
+                }
+                else
+                {
+                    float groundHeight;
+                    if (ZoneSystem.instance.GetGroundHeight(teleportPosition, out groundHeight))
+                    {
+                        teleportPosition.y = groundHeight;
+                    }
                 }
 
                 // 순간이동 VFX (사라지는 효과)
@@ -482,7 +533,7 @@ namespace CaptainSkillTree.SkillTree
                 // 순간이동 VFX (나타나는 효과)
                 SimpleVFX.Play("hit_01", teleportPosition, 2f);
 
-                Plugin.Log.LogDebug($"[암살자의 심장] 순간이동 완료 - 카메라 방향 기준 목표 뒤 {behindDistance}m");
+                Plugin.Log.LogDebug($"[암살자의 심장] 순간이동 완료 - 플레이어→몬스터 방향 {behindDistance}m");
             }
             catch (System.Exception ex)
             {
@@ -568,7 +619,7 @@ namespace CaptainSkillTree.SkillTree
         /// 암살자의 심장 연속 공격 코루틴
         /// 순간이동 후 설정된 횟수만큼 연속 공격 실행
         /// </summary>
-        private static IEnumerator ExecuteAssassinHeartAttacks(Player player, Character target)
+        private static IEnumerator ExecuteAssassinHeartAttacks(Player player, Character target, Vector3 originalPosition)
         {
             // 0.1초 대기 (순간이동 완료 후)
             yield return new WaitForSeconds(0.1f);
@@ -610,6 +661,13 @@ namespace CaptainSkillTree.SkillTree
             }
 
             Plugin.Log.LogDebug($"[암살자의 심장] 연속 공격 완료 - {attackCount}회");
+
+            // 원래 위치로 즉시 복귀
+            if (player != null && !player.IsDead())
+            {
+                player.transform.position = originalPosition;
+                Plugin.Log.LogDebug("[암살자의 심장] 원래 위치로 복귀 완료");
+            }
         }
 
         /// <summary>

@@ -86,24 +86,44 @@ namespace CaptainSkillTree.SkillTree
                 // 스태미나 소모
                 player.UseStamina(requiredStamina);
 
-                // 주변 몬스터 도발
-                int taunted = TauntNearbyEnemies(player);
-
                 // 쿨다운 설정
                 SetCooldown(player, "Tanker", Tanker_Config.TankerTauntCooldownValue);
                 ActiveSkillCooldownRegistry.SetCooldown("Y", Tanker_Config.TankerTauntCooldownValue);
 
-                // 스킬 발동 효과
-                PlayTankerEffects(player);
-                
                 // 탱커 방어 버프 시작 (피해 감소 + 지속 이펙트)
                 StartTankerDefenseBuff(player);
 
-                Plugin.Log.LogDebug($"[탱커 도발] {player.GetPlayerName()} 도발 완료 - {taunted}마리 도발");
+                // 시전 효과음 1회 재생
+                VFXManager.PlayVFX("sfx_dragon_scream", player.transform.position);
+
+                // 5회 반복 도발 코루틴 시작 (1초 간격)
+                if (Plugin.Instance != null)
+                    Plugin.Instance.StartCoroutine(TauntPulseRoutine(player));
+
+                Plugin.Log.LogDebug($"[탱커 도발] {player.GetPlayerName()} 5회 반복 도발 시작");
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[탱커 도발] 스킬 실행 중 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 도발 5회 반복 코루틴 - 1초 간격으로 어그로+VFX 발동
+        /// </summary>
+        private static IEnumerator TauntPulseRoutine(Player player)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (player == null || !player || player.IsDead()) yield break;
+
+                TauntNearbyEnemies(player);
+                PlayTankerEffects(player);
+
+                Plugin.Log.LogDebug($"[탱커 도발] {player.GetPlayerName()} {i + 1}/5회 펄스 발동");
+
+                if (i < 4)
+                    yield return new WaitForSeconds(1f);
             }
         }
 

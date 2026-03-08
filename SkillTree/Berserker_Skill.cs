@@ -197,13 +197,13 @@ namespace CaptainSkillTree.SkillTree
 
                 var state = rageStates[player];
                 int currentTier = Mathf.FloorToInt(currentDamageBonus / 20f);
-                currentTier = Mathf.Min(currentTier, 5);
+                currentTier = Mathf.Min(currentTier, 10);  // 최대 200%
 
                 if (currentTier > state.LastDamageTier && currentTier > 0)
                 {
                     int displayPercentage = currentTier * 20;
                     SkillEffect.ShowSkillEffectText(player,
-                        $"🔥 분노 {displayPercentage}% 🔥",
+                        $"🔥 추가 데미지 +{displayPercentage}% 🔥",
                         Color.red,
                         SkillEffect.SkillEffectTextType.XLarge);
 
@@ -306,7 +306,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 몬스터 적중 시 VFX 효과 (WackyEpicMMO CriticalVFX 방식)
+        /// 몬스터 적중 시 VFX 효과 (분노 버프 중 flash_round_yellow)
         /// </summary>
         public static void CreateMonsterHitEffect(Character target)
         {
@@ -314,8 +314,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (target == null) return;
 
-                // SimpleVFX 방식: Valheim 내장 VFX로 몬스터 타격 효과
-                SimpleVFX.PlayAtPosition(target.transform.position + Vector3.up * 1f, 2f);
+                SimpleVFX.Play("flash_round_ellow", target.transform.position + Vector3.up * 1f, 1.5f);
             }
             catch (Exception ex)
             {

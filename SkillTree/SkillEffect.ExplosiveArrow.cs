@@ -79,6 +79,7 @@ namespace CaptainSkillTree.SkillTree
                 // 5. 스킬 발동 (석궁 단 한발과 동일 - 즉시 준비 상태)
                 explosiveArrowCooldown[player] = Time.time;
                 explosiveArrowReady[player] = true;
+                ActiveSkillCooldownRegistry.SetCooldown("R", SkillTreeConfig.BowExplosiveArrowCooldownValue);
 
                 // 스태미나 소모
                 player.UseStamina(requiredStamina);

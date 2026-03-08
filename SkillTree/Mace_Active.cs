@@ -399,18 +399,15 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 방패 위치 계산: 플레이어 앞 + 왼쪽 오프셋 + 높이
-                Vector3 shieldPosition = player.transform.position +
-                                        player.transform.forward * 0.5f +    // 앞쪽 0.5m
-                                        -player.transform.right * 0.3f +     // 왼쪽 0.3m (방패 위치)
-                                        Vector3.up * 1.2f;                   // 위쪽 1.2m (가슴 높이)
+                // 시전자(플레이어 본체) 위치에 guard_01 VFX 재생
+                Vector3 casterPosition = player.GetCenterPoint();
 
-                Plugin.Log.LogInfo($"[수호자의 진심] 막기 반사 VFX 재생 시도 - 방패 위치: {shieldPosition}");
+                Plugin.Log.LogInfo($"[수호자의 진심] 반사 VFX 재생 시도 - 시전자 위치: {casterPosition}");
 
-                // ✅ 막을 시 guard_01 VFX 재생 (방패 앞 위치)
-                SimpleVFX.Play("guard_01", shieldPosition, 1.5f);
+                // ✅ 반사 시 시전자에게 guard_01 VFX 재생
+                SimpleVFX.Play("guard_01", casterPosition, 1.5f);
 
-                Plugin.Log.LogInfo($"[수호자의 진심] guard_01 VFX 재생 완료 (방패 앞)");
+                Plugin.Log.LogInfo($"[수호자의 진심] guard_01 VFX 재생 완료 (시전자)");
             }
             catch (System.Exception ex)
             {

@@ -1,4 +1,4 @@
-using BepInEx.Configuration;
+﻿using BepInEx.Configuration;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -55,6 +55,8 @@ namespace CaptainSkillTree.SkillTree
         // 5단계 (특수화 스탯)
         public static ConfigEntry<float> AttackSpecialStat;
 
+        public static ConfigEntry<float> AttackSpecialChance;
+
         // 6단계 (4가지)
         public static ConfigEntry<float> AttackCritDamageBonus;
         public static ConfigEntry<float> AttackTwoHandedBonus;
@@ -99,6 +101,7 @@ namespace CaptainSkillTree.SkillTree
         public static float AttackMeleeEnhancementValue => SkillTreeConfig.GetEffectiveValue("Attack_Step4_MeleeEnhancement", AttackMeleeEnhancement.Value);
         public static float AttackRangedEnhancementValue => SkillTreeConfig.GetEffectiveValue("Attack_Step4_RangedEnhancement", AttackRangedEnhancement.Value);
         public static float AttackSpecialStatValue => SkillTreeConfig.GetEffectiveValue("Attack_Step5_SpecialStat", AttackSpecialStat.Value);
+        public static float AttackSpecialChanceValue => SkillTreeConfig.GetEffectiveValue("Tier5_Charge_TriggerChance", AttackSpecialChance?.Value ?? 33f);
         public static float AttackCritDamageBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus", AttackCritDamageBonus.Value);
         public static float AttackTwoHandedBonusValue => SkillTreeConfig.GetEffectiveValue("Attack_Step6_TwoHandedBonus", AttackTwoHandedBonus.Value);
         public static float AttackStaffElementalValue => SkillTreeConfig.GetEffectiveValue("Attack_Step6_StaffElemental", AttackStaffElemental.Value);
@@ -227,6 +230,10 @@ namespace CaptainSkillTree.SkillTree
             AttackSpecialStat = SkillTreeConfig.BindServerSync(config,
                 "Attack Tree", "Tier5_SpecialStat_SpecBonus", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier5_SpecialStat_SpecBonus"), order: 10);
+
+            AttackSpecialChance = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier5_Charge_TriggerChance", 33f,
+                SkillTreeConfig.GetConfigDescription("Tier5_Charge_TriggerChance"), order: 10);
 
             AttackStep5RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Attack Tree", "Tier5_SpecialStat_RequiredPoints", 2,

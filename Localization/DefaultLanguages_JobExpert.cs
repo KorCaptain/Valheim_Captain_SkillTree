@@ -119,7 +119,7 @@ namespace CaptainSkillTree.Localization
                 ["mmo_epic_to_captain_complete"] = "EpicMMO -> Captain 데이터 복구 완료!",
                 ["mmo_epic_to_captain_detail"] = "Lv.{0}",
                 ["level_up_message"] = "<color=green>레벨 업!</color>\n+{0} 스킬포인트 (Lv.{1})",
-                ["mmo_level_sync_message"] = "<color=green>EpicMMO와 Level System을 연동합니다.</color>\nLv.{0} | 스킬포인트: {1}",
+                ["mmo_level_sync_message"] = "<color=#00BFFF>Lv.{0} / 스킬포인트. {1}</color>",
 
                 // === Job Skill Messages ===
                 ["job_no_job_selected"] = "직업을 선택하지 않았습니다.",
@@ -498,7 +498,7 @@ namespace CaptainSkillTree.Localization
                 ["mmo_epic_to_captain_complete"] = "EpicMMO -> Captain data recovery complete!",
                 ["mmo_epic_to_captain_detail"] = "Lv.{0}",
                 ["level_up_message"] = "<color=green>LEVEL UP!</color>\n+{0} Skill Points (Lv.{1})",
-                ["mmo_level_sync_message"] = "<color=green>EpicMMO and Level System synced.</color>\nLv.{0} | Skill Points: {1}",
+                ["mmo_level_sync_message"] = "<color=#00BFFF>Lv.{0} / Skill Point. {1}</color>",
 
                 // === Job Skill Messages ===
                 ["job_no_job_selected"] = "No job selected.",

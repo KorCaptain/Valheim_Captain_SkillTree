@@ -303,7 +303,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 연속 발사 실제 실행 (0.25초 간격으로 발사체 연속 발사)
         /// </summary>
-        public static void PerformStaffDualCastAttack(Player player, ItemDrop.ItemData weapon, Vector3 baseDirection)
+        public static void PerformStaffDualCastAttack(Player player, ItemDrop.ItemData weapon, Vector3 baseDirection, Vector3 aimSpot)
         {
             try
             {
@@ -315,7 +315,7 @@ namespace CaptainSkillTree.SkillTree
                 ClearStaffDualCastBuff(player);
 
                 SkillTreeInputListener.Instance.StartCoroutine(
-                    StaffRapidFireCoroutine(player, weapon, baseDirection, shotCount, damagePercent));
+                    StaffRapidFireCoroutine(player, weapon, baseDirection, shotCount, damagePercent, aimSpot));
                 DrawFloatingText(player, "✨ " + L.Get("staff_dual_cast_activated", shotCount.ToString()), new Color(0.8f, 0.3f, 1f));
             }
             catch (Exception ex)
@@ -325,7 +325,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         private static IEnumerator StaffRapidFireCoroutine(Player player, ItemDrop.ItemData weapon,
-            Vector3 fireDirection, int shotCount, float damagePercent)
+            Vector3 fireDirection, int shotCount, float damagePercent, Vector3 aimSpot)
         {
             for (int i = 0; i < shotCount; i++)
             {
@@ -335,12 +335,12 @@ namespace CaptainSkillTree.SkillTree
                 if (i > 0)
                     yield return new WaitForSeconds(0.25f);
 
-                FireSingleStaffProjectile(player, weapon, fireDirection, damagePercent);
+                FireSingleStaffProjectile(player, weapon, fireDirection, damagePercent, aimSpot);
             }
         }
 
         private static void FireSingleStaffProjectile(Player player, ItemDrop.ItemData weapon,
-            Vector3 fireDirection, float damagePercent)
+            Vector3 fireDirection, float damagePercent, Vector3 aimSpot)
         {
             try
             {
@@ -349,10 +349,17 @@ namespace CaptainSkillTree.SkillTree
 
                 var spawnPoint = player.transform.position + player.transform.forward * 0.5f + Vector3.up * 1.4f;
 
+                // aimSpot이 유효하면 실제 조준점 방향 사용 (기본 발사체와 동일한 시차 보정)
+                Vector3 actualDir = (aimSpot != Vector3.zero && (aimSpot - spawnPoint).sqrMagnitude > 0.01f)
+                    ? (aimSpot - spawnPoint).normalized
+                    : fireDirection;
+
+                CaptainSkillTree.VFX.VFXManager.PlaySound("sfx_dverger_fireball_rain_shot", spawnPoint, 2f);
+
                 var projectileObj = UnityEngine.Object.Instantiate(
                     weaponAttack.m_attackProjectile,
                     spawnPoint,
-                    Quaternion.LookRotation(fireDirection));
+                    Quaternion.LookRotation(actualDir));
 
                 var projectile = projectileObj.GetComponent<Projectile>();
                 if (projectile == null) return;
@@ -361,13 +368,13 @@ namespace CaptainSkillTree.SkillTree
                 hitData.m_damage = weapon.GetDamage();
                 hitData.m_damage.Modify(damagePercent / 100f);
                 hitData.m_point = spawnPoint;
-                hitData.m_dir = fireDirection;
+                hitData.m_dir = actualDir;
                 hitData.m_attacker = player.GetZDOID();
                 hitData.m_skill = Skills.SkillType.ElementalMagic;
                 hitData.SetAttacker(player);
 
                 float vel = weaponAttack.m_projectileVel > 0 ? weaponAttack.m_projectileVel : 60f;
-                projectile.Setup(player, fireDirection * vel, weaponAttack.m_projectileAccuracy, hitData, null, weapon);
+                projectile.Setup(player, actualDir * vel, weaponAttack.m_projectileAccuracy, hitData, null, weapon);
             }
             catch (Exception ex)
             {

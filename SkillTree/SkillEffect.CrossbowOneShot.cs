@@ -37,11 +37,6 @@ namespace CaptainSkillTree.SkillTree
             {
                 float remainingCooldown = crossbowOneShotCooldownTime - (Time.time - crossbowOneShotCooldown[player]);
                 DrawFloatingText(player, L.Get("crossbow_oneshot_cooldown", $"{remainingCooldown:F1}"));
-                if (crossbowOneShotCoroutine.ContainsKey(player) && crossbowOneShotCoroutine[player] != null)
-                {
-                    player.StopCoroutine(crossbowOneShotCoroutine[player]);
-                }
-                crossbowOneShotCoroutine[player] = player.StartCoroutine(ShowCooldownDisplay(player, remainingCooldown, L.Get("crossbow_oneshot_name")));
                 return;
             }
 

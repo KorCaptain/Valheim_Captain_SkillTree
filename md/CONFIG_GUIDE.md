@@ -64,7 +64,7 @@ Rogue Job Skills, Paladin Job Skills, Berserker Job Skills
 - Tier 3-3 : 체력증강
 - Tier 3-4 : 방패훈련
 - Tier 4-1 : 충격파방출
-- Tier 4-2 : 발구르기
+- Tier 4-2 : 발구르기	
 - Tier 4-3 : 바위피부
 - Tier 5-1 : 지구력
 - Tier 5-2 : 기민함

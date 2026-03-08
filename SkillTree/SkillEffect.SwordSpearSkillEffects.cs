@@ -350,6 +350,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 쿨타임 시작
             spearPenetrateCooldownEndTime[player] = Time.time + cooldown;
+            ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
 
             // VFX 재생 (플레이어 위치)
             SimpleVFX.Play("vfx_offering_activate", player.transform.position, 1f);

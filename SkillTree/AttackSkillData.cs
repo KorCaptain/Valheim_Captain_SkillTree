@@ -233,7 +233,7 @@ namespace CaptainSkillTree.SkillTree
                 Id = "atk_special",
                 NameKey = "atk_special_name",
                 DescriptionKey = "atk_special_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackSpecialStatValue },
+                DescriptionArgs = new object[] { Attack_Config.AttackSpecialChanceValue, Attack_Config.AttackSpecialStatValue },
                 RequiredPoints = Attack_Config.AttackStep5RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
@@ -247,9 +247,9 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_special_effect", SkillTreeConfig.AttackSpecialStatValue),
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_special_effect", Attack_Config.AttackSpecialChanceValue, Attack_Config.AttackSpecialStatValue),
                             new Color(1f, 0.9f, 0.3f), SkillEffect.SkillEffectTextType.Standard);
-                        Plugin.Log.LogInfo($"[특수화 스탯] 효과 적용 완료 - 치명타 확률 +{SkillTreeConfig.AttackSpecialStatValue}%");
+                        Plugin.Log.LogInfo($"[충전] 습득 - 공격 시 {Attack_Config.AttackSpecialChanceValue}% 확률로 스태미나 {Attack_Config.AttackSpecialStatValue}% 회복");
                     }
                 }
             });

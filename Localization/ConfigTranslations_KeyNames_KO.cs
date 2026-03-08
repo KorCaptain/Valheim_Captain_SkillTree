@@ -17,6 +17,7 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_H"] = "보조 스킬 키",
                 ["HUD_PosX"] = "HUD X 위치",
                 ["HUD_PosY"] = "HUD Y 위치",
+                ["PassiveMessageDisplay"] = "패시브 메시지 표시",
 
                 // ============================================
                 // Attack Tree (공격 트리) - 33개
@@ -59,9 +60,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_RangedEnhance_RangedDamageBonus"] = "Tier 4-3: [원거리 강화] 데미지 보너스 (%)",
                 ["Tier4_RangedEnhance_RequiredPoints"] = "Tier 4-3: [원거리 강화] 필요 포인트",
 
-                // === Tier 5: 특수화 스탯 (2개) ===
-                ["Tier5_SpecialStat_SpecBonus"] = "Tier 5: [특수화 스탯] 무기 특화 보너스",
-                ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [특수화 스탯] 필요 포인트",
+                // === Tier 5: 충전 (3개) ===
+                ["Tier5_SpecialStat_SpecBonus"] = "Tier 5: [충전] 스태미나 회복량 (%)",
+                ["Tier5_Charge_TriggerChance"] = "Tier 5: [충전] 발동 확률 (%)",
+                ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [충전] 필요 포인트",
 
                 // === Tier 6: 최종 강화 (8개) ===
                 ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 (%)",

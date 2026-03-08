@@ -219,6 +219,19 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> HudPosX;
         public static ConfigEntry<int> HudPosY;
 
+        // 패시브 메시지 표시 방식
+        public static ConfigEntry<string> PassiveMessageDisplay;
+        public static int PassiveMessageDisplayValue {
+            get {
+                switch (PassiveMessageDisplay?.Value) {
+                    case "TopLeft": return 1;
+                    case "Off":     return 2;
+                    default:        return 0; // "Center"
+                }
+            }
+        }
+
+
         // 동적 값 접근 프로퍼티
         public static string LanguageValue => Language?.Value ?? "Korean";
         public static float MoveSpeedMaxBonusValue => GetEffectiveValue("move_speed_max_bonus", MoveSpeedMaxBonus?.Value ?? 70f);
@@ -673,6 +686,20 @@ namespace CaptainSkillTree.SkillTree
                     new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HUD_PosY"), Order = -15 }
                 )
             );
+
+            PassiveMessageDisplay = config.Bind(
+                "Skill_Tree_Base",
+                "PassiveMessageDisplay",
+                "Center",
+                new ConfigDescription(
+                    GetConfigDescription("PassiveMessageDisplay"),
+                    new AcceptableValueList<string>("Center", "TopLeft", "Off"),
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("PassiveMessageDisplay"), Order = -16 }
+                )
+            );
+
+            // en.json 항상 자동 생성 (커뮤니티 번역 템플릿)
+            CaptainSkillTree.Localization.LocalizationExporter.ExportEnJson();
 
             Plugin.Log.LogDebug("[SkillTreeConfig] Skill_Tree_Base 설정 초기화 완료");
 

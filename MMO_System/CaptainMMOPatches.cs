@@ -231,31 +231,17 @@ namespace CaptainSkillTree.MMO_System
 
         #region === Game Events ===
 
-        [HarmonyPatch(typeof(Game), "SavePlayerProfile")]
-        [HarmonyPostfix]
-        public static void Game_SavePlayerProfile_Postfix()
-        {
-            try
-            {
-                CaptainMMOBridge.OnPlayerSave();
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[CaptainMMOPatches] Game_SavePlayerProfile 오류: {ex.Message}");
-            }
-        }
-
         [HarmonyPatch(typeof(Game), "SpawnPlayer")]
         [HarmonyPostfix]
         public static void Game_SpawnPlayer_Postfix()
         {
             try
             {
-                CaptainMMOBridge.ShowStartupNotification();
+                LevelSyncManager.Instance.Reset();
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[CaptainMMOPatches] Game_SpawnPlayer 알림 오류: {ex.Message}");
+                Plugin.Log.LogError($"[CaptainMMOPatches] Game_SpawnPlayer 오류: {ex.Message}");
             }
         }
 

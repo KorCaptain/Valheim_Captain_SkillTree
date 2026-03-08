@@ -133,26 +133,6 @@ namespace CaptainSkillTree.SkillTree
                                 new Color(0.2f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
                         }
 
-                        // 활 집중 사격 - 치명타 확률 증가 (치명타 시스템 통합)
-                        if (isBow && manager.GetSkillLevel("bow_Step2_focus") > 0)
-                        {
-                            float critChance = SkillTreeConfig.BowStep2FocusCritBonusValue;
-                            // 치명타 시스템(Critical.cs)과 통합
-                            float totalCritChance = Critical.CalculateCritChance(player, Skills.SkillType.Bows) + critChance;
-
-                            if (UnityEngine.Random.Range(0f, 100f) < totalCritChance)
-                            {
-                                // 치명타 데미지(CriticalDamage.cs)에서 배율 가져오기
-                                float critDamageMultiplier = CriticalDamage.CalculateCritDamageMultiplier(player, Skills.SkillType.Bows);
-                                totalDamageMultiplier *= critDamageMultiplier;
-                                showEffect = true;
-                                isAttackTreeEffect = true;
-                                SkillEffect.ShowSkillEffectText(player, "🎯 " + L.Get("focus_fire_crit", $"{critDamageMultiplier:F1}"),
-                                    new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
-                                Plugin.Log.LogDebug($"[활 집중 사격] 치명타 발동 - 확률: {totalCritChance}%, 배율: {critDamageMultiplier:F1}x");
-                            }
-                        }
-
                         // 석궁 특화 (공격력 증가)
                         if (isCrossbow && manager.GetSkillLevel("atk_crossbow_bonus") > 0 && 
                             UnityEngine.Random.Range(0f, 100f) < SkillTreeConfig.AttackCrossbowBonusChanceValue)
@@ -217,20 +197,7 @@ namespace CaptainSkillTree.SkillTree
                         isAttackTreeEffect = true;
                     }
 
-                    // 4단계: 정밀 공격 (치명타 확률 +5%) - Valheim 표준 치명타 시스템 활용
-                    if (manager.GetSkillLevel("atk_crit_chance") > 0)
-                    {
-                        // Valheim 표준 치명타 시스템과 연동하여 추가 보너스만 제공
-                        float critBonus = 0.05f; // 5% 치명타 확률 보너스
-                        if (UnityEngine.Random.Range(0f, 1f) < critBonus)
-                        {
-                            totalDamageMultiplier *= 1.3f; // 추가 치명타 보너스
-                            showEffect = true;
-                            isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "💀 " + L.Get("precision_attack"),
-                                new Color(1f, 0.1f, 0.1f), SkillEffect.SkillEffectTextType.Critical);
-                        }
-                    }
+                    // 4단계: 정밀 공격 - Valheim GetRandomSkillFactor 패치(하단)에서 처리됨 (중복 적용 금지)
 
                     // 4단계: 근접 강화 (근접무기 2연속 공격 시 +10% 추가 피해)
                     if (manager.GetSkillLevel("atk_melee_crit") > 0 && currentWeapon != null)
@@ -238,14 +205,7 @@ namespace CaptainSkillTree.SkillTree
                         CheckMeleeCombo(player, ref totalDamageMultiplier, ref showEffect, ref isAttackTreeEffect);
                     }
 
-                    // 6단계: 약점 공격 (치명타 피해 +[CONFIG]%)
-                    if (manager.GetSkillLevel("atk_crit_dmg") > 0 && hit.m_damage.GetTotalDamage() > 50f)
-                    {
-                        float bonus = SkillTreeConfig.AttackCritDamageBonusValue / 100f;
-                        totalDamageMultiplier *= (1f + bonus);
-                        showEffect = true;
-                        isAttackTreeEffect = true;
-                    }
+                    // 6단계: 약점 공격 - Valheim GetRandomSkillFactor 패치(하단)에서 치명타 시 처리됨 (중복 적용 금지)
 
                     // 6단계: 양손 분쇄 (양손 무기 공격력 +[CONFIG]%)
                     if (manager.GetSkillLevel("atk_twohand_crush") > 0 && currentWeapon != null)
@@ -285,6 +245,21 @@ namespace CaptainSkillTree.SkillTree
                         }
                     }
 
+                    // 5단계: 충전 - 공격 시 33% 확률로 스태미나 회복
+                    if (manager.GetSkillLevel("atk_special") > 0)
+                    {
+                        if (UnityEngine.Random.Range(0f, 100f) < Attack_Config.AttackSpecialChanceValue)
+                        {
+                            float maxStamina = player.GetMaxStamina();
+                            float recoveryAmount = maxStamina * (Attack_Config.AttackSpecialStatValue / 100f);
+                            player.UseStamina(-recoveryAmount);
+                            SkillEffect.ShowSkillEffectText(player,
+                                $"+{recoveryAmount:F0}",
+                                Color.yellow,
+                                SkillEffect.SkillEffectTextType.Combat);
+                        }
+                    }
+
                     // 4단계: 원거리 강화 (원거리 무기 공격력 +5%)
                     if (manager.GetSkillLevel("atk_ranged_enhance") > 0 && currentWeapon != null)
                     {
@@ -316,11 +291,24 @@ namespace CaptainSkillTree.SkillTree
                             SkillEffect.ShowSkillEffectText(player, "⚔️ " + L.Get("attack_expert"),
                                 new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
                         }
-                        
+
                         // 디버깅 로그 (가끔씩만)
                         if (UnityEngine.Random.Range(0f, 1f) < 0.02f)
                         {
                             Plugin.Log.LogInfo($"[공격 트리] 총 데미지 배율: {totalDamageMultiplier:F2}x");
+                        }
+                    }
+
+                    // === 커스텀 치명타 시스템 (모든 무기 통합 처리) ===
+                    // Critical.cs에서 무기별 보너스 + 공통 보너스(atk_crit_chance 등) 모두 합산
+                    if (currentWeapon != null)
+                    {
+                        var weaponSkillType = currentWeapon.m_shared.m_skillType;
+                        float critChance = Critical.CalculateCritChance(player, weaponSkillType);
+                        if (Critical.RollCritical(critChance))
+                        {
+                            float critDmgBonus = CriticalDamage.CalculateCritDamageMultiplier(player, weaponSkillType);
+                            CriticalDamage.ApplyCriticalDamage(player, ref hit, critDmgBonus, weaponSkillType);
                         }
                     }
                 }
@@ -438,38 +426,6 @@ namespace CaptainSkillTree.SkillTree
     // ===== 중복 패치 제거 완료 =====
     // 모든 공격 전문화 로직은 Character_Damage_AttackTree_Patch에서 통합 처리됨
 
-    // 치명타 확률 및 피해 증가 패치
-    [HarmonyPatch(typeof(Character), nameof(Character.GetRandomSkillFactor))]
-    public static class SkillTree_Character_GetRandomSkillFactor_CritBonus_Patch
-    {
-        [HarmonyPriority(Priority.Low)]
-        public static void Postfix(Character __instance, Skills.SkillType skill, ref float __result)
-        {
-            try
-            {
-                if (!__instance.IsPlayer()) return;
-
-                // 정밀 공격: 치명타 확률 +5%
-                if (SkillEffect.HasSkill("atk_crit_chance"))
-                {
-                    __result += 0.05f;
-                }
-
-                // 대마법사 스킬 제거됨
-
-                // 약점 공격: 치명타 피해 +7%
-                if (SkillEffect.HasSkill("atk_crit_dmg") && __result > 1.0f) // 치명타 발생 시
-                {
-                    __result += 0.07f;
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[스킬트리→발하임] GetRandomSkillFactor 치명타 패치 오류: {ex.Message}");
-            }
-        }
-    }
-
     // 양손 무기 공격력 증가 패치
     [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetDamage), new[] { typeof(int), typeof(float) })]
     public static class SkillTree_ItemData_GetDamage_TwoHandedCrush_Patch
@@ -494,152 +450,6 @@ namespace CaptainSkillTree.SkillTree
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[스킬트리→발하임] GetDamage 양손분쇄 패치 오류: {ex.Message}");
-            }
-        }
-    }
-
-    // 공격 전문가 스킬 툴팁 표시 패치
-    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip),
-        new[] { typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int) })]
-    public static class AttackTree_ItemData_GetTooltip_Patch
-    {
-        private const string COL_TOTAL = "orange";
-        private const string COL_BASE  = "white";
-        private const string COL_BONUS = "#4FC3F7";
-        private const string COL_GRAY  = "#808080";
-
-        private static string BuildDmgLine(string line, float baseVal, float flatBonus, float pctBonus)
-        {
-            int colonIdx = line.IndexOf(':');
-            if (colonIdx < 0) return line;
-            string label = line.Substring(0, colonIdx + 1);
-
-            bool hasFlat = flatBonus > 0f;
-            bool hasPct  = pctBonus  > 0f;
-            if (!hasFlat && !hasPct) return line;
-
-            float total = (baseVal + flatBonus) * (1f + pctBonus / 100f);
-
-            if (hasFlat && !hasPct)
-                return $"{label} <color={COL_TOTAL}>{total:F0}</color> " +
-                       $"<color={COL_GRAY}>(</color><color={COL_BASE}>{baseVal:F0}</color>" +
-                       $"<color={COL_GRAY}> + </color><color={COL_BONUS}>{flatBonus:F0}</color>" +
-                       $"<color={COL_GRAY}>)</color>";
-
-            string inner = hasFlat
-                ? $"<color={COL_GRAY}>(</color><color={COL_BASE}>{baseVal:F0}</color>" +
-                  $"<color={COL_GRAY}> + </color><color={COL_BONUS}>{flatBonus:F0}</color>" +
-                  $"<color={COL_GRAY}>)</color>"
-                : $"<color={COL_BASE}>{baseVal:F0}</color>";
-
-            return $"{label} <color={COL_TOTAL}>{total:F0}</color> " +
-                   $"<color={COL_GRAY}>({inner} * </color>" +
-                   $"<color={COL_BONUS}>{pctBonus:F0}%</color>" +
-                   $"<color={COL_GRAY}>)</color>";
-        }
-
-        [HarmonyPostfix]
-        private static void Postfix(ItemDrop.ItemData item, int qualityLevel, bool crafting, float worldLevel, int stackOverride, ref string __result)
-        {
-            try
-            {
-                // 무기 아이템만 처리
-                if (item?.m_shared == null) return;
-                if (item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.OneHandedWeapon &&
-                    item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.TwoHandedWeapon &&
-                    item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.TwoHandedWeaponLeft &&
-                    item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Bow &&
-                    item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Torch) return;
-
-                // 크래프팅 화면이 아닐 때만 표시
-                if (crafting) return;
-
-                // 플레이어 확인
-                var player = Player.m_localPlayer;
-                if (player == null) return;
-
-                var manager = SkillTreeManager.Instance;
-                if (manager == null) return;
-
-                string bonusText = "";
-                float physFixed = 0f, elemFixed = 0f;
-                float physPct   = 0f, elemPct   = 0f;
-
-                // 보너스 수집
-                if (manager.GetSkillLevel("attack_root") > 0)
-                {
-                    float pct = SkillTreeConfig.AttackRootDamageBonusValue;
-                    physPct += pct;
-                    elemPct += pct;
-                    bonusText += $"\n<color=#ffd700>⚔️ 공격 전문가: 모든 공격력 +{pct}%</color>";
-                }
-
-                if (manager.GetSkillLevel("atk_base") > 0)
-                {
-                    float p = SkillTreeConfig.AttackBasePhysicalDamageValue;
-                    float e = SkillTreeConfig.AttackBaseElementalDamageValue;
-                    physFixed += p;
-                    elemFixed += e;
-                    bonusText += $"\n<color=#00ff00>💪 기본 공격: 관통 +{p}, 화염 +1</color>";
-                }
-
-                if (manager.GetSkillLevel("atk_twohand_drain") > 0)
-                {
-                    float p = SkillTreeConfig.AttackTwoHandDrainPhysicalDamageValue;
-                    float e = SkillTreeConfig.AttackTwoHandDrainElementalDamageValue;
-                    physPct += p;
-                    elemPct += e;
-                    bonusText += $"\n<color=#ff8c00>🔥 공격 증가: 물리 +{p}%, 속성 +{e}%</color>";
-                }
-
-                // 치명타 정보 추가
-                var weaponType = item.m_shared.m_skillType;
-                float critChance = Critical.CalculateCritChance(player, weaponType);
-                float critDmg    = CriticalDamage.CalculateCritDamageMultiplier(player, weaponType);
-
-                if (critChance > 0f || critDmg > 0f)
-                {
-                    string critInfo = "💥 치명타:";
-                    if (critChance > 0f) critInfo += $" +{critChance:F0}% 확률";
-                    if (critChance > 0f && critDmg > 0f) critInfo += ",";
-                    if (critDmg    > 0f) critInfo += $" +{critDmg:F0}% 피해";
-                    bonusText += $"\n<color=#ff6b6b>{critInfo}</color>";
-                }
-
-                // 보너스가 있으면 단일 패스로 수치 라인 교체
-                if (physFixed > 0f || elemFixed > 0f || physPct > 0f || elemPct > 0f)
-                {
-                    var dmg = item.GetDamage(qualityLevel, worldLevel);
-                    string[] lines = __result.Split('\n');
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        string l = lines[i];
-                        if      (dmg.m_slash     > 0 && l.Contains("$inventory_slash"))
-                            lines[i] = BuildDmgLine(l, dmg.m_slash,     physFixed, physPct);
-                        else if (dmg.m_blunt     > 0 && l.Contains("$inventory_blunt"))
-                            lines[i] = BuildDmgLine(l, dmg.m_blunt,     physFixed, physPct);
-                        else if (dmg.m_pierce    > 0 && l.Contains("$inventory_pierce"))
-                            lines[i] = BuildDmgLine(l, dmg.m_pierce,    physFixed, physPct);
-                        else if (dmg.m_fire      > 0 && l.Contains("$inventory_fire"))
-                            lines[i] = BuildDmgLine(l, dmg.m_fire,      elemFixed, elemPct);
-                        else if (dmg.m_frost     > 0 && l.Contains("$inventory_frost"))
-                            lines[i] = BuildDmgLine(l, dmg.m_frost,     elemFixed, elemPct);
-                        else if (dmg.m_lightning > 0 && l.Contains("$inventory_lightning"))
-                            lines[i] = BuildDmgLine(l, dmg.m_lightning, elemFixed, elemPct);
-                        else if (dmg.m_poison    > 0 && l.Contains("$inventory_poison"))
-                            lines[i] = BuildDmgLine(l, dmg.m_poison,    elemFixed, elemPct);
-                        else if (dmg.m_spirit    > 0 && l.Contains("$inventory_spirit"))
-                            lines[i] = BuildDmgLine(l, dmg.m_spirit,    elemFixed, elemPct);
-                    }
-                    __result = string.Join("\n", lines);
-                }
-
-                if (!string.IsNullOrEmpty(bonusText))
-                    __result += bonusText;
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[공격 전문가 툴팁] GetTooltip 패치 오류: {ex.Message}");
             }
         }
     }

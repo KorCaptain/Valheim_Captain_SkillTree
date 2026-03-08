@@ -495,8 +495,9 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 원거리 전문가: 지팡이/완드 화염 공격 +2 (화염 속성 스킬과 동일한 패턴)
+                // 원거리 전문가: 지팡이/완드 화염 공격 +2 (지팡이/완드 무기에만 적용)
                 if (player != null && SkillEffect.HasSkill("ranged_root") &&
+                    SkillEffect.IsStaffWeapon(__instance) &&
                     StaffEquipmentDetector.IsWieldingStaffOrWand(player))
                 {
                     __result.m_fire += 2f;
@@ -554,8 +555,9 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 지팡이 전문가: 지팡이 속성 공격력 증가 (착용 기반 최적화)
+                // 지팡이 전문가: 지팡이 속성 공격력 증가 (지팡이/완드 무기에만 적용)
                 if (player != null && SkillEffect.HasSkill("staff_Step1_damage") &&
+                    SkillEffect.IsStaffWeapon(__instance) &&
                     StaffEquipmentDetector.IsWieldingStaffOrWand(player))
                 {
                     // 설정값 기반 속성 데미지 증가
@@ -567,24 +569,27 @@ namespace CaptainSkillTree.SkillTree
                     if (__result.m_spirit > 0) __result.m_spirit *= damageMultiplier;
                 }
 
-                // staff_Step4_range: 화염 속성 (화염 공격 +[CONFIG])
+                // staff_Step4_range: 화염 속성 (화염 공격 +[CONFIG], 지팡이/완드 무기에만 적용)
                 if (player != null && SkillEffect.HasSkill("staff_Step4_range") &&
+                    SkillEffect.IsStaffWeapon(__instance) &&
                     StaffEquipmentDetector.IsWieldingStaffOrWand(player))
                 {
                     float fireBonus = Staff_Config.StaffFireDamageBonusValue;
                     __result.m_fire += fireBonus;
                 }
 
-                // staff_Step4_reduction: 냉기 속성 (냉기 공격 +[CONFIG])
+                // staff_Step4_reduction: 냉기 속성 (냉기 공격 +[CONFIG], 지팡이/완드 무기에만 적용)
                 if (player != null && SkillEffect.HasSkill("staff_Step4_reduction") &&
+                    SkillEffect.IsStaffWeapon(__instance) &&
                     StaffEquipmentDetector.IsWieldingStaffOrWand(player))
                 {
                     float frostBonus = Staff_Config.StaffFrostDamageBonusValue;
                     __result.m_frost += frostBonus;
                 }
 
-                // staff_Step4_surge: 번개 속성 (번개 공격 +[CONFIG])
+                // staff_Step4_surge: 번개 속성 (번개 공격 +[CONFIG], 지팡이/완드 무기에만 적용)
                 if (player != null && SkillEffect.HasSkill("staff_Step4_surge") &&
+                    SkillEffect.IsStaffWeapon(__instance) &&
                     StaffEquipmentDetector.IsWieldingStaffOrWand(player))
                 {
                     float lightningBonus = Staff_Config.StaffLightningDamageBonusValue;
@@ -840,42 +845,4 @@ namespace CaptainSkillTree.SkillTree
         }
     }
 
-    /// <summary>
-    /// 활 아이템 툴팁에 스킬 보너스 표시
-    /// </summary>
-    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip),
-        new[] { typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int) })]
-    public static class BowSkills_ItemData_GetTooltip_Patch
-    {
-        [HarmonyPostfix]
-        private static void Postfix(ItemDrop.ItemData item, int qualityLevel, bool crafting, float worldLevel, int stackOverride, ref string __result)
-        {
-            try
-            {
-                // 활 아이템만 처리
-                if (item?.m_shared?.m_skillType != Skills.SkillType.Bows) return;
-
-                // 크래프팅 화면이 아닐 때만 표시
-                if (crafting) return;
-
-                // 플레이어 확인
-                var player = Player.m_localPlayer;
-                if (player == null) return;
-
-                // 관통 스킬 보유 확인
-                if (!SkillEffect.HasSkill("bow_Step3_silentshot")) return;
-
-                // 툴팁에 추가 정보 표시
-                float damageBonus = Bow_Config.BowStep3SilentShotDamageBonusValue;
-                string bonusText = $"\n<color=#00ff00>관통: 공격력 +{damageBonus}</color>";
-
-                __result += bonusText;
-                Plugin.Log.LogDebug($"[활 툴팁] 관통 보너스 표시: +{damageBonus}");
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[활 툴팁] GetTooltip 패치 오류: {ex.Message}");
-            }
-        }
-    }
 }

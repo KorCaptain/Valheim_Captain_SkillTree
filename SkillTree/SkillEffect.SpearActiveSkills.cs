@@ -282,7 +282,21 @@ namespace CaptainSkillTree.SkillTree
                     DrawFloatingText(player, L.Get("combo_spear_retrieved_equipped"), new Color(0.5f, 1f, 0.5f, 1f));
                     return;
                 }
-                DrawFloatingText(player, L.Get("combo_spear_inventory_full"), Color.red);
+                // 인벤토리 가득 찬 경우 → 캐릭터 앞에 드롭
+                var spearPrefab = ZNetScene.instance?.GetPrefab(newSpear.m_shared.m_name);
+                if (spearPrefab != null)
+                {
+                    Vector3 dropPos = player.transform.position + player.transform.forward * 1.5f + Vector3.up * 0.5f;
+                    var droppedObj = UnityEngine.Object.Instantiate(spearPrefab, dropPos, Quaternion.identity);
+                    var itemDrop = droppedObj?.GetComponent<ItemDrop>();
+                    if (itemDrop != null)
+                        itemDrop.m_itemData = newSpear;
+                    DrawFloatingText(player, L.Get("combo_spear_inventory_full"), Color.yellow);
+                }
+                else
+                {
+                    DrawFloatingText(player, L.Get("combo_spear_inventory_full"), Color.red);
+                }
             }
             catch (Exception ex)
             {

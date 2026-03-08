@@ -147,7 +147,8 @@ namespace CaptainSkillTree.SkillTree
                 
                 // 쿨타임 설정
                 lastActivationTime[playerKey] = currentTime;
-                
+                ActiveSkillCooldownRegistry.SetCooldown("Y", Mage_Config.MageCooldownValue);
+
                 // Eitr 소모
                 player.AddEitr(-eitrCost);
                 

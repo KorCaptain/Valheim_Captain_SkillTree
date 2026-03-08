@@ -319,8 +319,16 @@ namespace CaptainSkillTree.SkillTree
             // === 마무리: 원래 위치로 복귀 ===
             if (player != null && !player.IsDead())
             {
-                float returnDistance = Vector3.Distance(player.transform.position, originalPosition);
-                yield return MoveToPosition(player, originalPosition, returnDistance, moveSpeed);
+                if (originalPosition.y > 4000f)
+                {
+                    // 던전 내부: 즉시 복귀 (이동 중 출구 트리거 접촉 방지)
+                    player.transform.position = originalPosition;
+                }
+                else
+                {
+                    float returnDistance = Vector3.Distance(player.transform.position, originalPosition);
+                    yield return MoveToPosition(player, originalPosition, returnDistance, moveSpeed);
+                }
 
                 SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("rush_slash_return"), Color.cyan);
             }
@@ -409,7 +417,16 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static Vector3 GetGroundPosition(Vector3 pos)
         {
-            // 위에서 아래로 레이캐스트
+            if (pos.y > 4000f)
+            {
+                // 던전 내(Y>4000): 던전 바닥은 terrain 레이어가 아니므로 레이어 제한 없이 Raycast
+                if (Physics.Raycast(pos + Vector3.up * 3f, Vector3.down, out RaycastHit dungeonHit, 8f))
+                {
+                    return new Vector3(pos.x, dungeonHit.point.y + 0.1f, pos.z);
+                }
+                return pos;
+            }
+            // 일반 지형
             if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("terrain", "Default")))
             {
                 return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);

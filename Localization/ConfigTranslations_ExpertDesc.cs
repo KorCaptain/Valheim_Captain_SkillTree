@@ -9,6 +9,17 @@ namespace CaptainSkillTree.Localization
             return new Dictionary<string, string>
             {
                 // ========================================
+                // Skill_Tree_Base
+                // ========================================
+                ["PassiveMessageDisplay"] =
+                "【패시브 메시지 표시 방식】\n" +
+                "패시브 스킬 효과 발동 시 화면에 표시되는 메시지 방식을 설정합니다.\n" +
+                "  Center = 화면 중앙 (기본값)\n" +
+                "  TopLeft = 왼쪽 위 소형 텍스트\n" +
+                "  Off = 표시 OFF\n" +
+                "※ 스킬 배울 때, 생산 전문가 메시지는 항상 중앙에 표시됩니다.",
+
+                // ========================================
                 // Attack Tree (공격 트리)
                 // ========================================
 
@@ -112,12 +123,15 @@ namespace CaptainSkillTree.Localization
                 "활, 석궁 등 원거리 무기의 데미지를 고정값으로 증가시킵니다.\n" +
                 "권장값: 3-8",
 
-                // === Tier 5: 특수화 스탯 (Specialized Stats) ===
+                // === Tier 5: 충전 (Charge) ===
                 ["Tier5_SpecialStat_SpecBonus"] =
-                "【무기 특화 보너스】\n" +
-                "현재 사용 중인 무기 타입의 특화 스탯을 증가시킵니다.\n" +
-                "근접 무기는 힘, 원거리 무기는 민첩, 마법은 지능이 증가합니다.\n" +
-                "권장값: 3-8",
+                "【스태미나 회복량】\n" +
+                "공격 시 회복할 스태미나 비율입니다 (최대 스태미나 기준).\n" +
+                "권장값: 3-10",
+                ["Tier5_Charge_TriggerChance"] =
+                "【발동 확률】\n" +
+                "공격 시 스태미나 회복 효과가 발동될 확률입니다.\n" +
+                "권장값: 20-50",
 
                 // === Tier 6: 최종 강화 (Final Enhancement) ===
                 ["Tier6_WeakPointAttack_CritDamageBonus"] =
@@ -685,6 +699,17 @@ namespace CaptainSkillTree.Localization
             return new Dictionary<string, string>
             {
                 // ========================================
+                // Skill_Tree_Base
+                // ========================================
+                ["PassiveMessageDisplay"] =
+                "【Passive Message Display】\n" +
+                "Controls how passive skill effect messages appear on screen.\n" +
+                "  Center = Screen Center (default)\n" +
+                "  TopLeft = Top-Left small text\n" +
+                "  Off = Off\n" +
+                "※ Skill learn and production expert messages always show at center.",
+
+                // ========================================
                 // Attack Tree
                 // ========================================
 
@@ -788,12 +813,15 @@ namespace CaptainSkillTree.Localization
                 "Increases damage of ranged weapons (bow, crossbow) by a flat amount.\n" +
                 "Recommended: 3-8",
 
-                // === Tier 5: Specialized Stats ===
+                // === Tier 5: Charge ===
                 ["Tier5_SpecialStat_SpecBonus"] =
-                "【Weapon Specialization Bonus】\n" +
-                "Increases specialized stat for the currently equipped weapon type.\n" +
-                "Melee increases Strength, ranged increases Dexterity, magic increases Intelligence.\n" +
-                "Recommended: 3-8",
+                "【Stamina Recovery】\n" +
+                "Percentage of max stamina recovered on attack trigger.\n" +
+                "Recommended: 3-10",
+                ["Tier5_Charge_TriggerChance"] =
+                "【Trigger Chance】\n" +
+                "Chance to trigger stamina recovery on attack.\n" +
+                "Recommended: 20-50",
 
                 // === Tier 6: Final Enhancement ===
                 ["Tier6_WeakPointAttack_CritDamageBonus"] =

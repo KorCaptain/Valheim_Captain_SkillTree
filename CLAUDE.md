@@ -226,6 +226,14 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 > ❌ ①②③ 중 하나라도 빠지면 F1 Config Manager에서 번역이 깨짐
 > ❌ 특히 ②를 누락하면 마우스오버 설명이 영어 키 이름 그대로 표시됨
 
+### 14. ru.json 자동 동기화 (필수)
+- **DefaultLanguages*.cs에 키를 추가/수정/삭제할 때마다 `Localization/ru.json`도 반드시 동시 수정**
+- 추가: 동일 키를 ru.json에 추가 (번역문 없으면 EN 원문을 임시값으로 사용)
+- 삭제: ru.json에서도 해당 키 제거
+- 수정: 의미가 바뀐 경우 ru.json 값도 갱신
+
+> ❌ ru.json 누락 시 러시아어 클라이언트에서 텍스트가 fallback(EN/KO)으로 표시됨
+
 ---
 
 ## 핵심 개발 원칙

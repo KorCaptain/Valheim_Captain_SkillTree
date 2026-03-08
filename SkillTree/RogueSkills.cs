@@ -32,6 +32,7 @@ namespace CaptainSkillTree.SkillTree
         // === 어그로 제거 독립 상태 (공격 시 스텔스 해제 후에도 유지) ===
         private static Dictionary<Player, float> aggroRemovalEndTime = new Dictionary<Player, float>();
         private static Dictionary<Player, bool> aggroRemovalActive = new Dictionary<Player, bool>();
+        private static Dictionary<Player, Coroutine> aggroRemovalLoopCoroutine = new Dictionary<Player, Coroutine>();
 
         // === 버프 VFX 시스템 ===
         private static Dictionary<Player, GameObject> rogueBuffVFXInstances = new Dictionary<Player, GameObject>();
@@ -144,10 +145,17 @@ namespace CaptainSkillTree.SkillTree
                 // 스텔스 적용 (8초간 몬스터가 타겟팅하지 못함)
                 ApplyStealthState(player);
 
-                // 어그로 제거 독립 상태 설정 (공격 시 스텔스 해제 후에도 어그로 보호 유지)
+                // 어그로 제거 루프 시작 (1초마다 반복, 공격 시 중단)
                 float aggroProtectionDuration = Rogue_Config.RogueShadowStrikeStealthDurationValue;
                 aggroRemovalEndTime[player] = Time.time + aggroProtectionDuration;
                 aggroRemovalActive[player] = true;
+                if (Plugin.Instance != null)
+                {
+                    if (aggroRemovalLoopCoroutine.TryGetValue(player, out var existingLoop) && existingLoop != null)
+                        Plugin.Instance.StopCoroutine(existingLoop);
+                    var loopCo = Plugin.Instance.StartCoroutine(AggroRemovalLoopCoroutine(player, aggroProtectionDuration));
+                    aggroRemovalLoopCoroutine[player] = loopCo;
+                }
 
                 // 쿨다운 설정
                 JobSkillsUtility.SetCooldown(player, "Rogue", Rogue_Config.RogueShadowStrikeCooldownValue);
@@ -410,6 +418,34 @@ namespace CaptainSkillTree.SkillTree
             }
             
             return aggroRemovedCount;
+        }
+
+        /// <summary>
+        /// 어그로 제거 반복 코루틴 (1초마다 실행, 버프 시간 동안 지속 - 공격/피격과 무관)
+        /// </summary>
+        private static IEnumerator AggroRemovalLoopCoroutine(Player player, float duration)
+        {
+            float endTime = Time.time + duration;
+
+            while (Time.time < endTime)
+            {
+                yield return new WaitForSeconds(1f);
+
+                if (player == null || player.IsDead()) break;
+
+                // 주변 몬스터 어그로 제거
+                RemoveNearbyMonsterAggro(player);
+
+                // 틱마다 VFX 재생
+                try
+                {
+                    VFX.VFXManager.PlayVFXMultiplayer("fx_greenroots_projectile_hit", "", player.transform.position, Quaternion.identity, 0.7f);
+                }
+                catch (Exception) { }
+            }
+
+            if (aggroRemovalLoopCoroutine.ContainsKey(player))
+                aggroRemovalLoopCoroutine.Remove(player);
         }
 
         /// <summary>
@@ -1112,6 +1148,24 @@ namespace CaptainSkillTree.SkillTree
                     stealthEndTime.Remove(player);
                     stealthActive.Remove(player);
 
+                    // 어그로 제거 루프 코루틴 중단
+                    if (aggroRemovalLoopCoroutine.TryGetValue(player, out var agroLoop) && agroLoop != null)
+                    {
+                        try
+                        {
+                            if (Plugin.Instance != null)
+                                Plugin.Instance.StopCoroutine(agroLoop);
+                            else if (player != null)
+                                player.StopCoroutine(agroLoop);
+                        }
+                        catch (Exception) { }
+                        finally { aggroRemovalLoopCoroutine.Remove(player); }
+                    }
+                    else
+                    {
+                        aggroRemovalLoopCoroutine.Remove(player);
+                    }
+
                     // 어그로 제거 상태 정리
                     aggroRemovalEndTime.Remove(player);
                     aggroRemovalActive.Remove(player);
@@ -1190,6 +1244,7 @@ namespace CaptainSkillTree.SkillTree
                         RogueSkills.RemoveStealthState(player, "공격");
                         // Plugin.Log.LogInfo($"[로그 스텔스] {player.GetPlayerName()} 공격으로 인한 스텔스 해제");
                     }
+
                     
                     // 로그 공격력 버프 활성 확인
                     if (RogueSkills.IsRogueAttackBuffActive(player))

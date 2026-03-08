@@ -295,8 +295,6 @@ namespace CaptainSkillTree.SkillTree
                 {
                     SkillEffect.knifeLastRollTime[__instance] = Time.time;
                     SkillEffect.knifeAfterRoll[__instance] = true;
-
-                    SkillEffect.CheckKnifeEvasion(__instance);
                 }
             }
             catch (Exception ex)

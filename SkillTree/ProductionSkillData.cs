@@ -50,7 +50,7 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player != null) {
                         SkillEffect.ShowSkillEffectText(player, L.Get("novice_worker_effect"),
-                            new Color(0.4f, 0.8f, 0.4f), SkillEffect.SkillEffectTextType.Standard);
+                            new Color(0.4f, 0.8f, 0.4f), SkillEffect.SkillEffectTextType.AlwaysCenter);
                     }
                 }
             });
@@ -73,7 +73,7 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player != null) {
                         SkillEffect.ShowSkillEffectText(player, L.Get("woodcutting_lv2_effect"),
-                            new Color(0.6f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
+                            new Color(0.6f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.AlwaysCenter);
                     }
                 }
             });
@@ -95,7 +95,7 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player != null) {
                         SkillEffect.ShowSkillEffectText(player, L.Get("gathering_lv2_effect"),
-                            new Color(0.2f, 0.8f, 0.4f), SkillEffect.SkillEffectTextType.Standard);
+                            new Color(0.2f, 0.8f, 0.4f), SkillEffect.SkillEffectTextType.AlwaysCenter);
                     }
                 }
             });
@@ -133,7 +133,7 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player != null) {
                         SkillEffect.ShowSkillEffectText(player, L.Get("crafting_lv2_effect"),
-                            new Color(0.8f, 0.6f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
+                            new Color(0.8f, 0.6f, 0.2f), SkillEffect.SkillEffectTextType.AlwaysCenter);
                     }
                 }
             });
@@ -156,7 +156,7 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player != null) {
                         SkillEffect.ShowSkillEffectText(player, L.Get("woodcutting_lv3_effect"),
-                            new Color(0.6f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
+                            new Color(0.6f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.AlwaysCenter);
                     }
                 }
             });
@@ -178,7 +178,7 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player != null) {
                         SkillEffect.ShowSkillEffectText(player, L.Get("gathering_lv3_effect"),
-                            new Color(0.2f, 0.8f, 0.4f), SkillEffect.SkillEffectTextType.Standard);
+                            new Color(0.2f, 0.8f, 0.4f), SkillEffect.SkillEffectTextType.AlwaysCenter);
                     }
                 }
             });

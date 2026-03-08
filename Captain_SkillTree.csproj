@@ -20,7 +20,7 @@
     <UseSharedCompilation>false</UseSharedCompilation>
     <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
     <!-- 🔧 버전 관리 시스템 -->
-    <Version>0.1.821</Version>
+    <Version>0.1.874</Version>
     <AutoIncrementVersion>true</AutoIncrementVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -154,7 +154,7 @@
     <EmbeddedResource Include="asset/Resources/job_icon" />
     <!-- BGM 음원 파일 (Resources 폴더 유지) -->
     <EmbeddedResource Include="asset/Resources/Skill_Tree_BGM.ogg" />
-    <!-- 러시아어 번역 파일 -->
+    <!-- 러시아어 번역 JSON -->
     <EmbeddedResource Include="Localization/ru.json" />
   </ItemGroup>
   <ItemGroup>

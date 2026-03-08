@@ -95,6 +95,9 @@ namespace CaptainSkillTree.Localization
 
                 _initialized = true;
 
+                // Translation 폴더에 en.json / ru.json 내보내기 (유저 번역 기여용)
+                ExportTranslationTemplates();
+
                 // 현재 언어 번역 개수 확인
                 if (!_translations.ContainsKey(_currentLanguage))
                 {
@@ -714,6 +717,48 @@ namespace CaptainSkillTree.Localization
             LoadLanguageFiles();
             Plugin.Log.LogDebug("[Localization] Language files reloaded");
         }
+
+        #region Translation Export
+
+        /// <summary>
+        /// BepInEx\config\CaptainSkillTree\Translation\ 폴더에 en.json / ru.json 내보내기.
+        /// 유저가 번역본을 수정해 개발자에게 보낼 수 있도록 매 게임 시작 시 최신 버전 덮어씀.
+        /// </summary>
+        private static void ExportTranslationTemplates()
+        {
+            var translationPath = Path.Combine(BepInEx.Paths.ConfigPath, "CaptainSkillTree", "Translation");
+            try
+            {
+                if (!Directory.Exists(translationPath))
+                    Directory.CreateDirectory(translationPath);
+
+                // en.json: DefaultLanguages.GetEnglish() 기준 최신본
+                var enPath = Path.Combine(translationPath, "en.json");
+                var enData = DefaultLanguages.GetEnglish();
+                File.WriteAllText(enPath, DictToJson(enData), System.Text.Encoding.UTF8);
+                Plugin.Log.LogDebug($"[Localization] Translation/en.json exported ({enData.Count} keys)");
+
+                // ru.json: EN 전체 키를 기준으로, RU 번역값으로 덮어씌우기
+                // → 두 파일 동일 키 수 보장, 미번역 신규 키는 영어 fallback
+                var ruPath = Path.Combine(translationPath, "ru.json");
+                var ruData = new Dictionary<string, string>(enData);
+                var ruTranslations = LoadFromEmbeddedResource("ru") ??
+                                     (_translations.ContainsKey("ru") ? _translations["ru"] : null);
+                if (ruTranslations != null)
+                {
+                    foreach (var kvp in ruTranslations)
+                        ruData[kvp.Key] = kvp.Value;
+                }
+                File.WriteAllText(ruPath, DictToJson(ruData), System.Text.Encoding.UTF8);
+                Plugin.Log.LogDebug($"[Localization] Translation/ru.json exported ({ruData.Count} keys, {ruTranslations?.Count ?? 0} RU translated)");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[Localization] Translation export 실패: {ex.Message}");
+            }
+        }
+
+        #endregion
 
         #region JSON Parsing (Simple implementation without external dependencies)
 

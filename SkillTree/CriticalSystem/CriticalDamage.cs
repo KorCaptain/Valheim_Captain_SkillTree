@@ -117,18 +117,11 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                 Plugin.Log.LogDebug($"[치명타 피해] Tier 7 암살자 (패시브): +{tierBonus}%");
             }
 
-            // Tier 9: 암살자의 심장 (G키 액티브)
-            if (SkillEffect.IsKnifeAssassinHeartActive(player))
-            {
-                // 배수를 %로 변환 (예: 1.3배 → 30% 추가)
-                float activeDamage = (Knife_Config.KnifeAssassinHeartCritDamageValue - 1f) * 100f;
-                bonus += activeDamage;
-                Plugin.Log.LogDebug($"[치명타 피해] Tier 9 암살자의 심장 (액티브): +{activeDamage}%");
-            }
+            // Tier 9: 암살자의 심장 - ApplyKnifeAssassinHeartCrit에서 직접 hit.m_damage 배율로 처리됨 (이중 적용 금지)
 
             if (bonus > 0f)
             {
-                Plugin.Log.LogInfo($"[단검 치명타 피해] 총 보너스: +{bonus}%");
+                Plugin.Log.LogDebug($"[단검 치명타 피해] 총 보너스: +{bonus}%");
             }
 
             return bonus;
@@ -158,7 +151,7 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
 
             if (bonus > 0f)
             {
-                Plugin.Log.LogInfo($"[활 치명타 피해] 총 보너스: +{bonus}%");
+                Plugin.Log.LogDebug($"[활 치명타 피해] 총 보너스: +{bonus}%");
             }
 
             return bonus;

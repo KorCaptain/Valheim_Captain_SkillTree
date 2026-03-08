@@ -414,7 +414,8 @@ namespace CaptainSkillTree.SkillTree
             Combat,      // 전투 관련 효과 (더 눈에 띄는 위치)
             Passive,     // 패시브 효과 (조용한 표시)
             Critical,    // 중요한 효과 (강조 표시)
-            XLarge       // 매우 큰 크기 (버서커 분노 등 특별한 효과)
+            XLarge,      // 매우 큰 크기 (버서커 분노 등 특별한 효과)
+            AlwaysCenter // 항상 화면 중앙 (config 무시) - 스킬 배움, 생산 전문가
         }
 
         /// <summary>
@@ -430,7 +431,22 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 string coloredText = $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{text}</color>";
-                
+
+                // AlwaysCenter / Critical / XLarge는 config 무관 항상 Center
+                if (type == SkillEffectTextType.AlwaysCenter
+                 || type == SkillEffectTextType.Critical
+                 || type == SkillEffectTextType.XLarge)
+                {
+                    ShowStandardText(coloredText);
+                    return;
+                }
+
+                // Standard / Passive / Combat → config에 따라 분기
+                int displayMode = SkillTreeConfig.PassiveMessageDisplayValue;
+                if (displayMode == 1) { ShowTopLeftText(coloredText); return; }
+                if (displayMode == 2) { return; } // OFF
+
+                // displayMode == 0: 기존 switch(type) 그대로 실행
                 switch (type)
                 {
                     case SkillEffectTextType.Standard:
@@ -441,12 +457,6 @@ namespace CaptainSkillTree.SkillTree
                         break;
                     case SkillEffectTextType.Passive:
                         ShowPassiveText(coloredText);
-                        break;
-                    case SkillEffectTextType.Critical:
-                        ShowCriticalText(coloredText);
-                        break;
-                    case SkillEffectTextType.XLarge:
-                        ShowXLargeText(coloredText);
                         break;
                 }
             }
@@ -490,6 +500,16 @@ namespace CaptainSkillTree.SkillTree
             {
                 ShowWorldText(player, coloredText, 0.8f);
             }
+        }
+
+        /// <summary>
+        /// 좌상단 소형 텍스트 표시 (MessageHud TopLeft 방식)
+        /// </summary>
+        private static void ShowTopLeftText(string coloredText)
+        {
+            var player = Player.m_localPlayer;
+            if (player != null)
+                player.Message(MessageHud.MessageType.TopLeft, coloredText);
         }
 
         /// <summary>
@@ -745,9 +765,7 @@ namespace CaptainSkillTree.SkillTree
                 }
                 else if (paramName == "Special")
                 {
-                    // 특수화 스탯: 특수화 +5
-                    int atkSpecialLv = SkillTreeManager.Instance.GetSkillLevel("atk_special");
-                    if (atkSpecialLv > 0) __result += (int)SkillTreeConfig.AttackSpecialStatValue * atkSpecialLv;
+
                     
                     // 모래시계: 쿨타임 시간 -1초 → 특수 +3 (간접 효과)
                     int agilityPeakLv = SkillTreeManager.Instance.GetSkillLevel("agility_peak");

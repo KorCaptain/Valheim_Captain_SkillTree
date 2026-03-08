@@ -19,7 +19,7 @@ namespace CaptainSkillTree.Localization
                 ["atk_melee_crit_name"] = "근접 강화",
                 ["atk_crit_chance_name"] = "정밀 공격",
                 ["atk_ranged_enhance_name"] = "원거리 강화",
-                ["atk_special_name"] = "특수화 스탯",
+                ["atk_special_name"] = "충전",
                 ["atk_crit_dmg_name"] = "약점 공격",
                 ["atk_finisher_melee_name"] = "연속 근접의 대가",
                 ["atk_twohand_crush_name"] = "양손 분쇄",
@@ -29,14 +29,14 @@ namespace CaptainSkillTree.Localization
                 ["atk_base_desc"] = "관통 공격 +{0}, 화염 속성 +1",
                 ["atk_twohand_drain_desc"] = "물리 공격력 +{0}%, 속성 공격력 +{1}%",
                 ["atk_ranged_enhance_desc"] = "원거리 무기 공격력 +{0}% (석궁, 활, 지팡이)",
-                ["atk_special_desc"] = "치명타 확률 +{0}%",
+                ["atk_special_desc"] = "공격 시 {0}% 확률으로 스태미나 {1}% 회복",
 
                 // === Attack Expert Tree - Effect Texts ===
                 ["atk_base_effect"] = "💪 기본 공격 습득!",
                 ["atk_melee_bonus_effect"] = "⚔️ 근접 특화 습득!",
                 ["atk_twohand_drain_effect"] = "💪 공격 증가!",
                 ["atk_ranged_enhance_effect"] = "🏹 원거리 강화!",
-                ["atk_special_effect"] = "⭐ 특수화 스탯! 치명타 확률 +{0}%",
+                ["atk_special_effect"] = "⚡ 충전 습득! 공격 시 {0}% 확률으로 스태미나 {1}% 회복",
                 ["atk_staff_mage_effect"] = "🔥 속성 공격!",
 
                 // === Paladin Skill ===
@@ -360,7 +360,7 @@ namespace CaptainSkillTree.Localization
                 ["atk_melee_crit_name"] = "Melee Enhancement",
                 ["atk_crit_chance_name"] = "Precision Strike",
                 ["atk_ranged_enhance_name"] = "Ranged Enhancement",
-                ["atk_special_name"] = "Specialized Stats",
+                ["atk_special_name"] = "Charge",
                 ["atk_crit_dmg_name"] = "Weak Point Strike",
                 ["atk_finisher_melee_name"] = "Combo Finisher",
                 ["atk_twohand_crush_name"] = "Two-Hand Crush",
@@ -370,14 +370,14 @@ namespace CaptainSkillTree.Localization
                 ["atk_base_desc"] = "Pierce attack +{0}, Fire attribute +1",
                 ["atk_twohand_drain_desc"] = "Physical attack +{0}%, Elemental attack +{1}%",
                 ["atk_ranged_enhance_desc"] = "Ranged weapon damage +{0}% (Crossbow, Bow, Staff)",
-                ["atk_special_desc"] = "Crit chance +{0}%",
+                ["atk_special_desc"] = "{0}% chance on attack to recover {1}% stamina",
 
                 // === Attack Expert Tree - Effect Texts (English) ===
                 ["atk_base_effect"] = "💪 Basic Attack Learned!",
                 ["atk_melee_bonus_effect"] = "⚔️ Melee Specialization Learned!",
                 ["atk_twohand_drain_effect"] = "💪 Attack Boost!",
                 ["atk_ranged_enhance_effect"] = "🏹 Ranged Enhancement!",
-                ["atk_special_effect"] = "⭐ Specialized Stats! Crit chance +{0}%",
+                ["atk_special_effect"] = "⚡ Charge! {0}% chance to recover {1}% stamina on attack",
                 ["atk_staff_mage_effect"] = "🔥 Elemental Strike!",
 
                 // === Paladin Skill ===

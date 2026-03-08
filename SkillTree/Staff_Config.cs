@@ -61,7 +61,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 // === Tier 0: 지팡이 전문가 ===
                 StaffExpertDamage = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier0_StaffExpert_ElementalDamageBonus", 12f,
+                    "Staff Tree", "Tier0_StaffExpert_ElementalDamageBonus", 5f,
                     SkillTreeConfig.GetConfigDescription("Tier0_StaffExpert_ElementalDamageBonus"));
 
                 StaffExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -104,7 +104,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // === Tier 3: 속성 강화 스킬 ===
                 StaffFrostDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier3_FrostElement_DamageBonus", 3f,
+                    "Staff Tree", "Tier3_FrostElement_DamageBonus", 1f,
                     SkillTreeConfig.GetConfigDescription("Tier3_FrostElement_DamageBonus"));
 
                 StaffFrostRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -112,7 +112,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier3_FrostElement_RequiredPoints"));
 
                 StaffFireDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier3_FireElement_DamageBonus", 3f,
+                    "Staff Tree", "Tier3_FireElement_DamageBonus", 1f,
                     SkillTreeConfig.GetConfigDescription("Tier3_FireElement_DamageBonus"));
 
                 StaffFireRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -120,7 +120,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier3_FireElement_RequiredPoints"));
 
                 StaffLightningDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier3_LightningElement_DamageBonus", 3f,
+                    "Staff Tree", "Tier3_LightningElement_DamageBonus", 1f,
                     SkillTreeConfig.GetConfigDescription("Tier3_LightningElement_DamageBonus"));
 
                 StaffLightningRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -138,11 +138,11 @@ namespace CaptainSkillTree.SkillTree
 
                 // === Tier 5-1: 이중시전 (R키 액티브) ===
                 StaffDoubleCastProjectileCount = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_DoubleCast_AdditionalProjectileCount", 7,
+                    "Staff Tree", "Tier5_DoubleCast_AdditionalProjectileCount", 5,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_AdditionalProjectileCount"));
 
                 StaffDoubleCastDamagePercent = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 15f,
+                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 30f,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_ProjectileDamagePercent"));
 
                 StaffDoubleCastAngleOffset = SkillTreeConfig.BindServerSync(config,
@@ -249,7 +249,7 @@ namespace CaptainSkillTree.SkillTree
         // === 설정값 접근자들 ===
 
         // 지팡이 전문가
-        public static float StaffExpertDamageValue => SkillTreeConfig.GetEffectiveValue("staff_tier0_expert_damage", StaffExpertDamage?.Value ?? 12f);
+        public static float StaffExpertDamageValue => SkillTreeConfig.GetEffectiveValue("staff_tier0_expert_damage", StaffExpertDamage?.Value ?? 5f);
         public static int StaffExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier0_expert_rp", StaffExpertRequiredPoints?.Value ?? 2);
 
         // Step 2
@@ -265,11 +265,11 @@ namespace CaptainSkillTree.SkillTree
         public static int StaffAmpRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier2_amp_rp", StaffAmpRequiredPoints?.Value ?? 3);
 
         // Step 4: 속성 강화
-        public static float StaffFrostDamageBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier3_frost_damage", StaffFrostDamageBonus?.Value ?? 3f);
+        public static float StaffFrostDamageBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier3_frost_damage", StaffFrostDamageBonus?.Value ?? 1f);
         public static int StaffFrostRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier3_frost_rp", StaffFrostRequiredPoints?.Value ?? 2);
-        public static float StaffFireDamageBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier3_fire_damage", StaffFireDamageBonus?.Value ?? 3f);
+        public static float StaffFireDamageBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier3_fire_damage", StaffFireDamageBonus?.Value ?? 1f);
         public static int StaffFireRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier3_fire_rp", StaffFireRequiredPoints?.Value ?? 2);
-        public static float StaffLightningDamageBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier3_lightning_damage", StaffLightningDamageBonus?.Value ?? 3f);
+        public static float StaffLightningDamageBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier3_lightning_damage", StaffLightningDamageBonus?.Value ?? 1f);
         public static int StaffLightningRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier3_lightning_rp", StaffLightningRequiredPoints?.Value ?? 2);
 
         // Step 5: 행운 마력
@@ -277,8 +277,8 @@ namespace CaptainSkillTree.SkillTree
         public static int StaffLuckManaRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier4_luck_rp", StaffLuckManaRequiredPoints?.Value ?? 3);
 
         // Step 6-1: 이중시전
-        public static int StaffDoubleCastProjectileCountValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_count", StaffDoubleCastProjectileCount?.Value ?? 7);
-        public static float StaffDoubleCastDamagePercentValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_damage", StaffDoubleCastDamagePercent?.Value ?? 15f);
+        public static int StaffDoubleCastProjectileCountValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_count", StaffDoubleCastProjectileCount?.Value ?? 5);
+        public static float StaffDoubleCastDamagePercentValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_damage", StaffDoubleCastDamagePercent?.Value ?? 30f);
         public static float StaffDoubleCastAngleOffsetValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_angle", StaffDoubleCastAngleOffset?.Value ?? 5f);
         public static float StaffDoubleCastEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_eitr", StaffDoubleCastEitrCost?.Value ?? 20f);
         public static float StaffDoubleCastCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_cd", StaffDoubleCastCooldown?.Value ?? 30f);

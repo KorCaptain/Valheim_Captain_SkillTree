@@ -2457,7 +2457,7 @@ namespace CaptainSkillTree.Gui
                     }
                     
                     // MMO VFX가 없으면 기본 발헤임 효과음 사용
-                    var soundPrefab = znet.GetPrefab("sfx_creature_tamed");
+                    var soundPrefab = znet.GetPrefab("sfx_dragon_scream");
                     if (soundPrefab != null)
                     {
                         UnityEngine.Object.Instantiate(soundPrefab, Camera.main.transform.position, Quaternion.identity);

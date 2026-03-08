@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using CaptainSkillTree.VFX;
 using CaptainSkillTree.Localization;
+using CaptainSkillTree;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -342,6 +343,7 @@ namespace CaptainSkillTree.SkillTree
             // 쿨타임 설정
             float cooldown = Knife_Config.KnifeAssassinHeartCooldownValue;
             knifeAssassinHeartCooldownEndTime[player] = currentTime + cooldown;
+            ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
 
             // 액티브 스킬: VFX/SFX 사용
             PlaySkillEffect(player, "knife_step9_assassin_heart", player.transform.position);
@@ -376,7 +378,7 @@ namespace CaptainSkillTree.SkillTree
                 hit.m_damage.m_slash *= critDamageMultiplier;
                 hit.m_damage.m_pierce *= critDamageMultiplier;
 
-                PlaySkillEffect(player, "knife_step9_assassin_heart", hit.m_point);
+                SimpleVFX.Play("flash_round_ellow", hit.m_point);
                 DrawFloatingText(player, L.Get("assassin_heart_crit", Knife_Config.KnifeAssassinHeartCritDamageValue.ToString()), Color.red);
 
                 Plugin.Log.LogDebug($"[암살자의 심장] 치명타 발동! {Knife_Config.KnifeAssassinHeartCritDamageValue}배 피해");

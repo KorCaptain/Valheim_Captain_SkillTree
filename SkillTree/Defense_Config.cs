@@ -360,7 +360,7 @@ namespace CaptainSkillTree.SkillTree
 
         // === Tier 3: 방패훈련 ===
         public static float ShieldTrainingBlockPowerBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Defense_ShieldTraining_BlockPower", ShieldTrainingBlockPowerBonus?.Value ?? 100f);
+            SkillTreeConfig.GetEffectiveValue("Defense_ShieldTraining_BlockPower", ShieldTrainingBlockPowerBonus?.Value ?? 30f);
 
         // === Tier 4: 충격파방출 ===
         public static float ShockwaveRadiusValue =>
@@ -415,7 +415,7 @@ namespace CaptainSkillTree.SkillTree
 
         // === Tier 5: 막기달인 ===
         public static float ParryMasterBlockPowerBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Defense_ParryMaster_BlockPower", ParryMasterBlockPowerBonus?.Value ?? 100f);
+            SkillTreeConfig.GetEffectiveValue("Defense_ParryMaster_BlockPower", ParryMasterBlockPowerBonus?.Value ?? 40f);
 
         public static float ParryMasterParryDurationBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_ParryMaster_ParryDuration", ParryMasterParryDurationBonus?.Value ?? 1f);
@@ -560,7 +560,7 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             ShieldTrainingBlockPowerBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier3_ShieldTraining_BlockPowerBonus", 100f,
+                "Defense Tree", "Tier3_ShieldTraining_BlockPowerBonus", 30f,
                 SkillTreeConfig.GetConfigDescription("Tier3_ShieldTraining_BlockPowerBonus"), order: 54);
 
             DefenseStep3ShieldRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -680,7 +680,7 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             ParryMasterBlockPowerBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier5_BlockMaster_ShieldBlockPowerBonus", 100f,
+                "Defense Tree", "Tier5_BlockMaster_ShieldBlockPowerBonus", 40f,
                 SkillTreeConfig.GetConfigDescription("Tier5_BlockMaster_ShieldBlockPowerBonus"), order: 24);
 
             ParryMasterParryDurationBonus = SkillTreeConfig.BindServerSync(config,

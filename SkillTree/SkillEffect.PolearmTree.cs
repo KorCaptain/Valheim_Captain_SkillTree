@@ -150,6 +150,7 @@ namespace CaptainSkillTree.SkillTree
             // 스킬 활성화
             polearmPierceChargeActive[player] = true;
             polearmPierceChargeLastUseTime[player] = now;
+            ActiveSkillCooldownRegistry.SetCooldown("G", Polearm_Config.PolearmPierceChargeCooldownValue);
 
             // 코루틴 시작
             if (polearmPierceChargeCoroutines.ContainsKey(player) && polearmPierceChargeCoroutines[player] != null)

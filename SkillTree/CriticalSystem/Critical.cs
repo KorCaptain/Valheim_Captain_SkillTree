@@ -75,13 +75,7 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                 Plugin.Log.LogDebug($"[공통 치명타] Tier 4 정밀 공격: +{tierBonus}%");
             }
 
-            // Tier 5: 특수화 스탯 - 치명타 확률 +[CONFIG]%
-            if (SkillEffect.HasSkill("atk_special"))
-            {
-                float tierBonus = SkillTreeConfig.AttackSpecialStatValue;
-                bonus += tierBonus;
-                Plugin.Log.LogDebug($"[공통 치명타] Tier 5 특수화 스탯: +{tierBonus}%");
-            }
+
 
             return bonus;
         }
@@ -117,7 +111,7 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
 
             if (bonus > 0f)
             {
-                Plugin.Log.LogInfo($"[단검 치명타] 총 확률: {bonus}%");
+                Plugin.Log.LogDebug($"[단검 치명타] 총 확률: {bonus}%");
             }
 
             return bonus;
@@ -155,7 +149,7 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
 
             if (bonus > 0f)
             {
-                Plugin.Log.LogInfo($"[활 치명타] 총 확률: {bonus}%");
+                Plugin.Log.LogDebug($"[활 치명타] 총 확률: {bonus}%");
             }
 
             return bonus;
@@ -228,7 +222,7 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
 
             if (bonus > 0f)
             {
-                Plugin.Log.LogInfo($"[창 치명타] 총 확률: {bonus}%");
+                Plugin.Log.LogDebug($"[창 치명타] 총 확률: {bonus}%");
             }
 
             return bonus;

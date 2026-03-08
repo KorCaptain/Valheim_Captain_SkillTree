@@ -373,9 +373,9 @@
   "spear_desc_expert": "2-ударное комбо: Скорость атаки +{0}%, Урон +{1}% ({2}с)",
   "spear_desc_throw": "Урон броска копья +{0}%",
   "spear_desc_crit": "Урон копья +{0}%",
-  "spear_desc_pierce"Урон оружия +{0}",
+  "spear_desc_pierce": "Урон от прокола +{0}",
   "spear_desc_evasion": "После уклонения: Урон +{0}%, Стоимость выносливости -{1}%",
-  "spear_desc_explosion": "{0}% шанс взрыва\nРадиус {1}м, Урон +{2}%",
+  "spear_desc_explosion": "Скорость атаки +{0}%",
   "spear_desc_dual": "2-ударное комбо: Урон +{1}% на {0}с",
   "spear_desc_penetrate": "Режим электрического шока на {0}с, срабатывает на {1} последовательных ударах",
   "spear_desc_penetrate_damage": "Урон оружия +{0}%",
@@ -711,7 +711,6 @@
   "atk_crit_dmg_name": "Удар по уязвимому месту",
   "atk_finisher_melee_name": "Финишер комбо",
   "atk_twohand_crush_name": "Сокрушение двуручным",
-  "atk_staff_m_name": "Элементальный удар",
   "atk_base_desc": "Физическая атака +{0}, Элементальная атака +{1}",
   "atk_twohand_drain_desc": "Физическая атака +{0}%, Элементальная атака +{1}%",
   "atk_ranged_enhance_desc": "Урон дальнего оружия +{0}% (Арбалет, Лук, Посох)",
@@ -897,7 +896,7 @@
   "config_tier5_parryrush_staminacost": "Уровень 5: Парирование с рывком (sword_step5_defswitch) - Стоимость выносливости",
   "config_tier5_parryrush_cooldown": "Уровень 5: Парирование с рывком (sword_step5_defswitch) - Перезарядка (сек)",
   "config_tier6_rushslash_requiredpoints": "Уровень 6: Рывок с ударом (sword_step5_finalcut) - Требуемые очки",
-  "config_tier6_rushslash_hit1damageratio": "Уровень 6: Рывок с ударом (sword_step5_finalcut) - Коэффициент урона 1-го удара (%)"
+  "config_tier6_rushslash_hit1damageratio": "Уровень 6: Рывок с ударом (sword_step5_finalcut) - Коэффициент урона 1-го удара (%)",
   "config_tier6_rushslash_hit2damageratio": "Уровень 6: Быстрый удар (sword_step5_finalcut) - Коэффициент урона 2-го удара (%)",
   "config_tier6_rushslash_hit3damageratio": "Уровень 6: Быстрый удар (sword_step5_finalcut) - Коэффициент урона 3-го удара (%)",
   "config_tier6_rushslash_initialdistance": "Уровень 6: Быстрый удар (sword_step5_finalcut) - Начальная дистанция рывка (метры)",
@@ -969,5 +968,22 @@
   "config_attack_tier6_crit_damage": "Уровень 6: Атака по уязвимым точкам (attack_step6_crit_damage) - Бонус критического урона (%)",
   "config_attack_tier6_twohand_bonus": "Уровень 6: Сокрушение двуручным оружием (attack_step6_twohanded) - Бонус урона двуручным оружием (%)",
   "config_attack_tier6_elemental": "Уровень 6: Элементальная атака (attack_step6_elemental) - Элементальный бонус (Лук, Посох) (%)",
-  "config_attack_tier6_finisher": "Уровень 6: Завершение комбо (attack_step6_finisher) - Бонус комбо из 3 ударов (%)"
+  "config_attack_tier6_finisher": "Уровень 6: Завершение комбо (attack_step6_finisher) - Бонус комбо из 3 ударов (%)",
+
+  "atk_staff_mage_name": "Элементальный удар",
+  "tooltip_max_targets": "Макс. целей",
+  "tooltip_targets_unit": " цел.",
+
+  "hud_slot_g": "Ближний бой",
+  "hud_slot_h": "Второй",
+  "hud_slot_r": "Дальний бой",
+  "hud_slot_y": "Класс",
+
+  "job_class_one_only": "Можно выбрать только 1 класс",
+  "epicmmo_connected_title": "EpicMMO подключён",
+  "epicmmo_connected_detail": "Подключено к системе уровней EpicMMO.\nСистема уровней Captain отключена.",
+  "rogue_aggro_protection_end": "Защита от аггро снята",
+
+  "sword_desc_rush_slash_path": "Поражает всех монстров на пути движения",
+  "rush_slash_path_hit": "Рассекающий удар!"
 }

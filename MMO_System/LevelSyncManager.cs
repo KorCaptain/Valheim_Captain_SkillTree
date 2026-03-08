@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using CaptainSkillTree.SkillTree;
 using CaptainSkillTree.Localization;
@@ -143,9 +144,9 @@ namespace CaptainSkillTree.MMO_System
                     if (CaptainMMOBridge.UseEpicMMO)
                     {
                         if (!EpicMMOReflectionHelper.HasInstance()) return; // EpicMMO 준비 대기
-                        // EpicMMO 연동 확인 완료 → 메시지 표시
-                        _lastKnownLevel = currentLevel;
-                        ShowFirstConnectionMessage(currentLevel);
+                        // EpicMMO 연동 확인 완료 → 메시지 표시 성공 시만 _lastKnownLevel 갱신 (retry 허용)
+                        if (ShowFirstConnectionMessage(currentLevel))
+                            _lastKnownLevel = currentLevel;
                     }
                     else
                     {
@@ -289,34 +290,53 @@ namespace CaptainSkillTree.MMO_System
         /// <summary>
         /// 첫 접속 시 EpicMMO 연동 확인 메시지 표시
         /// </summary>
-        private void ShowFirstConnectionMessage(int level)
+        private bool ShowFirstConnectionMessage(int level)
         {
+            if (MessageHud.instance == null)
+            {
+                Plugin.Log.LogDebug("[LevelSyncManager] MessageHud 없음, 다음 주기에 재시도");
+                return false;
+            }
             var manager = SkillTreeManager.Instance;
-            int availablePoints = manager?.GetAvailablePoints() ?? 0;
-            ShowNotification(string.Format(L.Get("mmo_level_sync_message"), level, availablePoints));
-            Plugin.Log.LogInfo($"[LevelSyncManager] EpicMMO 연동 확인 완료 - Lv.{level}, 사용가능 SP: {availablePoints}");
+            int maxPoints = manager?.GetTotalMaxPoints() ?? 0;
+            // 연동 메시지 + 레벨/포인트 - 모두 Center에 통합 표시 (5초)
+            string combined = L.Get("epicmmo_connected_detail") + "\n" + string.Format(L.Get("mmo_level_sync_message"), level, maxPoints);
+            ShowNotification(combined, 5f);
+            Plugin.Log.LogInfo($"[LevelSyncManager] EpicMMO 연동 확인 완료 - Lv.{level}, 최대 SP: {maxPoints}");
+            return true;
         }
 
         /// <summary>
-        /// MessageHud를 통한 알림 표시
+        /// MessageHud를 통한 알림 표시 (duration초 동안 유지)
         /// </summary>
-        private void ShowNotification(string message)
+        private void ShowNotification(string message, float duration = 4f)
         {
             try
             {
-                if (MessageHud.instance != null)
-                {
-                    MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, message);
-                }
-                else
+                if (MessageHud.instance == null)
                 {
                     Plugin.Log.LogDebug($"[LevelSyncManager] MessageHud 없음, 로그만 출력: {message}");
+                    return;
                 }
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, message);
+                if (duration > 4f && Plugin.Instance != null)
+                    Plugin.Instance.StartCoroutine(ExtendCenterMessage(message, duration));
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogDebug($"[LevelSyncManager] 알림 표시 실패: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// Center 메시지를 지정한 시간(초) 동안 유지
+        /// Valheim 기본 4초 이후 남은 시간만큼 재표시
+        /// </summary>
+        private static IEnumerator ExtendCenterMessage(string message, float totalDuration)
+        {
+            yield return new WaitForSeconds(totalDuration - 4f);
+            if (MessageHud.instance != null)
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, message);
         }
 
         /// <summary>
@@ -339,6 +359,15 @@ namespace CaptainSkillTree.MMO_System
             {
                 Plugin.Log.LogDebug($"[LevelSyncManager] UI 갱신 실패: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// 재접속 시 레벨 감지 상태 초기화 (SpawnPlayer 시 호출)
+        /// </summary>
+        public void Reset()
+        {
+            _lastKnownLevel = 0;
+            _lastCheckTime = 0f;  // SpawnPlayer 직후 즉시 체크 가능
         }
 
         /// <summary>

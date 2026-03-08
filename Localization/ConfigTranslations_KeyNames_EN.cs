@@ -17,6 +17,7 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_H"] = "Secondary Skill Key",
                 ["HUD_PosX"] = "HUD X Position",
                 ["HUD_PosY"] = "HUD Y Position",
+                ["PassiveMessageDisplay"] = "Passive Message Display",
 
                 // ============================================
                 // Attack Tree - 33 Keys
@@ -59,9 +60,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_RangedEnhance_RangedDamageBonus"] = "Tier 4-3: [Ranged Enhance] Damage Bonus (%)",
                 ["Tier4_RangedEnhance_RequiredPoints"] = "Tier 4-3: [Ranged Enhance] Required Points",
 
-                // === Tier 5: Specialized Stats (2) ===
-                ["Tier5_SpecialStat_SpecBonus"] = "Tier 5: [Specialized Stats] Weapon Specialization Bonus",
-                ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [Specialized Stats] Required Points",
+                // === Tier 5: Charge (3) ===
+                ["Tier5_SpecialStat_SpecBonus"] = "Tier 5: [Charge] Stamina Recovery (%)",
+                ["Tier5_Charge_TriggerChance"] = "Tier 5: [Charge] Trigger Chance (%)",
+                ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [Charge] Required Points",
 
                 // === Tier 6: Final Enhancement (8) ===
                 ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [Weak Point] Crit Damage Bonus (%)",

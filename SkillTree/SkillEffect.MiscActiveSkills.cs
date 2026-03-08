@@ -414,7 +414,8 @@ namespace CaptainSkillTree.SkillTree
                 if (!SkillEffect.IsStaffDualCastReady(player)) return true;
 
                 Vector3 attackDir = player.GetLookDir();
-                SkillTreeInputListener.Instance.StartCoroutine(DelayedDualCastExecution(player, currentWeapon, attackDir));
+                Vector3 aimSpot = Traverse.Create(__instance).Field("m_aimSpot").GetValue<Vector3>();
+                SkillTreeInputListener.Instance.StartCoroutine(DelayedDualCastExecution(player, currentWeapon, attackDir, aimSpot));
 
                 return true;
             }
@@ -425,7 +426,7 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        private static IEnumerator DelayedDualCastExecution(Player player, ItemDrop.ItemData weapon, Vector3 attackDir)
+        private static IEnumerator DelayedDualCastExecution(Player player, ItemDrop.ItemData weapon, Vector3 attackDir, Vector3 aimSpot)
         {
             yield return new WaitForSeconds(0.5f);
 
@@ -433,7 +434,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (SkillEffect.IsStaffDualCastReady(player))
             {
-                SkillEffect.PerformStaffDualCastAttack(player, weapon, attackDir);
+                SkillEffect.PerformStaffDualCastAttack(player, weapon, attackDir, aimSpot);
             }
         }
     }
