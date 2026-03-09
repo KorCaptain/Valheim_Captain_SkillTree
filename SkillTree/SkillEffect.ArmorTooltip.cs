@@ -221,7 +221,7 @@ namespace CaptainSkillTree.SkillTree
                         bonusText += $"\n<color=#40e0d0>회피 : +{dodgeTotal:F0}%</color>";
 
                     if (!string.IsNullOrEmpty(bonusText))
-                        __result += bonusText;
+                        __result += "\n🛡" + bonusText;
                 }
                 catch (System.Exception ex)
                 {

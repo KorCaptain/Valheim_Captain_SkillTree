@@ -1167,18 +1167,32 @@ namespace CaptainSkillTree.SkillTree
             SkillEffect.UpdateDefenseDodgeRate(Player.m_localPlayer);
         }
 
-        // 생산 전문가를 제외한 스킬 초기화 (UI 초기화 버튼용)
+        // 생산 전문가를 제외한 스킬 초기화 (직업 스킬도 제외, UI 포인트 초기화 버튼용)
         public void ResetAllSkillLevelsExceptProduction()
         {
             if (Player.m_localPlayer == null) return;
             foreach (var node in SkillNodes.Values)
             {
                 if (ProductionSkillIds.Contains(node.Id)) continue;
+                if (IsJobSkill(node.Id)) continue;
                 string key = $"CaptainSkillTree_{node.Id}";
                 Player.m_localPlayer.m_customData[key] = "0";
             }
             pendingInvestments.Clear();
             SkillEffect.UpdateDefenseDodgeRate(Player.m_localPlayer);
+        }
+
+        // 직업 스킬만 초기화 (UI 직업 초기화 버튼용)
+        public void ResetJobSkillLevels()
+        {
+            if (Player.m_localPlayer == null) return;
+            var jobIds = new[] { "Paladin", "Tanker", "Berserker", "Rogue", "Mage", "Archer" };
+            foreach (var jobId in jobIds)
+            {
+                string key = $"CaptainSkillTree_{jobId}";
+                Player.m_localPlayer.m_customData[key] = "0";
+            }
+            pendingInvestments.Clear();
         }
 
         // 생산 전문가 스킬만 초기화

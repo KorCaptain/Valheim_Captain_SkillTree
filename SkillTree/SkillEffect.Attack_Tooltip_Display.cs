@@ -52,6 +52,14 @@ namespace CaptainSkillTree.SkillTree
         private const string COL_PCT   = "#00BFFF";
         private const string COL_GRAY  = "#808080";
 
+        // 효과별 색상
+        private const string COL_ATK_PHY  = "#FF6B35";  // 물리 공격력 - 주황빨강
+        private const string COL_ATK_ELEM = "#C77DFF";  // 속성 공격력 - 보라
+        private const string COL_MOVE_SPD = "#80FF80";  // 이동속도    - 연두
+        private const string COL_ATK_SPD  = "#FFD700";  // 공격속도    - 금색
+        private const string COL_CRIT_CHC = "#FF4D4D";  // 치명타 확률 - 붉은색
+        private const string COL_CRIT_DMG = "#FF9900";  // 치명타 피해 - 주황
+
         // ─────────────────────────────────────────────────────────────────
         // 무기 그룹 판별
         // ─────────────────────────────────────────────────────────────────
@@ -344,17 +352,17 @@ namespace CaptainSkillTree.SkillTree
         public static void AppendExtraStats(ref string result, WeaponBonuses b)
         {
             if (b.PctPhysical > 0.01f)
-                result += $"\n<color={COL_PCT}>★ 물리 공격력: +{b.PctPhysical:F0}%</color>";
+                result += $"\n<color={COL_ATK_PHY}>⚔️ 물리 공격력: +{b.PctPhysical:F0}%</color>";
             if (b.PctElemental > 0.01f)
-                result += $"\n<color={COL_PCT}>★ 속성 공격력: +{b.PctElemental:F0}%</color>";
+                result += $"\n<color={COL_ATK_ELEM}>⚔️ 속성 공격력: +{b.PctElemental:F0}%</color>";
             if (b.MoveSpeed > 0.01f)
-                result += $"\n<color={COL_BONUS}>★ 이동속도: +{b.MoveSpeed:F0}%</color>";
+                result += $"\n<color={COL_MOVE_SPD}>⚔️ 이동속도: +{b.MoveSpeed:F0}%</color>";
             if (b.AttackSpeed > 0.01f)
-                result += $"\n<color={COL_BONUS}>★ 공격속도: +{b.AttackSpeed:F0}%</color>";
+                result += $"\n<color={COL_ATK_SPD}>⚔️ 공격속도: +{b.AttackSpeed:F0}%</color>";
             if (b.CritChance > 0.01f)
-                result += $"\n<color={COL_BONUS}>★ 치명타 확률: +{b.CritChance:F0}%</color>";
+                result += $"\n<color={COL_CRIT_CHC}>⚔️ 치명타 확률: +{b.CritChance:F0}%</color>";
             if (b.CritDamage > 0.01f)
-                result += $"\n<color={COL_BONUS}>★ 치명타 피해: +{b.CritDamage:F0}%</color>";
+                result += $"\n<color={COL_CRIT_DMG}>⚔️ 치명타 피해: +{b.CritDamage:F0}%</color>";
         }
     }
 
@@ -379,6 +387,14 @@ namespace CaptainSkillTree.SkillTree
 
                     var player = Player.m_localPlayer;
                     if (player == null) return;
+
+                    // 방어구 아이템 명시적 제외 (공격 효과는 무기에만 표시)
+                    var itemType = item.m_shared.m_itemType;
+                    if (itemType == ItemDrop.ItemData.ItemType.Helmet  ||
+                        itemType == ItemDrop.ItemData.ItemType.Chest   ||
+                        itemType == ItemDrop.ItemData.ItemType.Legs    ||
+                        itemType == ItemDrop.ItemData.ItemType.Shield)
+                        return;
 
                     var group = WeaponTooltipHelper.GetWeaponGroup(item);
                     if (group == WeaponGroup.None) return;

@@ -32,6 +32,7 @@ namespace CaptainSkillTree.Gui
         public GameObject? panel;
         private UnityEngine.UI.Text? skillPointText;
         private Button? resetPointButton;
+        private Button? resetJobButton;
         private Button? resetProductionButton;
         private Button? musicToggleButton;
         private Dictionary<string, GameObject> nodeObjects = new Dictionary<string, GameObject>();
@@ -90,7 +91,15 @@ namespace CaptainSkillTree.Gui
                     }
                 }
 
-                // 3. 생산 초기화 버튼 텍스트 갱신
+                // 3. 직업 초기화 버튼 텍스트 갱신
+                if (resetJobButton != null)
+                {
+                    var btnText = resetJobButton.GetComponentInChildren<UnityEngine.UI.Text>();
+                    if (btnText != null)
+                        btnText.text = L10n.Get("ui_reset_job");
+                }
+
+                // 4. 생산 초기화 버튼 텍스트 갱신
                 if (resetProductionButton != null)
                 {
                     var btnText = resetProductionButton.GetComponentInChildren<UnityEngine.UI.Text>();
@@ -98,7 +107,7 @@ namespace CaptainSkillTree.Gui
                         btnText.text = L10n.Get("ui_reset_production");
                 }
 
-                // 4. Music 버튼 텍스트 갱신
+                // 5. Music 버튼 텍스트 갱신
                 if (musicToggleButton != null)
                 {
                     var musicText = musicToggleButton.GetComponentInChildren<UnityEngine.UI.Text>();
@@ -259,58 +268,28 @@ namespace CaptainSkillTree.Gui
             }
 
 
-            // [포인트 초기화] 버튼 생성 (텍스트 버튼)
-            GameObject btnObj = new GameObject("ResetPointButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
-            btnObj.transform.SetParent(panel.transform, false);
-            var btnRect = btnObj.GetComponent<RectTransform>();
-            btnRect.sizeDelta = new Vector2(100, 32); // 120x40에서 10% 감소 (108x36)
-            btnRect.anchorMin = new Vector2(0.5f, 1f);
-            btnRect.anchorMax = new Vector2(0.5f, 1f);
-            btnRect.pivot = new Vector2(0.5f, 1f);
-            btnRect.anchoredPosition = new Vector2(220, -40); // 텍스트 오른쪽, 더 넓게 띄움
-            var btnImg = btnObj.GetComponent<Image>();
-            btnImg.color = new Color(0.2f, 0.2f, 0.2f, 1f);
-            resetPointButton = btnObj.GetComponent<Button>();
-            resetPointButton.onClick.AddListener(() => ResetSkillPoints());
-            // 버튼 텍스트
-            GameObject btnTxtObj = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
-            btnTxtObj.transform.SetParent(btnObj.transform, false);
-            var btnTxt = btnTxtObj.GetComponent<Text>();
-            btnTxt.text = L10n.Get("ui_reset_points");
-            btnTxt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            btnTxt.alignment = TextAnchor.MiddleCenter;
-            btnTxt.color = Color.white;
-            btnTxt.rectTransform.sizeDelta = btnRect.sizeDelta;
-            btnTxt.rectTransform.anchoredPosition = Vector2.zero;
+            // 행 1: [포인트 초기화] [직업 초기화] [생산 초기화] (y=-40)
+            // 행 2: [Music Off] (y=-76)
 
-            // [생산 전문가 초기화] 버튼 생성 (포인트 초기화 버튼 아래)
-            GameObject prodBtnObj = new GameObject("ResetProductionButton",
-                typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
-            prodBtnObj.transform.SetParent(panel.transform, false);
-            var prodBtnRect = prodBtnObj.GetComponent<RectTransform>();
-            prodBtnRect.sizeDelta = new Vector2(100, 32);
-            prodBtnRect.anchorMin = new Vector2(0.5f, 1f);
-            prodBtnRect.anchorMax = new Vector2(0.5f, 1f);
-            prodBtnRect.pivot = new Vector2(0.5f, 1f);
-            prodBtnRect.anchoredPosition = new Vector2(220, -76);
-            var prodBtnImg = prodBtnObj.GetComponent<Image>();
-            prodBtnImg.color = new Color(0.1f, 0.35f, 0.1f, 1f);
-            resetProductionButton = prodBtnObj.GetComponent<Button>();
-            resetProductionButton.onClick.AddListener(() => ResetProductionSkillPoints());
-            // 버튼 텍스트
-            GameObject prodBtnTxtObj = new GameObject("Text",
-                typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
-            prodBtnTxtObj.transform.SetParent(prodBtnObj.transform, false);
-            var prodBtnTxt = prodBtnTxtObj.GetComponent<Text>();
-            prodBtnTxt.text = L10n.Get("ui_reset_production");
-            prodBtnTxt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            prodBtnTxt.alignment = TextAnchor.MiddleCenter;
-            prodBtnTxt.color = Color.white;
-            prodBtnTxt.fontSize = 11;
-            prodBtnTxt.rectTransform.sizeDelta = prodBtnRect.sizeDelta;
-            prodBtnTxt.rectTransform.anchoredPosition = Vector2.zero;
+            // 행 1 버튼 공통 크기: 130x38, 폰트 13, 간격 12px
+            // x 중심 위치: 120 / 262 / 404
 
-            // Music On/Off 토글 버튼 생성 (포인트 초기화 버튼 오른쪽)
+            // [포인트 초기화] 버튼 생성 (행 1 왼쪽) - 스틸블루
+            resetPointButton = CreateFancyButton("ResetPointButton", L10n.Get("ui_reset_points"),
+                new Vector2(120, -40), new Color(0.22f, 0.45f, 0.70f, 1f), panel.transform,
+                () => ResetSkillPoints());
+
+            // [직업 초기화] 버튼 생성 (행 1 중간) - 보라
+            resetJobButton = CreateFancyButton("ResetJobButton", L10n.Get("ui_reset_job"),
+                new Vector2(262, -40), new Color(0.50f, 0.20f, 0.60f, 1f), panel.transform,
+                () => ResetJobSkillPoints());
+
+            // [생산 초기화] 버튼 생성 (행 1 오른쪽) - 에메랄드
+            resetProductionButton = CreateFancyButton("ResetProductionButton", L10n.Get("ui_reset_production"),
+                new Vector2(404, -40), new Color(0.15f, 0.55f, 0.25f, 1f), panel.transform,
+                () => ResetProductionSkillPoints());
+
+            // Music On/Off 토글 버튼 생성 (행 2)
             CreateMusicToggleButton(panel);
 
             // 하단 중앙 UI: 사용 가능 포인트, 확인/취소 버튼 (기존 텍스트 바로 아래로 이동)
@@ -458,6 +437,102 @@ namespace CaptainSkillTree.Gui
             textRect.offsetMin = Vector2.zero;
             textRect.offsetMax = Vector2.zero;
             
+            return button;
+        }
+
+        /// <summary>
+        /// 4-레이어 입체감 버튼 생성 (Shadow + MainBody + Highlight + Text+Shadow)
+        /// </summary>
+        private Button CreateFancyButton(string name, string text, Vector2 position,
+            Color mainColor, Transform parent, UnityEngine.Events.UnityAction onClick)
+        {
+            // 루트 컨테이너 (Button 컴포넌트, 투명)
+            GameObject root = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            root.transform.SetParent(parent, false);
+            var rootRect = root.GetComponent<RectTransform>();
+            rootRect.sizeDelta = new Vector2(134, 42);
+            rootRect.anchorMin = new Vector2(0.5f, 1f);
+            rootRect.anchorMax = new Vector2(0.5f, 1f);
+            rootRect.pivot = new Vector2(0.5f, 1f);
+            rootRect.anchoredPosition = position;
+            root.GetComponent<Image>().color = Color.clear;
+
+            // 1. 드롭 섀도우 레이어 (먼저 생성 = 뒤에 렌더링)
+            GameObject shadowGo = new GameObject("Shadow", typeof(RectTransform), typeof(Image));
+            shadowGo.transform.SetParent(root.transform, false);
+            var shadowRect = shadowGo.GetComponent<RectTransform>();
+            shadowRect.anchorMin = new Vector2(0.5f, 0.5f);
+            shadowRect.anchorMax = new Vector2(0.5f, 0.5f);
+            shadowRect.pivot = new Vector2(0.5f, 0.5f);
+            shadowRect.sizeDelta = new Vector2(130, 38);
+            shadowRect.anchoredPosition = new Vector2(2f, -2f);
+            var shadowImg = shadowGo.GetComponent<Image>();
+            shadowImg.color = new Color(0, 0, 0, 0.6f);
+            shadowImg.raycastTarget = false;
+
+            // 2. 메인 바디 레이어
+            GameObject mainGo = new GameObject("MainBody", typeof(RectTransform), typeof(Image));
+            mainGo.transform.SetParent(root.transform, false);
+            var mainRect = mainGo.GetComponent<RectTransform>();
+            mainRect.anchorMin = new Vector2(0.5f, 0.5f);
+            mainRect.anchorMax = new Vector2(0.5f, 0.5f);
+            mainRect.pivot = new Vector2(0.5f, 0.5f);
+            mainRect.sizeDelta = new Vector2(130, 38);
+            mainRect.anchoredPosition = Vector2.zero;
+            var mainImg = mainGo.GetComponent<Image>();
+            mainImg.color = mainColor;
+            mainImg.raycastTarget = false;
+
+            // 3. 상단 하이라이트 레이어 (mainGo 자식)
+            GameObject hlGo = new GameObject("Highlight", typeof(RectTransform), typeof(Image));
+            hlGo.transform.SetParent(mainGo.transform, false);
+            var hlRect = hlGo.GetComponent<RectTransform>();
+            hlRect.anchorMin = new Vector2(0, 0.6f);
+            hlRect.anchorMax = new Vector2(1, 1);
+            hlRect.offsetMin = Vector2.zero;
+            hlRect.offsetMax = Vector2.zero;
+            var hlImg = hlGo.GetComponent<Image>();
+            hlImg.color = new Color(
+                Mathf.Min(mainColor.r + 0.25f, 1f),
+                Mathf.Min(mainColor.g + 0.25f, 1f),
+                Mathf.Min(mainColor.b + 0.25f, 1f),
+                0.5f
+            );
+            hlImg.raycastTarget = false;
+
+            // 4. 텍스트 + Shadow 컴포넌트 (mainGo 자식)
+            GameObject textGo = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Text));
+            textGo.transform.SetParent(mainGo.transform, false);
+            var textComp = textGo.GetComponent<UnityEngine.UI.Text>();
+            textComp.text = text;
+            textComp.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            textComp.alignment = TextAnchor.MiddleCenter;
+            textComp.color = Color.white;
+            textComp.fontSize = 13;
+            textComp.raycastTarget = false;
+            var textRect = textGo.GetComponent<RectTransform>();
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.offsetMin = Vector2.zero;
+            textRect.offsetMax = Vector2.zero;
+            var textShadow = textGo.AddComponent<UnityEngine.UI.Shadow>();
+            textShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            textShadow.effectDistance = new Vector2(1f, -1f);
+
+            // 5. Button ColorBlock (Hover/Press 피드백)
+            var button = root.GetComponent<Button>();
+            var colors = button.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(1.2f, 1.2f, 1.2f, 1f);
+            colors.pressedColor = new Color(0.75f, 0.75f, 0.75f, 1f);
+            colors.fadeDuration = 0.1f;
+            button.colors = colors;
+
+            button.onClick.AddListener(() => {
+                StartCoroutine(ButtonClickEffect(rootRect));
+                onClick.Invoke();
+            });
+
             return button;
         }
 
@@ -693,6 +768,22 @@ namespace CaptainSkillTree.Gui
             Debug.Log($"[SkillTreeUI] 스킬포인트가 초기화되었습니다.");
         }
         
+        private void ResetJobSkillPoints()
+        {
+            ShowResetConfirmDialog(
+                "ui_reset_job_confirm_title",
+                "ui_reset_job_confirm_message",
+                ExecuteResetJobSkillPoints);
+        }
+
+        private void ExecuteResetJobSkillPoints()
+        {
+            var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
+            manager.ResetJobSkillLevels();
+            RefreshUI();
+            Debug.Log("[SkillTreeUI] 직업 스킬이 초기화되었습니다.");
+        }
+
         private void ResetProductionSkillPoints()
         {
             ShowResetConfirmDialog(
@@ -2651,40 +2742,14 @@ namespace CaptainSkillTree.Gui
         {
             try
             {
-                // Music 토글 버튼 생성 (포인트 초기화 버튼과 동일한 스타일)
-                GameObject musicBtnObj = new GameObject("MusicToggleButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
-                musicBtnObj.transform.SetParent(parent.transform, false);
-                
-                var musicBtnRect = musicBtnObj.GetComponent<RectTransform>();
-                musicBtnRect.sizeDelta = new Vector2(80, 32); // 포인트 초기화 버튼보다 약간 작게
-                musicBtnRect.anchorMin = new Vector2(0.5f, 1f);
-                musicBtnRect.anchorMax = new Vector2(0.5f, 1f);
-                musicBtnRect.pivot = new Vector2(0.5f, 1f);
-                musicBtnRect.anchoredPosition = new Vector2(330, -40); // 포인트 초기화 버튼 오른쪽 (220 + 110)
-                
-                var musicBtnImg = musicBtnObj.GetComponent<Image>();
-                // BGM 상태에 따라 색상 설정 (초기값: 활성화 상태)
-                UpdateMusicButtonColor(musicBtnImg);
-                
-                musicToggleButton = musicBtnObj.GetComponent<Button>();
-                musicToggleButton.onClick.AddListener(() => ToggleBGM());
-                
-                // 버튼 텍스트
-                GameObject musicBtnTxtObj = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
-                musicBtnTxtObj.transform.SetParent(musicBtnObj.transform, false);
-                var musicBtnTxt = musicBtnTxtObj.GetComponent<Text>();
-                
-                // BGM 상태에 따라 텍스트 설정
-                UpdateMusicButtonText(musicBtnTxt);
-                
-                musicBtnTxt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                musicBtnTxt.alignment = TextAnchor.MiddleCenter;
-                musicBtnTxt.color = Color.white;
-                musicBtnTxt.fontSize = 12; // 버튼이 작으므로 폰트 크기 조정
-                musicBtnTxt.rectTransform.sizeDelta = musicBtnRect.sizeDelta;
-                musicBtnTxt.rectTransform.anchoredPosition = Vector2.zero;
+                bool isBGMEnabled = SkillTreeBGMManager.Instance?.IsBGMEnabled ?? true;
+                Color initialColor = isBGMEnabled
+                    ? new Color(0.10f, 0.50f, 0.80f, 1f)
+                    : new Color(0.35f, 0.35f, 0.40f, 1f);
+                string initialText = isBGMEnabled ? "Music On" : "Music Off";
 
-                // Music On/Off 토글 버튼 생성 완료
+                musicToggleButton = CreateFancyButton("MusicToggleButton", initialText,
+                    new Vector2(262, -82), initialColor, parent.transform, () => ToggleBGM());
             }
             catch (System.Exception ex)
             {
@@ -2733,18 +2798,14 @@ namespace CaptainSkillTree.Gui
             {
                 if (musicToggleButton != null)
                 {
-                    var image = musicToggleButton.GetComponent<Image>();
+                    // 새 레이어 구조: MainBody Image 참조
+                    var mainBodyTf = musicToggleButton.transform.Find("MainBody");
+                    if (mainBodyTf != null)
+                        UpdateMusicButtonColor(mainBodyTf.GetComponent<Image>());
+
                     var text = musicToggleButton.GetComponentInChildren<Text>();
-                    
-                    if (image != null)
-                    {
-                        UpdateMusicButtonColor(image);
-                    }
-                    
                     if (text != null)
-                    {
                         UpdateMusicButtonText(text);
-                    }
                 }
             }
             catch (System.Exception ex)
@@ -2756,28 +2817,34 @@ namespace CaptainSkillTree.Gui
         /// <summary>
         /// BGM 상태에 따라 버튼 색상 업데이트
         /// </summary>
-        private void UpdateMusicButtonColor(Image buttonImage)
+        private void UpdateMusicButtonColor(Image mainLayerImage)
         {
             try
             {
+                if (mainLayerImage == null) return;
                 bool isBGMEnabled = SkillTreeBGMManager.Instance?.IsBGMEnabled ?? true;
-                
-                if (isBGMEnabled)
+                Color mainColor = isBGMEnabled
+                    ? new Color(0.10f, 0.50f, 0.80f, 1f)
+                    : new Color(0.35f, 0.35f, 0.40f, 1f);
+                mainLayerImage.color = mainColor;
+
+                // 하이라이트 레이어도 함께 업데이트
+                var hlTf = mainLayerImage.transform.Find("Highlight");
+                if (hlTf != null)
                 {
-                    // BGM 활성화 - 파란색
-                    buttonImage.color = new Color(0.0f, 0.3f, 0.7f, 1f);
-                }
-                else
-                {
-                    // BGM 비활성화 - 회색
-                    buttonImage.color = new Color(0.4f, 0.4f, 0.4f, 1f);
+                    var hlImg = hlTf.GetComponent<Image>();
+                    if (hlImg != null)
+                        hlImg.color = new Color(
+                            Mathf.Min(mainColor.r + 0.25f, 1f),
+                            Mathf.Min(mainColor.g + 0.25f, 1f),
+                            Mathf.Min(mainColor.b + 0.25f, 1f),
+                            0.5f
+                        );
                 }
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[BGM UI] 버튼 색상 업데이트 실패: {ex.Message}");
-                // 기본 색상으로 설정
-                buttonImage.color = new Color(0.2f, 0.2f, 0.2f, 1f);
             }
         }
 
