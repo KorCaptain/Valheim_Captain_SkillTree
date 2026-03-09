@@ -953,7 +953,7 @@ namespace CaptainSkillTree.SkillTree
                 target.Damage(hit);
 
                 // VFX: 적중 효과
-                VFXManager.PlayVFXMultiplayer("vfx_sledge_hit", "", target.GetCenterPoint(), Quaternion.identity, 2f);
+                VFXManager.PlayVFXMultiplayer("fx_shieldgenerator_domehit", "", target.GetCenterPoint(), Quaternion.identity, 2f);
 
                 SkillEffect.DrawFloatingText(player, "🛡️ " + L.Get("parry_rush_damage", Sword_Config.ParryRushDamageBonusValue), Color.cyan);
                 Plugin.Log.LogInfo($"[패링 돌격] 돌격 성공! 공격력 +{Sword_Config.ParryRushDamageBonusValue}%, 밀어내기 {Sword_Config.ParryRushPushDistanceValue}m");
