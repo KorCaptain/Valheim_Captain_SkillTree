@@ -283,7 +283,8 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
                 // 인벤토리 가득 찬 경우 → 캐릭터 앞에 드롭
-                var spearPrefab = ZNetScene.instance?.GetPrefab(newSpear.m_shared.m_name);
+                var prefabName = newSpear.m_dropPrefab?.name;
+                var spearPrefab = (prefabName != null) ? ZNetScene.instance?.GetPrefab(prefabName) : null;
                 if (spearPrefab != null)
                 {
                     Vector3 dropPos = player.transform.position + player.transform.forward * 1.5f + Vector3.up * 0.5f;

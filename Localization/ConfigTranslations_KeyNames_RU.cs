@@ -153,7 +153,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_MindShield_RequiredPoints"] = "Ур.6-1: [Ментал. щит] Необходимые очки",
 
                 // === Ур. 6-2: Усиление Нервов (2) ===
-                ["Tier6_NerveEnhancement_DodgeBonus"] = "Ур.6: Постоянный бонус уклонения (%)",
+                ["Tier6_NerveEnhancement_DodgeBonus"] = "Ур.6: Условный бонус уклонения (30с, %)",
                 ["Tier6_NerveEnhancement_RequiredPoints"] = "Ур.6-2: [Усил. нервов] Необходимые очки",
 
                 // === Ур. 6-3: Двойной Прыжок (1) ===

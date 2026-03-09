@@ -67,7 +67,7 @@ namespace CaptainSkillTree.SkillTree
                         c.Damage(hit);
                         alreadyHit.Add(id);
 
-                        SimpleVFX.Play("fx_sword_hit", c.GetCenterPoint(), 1f);
+                        SimpleVFX.Play("flash_yellow_pink", c.GetCenterPoint(), 1f);
                         SkillEffect.DrawFloatingText(player, L.Get("rush_slash_path_hit"), Color.white);
                     }
                 }

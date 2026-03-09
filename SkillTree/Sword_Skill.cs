@@ -499,7 +499,7 @@ namespace CaptainSkillTree.SkillTree
                 hitCount++;
 
                 // 개별 타격 VFX
-                SimpleVFX.Play("fx_sword_hit", monster.GetCenterPoint(), 1f);
+                SimpleVFX.Play("flash_yellow_pink", monster.GetCenterPoint(), 1f);
             }
 
             // 5. 플로팅 텍스트

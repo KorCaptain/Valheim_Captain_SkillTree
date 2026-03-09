@@ -62,7 +62,7 @@ namespace CaptainSkillTree.Localization
                 ["defense_stamina_desc"] = "회피 +{0}%, 구르기 스태미나 -{1}%",
                 ["defense_heal_desc"] = "{0}초마다 체력 +{1}",
                 ["defense_parry_desc"] = "패링 +{0}초, 방패 방어력 +{1}",
-                ["defense_attack_desc"] = "회피 +{0}%",
+                ["defense_attack_desc"] = "30초 동안 피격 회피 미발동 시 회피 +{0}%",
                 ["defense_body_desc"] = "체력 최대치 +{0}%, 물리/속성 저항 +{1}%",
                 ["defense_true_desc"] = "블럭 스태미나 -{0}%, 일반 방패 이동속도 +{1}%, 대형 방패 이동속도 +{2}%",
 
@@ -242,7 +242,7 @@ namespace CaptainSkillTree.Localization
                 ["taunt_ready"] = "도발 준비 완료!",
 
                 // === Attack Expert Tree Effect Messages ===
-                ["rage_bonus"] = "분노 +{0}%!",
+                ["rage_bonus"] = "추가 데미지 +{0}%",
                 ["melee_specialization"] = "근접 특화!",
                 ["bow_specialization"] = "활 특화!",
                 ["focus_fire_crit"] = "집중 사격 치명타 x{0}!",
@@ -441,7 +441,7 @@ namespace CaptainSkillTree.Localization
                 ["defense_stamina_desc"] = "Dodge +{0}%, Roll stamina -{1}%",
                 ["defense_heal_desc"] = "Health +{1} every {0}s",
                 ["defense_parry_desc"] = "Parry +{0}s, Shield block power +{1}",
-                ["defense_attack_desc"] = "Dodge +{0}%",
+                ["defense_attack_desc"] = "Dodge +{0}% if evasion not triggered for 30s",
                 ["defense_body_desc"] = "Max health +{0}%, Physical/Elemental resistance +{1}%",
                 ["defense_true_desc"] = "Block stamina -{0}%, Normal shield speed +{1}%, Tower shield speed +{2}%",
 

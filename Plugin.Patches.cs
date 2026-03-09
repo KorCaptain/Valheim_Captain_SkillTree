@@ -447,6 +447,7 @@ namespace CaptainSkillTree
         {
             static void Postfix()
             {
+                SkillTreeConfig.DetectServerClientMode();
                 InitializeServerSync();
             }
         }

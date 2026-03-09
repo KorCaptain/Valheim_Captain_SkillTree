@@ -19,6 +19,9 @@
 - **커스텀 VFX** (hit_01, debuff 등): `SimpleVFX` 사용
 - **발헤임 기본 VFX** (smokebomb_explosion, vfx_blocked 등): `VFXManager.PlayVFXMultiplayer()` 사용
 
+**커스텀 VFX 리스트는 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\asset\VFX 의 모든 프리팹
+**발헤임 기본 VFX  리스트는 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\VFX 의 Valheim_prefab.txt 
+
 ## 발헤임 기본 이팩트로 프리팹 기본 등록 되어 있음
 smokebomb_explosion - 발헤임 기본 스모크 효과 - 로그 이팩트
 vfx_GodExplosion - 발헤임 기본 녹색 폭파 완전 큼

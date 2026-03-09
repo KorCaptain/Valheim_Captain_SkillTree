@@ -247,7 +247,7 @@ namespace CaptainSkillTree.SkillTree
         // =====================================================
 
         /// <summary>
-        /// defense_Step6_attack: 신경강화 - 회피율 보너스 (영구, %)
+        /// defense_Step6_attack: 신경강화 - 회피율 보너스 (30초 미발동 조건, %)
         /// </summary>
         public static ConfigEntry<float> AttackDodgeBonus;
 
@@ -704,7 +704,7 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             AttackDodgeBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier6_NerveEnhancement_DodgeBonus", 5f,
+                "Defense Tree", "Tier6_NerveEnhancement_DodgeBonus", 45f,
                 SkillTreeConfig.GetConfigDescription("Tier6_NerveEnhancement_DodgeBonus"), order: 18);
 
             DefenseStep6AttackRequiredPoints = SkillTreeConfig.BindServerSync(config,

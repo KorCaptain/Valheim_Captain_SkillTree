@@ -34,13 +34,21 @@ namespace CaptainSkillTree.SkillTree
         public float AttackSpeed;
         public float CritChance;
         public float CritDamage;
+        public float RapidFireChance;     // 연속 발사 Lv1 확률
+        public float RapidFireLv2Chance;  // 연속 발사 Lv2 확률
+        public float MultishotLv1Chance;  // 멀티샷 Lv1 확률
+        public float MultishotLv1Arrows;  // 멀티샷 Lv1 화살 수
+        public float MultishotLv2Chance;  // 멀티샷 Lv2 확률
+        public float MultishotLv2Arrows;  // 멀티샷 Lv2 화살 수
 
         public bool HasAny()
         {
-            return FlatPierce      > 0.01f || FlatSlash       > 0.01f || FlatBlunt      > 0.01f ||
-                   FlatAllPhysical > 0.01f || FlatAllElemental > 0.01f || MoveSpeed     > 0.01f ||
-                   PctPhysical     > 0.01f || PctElemental    > 0.01f || AttackSpeed    > 0.01f ||
-                   CritChance      > 0.01f || CritDamage      > 0.01f;
+            return FlatPierce        > 0.01f || FlatSlash         > 0.01f || FlatBlunt          > 0.01f ||
+                   FlatAllPhysical   > 0.01f || FlatAllElemental  > 0.01f || MoveSpeed          > 0.01f ||
+                   PctPhysical       > 0.01f || PctElemental      > 0.01f || AttackSpeed        > 0.01f ||
+                   CritChance        > 0.01f || CritDamage        > 0.01f ||
+                   RapidFireChance   > 0.01f || RapidFireLv2Chance > 0.01f ||
+                   MultishotLv1Chance > 0.01f || MultishotLv2Chance > 0.01f;
         }
     }
 
@@ -117,6 +125,15 @@ namespace CaptainSkillTree.SkillTree
             var skillType = item.m_shared.m_skillType;
             b.CritChance = Critical.CalculateCritChance(player, skillType);
             b.CritDamage = CriticalDamage.CalculateCritDamageMultiplier(player, skillType);
+
+            // 근접 전문가 공통 flat 보너스 (melee_root) — 근접 무기 타입에만 적용
+            if (SkillEffect.HasSkill("melee_root") &&
+                (group == WeaponGroup.Knife  || group == WeaponGroup.Sword ||
+                 group == WeaponGroup.Mace   || group == WeaponGroup.Spear ||
+                 group == WeaponGroup.Polearm))
+            {
+                b.FlatAllPhysical += 3f;
+            }
 
             // 무기별 보너스
             switch (group)
@@ -199,6 +216,16 @@ namespace CaptainSkillTree.SkillTree
                         physPct += Attack_Config.AttackRangedEnhancementValue;
                     if (SkillEffect.HasSkill("bow_draw1"))
                         b.AttackSpeed += Speed_Config.SpeedBowDrawSpeedValue;
+                    if (SkillEffect.HasSkill("bow_Step2_multishot"))
+                    {
+                        b.MultishotLv1Chance = Bow_Config.BowMultishotLv1ChanceValue;
+                        b.MultishotLv1Arrows = Bow_Config.BowMultishotArrowCountValue;
+                    }
+                    if (SkillEffect.HasSkill("bow_Step4_multishot2"))
+                    {
+                        b.MultishotLv2Chance = Bow_Config.BowMultishotLv2ChanceValue;
+                        b.MultishotLv2Arrows = Bow_Config.BowMultishotArrowCountValue;
+                    }
                     break;
 
                 case WeaponGroup.Crossbow:
@@ -212,6 +239,10 @@ namespace CaptainSkillTree.SkillTree
                         physPct += Attack_Config.AttackRangedEnhancementValue;
                     if (SkillEffect.HasSkill("crossbow_draw1"))
                         b.AttackSpeed += Speed_Config.SpeedCrossbowDrawSpeedValue;
+                    if (SkillEffect.HasSkill("crossbow_Step2_rapid_fire"))
+                        b.RapidFireChance = Crossbow_Config.CrossbowRapidFireChanceValue;
+                    if (SkillEffect.HasSkill("crossbow_Step4_rapid_fire_lv2"))
+                        b.RapidFireLv2Chance = Crossbow_Config.CrossbowRapidFireLv2ChanceValue;
                     break;
 
                 case WeaponGroup.Staff:
@@ -354,15 +385,23 @@ namespace CaptainSkillTree.SkillTree
             if (b.PctPhysical > 0.01f)
                 result += $"\n<color={COL_ATK_PHY}>⚔️ 물리 공격력: +{b.PctPhysical:F0}%</color>";
             if (b.PctElemental > 0.01f)
-                result += $"\n<color={COL_ATK_ELEM}>⚔️ 속성 공격력: +{b.PctElemental:F0}%</color>";
+                result += $"\n<color={COL_ATK_ELEM}>🔥 속성 공격력: +{b.PctElemental:F0}%</color>";
             if (b.MoveSpeed > 0.01f)
-                result += $"\n<color={COL_MOVE_SPD}>⚔️ 이동속도: +{b.MoveSpeed:F0}%</color>";
+                result += $"\n<color={COL_MOVE_SPD}>💨 이동속도: +{b.MoveSpeed:F0}%</color>";
             if (b.AttackSpeed > 0.01f)
-                result += $"\n<color={COL_ATK_SPD}>⚔️ 공격속도: +{b.AttackSpeed:F0}%</color>";
+                result += $"\n<color={COL_ATK_SPD}>⚡ 공격속도: +{b.AttackSpeed:F0}%</color>";
+            if (b.MultishotLv1Chance > 0.01f)
+                result += $"\n<color={COL_ATK_PHY}>🎯 멀티샷 Lv1:</color> <color=orange>{b.MultishotLv1Chance:F0}%</color> <color=white>확률 +{b.MultishotLv1Arrows:F0}발</color>";
+            if (b.MultishotLv2Chance > 0.01f)
+                result += $"\n<color={COL_ATK_PHY}>🎯 멀티샷 Lv2:</color> <color=orange>{b.MultishotLv2Chance:F0}%</color> <color=white>확률 +{b.MultishotLv2Arrows:F0}발</color>";
+            if (b.RapidFireChance > 0.01f)
+                result += $"\n<color={COL_ATK_PHY}>🔁 연속 발사 Lv1:</color> <color=orange>{b.RapidFireChance:F0}%</color> <color=white>확률</color>";
+            if (b.RapidFireLv2Chance > 0.01f)
+                result += $"\n<color={COL_ATK_PHY}>🔁 연속 발사 Lv2:</color> <color=orange>{b.RapidFireLv2Chance:F0}%</color> <color=white>확률</color>";
             if (b.CritChance > 0.01f)
-                result += $"\n<color={COL_CRIT_CHC}>⚔️ 치명타 확률: +{b.CritChance:F0}%</color>";
+                result += $"\n<color={COL_CRIT_CHC}>🎯 치명타 확률: +{b.CritChance:F0}%</color>";
             if (b.CritDamage > 0.01f)
-                result += $"\n<color={COL_CRIT_DMG}>⚔️ 치명타 피해: +{b.CritDamage:F0}%</color>";
+                result += $"\n<color={COL_CRIT_DMG}>💥 치명타 피해: +{b.CritDamage:F0}%</color>";
         }
     }
 

@@ -321,9 +321,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 6: 최종 방어 기술 ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] =
-                "【회피율 영구 보너스 (%)】\n" +
-                "신경 강화로 회피율이 영구적으로 증가합니다.\n" +
-                "권장값: 3-8%",
+                "【회피율 조건부 보너스 (30초 미발동, %)】\n" +
+                "30초 동안 피격 회피가 발동되지 않으면 활성화됩니다.\n" +
+                "권장값: 30-50%",
 
                 ["Tier6_JotunnVitality_HPBonus"] =
                 "【체력 보너스 (%)】\n" +
@@ -1011,9 +1011,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 6: Final Defense Skills ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] =
-                "【Permanent Dodge Rate Bonus (%)】\n" +
-                "Nerve enhancement permanently increases dodge rate.\n" +
-                "Recommended: 3-8%",
+                "【Conditional Dodge Bonus (30s no-evasion, %)】\n" +
+                "Activates if no evasion triggered for 30 seconds.\n" +
+                "Recommended: 30-50%",
 
                 ["Tier6_JotunnVitality_HPBonus"] =
                 "【Health Bonus (%)】\n" +

@@ -217,12 +217,8 @@ namespace CaptainSkillTree.SkillTree
                 Vector3 targetForward = target.transform.forward;
                 Vector3 behindPosition = targetPos - (targetForward * behindDistance);
 
-                // 지형 높이 조정
-                if (ZoneSystem.instance != null)
-                {
-                    float groundHeight = ZoneSystem.instance.GetGroundHeight(behindPosition);
-                    behindPosition.y = groundHeight;
-                }
+                // 지형 높이 조정 (던전/외부 모두 안전)
+                behindPosition = GetGroundPositionSafe(behindPosition);
 
                 // 시작점 VFX
                 SimpleVFX.Play("vfx_spawn_small", originalPosition, 1.5f);
@@ -635,12 +631,8 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
-                // 지형 높이 조정
-                if (ZoneSystem.instance != null)
-                {
-                    float groundHeight = ZoneSystem.instance.GetGroundHeight(position);
-                    position.y = groundHeight;
-                }
+                // 지형 높이 조정 (던전/외부 모두 안전)
+                position = GetGroundPositionSafe(position);
 
                 // VFX (출발점)
                 SimpleVFX.Play("vfx_spawn_small", player.transform.position, 1.5f);
@@ -715,6 +707,24 @@ namespace CaptainSkillTree.SkillTree
             {
                 DrawFloatingText(player, L.Get("assassin_hit_count", hits.ToString(), required.ToString()), Color.red);
             }
+        }
+
+        /// <summary>
+        /// 던전(y>4000)과 외부 지형 모두에서 안전하게 바닥 높이를 반환
+        /// </summary>
+        private static Vector3 GetGroundPositionSafe(Vector3 pos)
+        {
+            if (pos.y > 4000f)
+            {
+                // 던전 내: Physics.Raycast로 실제 바닥 감지 (ZoneSystem 미사용)
+                if (Physics.Raycast(pos + Vector3.up * 3f, Vector3.down, out RaycastHit dungeonHit, 8f))
+                    return new Vector3(pos.x, dungeonHit.point.y + 0.1f, pos.z);
+                return pos; // 감지 실패 시 원래 Y 유지
+            }
+            // 외부 지형: terrain/Default 레이어 Raycast
+            if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("terrain", "Default")))
+                return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
+            return pos;
         }
 
         /// <summary>

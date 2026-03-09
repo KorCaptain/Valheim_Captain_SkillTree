@@ -332,12 +332,12 @@ namespace CaptainSkillTree.SkillTree
                 var player = Player.m_localPlayer;
                 if (player == null) return;
 
-                // 근접 전문가: 각 근접무기 타입별 데미지 +2
+                // 근접 전문가: 각 근접무기 타입별 데미지 +3
                 if (SkillEffect.HasSkill("melee_root") && IsMeleeWeapon(__instance))
                 {
-                    if (__result.m_slash > 0) __result.m_slash += 2f;
-                    if (__result.m_pierce > 0) __result.m_pierce += 2f;
-                    if (__result.m_blunt > 0) __result.m_blunt += 2f;
+                    if (__result.m_slash > 0) __result.m_slash += 3f;
+                    if (__result.m_pierce > 0) __result.m_pierce += 3f;
+                    if (__result.m_blunt > 0) __result.m_blunt += 3f;
                 }
 
                 // 단검 패시브 스킬 보너스

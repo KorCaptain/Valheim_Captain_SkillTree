@@ -260,7 +260,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [마인드쉴드] 필요 포인트",
 
                 // === Tier 6-2: 신경강화 (2개) ===
-                ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [신경강화] 회피율 영구 보너스 (%)",
+                ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [신경강화] 회피율 조건부 보너스 (30초 미발동, %)",
                 ["Tier6_NerveEnhancement_RequiredPoints"] = "Tier 6-2: [신경강화] 필요 포인트",
 
                 // === Tier 6-3: 이단점프 (1개) ===

@@ -1234,12 +1234,8 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogDebug($"[속도 전문가] speed_root - MMO Agility 증가: +10 (이동속도 +5%)");
                     }
                     
-                    // knife_step3_move_speed: 단검 빠른 움직임 (패시브 - 단검 착용 시)
-                    if (SkillEffect.HasSkill("knife_step3_move_speed") && WeaponHelper.IsUsingDagger(player))
-                    {
-                        bonus += (int)(Knife_Config.KnifeMoveSpeedBonusValue * 2f); // 5% * 2 = +10 Agility
-                        Plugin.Log.LogDebug($"[단검 스킬] knife_step3_move_speed - MMO Agility 증가: +{(int)(Knife_Config.KnifeMoveSpeedBonusValue * 2f)} (이동속도 +{Knife_Config.KnifeMoveSpeedBonusValue}%)");
-                    }
+                    // knife_step3_move_speed는 RogueSkills.cs GetJogSpeedFactor Postfix에서 직접 처리
+                    // Agility 경로로 추가 시 EpicMMO 재계산 시 누적 발생 → 제거
 
                     // 속도 마스터 - 추가 보너스 (있는 경우)
                     if (SkillEffect.HasSkill("speed_master"))

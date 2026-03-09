@@ -276,17 +276,17 @@ namespace CaptainSkillTree.Gui
 
             // [포인트 초기화] 버튼 생성 (행 1 왼쪽) - 스틸블루
             resetPointButton = CreateFancyButton("ResetPointButton", L10n.Get("ui_reset_points"),
-                new Vector2(120, -40), new Color(0.22f, 0.45f, 0.70f, 1f), panel.transform,
+                new Vector2(170, -40), new Color(0.22f, 0.45f, 0.70f, 1f), panel.transform,
                 () => ResetSkillPoints());
 
             // [직업 초기화] 버튼 생성 (행 1 중간) - 보라
             resetJobButton = CreateFancyButton("ResetJobButton", L10n.Get("ui_reset_job"),
-                new Vector2(262, -40), new Color(0.50f, 0.20f, 0.60f, 1f), panel.transform,
+                new Vector2(290, -40), new Color(0.50f, 0.20f, 0.60f, 1f), panel.transform,
                 () => ResetJobSkillPoints());
 
             // [생산 초기화] 버튼 생성 (행 1 오른쪽) - 에메랄드
             resetProductionButton = CreateFancyButton("ResetProductionButton", L10n.Get("ui_reset_production"),
-                new Vector2(404, -40), new Color(0.15f, 0.55f, 0.25f, 1f), panel.transform,
+                new Vector2(410, -40), new Color(0.15f, 0.55f, 0.25f, 1f), panel.transform,
                 () => ResetProductionSkillPoints());
 
             // Music On/Off 토글 버튼 생성 (행 2)
@@ -450,7 +450,7 @@ namespace CaptainSkillTree.Gui
             GameObject root = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
             root.transform.SetParent(parent, false);
             var rootRect = root.GetComponent<RectTransform>();
-            rootRect.sizeDelta = new Vector2(134, 42);
+            rootRect.sizeDelta = new Vector2(90, 30);
             rootRect.anchorMin = new Vector2(0.5f, 1f);
             rootRect.anchorMax = new Vector2(0.5f, 1f);
             rootRect.pivot = new Vector2(0.5f, 1f);
@@ -464,7 +464,7 @@ namespace CaptainSkillTree.Gui
             shadowRect.anchorMin = new Vector2(0.5f, 0.5f);
             shadowRect.anchorMax = new Vector2(0.5f, 0.5f);
             shadowRect.pivot = new Vector2(0.5f, 0.5f);
-            shadowRect.sizeDelta = new Vector2(130, 38);
+            shadowRect.sizeDelta = new Vector2(104, 26);
             shadowRect.anchoredPosition = new Vector2(2f, -2f);
             var shadowImg = shadowGo.GetComponent<Image>();
             shadowImg.color = new Color(0, 0, 0, 0.6f);
@@ -477,7 +477,7 @@ namespace CaptainSkillTree.Gui
             mainRect.anchorMin = new Vector2(0.5f, 0.5f);
             mainRect.anchorMax = new Vector2(0.5f, 0.5f);
             mainRect.pivot = new Vector2(0.5f, 0.5f);
-            mainRect.sizeDelta = new Vector2(130, 38);
+            mainRect.sizeDelta = new Vector2(104, 26);
             mainRect.anchoredPosition = Vector2.zero;
             var mainImg = mainGo.GetComponent<Image>();
             mainImg.color = mainColor;
@@ -508,7 +508,7 @@ namespace CaptainSkillTree.Gui
             textComp.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             textComp.alignment = TextAnchor.MiddleCenter;
             textComp.color = Color.white;
-            textComp.fontSize = 13;
+            textComp.fontSize = 11;
             textComp.raycastTarget = false;
             var textRect = textGo.GetComponent<RectTransform>();
             textRect.anchorMin = Vector2.zero;
@@ -2749,7 +2749,7 @@ namespace CaptainSkillTree.Gui
                 string initialText = isBGMEnabled ? "Music On" : "Music Off";
 
                 musicToggleButton = CreateFancyButton("MusicToggleButton", initialText,
-                    new Vector2(262, -82), initialColor, parent.transform, () => ToggleBGM());
+                    new Vector2(290, -70), initialColor, parent.transform, () => ToggleBGM());
             }
             catch (System.Exception ex)
             {

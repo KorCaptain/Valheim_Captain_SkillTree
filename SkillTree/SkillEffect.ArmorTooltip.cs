@@ -89,7 +89,12 @@ namespace CaptainSkillTree.SkillTree
                     if (manager.GetSkillLevel("defense_Step5_stamina") > 0)
                         dodgeTotal += Defense_Config.StaminaDodgeBonusValue;
                     if (manager.GetSkillLevel("defense_Step6_attack") > 0)
-                        dodgeTotal += Defense_Config.AttackDodgeBonusValue;
+                    {
+                        bool isInCooldown = SkillEffect.nerveLastEvasionTime.ContainsKey(Player.m_localPlayer) &&
+                                            Time.time - SkillEffect.nerveLastEvasionTime[Player.m_localPlayer] < 30f;
+                        if (!isInCooldown)
+                            dodgeTotal += Defense_Config.AttackDodgeBonusValue;
+                    }
 
                     float moveSpeedTotal = 0f;
                     if (manager.GetSkillLevel("speed_root") > 0)
@@ -155,6 +160,7 @@ namespace CaptainSkillTree.SkillTree
 
                     // bonusText 수집
                     string bonusText = "";
+                    float resist = Defense_Config.BodyArmorBonusValue;
 
                     switch (itemType)
                     {
@@ -162,66 +168,67 @@ namespace CaptainSkillTree.SkillTree
                             if (flatBonus > 0f)
                             {
                                 float hp = Defense_Config.DefenseRootHealthBonusValue;
-                                bonusText += $"\n<color=#ffd700>방어 전문가 : 체 +{hp:F0}, 방어력 +{flatBonus:F0}</color>";
+                                bonusText += $"\n<color=#FFD700>🛡️</color><color=white>방어 전문가</color> : 체력 <color=#4FC3F7>+{hp:F0}</color>, 방어력 <color=#4FC3F7>+{flatBonus:F0}</color>";
                             }
+                            if (dodgeTotal > 0f)
+                                bonusText += $"\n<color=#40E0D0>💨</color><color=white>회피</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
+                            if (rockSkinActive)
+                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : 방어력 <color=orange>+{rockSkinPct:F0}%</color>";
+                            if (bodyActive)
+                                bonusText += $"\n<color=#E040FB>🔰</color><color=white>저항</color> : 물리저항 <color=#4FC3F7>+{resist:F0}</color>, 속성저항 <color=#4FC3F7>+{resist:F0}</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Chest:
                             if (flatBonus > 0f)
                             {
                                 float hp = Defense_Config.SurvivalHealthBonusValue;
-                                bonusText += $"\n<color=#00ff00>피부경화 : 체 +{hp:F0}, 방어력 +{flatBonus:F0}</color>";
+                                bonusText += $"\n<color=#00FF00>🪨</color><color=white>피부경화</color> : 체력 <color=#4FC3F7>+{hp:F0}</color>, 방어력 <color=#4FC3F7>+{flatBonus:F0}</color>";
                             }
                             if (boostActive)
-                                bonusText += $"\n<color=#7fff00>체력증강 : +{Defense_Config.BoostHealthBonusValue:F0}</color>";
+                                bonusText += $"\n<color=#7FFF00>❤️</color><color=white>체력증강</color> : <color=#4FC3F7>+{Defense_Config.BoostHealthBonusValue:F0}</color>";
                             if (berserkerActive)
-                                bonusText += $"\n<color=#ff4500>버서커 체력 : +{Berserker_Config.BerserkerPassiveHealthBonusValue:F0}%</color>";
+                                bonusText += $"\n<color=#FF4500>💢</color><color=white>버서커 체력</color> : <color=orange>+{Berserker_Config.BerserkerPassiveHealthBonusValue:F0}%</color>";
+                            if (dodgeTotal > 0f)
+                                bonusText += $"\n<color=#40E0D0>💨</color><color=white>회피</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
+                            if (rockSkinActive)
+                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : 방어력 <color=orange>+{rockSkinPct:F0}%</color>";
+                            if (bodyActive)
+                                bonusText += $"\n<color=#E040FB>🔰</color><color=white>저항</color> : 물리저항 <color=#4FC3F7>+{resist:F0}</color>, 속성저항 <color=#4FC3F7>+{resist:F0}</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Legs:
                             if (flatBonus > 0f)
                             {
                                 float hp = Defense_Config.HealthBonusValue;
-                                bonusText += $"\n<color=#00bfff>체력단련 : 체 +{hp:F0}, 방어력 +{flatBonus:F0}</color>";
+                                bonusText += $"\n<color=#00BFFF>💪</color><color=white>체력단련</color> : 체력 <color=#4FC3F7>+{hp:F0}</color>, 방어력 <color=#4FC3F7>+{flatBonus:F0}</color>";
                             }
                             if (moveSpeedTotal > 0f)
-                                bonusText += $"\n<color=#adff2f>이동속도 : +{moveSpeedTotal:F0}%</color>";
+                                bonusText += $"\n<color=#ADFF2F>🏃</color><color=white>이동속도</color> : <color=#00BFFF>+{moveSpeedTotal:F0}%</color>";
                             if (dodgeTotal > 0f)
-                                bonusText += $"\n<color=#40e0d0>회피 : +{dodgeTotal:F0}%</color>";
+                                bonusText += $"\n<color=#40E0D0>💨</color><color=white>회피</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
+                            if (rockSkinActive)
+                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : 방어력 <color=orange>+{rockSkinPct:F0}%</color>";
+                            if (bodyActive)
+                                bonusText += $"\n<color=#E040FB>🔰</color><color=white>저항</color> : 물리저항 <color=#4FC3F7>+{resist:F0}</color>, 속성저항 <color=#4FC3F7>+{resist:F0}</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Shield:
                             if (manager.GetSkillLevel("defense_Step3_shield") > 0)
-                                bonusText += $"\n<color=#00ff00>방패훈련 : +{Defense_Config.ShieldTrainingBlockPowerBonusValue:F0}</color>";
+                                bonusText += $"\n<color=#00FF00>🛡️</color><color=white>방패훈련</color> : <color=#4FC3F7>+{Defense_Config.ShieldTrainingBlockPowerBonusValue:F0}</color>";
                             if (manager.GetSkillLevel("defense_Step5_parry") > 0)
-                                bonusText += $"\n<color=#00bfff>막기달인 : 패링 +{Defense_Config.ParryMasterParryDurationBonusValue:F0}초, 방어력 +{Defense_Config.ParryMasterBlockPowerBonusValue:F0}</color>";
+                                bonusText += $"\n<color=#00BFFF>⚔️</color><color=white>막기달인</color> : 패링 <color=#4FC3F7>+{Defense_Config.ParryMasterParryDurationBonusValue:F0}초</color>, 방어력 <color=#4FC3F7>+{Defense_Config.ParryMasterBlockPowerBonusValue:F0}</color>";
                             if (rockSkinActive)
-                                bonusText += $"\n<color=#ff8c00>바위피부 : +{rockSkinPct:F0}%</color>";
+                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : <color=orange>+{rockSkinPct:F0}%</color>";
                             if (jotunnShieldActive)
                             {
                                 bool isTower = item.m_shared.m_name?.ToLower().Contains("tower") ?? false;
                                 float speed  = isTower
                                     ? Defense_Config.JotunnShieldTowerSpeedBonusValue
                                     : Defense_Config.JotunnShieldNormalSpeedBonusValue;
-                                bonusText += $"\n<color=#9400d3>요툰의 방패 : 블럭 스태미나 -{Defense_Config.JotunnShieldBlockStaminaReductionValue:F0}%, 이동속도 +{speed:F0}%</color>";
+                                bonusText += $"\n<color=#9400D3>✨</color><color=white>요툰의 방패</color> : 블럭 스태미나 <color=orange>-{Defense_Config.JotunnShieldBlockStaminaReductionValue:F0}%</color>, 이동속도 <color=#00BFFF>+{speed:F0}%</color>";
                             }
                             break;
                     }
 
-                    // 공통: 바위피부 (방어구 부위만, 방패는 위에서 처리)
-                    if (!isShield && rockSkinActive)
-                        bonusText += $"\n<color=#ff8c00>바위피부 : 방어력 +{rockSkinPct:F0}%</color>";
-
-                    // 공통: 저항 (방어구 부위만)
-                    if (!isShield && bodyActive)
-                    {
-                        float resist = Defense_Config.BodyArmorBonusValue;
-                        bonusText += $"\n<color=#e040fb>저항 : 물리저항 +{resist:F0}, 속성저항 +{resist:F0}</color>";
-                    }
-
-                    // 공통: 회피 총합 (투구/흉갑만 — 각반은 위 Legs case에서 처리)
-                    if (!isShield && itemType != ItemDrop.ItemData.ItemType.Legs && dodgeTotal > 0f)
-                        bonusText += $"\n<color=#40e0d0>회피 : +{dodgeTotal:F0}%</color>";
-
                     if (!string.IsNullOrEmpty(bonusText))
-                        __result += "\n🛡" + bonusText;
+                        __result += bonusText;
                 }
                 catch (System.Exception ex)
                 {

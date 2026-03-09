@@ -545,7 +545,7 @@ namespace CaptainSkillTree.Localization
                 ["taunt_ready"] = "Taunt Ready!",
 
                 // === Attack Expert Tree Effect Messages ===
-                ["rage_bonus"] = "Rage +{0}%!",
+                ["rage_bonus"] = "Extra Damage +{0}%",
                 ["melee_specialization"] = "Melee Specialization!",
                 ["bow_specialization"] = "Bow Specialization!",
                 ["focus_fire_crit"] = "Focus Fire Crit x{0}!",

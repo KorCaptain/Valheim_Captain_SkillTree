@@ -426,8 +426,12 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // SimpleVFX 방식: Valheim 내장 VFX로 패시브 효과
                 SimpleVFX.PlayOnPlayer(player, 3f);
+
+                // 무적 발동: vfx_blocked + sfx_dragon_scream
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer(
+                    "vfx_blocked", "sfx_dragon_scream",
+                    player.transform.position + Vector3.up * 1f);
             }
             catch (Exception ex)
             {
@@ -609,13 +613,35 @@ namespace CaptainSkillTree.SkillTree
             {
                 try
                 {
-                    // 플레이어가 아니면 패스
                     if (!(__instance is Player player)) return;
-
-                    // 버서커 스킬이 없으면 패스
                     if (!HasBerserkerSkill(player)) return;
 
-                    // === 분노 데미지 보너스만 적용 ===
+                    // === 1. 패시브 무적 활성 중 → 데미지 전량 차단 ===
+                    if (IsPassiveInvincibilityActive(player))
+                    {
+                        hit.m_damage = new HitData.DamageTypes();
+                        return;
+                    }
+
+                    // === 2. 무적 발동 조건 체크 (쿨다운 중이면 스킵) ===
+                    if (!IsPassiveInvincibilityOnCooldown(player))
+                    {
+                        float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
+                        bool isLowHP = player.GetHealthPercentage() <= threshold;
+                        bool isLethal = hit.GetTotalDamage() >= player.GetHealth();
+
+                        if (isLowHP || isLethal)
+                        {
+                            if (!passiveStates.ContainsKey(player))
+                                passiveStates[player] = new PassiveState();
+
+                            ApplyPassiveInvincibility(player, passiveStates[player]);
+                            hit.m_damage = new HitData.DamageTypes(); // 발동 트리거 공격도 차단
+                            return;
+                        }
+                    }
+
+                    // === 3. 분노 데미지 보너스 (기존 코드 유지) ===
                     if (IsPlayerInRage(player))
                     {
                         float damageBonus = GetRageDamageBonus(player);
@@ -623,12 +649,8 @@ namespace CaptainSkillTree.SkillTree
                         {
                             float multiplier = 1f + (damageBonus / 100f);
                             hit.m_damage.Modify(multiplier);
-
-                            // 몬스터 적중 효과
                             if (__instance != player)
-                            {
                                 CreateMonsterHitEffect(__instance);
-                            }
                         }
                     }
                 }

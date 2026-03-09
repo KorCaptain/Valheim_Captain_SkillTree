@@ -260,7 +260,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [Mind Shield] Required Points",
 
                 // === Tier 6-2: Nerve Enhancement (2) ===
-                ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [Nerve Enhancement] Permanent Dodge Bonus (%)",
+                ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [Nerve Enhancement] Conditional Dodge Bonus (30s no-evasion, %)",
                 ["Tier6_NerveEnhancement_RequiredPoints"] = "Tier 6-2: [Nerve Enhancement] Required Points",
 
                 // === Tier 6-3: Double Jump (1) ===

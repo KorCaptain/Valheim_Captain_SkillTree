@@ -14,11 +14,11 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public class ConfigurationManagerAttributes
     {
-        public bool? IsAdminOnly;
-        public bool? Browsable;
-        public string Category;
-        public int? Order;
-        public string DispName;  // F1 메뉴 2차 항목 표시명 (키 이름 번역)
+        public bool? IsAdminOnly { get; set; }
+        public bool? Browsable { get; set; }
+        public string Category { get; set; }
+        public int? Order { get; set; }
+        public string DispName { get; set; }  // F1 메뉴 2차 항목 표시명 (키 이름 번역)
     }
 
     /// <summary>
@@ -821,7 +821,7 @@ namespace CaptainSkillTree.SkillTree
             if (Player.m_localPlayer == null) return;
         }
 
-        private static void DetectServerClientMode()
+        public static void DetectServerClientMode()
         {
             _isServer = ZNet.instance == null || ZNet.instance.IsServer();
             Plugin.Log.LogDebug($"[SkillTreeConfig] 모드 감지: {(_isServer ? "서버" : "클라이언트")}");

@@ -457,8 +457,10 @@ namespace CaptainSkillTree.SkillTree
             
             try
             {
-                // 1단계: 현재 타겟 확인
-                var currentTarget = ai.GetTargetCreature();
+                // 1단계: 현재 타겟 확인 (패치 우회 - m_targetCreature 직접 읽기)
+                var rawTargetField = typeof(BaseAI).GetField("m_targetCreature",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var currentTarget = rawTargetField?.GetValue(ai) as Character;
                 bool isTargetingPlayer = (currentTarget != null && currentTarget.gameObject == player.gameObject);
                 
                 Plugin.Log.LogInfo($"[안전한 어그로 제거] {enemyName} 현재 타겟: {(isTargetingPlayer ? "플레이어" : "다른 대상 또는 없음")}");

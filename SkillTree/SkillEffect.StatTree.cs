@@ -26,6 +26,9 @@ namespace CaptainSkillTree.SkillTree
         // StatusEffect 캐시 (성능 최적화)
         private static readonly Dictionary<Player, bool> statTreeStatusEffectApplied = new Dictionary<Player, bool>();
 
+        // 신경강화: 마지막 피격 회피 발동 시간 (Time.time)
+        internal static Dictionary<Player, float> nerveLastEvasionTime = new Dictionary<Player, float>();
+
         /// <summary>
         /// 1. atk_twohand_drain: 물리/속성 공격력 직접 증가
         /// Character.Damage 패치를 통한 직접 데미지 증가 방식
@@ -457,11 +460,14 @@ namespace CaptainSkillTree.SkillTree
                     totalDodge += Defense_Config.StaminaDodgeBonusValue / 100f;
                 }
 
-                // defense_Step6_attack: 신경강화
+                // defense_Step6_attack: 신경강화 (30초 미발동 조건)
                 int attackLevel = manager.GetSkillLevel("defense_Step6_attack");
                 if (attackLevel > 0)
                 {
-                    totalDodge += Defense_Config.AttackDodgeBonusValue / 100f;
+                    bool isInCooldown = nerveLastEvasionTime.ContainsKey(player) &&
+                                        Time.time - nerveLastEvasionTime[player] < 30f;
+                    if (!isInCooldown)
+                        totalDodge += Defense_Config.AttackDodgeBonusValue / 100f;
                 }
             }
 
@@ -513,7 +519,33 @@ namespace CaptainSkillTree.SkillTree
                 {
                     statTreeStatusEffectApplied.Remove(__instance);
                 }
+                if (nerveLastEvasionTime.ContainsKey(__instance))
+                {
+                    nerveLastEvasionTime.Remove(__instance);
+                }
             }
+        }
+    }
+
+    /// <summary>
+    /// 신경강화 스킬의 30초 쿨다운 타이머 (피격 회피 발동 시 플레이어 GameObject에 부착)
+    /// </summary>
+    internal class NerveEnhancementTimer : MonoBehaviour
+    {
+        private Coroutine _restoreCoroutine;
+
+        public void ResetTimer(Player player)
+        {
+            if (_restoreCoroutine != null) StopCoroutine(_restoreCoroutine);
+            _restoreCoroutine = StartCoroutine(RestoreAfterDelay(player));
+        }
+
+        private IEnumerator RestoreAfterDelay(Player player)
+        {
+            yield return new WaitForSeconds(30f);
+            SkillEffect.nerveLastEvasionTime.Remove(player);
+            SkillEffect.UpdateDefenseDodgeRate(player);
+            _restoreCoroutine = null;
         }
     }
 }

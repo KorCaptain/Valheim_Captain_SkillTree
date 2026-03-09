@@ -360,23 +360,8 @@ namespace CaptainSkillTree.SkillTree
                 float cooldown = Knife_Config.KnifeAssassinHeartCooldownValue;
                 JobSkillsUtility.SetCooldown(player, skillName, cooldown);
 
-                // 순간이동 전 원래 위치 저장
+                // 원래 위치 저장 (복귀용)
                 Vector3 originalPosition = player.transform.position;
-
-                bool inDungeon = originalPosition.y > 4000f;
-
-                if (!inDungeon)
-                {
-                    // 외부: 몬스터 뒤로 순간이동
-                    TeleportBehindEnemy(player, targetEnemy);
-                }
-                else
-                {
-                    // 던전 내부: 이동 없이 VFX만 재생 (출구 트리거 발동 방지)
-                    SimpleVFX.Play("debuff", player.transform.position, 2f);
-                    SimpleVFX.Play("hit_01", targetEnemy.transform.position, 2f);
-                    Plugin.Log.LogDebug("[암살자의 심장] 던전 내부 - 이동 없이 VFX만 재생");
-                }
 
                 // 대상 스턴 적용
                 ApplyStunToTarget(targetEnemy, player);
@@ -384,18 +369,14 @@ namespace CaptainSkillTree.SkillTree
                 // 버프 효과 적용
                 ApplyAssassinHeartBuff(player);
 
-                // VFX/SFX 재생 (플레이어 위치 + 적 위치)
-                SkillEffect.PlaySkillEffect(player, "knife_step9_assassin_heart", player.transform.position);
-                SimpleVFX.Play("hit_01", targetEnemy.transform.position, 2f);
-
                 SkillEffect.ShowSkillEffectText(player,
                     "💀 " + L.Get("knife_assassin_heart_activated"),
                     new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
 
-                // 순간이동 후 연속 공격 코루틴 실행 (원래 위치 전달)
+                // 대시 이동 + 연속 공격 + 복귀 코루틴 실행
                 player.StartCoroutine(ExecuteAssassinHeartAttacks(player, targetEnemy, originalPosition));
 
-                Plugin.Log.LogDebug($"[암살자의 심장] 순간이동 + 스턴 + 연속공격 시작 - 대상: {targetEnemy.m_name}");
+                Plugin.Log.LogDebug($"[암살자의 심장] 대시 + 스턴 + 연속공격 시작 - 대상: {targetEnemy.m_name}");
 
                 return true;
             }
@@ -457,88 +438,84 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 적 뒤로 순간이동 (플레이어→몬스터 방향 기준, 단계적 벽 감지)
+        /// 적 뒤 안전 위치 계산 (벽 감지 포함, 높이 보정 포함)
         /// </summary>
-        private static void TeleportBehindEnemy(Player player, Character target)
+        private static Vector3 CalculateBehindPosition(Player player, Character target)
         {
-            try
+            float behindDistance = Knife_Config.KnifeAssassinHeartTeleportBehindValue;
+            Vector3 targetPos = target.transform.position;
+            Vector3 playerToEnemy = targetPos - player.transform.position;
+            playerToEnemy.y = 0;
+            Vector3 backDir = playerToEnemy.sqrMagnitude > 0.001f
+                ? playerToEnemy.normalized
+                : GetCameraForward(player);
+
+            int wallMask = ~LayerMask.GetMask("character", "character_net", "character_trigger", "Water", "Ignore Raycast");
+            Vector3 result = targetPos + backDir * 0.3f;
+            for (float dist = behindDistance; dist >= 0.5f; dist -= 0.5f)
             {
-                float behindDistance = Knife_Config.KnifeAssassinHeartTeleportBehindValue;
-                Vector3 targetPos = target.transform.position;
-
-                // 카메라 방향 대신 플레이어→몬스터 방향 기준으로 뒤쪽 계산
-                Vector3 playerToEnemy = targetPos - player.transform.position;
-                playerToEnemy.y = 0;
-                Vector3 backDir = playerToEnemy.sqrMagnitude > 0.001f
-                    ? playerToEnemy.normalized
-                    : GetCameraForward(player);
-
-                // character 계열 제외한 모든 레이어에서 벽 감지 (던전 벽 포함)
-                int wallMask = ~LayerMask.GetMask("character", "character_net", "character_trigger", "Water", "Ignore Raycast");
-
-                // 안전한 위치 탐색 (단계적 거리 줄이기)
-                Vector3 teleportPosition = targetPos + backDir * behindDistance;
-                bool foundSafe = false;
-                for (float dist = behindDistance; dist >= 0.5f; dist -= 0.5f)
+                Vector3 candidate = targetPos + backDir * dist;
+                if (!Physics.Linecast(targetPos + Vector3.up * 0.5f, candidate + Vector3.up * 0.5f, wallMask))
                 {
-                    Vector3 candidate = targetPos + backDir * dist;
-                    if (!Physics.Linecast(targetPos + Vector3.up * 0.5f, candidate + Vector3.up * 0.5f, wallMask))
-                    {
-                        teleportPosition = candidate;
-                        foundSafe = true;
-                        if (dist < behindDistance)
-                            Plugin.Log.LogDebug($"[암살자의 심장] 벽 감지 - {dist}m로 축소");
-                        break;
-                    }
+                    result = candidate;
+                    break;
                 }
-                if (!foundSafe)
-                {
-                    teleportPosition = targetPos + backDir * 0.3f;
-                    Plugin.Log.LogDebug("[암살자의 심장] 모든 후보 차단 - 최소 거리 사용");
-                }
-
-                // 높이 보정 (던전 내부 여부에 따라 다른 방식 사용)
-                if (teleportPosition.y > 4000f)
-                {
-                    // 던전 내(Y>4000): ZoneSystem은 외부 지형만 반환하므로 레이어 무관 Raycast 사용
-                    if (Physics.Raycast(teleportPosition + Vector3.up * 3f, Vector3.down, out RaycastHit dungeonHit, 8f))
-                    {
-                        teleportPosition.y = dungeonHit.point.y + 0.1f;
-                    }
-                    // 감지 실패 시 기존 Y 유지 (던전 내부이므로 이미 올바른 높이)
-                }
-                else
-                {
-                    float groundHeight;
-                    if (ZoneSystem.instance.GetGroundHeight(teleportPosition, out groundHeight))
-                    {
-                        teleportPosition.y = groundHeight;
-                    }
-                }
-
-                // 순간이동 VFX (사라지는 효과)
-                SimpleVFX.Play("debuff", player.transform.position, 2f);
-
-                // 플레이어 이동
-                player.transform.position = teleportPosition;
-
-                // 적을 바라보는 방향으로 회전 (등 뒤에서 적을 바라봄)
-                Vector3 lookDirection = targetPos - teleportPosition;
-                lookDirection.y = 0;
-                if (lookDirection.sqrMagnitude > 0.001f)
-                {
-                    player.transform.rotation = Quaternion.LookRotation(lookDirection);
-                }
-
-                // 순간이동 VFX (나타나는 효과)
-                SimpleVFX.Play("hit_01", teleportPosition, 2f);
-
-                Plugin.Log.LogDebug($"[암살자의 심장] 순간이동 완료 - 플레이어→몬스터 방향 {behindDistance}m");
             }
-            catch (System.Exception ex)
+            return GetGroundPosition(result);
+        }
+
+        /// <summary>
+        /// 지면 높이 보정 - 던전 내외 모두 안전 (Sword_Skill 방식)
+        /// 던전(Y>4000): Physics.Raycast로 실제 바닥 감지
+        /// 외부: terrain 레이어 Raycast
+        /// </summary>
+        private static Vector3 GetGroundPosition(Vector3 pos)
+        {
+            if (pos.y > 4000f)
             {
-                Plugin.Log.LogError($"[암살자의 심장] 순간이동 실패: {ex.Message}");
+                if (Physics.Raycast(pos + Vector3.up * 3f, Vector3.down, out RaycastHit dungeonHit, 8f))
+                    return new Vector3(pos.x, dungeonHit.point.y + 0.1f, pos.z);
+                return pos;
             }
+            if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("terrain", "Default")))
+                return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
+            return pos;
+        }
+
+        /// <summary>
+        /// 적 뒤로 빠른 대시 이동 코루틴 (던전 호환)
+        /// </summary>
+        private static IEnumerator DashBehindEnemy(Player player, Character target)
+        {
+            Vector3 dest = CalculateBehindPosition(player, target);
+            SimpleVFX.Play("debuff", player.transform.position, 2f);
+            yield return MoveToTarget(player, dest, 0.2f);
+
+            // 적을 바라봄
+            Vector3 lookDir = target.transform.position - player.transform.position;
+            lookDir.y = 0;
+            if (lookDir.sqrMagnitude > 0.001f)
+                player.transform.rotation = Quaternion.LookRotation(lookDir);
+
+            SimpleVFX.Play("hit_01", player.transform.position, 1f);
+        }
+
+        /// <summary>
+        /// EaseOut Lerp 이동 헬퍼
+        /// </summary>
+        private static IEnumerator MoveToTarget(Player player, Vector3 dest, float duration)
+        {
+            float elapsed = 0f;
+            Vector3 start = player.transform.position;
+            while (elapsed < duration)
+            {
+                if (player == null || player.IsDead()) yield break;
+                elapsed += Time.deltaTime;
+                float smoothT = 1f - Mathf.Pow(1f - Mathf.Clamp01(elapsed / duration), 2f);
+                player.transform.position = GetGroundPosition(Vector3.Lerp(start, dest, smoothT));
+                yield return null;
+            }
+            player.transform.position = GetGroundPosition(dest);
         }
 
         /// <summary>
@@ -621,9 +598,6 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static IEnumerator ExecuteAssassinHeartAttacks(Player player, Character target, Vector3 originalPosition)
         {
-            // 0.1초 대기 (순간이동 완료 후)
-            yield return new WaitForSeconds(0.1f);
-
             var weapon = player?.GetCurrentWeapon();
             if (weapon == null)
             {
@@ -634,38 +608,29 @@ namespace CaptainSkillTree.SkillTree
             int attackCount = Knife_Config.KnifeAssassinHeartAttackCountValue;
             float attackInterval = Knife_Config.KnifeAssassinHeartAttackIntervalValue;
 
+            // 1. VFX + 적 뒤로 대시 이동 (던전 내외 모두 안전)
+            SkillEffect.PlaySkillEffect(player, "knife_step9_assassin_heart", player.transform.position);
+            yield return DashBehindEnemy(player, target);
+
             Plugin.Log.LogDebug($"[암살자의 심장] 연속 공격 시작 - {attackCount}회, {attackInterval}초 간격");
 
-            // 설정된 횟수만큼 연속 공격
+            // 2. 연속 공격 (yield break 대신 break로 복귀 보장)
             for (int i = 0; i < attackCount; i++)
             {
-                // 유효성 검사
-                if (player == null || player.IsDead())
-                {
-                    Plugin.Log.LogDebug("[암살자의 심장] 플레이어 사망으로 연속 공격 중단");
-                    yield break;
-                }
-                if (target == null || target.IsDead())
-                {
-                    Plugin.Log.LogDebug("[암살자의 심장] 대상 사망으로 연속 공격 중단");
-                    yield break;
-                }
+                if (player == null || player.IsDead()) break;
+                if (target == null || target.IsDead()) break;
 
-                // 공격 애니메이션 트리거 (실패해도 계속 진행)
                 try { player.StartAttack(null, false); } catch { }
-
-                // HitData로 직접 데미지 적용
                 ExecuteAssassinStrike(player, target, weapon, i + 1);
-
                 yield return new WaitForSeconds(attackInterval);
             }
 
             Plugin.Log.LogDebug($"[암살자의 심장] 연속 공격 완료 - {attackCount}회");
 
-            // 원래 위치로 즉시 복귀
+            // 3. 항상 복귀 (break 이후에도 실행됨)
             if (player != null && !player.IsDead())
             {
-                player.transform.position = originalPosition;
+                yield return MoveToTarget(player, originalPosition, 0.3f);
                 Plugin.Log.LogDebug("[암살자의 심장] 원래 위치로 복귀 완료");
             }
         }
