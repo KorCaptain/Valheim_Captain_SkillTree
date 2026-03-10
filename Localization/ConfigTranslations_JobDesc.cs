@@ -95,6 +95,61 @@ namespace CaptainSkillTree.Localization
                 "아처의 기동성을 강화합니다.\n" +
                 "권장값: 40-60%",
 
+                // === Archer Job: 레벨업 스탯 변화 (9개) ===
+                ["Archer_Lv2_BonusArrows"] =
+                "【Lv2: 추가 발사체 수】\n" +
+                "아처 Lv2 업그레이드 시 추가되는 화살 수입니다.\n" +
+                "기본 화살 수에 더해집니다.\n" +
+                "권장값: 1",
+
+                ["Archer_Lv2_DamagePercent"] =
+                "【Lv2: 1발당 공격력 (%)】\n" +
+                "아처 Lv2에서 각 화살의 데미지 비율입니다.\n" +
+                "활+화살 총 공격력의 해당 %로 적용됩니다.\n" +
+                "권장값: 50-60%",
+
+                ["Archer_Lv3_BonusArrows"] =
+                "【Lv3: 추가 발사체 수】\n" +
+                "아처 Lv3 업그레이드 시 추가되는 화살 수입니다.\n" +
+                "기본 화살 수에 더해집니다.\n" +
+                "권장값: 2",
+
+                ["Archer_Lv3_DamagePercent"] =
+                "【Lv3: 1발당 공격력 (%)】\n" +
+                "아처 Lv3에서 각 화살의 데미지 비율입니다.\n" +
+                "활+화살 총 공격력의 해당 %로 적용됩니다.\n" +
+                "권장값: 55-65%",
+
+                ["Archer_Lv4_BonusArrows"] =
+                "【Lv4: 추가 발사체 수】\n" +
+                "아처 Lv4 업그레이드 시 추가되는 화살 수입니다.\n" +
+                "기본 화살 수에 더해집니다.\n" +
+                "권장값: 3",
+
+                ["Archer_Lv4_DamagePercent"] =
+                "【Lv4: 1발당 공격력 (%)】\n" +
+                "아처 Lv4에서 각 화살의 데미지 비율입니다.\n" +
+                "활+화살 총 공격력의 해당 %로 적용됩니다.\n" +
+                "권장값: 60-70%",
+
+                ["Archer_Lv5_BonusArrows"] =
+                "【Lv5: 추가 발사체 수】\n" +
+                "아처 Lv5 업그레이드 시 추가되는 화살 수입니다.\n" +
+                "기본 화살 수에 더해집니다.\n" +
+                "권장값: 3",
+
+                ["Archer_Lv5_DamagePercent"] =
+                "【Lv5: 1발당 공격력 (%)】\n" +
+                "아처 Lv5에서 각 화살의 데미지 비율입니다.\n" +
+                "활+화살 총 공격력의 해당 %로 적용됩니다.\n" +
+                "권장값: 60-70%",
+
+                ["Archer_Lv5_BonusCharges"] =
+                "【Lv5: 추가 충전 횟수】\n" +
+                "아처 Lv5에서 추가되는 멀티샷 충전 횟수입니다.\n" +
+                "기본 충전 횟수에 더해집니다.\n" +
+                "권장값: 1",
+
                 // ========================================
                 // Mage Job (Y-Key Active, 6 keys)
                 // ========================================
@@ -461,6 +516,61 @@ namespace CaptainSkillTree.Localization
                 "Reduces damage from falling.\n" +
                 "Enhances archer mobility.\n" +
                 "Recommended: 40-60%",
+
+                // === Archer Job: Level-up Stat Changes (9 keys) ===
+                ["Archer_Lv2_BonusArrows"] =
+                "【Lv2: Bonus Arrow Count】\n" +
+                "Additional arrows added at Archer Lv2.\n" +
+                "Added on top of the base arrow count.\n" +
+                "Recommended: 1",
+
+                ["Archer_Lv2_DamagePercent"] =
+                "【Lv2: Damage Per Arrow (%)】\n" +
+                "Damage ratio per arrow at Archer Lv2.\n" +
+                "Applied as % of total bow+arrow damage.\n" +
+                "Recommended: 50-60%",
+
+                ["Archer_Lv3_BonusArrows"] =
+                "【Lv3: Bonus Arrow Count】\n" +
+                "Additional arrows added at Archer Lv3.\n" +
+                "Added on top of the base arrow count.\n" +
+                "Recommended: 2",
+
+                ["Archer_Lv3_DamagePercent"] =
+                "【Lv3: Damage Per Arrow (%)】\n" +
+                "Damage ratio per arrow at Archer Lv3.\n" +
+                "Applied as % of total bow+arrow damage.\n" +
+                "Recommended: 55-65%",
+
+                ["Archer_Lv4_BonusArrows"] =
+                "【Lv4: Bonus Arrow Count】\n" +
+                "Additional arrows added at Archer Lv4.\n" +
+                "Added on top of the base arrow count.\n" +
+                "Recommended: 3",
+
+                ["Archer_Lv4_DamagePercent"] =
+                "【Lv4: Damage Per Arrow (%)】\n" +
+                "Damage ratio per arrow at Archer Lv4.\n" +
+                "Applied as % of total bow+arrow damage.\n" +
+                "Recommended: 60-70%",
+
+                ["Archer_Lv5_BonusArrows"] =
+                "【Lv5: Bonus Arrow Count】\n" +
+                "Additional arrows added at Archer Lv5.\n" +
+                "Added on top of the base arrow count.\n" +
+                "Recommended: 3",
+
+                ["Archer_Lv5_DamagePercent"] =
+                "【Lv5: Damage Per Arrow (%)】\n" +
+                "Damage ratio per arrow at Archer Lv5.\n" +
+                "Applied as % of total bow+arrow damage.\n" +
+                "Recommended: 60-70%",
+
+                ["Archer_Lv5_BonusCharges"] =
+                "【Lv5: Bonus Charges】\n" +
+                "Additional multishot charges added at Archer Lv5.\n" +
+                "Added on top of the base charge count.\n" +
+                "Recommended: 1",
 
                 // ========================================
                 // Mage Job (Y-Key Active, 6 keys)

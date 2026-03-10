@@ -20,6 +20,17 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ArcherJumpHeightBonus;            // 점프 높이 보너스 (기본: 20%)
         public static ConfigEntry<float> ArcherFallDamageReduction;        // 낙사 데미지 감소 (기본: 50%)
 
+        // === 아처 레벨업 스탯 변화 컨피그 (Lv2~5, 레벨 순 정렬) ===
+        public static ConfigEntry<int>   ArcherLv2BonusArrows;
+        public static ConfigEntry<float> ArcherLv2DamagePercent;
+        public static ConfigEntry<int>   ArcherLv3BonusArrows;
+        public static ConfigEntry<float> ArcherLv3DamagePercent;
+        public static ConfigEntry<int>   ArcherLv4BonusArrows;
+        public static ConfigEntry<float> ArcherLv4DamagePercent;
+        public static ConfigEntry<int>   ArcherLv5BonusArrows;
+        public static ConfigEntry<float> ArcherLv5DamagePercent;
+        public static ConfigEntry<int>   ArcherLv5BonusCharges;
+
         // === 동적 값 접근자 (MMO 시스템 연동) ===
         public static int ArcherMultiShotArrowCountValue => (int)SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_ArrowCount", ArcherMultiShotArrowCount.Value);
         public static int ArcherMultiShotArrowConsumptionValue => (int)SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_ArrowConsumption", ArcherMultiShotArrowConsumption.Value);
@@ -31,6 +42,17 @@ namespace CaptainSkillTree.SkillTree
         // === 패시브 스킬 동적 값 접근자 ===
         public static float ArcherJumpHeightBonusValue => SkillTreeConfig.GetEffectiveValue("Archer_JumpHeightBonus", ArcherJumpHeightBonus.Value);
         public static float ArcherFallDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Archer_FallDamageReduction", ArcherFallDamageReduction.Value);
+
+        // === 레벨업 스탯 변화 동적 값 접근자 (레벨 순) ===
+        public static int   ArcherLv2BonusArrowsValue   => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv2_BonusArrows",   ArcherLv2BonusArrows.Value);
+        public static float ArcherLv2DamagePercentValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv2_DamagePercent", ArcherLv2DamagePercent.Value);
+        public static int   ArcherLv3BonusArrowsValue   => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv3_BonusArrows",   ArcherLv3BonusArrows.Value);
+        public static float ArcherLv3DamagePercentValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv3_DamagePercent", ArcherLv3DamagePercent.Value);
+        public static int   ArcherLv4BonusArrowsValue   => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv4_BonusArrows",   ArcherLv4BonusArrows.Value);
+        public static float ArcherLv4DamagePercentValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv4_DamagePercent", ArcherLv4DamagePercent.Value);
+        public static int   ArcherLv5BonusArrowsValue   => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv5_BonusArrows",   ArcherLv5BonusArrows.Value);
+        public static float ArcherLv5DamagePercentValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv5_DamagePercent", ArcherLv5DamagePercent.Value);
+        public static int   ArcherLv5BonusChargesValue  => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv5_BonusCharges",  (float)ArcherLv5BonusCharges.Value);
 
         /// <summary>
         /// 아처 컨피그 초기화 (SkillTreeConfig에서 호출)
@@ -100,6 +122,70 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Archer_FallDamageReduction")
                 );
 
+                // === 아처 레벨업 스탯 변화 설정 (Lv2~5) ===
+                ArcherLv2BonusArrows = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv2_BonusArrows",
+                    1,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv2_BonusArrows")
+                );
+
+                ArcherLv2DamagePercent = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv2_DamagePercent",
+                    55.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv2_DamagePercent")
+                );
+
+                ArcherLv3BonusArrows = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv3_BonusArrows",
+                    2,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv3_BonusArrows")
+                );
+
+                ArcherLv3DamagePercent = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv3_DamagePercent",
+                    60.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv3_DamagePercent")
+                );
+
+                ArcherLv4BonusArrows = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv4_BonusArrows",
+                    3,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv4_BonusArrows")
+                );
+
+                ArcherLv4DamagePercent = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv4_DamagePercent",
+                    65.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv4_DamagePercent")
+                );
+
+                ArcherLv5BonusArrows = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv5_BonusArrows",
+                    3,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv5_BonusArrows")
+                );
+
+                ArcherLv5DamagePercent = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv5_DamagePercent",
+                    65.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv5_DamagePercent")
+                );
+
+                ArcherLv5BonusCharges = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv5_BonusCharges",
+                    1,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv5_BonusCharges")
+                );
+
                 Plugin.Log.LogDebug("[아처 컨피그] 설정 항목 생성 완료 (액티브 + 패시브)");
                 
                 // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
@@ -131,6 +217,17 @@ namespace CaptainSkillTree.SkillTree
                 // 패시브 스킬 이벤트 핸들러
                 ArcherJumpHeightBonus.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherFallDamageReduction.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+
+                // 레벨업 스탯 변화 이벤트 핸들러
+                ArcherLv2BonusArrows.SettingChanged    += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv2DamagePercent.SettingChanged  += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv3BonusArrows.SettingChanged    += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv3DamagePercent.SettingChanged  += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv4BonusArrows.SettingChanged    += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv4DamagePercent.SettingChanged  += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv5BonusArrows.SettingChanged    += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv5DamagePercent.SettingChanged  += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv5BonusCharges.SettingChanged   += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
 
                 Plugin.Log.LogDebug("[아처 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화 (액티브 + 패시브)");
             }

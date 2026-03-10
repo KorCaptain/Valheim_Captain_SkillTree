@@ -20,7 +20,7 @@
     <UseSharedCompilation>false</UseSharedCompilation>
     <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
     <!-- 🔧 버전 관리 시스템 -->
-    <Version>0.1.890</Version>
+    <Version>0.1.895</Version>
     <AutoIncrementVersion>true</AutoIncrementVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -212,7 +212,7 @@
   <!-- 🔧 자동 버전 증가 타겟 -->
   <Target Name="IncrementVersion" BeforeTargets="BeforeBuild" Condition="'$(AutoIncrementVersion)' == 'true'">
     <Message Text="🔧 버전 자동 증가 시스템 실행..." Importance="high" />
-    <Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)build\IncrementVersion.ps1&quot; -ProjectFile &quot;$(MSBuildProjectFullPath)&quot; -ProjectDir &quot;$(ProjectDir)&quot;" ConsoleToMSBuild="true" IgnoreStandardErrorWarningFormat="true" />
+    <Exec Command="pwsh -ExecutionPolicy Bypass -File &quot;$(ProjectDir)build\IncrementVersion.ps1&quot; -ProjectFile &quot;$(MSBuildProjectFullPath)&quot; -ProjectDir &quot;$(ProjectDir)&quot;" ConsoleToMSBuild="true" IgnoreStandardErrorWarningFormat="true" />
   </Target>
   <!-- 🚀 빌드 후 자동 배포 (r2modmanPlus 플러그인 폴더로 복사, Windows 환경에서만 실행) -->
   <Target Name="DeployToR2ModMan" AfterTargets="Build" Condition="'$(APPDATA)' != '' And Exists('$(APPDATA)\r2modmanPlus-local')">

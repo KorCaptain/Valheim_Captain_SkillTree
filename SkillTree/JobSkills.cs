@@ -53,7 +53,7 @@ namespace CaptainSkillTree.SkillTree
                 Name = "아처",
                 Description = Archer_Tooltip.GetArcherTooltip(),
                 RequiredPoints = 0,
-                MaxLevel = 1,
+                MaxLevel = 5,
                 Tier = 7,
                 Position = new Vector2(-375, 395),
                 Category = "직업",

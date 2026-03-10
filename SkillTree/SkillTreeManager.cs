@@ -381,6 +381,12 @@ namespace CaptainSkillTree.SkillTree
                     return false;
                 }
             }
+            else if (skillId == "Archer")
+            {
+                // 아처 직업: 레벨별 아이템 요구사항 체크
+                int targetLevel = currentLevel + 1;
+                if (!HasArcherLevelItems(targetLevel)) return false;
+            }
             else
             {
                 // 일반 스킬: 포인트 체크 (대기 중인 투자 고려)
@@ -1015,7 +1021,18 @@ namespace CaptainSkillTree.SkillTree
             int currentLevel = GetSkillLevel(skillId) + (pendingInvestments.ContainsKey(skillId) ? pendingInvestments[skillId] : 0);
             if (currentLevel >= node.MaxLevel) return;
 
-            if (node.RequiredPoints > 0 && GetAvailablePoints(true) < node.RequiredPoints) return;
+            if (skillId == "Archer")
+            {
+                int targetLevel = currentLevel + 1;
+                if (!HasArcherLevelItems(targetLevel))
+                {
+                    if ((System.Object)Player.m_localPlayer != null)
+                        SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                            "⚠️ " + L.Get("archer_level_item_required", targetLevel), Color.red);
+                    return;
+                }
+            }
+            else if (node.RequiredPoints > 0 && GetAvailablePoints(true) < node.RequiredPoints) return;
 
             // === 상호 배타적 스킬 체크 ===
             if (node.MutuallyExclusive != null && node.MutuallyExclusive.Count > 0)
@@ -1070,8 +1087,14 @@ namespace CaptainSkillTree.SkillTree
             {
                 int currentLevel = GetSkillLevel(pending.Key);
                 
-                // 직업 스킬이고 레벨 0에서 1로 올라가는 경우(처음 전직)에만 아이템 소모
-                if (IsJobSkill(pending.Key) && currentLevel == 0)
+                // 아처 직업: 레벨별 아이템 소모
+                if (pending.Key == "Archer")
+                {
+                    int targetLevel = currentLevel + 1;
+                    ConsumeArcherLevelItems(targetLevel);
+                }
+                // 다른 직업 스킬: 레벨 0에서 1로 올라가는 경우(처음 전직)에만 아이템 소모
+                else if (IsJobSkill(pending.Key) && currentLevel == 0)
                 {
                     ConsumeJobSkillRequirements(pending.Key);
                 }
@@ -1139,6 +1162,69 @@ namespace CaptainSkillTree.SkillTree
             {
                 // 다른 직업들: 에이크쉬르 트로피만 소모
                 inventory.RemoveItem("$item_trophy_eikthyr", 1);
+            }
+        }
+
+        private bool HasArcherLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return false;
+            var inventory = player.GetInventory();
+            if (inventory == null) return false;
+
+            switch (targetLevel)
+            {
+                case 1: return inventory.HaveItem("$item_trophy_skeleton") &&
+                               inventory.HaveItem("$item_trophy_eikthyr");
+                case 2: return inventory.HaveItem("$item_trophy_greydwarf") &&
+                               inventory.CountItems("$item_trophy_eikthyr") >= 2;
+                case 3: return inventory.HaveItem("$item_trophy_greydwarfshaman") &&
+                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.HaveItem("$item_trophy_theelder");
+                case 4: return inventory.HaveItem("$item_trophy_skeleton") &&
+                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.HaveItem("$item_trophy_theelder") &&
+                               inventory.HaveItem("$item_trophy_bonemass");
+                case 5: return inventory.HaveItem("$item_trophy_hatchling") &&
+                               inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.HaveItem("$item_trophy_dragonqueen");
+                default: return false;
+            }
+        }
+
+        private void ConsumeArcherLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            switch (targetLevel)
+            {
+                case 1:
+                    inventory.RemoveItem("$item_trophy_skeleton", 1);
+                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    break;
+                case 2:
+                    inventory.RemoveItem("$item_trophy_greydwarf", 1);
+                    inventory.RemoveItem("$item_trophy_eikthyr", 2);
+                    break;
+                case 3:
+                    inventory.RemoveItem("$item_trophy_greydwarfshaman", 1);
+                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_trophy_theelder", 1);
+                    break;
+                case 4:
+                    inventory.RemoveItem("$item_trophy_skeleton", 1);
+                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_trophy_theelder", 1);
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_hatchling", 1);
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    break;
             }
         }
 

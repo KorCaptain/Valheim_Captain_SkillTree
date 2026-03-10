@@ -797,6 +797,15 @@ namespace CaptainSkillTree.Localization
                 ["Archer_MultiShot_StaminaCost"] = "Multishot: Stamina Cost",
                 ["Archer_JumpHeightBonus"] = "Passive: Jump Height Bonus (%)",
                 ["Archer_FallDamageReduction"] = "Passive: Fall Damage Reduction (%)",
+                ["Archer_Lv2_BonusArrows"]   = "Lv2: Bonus Arrow Count",
+                ["Archer_Lv2_DamagePercent"] = "Lv2: Damage Per Arrow (%)",
+                ["Archer_Lv3_BonusArrows"]   = "Lv3: Bonus Arrow Count",
+                ["Archer_Lv3_DamagePercent"] = "Lv3: Damage Per Arrow (%)",
+                ["Archer_Lv4_BonusArrows"]   = "Lv4: Bonus Arrow Count",
+                ["Archer_Lv4_DamagePercent"] = "Lv4: Damage Per Arrow (%)",
+                ["Archer_Lv5_BonusArrows"]   = "Lv5: Bonus Arrow Count",
+                ["Archer_Lv5_DamagePercent"] = "Lv5: Damage Per Arrow (%)",
+                ["Archer_Lv5_BonusCharges"]  = "Lv5: Bonus Charges",
 
                 // ============================================
                 // Mage Job Skills - 6 Keys

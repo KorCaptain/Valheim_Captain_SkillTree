@@ -799,6 +799,15 @@ namespace CaptainSkillTree.Localization
                 ["Archer_MultiShot_StaminaCost"] = "멀티샷: 스태미나 소모",
                 ["Archer_JumpHeightBonus"] = "패시브: 점프 높이 보너스 (%)",
                 ["Archer_FallDamageReduction"] = "패시브: 낙사 데미지 감소 (%)",
+                ["Archer_Lv2_BonusArrows"]   = "Lv2: 추가 발사체 수",
+                ["Archer_Lv2_DamagePercent"] = "Lv2: 1발당 공격력 (%)",
+                ["Archer_Lv3_BonusArrows"]   = "Lv3: 추가 발사체 수",
+                ["Archer_Lv3_DamagePercent"] = "Lv3: 1발당 공격력 (%)",
+                ["Archer_Lv4_BonusArrows"]   = "Lv4: 추가 발사체 수",
+                ["Archer_Lv4_DamagePercent"] = "Lv4: 1발당 공격력 (%)",
+                ["Archer_Lv5_BonusArrows"]   = "Lv5: 추가 발사체 수",
+                ["Archer_Lv5_DamagePercent"] = "Lv5: 1발당 공격력 (%)",
+                ["Archer_Lv5_BonusCharges"]  = "Lv5: 추가 충전 횟수",
 
                 // ============================================
                 // Mage Job Skills (메이지 직업 스킬) - 6개

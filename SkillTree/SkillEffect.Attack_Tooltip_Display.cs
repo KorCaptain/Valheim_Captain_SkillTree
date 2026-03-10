@@ -427,12 +427,12 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player == null) return;
 
-                    // 방어구 아이템 명시적 제외 (공격 효과는 무기에만 표시)
+                    // 무기 아이템만 허용 (화이트리스트 방식 - 음식/물약/열쇠 등 비무기 완전 차단)
                     var itemType = item.m_shared.m_itemType;
-                    if (itemType == ItemDrop.ItemData.ItemType.Helmet  ||
-                        itemType == ItemDrop.ItemData.ItemType.Chest   ||
-                        itemType == ItemDrop.ItemData.ItemType.Legs    ||
-                        itemType == ItemDrop.ItemData.ItemType.Shield)
+                    if (itemType != ItemDrop.ItemData.ItemType.OneHandedWeapon &&
+                        itemType != ItemDrop.ItemData.ItemType.TwoHandedWeapon &&
+                        itemType != ItemDrop.ItemData.ItemType.Bow             &&
+                        itemType != ItemDrop.ItemData.ItemType.Torch)
                         return;
 
                     var group = WeaponTooltipHelper.GetWeaponGroup(item);

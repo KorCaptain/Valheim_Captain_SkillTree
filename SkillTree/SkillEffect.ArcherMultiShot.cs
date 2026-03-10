@@ -32,8 +32,26 @@ namespace CaptainSkillTree.SkillTree
         // 아처 멀티샷 상태 효과 프리팹 캐시 (한 번만 로드)
         private static GameObject cachedArcherStatusEffectPrefab = null;
         
-        // 화살 수는 컨피그에서 설정 (기본 5발)
-        public static int ARCHER_MULTISHOT_ARROWS => Archer_Config.ArcherMultiShotArrowCountValue;
+        // 아처 현재 레벨 조회
+        private static int GetArcherLevel() =>
+            SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
+
+        // 화살 수는 컨피그 기본값 + 레벨 보너스
+        public static int ARCHER_MULTISHOT_ARROWS
+        {
+            get
+            {
+                var baseCount = Archer_Config.ArcherMultiShotArrowCountValue;
+                var lv = GetArcherLevel();
+                return lv switch {
+                    2 => baseCount + Archer_Config.ArcherLv2BonusArrowsValue,
+                    3 => baseCount + Archer_Config.ArcherLv3BonusArrowsValue,
+                    4 => baseCount + Archer_Config.ArcherLv4BonusArrowsValue,
+                    5 => baseCount + Archer_Config.ArcherLv5BonusArrowsValue,
+                    _ => baseCount
+                };
+            }
+        }
         
         /// <summary>
         /// 아처 멀티샷 버프 활성화 (Y키 - 2회 사용 가능한 버프 활성화)
@@ -78,8 +96,9 @@ namespace CaptainSkillTree.SkillTree
                 ActiveSkillCooldownRegistry.SetCooldown("Y", Archer_Config.ArcherMultiShotCooldownValue);
                 player.UseStamina(staminaCost);
                 
-                // 멀티샷 충전 횟수 설정 (컨피그에서 가져옴)
-                var charges = Archer_Config.ArcherMultiShotChargesValue;
+                // 멀티샷 충전 횟수 설정 (Lv5에서 +1 보너스)
+                var baseCharges = Archer_Config.ArcherMultiShotChargesValue;
+                var charges = GetArcherLevel() >= 5 ? baseCharges + Archer_Config.ArcherLv5BonusChargesValue : baseCharges;
                 archerMultiShotCharges[player] = charges;
                 
                 ShowSkillEffectText(player, "🏹 " + L.Get("multishot_ready", charges.ToString()),
@@ -303,8 +322,17 @@ namespace CaptainSkillTree.SkillTree
                     var hitData = new HitData();
                     var fullDamage = weapon.GetDamage();
                     fullDamage.Add(ammo.GetDamage());
-                    var damagePercent = Archer_Config.ArcherMultiShotDamagePercentValue / 100f;
-                    fullDamage.Modify(damagePercent); // 아처 멀티샷 컨피그 데미지
+                    var baseDmg = Archer_Config.ArcherMultiShotDamagePercentValue;
+                    var lv = GetArcherLevel();
+                    float lvDmg = lv switch {
+                        2 => Archer_Config.ArcherLv2DamagePercentValue,
+                        3 => Archer_Config.ArcherLv3DamagePercentValue,
+                        4 => Archer_Config.ArcherLv4DamagePercentValue,
+                        5 => Archer_Config.ArcherLv5DamagePercentValue,
+                        _ => baseDmg
+                    };
+                    var damagePercent = lvDmg / 100f;
+                    fullDamage.Modify(damagePercent); // 아처 멀티샷 레벨 보정 데미지
                     
                     hitData.m_damage = fullDamage;
                     hitData.m_point = spawnPoint;

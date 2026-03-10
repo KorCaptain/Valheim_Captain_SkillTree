@@ -514,6 +514,15 @@ namespace CaptainSkillTree.Localization
                 ["Archer_MultiShot_StaminaCost"] = "Мультивыстрел: Расход выносливости",
                 ["Archer_JumpHeightBonus"] = "Пассивный: Бонус высоты прыжка (%)",
                 ["Archer_FallDamageReduction"] = "Пассивный: Снижение урона при падении (%)",
+                ["Archer_Lv2_BonusArrows"]   = "Ур.2: Доп. количество стрел",
+                ["Archer_Lv2_DamagePercent"] = "Ур.2: Урон каждой стрелы (%)",
+                ["Archer_Lv3_BonusArrows"]   = "Ур.3: Доп. количество стрел",
+                ["Archer_Lv3_DamagePercent"] = "Ур.3: Урон каждой стрелы (%)",
+                ["Archer_Lv4_BonusArrows"]   = "Ур.4: Доп. количество стрел",
+                ["Archer_Lv4_DamagePercent"] = "Ур.4: Урон каждой стрелы (%)",
+                ["Archer_Lv5_BonusArrows"]   = "Ур.5: Доп. количество стрел",
+                ["Archer_Lv5_DamagePercent"] = "Ур.5: Урон каждой стрелы (%)",
+                ["Archer_Lv5_BonusCharges"]  = "Ур.5: Доп. количество зарядов",
 
                 // ============================================
                 // Mage Job Skills - 6 ключей

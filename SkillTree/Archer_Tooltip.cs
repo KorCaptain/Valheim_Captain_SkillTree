@@ -31,39 +31,88 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 아처 상세 툴팁 생성 (성기사와 동일한 형식)
+        /// 아처 상세 툴팁 생성 - 레벨 인식 버전
         /// </summary>
         public static string GetArcherTooltip()
         {
-            // 컨피그에서 실제 값 가져오기
-            var arrowCount = Archer_Config.ArcherMultiShotArrowCountValue;
-            var charges = Archer_Config.ArcherMultiShotChargesValue;
-            var damagePercent = Archer_Config.ArcherMultiShotDamagePercentValue;
-            var arrowConsumption = Archer_Config.ArcherMultiShotArrowConsumptionValue;
+            var manager = SkillTreeManager.Instance;
+            int currentLevel = manager?.GetSkillLevel("Archer") ?? 0;
+
+            var baseArrows = Archer_Config.ArcherMultiShotArrowCountValue;
+            var baseCharges = Archer_Config.ArcherMultiShotChargesValue;
+            var baseDamage = Archer_Config.ArcherMultiShotDamagePercentValue;
             var stamina = Archer_Config.ArcherMultiShotStaminaCostValue;
             var cooldown = Archer_Config.ArcherMultiShotCooldownValue;
-            
-            // 패시브 스킬 값 가져오기
-            var jumpHeightBonus = Archer_Config.ArcherJumpHeightBonusValue;
-            var fallDamageReduction = Archer_Config.ArcherFallDamageReductionValue;
-            
-            // 상세 툴팁 데이터 생성
-            var data = new ArcherTooltipData
-            {
-                skillName = L.Get("job_archer"),
-                description = L.Get("archer_desc_multishot", arrowCount, charges, damagePercent),
-                range = L.Get("archer_range_arrows", arrowCount),
-                consumeStamina = $"{stamina}",
-                consumeArrow = $"{arrowConsumption}",
-                skillType = L.Get("skill_type_active_key", "Y"),
-                cooldown = $"{cooldown}{L.Get("unit_seconds")}",
-                requirement = L.Get("requirement_archer"),
-                confirmation = L.Get("confirmation_job_only"),
-                passiveSkills = L.Get("archer_passive_skills", jumpHeightBonus, fallDamageReduction),
-                requiredItem = L.Get("item_eikthyr_trophy")
+            var jumpBonus = Archer_Config.ArcherJumpHeightBonusValue;
+            var fallReduction = Archer_Config.ArcherFallDamageReductionValue;
+
+            // 현재 레벨 효과 계산 - Config 참조
+            int arrowBonus = currentLevel switch {
+                2 => Archer_Config.ArcherLv2BonusArrowsValue,
+                3 => Archer_Config.ArcherLv3BonusArrowsValue,
+                4 => Archer_Config.ArcherLv4BonusArrowsValue,
+                5 => Archer_Config.ArcherLv5BonusArrowsValue,
+                _ => 0
             };
-            
-            return GenerateArcherTooltip(data);
+            int currentArrows = baseArrows + arrowBonus;
+            float lvDamage = currentLevel switch {
+                2 => Archer_Config.ArcherLv2DamagePercentValue,
+                3 => Archer_Config.ArcherLv3DamagePercentValue,
+                4 => Archer_Config.ArcherLv4DamagePercentValue,
+                5 => Archer_Config.ArcherLv5DamagePercentValue,
+                _ => baseDamage
+            };
+            int currentDamage = (int)lvDamage;
+            int currentCharges = currentLevel >= 5 ? baseCharges + Archer_Config.ArcherLv5BonusChargesValue : baseCharges;
+
+            var tooltip = $"<color=#FFD700><size=22>{L.Get("job_archer")}</size></color>\n";
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("archer_current_level")}: Lv{currentLevel} / 5</size></color>\n\n";
+
+            if (currentLevel > 0)
+            {
+                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color>";
+                tooltip += $"<color=#E0E0E0><size=16>{L.Get("archer_effect_arrows", currentArrows, currentCharges, currentDamage)}</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
+                tooltip += $"<color=#ADFF2F><size=16>{L.Get("archer_passive_skills", jumpBonus, fallReduction)}</size></color>\n";
+            }
+            else
+            {
+                tooltip += $"<color=#E0E0E0><size=16>{L.Get("archer_desc_multishot", baseArrows, baseCharges, (int)baseDamage)}</size></color>\n";
+            }
+
+            // 다음 레벨 비용
+            if (currentLevel < 5)
+            {
+                int nextLevel = currentLevel + 1;
+                tooltip += $"\n<color=#FFA500><size=16>{L.Get("archer_next_level_cost", nextLevel)}: </size></color>";
+                tooltip += $"<color=#FF6B6B><size=16>{GetArcherLevelCostText(nextLevel)}</size></color>\n";
+            }
+            else
+            {
+                tooltip += $"\n<color=#FFD700><size=16>{L.Get("archer_max_level")}</size></color>\n";
+            }
+
+            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
+            tooltip += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {stamina}, {L.Get("stat_arrow")} 1{L.Get("unit_pieces")}</size></color>\n";
+            tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";
+            tooltip += $"<color=#FFDB58><size=16>{cooldown}{L.Get("unit_seconds")}</size></color>\n";
+            tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color>";
+            tooltip += $"<color=#FFE4B5><size=16>{L.Get("confirmation_job_only")}</size></color>";
+
+            return tooltip.TrimEnd('\n');
+        }
+
+        private static string GetArcherLevelCostText(int targetLevel)
+        {
+            switch (targetLevel)
+            {
+                case 1: return L.Get("item_trophy_skeleton") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1";
+                case 2: return L.Get("item_trophy_greydwarf") + " x1 + " + L.Get("item_eikthyr_trophy") + " x2";
+                case 3: return L.Get("item_trophy_greydwarfshaman") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_trophy_theelder") + " x1";
+                case 4: return L.Get("item_trophy_skeleton") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_trophy_theelder") + " x1 + " + L.Get("item_trophy_bonemass") + " x1";
+                case 5: return L.Get("item_trophy_hatchling") + " x1 + " + L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_dragonqueen") + " x1";
+                default: return "";
+            }
         }
 
         /// <summary>
