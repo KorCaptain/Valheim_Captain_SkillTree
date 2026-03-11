@@ -334,6 +334,9 @@ namespace CaptainSkillTree.MMO_System
                 "[기본: true]");
 
             Plugin.Log.LogDebug("[CaptainLevelConfig] Config 바인딩 완료 (기본 Config 사용)");
+
+            // MMO 난이도 시스템 (같은 최상단 섹션에 배치)
+            MMODifficultyConfig.Bind(config);
         }
 
         /// <summary>
