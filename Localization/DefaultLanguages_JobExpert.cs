@@ -84,12 +84,12 @@ namespace CaptainSkillTree.Localization
                 // Mace Expert Tree (additional)
                 ["mace_expert_desc2"] = "둔기 피해 +{0}%, 공격 시 {1}% 확률로 {2}초 기절",
                 ["mace_stun_boost_desc2"] = "기절 확률 +{0}%, 지속시간 +{1}초",
-                ["mace_guard_boost_desc2"] = "방어 +{0}%",
+                ["mace_guard_boost_desc2"] = "세컨드 공격 시 공격력 +{0}%, 범위 {1}m",
                 ["mace_heavy_strike_desc2"] = "무거운 공격 타격 +{0}",
-                ["mace_knockback_desc2"] = "공격 시 {0}% 확률로 노크백",
+                ["mace_knockback_desc2"] = "막기 미사용 피격 시 {0}% 확률로 공격자 밀어냄",
                 ["mace_tank_desc2"] = "체력 +{0}%, 받는 데미지 -{1}%",
-                ["mace_dps_desc2"] = "공격력 +{0}%, 공격속도 +{1}%",
-                ["mace_grandmaster_desc2"] = "방어 +{0}%",
+                ["mace_dps_desc2"] = "공격력 +{0}%",
+                ["mace_grandmaster_desc2"] = "공격속도 +{0}%",
 
                 // === Prerequisite Text ===
                 ["prerequisite_label"] = "🔗 필요",
@@ -210,6 +210,7 @@ namespace CaptainSkillTree.Localization
                 ["rush_slash_canceled"] = "돌진 연속 베기 중단됨",
                 ["parry_rush_skill_required"] = "패링 돌격 스킬이 필요합니다",
                 ["shield_required"] = "방패를 착용해야 합니다",
+                ["sword_or_shield_required"] = "검 또는 방패를 착용해야 합니다",
                 ["parry_rush_already_active"] = "패링 돌격 이미 활성 중",
                 ["parry_rush_activate"] = "패링 돌격! ({0}초)",
                 ["parry_rush_damage"] = "패링 돌격! (+{0}%)",
@@ -352,10 +353,14 @@ namespace CaptainSkillTree.Localization
                 ["item_trophy_greydwarf"] = "Greydwarf Trophy",
                 ["item_trophy_greydwarfbrute"] = "Greydwarf Brute Trophy",
                 ["item_trophy_greydwarfshaman"] = "Greydwarf Shaman Trophy",
+                ["item_trophy_troll"] = "Troll Trophy",
                 ["item_trophy_theelder"] = "The Elder Trophy",
+                ["item_trophy_abomination"] = "Abomination Trophy",
                 ["item_trophy_bonemass"] = "Bonemass Trophy",
                 ["item_trophy_hatchling"] = "Drake Trophy",
                 ["item_trophy_dragonqueen"] = "Moder Trophy",
+                ["item_trophy_goblinking"] = "Yagluth Trophy",
+                ["item_trophy_thequeen"] = "The Queen Trophy",
 
                 // === Tanker Job ===
                 ["tanker_skill_warcry"] = "War Cry",
@@ -476,12 +481,12 @@ namespace CaptainSkillTree.Localization
                 // Mace Expert Tree (additional)
                 ["mace_expert_desc2"] = "Mace damage +{0}%, {1}% chance to stun for {2}s on hit",
                 ["mace_stun_boost_desc2"] = "Stun chance +{0}%, Duration +{1}s",
-                ["mace_guard_boost_desc2"] = "Defense +{0}%",
+                ["mace_guard_boost_desc2"] = "Secondary attack damage +{0}%, AoE range {1}m",
                 ["mace_heavy_strike_desc2"] = "Heavy attack blunt +{0}",
-                ["mace_knockback_desc2"] = "{0}% chance for knockback on attack",
+                ["mace_knockback_desc2"] = "When not blocking, {0}% chance to push attacker on hit",
                 ["mace_tank_desc2"] = "Health +{0}%, Damage taken -{1}%",
-                ["mace_dps_desc2"] = "Damage +{0}%, Attack speed +{1}%",
-                ["mace_grandmaster_desc2"] = "Defense +{0}%",
+                ["mace_dps_desc2"] = "Damage +{0}%",
+                ["mace_grandmaster_desc2"] = "Attack speed +{0}%",
 
                 // === Prerequisite Text ===
                 ["prerequisite_label"] = "🔗 Required",
@@ -550,6 +555,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Berserker Skill Messages ===
                 ["berserker_rage_end"] = "Berserker Rage ended",
+
+                // === Sword Active Skill Messages ===
+                ["sword_or_shield_required"] = "You must equip a sword or shield",
 
                 // === Level Up Message ===
                 ["level_up"] = "LEVEL UP!",

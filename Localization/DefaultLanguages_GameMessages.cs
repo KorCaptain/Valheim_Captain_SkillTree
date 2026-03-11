@@ -293,6 +293,13 @@ namespace CaptainSkillTree.Localization
                 // === EpicMMO Connection Messages ===
                 ["epicmmo_connected_title"] = "EpicMMO 연동됨",
                 ["epicmmo_connected_detail"] = "EpicMMO 레벨 시스템과 연동되었습니다.\n자체 레벨 시스템이 비활성화됩니다.",
+
+                // === MMO Difficulty Notification ===
+                ["mmo_diff_notification_title"] = "몬스터 난이도 상향됨",
+                ["mmo_diff_notification_detail"] = "사용 SP {0} → 별 출현 확률 +{1}%",
+
+                // === Respawn Message ===
+                ["respawn_message"] = "성장해서 다시 도전하세요~!",
             };
         }
 
@@ -585,6 +592,13 @@ namespace CaptainSkillTree.Localization
                 // === EpicMMO Connection Messages ===
                 ["epicmmo_connected_title"] = "EpicMMO Connected",
                 ["epicmmo_connected_detail"] = "Connected to EpicMMO level system.\nCaptain level system disabled.",
+
+                // === MMO Difficulty Notification ===
+                ["mmo_diff_notification_title"] = "Monster Difficulty Increased",
+                ["mmo_diff_notification_detail"] = "Used SP {0} → Star chance +{1}%",
+
+                // === Respawn Message ===
+                ["respawn_message"] = "Grow stronger and challenge again~!",
             };
         }
     }

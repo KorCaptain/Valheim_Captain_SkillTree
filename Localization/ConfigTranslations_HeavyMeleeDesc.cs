@@ -102,17 +102,17 @@ namespace CaptainSkillTree.Localization
                 "회피 찌르기 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 12",
 
-                ["Tier4_Evasion_DamageBonus"] =
-                "【회피 후 공격력 보너스 (%)】\n" +
-                "구르기(회피) 직후 창 공격의 피해가 증가합니다.\n" +
-                "기동성과 공격력을 동시에 강화합니다.\n" +
-                "권장값: 20-35%",
+                ["Tier4_Evasion_EvasionBonus"] =
+                "【공격 시 회피율 보너스 (%)】\n" +
+                "창으로 공격 시 회피율이 증가합니다 (5초간).\n" +
+                "공격적인 플레이에서 생존력을 높입니다.\n" +
+                "권장값: 15-25%",
 
                 ["Tier4_Evasion_StaminaReduction"] =
-                "【스태미나 소모 감소 (%)】\n" +
-                "회피 후 공격 시 스태미나 소모가 감소합니다.\n" +
+                "【공격 스태미나 소모 감소 (%)】\n" +
+                "회피 찌르기 공격의 스태미나 소모가 감소합니다.\n" +
                 "지속적인 전투가 가능합니다.\n" +
-                "권장값: 5-12%",
+                "권장값: 5-15%",
 
                 // === Spear Tree: Tier 4 - 이연창 (2개) ===
                 ["Tier4_Dual_DamageBonus"] =
@@ -276,13 +276,18 @@ namespace CaptainSkillTree.Localization
                 "기절 강화 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 1",
 
-                // === Tier 3: 방어 강화 (Guard) ===
+                // === Tier 3: 회전 타격 (Spin Strike) ===
 
-                ["Tier3_Guard_ArmorBonus"] =
-                "【방어력 보너스 (고정값)】\n" +
-                "기본 방어력을 고정 수치로 증가시킵니다.\n" +
-                "탱커 빌드에 유용합니다.\n" +
-                "권장값: 2-5",
+                ["Tier3_SpinStrike_DamageBonus"] =
+                "【세컨드 어택 데미지 보너스 (%)】\n" +
+                "세컨드 어택 시 공격력을 증가시킵니다.\n" +
+                "퍼센트 기반으로 높은 기본 공격력일수록 효과가 커집니다.\n" +
+                "권장값: 15-25%",
+
+                ["Tier3_SpinStrike_Range"] =
+                "【AOE 범위 (미터)】\n" +
+                "세컨드 어택 시 주변 적에게 데미지를 주는 범위입니다.\n" +
+                "권장값: 5-10m",
 
                 ["Tier3_Guard_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -342,28 +347,22 @@ namespace CaptainSkillTree.Localization
                 "DPS 빌드에 유용합니다.\n" +
                 "권장값: 15-25%",
 
-                ["Tier5_DPS_AttackSpeedBonus"] =
-                "【공격속도 보너스 (%)】\n" +
-                "둔기 공격속도를 증가시킵니다.\n" +
-                "느린 둔기의 약점을 보완합니다.\n" +
-                "권장값: 8-15%",
-
                 ["Tier5_DPS_RequiredPoints"] =
                 "【필요 포인트】\n" +
                 "데미지 강화 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 1",
 
-                // === Tier 6: 그랜드마스터 (Grandmaster) ===
+                // === Tier 6: 속공 (Sokgong / Swift Attack) ===
 
-                ["Tier6_Grandmaster_ArmorBonus"] =
-                "【방어력 보너스 (%)】\n" +
-                "퍼센트 기반 방어력 보너스입니다.\n" +
-                "고급 방어구와 시너지가 좋습니다.\n" +
-                "권장값: 15-25%",
+                ["Tier6_Sokgong_AttackSpeedBonus"] =
+                "【공격속도 보너스 (%)】\n" +
+                "둔기 공격속도를 증가시킵니다.\n" +
+                "느린 둔기의 약점을 보완합니다.\n" +
+                "권장값: 8-15%",
 
                 ["Tier6_Grandmaster_RequiredPoints"] =
                 "【필요 포인트】\n" +
-                "그랜드마스터 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "속공 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 1",
 
                 // === Tier 7: 분노의 망치 (Fury Hammer - H키 액티브) ===
@@ -709,17 +708,17 @@ namespace CaptainSkillTree.Localization
                 "Skill points required to unlock the Evasion Strike node.\n" +
                 "Recommended: 12",
 
-                ["Tier4_Evasion_DamageBonus"] =
-                "【Damage Bonus After Dodge (%)】\n" +
-                "Spear damage increases immediately after dodging.\n" +
-                "Enhances both mobility and damage.\n" +
-                "Recommended: 20-35%",
+                ["Tier4_Evasion_EvasionBonus"] =
+                "【Evasion Bonus on Attack (%)】\n" +
+                "Evasion rate increases when attacking with spear (for 5s).\n" +
+                "Improves survivability during aggressive play.\n" +
+                "Recommended: 15-25%",
 
                 ["Tier4_Evasion_StaminaReduction"] =
-                "【Stamina Cost Reduction (%)】\n" +
-                "Reduces stamina cost for attacks after dodge.\n" +
+                "【Attack Stamina Cost Reduction (%)】\n" +
+                "Reduces stamina cost for Evasion Strike attacks.\n" +
                 "Enables sustained combat.\n" +
-                "Recommended: 5-12%",
+                "Recommended: 5-15%",
 
                 // === Spear Tree: Tier 4 - Dual Spear (2 keys) ===
                 ["Tier4_Dual_DamageBonus"] =
@@ -882,13 +881,18 @@ namespace CaptainSkillTree.Localization
                 "Skill points required to unlock the Stun Boost node.\n" +
                 "Recommended: 1",
 
-                // === Tier 3: Guard ===
+                // === Tier 3: Spin Strike ===
 
-                ["Tier3_Guard_ArmorBonus"] =
-                "【Armor Bonus (Fixed Value)】\n" +
-                "Increases base armor by a fixed amount.\n" +
-                "Useful for tank builds.\n" +
-                "Recommended: 2-5",
+                ["Tier3_SpinStrike_DamageBonus"] =
+                "【Secondary Attack Damage Bonus (%)】\n" +
+                "Increases damage on secondary attack.\n" +
+                "Percentage-based; higher base damage yields greater effect.\n" +
+                "Recommended: 15-25%",
+
+                ["Tier3_SpinStrike_Range"] =
+                "【AoE Range (meters)】\n" +
+                "Range within which nearby enemies take damage on secondary attack.\n" +
+                "Recommended: 5-10m",
 
                 ["Tier3_Guard_RequiredPoints"] =
                 "【Required Points】\n" +
@@ -948,28 +952,22 @@ namespace CaptainSkillTree.Localization
                 "Useful for DPS builds.\n" +
                 "Recommended: 15-25%",
 
-                ["Tier5_DPS_AttackSpeedBonus"] =
-                "【Attack Speed Bonus (%)】\n" +
-                "Increases mace attack speed.\n" +
-                "Compensates for slow mace attacks.\n" +
-                "Recommended: 8-15%",
-
                 ["Tier5_DPS_RequiredPoints"] =
                 "【Required Points】\n" +
                 "Skill points required to unlock the DPS Boost node.\n" +
                 "Recommended: 1",
 
-                // === Tier 6: Grandmaster ===
+                // === Tier 6: Swift Attack (Sokgong) ===
 
-                ["Tier6_Grandmaster_ArmorBonus"] =
-                "【Armor Bonus (%)】\n" +
-                "Percentage-based armor bonus.\n" +
-                "Great synergy with high-tier armor.\n" +
-                "Recommended: 15-25%",
+                ["Tier6_Sokgong_AttackSpeedBonus"] =
+                "【Attack Speed Bonus (%)】\n" +
+                "Increases mace attack speed.\n" +
+                "Compensates for the slow mace attack rate.\n" +
+                "Recommended: 8-15%",
 
                 ["Tier6_Grandmaster_RequiredPoints"] =
                 "【Required Points】\n" +
-                "Skill points required to unlock the Grandmaster node.\n" +
+                "Skill points required to unlock the Swift Attack node.\n" +
                 "Recommended: 1",
 
                 // === Tier 7: Fury Hammer (H-Key Active) ===

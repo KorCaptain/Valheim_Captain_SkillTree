@@ -17,7 +17,7 @@
 
 **VFX 타입별 사용 메서드:**
 - **커스텀 VFX** (hit_01, debuff 등): `SimpleVFX` 사용
-- **발헤임 기본 VFX** (smokebomb_explosion, vfx_blocked 등): `VFXManager.PlayVFXMultiplayer()` 사용
+- **발헤임 기본 VFX** (fx_greenroots_projectile_hit, vfx_blocked 등): `VFXManager.PlayVFXMultiplayer()` 사용
 
 **커스텀 VFX 리스트는 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\asset\VFX 의 모든 프리팹
 **발헤임 기본 VFX  리스트는 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\VFX 의 Valheim_prefab.txt 

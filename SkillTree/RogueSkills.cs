@@ -93,9 +93,12 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
+            player.UseStamina(requiredStamina);
+            JobSkillsUtility.SetCooldown(player, "Rogue", Rogue_Config.RogueShadowStrikeCooldownValue);
+            ActiveSkillCooldownRegistry.SetCooldown("Y", Rogue_Config.RogueShadowStrikeCooldownValue);
+
             try
             {
-                player.UseStamina(requiredStamina);
                 CreateSmokeEffect(player);
 
                 int aggroRemoved = RemoveNearbyMonsterAggro(player);
@@ -118,8 +121,6 @@ namespace CaptainSkillTree.SkillTree
                     aggroRemovalLoopCoroutine[player] = loopCo;
                 }
 
-                JobSkillsUtility.SetCooldown(player, "Rogue", Rogue_Config.RogueShadowStrikeCooldownValue);
-                ActiveSkillCooldownRegistry.SetCooldown("Y", Rogue_Config.RogueShadowStrikeCooldownValue);
                 PlayRogueEffects(player);
                 PlayRogueCastSound(player);
             }

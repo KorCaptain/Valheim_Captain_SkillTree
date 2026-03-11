@@ -74,35 +74,23 @@ namespace CaptainSkillTree.MMO_System
         }
 
         // ============================================================
-        //  플레이어 접속 시 난이도 알림 (세션당 1회)
+        //  난이도 알림 외부 트리거 (LevelSyncManager에서 연동 메시지 후 호출)
         // ============================================================
 
-        [HarmonyPatch(typeof(Player), "Start")]
-        [HarmonyPostfix]
-        public static void Player_Start_Postfix(Player __instance)
+        /// <summary>
+        /// LevelSyncManager에서 연동 메시지 표시 완료 후 1초 뒤 호출
+        /// </summary>
+        public static void TriggerDifficultyNotification()
         {
-            try
-            {
-                // 시스템 비활성화 시 스킵
-                if (MMODifficultyConfig.EnableMMODifficulty == null ||
-                    !MMODifficultyConfig.EnableMMODifficulty.Value)
-                    return;
+            if (MMODifficultyConfig.EnableMMODifficulty == null ||
+                !MMODifficultyConfig.EnableMMODifficulty.Value)
+                return;
 
-                // 다른 플레이어(멀티) 무시
-                if (__instance != Player.m_localPlayer) return;
+            if (_notificationShown) return;
+            _notificationShown = true;
 
-                // 세션당 1회만 표시
-                if (_notificationShown) return;
-                _notificationShown = true;
-
-                // EpicMMO 연동 메시지(~1초) 종료 후 표시 → 6초 대기
-                if (Plugin.Instance != null)
-                    Plugin.Instance.StartCoroutine(ShowDifficultyNotificationDelayed(6f));
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogDebug($"[MMODifficulty] Player_Start 패치 오류: {ex.Message}");
-            }
+            if (Plugin.Instance != null)
+                Plugin.Instance.StartCoroutine(ShowDifficultyNotificationDelayed(1f));
         }
 
         private static IEnumerator ShowDifficultyNotificationDelayed(float delay)
@@ -176,6 +164,7 @@ namespace CaptainSkillTree.MMO_System
         public static void Game_Logout_Postfix()
         {
             _notificationShown = false;
+            LevelSyncManager.Instance.OnLogout();
             Plugin.Log.LogDebug("[MMODifficulty] 세션 플래그 초기화");
         }
     }

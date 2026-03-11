@@ -148,7 +148,7 @@ namespace CaptainSkillTree.Gui
             }
         }
 
-        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin", "Paladin" };
+        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin" };
         private bool IsJobIcon(CaptainSkillTree.SkillTree.SkillNode node)
         {
             string iconName = node.IconName;
@@ -276,17 +276,17 @@ namespace CaptainSkillTree.Gui
 
             // [포인트 초기화] 버튼 생성 (행 1 왼쪽) - 스틸블루
             resetPointButton = CreateFancyButton("ResetPointButton", L10n.Get("ui_reset_points"),
-                new Vector2(170, -40), new Color(0.22f, 0.45f, 0.70f, 1f), panel.transform,
+                new Vector2(590, -40), new Color(0.22f, 0.45f, 0.70f, 1f), panel.transform,
                 () => ResetSkillPoints());
 
             // [직업 초기화] 버튼 생성 (행 1 중간) - 보라
             resetJobButton = CreateFancyButton("ResetJobButton", L10n.Get("ui_reset_job"),
-                new Vector2(290, -40), new Color(0.50f, 0.20f, 0.60f, 1f), panel.transform,
+                new Vector2(710, -40), new Color(0.50f, 0.20f, 0.60f, 1f), panel.transform,
                 () => ResetJobSkillPoints());
 
             // [생산 초기화] 버튼 생성 (행 1 오른쪽) - 에메랄드
             resetProductionButton = CreateFancyButton("ResetProductionButton", L10n.Get("ui_reset_production"),
-                new Vector2(410, -40), new Color(0.15f, 0.55f, 0.25f, 1f), panel.transform,
+                new Vector2(830, -40), new Color(0.15f, 0.55f, 0.25f, 1f), panel.transform,
                 () => ResetProductionSkillPoints());
 
             // Music On/Off 토글 버튼 생성 (행 2)
@@ -2749,7 +2749,7 @@ namespace CaptainSkillTree.Gui
                 string initialText = isBGMEnabled ? "Music On" : "Music Off";
 
                 musicToggleButton = CreateFancyButton("MusicToggleButton", initialText,
-                    new Vector2(290, -70), initialColor, parent.transform, () => ToggleBGM());
+                    new Vector2(710, -70), initialColor, parent.transform, () => ToggleBGM());
             }
             catch (System.Exception ex)
             {

@@ -438,8 +438,8 @@ namespace CaptainSkillTree.Gui
                 case "mace_Step2_stun_boost": // 기절 강화
                     result = L.Get("mace_stun_boost_desc2", Mace_Config.MaceStep2StunChanceBonusValue, Mace_Config.MaceStep2StunDurationBonusValue);
                     break;
-                case "mace_Step3_branch_guard": // 방어 강화
-                    result = L.Get("mace_guard_boost_desc2", Mace_Config.MaceStep3GuardArmorBonusValue);
+                case "mace_Step3_branch_guard": // 회전 타격
+                    result = L.Get("mace_guard_boost_desc2", Mace_Config.MaceStep3SpinDamageBonusValue, Mace_Config.MaceStep3SpinRangeValue);
                     break;
                 case "mace_Step3_branch_heavy": // 무거운 타격
                     result = L.Get("mace_heavy_strike_desc2", Mace_Config.MaceStep3HeavyDamageBonusValue);
@@ -451,10 +451,10 @@ namespace CaptainSkillTree.Gui
                     result = L.Get("mace_tank_desc2", Mace_Config.MaceStep5TankHealthBonusValue, Mace_Config.MaceStep5TankDamageReductionValue);
                     break;
                 case "mace_Step5_dps": // 공격력 강화
-                    result = L.Get("mace_dps_desc2", Mace_Config.MaceStep5DpsDamageBonusValue, Mace_Config.MaceStep5DpsAttackSpeedBonusValue);
+                    result = L.Get("mace_dps_desc2", Mace_Config.MaceStep5DpsDamageBonusValue);
                     break;
-                case "mace_Step6_grandmaster": // 그랜드마스터
-                    result = L.Get("mace_grandmaster_desc2", Mace_Config.MaceStep6ArmorBonusValue);
+                case "mace_Step6_grandmaster": // 속공
+                    result = L.Get("mace_grandmaster_desc2", Mace_Config.MaceStep6AttackSpeedBonusValue);
                     break;
                 case "mace_Step7_fury_hammer": // 분노의 망치 (액티브 스킬)
                     result = Mace_Tooltip.GetMaceStep7FuryHammerTooltip();

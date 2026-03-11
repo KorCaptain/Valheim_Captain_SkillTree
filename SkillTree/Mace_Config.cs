@@ -58,7 +58,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> MaceStep2StunDurationBonus;
 
-        // ===== Tier 3: 방어 강화 =====
+        // ===== Tier 3: 회전 타격 (Spin Strike) =====
 
         /// <summary>
         /// Tier 3 방어 - 필요 포인트
@@ -66,9 +66,14 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> MaceStep3GuardRequiredPoints;
 
         /// <summary>
-        /// Tier 3 방어 - 방어력 보너스 (고정값)
+        /// Tier 3 회전 타격 - 공격력 보너스 (%)
         /// </summary>
-        public static ConfigEntry<float> MaceStep3GuardArmorBonus;
+        public static ConfigEntry<float> MaceStep3SpinDamageBonus;
+
+        /// <summary>
+        /// Tier 3 회전 타격 - AOE 범위 (미터)
+        /// </summary>
+        public static ConfigEntry<float> MaceStep3SpinRange;
 
         // ===== Tier 3: 무거운 타격 =====
 
@@ -123,12 +128,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> MaceStep5DpsDamageBonus;
 
-        /// <summary>
-        /// Tier 5 DPS - 공격속도 보너스 (%)
-        /// </summary>
-        public static ConfigEntry<float> MaceStep5DpsAttackSpeedBonus;
-
-        // ===== Tier 6: 그랜드마스터 =====
+        // ===== Tier 6: 속공 (Swift Attack) =====
 
         /// <summary>
         /// Tier 6 - 필요 포인트
@@ -136,9 +136,9 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> MaceStep6RequiredPoints;
 
         /// <summary>
-        /// Tier 6 - 방어력 보너스 (%)
+        /// Tier 6 속공 - 공격속도 보너스 (%)
         /// </summary>
-        public static ConfigEntry<float> MaceStep6ArmorBonus;
+        public static ConfigEntry<float> MaceStep6AttackSpeedBonus;
 
         // ===== 분노의 망치 (Fury Hammer) - H키 액티브 스킬 =====
 
@@ -221,33 +221,35 @@ namespace CaptainSkillTree.SkillTree
 
         // === Tier 2: 기절 강화 ===
         public static int MaceStep2RequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step2_RequiredPoints", MaceStep2RequiredPoints?.Value ?? 1);
+            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step2_RequiredPoints", MaceStep2RequiredPoints?.Value ?? 2);
         public static float MaceStep2StunChanceBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step2_StunChanceBonus", MaceStep2StunChanceBonus?.Value ?? 15f);
         public static float MaceStep2StunDurationBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step2_StunDurationBonus", MaceStep2StunDurationBonus?.Value ?? 0.5f);
 
-        // === Tier 3: 방어 강화 ===
+        // === Tier 3: 회전 타격 ===
         public static int MaceStep3GuardRequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step3_Guard_RequiredPoints", MaceStep3GuardRequiredPoints?.Value ?? 1);
-        public static float MaceStep3GuardArmorBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_Step3_Guard_ArmorBonus", MaceStep3GuardArmorBonus?.Value ?? 15f);
+            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step3_Guard_RequiredPoints", MaceStep3GuardRequiredPoints?.Value ?? 2);
+        public static float MaceStep3SpinDamageBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_Step3_SpinStrike_DamageBonus", MaceStep3SpinDamageBonus?.Value ?? 20f);
+        public static float MaceStep3SpinRangeValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_Step3_SpinStrike_Range", MaceStep3SpinRange?.Value ?? 7f);
 
         // === Tier 3: 무거운 타격 ===
         public static int MaceStep3HeavyRequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step3_Heavy_RequiredPoints", MaceStep3HeavyRequiredPoints?.Value ?? 1);
+            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step3_Heavy_RequiredPoints", MaceStep3HeavyRequiredPoints?.Value ?? 3);
         public static float MaceStep3HeavyDamageBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step3_Heavy_DamageBonus", MaceStep3HeavyDamageBonus?.Value ?? 20f);
 
         // === Tier 4: 밀어내기 ===
         public static int MaceStep4RequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step4_RequiredPoints", MaceStep4RequiredPoints?.Value ?? 1);
+            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step4_RequiredPoints", MaceStep4RequiredPoints?.Value ?? 3);
         public static float MaceStep4KnockbackChanceValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step4_KnockbackChance", MaceStep4KnockbackChance?.Value ?? 30f);
 
         // === Tier 5: 탱커 ===
         public static int MaceStep5TankRequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step5_Tank_RequiredPoints", MaceStep5TankRequiredPoints?.Value ?? 1);
+            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step5_Tank_RequiredPoints", MaceStep5TankRequiredPoints?.Value ?? 2);
         public static float MaceStep5TankHealthBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step5_Tank_HealthBonus", MaceStep5TankHealthBonus?.Value ?? 25f);
         public static float MaceStep5TankDamageReductionValue =>
@@ -255,17 +257,15 @@ namespace CaptainSkillTree.SkillTree
 
         // === Tier 5: 공격력 강화 ===
         public static int MaceStep5DpsRequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step5_Dps_RequiredPoints", MaceStep5DpsRequiredPoints?.Value ?? 1);
+            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step5_Dps_RequiredPoints", MaceStep5DpsRequiredPoints?.Value ?? 3);
         public static float MaceStep5DpsDamageBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step5_Dps_DamageBonus", MaceStep5DpsDamageBonus?.Value ?? 20f);
-        public static float MaceStep5DpsAttackSpeedBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_Step5_Dps_AttackSpeedBonus", MaceStep5DpsAttackSpeedBonus?.Value ?? 10f);
 
-        // === Tier 6: 그랜드마스터 ===
+        // === Tier 6: 속공 ===
         public static int MaceStep6RequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step6_RequiredPoints", MaceStep6RequiredPoints?.Value ?? 1);
-        public static float MaceStep6ArmorBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_Step6_ArmorBonus", MaceStep6ArmorBonus?.Value ?? 20f);
+            (int)SkillTreeConfig.GetEffectiveValue("Mace_Step6_RequiredPoints", MaceStep6RequiredPoints?.Value ?? 2);
+        public static float MaceStep6AttackSpeedBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_Step6_Sokgong_AttackSpeedBonus", MaceStep6AttackSpeedBonus?.Value ?? 10f);
 
         // === Tier 7: 분노의 망치 ===
         public static int FuryHammerRequiredPointsValue =>
@@ -307,19 +307,19 @@ namespace CaptainSkillTree.SkillTree
         /// 수호자의 진심 쿨타임 값 (서버 우선)
         /// </summary>
         public static float GuardianHeartCooldownValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_Cooldown", GuardianHeartCooldown?.Value ?? 75f);
+            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_Cooldown", GuardianHeartCooldown?.Value ?? 45f);
 
         /// <summary>
         /// 수호자의 진심 스태미나 소모 값 (서버 우선)
         /// </summary>
         public static float GuardianHeartStaminaCostValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_StaminaCost", GuardianHeartStaminaCost?.Value ?? 25f);
+            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_StaminaCost", GuardianHeartStaminaCost?.Value ?? 20f);
 
         /// <summary>
         /// 수호자의 진심 버프 지속시간 값 (서버 우선)
         /// </summary>
         public static float GuardianHeartDurationValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_Duration", GuardianHeartDuration?.Value ?? 45f);
+            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_Duration", GuardianHeartDuration?.Value ?? 30f);
 
         /// <summary>
         /// 수호자의 진심 반사 데미지 비율 값 (서버 우선)
@@ -407,12 +407,19 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_StunBoost_RequiredPoints")
             );
 
-            // Tier 3: 방어 강화
-            MaceStep3GuardArmorBonus = SkillTreeConfig.BindServerSync(config,
+            // Tier 3: 회전 타격
+            MaceStep3SpinDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier3_Guard_ArmorBonus",
-                3f,
-                SkillTreeConfig.GetConfigDescription("Tier3_Guard_ArmorBonus")
+                "Tier3_SpinStrike_DamageBonus",
+                20f,
+                SkillTreeConfig.GetConfigDescription("Tier3_SpinStrike_DamageBonus")
+            );
+
+            MaceStep3SpinRange = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier3_SpinStrike_Range",
+                7f,
+                SkillTreeConfig.GetConfigDescription("Tier3_SpinStrike_Range")
             );
 
             MaceStep3GuardRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -482,13 +489,6 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier5_DPS_DamageBonus")
             );
 
-            MaceStep5DpsAttackSpeedBonus = SkillTreeConfig.BindServerSync(config,
-                "Mace Tree",
-                "Tier5_DPS_AttackSpeedBonus",
-                10f,
-                SkillTreeConfig.GetConfigDescription("Tier5_DPS_AttackSpeedBonus")
-            );
-
             MaceStep5DpsRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier5_DPS_RequiredPoints",
@@ -496,12 +496,12 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier5_DPS_RequiredPoints")
             );
 
-            // Tier 6: 그랜드마스터
-            MaceStep6ArmorBonus = SkillTreeConfig.BindServerSync(config,
+            // Tier 6: 속공
+            MaceStep6AttackSpeedBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier6_Grandmaster_ArmorBonus",
-                20f,
-                SkillTreeConfig.GetConfigDescription("Tier6_Grandmaster_ArmorBonus")
+                "Tier6_Sokgong_AttackSpeedBonus",
+                10f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Sokgong_AttackSpeedBonus")
             );
 
             MaceStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,

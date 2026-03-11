@@ -95,6 +95,8 @@ namespace CaptainSkillTree.SkillTree
                         if (!isInCooldown)
                             dodgeTotal += Defense_Config.AttackDodgeBonusValue;
                     }
+                    if (manager.GetSkillLevel("knife_expert") > 0 && manager.GetSkillLevel("knife_step2_evasion") > 0)
+                        dodgeTotal += Knife_Config.KnifeEvasionBonusValue;
 
                     float moveSpeedTotal = 0f;
                     if (manager.GetSkillLevel("speed_root") > 0)
@@ -104,9 +106,16 @@ namespace CaptainSkillTree.SkillTree
 
                     // 방패: 항상 처리 (바닐라 yellow "(118)" 제거)
                     // 방어구: 표시할 보너스가 없으면 스킵
+                    float physResist = bodyActive ? Defense_Config.BodyArmorBonusValue : 0f;
+                    float elemResist = bodyActive ? Defense_Config.BodyArmorBonusValue : 0f;
+                    bool mageActive = manager.GetSkillLevel("Mage") > 0;
+                    if (mageActive)
+                        elemResist += Mage_Config.MageElementalResistanceValue;
+                    bool resistActive = physResist > 0f || elemResist > 0f;
+
                     if (!isShield)
                     {
-                        bool hasBonus = flatBonus != 0f || rockSkinActive || bodyActive
+                        bool hasBonus = flatBonus != 0f || rockSkinActive || resistActive
                                         || boostActive || berserkerActive || dodgeTotal > 0f
                                         || (itemType == ItemDrop.ItemData.ItemType.Legs && moveSpeedTotal > 0f);
                         if (!hasBonus) return;
@@ -160,7 +169,6 @@ namespace CaptainSkillTree.SkillTree
 
                     // bonusText 수집
                     string bonusText = "";
-                    float resist = Defense_Config.BodyArmorBonusValue;
 
                     switch (itemType)
                     {
@@ -174,8 +182,15 @@ namespace CaptainSkillTree.SkillTree
                                 bonusText += $"\n<color=#40E0D0>💨</color><color=white>회피</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
                             if (rockSkinActive)
                                 bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : 방어력 <color=orange>+{rockSkinPct:F0}%</color>";
-                            if (bodyActive)
-                                bonusText += $"\n<color=#E040FB>🔰</color><color=white>저항</color> : 물리저항 <color=#4FC3F7>+{resist:F0}</color>, 속성저항 <color=#4FC3F7>+{resist:F0}</color>";
+                            if (resistActive)
+                            {
+                                string resistLine = "\n<color=#E040FB>🔰</color><color=white>저항</color> :";
+                                if (physResist > 0f)
+                                    resistLine += $" 물리저항 <color=#4FC3F7>+{physResist:F0}</color>";
+                                if (elemResist > 0f)
+                                    resistLine += $"{(physResist > 0f ? "," : "")} 속성저항 <color=#4FC3F7>+{elemResist:F0}</color>";
+                                bonusText += resistLine;
+                            }
                             break;
                         case ItemDrop.ItemData.ItemType.Chest:
                             if (flatBonus > 0f)
@@ -191,8 +206,15 @@ namespace CaptainSkillTree.SkillTree
                                 bonusText += $"\n<color=#40E0D0>💨</color><color=white>회피</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
                             if (rockSkinActive)
                                 bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : 방어력 <color=orange>+{rockSkinPct:F0}%</color>";
-                            if (bodyActive)
-                                bonusText += $"\n<color=#E040FB>🔰</color><color=white>저항</color> : 물리저항 <color=#4FC3F7>+{resist:F0}</color>, 속성저항 <color=#4FC3F7>+{resist:F0}</color>";
+                            if (resistActive)
+                            {
+                                string resistLine = "\n<color=#E040FB>🔰</color><color=white>저항</color> :";
+                                if (physResist > 0f)
+                                    resistLine += $" 물리저항 <color=#4FC3F7>+{physResist:F0}</color>";
+                                if (elemResist > 0f)
+                                    resistLine += $"{(physResist > 0f ? "," : "")} 속성저항 <color=#4FC3F7>+{elemResist:F0}</color>";
+                                bonusText += resistLine;
+                            }
                             break;
                         case ItemDrop.ItemData.ItemType.Legs:
                             if (flatBonus > 0f)
@@ -206,8 +228,15 @@ namespace CaptainSkillTree.SkillTree
                                 bonusText += $"\n<color=#40E0D0>💨</color><color=white>회피</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
                             if (rockSkinActive)
                                 bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : 방어력 <color=orange>+{rockSkinPct:F0}%</color>";
-                            if (bodyActive)
-                                bonusText += $"\n<color=#E040FB>🔰</color><color=white>저항</color> : 물리저항 <color=#4FC3F7>+{resist:F0}</color>, 속성저항 <color=#4FC3F7>+{resist:F0}</color>";
+                            if (resistActive)
+                            {
+                                string resistLine = "\n<color=#E040FB>🔰</color><color=white>저항</color> :";
+                                if (physResist > 0f)
+                                    resistLine += $" 물리저항 <color=#4FC3F7>+{physResist:F0}</color>";
+                                if (elemResist > 0f)
+                                    resistLine += $"{(physResist > 0f ? "," : "")} 속성저항 <color=#4FC3F7>+{elemResist:F0}</color>";
+                                bonusText += resistLine;
+                            }
                             break;
                         case ItemDrop.ItemData.ItemType.Shield:
                             if (manager.GetSkillLevel("defense_Step3_shield") > 0)

@@ -243,10 +243,10 @@ namespace CaptainSkillTree.Localization
                 "권장값: 10-20%",
 
                 ["Tier4_AllInOne_DefenseBonus"] =
-                "【방어력 보너스 (고정값)】\n" +
-                "공방일체 자세의 방어력 보너스입니다.\n" +
-                "공격하면서도 강한 방어가 가능합니다.\n" +
-                "권장값: 15-30",
+                "【막기 방어력 보너스 (고정값)】\n" +
+                "공방일체 자세의 막기 방어력 보너스입니다.\n" +
+                "검 또는 방패 착용 시 막기 방어력에 추가됩니다.\n" +
+                "권장값: 20-30",
 
                 ["Tier4_TrueDuel_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -271,11 +271,11 @@ namespace CaptainSkillTree.Localization
                 "이 시간 동안 강화된 공격이 가능합니다.\n" +
                 "권장값: 20-40초",
 
-                ["Tier5_ParryRush_DamageBonus"] =
-                "【돌격 공격력 보너스 (%)】\n" +
-                "패링 성공 시 돌격 공격의 피해 증가량입니다.\n" +
-                "완벽한 타이밍에 강력한 반격을 날립니다.\n" +
-                "권장값: 50-100%",
+                ["Tier5_ParryRush_BlockPowerRatio"] =
+                "【막기 방어력 비율 (%)】\n" +
+                "패링 돌격 시 막기 방어력의 비율로 타격 데미지를 줍니다.\n" +
+                "방패 또는 검의 막기 방어력 기준입니다.\n" +
+                "권장값: 30-70%",
 
                 ["Tier5_ParryRush_PushDistance"] =
                 "【밀어내기 거리 (m)】\n" +
@@ -623,10 +623,10 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 10-20%",
 
                 ["Tier4_AllInOne_DefenseBonus"] =
-                "【Defense Bonus (Fixed Value)】\n" +
-                "Defense bonus of the unity stance.\n" +
-                "Enables strong defense while attacking.\n" +
-                "Recommended: 15-30",
+                "【Block Power Bonus (Fixed Value)】\n" +
+                "Block power bonus of the Attack & Defense stance.\n" +
+                "Added to block power of equipped sword or shield.\n" +
+                "Recommended: 20-30",
 
                 // === Sword Tree: True Duel (1개) ===
                 ["Sword_TrueDuel_AttackSpeedBonus"] =
@@ -809,11 +809,11 @@ namespace CaptainSkillTree.Localization
                 "Enhanced attacks are possible during this time.\n" +
                 "Recommended: 20-40 sec",
 
-                ["Tier5_ParryRush_DamageBonus"] =
-                "【Rush Attack Damage Bonus (%)】\n" +
-                "Damage increase for rush attack on successful parry.\n" +
-                "Deliver a powerful counterattack at the perfect timing.\n" +
-                "Recommended: 50-100%",
+                ["Tier5_ParryRush_BlockPowerRatio"] =
+                "【Block Power Ratio (%)】\n" +
+                "Applies blunt damage equal to this ratio of block power on parry rush.\n" +
+                "Based on equipped shield or sword block power.\n" +
+                "Recommended: 30-70%",
 
                 ["Tier5_ParryRush_PushDistance"] =
                 "【Knockback Distance (m)】\n" +

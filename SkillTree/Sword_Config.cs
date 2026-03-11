@@ -89,7 +89,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SwordStep3AllInOneAttackBonus;
 
         /// <summary>
-        /// Tier 4 공방일체 - 방어력 보너스 (고정값)
+        /// Tier 4 공방일체 - 막기 방어력 보너스 (고정값)
         /// </summary>
         public static ConfigEntry<float> SwordStep3AllInOneDefenseBonus;
 
@@ -116,9 +116,9 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ParryRushDuration;
 
         /// <summary>
-        /// 패링 돌격 - 공격력 보너스 (%)
+        /// 패링 돌격 - 막기 방어력 비율 (%)
         /// </summary>
-        public static ConfigEntry<float> ParryRushDamageBonus;
+        public static ConfigEntry<float> ParryRushBlockPowerRatio;
 
         /// <summary>
         /// 패링 돌격 - 밀어내기 거리 (m)
@@ -234,7 +234,7 @@ namespace CaptainSkillTree.SkillTree
         public static float SwordStep3AllInOneAttackBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Step3_AllInOne_AttackBonus", SwordStep3AllInOneAttackBonus?.Value ?? 10f);
         public static float SwordStep3AllInOneDefenseBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_Step3_AllInOne_DefenseBonus", SwordStep3AllInOneDefenseBonus?.Value ?? 15f);
+            SkillTreeConfig.GetEffectiveValue("Sword_Step3_AllInOne_DefenseBonus", SwordStep3AllInOneDefenseBonus?.Value ?? 25f);
 
         // === Tier 5: 진검승부 ===
         public static int SwordStep4TrueDuelRequiredPointsValue =>
@@ -247,8 +247,8 @@ namespace CaptainSkillTree.SkillTree
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Step5_RequiredPoints", SwordStep5DefenseSwitchRequiredPoints?.Value ?? 3);
         public static float ParryRushDurationValue =>
             SkillTreeConfig.GetEffectiveValue("ParryRush_Duration", ParryRushDuration?.Value ?? 30f);
-        public static float ParryRushDamageBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("ParryRush_DamageBonus", ParryRushDamageBonus?.Value ?? 100f);
+        public static float ParryRushBlockPowerRatioValue =>
+            SkillTreeConfig.GetEffectiveValue("ParryRush_BlockPowerRatio", ParryRushBlockPowerRatio?.Value ?? 50f);
         public static float ParryRushPushDistanceValue =>
             SkillTreeConfig.GetEffectiveValue("ParryRush_PushDistance", ParryRushPushDistance?.Value ?? 4f);
         public static float ParryRushStaminaCostValue =>
@@ -409,7 +409,7 @@ namespace CaptainSkillTree.SkillTree
             SwordStep2ComboSlashDuration = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier2_ComboSlash_BuffDuration",
-                5f,
+                10f,
                 SkillTreeConfig.GetConfigDescription("Tier2_ComboSlash_BuffDuration")
             );
 
@@ -446,7 +446,7 @@ namespace CaptainSkillTree.SkillTree
             SwordStep3AllInOneDefenseBonus = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier4_AllInOne_DefenseBonus",
-                15f,
+                25f,
                 SkillTreeConfig.GetConfigDescription("Tier4_AllInOne_DefenseBonus")
             );
 
@@ -480,11 +480,11 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_BuffDuration")
             );
 
-            ParryRushDamageBonus = SkillTreeConfig.BindServerSync(config,
+            ParryRushBlockPowerRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier5_ParryRush_DamageBonus",
-                30f,
-                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_DamageBonus")
+                "Tier5_ParryRush_BlockPowerRatio",
+                50f,
+                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_BlockPowerRatio")
             );
 
             ParryRushPushDistance = SkillTreeConfig.BindServerSync(config,

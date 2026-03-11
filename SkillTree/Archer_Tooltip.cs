@@ -106,11 +106,11 @@ namespace CaptainSkillTree.SkillTree
         {
             switch (targetLevel)
             {
-                case 1: return L.Get("item_trophy_skeleton") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1";
-                case 2: return L.Get("item_trophy_greydwarf") + " x1 + " + L.Get("item_eikthyr_trophy") + " x2";
-                case 3: return L.Get("item_trophy_greydwarfshaman") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_trophy_theelder") + " x1";
-                case 4: return L.Get("item_trophy_skeleton") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_trophy_theelder") + " x1 + " + L.Get("item_trophy_bonemass") + " x1";
-                case 5: return L.Get("item_trophy_hatchling") + " x1 + " + L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_dragonqueen") + " x1";
+                case 1: return L.Get("item_trophy_greydwarfbrute") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1";
+                case 2: return L.Get("item_trophy_troll") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_trophy_theelder") + " x1";
+                case 3: return L.Get("item_trophy_abomination") + " x1 + " + L.Get("item_trophy_theelder") + " x1 + " + L.Get("item_trophy_bonemass") + " x1";
+                case 4: return L.Get("item_trophy_abomination") + " x1 + " + L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_dragonqueen") + " x1";
+                case 5: return L.Get("item_trophy_dragonqueen") + " x1 + " + L.Get("item_trophy_goblinking") + " x1 + " + L.Get("item_trophy_thequeen") + " x1";
                 default: return "";
             }
         }

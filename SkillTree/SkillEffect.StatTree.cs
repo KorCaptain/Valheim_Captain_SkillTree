@@ -489,6 +489,13 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogDebug($"[공격과 회피] 단검 임시 회피율 +{attackEvasionBonus}%");
             }
 
+            // spear_Step2_evasion: 회피 찌르기 (창 공격 후 5초간 회피율 버프)
+            if (IsSpearEvasionBuffActive(player) && IsUsingSpear(player))
+            {
+                totalDodge += Spear_Config.SpearStep3EvasionBonusValue / 100f;
+                Plugin.Log.LogDebug($"[회피 찌르기] 창 회피율 +{Spear_Config.SpearStep3EvasionBonusValue}%");
+            }
+
             player.SetCustomDodgeChance(totalDodge);
         }
 

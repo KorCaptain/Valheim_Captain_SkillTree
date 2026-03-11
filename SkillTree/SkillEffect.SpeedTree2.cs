@@ -87,8 +87,8 @@ namespace CaptainSkillTree.SkillTree
             if (!tier8MeleeLastHitTime.ContainsKey(player))
                 tier8MeleeLastHitTime[player] = 0;
 
-            // 3초 내 연속 공격인지 확인
-            if (currentTime - tier8MeleeLastHitTime[player] < 3f)
+            // 5초 내 연속 공격인지 확인
+            if (currentTime - tier8MeleeLastHitTime[player] < 5f)
             {
                 tier8MeleeComboCount[player]++;
             }
@@ -137,8 +137,8 @@ namespace CaptainSkillTree.SkillTree
             if (!staffLastCastTime.ContainsKey(player))
                 staffLastCastTime[player] = 0;
 
-            // 4초 내 연속 시전인지 확인
-            if (currentTime - staffLastCastTime[player] < 4f)
+            // 5초 내 연속 시전인지 확인
+            if (currentTime - staffLastCastTime[player] < 5f)
             {
                 staffComboCount[player]++;
             }
@@ -169,13 +169,23 @@ namespace CaptainSkillTree.SkillTree
         public static float GetMeleeComboStaminaReduction(Player player)
         {
             if (player == null) return 1f;
-            if (!HasSkill("melee_combo")) return 1f;
 
-            if (meleeComboSpeedEndTime.TryGetValue(player, out float endTime) && Time.time < endTime)
+            float totalReduction = 1f;
+
+            if (HasSkill("melee_combo") && meleeComboSpeedEndTime.TryGetValue(player, out float endTime) && Time.time < endTime)
             {
-                return 1f - (SkillTreeConfig.SpeedMeleeComboStaminaValue / 100f);
+                totalReduction -= SkillTreeConfig.SpeedMeleeComboStaminaValue / 100f;
             }
-            return 1f;
+
+            // 창: 회피 찌르기 공격 스태미나 감소
+            var weapon = player.GetCurrentWeapon();
+            if (weapon != null && HasSkill("spear_Step2_evasion") &&
+                weapon.m_shared.m_skillType == Skills.SkillType.Spears)
+            {
+                totalReduction -= Spear_Config.SpearStep3EvasionStaminaReductionValue / 100f;
+            }
+
+            return totalReduction;
         }
 
         /// <summary>

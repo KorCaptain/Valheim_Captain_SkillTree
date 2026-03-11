@@ -46,7 +46,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("mace_desc_damage_boost", Mace_Config.MaceStep1DamageBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
-            data.requiredPoints = "2";
+            data.requiredPoints = Mace_Config.MaceStep1RequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Mace);
         }
@@ -63,7 +63,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("mace_desc_stun_boost", Mace_Config.MaceStep2StunChanceBonusValue, Mace_Config.MaceStep2StunDurationBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Mace_Config.MaceStep2RequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Mace);
         }
@@ -77,10 +77,10 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("mace_skill_guard_boost")}</size></color>",
-                L.Get("mace_desc_guard_boost", Mace_Config.MaceStep3GuardArmorBonusValue),
+                L.Get("mace_desc_guard_boost", Mace_Config.MaceStep3SpinDamageBonusValue, Mace_Config.MaceStep3SpinRangeValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Mace_Config.MaceStep3GuardRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Mace);
         }
@@ -97,7 +97,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("mace_desc_heavy_strike", Mace_Config.MaceStep3HeavyDamageBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Mace_Config.MaceStep3HeavyRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Mace);
         }
@@ -114,7 +114,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("mace_desc_knockback", Mace_Config.MaceStep4KnockbackChanceValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
-            data.requiredPoints = "2";
+            data.requiredPoints = Mace_Config.MaceStep4RequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Mace);
         }
@@ -131,7 +131,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("mace_desc_tanker", Mace_Config.MaceStep5TankHealthBonusValue, Mace_Config.MaceStep5TankDamageReductionValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Mace_Config.MaceStep5TankRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Mace);
         }
@@ -145,10 +145,10 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("mace_skill_dps_boost")}</size></color>",
-                L.Get("mace_desc_dps_boost", Mace_Config.MaceStep5DpsDamageBonusValue, Mace_Config.MaceStep5DpsAttackSpeedBonusValue),
+                L.Get("mace_desc_dps_boost", Mace_Config.MaceStep5DpsDamageBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Mace_Config.MaceStep5DpsRequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Mace);
         }
@@ -162,10 +162,10 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("mace_skill_grandmaster")}</size></color>",
-                L.Get("mace_desc_grandmaster", Mace_Config.MaceStep6ArmorBonusValue),
+                L.Get("mace_desc_grandmaster", Mace_Config.MaceStep6AttackSpeedBonusValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
-            data.requiredPoints = "2";
+            data.requiredPoints = Mace_Config.MaceStep6RequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Mace);
         }

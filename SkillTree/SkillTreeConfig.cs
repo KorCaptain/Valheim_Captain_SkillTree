@@ -53,6 +53,7 @@ namespace CaptainSkillTree.SkillTree
                     string configLang = Language.Value.ToLower();
                     string result = (configLang == "ko" || configLang == "kr") ? "ko"
                                   : (configLang == "ru") ? "ru"
+                                  : (configLang == "pt_br" || configLang == "pt") ? "pt_BR"
                                   : "en";
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using config language: {Language.Value} -> {result}");
                     return result;
@@ -65,6 +66,7 @@ namespace CaptainSkillTree.SkillTree
                     string langLow = valheimLang.ToLower();
                     string result = (langLow == "korean") ? "ko"
                                   : (langLow == "russian") ? "ru"
+                                  : (langLow == "portuguese_brazilian") ? "pt_BR"
                                   : "en";
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using Valheim language: {valheimLang} -> {result}");
                     return result;
@@ -77,6 +79,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using LocalizationManager: {currentLang}");
                     return (currentLang == "ko") ? "ko"
                          : (currentLang == "ru") ? "ru"
+                         : (currentLang == "pt_BR") ? "pt_BR"
                          : "en";
                 }
 
@@ -109,6 +112,8 @@ namespace CaptainSkillTree.SkillTree
             if (descriptionKey.EndsWith("_RequiredPoints"))
                 return _detectedConfigLanguage == "ru"
                     ? "【Необходимые очки】\nОчки навыков для разблокировки этого узла."
+                    : _detectedConfigLanguage == "pt_BR"
+                        ? "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó."
                     : _detectedConfigLanguage == "en"
                         ? "【Required Points】\nPoints required to unlock this node."
                         : "【필요 포인트】\n이 노드를 해금하기 위해 필요한 스킬 포인트 개수입니다.";
@@ -129,6 +134,8 @@ namespace CaptainSkillTree.SkillTree
                 var tierPart = keyName.Split('_')[0]; // "TierX" or "Knife" 등
                 return _detectedConfigLanguage == "ru"
                     ? $"{tierPart}: Необходимые очки"
+                    : _detectedConfigLanguage == "pt_BR"
+                        ? $"{tierPart}: Pontos Necessários"
                     : _detectedConfigLanguage == "en"
                         ? $"{tierPart}: Required Points"
                         : $"{tierPart}: 필요 포인트";
@@ -475,7 +482,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep1ThrowCooldown => Spear_Config.SpearStep1ThrowCooldown;
         public static ConfigEntry<float> SpearStep1ThrowDamage => Spear_Config.SpearStep1ThrowDamage;
         public static ConfigEntry<float> SpearStep1CritDamageBonus => Spear_Config.SpearStep1CritDamageBonus;
-        public static ConfigEntry<float> SpearStep2EvasionDamageBonus => Spear_Config.SpearStep2EvasionDamageBonus;
+        public static ConfigEntry<float> SpearStep2EvasionBonus => Spear_Config.SpearStep2EvasionBonus;
         public static ConfigEntry<float> SpearStep3PierceDamageBonus => Spear_Config.SpearStep3PierceDamageBonus;
         // 빠른창
         public static ConfigEntry<float> SpearQuickAttackSpeed => Spear_Config.SpearQuickAttackSpeed;
@@ -494,7 +501,7 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep2ThrowCooldownValue => Spear_Config.SpearStep2ThrowCooldownValue;
         public static float SpearStep2ThrowDamageValue => Spear_Config.SpearStep2ThrowDamageValue;
         public static float SpearStep2CritDamageBonusValue => Spear_Config.SpearStep2CritDamageBonusValue;
-        public static float SpearStep3EvasionDamageBonusValue => Spear_Config.SpearStep3EvasionDamageBonusValue;
+        public static float SpearStep3EvasionBonusValue => Spear_Config.SpearStep3EvasionBonusValue;
         public static float SpearStep3PierceDamageBonusValue => Spear_Config.SpearStep3PierceDamageBonusValue;
         // 빠른창 Value
         public static float SpearQuickAttackSpeedValue => Spear_Config.SpearQuickAttackSpeedValue;

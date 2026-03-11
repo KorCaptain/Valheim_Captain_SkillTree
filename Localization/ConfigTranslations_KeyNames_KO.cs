@@ -441,7 +441,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Spear Tree: 회피 찌르기 (3개) ===
                 ["Tier4_Evasion_RequiredPoints"] = "Tier 4-1: [회피 찌르기] 필요 포인트",
-                ["Tier4_Evasion_DamageBonus"] = "Tier 4-1: [회피 찌르기] 구르기 후 공격력 보너스 (%)",
+                ["Tier4_Evasion_EvasionBonus"] = "Tier 4-1: [회피 찌르기] 공격 시 회피율 보너스 (%)",
                 ["Tier4_Evasion_StaminaReduction"] = "Tier 4-1: [회피 찌르기] 스태미나 소모 감소 (%)",
 
                 // === Spear Tree: 이연창 (2개) ===
@@ -698,9 +698,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_StunBoost_StunDurationBonus"] = "Tier 2: [기절 강화] 기절 지속시간 보너스 (초)",
                 ["Tier2_StunBoost_RequiredPoints"] = "Tier 2: [기절 강화] 필요 포인트",
 
-                // === Tier 3-1: 방어 강화 (2개) ===
-                ["Tier3_Guard_ArmorBonus"] = "Tier 3-1: [방어 강화] 방어력 보너스",
-                ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [방어 강화] 필요 포인트",
+                // === Tier 3-1: 회전 타격 (3개) ===
+                ["Tier3_SpinStrike_DamageBonus"] = "Tier 3-1: [회전 타격] 공격력 보너스 (%)",
+                ["Tier3_SpinStrike_Range"] = "Tier 3-1: [회전 타격] AOE 범위 (m)",
+                ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [회전 타격] 필요 포인트",
 
                 // === Tier 3-2: 무거운 일격 (2개) ===
                 ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3-2: [무거운 일격] 타격 보너스",
@@ -715,14 +716,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Tank_DamageReduction"] = "Tier 5-1: [탱커] 받는 데미지 감소 (%)",
                 ["Tier5_Tank_RequiredPoints"] = "Tier 5-1: [탱커] 필요 포인트",
 
-                // === Tier 5-2: 데미지 강화 (3개) ===
+                // === Tier 5-2: 데미지 강화 (2개) ===
                 ["Tier5_DPS_DamageBonus"] = "Tier 5-2: [데미지 강화] 공격력 보너스 (%)",
-                ["Tier5_DPS_AttackSpeedBonus"] = "Tier 5-2: [데미지 강화] 공격속도 보너스 (%)",
                 ["Tier5_DPS_RequiredPoints"] = "Tier 5-2: [데미지 강화] 필요 포인트",
 
-                // === Tier 6: 그랜드마스터 (2개) ===
-                ["Tier6_Grandmaster_ArmorBonus"] = "Tier 6: [그랜드마스터] 방어력 보너스 (%)",
-                ["Tier6_Grandmaster_RequiredPoints"] = "Tier 6: [그랜드마스터] 필요 포인트",
+                // === Tier 6: 속공 (2개) ===
+                ["Tier6_Sokgong_AttackSpeedBonus"] = "Tier 6: [속공] 공격속도 보너스 (%)",
+                ["Tier6_Grandmaster_RequiredPoints"] = "Tier 6: [속공] 필요 포인트",
 
                 // === Tier 7-1: 분노의 망치 - H키 액티브 (6개) ===
                 ["Tier7_FuryHammer_NormalHitMultiplier"] = "Tier 7-1: [분노의 망치] 1-4타 데미지 배율 (%)",

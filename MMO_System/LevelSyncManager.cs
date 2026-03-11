@@ -53,6 +53,16 @@ namespace CaptainSkillTree.MMO_System
         /// </summary>
         public bool IsInitialized { get; private set; } = false;
 
+        /// <summary>
+        /// 최초 로그인 완료 여부 (사망 후 부활과 구분)
+        /// </summary>
+        private bool _hasLoggedIn = false;
+
+        /// <summary>
+        /// 부활 메시지 표시 대기 플래그
+        /// </summary>
+        private bool _showRespawnMessage = false;
+
         #endregion
 
         #region === Events ===
@@ -107,6 +117,17 @@ namespace CaptainSkillTree.MMO_System
         }
 
         /// <summary>
+        /// 로그아웃 시 호출 - 플래그 초기화로 재접속 시 연동 메시지 재표시
+        /// </summary>
+        public void OnLogout()
+        {
+            _hasLoggedIn = false;
+            _lastKnownLevel = 0;
+            _showRespawnMessage = false;
+            Plugin.Log.LogDebug("[LevelSyncManager] 로그아웃 - 플래그 초기화");
+        }
+
+        /// <summary>
         /// 리소스 정리
         /// </summary>
         public void Cleanup()
@@ -114,6 +135,8 @@ namespace CaptainSkillTree.MMO_System
             OnLevelDecreased -= HandleLevelDecreaseEvent;
             OnLevelIncreased -= HandleLevelIncreaseEvent;
             IsInitialized = false;
+            _hasLoggedIn = false;
+            _showRespawnMessage = false;
             Plugin.Log.LogDebug("[LevelSyncManager] 정리 완료");
         }
 
@@ -136,6 +159,17 @@ namespace CaptainSkillTree.MMO_System
 
             try
             {
+                // 사망 후 부활 메시지 대기
+                if (_showRespawnMessage)
+                {
+                    if (MessageHud.instance != null)
+                    {
+                        ShowNotification(L.Get("respawn_message"));
+                        _showRespawnMessage = false;
+                    }
+                    return;
+                }
+
                 int currentLevel = CaptainMMOBridge.GetLevel();
 
                 if (_lastKnownLevel == 0)
@@ -146,12 +180,16 @@ namespace CaptainSkillTree.MMO_System
                         if (!EpicMMOReflectionHelper.HasInstance()) return; // EpicMMO 준비 대기
                         // EpicMMO 연동 확인 완료 → 메시지 표시 성공 시만 _lastKnownLevel 갱신 (retry 허용)
                         if (ShowFirstConnectionMessage(currentLevel))
+                        {
                             _lastKnownLevel = currentLevel;
+                            _hasLoggedIn = true;
+                        }
                     }
                     else
                     {
                         // EpicMMO 없음 → 조용히 초기화 (메시지 없음)
                         _lastKnownLevel = currentLevel;
+                        _hasLoggedIn = true;
                     }
                     return;
                 }
@@ -303,7 +341,16 @@ namespace CaptainSkillTree.MMO_System
             string combined = L.Get("epicmmo_connected_detail") + "\n" + string.Format(L.Get("mmo_level_sync_message"), level, maxPoints);
             ShowNotification(combined, 5f);
             Plugin.Log.LogInfo($"[LevelSyncManager] EpicMMO 연동 확인 완료 - Lv.{level}, 최대 SP: {maxPoints}");
+            // 연동 메시지 완료 후 1초 뒤 난이도 알림 트리거
+            if (Plugin.Instance != null)
+                Plugin.Instance.StartCoroutine(TriggerDifficultyAfterDelay(1f));
             return true;
+        }
+
+        private static IEnumerator TriggerDifficultyAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            MMODifficultyPatches.TriggerDifficultyNotification();
         }
 
         /// <summary>
@@ -362,12 +409,22 @@ namespace CaptainSkillTree.MMO_System
         }
 
         /// <summary>
-        /// 재접속 시 레벨 감지 상태 초기화 (SpawnPlayer 시 호출)
+        /// SpawnPlayer 시 호출 - 첫 접속과 사망 후 부활을 구분 처리
         /// </summary>
         public void Reset()
         {
-            _lastKnownLevel = 0;
-            _lastCheckTime = 0f;  // SpawnPlayer 직후 즉시 체크 가능
+            if (_hasLoggedIn)
+            {
+                // 사망 후 부활: 접속 메시지 재표시 없이 부활 메시지만 예약
+                _showRespawnMessage = true;
+                _lastCheckTime = 0f;
+            }
+            else
+            {
+                // 첫 접속: 기존 방식으로 초기화 (Update에서 접속 메시지 표시)
+                _lastKnownLevel = 0;
+                _lastCheckTime = 0f;
+            }
         }
 
         /// <summary>

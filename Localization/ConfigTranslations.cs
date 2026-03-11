@@ -17,7 +17,9 @@ namespace CaptainSkillTree.Localization
         /// </summary>
         public static Dictionary<string, string> GetCategoryTranslations(string lang)
         {
-            return (lang == "ko") ? GetKoreanCategories() : GetEnglishCategories();
+            return (lang == "ko") ? GetKoreanCategories()
+                 : (lang == "pt_BR") ? GetPortugueseBrazilianCategories()
+                 : GetEnglishCategories();
         }
 
         /// <summary>
@@ -27,6 +29,7 @@ namespace CaptainSkillTree.Localization
         {
             if (lang == "ko") return GetKoreanDescriptions();
             if (lang == "ru") return GetRussianDescriptions();
+            if (lang == "pt_BR") return GetPortugueseBrazilianDescriptions();
             return GetEnglishDescriptions();
         }
 
@@ -38,6 +41,7 @@ namespace CaptainSkillTree.Localization
         {
             if (lang == "ko") return GetKoreanKeyNames();
             if (lang == "ru") return GetRussianKeyNames();
+            if (lang == "pt_BR") return GetPortugueseBrazilianKeyNames();
             return GetEnglishKeyNames();
         }
 
@@ -128,6 +132,44 @@ namespace CaptainSkillTree.Localization
             foreach (var kv in GetSwordKnifeDescriptions_RU()) dict[kv.Key] = kv.Value;
             foreach (var kv in GetHeavyMeleeDescriptions_RU()) dict[kv.Key] = kv.Value;
             foreach (var kv in GetJobDescriptions_RU())         dict[kv.Key] = kv.Value;
+            return dict;
+        }
+
+        // ============================================
+        // 카테고리 번역 (포르투갈어 BR)
+        // ============================================
+        private static Dictionary<string, string> GetPortugueseBrazilianCategories()
+        {
+            return new Dictionary<string, string>
+            {
+                ["Attack Tree"] = "Árvore de Ataque",
+                ["Defense Tree"] = "Árvore de Defesa",
+                ["Production Tree"] = "Árvore de Produção",
+                ["Staff Tree"] = "Árvore de Cajado",
+                ["Crossbow Tree"] = "Árvore de Besta",
+                ["Bow Tree"] = "Árvore de Arco",
+                ["Sword Tree"] = "Árvore de Espada",
+                ["Spear Tree"] = "Árvore de Lança",
+                ["Mace Tree"] = "Árvore de Maça",
+                ["Polearm Tree"] = "Árvore de Haste",
+                ["Knife Tree"] = "Árvore de Adaga",
+                ["Speed Tree"] = "Árvore de Velocidade",
+                ["Archer Job Skills"] = "Habilidades de Arqueiro",
+                ["Mage Job Skills"] = "Habilidades de Mago",
+            };
+        }
+
+        // ============================================
+        // 설명 번역 집합 (포르투갈어 BR)
+        // ============================================
+        private static Dictionary<string, string> GetPortugueseBrazilianDescriptions()
+        {
+            var dict = new Dictionary<string, string>();
+            foreach (var kv in GetExpertDescriptions_PTBR())     dict[kv.Key] = kv.Value;
+            foreach (var kv in GetRangedDescriptions_PTBR())     dict[kv.Key] = kv.Value;
+            foreach (var kv in GetSwordKnifeDescriptions_PTBR()) dict[kv.Key] = kv.Value;
+            foreach (var kv in GetHeavyMeleeDescriptions_PTBR()) dict[kv.Key] = kv.Value;
+            foreach (var kv in GetJobDescriptions_PTBR())        dict[kv.Key] = kv.Value;
             return dict;
         }
 

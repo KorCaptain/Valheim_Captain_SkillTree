@@ -426,12 +426,11 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                SimpleVFX.PlayOnPlayer(player, 3f);
+                float duration = Berserker_Config.BerserkerPassiveInvincibilityDurationValue;
 
-                // 무적 발동: vfx_blocked + sfx_dragon_scream
-                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer(
-                    "vfx_blocked", "sfx_dragon_scream",
-                    player.transform.position + Vector3.up * 1f);
+                // 무적 발동: fx_shield_start (캐릭터 따라다님) + sfx_dragon_scream
+                CaptainSkillTree.VFX.VFXManager.PlayVFXAttachedToPlayer(
+                    player, "fx_shield_start", "sfx_dragon_scream", duration);
             }
             catch (Exception ex)
             {

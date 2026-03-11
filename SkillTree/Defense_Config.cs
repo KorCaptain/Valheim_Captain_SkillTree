@@ -456,11 +456,11 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             DefenseRootHealthBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier0_DefenseExpert_HPBonus", 5f,
+                "Defense Tree", "Tier0_DefenseExpert_HPBonus", 10f,
                 SkillTreeConfig.GetConfigDescription("Tier0_DefenseExpert_HPBonus"), order: 80);
 
             DefenseRootArmorBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier0_DefenseExpert_ArmorBonus", 2f,
+                "Defense Tree", "Tier0_DefenseExpert_ArmorBonus", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier0_DefenseExpert_ArmorBonus"), order: 79);
 
             DefenseRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -476,7 +476,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier1_SkinHardening_HPBonus"), order: 76);
 
             SurvivalArmorBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier1_SkinHardening_ArmorBonus", 5f,
+                "Defense Tree", "Tier1_SkinHardening_ArmorBonus", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier1_SkinHardening_ArmorBonus"), order: 75);
 
             DefenseStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -488,11 +488,11 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             DodgeStaminaBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier2_MindBodyTraining_StaminaBonus", 25f,
+                "Defense Tree", "Tier2_MindBodyTraining_StaminaBonus", 20f,
                 SkillTreeConfig.GetConfigDescription("Tier2_MindBodyTraining_StaminaBonus"), order: 72);
 
             DodgeEitrBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier2_MindBodyTraining_EitrBonus", 25f,
+                "Defense Tree", "Tier2_MindBodyTraining_EitrBonus", 15f,
                 SkillTreeConfig.GetConfigDescription("Tier2_MindBodyTraining_EitrBonus"), order: 71);
 
             DefenseStep2DodgeRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -504,11 +504,11 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             HealthBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier2_HealthTraining_HPBonus", 20f,
+                "Defense Tree", "Tier2_HealthTraining_HPBonus", 10f,
                 SkillTreeConfig.GetConfigDescription("Tier2_HealthTraining_HPBonus"), order: 68);
 
             HealthArmorBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier2_HealthTraining_ArmorBonus", 5f,
+                "Defense Tree", "Tier2_HealthTraining_ArmorBonus", 2f,
                 SkillTreeConfig.GetConfigDescription("Tier2_HealthTraining_ArmorBonus"), order: 67);
 
             DefenseStep2HealthRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -520,7 +520,7 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             BreathEitrBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier3_CoreBreathing_EitrBonus", 10f,
+                "Defense Tree", "Tier3_CoreBreathing_EitrBonus", 15f,
                 SkillTreeConfig.GetConfigDescription("Tier3_CoreBreathing_EitrBonus"), order: 64);
 
             DefenseStep3BreathRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -548,7 +548,7 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             BoostHealthBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier3_HealthBoost_HPBonus", 15f,
+                "Defense Tree", "Tier3_HealthBoost_HPBonus", 25f,
                 SkillTreeConfig.GetConfigDescription("Tier3_HealthBoost_HPBonus"), order: 57);
 
             DefenseStep3BoostRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -704,7 +704,7 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             AttackDodgeBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier6_NerveEnhancement_DodgeBonus", 45f,
+                "Defense Tree", "Tier6_NerveEnhancement_DodgeBonus", 35f,
                 SkillTreeConfig.GetConfigDescription("Tier6_NerveEnhancement_DodgeBonus"), order: 18);
 
             DefenseStep6AttackRequiredPoints = SkillTreeConfig.BindServerSync(config,

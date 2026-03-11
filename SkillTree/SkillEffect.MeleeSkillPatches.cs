@@ -122,6 +122,12 @@ namespace CaptainSkillTree.SkillTree
                     hit.m_damage.m_slash *= 1.2f;
                     hit.m_damage.m_pierce *= 1.2f;
                 }
+
+                // 공방일체 효과 표시 (10% 확률)
+                if (UnityEngine.Random.Range(0f, 1f) < 0.1f)
+                {
+                    SkillEffect.ApplySwordOffenseDefense(player, hit);
+                }
             }
             catch (Exception ex)
             {
@@ -187,10 +193,6 @@ namespace CaptainSkillTree.SkillTree
                 SkillEffect.DrawFloatingText(player, "🔥 " + L.Get("spear_expert_damage", SkillTreeConfig.SpearStep1DamageBonusValue));
             }
 
-            // 회피 찌르기 체크
-            bool isAfterRoll = SkillEffect.spearAfterRoll.TryGetValue(player, out bool afterRoll) && afterRoll &&
-                              Time.time - SkillEffect.spearRollTime[player] < 2f;
-
             // 급소 찌르기
             if (SkillEffect.HasSkill("spear_Step1_crit"))
             {
@@ -199,15 +201,8 @@ namespace CaptainSkillTree.SkillTree
                 SkillEffect.PlaySkillEffect(player, "spear_Step1_crit", hit.m_point);
             }
 
-            // 회피 찌르기
-            if (isAfterRoll && SkillEffect.HasSkill("spear_Step2_evasion"))
-            {
-                float bonusPercent = SkillTreeConfig.SpearStep3EvasionDamageBonusValue / 100f;
-                hit.m_damage.m_pierce *= (1f + bonusPercent);
-                SkillEffect.spearAfterRoll[player] = false;
-                SkillEffect.PlaySkillEffect(player, "spear_Step2_evasion", hit.m_point);
-                SkillEffect.DrawFloatingText(player, "🎯 " + L.Get("evasion_thrust", SkillTreeConfig.SpearStep3EvasionDamageBonusValue));
-            }
+            // 회피 찌르기 - 공격 시 5초간 회피 버프
+            SkillEffect.ApplySpearEvasionBuff(player);
 
             // 이연창 효과 (2연속 공격 시 버프 발동)
             SkillEffect.CheckSpearDualCombo(player);
@@ -271,25 +266,6 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 창 스킬: 회피 찌르기
-                if (SkillEffect.IsUsingSpear(__instance))
-                {
-                    if (SkillEffect.HasSkill("spear_Step2_evasion"))
-                    {
-                        SkillEffect.spearAfterRoll[__instance] = true;
-                        SkillEffect.spearRollTime[__instance] = Time.time;
-
-                        if (SkillEffect.spearRollBuffCoroutine.ContainsKey(__instance))
-                        {
-                            __instance.StopCoroutine(SkillEffect.spearRollBuffCoroutine[__instance]);
-                        }
-                        SkillEffect.spearRollBuffCoroutine[__instance] = __instance.StartCoroutine(ClearSpearRollBuff(__instance));
-
-                        Plugin.Log.LogInfo("[회피 찌르기] 구르기 감지 - 2초간 보너스 활성화");
-                        SkillEffect.DrawFloatingText(__instance, "🏃 " + L.Get("evasion_thrust_ready"), Color.green);
-                    }
-                }
-
                 // 단검 스킬
                 if (SkillEffect.IsUsingDagger(__instance))
                 {
@@ -303,17 +279,6 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        private static IEnumerator ClearSpearRollBuff(Player player)
-        {
-            yield return new WaitForSeconds(2f);
-
-            if (SkillEffect.spearAfterRoll.ContainsKey(player))
-            {
-                SkillEffect.spearAfterRoll[player] = false;
-                Plugin.Log.LogInfo("[회피 찌르기] 버프 자동 해제");
-                SkillEffect.DrawFloatingText(player, L.Get("evasion_thrust_end"), Color.gray);
-            }
-        }
     }
 
     /// <summary>
@@ -370,7 +335,8 @@ namespace CaptainSkillTree.SkillTree
                    weapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
                    weapon.m_shared.m_skillType == Skills.SkillType.Knives ||
                    weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
-                   weapon.m_shared.m_skillType == Skills.SkillType.Polearms;
+                   weapon.m_shared.m_skillType == Skills.SkillType.Polearms ||
+                   weapon.m_shared.m_skillType == Skills.SkillType.Unarmed;
         }
 
         private static void ApplyKnifePassiveBonus(ItemDrop.ItemData item, Player player, ref HitData.DamageTypes result)
@@ -421,6 +387,15 @@ namespace CaptainSkillTree.SkillTree
             if (riposteBonus > 0) totalSwordBonusFixed += riposteBonus;
 
             // 방어 전환 → 패링 돌격으로 전환됨 (액티브 스킬, 패시브 보너스 없음)
+
+            // 공방일체 - 양손검 사용 시 공격력 보너스
+            if (SkillEffect.HasSkill("sword_step3_allinone") &&
+                item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
+            {
+                float allinoneBonus = SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue / 100f;
+                if (result.m_slash > 0) result.m_slash *= (1f + allinoneBonus);
+                if (result.m_pierce > 0) result.m_pierce *= (1f + allinoneBonus);
+            }
 
             // 비율 보너스 적용
             if (totalSwordBonusPercent > 0 && result.m_slash > 0)
@@ -486,10 +461,10 @@ namespace CaptainSkillTree.SkillTree
                 totalSpearBonus += SkillTreeConfig.SpearStep1DamageBonusValue;
             }
 
-            // 회피 찌르기
-            if (SkillEffect.HasSkill("spear_Step2_evasion"))
+            // 급소 찌르기 - 데미지 보너스 (아이템 마우스오버 표시용)
+            if (SkillEffect.HasSkill("spear_Step1_crit"))
             {
-                totalSpearBonus += SkillTreeConfig.SpearStep3EvasionDamageBonusValue;
+                totalSpearBonus += SkillTreeConfig.SpearStep2CritDamageBonusValue;
             }
 
             // 연격창 - 관통 공격력 전용
@@ -596,6 +571,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     spearRollBuffCoroutine.Remove(player);
                 }
+                spearEvasionBuffEndTime.Remove(player);
                 spearTripleComboActive.Remove(player);
                 spearComboSequenceActive.Remove(player);
                 spearExpertComboCount.Remove(player);

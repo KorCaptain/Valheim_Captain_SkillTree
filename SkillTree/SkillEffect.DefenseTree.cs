@@ -28,33 +28,45 @@ namespace CaptainSkillTree.SkillTree
             {
                 try
                 {
-                    // 1. 방패가 아니면 무시
-                    if (__instance.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Shield)
-                        return;
+                    // 1. 방패 또는 검이 아니면 무시
+                    bool isShield = __instance.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield;
+                    bool isSword = __instance.m_shared.m_skillType == Skills.SkillType.Swords;
+                    if (!isShield && !isSword) return;
 
                     var player = Player.m_localPlayer;
                     if (player == null) return;
 
-                    // 2. 현재 장착한 방패인지 확인 (Traverse 사용)
+                    // 2. 현재 장착한 아이템인지 확인 (Traverse 사용)
                     var leftItem = Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
-                    if (leftItem != __instance)
-                        return;
+                    var rightItem = Traverse.Create(player).Field("m_rightItem").GetValue<ItemDrop.ItemData>();
+                    bool isEquipped = (__instance == leftItem || __instance == rightItem);
+                    if (!isEquipped) return;
 
                     var manager = SkillTreeManager.Instance;
                     if (manager == null) return;
 
                     float blockPowerBonus = 0f;
 
-                    // defense_Step3_shield: 방패훈련 (+100)
-                    if (manager.GetSkillLevel("defense_Step3_shield") > 0)
+                    // 방패 전용 스킬 (방패를 왼손에 착용했을 때만)
+                    if (isShield && __instance == leftItem)
                     {
-                        blockPowerBonus += Defense_Config.ShieldTrainingBlockPowerBonusValue;
+                        // defense_Step3_shield: 방패훈련 (+100)
+                        if (manager.GetSkillLevel("defense_Step3_shield") > 0)
+                        {
+                            blockPowerBonus += Defense_Config.ShieldTrainingBlockPowerBonusValue;
+                        }
+
+                        // defense_Step5_parry: 막기달인 (+100)
+                        if (manager.GetSkillLevel("defense_Step5_parry") > 0)
+                        {
+                            blockPowerBonus += Defense_Config.ParryMasterBlockPowerBonusValue;
+                        }
                     }
 
-                    // defense_Step5_parry: 막기달인 (+100)
-                    if (manager.GetSkillLevel("defense_Step5_parry") > 0)
+                    // 공방일체: 검 또는 방패 막기 방어력 +25
+                    if (manager.GetSkillLevel("sword_step3_allinone") > 0)
                     {
-                        blockPowerBonus += Defense_Config.ParryMasterBlockPowerBonusValue;
+                        blockPowerBonus += Sword_Config.SwordStep3AllInOneDefenseBonusValue;
                     }
 
                     if (blockPowerBonus > 0)
@@ -62,8 +74,8 @@ namespace CaptainSkillTree.SkillTree
                         __result += blockPowerBonus;
                     }
 
-                    // defense_Step4_tanker: 바위피부 - 방패 방어력 +X%
-                    if (manager.GetSkillLevel("defense_Step4_tanker") > 0)
+                    // defense_Step4_tanker: 바위피부 - 방패 방어력 +X% (방패에만 적용)
+                    if (isShield && __instance == leftItem && manager.GetSkillLevel("defense_Step4_tanker") > 0)
                     {
                         float multiplier = Defense_Config.TankerArmorBonusValue / 100f;
                         __result += __result * multiplier;
@@ -85,7 +97,7 @@ namespace CaptainSkillTree.SkillTree
         public static class Character_BlockAttack_DefenseTree_Patch
         {
             [HarmonyPriority(Priority.Low)]
-            public static void Postfix(Character __instance, bool __result)
+            public static void Postfix(Character __instance, HitData hit, Character attacker, bool __result)
             {
                 try
                 {
@@ -113,6 +125,24 @@ namespace CaptainSkillTree.SkillTree
                             float newTimer = currentTimer + bonusDuration;
                             traverse.Field("m_perfectBlockBonus").SetValue(newTimer);
                             Plugin.Log.LogDebug($"[막기달인] 패링 지속시간: {currentTimer:F2}초 → {newTimer:F2}초 (+{bonusDuration}초)");
+
+                            // 칼날 되치기: 패링 성공 시 검 사용 중이면 버프 활성화
+                            if (__instance is Player player && SkillEffect.IsUsingSword(player))
+                            {
+                                SkillEffect.ApplySwordBladeCounter(player);
+                                Sword_Skill.OnParryRushTrigger(player, attacker);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // 막기달인 없어도 칼날 되치기/패링 돌격 체크
+                        var traverse = Traverse.Create(__instance);
+                        float currentTimer = traverse.Field("m_perfectBlockBonus").GetValue<float>();
+                        if (currentTimer > 0 && __instance is Player pPlayer && SkillEffect.IsUsingSword(pPlayer))
+                        {
+                            SkillEffect.ApplySwordBladeCounter(pPlayer);
+                            Sword_Skill.OnParryRushTrigger(pPlayer, attacker);
                         }
                     }
                 }

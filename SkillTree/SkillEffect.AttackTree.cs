@@ -103,11 +103,13 @@ namespace CaptainSkillTree.SkillTree
                                   currentWeapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
                                   currentWeapon.m_shared.m_skillType == Skills.SkillType.Knives ||
                                   currentWeapon.m_shared.m_skillType == Skills.SkillType.Spears ||
-                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.Polearms;
-                        
+                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.Polearms ||
+                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.Unarmed;
+
                         isBow = currentWeapon.m_shared.m_skillType == Skills.SkillType.Bows;
                         isCrossbow = currentWeapon.m_shared.m_skillType == Skills.SkillType.Crossbows;
-                        isStaff = currentWeapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic;
+                        isStaff = currentWeapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic ||
+                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.BloodMagic;
 
                         // 근접 특화
                         if (isMelee && manager.GetSkillLevel("atk_melee_bonus") > 0 && 
@@ -203,6 +205,26 @@ namespace CaptainSkillTree.SkillTree
                     if (manager.GetSkillLevel("atk_melee_crit") > 0 && currentWeapon != null)
                     {
                         CheckMeleeCombo(player, ref totalDamageMultiplier, ref showEffect, ref isAttackTreeEffect);
+                    }
+
+                    // 연속베기 지속 버프 (sword_Step2_combo_slash)
+                    if (isMelee && SkillEffect.IsUsingSword(player) &&
+                        SkillEffect.swordComboSlashBuffEndTime.TryGetValue(player, out float comboSlashEnd) &&
+                        Time.time < comboSlashEnd)
+                    {
+                        float bonus = SkillTreeConfig.SwordStep2ComboSlashBonusValue / 100f;
+                        totalDamageMultiplier *= (1f + bonus);
+                        isAttackTreeEffect = true;
+                    }
+
+                    // 칼날 되치기 지속 버프 (sword_step3_riposte)
+                    if (isMelee && SkillEffect.IsUsingSword(player) &&
+                        SkillEffect.swordBladeCounterEndTime.TryGetValue(player, out float bladeEnd) &&
+                        Time.time < bladeEnd)
+                    {
+                        float bonus = SkillTreeConfig.SwordStep3BladeCounterBonusValue / 100f;
+                        totalDamageMultiplier *= (1f + bonus);
+                        isAttackTreeEffect = true;
                     }
 
                     // 6단계: 약점 공격 - Valheim GetRandomSkillFactor 패치(하단)에서 치명타 시 처리됨 (중복 적용 금지)
@@ -328,8 +350,8 @@ namespace CaptainSkillTree.SkillTree
             if (!AttackTreeTracker.meleeLastHitTime.ContainsKey(player))
                 AttackTreeTracker.meleeLastHitTime[player] = 0;
 
-            // 3초 내 연속 공격인지 확인
-            if (currentTime - AttackTreeTracker.meleeLastHitTime[player] < 3f)
+            // 5초 내 연속 공격인지 확인
+            if (currentTime - AttackTreeTracker.meleeLastHitTime[player] < 5f)
             {
                 AttackTreeTracker.meleeComboCount[player]++;
             }

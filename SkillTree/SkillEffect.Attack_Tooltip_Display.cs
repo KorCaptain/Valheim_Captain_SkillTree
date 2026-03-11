@@ -40,6 +40,8 @@ namespace CaptainSkillTree.SkillTree
         public float MultishotLv1Arrows;  // 멀티샷 Lv1 화살 수
         public float MultishotLv2Chance;  // 멀티샷 Lv2 확률
         public float MultishotLv2Arrows;  // 멀티샷 Lv2 화살 수
+        public bool HasMeleeExpert;       // 근접 전문가 레이블 표시
+        public bool HasRangedExpert;      // 원거리 전문가 레이블 표시
 
         public bool HasAny()
         {
@@ -85,6 +87,7 @@ namespace CaptainSkillTree.SkillTree
                 case Skills.SkillType.Crossbows:    return WeaponGroup.Crossbow;
                 case Skills.SkillType.ElementalMagic:
                 case Skills.SkillType.BloodMagic:   return WeaponGroup.Staff;
+                case Skills.SkillType.Unarmed:      return WeaponGroup.Knife;
                 default:                            return WeaponGroup.None;
             }
         }
@@ -133,6 +136,7 @@ namespace CaptainSkillTree.SkillTree
                  group == WeaponGroup.Polearm))
             {
                 b.FlatAllPhysical += 3f;
+                b.HasMeleeExpert = true;
             }
 
             // 무기별 보너스
@@ -159,6 +163,11 @@ namespace CaptainSkillTree.SkillTree
                 case WeaponGroup.Sword:
                     if (SkillEffect.HasSkill("sword_expert"))
                         physPct += Sword_Config.SwordExpertDamageValue;
+                    if (SkillEffect.HasSkill("sword_step3_riposte"))
+                        b.FlatSlash += Sword_Config.SwordRiposteDamageBonusValue;
+                    if (SkillEffect.HasSkill("sword_step3_allinone") &&
+                        item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
+                        physPct += SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue;
                     if (SkillEffect.HasSkill("atk_melee_bonus"))
                         physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
@@ -181,7 +190,10 @@ namespace CaptainSkillTree.SkillTree
                     if (SkillEffect.HasSkill("mace_Step5_dps"))
                     {
                         physPct += Mace_Config.MaceStep5DpsDamageBonusValue;
-                        b.AttackSpeed += Mace_Config.MaceStep5DpsAttackSpeedBonusValue;
+                    }
+                    if (SkillEffect.HasSkill("mace_Step6_grandmaster"))
+                    {
+                        b.AttackSpeed += Mace_Config.MaceStep6AttackSpeedBonusValue;
                     }
                     break;
 
@@ -205,7 +217,10 @@ namespace CaptainSkillTree.SkillTree
 
                 case WeaponGroup.Bow:
                     if (SkillEffect.HasSkill("ranged_root"))
+                    {
                         b.FlatPierce += 2f;
+                        b.HasRangedExpert = true;
+                    }
                     if (SkillEffect.HasSkill("bow_Step3_silentshot"))
                         b.FlatPierce += Bow_Config.BowStep3SilentShotDamageBonusValue;
                     if (SkillEffect.HasSkill("bow_Step1_damage"))
@@ -226,11 +241,18 @@ namespace CaptainSkillTree.SkillTree
                         b.MultishotLv2Chance = Bow_Config.BowMultishotLv2ChanceValue;
                         b.MultishotLv2Arrows = Bow_Config.BowMultishotArrowCountValue;
                     }
+                    // 활/석궁은 공통 속도 패시브(speed_base, speed_1) 미적용 (공격속도 표시 제거)
+                    b.AttackSpeed -= Speed_Config.SpeedBaseAttackSpeedValue;
+                    b.AttackSpeed -= Speed_Config.SpeedDexterityAttackSpeedBonusValue;
+                    if (b.AttackSpeed < 0f) b.AttackSpeed = 0f;
                     break;
 
                 case WeaponGroup.Crossbow:
                     if (SkillEffect.HasSkill("ranged_root"))
+                    {
                         b.FlatPierce += 2f;
+                        b.HasRangedExpert = true;
+                    }
                     if (SkillEffect.HasSkill("crossbow_Step1_damage"))
                         physPct += Crossbow_Config.CrossbowExpertDamageBonusValue;
                     if (SkillEffect.HasSkill("atk_crossbow_bonus"))
@@ -243,9 +265,18 @@ namespace CaptainSkillTree.SkillTree
                         b.RapidFireChance = Crossbow_Config.CrossbowRapidFireChanceValue;
                     if (SkillEffect.HasSkill("crossbow_Step4_rapid_fire_lv2"))
                         b.RapidFireLv2Chance = Crossbow_Config.CrossbowRapidFireLv2ChanceValue;
+                    // 활/석궁은 공통 속도 패시브(speed_base, speed_1) 미적용 (공격속도 표시 제거)
+                    b.AttackSpeed -= Speed_Config.SpeedBaseAttackSpeedValue;
+                    b.AttackSpeed -= Speed_Config.SpeedDexterityAttackSpeedBonusValue;
+                    if (b.AttackSpeed < 0f) b.AttackSpeed = 0f;
                     break;
 
                 case WeaponGroup.Staff:
+                    if (SkillEffect.HasSkill("ranged_root"))
+                    {
+                        b.FlatAllElemental += 2f;
+                        b.HasRangedExpert = true;
+                    }
                     if (SkillEffect.HasSkill("staff_Step1_damage"))
                         elemPct += Staff_Config.StaffExpertDamageValue;
                     if (SkillEffect.HasSkill("atk_staff_bonus"))
@@ -402,6 +433,10 @@ namespace CaptainSkillTree.SkillTree
                 result += $"\n<color={COL_CRIT_CHC}>🎯 치명타 확률: +{b.CritChance:F0}%</color>";
             if (b.CritDamage > 0.01f)
                 result += $"\n<color={COL_CRIT_DMG}>💥 치명타 피해: +{b.CritDamage:F0}%</color>";
+            if (b.HasMeleeExpert)
+                result += $"\n<color={COL_ATK_PHY}>⚔️ 근접 전문가: +3 물리 (고정)</color>";
+            if (b.HasRangedExpert)
+                result += $"\n<color={COL_ATK_PHY}>🏹 원거리 전문가: +2 관통/속성 (고정)</color>";
         }
     }
 

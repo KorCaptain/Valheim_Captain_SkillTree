@@ -84,9 +84,8 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 스태미나 확인
-                float maxStamina = player.GetMaxStamina();
-                float requiredStamina = maxStamina * (SkillTreeConfig.SpearStep2ThrowStaminaCostValue / 100f);
+                // 스태미나 확인 (고정값)
+                float requiredStamina = SkillTreeConfig.SpearStep2ThrowStaminaCostValue;
                 if (player.GetStamina() < requiredStamina)
                 {
                     DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);

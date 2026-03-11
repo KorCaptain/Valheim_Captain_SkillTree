@@ -93,8 +93,8 @@ namespace CaptainSkillTree.SkillTree
             if (!speedMeleeLastHitTime.ContainsKey(player))
                 speedMeleeLastHitTime[player] = 0;
 
-            // 3초 내 연속 공격인지 확인
-            if (currentTime - speedMeleeLastHitTime[player] < 3f)
+            // 5초 내 연속 공격인지 확인
+            if (currentTime - speedMeleeLastHitTime[player] < 5f)
             {
                 speedMeleeComboCount[player]++;
             }
@@ -131,8 +131,8 @@ namespace CaptainSkillTree.SkillTree
             if (!bowLastHitTime.ContainsKey(player))
                 bowLastHitTime[player] = 0;
 
-            // 3초 내 연속 공격인지 확인
-            if (currentTime - bowLastHitTime[player] < 3f)
+            // 5초 내 연속 공격인지 확인
+            if (currentTime - bowLastHitTime[player] < 5f)
             {
                 bowComboCount[player]++;
             }
@@ -386,11 +386,11 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 둔기 공격속도 보너스 (Tier 5 DPS: +10%)
+                // 둔기 공격속도 보너스 (Tier 6 속공: +10%)
                 bool isUsingMace = WeaponHelper.IsUsingMace(player);
                 if (isUsingMace)
                 {
-                    float maceBonus = MaceSkills.GetAttackSpeedBonus();
+                    float maceBonus = MaceSkills.GetMaceSokgongAttackSpeedBonus();
                     if (maceBonus > 0f)
                     {
                         bonus += maceBonus;

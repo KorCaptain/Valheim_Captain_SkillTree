@@ -440,7 +440,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Spear Tree: Evasion Strike (3 keys) ===
                 ["Tier4_Evasion_RequiredPoints"] = "Tier 4-1: [Evasion Strike] Required Points",
-                ["Tier4_Evasion_DamageBonus"] = "Tier 4-1: [Evasion Strike] Post-Dodge Damage Bonus (%)",
+                ["Tier4_Evasion_EvasionBonus"] = "Tier 4-1: [Evasion Strike] Evasion Bonus on Attack (%)",
                 ["Tier4_Evasion_StaminaReduction"] = "Tier 4-1: [Evasion Strike] Stamina Cost Reduction (%)",
 
                 // === Spear Tree: Dual Strike (2 keys) ===
@@ -696,9 +696,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_StunBoost_StunDurationBonus"] = "Tier 2: [Stun Boost] Stun Duration Bonus (sec)",
                 ["Tier2_StunBoost_RequiredPoints"] = "Tier 2: [Stun Boost] Required Points",
 
-                // === Tier 3-1: Guard (2) ===
-                ["Tier3_Guard_ArmorBonus"] = "Tier 3-1: [Guard] Armor Bonus",
-                ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [Guard] Required Points",
+                // === Tier 3-1: Spin Strike (3) ===
+                ["Tier3_SpinStrike_DamageBonus"] = "Tier 3-1: [Spin Strike] Damage Bonus (%)",
+                ["Tier3_SpinStrike_Range"] = "Tier 3-1: [Spin Strike] AoE Range (m)",
+                ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [Spin Strike] Required Points",
 
                 // === Tier 3-2: Heavy Strike (2) ===
                 ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3-2: [Heavy Strike] Blunt Bonus",
@@ -713,14 +714,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Tank_DamageReduction"] = "Tier 5-1: [Tank] Incoming Damage Reduction (%)",
                 ["Tier5_Tank_RequiredPoints"] = "Tier 5-1: [Tank] Required Points",
 
-                // === Tier 5-2: DPS Boost (3) ===
+                // === Tier 5-2: DPS Boost (2) ===
                 ["Tier5_DPS_DamageBonus"] = "Tier 5-2: [DPS Boost] Damage Bonus (%)",
-                ["Tier5_DPS_AttackSpeedBonus"] = "Tier 5-2: [DPS Boost] Attack Speed Bonus (%)",
                 ["Tier5_DPS_RequiredPoints"] = "Tier 5-2: [DPS Boost] Required Points",
 
-                // === Tier 6: Grandmaster (2) ===
-                ["Tier6_Grandmaster_ArmorBonus"] = "Tier 6: [Grandmaster] Armor Bonus (%)",
-                ["Tier6_Grandmaster_RequiredPoints"] = "Tier 6: [Grandmaster] Required Points",
+                // === Tier 6: Swift Attack (2) ===
+                ["Tier6_Sokgong_AttackSpeedBonus"] = "Tier 6: [Swift Attack] Attack Speed Bonus (%)",
+                ["Tier6_Grandmaster_RequiredPoints"] = "Tier 6: [Swift Attack] Required Points",
 
                 // === Tier 7-1: Fury Hammer - H-Key Active (6) ===
                 ["Tier7_FuryHammer_NormalHitMultiplier"] = "Tier 7-1: [Fury Hammer] Hits 1-4 Damage Multiplier (%)",

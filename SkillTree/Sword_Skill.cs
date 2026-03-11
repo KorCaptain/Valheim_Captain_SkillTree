@@ -765,10 +765,10 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 2. 방패 착용 확인
-                if (!HasShield(player))
+                // 2. 방패 또는 검 착용 확인
+                if (!HasShield(player) && !IsUsingSword(player))
                 {
-                    SkillEffect.DrawFloatingText(player, L.Get("shield_required"), Color.red);
+                    SkillEffect.DrawFloatingText(player, L.Get("sword_or_shield_required"), Color.red);
                     return;
                 }
 
@@ -843,8 +843,8 @@ namespace CaptainSkillTree.SkillTree
                 if (parryRushCharging.Contains(player)) return; // 이미 코루틴 실행 중
 
                 // 무기 확인 (방패 패링 중 GetCurrentWeapon이 방패를 반환할 수 있으므로 장비 목록에서 검 확인)
+                // weapon == null 허용: 방패만 있는 경우 ExecuteParryRushCharge에서 방패 block power 사용
                 var weapon = GetEquippedSword(player);
-                if (weapon == null) return;
 
                 // 돌격 코루틴 시작
                 parryRushCharging.Add(player);
@@ -867,6 +867,7 @@ namespace CaptainSkillTree.SkillTree
                 parryRushCharging.Remove(player);
                 yield break;
             }
+            // weapon이 null이면 방패의 block power 사용 (방패만 착용한 경우)
 
             // 1. blocking 모션 시작
             var zanim = player.GetComponentInChildren<ZSyncAnimation>();
@@ -935,28 +936,42 @@ namespace CaptainSkillTree.SkillTree
             // 4. 도착 - 데미지 적용
             if (target != null && !target.IsDead() && player != null && !player.IsDead())
             {
-                var weaponDamage = weapon.GetDamage();
-                float damageMultiplier = 1f + (Sword_Config.ParryRushDamageBonusValue / 100f);
+                // 방패 또는 검의 막기 방어력 x 비율로 타격 데미지
+                float skillFactor = 0f;
+                var shieldItem = HarmonyLib.Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+                float blockPower;
+                if (shieldItem != null && shieldItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+                {
+                    blockPower = shieldItem.GetBlockPower(skillFactor);
+                }
+                else if (weapon != null)
+                {
+                    blockPower = weapon.GetBlockPower(skillFactor);
+                }
+                else
+                {
+                    blockPower = 0f;
+                }
+                float ratio = Sword_Config.ParryRushBlockPowerRatioValue / 100f;
+                float bluntDamage = blockPower * ratio;
 
                 var hit = new HitData();
-                hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
-                hit.m_damage.m_blunt = weaponDamage.m_blunt * damageMultiplier;
-                hit.m_damage.m_pierce = weaponDamage.m_pierce * damageMultiplier;
+                hit.m_damage.m_blunt = bluntDamage;
 
                 hit.m_point = target.GetCenterPoint();
                 hit.m_dir = (target.transform.position - player.transform.position).normalized;
                 hit.m_pushForce = Sword_Config.ParryRushPushDistanceValue;
                 hit.m_attacker = player.GetZDOID();
                 hit.SetAttacker(player);
-                hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
+                if (weapon != null) hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
 
                 target.Damage(hit);
 
                 // VFX: 적중 효과
                 VFXManager.PlayVFXMultiplayer("fx_shieldgenerator_domehit", "", target.GetCenterPoint(), Quaternion.identity, 2f);
 
-                SkillEffect.DrawFloatingText(player, "🛡️ " + L.Get("parry_rush_damage", Sword_Config.ParryRushDamageBonusValue), Color.cyan);
-                Plugin.Log.LogInfo($"[패링 돌격] 돌격 성공! 공격력 +{Sword_Config.ParryRushDamageBonusValue}%, 밀어내기 {Sword_Config.ParryRushPushDistanceValue}m");
+                SkillEffect.DrawFloatingText(player, "🛡️ " + L.Get("parry_rush_damage", Mathf.RoundToInt(bluntDamage)), Color.cyan);
+                Plugin.Log.LogInfo($"[패링 돌격] 돌격 성공! 막기력 {blockPower:F0} x {Sword_Config.ParryRushBlockPowerRatioValue}% = {bluntDamage:F0} 타격 데미지");
             }
 
             // 5. blocking 해제

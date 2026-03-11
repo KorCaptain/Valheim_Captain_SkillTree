@@ -1,6 +1,9 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -48,40 +51,31 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 방어력 비율 보너스 계산
-        /// Tier 6 Grandmaster (+20%)
+        /// 회전 타격 데미지 보너스 반환
+        /// Tier 3 Guard: 세컨드 어택 시 +20%
         /// </summary>
-        public static float GetTotalArmorBonusPercent()
-        {
-            return SkillBonusCalculator.GetIfActive(
-                "mace_Step6_grandmaster",
-                () => Mace_Config.MaceStep6ArmorBonusValue
-            );
-        }
-
-        /// <summary>
-        /// 방어력 고정값 보너스 계산
-        /// Tier 3 Guard (+3)
-        /// </summary>
-        public static float GetTotalArmorBonusFixed()
+        public static float GetMaceSpinDamageBonus()
         {
             return SkillBonusCalculator.GetIfActive(
                 "mace_Step3_branch_guard",
-                () => Mace_Config.MaceStep3GuardArmorBonusValue
+                () => Mace_Config.MaceStep3SpinDamageBonusValue
             );
         }
 
         /// <summary>
-        /// 공격속도 보너스 반환 (Plugin.cs의 시스템 활용)
-        /// Tier 5 DPS: +10%
+        /// 속공 공격속도 보너스 반환 (AnimationSpeedManager 통합)
+        /// Tier 6 속공: +10%
         /// </summary>
-        public static float GetAttackSpeedBonus()
+        public static float GetMaceSokgongAttackSpeedBonus()
         {
             return SkillBonusCalculator.GetIfActive(
-                "mace_Step5_dps",
-                () => Mace_Config.MaceStep5DpsAttackSpeedBonusValue
+                "mace_Step6_grandmaster",
+                () => Mace_Config.MaceStep6AttackSpeedBonusValue
             );
         }
+
+        // 마지막 세컨드 어택 시간 추적 (회전 타격용)
+        internal static Dictionary<Player, float> s_lastSpinTime = new Dictionary<Player, float>();
     }
 
     // ===== Harmony 패치 =====
@@ -96,21 +90,14 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 공격자가 플레이어인지 확인
                 if (hit.GetAttacker() is not Player attacker) return;
-
-                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
                 if (!WeaponHelper.IsUsingMace(attacker)) return;
 
-                // 총 데미지 배율 계산
                 float damageBonus = MaceSkills.GetTotalMaceDamageBonus();
                 if (damageBonus > 0f)
                 {
                     float totalDamageMultiplier = 1f + damageBonus / 100f;
-
-                    // blunt 데미지 타입에만 배율 적용
                     hit.m_damage.m_blunt *= totalDamageMultiplier;
-
                     Plugin.Log.LogDebug($"[둔기 데미지] 보너스 +{damageBonus}% 적용 (blunt, 배율: {totalDamageMultiplier:F2})");
                 }
             }
@@ -131,22 +118,15 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 공격자가 플레이어인지 확인
                 if (hit.GetAttacker() is not Player attacker) return;
-
-                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
                 if (!WeaponHelper.IsUsingMace(attacker)) return;
 
-                // 기절 확률 및 지속시간 계산
                 float stunChance = MaceSkills.GetTotalStunChance();
                 float stunDuration = MaceSkills.GetTotalStunDuration();
 
                 if (stunChance <= 0f || stunDuration <= 0f) return;
-
-                // 확률 체크
                 if (UnityEngine.Random.Range(0f, 100f) > stunChance) return;
 
-                // 기절 효과 적용
                 if (__instance != null && !__instance.IsDead())
                 {
                     __instance.Stagger(Vector3.zero);
@@ -161,8 +141,8 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
-    /// 둔기 노크백 효과 패치
-    /// Tier 4: 30% 확률로 노크백
+    /// 둔기 밀어내기 효과 패치
+    /// Tier 4: 막기 미사용 상태에서 피격 시 30% 확률로 공격자를 5m 밀어냄
     /// </summary>
     [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
     public static class MaceSkills_KnockbackPatch
@@ -171,78 +151,40 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 공격자가 플레이어인지 확인
-                if (hit.GetAttacker() is not Player attacker) return;
-
-                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
-                if (!WeaponHelper.IsUsingMace(attacker)) return;
-
-                // Tier 4: 밀어내기 (SkillBonusCalculator 사용)
-                if (SkillBonusCalculator.IsSkillActive("mace_Step4_push"))
-                {
-                    float knockbackChance = Mace_Config.MaceStep4KnockbackChanceValue;
-
-                    // 확률 체크
-                    if (UnityEngine.Random.Range(0f, 100f) <= knockbackChance)
-                    {
-                        // 노크백 강도 증가
-                        hit.m_pushForce *= 2.0f;
-                        Plugin.Log.LogDebug($"[둔기 밀어내기] 확률 {knockbackChance}% 발동! 노크백 강도 2배");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[둔기 노크백 패치] 오류: {ex.Message}");
-            }
-        }
-    }
-
-    /// <summary>
-    /// 둔기 방어력 증가 패치 (방어 전문가 패턴 참조)
-    /// Tier 3 Guard (+15%) + Tier 6 Grandmaster (+20%)
-    /// </summary>
-    [HarmonyPatch(typeof(Character), nameof(Character.GetBodyArmor))]
-    public static class MaceSkills_ArmorPatch
-    {
-        static void Postfix(Character __instance, ref float __result)
-        {
-            try
-            {
-                // 플레이어만 처리
+                // 피격자가 플레이어인지 확인
                 if (__instance is not Player player) return;
-
-                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
                 if (!WeaponHelper.IsUsingMace(player)) return;
+                if (!SkillBonusCalculator.IsSkillActive("mace_Step4_push")) return;
+                if (player.IsBlocking()) return;
 
-                // 방어력 비율 보너스 계산
-                float armorBonusPercent = MaceSkills.GetTotalArmorBonusPercent();
-                if (armorBonusPercent > 0f)
-                {
-                    float bonusArmor = __result * (armorBonusPercent / 100f);
-                    __result += bonusArmor;
-                    Plugin.Log.LogDebug($"[둔기 방어력] +{armorBonusPercent}% 적용: {bonusArmor:F1} 추가");
-                }
+                // 공격자가 몬스터인지 확인
+                Character attacker = hit.GetAttacker() as Character;
+                if (attacker == null || attacker.IsPlayer()) return;
 
-                // 방어력 고정값 보너스 계산
-                float armorBonusFixed = MaceSkills.GetTotalArmorBonusFixed();
-                if (armorBonusFixed > 0f)
-                {
-                    __result += armorBonusFixed;
-                    Plugin.Log.LogDebug($"[둔기 방어력] +{armorBonusFixed} 고정 추가");
-                }
+                float knockbackChance = Mace_Config.MaceStep4KnockbackChanceValue;
+                if (UnityEngine.Random.Range(0f, 100f) > knockbackChance) return;
 
-                Plugin.Log.LogDebug($"[둔기 방어력] 최종 방어력: {__result:F1}");
+                // 공격자를 5m 밀어냄 (pushForce 80f ≈ 5m)
+                Vector3 pushDir = (attacker.transform.position - player.transform.position).normalized;
+                var pushHit = new HitData();
+                pushHit.m_pushForce = 80f;
+                pushHit.m_dir = pushDir;
+                pushHit.m_point = attacker.GetCenterPoint();
+                pushHit.m_blockable = false;
+                pushHit.m_dodgeable = false;
+                attacker.Damage(pushHit);
+
+                Plugin.Log.LogDebug($"[둔기 밀어내기] 확률 {knockbackChance}% 발동! 공격자를 밀어냄");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[둔기 방어력 패치] 오류: {ex.Message}");
+                Plugin.Log.LogError($"[둔기 밀어내기 패치] 오류: {ex.Message}");
             }
         }
     }
 
     /// <summary>
-    /// 둔기 체력 증가 패치 (SkillEffect.cs 패턴 참조)
+    /// 둔기 체력 증가 패치
     /// Tier 5 Tank: 체력 +25%
     /// </summary>
     [HarmonyPatch(typeof(Character), nameof(Character.GetMaxHealth))]
@@ -252,13 +194,9 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 플레이어만 처리
                 if (__instance is not Player player) return;
-
-                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
                 if (!WeaponHelper.IsUsingMace(player)) return;
 
-                // Tier 5 Tank: 체력 보너스 (+25%) (SkillBonusCalculator 사용)
                 if (SkillBonusCalculator.IsSkillActive("mace_Step5_tank"))
                 {
                     float healthBonus = Mace_Config.MaceStep5TankHealthBonusValue;
@@ -287,19 +225,14 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 피격자가 플레이어인지 확인
                 if (__instance is not Player player) return;
-
-                // 둔기 무기 사용 여부 확인 (WeaponHelper 사용)
                 if (!WeaponHelper.IsUsingMace(player)) return;
 
-                // Tier 5 Tank: 받는 데미지 감소 (-10%) (SkillBonusCalculator 사용)
                 if (SkillBonusCalculator.IsSkillActive("mace_Step5_tank"))
                 {
                     float damageReduction = Mace_Config.MaceStep5TankDamageReductionValue;
                     float reductionMultiplier = 1f - (damageReduction / 100f);
 
-                    // 모든 데미지 타입 감소
                     hit.m_damage.m_blunt *= reductionMultiplier;
                     hit.m_damage.m_pierce *= reductionMultiplier;
                     hit.m_damage.m_slash *= reductionMultiplier;
@@ -317,6 +250,112 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[둔기 데미지 감소 패치] 오류: {ex.Message}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 회전 타격 - 세컨드 어택 감지 패치
+    /// Attack.Start에서 특수 공격 감지 후 시간 기록
+    /// </summary>
+    [HarmonyPatch(typeof(Attack), nameof(Attack.Start))]
+    public static class MaceSkills_SpinDetect_Patch
+    {
+        [HarmonyPriority(HarmonyLib.Priority.High)]
+        static void Postfix(Attack __instance)
+        {
+            try
+            {
+                var player = Player.m_localPlayer;
+                if (player == null) return;
+                if (!WeaponHelper.IsUsingMace(player)) return;
+                if (!SkillBonusCalculator.IsSkillActive("mace_Step3_branch_guard")) return;
+
+                // 세컨드 어택(휠 마우스 / SecondaryAttack 버튼) 감지
+                bool isSecondaryAttack = ZInput.GetButton("SecondaryAttack") || Input.GetMouseButton(2);
+                if (!isSecondaryAttack) return;
+
+                MaceSkills.s_lastSpinTime[player] = Time.time;
+                Plugin.Log.LogDebug("[둔기 회전 타격] 세컨드 어택 감지 - 보너스 준비");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[MaceSkills_SpinDetect_Patch] 오류: {ex.Message}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 회전 타격 - 데미지 적용 패치
+    /// 세컨드 어택 후 0.5초 이내 공격 시 +20% 데미지 및 7m AOE 적용
+    /// </summary>
+    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+    public static class MaceSkills_SpinStrikePatch
+    {
+        private static bool s_applyingAoe = false;
+
+        [HarmonyPriority(HarmonyLib.Priority.High)]
+        static void Prefix(Character __instance, HitData hit)
+        {
+            try
+            {
+                if (s_applyingAoe) return;
+                if (__instance == null || __instance.IsPlayer()) return;
+
+                if (hit.GetAttacker() is not Player attacker) return;
+                if (!WeaponHelper.IsUsingMace(attacker)) return;
+                if (!SkillBonusCalculator.IsSkillActive("mace_Step3_branch_guard")) return;
+
+                // 세컨드 어택 시간 체크 (0.5초 이내)
+                if (!MaceSkills.s_lastSpinTime.TryGetValue(attacker, out float t)) return;
+                if (Time.time - t > 0.5f) return;
+
+                float spinBonus = MaceSkills.GetMaceSpinDamageBonus();
+                if (spinBonus <= 0f) return;
+
+                // 데미지 보너스 적용 (+20%)
+                float multiplier = 1f + spinBonus / 100f;
+                hit.m_damage.m_blunt *= multiplier;
+
+                // 7m AOE 적용 (재귀 방지 플래그 사용)
+                float spinRange = Mace_Config.MaceStep3SpinRangeValue;
+                s_applyingAoe = true;
+                try
+                {
+                    var mobs = Character.GetAllCharacters().Where(c =>
+                        c != __instance &&
+                        c.IsMonsterFaction(0f) &&
+                        Vector3.Distance(c.transform.position, attacker.transform.position) < spinRange
+                    ).ToList();
+
+                    foreach (var mob in mobs)
+                    {
+                        var aoeHit = new HitData();
+                        aoeHit.m_damage.m_blunt = hit.m_damage.m_blunt;
+                        aoeHit.m_dir = (mob.transform.position - attacker.transform.position).normalized;
+                        aoeHit.m_point = mob.GetCenterPoint();
+                        aoeHit.m_attacker = attacker.GetZDOID();
+                        aoeHit.SetAttacker(attacker);
+                        aoeHit.m_blockable = false;
+                        aoeHit.m_dodgeable = false;
+                        mob.Damage(aoeHit);
+                    }
+                }
+                finally
+                {
+                    s_applyingAoe = false;
+                }
+
+                // 시간 리셋 (중복 발동 방지)
+                MaceSkills.s_lastSpinTime[attacker] = -999f;
+
+                // 텍스트 표시 (패시브: VFX 금지)
+                SkillEffect.DrawFloatingText(attacker, "🌀 " + L.Get("spin_attack_hit", spinBonus));
+                Plugin.Log.LogDebug($"[둔기 회전 타격] +{spinBonus}% 데미지 적용, AOE {spinRange}m");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[MaceSkills_SpinStrikePatch] 오류: {ex.Message}");
             }
         }
     }

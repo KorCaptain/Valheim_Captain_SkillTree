@@ -211,8 +211,8 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static IEnumerator AggroRemovalLoopCoroutine(Player player, float duration)
         {
-            float endTime = Time.time + duration;
-            while (Time.time < endTime)
+            int ticks = Mathf.Max(1, Mathf.RoundToInt(duration));
+            for (int i = 0; i < ticks; i++)
             {
                 yield return new WaitForSeconds(1f);
 
@@ -228,6 +228,8 @@ namespace CaptainSkillTree.SkillTree
             }
 
             aggroRemovalLoopCoroutine.Remove(player);
+            aggroRemovalActive.Remove(player);
+            aggroRemovalEndTime.Remove(player);
         }
 
         /// <summary>

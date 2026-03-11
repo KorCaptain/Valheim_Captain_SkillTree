@@ -74,6 +74,8 @@ namespace CaptainSkillTree.SkillTree
                     SimpleVFX.PlayOnPlayer(caster, "buff_03a_aura", 3f);
                     // 사운드는 고정 위치 재생
                     SimpleVFX.Play("sfx_dverger_heal_finish", casterPos, 2f);
+                    // 방패 발전기 충전 VFX (발헤임 기본 VFX → VFXManager 사용)
+                    CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_shieldgenerator_refuel", "", casterPos, Quaternion.identity, 3f);
                 }
                 catch (Exception ex)
                 {

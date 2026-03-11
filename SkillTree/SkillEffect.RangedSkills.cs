@@ -383,7 +383,8 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 // 1순위: Valheim 기본 스킬 타입 확인 (가장 확실한 방법)
-                if (weapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic)
+                if (weapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic ||
+                    weapon.m_shared.m_skillType == Skills.SkillType.BloodMagic)
                 {
                     return true;
                 }

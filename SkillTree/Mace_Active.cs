@@ -116,6 +116,9 @@ namespace CaptainSkillTree.SkillTree
                 // 3. 플로팅 텍스트
                 DrawFloatingText(player, L.Get("guardian_heart_activated"), new Color(0.2f, 0.8f, 1f, 1f));
 
+                // 3-0. 시전 효과음
+                SimpleVFX.Play("sfx_dragon_scream", player.transform.position, 3f);
+
                 // 3-1. 머리 위 상태 효과 VFX 재생 (45초 지속)
                 PlayGuardianHeartStatusEffect(player);
 

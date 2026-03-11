@@ -406,7 +406,7 @@ namespace CaptainSkillTree.SkillTree
                 consecutiveHits[player] = 0;
 
             float now = Time.time;
-            if (lastHitTime.ContainsKey(player) && now - lastHitTime[player] < 2f)
+            if (lastHitTime.ContainsKey(player) && now - lastHitTime[player] < 5f)
             {
                 consecutiveHits[player]++;
             }

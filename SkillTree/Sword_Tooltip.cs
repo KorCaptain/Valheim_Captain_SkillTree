@@ -205,13 +205,13 @@ namespace CaptainSkillTree.SkillTree
             var requiredPoints = 3;
 
             float duration = Sword_Config.ParryRushDurationValue;
-            float damageBonus = Sword_Config.ParryRushDamageBonusValue;
+            float blockPowerRatio = Sword_Config.ParryRushBlockPowerRatioValue;
             float pushDist = Sword_Config.ParryRushPushDistanceValue;
             float staminaCost = Sword_Config.ParryRushStaminaCostValue;
             float cooldown = Sword_Config.ParryRushCooldownValue;
 
             string description = L.Get("sword_desc_parry_rush", duration) + "\n" +
-                                $"<color=#98FB98>{L.Get("sword_desc_parry_rush_damage", damageBonus)}</color>\n" +
+                                $"<color=#98FB98>{L.Get("sword_desc_parry_rush_damage", blockPowerRatio)}</color>\n" +
                                 $"<color=#FFA500>{L.Get("sword_desc_parry_rush_push", pushDist)}</color>";
 
             var data = MeleeTooltipUtils.CreateActiveSkillData(
@@ -221,7 +221,7 @@ namespace CaptainSkillTree.SkillTree
                 $"{cooldown}{L.Get("unit_seconds")}",
                 MeleeTooltipUtils.WeaponType.Sword,
                 L.Get("tooltip_same_weapon_only"),
-                L.Get("requirement_shield_equip"),
+                L.Get("requirement_sword_or_shield_equip"),
                 "H"
             );
             data.requiredPoints = requiredPoints.ToString();

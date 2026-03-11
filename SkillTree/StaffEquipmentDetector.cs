@@ -74,10 +74,11 @@ namespace CaptainSkillTree.SkillTree
                     return false;
                 }
 
-                // 1순위: Valheim 기본 ElementalMagic 스킬 타입 (가장 정확한 방법)
-                if (currentWeapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic)
+                // 1순위: Valheim 기본 ElementalMagic/BloodMagic 스킬 타입 (가장 정확한 방법)
+                if (currentWeapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic ||
+                    currentWeapon.m_shared.m_skillType == Skills.SkillType.BloodMagic)
                 {
-                    Plugin.Log.LogInfo($"[지팡이 착용 감지] ElementalMagic 타입 지팡이 착용: {currentWeapon.m_shared.m_name}");
+                    Plugin.Log.LogInfo($"[지팡이 착용 감지] Magic 타입 지팡이 착용: {currentWeapon.m_shared.m_name}");
                     return true;
                 }
 

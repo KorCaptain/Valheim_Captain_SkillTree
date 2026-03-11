@@ -39,7 +39,7 @@ namespace CaptainSkillTree.SkillTree
                 swordComboCount[player] = 0;
 
             float now = Time.time;
-            if (swordLastHitTime.ContainsKey(player) && now - swordLastHitTime[player] < 3f)
+            if (swordLastHitTime.ContainsKey(player) && now - swordLastHitTime[player] < 5f)
             {
                 swordComboCount[player]++;
             }
@@ -72,7 +72,7 @@ namespace CaptainSkillTree.SkillTree
             if (!swordComboCount.ContainsKey(player))
                 swordComboCount[player] = 0;
 
-            if (swordLastHitTime.ContainsKey(player) && now - swordLastHitTime[player] < 3f)
+            if (swordLastHitTime.ContainsKey(player) && now - swordLastHitTime[player] < 5f)
             {
                 swordComboCount[player]++;
             }
@@ -104,7 +104,7 @@ namespace CaptainSkillTree.SkillTree
             if (!swordComboCount.ContainsKey(player))
                 swordComboCount[player] = 0;
 
-            if (swordLastHitTime.ContainsKey(player) && now - swordLastHitTime[player] < 3f)
+            if (swordLastHitTime.ContainsKey(player) && now - swordLastHitTime[player] < 10f)
             {
                 swordComboCount[player]++;
             }
@@ -118,10 +118,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 DrawFloatingText(player, "⚔️ " + L.Get("sword_combo_slash", SkillTreeConfig.SwordStep2ComboSlashBonusValue));
 
-                nextAttackBoosted[player] = true;
-                nextAttackMultiplier[player] = 1f + (SkillTreeConfig.SwordStep2ComboSlashBonusValue / 100f);
-                nextAttackExpiry[player] = now + SkillTreeConfig.SwordStep2ComboSlashDurationValue;
-                nextAttackShowMessage[player] = false; // 연속베기 메시지 이미 표시됨
+                swordComboSlashBuffEndTime[player] = now + SkillTreeConfig.SwordStep2ComboSlashDurationValue;
                 swordComboCount[player] = 0;
             }
         }
@@ -161,11 +158,10 @@ namespace CaptainSkillTree.SkillTree
         {
             if (!HasSkill("sword_step3_allinone")) return;
 
-            var currentWeapon = player.GetCurrentWeapon();
-            if (currentWeapon != null && currentWeapon.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
+            if (Sword_Skill.IsUsingSword(player))
             {
-                DrawFloatingText(player, "⚔️🛡️ " + L.Get("sword_offense_defense", SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue, SkillTreeConfig.SwordStep3OffenseDefenseDefenseBonusValue));
-                Plugin.Log.LogDebug($"[공방일체] 양손 무기 착용 - 공격력 +{SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue}%, 방어력 +{SkillTreeConfig.SwordStep3OffenseDefenseDefenseBonusValue} 적용");
+                DrawFloatingText(player, "⚔️🛡️ " + L.Get("sword_offense_defense", SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue, Sword_Config.SwordStep3AllInOneDefenseBonusValue));
+                Plugin.Log.LogDebug($"[공방일체] 검 착용 - 공격력 +{SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue}%, 막기 방어력 +{Sword_Config.SwordStep3AllInOneDefenseBonusValue} 적용");
             }
         }
 
@@ -200,20 +196,28 @@ namespace CaptainSkillTree.SkillTree
 
         // === 창 스킬 시스템 ===
 
-        /// <summary>
-        /// 창 롤 후 공격 보너스 체크
-        /// </summary>
-        public static void CheckSpearRollAttack(Player player)
-        {
-            if (!spearAfterRoll.ContainsKey(player)) return;
+        // === 회피 찌르기 버프 시스템 ===
+        public static Dictionary<Player, float> spearEvasionBuffEndTime = new Dictionary<Player, float>();
 
-            float now = Time.time;
-            if (spearAfterRoll[player] && now - spearRollTime[player] < 2f)
-            {
-                spearAfterRoll[player] = false;
-                PlaySkillEffect(player, "spear_evasion");
-                DrawFloatingText(player, "🎯 " + L.Get("sword_dodge_counter"));
-            }
+        /// <summary>
+        /// 회피 찌르기 - 창 공격 시 5초간 회피율 버프 발동
+        /// </summary>
+        public static void ApplySpearEvasionBuff(Player player)
+        {
+            if (!HasSkill("spear_Step2_evasion")) return;
+            float duration = 5f;
+            spearEvasionBuffEndTime[player] = Time.time + duration;
+            DrawFloatingText(player, "💨 " + L.Get("spear_evasion_buff", Spear_Config.SpearStep3EvasionBonusValue));
+            UpdateDefenseDodgeRate(player);
+            Plugin.Log.LogDebug($"[회피찌르기] 공격 시 회피율 +{Spear_Config.SpearStep3EvasionBonusValue}% 버프 ({duration}초)");
+        }
+
+        /// <summary>
+        /// 회피 찌르기 버프 활성 여부 확인
+        /// </summary>
+        public static bool IsSpearEvasionBuffActive(Player player)
+        {
+            return spearEvasionBuffEndTime.TryGetValue(player, out float expiry) && Time.time < expiry;
         }
 
         /// <summary>
@@ -227,7 +231,7 @@ namespace CaptainSkillTree.SkillTree
             if (!spearExpertComboCount.ContainsKey(player))
                 spearExpertComboCount[player] = 0;
 
-            if (spearExpertLastHitTime.ContainsKey(player) && now - spearExpertLastHitTime[player] < 3f)
+            if (spearExpertLastHitTime.ContainsKey(player) && now - spearExpertLastHitTime[player] < 5f)
             {
                 spearExpertComboCount[player]++;
             }
@@ -256,7 +260,7 @@ namespace CaptainSkillTree.SkillTree
             if (spearLastHitTime.ContainsKey(player) && now - spearLastHitTime[player] < 0.05f)
                 return;
 
-            if (spearLastHitTime.ContainsKey(player) && now - spearLastHitTime[player] < 3f)
+            if (spearLastHitTime.ContainsKey(player) && now - spearLastHitTime[player] < 5f)
             {
                 spearComboCount[player]++;
             }
@@ -334,8 +338,8 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            // 스태미나 체크
-            float staminaCost = player.GetMaxStamina() * (Spear_Config.SpearStep6PenetrateStaminaCostValue / 100f);
+            // 스태미나 체크 (고정값)
+            float staminaCost = Spear_Config.SpearStep6PenetrateStaminaCostValue;
             if (player.GetStamina() < staminaCost)
             {
                 DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
@@ -402,7 +406,7 @@ namespace CaptainSkillTree.SkillTree
             if (!spearPenetrateComboCount.ContainsKey(player))
                 spearPenetrateComboCount[player] = 0;
 
-            if (spearPenetrateLastHitTime.ContainsKey(player) && now - spearPenetrateLastHitTime[player] < 3f)
+            if (spearPenetrateLastHitTime.ContainsKey(player) && now - spearPenetrateLastHitTime[player] < 5f)
             {
                 spearPenetrateComboCount[player]++;
             }
@@ -445,8 +449,8 @@ namespace CaptainSkillTree.SkillTree
                 float baseDamage = hit != null ? hit.GetTotalDamage() : 50f;
                 float lightningDamage = baseDamage * damageMultiplier;
 
-                // 2. VFX 재생 (Valheim 기본 프리팹, 크기 35%)
-                SimpleVFX.Play("fx_eikthyr_stomp", target.transform.position, 0.35f);
+                // 2. VFX 재생
+                SimpleVFX.Play("flash_blue_purple", target.transform.position, 1.0f);
 
                 // 3. 번개 데미지 적용
                 if (!target.IsDead())

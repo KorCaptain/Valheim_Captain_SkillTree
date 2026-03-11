@@ -125,7 +125,7 @@ namespace CaptainSkillTree.SkillTree
 
         public static float CrossbowRapidFireDamagePercentValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_rapid_fire_damage",
-            CrossbowRapidFireDamagePercent?.Value ?? 75f);
+            CrossbowRapidFireDamagePercent?.Value ?? 35f);
 
         public static float CrossbowRapidFireDelayValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_rapid_fire_delay",
@@ -165,7 +165,7 @@ namespace CaptainSkillTree.SkillTree
 
         public static float CrossbowRapidFireLv2DamagePercentValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_rapid_fire_lv2_damage",
-            CrossbowRapidFireLv2DamagePercent?.Value ?? 75f);
+            CrossbowRapidFireLv2DamagePercent?.Value ?? 35f);
 
         public static float CrossbowRapidFireLv2DelayValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_rapid_fire_lv2_delay",

@@ -267,11 +267,7 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                if (Player.m_localPlayer == null) 
-                {
-                    Debug.LogWarning("[SkillTreeManager] Player가 null입니다");
-                    return 0;
-                }
+                if (Player.m_localPlayer == null) return 0;
 
                 if (string.IsNullOrEmpty(skillId))
                 {
@@ -312,11 +308,7 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                if (Player.m_localPlayer == null)
-                {
-                    Debug.LogWarning("[SkillTreeManager] Player가 null입니다");
-                    return;
-                }
+                if (Player.m_localPlayer == null) return;
 
                 if (string.IsNullOrEmpty(skillId))
                 {
@@ -1174,20 +1166,20 @@ namespace CaptainSkillTree.SkillTree
 
             switch (targetLevel)
             {
-                case 1: return inventory.HaveItem("$item_trophy_skeleton") &&
+                case 1: return inventory.HaveItem("$item_trophy_greydwarfbrute") &&
                                inventory.HaveItem("$item_trophy_eikthyr");
-                case 2: return inventory.HaveItem("$item_trophy_greydwarf") &&
-                               inventory.CountItems("$item_trophy_eikthyr") >= 2;
-                case 3: return inventory.HaveItem("$item_trophy_greydwarfshaman") &&
+                case 2: return inventory.HaveItem("$item_trophy_troll") &&
                                inventory.HaveItem("$item_trophy_eikthyr") &&
                                inventory.HaveItem("$item_trophy_theelder");
-                case 4: return inventory.HaveItem("$item_trophy_skeleton") &&
-                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                case 3: return inventory.HaveItem("$item_trophy_abomination") &&
                                inventory.HaveItem("$item_trophy_theelder") &&
                                inventory.HaveItem("$item_trophy_bonemass");
-                case 5: return inventory.HaveItem("$item_trophy_hatchling") &&
+                case 4: return inventory.HaveItem("$item_trophy_abomination") &&
                                inventory.HaveItem("$item_trophy_bonemass") &&
                                inventory.HaveItem("$item_trophy_dragonqueen");
+                case 5: return inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.HaveItem("$item_trophy_goblinking") &&
+                               inventory.HaveItem("$item_trophy_thequeen");
                 default: return false;
             }
         }
@@ -1202,28 +1194,28 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 1:
-                    inventory.RemoveItem("$item_trophy_skeleton", 1);
+                    inventory.RemoveItem("$item_trophy_greydwarfbrute", 1);
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
                     break;
                 case 2:
-                    inventory.RemoveItem("$item_trophy_greydwarf", 1);
-                    inventory.RemoveItem("$item_trophy_eikthyr", 2);
+                    inventory.RemoveItem("$item_trophy_troll", 1);
+                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_trophy_theelder", 1);
                     break;
                 case 3:
-                    inventory.RemoveItem("$item_trophy_greydwarfshaman", 1);
-                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_trophy_abomination", 1);
                     inventory.RemoveItem("$item_trophy_theelder", 1);
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
                     break;
                 case 4:
-                    inventory.RemoveItem("$item_trophy_skeleton", 1);
-                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
-                    inventory.RemoveItem("$item_trophy_theelder", 1);
-                    inventory.RemoveItem("$item_trophy_bonemass", 1);
-                    break;
-                case 5:
-                    inventory.RemoveItem("$item_trophy_hatchling", 1);
+                    inventory.RemoveItem("$item_trophy_abomination", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_trophy_goblinking", 1);
+                    inventory.RemoveItem("$item_trophy_thequeen", 1);
                     break;
             }
         }

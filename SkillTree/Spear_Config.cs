@@ -23,7 +23,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep1ThrowCooldown;
         public static ConfigEntry<float> SpearStep1ThrowDamage;
         public static ConfigEntry<float> SpearStep1CritDamageBonus;
-        public static ConfigEntry<float> SpearStep2EvasionDamageBonus;
+        public static ConfigEntry<float> SpearStep2EvasionBonus;
         public static ConfigEntry<float> SpearStep2EvasionStaminaReduction;
         public static ConfigEntry<float> SpearStep3PierceDamageBonus;
         // 빠른창 설정
@@ -63,7 +63,7 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep2ThrowCooldownValue => SkillTreeConfig.GetEffectiveValue("spear_Step1_throw_cooldown", SpearStep1ThrowCooldown.Value);
         public static float SpearStep2ThrowDamageValue => SkillTreeConfig.GetEffectiveValue("spear_Step1_throw_damage", SpearStep1ThrowDamage.Value);
         public static float SpearStep2CritDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step1_crit_damage_bonus", SpearStep1CritDamageBonus.Value);
-        public static float SpearStep3EvasionDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step2_evasion_damage_bonus", SpearStep2EvasionDamageBonus.Value);
+        public static float SpearStep3EvasionBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step2_evasion_bonus", SpearStep2EvasionBonus.Value);
         public static float SpearStep3EvasionStaminaReductionValue => SkillTreeConfig.GetEffectiveValue("spear_Step2_evasion_stamina_reduction", SpearStep2EvasionStaminaReduction.Value);
         public static float SpearStep3PierceDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step3_pierce_damage", SpearStep3PierceDamageBonus.Value);
         // 빠른창 접근 프로퍼티
@@ -175,16 +175,16 @@ namespace CaptainSkillTree.SkillTree
                 4f,
                 SkillTreeConfig.GetConfigDescription("Tier3_Rapid_DamageBonus"));
 
-            SpearStep2EvasionDamageBonus = SkillTreeConfig.BindServerSync(config,
+            SpearStep2EvasionBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
-                "Tier4_Evasion_DamageBonus",
-                25f,
-                SkillTreeConfig.GetConfigDescription("Tier4_Evasion_DamageBonus"));
+                "Tier4_Evasion_EvasionBonus",
+                20f,
+                SkillTreeConfig.GetConfigDescription("Tier4_Evasion_EvasionBonus"));
 
             SpearStep2EvasionStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier4_Evasion_StaminaReduction",
-                8f,
+                10f,
                 SkillTreeConfig.GetConfigDescription("Tier4_Evasion_StaminaReduction"));
 
             // === 빠른창 설정 ===
@@ -234,7 +234,7 @@ namespace CaptainSkillTree.SkillTree
             SpearStep5PenetrateStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_GKey_StaminaCost",
-                25f,
+                20f,
                 SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_GKey_StaminaCost"));
 
             SpearStep5ComboCooldown = SkillTreeConfig.BindServerSync(config,
@@ -252,7 +252,7 @@ namespace CaptainSkillTree.SkillTree
             SpearStep5ComboStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_HKey_StaminaCost",
-                20f,
+                30f,
                 SkillTreeConfig.GetConfigDescription("Tier5_Combo_HKey_StaminaCost"));
 
             SpearStep5ComboKnockbackRadius = SkillTreeConfig.BindServerSync(config,

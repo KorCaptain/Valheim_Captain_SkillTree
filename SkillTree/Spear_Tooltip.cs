@@ -107,7 +107,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("spear_skill_evasion")}</size></color>",
-                L.Get("spear_desc_evasion", Spear_Config.SpearStep3EvasionDamageBonusValue, Spear_Config.SpearStep3EvasionStaminaReductionValue),
+                L.Get("spear_desc_evasion", Spear_Config.SpearStep3EvasionBonusValue, Spear_Config.SpearStep3EvasionStaminaReductionValue),
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requiredPoints = "3";
@@ -173,7 +173,7 @@ namespace CaptainSkillTree.SkillTree
                 // 4. 범위 - 생략 (단일 대상)
 
                 // 5. 소모 (#FFB347 / #FFDAB9)
-                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {Spear_Config.SpearStep6PenetrateStaminaCostValue}%</size></color>\n";
+                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {Spear_Config.SpearStep6PenetrateStaminaCostValue}</size></color>\n";
 
                 // 6. 스킬유형 (G키 강조: #FF4500 / #00FF00)
                 tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FF00><size=16>{L.Get("skill_type_active_key", "G")}</size></color>\n";
@@ -222,7 +222,7 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("spear_desc_combo_range", SkillTreeConfig.SpearStep2ThrowRangeValue)}</size></color>\n";
 
                 // 5. 소모 (#FFB347 / #FFDAB9)
-                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {SkillTreeConfig.SpearStep2ThrowStaminaCostValue}%</size></color>\n";
+                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {SkillTreeConfig.SpearStep2ThrowStaminaCostValue}</size></color>\n";
 
                 // 6. 스킬유형 (H키 강조: #FF1493 / #00FFFF)
                 tooltip += $"<color=#FF1493><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FFFF><size=16>{L.Get("skill_type_active_key", "H")}</size></color>\n";
