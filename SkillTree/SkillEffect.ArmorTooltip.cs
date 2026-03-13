@@ -1,5 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -73,6 +74,29 @@ namespace CaptainSkillTree.SkillTree
                             if (manager.GetSkillLevel("defense_Step5_parry") > 0)
                                 flatBlockBonus += Defense_Config.ParryMasterBlockPowerBonusValue;
                             break;
+                        case ItemDrop.ItemData.ItemType.TwoHandedWeapon:
+                        case ItemDrop.ItemData.ItemType.OneHandedWeapon:
+                            if (item.m_shared.m_skillType != Skills.SkillType.Swords) return;
+                            if (manager.GetSkillLevel("sword_step3_allinone") == 0) return;
+                            if (!WeaponHelper.IsUsingTwoHandedSword(player)) return;
+                            {
+                                float pct = Sword_Config.SwordStep3AllInOneDefenseBonusValue;
+                                float mult = 1f + pct / 100f;
+                                string[] swordLines = __result.Split('\n');
+                                for (int i = 0; i < swordLines.Length; i++)
+                                {
+                                    if (!swordLines[i].Contains("$item_blockarmor")) continue;
+                                    int ci = swordLines[i].IndexOf(':');
+                                    if (ci < 0) break;
+                                    string lbl = swordLines[i].Substring(0, ci + 1);
+                                    float rawBase = item.m_shared.m_blockPower +
+                                                    item.m_shared.m_blockPowerPerLevel * (qualityLevel - 1);
+                                    swordLines[i] = BuildLine(lbl, rawBase, 0f, true, pct, mult);
+                                    break;
+                                }
+                                __result = string.Join("\n", swordLines);
+                            }
+                            return;
                         default:
                             return;
                     }
@@ -176,19 +200,19 @@ namespace CaptainSkillTree.SkillTree
                             if (flatBonus > 0f)
                             {
                                 float hp = Defense_Config.DefenseRootHealthBonusValue;
-                                bonusText += $"\n<color=#FFD700>🛡️</color><color=white>방어 전문가</color> : 체력 <color=#4FC3F7>+{hp:F0}</color>, 방어력 <color=#4FC3F7>+{flatBonus:F0}</color>";
+                                bonusText += $"\n<color=#FFD700>🛡️</color><color=white>{L.Get("armor_effect_defense_expert")}</color> : {L.Get("armor_stat_hp")} <color=#4FC3F7>+{hp:F0}</color>, {L.Get("armor_stat_defense")} <color=#4FC3F7>+{flatBonus:F0}</color>";
                             }
                             if (dodgeTotal > 0f)
-                                bonusText += $"\n<color=#40E0D0>💨</color><color=white>회피</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
+                                bonusText += $"\n<color=#40E0D0>💨</color><color=white>{L.Get("armor_effect_evasion")}</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
                             if (rockSkinActive)
-                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : 방어력 <color=orange>+{rockSkinPct:F0}%</color>";
+                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>{L.Get("armor_effect_rockskin")}</color> : {L.Get("armor_stat_defense")} <color=orange>+{rockSkinPct:F0}%</color>";
                             if (resistActive)
                             {
-                                string resistLine = "\n<color=#E040FB>🔰</color><color=white>저항</color> :";
+                                string resistLine = $"\n<color=#E040FB>🔰</color><color=white>{L.Get("armor_effect_resistance")}</color> :";
                                 if (physResist > 0f)
-                                    resistLine += $" 물리저항 <color=#4FC3F7>+{physResist:F0}</color>";
+                                    resistLine += $" {L.Get("armor_effect_phys_resist")} <color=#4FC3F7>+{physResist:F0}</color>";
                                 if (elemResist > 0f)
-                                    resistLine += $"{(physResist > 0f ? "," : "")} 속성저항 <color=#4FC3F7>+{elemResist:F0}</color>";
+                                    resistLine += $"{(physResist > 0f ? "," : "")} {L.Get("armor_effect_elem_resist")} <color=#4FC3F7>+{elemResist:F0}</color>";
                                 bonusText += resistLine;
                             }
                             break;
@@ -196,23 +220,23 @@ namespace CaptainSkillTree.SkillTree
                             if (flatBonus > 0f)
                             {
                                 float hp = Defense_Config.SurvivalHealthBonusValue;
-                                bonusText += $"\n<color=#00FF00>🪨</color><color=white>피부경화</color> : 체력 <color=#4FC3F7>+{hp:F0}</color>, 방어력 <color=#4FC3F7>+{flatBonus:F0}</color>";
+                                bonusText += $"\n<color=#00FF00>🪨</color><color=white>{L.Get("armor_effect_skin_hardening")}</color> : {L.Get("armor_stat_hp")} <color=#4FC3F7>+{hp:F0}</color>, {L.Get("armor_stat_defense")} <color=#4FC3F7>+{flatBonus:F0}</color>";
                             }
                             if (boostActive)
-                                bonusText += $"\n<color=#7FFF00>❤️</color><color=white>체력증강</color> : <color=#4FC3F7>+{Defense_Config.BoostHealthBonusValue:F0}</color>";
+                                bonusText += $"\n<color=#7FFF00>❤️</color><color=white>{L.Get("armor_effect_health_boost")}</color> : <color=#4FC3F7>+{Defense_Config.BoostHealthBonusValue:F0}</color>";
                             if (berserkerActive)
-                                bonusText += $"\n<color=#FF4500>💢</color><color=white>버서커 체력</color> : <color=orange>+{Berserker_Config.BerserkerPassiveHealthBonusValue:F0}%</color>";
+                                bonusText += $"\n<color=#FF4500>💢</color><color=white>{L.Get("armor_effect_berserker_hp")}</color> : <color=orange>+{Berserker_Config.BerserkerPassiveHealthBonusValue:F0}%</color>";
                             if (dodgeTotal > 0f)
-                                bonusText += $"\n<color=#40E0D0>💨</color><color=white>회피</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
+                                bonusText += $"\n<color=#40E0D0>💨</color><color=white>{L.Get("armor_effect_evasion")}</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
                             if (rockSkinActive)
-                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : 방어력 <color=orange>+{rockSkinPct:F0}%</color>";
+                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>{L.Get("armor_effect_rockskin")}</color> : {L.Get("armor_stat_defense")} <color=orange>+{rockSkinPct:F0}%</color>";
                             if (resistActive)
                             {
-                                string resistLine = "\n<color=#E040FB>🔰</color><color=white>저항</color> :";
+                                string resistLine = $"\n<color=#E040FB>🔰</color><color=white>{L.Get("armor_effect_resistance")}</color> :";
                                 if (physResist > 0f)
-                                    resistLine += $" 물리저항 <color=#4FC3F7>+{physResist:F0}</color>";
+                                    resistLine += $" {L.Get("armor_effect_phys_resist")} <color=#4FC3F7>+{physResist:F0}</color>";
                                 if (elemResist > 0f)
-                                    resistLine += $"{(physResist > 0f ? "," : "")} 속성저항 <color=#4FC3F7>+{elemResist:F0}</color>";
+                                    resistLine += $"{(physResist > 0f ? "," : "")} {L.Get("armor_effect_elem_resist")} <color=#4FC3F7>+{elemResist:F0}</color>";
                                 bonusText += resistLine;
                             }
                             break;
@@ -220,38 +244,38 @@ namespace CaptainSkillTree.SkillTree
                             if (flatBonus > 0f)
                             {
                                 float hp = Defense_Config.HealthBonusValue;
-                                bonusText += $"\n<color=#00BFFF>💪</color><color=white>체력단련</color> : 체력 <color=#4FC3F7>+{hp:F0}</color>, 방어력 <color=#4FC3F7>+{flatBonus:F0}</color>";
+                                bonusText += $"\n<color=#00BFFF>💪</color><color=white>{L.Get("armor_effect_body_training")}</color> : {L.Get("armor_stat_hp")} <color=#4FC3F7>+{hp:F0}</color>, {L.Get("armor_stat_defense")} <color=#4FC3F7>+{flatBonus:F0}</color>";
                             }
                             if (moveSpeedTotal > 0f)
-                                bonusText += $"\n<color=#ADFF2F>🏃</color><color=white>이동속도</color> : <color=#00BFFF>+{moveSpeedTotal:F0}%</color>";
+                                bonusText += $"\n<color=#ADFF2F>🏃</color><color=white>{L.Get("armor_effect_move_spd")}</color> : <color=#00BFFF>+{moveSpeedTotal:F0}%</color>";
                             if (dodgeTotal > 0f)
-                                bonusText += $"\n<color=#40E0D0>💨</color><color=white>회피</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
+                                bonusText += $"\n<color=#40E0D0>💨</color><color=white>{L.Get("armor_effect_evasion")}</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
                             if (rockSkinActive)
-                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : 방어력 <color=orange>+{rockSkinPct:F0}%</color>";
+                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>{L.Get("armor_effect_rockskin")}</color> : {L.Get("armor_stat_defense")} <color=orange>+{rockSkinPct:F0}%</color>";
                             if (resistActive)
                             {
-                                string resistLine = "\n<color=#E040FB>🔰</color><color=white>저항</color> :";
+                                string resistLine = $"\n<color=#E040FB>🔰</color><color=white>{L.Get("armor_effect_resistance")}</color> :";
                                 if (physResist > 0f)
-                                    resistLine += $" 물리저항 <color=#4FC3F7>+{physResist:F0}</color>";
+                                    resistLine += $" {L.Get("armor_effect_phys_resist")} <color=#4FC3F7>+{physResist:F0}</color>";
                                 if (elemResist > 0f)
-                                    resistLine += $"{(physResist > 0f ? "," : "")} 속성저항 <color=#4FC3F7>+{elemResist:F0}</color>";
+                                    resistLine += $"{(physResist > 0f ? "," : "")} {L.Get("armor_effect_elem_resist")} <color=#4FC3F7>+{elemResist:F0}</color>";
                                 bonusText += resistLine;
                             }
                             break;
                         case ItemDrop.ItemData.ItemType.Shield:
                             if (manager.GetSkillLevel("defense_Step3_shield") > 0)
-                                bonusText += $"\n<color=#00FF00>🛡️</color><color=white>방패훈련</color> : <color=#4FC3F7>+{Defense_Config.ShieldTrainingBlockPowerBonusValue:F0}</color>";
+                                bonusText += $"\n<color=#00FF00>🛡️</color><color=white>{L.Get("armor_effect_shield_training")}</color> : <color=#4FC3F7>+{Defense_Config.ShieldTrainingBlockPowerBonusValue:F0}</color>";
                             if (manager.GetSkillLevel("defense_Step5_parry") > 0)
-                                bonusText += $"\n<color=#00BFFF>⚔️</color><color=white>막기달인</color> : 패링 <color=#4FC3F7>+{Defense_Config.ParryMasterParryDurationBonusValue:F0}초</color>, 방어력 <color=#4FC3F7>+{Defense_Config.ParryMasterBlockPowerBonusValue:F0}</color>";
+                                bonusText += $"\n<color=#00BFFF>⚔️</color><color=white>{L.Get("armor_effect_parry_master")}</color> : {L.Get("armor_stat_parry")} <color=#4FC3F7>+{Defense_Config.ParryMasterParryDurationBonusValue:F0}{L.Get("armor_stat_sec")}</color>, {L.Get("armor_stat_defense")} <color=#4FC3F7>+{Defense_Config.ParryMasterBlockPowerBonusValue:F0}</color>";
                             if (rockSkinActive)
-                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>바위피부</color> : <color=orange>+{rockSkinPct:F0}%</color>";
+                                bonusText += $"\n<color=#FF8C00>🪨</color><color=white>{L.Get("armor_effect_rockskin")}</color> : <color=orange>+{rockSkinPct:F0}%</color>";
                             if (jotunnShieldActive)
                             {
                                 bool isTower = item.m_shared.m_name?.ToLower().Contains("tower") ?? false;
                                 float speed  = isTower
                                     ? Defense_Config.JotunnShieldTowerSpeedBonusValue
                                     : Defense_Config.JotunnShieldNormalSpeedBonusValue;
-                                bonusText += $"\n<color=#9400D3>✨</color><color=white>요툰의 방패</color> : 블럭 스태미나 <color=orange>-{Defense_Config.JotunnShieldBlockStaminaReductionValue:F0}%</color>, 이동속도 <color=#00BFFF>+{speed:F0}%</color>";
+                                bonusText += $"\n<color=#9400D3>✨</color><color=white>{L.Get("armor_effect_jotunn_shield")}</color> : {L.Get("armor_stat_block_stamina")} <color=orange>-{Defense_Config.JotunnShieldBlockStaminaReductionValue:F0}%</color>, {L.Get("armor_effect_move_spd")} <color=#00BFFF>+{speed:F0}%</color>";
                             }
                             break;
                     }

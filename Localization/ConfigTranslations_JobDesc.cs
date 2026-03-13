@@ -150,6 +150,50 @@ namespace CaptainSkillTree.Localization
                 "기본 충전 횟수에 더해집니다.\n" +
                 "권장값: 1",
 
+                // === Archer Job: 레벨별 패시브 추가분 (8개) ===
+                ["Archer_Lv2_JumpHeightBonus"] =
+                "【Lv2 패시브: 점프 높이 추가 (%)】\n" +
+                "아처 Lv2 업그레이드 시 추가되는 점프 높이 보너스입니다.\n" +
+                "Lv1 기본값에 더해집니다.\n" +
+                "권장값: 10%",
+
+                ["Archer_Lv3_JumpHeightBonus"] =
+                "【Lv3 패시브: 점프 높이 추가 (%)】\n" +
+                "아처 Lv3 업그레이드 시 추가되는 점프 높이 보너스입니다.\n" +
+                "권장값: 20%",
+
+                ["Archer_Lv4_JumpHeightBonus"] =
+                "【Lv4 패시브: 점프 높이 추가 (%)】\n" +
+                "아처 Lv4 업그레이드 시 추가되는 점프 높이 보너스입니다.\n" +
+                "권장값: 20%",
+
+                ["Archer_Lv5_JumpHeightBonus"] =
+                "【Lv5 패시브: 점프 높이 추가 (%)】\n" +
+                "아처 Lv5 업그레이드 시 추가되는 점프 높이 보너스입니다.\n" +
+                "권장값: 20%",
+
+                ["Archer_Lv3_FallDamageReduction"] =
+                "【Lv3 패시브: 낙사 데미지 감소 추가 (%)】\n" +
+                "아처 Lv3 업그레이드 시 추가되는 낙사 데미지 감소량입니다.\n" +
+                "Lv1 기본값에 더해집니다.\n" +
+                "권장값: 10%",
+
+                ["Archer_Lv4_FallDamageReduction"] =
+                "【Lv4 패시브: 낙사 데미지 감소 추가 (%)】\n" +
+                "아처 Lv4 업그레이드 시 추가되는 낙사 데미지 감소량입니다.\n" +
+                "권장값: 20%",
+
+                ["Archer_Lv5_FallDamageReduction"] =
+                "【Lv5 패시브: 낙사 데미지 감소 추가 (%)】\n" +
+                "아처 Lv5 업그레이드 시 추가되는 낙사 데미지 감소량입니다.\n" +
+                "권장값: 35%",
+
+                ["Archer_ElementalResistPerLevel"] =
+                "【패시브: 레벨당 속성 저항 (%)】\n" +
+                "아처 레벨업마다 추가되는 속성 저항 기본값입니다.\n" +
+                "독(Lv2+), 냉기(Lv3+), 화염(Lv4+), 번개(Lv5) 저항에 적용.\n" +
+                "권장값: 10%",
+
                 // ========================================
                 // Mage Job (Y-Key Active, 6 keys)
                 // ========================================
@@ -571,6 +615,50 @@ namespace CaptainSkillTree.Localization
                 "Additional multishot charges added at Archer Lv5.\n" +
                 "Added on top of the base charge count.\n" +
                 "Recommended: 1",
+
+                // === Archer Job: Level-based Passive Additions (8 keys) ===
+                ["Archer_Lv2_JumpHeightBonus"] =
+                "【Lv2 Passive: Jump Height Bonus (%)】\n" +
+                "Additional jump height bonus at Archer Lv2.\n" +
+                "Added on top of the Lv1 base value.\n" +
+                "Recommended: 10%",
+
+                ["Archer_Lv3_JumpHeightBonus"] =
+                "【Lv3 Passive: Jump Height Bonus (%)】\n" +
+                "Additional jump height bonus at Archer Lv3.\n" +
+                "Recommended: 20%",
+
+                ["Archer_Lv4_JumpHeightBonus"] =
+                "【Lv4 Passive: Jump Height Bonus (%)】\n" +
+                "Additional jump height bonus at Archer Lv4.\n" +
+                "Recommended: 20%",
+
+                ["Archer_Lv5_JumpHeightBonus"] =
+                "【Lv5 Passive: Jump Height Bonus (%)】\n" +
+                "Additional jump height bonus at Archer Lv5.\n" +
+                "Recommended: 20%",
+
+                ["Archer_Lv3_FallDamageReduction"] =
+                "【Lv3 Passive: Fall Damage Reduction (%)】\n" +
+                "Additional fall damage reduction at Archer Lv3.\n" +
+                "Added on top of the Lv1 base value.\n" +
+                "Recommended: 10%",
+
+                ["Archer_Lv4_FallDamageReduction"] =
+                "【Lv4 Passive: Fall Damage Reduction (%)】\n" +
+                "Additional fall damage reduction at Archer Lv4.\n" +
+                "Recommended: 20%",
+
+                ["Archer_Lv5_FallDamageReduction"] =
+                "【Lv5 Passive: Fall Damage Reduction (%)】\n" +
+                "Additional fall damage reduction at Archer Lv5.\n" +
+                "Recommended: 35%",
+
+                ["Archer_ElementalResistPerLevel"] =
+                "【Passive: Elemental Resist Per Level (%)】\n" +
+                "Base elemental resistance gained per archer level.\n" +
+                "Poison(Lv2+), Cold(Lv3+), Fire(Lv4+), Lightning(Lv5).\n" +
+                "Recommended: 10%",
 
                 // ========================================
                 // Mage Job (Y-Key Active, 6 keys)

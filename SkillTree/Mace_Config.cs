@@ -545,7 +545,7 @@ namespace CaptainSkillTree.SkillTree
             FuryHammerAoeRadius = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_FuryHammer_AoeRadius",
-                5f,
+                10f,
                 SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_AoeRadius")
             );
 

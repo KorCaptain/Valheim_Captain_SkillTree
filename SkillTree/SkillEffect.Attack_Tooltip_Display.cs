@@ -1,4 +1,5 @@
 using HarmonyLib;
+using CaptainSkillTree.Localization;
 using CaptainSkillTree.SkillTree.CriticalSystem;
 
 namespace CaptainSkillTree.SkillTree
@@ -42,6 +43,8 @@ namespace CaptainSkillTree.SkillTree
         public float MultishotLv2Arrows;  // 멀티샷 Lv2 화살 수
         public bool HasMeleeExpert;       // 근접 전문가 레이블 표시
         public bool HasRangedExpert;      // 원거리 전문가 레이블 표시
+        public bool HasRiposte;           // 칼날 되치기 레이블 표시용
+        public float BlockPower;          // 막기 방어력 % 보너스
 
         public bool HasAny()
         {
@@ -50,7 +53,8 @@ namespace CaptainSkillTree.SkillTree
                    PctPhysical       > 0.01f || PctElemental      > 0.01f || AttackSpeed        > 0.01f ||
                    CritChance        > 0.01f || CritDamage        > 0.01f ||
                    RapidFireChance   > 0.01f || RapidFireLv2Chance > 0.01f ||
-                   MultishotLv1Chance > 0.01f || MultishotLv2Chance > 0.01f;
+                   MultishotLv1Chance > 0.01f || MultishotLv2Chance > 0.01f ||
+                   BlockPower        > 0.01f;
         }
     }
 
@@ -164,17 +168,22 @@ namespace CaptainSkillTree.SkillTree
                     if (SkillEffect.HasSkill("sword_expert"))
                         physPct += Sword_Config.SwordExpertDamageValue;
                     if (SkillEffect.HasSkill("sword_step3_riposte"))
+                    {
                         b.FlatSlash += Sword_Config.SwordRiposteDamageBonusValue;
-                    if (SkillEffect.HasSkill("sword_step3_allinone") &&
-                        item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
+                        b.HasRiposte = true;
+                    }
+                    if (SkillEffect.HasSkill("sword_step3_allinone") && WeaponHelper.IsUsingTwoHandedSword(player))
+                    {
                         physPct += SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue;
+                        b.BlockPower += Sword_Config.SwordStep3AllInOneDefenseBonusValue;
+                    }
                     if (SkillEffect.HasSkill("atk_melee_bonus"))
                         physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedMeleeAttackSpeedValue;
                     if (SkillEffect.HasSkill("sword_step1_fastslash"))
                         b.AttackSpeed += Sword_Config.SwordStep1FastSlashSpeedValue;
-                    if (SkillEffect.HasSkill("sword_step4_trueduel"))
+                    if (SkillEffect.HasSkill("sword_step4_duel"))
                         b.AttackSpeed += Sword_Config.SwordStep4TrueDuelSpeedValue;
                     break;
 
@@ -414,29 +423,33 @@ namespace CaptainSkillTree.SkillTree
         public static void AppendExtraStats(ref string result, WeaponBonuses b)
         {
             if (b.PctPhysical > 0.01f)
-                result += $"\n<color={COL_ATK_PHY}>⚔️ 물리 공격력: +{b.PctPhysical:F0}%</color>";
+                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_phys_atk")}: +{b.PctPhysical:F0}%</color>";
             if (b.PctElemental > 0.01f)
-                result += $"\n<color={COL_ATK_ELEM}>🔥 속성 공격력: +{b.PctElemental:F0}%</color>";
+                result += $"\n<color={COL_ATK_ELEM}>🔥 {L.Get("weapon_effect_elem_atk")}: +{b.PctElemental:F0}%</color>";
             if (b.MoveSpeed > 0.01f)
-                result += $"\n<color={COL_MOVE_SPD}>💨 이동속도: +{b.MoveSpeed:F0}%</color>";
+                result += $"\n<color={COL_MOVE_SPD}>💨 {L.Get("weapon_effect_move_spd")}: +{b.MoveSpeed:F0}%</color>";
             if (b.AttackSpeed > 0.01f)
-                result += $"\n<color={COL_ATK_SPD}>⚡ 공격속도: +{b.AttackSpeed:F0}%</color>";
+                result += $"\n<color={COL_ATK_SPD}>⚡ {L.Get("weapon_effect_atk_spd")}: +{b.AttackSpeed:F0}%</color>";
             if (b.MultishotLv1Chance > 0.01f)
-                result += $"\n<color={COL_ATK_PHY}>🎯 멀티샷 Lv1:</color> <color=orange>{b.MultishotLv1Chance:F0}%</color> <color=white>확률 +{b.MultishotLv1Arrows:F0}발</color>";
+                result += $"\n<color={COL_ATK_PHY}>🎯 {L.Get("weapon_effect_multishot_lv1")}:</color> <color=orange>{b.MultishotLv1Chance:F0}%</color> <color=white>{L.Get("weapon_effect_prob")} +{b.MultishotLv1Arrows:F0}{L.Get("weapon_effect_arrows")}</color>";
             if (b.MultishotLv2Chance > 0.01f)
-                result += $"\n<color={COL_ATK_PHY}>🎯 멀티샷 Lv2:</color> <color=orange>{b.MultishotLv2Chance:F0}%</color> <color=white>확률 +{b.MultishotLv2Arrows:F0}발</color>";
+                result += $"\n<color={COL_ATK_PHY}>🎯 {L.Get("weapon_effect_multishot_lv2")}:</color> <color=orange>{b.MultishotLv2Chance:F0}%</color> <color=white>{L.Get("weapon_effect_prob")} +{b.MultishotLv2Arrows:F0}{L.Get("weapon_effect_arrows")}</color>";
             if (b.RapidFireChance > 0.01f)
-                result += $"\n<color={COL_ATK_PHY}>🔁 연속 발사 Lv1:</color> <color=orange>{b.RapidFireChance:F0}%</color> <color=white>확률</color>";
+                result += $"\n<color={COL_ATK_PHY}>🔁 {L.Get("weapon_effect_rapidfire_lv1")}:</color> <color=orange>{b.RapidFireChance:F0}%</color> <color=white>{L.Get("weapon_effect_prob")}</color>";
             if (b.RapidFireLv2Chance > 0.01f)
-                result += $"\n<color={COL_ATK_PHY}>🔁 연속 발사 Lv2:</color> <color=orange>{b.RapidFireLv2Chance:F0}%</color> <color=white>확률</color>";
+                result += $"\n<color={COL_ATK_PHY}>🔁 {L.Get("weapon_effect_rapidfire_lv2")}:</color> <color=orange>{b.RapidFireLv2Chance:F0}%</color> <color=white>{L.Get("weapon_effect_prob")}</color>";
             if (b.CritChance > 0.01f)
-                result += $"\n<color={COL_CRIT_CHC}>🎯 치명타 확률: +{b.CritChance:F0}%</color>";
+                result += $"\n<color={COL_CRIT_CHC}>🎯 {L.Get("weapon_effect_crit_chance")}: +{b.CritChance:F0}%</color>";
             if (b.CritDamage > 0.01f)
-                result += $"\n<color={COL_CRIT_DMG}>💥 치명타 피해: +{b.CritDamage:F0}%</color>";
+                result += $"\n<color={COL_CRIT_DMG}>💥 {L.Get("weapon_effect_crit_dmg")}: +{b.CritDamage:F0}%</color>";
+            if (b.BlockPower > 0.01f)
+                result += $"\n<color=#87CEEB>🛡️ {L.Get("weapon_effect_block_power")}: +{b.BlockPower:F0}%</color>";
+            if (b.HasRiposte)
+                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_riposte")}: +{b.FlatSlash:F0} {L.Get("weapon_stat_slash_fixed")}</color>";
             if (b.HasMeleeExpert)
-                result += $"\n<color={COL_ATK_PHY}>⚔️ 근접 전문가: +3 물리 (고정)</color>";
+                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_melee_expert")}: {L.Get("weapon_effect_melee_expert_suffix")}</color>";
             if (b.HasRangedExpert)
-                result += $"\n<color={COL_ATK_PHY}>🏹 원거리 전문가: +2 관통/속성 (고정)</color>";
+                result += $"\n<color={COL_ATK_PHY}>🏹 {L.Get("weapon_effect_ranged_expert")}: {L.Get("weapon_effect_ranged_expert_suffix")}</color>";
         }
     }
 
@@ -464,10 +477,12 @@ namespace CaptainSkillTree.SkillTree
 
                     // 무기 아이템만 허용 (화이트리스트 방식 - 음식/물약/열쇠 등 비무기 완전 차단)
                     var itemType = item.m_shared.m_itemType;
+                    bool isUnarmed = item.m_shared.m_skillType == Skills.SkillType.Unarmed;
                     if (itemType != ItemDrop.ItemData.ItemType.OneHandedWeapon &&
                         itemType != ItemDrop.ItemData.ItemType.TwoHandedWeapon &&
                         itemType != ItemDrop.ItemData.ItemType.Bow             &&
-                        itemType != ItemDrop.ItemData.ItemType.Torch)
+                        itemType != ItemDrop.ItemData.ItemType.Torch           &&
+                        !isUnarmed)  // 클로(Unarmed) 타입 예외 허용
                         return;
 
                     var group = WeaponTooltipHelper.GetWeaponGroup(item);

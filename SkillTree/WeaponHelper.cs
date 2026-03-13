@@ -220,6 +220,18 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 양손검 사용 여부 확인 (ItemType.TwoHandedWeapon + SkillType.Swords)
+        /// </summary>
+        public static bool IsUsingTwoHandedSword(Player player)
+        {
+            if (player == null) return false;
+            var weapon = player.GetCurrentWeapon();
+            if (weapon?.m_shared == null) return false;
+            return weapon.m_shared.m_skillType == Skills.SkillType.Swords &&
+                   weapon.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon;
+        }
+
+        /// <summary>
         /// 양손 둔기 사용 여부 확인 (슬레지해머, 디몰리셔 등)
         /// </summary>
         public static bool IsUsingTwoHandedMace(Player player)

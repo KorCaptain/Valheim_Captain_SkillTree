@@ -36,13 +36,12 @@ namespace CaptainSkillTree.Gui
             "mace_Step7_fury_hammer", "staff_Step6_heal"
         };
         private static readonly string[] HIconNames = {
-            "sword_unlock", "spear_unlock",
-            "mace_unlock", "staff_unlock"
+            "defense_unlock", "attack_unlock",
+            "attack_unlock", "staff_unlock"
         };
 
         // HUD 슬롯 정보
         private static readonly string[] SlotKeys   = { "Y", "R", "G", "H" };
-        private static readonly string   HSlotIcon  = "melee_unlock";
 
         // Y슬롯 디버그 로그 (1회만)
         private bool _ySlotDebugLogged = false;
@@ -204,7 +203,7 @@ namespace CaptainSkillTree.Gui
             keyRt.sizeDelta = new Vector2(62f, 32f);
             keyGO.transform.SetAsLastSibling();
 
-            return new SlotUI
+            var slot = new SlotUI
             {
                 Root = go,
                 IconRt = iconRt,
@@ -214,6 +213,72 @@ namespace CaptainSkillTree.Gui
                 CountdownText = countText,
                 KeyLabelText = keyText
             };
+
+            // Y슬롯: 버서커 패시브 쿨타임 서브 아이콘 생성
+            if (key == "Y")
+            {
+                var subRoot = new GameObject("PassiveSubIcon");
+                subRoot.transform.SetParent(go.transform, false);
+                var subRt = subRoot.AddComponent<RectTransform>();
+                subRt.anchorMin = new Vector2(0.5f, 0.5f);
+                subRt.anchorMax = new Vector2(0.5f, 0.5f);
+                subRt.pivot = new Vector2(0.5f, 0.5f);
+                subRt.anchoredPosition = new Vector2(-20f, 30f);
+                subRt.sizeDelta = new Vector2(22f, 22f);
+
+                // 서브 아이콘 배경
+                var subIconGO = new GameObject("SubIconBg");
+                subIconGO.transform.SetParent(subRoot.transform, false);
+                var subIconImg = subIconGO.AddComponent<Image>();
+                subIconImg.color = new Color(0.2f, 0.2f, 0.2f, 0.85f);
+                subIconImg.raycastTarget = false;
+                var subIconRt = subIconGO.GetComponent<RectTransform>();
+                subIconRt.anchorMin = Vector2.zero;
+                subIconRt.anchorMax = Vector2.one;
+                subIconRt.offsetMin = Vector2.zero;
+                subIconRt.offsetMax = Vector2.zero;
+
+                // 서브 쿨타임 오버레이 (위→아래)
+                var subOverlayGO = new GameObject("PassiveOverlay");
+                subOverlayGO.transform.SetParent(subRoot.transform, false);
+                var subOverlay = subOverlayGO.AddComponent<Image>();
+                subOverlay.raycastTarget = false;
+                subOverlay.color = new Color(0f, 0f, 0f, 0.85f);
+                subOverlay.type = Image.Type.Filled;
+                subOverlay.fillMethod = Image.FillMethod.Vertical;
+                subOverlay.fillOrigin = (int)Image.OriginVertical.Top;
+                subOverlay.fillAmount = 0f;
+                var subOverlayRt = subOverlayGO.GetComponent<RectTransform>();
+                subOverlayRt.anchorMin = Vector2.zero;
+                subOverlayRt.anchorMax = Vector2.one;
+                subOverlayRt.offsetMin = Vector2.zero;
+                subOverlayRt.offsetMax = Vector2.zero;
+
+                // 서브 카운트다운 텍스트
+                var subCountGO = new GameObject("PassiveCountdown");
+                subCountGO.transform.SetParent(subRoot.transform, false);
+                var subCount = subCountGO.AddComponent<Text>();
+                subCount.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                subCount.fontSize = 12;
+                subCount.fontStyle = FontStyle.Bold;
+                subCount.color = Color.white;
+                subCount.alignment = TextAnchor.MiddleCenter;
+                subCount.raycastTarget = false;
+                subCount.text = "";
+                var subCountRt = subCountGO.GetComponent<RectTransform>();
+                subCountRt.anchorMin = Vector2.zero;
+                subCountRt.anchorMax = Vector2.one;
+                subCountRt.offsetMin = Vector2.zero;
+                subCountRt.offsetMax = Vector2.zero;
+
+                subRoot.SetActive(false);
+
+                slot.PassiveSubRoot = subRoot;
+                slot.PassiveSubOverlay = subOverlay;
+                slot.PassiveSubCountdown = subCount;
+            }
+
+            return slot;
         }
 
         private float _updateTimer = 0f;
@@ -357,12 +422,11 @@ namespace CaptainSkillTree.Gui
                     }
                     break;
                 case "H":
-                    // H슬롯은 melee_unlock 고정 (연관 스킬이 있을 때만 표시)
                     for (int i = 0; i < HSkillIds.Length; i++)
                     {
                         if (mgr.GetSkillLevel(HSkillIds[i]) > 0)
                         {
-                            iconName = HSlotIcon;
+                            iconName = HIconNames[i];
                             break;
                         }
                     }
@@ -414,6 +478,34 @@ namespace CaptainSkillTree.Gui
             {
                 slot.CountdownText.text = "";
                 slot.CountdownText.gameObject.SetActive(false);
+            }
+
+            // Y슬롯: 버서커 패시브 서브 아이콘 업데이트
+            if (slotKey == "Y" && slot.PassiveSubRoot != null)
+            {
+                bool isBerserker = iconName == "Berserker_unlock";
+                if (isBerserker)
+                {
+                    float passiveRatio = ActiveSkillCooldownRegistry.GetCooldownRatio("passive_berserker");
+                    float passiveRemaining = ActiveSkillCooldownRegistry.GetCooldownRemaining("passive_berserker");
+                    bool passiveOnCooldown = passiveRatio > 0f || passiveRemaining > 0f;
+
+                    slot.PassiveSubRoot.SetActive(passiveOnCooldown);
+                    if (passiveOnCooldown)
+                    {
+                        slot.PassiveSubOverlay.fillAmount = passiveRatio;
+                        if (passiveRemaining > 60f)
+                            slot.PassiveSubCountdown.text = Mathf.CeilToInt(passiveRemaining / 60f) + "m";
+                        else if (passiveRemaining > 0f)
+                            slot.PassiveSubCountdown.text = Mathf.CeilToInt(passiveRemaining).ToString();
+                        else
+                            slot.PassiveSubCountdown.text = "";
+                    }
+                }
+                else
+                {
+                    slot.PassiveSubRoot.SetActive(false);
+                }
             }
         }
 
@@ -501,6 +593,11 @@ namespace CaptainSkillTree.Gui
             public float PrevRatio;
             public bool ScaleAnimActive;
             public float ScaleAnimStart;
+
+            // 버서커 패시브 서브 아이콘 (Y슬롯 전용)
+            public GameObject PassiveSubRoot;
+            public Image PassiveSubOverlay;
+            public Text PassiveSubCountdown;
         }
     }
 }

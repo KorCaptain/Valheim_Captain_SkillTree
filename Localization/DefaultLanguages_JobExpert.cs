@@ -221,6 +221,7 @@ namespace CaptainSkillTree.Localization
                 ["already_rage_state"] = "이미 분노 상태!",
                 ["berserker_rage"] = "버서커 분노!",
                 ["death_ignore"] = "죽음의 무시",
+                ["berserker_ranged_30pct"] = "(원거리 공격력은 30%만 적용)",
 
                 // === Staff Heal Effect Messages ===
                 ["heal_cooldown"] = "힐 쿨타임: {0}초",
@@ -343,6 +344,11 @@ namespace CaptainSkillTree.Localization
                 ["archer_desc_multishot_fallback"] = "Fires 5 arrows x2 times.",
                 ["archer_desc_arrow_damage_fallback"] = "Each arrow deals 50% of bow+arrow damage",
                 ["archer_passive_skills"] = "Jump height +{0}%, Fall damage -{1}%",
+                ["archer_passive_lv1"] = "Jump +{0}%, Fall -{1}%",
+                ["archer_passive_lv2"] = "Jump +{0}%, Poison Resist +{1}%",
+                ["archer_passive_lv3"] = "Jump +{0}%, Fall -{1}%, Poison/Cold Resist +{2}%",
+                ["archer_passive_lv4"] = "Jump +{0}%, Fall -{1}%, Poison/Cold/Fire Resist +{2}%",
+                ["archer_passive_lv5"] = "Jump +{0}%, Fall -{1}%, All Elemental Resist +{2}%",
                 ["requirement_archer"] = "Bow equipped, Archer job",
                 ["archer_current_level"] = "Current Level",
                 ["archer_max_level"] = "★ Max Level Reached",
@@ -373,6 +379,7 @@ namespace CaptainSkillTree.Localization
                 ["berserker_skill_rage"] = "Berserker Rage",
                 ["berserker_desc_rage"] = "Activate rage state for {0}s with powerful attack boost",
                 ["berserker_desc_rage_detail"] = "+{0}% damage per 1% health lost, max +{1}%",
+                ["berserker_ranged_30pct"] = "(30% effectiveness for ranged attacks)",
                 ["berserker_rage_effect"] = "Rage Effect",
                 ["berserker_rage_damage_per_health"] = "+{0}% damage per 1% health lost",
                 ["berserker_passive_desc"] = "Stamina regen +20%, Max HP +{3}%, Invincible for {1}s when health below {0}% (cooldown {2}min)",

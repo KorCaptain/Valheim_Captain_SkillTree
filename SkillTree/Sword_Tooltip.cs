@@ -167,7 +167,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("sword_desc_all_in_one", SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue, SkillTreeConfig.SwordStep3OffenseDefenseDefenseBonusValue),
                 MeleeTooltipUtils.WeaponType.Sword
             );
-            data.requirement = L.Get("requirement_sword_equip");
+            data.requirement = L.Get("requirement_two_handed_sword");
             data.additionalInfo = L.Get("tooltip_sword_effect_note");
             data.requiredPoints = requiredPoints.ToString();
 

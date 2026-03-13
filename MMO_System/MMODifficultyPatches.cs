@@ -31,6 +31,9 @@ namespace CaptainSkillTree.MMO_System
                 if (MMODifficultyConfig.EnableMMODifficulty == null ||
                     !MMODifficultyConfig.EnableMMODifficulty.Value)
                     return;
+                if (CaptainLevelConfig.EnableCaptainLevel != null &&
+                    !CaptainLevelConfig.EnableCaptainLevel.Value)
+                    return;
 
                 // 2. 플레이어 자신은 스킵
                 if (__instance.IsPlayer()) return;
@@ -59,9 +62,9 @@ namespace CaptainSkillTree.MMO_System
                 {
                     int newLevel = Mathf.Max(1, __instance.GetLevel() + bonus);
                     __instance.SetLevel(newLevel);
-                    Plugin.Log.LogDebug(
-                        $"[MMODifficulty] {__instance.name} level +{bonus} " +
-                        $"(SP:{totalSP}, 최종:{newLevel})");
+                    Plugin.Log.LogInfo(
+                        $"[MMODifficulty] 몬스터 레벨 상향: {__instance.name} +{bonus}레벨 " +
+                        $"(SP:{totalSP}, 최종 레벨:{newLevel})");
                 }
 
                 // 10. 적용 완료 마킹
@@ -84,6 +87,9 @@ namespace CaptainSkillTree.MMO_System
         {
             if (MMODifficultyConfig.EnableMMODifficulty == null ||
                 !MMODifficultyConfig.EnableMMODifficulty.Value)
+                return;
+            if (CaptainLevelConfig.EnableCaptainLevel != null &&
+                !CaptainLevelConfig.EnableCaptainLevel.Value)
                 return;
 
             if (_notificationShown) return;

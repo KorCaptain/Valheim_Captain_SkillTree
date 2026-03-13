@@ -138,17 +138,12 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 칼날 되치기 - 패링 성공 시 공격력 증가 효과
+        /// 칼날 되치기 - 패시브 베기 +5 고정 (MeleeSkillPatches에서 항상 적용됨, 패링 버프 불필요)
         /// </summary>
         public static void ApplySwordBladeCounter(Player player)
         {
-            if (!HasSkill("sword_step3_riposte")) return;
-
-            float duration = SkillTreeConfig.SwordStep3BladeCounterDurationValue;
-            swordBladeCounterEndTime[player] = Time.time + duration;
-
-            DrawFloatingText(player, "⚔️ " + L.Get("sword_blade_counter", duration, SkillTreeConfig.SwordStep3BladeCounterBonusValue));
-            Plugin.Log.LogInfo($"[칼날 되치기] 패링 성공 - {duration}초간 공격력 +{SkillTreeConfig.SwordStep3BladeCounterBonusValue}% 적용");
+            // 이전 설계의 패링 버프 메커니즘 제거됨
+            // 실제 효과는 MeleeSkillPatches.ApplySwordPassiveBonus에서 고정값으로 적용 중
         }
 
         /// <summary>

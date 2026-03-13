@@ -20,7 +20,7 @@
     <UseSharedCompilation>false</UseSharedCompilation>
     <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
     <!-- 🔧 버전 관리 시스템 -->
-    <Version>0.1.914</Version>
+    <Version>0.1.942</Version>
     <AutoIncrementVersion>true</AutoIncrementVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -151,6 +151,8 @@
     <EmbeddedResource Include="asset/Resources/Skill_Tree_BGM.ogg" />
     <!-- 러시아어 번역 JSON -->
     <EmbeddedResource Include="Localization/ru.json" />
+    <!-- 포르투갈어(브라질) 번역 JSON -->
+    <EmbeddedResource Include="Localization/pt_BR.json" />
   </ItemGroup>
   <ItemGroup>
     <!-- VFX 효과 에셋들 (VFX 폴더의 모든 프리팹을 EmbeddedResource로 포함) -->

@@ -166,7 +166,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_CrossbowSpec_EnhanceTriggerChance"), order: 44);
 
             AttackCrossbowBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_CrossbowSpec_CrossbowDamage", 9f,
+                "Attack Tree", "Tier2_CrossbowSpec_CrossbowDamage", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier2_CrossbowSpec_CrossbowDamage"), order: 44);
 
             AttackStep2CrossbowRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -179,7 +179,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_StaffSpec_ElementalTriggerChance"), order: 42);
 
             AttackStaffBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_StaffSpec_StaffDamage", 8f,
+                "Attack Tree", "Tier2_StaffSpec_StaffDamage", 10f,
                 SkillTreeConfig.GetConfigDescription("Tier2_StaffSpec_StaffDamage"), order: 42);
 
             AttackStep2StaffRequiredPoints = SkillTreeConfig.BindServerSync(config,

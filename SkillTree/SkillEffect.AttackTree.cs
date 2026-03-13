@@ -42,6 +42,22 @@ namespace CaptainSkillTree.SkillTree
                         float rageDamageBonus = BerserkerSkills.GetRageDamageBonus(player);
                         if (rageDamageBonus > 0f)
                         {
+                            // 원거리/연공창 사용 시 30% 스케일링
+                            var rageWeapon = player.GetCurrentWeapon();
+                            if (rageWeapon != null)
+                            {
+                                bool isRageBow = rageWeapon.m_shared.m_skillType == Skills.SkillType.Bows;
+                                bool isRageCrossbow = rageWeapon.m_shared.m_skillType == Skills.SkillType.Crossbows;
+                                bool isRageStaff = rageWeapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic ||
+                                                   rageWeapon.m_shared.m_skillType == Skills.SkillType.BloodMagic;
+                                bool isRageSpear = rageWeapon.m_shared.m_skillType == Skills.SkillType.Spears;
+                                bool isSpearComboActive = isRageSpear &&
+                                    SkillEffect.spearEnhancedThrowBuffEndTime.TryGetValue(player, out float spearBuffEnd) &&
+                                    Time.time < spearBuffEnd;
+                                if (isRageBow || isRageCrossbow || isRageStaff || isSpearComboActive)
+                                    rageDamageBonus *= 0.3f;
+                            }
+
                             float rageMultiplier = 1f + (rageDamageBonus / 100f);
                             totalDamageMultiplier *= rageMultiplier;
                             showEffect = true;
@@ -217,16 +233,6 @@ namespace CaptainSkillTree.SkillTree
                         isAttackTreeEffect = true;
                     }
 
-                    // 칼날 되치기 지속 버프 (sword_step3_riposte)
-                    if (isMelee && SkillEffect.IsUsingSword(player) &&
-                        SkillEffect.swordBladeCounterEndTime.TryGetValue(player, out float bladeEnd) &&
-                        Time.time < bladeEnd)
-                    {
-                        float bonus = SkillTreeConfig.SwordStep3BladeCounterBonusValue / 100f;
-                        totalDamageMultiplier *= (1f + bonus);
-                        isAttackTreeEffect = true;
-                    }
-
                     // 6단계: 약점 공격 - Valheim GetRandomSkillFactor 패치(하단)에서 치명타 시 처리됨 (중복 적용 금지)
 
                     // 6단계: 양손 분쇄 (양손 무기 공격력 +[CONFIG]%)
@@ -290,10 +296,7 @@ namespace CaptainSkillTree.SkillTree
                         {
                             float bonus = SkillTreeConfig.AttackRangedEnhancementValue / 100f;
                             totalDamageMultiplier *= (1f + bonus);
-                            showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "🏹 " + L.Get("ranged_enhance"),
-                                new Color(0.2f, 0.8f, 0.8f), SkillEffect.SkillEffectTextType.Combat);
                         }
                     }
 
@@ -306,6 +309,11 @@ namespace CaptainSkillTree.SkillTree
                         hit.m_damage.m_pierce *= totalDamageMultiplier;
                         hit.m_damage.m_chop *= totalDamageMultiplier;
                         hit.m_damage.m_pickaxe *= totalDamageMultiplier;
+                        hit.m_damage.m_fire *= totalDamageMultiplier;
+                        hit.m_damage.m_frost *= totalDamageMultiplier;
+                        hit.m_damage.m_lightning *= totalDamageMultiplier;
+                        hit.m_damage.m_poison *= totalDamageMultiplier;
+                        hit.m_damage.m_spirit *= totalDamageMultiplier;
 
                         // attack_root 스킬 전용 효과 표시 (배운 경우에만)
                         if (showAttackRootEffect && UnityEngine.Random.Range(0f, 1f) < 0.1f)

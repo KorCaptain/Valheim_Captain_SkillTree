@@ -117,6 +117,50 @@ namespace CaptainSkillTree.Localization
                 "Somado à quantidade base de cargas.\n" +
                 "Valor recomendado: 1",
 
+                // === Arqueiro: Bônus passivos por nível (8 chaves) ===
+                ["Archer_Lv2_JumpHeightBonus"] =
+                "【Nv.2 Passivo: Bônus de Altura de Salto (%)】\n" +
+                "Bônus extra de altura de salto no Nv.2.\n" +
+                "Somado ao valor base do Nv.1.\n" +
+                "Valor recomendado: 10%",
+
+                ["Archer_Lv3_JumpHeightBonus"] =
+                "【Nv.3 Passivo: Bônus de Altura de Salto (%)】\n" +
+                "Bônus extra de altura de salto no Nv.3.\n" +
+                "Valor recomendado: 20%",
+
+                ["Archer_Lv4_JumpHeightBonus"] =
+                "【Nv.4 Passivo: Bônus de Altura de Salto (%)】\n" +
+                "Bônus extra de altura de salto no Nv.4.\n" +
+                "Valor recomendado: 20%",
+
+                ["Archer_Lv5_JumpHeightBonus"] =
+                "【Nv.5 Passivo: Bônus de Altura de Salto (%)】\n" +
+                "Bônus extra de altura de salto no Nv.5.\n" +
+                "Valor recomendado: 20%",
+
+                ["Archer_Lv3_FallDamageReduction"] =
+                "【Nv.3 Passivo: Redução de Dano de Queda (%)】\n" +
+                "Redução extra de dano de queda no Nv.3.\n" +
+                "Somado ao valor base do Nv.1.\n" +
+                "Valor recomendado: 10%",
+
+                ["Archer_Lv4_FallDamageReduction"] =
+                "【Nv.4 Passivo: Redução de Dano de Queda (%)】\n" +
+                "Redução extra de dano de queda no Nv.4.\n" +
+                "Valor recomendado: 20%",
+
+                ["Archer_Lv5_FallDamageReduction"] =
+                "【Nv.5 Passivo: Redução de Dano de Queda (%)】\n" +
+                "Redução extra de dano de queda no Nv.5.\n" +
+                "Valor recomendado: 35%",
+
+                ["Archer_ElementalResistPerLevel"] =
+                "【Passivo: Resistência Elemental por Nível (%)】\n" +
+                "Resistência elemental base por nível do arqueiro.\n" +
+                "Veneno(Nv2+), Frio(Nv3+), Fogo(Nv4+), Raio(Nv5).\n" +
+                "Valor recomendado: 10%",
+
                 // ========================================
                 // Mage Job (mago)
                 // ========================================

@@ -244,25 +244,54 @@ namespace CaptainSkillTree.Gui
             // 2. 단검 노드(아이콘 방식, 프리팹 NO, 코드 직접 생성)
             // (기존 단검/근접/무기 노드 수동 생성 코드 전체 삭제)
             // ...
-            // 중앙 상단 UI: [스킬트리 사용가능 포인트 00] 텍스트 복원
+            // 중앙 상단 UI: 스킬포인트 배경 패널 + 텍스트
+            // 골드 테두리 레이어
+            GameObject spBorderGo = new GameObject("SkillPointBorder", typeof(RectTransform), typeof(Image));
+            spBorderGo.transform.SetParent(panel.transform, false);
+            var spBorderRect = spBorderGo.GetComponent<RectTransform>();
+            spBorderRect.sizeDelta = new Vector2(300, 40);
+            spBorderRect.anchorMin = new Vector2(0.5f, 1f);
+            spBorderRect.anchorMax = new Vector2(0.5f, 1f);
+            spBorderRect.pivot = new Vector2(0.5f, 1f);
+            spBorderRect.anchoredPosition = new Vector2(0, -40);
+            var spBorderImg = spBorderGo.GetComponent<Image>();
+            spBorderImg.color = new Color(0.85f, 0.7f, 0.1f, 0.9f);
+            spBorderImg.raycastTarget = false;
+
+            // 다크 배경 레이어
+            GameObject spBgGo = new GameObject("SkillPointBg", typeof(RectTransform), typeof(Image));
+            spBgGo.transform.SetParent(panel.transform, false);
+            var spBgRect = spBgGo.GetComponent<RectTransform>();
+            spBgRect.sizeDelta = new Vector2(294, 34);
+            spBgRect.anchorMin = new Vector2(0.5f, 1f);
+            spBgRect.anchorMax = new Vector2(0.5f, 1f);
+            spBgRect.pivot = new Vector2(0.5f, 1f);
+            spBgRect.anchoredPosition = new Vector2(0, -40);
+            var spBgImg = spBgGo.GetComponent<Image>();
+            spBgImg.color = new Color(0.04f, 0.04f, 0.12f, 0.88f);
+            spBgImg.raycastTarget = false;
+
+            // 스킬포인트 텍스트
             GameObject txtObj = new GameObject("SkillPointText", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Text));
             txtObj.transform.SetParent(panel.transform, false);
             var skillPointUnityText = txtObj.GetComponent<UnityEngine.UI.Text>();
             if (skillPointUnityText != null) {
-                skillPointText = skillPointUnityText; // TextMeshProUGUI 필드에 할당
+                skillPointText = skillPointUnityText;
                 UpdateSkillPointText();
-                skillPointUnityText.fontSize = 18;
-                skillPointUnityText.color = new Color(1f, 0.2f, 0.7f, 1f); // 진한 분홍색, 완전 불투명
+                skillPointUnityText.fontSize = 16;
+                skillPointUnityText.color = Color.white;
                 skillPointUnityText.alignment = TextAnchor.MiddleCenter;
                 skillPointUnityText.fontStyle = FontStyle.Bold;
-                // Arial 폰트 할당
                 skillPointUnityText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                var txtShadow = txtObj.AddComponent<UnityEngine.UI.Shadow>();
+                txtShadow.effectColor = new Color(0, 0, 0, 0.85f);
+                txtShadow.effectDistance = new Vector2(1.5f, -1.5f);
                 var txtRect = txtObj.GetComponent<RectTransform>();
-                txtRect.sizeDelta = new Vector2(300, 40);
+                txtRect.sizeDelta = new Vector2(290, 34);
                 txtRect.anchorMin = new Vector2(0.5f, 1f);
                 txtRect.anchorMax = new Vector2(0.5f, 1f);
                 txtRect.pivot = new Vector2(0.5f, 1f);
-                txtRect.anchoredPosition = new Vector2(0, -40); // 중앙 상단
+                txtRect.anchoredPosition = new Vector2(0, -40);
             } else {
                 Debug.LogError("[SkillTreeUI] UnityEngine.UI.Text 컴포넌트 생성 실패");
             }
@@ -356,30 +385,24 @@ namespace CaptainSkillTree.Gui
             containerRect.anchorMin = new Vector2(0.5f, 1f);
             containerRect.anchorMax = new Vector2(0.5f, 1f);
             containerRect.pivot = new Vector2(0.5f, 1f);
-            containerRect.anchoredPosition = new Vector2(0, -60); // -30에서 -60으로 변경 (추가 -30)
-            containerRect.sizeDelta = new Vector2(300, 60);
+            containerRect.anchoredPosition = new Vector2(0, -82);
+            containerRect.sizeDelta = new Vector2(270, 40);
 
             // 1. 사용 가능 포인트 텍스트 (제거 - 기존 텍스트를 사용)
 
-            // 2. 확인 버튼 (50% 크기 = 30% + 20% 증가)
-            confirmButton = CreateStyledButton("ConfirmButton", L10n.Get("ui_confirm"), new Vector2(-62.5f, 0), new Color(0.0f, 0.0f, 0.545f), container.transform, () => {
-                // 투자 확정 시 이펙트와 효과음
+            // 2. 확인 버튼 (딥 에메랄드)
+            confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"), new Vector2(-65f, 0), new Color(0.06f, 0.40f, 0.18f, 1f), container.transform, () => {
                 PlaySkillInvestmentEffects();
-                
                 SkillTree.SkillTreeManager.Instance.ConfirmInvestments();
-                
                 nodeUI.RefreshNodeStates();
                 nodeUI.UpdateConnectionLines();
                 RefreshUI();
             });
 
-            // 3. 취소 버튼 (50% 크기 = 30% + 20% 증가)
-            cancelButton = CreateStyledButton("CancelButton", L10n.Get("ui_cancel"), new Vector2(62.5f, 0), new Color(0.545f, 0.0f, 0.0f), container.transform, () => {
-                // 취소 시 취소음
+            // 3. 취소 버튼 (다크 스틸)
+            cancelButton = CreateLuxuryButton("CancelButton", L10n.Get("ui_cancel"), new Vector2(65f, 0), new Color(0.22f, 0.22f, 0.30f, 1f), container.transform, () => {
                 PlayCancelSound();
-                
                 SkillTree.SkillTreeManager.Instance.CancelInvestments();
-                
                 nodeUI.RefreshNodeStates();
                 nodeUI.UpdateConnectionLines();
                 RefreshUI();
@@ -437,6 +460,112 @@ namespace CaptainSkillTree.Gui
             textRect.offsetMin = Vector2.zero;
             textRect.offsetMax = Vector2.zero;
             
+            return button;
+        }
+
+        /// <summary>
+        /// 5-레이어 고급 버튼 생성 (Shadow + GoldBorder + MainBody + Highlight + Text)
+        /// </summary>
+        private Button CreateLuxuryButton(string name, string text, Vector2 position,
+            Color mainColor, Transform parent, UnityEngine.Events.UnityAction onClick)
+        {
+            // 루트 컨테이너 (Button 컴포넌트, 투명)
+            GameObject root = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            root.transform.SetParent(parent, false);
+            var rootRect = root.GetComponent<RectTransform>();
+            rootRect.sizeDelta = new Vector2(110, 32);
+            rootRect.anchorMin = new Vector2(0.5f, 0.5f);
+            rootRect.anchorMax = new Vector2(0.5f, 0.5f);
+            rootRect.pivot = new Vector2(0.5f, 0.5f);
+            rootRect.anchoredPosition = position;
+            root.GetComponent<Image>().color = Color.clear;
+
+            // 1. 드롭 섀도우 레이어
+            GameObject shadowGo = new GameObject("Shadow", typeof(RectTransform), typeof(Image));
+            shadowGo.transform.SetParent(root.transform, false);
+            var shadowRect = shadowGo.GetComponent<RectTransform>();
+            shadowRect.anchorMin = new Vector2(0.5f, 0.5f);
+            shadowRect.anchorMax = new Vector2(0.5f, 0.5f);
+            shadowRect.pivot = new Vector2(0.5f, 0.5f);
+            shadowRect.sizeDelta = new Vector2(110, 32);
+            shadowRect.anchoredPosition = new Vector2(2f, -2f);
+            shadowGo.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+            shadowGo.GetComponent<Image>().raycastTarget = false;
+
+            // 2. 골드 테두리 레이어
+            GameObject borderGo = new GameObject("GoldBorder", typeof(RectTransform), typeof(Image));
+            borderGo.transform.SetParent(root.transform, false);
+            var borderRect = borderGo.GetComponent<RectTransform>();
+            borderRect.anchorMin = new Vector2(0.5f, 0.5f);
+            borderRect.anchorMax = new Vector2(0.5f, 0.5f);
+            borderRect.pivot = new Vector2(0.5f, 0.5f);
+            borderRect.sizeDelta = new Vector2(110, 32);
+            borderRect.anchoredPosition = Vector2.zero;
+            borderGo.GetComponent<Image>().color = new Color(0.85f, 0.7f, 0.1f, 0.85f);
+            borderGo.GetComponent<Image>().raycastTarget = false;
+
+            // 3. 메인 바디 레이어
+            GameObject mainGo = new GameObject("MainBody", typeof(RectTransform), typeof(Image));
+            mainGo.transform.SetParent(root.transform, false);
+            var mainRect = mainGo.GetComponent<RectTransform>();
+            mainRect.anchorMin = new Vector2(0.5f, 0.5f);
+            mainRect.anchorMax = new Vector2(0.5f, 0.5f);
+            mainRect.pivot = new Vector2(0.5f, 0.5f);
+            mainRect.sizeDelta = new Vector2(104, 26);
+            mainRect.anchoredPosition = Vector2.zero;
+            mainGo.GetComponent<Image>().color = mainColor;
+            mainGo.GetComponent<Image>().raycastTarget = false;
+
+            // 4. 상단 하이라이트 레이어 (상단 40%)
+            GameObject hlGo = new GameObject("Highlight", typeof(RectTransform), typeof(Image));
+            hlGo.transform.SetParent(mainGo.transform, false);
+            var hlRect = hlGo.GetComponent<RectTransform>();
+            hlRect.anchorMin = new Vector2(0, 0.6f);
+            hlRect.anchorMax = new Vector2(1, 1);
+            hlRect.offsetMin = Vector2.zero;
+            hlRect.offsetMax = Vector2.zero;
+            hlGo.GetComponent<Image>().color = new Color(
+                Mathf.Min(mainColor.r + 0.2f, 1f),
+                Mathf.Min(mainColor.g + 0.2f, 1f),
+                Mathf.Min(mainColor.b + 0.2f, 1f),
+                0.45f
+            );
+            hlGo.GetComponent<Image>().raycastTarget = false;
+
+            // 5. 텍스트 + Shadow
+            GameObject textGo = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Text));
+            textGo.transform.SetParent(mainGo.transform, false);
+            var textComp = textGo.GetComponent<UnityEngine.UI.Text>();
+            textComp.text = text;
+            textComp.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            textComp.alignment = TextAnchor.MiddleCenter;
+            textComp.color = Color.white;
+            textComp.fontSize = 16;
+            textComp.fontStyle = FontStyle.Bold;
+            textComp.raycastTarget = false;
+            var textRect = textGo.GetComponent<RectTransform>();
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.offsetMin = Vector2.zero;
+            textRect.offsetMax = Vector2.zero;
+            var textShadow = textGo.AddComponent<UnityEngine.UI.Shadow>();
+            textShadow.effectColor = new Color(0, 0, 0, 0.85f);
+            textShadow.effectDistance = new Vector2(1f, -1f);
+
+            // ColorBlock
+            var button = root.GetComponent<Button>();
+            var colors = button.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(1.15f, 1.15f, 1.15f, 1f);
+            colors.pressedColor = new Color(0.7f, 0.7f, 0.7f, 1f);
+            colors.fadeDuration = 0.1f;
+            button.colors = colors;
+
+            button.onClick.AddListener(() => {
+                StartCoroutine(ButtonClickEffect(rootRect));
+                onClick.Invoke();
+            });
+
             return button;
         }
 
@@ -577,13 +706,13 @@ namespace CaptainSkillTree.Gui
                 {
                     // 스킬포인트 기반 레벨 모드: Lv.34 스킬포인트 05 / 150
                     // (사용: 102, 2pt/Lv) - 줄바꿈 후 흰색 표시
-                    skillPointText.text = $"<color=#00BFFF>Lv.{levelInfo.level}</color> {L10n.Get("skill_points")} <color=#FF0000>{availablePoints:00}</color><color=#FFFFFF> / </color><color=#000000>{maxPoints}</color>\n<color=#FFFFFF>({L10n.Get("ui_skill_used")}: {levelInfo.usedPoints}, {levelInfo.pointsPerLevel}{L10n.Get("ui_pt_per_level")})</color>";
+                    skillPointText.text = $"<color=#FFD700>Lv.{levelInfo.level}</color> {L10n.Get("skill_points")} <color=#FF8C00>{availablePoints:00}</color><color=#888888> / </color><color=#C0C0C0>{maxPoints}</color>\n<color=#FFFFFF>({L10n.Get("ui_skill_used")}: {levelInfo.usedPoints}, {levelInfo.pointsPerLevel}{L10n.Get("ui_pt_per_level")})</color>";
                 }
                 else
                 {
                     // 기존 모드: 스킬트리 사용가능 포인트 05 / 150
                     int currentLevel = CaptainMMOBridge.GetLevel();
-                    skillPointText.text = $"<color=#00BFFF>Lv.{currentLevel}</color> {L10n.Get("skill_points")} <color=#FF0000>{availablePoints:00}</color><color=#FFFFFF> / </color><color=#000000>{maxPoints:00}</color>";
+                    skillPointText.text = $"<color=#FFD700>Lv.{currentLevel}</color> {L10n.Get("skill_points")} <color=#FF8C00>{availablePoints:00}</color><color=#888888> / </color><color=#C0C0C0>{maxPoints:00}</color>";
                 }
             }
         }

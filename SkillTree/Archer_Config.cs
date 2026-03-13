@@ -20,6 +20,16 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ArcherJumpHeightBonus;            // 점프 높이 보너스 (기본: 20%)
         public static ConfigEntry<float> ArcherFallDamageReduction;        // 낙사 데미지 감소 (기본: 50%)
 
+        // === 아처 레벨별 패시브 점프/낙사 추가 컨피그 (Lv2~5) ===
+        public static ConfigEntry<float> ArcherLv2JumpHeightBonus;         // Lv2 추가 점프 (기본: 10%)
+        public static ConfigEntry<float> ArcherLv3JumpHeightBonus;         // Lv3 추가 점프 (기본: 20%)
+        public static ConfigEntry<float> ArcherLv4JumpHeightBonus;         // Lv4 추가 점프 (기본: 20%)
+        public static ConfigEntry<float> ArcherLv5JumpHeightBonus;         // Lv5 추가 점프 (기본: 20%)
+        public static ConfigEntry<float> ArcherLv3FallDamageReduction;     // Lv3 추가 낙사 감소 (기본: 10%)
+        public static ConfigEntry<float> ArcherLv4FallDamageReduction;     // Lv4 추가 낙사 감소 (기본: 20%)
+        public static ConfigEntry<float> ArcherLv5FallDamageReduction;     // Lv5 추가 낙사 감소 (기본: 35%)
+        public static ConfigEntry<float> ArcherElementalResistPerLevel;    // 레벨당 속성 저항 (기본: 10%)
+
         // === 아처 레벨업 스탯 변화 컨피그 (Lv2~5, 레벨 순 정렬) ===
         public static ConfigEntry<int>   ArcherLv2BonusArrows;
         public static ConfigEntry<float> ArcherLv2DamagePercent;
@@ -42,6 +52,16 @@ namespace CaptainSkillTree.SkillTree
         // === 패시브 스킬 동적 값 접근자 ===
         public static float ArcherJumpHeightBonusValue => SkillTreeConfig.GetEffectiveValue("Archer_JumpHeightBonus", ArcherJumpHeightBonus.Value);
         public static float ArcherFallDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Archer_FallDamageReduction", ArcherFallDamageReduction.Value);
+
+        // === 레벨별 패시브 추가분 동적 값 접근자 ===
+        public static float ArcherLv2JumpHeightBonusValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv2_JumpHeightBonus", ArcherLv2JumpHeightBonus.Value);
+        public static float ArcherLv3JumpHeightBonusValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv3_JumpHeightBonus", ArcherLv3JumpHeightBonus.Value);
+        public static float ArcherLv4JumpHeightBonusValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv4_JumpHeightBonus", ArcherLv4JumpHeightBonus.Value);
+        public static float ArcherLv5JumpHeightBonusValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv5_JumpHeightBonus", ArcherLv5JumpHeightBonus.Value);
+        public static float ArcherLv3FallDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv3_FallDamageReduction", ArcherLv3FallDamageReduction.Value);
+        public static float ArcherLv4FallDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv4_FallDamageReduction", ArcherLv4FallDamageReduction.Value);
+        public static float ArcherLv5FallDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv5_FallDamageReduction", ArcherLv5FallDamageReduction.Value);
+        public static float ArcherElementalResistPerLevelValue => SkillTreeConfig.GetEffectiveValue("Archer_ElementalResistPerLevel", ArcherElementalResistPerLevel.Value);
 
         // === 레벨업 스탯 변화 동적 값 접근자 (레벨 순) ===
         public static int   ArcherLv2BonusArrowsValue   => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv2_BonusArrows",   ArcherLv2BonusArrows.Value);
@@ -111,15 +131,72 @@ namespace CaptainSkillTree.SkillTree
                 ArcherJumpHeightBonus = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
                     "Archer_JumpHeightBonus",
-                    20.0f,
+                    0.0f,
                     SkillTreeConfig.GetConfigDescription("Archer_JumpHeightBonus")
                 );
 
                 ArcherFallDamageReduction = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
                     "Archer_FallDamageReduction",
-                    50.0f,
+                    0.0f,
                     SkillTreeConfig.GetConfigDescription("Archer_FallDamageReduction")
+                );
+
+                // === 아처 레벨별 패시브 추가 설정 (Lv2~5) ===
+                ArcherLv2JumpHeightBonus = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv2_JumpHeightBonus",
+                    10.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv2_JumpHeightBonus")
+                );
+
+                ArcherLv3JumpHeightBonus = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv3_JumpHeightBonus",
+                    20.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv3_JumpHeightBonus")
+                );
+
+                ArcherLv4JumpHeightBonus = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv4_JumpHeightBonus",
+                    20.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv4_JumpHeightBonus")
+                );
+
+                ArcherLv5JumpHeightBonus = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv5_JumpHeightBonus",
+                    20.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv5_JumpHeightBonus")
+                );
+
+                ArcherLv3FallDamageReduction = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv3_FallDamageReduction",
+                    10.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv3_FallDamageReduction")
+                );
+
+                ArcherLv4FallDamageReduction = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv4_FallDamageReduction",
+                    20.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv4_FallDamageReduction")
+                );
+
+                ArcherLv5FallDamageReduction = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Lv5_FallDamageReduction",
+                    35.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Lv5_FallDamageReduction")
+                );
+
+                ArcherElementalResistPerLevel = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_ElementalResistPerLevel",
+                    10.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_ElementalResistPerLevel")
                 );
 
                 // === 아처 레벨업 스탯 변화 설정 (Lv2~5) ===
@@ -217,6 +294,16 @@ namespace CaptainSkillTree.SkillTree
                 // 패시브 스킬 이벤트 핸들러
                 ArcherJumpHeightBonus.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherFallDamageReduction.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+
+                // 레벨별 패시브 추가분 이벤트 핸들러
+                ArcherLv2JumpHeightBonus.SettingChanged   += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv3JumpHeightBonus.SettingChanged   += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv4JumpHeightBonus.SettingChanged   += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv5JumpHeightBonus.SettingChanged   += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv3FallDamageReduction.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv4FallDamageReduction.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherLv5FallDamageReduction.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherElementalResistPerLevel.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
 
                 // 레벨업 스탯 변화 이벤트 핸들러
                 ArcherLv2BonusArrows.SettingChanged    += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();

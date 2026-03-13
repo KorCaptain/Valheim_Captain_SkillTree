@@ -581,12 +581,13 @@ namespace CaptainSkillTree.SkillTree
                     "  - 'Auto' = Auto-detect from Valheim settings (Recommended)\n" +
                     "  - 'KR' = Korean\n" +
                     "  - 'EN' = English\n" +
-                    "  - 'RU' = Russian\n\n" +
+                    "  - 'RU' = Russian\n" +
+                    "  - 'PT_BR' = Portuguese (Brazilian)\n\n" +
                     "⚠️ IMPORTANT: Game restart required after changing this setting!\n" +
                     "   Config Manager (F1) descriptions are set at game startup.\n\n" +
                     "⚠️ 중요: 이 설정 변경 후 게임 재시작이 필요합니다!\n" +
                     "   Config Manager (F1) 설명은 게임 시작 시 설정됩니다.",
-                    new AcceptableValueList<string>("Auto", "KR", "EN", "RU")
+                    new AcceptableValueList<string>("Auto", "KR", "EN", "RU", "PT_BR")
                 )
             );
 
@@ -920,7 +921,7 @@ namespace CaptainSkillTree.SkillTree
                 }
                 else
                 {
-                    Plugin.Log.LogWarning("[SkillTreeConfig] ZNet 또는 ZRoutedRpc가 아직 초기화되지 않아 Config 전송을 건너뜁니다.");
+                    Plugin.Log.LogDebug("[SkillTreeConfig] ZNet 또는 ZRoutedRpc가 아직 초기화되지 않아 Config 전송을 건너뜁니다.");
                 }
             }
             catch (Exception ex)

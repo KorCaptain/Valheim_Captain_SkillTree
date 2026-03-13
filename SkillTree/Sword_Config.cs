@@ -234,7 +234,7 @@ namespace CaptainSkillTree.SkillTree
         public static float SwordStep3AllInOneAttackBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Step3_AllInOne_AttackBonus", SwordStep3AllInOneAttackBonus?.Value ?? 10f);
         public static float SwordStep3AllInOneDefenseBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Sword_Step3_AllInOne_DefenseBonus", SwordStep3AllInOneDefenseBonus?.Value ?? 25f);
+            SkillTreeConfig.GetEffectiveValue("Sword_Step3_AllInOne_DefenseBonus", SwordStep3AllInOneDefenseBonus?.Value ?? 15f);
 
         // === Tier 5: 진검승부 ===
         public static int SwordStep4TrueDuelRequiredPointsValue =>
@@ -483,7 +483,7 @@ namespace CaptainSkillTree.SkillTree
             ParryRushBlockPowerRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_BlockPowerRatio",
-                50f,
+                10f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_BlockPowerRatio")
             );
 

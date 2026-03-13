@@ -57,7 +57,6 @@ namespace CaptainSkillTree.SkillTree
 
         // 검 신규 스킬 상태 추적
         public static Dictionary<Player, float> swordCounterDefenseEndTime = new Dictionary<Player, float>();
-        public static Dictionary<Player, float> swordBladeCounterEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> swordComboSlashBuffEndTime = new Dictionary<Player, float>();
 
         // 창 관련 상태 변수

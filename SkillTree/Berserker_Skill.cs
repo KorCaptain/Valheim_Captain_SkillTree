@@ -404,6 +404,7 @@ namespace CaptainSkillTree.SkillTree
                 state.EndTime = Time.time + duration;
                 state.CooldownEndTime = Time.time + cooldown;
                 state.LastNotificationTime = 0f;
+                ActiveSkillCooldownRegistry.SetCooldown("passive_berserker", cooldown);
 
                 // VFX 효과 (자동 정리)
                 CreatePassiveEffect(player);
@@ -627,9 +628,12 @@ namespace CaptainSkillTree.SkillTree
                     {
                         float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
                         bool isLowHP = player.GetHealthPercentage() <= threshold;
-                        bool isLethal = hit.GetTotalDamage() >= player.GetHealth();
+                        float currentHP = player.GetHealth();
+                        float maxHP = player.GetMaxHealth();
+                        float hpAfterHit = currentHP - hit.GetTotalDamage();
+                        bool wouldDropToLow = maxHP > 0f && (hpAfterHit / maxHP) <= threshold;
 
-                        if (isLowHP || isLethal)
+                        if (isLowHP || wouldDropToLow)
                         {
                             if (!passiveStates.ContainsKey(player))
                                 passiveStates[player] = new PassiveState();

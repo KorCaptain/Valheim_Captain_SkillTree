@@ -34,6 +34,11 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                     return GetSpearCritDamage(player);
                 case Skills.SkillType.Polearms:
                     return GetPolearmCritDamage(player);
+                case Skills.SkillType.Unarmed:
+                    return GetKnifeCritDamage(player);
+                case Skills.SkillType.ElementalMagic:
+                case Skills.SkillType.BloodMagic:
+                    return GetStaffCritDamage(player);
                 default:
                     return 0f;
             }
@@ -61,9 +66,6 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
             hit.m_damage.m_blunt *= damageBonus;
             hit.m_damage.m_slash *= damageBonus;
             hit.m_damage.m_chop *= damageBonus;
-
-            // 시각 효과
-            ShowCriticalEffect(player, hit.m_point, weaponType, critMultiplier);
 
             Plugin.Log.LogInfo($"[치명타 피해] {GetWeaponName(weaponType)} 치명타 발생! +{critMultiplier}% 피해 (배수: {damageBonus:F2}x)");
         }
@@ -238,6 +240,19 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
             return bonus;
         }
 
+        /// <summary>
+        /// 지팡이/완드 치명타 피해 계산 (ElementalMagic, BloodMagic)
+        /// </summary>
+        public static float GetStaffCritDamage(Player player)
+        {
+            float bonus = 0f;
+
+            // === 공통 보너스 (공격 전문가 트리) ===
+            bonus += GetCommonCritDamageBonus(player);
+
+            return bonus;
+        }
+
         #endregion
 
         #region 시각 효과
@@ -272,6 +287,7 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                 case Skills.SkillType.Polearms: return "폴암";
                 case Skills.SkillType.Axes: return "도끼";
                 case Skills.SkillType.Blocking: return "방패";
+                case Skills.SkillType.Unarmed: return "클로";
                 default: return "무기";
             }
         }

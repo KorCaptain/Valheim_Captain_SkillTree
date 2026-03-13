@@ -36,23 +36,63 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 아처 점프 높이 보너스 가져오기
+        /// 아처 점프 높이 보너스 가져오기 (레벨 누적 합산)
         /// </summary>
         public static float GetArcherJumpHeightBonus(Player player)
         {
             if (!IsArcher(player)) return 0f;
-            
-            return Archer_Config.ArcherJumpHeightBonusValue / 100f; // 퍼센트를 소수로 변환
+            int level = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
+
+            float total = Archer_Config.ArcherJumpHeightBonusValue; // Lv1: 20%
+            if (level >= 2) total += Archer_Config.ArcherLv2JumpHeightBonusValue;
+            if (level >= 3) total += Archer_Config.ArcherLv3JumpHeightBonusValue;
+            if (level >= 4) total += Archer_Config.ArcherLv4JumpHeightBonusValue;
+            if (level >= 5) total += Archer_Config.ArcherLv5JumpHeightBonusValue;
+            return total / 100f;
         }
 
         /// <summary>
-        /// 아처 낙사 데미지 감소 가져오기
+        /// 아처 낙사 데미지 감소 가져오기 (레벨 누적 합산)
         /// </summary>
         public static float GetArcherFallDamageReduction(Player player)
         {
             if (!IsArcher(player)) return 0f;
-            
-            return Archer_Config.ArcherFallDamageReductionValue / 100f; // 퍼센트를 소수로 변환
+            int level = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
+
+            float total = Archer_Config.ArcherFallDamageReductionValue; // Lv1: 50%
+            if (level >= 3) total += Archer_Config.ArcherLv3FallDamageReductionValue;
+            if (level >= 4) total += Archer_Config.ArcherLv4FallDamageReductionValue;
+            if (level >= 5) total += Archer_Config.ArcherLv5FallDamageReductionValue;
+            return total / 100f;
+        }
+
+        // === 속성 저항 헬퍼 (Lv별 시작, 레벨 누적) ===
+        public static float GetArcherPoisonResist()
+        {
+            int level = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
+            if (level < 2) return 0f;
+            return (level - 1) * Archer_Config.ArcherElementalResistPerLevelValue / 100f;
+        }
+
+        public static float GetArcherColdResist()
+        {
+            int level = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
+            if (level < 3) return 0f;
+            return (level - 2) * Archer_Config.ArcherElementalResistPerLevelValue / 100f;
+        }
+
+        public static float GetArcherFireResist()
+        {
+            int level = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
+            if (level < 4) return 0f;
+            return (level - 3) * Archer_Config.ArcherElementalResistPerLevelValue / 100f;
+        }
+
+        public static float GetArcherLightningResist()
+        {
+            int level = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
+            if (level < 5) return 0f;
+            return (level - 4) * Archer_Config.ArcherElementalResistPerLevelValue / 100f;
         }
     }
 
@@ -266,6 +306,40 @@ namespace CaptainSkillTree.SkillTree
         {
             fallDamageReductionStates.Clear();
             Plugin.Log.LogInfo("[아처 낙사 데미지] 모든 상태 정리 완료");
+        }
+    }
+
+    /// <summary>
+    /// 아처 속성 저항 패치 (Tier 2 직접 패치 - MMO 미지원 속성저항)
+    /// 패시브이므로 VFX/SFX 없음
+    /// </summary>
+    [HarmonyPatch(typeof(Character), "Damage")]
+    public static class ArcherElementalResistPatch
+    {
+        static void Prefix(Character __instance, ref HitData hit)
+        {
+            try
+            {
+                if (!(__instance is Player player)) return;
+                if (!ArcherSkills.IsArcher(player)) return;
+
+                // 낙사 데미지(공격자 없음)는 무시 - ArcherFallDamageReductionPatch에서 처리
+                if (hit.m_attacker.IsNone()) return;
+
+                float poisonResist = ArcherSkills.GetArcherPoisonResist();
+                float coldResist   = ArcherSkills.GetArcherColdResist();
+                float fireResist   = ArcherSkills.GetArcherFireResist();
+                float lightningResist = ArcherSkills.GetArcherLightningResist();
+
+                if (poisonResist > 0f)    hit.m_damage.m_poison    *= (1f - poisonResist);
+                if (coldResist > 0f)      hit.m_damage.m_frost     *= (1f - coldResist);
+                if (fireResist > 0f)      hit.m_damage.m_fire      *= (1f - fireResist);
+                if (lightningResist > 0f) hit.m_damage.m_lightning *= (1f - lightningResist);
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[아처 속성 저항] Damage 패치 오류: {ex.Message}");
+            }
         }
     }
 }

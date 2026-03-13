@@ -255,6 +255,75 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
+    /// 회전 타격 - 폴암 세컨드 모션 적용 패치
+    /// Humanoid.StartAttack Prefix에서 둔기의 m_secondaryAttack을 폴암 것으로 임시 교체
+    /// → 한손 둔기: 기존 세컨드 모션 → 폴암 회전 모션 교체
+    /// → 양손 둔기: 없던 세컨드 모션 → 폴암 회전 모션 강제 적용
+    /// </summary>
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.StartAttack))]
+    public static class MaceSkills_SpinAnimation_Patch
+    {
+        private static Attack s_polearmSecondaryCache = null;
+        private static Attack s_savedSecondary = null;
+        private static ItemDrop.ItemData.SharedData s_savedSharedData = null;
+
+        static void Prefix(Humanoid __instance, bool secondaryAttack)
+        {
+            try
+            {
+                if (!secondaryAttack) return;
+                if (__instance is not Player player) return;
+                if (!WeaponHelper.IsUsingMace(player)) return;
+                if (!SkillBonusCalculator.IsSkillActive("mace_Step3_branch_guard")) return;
+
+                Attack polearmSecondary = GetCachedPolearmSecondary();
+                if (polearmSecondary == null) return;
+
+                var weapon = player.GetCurrentWeapon();
+                if (weapon?.m_shared == null) return;
+
+                s_savedSharedData = weapon.m_shared;
+                s_savedSecondary = weapon.m_shared.m_secondaryAttack;
+                weapon.m_shared.m_secondaryAttack = polearmSecondary;
+                Plugin.Log.LogDebug("[둔기 회전 모션] 폴암 세컨드 모션으로 임시 교체");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[MaceSkills_SpinAnimation_Patch.Prefix] 오류: {ex.Message}");
+            }
+        }
+
+        static void Postfix()
+        {
+            if (s_savedSharedData == null) return;
+            s_savedSharedData.m_secondaryAttack = s_savedSecondary;
+            s_savedSharedData = null;
+            s_savedSecondary = null;
+        }
+
+        private static Attack GetCachedPolearmSecondary()
+        {
+            if (s_polearmSecondaryCache != null) return s_polearmSecondaryCache;
+            if (ObjectDB.instance == null) return null;
+
+            string[] candidates = { "AtgeirBronze", "AtgeirBlackmetal", "Atgeir" };
+            foreach (var prefabName in candidates)
+            {
+                var prefab = ObjectDB.instance.GetItemPrefab(prefabName);
+                if (prefab == null) continue;
+                var item = prefab.GetComponent<ItemDrop>();
+                var secondary = item?.m_itemData?.m_shared?.m_secondaryAttack;
+                if (secondary == null) continue;
+                s_polearmSecondaryCache = secondary;
+                Plugin.Log.LogInfo($"[둔기 회전 모션] 폴암 세컨드 공격 캐시 완료: {prefabName}");
+                return s_polearmSecondaryCache;
+            }
+            Plugin.Log.LogWarning("[둔기 회전 모션] 폴암 프리팹을 찾지 못했습니다 (AtgeirBronze/AtgeirBlackmetal/Atgeir)");
+            return null;
+        }
+    }
+
+    /// <summary>
     /// 회전 타격 - 세컨드 어택 감지 패치
     /// Attack.Start에서 특수 공격 감지 후 시간 기록
     /// </summary>

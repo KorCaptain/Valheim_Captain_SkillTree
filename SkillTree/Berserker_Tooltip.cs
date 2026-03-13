@@ -52,7 +52,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     skillName = L.Get("berserker_skill_rage"),
                     description = L.Get("berserker_desc_rage", duration),
-                    additionalInfo = L.Get("berserker_desc_rage_detail", damagePerPercent, maxDamageBonus),
+                    additionalInfo = L.Get("berserker_desc_rage_detail", damagePerPercent, maxDamageBonus) + " " + L.Get("berserker_ranged_30pct"),
                     range = L.Get("tooltip_self"),
                     consumeStamina = $"{staminaCost:F0}",
                     consumeArrow = L.Get("tooltip_none"),
@@ -168,7 +168,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 skillName = L.Get("berserker_skill_rage"),
                 description = L.Get("berserker_desc_rage", Berserker_Config.BerserkerRageDurationValue),
-                additionalInfo = L.Get("berserker_desc_rage_detail", Berserker_Config.BerserkerRageDamagePerHealthPercentValue, Berserker_Config.BerserkerRageMaxDamageBonusValue),
+                additionalInfo = L.Get("berserker_desc_rage_detail", Berserker_Config.BerserkerRageDamagePerHealthPercentValue, Berserker_Config.BerserkerRageMaxDamageBonusValue) + " " + L.Get("berserker_ranged_30pct"),
                 range = L.Get("tooltip_self"),
                 consumeStamina = $"{Berserker_Config.BerserkerRageStaminaCostValue}",
                 consumeArrow = L.Get("tooltip_none"),

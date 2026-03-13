@@ -388,9 +388,8 @@ namespace CaptainSkillTree.SkillTree
 
             // 방어 전환 → 패링 돌격으로 전환됨 (액티브 스킬, 패시브 보너스 없음)
 
-            // 공방일체 - 양손검 사용 시 공격력 보너스
-            if (SkillEffect.HasSkill("sword_step3_allinone") &&
-                item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
+            // 공방일체 - 검 사용 시 공격력 보너스
+            if (SkillEffect.HasSkill("sword_step3_allinone"))
             {
                 float allinoneBonus = SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue / 100f;
                 if (result.m_slash > 0) result.m_slash *= (1f + allinoneBonus);
@@ -559,7 +558,6 @@ namespace CaptainSkillTree.SkillTree
                 nextAttackExpiry.Remove(player);
                 nextAttackShowMessage.Remove(player);
                 swordCounterDefenseEndTime.Remove(player);
-                swordBladeCounterEndTime.Remove(player);
 
                 // 창 관련 Dictionary 정리
                 spearComboCount.Remove(player);

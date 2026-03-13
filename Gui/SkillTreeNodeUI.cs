@@ -197,21 +197,12 @@ namespace CaptainSkillTree.Gui
                 btn.onClick.AddListener(() => {
                     onNodeClick(node, rect);
                 });
-                
+
                 // 버튼과 EventTrigger 활성화 (로그 정리됨)
-                
+
                 // EventTrigger 추가 (호버용)
                 var eventTrigger = nodeObj.AddComponent<UnityEngine.EventSystems.EventTrigger>();
-                
-                
-                // PointerDown 이벤트 추가 (백업용 - Button이 실패할 경우를 위해 실제 클릭 동작도 수행)
-                var pointerDown = new UnityEngine.EventSystems.EventTrigger.Entry { eventID = UnityEngine.EventSystems.EventTriggerType.PointerDown };
-                pointerDown.callback.AddListener((data) => {
-                    // EventTrigger 클릭 - PointerDown 호출됨 (백업용)
-                    onNodeClick(node, rect); // 실제 클릭 동작 수행
-                });
-                eventTrigger.triggers.Add(pointerDown);
-                
+
                 var pointerEnter = new UnityEngine.EventSystems.EventTrigger.Entry { eventID = UnityEngine.EventSystems.EventTriggerType.PointerEnter };
                 pointerEnter.callback.AddListener((data) => { 
                     onNodeHover(node, rect.position); 

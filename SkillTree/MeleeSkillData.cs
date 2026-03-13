@@ -542,7 +542,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 ApplyEffect = (lv) => { }
             });
-            
+
             // ==================== 폴암 스킬 트리 ====================
 
             // 1단계: 폴암 전문가

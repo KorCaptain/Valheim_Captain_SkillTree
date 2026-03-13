@@ -399,6 +399,14 @@ namespace CaptainSkillTree.Localization
                 ["Archer_Lv5_BonusArrows"]   = "Nv5: Flechas Adicionais",
                 ["Archer_Lv5_DamagePercent"] = "Nv5: Dano por Flecha (%)",
                 ["Archer_Lv5_BonusCharges"]  = "Nv5: Cargas Adicionais",
+                ["Archer_Lv2_JumpHeightBonus"]     = "Nv2 Passivo: Bônus de Altura de Salto (%)",
+                ["Archer_Lv3_JumpHeightBonus"]     = "Nv3 Passivo: Bônus de Altura de Salto (%)",
+                ["Archer_Lv4_JumpHeightBonus"]     = "Nv4 Passivo: Bônus de Altura de Salto (%)",
+                ["Archer_Lv5_JumpHeightBonus"]     = "Nv5 Passivo: Bônus de Altura de Salto (%)",
+                ["Archer_Lv3_FallDamageReduction"] = "Nv3 Passivo: Redução de Dano de Queda (%)",
+                ["Archer_Lv4_FallDamageReduction"] = "Nv4 Passivo: Redução de Dano de Queda (%)",
+                ["Archer_Lv5_FallDamageReduction"] = "Nv5 Passivo: Redução de Dano de Queda (%)",
+                ["Archer_ElementalResistPerLevel"] = "Passivo: Resistência Elemental por Nível (%)",
 
                 // ============================================
                 // Habilidades de Classe - Mago

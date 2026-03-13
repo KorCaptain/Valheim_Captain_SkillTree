@@ -63,10 +63,11 @@ namespace CaptainSkillTree.SkillTree
                         }
                     }
 
-                    // 공방일체: 검 또는 방패 막기 방어력 +25
-                    if (manager.GetSkillLevel("sword_step3_allinone") > 0)
+                    // 공방일체: 양손검 착용 시 막기 방어력 +15% (비율)
+                    if (isSword && WeaponHelper.IsUsingTwoHandedSword(player) &&
+                        manager.GetSkillLevel("sword_step3_allinone") > 0)
                     {
-                        blockPowerBonus += Sword_Config.SwordStep3AllInOneDefenseBonusValue;
+                        __result *= (1f + Sword_Config.SwordStep3AllInOneDefenseBonusValue / 100f);
                     }
 
                     if (blockPowerBonus > 0)

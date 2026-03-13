@@ -34,6 +34,11 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                     return GetSpearCritChance(player);
                 case Skills.SkillType.Polearms:
                     return GetPolearmCritChance(player);
+                case Skills.SkillType.Unarmed:
+                    return GetKnifeCritChance(player);
+                case Skills.SkillType.ElementalMagic:
+                case Skills.SkillType.BloodMagic:
+                    return GetStaffCritChance(player);
                 default:
                     return 0f;
             }
@@ -239,6 +244,19 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
             bonus += GetCommonCritChanceBonus(player);
 
             // TODO: 폴암 치명타 스킬 구현 시 추가
+
+            return bonus;
+        }
+
+        /// <summary>
+        /// 지팡이/완드 치명타 확률 계산 (ElementalMagic, BloodMagic)
+        /// </summary>
+        public static float GetStaffCritChance(Player player)
+        {
+            float bonus = 0f;
+
+            // === 공통 보너스 (공격 전문가 트리) ===
+            bonus += GetCommonCritChanceBonus(player);
 
             return bonus;
         }

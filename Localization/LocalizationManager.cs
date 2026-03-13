@@ -47,7 +47,7 @@ namespace CaptainSkillTree.Localization
             { "FR", "fr" },
             { "ES", "es" },
             { "RU", "ru" },
-            { "PT", "pt" }
+            { "PT_BR", "pt_BR" }
         };
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace CaptainSkillTree.Localization
 
             // Start with default languages (KR, EN always available)
             // CN, JP, RU, EU are also available by default for major international support
-            _supportedLanguages = new List<string> { "KR", "EN", "CN", "JP", "RU", "EU" };
+            _supportedLanguages = new List<string> { "KR", "EN", "CN", "JP", "RU", "EU", "PT_BR" };
 
             if (!Directory.Exists(configPath))
             {
@@ -142,7 +142,7 @@ namespace CaptainSkillTree.Localization
                 string upperCode = null;
                 foreach (var kvp in LanguageCodeMap.ToList())
                 {
-                    if (kvp.Value == fileName)
+                    if (kvp.Value.ToLower() == fileName)
                     {
                         upperCode = kvp.Key;
                         break;
@@ -523,6 +523,11 @@ namespace CaptainSkillTree.Localization
                     _currentLanguage = _translations.ContainsKey("ru") ? "ru" : "en";
                     Plugin.Log.LogDebug($"[Localization] Auto-detect: Russian -> {(_currentLanguage == "ru" ? "RU" : "EN (fallback)")}");
                 }
+                else if (lowerLang.Contains("portuguese_brazilian") || lowerLang.Contains("portuguese") || lowerLang.Contains("pt_br"))
+                {
+                    _currentLanguage = _translations.ContainsKey("pt_BR") ? "pt_BR" : "en";
+                    Plugin.Log.LogDebug($"[Localization] Auto-detect: Portuguese (Brazilian) -> {(_currentLanguage == "pt_BR" ? "PT_BR" : "EN (fallback)")}");
+                }
                 else if (lowerLang.Contains("english"))
                 {
                     _currentLanguage = "en";
@@ -751,6 +756,19 @@ namespace CaptainSkillTree.Localization
                 }
                 File.WriteAllText(ruPath, DictToJson(ruData), System.Text.Encoding.UTF8);
                 Plugin.Log.LogDebug($"[Localization] Translation/ru.json exported ({ruData.Count} keys, {ruTranslations?.Count ?? 0} RU translated)");
+
+                // pt_BR.json: EN 전체 키를 기준으로, PT_BR 번역값으로 덮어씌우기
+                var ptBrPath = Path.Combine(translationPath, "pt_BR.json");
+                var ptBrData = new Dictionary<string, string>(enData);
+                var ptBrTranslations = LoadFromEmbeddedResource("pt_BR") ??
+                                       (_translations.ContainsKey("pt_BR") ? _translations["pt_BR"] : null);
+                if (ptBrTranslations != null)
+                {
+                    foreach (var kvp in ptBrTranslations)
+                        ptBrData[kvp.Key] = kvp.Value;
+                }
+                File.WriteAllText(ptBrPath, DictToJson(ptBrData), System.Text.Encoding.UTF8);
+                Plugin.Log.LogDebug($"[Localization] Translation/pt_BR.json exported ({ptBrData.Count} keys, {ptBrTranslations?.Count ?? 0} PT_BR translated)");
             }
             catch (Exception ex)
             {

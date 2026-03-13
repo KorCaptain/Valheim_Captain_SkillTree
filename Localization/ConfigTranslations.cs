@@ -66,6 +66,10 @@ namespace CaptainSkillTree.Localization
                 ["Speed Tree"] = "Speed Tree",
                 ["Archer Job Skills"] = "Archer Job Skills",
                 ["Mage Job Skills"] = "Mage Job Skills",
+                ["Tanker Job Skills"] = "Tanker Job Skills",
+                ["Rogue Job Skills"] = "Rogue Job Skills",
+                ["Paladin Job Skills"] = "Paladin Job Skills",
+                ["Berserker Job Skills"] = "Berserker Job Skills",
             };
         }
 
@@ -90,6 +94,10 @@ namespace CaptainSkillTree.Localization
                 ["Speed Tree"] = "Speed Tree",
                 ["Archer Job Skills"] = "Archer Job Skills",
                 ["Mage Job Skills"] = "Mage Job Skills",
+                ["Tanker Job Skills"] = "Tanker Job Skills",
+                ["Rogue Job Skills"] = "Rogue Job Skills",
+                ["Paladin Job Skills"] = "Paladin Job Skills",
+                ["Berserker Job Skills"] = "Berserker Job Skills",
             };
         }
 
@@ -156,6 +164,10 @@ namespace CaptainSkillTree.Localization
                 ["Speed Tree"] = "Árvore de Velocidade",
                 ["Archer Job Skills"] = "Habilidades de Arqueiro",
                 ["Mage Job Skills"] = "Habilidades de Mago",
+                ["Tanker Job Skills"] = "Habilidades de Tanker",
+                ["Rogue Job Skills"] = "Habilidades de Ladino",
+                ["Paladin Job Skills"] = "Habilidades de Paladino",
+                ["Berserker Job Skills"] = "Habilidades de Berserker",
             };
         }
 

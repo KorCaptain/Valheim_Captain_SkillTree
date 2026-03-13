@@ -43,7 +43,7 @@ namespace CaptainSkillTree.SkillTree
         // === Passive Skill Dynamic Values (MMO getParameter integration) ===
         public static float BerserkerPassiveHealthThresholdValue => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_HealthThreshold", BerserkerPassiveHealthThreshold?.Value ?? 10f);
         public static float BerserkerPassiveInvincibilityDurationValue => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_InvincibilityDuration", BerserkerPassiveInvincibilityDuration?.Value ?? 8f);
-        public static float BerserkerPassiveCooldownValue => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_Cooldown", BerserkerPassiveCooldown?.Value ?? 180f); // 3 minutes = 180 seconds
+        public static float BerserkerPassiveCooldownValue => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_Cooldown", BerserkerPassiveCooldown?.Value ?? 600f); // 10 minutes = 600 seconds
         public static float BerserkerPassiveHealthBonusValue => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_HealthBonus", BerserkerPassiveHealthBonus?.Value ?? 100f);
 
         #endregion
@@ -92,7 +92,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Beserker_Passive_InvincibilityDuration"));
 
                 BerserkerPassiveCooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Passive_Cooldown", 180f,
+                    "Berserker Job Skills", "Beserker_Passive_Cooldown", 600f,
                     SkillTreeConfig.GetConfigDescription("Beserker_Passive_Cooldown"));
 
                 BerserkerPassiveHealthBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,

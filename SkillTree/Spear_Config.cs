@@ -246,7 +246,7 @@ namespace CaptainSkillTree.SkillTree
             SpearStep5ComboDamage = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_HKey_DamageMultiplier",
-                280f,
+                120f,
                 SkillTreeConfig.GetConfigDescription("Tier5_Combo_HKey_DamageMultiplier"));
 
             SpearStep5ComboStaminaCost = SkillTreeConfig.BindServerSync(config,
