@@ -495,6 +495,12 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep5ComboKnockbackRadius => Spear_Config.SpearStep5ComboKnockbackRadius;
         public static ConfigEntry<float> SpearStep5ComboRange => Spear_Config.SpearStep5ComboRange;
 
+        // 창 전문가 proc 프록시 (신규)
+        public static ConfigEntry<float> SpearExpertProcChance => Spear_Config.SpearExpertProcChance;
+        public static ConfigEntry<float> SpearExpertSpeedBoostPercent => Spear_Config.SpearExpertSpeedBoostPercent;
+        public static float SpearExpertProcChanceValue => Spear_Config.SpearExpertProcChanceValue;
+        public static float SpearExpertSpeedBoostPercentValue => Spear_Config.SpearExpertSpeedBoostPercentValue;
+
         public static float SpearStep1AttackSpeedValue => Spear_Config.SpearStep1AttackSpeedValue;
         public static float SpearStep1DamageBonusValue => Spear_Config.SpearStep1DamageBonusValue;
         public static float SpearStep1DurationValue => Spear_Config.SpearStep1DurationValue;
@@ -526,6 +532,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PolearmStep3AreaComboBonus => Polearm_Config.PolearmStep3AreaComboBonus;
         public static ConfigEntry<float> PolearmStep3AreaComboDuration => Polearm_Config.PolearmStep3AreaComboDuration;
         public static ConfigEntry<float> PolearmStep3GroundWheelDamage => Polearm_Config.PolearmStep3GroundWheelDamage;
+        public static ConfigEntry<float> PolearmStep3StormSlashExplosion => Polearm_Config.PolearmStep3StormSlashExplosion;
         public static ConfigEntry<float> PolearmStep4MoonRangeBonus => Polearm_Config.PolearmStep4MoonRangeBonus;
         public static ConfigEntry<float> PolearmStep4MoonStaminaReduction => Polearm_Config.PolearmStep4MoonStaminaReduction;
         public static ConfigEntry<float> PolearmStep4ChargeDamageBonus => Polearm_Config.PolearmStep4ChargeDamageBonus;
@@ -546,6 +553,7 @@ namespace CaptainSkillTree.SkillTree
         public static float PolearmStep3AreaComboBonusValue => Polearm_Config.PolearmStep3AreaComboBonusValue;
         public static float PolearmStep3AreaComboDurationValue => Polearm_Config.PolearmStep3AreaComboDurationValue;
         public static float PolearmStep3GroundWheelDamageValue => Polearm_Config.PolearmStep3GroundWheelDamageValue;
+        public static float PolearmStep3StormSlashExplosionValue => Polearm_Config.PolearmStep3StormSlashExplosionValue;
         public static float PolearmStep4MoonRangeBonusValue => Polearm_Config.PolearmStep4MoonRangeBonusValue;
         public static float PolearmStep4MoonStaminaReductionValue => Polearm_Config.PolearmStep4MoonStaminaReductionValue;
         public static float PolearmStep4ChargeDamageBonusValue => Polearm_Config.PolearmStep4ChargeDamageBonusValue;
@@ -901,6 +909,8 @@ namespace CaptainSkillTree.SkillTree
                     // Spear Tree
                     ["spear_Step1_attack_speed"] = Spear_Config.SpearStep1AttackSpeed.Value,
                     ["spear_Step1_damage_bonus"] = Spear_Config.SpearStep1DamageBonus.Value,
+                    ["spear_expert_proc_chance"] = Spear_Config.SpearExpertProcChance.Value,
+                    ["spear_expert_speed_boost"] = Spear_Config.SpearExpertSpeedBoostPercent.Value,
 
                     // Polearm Tree
                     ["polearm_step4_charge_damage"] = Polearm_Config.PolearmStep4ChargeDamageBonus.Value,

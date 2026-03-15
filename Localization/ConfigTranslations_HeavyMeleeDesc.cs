@@ -43,6 +43,18 @@ namespace CaptainSkillTree.Localization
                 "긴 지속시간으로 안정적인 전투가 가능합니다.\n" +
                 "권장값: 4-8초",
 
+                ["Tier0_SpearExpert_ProcChance"] =
+                "【창 전문가 발동 확률 (%)】\n" +
+                "공격 시 번개 일격 proc이 발동될 확률입니다.\n" +
+                "발동 시 다음 1회 공격이 고속으로 실행됩니다.\n" +
+                "권장값: 20-35%",
+
+                ["Tier0_SpearExpert_SpeedBoost"] =
+                "【창 전문가 속도 부스트 (%)】\n" +
+                "proc 발동 시 추가되는 공격속도 보너스입니다.\n" +
+                "기본 100% + 이 수치 = 총 공격속도 배율.\n" +
+                "권장값: 80-120%",
+
                 // === Spear Tree: Tier 1 - 급소 찌르기 (2개) ===
                 ["Tier1_QuickStrike_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -511,16 +523,20 @@ namespace CaptainSkillTree.Localization
                 "광역 강타 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
                 "권장값: 2",
 
-                // === Polearm Tree: Tier 4-1 - 지면 강타 (2개) ===
+                // === Polearm Tree: Tier 4-1 - 폭풍베기 (3개) ===
                 ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] =
-                "【회전 공격 피해 보너스 (%)】\n" +
-                "지면을 강타하는 회전 공격의 피해를 증가시킵니다.\n" +
-                "광역 딜링 핵심 스킬입니다.\n" +
-                "권장값: 70-100%",
+                "【1차 베기 데미지 보너스 (%)】\n" +
+                "휠 마우스 특수 공격 적중 시 즉시 적용되는 1차 베기 보너스입니다.\n" +
+                "권장값: 25-35%",
+
+                ["Tier4-1_StormSlash_ExplosionBonus"] =
+                "【폭발 데미지 보너스 (%)】\n" +
+                "1차 베기 후 2초 뒤 대상에 폭발 데미지를 추가로 가합니다.\n" +
+                "권장값: 50-70%",
 
                 ["Tier4-1_GroundWheel_RequiredPoints"] =
                 "【필요 포인트】\n" +
-                "지면 강타 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "폭풍베기 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
                 "권장값: 2",
 
                 // === Polearm Tree: Tier 4-2 - 반달 베기 (3개) ===
@@ -648,6 +664,18 @@ namespace CaptainSkillTree.Localization
                 "Duration of 2-hit combo effect.\n" +
                 "Longer duration enables stable combat.\n" +
                 "Recommended: 4-8 sec",
+
+                ["Tier0_SpearExpert_ProcChance"] =
+                "【Spear Expert Proc Chance (%)】\n" +
+                "Chance to trigger Lightning Strike proc on attack.\n" +
+                "Triggers 1 extra fast attack when proc activates.\n" +
+                "Recommended: 20-35%",
+
+                ["Tier0_SpearExpert_SpeedBoost"] =
+                "【Spear Expert Speed Boost (%)】\n" +
+                "Attack speed bonus added when proc activates.\n" +
+                "Base 100% + this value = total attack speed multiplier.\n" +
+                "Recommended: 80-120%",
 
                 // === Spear Tree: Tier 1 - Vital Strike (2 keys) ===
                 ["Tier1_QuickStrike_RequiredPoints"] =
@@ -1116,16 +1144,20 @@ namespace CaptainSkillTree.Localization
                 "Skill points required to unlock the Wide Slash node.\n" +
                 "Recommended: 2",
 
-                // === Polearm Tree: Tier 4-1 - Ground Pound (2 keys) ===
+                // === Polearm Tree: Tier 4-1 - Storm Slash (3 keys) ===
                 ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] =
-                "【Spinning Attack Damage Bonus (%)】\n" +
-                "Increases ground-smashing spinning attack damage.\n" +
-                "Core area damage skill.\n" +
-                "Recommended: 70-100%",
+                "【1st Slash Damage Bonus (%)】\n" +
+                "Instant slash bonus applied on wheel mouse special attack hit.\n" +
+                "Recommended: 25-35%",
+
+                ["Tier4-1_StormSlash_ExplosionBonus"] =
+                "【Explosion Damage Bonus (%)】\n" +
+                "Deals additional explosion damage to the target 2 seconds after the 1st slash.\n" +
+                "Recommended: 50-70%",
 
                 ["Tier4-1_GroundWheel_RequiredPoints"] =
                 "【Required Points】\n" +
-                "Skill points required to unlock the Ground Pound node.\n" +
+                "Skill points required to unlock the Storm Slash node.\n" +
                 "Recommended: 2",
 
                 // === Polearm Tree: Tier 4-2 - Crescent Slash (3 keys) ===

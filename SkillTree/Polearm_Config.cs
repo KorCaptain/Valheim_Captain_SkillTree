@@ -26,6 +26,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PolearmStep3AreaComboBonus;
         public static ConfigEntry<float> PolearmStep3AreaComboDuration;
         public static ConfigEntry<float> PolearmStep3GroundWheelDamage;
+        public static ConfigEntry<float> PolearmStep3StormSlashExplosion;
         public static ConfigEntry<float> PolearmStep4MoonRangeBonus;
         public static ConfigEntry<float> PolearmStep4MoonStaminaReduction;
         public static ConfigEntry<float> PolearmStep4ChargeDamageBonus;
@@ -59,6 +60,7 @@ namespace CaptainSkillTree.SkillTree
         public static float PolearmStep3AreaComboBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_step3_area_combo_bonus", PolearmStep3AreaComboBonus.Value);
         public static float PolearmStep3AreaComboDurationValue => SkillTreeConfig.GetEffectiveValue("polearm_step3_area_combo_duration", PolearmStep3AreaComboDuration.Value);
         public static float PolearmStep3GroundWheelDamageValue => SkillTreeConfig.GetEffectiveValue("polearm_step3_ground_wheel_damage", PolearmStep3GroundWheelDamage.Value);
+        public static float PolearmStep3StormSlashExplosionValue => SkillTreeConfig.GetEffectiveValue("polearm_step3_stormslash_explosion", PolearmStep3StormSlashExplosion.Value);
         public static float PolearmStep4MoonRangeBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_step4_moon_range_bonus", PolearmStep4MoonRangeBonus.Value);
         public static float PolearmStep4MoonStaminaReductionValue => SkillTreeConfig.GetEffectiveValue("polearm_step4_moon_stamina_reduction", PolearmStep4MoonStaminaReduction.Value);
         public static float PolearmStep4ChargeDamageBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_step4_charge_damage", PolearmStep4ChargeDamageBonus.Value);
@@ -118,10 +120,13 @@ namespace CaptainSkillTree.SkillTree
                 "Polearm Tree", "Tier3_AreaCombo_RequiredPoints", 2,
                 SkillTreeConfig.GetConfigDescription("Tier3_AreaCombo_RequiredPoints"));
 
-            // Tier 4-1: 지면 강타
+            // Tier 4-1: 폭풍베기 (구 지면 강타)
             PolearmStep3GroundWheelDamage = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier4-1_GroundWheel_WheelAttackDamageBonus", 80f,
+                "Polearm Tree", "Tier4-1_GroundWheel_WheelAttackDamageBonus", 30f,
                 SkillTreeConfig.GetConfigDescription("Tier4-1_GroundWheel_WheelAttackDamageBonus"));
+            PolearmStep3StormSlashExplosion = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier4-1_StormSlash_ExplosionBonus", 60f,
+                SkillTreeConfig.GetConfigDescription("Tier4-1_StormSlash_ExplosionBonus"));
             PolearmGroundWheelRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier4-1_GroundWheel_RequiredPoints", 2,
                 SkillTreeConfig.GetConfigDescription("Tier4-1_GroundWheel_RequiredPoints"));

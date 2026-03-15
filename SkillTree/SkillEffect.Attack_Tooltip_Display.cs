@@ -44,7 +44,17 @@ namespace CaptainSkillTree.SkillTree
         public bool HasMeleeExpert;       // 근접 전문가 레이블 표시
         public bool HasRangedExpert;      // 원거리 전문가 레이블 표시
         public bool HasRiposte;           // 칼날 되치기 레이블 표시용
+        public bool HasHeavyStrike;       // 무거운 일격 레이블 표시용
         public float BlockPower;          // 막기 방어력 % 보너스
+        public float FlatFire;            // 화염 속성 고정값 (staff_Step4_range)
+        public float FlatFrost;           // 냉기 속성 고정값 (staff_Step4_reduction)
+        public float FlatLightning;       // 번개 속성 고정값 (staff_Step4_surge)
+        public float SpinAttackBonus;     // 2차 공격 보너스 % (polearm_step1_spin)
+        public bool  HasPolearmBoost;     // 폴암강화 레이블 표시용
+        public float PolearmBoostFixed;   // 폴암강화 고정 보너스값
+        public bool  HasSuppressAttack;   // 제압 공격 레이블 표시용
+        public float SuppressAttackPct;   // 제압 공격 % 값
+        public float HeroStrikeChance;    // 영웅 타격 스태거 확률
 
         public bool HasAny()
         {
@@ -54,7 +64,10 @@ namespace CaptainSkillTree.SkillTree
                    CritChance        > 0.01f || CritDamage        > 0.01f ||
                    RapidFireChance   > 0.01f || RapidFireLv2Chance > 0.01f ||
                    MultishotLv1Chance > 0.01f || MultishotLv2Chance > 0.01f ||
-                   BlockPower        > 0.01f;
+                   BlockPower        > 0.01f ||
+                   FlatFire > 0.01f || FlatFrost > 0.01f || FlatLightning > 0.01f ||
+                   SpinAttackBonus   > 0.01f ||
+                   HasPolearmBoost || HasSuppressAttack || HeroStrikeChance > 0.01f;
         }
     }
 
@@ -195,7 +208,10 @@ namespace CaptainSkillTree.SkillTree
                     if (SkillEffect.HasSkill("melee_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedMeleeAttackSpeedValue;
                     if (SkillEffect.HasSkill("mace_Step3_branch_heavy"))
+                    {
                         b.FlatBlunt += Mace_Config.MaceStep3HeavyDamageBonusValue;
+                        b.HasHeavyStrike = true;
+                    }
                     if (SkillEffect.HasSkill("mace_Step5_dps"))
                     {
                         physPct += Mace_Config.MaceStep5DpsDamageBonusValue;
@@ -209,8 +225,7 @@ namespace CaptainSkillTree.SkillTree
                 case WeaponGroup.Spear:
                     if (SkillEffect.HasSkill("spear_Step3_pierce"))
                         b.FlatPierce += Spear_Config.SpearStep3PierceDamageBonusValue;
-                    if (SkillEffect.HasSkill("spear_expert"))
-                        physPct += Spear_Config.SpearStep1DamageBonusValue;
+                    // 창 전문가: 신규 메커닉(proc 공격속도)이므로 데미지 표시 없음
                     if (SkillEffect.HasSkill("atk_melee_bonus"))
                         physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
@@ -222,6 +237,27 @@ namespace CaptainSkillTree.SkillTree
                         physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedMeleeAttackSpeedValue;
+                    // 제압 공격 - 물리 데미지 % 보너스 + named label
+                    if (SkillEffect.HasSkill("polearm_step1_suppress"))
+                    {
+                        physPct += SkillTreeConfig.PolearmStep1SuppressDamageValue;
+                        b.HasSuppressAttack = true;
+                        b.SuppressAttackPct = SkillTreeConfig.PolearmStep1SuppressDamageValue;
+                    }
+                    // 폴암강화 - slash + pierce 고정값 보너스 + named label
+                    if (SkillEffect.HasSkill("polearm_step4_charge"))
+                    {
+                        b.FlatSlash  += SkillTreeConfig.PolearmStep4ChargeDamageBonusValue;
+                        b.FlatPierce += SkillTreeConfig.PolearmStep4ChargeDamageBonusValue;
+                        b.HasPolearmBoost = true;
+                        b.PolearmBoostFixed = SkillTreeConfig.PolearmStep4ChargeDamageBonusValue;
+                    }
+                    // 영웅 타격 - 스태거 확률 named label
+                    if (SkillEffect.HasSkill("polearm_step2_hero"))
+                        b.HeroStrikeChance = SkillTreeConfig.PolearmStep2HeroKnockbackChanceValue;
+                    // 회전베기 - 2차 공격(특수공격) 데미지 보너스 표시
+                    if (SkillEffect.HasSkill("polearm_step1_spin"))
+                        b.SpinAttackBonus += SkillTreeConfig.PolearmStep1SpinWheelDamageValue;
                     break;
 
                 case WeaponGroup.Bow:
@@ -296,6 +332,12 @@ namespace CaptainSkillTree.SkillTree
                         elemPct += Attack_Config.AttackRangedEnhancementValue;
                     if (SkillEffect.HasSkill("staff_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedStaffCastSpeedFinalValue;
+                    if (SkillEffect.HasSkill("staff_Step4_range"))
+                        b.FlatFire += Staff_Config.StaffFireDamageBonusValue;
+                    if (SkillEffect.HasSkill("staff_Step4_reduction"))
+                        b.FlatFrost += Staff_Config.StaffFrostDamageBonusValue;
+                    if (SkillEffect.HasSkill("staff_Step4_surge"))
+                        b.FlatLightning += Staff_Config.StaffLightningDamageBonusValue;
                     break;
             }
 
@@ -354,11 +396,11 @@ namespace CaptainSkillTree.SkillTree
             if (raw.m_blunt     > 0f && line.Contains("$inventory_blunt"))
                 return BuildDamageLine(line, raw.m_blunt,     b.FlatBlunt  + b.FlatAllPhysical, b.PctPhysical);
             if (raw.m_fire      > 0f && line.Contains("$inventory_fire"))
-                return BuildDamageLine(line, raw.m_fire,      b.FlatAllElemental, b.PctElemental);
+                return BuildDamageLine(line, raw.m_fire,      b.FlatAllElemental + b.FlatFire,      b.PctElemental);
             if (raw.m_frost     > 0f && line.Contains("$inventory_frost"))
-                return BuildDamageLine(line, raw.m_frost,     b.FlatAllElemental, b.PctElemental);
+                return BuildDamageLine(line, raw.m_frost,     b.FlatAllElemental + b.FlatFrost,     b.PctElemental);
             if (raw.m_lightning > 0f && line.Contains("$inventory_lightning"))
-                return BuildDamageLine(line, raw.m_lightning, b.FlatAllElemental, b.PctElemental);
+                return BuildDamageLine(line, raw.m_lightning, b.FlatAllElemental + b.FlatLightning, b.PctElemental);
             if (raw.m_poison    > 0f && line.Contains("$inventory_poison"))
                 return BuildDamageLine(line, raw.m_poison,    b.FlatAllElemental, b.PctElemental);
             if (raw.m_spirit    > 0f && line.Contains("$inventory_spirit"))
@@ -420,7 +462,7 @@ namespace CaptainSkillTree.SkillTree
         // ─────────────────────────────────────────────────────────────────
         // 추가 스탯 라인 (툴팁 맨 뒤에 추가)
         // ─────────────────────────────────────────────────────────────────
-        public static void AppendExtraStats(ref string result, WeaponBonuses b)
+        public static void AppendExtraStats(ref string result, WeaponBonuses b, HitData.DamageTypes raw)
         {
             if (b.PctPhysical > 0.01f)
                 result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_phys_atk")}: +{b.PctPhysical:F0}%</color>";
@@ -446,10 +488,29 @@ namespace CaptainSkillTree.SkillTree
                 result += $"\n<color=#87CEEB>🛡️ {L.Get("weapon_effect_block_power")}: +{b.BlockPower:F0}%</color>";
             if (b.HasRiposte)
                 result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_riposte")}: +{b.FlatSlash:F0} {L.Get("weapon_stat_slash_fixed")}</color>";
+            if (b.HasHeavyStrike)
+                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_heavy_strike")}: +{b.FlatBlunt:F0} {L.Get("weapon_stat_blunt_fixed")}</color>";
             if (b.HasMeleeExpert)
                 result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_melee_expert")}: {L.Get("weapon_effect_melee_expert_suffix")}</color>";
             if (b.HasRangedExpert)
                 result += $"\n<color={COL_ATK_PHY}>🏹 {L.Get("weapon_effect_ranged_expert")}: {L.Get("weapon_effect_ranged_expert_suffix")}</color>";
+
+            if (b.SpinAttackBonus > 0.01f)
+                result += $"\n<color={COL_ATK_PHY}>🌀 {L.Get("weapon_effect_spin_attack")}: +{b.SpinAttackBonus:F0}%</color>";
+            if (b.HasPolearmBoost)
+                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_polearm_boost")}: +{b.PolearmBoostFixed:F0} {L.Get("weapon_stat_pierce_fixed")}/{L.Get("weapon_stat_slash_fixed")}</color>";
+            if (b.HasSuppressAttack)
+                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_suppress_attack")}: +{b.SuppressAttackPct:F0}%</color>";
+            if (b.HeroStrikeChance > 0.01f)
+                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_hero_strike")}: {b.HeroStrikeChance:F0}% {L.Get("weapon_effect_stagger")}</color>";
+
+            // 지팡이 속성 스킬 보너스: 무기에 해당 속성이 없어도 별도 라인으로 표시
+            if (b.FlatFire > 0.01f && raw.m_fire <= 0.01f)
+                result += $"\n<color={COL_ATK_ELEM}>🔥 {L.Get("weapon_effect_fire_bonus")}: +{b.FlatFire:F0}</color>";
+            if (b.FlatFrost > 0.01f && raw.m_frost <= 0.01f)
+                result += $"\n<color=#87CEEB>❄️ {L.Get("weapon_effect_frost_bonus")}: +{b.FlatFrost:F0}</color>";
+            if (b.FlatLightning > 0.01f && raw.m_lightning <= 0.01f)
+                result += $"\n<color=#FFD700>⚡ {L.Get("weapon_effect_lightning_bonus")}: +{b.FlatLightning:F0}</color>";
         }
     }
 
@@ -493,7 +554,7 @@ namespace CaptainSkillTree.SkillTree
 
                     var rawBase = WeaponTooltipHelper.GetRawBaseDamage(item, qualityLevel);
                     WeaponTooltipHelper.ModifyDamageLines(ref __result, bonuses, rawBase);
-                    WeaponTooltipHelper.AppendExtraStats(ref __result, bonuses);
+                    WeaponTooltipHelper.AppendExtraStats(ref __result, bonuses, rawBase);
                 }
                 catch (System.Exception ex)
                 {

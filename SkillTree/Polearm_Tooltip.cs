@@ -101,7 +101,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 지면 강타 툴팁 생성
+        /// 폭풍베기 툴팁 생성 (구 지면 강타)
         /// </summary>
         public static string GetPolearmStep3GroundTooltip()
         {
@@ -109,7 +109,9 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("polearm_skill_ground")}</size></color>",
-                L.Get("polearm_desc_ground", SkillTreeConfig.PolearmStep3GroundWheelDamageValue),
+                L.Get("polearm_desc_ground",
+                    SkillTreeConfig.PolearmStep3GroundWheelDamageValue,
+                    SkillTreeConfig.PolearmStep3StormSlashExplosionValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
             data.requiredPoints = Polearm_Config.PolearmGroundWheelRequiredPointsValue.ToString();

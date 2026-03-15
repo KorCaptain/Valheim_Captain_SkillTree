@@ -34,16 +34,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_BaseAttack_RequiredPoints"] = "Tier 1: [기본 공격] 필요 포인트",
 
                 // === Tier 2: 무기 전문화 (12개) ===
-                ["Tier2_MeleeSpec_BonusTriggerChance"] = "Tier 2-1: [근접 특화] 발동 확률 (%)",
+                ["Tier2_MeleeSpec_BonusTriggerChance"] = "Tier 2-1: [근접 특화] 상시 보너스 (%)",
                 ["Tier2_MeleeSpec_MeleeDamage"] = "Tier 2-1: [근접 특화] 추가 데미지",
                 ["Tier2_MeleeSpec_RequiredPoints"] = "Tier 2-1: [근접 특화] 필요 포인트",
-                ["Tier2_BowSpec_BonusTriggerChance"] = "Tier 2-2: [활 특화] 발동 확률 (%)",
+                ["Tier2_BowSpec_BonusTriggerChance"] = "Tier 2-2: [활 특화] 상시 보너스 (%)",
                 ["Tier2_BowSpec_BowDamage"] = "Tier 2-2: [활 특화] 추가 데미지",
                 ["Tier2_BowSpec_RequiredPoints"] = "Tier 2-2: [활 특화] 필요 포인트",
-                ["Tier2_CrossbowSpec_EnhanceTriggerChance"] = "Tier 2-3: [석궁 특화] 발동 확률 (%)",
+                ["Tier2_CrossbowSpec_EnhanceTriggerChance"] = "Tier 2-3: [석궁 특화] 상시 보너스 (%)",
                 ["Tier2_CrossbowSpec_CrossbowDamage"] = "Tier 2-3: [석궁 특화] 추가 데미지",
                 ["Tier2_CrossbowSpec_RequiredPoints"] = "Tier 2-3: [석궁 특화] 필요 포인트",
-                ["Tier2_StaffSpec_ElementalTriggerChance"] = "Tier 2-4: [지팡이 특화] 발동 확률 (%)",
+                ["Tier2_StaffSpec_ElementalTriggerChance"] = "Tier 2-4: [지팡이 특화] 상시 보너스 (%)",
                 ["Tier2_StaffSpec_StaffDamage"] = "Tier 2-4: [지팡이 특화] 추가 데미지",
                 ["Tier2_StaffSpec_RequiredPoints"] = "Tier 2-4: [지팡이 특화] 필요 포인트",
 
@@ -68,7 +68,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 6: 최종 강화 (8개) ===
                 ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 (%)",
                 ["Tier6_WeakPointAttack_RequiredPoints"] = "Tier 6-1: [약점 공격] 필요 포인트",
-                ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [연속 근접] 3연타 피니셔 보너스 (%)",
+                ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [한손 무기] 상시 보너스 (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Tier 6-2: [연속 근접] 필요 포인트",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Tier 6-3: [양손 분쇄] 양손 데미지 보너스 (%)",
                 ["Tier6_TwoHandCrush_RequiredPoints"] = "Tier 6-3: [양손 분쇄] 필요 포인트",
@@ -421,6 +421,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_SpearExpert_2HitAttackSpeed"] = "Tier 0: [창 전문가] 2연속 공격속도 보너스 (%)",
                 ["Tier0_SpearExpert_2HitDamageBonus"] = "Tier 0: [창 전문가] 2연속 공격력 보너스 (%)",
                 ["Tier0_SpearExpert_EffectDuration"] = "Tier 0: [창 전문가] 효과 지속시간 (초)",
+                ["Tier0_SpearExpert_ProcChance"] = "Tier 0: [창 전문가] 발동 확률 (%)",
+                ["Tier0_SpearExpert_SpeedBoost"] = "Tier 0: [창 전문가] 속도 부스트 (%)",
 
                 // === Spear Tree: 급소 찌르기 (2개) ===
                 ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [급소 찌르기] 필요 포인트",
@@ -764,9 +766,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_AreaCombo_DoubleHitDuration"] = "Tier 3: [광역 강타] 2연타 버프 지속시간 (초)",
                 ["Tier3_AreaCombo_RequiredPoints"] = "Tier 3: [광역 강타] 필요 포인트",
 
-                // === Tier 4-1 - 지면 강타 (2개) ===
-                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] = "Tier 4-1: [지면 강타] 회전 공격 피해 보너스 (%)",
-                ["Tier4-1_GroundWheel_RequiredPoints"] = "Tier 4-1: [지면 강타] 필요 포인트",
+                // === Tier 4-1 - 폭풍베기 (3개) ===
+                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] = "Tier 4-1: [폭풍베기] 1차 베기 데미지 보너스 (%)",
+                ["Tier4-1_StormSlash_ExplosionBonus"] = "Tier 4-1: [폭풍베기] 폭발 데미지 보너스 (%)",
+                ["Tier4-1_GroundWheel_RequiredPoints"] = "Tier 4-1: [폭풍베기] 필요 포인트",
 
                 // === Tier 4-2 - 반달 베기 (3개) ===
                 ["Tier4-2_MoonSlash_AttackRangeBonus"] = "Tier 4-2: [반달 베기] 공격 범위 보너스 (%)",
@@ -798,7 +801,7 @@ namespace CaptainSkillTree.Localization
                 ["Archer_MultiShot_Charges"] = "Lv1 멀티샷: 추가 발사 회수",
                 ["Archer_MultiShot_StaminaCost"] = "Lv1 멀티샷: 스태미나 소모",
                 ["Archer_JumpHeightBonus"] = "Lv1 패시브: 점프 높이 보너스 (%)",
-                ["Archer_FallDamageReduction"] = "Lv1 패시브: 낙사 데미지 감소 (%)",
+                ["Archer_FallDamageReduction"] = "Lv1 패시브: 낙하 데미지 감소 (%)",
                 ["Archer_Lv2_BonusArrows"]   = "Lv2 멀티샷: 추가 발사체 수",
                 ["Archer_Lv2_DamagePercent"] = "Lv2 멀티샷: 1발당 공격력 (%)",
                 ["Archer_Lv3_BonusArrows"]   = "Lv3 멀티샷: 추가 발사체 수",
@@ -812,9 +815,9 @@ namespace CaptainSkillTree.Localization
                 ["Archer_Lv3_JumpHeightBonus"]     = "Lv3 패시브: 점프 높이 보너스 (%)",
                 ["Archer_Lv4_JumpHeightBonus"]     = "Lv4 패시브: 점프 높이 보너스 (%)",
                 ["Archer_Lv5_JumpHeightBonus"]     = "Lv5 패시브: 점프 높이 보너스 (%)",
-                ["Archer_Lv3_FallDamageReduction"] = "Lv3 패시브: 낙사 데미지 감소 (%)",
-                ["Archer_Lv4_FallDamageReduction"] = "Lv4 패시브: 낙사 데미지 감소 (%)",
-                ["Archer_Lv5_FallDamageReduction"] = "Lv5 패시브: 낙사 데미지 감소 (%)",
+                ["Archer_Lv3_FallDamageReduction"] = "Lv3 패시브: 낙하 데미지 감소 (%)",
+                ["Archer_Lv4_FallDamageReduction"] = "Lv4 패시브: 낙하 데미지 감소 (%)",
+                ["Archer_Lv5_FallDamageReduction"] = "Lv5 패시브: 낙하 데미지 감소 (%)",
                 ["Archer_ElementalResistPerLevel"] = "패시브: 속성 저항/레벨 (%)",
 
                 // ============================================

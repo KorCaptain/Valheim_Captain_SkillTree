@@ -226,6 +226,9 @@ namespace CaptainSkillTree.SkillTree
                 // SimpleVFX 방식: Valheim 내장 VFX로 플레이어 효과
                 SimpleVFX.PlayOnPlayer(player, Berserker_Config.BerserkerRageDurationValue);
 
+                // 분노 사운드
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_dragon_scream", "", player.transform.position);
+
                 // 머리 위 상태 표시 VFX 생성 (연공창 방식)
                 CreateRageBuffVFX(player);
             }
@@ -627,13 +630,14 @@ namespace CaptainSkillTree.SkillTree
                     if (!IsPassiveInvincibilityOnCooldown(player))
                     {
                         float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
-                        bool isLowHP = player.GetHealthPercentage() <= threshold;
                         float currentHP = player.GetHealth();
                         float maxHP = player.GetMaxHealth();
-                        float hpAfterHit = currentHP - hit.GetTotalDamage();
-                        bool wouldDropToLow = maxHP > 0f && (hpAfterHit / maxHP) <= threshold;
+                        float damage = hit.GetTotalDamage();
+                        float hpAfterHit = currentHP - damage;
+                        // 실제 데미지가 있고, 이 공격 후 체력이 10% 이하로 떨어질 때만 발동
+                        bool wouldDropToLow = damage > 0f && maxHP > 0f && (hpAfterHit / maxHP) <= threshold;
 
-                        if (isLowHP || wouldDropToLow)
+                        if (wouldDropToLow)
                         {
                             if (!passiveStates.ContainsKey(player))
                                 passiveStates[player] = new PassiveState();

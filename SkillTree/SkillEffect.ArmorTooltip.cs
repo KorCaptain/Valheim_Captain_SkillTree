@@ -119,7 +119,7 @@ namespace CaptainSkillTree.SkillTree
                         if (!isInCooldown)
                             dodgeTotal += Defense_Config.AttackDodgeBonusValue;
                     }
-                    if (manager.GetSkillLevel("knife_expert") > 0 && manager.GetSkillLevel("knife_step2_evasion") > 0)
+                    if (manager.GetSkillLevel("knife_step2_evasion") > 0 && WeaponHelper.IsUsingDagger(player))
                         dodgeTotal += Knife_Config.KnifeEvasionBonusValue;
 
                     float moveSpeedTotal = 0f;
@@ -127,6 +127,8 @@ namespace CaptainSkillTree.SkillTree
                         moveSpeedTotal += Speed_Config.SpeedRootMoveSpeedValue;
                     if (manager.GetSkillLevel("speed_1") > 0)
                         moveSpeedTotal += Speed_Config.SpeedDexterityMoveSpeedBonusValue;
+                    if (manager.GetSkillLevel("knife_step3_move_speed") > 0 && WeaponHelper.IsUsingDagger(player))
+                        moveSpeedTotal += Knife_Config.KnifeMoveSpeedBonusValue;
 
                     // 방패: 항상 처리 (바닐라 yellow "(118)" 제거)
                     // 방어구: 표시할 보너스가 없으면 스킵
@@ -135,13 +137,16 @@ namespace CaptainSkillTree.SkillTree
                     bool mageActive = manager.GetSkillLevel("Mage") > 0;
                     if (mageActive)
                         elemResist += Mage_Config.MageElementalResistanceValue;
+                    bool rogueActive = manager.GetSkillLevel("Rogue") > 0;
+                    if (rogueActive)
+                        elemResist += Rogue_Config.RogueElementalResistanceDebuffValue;
                     bool resistActive = physResist > 0f || elemResist > 0f;
 
                     if (!isShield)
                     {
                         bool hasBonus = flatBonus != 0f || rockSkinActive || resistActive
                                         || boostActive || berserkerActive || dodgeTotal > 0f
-                                        || (itemType == ItemDrop.ItemData.ItemType.Legs && moveSpeedTotal > 0f);
+                                        || moveSpeedTotal > 0f;
                         if (!hasBonus) return;
                     }
 
@@ -189,6 +194,29 @@ namespace CaptainSkillTree.SkillTree
                         }
                     }
 
+                    // 각반 이동속도 스킬 보너스 → 바닐라 Total 수정
+                    if (!isShield && (itemType == ItemDrop.ItemData.ItemType.Legs || itemType == ItemDrop.ItemData.ItemType.Chest) && moveSpeedTotal > 0f)
+                    {
+                        for (int i = 0; i < lines.Length; i++)
+                        {
+                            if (!lines[i].Contains("$item_movement_modifier")) continue;
+                            const string totalKey = "$item_total:<color=yellow>";
+                            int totalIdx = lines[i].IndexOf(totalKey);
+                            if (totalIdx < 0) break;
+                            int pctStart = totalIdx + totalKey.Length;
+                            int pctEnd = lines[i].IndexOf("%", pctStart);
+                            if (pctEnd < 0) break;
+                            string pctStr = lines[i].Substring(pctStart, pctEnd - pctStart);
+                            if (float.TryParse(pctStr, System.Globalization.NumberStyles.Any,
+                                System.Globalization.CultureInfo.InvariantCulture, out float currentTotal))
+                            {
+                                float newTotal = currentTotal + moveSpeedTotal;
+                                lines[i] = lines[i].Substring(0, pctStart) + $"{newTotal:F0}" + lines[i].Substring(pctEnd);
+                            }
+                            break;
+                        }
+                    }
+
                     __result = string.Join("\n", lines);
 
                     // bonusText 수집
@@ -222,6 +250,8 @@ namespace CaptainSkillTree.SkillTree
                                 float hp = Defense_Config.SurvivalHealthBonusValue;
                                 bonusText += $"\n<color=#00FF00>🪨</color><color=white>{L.Get("armor_effect_skin_hardening")}</color> : {L.Get("armor_stat_hp")} <color=#4FC3F7>+{hp:F0}</color>, {L.Get("armor_stat_defense")} <color=#4FC3F7>+{flatBonus:F0}</color>";
                             }
+                            if (moveSpeedTotal > 0f)
+                                bonusText += $"\n<color=#ADFF2F>🏃</color><color=white>{L.Get("armor_effect_move_spd")}</color> : <color=#00BFFF>+{moveSpeedTotal:F0}%</color>";
                             if (boostActive)
                                 bonusText += $"\n<color=#7FFF00>❤️</color><color=white>{L.Get("armor_effect_health_boost")}</color> : <color=#4FC3F7>+{Defense_Config.BoostHealthBonusValue:F0}</color>";
                             if (berserkerActive)

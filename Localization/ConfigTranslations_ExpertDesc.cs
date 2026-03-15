@@ -40,9 +40,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 2: 무기 전문화 (Weapon Specialization) ===
                 ["Tier2_MeleeSpec_BonusTriggerChance"] =
-                "【근접 무기 보너스 발동 확률 (%)】\n" +
-                "근접 무기 공격 시 추가 데미지가 발동할 확률입니다.\n" +
-                "확률적으로 폭발적인 데미지를 줄 수 있습니다.\n" +
+                "【근접 무기 상시 데미지 보너스 (%)】\n" +
+                "근접 무기 공격 시 항상 추가 데미지를 줍니다.\n" +
+                "공격할 때마다 고정적으로 적용됩니다.\n" +
                 "권장값: 15-25%",
 
                 ["Tier2_MeleeSpec_MeleeDamage"] =
@@ -51,9 +51,9 @@ namespace CaptainSkillTree.Localization
                 "권장값: 8-15",
 
                 ["Tier2_BowSpec_BonusTriggerChance"] =
-                "【활 보너스 발동 확률 (%)】\n" +
-                "활 공격 시 추가 데미지가 발동할 확률입니다.\n" +
-                "치명적인 화살을 발사할 기회를 제공합니다.\n" +
+                "【활 상시 데미지 보너스 (%)】\n" +
+                "활 공격 시 항상 추가 데미지를 줍니다.\n" +
+                "공격할 때마다 고정적으로 적용됩니다.\n" +
                 "권장값: 15-25%",
 
                 ["Tier2_BowSpec_BowDamage"] =
@@ -62,9 +62,9 @@ namespace CaptainSkillTree.Localization
                 "권장값: 6-12",
 
                 ["Tier2_CrossbowSpec_EnhanceTriggerChance"] =
-                "【석궁 보너스 발동 확률 (%)】\n" +
-                "석궁 공격 시 추가 데미지가 발동할 확률입니다.\n" +
-                "강력한 볼트로 적을 관통합니다.\n" +
+                "【석궁 상시 데미지 보너스 (%)】\n" +
+                "석궁 공격 시 항상 추가 데미지를 줍니다.\n" +
+                "공격할 때마다 고정적으로 적용됩니다.\n" +
                 "권장값: 12-20%",
 
                 ["Tier2_CrossbowSpec_CrossbowDamage"] =
@@ -73,9 +73,9 @@ namespace CaptainSkillTree.Localization
                 "권장값: 7-13",
 
                 ["Tier2_StaffSpec_ElementalTriggerChance"] =
-                "【지팡이 속성 보너스 발동 확률 (%)】\n" +
-                "지팡이 공격 시 추가 속성 데미지가 발동할 확률입니다.\n" +
-                "마법 공격의 위력을 극대화합니다.\n" +
+                "【지팡이 상시 데미지 보너스 (%)】\n" +
+                "지팡이/완드 공격 시 항상 추가 데미지를 줍니다.\n" +
+                "공격할 때마다 고정적으로 적용됩니다.\n" +
                 "권장값: 15-25%",
 
                 ["Tier2_StaffSpec_StaffDamage"] =
@@ -153,9 +153,9 @@ namespace CaptainSkillTree.Localization
                 "권장값: 8-15%",
 
                 ["Tier6_ComboFinisher_3HitComboBonus"] =
-                "【3연타 콤보 피니셔 데미지 보너스 (%)】\n" +
-                "근접 무기로 3회 연속 타격 시 최종 타격 데미지가 증가합니다.\n" +
-                "콤보 피니셔로 적을 제압합니다.\n" +
+                "【한손 무기 상시 데미지 보너스 (%)】\n" +
+                "한손 무기(검/단검/둔기/도끼) 공격 시 항상 적용됩니다.\n" +
+                "공격할 때마다 고정적으로 추가 데미지를 줍니다.\n" +
                 "권장값: 12-20%",
 
                 // ========================================
@@ -730,9 +730,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 2: Weapon Specialization ===
                 ["Tier2_MeleeSpec_BonusTriggerChance"] =
-                "【Melee Bonus Trigger Chance (%)】\n" +
-                "Chance for additional damage to trigger on melee attacks.\n" +
-                "Provides explosive burst damage opportunities.\n" +
+                "【Melee Always Damage Bonus (%)】\n" +
+                "Always applies additional damage on melee attacks.\n" +
+                "Applied consistently on every hit.\n" +
                 "Recommended: 15-25%",
 
                 ["Tier2_MeleeSpec_MeleeDamage"] =
@@ -741,9 +741,9 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 8-15",
 
                 ["Tier2_BowSpec_BonusTriggerChance"] =
-                "【Bow Bonus Trigger Chance (%)】\n" +
-                "Chance for additional damage to trigger on bow attacks.\n" +
-                "Fires devastating arrows with this proc.\n" +
+                "【Bow Always Damage Bonus (%)】\n" +
+                "Always applies additional damage on bow attacks.\n" +
+                "Applied consistently on every hit.\n" +
                 "Recommended: 15-25%",
 
                 ["Tier2_BowSpec_BowDamage"] =
@@ -752,9 +752,9 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 6-12",
 
                 ["Tier2_CrossbowSpec_EnhanceTriggerChance"] =
-                "【Crossbow Bonus Trigger Chance (%)】\n" +
-                "Chance for additional damage to trigger on crossbow attacks.\n" +
-                "Penetrates enemies with powerful bolts.\n" +
+                "【Crossbow Always Damage Bonus (%)】\n" +
+                "Always applies additional damage on crossbow attacks.\n" +
+                "Applied consistently on every hit.\n" +
                 "Recommended: 12-20%",
 
                 ["Tier2_CrossbowSpec_CrossbowDamage"] =
@@ -763,9 +763,9 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 7-13",
 
                 ["Tier2_StaffSpec_ElementalTriggerChance"] =
-                "【Staff Elemental Bonus Trigger Chance (%)】\n" +
-                "Chance for additional elemental damage to trigger on staff attacks.\n" +
-                "Maximizes magical attack power.\n" +
+                "【Staff Always Damage Bonus (%)】\n" +
+                "Always applies additional damage on staff/wand attacks.\n" +
+                "Applied consistently on every hit.\n" +
                 "Recommended: 15-25%",
 
                 ["Tier2_StaffSpec_StaffDamage"] =
@@ -843,9 +843,9 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 8-15%",
 
                 ["Tier6_ComboFinisher_3HitComboBonus"] =
-                "【3-Hit Combo Finisher Damage Bonus (%)】\n" +
-                "Increases final hit damage when landing 3 consecutive melee hits.\n" +
-                "Dominate enemies with combo finishers.\n" +
+                "【One-Hand Always Damage Bonus (%)】\n" +
+                "Always applies on one-handed weapon attacks (sword/dagger/mace/axe).\n" +
+                "Applied consistently on every hit.\n" +
                 "Recommended: 12-20%",
 
                 // ========================================

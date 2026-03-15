@@ -212,6 +212,8 @@ namespace CaptainSkillTree.SkillTree
 
                     // 1타 공격속도 버프 비활성화
                     furyHammer1stHitBuff[player] = false;
+                    // 경고 상태 초기화: 다음 일반 공격 시 속도가 캡 하에서 정상 동작하도록
+                    CaptainSkillTree.AttackSpeedHandler_Game_Awake_Patch.ClearAttackSpeedWarningState(player);
                     Plugin.Log.LogInfo("[분노의 망치] 1타 공격속도 버프 비활성화 (일반 공격 완료)");
 
                     // ✅ 데미지 먼저 적용 (넉백 0)

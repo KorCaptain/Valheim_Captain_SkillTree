@@ -182,45 +182,28 @@ namespace CaptainSkillTree.SkillTree
             // 번개 충격 처리 중이면 스킵 (재진입 방지 - 무한 루프 방지)
             if (SkillEffect.IsProcessingSpearLightningDamage()) return;
 
-            // 창 전문가 2연속 공격 체크
-            SkillEffect.CheckSpearExpertCombo(player);
+            // 창 전문가 proc 소비 (이번 공격으로 버프 차지 감소)
+            SkillEffect.ConsumeSpearExpertProc(player);
 
-            // 창 전문가 공격력 보너스
-            if (SkillEffect.spearExpertComboCount.TryGetValue(player, out int comboCount) && comboCount >= 2)
-            {
-                float bonusPercent = SkillTreeConfig.SpearStep1DamageBonusValue / 100f;
-                hit.m_damage.m_pierce *= (1f + bonusPercent);
-                SkillEffect.DrawFloatingText(player, "🔥 " + L.Get("spear_expert_damage", SkillTreeConfig.SpearStep1DamageBonusValue));
-            }
-
-            // 급소 찌르기
-            if (SkillEffect.HasSkill("spear_Step1_crit"))
-            {
-                float bonusPercent = SkillTreeConfig.SpearStep2CritDamageBonusValue / 100f;
-                hit.m_damage.m_pierce *= (1f + bonusPercent);
-                SkillEffect.PlaySkillEffect(player, "spear_Step1_crit", hit.m_point);
-            }
+            // 창 전문가 proc 발동 (다음 공격에 적용될 버프)
+            SkillEffect.TriggerSpearExpertProc(player);
 
             // 회피 찌르기 - 공격 시 5초간 회피 버프
             SkillEffect.ApplySpearEvasionBuff(player);
 
-            // 이연창 효과 (2연속 공격 시 버프 발동)
+            // 이연창 콤보 체크 (버프 활성화)
             SkillEffect.CheckSpearDualCombo(player);
-            if (SkillEffect.IsSpearDualBuffActive(player))
-            {
-                float bonusPercent = Spear_Config.SpearDualDamageBonusValue / 100f;
-                hit.m_damage.m_pierce *= (1f + bonusPercent);
-            }
 
-            // 연격창
-            SkillEffect.CheckDoubleAttack(player, target, hit);
-
-            // 투창 전문가
-            SkillEffect.ApplySpearThrowExpertDamage(hit);
-
-            // 꿰뚫는 창 (번개 충격)
+            // 꿰뚫는 창 콤보 체크
             SkillEffect.CheckSpearPenetrateCombo(player, target, hit);
+
+            // 실제 데미지 수정은 GetDamage 패치(ApplySpearPassiveBonus)에서 처리
         }
+
+        // 효과 텍스트 표시 쿨다운 (폴암강화/제압 공격)
+        private static Dictionary<Player, float> polearmBoostLastTextTime = new Dictionary<Player, float>();
+        private static Dictionary<Player, float> suppressLastTextTime = new Dictionary<Player, float>();
+        private const float TEXT_COOLDOWN = 1f;
 
         private static void ProcessPolearmAttack(Player player, HitData hit)
         {
@@ -245,12 +228,28 @@ namespace CaptainSkillTree.SkillTree
                 }
             }
 
-            // 폴암강화
+            // 폴암강화 - 이미 GetDamage(Postfix)에서 적용됨, 텍스트 표시만 (3초 쿨다운)
             if (SkillEffect.HasSkill("polearm_step4_charge"))
             {
-                float bonusValue = SkillTreeConfig.PolearmStep4ChargeDamageBonusValue;
-                hit.m_damage.m_pierce += bonusValue;
-                Plugin.Log.LogDebug($"[폴암강화] 무기 공격력 보너스 적용 (pierce): +{bonusValue}");
+                float now = Time.time;
+                if (!polearmBoostLastTextTime.TryGetValue(player, out float last) || now - last >= TEXT_COOLDOWN)
+                {
+                    float bonusValue = SkillTreeConfig.PolearmStep4ChargeDamageBonusValue;
+                    SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("polearm_boost_active", bonusValue));
+                    polearmBoostLastTextTime[player] = now;
+                }
+            }
+
+            // 제압 공격 - 이미 GetDamage(Postfix)에서 적용됨, 텍스트 표시만 (3초 쿨다운)
+            if (SkillEffect.HasSkill("polearm_step1_suppress"))
+            {
+                float now = Time.time;
+                if (!suppressLastTextTime.TryGetValue(player, out float last) || now - last >= TEXT_COOLDOWN)
+                {
+                    float bonusPct = SkillTreeConfig.PolearmStep1SuppressDamageValue;
+                    SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("suppress_active", bonusPct));
+                    suppressLastTextTime[player] = now;
+                }
             }
         }
     }
@@ -454,16 +453,18 @@ namespace CaptainSkillTree.SkillTree
 
             float totalSpearBonus = 0f;
 
-            // 창 전문가
-            if (SkillEffect.HasSkill("spear_expert"))
-            {
-                totalSpearBonus += SkillTreeConfig.SpearStep1DamageBonusValue;
-            }
+            // 창 전문가 - 신규 메커닉은 공격속도 proc (SpeedTree에서 처리), 데미지 보너스 없음
 
-            // 급소 찌르기 - 데미지 보너스 (아이템 마우스오버 표시용)
+            // 급소 찌르기 - 데미지 보너스 +20%
             if (SkillEffect.HasSkill("spear_Step1_crit"))
             {
                 totalSpearBonus += SkillTreeConfig.SpearStep2CritDamageBonusValue;
+            }
+
+            // 투창 전문가 - 패시브 공격력 +120%
+            if (SkillEffect.HasSkill("spear_Step1_throw"))
+            {
+                totalSpearBonus += Spear_Config.SpearStep2ThrowDamageValue;
             }
 
             // 연격창 - 관통 공격력 전용
@@ -512,7 +513,7 @@ namespace CaptainSkillTree.SkillTree
             // 고정값 보너스 적용
             if (totalPolearmBonusFixed > 0)
             {
-                GetDamageHelper.AddFixedDamage(ref result, totalPolearmBonusFixed, "pierce");
+                GetDamageHelper.AddFixedDamage(ref result, totalPolearmBonusFixed, "slash", "pierce");
             }
         }
     }
@@ -574,6 +575,8 @@ namespace CaptainSkillTree.SkillTree
                 spearComboSequenceActive.Remove(player);
                 spearExpertComboCount.Remove(player);
                 spearExpertLastHitTime.Remove(player);
+                spearExpertProcBuffActive.Remove(player);
+                spearExpertProcCharges.Remove(player);
             }
             catch (Exception ex)
             {

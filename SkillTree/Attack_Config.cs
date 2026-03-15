@@ -140,7 +140,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_MeleeSpec_BonusTriggerChance"), order: 48);
 
             AttackMeleeBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_MeleeSpec_MeleeDamage", 10f,
+                "Attack Tree", "Tier2_MeleeSpec_MeleeDamage", 2f,
                 SkillTreeConfig.GetConfigDescription("Tier2_MeleeSpec_MeleeDamage"), order: 48);
 
             AttackStep2MeleeRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -153,7 +153,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_BowSpec_BonusTriggerChance"), order: 46);
 
             AttackBowBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_BowSpec_BowDamage", 8f,
+                "Attack Tree", "Tier2_BowSpec_BowDamage", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier2_BowSpec_BowDamage"), order: 46);
 
             AttackStep2BowRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -166,7 +166,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_CrossbowSpec_EnhanceTriggerChance"), order: 44);
 
             AttackCrossbowBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_CrossbowSpec_CrossbowDamage", 5f,
+                "Attack Tree", "Tier2_CrossbowSpec_CrossbowDamage", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier2_CrossbowSpec_CrossbowDamage"), order: 44);
 
             AttackStep2CrossbowRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -179,7 +179,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_StaffSpec_ElementalTriggerChance"), order: 42);
 
             AttackStaffBonusDamage = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier2_StaffSpec_StaffDamage", 10f,
+                "Attack Tree", "Tier2_StaffSpec_StaffDamage", 2f,
                 SkillTreeConfig.GetConfigDescription("Tier2_StaffSpec_StaffDamage"), order: 42);
 
             AttackStep2StaffRequiredPoints = SkillTreeConfig.BindServerSync(config,
@@ -250,7 +250,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 6-2: Combo Finisher ===
             AttackFinisherMeleeBonus = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier6_ComboFinisher_3HitComboBonus", 15f,
+                "Attack Tree", "Tier6_ComboFinisher_3HitComboBonus", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier6_ComboFinisher_3HitComboBonus"), order: 6);
 
             AttackStep6FinisherRequiredPoints = SkillTreeConfig.BindServerSync(config,

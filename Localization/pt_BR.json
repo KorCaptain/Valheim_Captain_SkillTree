@@ -18,11 +18,11 @@
 
     "archer_jump_bonus": "Passiva do Arqueiro: Altura de salto +{0}%",
     "archer_fall_damage_reduced": "Passiva do Arqueiro: -{0}% de dano de queda",
-    "archer_passive_lv1": "Salto +{0}%, Queda -{1}%",
+    "archer_passive_lv1": "Salto +{0}%, Dano de Queda -{1}%",
     "archer_passive_lv2": "Salto +{0}%, Resist. Veneno +{1}%",
-    "archer_passive_lv3": "Salto +{0}%, Queda -{1}%, Resist. Veneno/Frio +{2}%",
-    "archer_passive_lv4": "Salto +{0}%, Queda -{1}%, Resist. Veneno/Frio/Fogo +{2}%",
-    "archer_passive_lv5": "Salto +{0}%, Queda -{1}%, Resist. Elemental +{2}%",
+    "archer_passive_lv3": "Salto +{0}%, Dano de Queda -{1}%, Resist. Veneno/Frio +{2}%",
+    "archer_passive_lv4": "Salto +{0}%, Dano de Queda -{1}%, Resist. Veneno/Frio/Fogo +{2}%",
+    "archer_passive_lv5": "Salto +{0}%, Dano de Queda -{1}%, Resist. Elemental +{2}%",
 
     "mage_cooldown": "Recarga de habilidade do Mago: {0}s restantes",
     "staff_required": "Você precisa equipar um cajado!",
@@ -393,7 +393,7 @@
     "ui_cancel": "Cancelar",
     "ui_reset_confirm_title": "Confirmar Redefinição de Habilidades",
     "ui_reset_confirm_message": "Tem certeza que deseja redefinir todas as habilidades?\nEsta ação não pode ser desfeita.",
-    "ui_reset_production": "Redefinir Produção",
+    "ui_reset_production": "Red. Prod.",
     "ui_reset_production_confirm_title": "Confirmar Redefinição de Especialista em Produção",
     "ui_reset_production_confirm_message": "Tem certeza que deseja redefinir as habilidades de Especialista em Produção?\nEsta ação não pode ser desfeita.",
     "ui_reset_job": "Redefinir Classe",
@@ -434,6 +434,7 @@
     "item_trophy_greydwarfbrute": "Troféu de Greydwarf Brute",
     "item_trophy_greydwarfshaman": "Troféu de Greydwarf Shaman",
     "item_trophy_troll": "Troféu de Troll",
+    "item_trophy_frosttroll": "Troféu do Troll de Gelo",
     "item_trophy_theelder": "Troféu do Ancião",
     "item_trophy_abomination": "Troféu de Abominação",
     "item_trophy_bonemass": "Troféu de Bonemass",
@@ -441,6 +442,7 @@
     "item_trophy_dragonqueen": "Troféu de Moder",
     "item_trophy_goblinking": "Troféu de Yagluth",
     "item_trophy_thequeen": "Troféu da Rainha",
+    "item_trophy_seekerqueen": "Troféu da Rainha Buscadora",
 
     "tanker_skill_warcry": "Grito de Guerra",
     "tanker_desc_warcry": "Provoca inimigos em {0}m por {1}s (chefe {2}s), lançador recebe {4}% de redução de dano por {3}s",
@@ -667,6 +669,10 @@
 
     "skill_activated": "{0} ativado!",
     "ground_stomp_effect": "Pisão no Chão! ({0} empurrados)",
+    "stomp_30sec_remaining": "🦶 Ground Stomp ready in 30s!",
+    "stomp_ready": "🦶 Ground Stomp Ready!",
+    "shockwave_30sec_remaining": "⚡ Shockwave ready in 30s!",
+    "shockwave_ready": "⚡ Shockwave Ready!",
     "luck_magic_activated": "✨ Magia da Sorte ativada!",
     "staff_wand_required": "❌ Você deve equipar um cajado ou varinha!",
 

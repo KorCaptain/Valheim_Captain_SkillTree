@@ -599,20 +599,32 @@ namespace CaptainSkillTree.Gui
             shadowImg.color = new Color(0, 0, 0, 0.6f);
             shadowImg.raycastTarget = false;
 
-            // 2. 메인 바디 레이어
+            // 2. 골드 테두리 레이어
+            GameObject borderGo = new GameObject("GoldBorder", typeof(RectTransform), typeof(Image));
+            borderGo.transform.SetParent(root.transform, false);
+            var borderRect = borderGo.GetComponent<RectTransform>();
+            borderRect.anchorMin = new Vector2(0.5f, 0.5f);
+            borderRect.anchorMax = new Vector2(0.5f, 0.5f);
+            borderRect.pivot = new Vector2(0.5f, 0.5f);
+            borderRect.sizeDelta = new Vector2(104, 26);
+            borderRect.anchoredPosition = Vector2.zero;
+            borderGo.GetComponent<Image>().color = new Color(0.85f, 0.7f, 0.1f, 0.70f);
+            borderGo.GetComponent<Image>().raycastTarget = false;
+
+            // 3. 메인 바디 레이어
             GameObject mainGo = new GameObject("MainBody", typeof(RectTransform), typeof(Image));
             mainGo.transform.SetParent(root.transform, false);
             var mainRect = mainGo.GetComponent<RectTransform>();
             mainRect.anchorMin = new Vector2(0.5f, 0.5f);
             mainRect.anchorMax = new Vector2(0.5f, 0.5f);
             mainRect.pivot = new Vector2(0.5f, 0.5f);
-            mainRect.sizeDelta = new Vector2(104, 26);
+            mainRect.sizeDelta = new Vector2(98, 20);
             mainRect.anchoredPosition = Vector2.zero;
             var mainImg = mainGo.GetComponent<Image>();
             mainImg.color = mainColor;
             mainImg.raycastTarget = false;
 
-            // 3. 상단 하이라이트 레이어 (mainGo 자식)
+            // 4. 상단 하이라이트 레이어 (mainGo 자식)
             GameObject hlGo = new GameObject("Highlight", typeof(RectTransform), typeof(Image));
             hlGo.transform.SetParent(mainGo.transform, false);
             var hlRect = hlGo.GetComponent<RectTransform>();
@@ -629,7 +641,7 @@ namespace CaptainSkillTree.Gui
             );
             hlImg.raycastTarget = false;
 
-            // 4. 텍스트 + Shadow 컴포넌트 (mainGo 자식)
+            // 5. 텍스트 + Shadow 컴포넌트 (mainGo 자식)
             GameObject textGo = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Text));
             textGo.transform.SetParent(mainGo.transform, false);
             var textComp = textGo.GetComponent<UnityEngine.UI.Text>();
@@ -637,7 +649,8 @@ namespace CaptainSkillTree.Gui
             textComp.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             textComp.alignment = TextAnchor.MiddleCenter;
             textComp.color = Color.white;
-            textComp.fontSize = 11;
+            textComp.fontSize = 13;
+            textComp.fontStyle = FontStyle.Bold;
             textComp.raycastTarget = false;
             var textRect = textGo.GetComponent<RectTransform>();
             textRect.anchorMin = Vector2.zero;
@@ -648,7 +661,7 @@ namespace CaptainSkillTree.Gui
             textShadow.effectColor = new Color(0, 0, 0, 0.8f);
             textShadow.effectDistance = new Vector2(1f, -1f);
 
-            // 5. Button ColorBlock (Hover/Press 피드백)
+            // 6. Button ColorBlock (Hover/Press 피드백)
             var button = root.GetComponent<Button>();
             var colors = button.colors;
             colors.normalColor = Color.white;
@@ -672,8 +685,9 @@ namespace CaptainSkillTree.Gui
             // 축소
             buttonRect.localScale = originalScale * 0.9f;
             yield return new WaitForSeconds(0.1f);
-            // 복원
-            buttonRect.localScale = originalScale;
+            // 복원 (다이얼로그 닫힘으로 버튼이 파괴된 경우 null 체크)
+            if (buttonRect != null)
+                buttonRect.localScale = originalScale;
         }
 
         private void UpdateAvailablePointText()
@@ -953,112 +967,106 @@ namespace CaptainSkillTree.Gui
             bgRect.anchorMax = Vector2.one;
             bgRect.sizeDelta = Vector2.zero;
             bgRect.anchoredPosition = Vector2.zero;
-            
-            // 다이얼로그 내용 패널
-            var dialogPanel = new GameObject("DialogPanel");
+
+            // 골드 테두리 패널 (외곽 프레임)
+            var dialogPanel = new GameObject("GoldBorder");
             dialogPanel.transform.SetParent(confirmDialog.transform, false);
-            
+
             var dialogImage = dialogPanel.AddComponent<Image>();
-            dialogImage.color = new Color(0.2f, 0.2f, 0.3f, 0.95f);
-            
+            dialogImage.color = new Color(0.85f, 0.7f, 0.1f, 0.85f);
+
             var dialogRect = dialogPanel.GetComponent<RectTransform>();
-            dialogRect.sizeDelta = new Vector2(400, 200);
+            dialogRect.sizeDelta = new Vector2(380, 220);
             dialogRect.anchoredPosition = Vector2.zero;
-            
-            // 제목 텍스트
+
+            // 다크 내부 배경 (GoldBorder 자식)
+            var darkBgGo = new GameObject("DarkBg");
+            darkBgGo.transform.SetParent(dialogPanel.transform, false);
+
+            var darkBgImage = darkBgGo.AddComponent<Image>();
+            darkBgImage.color = new Color(0.08f, 0.07f, 0.20f, 0.97f);
+
+            var darkBgRect = darkBgGo.GetComponent<RectTransform>();
+            darkBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+            darkBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+            darkBgRect.pivot = new Vector2(0.5f, 0.5f);
+            darkBgRect.sizeDelta = new Vector2(374, 214);
+            darkBgRect.anchoredPosition = Vector2.zero;
+
+            // 제목 배경 바 (DarkBg 자식)
+            var titleBarGo = new GameObject("TitleBar");
+            titleBarGo.transform.SetParent(darkBgGo.transform, false);
+
+            var titleBarImage = titleBarGo.AddComponent<Image>();
+            titleBarImage.color = new Color(0.10f, 0.08f, 0.25f, 1f);
+            titleBarImage.raycastTarget = false;
+
+            var titleBarRect = titleBarGo.GetComponent<RectTransform>();
+            titleBarRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleBarRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleBarRect.pivot = new Vector2(0.5f, 0.5f);
+            titleBarRect.sizeDelta = new Vector2(374, 44);
+            titleBarRect.anchoredPosition = new Vector2(0, 88);
+
+            // 제목 텍스트 (DarkBg 자식)
             var titleObj = new GameObject("Title");
-            titleObj.transform.SetParent(dialogPanel.transform, false);
-            
+            titleObj.transform.SetParent(darkBgGo.transform, false);
+
             var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
             titleText.text = L10n.Get(titleKey);
             titleText.fontSize = 20;
-            titleText.color = Color.white;
+            titleText.fontStyle = FontStyle.Bold;
+            titleText.color = new Color(1f, 0.85f, 0f, 1f);
             titleText.alignment = TextAnchor.MiddleCenter;
             titleText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            
+
+            var titleShadow = titleObj.AddComponent<UnityEngine.UI.Shadow>();
+            titleShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            titleShadow.effectDistance = new Vector2(1f, -1f);
+
             var titleRect = titleObj.GetComponent<RectTransform>();
-            titleRect.sizeDelta = new Vector2(360, 40);
-            titleRect.anchoredPosition = new Vector2(0, 50);
-            
-            // 내용 텍스트
+            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRect.pivot = new Vector2(0.5f, 0.5f);
+            titleRect.sizeDelta = new Vector2(340, 34);
+            titleRect.anchoredPosition = new Vector2(0, 78);
+
+            // 내용 텍스트 (DarkBg 자식)
             var contentObj = new GameObject("Content");
-            contentObj.transform.SetParent(dialogPanel.transform, false);
-            
+            contentObj.transform.SetParent(darkBgGo.transform, false);
+
             var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
             contentText.text = L10n.Get(messageKey);
             contentText.fontSize = 14;
             contentText.color = Color.white;
             contentText.alignment = TextAnchor.MiddleCenter;
             contentText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            
+
+            var contentShadow = contentObj.AddComponent<UnityEngine.UI.Shadow>();
+            contentShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            contentShadow.effectDistance = new Vector2(1f, -1f);
+
             var contentRect = contentObj.GetComponent<RectTransform>();
-            contentRect.sizeDelta = new Vector2(360, 60);
-            contentRect.anchoredPosition = new Vector2(0, 0);
-            
-            // 확인 버튼
-            var confirmBtnObj = new GameObject("ConfirmButton");
-            confirmBtnObj.transform.SetParent(dialogPanel.transform, false);
-            
-            var confirmBtnImage = confirmBtnObj.AddComponent<Image>();
-            confirmBtnImage.color = new Color(0.8f, 0.2f, 0.2f, 1f); // 빨간색
-            
-            confirmButton = confirmBtnObj.AddComponent<Button>();
-            confirmButton.onClick.AddListener(() => {
+            contentRect.anchorMin = new Vector2(0.5f, 0.5f);
+            contentRect.anchorMax = new Vector2(0.5f, 0.5f);
+            contentRect.pivot = new Vector2(0.5f, 0.5f);
+            contentRect.sizeDelta = new Vector2(340, 70);
+            contentRect.anchoredPosition = new Vector2(0, 10);
+
+            // 확인 버튼 (DarkBg 자식) - Luxury 스타일 (레드-버건디)
+            confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"),
+                new Vector2(-68f, -82f), new Color(0.60f, 0.10f, 0.10f, 1f), darkBgGo.transform, () => {
                 PlayConfirmSound();
                 HideResetConfirmDialog();
                 onConfirm();
             });
-            
-            var confirmBtnRect = confirmBtnObj.GetComponent<RectTransform>();
-            confirmBtnRect.sizeDelta = new Vector2(120, 40);
-            confirmBtnRect.anchoredPosition = new Vector2(-70, -50);
-            
-            // 확인 버튼 텍스트
-            var confirmTxtObj = new GameObject("ConfirmText");
-            confirmTxtObj.transform.SetParent(confirmBtnObj.transform, false);
-            
-            var confirmTxt = confirmTxtObj.AddComponent<UnityEngine.UI.Text>();
-            confirmTxt.text = L10n.Get("ui_confirm");
-            confirmTxt.fontSize = 14;
-            confirmTxt.color = Color.white;
-            confirmTxt.alignment = TextAnchor.MiddleCenter;
-            confirmTxt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
 
-            var confirmTxtRect = confirmTxtObj.GetComponent<RectTransform>();
-            confirmTxtRect.sizeDelta = new Vector2(120, 40);
-            confirmTxtRect.anchoredPosition = Vector2.zero;
-
-            // 취소 버튼
-            var cancelBtnObj = new GameObject("CancelButton");
-            cancelBtnObj.transform.SetParent(dialogPanel.transform, false);
-
-            var cancelBtnImage = cancelBtnObj.AddComponent<Image>();
-            cancelBtnImage.color = new Color(0.4f, 0.4f, 0.4f, 1f); // 회색
-
-            cancelButton = cancelBtnObj.AddComponent<Button>();
-            cancelButton.onClick.AddListener(() => {
+            // 취소 버튼 (DarkBg 자식) - Luxury 스타일 (다크 스틸)
+            cancelButton = CreateLuxuryButton("CancelButton", L10n.Get("ui_cancel"),
+                new Vector2(68f, -82f), new Color(0.22f, 0.22f, 0.30f, 1f), darkBgGo.transform, () => {
                 PlayCancelSound();
                 HideResetConfirmDialog();
             });
-
-            var cancelBtnRect = cancelBtnObj.GetComponent<RectTransform>();
-            cancelBtnRect.sizeDelta = new Vector2(120, 40);
-            cancelBtnRect.anchoredPosition = new Vector2(70, -50);
-
-            // 취소 버튼 텍스트
-            var cancelTxtObj = new GameObject("CancelText");
-            cancelTxtObj.transform.SetParent(cancelBtnObj.transform, false);
-
-            var cancelTxt = cancelTxtObj.AddComponent<UnityEngine.UI.Text>();
-            cancelTxt.text = L10n.Get("ui_cancel");
-            cancelTxt.fontSize = 14;
-            cancelTxt.color = Color.white;
-            cancelTxt.alignment = TextAnchor.MiddleCenter;
-            cancelTxt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            
-            var cancelTxtRect = cancelTxtObj.GetComponent<RectTransform>();
-            cancelTxtRect.sizeDelta = new Vector2(120, 40);
-            cancelTxtRect.anchoredPosition = Vector2.zero;
             
             // 다이얼로그를 최상위로 설정
             confirmDialog.transform.SetAsLastSibling();

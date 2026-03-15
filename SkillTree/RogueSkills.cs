@@ -507,7 +507,7 @@ namespace CaptainSkillTree.SkillTree
                     if (!_moveSpeedWarningShown.TryGetValue(__instance, out bool shown) || !shown)
                     {
                         Plugin.Log.LogWarning($"[이동속도] {__instance.GetPlayerName()} 보너스 제한: {totalBonus:F1}% → {maxBonus}%");
-                        __instance.Message(MessageHud.MessageType.Center, $"이동속도 제한을 {maxBonus}%를 넘길 수 없습니다.");
+                        __instance.Message(MessageHud.MessageType.Center, L.Get("move_speed_cap_warning", $"{maxBonus:F0}"));
                         _moveSpeedWarningShown[__instance] = true;
                     }
                     totalBonus = maxBonus;

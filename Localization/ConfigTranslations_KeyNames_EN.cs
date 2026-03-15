@@ -34,16 +34,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_BaseAttack_RequiredPoints"] = "Tier 1: [Base Attack] Required Points",
 
                 // === Tier 2: Weapon Specialization (12) ===
-                ["Tier2_MeleeSpec_BonusTriggerChance"] = "Tier 2-1: [Melee Spec] Trigger Chance (%)",
+                ["Tier2_MeleeSpec_BonusTriggerChance"] = "Tier 2-1: [Melee Spec] Always Bonus (%)",
                 ["Tier2_MeleeSpec_MeleeDamage"] = "Tier 2-1: [Melee Spec] Bonus Damage",
                 ["Tier2_MeleeSpec_RequiredPoints"] = "Tier 2-1: [Melee Spec] Required Points",
-                ["Tier2_BowSpec_BonusTriggerChance"] = "Tier 2-2: [Bow Spec] Trigger Chance (%)",
+                ["Tier2_BowSpec_BonusTriggerChance"] = "Tier 2-2: [Bow Spec] Always Bonus (%)",
                 ["Tier2_BowSpec_BowDamage"] = "Tier 2-2: [Bow Spec] Bonus Damage",
                 ["Tier2_BowSpec_RequiredPoints"] = "Tier 2-2: [Bow Spec] Required Points",
-                ["Tier2_CrossbowSpec_EnhanceTriggerChance"] = "Tier 2-3: [Crossbow Spec] Trigger Chance (%)",
+                ["Tier2_CrossbowSpec_EnhanceTriggerChance"] = "Tier 2-3: [Crossbow Spec] Always Bonus (%)",
                 ["Tier2_CrossbowSpec_CrossbowDamage"] = "Tier 2-3: [Crossbow Spec] Bonus Damage",
                 ["Tier2_CrossbowSpec_RequiredPoints"] = "Tier 2-3: [Crossbow Spec] Required Points",
-                ["Tier2_StaffSpec_ElementalTriggerChance"] = "Tier 2-4: [Staff Spec] Trigger Chance (%)",
+                ["Tier2_StaffSpec_ElementalTriggerChance"] = "Tier 2-4: [Staff Spec] Always Bonus (%)",
                 ["Tier2_StaffSpec_StaffDamage"] = "Tier 2-4: [Staff Spec] Bonus Damage",
                 ["Tier2_StaffSpec_RequiredPoints"] = "Tier 2-4: [Staff Spec] Required Points",
 
@@ -68,7 +68,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 6: Final Enhancement (8) ===
                 ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [Weak Point] Crit Damage Bonus (%)",
                 ["Tier6_WeakPointAttack_RequiredPoints"] = "Tier 6-1: [Weak Point] Required Points",
-                ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [Combo Finisher] 3-Hit Combo Bonus (%)",
+                ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [One-Hand] Always Bonus (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Tier 6-2: [Combo Finisher] Required Points",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Tier 6-3: [Two-Hand Crush] Damage Bonus (%)",
                 ["Tier6_TwoHandCrush_RequiredPoints"] = "Tier 6-3: [Two-Hand Crush] Required Points",
@@ -421,6 +421,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_SpearExpert_2HitAttackSpeed"] = "Tier 0: [Spear Expert] 2-Hit Attack Speed Bonus (%)",
                 ["Tier0_SpearExpert_2HitDamageBonus"] = "Tier 0: [Spear Expert] 2-Hit Damage Bonus (%)",
                 ["Tier0_SpearExpert_EffectDuration"] = "Tier 0: [Spear Expert] Effect Duration (sec)",
+                ["Tier0_SpearExpert_ProcChance"] = "Tier 0: [Spear Expert] Proc Chance (%)",
+                ["Tier0_SpearExpert_SpeedBoost"] = "Tier 0: [Spear Expert] Speed Boost (%)",
 
                 // === Spear Tree: Vital Strike (2 keys) ===
                 ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [Vital Strike] Required Points",
@@ -762,9 +764,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_AreaCombo_DoubleHitDuration"] = "Tier 3: [Wide Slash] Double Hit Buff Duration (sec)",
                 ["Tier3_AreaCombo_RequiredPoints"] = "Tier 3: [Wide Slash] Required Points",
 
-                // === Tier 4-1 - Ground Pound (2) ===
-                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] = "Tier 4-1: [Ground Pound] Wheel Attack Damage Bonus (%)",
-                ["Tier4-1_GroundWheel_RequiredPoints"] = "Tier 4-1: [Ground Pound] Required Points",
+                // === Tier 4-1 - Storm Slash (3) ===
+                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] = "Tier 4-1: [Storm Slash] 1st Slash Damage Bonus (%)",
+                ["Tier4-1_StormSlash_ExplosionBonus"] = "Tier 4-1: [Storm Slash] Explosion Damage Bonus (%)",
+                ["Tier4-1_GroundWheel_RequiredPoints"] = "Tier 4-1: [Storm Slash] Required Points",
 
                 // === Tier 4-2 - Crescent Slash (3) ===
                 ["Tier4-2_MoonSlash_AttackRangeBonus"] = "Tier 4-2: [Crescent Slash] Attack Range Bonus (%)",

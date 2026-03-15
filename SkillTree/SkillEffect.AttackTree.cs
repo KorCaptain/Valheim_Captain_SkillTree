@@ -127,40 +127,28 @@ namespace CaptainSkillTree.SkillTree
                         isStaff = currentWeapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic ||
                                   currentWeapon.m_shared.m_skillType == Skills.SkillType.BloodMagic;
 
-                        // 근접 특화
-                        if (isMelee && manager.GetSkillLevel("atk_melee_bonus") > 0 && 
-                            UnityEngine.Random.Range(0f, 100f) < SkillTreeConfig.AttackMeleeBonusChanceValue)
+                        // 근접 특화 (상시 +2%)
+                        if (isMelee && manager.GetSkillLevel("atk_melee_bonus") > 0)
                         {
                             float bonus = SkillTreeConfig.AttackMeleeBonusDamageValue / 100f;
                             totalDamageMultiplier *= (1f + bonus);
-                            showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "💥 " + L.Get("melee_specialization"),
-                                new Color(1f, 0.3f, 0.3f), SkillEffect.SkillEffectTextType.Combat);
                         }
 
-                        // 활 특화
-                        if (isBow && manager.GetSkillLevel("atk_bow_bonus") > 0 && 
-                            UnityEngine.Random.Range(0f, 100f) < SkillTreeConfig.AttackBowBonusChanceValue)
+                        // 활 특화 (상시 +1%)
+                        if (isBow && manager.GetSkillLevel("atk_bow_bonus") > 0)
                         {
                             float bonus = SkillTreeConfig.AttackBowBonusDamageValue / 100f;
                             totalDamageMultiplier *= (1f + bonus);
-                            showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "🏹 " + L.Get("bow_specialization"),
-                                new Color(0.2f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
                         }
 
-                        // 석궁 특화 (공격력 증가)
-                        if (isCrossbow && manager.GetSkillLevel("atk_crossbow_bonus") > 0 && 
-                            UnityEngine.Random.Range(0f, 100f) < SkillTreeConfig.AttackCrossbowBonusChanceValue)
+                        // 석궁 특화 (상시 +1%)
+                        if (isCrossbow && manager.GetSkillLevel("atk_crossbow_bonus") > 0)
                         {
                             float bonus = SkillTreeConfig.AttackCrossbowBonusDamageValue / 100f;
                             totalDamageMultiplier *= (1f + bonus);
-                            showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "⚡ " + L.Get("crossbow_specialization"),
-                                new Color(1f, 0.9f, 0.3f), SkillEffect.SkillEffectTextType.Combat);
                         }
 
                         // 석궁 "단 한 발" 스킬 효과 확인 및 적용
@@ -180,17 +168,12 @@ namespace CaptainSkillTree.SkillTree
                             }
                         }
 
-                        // 지팡이 특화 (공격력 증가 + 주변 적에게 속성 피해)
-                        if (isStaff && manager.GetSkillLevel("atk_staff_bonus") > 0 && 
-                            UnityEngine.Random.Range(0f, 100f) < SkillTreeConfig.AttackStaffBonusChanceValue)
+                        // 지팡이 특화 (상시 +2%)
+                        if (isStaff && manager.GetSkillLevel("atk_staff_bonus") > 0)
                         {
                             float bonus = SkillTreeConfig.AttackStaffBonusDamageValue / 100f;
                             totalDamageMultiplier *= (1f + bonus);
-                            ApplyStaffAreaDamage(player, hit);
-                            showEffect = true;
                             isAttackTreeEffect = true;
-                            SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("staff_specialization"),
-                                new Color(1f, 0.2f, 1f), SkillEffect.SkillEffectTextType.Combat);
                         }
                     }
 
@@ -221,6 +204,21 @@ namespace CaptainSkillTree.SkillTree
                     if (manager.GetSkillLevel("atk_melee_crit") > 0 && currentWeapon != null)
                     {
                         CheckMeleeCombo(player, ref totalDamageMultiplier, ref showEffect, ref isAttackTreeEffect);
+                    }
+
+                    // 연속 근접의 대가 - 한손 무기 상시 +5%
+                    if (manager.GetSkillLevel("atk_finisher_melee") > 0 && currentWeapon != null)
+                    {
+                        bool isOneHanded = currentWeapon.m_shared.m_skillType == Skills.SkillType.Swords ||
+                                           currentWeapon.m_shared.m_skillType == Skills.SkillType.Knives ||
+                                           currentWeapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
+                                           currentWeapon.m_shared.m_skillType == Skills.SkillType.Axes;
+                        if (isOneHanded)
+                        {
+                            float bonus = SkillTreeConfig.AttackFinisherMeleeBonusValue / 100f;
+                            totalDamageMultiplier *= (1f + bonus);
+                            isAttackTreeEffect = true;
+                        }
                     }
 
                     // 연속베기 지속 버프 (sword_Step2_combo_slash)
@@ -281,6 +279,7 @@ namespace CaptainSkillTree.SkillTree
                             float maxStamina = player.GetMaxStamina();
                             float recoveryAmount = maxStamina * (Attack_Config.AttackSpecialStatValue / 100f);
                             player.UseStamina(-recoveryAmount);
+                            SimpleVFX.PlayOnPlayer(player, "debuff_03_aura", 2f, Vector3.zero);
                             SkillEffect.ShowSkillEffectText(player,
                                 $"+{recoveryAmount:F0}",
                                 Color.yellow,
@@ -386,18 +385,6 @@ namespace CaptainSkillTree.SkillTree
                 }
             }
 
-            // 3연속 공격 시 추가 보너스 (연속 근접의 대가)
-            if (manager != null && manager.GetSkillLevel("atk_finisher_melee") > 0 && 
-                AttackTreeTracker.meleeComboCount[player] >= 3)
-            {
-                float bonus = SkillTreeConfig.AttackFinisherMeleeBonusValue / 100f;
-                totalDamageMultiplier *= (1f + bonus);
-                if (AttackTreeTracker.meleeComboCount[player] == 3)
-                {
-                    SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("consecutive_melee_master"),
-                        new Color(1f, 0.5f, 0f), SkillEffect.SkillEffectTextType.Critical);
-                }
-            }
         }
 
         private static void ApplyStaffAreaDamage(Player player, HitData originalHit)

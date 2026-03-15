@@ -50,7 +50,7 @@ namespace CaptainSkillTree.Localization
                 // === Archer Skill ===
                 ["archer_skill_multishot"] = "멀티샷",
                 ["archer_desc_multishot"] = "{0}발씩 {1}회 발사, 화살 1발은 활+화살 공격력의 {2}%",
-                ["archer_desc_passive"] = "점프 높이 +{0}%, 낙사 데미지 -{1}%",
+                ["archer_desc_passive"] = "점프 높이 +{0}%, 낙하 데미지 -{1}%",
                 ["archer_range_arrows"] = "화살 {0}개 발사",
 
                 // === Mace Skill Names ===
@@ -102,7 +102,8 @@ namespace CaptainSkillTree.Localization
                 ["spear_skill_dual"] = "이연창",
 
                 // === Spear Skill Descriptions ===
-                ["spear_desc_expert"] = "2연속 공격 시 공격 속도 +{0}%, 공격력 +{1}%({2}초 동안)",
+                ["spear_desc_expert"] = "{0}% 확률로 공격 시 {1}% 공격속도로 1회 추가 공격 발동",
+                ["spear_expert_proc"] = "번개 일격!",
                 ["spear_desc_throw"] = "창 던지기 공격력 +{0}%",
                 ["spear_desc_crit"] = "창 공격력 +{0}%",
                 ["spear_desc_pierce"] = "관통 공격력 +{0}",
@@ -124,17 +125,17 @@ namespace CaptainSkillTree.Localization
                 ["polearm_skill_suppress"] = "제압 공격",
                 ["polearm_skill_hero"] = "영웅 타격",
                 ["polearm_skill_area"] = "광역 강타",
-                ["polearm_skill_ground"] = "지면 강타",
+                ["polearm_skill_ground"] = "폭풍베기",
                 ["polearm_skill_moon"] = "반달 베기",
                 ["polearm_skill_charge"] = "폴암강화",
 
                 // === Polearm Skill Descriptions ===
                 ["polearm_desc_expert"] = "공격 범위 +{0}%",
-                ["polearm_desc_spin"] = "특수 공격 공격력 +{0}%",
+                ["polearm_desc_spin"] = "특수(휠 마우스) 공격력 +{0}%",
                 ["polearm_desc_suppress"] = "공격력 +{0}%",
                 ["polearm_desc_hero"] = "{0}% 확률로 스태거",
                 ["polearm_desc_area"] = "2연속 공격 시 공격력 +{0}%({1}초동안)",
-                ["polearm_desc_ground"] = "특수 공격 공격력 +{0}%",
+                ["polearm_desc_ground"] = "특수(휠 마우스) 적중: 1차 베기 +{0}%, 2초 후 폭발 +{1}%",
                 ["polearm_desc_moon"] = "공격 범위 +{0}%, 공격 스태미나 -{1}%",
                 ["polearm_desc_charge"] = "관통 공격력 +{0}",
                 ["polearm_desc_king"] = "전방 {0}m 돌진, 적 충돌 시 관통 공격",
@@ -269,12 +270,12 @@ namespace CaptainSkillTree.Localization
                 // === Archer Job ===
                 ["archer_desc_multishot_fallback"] = "5발씩 2회 발사합니다.",
                 ["archer_desc_arrow_damage_fallback"] = "화살 1발은 활+화살 공격력의 50%",
-                ["archer_passive_skills"] = "점프 높이 +{0}%, 낙사 데미지 -{1}%",
-                ["archer_passive_lv1"] = "점프 +{0}%, 낙사 -{1}%",
+                ["archer_passive_skills"] = "점프 높이 +{0}%, 낙하 데미지 -{1}%",
+                ["archer_passive_lv1"] = "점프 +{0}%, 낙하 데미지 -{1}%",
                 ["archer_passive_lv2"] = "점프 +{0}%, 독 저항 +{1}%",
-                ["archer_passive_lv3"] = "점프 +{0}%, 낙사 -{1}%, 독/냉기 저항 +{2}%",
-                ["archer_passive_lv4"] = "점프 +{0}%, 낙사 -{1}%, 독/냉기/화염 저항 +{2}%",
-                ["archer_passive_lv5"] = "점프 +{0}%, 낙사 -{1}%, 독/냉기/화염/번개 저항 +{2}%",
+                ["archer_passive_lv3"] = "점프 +{0}%, 낙하 데미지 -{1}%, 독/냉기 저항 +{2}%",
+                ["archer_passive_lv4"] = "점프 +{0}%, 낙하 데미지 -{1}%, 독/냉기/화염 저항 +{2}%",
+                ["archer_passive_lv5"] = "점프 +{0}%, 낙하 데미지 -{1}%, 독/냉기/화염/번개 저항 +{2}%",
                 ["requirement_archer"] = "활 착용, 아처 직업",
                 ["archer_current_level"] = "현재 레벨",
                 ["archer_max_level"] = "★ 최대 레벨 달성",
@@ -293,6 +294,8 @@ namespace CaptainSkillTree.Localization
                 ["item_trophy_dragonqueen"] = "모더 트로피",
                 ["item_trophy_goblinking"] = "야글루스 트로피",
                 ["item_trophy_thequeen"] = "여왕 트로피",
+                ["item_trophy_frosttroll"] = "서리 트롤 트로피",
+                ["item_trophy_seekerqueen"] = "시커 여왕 트로피",
 
                 // === Tanker Job ===
                 ["tanker_skill_warcry"] = "전장의 함성",
@@ -548,7 +551,8 @@ namespace CaptainSkillTree.Localization
                 ["spear_skill_dual"] = "Dual Thrust",
 
                 // === Spear Skill Descriptions ===
-                ["spear_desc_expert"] = "2-hit combo: Attack speed +{0}%, Damage +{1}% ({2}s)",
+                ["spear_desc_expert"] = "{0}% chance on hit to trigger 1 extra attack at {1}% speed",
+                ["spear_expert_proc"] = "Lightning Strike!",
                 ["spear_desc_throw"] = "Spear throw damage +{0}%",
                 ["spear_desc_crit"] = "Spear damage +{0}%",
                 ["spear_desc_pierce"] = "Pierce damage +{0}",
@@ -570,17 +574,17 @@ namespace CaptainSkillTree.Localization
                 ["polearm_skill_suppress"] = "Suppress Attack",
                 ["polearm_skill_hero"] = "Hero Strike",
                 ["polearm_skill_area"] = "Wide Slash",
-                ["polearm_skill_ground"] = "Ground Pound",
+                ["polearm_skill_ground"] = "Storm Slash",
                 ["polearm_skill_moon"] = "Crescent Slash",
                 ["polearm_skill_charge"] = "Polearm Enhancement",
 
                 // === Polearm Skill Descriptions ===
                 ["polearm_desc_expert"] = "Attack range +{0}%",
-                ["polearm_desc_spin"] = "Special attack damage +{0}%",
+                ["polearm_desc_spin"] = "Special (wheel mouse) attack damage +{0}%",
                 ["polearm_desc_suppress"] = "Damage +{0}%",
                 ["polearm_desc_hero"] = "{0}% chance to stagger",
                 ["polearm_desc_area"] = "2-hit combo: Damage +{0}% ({1}s)",
-                ["polearm_desc_ground"] = "Special attack damage +{0}%",
+                ["polearm_desc_ground"] = "Special (wheel mouse) hit: 1st slash +{0}%, explosion +{1}% after 2s",
                 ["polearm_desc_moon"] = "Attack range +{0}%, Stamina cost -{1}%",
                 ["polearm_desc_charge"] = "Pierce damage +{0}",
                 ["polearm_desc_king"] = "Dash {0}m forward, pierce attack on enemy contact",
@@ -682,7 +686,7 @@ namespace CaptainSkillTree.Localization
                 ["ui_cancel"] = "Cancel",
                 ["ui_reset_confirm_title"] = "Reset Skills Confirm",
                 ["ui_reset_confirm_message"] = "Are you sure you want to reset all skills?\nThis action cannot be undone.",
-                ["ui_reset_production"] = "Reset Production",
+                ["ui_reset_production"] = "Reset Pd",
                 ["ui_reset_production_confirm_title"] = "Reset Production Expert Confirm",
                 ["ui_reset_production_confirm_message"] = "Are you sure you want to reset Production Expert skills?\nThis action cannot be undone.",
                 ["ui_reset_job"] = "Reset Job",

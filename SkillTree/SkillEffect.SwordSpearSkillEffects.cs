@@ -277,6 +277,46 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        // === 창 전문가 proc 버프 시스템 ===
+        public static Dictionary<Player, bool> spearExpertProcBuffActive = new Dictionary<Player, bool>();
+        public static Dictionary<Player, int> spearExpertProcCharges = new Dictionary<Player, int>();
+
+        /// <summary>
+        /// 창 전문가 proc 발동 (28% 확률 → 다음 1회 공격 200% 속도)
+        /// </summary>
+        public static void TriggerSpearExpertProc(Player player)
+        {
+            if (!HasSkill("spear_expert")) return;
+
+            float procChance = Spear_Config.SpearExpertProcChanceValue / 100f;
+            if (UnityEngine.Random.value < procChance)
+            {
+                spearExpertProcBuffActive[player] = true;
+                spearExpertProcCharges[player] = 1;
+                DrawFloatingText(player, "⚡ " + L.Get("spear_expert_proc"));
+                Plugin.Log.LogDebug($"[창 전문가] proc 발동 - 다음 1회 공격 {100f + Spear_Config.SpearExpertSpeedBoostPercentValue}% 속도");
+            }
+        }
+
+        /// <summary>
+        /// 창 전문가 proc 버프 소비 (공격 시 1회 차지 감소)
+        /// </summary>
+        public static void ConsumeSpearExpertProc(Player player)
+        {
+            if (!spearExpertProcBuffActive.TryGetValue(player, out bool active) || !active) return;
+            spearExpertProcCharges[player]--;
+            if (spearExpertProcCharges[player] <= 0)
+                spearExpertProcBuffActive[player] = false;
+        }
+
+        /// <summary>
+        /// 창 전문가 proc 버프 활성 여부
+        /// </summary>
+        public static bool IsSpearExpertProcActive(Player player)
+        {
+            return spearExpertProcBuffActive.TryGetValue(player, out bool active) && active;
+        }
+
         // 이연창 버프 만료시간 추적
         public static Dictionary<Player, float> spearDualBuffExpiry = new Dictionary<Player, float>();
 

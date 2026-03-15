@@ -173,19 +173,19 @@ namespace CaptainSkillTree.Localization
                 "권장값: 20%",
 
                 ["Archer_Lv3_FallDamageReduction"] =
-                "【Lv3 패시브: 낙사 데미지 감소 추가 (%)】\n" +
-                "아처 Lv3 업그레이드 시 추가되는 낙사 데미지 감소량입니다.\n" +
+                "【Lv3 패시브: 낙하 데미지 감소 추가 (%)】\n" +
+                "아처 Lv3 업그레이드 시 추가되는 낙하 데미지 감소량입니다.\n" +
                 "Lv1 기본값에 더해집니다.\n" +
                 "권장값: 10%",
 
                 ["Archer_Lv4_FallDamageReduction"] =
-                "【Lv4 패시브: 낙사 데미지 감소 추가 (%)】\n" +
-                "아처 Lv4 업그레이드 시 추가되는 낙사 데미지 감소량입니다.\n" +
+                "【Lv4 패시브: 낙하 데미지 감소 추가 (%)】\n" +
+                "아처 Lv4 업그레이드 시 추가되는 낙하 데미지 감소량입니다.\n" +
                 "권장값: 20%",
 
                 ["Archer_Lv5_FallDamageReduction"] =
-                "【Lv5 패시브: 낙사 데미지 감소 추가 (%)】\n" +
-                "아처 Lv5 업그레이드 시 추가되는 낙사 데미지 감소량입니다.\n" +
+                "【Lv5 패시브: 낙하 데미지 감소 추가 (%)】\n" +
+                "아처 Lv5 업그레이드 시 추가되는 낙하 데미지 감소량입니다.\n" +
                 "권장값: 35%",
 
                 ["Archer_ElementalResistPerLevel"] =

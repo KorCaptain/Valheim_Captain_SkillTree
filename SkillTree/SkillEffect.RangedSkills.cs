@@ -556,21 +556,8 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 지팡이 전문가: 지팡이 속성 공격력 증가 (지팡이/완드 무기에만 적용)
-                if (player != null && SkillEffect.HasSkill("staff_Step1_damage") &&
-                    SkillEffect.IsStaffWeapon(__instance) &&
-                    StaffEquipmentDetector.IsWieldingStaffOrWand(player))
-                {
-                    // 설정값 기반 속성 데미지 증가
-                    float damageMultiplier = 1.0f + (Staff_Config.StaffExpertDamageValue / 100f);
-                    if (__result.m_fire > 0) __result.m_fire *= damageMultiplier;
-                    if (__result.m_frost > 0) __result.m_frost *= damageMultiplier;
-                    if (__result.m_lightning > 0) __result.m_lightning *= damageMultiplier;
-                    if (__result.m_poison > 0) __result.m_poison *= damageMultiplier;
-                    if (__result.m_spirit > 0) __result.m_spirit *= damageMultiplier;
-                }
-
                 // staff_Step4_range: 화염 속성 (화염 공격 +[CONFIG], 지팡이/완드 무기에만 적용)
+                // ※ 지팡이 전문가 배율 적용 전에 처리하여 배율 혜택 받음
                 if (player != null && SkillEffect.HasSkill("staff_Step4_range") &&
                     SkillEffect.IsStaffWeapon(__instance) &&
                     StaffEquipmentDetector.IsWieldingStaffOrWand(player))
@@ -595,6 +582,21 @@ namespace CaptainSkillTree.SkillTree
                 {
                     float lightningBonus = Staff_Config.StaffLightningDamageBonusValue;
                     __result.m_lightning += lightningBonus;
+                }
+
+                // 지팡이 전문가: 지팡이 속성 공격력 증가 (지팡이/완드 무기에만 적용)
+                // ※ Step4 속성 추가 이후에 배율 적용하여 속성 스킬 보너스에도 배율 적용됨
+                if (player != null && SkillEffect.HasSkill("staff_Step1_damage") &&
+                    SkillEffect.IsStaffWeapon(__instance) &&
+                    StaffEquipmentDetector.IsWieldingStaffOrWand(player))
+                {
+                    // 설정값 기반 속성 데미지 증가
+                    float damageMultiplier = 1.0f + (Staff_Config.StaffExpertDamageValue / 100f);
+                    if (__result.m_fire > 0) __result.m_fire *= damageMultiplier;
+                    if (__result.m_frost > 0) __result.m_frost *= damageMultiplier;
+                    if (__result.m_lightning > 0) __result.m_lightning *= damageMultiplier;
+                    if (__result.m_poison > 0) __result.m_poison *= damageMultiplier;
+                    if (__result.m_spirit > 0) __result.m_spirit *= damageMultiplier;
                 }
             }
             catch (System.Exception ex)

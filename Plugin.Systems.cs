@@ -65,6 +65,10 @@ namespace CaptainSkillTree
                 {
                     var player = __instance as Player;
 
+                    // 피격 전 체력 저장 (발구르기/충격파 임계값 교차 감지용)
+                    stompPreHitHP[player] = player.GetHealthPercentage();
+                    shockwavePreHitHP[player] = player.GetHealthPercentage();
+
                     // 수호자의 진심: 원본 데미지 저장 (막기 처리 전)
                     SkillEffect.SaveOriginalDamage(player, hit);
 
@@ -200,48 +204,52 @@ namespace CaptainSkillTree
             /// </summary>
             private static Dictionary<Player, float> stompCooldowns = new Dictionary<Player, float>();
             private static Dictionary<Player, float> shockwaveCooldowns = new Dictionary<Player, float>();
+            private static Dictionary<Player, float> stompPreHitHP = new Dictionary<Player, float>();
+            private static Dictionary<Player, float> shockwavePreHitHP = new Dictionary<Player, float>();
+            private static Dictionary<Player, Coroutine> stompNotifyCoroutines = new Dictionary<Player, Coroutine>();
+            private static Dictionary<Player, Coroutine> shockwaveNotifyCoroutines = new Dictionary<Player, Coroutine>();
 
             private static void CheckStompAutoTrigger(Player player)
             {
-                if (player == null || player.IsDead())
-                {
-                    return;
-                }
+                if (player == null || player.IsDead()) return;
+                if (SkillTreeManager.Instance?.GetSkillLevel("defense_Step4_instant") <= 0) return;
 
-                // 스킬 보유 여부 확인
-                if (SkillTreeManager.Instance?.GetSkillLevel("defense_Step4_instant") <= 0)
-                {
-                    return;
-                }
-
-                // 체력 비율 확인
-                float healthPercent = player.GetHealthPercentage();
+                // 임계값 이하로 "방금 떨어진" 순간 또는 최초 발동 허용
                 float threshold = Defense_Config.StompHealthThresholdValue;
+                float preHP = stompPreHitHP.TryGetValue(player, out float sv) ? sv : 1f;
+                float currentHP = player.GetHealthPercentage();
+                bool justDropped = preHP > threshold && currentHP <= threshold;
+                bool firstTimeBelow = !stompCooldowns.ContainsKey(player) && currentHP <= threshold;
+                if (!justDropped && !firstTimeBelow) return;
 
-                if (healthPercent > threshold)
-                {
-                    return; // 체력이 임계값보다 높으면 발동 안 함
-                }
-
-                // 쿨타임 확인
+                // 쿨타임 확인 (메시지 없이 스킵)
                 float cooldown = Defense_Config.StompCooldownValue;
-                if (stompCooldowns.ContainsKey(player))
-                {
-                    float elapsed = Time.time - stompCooldowns[player];
-                    if (elapsed < cooldown)
-                    {
-                        // 쿨타임 중 - 남은 시간 표시
-                        float remaining = cooldown - elapsed;
-                        player.Message(MessageHud.MessageType.Center, $"발구르기 쿨타임 ({remaining:F0}초 남음)");
-                        return;
-                    }
-                }
+                if (stompCooldowns.TryGetValue(player, out float lastStomp) &&
+                    Time.time - lastStomp < cooldown) return;
 
                 // 발구르기 실행
                 SkillEffect.ExecuteStompSkill(player);
-
-                // 쿨타임 기록
                 stompCooldowns[player] = Time.time;
+
+                // 쿨타임 알림 코루틴 시작
+                if (stompNotifyCoroutines.TryGetValue(player, out var oldStomp) && oldStomp != null)
+                    try { player.StopCoroutine(oldStomp); } catch { }
+                stompNotifyCoroutines[player] = player.StartCoroutine(StompCooldownNotify(player, cooldown));
+            }
+
+            private static IEnumerator StompCooldownNotify(Player player, float cooldown)
+            {
+                float wait30 = cooldown - 30f;
+                if (wait30 > 0f)
+                {
+                    yield return new WaitForSeconds(wait30);
+                    if (player != null && !player.IsDead())
+                        player.Message(MessageHud.MessageType.Center, L.Get("stomp_30sec_remaining"));
+                }
+                yield return new WaitForSeconds(Mathf.Min(30f, cooldown));
+                if (player != null && !player.IsDead())
+                    player.Message(MessageHud.MessageType.Center, L.Get("stomp_ready"));
+                stompNotifyCoroutines.Remove(player);
             }
 
             /// <summary>
@@ -252,24 +260,38 @@ namespace CaptainSkillTree
                 if (player == null || player.IsDead()) return;
                 if (SkillTreeManager.Instance?.GetSkillLevel("defense_Step4_mental") <= 0) return;
 
-                float healthPercent = player.GetHealthPercentage();
-                if (healthPercent > 0.45f) return;
+                const float threshold = 0.45f;
+                float preHP = shockwavePreHitHP.TryGetValue(player, out float wv) ? wv : 1f;
+                float currentHP = player.GetHealthPercentage();
+                bool justDropped = preHP > threshold && currentHP <= threshold;
+                bool firstTimeBelow = !shockwaveCooldowns.ContainsKey(player) && currentHP <= threshold;
+                if (!justDropped && !firstTimeBelow) return;
 
                 float cooldown = Defense_Config.ShockwaveCooldownValue;
-                if (shockwaveCooldowns.ContainsKey(player))
-                {
-                    float elapsed = Time.time - shockwaveCooldowns[player];
-                    if (elapsed < cooldown)
-                    {
-                        float remaining = cooldown - elapsed;
-                        player.Message(MessageHud.MessageType.Center,
-                            L.Get("shockwave_cooldown", remaining.ToString("F0")));
-                        return;
-                    }
-                }
+                if (shockwaveCooldowns.TryGetValue(player, out float lastShock) &&
+                    Time.time - lastShock < cooldown) return;
 
                 SkillEffect.ExecuteShockwaveSkill(player);
                 shockwaveCooldowns[player] = Time.time;
+
+                if (shockwaveNotifyCoroutines.TryGetValue(player, out var oldShock) && oldShock != null)
+                    try { player.StopCoroutine(oldShock); } catch { }
+                shockwaveNotifyCoroutines[player] = player.StartCoroutine(ShockwaveCooldownNotify(player, cooldown));
+            }
+
+            private static IEnumerator ShockwaveCooldownNotify(Player player, float cooldown)
+            {
+                float wait30 = cooldown - 30f;
+                if (wait30 > 0f)
+                {
+                    yield return new WaitForSeconds(wait30);
+                    if (player != null && !player.IsDead())
+                        player.Message(MessageHud.MessageType.Center, L.Get("shockwave_30sec_remaining"));
+                }
+                yield return new WaitForSeconds(Mathf.Min(30f, cooldown));
+                if (player != null && !player.IsDead())
+                    player.Message(MessageHud.MessageType.Center, L.Get("shockwave_ready"));
+                shockwaveNotifyCoroutines.Remove(player);
             }
         }
     }

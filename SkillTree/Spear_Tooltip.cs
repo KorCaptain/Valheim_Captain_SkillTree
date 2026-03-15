@@ -37,7 +37,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("spear_skill_expert")}</size></color>",
-                L.Get("spear_desc_expert", SkillTreeConfig.SpearStep1AttackSpeedValue, SkillTreeConfig.SpearStep1DamageBonusValue, SkillTreeConfig.SpearStep1DurationValue),
+                L.Get("spear_desc_expert", Spear_Config.SpearExpertProcChanceValue, 100f + Spear_Config.SpearExpertSpeedBoostPercentValue),
                 MeleeTooltipUtils.WeaponType.Spear
             );
             data.requirement = L.Get("requirement_spear_equip");

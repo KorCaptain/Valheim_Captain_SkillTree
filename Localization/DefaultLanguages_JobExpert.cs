@@ -170,6 +170,10 @@ namespace CaptainSkillTree.Localization
                 // === Skill Effect Messages ===
                 ["skill_activated"] = "{0} 발동!",
                 ["ground_stomp_effect"] = "발구르기! ({0}명 밀어냄)",
+                ["stomp_30sec_remaining"] = "🦶 발구르기 30초 후 준비!",
+                ["stomp_ready"] = "🦶 발구르기 준비완료!",
+                ["shockwave_30sec_remaining"] = "⚡ 충격파방출 30초 후 준비!",
+                ["shockwave_ready"] = "⚡ 충격파방출 준비완료!",
                 ["luck_magic_activated"] = "✨ 행운 마력 발동!",
                 ["staff_wand_required"] = "❌ 지팡이나 완드를 착용해야 합니다!",
 
@@ -344,11 +348,11 @@ namespace CaptainSkillTree.Localization
                 ["archer_desc_multishot_fallback"] = "Fires 5 arrows x2 times.",
                 ["archer_desc_arrow_damage_fallback"] = "Each arrow deals 50% of bow+arrow damage",
                 ["archer_passive_skills"] = "Jump height +{0}%, Fall damage -{1}%",
-                ["archer_passive_lv1"] = "Jump +{0}%, Fall -{1}%",
+                ["archer_passive_lv1"] = "Jump +{0}%, Fall Damage -{1}%",
                 ["archer_passive_lv2"] = "Jump +{0}%, Poison Resist +{1}%",
-                ["archer_passive_lv3"] = "Jump +{0}%, Fall -{1}%, Poison/Cold Resist +{2}%",
-                ["archer_passive_lv4"] = "Jump +{0}%, Fall -{1}%, Poison/Cold/Fire Resist +{2}%",
-                ["archer_passive_lv5"] = "Jump +{0}%, Fall -{1}%, All Elemental Resist +{2}%",
+                ["archer_passive_lv3"] = "Jump +{0}%, Fall Damage -{1}%, Poison/Cold Resist +{2}%",
+                ["archer_passive_lv4"] = "Jump +{0}%, Fall Damage -{1}%, Poison/Cold/Fire Resist +{2}%",
+                ["archer_passive_lv5"] = "Jump +{0}%, Fall Damage -{1}%, All Elemental Resist +{2}%",
                 ["requirement_archer"] = "Bow equipped, Archer job",
                 ["archer_current_level"] = "Current Level",
                 ["archer_max_level"] = "★ Max Level Reached",
@@ -367,6 +371,8 @@ namespace CaptainSkillTree.Localization
                 ["item_trophy_dragonqueen"] = "Moder Trophy",
                 ["item_trophy_goblinking"] = "Yagluth Trophy",
                 ["item_trophy_thequeen"] = "The Queen Trophy",
+                ["item_trophy_frosttroll"] = "Frost Troll Trophy",
+                ["item_trophy_seekerqueen"] = "Seeker Queen Trophy",
 
                 // === Tanker Job ===
                 ["tanker_skill_warcry"] = "War Cry",

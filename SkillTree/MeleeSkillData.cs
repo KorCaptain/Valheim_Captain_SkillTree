@@ -385,7 +385,7 @@ namespace CaptainSkillTree.SkillTree
                 Id = "spear_expert",
                 NameKey = "spear_skill_expert",
                 DescriptionKey = "spear_desc_expert",
-                DescriptionArgs = new object[] { SkillTreeConfig.SpearStep1AttackSpeedValue, SkillTreeConfig.SpearStep1DamageBonusValue, SkillTreeConfig.SpearStep1DurationValue },
+                DescriptionArgs = new object[] { Spear_Config.SpearExpertProcChanceValue, 100f + Spear_Config.SpearExpertSpeedBoostPercentValue },
                 RequiredPoints = Spear_Config.SpearExpertRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,

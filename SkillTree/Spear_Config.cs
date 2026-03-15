@@ -28,6 +28,10 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep3PierceDamageBonus;
         // 빠른창 설정
         public static ConfigEntry<float> SpearQuickAttackSpeed;
+        // === 창 전문가 proc 설정 (신규) ===
+        public static ConfigEntry<float> SpearExpertProcChance;
+        public static ConfigEntry<float> SpearExpertSpeedBoostPercent;
+
         // 이연창 설정
         public static ConfigEntry<float> SpearDualDamageBonus;
         public static ConfigEntry<float> SpearDualDuration;
@@ -68,6 +72,10 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep3PierceDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step3_pierce_damage", SpearStep3PierceDamageBonus.Value);
         // 빠른창 접근 프로퍼티
         public static float SpearQuickAttackSpeedValue => SkillTreeConfig.GetEffectiveValue("spear_Step3_quick_attack_speed", SpearQuickAttackSpeed.Value);
+        // 창 전문가 proc 접근 프로퍼티 (신규)
+        public static float SpearExpertProcChanceValue => SkillTreeConfig.GetEffectiveValue("spear_expert_proc_chance", SpearExpertProcChance.Value);
+        public static float SpearExpertSpeedBoostPercentValue => SkillTreeConfig.GetEffectiveValue("spear_expert_speed_boost", SpearExpertSpeedBoostPercent.Value);
+
         // 이연창 접근 프로퍼티
         public static float SpearDualDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_dual_damage_bonus", SpearDualDamageBonus.Value);
         public static float SpearDualDurationValue => SkillTreeConfig.GetEffectiveValue("spear_dual_duration", SpearDualDuration.Value);
@@ -193,6 +201,19 @@ namespace CaptainSkillTree.SkillTree
                 "Tier3_QuickSpear_AttackSpeed",
                 20f,
                 SkillTreeConfig.GetConfigDescription("Tier3_QuickSpear_AttackSpeed"));
+
+            // === 창 전문가 proc 설정 (신규) ===
+            SpearExpertProcChance = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree",
+                "Tier0_SpearExpert_ProcChance",
+                28f,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpearExpert_ProcChance"));
+
+            SpearExpertSpeedBoostPercent = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree",
+                "Tier0_SpearExpert_SpeedBoost",
+                100f,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpearExpert_SpeedBoost"));
 
             // === 이연창 설정 ===
             SpearDualDamageBonus = SkillTreeConfig.BindServerSync(config,

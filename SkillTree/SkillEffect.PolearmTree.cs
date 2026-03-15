@@ -677,7 +677,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 휠 마우스(특수공격) 데미지 보너스 계산
         /// 회전베기 (polearm_step1_spin) +60%
-        /// 지면 강타 (polearm_step3_ground) +80%
+        /// 폭풍베기 (polearm_step3_ground)는 별도 패치(PolearmStormSlash)에서 처리
         /// </summary>
         public static float GetPolearmWheelDamageBonus()
         {
@@ -688,13 +688,6 @@ namespace CaptainSkillTree.SkillTree
             {
                 bonus += SkillTreeConfig.PolearmStep1SpinWheelDamageValue;
                 Plugin.Log.LogDebug($"[회전베기] 휠 공격력 +{SkillTreeConfig.PolearmStep1SpinWheelDamageValue}%");
-            }
-
-            // 지면 강타 - 휠 마우스 공격력 +80%
-            if (HasSkill("polearm_step3_ground"))
-            {
-                bonus += SkillTreeConfig.PolearmStep3GroundWheelDamageValue;
-                Plugin.Log.LogDebug($"[지면 강타] 휠 공격력 +{SkillTreeConfig.PolearmStep3GroundWheelDamageValue}%");
             }
 
             return bonus;
@@ -790,14 +783,16 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                if (__instance == null || hit == null || __instance.IsDead()) return;
+                if (__instance == null || hit == null) return;
                 if (__instance.IsPlayer()) return; // 플레이어는 제외
 
-                var attacker = hit.GetAttacker();
-                if (attacker == null || !attacker.IsPlayer()) return;
-
-                var player = attacker as Player;
+                // 로컬 플레이어 직접 참조 (DrawFloatingText가 Player.m_localPlayer와 동일성 비교)
+                var player = Player.m_localPlayer;
                 if (player == null || !SkillEffect.IsUsingPolearm(player)) return;
+
+                // 로컬 플레이어의 공격인지 확인
+                var attacker = hit.GetAttacker();
+                if (attacker == null || attacker != player) return;
 
                 // 영웅 타격 스킬 확인
                 float knockbackChance = SkillEffect.GetPolearmHeroKnockbackChance();
@@ -806,12 +801,15 @@ namespace CaptainSkillTree.SkillTree
                 // 확률 체크
                 if (UnityEngine.Random.value * 100f > knockbackChance) return;
 
-                // 스태거 적용
-                Vector3 knockbackDir = (__instance.transform.position - player.transform.position).normalized;
-                __instance.Stagger(knockbackDir);
-
-                // 패시브 스킬: 텍스트 표시만 (VFX/SFX 금지)
+                // 텍스트는 IsDead 무관하게 표시 (스태거 확률 발동 알림)
                 SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("hero_strike_stagger"));
+
+                // 스태거는 생존한 대상에만 적용
+                if (!__instance.IsDead())
+                {
+                    Vector3 knockbackDir = (__instance.transform.position - player.transform.position).normalized;
+                    __instance.Stagger(knockbackDir);
+                }
                 Plugin.Log.LogInfo($"[영웅 타격] 스태거 발동 - {__instance.name}");
             }
             catch (System.Exception ex)
@@ -825,7 +823,7 @@ namespace CaptainSkillTree.SkillTree
     /// 폴암 휠 마우스(특수 공격) 데미지 보너스 패치
     /// Attack.Start에서 특수 공격 감지 후 보너스 준비
     /// 회전베기 (polearm_step1_spin) +60%
-    /// 지면 강타 (polearm_step3_ground) +80%
+    /// 폭풍베기 (polearm_step3_ground) → 별도 PolearmStormSlash 패치에서 처리
     /// </summary>
     [HarmonyPatch(typeof(Attack), nameof(Attack.Start))]
     public static class Attack_Start_PolearmWheelDetect_Patch
@@ -841,12 +839,12 @@ namespace CaptainSkillTree.SkillTree
                 var player = Player.m_localPlayer;
                 if (player == null || !SkillEffect.IsUsingPolearm(player)) return;
 
-                // 휠 마우스 보너스 계산
-                float wheelBonus = SkillEffect.GetPolearmWheelDamageBonus();
-                if (wheelBonus <= 0f) return;
+                // 회전베기 또는 폭풍베기 스킬이 있을 때만 처리
+                bool hasWheelSkill = SkillEffect.GetPolearmWheelDamageBonus() > 0f
+                                   || SkillEffect.HasSkill("polearm_step3_ground");
+                if (!hasWheelSkill) return;
 
-                // 특수 공격(휠 마우스/가운데 버튼) 체크
-                // Valheim에서 Secondary Attack은 마우스 가운데 버튼 또는 특정 키
+                // secondaryAttack 먼저 기록 (wheelBonus와 독립적으로)
                 bool isSecondaryAttack = ZInput.GetButton("SecondaryAttack") || Input.GetMouseButton(2);
 
                 if (isSecondaryAttack)
@@ -854,7 +852,7 @@ namespace CaptainSkillTree.SkillTree
                     // 특수 공격 시간 기록 (Character.Damage에서 확인용)
                     lastSecondaryAttackTime[player] = Time.time;
 
-                    Plugin.Log.LogDebug($"[폴암 휠 공격] 특수 공격 감지 - 보너스 +{wheelBonus}% 준비");
+                    Plugin.Log.LogDebug($"[폴암] 특수 공격 감지");
                 }
             }
             catch (System.Exception ex)
@@ -959,6 +957,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 Attack_Start_PolearmWheelDetect_Patch.Cleanup(player);
+                CleanupStormSlashOnDeath(player);
 
                 Plugin.Log.LogDebug("[폴암 스킬] 플레이어 상태 정리 완료");
             }

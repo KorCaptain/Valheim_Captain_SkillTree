@@ -1168,8 +1168,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 case 1: return inventory.HaveItem("$item_trophy_greydwarfbrute") &&
                                inventory.HaveItem("$item_trophy_eikthyr");
-                case 2: return inventory.HaveItem("$item_trophy_troll") &&
-                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                case 2: return inventory.HaveItem("$item_trophy_eikthyr") &&
                                inventory.HaveItem("$item_trophy_theelder");
                 case 3: return inventory.HaveItem("$item_trophy_abomination") &&
                                inventory.HaveItem("$item_trophy_theelder") &&
@@ -1179,7 +1178,7 @@ namespace CaptainSkillTree.SkillTree
                                inventory.HaveItem("$item_trophy_dragonqueen");
                 case 5: return inventory.HaveItem("$item_trophy_dragonqueen") &&
                                inventory.HaveItem("$item_trophy_goblinking") &&
-                               inventory.HaveItem("$item_trophy_thequeen");
+                               inventory.HaveItem("$item_trophy_seekerqueen");
                 default: return false;
             }
         }
@@ -1198,7 +1197,6 @@ namespace CaptainSkillTree.SkillTree
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
                     break;
                 case 2:
-                    inventory.RemoveItem("$item_trophy_troll", 1);
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
                     inventory.RemoveItem("$item_trophy_theelder", 1);
                     break;
@@ -1215,7 +1213,7 @@ namespace CaptainSkillTree.SkillTree
                 case 5:
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
-                    inventory.RemoveItem("$item_trophy_thequeen", 1);
+                    inventory.RemoveItem("$item_trophy_seekerqueen", 1);
                     break;
             }
         }

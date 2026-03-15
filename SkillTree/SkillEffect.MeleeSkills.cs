@@ -166,7 +166,7 @@ namespace CaptainSkillTree.SkillTree
             ["polearm_step1_suppress"] = "제압 공격",
             ["polearm_step2_hero"] = "영웅 타격",
             ["polearm_step3_area"] = "광역 강타",
-            ["polearm_step3_ground"] = "지면 강타",
+            ["polearm_step3_ground"] = "폭풍베기",
             ["polearm_step4_moon"] = "반달 베기",
             ["polearm_step4_charge"] = "폴암강화",
             ["polearm_step5_king"] = "장창의 제왕",

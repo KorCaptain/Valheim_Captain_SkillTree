@@ -286,13 +286,14 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 창 전문가 (spear_expert) - 2연속 공격 속도 - 창 착용 시만
-                if (HasSkill("spear_expert"))
+                // 창 전문가 (spear_expert) - proc 활성 시 +100% 공격속도 - 창 착용 시만
+                if (HasSkill("spear_expert") && IsSpearExpertProcActive(player))
                 {
                     if (weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
                         weapon.m_shared.m_skillType == Skills.SkillType.Polearms)
                     {
-                        bonus += SkillTreeConfig.SpearStep1AttackSpeedValue;
+                        bonus += Spear_Config.SpearExpertSpeedBoostPercentValue;
+                        Plugin.Log.LogDebug($"[공속] 창 전문가 proc: +{Spear_Config.SpearExpertSpeedBoostPercentValue}%");
                     }
                 }
 

@@ -15,6 +15,8 @@ namespace CaptainSkillTree.Localization
                 ["hud_slot_h"] = "보조",
 
                 // === Common Messages ===
+                ["attack_speed_cap_warning"] = "공격속도 보너스가 {0}%를 초과할 수 없습니다.",
+                ["move_speed_cap_warning"] = "이동속도 보너스가 {0}%를 초과할 수 없습니다.",
                 ["cooldown_remaining"] = "{0} 쿨다운 중! 남은 시간: {1}초",
                 ["skill_cooldown"] = "{0} 스킬 쿨타임: {1}초 남음",
                 ["stamina_insufficient"] = "스태미나가 부족합니다",
@@ -26,7 +28,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Archer Passive ===
                 ["archer_jump_bonus"] = "아처 패시브: 점프 높이 +{0}%",
-                ["archer_fall_damage_reduced"] = "아처 패시브: -{0} 낙사 데미지 감소!",
+                ["archer_fall_damage_reduced"] = "아처 패시브: -{0} 낙하 데미지 감소!",
 
                 // === Mage Skills ===
                 ["mage_cooldown"] = "메이지 스킬 쿨타임: {0}초 남음",
@@ -126,6 +128,10 @@ namespace CaptainSkillTree.Localization
                 ["polearm_king_cooldown"] = "장창제왕 쿨다운 중! 남은 시간: {0}초",
                 ["polearm_required"] = "폴암을 착용해야 합니다",
                 ["polearm_king_success"] = "장창제왕! {0} 데미지!",
+                ["storm_slash_first"] = "폭풍베기! 1차 베기 +{0}%",
+                ["storm_slash_explosion"] = "폭풍베기 폭발! +{0}%",
+                ["polearm_boost_active"] = "⚔️ 폴암강화 +{0} 관통!",
+                ["suppress_active"] = "⚔️ 제압 공격 +{0}%!",
 
                 // === Knife Skills ===
                 ["knife_assassin_cooldown"] = "암살자의 심장 쿨다운 중! 남은 시간: {0}초",
@@ -314,6 +320,8 @@ namespace CaptainSkillTree.Localization
                 ["hud_slot_h"] = "Secondary",
 
                 // === Common Messages ===
+                ["attack_speed_cap_warning"] = "Attack speed bonus cannot exceed {0}%.",
+                ["move_speed_cap_warning"] = "Move speed bonus cannot exceed {0}%.",
                 ["cooldown_remaining"] = "{0} on cooldown! Remaining: {1}s",
                 ["skill_cooldown"] = "{0} skill cooldown: {1}s remaining",
                 ["stamina_insufficient"] = "Not enough stamina",
@@ -483,6 +491,10 @@ namespace CaptainSkillTree.Localization
                 // === Skill Effect Messages ===
                 ["skill_activated"] = "{0} Activated!",
                 ["ground_stomp_effect"] = "Ground Stomp! ({0} enemies pushed)",
+                ["stomp_30sec_remaining"] = "🦶 Ground Stomp ready in 30s!",
+                ["stomp_ready"] = "🦶 Ground Stomp Ready!",
+                ["shockwave_30sec_remaining"] = "⚡ Shockwave ready in 30s!",
+                ["shockwave_ready"] = "⚡ Shockwave Ready!",
                 ["luck_magic_activated"] = "✨ Luck Magic Activated!",
                 ["staff_wand_required"] = "❌ You must equip a staff or wand!",
 
@@ -510,6 +522,10 @@ namespace CaptainSkillTree.Localization
                 ["charge_complete"] = "Charge Complete",
                 ["hero_strike_stagger"] = "Hero Strike! (Stagger)",
                 ["wheel_attack"] = "Wheel Attack +{0}%!",
+                ["storm_slash_first"] = "Storm Slash! 1st Slash +{0}%",
+                ["storm_slash_explosion"] = "Storm Slash Explosion! +{0}%",
+                ["polearm_boost_active"] = "⚔️ Polearm Boost +{0} Pierce!",
+                ["suppress_active"] = "⚔️ Suppress Attack +{0}%!",
 
                 // === Sword Effect Messages ===
                 ["rush_slash_skill_required"] = "Rush Slash skill required",
