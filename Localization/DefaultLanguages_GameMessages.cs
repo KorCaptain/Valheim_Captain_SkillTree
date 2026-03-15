@@ -130,6 +130,7 @@ namespace CaptainSkillTree.Localization
                 ["polearm_king_success"] = "장창제왕! {0} 데미지!",
                 ["storm_slash_first"] = "폭풍베기! 1차 베기 +{0}%",
                 ["storm_slash_explosion"] = "폭풍베기 폭발! +{0}%",
+                ["storm_slash_triggered"] = "폭풍베기! 번개 +{0}",
                 ["polearm_boost_active"] = "⚔️ 폴암강화 +{0} 관통!",
                 ["suppress_active"] = "⚔️ 제압 공격 +{0}%!",
 
@@ -303,6 +304,10 @@ namespace CaptainSkillTree.Localization
                 // === MMO Difficulty Notification ===
                 ["mmo_diff_notification_title"] = "몬스터 난이도 상향됨",
                 ["mmo_diff_notification_detail"] = "사용 SP {0} → 별 출현 확률 +{1}%",
+
+                // === Level Decrease Messages ===
+                ["level_decrease_reset"] = "레벨 감소로 스킬이 초기화되었습니다",
+                ["level_decrease_notice"] = "레벨이 감소했습니다",
 
                 // === Respawn Message ===
                 ["respawn_message"] = "성장해서 다시 도전하세요~!",
@@ -524,6 +529,7 @@ namespace CaptainSkillTree.Localization
                 ["wheel_attack"] = "Wheel Attack +{0}%!",
                 ["storm_slash_first"] = "Storm Slash! 1st Slash +{0}%",
                 ["storm_slash_explosion"] = "Storm Slash Explosion! +{0}%",
+                ["storm_slash_triggered"] = "Storm Slash! Lightning +{0}",
                 ["polearm_boost_active"] = "⚔️ Polearm Boost +{0} Pierce!",
                 ["suppress_active"] = "⚔️ Suppress Attack +{0}%!",
 
@@ -612,6 +618,10 @@ namespace CaptainSkillTree.Localization
                 // === MMO Difficulty Notification ===
                 ["mmo_diff_notification_title"] = "Monster Difficulty Increased",
                 ["mmo_diff_notification_detail"] = "Used SP {0} → Star chance +{1}%",
+
+                // === Level Decrease Messages ===
+                ["level_decrease_reset"] = "Skills reset due to level decrease",
+                ["level_decrease_notice"] = "Level decreased",
 
                 // === Respawn Message ===
                 ["respawn_message"] = "Grow stronger and challenge again~!",

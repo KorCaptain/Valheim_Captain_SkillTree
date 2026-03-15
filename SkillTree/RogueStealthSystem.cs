@@ -217,12 +217,14 @@ namespace CaptainSkillTree.SkillTree
                 yield return new WaitForSeconds(1f);
 
                 if (player == null || player.IsDead()) break;
+                if (Player.m_localPlayer == null || Player.m_localPlayer != player) break; // 씬 전환 중단 가드
 
                 RemoveNearbyMonsterAggro(player);
 
                 try
                 {
-                    VFX.VFXManager.PlayVFXMultiplayer("fx_greenroots_projectile_hit", "", player.transform.position, Quaternion.identity, 0.7f);
+                    // 커스텀 VFX: Destroy 보장 → 오브젝트 누적 없음 → 던전 로딩 정상화
+                    SimpleVFX.Play("statusailment_01", player.transform.position, 0.5f);
                 }
                 catch (Exception) { }
             }

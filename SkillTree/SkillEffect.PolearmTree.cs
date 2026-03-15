@@ -854,6 +854,12 @@ namespace CaptainSkillTree.SkillTree
 
                     Plugin.Log.LogDebug($"[폴암] 특수 공격 감지");
                 }
+                else if (SkillEffect.HasSkill("polearm_step3_ground"))
+                {
+                    // 1차 일반 공격 → 폭풍베기 4초 프라이밍
+                    SkillEffect.polearmStormSlashPrimedTime[player] = Time.time;
+                    Plugin.Log.LogDebug($"[폭풍베기] 프라이밍 시작 (4초 창)");
+                }
             }
             catch (System.Exception ex)
             {

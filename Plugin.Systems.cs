@@ -92,6 +92,7 @@ namespace CaptainSkillTree
                             hit.m_damage.m_poison = 0;
                             hit.m_damage.m_spirit = 0;
                             player.m_dodgeEffects.Create(player.transform.position, Quaternion.identity);
+                            CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_dodge", "", player.transform.position, Quaternion.identity, 1.5f);
 
                             // 회피 성공 메시지 - 스킬명 표시
                             var manager = SkillTreeManager.Instance;

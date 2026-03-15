@@ -641,7 +641,7 @@ namespace CaptainSkillTree.SkillTree
                 Id = "polearm_step3_ground",
                 NameKey = "polearm_skill_ground",
                 DescriptionKey = "polearm_desc_ground",
-                DescriptionArgs = new object[] { SkillTreeConfig.PolearmStep3GroundWheelDamageValue },
+                DescriptionArgs = new object[] { SkillTreeConfig.PolearmStep3StormSlashExplosionValue },
                 RequiredPoints = Polearm_Config.PolearmGroundWheelRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,

@@ -328,13 +328,14 @@ namespace CaptainSkillTree.Gui
             warningObj = new GameObject("Warning", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
             warningObj.transform.SetParent(parent, false);
             var rect = warningObj.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(400, 30);
+            rect.sizeDelta = new Vector2(400, 65);
             rect.anchoredPosition = new Vector2(0, 120);
             warningText = warningObj.GetComponent<Text>();
             warningText.font = Resources.GetBuiltinResource<Font>("Arial.ttf"); // 포인트 초기화 버튼과 동일한 폰트
             warningText.fontSize = 20;
             warningText.color = Color.red;
             warningText.alignment = TextAnchor.MiddleCenter;
+            warningText.verticalOverflow = VerticalWrapMode.Overflow;
             warningObj.SetActive(false);
         }
         public void ShowWarning(string msg)

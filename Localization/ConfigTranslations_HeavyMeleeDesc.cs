@@ -524,15 +524,10 @@ namespace CaptainSkillTree.Localization
                 "권장값: 2",
 
                 // === Polearm Tree: Tier 4-1 - 폭풍베기 (3개) ===
-                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] =
-                "【1차 베기 데미지 보너스 (%)】\n" +
-                "휠 마우스 특수 공격 적중 시 즉시 적용되는 1차 베기 보너스입니다.\n" +
-                "권장값: 25-35%",
-
                 ["Tier4-1_StormSlash_ExplosionBonus"] =
-                "【폭발 데미지 보너스 (%)】\n" +
-                "1차 베기 후 2초 뒤 대상에 폭발 데미지를 추가로 가합니다.\n" +
-                "권장값: 50-70%",
+                "【번개속성 추가 데미지】\n" +
+                "1차 공격 후 4초 이내 특수(휠 마우스) 공격 시 추가되는 번개 데미지입니다.\n" +
+                "권장값: 10-20",
 
                 ["Tier4-1_GroundWheel_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -1145,15 +1140,10 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 2",
 
                 // === Polearm Tree: Tier 4-1 - Storm Slash (3 keys) ===
-                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] =
-                "【1st Slash Damage Bonus (%)】\n" +
-                "Instant slash bonus applied on wheel mouse special attack hit.\n" +
-                "Recommended: 25-35%",
-
                 ["Tier4-1_StormSlash_ExplosionBonus"] =
-                "【Explosion Damage Bonus (%)】\n" +
-                "Deals additional explosion damage to the target 2 seconds after the 1st slash.\n" +
-                "Recommended: 50-70%",
+                "【Lightning Damage Bonus】\n" +
+                "Lightning damage added when using wheel mouse attack within 4s of a primary attack.\n" +
+                "Recommended: 10-20",
 
                 ["Tier4-1_GroundWheel_RequiredPoints"] =
                 "【Required Points】\n" +

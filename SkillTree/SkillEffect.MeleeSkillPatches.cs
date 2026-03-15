@@ -200,9 +200,8 @@ namespace CaptainSkillTree.SkillTree
             // 실제 데미지 수정은 GetDamage 패치(ApplySpearPassiveBonus)에서 처리
         }
 
-        // 효과 텍스트 표시 쿨다운 (폴암강화/제압 공격)
+        // 효과 텍스트 표시 쿨다운 (폴암강화)
         private static Dictionary<Player, float> polearmBoostLastTextTime = new Dictionary<Player, float>();
-        private static Dictionary<Player, float> suppressLastTextTime = new Dictionary<Player, float>();
         private const float TEXT_COOLDOWN = 1f;
 
         private static void ProcessPolearmAttack(Player player, HitData hit)
@@ -240,17 +239,6 @@ namespace CaptainSkillTree.SkillTree
                 }
             }
 
-            // 제압 공격 - 이미 GetDamage(Postfix)에서 적용됨, 텍스트 표시만 (3초 쿨다운)
-            if (SkillEffect.HasSkill("polearm_step1_suppress"))
-            {
-                float now = Time.time;
-                if (!suppressLastTextTime.TryGetValue(player, out float last) || now - last >= TEXT_COOLDOWN)
-                {
-                    float bonusPct = SkillTreeConfig.PolearmStep1SuppressDamageValue;
-                    SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("suppress_active", bonusPct));
-                    suppressLastTextTime[player] = now;
-                }
-            }
         }
     }
 
@@ -575,8 +563,7 @@ namespace CaptainSkillTree.SkillTree
                 spearComboSequenceActive.Remove(player);
                 spearExpertComboCount.Remove(player);
                 spearExpertLastHitTime.Remove(player);
-                spearExpertProcBuffActive.Remove(player);
-                spearExpertProcCharges.Remove(player);
+                spearExpertProcEndTime.Remove(player);
             }
             catch (Exception ex)
             {

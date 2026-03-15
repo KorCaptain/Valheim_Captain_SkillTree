@@ -39,6 +39,11 @@ namespace CaptainSkillTree.Localization
                 ["weapon_effect_suppress_attack"]     = "제압 공격",
                 ["weapon_effect_hero_strike"]         = "영웅 타격",
                 ["weapon_effect_stagger"]             = "스태거",
+                ["weapon_stat_atk_power"]             = "공격력",
+                ["weapon_effect_spear_expert_proc"]   = "창 전문가",
+                ["weapon_effect_spear_evasion"]       = "회피 찌르기",
+                ["weapon_effect_spear_dual"]          = "이연창",
+                ["weapon_effect_spear_throw"]         = "투창 전문가",
 
                 // === Armor Tooltip Effects ===
                 ["armor_effect_defense_expert"]  = "방어 전문가",
@@ -98,6 +103,11 @@ namespace CaptainSkillTree.Localization
                 ["weapon_effect_suppress_attack"]     = "Suppress Attack",
                 ["weapon_effect_hero_strike"]         = "Hero Strike",
                 ["weapon_effect_stagger"]             = "Stagger",
+                ["weapon_stat_atk_power"]             = "Damage",
+                ["weapon_effect_spear_expert_proc"]   = "Spear Expert",
+                ["weapon_effect_spear_evasion"]       = "Evasion Thrust",
+                ["weapon_effect_spear_dual"]          = "Twin Strike",
+                ["weapon_effect_spear_throw"]         = "Throw Expert",
 
                 // === Armor Tooltip Effects ===
                 ["armor_effect_defense_expert"]  = "Defense Expert",

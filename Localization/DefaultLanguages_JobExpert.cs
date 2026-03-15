@@ -337,6 +337,12 @@ namespace CaptainSkillTree.Localization
                 ["speed_ex2_effect"] = "🏹 수련자2 습득! 지팡이/활 숙련도 +{0}",
                 ["all_master_effect"] = "🏃 숙련자 습득! 달리기/점프 숙련도 +{0}",
                 ["agility_peak_effect"] = "🦘 점프 숙련자 습득! 점프 숙련도 +{0}",
+
+                // === Archer Tooltip Keys ===
+                ["archer_level_req_items"] = "Lv{0} 필요아이템",
+                ["archer_preview_arrows_damage"] = "추가 발사체 +{0}, 1발당 공격력 {1}%",
+                ["archer_preview_charges"] = "추가 발사 회수 +{0}",
+                ["archer_job_requirement"] = "활 착용, 아처 직업",
             };
         }
 
@@ -359,6 +365,8 @@ namespace CaptainSkillTree.Localization
                 ["archer_next_level_cost"] = "Lv{0} Upgrade Materials",
                 ["archer_effect_arrows"] = "Fire {0} arrows x{1}, each deals {2}% damage",
                 ["archer_level_item_required"] = "Not enough materials for Archer Lv{0} upgrade",
+                ["archer_upgrade_confirm"] = "Upgrade Archer to Lv{0}?",
+                ["archer_missing_items"] = "Missing: {0}",
                 ["item_trophy_skeleton"] = "Skeleton Trophy",
                 ["item_trophy_greydwarf"] = "Greydwarf Trophy",
                 ["item_trophy_greydwarfbrute"] = "Greydwarf Brute Trophy",
@@ -624,6 +632,12 @@ namespace CaptainSkillTree.Localization
                 ["speed_ex2_effect"] = "🏹 Trainee 2 Learned! Staff/Bow Proficiency +{0}",
                 ["all_master_effect"] = "🏃 Master Learned! Run/Jump Proficiency +{0}",
                 ["agility_peak_effect"] = "🦘 Jump Master Learned! Jump Proficiency +{0}",
+
+                // === Archer Tooltip Keys ===
+                ["archer_level_req_items"] = "Lv{0} Required Items",
+                ["archer_preview_arrows_damage"] = "+{0} projectiles, {1}% damage per arrow",
+                ["archer_preview_charges"] = "+{0} additional charges",
+                ["archer_job_requirement"] = "Bow equipped, Archer job",
             };
         }
     }

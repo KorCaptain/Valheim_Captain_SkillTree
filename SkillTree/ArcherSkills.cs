@@ -36,34 +36,38 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 아처 점프 높이 보너스 가져오기 (레벨 누적 합산)
+        /// 아처 점프 높이 보너스 가져오기 (레벨별 최대 수치)
         /// </summary>
         public static float GetArcherJumpHeightBonus(Player player)
         {
             if (!IsArcher(player)) return 0f;
             int level = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
 
-            float total = Archer_Config.ArcherJumpHeightBonusValue; // Lv1: 20%
-            if (level >= 2) total += Archer_Config.ArcherLv2JumpHeightBonusValue;
-            if (level >= 3) total += Archer_Config.ArcherLv3JumpHeightBonusValue;
-            if (level >= 4) total += Archer_Config.ArcherLv4JumpHeightBonusValue;
-            if (level >= 5) total += Archer_Config.ArcherLv5JumpHeightBonusValue;
-            return total / 100f;
+            float value = level switch {
+                2 => Archer_Config.ArcherLv2JumpHeightBonusValue,
+                3 => Archer_Config.ArcherLv3JumpHeightBonusValue,
+                4 => Archer_Config.ArcherLv4JumpHeightBonusValue,
+                >= 5 => Archer_Config.ArcherLv5JumpHeightBonusValue,
+                _ => Archer_Config.ArcherJumpHeightBonusValue  // Lv0~1
+            };
+            return value / 100f;
         }
 
         /// <summary>
-        /// 아처 낙사 데미지 감소 가져오기 (레벨 누적 합산)
+        /// 아처 낙사 데미지 감소 가져오기 (레벨별 최대 수치)
         /// </summary>
         public static float GetArcherFallDamageReduction(Player player)
         {
             if (!IsArcher(player)) return 0f;
             int level = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
 
-            float total = Archer_Config.ArcherFallDamageReductionValue; // Lv1: 50%
-            if (level >= 3) total += Archer_Config.ArcherLv3FallDamageReductionValue;
-            if (level >= 4) total += Archer_Config.ArcherLv4FallDamageReductionValue;
-            if (level >= 5) total += Archer_Config.ArcherLv5FallDamageReductionValue;
-            return total / 100f;
+            float value = level switch {
+                3 => Archer_Config.ArcherLv3FallDamageReductionValue,
+                4 => Archer_Config.ArcherLv4FallDamageReductionValue,
+                >= 5 => Archer_Config.ArcherLv5FallDamageReductionValue,
+                _ => Archer_Config.ArcherFallDamageReductionValue  // Lv0~2
+            };
+            return value / 100f;
         }
 
         // === 속성 저항 헬퍼 (Lv별 시작, 레벨 누적) ===

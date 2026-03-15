@@ -1015,7 +1015,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (skillId == "Archer")
             {
-                int targetLevel = currentLevel + 1;
+                int targetLevel = GetSkillLevel(skillId) + 1;
                 if (!HasArcherLevelItems(targetLevel))
                 {
                     if ((System.Object)Player.m_localPlayer != null)
@@ -1157,7 +1157,7 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        private bool HasArcherLevelItems(int targetLevel)
+        public bool HasArcherLevelItems(int targetLevel)
         {
             var player = Player.m_localPlayer;
             if (player == null) return false;
@@ -1169,9 +1169,9 @@ namespace CaptainSkillTree.SkillTree
                 case 1: return inventory.HaveItem("$item_trophy_greydwarfbrute") &&
                                inventory.HaveItem("$item_trophy_eikthyr");
                 case 2: return inventory.HaveItem("$item_trophy_eikthyr") &&
-                               inventory.HaveItem("$item_trophy_theelder");
-                case 3: return inventory.HaveItem("$item_trophy_abomination") &&
-                               inventory.HaveItem("$item_trophy_theelder") &&
+                               inventory.HaveItem("$item_trophy_elder");
+                case 3: return inventory.HaveItem("$item_trophy_hatchling") &&
+                               inventory.HaveItem("$item_trophy_elder") &&
                                inventory.HaveItem("$item_trophy_bonemass");
                 case 4: return inventory.HaveItem("$item_trophy_abomination") &&
                                inventory.HaveItem("$item_trophy_bonemass") &&
@@ -1181,6 +1181,43 @@ namespace CaptainSkillTree.SkillTree
                                inventory.HaveItem("$item_trophy_seekerqueen");
                 default: return false;
             }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingArcherItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            var missing = new System.Collections.Generic.List<string>();
+            if (player == null) return missing;
+            var inventory = player.GetInventory();
+            if (inventory == null) return missing;
+
+            switch (targetLevel)
+            {
+                case 1:
+                    if (!inventory.HaveItem("$item_trophy_greydwarfbrute")) missing.Add(L.Get("item_trophy_greydwarfbrute"));
+                    if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    break;
+                case 2:
+                    if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
+                    break;
+                case 3:
+                    if (!inventory.HaveItem("$item_trophy_hatchling")) missing.Add(L.Get("item_trophy_hatchling"));
+                    if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
+                    if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    break;
+                case 4:
+                    if (!inventory.HaveItem("$item_trophy_abomination")) missing.Add(L.Get("item_trophy_abomination"));
+                    if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    break;
+                case 5:
+                    if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
+                    if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    break;
+            }
+            return missing;
         }
 
         private void ConsumeArcherLevelItems(int targetLevel)
@@ -1198,11 +1235,11 @@ namespace CaptainSkillTree.SkillTree
                     break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
-                    inventory.RemoveItem("$item_trophy_theelder", 1);
+                    inventory.RemoveItem("$item_trophy_elder", 1);
                     break;
                 case 3:
-                    inventory.RemoveItem("$item_trophy_abomination", 1);
-                    inventory.RemoveItem("$item_trophy_theelder", 1);
+                    inventory.RemoveItem("$item_trophy_hatchling", 1);
+                    inventory.RemoveItem("$item_trophy_elder", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     break;
                 case 4:

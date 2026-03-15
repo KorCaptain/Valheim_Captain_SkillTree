@@ -260,7 +260,7 @@ namespace CaptainSkillTree.MMO_System
                 manager.ResetAllSkillLevels();
 
                 // MessageHud를 통한 알림
-                ShowNotification($"<color=yellow>레벨 감소로 스킬이 초기화되었습니다</color>\n" +
+                ShowNotification($"<color=yellow>{L.Get("level_decrease_reset")}</color>\n" +
                                  $"Lv.{oldLevel} → Lv.{newLevel}");
 
                 Plugin.Log.LogInfo($"[LevelSyncManager] 레벨 감소로 스킬 초기화 완료: Lv.{oldLevel} → Lv.{newLevel}");
@@ -268,7 +268,7 @@ namespace CaptainSkillTree.MMO_System
             else
             {
                 // 포인트가 충분하면 알림만
-                ShowNotification($"<color=orange>레벨이 감소했습니다</color>\n" +
+                ShowNotification($"<color=orange>{L.Get("level_decrease_notice")}</color>\n" +
                                  $"Lv.{oldLevel} → Lv.{newLevel}");
 
                 Plugin.Log.LogInfo($"[LevelSyncManager] 레벨 감소 (초기화 불필요): Lv.{oldLevel} → Lv.{newLevel}");

@@ -765,8 +765,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_AreaCombo_RequiredPoints"] = "Tier 3: [Wide Slash] Required Points",
 
                 // === Tier 4-1 - Storm Slash (3) ===
-                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] = "Tier 4-1: [Storm Slash] 1st Slash Damage Bonus (%)",
-                ["Tier4-1_StormSlash_ExplosionBonus"] = "Tier 4-1: [Storm Slash] Explosion Damage Bonus (%)",
+
+                ["Tier4-1_StormSlash_ExplosionBonus"] = "Tier 4-1: [Storm Slash] Lightning Damage Bonus",
                 ["Tier4-1_GroundWheel_RequiredPoints"] = "Tier 4-1: [Storm Slash] Required Points",
 
                 // === Tier 4-2 - Crescent Slash (3) ===

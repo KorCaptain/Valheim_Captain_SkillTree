@@ -440,12 +440,6 @@ namespace CaptainSkillTree.Localization
                 "【Pontos Necessários】\nPontos para desbloquear Golpe em Área.",
 
                 // === Tier 4-1: Golpe no Chão ===
-                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] =
-                "【Bônus de Dano de Rotação (%)】\n" +
-                "Aumenta o dano do ataque giratório no chão.\n" +
-                "Habilidade chave para dano em área.\n" +
-                "Valor recomendado: 70-100%",
-
                 ["Tier4-1_GroundWheel_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Golpe no Chão.",
 

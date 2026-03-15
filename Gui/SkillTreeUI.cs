@@ -1086,7 +1086,182 @@ namespace CaptainSkillTree.Gui
                 // 스킬 초기화 확인 다이얼로그 숨김
             }
         }
-        
+
+        /// <summary>
+        /// 아처 Lv2+ 업그레이드 확인 다이얼로그 (럭셔리 스타일)
+        /// </summary>
+        private void ShowArcherUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
+        {
+            if (confirmDialog != null)
+                DestroyImmediate(confirmDialog);
+
+            confirmDialog = new GameObject("ArcherUpgradeDialog");
+            confirmDialog.transform.SetParent(panel.transform, false);
+
+            var bgImage = confirmDialog.AddComponent<Image>();
+            bgImage.color = new Color(0, 0, 0, 0.7f);
+
+            var bgRect = confirmDialog.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.sizeDelta = Vector2.zero;
+            bgRect.anchoredPosition = Vector2.zero;
+
+            var dialogPanel = new GameObject("GoldBorder");
+            dialogPanel.transform.SetParent(confirmDialog.transform, false);
+
+            var dialogImage = dialogPanel.AddComponent<Image>();
+            dialogImage.color = new Color(0.85f, 0.7f, 0.1f, 0.85f);
+
+            var dialogRect = dialogPanel.GetComponent<RectTransform>();
+            dialogRect.sizeDelta = new Vector2(380, 220);
+            dialogRect.anchoredPosition = Vector2.zero;
+
+            var darkBgGo = new GameObject("DarkBg");
+            darkBgGo.transform.SetParent(dialogPanel.transform, false);
+
+            var darkBgImage = darkBgGo.AddComponent<Image>();
+            darkBgImage.color = new Color(0.08f, 0.07f, 0.20f, 0.97f);
+
+            var darkBgRect = darkBgGo.GetComponent<RectTransform>();
+            darkBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+            darkBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+            darkBgRect.pivot = new Vector2(0.5f, 0.5f);
+            darkBgRect.sizeDelta = new Vector2(374, 214);
+            darkBgRect.anchoredPosition = Vector2.zero;
+
+            var titleBarGo = new GameObject("TitleBar");
+            titleBarGo.transform.SetParent(darkBgGo.transform, false);
+
+            var titleBarImage = titleBarGo.AddComponent<Image>();
+            titleBarImage.color = new Color(0.10f, 0.08f, 0.25f, 1f);
+            titleBarImage.raycastTarget = false;
+
+            var titleBarRect = titleBarGo.GetComponent<RectTransform>();
+            titleBarRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleBarRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleBarRect.pivot = new Vector2(0.5f, 0.5f);
+            titleBarRect.sizeDelta = new Vector2(374, 44);
+            titleBarRect.anchoredPosition = new Vector2(0, 88);
+
+            var titleObj = new GameObject("Title");
+            titleObj.transform.SetParent(darkBgGo.transform, false);
+
+            var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
+            titleText.text = L10n.Get("archer_upgrade_title");
+            titleText.fontSize = 20;
+            titleText.fontStyle = FontStyle.Bold;
+            titleText.color = new Color(1f, 0.85f, 0f, 1f);
+            titleText.alignment = TextAnchor.MiddleCenter;
+            titleText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+
+            var titleShadow = titleObj.AddComponent<UnityEngine.UI.Shadow>();
+            titleShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            titleShadow.effectDistance = new Vector2(1f, -1f);
+
+            var titleRect = titleObj.GetComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRect.pivot = new Vector2(0.5f, 0.5f);
+            titleRect.sizeDelta = new Vector2(340, 34);
+            titleRect.anchoredPosition = new Vector2(0, 78);
+
+            var contentObj = new GameObject("Content");
+            contentObj.transform.SetParent(darkBgGo.transform, false);
+
+            var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
+            contentText.text = L10n.Get("archer_upgrade_confirm", targetLevel);
+            contentText.fontSize = 20;
+            contentText.color = Color.white;
+            contentText.alignment = TextAnchor.MiddleCenter;
+            contentText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+
+            var contentShadow = contentObj.AddComponent<UnityEngine.UI.Shadow>();
+            contentShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            contentShadow.effectDistance = new Vector2(1f, -1f);
+
+            var contentRect = contentObj.GetComponent<RectTransform>();
+            contentRect.anchorMin = new Vector2(0.5f, 0.5f);
+            contentRect.anchorMax = new Vector2(0.5f, 0.5f);
+            contentRect.pivot = new Vector2(0.5f, 0.5f);
+            contentRect.sizeDelta = new Vector2(340, 70);
+            contentRect.anchoredPosition = new Vector2(0, 10);
+
+            var capturedNodeRect = nodeRect;
+            confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"),
+                new Vector2(-68f, -82f), new Color(0.60f, 0.10f, 0.10f, 1f), darkBgGo.transform, () => {
+                PlayConfirmSound();
+                HideResetConfirmDialog();
+                var mgr = SkillTree.SkillTreeManager.Instance;
+                mgr.AddPendingInvestment("Archer");
+                mgr.ConfirmInvestments();
+                CaptainSkillTree.SkillTree.Archer_Tooltip.UpdateArcherTooltip();
+                if (capturedNodeRect != null)
+                    StartCoroutine(PlayArcherLevelUpAnimation(capturedNodeRect, targetLevel));
+                nodeUI.RefreshNodeStates();
+                RefreshUI();
+            });
+
+            cancelButton = CreateLuxuryButton("CancelButton", L10n.Get("ui_cancel"),
+                new Vector2(68f, -82f), new Color(0.22f, 0.22f, 0.30f, 1f), darkBgGo.transform, () => {
+                PlayCancelSound();
+                HideResetConfirmDialog();
+            });
+
+            confirmDialog.transform.SetAsLastSibling();
+        }
+
+        /// <summary>
+        /// 아처 Lv2+ 우아한 업그레이드 애니메이션
+        /// </summary>
+        private System.Collections.IEnumerator PlayArcherLevelUpAnimation(RectTransform nodeRect, int level)
+        {
+            if (nodeRect == null) yield break;
+
+            // 텍스트 플로팅과 아이콘 중앙 이동+회전 동시 재생
+            StartCoroutine(PlayFloatingLevelText(nodeRect, level));
+            yield return StartCoroutine(PlayJobIconSpecialEffect(nodeRect));
+        }
+
+        private System.Collections.IEnumerator PlayFloatingLevelText(RectTransform nodeRect, int level)
+        {
+            var floatGo = new GameObject("FloatingLevelText", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Text));
+            floatGo.transform.SetParent(panel.transform, false);
+
+            var floatText = floatGo.GetComponent<UnityEngine.UI.Text>();
+            floatText.text = $"Lv{level}";
+            floatText.fontSize = 36;
+            floatText.fontStyle = FontStyle.Bold;
+            floatText.color = new Color(1f, 0.2f, 0.2f, 1f);
+            floatText.alignment = TextAnchor.MiddleCenter;
+            floatText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            floatText.raycastTarget = false;
+
+            var floatRect = floatGo.GetComponent<RectTransform>();
+            floatRect.sizeDelta = new Vector2(120, 50);
+            floatRect.anchorMin = new Vector2(0.5f, 0.5f);
+            floatRect.anchorMax = new Vector2(0.5f, 0.5f);
+            floatRect.pivot = new Vector2(0.5f, 0.5f);
+            floatRect.anchoredPosition = nodeRect.anchoredPosition + new Vector2(0, 40f);
+
+            float duration = 3.0f;
+            float elapsed = 0f;
+            Vector2 startPos = floatRect.anchoredPosition;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                floatRect.anchoredPosition = startPos + new Vector2(0, t * 150f);
+                var c = floatText.color;
+                c.a = 1f - t;
+                floatText.color = c;
+                yield return null;
+            }
+
+            UnityEngine.Object.Destroy(floatGo);
+        }
+
 
         // SkillTree 노드와 연결선 자동 배치/생성 (방사형 구조)
         private void GenerateSkillTreeNodesAndLines(GameObject skillTreePanel)
@@ -1313,6 +1488,19 @@ namespace CaptainSkillTree.Gui
                     if (!hasEikthyrTrophy)
                     {
                         return new InvestResult(false, L10n.Get("trophy_eikthyr_required"));
+                    }
+                }
+                else if (node.Id == "Archer")
+                {
+                    // Lv1+ 아처 업그레이드: 재료 체크
+                    int targetLevel = currentLevel + 1;
+                    if (!manager.HasArcherLevelItems(targetLevel))
+                    {
+                        var missing = manager.GetMissingArcherItems(targetLevel);
+                        var msg = L10n.Get("archer_level_item_required", targetLevel);
+                        if (missing.Count > 0)
+                            msg += "\n" + L10n.Get("archer_missing_items", string.Join(", ", missing));
+                        return new InvestResult(false, msg);
                     }
                 }
             }
@@ -1546,6 +1734,32 @@ namespace CaptainSkillTree.Gui
             }
             else
             {
+                // 아처 Lv1+ 업그레이드: 확인 다이얼로그 표시
+                if (node.Id == "Archer" && manager.GetSkillLevel("Archer") >= 1)
+                {
+                    int targetLevel = manager.GetSkillLevel("Archer") + 1;
+                    if (manager.HasArcherLevelItems(targetLevel))
+                    {
+                        RectTransform nodeRect = null;
+                        if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
+                        {
+                            var nodeObj = nodeUI.nodeObjects[node.Id];
+                            if (nodeObj != null) nodeRect = nodeObj.GetComponent<RectTransform>();
+                        }
+                        ShowArcherUpgradeConfirmDialog(targetLevel, nodeRect);
+                        return;
+                    }
+                    else
+                    {
+                        var missing = manager.GetMissingArcherItems(targetLevel);
+                        var msg = L10n.Get("archer_level_item_required", targetLevel);
+                        if (missing.Count > 0)
+                            msg += "\n" + L10n.Get("archer_missing_items", string.Join(", ", missing));
+                        ShowWarning(msg);
+                        return;
+                    }
+                }
+
                 // 일반 스킬: 포인트 소모 (기존 시스템)
                 int beforePending = manager.pendingInvestments.ContainsKey(node.Id) ? manager.pendingInvestments[node.Id] : 0;
                 manager.AddPendingInvestment(node.Id);
@@ -1820,8 +2034,8 @@ namespace CaptainSkillTree.Gui
                             new Color(1f, 0.8f, 0.2f), CaptainSkillTree.SkillTree.SkillEffect.SkillEffectTextType.Standard);
                     }
 
-                    // 직업 아이콘인지 확인
-                    if (IsJobIcon(node))
+                    // 직업 아이콘인지 확인 (Lv0→Lv1 최초 전직만 특별 효과 재생)
+                    if (IsJobIcon(node) && manager.GetSkillLevel(node.Id) == 0)
                     {
                         // 직업 아이콘 특별 효과
                         StartCoroutine(PlayJobIconSpecialEffect(nodeObj.GetComponent<RectTransform>()));
@@ -2323,6 +2537,9 @@ namespace CaptainSkillTree.Gui
             }
         }
         
+        private float EaseInOutCubic(float t) =>
+            t < 0.5f ? 4f * t * t * t : 1f - Mathf.Pow(-2f * t + 2f, 3f) / 2f;
+
         // 빛나는 효과
         private System.Collections.IEnumerator BlinkEffect(Image img, Color originalColor)
         {

@@ -55,6 +55,8 @@ namespace CaptainSkillTree.SkillTree
         public bool  HasSuppressAttack;   // 제압 공격 레이블 표시용
         public float SuppressAttackPct;   // 제압 공격 % 값
         public float HeroStrikeChance;    // 영웅 타격 스태거 확률
+        public bool HasSpearThrow;        // 투창 전문가 레이블 표시용
+        public float SpearThrowBonus;
 
         public bool HasAny()
         {
@@ -67,7 +69,8 @@ namespace CaptainSkillTree.SkillTree
                    BlockPower        > 0.01f ||
                    FlatFire > 0.01f || FlatFrost > 0.01f || FlatLightning > 0.01f ||
                    SpinAttackBonus   > 0.01f ||
-                   HasPolearmBoost || HasSuppressAttack || HeroStrikeChance > 0.01f;
+                   HasPolearmBoost || HasSuppressAttack || HeroStrikeChance > 0.01f ||
+                   HasSpearThrow;
         }
     }
 
@@ -223,9 +226,21 @@ namespace CaptainSkillTree.SkillTree
                     break;
 
                 case WeaponGroup.Spear:
+                    // 급소 찌르기 - 물리 데미지 +20%
+                    if (SkillEffect.HasSkill("spear_Step1_crit"))
+                        physPct += Spear_Config.SpearStep2CritDamageBonusValue;
+                    // 투창 전문가 - 2차 공격(휠마우스) 시 추가 데미지
+                    if (SkillEffect.HasSkill("spear_Step1_throw"))
+                    {
+                        b.HasSpearThrow = true;
+                        b.SpearThrowBonus = Spear_Config.SpearStep2ThrowDamageValue;
+                    }
+                    // 연격창 - 관통 고정 보너스
                     if (SkillEffect.HasSkill("spear_Step3_pierce"))
                         b.FlatPierce += Spear_Config.SpearStep3PierceDamageBonusValue;
-                    // 창 전문가: 신규 메커닉(proc 공격속도)이므로 데미지 표시 없음
+                    // 빠른창 - 공격속도 (SpeedTree에서 실제 적용)
+                    if (SkillEffect.HasSkill("spear_Step3_quick"))
+                        b.AttackSpeed += Spear_Config.SpearQuickAttackSpeedValue;
                     if (SkillEffect.HasSkill("atk_melee_bonus"))
                         physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
@@ -464,8 +479,9 @@ namespace CaptainSkillTree.SkillTree
         // ─────────────────────────────────────────────────────────────────
         public static void AppendExtraStats(ref string result, WeaponBonuses b, HitData.DamageTypes raw)
         {
-            if (b.PctPhysical > 0.01f)
-                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_phys_atk")}: +{b.PctPhysical:F0}%</color>";
+            float displayPhysPct = b.PctPhysical - (b.HasSuppressAttack ? b.SuppressAttackPct : 0f);
+            if (displayPhysPct > 0.01f)
+                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_phys_atk")}: +{displayPhysPct:F0}%</color>";
             if (b.PctElemental > 0.01f)
                 result += $"\n<color={COL_ATK_ELEM}>🔥 {L.Get("weapon_effect_elem_atk")}: +{b.PctElemental:F0}%</color>";
             if (b.MoveSpeed > 0.01f)
@@ -500,9 +516,12 @@ namespace CaptainSkillTree.SkillTree
             if (b.HasPolearmBoost)
                 result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_polearm_boost")}: +{b.PolearmBoostFixed:F0} {L.Get("weapon_stat_pierce_fixed")}/{L.Get("weapon_stat_slash_fixed")}</color>";
             if (b.HasSuppressAttack)
-                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_suppress_attack")}: +{b.SuppressAttackPct:F0}%</color>";
+                result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_suppress_attack")}: {L.Get("weapon_stat_atk_power")} +{b.SuppressAttackPct:F0}%</color>";
             if (b.HeroStrikeChance > 0.01f)
                 result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_hero_strike")}: {b.HeroStrikeChance:F0}% {L.Get("weapon_effect_stagger")}</color>";
+
+            if (b.HasSpearThrow)
+                result += $"\n<color={COL_ATK_PHY}>🏹 {L.Get("weapon_effect_spear_throw")}: +{b.SpearThrowBonus:F0}% (2차)</color>";
 
             // 지팡이 속성 스킬 보너스: 무기에 해당 속성이 없어도 별도 라인으로 표시
             if (b.FlatFire > 0.01f && raw.m_fire <= 0.01f)

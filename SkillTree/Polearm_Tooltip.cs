@@ -109,9 +109,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("polearm_skill_ground")}</size></color>",
-                L.Get("polearm_desc_ground",
-                    SkillTreeConfig.PolearmStep3GroundWheelDamageValue,
-                    SkillTreeConfig.PolearmStep3StormSlashExplosionValue),
+                L.Get("polearm_desc_ground", SkillTreeConfig.PolearmStep3StormSlashExplosionValue),
                 MeleeTooltipUtils.WeaponType.Polearm
             );
             data.requiredPoints = Polearm_Config.PolearmGroundWheelRequiredPointsValue.ToString();

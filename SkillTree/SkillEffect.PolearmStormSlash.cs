@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
@@ -9,86 +8,40 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 폭풍베기 (polearm_step3_ground) 전용 효과
-    /// 휠 마우스 특수 공격 적중 시:
-    /// - 1차: 베기 +30% 즉시 적용 + vfx_HealthUpgrade
-    /// - 2초 후: 폭발 +60% + fx_crit VFX
+    /// 1차 일반 공격 후 4초 이내 2차 특수(휠 마우스) 공격 시:
+    /// - VFX (fx_lightningweapon_hit)
+    /// - 번개 속성 데미지 추가 (PolearmStep3StormSlashExplosionValue)
     /// </summary>
     public static partial class SkillEffect
     {
-        // 폭풍베기 코루틴 추적 (플레이어별 다수 코루틴 가능)
-        public static Dictionary<Player, List<Coroutine>> polearmStormSlashCoroutines = new Dictionary<Player, List<Coroutine>>();
+        private const float STORM_SLASH_WINDOW = 4f;
+
+        // 1차 공격 시간 추적 (플레이어별)
+        public static Dictionary<Player, float> polearmStormSlashPrimedTime = new Dictionary<Player, float>();
 
         /// <summary>
-        /// 폭풍베기 폭발 코루틴 - delay초 후 대상에 폭발 데미지 적용
+        /// 폭풍베기 발동 조건 확인 (4초 이내 프라이밍)
         /// </summary>
-        internal static IEnumerator ExecuteStormSlashExplosion(Player player, Character target, ItemDrop.ItemData weapon, float delay = 2f)
+        public static bool IsStormSlashPrimed(Player player)
         {
-            yield return new WaitForSeconds(delay);
-
-            if (player == null || player.IsDead()) yield break;
-            if (target == null || weapon == null) yield break;
-
-            float explosionBonus = SkillTreeConfig.PolearmStep3StormSlashExplosionValue;
-
-            // VFX + 텍스트는 대상 생사 무관하게 항상 표시
-            try
-            {
-                VFXManager.PlayVFXMultiplayer("fx_crit", "", target.GetCenterPoint(), Quaternion.identity, 2f);
-            }
-            catch { }
-
-            DrawFloatingText(player, "💥 " + L.Get("storm_slash_explosion", explosionBonus));
-
-            // 데미지는 생존한 대상에만 적용
-            if (!target.IsDead())
-            {
-                try
-                {
-                    var weaponDamage = weapon.GetDamage();
-                    var hit = new HitData();
-                    hit.m_damage.m_slash = weaponDamage.m_slash * (1f + explosionBonus / 100f);
-                    hit.m_point = target.GetCenterPoint();
-                    hit.m_dir = (target.transform.position - player.transform.position).normalized;
-                    hit.m_attacker = player.GetZDOID();
-                    hit.SetAttacker(player);
-                    hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
-
-                    target.Damage(hit);
-                    Plugin.Log.LogInfo($"[폭풍베기] 폭발 데미지 +{explosionBonus}% 적용");
-                }
-                catch (System.Exception ex)
-                {
-                    Plugin.Log.LogError($"[폭풍베기] 폭발 오류: {ex.Message}");
-                }
-            }
-            else
-            {
-                Plugin.Log.LogDebug($"[폭풍베기] 대상 이미 사망 - VFX/텍스트만 표시");
-            }
+            if (player == null) return false;
+            if (!polearmStormSlashPrimedTime.TryGetValue(player, out float primedTime)) return false;
+            return Time.time - primedTime < STORM_SLASH_WINDOW;
         }
 
         /// <summary>
-        /// 폭풍베기 코루틴 정리 (사망/로그아웃 시)
+        /// 폭풍베기 상태 정리 (사망/로그아웃 시)
         /// </summary>
         public static void CleanupStormSlashOnDeath(Player player)
         {
             if (player == null) return;
-            if (!polearmStormSlashCoroutines.TryGetValue(player, out var coroutines)) return;
-
-            foreach (var cr in coroutines)
-            {
-                if (cr != null)
-                {
-                    try { player.StopCoroutine(cr); } catch { }
-                }
-            }
-            polearmStormSlashCoroutines.Remove(player);
+            polearmStormSlashPrimedTime.Remove(player);
         }
     }
 
     /// <summary>
-    /// 폭풍베기 1차 타격 패치
-    /// Character.Damage Prefix - 휠 공격 시 1차 베기 +30% 적용 후 2초 뒤 폭발 예약
+    /// 폭풍베기 2차 공격(휠) 적중 패치
+    /// 4초 이내 프라이밍 상태 + 2차 특수 공격 → 번개속성 추가 + VFX
     /// </summary>
     [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
     public static class Character_Damage_PolearmStormSlash_Patch
@@ -108,28 +61,20 @@ namespace CaptainSkillTree.SkillTree
                 if (player == null || !SkillEffect.IsUsingPolearm(player)) return;
                 if (!SkillEffect.HasSkill("polearm_step3_ground")) return;
                 if (!Attack_Start_PolearmWheelDetect_Patch.IsRecentSecondaryAttack(player)) return;
+                if (!SkillEffect.IsStormSlashPrimed(player)) return;
 
-                float firstBonus = SkillTreeConfig.PolearmStep3GroundWheelDamageValue;
+                float lightningBonus = SkillTreeConfig.PolearmStep3StormSlashExplosionValue;
 
-                // 1차 베기 보너스 즉시 적용
-                hit.m_damage.m_slash *= (1f + firstBonus / 100f);
+                // 번개 속성 데미지 추가
+                hit.m_damage.m_lightning += lightningBonus;
 
-                // Valheim 기본 VFX - 대상에 재생
-                VFXManager.PlayVFXMultiplayer("vfx_HealthUpgrade", "", __instance.GetCenterPoint(), Quaternion.identity, 2f);
-                SkillEffect.DrawFloatingText(player, "🌀 " + L.Get("storm_slash_first", firstBonus));
+                // VFX - 번개 효과
+                VFXManager.PlayVFXMultiplayer("fx_lightningweapon_hit", "", __instance.GetCenterPoint(), Quaternion.identity, 2f);
 
-                // 2초 후 폭발 코루틴 시작
-                var weapon = player.GetCurrentWeapon();
-                if (weapon != null)
-                {
-                    var coroutine = player.StartCoroutine(SkillEffect.ExecuteStormSlashExplosion(player, __instance, weapon, 2f));
+                // 발동 텍스트
+                SkillEffect.DrawFloatingText(player, "⚡ " + L.Get("storm_slash_triggered", lightningBonus));
 
-                    if (!SkillEffect.polearmStormSlashCoroutines.ContainsKey(player))
-                        SkillEffect.polearmStormSlashCoroutines[player] = new List<Coroutine>();
-                    SkillEffect.polearmStormSlashCoroutines[player].Add(coroutine);
-                }
-
-                Plugin.Log.LogInfo($"[폭풍베기] 1차 베기 +{firstBonus}% 적용, 폭발 예약 중");
+                Plugin.Log.LogInfo($"[폭풍베기] 번개 +{lightningBonus} 적용");
             }
             catch (System.Exception ex)
             {

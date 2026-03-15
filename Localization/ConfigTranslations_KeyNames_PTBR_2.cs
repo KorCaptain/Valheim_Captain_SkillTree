@@ -356,7 +356,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_AreaCombo_RequiredPoints"] = "Tier 3: [Corte Amplo] Pontos Necessários",
 
                 // === Tier 4-1: Golpe no Chão (2) ===
-                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] = "Tier 4-1: [Golpe no Chão] Bônus de Dano do Ataque Giratório (%)",
                 ["Tier4-1_GroundWheel_RequiredPoints"] = "Tier 4-1: [Golpe no Chão] Pontos Necessários",
 
                 // === Tier 4-2: Corte Crescente (3) ===

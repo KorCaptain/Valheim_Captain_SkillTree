@@ -650,6 +650,14 @@ namespace CaptainSkillTree
                                 return speed * bonusMultiplier;
                             }
 
+                            // 창 전문가 proc 활성 시 캡 우회 (공격 적중 전까지 매 프레임 유지)
+                            if (SkillEffect.IsSpearExpertProcActive(player))
+                            {
+                                double bonusMultiplier = 1.0 + (attackSpeedBonus / 100.0);
+                                Plugin.Log.LogDebug($"[공격속도] 창 전문가 proc - 캡 우회: {attackSpeedBonus:F1}%");
+                                return speed * bonusMultiplier;
+                            }
+
                             // 최대치 제한 적용 (v0.1.226+)
                             float maxBonus = SkillTreeConfig.AttackSpeedMaxBonusValue;
                             if (attackSpeedBonus > maxBonus)

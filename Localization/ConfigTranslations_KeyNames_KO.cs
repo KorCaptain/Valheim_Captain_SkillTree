@@ -767,8 +767,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_AreaCombo_RequiredPoints"] = "Tier 3: [광역 강타] 필요 포인트",
 
                 // === Tier 4-1 - 폭풍베기 (3개) ===
-                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] = "Tier 4-1: [폭풍베기] 1차 베기 데미지 보너스 (%)",
-                ["Tier4-1_StormSlash_ExplosionBonus"] = "Tier 4-1: [폭풍베기] 폭발 데미지 보너스 (%)",
+
+                ["Tier4-1_StormSlash_ExplosionBonus"] = "Tier 4-1: [폭풍베기] 번개속성 추가 데미지",
                 ["Tier4-1_GroundWheel_RequiredPoints"] = "Tier 4-1: [폭풍베기] 필요 포인트",
 
                 // === Tier 4-2 - 반달 베기 (3개) ===

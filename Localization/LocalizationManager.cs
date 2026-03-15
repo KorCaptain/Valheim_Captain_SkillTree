@@ -124,7 +124,7 @@ namespace CaptainSkillTree.Localization
 
             // Start with default languages (KR, EN always available)
             // CN, JP, RU, EU are also available by default for major international support
-            _supportedLanguages = new List<string> { "KR", "EN", "CN", "JP", "RU", "EU", "PT_BR" };
+            _supportedLanguages = new List<string> { "KR", "EN", "CN", "JP", "DE", "RU", "EU", "PT_BR" };
 
             if (!Directory.Exists(configPath))
             {
@@ -264,10 +264,10 @@ namespace CaptainSkillTree.Localization
                                 langData[kvp.Key] = kvp.Value;
                                 addedKeys++;
                             }
-                            else if (langData[kvp.Key] != kvp.Value)
+                            else if (langData[kvp.Key] != kvp.Value && (fileLang == "ko" || fileLang == "en"))
                             {
-                                // Update stale format strings from DefaultLanguages
-                                // This prevents FormatException when format placeholders change between versions
+                                // Only overwrite for authoritative languages (ko/en)
+                                // For translated languages (de, ru, pt_BR etc.), keep existing translations
                                 langData[kvp.Key] = kvp.Value;
                                 updatedKeys++;
                             }
@@ -769,6 +769,19 @@ namespace CaptainSkillTree.Localization
                 }
                 File.WriteAllText(ptBrPath, DictToJson(ptBrData), System.Text.Encoding.UTF8);
                 Plugin.Log.LogDebug($"[Localization] Translation/pt_BR.json exported ({ptBrData.Count} keys, {ptBrTranslations?.Count ?? 0} PT_BR translated)");
+
+                // de.json: EN 전체 키를 기준으로, DE 번역값으로 덮어씌우기
+                var dePath = Path.Combine(translationPath, "de.json");
+                var deData = new Dictionary<string, string>(enData);
+                var deTranslations = LoadFromEmbeddedResource("de") ??
+                                     (_translations.ContainsKey("de") ? _translations["de"] : null);
+                if (deTranslations != null)
+                {
+                    foreach (var kvp in deTranslations)
+                        deData[kvp.Key] = kvp.Value;
+                }
+                File.WriteAllText(dePath, DictToJson(deData), System.Text.Encoding.UTF8);
+                Plugin.Log.LogDebug($"[Localization] Translation/de.json exported ({deData.Count} keys, {deTranslations?.Count ?? 0} DE translated)");
             }
             catch (Exception ex)
             {

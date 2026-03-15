@@ -486,7 +486,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_AreaCombo_DoubleHitBonus"] = "Ур.3: [Широкий удар] Бонус двойного удара (%)",
                 ["Tier3_AreaCombo_DoubleHitDuration"] = "Ур.3: [Широкий удар] Длительность эффекта (сек)",
                 ["Tier3_AreaCombo_RequiredPoints"] = "Ур.3: [Широкий удар] Необходимые очки",
-                ["Tier4-1_GroundWheel_WheelAttackDamageBonus"] = "Ур.4-1: [Удар о землю] Бонус вращения (%)",
                 ["Tier4-1_GroundWheel_RequiredPoints"] = "Ур.4-1: [Удар о землю] Необходимые очки",
                 ["Tier4-2_MoonSlash_AttackRangeBonus"] = "Ур.4-2: [Лунный удар] Бонус дальности атаки (%)",
                 ["Tier4-2_MoonSlash_StaminaReduction"] = "Ур.4-2: [Лунный удар] Снижение выносливости (%)",

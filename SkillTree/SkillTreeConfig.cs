@@ -52,6 +52,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     string configLang = Language.Value.ToLower();
                     string result = (configLang == "ko" || configLang == "kr") ? "ko"
+                                  : (configLang == "de") ? "de"
                                   : (configLang == "ru") ? "ru"
                                   : (configLang == "pt_br" || configLang == "pt") ? "pt_BR"
                                   : "en";
@@ -65,6 +66,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     string langLow = valheimLang.ToLower();
                     string result = (langLow == "korean") ? "ko"
+                                  : (langLow.Contains("german") || langLow == "deutsch") ? "de"
                                   : (langLow == "russian") ? "ru"
                                   : (langLow == "portuguese_brazilian") ? "pt_BR"
                                   : "en";
@@ -78,6 +80,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using LocalizationManager: {currentLang}");
                     return (currentLang == "ko") ? "ko"
+                         : (currentLang == "de") ? "de"
                          : (currentLang == "ru") ? "ru"
                          : (currentLang == "pt_BR") ? "pt_BR"
                          : "en";
@@ -114,6 +117,8 @@ namespace CaptainSkillTree.SkillTree
                     ? "【Необходимые очки】\nОчки навыков для разблокировки этого узла."
                     : _detectedConfigLanguage == "pt_BR"
                         ? "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó."
+                    : _detectedConfigLanguage == "de"
+                        ? "【Erforderliche Punkte】\nFähigkeitspunkte zum Freischalten dieses Knotens."
                     : _detectedConfigLanguage == "en"
                         ? "【Required Points】\nPoints required to unlock this node."
                         : "【필요 포인트】\n이 노드를 해금하기 위해 필요한 스킬 포인트 개수입니다.";
@@ -136,6 +141,8 @@ namespace CaptainSkillTree.SkillTree
                     ? $"{tierPart}: Необходимые очки"
                     : _detectedConfigLanguage == "pt_BR"
                         ? $"{tierPart}: Pontos Necessários"
+                    : _detectedConfigLanguage == "de"
+                        ? $"{tierPart}: Erforderliche Punkte"
                     : _detectedConfigLanguage == "en"
                         ? $"{tierPart}: Required Points"
                         : $"{tierPart}: 필요 포인트";
@@ -531,7 +538,6 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PolearmStep2HeroKnockbackChance => Polearm_Config.PolearmStep2HeroKnockbackChance;
         public static ConfigEntry<float> PolearmStep3AreaComboBonus => Polearm_Config.PolearmStep3AreaComboBonus;
         public static ConfigEntry<float> PolearmStep3AreaComboDuration => Polearm_Config.PolearmStep3AreaComboDuration;
-        public static ConfigEntry<float> PolearmStep3GroundWheelDamage => Polearm_Config.PolearmStep3GroundWheelDamage;
         public static ConfigEntry<float> PolearmStep3StormSlashExplosion => Polearm_Config.PolearmStep3StormSlashExplosion;
         public static ConfigEntry<float> PolearmStep4MoonRangeBonus => Polearm_Config.PolearmStep4MoonRangeBonus;
         public static ConfigEntry<float> PolearmStep4MoonStaminaReduction => Polearm_Config.PolearmStep4MoonStaminaReduction;
@@ -552,7 +558,6 @@ namespace CaptainSkillTree.SkillTree
         public static float PolearmStep2HeroKnockbackChanceValue => Polearm_Config.PolearmStep2HeroKnockbackChanceValue;
         public static float PolearmStep3AreaComboBonusValue => Polearm_Config.PolearmStep3AreaComboBonusValue;
         public static float PolearmStep3AreaComboDurationValue => Polearm_Config.PolearmStep3AreaComboDurationValue;
-        public static float PolearmStep3GroundWheelDamageValue => Polearm_Config.PolearmStep3GroundWheelDamageValue;
         public static float PolearmStep3StormSlashExplosionValue => Polearm_Config.PolearmStep3StormSlashExplosionValue;
         public static float PolearmStep4MoonRangeBonusValue => Polearm_Config.PolearmStep4MoonRangeBonusValue;
         public static float PolearmStep4MoonStaminaReductionValue => Polearm_Config.PolearmStep4MoonStaminaReductionValue;
@@ -589,13 +594,14 @@ namespace CaptainSkillTree.SkillTree
                     "  - 'Auto' = Auto-detect from Valheim settings (Recommended)\n" +
                     "  - 'KR' = Korean\n" +
                     "  - 'EN' = English\n" +
+                    "  - 'DE' = German\n" +
                     "  - 'RU' = Russian\n" +
                     "  - 'PT_BR' = Portuguese (Brazilian)\n\n" +
                     "⚠️ IMPORTANT: Game restart required after changing this setting!\n" +
                     "   Config Manager (F1) descriptions are set at game startup.\n\n" +
                     "⚠️ 중요: 이 설정 변경 후 게임 재시작이 필요합니다!\n" +
                     "   Config Manager (F1) 설명은 게임 시작 시 설정됩니다.",
-                    new AcceptableValueList<string>("Auto", "KR", "EN", "RU", "PT_BR")
+                    new AcceptableValueList<string>("Auto", "KR", "EN", "DE", "RU", "PT_BR")
                 )
             );
 

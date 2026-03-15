@@ -31,111 +31,115 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 아처 상세 툴팁 생성 - 레벨 인식 버전
+        /// 아처 상세 툴팁 생성 - 현재 레벨 스탯을 메인 블록으로 표시
         /// </summary>
         public static string GetArcherTooltip()
         {
             var manager = SkillTreeManager.Instance;
             int currentLevel = manager?.GetSkillLevel("Archer") ?? 0;
+            int displayLevel = Math.Min(currentLevel + 1, 5); // 필요 아이템용 (다음 레벨)
+            int mainLevel = currentLevel == 0 ? 1 : currentLevel; // 메인 블록 (현재 레벨, 미획득 시 Lv1)
 
-            var baseArrows = Archer_Config.ArcherMultiShotArrowCountValue;
-            var baseCharges = Archer_Config.ArcherMultiShotChargesValue;
-            var baseDamage = Archer_Config.ArcherMultiShotDamagePercentValue;
-            var stamina = Archer_Config.ArcherMultiShotStaminaCostValue;
-            var cooldown = Archer_Config.ArcherMultiShotCooldownValue;
-            var jumpBonus = Archer_Config.ArcherJumpHeightBonusValue;
-            var fallReduction = Archer_Config.ArcherFallDamageReductionValue;
+            int baseArrows  = Archer_Config.ArcherMultiShotArrowCountValue;
+            int baseCharges = Archer_Config.ArcherMultiShotChargesValue;
+            int baseDamage  = (int)Archer_Config.ArcherMultiShotDamagePercentValue;
+            int stamina     = (int)Archer_Config.ArcherMultiShotStaminaCostValue;
+            float cooldown  = Archer_Config.ArcherMultiShotCooldownValue;
+            float resistVal = Archer_Config.ArcherElementalResistPerLevelValue;
 
-            // 현재 레벨 효과 계산 - Config 참조
-            int arrowBonus = currentLevel switch {
-                2 => Archer_Config.ArcherLv2BonusArrowsValue,
-                3 => Archer_Config.ArcherLv3BonusArrowsValue,
-                4 => Archer_Config.ArcherLv4BonusArrowsValue,
-                5 => Archer_Config.ArcherLv5BonusArrowsValue,
-                _ => 0
-            };
-            int currentArrows = baseArrows + arrowBonus;
-            float lvDamage = currentLevel switch {
-                2 => Archer_Config.ArcherLv2DamagePercentValue,
-                3 => Archer_Config.ArcherLv3DamagePercentValue,
-                4 => Archer_Config.ArcherLv4DamagePercentValue,
-                5 => Archer_Config.ArcherLv5DamagePercentValue,
-                _ => baseDamage
-            };
-            int currentDamage = (int)lvDamage;
-            int currentCharges = currentLevel >= 5 ? baseCharges + Archer_Config.ArcherLv5BonusChargesValue : baseCharges;
+            int arrows  = GetArrowsForLevel(mainLevel, baseArrows);
+            int charges = GetChargesForLevel(mainLevel, baseCharges);
+            int damage  = GetDamageForLevel(mainLevel, baseDamage);
 
             var tooltip = $"<color=#FFD700><size=22>{L.Get("job_archer")}</size></color>\n";
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("archer_current_level")}: Lv{currentLevel} / 5</size></color>\n\n";
 
-            if (currentLevel > 0)
-            {
-                // 현재 레벨 기준 누적 패시브 계산
-                float cumulativeJump = jumpBonus;
-                if (currentLevel >= 2) cumulativeJump += Archer_Config.ArcherLv2JumpHeightBonusValue;
-                if (currentLevel >= 3) cumulativeJump += Archer_Config.ArcherLv3JumpHeightBonusValue;
-                if (currentLevel >= 4) cumulativeJump += Archer_Config.ArcherLv4JumpHeightBonusValue;
-                if (currentLevel >= 5) cumulativeJump += Archer_Config.ArcherLv5JumpHeightBonusValue;
-
-                float cumulativeFall = fallReduction;
-                if (currentLevel >= 3) cumulativeFall += Archer_Config.ArcherLv3FallDamageReductionValue;
-                if (currentLevel >= 4) cumulativeFall += Archer_Config.ArcherLv4FallDamageReductionValue;
-                if (currentLevel >= 5) cumulativeFall += Archer_Config.ArcherLv5FallDamageReductionValue;
-
-                float resistVal = Archer_Config.ArcherElementalResistPerLevelValue;
-
-                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color>";
-                tooltip += $"<color=#E0E0E0><size=16>{L.Get("archer_effect_arrows", currentArrows, currentCharges, currentDamage)}</size></color>\n";
-                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
-
-                string passiveStr;
-                switch (currentLevel)
-                {
-                    case 1:  passiveStr = L.Get("archer_passive_lv1", (int)cumulativeJump, (int)cumulativeFall); break;
-                    case 2:  passiveStr = L.Get("archer_passive_lv2", (int)cumulativeJump, (int)((currentLevel-1)*resistVal)); break;
-                    case 3:  passiveStr = L.Get("archer_passive_lv3", (int)cumulativeJump, (int)cumulativeFall, (int)((currentLevel-2)*resistVal)); break;
-                    case 4:  passiveStr = L.Get("archer_passive_lv4", (int)cumulativeJump, (int)cumulativeFall, (int)((currentLevel-3)*resistVal)); break;
-                    default: passiveStr = L.Get("archer_passive_lv5", (int)cumulativeJump, (int)cumulativeFall, (int)resistVal); break;
-                }
-                tooltip += $"<color=#ADFF2F><size=16>{passiveStr}</size></color>\n";
-            }
-            else
-            {
-                // Lv0 상태: 레벨별 상세 예고
-                tooltip += $"<color=#E0E0E0><size=16>{L.Get("archer_desc_multishot", baseArrows, baseCharges, (int)baseDamage)}</size></color>\n";
-                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
-                tooltip += $"<color=#ADFF2F><size=16>{L.Get("archer_passive_lv1", (int)jumpBonus, (int)fallReduction)}</size></color>\n";
-
-                // 레벨별 추가 패시브 요약
-                float resistVal = Archer_Config.ArcherElementalResistPerLevelValue;
-                tooltip += $"\n<color=#808080><size=14>";
-                tooltip += $"Lv2: {L.Get("archer_passive_lv2", (int)Archer_Config.ArcherLv2JumpHeightBonusValue, (int)resistVal)}\n";
-                tooltip += $"Lv3: {L.Get("archer_passive_lv3", (int)Archer_Config.ArcherLv3JumpHeightBonusValue, (int)Archer_Config.ArcherLv3FallDamageReductionValue, (int)resistVal)}\n";
-                tooltip += $"Lv4: {L.Get("archer_passive_lv4", (int)Archer_Config.ArcherLv4JumpHeightBonusValue, (int)Archer_Config.ArcherLv4FallDamageReductionValue, (int)resistVal)}\n";
-                tooltip += $"Lv5: {L.Get("archer_passive_lv5", (int)Archer_Config.ArcherLv5JumpHeightBonusValue, (int)Archer_Config.ArcherLv5FallDamageReductionValue, (int)resistVal)}";
-                tooltip += $"</size></color>\n";
-            }
-
-            // 다음 레벨 비용
-            if (currentLevel < 5)
-            {
-                int nextLevel = currentLevel + 1;
-                tooltip += $"\n<color=#FFA500><size=16>{L.Get("archer_next_level_cost", nextLevel)}: </size></color>";
-                tooltip += $"<color=#FF6B6B><size=16>{GetArcherLevelCostText(nextLevel)}</size></color>\n";
-            }
-            else
-            {
-                tooltip += $"\n<color=#FFD700><size=16>{L.Get("archer_max_level")}</size></color>\n";
-            }
-
+            // 메인 블록: mainLevel 기준 스탯 (현재 레벨)
+            tooltip += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {L.Get("archer_effect_arrows", arrows, charges, damage)}</size></color>\n";
+            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
+            tooltip += $"<color=#ADFF2F><size=16>{GetPassiveStr(mainLevel, resistVal)}</size></color>\n";
             tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
             tooltip += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {stamina}, {L.Get("stat_arrow")} 1{L.Get("unit_pieces")}</size></color>\n";
+            tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
+            tooltip += $"<color=#ADFF2F><size=16>{L.Get("skill_type_active_key", "Y")}</size></color>\n";
             tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";
             tooltip += $"<color=#FFDB58><size=16>{cooldown}{L.Get("unit_seconds")}</size></color>\n";
+            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>";
+            tooltip += $"<color=#00FF00><size=16>{L.Get("archer_job_requirement")}</size></color>\n";
             tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color>";
-            tooltip += $"<color=#FFE4B5><size=16>{L.Get("confirmation_job_only")}</size></color>";
+            tooltip += $"<color=#FFE4B5><size=16>{L.Get("confirmation_job_only")}</size></color>\n";
+
+            // 필요아이템 or 최대레벨 메시지 (displayLevel 기준 - 다음 레벨 아이템)
+            if (currentLevel < 5)
+            {
+                tooltip += $"<color=#FFA500><size=16>{L.Get("archer_level_req_items", displayLevel)}: </size></color>";
+                tooltip += $"<color=#FF6B6B><size=16>{GetArcherLevelCostText(displayLevel)}</size></color>\n";
+            }
+            else
+            {
+                tooltip += $"<color=#FFD700><size=16>{L.Get("archer_max_level")}</size></color>\n";
+            }
+
+            // 구분선 + 프리뷰 (mainLevel < 5인 경우)
+            if (mainLevel < 5)
+            {
+                tooltip += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
+                for (int lv = mainLevel + 1; lv <= 5; lv++)
+                {
+                    int pvArrows    = GetArrowsForLevel(lv, baseArrows);
+                    int pvCharges   = GetChargesForLevel(lv, baseCharges);
+                    int pvDamage    = GetDamageForLevel(lv, baseDamage);
+                    int prevArrows  = GetArrowsForLevel(lv - 1, baseArrows);
+                    int prevCharges = GetChargesForLevel(lv - 1, baseCharges);
+
+                    string activePreview = pvCharges > prevCharges
+                        ? L.Get("archer_preview_charges", pvCharges - prevCharges)
+                        : L.Get("archer_preview_arrows_damage", pvArrows - prevArrows, pvDamage);
+
+                    tooltip += $"<color=#808080><size=14>Lv{lv} : {activePreview}\n";
+                    tooltip += $"  {L.Get("tooltip_passive")}: {GetPassiveStr(lv, resistVal)}</size></color>\n";
+                }
+            }
 
             return tooltip.TrimEnd('\n');
+        }
+
+        private static int GetArrowsForLevel(int level, int baseArrows)
+        {
+            return level switch {
+                2 => baseArrows + Archer_Config.ArcherLv2BonusArrowsValue,
+                3 => baseArrows + Archer_Config.ArcherLv3BonusArrowsValue,
+                4 => baseArrows + Archer_Config.ArcherLv4BonusArrowsValue,
+                5 => baseArrows + Archer_Config.ArcherLv5BonusArrowsValue,
+                _ => baseArrows
+            };
+        }
+
+        private static int GetChargesForLevel(int level, int baseCharges)
+        {
+            return level >= 5 ? baseCharges + Archer_Config.ArcherLv5BonusChargesValue : baseCharges;
+        }
+
+        private static int GetDamageForLevel(int level, int baseDamage)
+        {
+            return level switch {
+                2 => (int)Archer_Config.ArcherLv2DamagePercentValue,
+                3 => (int)Archer_Config.ArcherLv3DamagePercentValue,
+                4 => (int)Archer_Config.ArcherLv4DamagePercentValue,
+                5 => (int)Archer_Config.ArcherLv5DamagePercentValue,
+                _ => baseDamage
+            };
+        }
+
+        private static string GetPassiveStr(int level, float resistVal)
+        {
+            switch (level)
+            {
+                case 1:  return L.Get("archer_passive_lv1", (int)Archer_Config.ArcherJumpHeightBonusValue, (int)Archer_Config.ArcherFallDamageReductionValue);
+                case 2:  return L.Get("archer_passive_lv2", (int)Archer_Config.ArcherLv2JumpHeightBonusValue, (int)resistVal);
+                case 3:  return L.Get("archer_passive_lv3", (int)Archer_Config.ArcherLv3JumpHeightBonusValue, (int)Archer_Config.ArcherLv3FallDamageReductionValue, (int)resistVal);
+                case 4:  return L.Get("archer_passive_lv4", (int)Archer_Config.ArcherLv4JumpHeightBonusValue, (int)Archer_Config.ArcherLv4FallDamageReductionValue, (int)resistVal);
+                default: return L.Get("archer_passive_lv5", (int)Archer_Config.ArcherLv5JumpHeightBonusValue, (int)Archer_Config.ArcherLv5FallDamageReductionValue, (int)resistVal);
+            }
         }
 
         private static string GetArcherLevelCostText(int targetLevel)
@@ -144,7 +148,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 case 1: return L.Get("item_trophy_greydwarfbrute") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1";
                 case 2: return L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_trophy_theelder") + " x1";
-                case 3: return L.Get("item_trophy_abomination") + " x1 + " + L.Get("item_trophy_theelder") + " x1 + " + L.Get("item_trophy_bonemass") + " x1";
+                case 3: return L.Get("item_trophy_hatchling") + " x1 + " + L.Get("item_trophy_theelder") + " x1 + " + L.Get("item_trophy_bonemass") + " x1";
                 case 4: return L.Get("item_trophy_abomination") + " x1 + " + L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_dragonqueen") + " x1";
                 case 5: return L.Get("item_trophy_dragonqueen") + " x1 + " + L.Get("item_trophy_goblinking") + " x1 + " + L.Get("item_trophy_seekerqueen") + " x1";
                 default: return "";

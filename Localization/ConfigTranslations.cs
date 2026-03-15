@@ -18,6 +18,7 @@ namespace CaptainSkillTree.Localization
         public static Dictionary<string, string> GetCategoryTranslations(string lang)
         {
             return (lang == "ko") ? GetKoreanCategories()
+                 : (lang == "de") ? GetGermanCategories()
                  : (lang == "pt_BR") ? GetPortugueseBrazilianCategories()
                  : GetEnglishCategories();
         }
@@ -28,6 +29,7 @@ namespace CaptainSkillTree.Localization
         public static Dictionary<string, string> GetDescriptionTranslations(string lang)
         {
             if (lang == "ko") return GetKoreanDescriptions();
+            if (lang == "de") return GetGermanDescriptions();
             if (lang == "ru") return GetRussianDescriptions();
             if (lang == "pt_BR") return GetPortugueseBrazilianDescriptions();
             return GetEnglishDescriptions();
@@ -40,6 +42,7 @@ namespace CaptainSkillTree.Localization
         public static Dictionary<string, string> GetKeyNameTranslations(string lang)
         {
             if (lang == "ko") return GetKoreanKeyNames();
+            if (lang == "de") return GetGermanKeyNames();
             if (lang == "ru") return GetRussianKeyNames();
             if (lang == "pt_BR") return GetPortugueseBrazilianKeyNames();
             return GetEnglishKeyNames();
@@ -144,6 +147,34 @@ namespace CaptainSkillTree.Localization
         }
 
         // ============================================
+        // 카테고리 번역 (독일어)
+        // ============================================
+        private static Dictionary<string, string> GetGermanCategories()
+        {
+            return new Dictionary<string, string>
+            {
+                ["Attack Tree"] = "Angriffsbaum",
+                ["Defense Tree"] = "Verteidigungsbaum",
+                ["Production Tree"] = "Produktionsbaum",
+                ["Staff Tree"] = "Stabbaum",
+                ["Crossbow Tree"] = "Armbrustsbaum",
+                ["Bow Tree"] = "Bogenbaum",
+                ["Sword Tree"] = "Schwertbaum",
+                ["Spear Tree"] = "Speerstaum",
+                ["Mace Tree"] = "Keulbaum",
+                ["Polearm Tree"] = "Stangenwaffe",
+                ["Knife Tree"] = "Messerstaum",
+                ["Speed Tree"] = "Geschwindigkeitsbaum",
+                ["Archer Job Skills"] = "Bogenschützen-Fähigkeiten",
+                ["Mage Job Skills"] = "Magier-Fähigkeiten",
+                ["Tanker Job Skills"] = "Tanker-Fähigkeiten",
+                ["Rogue Job Skills"] = "Schurken-Fähigkeiten",
+                ["Paladin Job Skills"] = "Paladin-Fähigkeiten",
+                ["Berserker Job Skills"] = "Berserker-Fähigkeiten",
+            };
+        }
+
+        // ============================================
         // 카테고리 번역 (포르투갈어 BR)
         // ============================================
         private static Dictionary<string, string> GetPortugueseBrazilianCategories()
@@ -172,6 +203,20 @@ namespace CaptainSkillTree.Localization
         }
 
         // ============================================
+        // 설명 번역 집합 (독일어) - 각 파일의 부분 메서드를 합산
+        // ============================================
+        private static Dictionary<string, string> GetGermanDescriptions()
+        {
+            var dict = new Dictionary<string, string>();
+            foreach (var kv in GetExpertDescriptions_DE())      dict[kv.Key] = kv.Value;
+            foreach (var kv in GetRangedDescriptions_DE())      dict[kv.Key] = kv.Value;
+            foreach (var kv in GetSwordKnifeDescriptions_DE())  dict[kv.Key] = kv.Value;
+            foreach (var kv in GetHeavyMeleeDescriptions_DE())  dict[kv.Key] = kv.Value;
+            foreach (var kv in GetJobDescriptions_DE())          dict[kv.Key] = kv.Value;
+            return dict;
+        }
+
+        // ============================================
         // 설명 번역 집합 (포르투갈어 BR)
         // ============================================
         private static Dictionary<string, string> GetPortugueseBrazilianDescriptions()
@@ -187,11 +232,12 @@ namespace CaptainSkillTree.Localization
 
         // GetKoreanKeyNames()  → ConfigTranslations_KeyNames_KO.cs
         // GetEnglishKeyNames() → ConfigTranslations_KeyNames_EN.cs
+        // GetGermanKeyNames()  → ConfigTranslations_KeyNames_DE.cs + _DE_Part2.cs
         // GetRussianKeyNames() → ConfigTranslations_KeyNames_RU.cs
-        // GetExpertDescriptions_KO/EN/RU()    → ConfigTranslations_ExpertDesc.cs / *_RU.cs
-        // GetRangedDescriptions_KO/EN/RU()    → ConfigTranslations_RangedDesc.cs / *_RU.cs
-        // GetSwordKnifeDescriptions_KO/EN/RU() → ConfigTranslations_SwordKnifeDesc.cs / *_RU.cs
-        // GetHeavyMeleeDescriptions_KO/EN/RU() → ConfigTranslations_HeavyMeleeDesc.cs / *_RU.cs
-        // GetJobDescriptions_KO/EN/RU()        → ConfigTranslations_JobDesc.cs / *_RU.cs
+        // GetExpertDescriptions_KO/EN/DE/RU()     → ConfigTranslations_ExpertDesc.cs / *_DE.cs / *_RU.cs
+        // GetRangedDescriptions_KO/EN/DE/RU()     → ConfigTranslations_RangedDesc.cs / *_DE.cs / *_RU.cs
+        // GetSwordKnifeDescriptions_KO/EN/DE/RU() → ConfigTranslations_SwordKnifeDesc.cs / *_DE.cs / *_RU.cs
+        // GetHeavyMeleeDescriptions_KO/EN/DE/RU() → ConfigTranslations_HeavyMeleeDesc.cs / *_DE.cs / *_RU.cs
+        // GetJobDescriptions_KO/EN/DE/RU()        → ConfigTranslations_JobDesc.cs / *_DE.cs / *_RU.cs
     }
 }

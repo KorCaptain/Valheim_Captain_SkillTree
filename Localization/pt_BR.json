@@ -272,7 +272,7 @@
     "spear_skill_explosion": "Lança Veloz",
     "spear_skill_dual": "Golpe Duplo",
 
-    "spear_desc_expert": "Combo de 2 acertos: Velocidade de ataque +{0}%, Dano +{1}% ({2}s)",
+    "spear_desc_expert": "{0}% de chance ao acertar de desencadear 1 ataque extra a {1}% de velocidade",
     "spear_desc_throw": "Dano de arremesso de lança +{0}%",
     "spear_desc_crit": "Dano com lança +{0}%",
     "spear_desc_pierce": "Dano de perfuração +{0}",
@@ -1168,6 +1168,7 @@
     "weapon_effect_ranged_expert_suffix": "+2 Perfc./Elemental",
     "weapon_effect_prob": "chance",
     "weapon_effect_arrows": "flechas",
+    "weapon_effect_spear_throw": "Especialista em Arremesso",
 
     "armor_effect_defense_expert": "Mestre Defesa",
     "armor_effect_evasion": "Evasão",
@@ -1190,5 +1191,7 @@
     "armor_stat_sec": "s",
     "requirement_two_handed_sword": "Espada de Duas Mãos equipada",
     "weapon_effect_riposte": "Riposte",
-    "weapon_stat_slash_fixed": "corte"
+    "weapon_stat_slash_fixed": "corte",
+    "level_decrease_reset": "Habilidades reiniciadas devido à queda de nível",
+    "level_decrease_notice": "Nível diminuído"
 }
