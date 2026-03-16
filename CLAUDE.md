@@ -1,3 +1,196 @@
+## 빠른 참조 맵 & 시스템 상세
+
+### A. 수정 목적별 파일 빠른 참조 맵
+
+| 작업 | 수정 파일 |
+|------|---------|
+| 새 스킬 추가 (예: 검 트리) | `SkillTree/MeleeSkillData.cs` + `SkillTree/Sword_Skill.cs` + `SkillTree/Sword_Config.cs` + `SkillTree/Sword_Tooltip.cs` + `Localization/DefaultLanguages_WeaponSkills.cs` + `Localization/ConfigTranslations_SwordKnifeDesc.cs` |
+| 스킬 효과 패치 수정 | `SkillTree/SkillEffect.cs` 또는 `SkillTree/SkillEffect.{무기}Skills.cs` |
+| UI 레이아웃 변경 | `Gui/SkillTreeUI.cs` (3223줄 – 수정 전 라인 확인 필수) |
+| 툴팁 내용 변경 | `Gui/SkillTreeTooltip.cs` + 해당 `SkillTree/*_Tooltip.cs` |
+| 다국어 키 추가 | `Localization/DefaultLanguages_*.cs` + `Localization/ru.json` |
+| Config 키 추가 | `SkillTree/*_Config.cs` + `Localization/ConfigTranslations_*Desc.cs` |
+| VFX 추가/수정 | `VFX/VFXManager.cs` + `SimpleVFX.cs` |
+| BGM 수정 | `Audio/SkillTreeBGMManager.cs` |
+| MMO 레벨 연동 | `MMO_System/CaptainMMOBridge.cs` + `MMO_System/CaptainLevelSystem.cs` |
+| 크리티컬 시스템 | `SkillTree/CriticalSystem/Critical.cs` + `CriticalDamage.cs` |
+| HUD 수정 | `Gui/ActiveSkillHUD.cs` + `Gui/SkillBuffDisplay.cs` |
+| 시스템 초기화 순서 | `Plugin.Systems.cs` (497줄) |
+| 입력 처리 | `Gui/SkillTreeInputListener.cs` (**수정 금지!**) |
+
+---
+
+### B. UI 시스템 상세 (Gui/)
+
+**SkillTreeUI.cs** (3223줄 – 최대 파일)
+- `BuildUI()`: 전체 패널 생성
+- `RenderNodes()`: 노드 아이콘 배치
+- `DrawConnections()`: 연결선 그리기
+- `OnLanguageChanged()`: 언어 변경 이벤트 수신 → 전체 텍스트 갱신
+- `ShowConfirmDialog()` / `HideConfirmDialog()`: 확인/취소 대화상자
+- SetSiblingIndex 렌더링 순서: 0=배경, 1=연결선, 2=노드, 3=직업아이콘, 최상위=툴팁
+
+**SkillTreeTooltip.cs** (1298줄)
+- `ShowTooltip(SkillNode)`: 툴팁 표시
+- `HideTooltip()`: ESC/Tab/우클릭/휠클릭으로 닫기
+- Canvas 최상위 레이어에 항상 배치 (`SetAsLastSibling`)
+
+**ActiveSkillHUD.cs** (603줄)
+- 액티브 스킬 쿨다운/버튼 표시
+- `UpdateHUD()`: 매 프레임 상태 갱신
+
+| 파일 | 역할 |
+|------|------|
+| `SkillTreeNodeUI.cs` | 개별 노드 아이콘 렌더링, 잠금/해제 상태 시각화 |
+| `SkillBuffDisplay.cs` | 버프 아이콘 HUD 표시 |
+| `SkillTreeZoomCntrl.cs` | 스킬트리 패널 줌 인/아웃 |
+| `SkillTreeInputListener.cs` | 키 입력 처리 (**수정 금지**) |
+
+---
+
+### C. 다국어 시스템 상세 (Localization/)
+
+**지원 언어**: KR(한국어), EN(영어), JP(일본어), CN(중국어), DE(독일어), FR(프랑스어), ES(스페인어), RU(러시아어), PT_BR(포르투갈어)
+
+| 파일 | 역할 |
+|------|------|
+| `LocalizationManager.cs` (916줄) | 자동 언어 감지, JSON+코드 번역 로딩, 이벤트 기반 UI 갱신 |
+| `L.cs` | `L.Get("key")` 축약 헬퍼 (27줄) |
+| `DefaultLanguages.cs` | partial class 진입점 – 5개 분류 파일 병합 |
+| `DefaultLanguages_GameMessages.cs` | 게임 메시지 KO/EN 번역 |
+| `DefaultLanguages_WeaponSkills.cs` | 무기 스킬 KO/EN 번역 |
+| `DefaultLanguages_JobExpert.cs` | 직업/전문가 KO/EN 번역 |
+| `DefaultLanguages_AttackProduction.cs` | 공격/생산 KO/EN 번역 |
+| `DefaultLanguages_ItemEffects.cs` | 아이템 효과 KO/EN 번역 |
+| `ConfigTranslations.cs` | F1 Config Manager 번역 오케스트레이터 |
+| `ConfigTranslations_ExpertDesc.cs` (1387줄) | 전문가 트리 Config 설명 |
+| `ConfigTranslations_HeavyMeleeDesc.cs` (1240줄) | 중무장 근접 Config 설명 |
+| `ConfigTranslations_SwordKnifeDesc.cs` (1110줄) | 검/단검 Config 설명 |
+| `ConfigTranslations_RangedDesc.cs` (1045줄) | 원거리 Config 설명 |
+| `ConfigTranslations_JobDesc.cs` (939줄) | 직업 Config 설명 |
+| `ConfigTranslations_KeyNames_KO.cs` (896줄) | F1 키 이름 한국어 |
+| `ConfigTranslations_KeyNames_EN.cs` | F1 키 이름 영어 |
+| `de.json`, `ru.json`, `pt_BR.json`, `zh-cn.json` | 외부 JSON 번역 파일 |
+
+**키 추가 워크플로우**:
+1. `DefaultLanguages_{분류}.cs`에 KO + EN 키 등록
+2. `ConfigTranslations_{분류}Desc.cs`에 설명 번역 추가
+3. `ConfigTranslations_KeyNames_KO.cs` + `_EN.cs`에 표시명 추가
+4. `ru.json` 동기화 (EN 원문으로 임시 등록 가능)
+5. 검증: `scripts/validate_loc_keys.ps1` 실행
+
+---
+
+### D. Config 시스템 상세 (SkillTree/*_Config.cs)
+
+**Config 파일 목록**:
+
+| 파일 | 담당 트리 |
+|------|----------|
+| `Attack_Config.cs` | 공격 전문가 |
+| `Speed_Config.cs` | 속도 전문가 |
+| `Defense_Config.cs` | 방어 전문가 |
+| `Production_Config.cs` | 생산 전문가 |
+| `Bow_Config.cs` | 활 트리 |
+| `Crossbow_Config.cs` | 석궁 트리 |
+| `Staff_Config.cs` | 지팡이 트리 |
+| `Knife_Config.cs` | 단검 트리 |
+| `Sword_Config.cs` | 검 트리 |
+| `Mace_Config.cs` | 둔기 트리 |
+| `Spear_Config.cs` | 창 트리 |
+| `Polearm_Config.cs` | 폴암 트리 |
+| `Archer_Config.cs` | 궁수 직업 |
+| `Berserker_Config.cs` | 광전사 직업 |
+| `Mage_Config.cs` | 마법사 직업 |
+| `Paladin_Config.cs` | 성기사 직업 |
+| `Rogue_Config.cs` | 로그 직업 |
+
+**Config 오케스트레이터**: `SkillTreeConfig.cs` (1059줄)
+- `InitializeAll()`: 모든 Config 파일 순차 초기화
+- `GetConfigDescription(key)`: 다국어 설명 반환 (하드코딩 금지)
+- Jotunn `BindServerSync`: 멀티플레이어 서버 동기화
+
+---
+
+### E. 스킬 트리 구조 상세
+
+**트리별 핵심 파일 매핑**:
+
+| 트리 | 데이터 | 스킬 구현 | 효과 패치 | 툴팁 |
+|------|--------|----------|----------|------|
+| 활(Bow) | `RangedSkillData.cs` | `ArcherSkills.cs` | `SkillEffect.RangedSkills.cs` | `Archer_Tooltip.cs` |
+| 석궁 | `RangedSkillData.cs` | - | `SkillEffect.CrossbowOneShot.cs` | - |
+| 지팡이 | `RangedSkillData.cs` | `MageSkills.cs` | `SkillEffect.cs` | `Mage_Tooltip.cs` |
+| 검 | `MeleeSkillData.cs` | `Sword_Skill.cs` | `SkillEffect.SwordSpearSkillEffects.cs` | `Sword_Tooltip.cs` |
+| 단검 | `MeleeSkillData.cs` | `Knife_Skill.cs` | `SkillEffect.KnifeSkillEffects.cs` | `Knife_Tooltip.cs` |
+| 둔기 | `MeleeSkillData.cs` | `MaceSkills.cs` | `SkillEffect.MeleeSkills.cs` | `Mace_Tooltip.cs` |
+| 창 | `MeleeSkillData.cs` | - | `SkillEffect.SwordSpearSkillEffects.cs` | `Spear_Tooltip.cs` |
+| 폴암 | `MeleeSkillData.cs` | - | `SkillEffect.PolearmTree.cs` | `Polearm_Tooltip.cs` |
+| 속도전문가 | `SpeedSkillData.cs` | - | `SkillEffect.SpeedTree.cs` + `SpeedTree2.cs` | - |
+| 방어전문가 | `Defense_SkillData.cs` | `TankerSkills.cs` | `SkillEffect.cs` | `Tanker_Tooltip.cs` |
+| 공격전문가 | `AttackSkillData.cs` | - | `SkillEffect.cs` | - |
+| 생산전문가 | `ProductionSkillData.cs` | - | `SkillEffect.cs` | - |
+| 직업시스템 | `JobSkills.cs` | `JobSkills.cs` | `Plugin.Patches.cs` | 직업별 `*_Tooltip.cs` |
+
+**SkillTreeData.cs 등록 순서** (RegisterAll):
+JobSkills → RangedSkillData → MeleeSkillData → DefenseTreeData → AttackSkillData → ProductionSkillData → SpeedSkillData
+
+**SkillNode 핵심 속성**:
+```csharp
+Id, NameKey, DescriptionKey,  // 로컬라이제이션 키
+Tier, Category, Position,     // 트리 위치
+Prerequisites, MutuallyExclusive, // 선행/상호배제
+MaxLevel, GetEffectValue, ApplyEffect // 효과
+```
+
+---
+
+### F. VFX 시스템 상세
+
+| 구분 | 위치 | 사용 방법 |
+|------|------|---------|
+| 커스텀 VFX | `asset/VFX/*.png` (35+ 파일) | `SimpleVFX.Play()` 또는 `VFXManager.PlayVFXFollowPlayer()` |
+| 발헤임 기본 VFX | `VFX/Valheim_prefab.txt` 목록 | `VFXManager.PlayVFXMultiplayer()` (**Destroy 호출 금지**) |
+
+**커스텀 VFX 파일 분류** (asset/VFX/): `area_*` 범위, `buff_*` 버프, `debuff_*` 디버프, `flash_*` 순간, `hit_*` 피격, `shine_*` 광채
+
+**VFX 핵심 클래스**:
+- `SimpleVFX.cs` (692줄): AssetBundle 로딩/캐싱/재생 코어
+- `VFXManager.cs`: 고수준 API
+  - `PlayVFXFollowPlayer(name, player)`: 플레이어 추적 VFX
+  - `PlayVFXAtPosition(name, pos)`: 위치 고정 VFX
+  - `PlayVFXMultiplayer(name, pos)`: ZNetScene 기반 멀티플레이어 동기화
+
+⚠️ **VFX 무한 로딩 방지**: 발헤임 기본 VFX 오브젝트에 `Destroy()` 절대 호출 금지 → `md/VFX_SOUND_INFINITE_LOADING_FIX.md` 참조
+
+---
+
+### G. MMO 시스템 상세 (MMO_System/)
+
+| 파일 | 역할 | 라인 |
+|------|------|------|
+| `CaptainMMOBridge.cs` | EpicMMO 감지 및 연동 (리플렉션 기반) | 951 |
+| `CaptainLevelSystem.cs` | 자체 레벨 시스템 (EpicMMO 없을 때 fallback) | 499 |
+| `CaptainExpHud.cs` | 경험치 HUD | - |
+| `CaptainExpTable.cs` | 레벨별 경험치 테이블 | - |
+| `CaptainMonsterExp.cs` | 몬스터 경험치 처리 | - |
+| `CaptainPartyExp.cs` | 파티 경험치 분배 | - |
+| `MMODifficultyManager.cs` | 난이도 관리 | - |
+| `EpicMMOReflectionHelper.cs` | MMO API 리플렉션 접근 헬퍼 | - |
+
+---
+
+### H. 핵심 유틸리티 클래스 (반드시 재사용)
+
+| 클래스 | 파일 | 주요 메서드 |
+|--------|------|-----------|
+| `WeaponHelper` | `SkillTree/WeaponHelper.cs` | `IsUsingSword()`, `IsUsingBow()`, `IsUsingStaff()` 등 무기 감지 |
+| `SkillBonusCalculator` | `SkillTree/SkillBonusCalculator.cs` | `CalculateTotal()`, `GetIfActive()`, `IsSkillActive()`, `CalculateMultiplier()` |
+| `SkillNodeBuilder` | `SkillTree/SkillNodeBuilder.cs` | `Create()`, `Melee(tier)`, `Ranged(tier)`, `Defense(tier)` 팩토리 |
+| `L` (헬퍼) | `Localization/L.cs` | `L.Get("key")` – 모든 텍스트에 사용 |
+
+---
+
 1. Think Before Coding
 Don't assume. Don't hide confusion. Surface tradeoffs.
 

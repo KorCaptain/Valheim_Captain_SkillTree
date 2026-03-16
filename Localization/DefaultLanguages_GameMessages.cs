@@ -540,10 +540,15 @@ namespace CaptainSkillTree.Localization
                 ["rush_slash_return"] = "Returning to original position!",
                 ["rush_slash_complete"] = "Rush Slash Complete! ({0} hits)",
                 ["rush_slash_canceled"] = "Rush Slash Canceled",
+                ["rush_slash_1st_attack"] = "⚔️ 1st Slash! ({0}%)",
+                ["rush_slash_2nd_attack"] = "⚔️ 2nd Slash! ({0}%)",
+                ["rush_slash_finisher"] = "💥 Finisher! ({0}%)",
+                ["rush_slash_default"] = "⚔️ Slash! ({0}%)",
                 ["parry_rush_skill_required"] = "Parry Rush skill required",
                 ["shield_required"] = "You must equip a shield",
                 ["parry_rush_already_active"] = "Parry Rush already active",
                 ["parry_rush_activate"] = "Parry Rush! ({0}s)",
+                ["parry_rush_buff_name"] = "Parry Rush",
                 ["parry_rush_damage"] = "Parry Rush! (+{0}%)",
 
                 // === Berserker Effect Messages ===

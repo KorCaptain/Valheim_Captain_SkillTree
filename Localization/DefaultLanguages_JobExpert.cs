@@ -212,11 +212,16 @@ namespace CaptainSkillTree.Localization
                 ["rush_slash_return"] = "원래 위치로 복귀!",
                 ["rush_slash_complete"] = "돌진 연속 베기 완료! ({0}타격)",
                 ["rush_slash_canceled"] = "돌진 연속 베기 중단됨",
+                ["rush_slash_1st_attack"] = "⚔️ 1차 베기! ({0}%)",
+                ["rush_slash_2nd_attack"] = "⚔️ 2차 베기! ({0}%)",
+                ["rush_slash_finisher"] = "💥 피니셔! ({0}%)",
+                ["rush_slash_default"] = "⚔️ 베기! ({0}%)",
                 ["parry_rush_skill_required"] = "패링 돌격 스킬이 필요합니다",
                 ["shield_required"] = "방패를 착용해야 합니다",
                 ["sword_or_shield_required"] = "검 또는 방패를 착용해야 합니다",
                 ["parry_rush_already_active"] = "패링 돌격 이미 활성 중",
                 ["parry_rush_activate"] = "패링 돌격! ({0}초)",
+                ["parry_rush_buff_name"] = "패링 돌격",
                 ["parry_rush_damage"] = "패링 돌격! (+{0}%)",
 
                 // === Berserker Effect Messages ===

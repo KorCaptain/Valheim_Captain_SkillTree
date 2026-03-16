@@ -505,10 +505,10 @@ namespace CaptainSkillTree.SkillTree
             // 5. 플로팅 텍스트
             string attackText = attackNumber switch
             {
-                1 => $"⚔️ 1차 베기! ({(int)damageRatio}%)",
-                2 => $"⚔️ 2차 베기! ({(int)damageRatio}%)",
-                3 => $"💥 피니셔! ({(int)damageRatio}%)",
-                _ => $"⚔️ 베기! ({(int)damageRatio}%)"
+                1 => L.Get("rush_slash_1st_attack", (int)damageRatio),
+                2 => L.Get("rush_slash_2nd_attack", (int)damageRatio),
+                3 => L.Get("rush_slash_finisher", (int)damageRatio),
+                _ => L.Get("rush_slash_default", (int)damageRatio)
             };
             SkillEffect.DrawFloatingText(player, attackText, attackNumber == 3 ? Color.yellow : Color.red);
 
@@ -813,7 +813,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     Gui.SkillBuffDisplay.Instance.ShowBuff(
                         "parry_rush_buff",
-                        "패링 돌격",
+                        L.Get("parry_rush_buff_name"),
                         duration,
                         Color.cyan
                     );
