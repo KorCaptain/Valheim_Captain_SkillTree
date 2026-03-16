@@ -446,7 +446,7 @@ namespace CaptainSkillTree.SkillTree
             SwordStep3AllInOneDefenseBonus = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier4_AllInOne_DefenseBonus",
-                25f,
+                15f,
                 SkillTreeConfig.GetConfigDescription("Tier4_AllInOne_DefenseBonus")
             );
 

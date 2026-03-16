@@ -86,7 +86,6 @@ namespace CaptainSkillTree.SkillTree
                 // 패시브 스킬: 텍스트 표시만 (VFX/SFX 금지)
                 DrawFloatingText(player, "⚔️ " + L.Get("polearm_area_combo", SkillTreeConfig.PolearmStep3AreaComboBonusValue));
 
-                Plugin.Log.LogInfo($"[광역 강타] 2연속 공격 달성 - 공격력 +{SkillTreeConfig.PolearmStep3AreaComboBonusValue}% 보너스 적용");
 
                 // 다음 공격에 보너스 적용 설정
                 nextAttackBoosted[player] = true;
@@ -810,7 +809,6 @@ namespace CaptainSkillTree.SkillTree
                     Vector3 knockbackDir = (__instance.transform.position - player.transform.position).normalized;
                     __instance.Stagger(knockbackDir);
                 }
-                Plugin.Log.LogInfo($"[영웅 타격] 스태거 발동 - {__instance.name}");
             }
             catch (System.Exception ex)
             {
@@ -925,7 +923,6 @@ namespace CaptainSkillTree.SkillTree
 
                 // 패시브 스킬: 텍스트 표시만 (VFX/SFX 금지)
                 SkillEffect.DrawFloatingText(player, "🌀 " + L.Get("wheel_attack", wheelBonus));
-                Plugin.Log.LogInfo($"[폴암 휠 공격] 데미지 보너스 +{wheelBonus}% 적용");
             }
             catch (System.Exception ex)
             {

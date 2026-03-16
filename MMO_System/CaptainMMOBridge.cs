@@ -189,8 +189,8 @@ namespace CaptainSkillTree.MMO_System
                 }
             }
 
-            // EpicMMO 없음: 백업된 레벨 사용 (순환 참조 방지 - 계산하지 않음)
-            return GetBackupLevel();
+            // EpicMMO 없음: CaptainLevelSystem 단일 소스 사용
+            return CaptainLevelSystem.Instance?.Level ?? 1;
         }
 
         /// <summary>
@@ -465,6 +465,9 @@ namespace CaptainSkillTree.MMO_System
 
                 // 일회성 레벨 마이그레이션 (레벨 11 같은 비정상 레벨 수정)
                 TryMigrateLevelIfNeeded();
+
+                // EpicMMO 백업 레벨이 더 높으면 CaptainLevelSystem 동기화
+                SyncCaptainFromEpicMMOBackup();
 
                 // 스킬포인트 기반 레벨 동기화
                 if (CaptainLevelConfig.UseSkillPointBasedLevel?.Value ?? false)
@@ -754,6 +757,33 @@ namespace CaptainSkillTree.MMO_System
             {
                 Plugin.Log.LogError($"[CaptainMMOBridge] EpicMMO->Captain 마이그레이션 실패: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// EpicMMO 백업 레벨이 CaptainLevelSystem보다 높으면 조용히 동기화
+        /// TryMigrateToCaptain 완료 마크 여부와 무관하게 항상 체크
+        /// </summary>
+        private static void SyncCaptainFromEpicMMOBackup()
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+
+            int backupLvl = GetEpicMMOBackupLevel(player);
+            int currentLvl = CaptainLevelSystem.Instance?.Level ?? 1;
+
+            if (backupLvl <= 1 || backupLvl <= currentLvl) return;
+
+            Plugin.Log.LogInfo($"[CaptainMMOBridge] EpicMMO 백업({backupLvl}) > Captain({currentLvl}) - CaptainLevelSystem 동기화");
+
+            // customData에 직접 쓰고 재로드 (이벤트 없이 조용히)
+            player.m_customData[KEY_CAPTAIN_LEVEL]       = backupLvl.ToString();
+            player.m_customData[KEY_CAPTAIN_CURRENT_EXP] = "0";
+            player.m_customData[KEY_CAPTAIN_TOTAL_EXP]   =
+                CaptainExpTable.GetTotalExpForLevel(backupLvl).ToString();
+
+            CaptainLevelSystem.Instance.Load();  // 재로드 (Level=backupLvl, CurrentExp=0)
+
+            Plugin.Log.LogInfo($"[CaptainMMOBridge] 동기화 완료 - CaptainLevel={CaptainLevelSystem.Instance.Level}");
         }
 
         #endregion

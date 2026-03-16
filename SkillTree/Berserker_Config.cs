@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using CaptainSkillTree;
+using UnityEngine;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -84,16 +85,16 @@ namespace CaptainSkillTree.SkillTree
 
                 // === Passive Skill: Death Defiance ===
                 BerserkerPassiveHealthThreshold = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Passive_HealthThreshold", 10f,
-                    SkillTreeConfig.GetConfigDescription("Beserker_Passive_HealthThreshold"));
+                    "Berserker Job Skills", "Berserker_Passive_HealthThreshold", 10f,
+                    SkillTreeConfig.GetConfigDescription("Berserker_Passive_HealthThreshold"));
 
                 BerserkerPassiveInvincibilityDuration = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Passive_InvincibilityDuration", 8f,
-                    SkillTreeConfig.GetConfigDescription("Beserker_Passive_InvincibilityDuration"));
+                    "Berserker Job Skills", "Berserker_Passive_InvincibilityDuration", 8f,
+                    SkillTreeConfig.GetConfigDescription("Berserker_Passive_InvincibilityDuration"));
 
                 BerserkerPassiveCooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Passive_Cooldown", 600f,
-                    SkillTreeConfig.GetConfigDescription("Beserker_Passive_Cooldown"));
+                    "Berserker Job Skills", "Berserker_Passive_Cooldown", 600f,
+                    SkillTreeConfig.GetConfigDescription("Berserker_Passive_Cooldown"));
 
                 BerserkerPassiveHealthBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                     "Berserker Job Skills", "Berserker_Passive_HealthBonus", 100f,
@@ -182,6 +183,10 @@ namespace CaptainSkillTree.SkillTree
 
                 // 툴팁 업데이트
                 JobSkills.UpdateBerserkerTooltip();
+
+                // 진행 중인 쿨타임을 새 Config 값 기준으로 재계산
+                float newCooldown = Mathf.Max(BerserkerPassiveCooldownValue, 60f);
+                ActiveSkillCooldownRegistry.RecalculateCooldown("passive_berserker", newCooldown);
             }
             catch (System.Exception ex)
             {

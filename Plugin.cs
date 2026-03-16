@@ -21,7 +21,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.0.201")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.0.228")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -769,7 +769,6 @@ namespace CaptainSkillTree
                 var inventoryPanel = canvas.transform.Find("Player");
                 if (inventoryPanel == null)
                 {
-                    Plugin.Log.LogWarning("Player 패널을 찾을 수 없음, Canvas에 직접 배치");
                     inventoryPanel = canvas.transform;
                 }
 
@@ -923,7 +922,6 @@ namespace CaptainSkillTree
                 if (SkillTreeBGMManager.Instance != null && SkillTreeBGMManager.Instance.IsBGMEnabled)
                 {
                     SkillTreeBGMManager.Instance.PlaySkillTreeBGM();
-                    Log.LogInfo("[BGM] 스킬트리 BGM 재생 시작 (BGM 활성화 상태)");
                 }
                 else if (SkillTreeBGMManager.Instance != null)
                 {
@@ -944,7 +942,6 @@ namespace CaptainSkillTree
                     go.transform.SetParent(canvas.transform, false);
                     skillTreeUI = go.AddComponent<CaptainSkillTree.Gui.SkillTreeUI>();
                     skillTreeUI.CreateUI(canvas);
-                    Plugin.Log.LogInfo("[스킬트리] skillTreeUI 새로 생성 및 Canvas 하위에 배치");
                 }
 
                 if (!skillTreeUI.panel.activeSelf)

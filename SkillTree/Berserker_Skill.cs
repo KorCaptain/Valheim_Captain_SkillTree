@@ -403,6 +403,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 float duration = Berserker_Config.BerserkerPassiveInvincibilityDurationValue;
                 float cooldown = Berserker_Config.BerserkerPassiveCooldownValue;
+                // Config 오설정 보호: 최소 60초 (쿨다운이 무적 지속시간보다 짧으면 무한 반복 방지)
+                cooldown = Mathf.Max(cooldown, 60f);
 
                 state.EndTime = Time.time + duration;
                 state.CooldownEndTime = Time.time + cooldown;
@@ -632,10 +634,13 @@ namespace CaptainSkillTree.SkillTree
                         float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
                         float currentHP = player.GetHealth();
                         float maxHP = player.GetMaxHealth();
-                        float damage = hit.GetTotalDamage();
-                        float hpAfterHit = currentHP - damage;
-                        // 실제 데미지가 있고, 이 공격 후 체력이 10% 이하로 떨어질 때만 발동
-                        bool wouldDropToLow = damage > 0f && maxHP > 0f && (hpAfterHit / maxHP) <= threshold;
+                        float rawDamage = hit.GetTotalDamage();
+                        // 방어력 적용 후 예상 데미지 계산 (Valheim 공식: max(raw*0.1, raw-armor))
+                        float armor = player.GetBodyArmor();
+                        float estimatedDamage = Mathf.Max(rawDamage * 0.1f, rawDamage - armor);
+                        float hpAfterHit = currentHP - estimatedDamage;
+                        // 실제 데미지가 있고, 이 공격 후 체력이 threshold% 이하로 떨어질 때만 발동
+                        bool wouldDropToLow = rawDamage > 0f && maxHP > 0f && (hpAfterHit / maxHP) <= threshold;
 
                         if (wouldDropToLow)
                         {

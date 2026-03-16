@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -467,9 +467,9 @@ namespace CaptainSkillTree.Localization
                 ["Beserker_Active_DamagePerHealthPercent"] = "Fúria do Berserker: Dano por % de HP (%)",
                 ["Beserker_Active_MaxDamageBonus"] = "Fúria do Berserker: Bônus de Dano Máximo (%)",
                 ["Beserker_Active_HealthThreshold"] = "Fúria do Berserker: Limite de HP (%)",
-                ["Beserker_Passive_HealthThreshold"] = "Desafio da Morte: Limite de HP (%)",
-                ["Beserker_Passive_InvincibilityDuration"] = "Desafio da Morte: Duração da Invencibilidade (seg)",
-                ["Beserker_Passive_Cooldown"] = "Desafio da Morte: Recarga (seg)",
+                ["Berserker_Passive_HealthThreshold"] = "Desafio da Morte: Limite de HP (%)",
+                ["Berserker_Passive_InvincibilityDuration"] = "Desafio da Morte: Duração da Invencibilidade (seg)",
+                ["Berserker_Passive_Cooldown"] = "Desafio da Morte: Recarga (seg)",
                 ["Berserker_Passive_HealthBonus"] = "Passivo: Bônus de HP Máximo (%)",
 
                 // ============================================

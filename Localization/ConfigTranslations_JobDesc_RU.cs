@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -407,17 +407,17 @@ namespace CaptainSkillTree.Localization
                 "Рекомендуемое значение: 50-100%",
 
                 // === Berserker Job: Пассивный «Вызов смерти» (3 ключа, опечатка Beserker сохранена) ===
-                ["Beserker_Passive_HealthThreshold"] =
+                ["Berserker_Passive_HealthThreshold"] =
                 "【Порог ХП для активации пассива (%)】\n" +
                 "Неуязвимость активируется, когда ХП опускается ниже этого %.\n" +
                 "Рекомендуемое значение: 8-15%",
 
-                ["Beserker_Passive_InvincibilityDuration"] =
+                ["Berserker_Passive_InvincibilityDuration"] =
                 "【Длительность неуязвимости (сек)】\n" +
                 "Время действия неуязвимости при срабатывании пассива.\n" +
                 "Рекомендуемое значение: 5-10 сек",
 
-                ["Beserker_Passive_Cooldown"] =
+                ["Berserker_Passive_Cooldown"] =
                 "【Перезарядка пассива (сек)】\n" +
                 "Время ожидания до повторного срабатывания пассивной неуязвимости.\n" +
                 "По умолчанию: 180 сек (3 минуты)\n" +

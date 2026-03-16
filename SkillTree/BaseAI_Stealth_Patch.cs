@@ -110,6 +110,39 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        /// <summary>
+        /// MonsterAI.UpdateTarget Postfix - UpdateTarget 실행 후 스텔스 플레이어 타겟 클리어
+        /// Prefix 방식의 문제: UpdateAI Postfix가 이미 m_targetCreature=null로 클리어한 상태이므로
+        /// Prefix 검사 시 항상 null → 조건 false → Prefix 무력화됨
+        /// Postfix 방식: UpdateTarget이 m_targetCreature=player로 설정한 직후 클리어
+        /// → 이후 UpdateCombat()이 null 타겟을 보므로 공격 결정하지 않음 ✅
+        /// </summary>
+        [HarmonyPatch(typeof(MonsterAI), "UpdateTarget")]
+        public static class MonsterAI_UpdateTarget_Stealth_Patch
+        {
+            [HarmonyPriority(Priority.High)]
+            public static void Postfix(MonsterAI __instance)
+            {
+                try
+                {
+                    if (s_targetCreatureField == null) return;
+                    var currentTarget = s_targetCreatureField.GetValue(__instance) as Character;
+                    if (currentTarget is Player p && (RogueSkills.IsPlayerInStealth(p) || RogueSkills.IsAggroRemoved(p)))
+                    {
+                        s_targetCreatureField.SetValue(__instance, null);
+                        // m_huntPlayer도 클리어: 타겟을 null로 해도 m_huntPlayer=true가 남으면 몬스터가 플레이어 방향으로 이동
+                        typeof(MonsterAI).GetField("m_huntPlayer",
+                            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                            ?.SetValue(__instance, false);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Plugin.Log.LogError($"[BaseAI 스텔스 패치] UpdateTarget Postfix 오류: {ex.Message}");
+                }
+            }
+        }
+
         // CanSeeTarget 패치는 ambiguous match 오류로 인해 제거
         // 다른 패치들로 충분한 스텔스 효과 구현
 
@@ -168,18 +201,30 @@ namespace CaptainSkillTree.SkillTree
                 {
                     // 스텔스 중인 플레이어 타겟 해제
                     ClearAITarget(baseAI);
-                    
-                    // MonsterAI인 경우 헌팅도 해제
-                    if (baseAI is MonsterAI monsterAI)
+
+                    // MonsterAI인 경우 헌팅도 해제 (m_huntPlayer bool 필드)
+                    if (baseAI is MonsterAI monsterAI && IsMonsterHuntingPlayer(monsterAI))
                     {
-                        var huntTarget = GetMonsterHuntTarget(monsterAI);
-                        if (huntTarget is Player huntPlayer && (RogueSkills.IsPlayerInStealth(huntPlayer) || RogueSkills.IsAggroRemoved(huntPlayer)))
+                        ClearMonsterHunt(monsterAI);
+                    }
+
+                    Plugin.Log.LogDebug($"[BaseAI 스텔스 패치] {targetPlayer.GetPlayerName()} 스텔스 중 - {character.GetHoverName()} 타겟 해제");
+                }
+
+                // m_huntPlayer 독립 체크: UpdateTarget Postfix가 m_targetCreature를 즉시 null로 클리어하면
+                // 이 코루틴이 도달했을 때 m_targetCreature는 이미 null이지만 m_huntPlayer=true가 남아 있을 수 있음
+                if (baseAI is MonsterAI monsterAIForHunt && IsMonsterHuntingPlayer(monsterAIForHunt))
+                {
+                    foreach (var c in allCharacters)
+                    {
+                        if (c is Player sp && (RogueSkills.IsPlayerInStealth(sp) || RogueSkills.IsAggroRemoved(sp))
+                            && Vector3.Distance(baseAI.transform.position, sp.transform.position) < 50f)
                         {
-                            ClearMonsterHunt(monsterAI);
+                            ClearMonsterHunt(monsterAIForHunt);
+                            Plugin.Log.LogDebug($"[BaseAI 스텔스 패치] {sp.GetPlayerName()} 스텔스 중 - {character.GetHoverName()} m_huntPlayer 독립 해제");
+                            break;
                         }
                     }
-                    
-                    Plugin.Log.LogDebug($"[BaseAI 스텔스 패치] {targetPlayer.GetPlayerName()} 스텔스 중 - {character.GetHoverName()} 타겟 해제");
                 }
             }
         }
@@ -218,24 +263,21 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// MonsterAI의 헌팅 타겟 가져오기
+        /// MonsterAI가 플레이어를 사냥 중인지 확인 (m_huntPlayer bool 필드)
         /// </summary>
-        private static Character GetMonsterHuntTarget(MonsterAI monsterAI)
+        private static bool IsMonsterHuntingPlayer(MonsterAI monsterAI)
         {
             try
             {
-                var huntField = typeof(MonsterAI).GetField("m_hunt", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var huntField = typeof(MonsterAI).GetField("m_huntPlayer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 if (huntField != null)
-                {
-                    return huntField.GetValue(monsterAI) as Character;
-                }
+                    return (bool)huntField.GetValue(monsterAI);
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogWarning($"[BaseAI 스텔스 패치] 헌팅 타겟 가져오기 실패: {ex.Message}");
+                Plugin.Log.LogWarning($"[BaseAI 스텔스 패치] 헌팅 상태 확인 실패: {ex.Message}");
             }
-            
-            return null;
+            return false;
         }
 
         /// <summary>
@@ -245,19 +287,16 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // SetHuntPlayer 메서드 호출
-                var setHuntMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var flags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+                // SetHuntPlayer(false) 메서드 호출
+                var setHuntMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer", flags);
                 if (setHuntMethod != null)
-                {
-                    setHuntMethod.Invoke(monsterAI, new object[] { null });
-                }
-                
-                // m_hunt 필드 직접 해제
-                var huntField = typeof(MonsterAI).GetField("m_hunt", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (huntField != null)
-                {
-                    huntField.SetValue(monsterAI, null);
-                }
+                    setHuntMethod.Invoke(monsterAI, new object[] { false });
+
+                // m_huntPlayer 필드 직접 해제
+                var huntPlayerField = typeof(MonsterAI).GetField("m_huntPlayer", flags);
+                if (huntPlayerField != null)
+                    huntPlayerField.SetValue(monsterAI, false);
             }
             catch (System.Exception ex)
             {

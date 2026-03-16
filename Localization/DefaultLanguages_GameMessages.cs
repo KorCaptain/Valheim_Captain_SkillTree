@@ -309,6 +309,9 @@ namespace CaptainSkillTree.Localization
                 ["level_decrease_reset"] = "레벨 감소로 스킬이 초기화되었습니다",
                 ["level_decrease_notice"] = "레벨이 감소했습니다",
 
+                // === Skill Effect Messages ===
+                ["shockwave_effect"] = "⚡ 충격파! {0}마리에게 피해!",
+
                 // === Respawn Message ===
                 ["respawn_message"] = "성장해서 다시 도전하세요~!",
             };
@@ -498,6 +501,7 @@ namespace CaptainSkillTree.Localization
                 ["ground_stomp_effect"] = "Ground Stomp! ({0} enemies pushed)",
                 ["stomp_30sec_remaining"] = "🦶 Ground Stomp ready in 30s!",
                 ["stomp_ready"] = "🦶 Ground Stomp Ready!",
+                ["shockwave_effect"] = "⚡ Shockwave! {0} enemies hit!",
                 ["shockwave_30sec_remaining"] = "⚡ Shockwave ready in 30s!",
                 ["shockwave_ready"] = "⚡ Shockwave Ready!",
                 ["luck_magic_activated"] = "✨ Luck Magic Activated!",

@@ -337,7 +337,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     var effectObj = UnityEngine.Object.Instantiate(magicEffect, impactPoint, Quaternion.identity);
                     var znetView = effectObj?.GetComponent<ZNetView>();
-                    if (znetView != null) UnityEngine.Object.DestroyImmediate(znetView);
+                    if (znetView != null) UnityEngine.Object.Destroy(znetView);
                     if (effectObj != null) UnityEngine.Object.Destroy(effectObj, 3f);
                 }
 
@@ -346,7 +346,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     var soundObj = UnityEngine.Object.Instantiate(magicSound, impactPoint, Quaternion.identity);
                     var znetView2 = soundObj?.GetComponent<ZNetView>();
-                    if (znetView2 != null) UnityEngine.Object.DestroyImmediate(znetView2);
+                    if (znetView2 != null) UnityEngine.Object.Destroy(znetView2);
                     if (soundObj != null) UnityEngine.Object.Destroy(soundObj, 3f);
                 }
             }

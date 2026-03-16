@@ -1091,7 +1091,7 @@
   "archer_missing_items": "Fehlt: {0}",
   "archer_upgrade_confirm": "Bogenschütze auf Lv{0} aufwerten?",
   "spear_expert_proc": "Blitzschlag!",
-  "weapon_effect_spear_throw": "Wurfexperte",
+  "parry_rush_buff_name": "Parierstoß",
   "level_decrease_reset": "Fähigkeiten aufgrund von Levelabstieg zurückgesetzt",
   "level_decrease_notice": "Level gesunken"
 }

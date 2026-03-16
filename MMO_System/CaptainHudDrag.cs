@@ -96,13 +96,23 @@ namespace CaptainSkillTree.MMO_System
         {
             if (_rt == null) return;
 
-            Vector2 screenSize = new Vector2(Screen.width, Screen.height);
-            Vector2 size       = _rt.sizeDelta;
+            // 실제 월드 크기 기준으로 클램프 (앵커/스케일 무관)
+            Vector3[] corners = new Vector3[4];
+            _rt.GetWorldCorners(corners);
+            // corners: 0=좌하, 1=좌상, 2=우상, 3=우하
 
-            // anchorMin/Max가 (0,0)이고 pivot이 (0,0)인 경우
-            float x = Mathf.Clamp(_rt.anchoredPosition.x, 0f, screenSize.x - size.x);
-            float y = Mathf.Clamp(_rt.anchoredPosition.y, 0f, screenSize.y - size.y);
-            _rt.anchoredPosition = new Vector2(x, y);
+            float w = corners[2].x - corners[0].x;
+            float h = corners[2].y - corners[0].y;
+
+            float minX = 0f;
+            float minY = 0f;
+            float maxX = Screen.width  - w;
+            float maxY = Screen.height - h;
+
+            Vector3 pos = _rt.position;
+            pos.x = Mathf.Clamp(pos.x, minX + w * _rt.pivot.x, maxX + w * _rt.pivot.x);
+            pos.y = Mathf.Clamp(pos.y, minY + h * _rt.pivot.y, maxY + h * _rt.pivot.y);
+            _rt.position = pos;
         }
     }
 }

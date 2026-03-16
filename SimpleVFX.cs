@@ -100,7 +100,6 @@ namespace CaptainSkillTree
 
             try
             {
-                Plugin.Log?.LogInfo("[SimpleVFX] 초기화 시작...");
 
                 // 1. PrefabRegistry에서 등록된 VFX 프리팹 가져오기
                 LoadFromPrefabRegistry();
@@ -112,7 +111,6 @@ namespace CaptainSkillTree
                 CacheValheimPrefabs();
 
                 _initialized = true;
-                Plugin.Log?.LogInfo($"[SimpleVFX] 초기화 완료 - 캐시된 프리팹: {_cachedPrefabs.Count}개");
             }
             catch (Exception ex)
             {
@@ -153,7 +151,6 @@ namespace CaptainSkillTree
                     }
                 }
 
-                Plugin.Log?.LogInfo($"[SimpleVFX] PrefabRegistry에서 {loadedCount}개 VFX 로드됨");
             }
             catch (Exception ex)
             {
@@ -199,7 +196,6 @@ namespace CaptainSkillTree
                     {
                         _cachedPrefabs["debuff"] = assets[0];
                         PlayerVFX = assets[0];  // 플레이어용 VFX로 할당
-                        Plugin.Log?.LogInfo($"[SimpleVFX] 'debuff' 프리팹 로드 완료: {assets[0].name}");
                     }
                 }
             }
@@ -261,7 +257,6 @@ namespace CaptainSkillTree
                     }
                 }
 
-                Plugin.Log?.LogInfo($"[SimpleVFX] Valheim VFX 캐시 완료: {_cachedPrefabs.Count}개");
             }
             catch (Exception ex)
             {
@@ -365,11 +360,13 @@ namespace CaptainSkillTree
                 GameObject prefab = null;
                 bool isCustom = IsCustomVFX(vfxName);
 
-                // 1. 캐시에서 찾기 (null 캐시 포함 - 반복 탐색 방지)
+                // 1. 캐시에서 찾기
                 if (_cachedPrefabs.TryGetValue(vfxName, out prefab))
                 {
-                    if (prefab == null) return null; // null 캐시 → 즉시 반환
-                    return InstantiateVFX(prefab, position, duration, vfxName);
+                    if (prefab != null)
+                        return InstantiateVFX(prefab, position, duration, vfxName);
+                    // null 캐시: 번들이 이후 로드되었을 수 있으므로 제거 후 재탐색
+                    _cachedPrefabs.Remove(vfxName);
                 }
 
                 // 2. 커스텀 VFX는 Resources에서 찾기
@@ -501,6 +498,7 @@ namespace CaptainSkillTree
             var vfxObj = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
             if (vfxObj != null)
             {
+                Plugin.Log?.LogInfo($"[SimpleVFX] {vfxName} ID={vfxObj.GetInstanceID()} 생성 (prefabID={prefab.GetInstanceID()})");
                 // 커스텀 VFX만 Destroy 호출
                 if (!string.IsNullOrEmpty(vfxName) && IsCustomVFX(vfxName))
                 {
@@ -679,7 +677,6 @@ namespace CaptainSkillTree
                 SimpleVFX.Initialize();
                 // ZNetScene에 커스텀 VFX 프리팹 등록 (spawn 명령어 사용 가능)
                 CaptainSkillTree.Prefab.PrefabRegistry.RegisterToZNetScene();
-                Plugin.Log?.LogInfo($"[SimpleVFX] 초기화 결과 - PlayerVFX: {(SimpleVFX.PlayerVFX != null ? "로드됨" : "null")}, MonsterVFX: {(SimpleVFX.MonsterVFX != null ? "로드됨" : "null")}");
             }
             catch (Exception ex)
             {

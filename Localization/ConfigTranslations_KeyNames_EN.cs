@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -878,9 +878,9 @@ namespace CaptainSkillTree.Localization
                 ["Beserker_Active_DamagePerHealthPercent"] = "Berserker Rage: Damage Per HP% (%)",
                 ["Beserker_Active_MaxDamageBonus"] = "Berserker Rage: Max Damage Bonus (%)",
                 ["Beserker_Active_HealthThreshold"] = "Berserker Rage: HP Threshold (%)",
-                ["Beserker_Passive_HealthThreshold"] = "Death Defiance: HP Threshold (%)",
-                ["Beserker_Passive_InvincibilityDuration"] = "Death Defiance: Invincibility Duration (sec)",
-                ["Beserker_Passive_Cooldown"] = "Death Defiance: Cooldown (sec)",
+                ["Berserker_Passive_HealthThreshold"] = "Death Defiance: HP Threshold (%)",
+                ["Berserker_Passive_InvincibilityDuration"] = "Death Defiance: Invincibility Duration (sec)",
+                ["Berserker_Passive_Cooldown"] = "Death Defiance: Cooldown (sec)",
                 ["Berserker_Passive_HealthBonus"] = "Passive: Max HP Bonus (%)",
 
                 // ============================================

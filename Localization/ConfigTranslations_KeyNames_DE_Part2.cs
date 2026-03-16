@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -467,9 +467,9 @@ namespace CaptainSkillTree.Localization
                 ["Beserker_Active_DamagePerHealthPercent"] = "Berserkerwut: Schaden pro LP-% (%)",
                 ["Beserker_Active_MaxDamageBonus"] = "Berserkerwut: Max. Schadensbonus (%)",
                 ["Beserker_Active_HealthThreshold"] = "Berserkerwut: LP-Schwellenwert (%)",
-                ["Beserker_Passive_HealthThreshold"] = "Todesherausforderung: LP-Schwellenwert (%)",
-                ["Beserker_Passive_InvincibilityDuration"] = "Todesherausforderung: Unverwundbarkeits-Dauer (Sek)",
-                ["Beserker_Passive_Cooldown"] = "Todesherausforderung: Abklingzeit (Sek)",
+                ["Berserker_Passive_HealthThreshold"] = "Todesherausforderung: LP-Schwellenwert (%)",
+                ["Berserker_Passive_InvincibilityDuration"] = "Todesherausforderung: Unverwundbarkeits-Dauer (Sek)",
+                ["Berserker_Passive_Cooldown"] = "Todesherausforderung: Abklingzeit (Sek)",
                 ["Berserker_Passive_HealthBonus"] = "Passiv: Max. LP-Bonus (%)",
 
                 // ============================================

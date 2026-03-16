@@ -153,7 +153,6 @@ namespace CaptainSkillTree.SkillTree
                 }
             }
 
-            Plugin.Log.LogInfo($"[장비 확인] 착용 중이지 않음: {itemName}");
             return false;
         }
 

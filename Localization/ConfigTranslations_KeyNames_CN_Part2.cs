@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -470,9 +470,9 @@ namespace CaptainSkillTree.Localization
                 ["Beserker_Active_DamagePerHealthPercent"] = "狂战士之怒: 每1%HP的伤害加成 (%)",
                 ["Beserker_Active_MaxDamageBonus"] = "狂战士之怒: 最大伤害加成 (%)",
                 ["Beserker_Active_HealthThreshold"] = "狂战士之怒: HP阈值 (%)",
-                ["Beserker_Passive_HealthThreshold"] = "死亡蔑视: HP阈值 (%)",
-                ["Beserker_Passive_InvincibilityDuration"] = "死亡蔑视: 无敌持续时间 (秒)",
-                ["Beserker_Passive_Cooldown"] = "死亡蔑视: 冷却时间 (秒)",
+                ["Berserker_Passive_HealthThreshold"] = "死亡蔑视: HP阈值 (%)",
+                ["Berserker_Passive_InvincibilityDuration"] = "死亡蔑视: 无敌持续时间 (秒)",
+                ["Berserker_Passive_Cooldown"] = "死亡蔑视: 冷却时间 (秒)",
                 ["Berserker_Passive_HealthBonus"] = "被动: 最大HP加成 (%)",
 
                 // ============================================

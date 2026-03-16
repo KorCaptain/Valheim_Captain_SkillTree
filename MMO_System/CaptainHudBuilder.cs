@@ -1,32 +1,27 @@
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CaptainSkillTree.MMO_System
 {
     /// <summary>
-    /// WackyEpicMMOSystem 스타일 가로 HUD 코드 빌드 전담 클래스
-    /// HorizontalLayoutGroup 기반, 에이트르 유무에 따라 1050/1475px 동적 크기
+    /// EpicMMO epicasset 번들에서 EpicHudPanelCanvas 프리팹을 직접 인스턴스화하여
+    /// WackyEpicMMOSystem과 완전히 동일한 HUD를 구성하는 클래스
     /// </summary>
     internal static class CaptainHudBuilder
     {
         // ──────────────────────────────────────────
-        // 색상 상수
+        // 레벨 색상 상수 (CaptainExpHud.cs에서 참조)
         // ──────────────────────────────────────────
 
-        private static readonly Color COL_PANEL_BG = new Color(0.184f, 0.086f, 0.000f, 0.88f);
-        private static readonly Color COL_BORDER   = new Color(0.55f,  0.35f,  0.05f,  0.75f);
-        private static readonly Color COL_BAR_BG   = new Color(0.10f,  0.05f,  0.00f,  0.92f);
-
-        // 레벨 색상
         internal static readonly Color COL_LVL_DEFAULT = new Color(1.00f, 0.85f, 0.30f, 1.00f);
         internal static readonly Color COL_LVL_SILVER  = new Color(0.95f, 0.80f, 0.55f, 1.00f);
         internal static readonly Color COL_LVL_GOLD    = new Color(1.00f, 0.60f, 0.05f, 1.00f);
         internal static readonly Color COL_LVL_PLAT    = new Color(0.90f, 0.75f, 1.00f, 1.00f);
 
-        // 가로 패널 폭
-        private const float WIDTH_NO_EITR  = 1050f;
+        // 패널 폭 (에이트르 유무에 따라 조정)
+        private const float WIDTH_NO_EITR   = 1050f;
         private const float WIDTH_WITH_EITR = 1475f;
-        private const float PANEL_HEIGHT   = 38f;
 
         // ──────────────────────────────────────────
         // HUD 컴포넌트 구조체
@@ -60,80 +55,128 @@ namespace CaptainSkillTree.MMO_System
         }
 
         // ──────────────────────────────────────────
-        // 진입점
+        // 진입점: epicasset 번들에서 프리팹 로딩
         // ──────────────────────────────────────────
 
         /// <summary>
-        /// HUD 전체를 코드로 빌드하고 컴포넌트 참조를 반환
+        /// epicasset AssetBundle에서 EpicHudPanelCanvas 프리팹을 인스턴스화하고
+        /// Transform.Find()로 UI 참조를 획득하여 반환
         /// </summary>
         internal static HudComponents Build()
         {
             var comp = new HudComponents();
 
-            // Canvas
-            var canvasGO = new GameObject("CaptainExpHUDCanvas");
-            var canvas   = canvasGO.AddComponent<Canvas>();
-            canvas.renderMode   = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 1511;
+            // 1. epicasset 번들 로드 (이미 로드된 번들 재사용, EpicMMO 중복 로드 방지)
+            AssetBundle bundle = null;
+            System.IO.Stream stream = null;
+            bool ownedBundle = false;
 
-            var scaler = canvasGO.AddComponent<CanvasScaler>();
-            scaler.scaleFactor = CaptainLevelConfig.HudScale?.Value ?? 1.0f;
+            foreach (var b in AssetBundle.GetAllLoadedAssetBundles())
+            {
+                if (b.Contains("EpicHudPanelCanvas")) { bundle = b; break; }
+            }
 
-            canvasGO.AddComponent<GraphicRaycaster>();
-            UnityEngine.Object.DontDestroyOnLoad(canvasGO);
+            if (bundle == null)
+            {
+                stream = Assembly.GetExecutingAssembly()
+                    .GetManifestResourceStream("CaptainSkillTree.asset.Resources.epicasset");
+                if (stream == null)
+                {
+                    Plugin.Log.LogError("[CaptainHudBuilder] epicasset 리소스 스트림을 찾을 수 없습니다.");
+                    return comp;
+                }
+                bundle = AssetBundle.LoadFromStream(stream);
+                if (bundle == null)
+                {
+                    Plugin.Log.LogError("[CaptainHudBuilder] epicasset AssetBundle 로드 실패.");
+                    stream.Dispose();
+                    return comp;
+                }
+                ownedBundle = true;
+            }
+
+            // 2. EpicHudPanelCanvas 프리팹 로드 & 인스턴스화
+            var prefab = bundle.LoadAsset<GameObject>("EpicHudPanelCanvas");
+            if (prefab == null)
+            {
+                Plugin.Log.LogError("[CaptainHudBuilder] EpicHudPanelCanvas 프리팹을 찾을 수 없습니다.");
+                if (ownedBundle) { bundle.Unload(false); stream.Dispose(); }
+                return comp;
+            }
+
+            // native Unity 경고 억제: Application.logMessageReceivedThreaded 백킹 필드를 reflection으로 일시 null화
+            var threadedField = typeof(Application).GetField(
+                "s_LogCallbackHandlerThreaded",
+                BindingFlags.Static | BindingFlags.NonPublic);
+            Application.LogCallback savedCallback = null;
+            try
+            {
+                if (threadedField != null)
+                {
+                    savedCallback = (Application.LogCallback)threadedField.GetValue(null);
+                    threadedField.SetValue(null, null);
+                }
+            }
+            catch { /* reflection 실패 시 무시 - 경고 표시만 될 뿐 */ }
+
+            Transform panelRoot;
+            try { panelRoot = Object.Instantiate(prefab).transform; }
+            finally
+            {
+                try { if (threadedField != null) threadedField.SetValue(null, savedCallback); }
+                catch { }
+            }
+            UnityEngine.Object.DontDestroyOnLoad(panelRoot.gameObject);
+
+            // 3. Canvas 설정
+            var canvas = panelRoot.GetComponentInChildren<Canvas>();
+            if (canvas != null)
+            {
+                canvas.renderMode   = RenderMode.ScreenSpaceOverlay;
+                canvas.sortingOrder = 1511;
+            }
             comp.Canvas = canvas;
 
-            // ── 메인 패널 (좌하단 앵커, HorizontalLayoutGroup) ──
-            var panel = new GameObject("CaptainHudPanel");
-            panel.transform.SetParent(canvasGO.transform, false);
+            // CanvasScaler 스케일
+            var scaler = panelRoot.GetComponentInChildren<CanvasScaler>();
+            if (scaler != null)
+                scaler.scaleFactor = CaptainLevelConfig.HudScale?.Value ?? 1.0f;
 
-            var panelRt = panel.AddComponent<RectTransform>();
-            panelRt.anchorMin        = new Vector2(0f, 0f);
-            panelRt.anchorMax        = new Vector2(0f, 0f);
-            panelRt.pivot            = new Vector2(0f, 0f);
-            panelRt.anchoredPosition = new Vector2(10f, 10f);
-            panelRt.sizeDelta        = new Vector2(WIDTH_NO_EITR, PANEL_HEIGHT);
-            comp.PanelRt = panelRt;
+            // 4. Transform.Find()로 UI 컴포넌트 참조 (EpicMMO InitHudPanel 동일 경로)
+            var expPanel = panelRoot.Find("EpicHudPanel");
+            comp.PanelRt = expPanel?.GetComponent<RectTransform>();
 
-            // 배경 + 테두리
-            AddPanelBackground(panel);
+            // Exp
+            comp.LevelText      = expPanel?.Find("Container/Exp/Lvl")?.GetComponent<Text>();
+            comp.ExpPercentText = expPanel?.Find("Container/Exp/Exp")?.GetComponent<Text>();
+            comp.ExpBarFill     = expPanel?.Find("Container/Exp/Bar/Fill")?.GetComponent<Image>();
+            comp.ExpBarGlow     = null; // EpicMMO 프리팹에 Glow 없음
 
-            // HorizontalLayoutGroup
-            var hLayout = panel.AddComponent<HorizontalLayoutGroup>();
-            hLayout.spacing              = 12f;
-            hLayout.childForceExpandWidth  = false;
-            hLayout.childForceExpandHeight = true;
-            hLayout.childAlignment        = TextAnchor.MiddleLeft;
-            hLayout.padding               = new RectOffset(10, 10, 5, 5);
+            // HP
+            comp.HpText    = expPanel?.Find("Container/Hp/Text")?.GetComponent<Text>();
+            comp.HpBarFill = expPanel?.Find("Container/Hp/Bar/Fill")?.GetComponent<Image>();
+            comp.HpPanel   = expPanel?.Find("Container/Hp")?.gameObject;
 
-            // ── 서브패널: HP ──
-            Color hpColor = ParseColor(CaptainLevelConfig.HudHpColor?.Value, new Color(0.529f, 0.000f, 0.000f));
-            comp.HpPanel = BuildStatSubPanel(
-                panel.transform, "HP", "♥", hpColor, 200f,
-                out comp.HpText, out comp.HpBarFill);
-            CaptainHudDrag.AttachTo(comp.HpPanel, "HP", canvas);
+            // 스태미나
+            comp.StaminaText    = expPanel?.Find("Container/Stamina/Text")?.GetComponent<Text>();
+            comp.StaminaBarFill = expPanel?.Find("Container/Stamina/Bar/Fill")?.GetComponent<Image>();
+            comp.StaminaPanel   = expPanel?.Find("Container/Stamina")?.gameObject;
 
-            // ── 서브패널: 스태미나 ──
-            Color stamColor = ParseColor(CaptainLevelConfig.HudStaminaColor?.Value, new Color(0.596f, 0.380f, 0.000f));
-            comp.StaminaPanel = BuildStatSubPanel(
-                panel.transform, "Stamina", "⚡", stamColor, 200f,
-                out comp.StaminaText, out comp.StaminaBarFill);
-            CaptainHudDrag.AttachTo(comp.StaminaPanel, "Stamina", canvas);
+            // 에이트르 (기본 숨김)
+            comp.EitrText    = expPanel?.Find("Container/Eitr/Text")?.GetComponent<Text>();
+            comp.EitrBarFill = expPanel?.Find("Container/Eitr/Bar/Fill")?.GetComponent<Image>();
+            comp.EitrPanel   = expPanel?.Find("Container/Eitr")?.gameObject;
+            comp.EitrPanel?.SetActive(false);
 
-            // ── 서브패널: 에이트르 (기본 숨김) ──
-            Color eitrColor = ParseColor(CaptainLevelConfig.HudEitrColor?.Value, new Color(0.518f, 0.145f, 0.486f));
-            comp.EitrPanel = BuildStatSubPanel(
-                panel.transform, "Eitr", "✦", eitrColor, 200f,
-                out comp.EitrText, out comp.EitrBarFill);
-            comp.EitrPanel.SetActive(false);
-            CaptainHudDrag.AttachTo(comp.EitrPanel, "Eitr", canvas);
+            // 5. 드래그 - Canvas 루트가 아닌 실제 패널(EpicHudPanel)에 부착
+            if (expPanel != null)
+                CaptainHudDrag.AttachTo(expPanel.gameObject, "MainHud", canvas);
 
-            // ── 서브패널: 경험치 ──
-            Color expColor = ParseColor(CaptainLevelConfig.HudExpColor?.Value, new Color(0.784f, 0.471f, 0.125f));
-            BuildExpSubPanel(
-                panel.transform, expColor,
-                out comp.LevelText, out comp.ExpPercentText,
-                out comp.ExpBarFill, out comp.ExpBarGlow);
+            // 6. 번들 언로드 (우리가 로드한 경우에만, 에셋 인스턴스는 유지)
+            if (ownedBundle) { bundle.Unload(false); stream.Dispose(); }
+
+            // 컴포넌트 참조 null 경고
+            LogNullWarnings(comp);
 
             return comp;
         }
@@ -150,195 +193,8 @@ namespace CaptainSkillTree.MMO_System
         }
 
         // ──────────────────────────────────────────
-        // 서브패널 빌더 (HP / 스태미나 / 에이트르)
+        // 공통 유틸 (외부 참조 유지)
         // ──────────────────────────────────────────
-
-        private static GameObject BuildStatSubPanel(
-            Transform parent, string name, string icon, Color barColor, float barWidth,
-            out Text textOut, out Image fillOut)
-        {
-            var sub = new GameObject($"Sub_{name}");
-            sub.transform.SetParent(parent, false);
-
-            var subRt = sub.AddComponent<RectTransform>();
-            var subElem = sub.AddComponent<LayoutElement>();
-            subElem.preferredWidth  = barWidth + 100f; // 아이콘 + 텍스트 + 바
-            subElem.minHeight       = PANEL_HEIGHT - 8f;
-            subElem.preferredHeight = PANEL_HEIGHT - 8f;
-
-            // 서브패널 배경 (약한 투명 배경)
-            var subBg = sub.AddComponent<Image>();
-            subBg.color = new Color(0.12f, 0.05f, 0.00f, 0.72f);
-            subBg.raycastTarget = true;
-
-            // 내부 HorizontalLayoutGroup
-            var hLayout = sub.AddComponent<HorizontalLayoutGroup>();
-            hLayout.spacing               = 4f;
-            hLayout.childForceExpandWidth  = false;
-            hLayout.childForceExpandHeight = false;
-            hLayout.childAlignment        = TextAnchor.MiddleLeft;
-            hLayout.padding               = new RectOffset(4, 4, 2, 2);
-
-            // 아이콘
-            CreateText(sub.transform, icon, 16, FontStyle.Bold, barColor, 20f, PANEL_HEIGHT - 8f);
-
-            // 숫자 텍스트
-            textOut = CreateText(sub.transform, "0/0", 12, FontStyle.Normal, Color.white, 72f, PANEL_HEIGHT - 8f);
-            textOut.alignment = TextAnchor.MiddleRight;
-
-            // 바 + 글로우 + 필
-            BuildBar(sub.transform, barWidth, barColor, out fillOut);
-
-            return sub;
-        }
-
-        // ──────────────────────────────────────────
-        // 경험치 서브패널
-        // ──────────────────────────────────────────
-
-        private static void BuildExpSubPanel(
-            Transform parent, Color expColor,
-            out Text levelTextOut, out Text expPercentOut,
-            out Image fillOut, out Image glowOut)
-        {
-            var sub = new GameObject("Sub_Exp");
-            sub.transform.SetParent(parent, false);
-
-            var subElem = sub.AddComponent<LayoutElement>();
-            subElem.flexibleWidth  = 1f;
-            subElem.minHeight      = PANEL_HEIGHT - 8f;
-            subElem.preferredHeight = PANEL_HEIGHT - 8f;
-
-            var subBg = sub.AddComponent<Image>();
-            subBg.color = new Color(0.12f, 0.05f, 0.00f, 0.72f);
-            subBg.raycastTarget = true;
-
-            var vLayout = sub.AddComponent<VerticalLayoutGroup>();
-            vLayout.spacing               = 2f;
-            vLayout.childForceExpandWidth  = true;
-            vLayout.childForceExpandHeight = false;
-            vLayout.childAlignment        = TextAnchor.UpperLeft;
-            vLayout.padding               = new RectOffset(4, 4, 2, 2);
-
-            // 헤더 줄 (레벨 | %)
-            var header = new GameObject("ExpHeader");
-            header.transform.SetParent(sub.transform, false);
-
-            var hLayout = header.AddComponent<HorizontalLayoutGroup>();
-            hLayout.spacing               = 6f;
-            hLayout.childForceExpandWidth  = false;
-            hLayout.childForceExpandHeight = false;
-            hLayout.childAlignment        = TextAnchor.MiddleLeft;
-
-            var headerFitter = header.AddComponent<ContentSizeFitter>();
-            headerFitter.verticalFit   = ContentSizeFitter.FitMode.PreferredSize;
-            headerFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-
-            // LV 텍스트
-            levelTextOut = CreateText(header.transform, "LV.1", 14, FontStyle.Bold, COL_LVL_DEFAULT, 80f, 18f);
-
-            // 구분선
-            CreateText(header.transform, "│", 12, FontStyle.Normal, new Color(0.75f, 0.55f, 0.20f), 10f, 18f);
-
-            // % 텍스트
-            expPercentOut = CreateText(header.transform, "0.00 %", 12, FontStyle.Bold, new Color(0.95f, 0.80f, 0.50f), 70f, 18f);
-
-            // 경험치 바
-            var barWrap = new GameObject("ExpBarWrap");
-            barWrap.transform.SetParent(sub.transform, false);
-
-            var barElem = barWrap.AddComponent<LayoutElement>();
-            barElem.minHeight       = 10f;
-            barElem.preferredHeight = 10f;
-
-            var barBg = barWrap.AddComponent<Image>();
-            barBg.color          = COL_BAR_BG;
-            barBg.raycastTarget  = false;
-
-            // 글로우
-            glowOut = AddFillImage(barWrap.transform, "ExpGlow",
-                new Color(expColor.r, expColor.g, expColor.b, 0.60f), offsetY: 0f);
-            glowOut.fillAmount = 0f;
-
-            // 메인 Fill
-            fillOut = AddFillImage(barWrap.transform, "ExpFill", expColor, offsetY: 2f);
-            fillOut.fillAmount = 0f;
-
-            CaptainHudDrag.AttachTo(sub, "Exp", null);
-        }
-
-        // ──────────────────────────────────────────
-        // 공통 바 빌더
-        // ──────────────────────────────────────────
-
-        private static void BuildBar(Transform parent, float barWidth, Color fillColor, out Image fillOut)
-        {
-            var barWrap = new GameObject("BarWrap");
-            barWrap.transform.SetParent(parent, false);
-
-            var barElem = barWrap.AddComponent<LayoutElement>();
-            barElem.preferredWidth  = barWidth;
-            barElem.preferredHeight = 16f;
-            barElem.minHeight       = 16f;
-
-            var barBg = barWrap.AddComponent<Image>();
-            barBg.color         = COL_BAR_BG;
-            barBg.raycastTarget = false;
-
-            // 글로우
-            var glowColor = new Color(fillColor.r, fillColor.g, fillColor.b, 0.60f);
-            AddFillImage(barWrap.transform, "Glow", glowColor, offsetY: 0f);
-
-            // 메인 Fill
-            fillOut = AddFillImage(barWrap.transform, "Fill", fillColor, offsetY: 2f);
-            fillOut.fillAmount = 1f;
-        }
-
-        // ──────────────────────────────────────────
-        // 패널 배경/테두리 유틸
-        // ──────────────────────────────────────────
-
-        private static void AddPanelBackground(GameObject panel)
-        {
-            var bg = panel.AddComponent<Image>();
-            bg.color          = COL_PANEL_BG;
-            bg.raycastTarget  = true;
-
-            var border = new GameObject("Border");
-            border.transform.SetParent(panel.transform, false);
-            var borderRt = border.AddComponent<RectTransform>();
-            borderRt.anchorMin = Vector2.zero;
-            borderRt.anchorMax = Vector2.one;
-            borderRt.offsetMin = new Vector2(-1f, -1f);
-            borderRt.offsetMax = new Vector2(1f, 1f);
-            var borderImg = border.AddComponent<Image>();
-            borderImg.color         = COL_BORDER;
-            borderImg.raycastTarget = false;
-            border.transform.SetAsFirstSibling();
-        }
-
-        // ──────────────────────────────────────────
-        // 공통 유틸
-        // ──────────────────────────────────────────
-
-        private static Image AddFillImage(Transform parent, string name, Color color, float offsetY)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(parent, false);
-            var rt = go.AddComponent<RectTransform>();
-            rt.anchorMin = Vector2.zero;
-            rt.anchorMax = Vector2.one;
-            rt.offsetMin = new Vector2(0f, offsetY);
-            rt.offsetMax = new Vector2(0f, -offsetY);
-            var img = go.AddComponent<Image>();
-            img.color          = color;
-            img.raycastTarget  = false;
-            img.type           = Image.Type.Filled;
-            img.fillMethod     = Image.FillMethod.Horizontal;
-            img.fillOrigin     = (int)Image.OriginHorizontal.Left;
-            img.fillAmount     = 1f;
-            return img;
-        }
 
         internal static Text CreateText(Transform parent, string content, int size, FontStyle style,
             Color color, float w, float h)
@@ -363,11 +219,17 @@ namespace CaptainSkillTree.MMO_System
             return t;
         }
 
-        private static Color ParseColor(string hex, Color fallback)
+        // ──────────────────────────────────────────
+        // 헬퍼
+        // ──────────────────────────────────────────
+
+        private static void LogNullWarnings(HudComponents comp)
         {
-            if (hex != null && ColorUtility.TryParseHtmlString(hex, out Color c))
-                return c;
-            return fallback;
+            if (comp.LevelText      == null) Plugin.Log.LogWarning("[CaptainHudBuilder] LevelText null (경로: Container/Exp/Lvl)");
+            if (comp.ExpPercentText == null) Plugin.Log.LogWarning("[CaptainHudBuilder] ExpPercentText null (경로: Container/Exp/Exp)");
+            if (comp.ExpBarFill     == null) Plugin.Log.LogWarning("[CaptainHudBuilder] ExpBarFill null (경로: Container/Exp/Bar/Fill)");
+            if (comp.HpBarFill      == null) Plugin.Log.LogWarning("[CaptainHudBuilder] HpBarFill null (경로: Container/Hp/Bar/Fill)");
+            if (comp.StaminaBarFill == null) Plugin.Log.LogWarning("[CaptainHudBuilder] StaminaBarFill null (경로: Container/Stamina/Bar/Fill)");
         }
     }
 }

@@ -25,6 +25,11 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, bool> aggroRemovalActive = new Dictionary<Player, bool>();
         private static Dictionary<Player, Coroutine> aggroRemovalLoopCoroutine = new Dictionary<Player, Coroutine>();
 
+        // === 리플렉션 필드 캐시 (Harmony 패치 우회용, BaseAI_Stealth_Patches와 동일 패턴) ===
+        private static readonly System.Reflection.FieldInfo s_targetCreatureFieldRaw =
+            typeof(BaseAI).GetField("m_targetCreature",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
         // ==================== 스텔스 시스템 ====================
 
         /// <summary>
@@ -212,23 +217,45 @@ namespace CaptainSkillTree.SkillTree
         private static IEnumerator AggroRemovalLoopCoroutine(Player player, float duration)
         {
             int ticks = Mathf.Max(1, Mathf.RoundToInt(duration));
+            Plugin.Log.LogInfo($"[어그로 루프] 시작: duration={duration}, ticks={ticks}");
+
             for (int i = 0; i < ticks; i++)
             {
                 yield return new WaitForSeconds(1f);
 
-                if (player == null || player.IsDead()) break;
-                if (Player.m_localPlayer == null || Player.m_localPlayer != player) break; // 씬 전환 중단 가드
-
-                RemoveNearbyMonsterAggro(player);
-
                 try
                 {
-                    // 커스텀 VFX: Destroy 보장 → 오브젝트 누적 없음 → 던전 로딩 정상화
-                    SimpleVFX.Play("statusailment_01", player.transform.position, 0.5f);
+                    if (player == null || player.IsDead())
+                    {
+                        Plugin.Log.LogInfo($"[어그로 루프] 중단 (tick {i + 1}/{ticks}): 플레이어 사망/null");
+                        break;
+                    }
+                    if (Player.m_localPlayer == null || Player.m_localPlayer != player)
+                    {
+                        Plugin.Log.LogInfo($"[어그로 루프] 중단 (tick {i + 1}/{ticks}): 씬 전환 감지");
+                        break;
+                    }
+
+                    Plugin.Log.LogInfo($"[어그로 루프] tick {i + 1}/{ticks} 실행");
+
+                    // VFX를 어그로 제거보다 먼저 실행 (어그로 해제 성공 여부와 무관하게 항상 재생)
+                    try
+                    {
+                        var vfxObj = SimpleVFX.Play("statusailment_01", player.transform.position, 0.5f);
+                        if (vfxObj == null) Plugin.Log.LogWarning($"[어그로 루프] VFX null (tick {i + 1}/{ticks})");
+                    }
+                    catch (Exception ex) { Plugin.Log.LogWarning($"[어그로 루프] VFX 예외: {ex.Message}"); }
+
+                    RemoveNearbyMonsterAggro(player);
                 }
-                catch (Exception) { }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[어그로 루프] tick {i + 1}/{ticks} 예외: {ex.Message}");
+                    // 예외가 발생해도 루프 계속 진행 (break 없음)
+                }
             }
 
+            Plugin.Log.LogInfo($"[어그로 루프] 완료: {ticks}회 반복 끝");
             aggroRemovalLoopCoroutine.Remove(player);
             aggroRemovalActive.Remove(player);
             aggroRemovalEndTime.Remove(player);
@@ -242,10 +269,8 @@ namespace CaptainSkillTree.SkillTree
             bool success = false;
             try
             {
-                var currentTarget = ai.GetTargetCreature();
-                if (currentTarget == null || currentTarget.gameObject != player.gameObject)
-                    return true; // 이미 어그로 없음
-
+                // 버프 지속 중에는 m_targetCreature가 UpdateAI Postfix에 의해 매 프레임 null로 유지됨
+                // → null 체크로 "이미 어그로 없음" 판단 불가 → 무조건 해제 로직 실행
                 var monsterAI = ai as MonsterAI;
                 if (monsterAI != null)
                     success = TryRemoveMonsterAIHuntPlayer(monsterAI, enemyName);
@@ -270,10 +295,10 @@ namespace CaptainSkillTree.SkillTree
                 bool success = false;
 
                 var setHuntMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer", flags);
-                if (setHuntMethod != null) { setHuntMethod.Invoke(monsterAI, new object[] { null }); success = true; }
+                if (setHuntMethod != null) { setHuntMethod.Invoke(monsterAI, new object[] { false }); success = true; }
 
-                var huntField = typeof(MonsterAI).GetField("m_hunt", flags);
-                if (huntField != null) { huntField.SetValue(monsterAI, null); success = true; }
+                var huntPlayerField = typeof(MonsterAI).GetField("m_huntPlayer", flags);
+                if (huntPlayerField != null) { huntPlayerField.SetValue(monsterAI, false); success = true; }
 
                 return success;
             }
@@ -331,7 +356,8 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                var finalTarget = ai.GetTargetCreature();
+                // raw field 접근: Harmony 패치 우회
+                var finalTarget = s_targetCreatureFieldRaw?.GetValue(ai) as Character;
                 if (finalTarget == null || finalTarget.gameObject != player.gameObject)
                 {
                     Plugin.Log.LogInfo($"[✅ 안전한 어그로 제거] {enemyName} 어그로 해제 확인됨");

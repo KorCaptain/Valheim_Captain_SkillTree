@@ -247,7 +247,7 @@ namespace CaptainSkillTree.SkillTree
         // =====================================================
 
         /// <summary>
-        /// defense_Step6_attack: 신경강화 - 회피율 보너스 (30초 미발동 조건, %)
+        /// defense_Step6_attack: 신경강화 - 회피율 보너스 (45초 미발동 조건, %)
         /// </summary>
         public static ConfigEntry<float> AttackDodgeBonus;
 

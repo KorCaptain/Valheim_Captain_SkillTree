@@ -74,7 +74,6 @@ namespace CaptainSkillTree.SkillTree
                 // 발동 텍스트
                 SkillEffect.DrawFloatingText(player, "⚡ " + L.Get("storm_slash_triggered", lightningBonus));
 
-                Plugin.Log.LogInfo($"[폭풍베기] 번개 +{lightningBonus} 적용");
             }
             catch (System.Exception ex)
             {

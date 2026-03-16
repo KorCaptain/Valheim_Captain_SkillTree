@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -880,9 +880,9 @@ namespace CaptainSkillTree.Localization
                 ["Beserker_Active_DamagePerHealthPercent"] = "버서커의 분노: HP당 피해 증가 (%)",
                 ["Beserker_Active_MaxDamageBonus"] = "버서커의 분노: 최대 피해 보너스 (%)",
                 ["Beserker_Active_HealthThreshold"] = "버서커의 분노: 발동 HP 임계값 (%)",
-                ["Beserker_Passive_HealthThreshold"] = "죽음의 도전: 발동 HP 임계값 (%)",
-                ["Beserker_Passive_InvincibilityDuration"] = "죽음의 도전: 무적 지속시간 (초)",
-                ["Beserker_Passive_Cooldown"] = "죽음의 도전: 쿨타임 (초)",
+                ["Berserker_Passive_HealthThreshold"] = "죽음의 도전: 발동 HP 임계값 (%)",
+                ["Berserker_Passive_InvincibilityDuration"] = "죽음의 도전: 무적 지속시간 (초)",
+                ["Berserker_Passive_Cooldown"] = "죽음의 도전: 쿨타임 (초)",
                 ["Berserker_Passive_HealthBonus"] = "패시브: 최대 체력 보너스 (%)",
 
                 // ============================================

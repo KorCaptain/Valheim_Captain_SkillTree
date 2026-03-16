@@ -275,13 +275,13 @@ namespace CaptainSkillTree.SkillTree
         /// 분노의 망치 1~4타 데미지 배율 (서버 우선) - 현재 공격력 기준
         /// </summary>
         public static float FuryHammerNormalHitMultiplierValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_NormalHitMultiplier", FuryHammerNormalHitMultiplier?.Value ?? 80f);
+            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_NormalHitMultiplier", FuryHammerNormalHitMultiplier?.Value ?? 40f);
 
         /// <summary>
         /// 분노의 망치 5타(최종타) 데미지 배율 (서버 우선) - 현재 공격력 기준
         /// </summary>
         public static float FuryHammerFinalHitMultiplierValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_FinalHitMultiplier", FuryHammerFinalHitMultiplier?.Value ?? 150f);
+            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_FinalHitMultiplier", FuryHammerFinalHitMultiplier?.Value ?? 80f);
 
         // 연속공격횟수와 공격간딜레이는 하드코딩 (5타, 0.5초 고정) - MaceSkills.FuryHammer.cs 참조
 
@@ -403,7 +403,7 @@ namespace CaptainSkillTree.SkillTree
             MaceStep2RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier2_StunBoost_RequiredPoints",
-                1,
+                2,
                 SkillTreeConfig.GetConfigDescription("Tier2_StunBoost_RequiredPoints")
             );
 
@@ -425,7 +425,7 @@ namespace CaptainSkillTree.SkillTree
             MaceStep3GuardRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier3_Guard_RequiredPoints",
-                1,
+                2,
                 SkillTreeConfig.GetConfigDescription("Tier3_Guard_RequiredPoints")
             );
 
@@ -440,7 +440,7 @@ namespace CaptainSkillTree.SkillTree
             MaceStep3HeavyRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier3_HeavyStrike_RequiredPoints",
-                1,
+                3,
                 SkillTreeConfig.GetConfigDescription("Tier3_HeavyStrike_RequiredPoints")
             );
 
@@ -455,7 +455,7 @@ namespace CaptainSkillTree.SkillTree
             MaceStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier4_Push_RequiredPoints",
-                1,
+                3,
                 SkillTreeConfig.GetConfigDescription("Tier4_Push_RequiredPoints")
             );
 
@@ -477,7 +477,7 @@ namespace CaptainSkillTree.SkillTree
             MaceStep5TankRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier5_Tank_RequiredPoints",
-                1,
+                2,
                 SkillTreeConfig.GetConfigDescription("Tier5_Tank_RequiredPoints")
             );
 
@@ -492,7 +492,7 @@ namespace CaptainSkillTree.SkillTree
             MaceStep5DpsRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier5_DPS_RequiredPoints",
-                1,
+                3,
                 SkillTreeConfig.GetConfigDescription("Tier5_DPS_RequiredPoints")
             );
 
@@ -507,7 +507,7 @@ namespace CaptainSkillTree.SkillTree
             MaceStep6RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier6_Grandmaster_RequiredPoints",
-                1,
+                2,
                 SkillTreeConfig.GetConfigDescription("Tier6_Grandmaster_RequiredPoints")
             );
 
@@ -515,14 +515,14 @@ namespace CaptainSkillTree.SkillTree
             FuryHammerNormalHitMultiplier = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_FuryHammer_NormalHitMultiplier",
-                80f,
+                40f,
                 SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_NormalHitMultiplier")
             );
 
             FuryHammerFinalHitMultiplier = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_FuryHammer_FinalHitMultiplier",
-                150f,
+                80f,
                 SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_FinalHitMultiplier")
             );
 

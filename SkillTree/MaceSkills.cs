@@ -301,7 +301,7 @@ namespace CaptainSkillTree.SkillTree
             s_savedSecondary = null;
         }
 
-        private static Attack GetCachedPolearmSecondary()
+        internal static Attack GetCachedPolearmSecondary()
         {
             if (s_polearmSecondaryCache != null) return s_polearmSecondaryCache;
             if (ObjectDB.instance == null) return null;
@@ -318,7 +318,22 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogInfo($"[둔기 회전 모션] 폴암 세컨드 공격 캐시 완료: {prefabName}");
                 return s_polearmSecondaryCache;
             }
-            Plugin.Log.LogWarning("[둔기 회전 모션] 폴암 프리팹을 찾지 못했습니다 (AtgeirBronze/AtgeirBlackmetal/Atgeir)");
+
+            // fallback: ObjectDB 전체 순회하여 유효한 폴암 세컨드 어택 탐색
+            foreach (var item in ObjectDB.instance.m_items)
+            {
+                var drop = item?.GetComponent<ItemDrop>();
+                if (drop?.m_itemData?.m_shared == null) continue;
+                var shared = drop.m_itemData.m_shared;
+                if (shared.m_skillType != Skills.SkillType.Polearms) continue;
+                if (shared.m_secondaryAttack == null) continue;
+                if (shared.m_secondaryAttack.m_attackType == Attack.AttackType.None) continue;
+                s_polearmSecondaryCache = shared.m_secondaryAttack;
+                Plugin.Log.LogInfo($"[둔기 회전 모션] fallback으로 폴암 세컨드 캐시: {item.name}");
+                return s_polearmSecondaryCache;
+            }
+
+            Plugin.Log.LogWarning("[둔기 회전 모션] 폴암 프리팹을 찾지 못했습니다 (fallback 포함)");
             return null;
         }
     }
@@ -350,6 +365,45 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[MaceSkills_SpinDetect_Patch] 오류: {ex.Message}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 양손 둔기 회전 타격 - 세컨드 어택 강제 발동 패치
+    /// 양손 둔기는 m_secondaryAttack이 없어 Valheim이 StartAttack(true)를 호출하지 않음
+    /// → 입력을 직접 감지하여 StartAttack(null, true) 호출 → SpinAnimation_Patch가 폴암 모션 주입
+    /// </summary>
+    [HarmonyPatch(typeof(Player), "Update")]
+    public static class MaceSkills_TwoHandedSpinInput_Patch
+    {
+        static void Postfix(Player __instance)
+        {
+            try
+            {
+                if (__instance != Player.m_localPlayer) return;
+                if (!WeaponHelper.IsUsingTwoHandedMace(__instance)) return;
+                if (!SkillBonusCalculator.IsSkillActive("mace_Step3_branch_guard")) return;
+                if (!Input.GetMouseButtonDown(2) && !ZInput.GetButtonDown("SecondaryAttack")) return;
+
+                var weapon = __instance.GetCurrentWeapon();
+                if (weapon?.m_shared == null) return;
+
+                // 자체 세컨드가 유효한 무기(예: Stagbreaker)는 제외 - Valheim이 자연스럽게 처리
+                var sec = weapon.m_shared.m_secondaryAttack;
+                if (sec != null && sec.m_attackType != Attack.AttackType.None) return;
+
+                // 폴암 세컨드를 찾지 못하면 시도하지 않음
+                if (MaceSkills_SpinAnimation_Patch.GetCachedPolearmSecondary() == null) return;
+
+                // StartAttack(null, true) 직접 호출
+                // → SpinAnimation_Patch.Prefix가 먼저 실행되어 폴암 세컨드 주입
+                __instance.StartAttack(null, true);
+                Plugin.Log.LogDebug("[양손 둔기 회전] StartAttack(true) 강제 호출");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[MaceSkills_TwoHandedSpinInput_Patch] 오류: {ex.Message}");
             }
         }
     }

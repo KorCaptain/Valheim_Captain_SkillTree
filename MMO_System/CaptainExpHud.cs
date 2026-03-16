@@ -77,6 +77,18 @@ namespace CaptainSkillTree.MMO_System
             catch { }
         }
 
+        [HarmonyPatch(typeof(Game), "Logout")]
+        [HarmonyPostfix]
+        public static void Game_Logout_Postfix()
+        {
+            try
+            {
+                _hudCanvas?.SetActive(false);
+                _initialized = false;
+            }
+            catch { }
+        }
+
         // ──────────────────────────────────────────
         // Harmony Patches - Prefix (WackyEpicMMOSystem 패턴)
         // UpdateHealth / UpdateStamina / UpdateEitr 는 이벤트 기반으로만 실행
@@ -167,6 +179,11 @@ namespace CaptainSkillTree.MMO_System
             _comp      = CaptainHudBuilder.Build();
             _hudCanvas = _comp.Canvas.gameObject;
 
+            // CaptainLevelSystem 이벤트 구독 (경험치/레벨업 시 HUD 자동 갱신)
+            var ls = CaptainLevelSystem.Instance;
+            ls.OnExpGain += (_, gained) => { UpdateExpBar(); ShowExpGainPopup((int)gained); };
+            ls.OnLevelUp += (level)     => { UpdateExpBar(); ShowLevelUpNotification(level); };
+
             _initialized = true;
             _hudCanvas.SetActive(false);
             Plugin.Log.LogInfo("[CaptainExpHud] WackyEpicMMOSystem 스타일 HUD 빌드 완료");
@@ -215,12 +232,9 @@ namespace CaptainSkillTree.MMO_System
                     $"<color=#FFD700>✦ LEVEL UP! ✦ LV.{newLevel}</color>");
 
                 if (!CaptainLevelConfig.ShowLevelUpEffect.Value) return;
-                var player = Player.m_localPlayer;
-                if (player == null) return;
 
-                var pos = player.transform.position + Vector3.up;
-                TrySpawnEffect(ZNetScene.instance?.GetPrefab("fx_skillup"), pos);
-                TrySpawnEffect(ZNetScene.instance?.GetPrefab("fx_GP_activated"), pos);
+                // EpicMMO LevelUpVFX (플레이어 Spine2 본에 재생)
+                CaptainLevelUpVFX.Play();
             }
             catch { }
         }
@@ -239,24 +253,24 @@ namespace CaptainSkillTree.MMO_System
                 var ls = CaptainLevelSystem.Instance;
                 if (ls == null) return;
 
-                int   level = ls.Level;
+                int   level = CaptainMMOBridge.GetLevel();  // EpicMMO 또는 백업 레벨
                 long  cur   = ls.CurrentExp;
                 long  need  = ls.GetExpToNextLevel();
                 float ratio = need > 0 ? Mathf.Clamp01((float)cur / need) : 0f;
 
-                _comp.LevelText.text  = $"LV.{level}";
+                _comp.LevelText.text  = $"Lv.{level}";
                 _comp.LevelText.color = LevelColor(level);
 
                 _comp.ExpPercentText.text = $"{ratio * 100f:F2} %";
 
-                var expColor = ExpBarColor(level);
+                var expColor = Color.white;
                 _comp.ExpBarFill.fillAmount = ratio;
                 _comp.ExpBarFill.color      = expColor;
 
                 if (_comp.ExpBarGlow != null)
                 {
                     _comp.ExpBarGlow.fillAmount = ratio;
-                    _comp.ExpBarGlow.color = new Color(expColor.r, expColor.g, expColor.b, 0.60f);
+                    _comp.ExpBarGlow.color = new Color(1f, 1f, 1f, 0.60f);
                 }
             }
             catch (Exception ex)
@@ -289,10 +303,5 @@ namespace CaptainSkillTree.MMO_System
         // 헬퍼
         // ──────────────────────────────────────────
 
-        private static void TrySpawnEffect(GameObject prefab, Vector3 pos)
-        {
-            if (prefab != null)
-                UnityEngine.Object.Instantiate(prefab, pos, Quaternion.identity);
-        }
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -446,17 +446,17 @@ namespace CaptainSkillTree.Localization
                 "권장값: 50-100%",
 
                 // === Berserker Job: 죽음의 도전 패시브 (3개, Beserker 오타 유지) ===
-                ["Beserker_Passive_HealthThreshold"] =
+                ["Berserker_Passive_HealthThreshold"] =
                 "【패시브 발동 HP 임계값 (%)】\n" +
                 "이 HP% 이하로 떨어지면 무적 효과가 발동됩니다.\n" +
                 "권장값: 8-15%",
 
-                ["Beserker_Passive_InvincibilityDuration"] =
+                ["Berserker_Passive_InvincibilityDuration"] =
                 "【무적 지속시간 (초)】\n" +
                 "패시브 발동 시 무적 상태가 지속되는 시간입니다.\n" +
                 "권장값: 5-10초",
 
-                ["Beserker_Passive_Cooldown"] =
+                ["Berserker_Passive_Cooldown"] =
                 "【패시브 스킬 쿨타임 (초)】\n" +
                 "패시브 무적 효과의 재발동 대기시간입니다.\n" +
                 "기본값: 180초 (3분)\n" +
@@ -912,17 +912,17 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 50-100%",
 
                 // === Berserker Job: Death Defiance Passive (3 keys, Beserker typo preserved) ===
-                ["Beserker_Passive_HealthThreshold"] =
+                ["Berserker_Passive_HealthThreshold"] =
                 "【Passive Trigger HP Threshold (%)】\n" +
                 "Invincibility triggers when HP falls below this percentage.\n" +
                 "Recommended: 8-15%",
 
-                ["Beserker_Passive_InvincibilityDuration"] =
+                ["Berserker_Passive_InvincibilityDuration"] =
                 "【Invincibility Duration (sec)】\n" +
                 "Duration of the invincibility effect when passive triggers.\n" +
                 "Recommended: 5-10 sec",
 
-                ["Beserker_Passive_Cooldown"] =
+                ["Berserker_Passive_Cooldown"] =
                 "【Passive Cooldown (sec)】\n" +
                 "Cooldown before the passive invincibility can trigger again.\n" +
                 "Default: 180 sec (3 minutes)\n" +

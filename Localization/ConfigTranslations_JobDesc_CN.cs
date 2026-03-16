@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -407,17 +407,17 @@ namespace CaptainSkillTree.Localization
                 "推荐：50-100%",
 
                 // === 狂战士：被动技能《死亡挑战》（3个键，保留Beserker拼写）===
-                ["Beserker_Passive_HealthThreshold"] =
+                ["Berserker_Passive_HealthThreshold"] =
                 "【被动激活生命值阈值(%)】\n" +
                 "生命值低于此百分比时激活无敌状态。\n" +
                 "推荐：8-15%",
 
-                ["Beserker_Passive_InvincibilityDuration"] =
+                ["Berserker_Passive_InvincibilityDuration"] =
                 "【无敌持续时间（秒）】\n" +
                 "被动激活时无敌状态的持续时间。\n" +
                 "推荐：5-10秒",
 
-                ["Beserker_Passive_Cooldown"] =
+                ["Berserker_Passive_Cooldown"] =
                 "【被动冷却时间（秒）】\n" +
                 "下次被动无敌激活前的等待时间。\n" +
                 "默认：180秒（3分钟）\n" +

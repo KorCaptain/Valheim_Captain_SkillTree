@@ -40,24 +40,63 @@ namespace CaptainSkillTree.SkillTree
         private static string _detectedConfigLanguage = "ko";
 
         /// <summary>
-        /// Configuration Manager 표시 언어 감지
-        /// BepInEx ConfigDescription은 초기화 시점에 고정되므로 게임 시작 시에만 감지
+        /// BepInEx INI 파일에서 Language 값을 직접 읽기 (Bind() 호출 전 사용)
         /// </summary>
-        private static string DetectConfigLanguage()
+        private static string TryReadRawLanguage(ConfigFile config)
         {
             try
             {
-                // 우선순위 1: SkillTreeConfig.Language 설정 (사용자가 직접 설정한 경우)
-                if (Language != null && Language.Value != "Auto")
+                string configPath = config.ConfigFilePath;
+                if (!System.IO.File.Exists(configPath))
+                    return "Auto";
+
+                string[] lines = System.IO.File.ReadAllLines(configPath);
+                bool inTargetSection = false;
+                foreach (string line in lines)
                 {
-                    string configLang = Language.Value.ToLower();
+                    string trimmed = line.Trim();
+                    if (trimmed == "[Skill_Tree_Base]")
+                    {
+                        inTargetSection = true;
+                        continue;
+                    }
+                    if (inTargetSection && trimmed.StartsWith("["))
+                        break; // 다른 섹션 진입 → 종료
+                    if (inTargetSection && trimmed.StartsWith("Language ="))
+                    {
+                        string val = trimmed.Substring("Language =".Length).Trim();
+                        Plugin.Log.LogDebug($"[SkillTreeConfig] Raw config Language: {val}");
+                        return val;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogWarning($"[SkillTreeConfig] TryReadRawLanguage failed: {ex.Message}");
+            }
+            return "Auto";
+        }
+
+        /// <summary>
+        /// Configuration Manager 표시 언어 감지
+        /// BepInEx ConfigDescription은 초기화 시점에 고정되므로 게임 시작 시에만 감지
+        /// </summary>
+        private static string DetectConfigLanguage(string preReadLang = null)
+        {
+            try
+            {
+                // 우선순위 1: raw 파일에서 미리 읽은 값 또는 SkillTreeConfig.Language 설정
+                string rawVal = preReadLang ?? (Language?.Value);
+                if (!string.IsNullOrEmpty(rawVal) && rawVal != "Auto")
+                {
+                    string configLang = rawVal.ToLower();
                     string result = (configLang == "ko" || configLang == "kr") ? "ko"
                                   : (configLang == "cn" || configLang == "zh") ? "zh-cn"
                                   : (configLang == "de") ? "de"
                                   : (configLang == "ru") ? "ru"
                                   : (configLang == "pt_br" || configLang == "pt") ? "pt_BR"
                                   : "en";
-                    Plugin.Log.LogDebug($"[SkillTreeConfig] Using config language: {Language.Value} -> {result}");
+                    Plugin.Log.LogDebug($"[SkillTreeConfig] Using config language: {rawVal} -> {result}");
                     return result;
                 }
 
@@ -582,7 +621,9 @@ namespace CaptainSkillTree.SkillTree
         public static void Initialize(ConfigFile config)
         {
             // === STEP 1: 언어 감지 (Config Manager 로컬라이제이션용) ===
-            _detectedConfigLanguage = DetectConfigLanguage();
+            // Language.Bind() 전에 INI 파일을 직접 읽어 저장된 언어 값 우선 적용
+            string rawLang = TryReadRawLanguage(config);
+            _detectedConfigLanguage = DetectConfigLanguage(rawLang);
             Plugin.Log.LogInfo($"[SkillTreeConfig] Config Manager language detected: {_detectedConfigLanguage}");
 
             DetectServerClientMode();
@@ -597,6 +638,7 @@ namespace CaptainSkillTree.SkillTree
                     "  - 'Auto' = Auto-detect from Valheim settings (Recommended)\n" +
                     "  - 'KR' = Korean\n" +
                     "  - 'EN' = English\n" +
+                    "  - 'CN' = Chinese (Simplified) / 中文(简体)\n" +
                     "  - 'DE' = German\n" +
                     "  - 'RU' = Russian\n" +
                     "  - 'PT_BR' = Portuguese (Brazilian)\n\n" +

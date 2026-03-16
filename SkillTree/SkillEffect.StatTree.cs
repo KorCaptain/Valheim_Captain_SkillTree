@@ -460,12 +460,12 @@ namespace CaptainSkillTree.SkillTree
                     totalDodge += Defense_Config.StaminaDodgeBonusValue / 100f;
                 }
 
-                // defense_Step6_attack: 신경강화 (30초 미발동 조건)
+                // defense_Step6_attack: 신경강화 (45초 미발동 조건)
                 int attackLevel = manager.GetSkillLevel("defense_Step6_attack");
                 if (attackLevel > 0)
                 {
                     bool isInCooldown = nerveLastEvasionTime.ContainsKey(player) &&
-                                        Time.time - nerveLastEvasionTime[player] < 30f;
+                                        Time.time - nerveLastEvasionTime[player] < 45f;
                     if (!isInCooldown)
                         totalDodge += Defense_Config.AttackDodgeBonusValue / 100f;
                 }
@@ -535,7 +535,7 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
-    /// 신경강화 스킬의 30초 쿨다운 타이머 (피격 회피 발동 시 플레이어 GameObject에 부착)
+    /// 신경강화 스킬의 45초 쿨다운 타이머 (피격 회피 발동 시 플레이어 GameObject에 부착)
     /// </summary>
     internal class NerveEnhancementTimer : MonoBehaviour
     {
@@ -549,7 +549,7 @@ namespace CaptainSkillTree.SkillTree
 
         private IEnumerator RestoreAfterDelay(Player player)
         {
-            yield return new WaitForSeconds(30f);
+            yield return new WaitForSeconds(45f);
             SkillEffect.nerveLastEvasionTime.Remove(player);
             SkillEffect.UpdateDefenseDodgeRate(player);
             _restoreCoroutine = null;

@@ -52,5 +52,25 @@ namespace CaptainSkillTree.SkillTree
             if (!_entries.TryGetValue(slot, out var entry)) return 0f;
             return Mathf.Max(0f, entry.EndTime - Time.time);
         }
+
+        /// <summary>
+        /// Config 변경 시 발동 시점을 기준으로 EndTime과 TotalTime을 모두 재계산.
+        /// 이미 만료된 경우(new_EndTime &lt;= Time.time) 엔트리를 삭제하여 즉시 사용 가능 상태로.
+        /// </summary>
+        public static void RecalculateCooldown(string slot, float newTotalTime)
+        {
+            if (!_entries.TryGetValue(slot, out var entry)) return;
+            if (newTotalTime <= 0f) return;
+
+            float triggerTime = entry.EndTime - entry.TotalTime; // 발동 시점 역산
+            float newEndTime = triggerTime + newTotalTime;
+
+            if (newEndTime <= Time.time)
+            {
+                _entries.Remove(slot); // 새 쿨타임 기준으로 이미 만료 → 즉시 사용 가능
+                return;
+            }
+            _entries[slot] = new CooldownEntry { EndTime = newEndTime, TotalTime = newTotalTime };
+        }
     }
 }

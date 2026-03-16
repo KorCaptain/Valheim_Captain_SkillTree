@@ -590,9 +590,9 @@ namespace CaptainSkillTree.Localization
                 ["Beserker_Active_DamagePerHealthPercent"] = "Ярость берсерка: Урон за 1% ХП (%)",
                 ["Beserker_Active_MaxDamageBonus"] = "Ярость берсерка: Макс. бонус урона (%)",
                 ["Beserker_Active_HealthThreshold"] = "Ярость берсерка: Порог ХП (%)",
-                ["Beserker_Passive_HealthThreshold"] = "Вызов смерти: Порог ХП (%)",
-                ["Beserker_Passive_InvincibilityDuration"] = "Вызов смерти: Длительность неуязвимости (сек)",
-                ["Beserker_Passive_Cooldown"] = "Вызов смерти: Перезарядка (сек)",
+                ["Berserker_Passive_HealthThreshold"] = "Вызов смерти: Порог ХП (%)",
+                ["Berserker_Passive_InvincibilityDuration"] = "Вызов смерти: Длительность неуязвимости (сек)",
+                ["Berserker_Passive_Cooldown"] = "Вызов смерти: Перезарядка (сек)",
                 ["Berserker_Passive_HealthBonus"] = "Пассивный: Бонус макс. ХП (%)",
             };
         }

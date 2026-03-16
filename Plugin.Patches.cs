@@ -403,7 +403,6 @@ namespace CaptainSkillTree
                         rect.sizeDelta = new Vector2(60, 60);
 
                         _iconPositionAdjusted = true;
-                        Log.LogInfo("[스킬트리] 아이콘 위치 조정: 화면 중앙 캐릭터 머리 위 (EpicMMO 미사용)");
                     }
                 }
                 catch (Exception ex)

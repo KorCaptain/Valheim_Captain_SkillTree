@@ -209,7 +209,6 @@ namespace CaptainSkillTree.Gui
 
             // 스킬트리 UI는 항상 화면 중앙에 배치
             panelRect.anchoredPosition = Vector2.zero;
-            Plugin.Log.LogInfo("[SkillTreeUI] UI 위치: 화면 중앙");
             
             // 패널 자체에 투명한 배경 설정하여 인벤토리 클릭 차단
             var panelImage = panel.GetComponent<Image>();
@@ -2273,40 +2272,13 @@ namespace CaptainSkillTree.Gui
             nodeRect.localScale = originalScale;
         }
 
-        // 확정 효과 재생 (LevelUpVFX 사용)
+        // 확정 효과 재생 (CaptainLevelUpVFX 사용)
         private void PlayConfirmSound()
         {
             try
             {
-                var znet = ZNetScene.instance;
-                if (znet != null)
-                {
-                    var player = Player.m_localPlayer;
-                    if (player == null) return;
-                    
-                    // MMO LevelUpVFX 효과 우선 사용
-                    var levelUpVFX = znet.GetPrefab("LevelUpVFX");
-                    if (levelUpVFX != null)
-                    {
-                        UnityEngine.Object.Instantiate(levelUpVFX, player.transform.position, Quaternion.identity);
-                        Plugin.Log.LogDebug($"[스킬트리] LevelUpVFX 효과 재생 성공");
-                        return;
-                    }
-                    
-                    // 대체 LevelUpVFX2 시도
-                    var levelUpVFX2 = znet.GetPrefab("LevelUpVFX2");
-                    if (levelUpVFX2 != null)
-                    {
-                        UnityEngine.Object.Instantiate(levelUpVFX2, player.transform.position, Quaternion.identity);
-                        Debug.Log($"[스킬트리] LevelUpVFX2 효과 재생 성공");
-                        return;
-                    }
-                    
-                    Debug.LogWarning($"[스킬트리] LevelUpVFX 효과를 찾을 수 없음");
-
-                    // 마지막 대안: 플레이어 메시지로 피드백
-                    player.Message(MessageHud.MessageType.TopLeft, L10n.Get("skill_invest_success"), 0, null);
-                }
+                // epicasset 번들에서 직접 로드한 LevelUpVFX 재생
+                CaptainSkillTree.MMO_System.CaptainLevelUpVFX.Play();
             }
             catch (System.Exception ex)
             {
@@ -2860,58 +2832,13 @@ namespace CaptainSkillTree.Gui
             }
         }
         
-        // 직업 아이콘 MMO 레벨업 효과음 재생 (LevelUpVFX 사용)
+        // 직업 아이콘 MMO 레벨업 효과음 재생 (CaptainLevelUpVFX 사용)
         private void TryPlayMMOLevelUpSound()
         {
             try
             {
-                var znet = ZNetScene.instance;
-                if (znet != null)
-                {
-                    // MMO 레벨업 VFX 먼저 시도
-                    var mmoSoundPrefab = znet.GetPrefab("LevelUpVFX");
-                    if (mmoSoundPrefab != null)
-                    {
-                        var player = Player.m_localPlayer;
-                        if (player != null)
-                        {
-                            // MMO와 같은 방식으로 플레이어 위치에 생성
-                            UnityEngine.Object.Instantiate(mmoSoundPrefab, player.transform.position + Vector3.up * 1.5f, Quaternion.identity);
-                        }
-                        else
-                        {
-                            UnityEngine.Object.Instantiate(mmoSoundPrefab, Camera.main.transform.position, Quaternion.identity);
-                        }
-                        return;
-                    }
-                    
-                    // 대체 MMO 레벨업 VFX 시도
-                    var altMmoSoundPrefab = znet.GetPrefab("LevelUpVFX2");
-                    if (altMmoSoundPrefab != null)
-                    {
-                        var player = Player.m_localPlayer;
-                        if (player != null)
-                        {
-                            UnityEngine.Object.Instantiate(altMmoSoundPrefab, player.transform.position + Vector3.up * 1.5f, Quaternion.identity);
-                        }
-                        else
-                        {
-                            UnityEngine.Object.Instantiate(altMmoSoundPrefab, Camera.main.transform.position, Quaternion.identity);
-                        }
-                        return;
-                    }
-                    
-                    // MMO VFX가 없으면 기본 발헤임 효과음 사용
-                    var soundPrefab = znet.GetPrefab("sfx_dragon_scream");
-                    if (soundPrefab != null)
-                    {
-                        UnityEngine.Object.Instantiate(soundPrefab, Camera.main.transform.position, Quaternion.identity);
-                    }
-                }
-                else
-                {
-                    Debug.LogError($"[직업 아이콘] ZNetScene.instance가 null입니다");
-                }
+                // epicasset 번들에서 직접 로드한 LevelUpVFX 재생
+                CaptainSkillTree.MMO_System.CaptainLevelUpVFX.Play();
             }
             catch (System.Exception ex)
             {

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -407,17 +407,17 @@ namespace CaptainSkillTree.Localization
                 "Empfehlung: 50-100%",
 
                 // === Berserker: Passiv «Todesherausforderung» (3 Schlüssel, Typo Beserker beibehalten) ===
-                ["Beserker_Passive_HealthThreshold"] =
+                ["Berserker_Passive_HealthThreshold"] =
                 "【LP-Schwellenwert für Passiv-Aktivierung (%)】\n" +
                 "Unverwundbarkeit aktiviert sich, wenn LP unter diesen % fallen.\n" +
                 "Empfehlung: 8-15%",
 
-                ["Beserker_Passive_InvincibilityDuration"] =
+                ["Berserker_Passive_InvincibilityDuration"] =
                 "【Unverwundbarkeitsdauer (Sek.)】\n" +
                 "Wirkungsdauer der Unverwundbarkeit bei Passiv-Aktivierung.\n" +
                 "Empfehlung: 5-10 Sek.",
 
-                ["Beserker_Passive_Cooldown"] =
+                ["Berserker_Passive_Cooldown"] =
                 "【Passiv-Abklingzeit (Sek.)】\n" +
                 "Wartezeit bis zur nächsten Passiv-Unverwundbarkeitsaktivierung.\n" +
                 "Standard: 180 Sek. (3 Minuten)\n" +

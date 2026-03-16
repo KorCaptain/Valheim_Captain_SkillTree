@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CaptainSkillTree.Localization
 {
@@ -407,17 +407,17 @@ namespace CaptainSkillTree.Localization
                 "Valor recomendado: 50-100%",
 
                 // === Berserker Job: Passivo «Desafio da Morte» (3 chaves, typo Beserker mantido) ===
-                ["Beserker_Passive_HealthThreshold"] =
+                ["Berserker_Passive_HealthThreshold"] =
                 "【Limite de HP para Ativação do Passivo (%)】\n" +
                 "A invencibilidade ativa quando o HP cai abaixo deste %.\n" +
                 "Valor recomendado: 8-15%",
 
-                ["Beserker_Passive_InvincibilityDuration"] =
+                ["Berserker_Passive_InvincibilityDuration"] =
                 "【Duração da Invencibilidade (seg)】\n" +
                 "Tempo de ação da invencibilidade ao acionar o passivo.\n" +
                 "Valor recomendado: 5-10 seg",
 
-                ["Beserker_Passive_Cooldown"] =
+                ["Berserker_Passive_Cooldown"] =
                 "【Recarga do Passivo (seg)】\n" +
                 "Tempo de espera até o próximo acionamento da invencibilidade passiva.\n" +
                 "Padrão: 180 seg (3 minutos)\n" +

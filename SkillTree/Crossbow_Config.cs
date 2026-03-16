@@ -231,7 +231,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_ShotCount"), order: 50);
 
                 CrossbowRapidFireDamagePercent = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier1_RapidFire_DamagePercent", 75f,
+                    "Crossbow Tree", "Tier1_RapidFire_DamagePercent", 35f,
                     SkillTreeConfig.GetConfigDescription("Tier1_RapidFire_DamagePercent"), order: 50);
 
                 CrossbowRapidFireDelay = SkillTreeConfig.BindServerSync(config,
@@ -296,7 +296,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_ShotCount"), order: 30);
 
                 CrossbowRapidFireLv2DamagePercent = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier4_RapidFireLv2_DamagePercent", 75f,
+                    "Crossbow Tree", "Tier4_RapidFireLv2_DamagePercent", 35f,
                     SkillTreeConfig.GetConfigDescription("Tier4_RapidFireLv2_DamagePercent"), order: 30);
 
                 CrossbowRapidFireLv2Delay = SkillTreeConfig.BindServerSync(config,
