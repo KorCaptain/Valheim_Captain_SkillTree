@@ -52,6 +52,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     string configLang = Language.Value.ToLower();
                     string result = (configLang == "ko" || configLang == "kr") ? "ko"
+                                  : (configLang == "cn" || configLang == "zh") ? "zh-cn"
                                   : (configLang == "de") ? "de"
                                   : (configLang == "ru") ? "ru"
                                   : (configLang == "pt_br" || configLang == "pt") ? "pt_BR"
@@ -66,6 +67,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     string langLow = valheimLang.ToLower();
                     string result = (langLow == "korean") ? "ko"
+                                  : (langLow.Contains("chinese") || langLow.Contains("中文")) ? "zh-cn"
                                   : (langLow.Contains("german") || langLow == "deutsch") ? "de"
                                   : (langLow == "russian") ? "ru"
                                   : (langLow == "portuguese_brazilian") ? "pt_BR"
@@ -80,6 +82,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using LocalizationManager: {currentLang}");
                     return (currentLang == "ko") ? "ko"
+                         : (currentLang == "zh-cn") ? "zh-cn"
                          : (currentLang == "de") ? "de"
                          : (currentLang == "ru") ? "ru"
                          : (currentLang == "pt_BR") ? "pt_BR"
@@ -601,7 +604,7 @@ namespace CaptainSkillTree.SkillTree
                     "   Config Manager (F1) descriptions are set at game startup.\n\n" +
                     "⚠️ 중요: 이 설정 변경 후 게임 재시작이 필요합니다!\n" +
                     "   Config Manager (F1) 설명은 게임 시작 시 설정됩니다.",
-                    new AcceptableValueList<string>("Auto", "KR", "EN", "DE", "RU", "PT_BR")
+                    new AcceptableValueList<string>("Auto", "KR", "EN", "CN", "DE", "RU", "PT_BR")
                 )
             );
 

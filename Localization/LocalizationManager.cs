@@ -41,7 +41,7 @@ namespace CaptainSkillTree.Localization
             { "KR", "ko" },
             { "EN", "en" },
             { "JP", "ja" },
-            { "CN", "zh" },
+            { "CN", "zh-cn" },
             { "EU", "eu" },
             { "DE", "de" },
             { "FR", "fr" },
@@ -500,8 +500,8 @@ namespace CaptainSkillTree.Localization
                 }
                 else if (lowerLang.Contains("chinese") || lowerLang.Contains("中文") || lowerLang.Contains("china"))
                 {
-                    _currentLanguage = _translations.ContainsKey("zh") ? "zh" : "en";
-                    Plugin.Log.LogDebug($"[Localization] Auto-detect: Chinese -> {(_currentLanguage == "zh" ? "CN" : "EN (fallback)")}");
+                    _currentLanguage = _translations.ContainsKey("zh-cn") ? "zh-cn" : "en";
+                    Plugin.Log.LogDebug($"[Localization] Auto-detect: Chinese -> {(_currentLanguage == "zh-cn" ? "CN" : "EN (fallback)")}");
                 }
                 else if (lowerLang.Contains("german") || lowerLang.Contains("deutsch"))
                 {
@@ -782,6 +782,19 @@ namespace CaptainSkillTree.Localization
                 }
                 File.WriteAllText(dePath, DictToJson(deData), System.Text.Encoding.UTF8);
                 Plugin.Log.LogDebug($"[Localization] Translation/de.json exported ({deData.Count} keys, {deTranslations?.Count ?? 0} DE translated)");
+
+                // zh-cn.json: EN 전체 키를 기준으로, ZH-CN 번역값으로 덮어씌우기
+                var zhPath = Path.Combine(translationPath, "zh-cn.json");
+                var zhData = new Dictionary<string, string>(enData);
+                var zhTranslations = LoadFromEmbeddedResource("zh-cn") ??
+                                     (_translations.ContainsKey("zh-cn") ? _translations["zh-cn"] : null);
+                if (zhTranslations != null)
+                {
+                    foreach (var kvp in zhTranslations)
+                        zhData[kvp.Key] = kvp.Value;
+                }
+                File.WriteAllText(zhPath, DictToJson(zhData), System.Text.Encoding.UTF8);
+                Plugin.Log.LogDebug($"[Localization] Translation/zh-cn.json exported ({zhData.Count} keys, {zhTranslations?.Count ?? 0} ZH-CN translated)");
             }
             catch (Exception ex)
             {

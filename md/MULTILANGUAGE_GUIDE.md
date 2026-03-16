@@ -1,6 +1,6 @@
 # MULTILANGUAGE_GUIDE.md - CaptainSkillTree 다국어 시스템 가이드
 
-> 최종 업데이트: 2026-03-16 (DE 추가 Phase 2 완료)
+> 최종 업데이트: 2026-03-16 (ZH-CN 완전 지원 추가)
 
 ---
 
@@ -13,6 +13,7 @@
 | `de` | 독일어 | ✅ 완전 지원 (Phase 2) |
 | `ru` | 러시아어 | ✅ 완전 지원 |
 | `pt_BR` | 포르투갈어 (브라질) | ✅ 완전 지원 |
+| `zh-cn` | 중국어 간체 | ✅ 완전 지원 |
 
 ---
 
@@ -21,7 +22,7 @@
 ### AcceptableValueList 순서
 `SkillTree/SkillTreeConfig.cs`에서 F1 Config Manager 드롭다운 순서를 정의:
 ```csharp
-new AcceptableValueList<string>("Auto", "KR", "EN", "DE", "RU", "PT_BR")
+new AcceptableValueList<string>("Auto", "KR", "EN", "DE", "RU", "PT_BR", "CN")
 ```
 
 ### DetectConfigLanguage() 우선순위 (3단계)
@@ -139,7 +140,8 @@ BepInEx\config\CaptainSkillTree\Translation\
 ├── en.json      ← DefaultLanguages.GetEnglish() 기준 최신본 (항상 덮어씀)
 ├── ru.json      ← EN 키 전체 + RU 번역값 병합
 ├── pt_BR.json   ← EN 키 전체 + PT_BR 번역값 병합
-└── de.json      ← EN 키 전체 + DE 번역값 병합
+├── de.json      ← EN 키 전체 + DE 번역값 병합
+└── zh-cn.json   ← EN 키 전체 + ZH-CN 번역값 병합
 ```
 
 ### 동작 원칙

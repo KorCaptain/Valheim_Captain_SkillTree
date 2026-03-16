@@ -114,6 +114,23 @@ namespace CaptainSkillTree.MMO_System
         /// </summary>
         public static ConfigEntry<bool> ShowLevelHUD;
 
+        // ── HUD 색상 / 스케일 ──
+
+        /// <summary>HP 바 색상 (HTML 16진수, 기본: #E62626)</summary>
+        public static ConfigEntry<string> HudHpColor;
+
+        /// <summary>스태미나 바 색상 (기본: #F0B814)</summary>
+        public static ConfigEntry<string> HudStaminaColor;
+
+        /// <summary>에이트르 바 색상 (기본: #3880FF)</summary>
+        public static ConfigEntry<string> HudEitrColor;
+
+        /// <summary>경험치 바 색상 (기본: #47D1FF)</summary>
+        public static ConfigEntry<string> HudExpColor;
+
+        /// <summary>HUD 전체 스케일 (기본: 1.0)</summary>
+        public static ConfigEntry<float> HudScale;
+
         #endregion
 
         #region === 스킬 포인트 설정 ===
@@ -286,6 +303,42 @@ namespace CaptainSkillTree.MMO_System
                 true,
                 "레벨/경험치 바 HUD 표시\n" +
                 "[기본: true]");
+
+            // === HUD 색상/스케일 설정 ===
+            HudHpColor = config.Bind(
+                SECTION,
+                "HUD HP Color",
+                "#870000",
+                "HP 바 색상 (HTML 16진수)\n" +
+                "[기본: #870000]");
+
+            HudStaminaColor = config.Bind(
+                SECTION,
+                "HUD Stamina Color",
+                "#986100",
+                "스태미나 바 색상 (HTML 16진수)\n" +
+                "[기본: #986100]");
+
+            HudEitrColor = config.Bind(
+                SECTION,
+                "HUD Eitr Color",
+                "#84257C",
+                "에이트르 바 색상 (HTML 16진수)\n" +
+                "[기본: #84257C]");
+
+            HudExpColor = config.Bind(
+                SECTION,
+                "HUD Exp Color",
+                "#C87820",
+                "경험치 바 색상 (HTML 16진수)\n" +
+                "[기본: #C87820]");
+
+            HudScale = config.Bind(
+                SECTION,
+                "HUD Scale",
+                1.0f,
+                "HUD 전체 스케일\n" +
+                "[기본: 1.0, 범위: 0.5-3.0]");
 
             // === 스킬 포인트 설정 ===
             SkillPointsPerLevel = config.Bind(
