@@ -479,6 +479,50 @@ namespace CaptainSkillTree.Localization
                 // 剑树 - 路径命中补充
                 // ============================================
                 ["Tier6_RushSlash_PathWidth"] = "Tier 6: [冲锋斩] 路径命中宽度 (米)",
+
+                // ============================================
+                // 制作专家 (Producer) 职业技能
+                // ============================================
+                ["Producer_Buff_Cooldown"] = "制作专家: 工匠祝福冷却时间 (秒)",
+                ["Producer_Buff_Duration"] = "制作专家: 工匠祝福持续时间 (秒)",
+                ["Producer_Buff_Range"] = "制作专家: 工匠祝福范围 (米)",
+                ["Producer_Buff_AttackBonus"] = "制作专家: 祝福攻击力加成 (%)",
+                ["Producer_Buff_MaxHealthBonus"] = "制作专家: 祝福最大HP加成 (%)",
+                ["Producer_Buff_StaminaCost"] = "制作专家: 祝福体力消耗",
+                ["Producer_FarmGrid_Lv1"] = "制作专家: 农耕格数量 Lv1",
+                ["Producer_FarmGrid_Lv2"] = "制作专家: 农耕格数量 Lv2",
+                ["Producer_FarmGrid_Lv3"] = "制作专家: 农耕格数量 Lv3",
+                ["Producer_FarmGrid_Lv4"] = "制作专家: 农耕格数量 Lv4",
+                ["Producer_FarmGrid_Lv5"] = "制作专家: 农耕格数量 Lv5",
+                ["Producer_Durability_Lv2"] = "制作专家: 耐久度加成 Lv2 (%)",
+                ["Producer_Durability_Lv3"] = "制作专家: 耐久度加成 Lv3 (%)",
+                ["Producer_Durability_Lv4"] = "制作专家: 耐久度加成 Lv4 (%)",
+                ["Producer_Durability_Lv5"] = "制作专家: 耐久度加成 Lv5 (%)",
+                ["Producer_MaterialReduction_Lv2"] = "制作专家: 材料减少 Lv2 (%)",
+                ["Producer_MaterialReduction_Lv3"] = "制作专家: 材料减少 Lv3 (%)",
+                ["Producer_MaterialReduction_Lv4"] = "制作专家: 材料减少 Lv4 (%)",
+                ["Producer_MaterialReduction_Lv5"] = "制作专家: 材料减少 Lv5 (%)",
+                ["Producer_EnchantChance_Lv3"] = "制作专家: 附魔概率 Lv3 (%)",
+                ["Producer_EnchantChance_Lv4"] = "制作专家: 附魔概率 Lv4 (%)",
+                ["Producer_EnchantChance_Lv5"] = "制作专家: 附魔概率 Lv5 (%)",
+                ["Producer_EnchantWeaponDmgMin_Lv3"] = "制作专家: 武器伤害附魔最小值 Lv3 (%)",
+                ["Producer_EnchantWeaponDmgMax_Lv3"] = "制作专家: 武器伤害附魔最大值 Lv3 (%)",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "制作专家: 武器伤害附魔最小值 Lv4 (%)",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "制作专家: 武器伤害附魔最大值 Lv4 (%)",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "制作专家: 武器伤害附魔最小值 Lv5 (%)",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "制作专家: 武器伤害附魔最大值 Lv5 (%)",
+                ["Producer_EnchantArmorMin_Lv3"] = "制作专家: 护甲附魔最小值 Lv3 (%)",
+                ["Producer_EnchantArmorMax_Lv3"] = "制作专家: 护甲附魔最大值 Lv3 (%)",
+                ["Producer_EnchantArmorMin_Lv4"] = "制作专家: 护甲附魔最小值 Lv4 (%)",
+                ["Producer_EnchantArmorMax_Lv4"] = "制作专家: 护甲附魔最大值 Lv4 (%)",
+                ["Producer_EnchantArmorMin_Lv5"] = "制作专家: 护甲附魔最小值 Lv5 (%)",
+                ["Producer_EnchantArmorMax_Lv5"] = "制作专家: 护甲附魔最大值 Lv5 (%)",
+                ["Producer_EnchantHpMin_Lv3"] = "制作专家: HP附魔最小值 Lv3 (%)",
+                ["Producer_EnchantHpMax_Lv3"] = "制作专家: HP附魔最大值 Lv3 (%)",
+                ["Producer_EnchantHpMin_Lv4"] = "制作专家: HP附魔最小值 Lv4 (%)",
+                ["Producer_EnchantHpMax_Lv4"] = "制作专家: HP附魔最大值 Lv4 (%)",
+                ["Producer_EnchantHpMin_Lv5"] = "制作专家: HP附魔最小值 Lv5 (%)",
+                ["Producer_EnchantHpMax_Lv5"] = "制作专家: HP附魔最大值 Lv5 (%)",
             };
         }
     }

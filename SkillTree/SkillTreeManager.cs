@@ -452,6 +452,7 @@ namespace CaptainSkillTree.SkillTree
             // G키: 근접 메인 액티브 (같은 무기 트리만 허용)
             var gKeyMeleeSkills = new[] {
                 "sword_step5_finalcut",       // 검: 돌진 연속 베기
+
                 "knife_step9_assassin_heart", // 단검: 암살자의 심장
                 "spear_Step5_penetrate",      // 창: 꿰뚫는 창
                 "polearm_step5_king",         // 폴암: 장창의 제왕
@@ -467,7 +468,7 @@ namespace CaptainSkillTree.SkillTree
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
-            var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin" };
+            var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin", "Producer" };
 
             // 액티브 스킬이 아니면 제한 없음
             if (!rKeySkills.Contains(skillId) && !gKeyMeleeSkills.Contains(skillId) &&
@@ -613,7 +614,7 @@ namespace CaptainSkillTree.SkillTree
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
-            var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin" };
+            var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin", "Producer" };
 
             // 액티브 스킬이 아니면 제한 없음
             if (!rKeySkills.Contains(skillId) && !gKeyMeleeSkills.Contains(skillId) &&
@@ -1024,6 +1025,22 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
             }
+            else if (skillId == "Producer")
+            {
+                int targetLevel = GetSkillLevel(skillId) + 1;
+                if (!HasProducerLevelItems(targetLevel))
+                {
+                    if ((System.Object)Player.m_localPlayer != null)
+                    {
+                        var missing = GetMissingProducerItems(targetLevel);
+                        string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
+                        SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                            "⚠️ " + L.Get("producer_level_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : ""), Color.red);
+                    }
+                    return;
+                }
+            }
             else if (node.RequiredPoints > 0 && GetAvailablePoints(true) < node.RequiredPoints) return;
 
             // === 상호 배타적 스킬 체크 ===
@@ -1085,6 +1102,12 @@ namespace CaptainSkillTree.SkillTree
                     int targetLevel = currentLevel + 1;
                     ConsumeArcherLevelItems(targetLevel);
                 }
+                // 제작 전문가: 레벨별 트로피 소모
+                else if (pending.Key == "Producer")
+                {
+                    int targetLevel = currentLevel + 1;
+                    ConsumeProducerLevelItems(targetLevel);
+                }
                 // 다른 직업 스킬: 레벨 0에서 1로 올라가는 경우(처음 전직)에만 아이템 소모
                 else if (IsJobSkill(pending.Key) && currentLevel == 0)
                 {
@@ -1115,8 +1138,8 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private bool IsJobSkill(string skillId)
         {
-            return skillId == "Paladin" || skillId == "Tanker" || skillId == "Berserker" || 
-                   skillId == "Rogue" || skillId == "Mage" || skillId == "Archer";
+            return skillId == "Paladin" || skillId == "Tanker" || skillId == "Berserker" ||
+                   skillId == "Rogue" || skillId == "Mage" || skillId == "Archer" || skillId == "Producer";
         }
         
         /// <summary>
@@ -1255,6 +1278,95 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        public bool HasProducerLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return false;
+            var inventory = player.GetInventory();
+            if (inventory == null) return false;
+
+            switch (targetLevel)
+            {
+                case 1: return inventory.HaveItem("$item_trophy_bjorn") &&
+                               inventory.HaveItem("$item_trophy_eikthyr");
+                case 2: return inventory.HaveItem("$item_trophy_troll") &&
+                               inventory.HaveItem("$item_trophy_elder");
+                case 3: return inventory.HaveItem("$item_trophy_abomination") &&
+                               inventory.HaveItem("$item_trophy_bonemass");
+                case 4: return inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.HaveItem("$item_trophy_dragonqueen");
+                case 5: return inventory.HaveItem("$item_trophy_goblinking") &&
+                               inventory.HaveItem("$item_trophy_seekerqueen");
+                default: return false;
+            }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingProducerItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            var missing = new System.Collections.Generic.List<string>();
+            if (player == null) return missing;
+            var inventory = player.GetInventory();
+            if (inventory == null) return missing;
+
+            switch (targetLevel)
+            {
+                case 1:
+                    if (!inventory.HaveItem("$item_trophy_bjorn")) missing.Add(L.Get("item_trophy_bear"));
+                    if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    break;
+                case 2:
+                    if (!inventory.HaveItem("$item_trophy_troll")) missing.Add(L.Get("item_trophy_troll"));
+                    if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
+                    break;
+                case 3:
+                    if (!inventory.HaveItem("$item_trophy_abomination")) missing.Add(L.Get("item_trophy_abomination"));
+                    if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    break;
+                case 4:
+                    if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    break;
+                case 5:
+                    if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
+                    if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    break;
+            }
+            return missing;
+        }
+
+        private void ConsumeProducerLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            switch (targetLevel)
+            {
+                case 1:
+                    inventory.RemoveItem("$item_trophy_bjorn", 1);
+                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    break;
+                case 2:
+                    inventory.RemoveItem("$item_trophy_troll", 1);
+                    inventory.RemoveItem("$item_trophy_elder", 1);
+                    break;
+                case 3:
+                    inventory.RemoveItem("$item_trophy_abomination", 1);
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    break;
+                case 4:
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_goblinking", 1);
+                    inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    break;
+            }
+        }
+
         // 생산 전문가 스킬 ID 집합
         private static readonly HashSet<string> ProductionSkillIds = new HashSet<string>
         {
@@ -1299,7 +1411,7 @@ namespace CaptainSkillTree.SkillTree
         public void ResetJobSkillLevels()
         {
             if (Player.m_localPlayer == null) return;
-            var jobIds = new[] { "Paladin", "Tanker", "Berserker", "Rogue", "Mage", "Archer" };
+            var jobIds = new[] { "Paladin", "Tanker", "Berserker", "Rogue", "Mage", "Archer", "Producer" };
             foreach (var jobId in jobIds)
             {
                 string key = $"CaptainSkillTree_{jobId}";

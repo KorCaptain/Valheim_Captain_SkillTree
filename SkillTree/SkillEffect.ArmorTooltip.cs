@@ -106,6 +106,8 @@ namespace CaptainSkillTree.SkillTree
                     bool jotunnShieldActive = manager.GetSkillLevel("defense_Step6_true") > 0;
                     bool boostActive        = manager.GetSkillLevel("defense_Step3_boost") > 0;
                     bool berserkerActive    = manager.GetSkillLevel("Berserker") > 0;
+                    bool producerBuffActive = ProducerSkills.IsProducerBuffActive(player);
+                    float producerHpBonus   = producerBuffActive ? Producer_Config.ProducerBuff_MaxHealthBonusValue : 0f;
 
                     float dodgeTotal = 0f;
                     if (manager.GetSkillLevel("defense_Step3_agile") > 0)
@@ -146,7 +148,7 @@ namespace CaptainSkillTree.SkillTree
                     {
                         bool hasBonus = flatBonus != 0f || rockSkinActive || resistActive
                                         || boostActive || berserkerActive || dodgeTotal > 0f
-                                        || moveSpeedTotal > 0f;
+                                        || moveSpeedTotal > 0f || producerBuffActive;
                         if (!hasBonus) return;
                     }
 
@@ -243,6 +245,8 @@ namespace CaptainSkillTree.SkillTree
                                     resistLine += $"{(physResist > 0f ? "," : "")} {L.Get("armor_effect_elem_resist")} <color=#4FC3F7>+{elemResist:F0}</color>";
                                 bonusText += resistLine;
                             }
+                            if (producerBuffActive)
+                                bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Chest:
                             if (flatBonus > 0f)
@@ -269,6 +273,8 @@ namespace CaptainSkillTree.SkillTree
                                     resistLine += $"{(physResist > 0f ? "," : "")} {L.Get("armor_effect_elem_resist")} <color=#4FC3F7>+{elemResist:F0}</color>";
                                 bonusText += resistLine;
                             }
+                            if (producerBuffActive)
+                                bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Legs:
                             if (flatBonus > 0f)
@@ -291,6 +297,8 @@ namespace CaptainSkillTree.SkillTree
                                     resistLine += $"{(physResist > 0f ? "," : "")} {L.Get("armor_effect_elem_resist")} <color=#4FC3F7>+{elemResist:F0}</color>";
                                 bonusText += resistLine;
                             }
+                            if (producerBuffActive)
+                                bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Shield:
                             if (manager.GetSkillLevel("defense_Step3_shield") > 0)
@@ -307,6 +315,8 @@ namespace CaptainSkillTree.SkillTree
                                     : Defense_Config.JotunnShieldNormalSpeedBonusValue;
                                 bonusText += $"\n<color=#9400D3>✨</color><color=white>{L.Get("armor_effect_jotunn_shield")}</color> : {L.Get("armor_stat_block_stamina")} <color=orange>-{Defense_Config.JotunnShieldBlockStaminaReductionValue:F0}%</color>, {L.Get("armor_effect_move_spd")} <color=#00BFFF>+{speed:F0}%</color>";
                             }
+                            if (producerBuffActive)
+                                bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
                             break;
                     }
 

@@ -52,7 +52,7 @@ namespace CaptainSkillTree.Gui
             return null;
         }
         
-        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin", "Paladin" };
+        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin", "craft" };
         
         public bool IsJobIconName(string iconName)
         {

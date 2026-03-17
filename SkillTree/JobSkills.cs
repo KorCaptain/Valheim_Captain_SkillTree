@@ -83,6 +83,9 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
             
+            // 제작 전문가 (Producer)
+            ProducerSkills.RegisterProducerSkill();
+
             // 성기사 (컨피그 기반 동적 툴팁)
             manager.AddSkill(new SkillNode {
                 Id = "Paladin",
@@ -121,6 +124,9 @@ namespace CaptainSkillTree.SkillTree
                 
                 UpdatePaladinTooltip();
                 Plugin.Log.LogDebug("[성기사] 성기사 툴팁 완료");
+
+                Producer_Tooltip.UpdateProducerTooltip();
+                Plugin.Log.LogDebug("[제작 전문가] 제작 전문가 툴팁 완료");
             }
             catch (System.Exception ex)
             {
@@ -222,6 +228,35 @@ namespace CaptainSkillTree.SkillTree
         }
         
         /// <summary>
+        /// 제작 전문가 툴팁 업데이트 (컨피그 변경 시 호출)
+        /// </summary>
+        public static void UpdateProducerTooltip()
+        {
+            try
+            {
+                Plugin.Log.LogDebug("[제작 전문가 툴팁] UpdateProducerTooltip 호출됨");
+
+                Producer_Tooltip.UpdateProducerTooltip();
+
+                var manager = SkillTreeManager.Instance;
+                if (manager?.SkillNodes != null && manager.SkillNodes.ContainsKey("Producer"))
+                {
+                    var newTooltip = Producer_Tooltip.GetProducerTooltip();
+                    manager.SkillNodes["Producer"].Description = newTooltip;
+                    Plugin.Log.LogDebug($"[제작 전문가 툴팁] 직접 업데이트 완료 - 새 툴팁 길이: {newTooltip?.Length ?? 0}");
+                }
+                else
+                {
+                    Plugin.Log.LogWarning("[제작 전문가 툴팁] SkillTreeManager 또는 Producer 노드가 없음");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[제작 전문가 툴팁] 업데이트 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// 한손 근접무기 착용 여부 확인 (성기사 조건)
         /// </summary>
         private static bool IsUsingOneHandedMeleeWeapon(Player player)
@@ -311,6 +346,7 @@ namespace CaptainSkillTree.SkillTree
             var rogueLevel = manager.GetSkillLevel("Rogue");
             var mageLevel = manager.GetSkillLevel("Mage");
             var archerLevel = manager.GetSkillLevel("Archer");
+            var producerLevel = manager.GetSkillLevel("Producer");
 
             // 성능 최적화: 첫 번째로 찾은 직업만 실행
             if (holyKnightLevel > 0)
@@ -344,9 +380,16 @@ namespace CaptainSkillTree.SkillTree
             }
 
             // 아처 멀티샷 실행
-            if (manager.GetSkillLevel("Archer") > 0)
+            if (archerLevel > 0)
             {
                 SkillEffect.ExecuteArcherMultiShot(player);
+                return;
+            }
+
+            // 제작 전문가 - 장인의 축복
+            if (producerLevel > 0)
+            {
+                ProducerSkills.ExecuteProducerBuff(player);
                 return;
             }
 

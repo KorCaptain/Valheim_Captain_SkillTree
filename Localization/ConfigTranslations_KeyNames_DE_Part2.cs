@@ -476,6 +476,50 @@ namespace CaptainSkillTree.Localization
                 // Schwert-Skilltree - Pfadangriff-Erweiterung
                 // ============================================
                 ["Tier6_RushSlash_PathWidth"] = "Tier 6: [Sturmhieb] Pfadangriffsbreite (m)",
+
+                // ============================================
+                // Handwerksmeister (Producer) Job Skills
+                // ============================================
+                ["Producer_Buff_Cooldown"] = "Handwerksmeister: Meistersegen Abklingzeit (Sek)",
+                ["Producer_Buff_Duration"] = "Handwerksmeister: Meistersegen Dauer (Sek)",
+                ["Producer_Buff_Range"] = "Handwerksmeister: Meistersegen Reichweite (m)",
+                ["Producer_Buff_AttackBonus"] = "Handwerksmeister: Meistersegen Angriffsbonus (%)",
+                ["Producer_Buff_MaxHealthBonus"] = "Handwerksmeister: Meistersegen max. LP-Bonus (%)",
+                ["Producer_Buff_StaminaCost"] = "Handwerksmeister: Meistersegen Ausdauerkosten",
+                ["Producer_FarmGrid_Lv1"] = "Handwerksmeister: Anbaufeld-Anzahl Lv1",
+                ["Producer_FarmGrid_Lv2"] = "Handwerksmeister: Anbaufeld-Anzahl Lv2",
+                ["Producer_FarmGrid_Lv3"] = "Handwerksmeister: Anbaufeld-Anzahl Lv3",
+                ["Producer_FarmGrid_Lv4"] = "Handwerksmeister: Anbaufeld-Anzahl Lv4",
+                ["Producer_FarmGrid_Lv5"] = "Handwerksmeister: Anbaufeld-Anzahl Lv5",
+                ["Producer_Durability_Lv2"] = "Handwerksmeister: Haltbarkeitsbonus Lv2 (%)",
+                ["Producer_Durability_Lv3"] = "Handwerksmeister: Haltbarkeitsbonus Lv3 (%)",
+                ["Producer_Durability_Lv4"] = "Handwerksmeister: Haltbarkeitsbonus Lv4 (%)",
+                ["Producer_Durability_Lv5"] = "Handwerksmeister: Haltbarkeitsbonus Lv5 (%)",
+                ["Producer_MaterialReduction_Lv2"] = "Handwerksmeister: Materialeinsparung Lv2 (%)",
+                ["Producer_MaterialReduction_Lv3"] = "Handwerksmeister: Materialeinsparung Lv3 (%)",
+                ["Producer_MaterialReduction_Lv4"] = "Handwerksmeister: Materialeinsparung Lv4 (%)",
+                ["Producer_MaterialReduction_Lv5"] = "Handwerksmeister: Materialeinsparung Lv5 (%)",
+                ["Producer_EnchantChance_Lv3"] = "Handwerksmeister: Verzauberungschance Lv3 (%)",
+                ["Producer_EnchantChance_Lv4"] = "Handwerksmeister: Verzauberungschance Lv4 (%)",
+                ["Producer_EnchantChance_Lv5"] = "Handwerksmeister: Verzauberungschance Lv5 (%)",
+                ["Producer_EnchantWeaponDmgMin_Lv3"] = "Handwerksmeister: Waffe Verzauberung Min Lv3 (%)",
+                ["Producer_EnchantWeaponDmgMax_Lv3"] = "Handwerksmeister: Waffe Verzauberung Max Lv3 (%)",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "Handwerksmeister: Waffe Verzauberung Min Lv4 (%)",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "Handwerksmeister: Waffe Verzauberung Max Lv4 (%)",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "Handwerksmeister: Waffe Verzauberung Min Lv5 (%)",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "Handwerksmeister: Waffe Verzauberung Max Lv5 (%)",
+                ["Producer_EnchantArmorMin_Lv3"] = "Handwerksmeister: Rüstung Verzauberung Min Lv3 (%)",
+                ["Producer_EnchantArmorMax_Lv3"] = "Handwerksmeister: Rüstung Verzauberung Max Lv3 (%)",
+                ["Producer_EnchantArmorMin_Lv4"] = "Handwerksmeister: Rüstung Verzauberung Min Lv4 (%)",
+                ["Producer_EnchantArmorMax_Lv4"] = "Handwerksmeister: Rüstung Verzauberung Max Lv4 (%)",
+                ["Producer_EnchantArmorMin_Lv5"] = "Handwerksmeister: Rüstung Verzauberung Min Lv5 (%)",
+                ["Producer_EnchantArmorMax_Lv5"] = "Handwerksmeister: Rüstung Verzauberung Max Lv5 (%)",
+                ["Producer_EnchantHpMin_Lv3"] = "Handwerksmeister: LP Verzauberung Min Lv3 (%)",
+                ["Producer_EnchantHpMax_Lv3"] = "Handwerksmeister: LP Verzauberung Max Lv3 (%)",
+                ["Producer_EnchantHpMin_Lv4"] = "Handwerksmeister: LP Verzauberung Min Lv4 (%)",
+                ["Producer_EnchantHpMax_Lv4"] = "Handwerksmeister: LP Verzauberung Max Lv4 (%)",
+                ["Producer_EnchantHpMin_Lv5"] = "Handwerksmeister: LP Verzauberung Min Lv5 (%)",
+                ["Producer_EnchantHpMax_Lv5"] = "Handwerksmeister: LP Verzauberung Max Lv5 (%)",
             };
         }
     }

@@ -8,6 +8,7 @@ using CaptainSkillTree.Gui;
 using CaptainSkillTree.Audio;
 using CaptainSkillTree.MMO_System;
 using Jotunn.Managers;
+using CaptainSkillTree.Localization;
 using L10n = CaptainSkillTree.Localization.LocalizationManager;
 
 namespace CaptainSkillTree.Gui
@@ -148,7 +149,7 @@ namespace CaptainSkillTree.Gui
             }
         }
 
-        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin" };
+        private static readonly HashSet<string> JobIconNames = new HashSet<string> { "Berserker", "Tanker", "Rogue", "Archer", "Mage", "mage", "Paladin", "paladin", "craft" };
         private bool IsJobIcon(CaptainSkillTree.SkillTree.SkillNode node)
         {
             string iconName = node.IconName;
@@ -2776,17 +2777,18 @@ namespace CaptainSkillTree.Gui
             {
                 var node = manager.SkillNodes[nodeId];
                 string iconName = node.IconName;
-                
-                if (iconName.Contains("Archer")) return "궁수";
-                if (iconName.Contains("Tanker")) return "탱커";
-                if (iconName.Contains("Berserker")) return "버서커";
-                if (iconName.Contains("Rogue")) return "로그";
-                if (iconName.Contains("Mage")) return "메이지";
-                if (iconName.Contains("Paladin")) return "Paladin";
+
+                if (iconName.Contains("Archer"))   return L.Get("job_archer");
+                if (iconName.Contains("Tanker"))   return L.Get("job_tanker");
+                if (iconName.Contains("Berserker")) return L.Get("job_berserker");
+                if (iconName.Contains("Rogue"))    return L.Get("job_rogue");
+                if (iconName.Contains("Mage"))     return L.Get("job_mage");
+                if (iconName.Contains("Paladin"))  return L.Get("job_paladin");
+                if (iconName.Contains("Producer")) return L.Get("job_producer");
             }
-            return "전사"; // 기본값
+            return L.Get("job_archer"); // 기본값
         }
-        
+
         // 월드 메시지 표시
         private void ShowJobChangeWorldMessage(string nodeId)
         {
@@ -2794,16 +2796,16 @@ namespace CaptainSkillTree.Gui
             {
                 var player = Player.m_localPlayer;
                 if (player == null) return;
-                
+
                 string playerName = player.GetPlayerName();
                 string jobName = GetJobDisplayName(nodeId);
-                string message = $"{playerName}님이 {jobName}으로 전직하였습니다.";
-                
+                string message = L.Get("job_change_announce", playerName, jobName);
+
                 // Valheim의 MessageHud를 사용하여 월드 메시지 표시
                 MessageHud.instance?.ShowMessage(MessageHud.MessageType.Center, message);
 
                 // 채팅으로도 표시
-                Chat.instance?.AddString($"<color=yellow>[전직] {message}</color>");
+                Chat.instance?.AddString($"<color=yellow>{message}</color>");
             }
             catch (System.Exception ex)
             {

@@ -428,6 +428,79 @@ namespace CaptainSkillTree.Localization
                 "【最大生命值加成(%)】\n" +
                 "狂战士被动：提升最大生命值。\n" +
                 "推荐：100%",
+
+                // === 制作专家 (Producer) 职业技能 ===
+                // ========================================
+                ["Producer_Buff_Cooldown"] =
+                "【工匠祝福：冷却时间（秒）】\n" +
+                "制作专家Buff激活之间的冷却时间。\n" +
+                "默认：180秒",
+
+                ["Producer_Buff_Duration"] =
+                "【工匠祝福：持续时间（秒）】\n" +
+                "队友攻击力/HP增益的持续时间。\n" +
+                "默认：120秒",
+
+                ["Producer_Buff_Range"] =
+                "【工匠祝福：范围（米）】\n" +
+                "队友在此范围内获得Buff。\n" +
+                "默认：15米",
+
+                ["Producer_Buff_AttackBonus"] =
+                "【Buff攻击力加成(%)】\n" +
+                "给予Buff队友的攻击力加成。\n" +
+                "默认：15%",
+
+                ["Producer_Buff_MaxHealthBonus"] =
+                "【Buff最大HP加成(%)】\n" +
+                "给予Buff队友的最大HP加成。\n" +
+                "默认：15%",
+
+                ["Producer_Buff_StaminaCost"] =
+                "【Buff体力消耗】\n" +
+                "激活Buff时消耗的体力值。\n" +
+                "默认：20",
+
+                ["Producer_FarmGrid_Lv1"] = "【农耕格大小 Lv1】\nLv1时农耕格中的额外格子数。\n默认：2",
+                ["Producer_FarmGrid_Lv2"] = "【农耕格大小 Lv2】\nLv2时农耕格中的额外格子数。\n默认：2",
+                ["Producer_FarmGrid_Lv3"] = "【农耕格大小 Lv3】\nLv3时农耕格中的额外格子数。\n默认：4",
+                ["Producer_FarmGrid_Lv4"] = "【农耕格大小 Lv4】\nLv4时农耕格中的额外格子数。\n默认：6",
+                ["Producer_FarmGrid_Lv5"] = "【农耕格大小 Lv5】\nLv5时农耕格中的额外格子数。\n默认：8",
+
+                ["Producer_Durability_Lv2"] = "【制作品耐久度加成 Lv2 (%)】\nLv2时制作物品的耐久度加成。\n默认：10%",
+                ["Producer_Durability_Lv3"] = "【制作品耐久度加成 Lv3 (%)】\nLv3时制作物品的耐久度加成。\n默认：15%",
+                ["Producer_Durability_Lv4"] = "【制作品耐久度加成 Lv4 (%)】\nLv4时制作物品的耐久度加成。\n默认：20%",
+                ["Producer_Durability_Lv5"] = "【制作品耐久度加成 Lv5 (%)】\nLv5时制作物品的耐久度加成。\n默认：30%",
+
+                ["Producer_MaterialReduction_Lv2"] = "【材料消耗减少 Lv2 (%)】\nLv2时每次制作节省的材料。\n默认：10%",
+                ["Producer_MaterialReduction_Lv3"] = "【材料消耗减少 Lv3 (%)】\nLv3时每次制作节省的材料。\n默认：15%",
+                ["Producer_MaterialReduction_Lv4"] = "【材料消耗减少 Lv4 (%)】\nLv4时每次制作节省的材料。\n默认：20%",
+                ["Producer_MaterialReduction_Lv5"] = "【材料消耗减少 Lv5 (%)】\nLv5时每次制作节省的材料。\n默认：30%",
+
+                ["Producer_EnchantChance_Lv3"] = "【附魔概率 Lv3 (%)】\nLv3时对制作物品附魔的概率。\n默认：25%",
+                ["Producer_EnchantChance_Lv4"] = "【附魔概率 Lv4 (%)】\nLv4时对制作物品附魔的概率。\n默认：30%",
+                ["Producer_EnchantChance_Lv5"] = "【附魔概率 Lv5 (%)】\nLv5时对制作物品附魔的概率。\n默认：35%",
+
+                ["Producer_EnchantWeaponDmgMin_Lv3"] = "【武器伤害附魔最小值 Lv3 (%)】\nLv3附魔武器伤害最小加成。\n默认：5%",
+                ["Producer_EnchantWeaponDmgMax_Lv3"] = "【武器伤害附魔最大值 Lv3 (%)】\nLv3附魔武器伤害最大加成。\n默认：5%",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【武器伤害附魔最小值 Lv4 (%)】\nLv4附魔武器伤害最小加成。\n默认：7%",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【武器伤害附魔最大值 Lv4 (%)】\nLv4附魔武器伤害最大加成。\n默认：9%",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【武器伤害附魔最小值 Lv5 (%)】\nLv5附魔武器伤害最小加成。\n默认：10%",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【武器伤害附魔最大值 Lv5 (%)】\nLv5附魔武器伤害最大加成。\n默认：12%",
+
+                ["Producer_EnchantArmorMin_Lv3"] = "【护甲附魔最小值 Lv3 (%)】\nLv3附魔护甲最小加成。\n默认：5%",
+                ["Producer_EnchantArmorMax_Lv3"] = "【护甲附魔最大值 Lv3 (%)】\nLv3附魔护甲最大加成。\n默认：5%",
+                ["Producer_EnchantArmorMin_Lv4"] = "【护甲附魔最小值 Lv4 (%)】\nLv4附魔护甲最小加成。\n默认：7%",
+                ["Producer_EnchantArmorMax_Lv4"] = "【护甲附魔最大值 Lv4 (%)】\nLv4附魔护甲最大加成。\n默认：9%",
+                ["Producer_EnchantArmorMin_Lv5"] = "【护甲附魔最小值 Lv5 (%)】\nLv5附魔护甲最小加成。\n默认：10%",
+                ["Producer_EnchantArmorMax_Lv5"] = "【护甲附魔最大值 Lv5 (%)】\nLv5附魔护甲最大加成。\n默认：12%",
+
+                ["Producer_EnchantHpMin_Lv3"] = "【HP附魔最小值 Lv3 (%)】\nLv3附魔最大HP最小加成。\n默认：2%",
+                ["Producer_EnchantHpMax_Lv3"] = "【HP附魔最大值 Lv3 (%)】\nLv3附魔最大HP最大加成。\n默认：2%",
+                ["Producer_EnchantHpMin_Lv4"] = "【HP附魔最小值 Lv4 (%)】\nLv4附魔最大HP最小加成。\n默认：4%",
+                ["Producer_EnchantHpMax_Lv4"] = "【HP附魔最大值 Lv4 (%)】\nLv4附魔最大HP最大加成。\n默认：5%",
+                ["Producer_EnchantHpMin_Lv5"] = "【HP附魔最小值 Lv5 (%)】\nLv5附魔最大HP最小加成。\n默认：6%",
+                ["Producer_EnchantHpMax_Lv5"] = "【HP附魔最大值 Lv5 (%)】\nLv5附魔最大HP最大加成。\n默认：8%",
             };
         }
     }

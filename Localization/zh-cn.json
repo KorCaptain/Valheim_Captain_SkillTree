@@ -1097,5 +1097,25 @@
 "archer_upgrade_confirm": "将弓手升级到Lv{0}？",
 "spear_expert_proc": "闪电打击！",
 "level_decrease_reset": "因等级下降重置技能",
-"level_decrease_notice": "等级下降"
+"level_decrease_notice": "等级下降",
+
+"job_producer": "制作专家",
+"job_producer_short": "工匠",
+"producer_buff_desc": "{0}秒内为15m内队友提供: 攻击力+{1}%, 最大HP+{2}%",
+"producer_buff_applied": "✨ 工匠祝福已激活！",
+"producer_passive_lv1": "农耕格 {0}格",
+"producer_passive_lv2": "农耕格 {0}格, 耐久度+{1}%, 材料-{2}%",
+"producer_passive_lv3": "农耕格 {0}格, 耐久度+{1}%, 材料-{2}%, 附魔概率{3}%",
+"producer_passive_lv4": "农耕格 {0}格, 耐久度+{1}%, 材料-{2}%, 附魔概率{3}%",
+"producer_passive_lv5": "农耕格 {0}格, 耐久度+{1}%, 材料-{2}%, 附魔概率{3}%",
+"producer_enchant_weapon_dmg": "✨ 制作祝福: 攻击力 +{0}%",
+"producer_enchant_armor": "✨ 制作祝福: 护甲 +{0}%",
+"producer_enchant_hp": "✨ 制作祝福: 最大HP +{0}%",
+"producer_enchant_notify": "✨ 附魔成功！",
+"producer_level_req_items": "Lv{0}所需物品",
+"producer_max_level": "★ 已达到最高等级！",
+"requirement_job_producer": "职业: 制作专家",
+"item_trophy_bear": "熊战利品",
+"farmgrid_planted": "{0}粒种子额外种植",
+"farmgrid_no_seeds": "种子不足"
 }

@@ -196,6 +196,10 @@ namespace CaptainSkillTree.Gui
             {
                 tooltipText = Rogue_Tooltip.GetRogueTooltip();
             }
+            else if (node.Id == "Producer")
+            {
+                tooltipText = Producer_Tooltip.GetProducerTooltip();
+            }
             else if (node.Id == "staff_Step6_heal")
             {
                 // 힐 스킬 전용 동적 툴팁 처리
@@ -943,7 +947,7 @@ namespace CaptainSkillTree.Gui
 
             // 직업 스킬
             if (nodeId == "Paladin" || nodeId == "Tanker" || nodeId == "Berserker" ||
-                nodeId == "Rogue" || nodeId == "Mage" || nodeId == "Archer")
+                nodeId == "Rogue" || nodeId == "Mage" || nodeId == "Archer" || nodeId == "Producer")
                 return L.Get("skill_type_job_active");
 
             // 전문가 노드

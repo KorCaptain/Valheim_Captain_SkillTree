@@ -292,7 +292,7 @@ namespace CaptainSkillTree.Localization
                 ["item_trophy_troll"] = "트롤 트로피",
                 ["item_trophy_theelder"] = "엘더 트로피",
                 ["item_trophy_abomination"] = "어보미네이션 트로피",
-                ["item_trophy_bonemass"] = "본메쉬 트로피",
+                ["item_trophy_bonemass"] = "본메스 트로피",
                 ["item_trophy_hatchling"] = "드레이크 트로피",
                 ["item_trophy_dragonqueen"] = "모더 트로피",
                 ["item_trophy_goblinking"] = "야글루스 트로피",

@@ -19,8 +19,8 @@ namespace CaptainSkillTree.Gui
         private RectTransform _containerRt;
 
         // 슬롯별 스킬 ID → 아이콘명 매핑 (Y슬롯: 직업, R/G: 무기 스킬)
-        private static readonly string[] YJobIds  = { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin" };
-        private static readonly string[] YIconNames = { "Berserker_unlock", "Tanker_unlock", "Archer_unlock", "Rogue_unlock", "Mage_unlock", "Paladin_unlock" };
+        private static readonly string[] YJobIds  = { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin", "Producer" };
+        private static readonly string[] YIconNames = { "Berserker_unlock", "Tanker_unlock", "Archer_unlock", "Rogue_unlock", "Mage_unlock", "Paladin_unlock", "craft_unlock" };
         private static readonly string[] RSkillIds = { "crossbow_Step6_expert", "bow_Step6_critboost", "staff_Step6_dual_cast" };
         private static readonly string[] RIconNames = { "crossbow_unlock", "bow_unlock", "staff_unlock" };
         private static readonly string[] GSkillIds = {
@@ -37,7 +37,7 @@ namespace CaptainSkillTree.Gui
         };
         private static readonly string[] HIconNames = {
             "defense_unlock", "attack_unlock",
-            "attack_unlock", "staff_unlock"
+            "attack_unlock", "ranged_unlock"
         };
 
         // HUD 슬롯 정보
@@ -276,6 +276,80 @@ namespace CaptainSkillTree.Gui
                 slot.PassiveSubRoot = subRoot;
                 slot.PassiveSubOverlay = subOverlay;
                 slot.PassiveSubCountdown = subCount;
+
+                // Y슬롯: 버프 수신자용 제작 전문가 아이콘 (직업 아이콘 왼쪽)
+                var buffSubRoot = new GameObject("ProducerBuffSubIcon");
+                buffSubRoot.transform.SetParent(go.transform, false);
+                var buffSubRt = buffSubRoot.AddComponent<RectTransform>();
+                buffSubRt.anchorMin = new Vector2(0.5f, 0.5f);
+                buffSubRt.anchorMax = new Vector2(0.5f, 0.5f);
+                buffSubRt.pivot = new Vector2(0.5f, 0.5f);
+                buffSubRt.anchoredPosition = new Vector2(-55f, 10f);
+                buffSubRt.sizeDelta = new Vector2(28f, 28f);
+
+                // 배경
+                var buffBgGO = new GameObject("Bg");
+                buffBgGO.transform.SetParent(buffSubRoot.transform, false);
+                var buffBgImg = buffBgGO.AddComponent<Image>();
+                buffBgImg.color = new Color(0.2f, 0.2f, 0.2f, 0.85f);
+                buffBgImg.raycastTarget = false;
+                var buffBgRt = buffBgGO.GetComponent<RectTransform>();
+                buffBgRt.anchorMin = Vector2.zero;
+                buffBgRt.anchorMax = Vector2.one;
+                buffBgRt.offsetMin = Vector2.zero;
+                buffBgRt.offsetMax = Vector2.zero;
+
+                // 아이콘
+                var buffIconGO = new GameObject("Icon");
+                buffIconGO.transform.SetParent(buffSubRoot.transform, false);
+                var buffIconImg = buffIconGO.AddComponent<Image>();
+                buffIconImg.raycastTarget = false;
+                buffIconImg.color = Color.white;
+                var buffIconRt = buffIconGO.GetComponent<RectTransform>();
+                buffIconRt.anchorMin = Vector2.zero;
+                buffIconRt.anchorMax = Vector2.one;
+                buffIconRt.offsetMin = Vector2.zero;
+                buffIconRt.offsetMax = Vector2.zero;
+
+                // 오버레이 (fillOrigin=Top → 버프 지속시간 비율)
+                var buffOverlayGO = new GameObject("Overlay");
+                buffOverlayGO.transform.SetParent(buffSubRoot.transform, false);
+                var buffOverlay = buffOverlayGO.AddComponent<Image>();
+                buffOverlay.raycastTarget = false;
+                buffOverlay.color = new Color(0f, 0f, 0f, 0.85f);
+                buffOverlay.type = Image.Type.Filled;
+                buffOverlay.fillMethod = Image.FillMethod.Vertical;
+                buffOverlay.fillOrigin = (int)Image.OriginVertical.Top;
+                buffOverlay.fillAmount = 0f;
+                var buffOverlayRt = buffOverlayGO.GetComponent<RectTransform>();
+                buffOverlayRt.anchorMin = Vector2.zero;
+                buffOverlayRt.anchorMax = Vector2.one;
+                buffOverlayRt.offsetMin = Vector2.zero;
+                buffOverlayRt.offsetMax = Vector2.zero;
+
+                // 카운트다운 텍스트
+                var buffCountGO = new GameObject("Countdown");
+                buffCountGO.transform.SetParent(buffSubRoot.transform, false);
+                var buffCount = buffCountGO.AddComponent<Text>();
+                buffCount.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                buffCount.fontSize = 10;
+                buffCount.fontStyle = FontStyle.Bold;
+                buffCount.color = Color.white;
+                buffCount.alignment = TextAnchor.MiddleCenter;
+                buffCount.raycastTarget = false;
+                buffCount.text = "";
+                var buffCountRt = buffCountGO.GetComponent<RectTransform>();
+                buffCountRt.anchorMin = Vector2.zero;
+                buffCountRt.anchorMax = Vector2.one;
+                buffCountRt.offsetMin = Vector2.zero;
+                buffCountRt.offsetMax = Vector2.zero;
+
+                buffSubRoot.SetActive(false);
+
+                slot.ProducerBuffSubRoot = buffSubRoot;
+                slot.ProducerBuffSubOverlay = buffOverlay;
+                slot.ProducerBuffSubCountdown = buffCount;
+                slot.ProducerBuffSubIconImage = buffIconImg;
             }
 
             return slot;
@@ -480,31 +554,63 @@ namespace CaptainSkillTree.Gui
                 slot.CountdownText.gameObject.SetActive(false);
             }
 
-            // Y슬롯: 버서커 패시브 서브 아이콘 업데이트
-            if (slotKey == "Y" && slot.PassiveSubRoot != null)
+            // Y슬롯: 패시브/버프 서브 아이콘 업데이트
+            if (slotKey == "Y")
             {
-                bool isBerserker = iconName == "Berserker_unlock";
-                if (isBerserker)
-                {
-                    float passiveRatio = ActiveSkillCooldownRegistry.GetCooldownRatio("passive_berserker");
-                    float passiveRemaining = ActiveSkillCooldownRegistry.GetCooldownRemaining("passive_berserker");
-                    bool passiveOnCooldown = passiveRatio > 0f || passiveRemaining > 0f;
+                bool isProducer = iconName == "craft_unlock";
 
-                    slot.PassiveSubRoot.SetActive(passiveOnCooldown);
-                    if (passiveOnCooldown)
+                // PassiveSubRoot: 시전자 버프 시간 OR 버서커 패시브 쿨타임
+                if (slot.PassiveSubRoot != null)
+                {
+                    if (isProducer)
                     {
-                        slot.PassiveSubOverlay.fillAmount = passiveRatio;
-                        if (passiveRemaining > 60f)
-                            slot.PassiveSubCountdown.text = Mathf.CeilToInt(passiveRemaining / 60f) + "m";
-                        else if (passiveRemaining > 0f)
-                            slot.PassiveSubCountdown.text = Mathf.CeilToInt(passiveRemaining).ToString();
-                        else
-                            slot.PassiveSubCountdown.text = "";
+                        float rem = ProducerSkills.GetBuffRemainingForPlayer(Player.m_localPlayer);
+                        float total = ProducerSkills.GetBuffTotalDuration();
+                        bool buffActive = rem > 0f && total > 0f;
+                        slot.PassiveSubRoot.SetActive(buffActive);
+                        if (buffActive)
+                        {
+                            slot.PassiveSubOverlay.fillAmount = rem / total;
+                            slot.PassiveSubCountdown.text = Mathf.CeilToInt(rem).ToString();
+                        }
+                    }
+                    else if (iconName == "Berserker_unlock")
+                    {
+                        float passiveRatio = ActiveSkillCooldownRegistry.GetCooldownRatio("passive_berserker");
+                        float passiveRemaining = ActiveSkillCooldownRegistry.GetCooldownRemaining("passive_berserker");
+                        bool passiveOnCooldown = passiveRatio > 0f || passiveRemaining > 0f;
+                        slot.PassiveSubRoot.SetActive(passiveOnCooldown);
+                        if (passiveOnCooldown)
+                        {
+                            slot.PassiveSubOverlay.fillAmount = passiveRatio;
+                            if (passiveRemaining > 60f)
+                                slot.PassiveSubCountdown.text = Mathf.CeilToInt(passiveRemaining / 60f) + "m";
+                            else if (passiveRemaining > 0f)
+                                slot.PassiveSubCountdown.text = Mathf.CeilToInt(passiveRemaining).ToString();
+                            else
+                                slot.PassiveSubCountdown.text = "";
+                        }
+                    }
+                    else
+                    {
+                        slot.PassiveSubRoot.SetActive(false);
                     }
                 }
-                else
+
+                // ProducerBuffSubRoot: 비시전자가 버프를 받은 경우 왼쪽에 craft_unlock 아이콘 표시
+                if (slot.ProducerBuffSubRoot != null)
                 {
-                    slot.PassiveSubRoot.SetActive(false);
+                    float rem = !isProducer ? ProducerSkills.GetBuffRemainingForPlayer(Player.m_localPlayer) : 0f;
+                    float total = ProducerSkills.GetBuffTotalDuration();
+                    bool show = rem > 0f && total > 0f;
+                    slot.ProducerBuffSubRoot.SetActive(show);
+                    if (show)
+                    {
+                        if (slot.ProducerBuffSubIconImage.sprite == null)
+                            slot.ProducerBuffSubIconImage.sprite = LoadIcon("craft_unlock");
+                        slot.ProducerBuffSubOverlay.fillAmount = rem / total;
+                        slot.ProducerBuffSubCountdown.text = Mathf.CeilToInt(rem).ToString();
+                    }
                 }
             }
         }
@@ -598,6 +704,12 @@ namespace CaptainSkillTree.Gui
             public GameObject PassiveSubRoot;
             public Image PassiveSubOverlay;
             public Text PassiveSubCountdown;
+
+            // 제작 전문가 버프 수신자 서브 아이콘 (Y슬롯 전용)
+            public GameObject ProducerBuffSubRoot;
+            public Image ProducerBuffSubOverlay;
+            public Text ProducerBuffSubCountdown;
+            public Image ProducerBuffSubIconImage;
         }
     }
 }

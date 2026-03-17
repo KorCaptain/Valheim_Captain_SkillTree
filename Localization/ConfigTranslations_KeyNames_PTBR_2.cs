@@ -476,6 +476,50 @@ namespace CaptainSkillTree.Localization
                 // Árvore de Espada - Adição de golpe de caminho
                 // ============================================
                 ["Tier6_RushSlash_PathWidth"] = "Tier 6: [Corte de Investida] Largura do Golpe de Caminho (m)",
+
+                // ============================================
+                // Mestre Artesão (Producer) - Habilidades de Classe
+                // ============================================
+                ["Producer_Buff_Cooldown"] = "Mestre Artesão: Recarga da Bênção do Artesão (seg)",
+                ["Producer_Buff_Duration"] = "Mestre Artesão: Duração da Bênção do Artesão (seg)",
+                ["Producer_Buff_Range"] = "Mestre Artesão: Alcance da Bênção do Artesão (m)",
+                ["Producer_Buff_AttackBonus"] = "Mestre Artesão: Bônus de Ataque da Bênção (%)",
+                ["Producer_Buff_MaxHealthBonus"] = "Mestre Artesão: Bônus de HP Máximo da Bênção (%)",
+                ["Producer_Buff_StaminaCost"] = "Mestre Artesão: Custo de Stamina da Bênção",
+                ["Producer_FarmGrid_Lv1"] = "Mestre Artesão: Contagem de Grade de Plantio Lv1",
+                ["Producer_FarmGrid_Lv2"] = "Mestre Artesão: Contagem de Grade de Plantio Lv2",
+                ["Producer_FarmGrid_Lv3"] = "Mestre Artesão: Contagem de Grade de Plantio Lv3",
+                ["Producer_FarmGrid_Lv4"] = "Mestre Artesão: Contagem de Grade de Plantio Lv4",
+                ["Producer_FarmGrid_Lv5"] = "Mestre Artesão: Contagem de Grade de Plantio Lv5",
+                ["Producer_Durability_Lv2"] = "Mestre Artesão: Bônus de Durabilidade Lv2 (%)",
+                ["Producer_Durability_Lv3"] = "Mestre Artesão: Bônus de Durabilidade Lv3 (%)",
+                ["Producer_Durability_Lv4"] = "Mestre Artesão: Bônus de Durabilidade Lv4 (%)",
+                ["Producer_Durability_Lv5"] = "Mestre Artesão: Bônus de Durabilidade Lv5 (%)",
+                ["Producer_MaterialReduction_Lv2"] = "Mestre Artesão: Redução de Material Lv2 (%)",
+                ["Producer_MaterialReduction_Lv3"] = "Mestre Artesão: Redução de Material Lv3 (%)",
+                ["Producer_MaterialReduction_Lv4"] = "Mestre Artesão: Redução de Material Lv4 (%)",
+                ["Producer_MaterialReduction_Lv5"] = "Mestre Artesão: Redução de Material Lv5 (%)",
+                ["Producer_EnchantChance_Lv3"] = "Mestre Artesão: Chance de Encantamento Lv3 (%)",
+                ["Producer_EnchantChance_Lv4"] = "Mestre Artesão: Chance de Encantamento Lv4 (%)",
+                ["Producer_EnchantChance_Lv5"] = "Mestre Artesão: Chance de Encantamento Lv5 (%)",
+                ["Producer_EnchantWeaponDmgMin_Lv3"] = "Mestre Artesão: Encant. Arma Dano Mín Lv3 (%)",
+                ["Producer_EnchantWeaponDmgMax_Lv3"] = "Mestre Artesão: Encant. Arma Dano Máx Lv3 (%)",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "Mestre Artesão: Encant. Arma Dano Mín Lv4 (%)",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "Mestre Artesão: Encant. Arma Dano Máx Lv4 (%)",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "Mestre Artesão: Encant. Arma Dano Mín Lv5 (%)",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "Mestre Artesão: Encant. Arma Dano Máx Lv5 (%)",
+                ["Producer_EnchantArmorMin_Lv3"] = "Mestre Artesão: Encant. Armadura Mín Lv3 (%)",
+                ["Producer_EnchantArmorMax_Lv3"] = "Mestre Artesão: Encant. Armadura Máx Lv3 (%)",
+                ["Producer_EnchantArmorMin_Lv4"] = "Mestre Artesão: Encant. Armadura Mín Lv4 (%)",
+                ["Producer_EnchantArmorMax_Lv4"] = "Mestre Artesão: Encant. Armadura Máx Lv4 (%)",
+                ["Producer_EnchantArmorMin_Lv5"] = "Mestre Artesão: Encant. Armadura Mín Lv5 (%)",
+                ["Producer_EnchantArmorMax_Lv5"] = "Mestre Artesão: Encant. Armadura Máx Lv5 (%)",
+                ["Producer_EnchantHpMin_Lv3"] = "Mestre Artesão: Encant. HP Mín Lv3 (%)",
+                ["Producer_EnchantHpMax_Lv3"] = "Mestre Artesão: Encant. HP Máx Lv3 (%)",
+                ["Producer_EnchantHpMin_Lv4"] = "Mestre Artesão: Encant. HP Mín Lv4 (%)",
+                ["Producer_EnchantHpMax_Lv4"] = "Mestre Artesão: Encant. HP Máx Lv4 (%)",
+                ["Producer_EnchantHpMin_Lv5"] = "Mestre Artesão: Encant. HP Mín Lv5 (%)",
+                ["Producer_EnchantHpMax_Lv5"] = "Mestre Artesão: Encant. HP Máx Lv5 (%)",
             };
         }
     }

@@ -799,6 +799,7 @@ namespace CaptainSkillTree.SkillTree
             Rogue_Config.InitializeRogueConfig(config);         // Rogue (로그)
             Paladin_Config.InitializePaladinConfig();           // Paladin (성기사)
             Berserker_Config.InitializeBerserkerConfig();       // Berserker (광전사)
+            Producer_Config.InitializeProducerConfig(config);  // Producer (제작 전문가)
 
             _configFile = config;
 
