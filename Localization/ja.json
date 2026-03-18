@@ -1,0 +1,22 @@
+{
+    "job_skill_rogue": "ローグ",
+    "job_rogue": "ローグ",
+
+    "rogue_shadow_strike_cooldown": "シャドーストライクのクールダウン: {0}秒",
+    "rogue_dagger_required": "ダガーまたはクローが必要です",
+    "rogue_shadow_strike_success": "🗡️ シャドーストライク！(毒の爆発×8 + {1}% ダメージ {0}秒間)",
+    "rogue_shadow_strike_no_enemy": "シャドーストライク！(近くに敵がいません)",
+    "rogue_stealth_start": "ステルス開始！({0}秒)",
+    "rogue_stealth_end": "ステルス終了！(理由：{0})",
+    "rogue_buff_end": "シャドーストライクのバフが終了しました！",
+    "rogue_smoke": "スモーク！",
+    "rogue_passive_fall_damage": "ローグのパッシブ：落下ダメージ -{0}！",
+    "rogue_shadow_strike_activate": "💥 シャドーストライク！",
+    "rogue_aggro_protection_end": "ヘイト保護が終了しました",
+    "rogue_stamina_insufficient": "スタミナが不足しています。",
+    "rogue_shadow_strike_end": "シャドーストライク終了",
+    "rogue_desc_shadow_strike": "{0}秒間ステルス、ヘイト除去範囲 {1}m",
+    "rogue_desc_attack_bonus": "{0}秒間 攻撃力 +{1}%",
+    "rogue_passive_desc": "攻撃速度 +{0}%、スタミナ消費 -{1}%、属性耐性 +{2}%",
+    "requirement_rogue": "ダガーまたはクロー装備、ローグ職業"
+}

@@ -166,6 +166,14 @@ namespace CaptainSkillTree.Localization
                 ["rogue_stamina_insufficient"] = "스태미나가 부족합니다.",
                 ["rogue_shadow_strike_success"] = "🗡️ 그림자 일격! (독성 폭발 8회 + {0}초간 데미지 +{1}%)",
                 ["rogue_shadow_strike_end"] = "그림자 일격 종료",
+                ["rogue_dagger_required"] = "단검 또는 발톱이 필요합니다",
+                ["rogue_stealth_start"] = "은신 시작! ({0}초)",
+                ["rogue_stealth_end"] = "은신 종료! (이유: {0})",
+                ["rogue_buff_end"] = "그림자 일격 버프 종료!",
+                ["rogue_smoke"] = "연막!",
+                ["rogue_passive_fall_damage"] = "로그 패시브: 낙하 데미지 -{0}!",
+                ["rogue_shadow_strike_no_enemy"] = "그림자 일격! (주변에 적 없음)",
+                ["rogue_aggro_protection_end"] = "어그로 보호 종료",
 
                 // === Mage Skill Messages ===
                 ["mage_explosion_cooldown"] = "마법 폭발 쿨타임: {0}초",
@@ -374,6 +382,12 @@ namespace CaptainSkillTree.Localization
                 ["archer_preview_arrows_damage"] = "추가 발사체 +{0}, 1발당 공격력 {1}%",
                 ["archer_preview_charges"] = "추가 발사 회수 +{0}",
                 ["archer_job_requirement"] = "활 착용, 아처 직업",
+
+                // === Rogue Job ===
+                ["rogue_desc_shadow_strike"] = "{0}초간 은신, 어그로 제거 범위 {1}m",
+                ["rogue_desc_attack_bonus"] = "{0}초간 공격력 +{1}%",
+                ["rogue_passive_desc"] = "공격 속도 +{0}%, 스태미나 사용 -{1}%, 원소 저항 +{2}%",
+                ["requirement_rogue"] = "단검 또는 발톱 장착, 로그 직업",
             };
         }
 
@@ -615,6 +629,15 @@ namespace CaptainSkillTree.Localization
                 ["rogue_stamina_insufficient"] = "Not enough stamina.",
                 ["rogue_shadow_strike_success"] = "🗡️ Shadow Strike! (Poison Blast x8 + {1}% damage for {0}s)",
                 ["rogue_shadow_strike_end"] = "Shadow Strike ended",
+                ["rogue_shadow_strike_activate"] = "💥 Shadow Strike!",
+                ["rogue_dagger_required"] = "Dagger or Claw required",
+                ["rogue_stealth_start"] = "Stealth started! ({0}s)",
+                ["rogue_stealth_end"] = "Stealth ended! (Reason: {0})",
+                ["rogue_buff_end"] = "Shadow Strike buff ended!",
+                ["rogue_smoke"] = "Smoke!",
+                ["rogue_passive_fall_damage"] = "Rogue passive: fall damage -{0}!",
+                ["rogue_shadow_strike_no_enemy"] = "Shadow Strike! (No enemies nearby)",
+                ["rogue_aggro_protection_end"] = "Aggro protection ended",
 
                 // === Mage Skill Messages ===
                 ["mage_explosion_cooldown"] = "Magic Explosion cooldown: {0}s",

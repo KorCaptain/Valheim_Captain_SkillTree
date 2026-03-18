@@ -697,6 +697,8 @@
     "job_skill_error": "Ошибка во время применения навыка.",
     "rogue_stamina_insufficient": "Недостаточно выносливости.",
     "rogue_shadow_strike_end": "Теневой удар окончен",
+    "rogue_shadow_strike_no_enemy": "Теневой удар! (Нет врагов поблизости)",
+    "rogue_aggro_protection_end": "Защита от аггро завершена",
     "mage_explosion_cooldown": "Перезарядка Магического взрыва: {0}с",
     "mage_eitr_insufficient": "Недостаточно Эйтры.",
     "mage_explosion_success": "🔮 Магический взрыв! (+{1}% магического урона, +{2}м дальности на {0}с)",
