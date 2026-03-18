@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using CaptainSkillTree;
 using CaptainSkillTree.Localization;
@@ -10,7 +8,7 @@ using CaptainSkillTree.Localization;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 로그 스텔스 + 어그로 제거 시스템 (RogueSkills partial class)
+    /// 로그 스텔스 시스템 (RogueSkills partial class)
     /// </summary>
     public static partial class RogueSkills
     {
@@ -20,20 +18,10 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, Coroutine> stealthDurationCoroutine = new Dictionary<Player, Coroutine>();
         private static bool stealthCleanerStarted = false;
 
-        // === 어그로 제거 독립 상태 (공격 시 스텔스 해제 후에도 유지) ===
-        private static Dictionary<Player, float> aggroRemovalEndTime = new Dictionary<Player, float>();
-        private static Dictionary<Player, bool> aggroRemovalActive = new Dictionary<Player, bool>();
-        private static Dictionary<Player, Coroutine> aggroRemovalLoopCoroutine = new Dictionary<Player, Coroutine>();
-
-        // === 리플렉션 필드 캐시 (Harmony 패치 우회용, BaseAI_Stealth_Patches와 동일 패턴) ===
-        private static readonly System.Reflection.FieldInfo s_targetCreatureFieldRaw =
-            typeof(BaseAI).GetField("m_targetCreature",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
         // ==================== 스텔스 시스템 ====================
 
         /// <summary>
-        /// 스텔스 상태 적용 (스텔스 지속시간 동안 몬스터가 플레이어를 타겟팅하지 못함)
+        /// 스텔스 상태 적용
         /// </summary>
         private static void ApplyStealthState(Player player)
         {
@@ -112,26 +100,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 어그로 제거 상태인지 확인 (스텔스와 독립, 공격 시에도 유지)
-        /// </summary>
-        public static bool IsAggroRemoved(Player player)
-        {
-            if (player == null) return false;
-            if (!aggroRemovalActive.TryGetValue(player, out bool active) || !active) return false;
-            if (!aggroRemovalEndTime.TryGetValue(player, out float endTime)) return false;
-
-            if (Time.time >= endTime)
-            {
-                aggroRemovalActive[player] = false;
-                aggroRemovalEndTime.Remove(player);
-                player.Message(MessageHud.MessageType.Center, L.Get("rogue_aggro_protection_end"));
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// 스텔스 시스템 상태 정리 (플레이어 로그아웃 시)
+        /// 스텔스 시스템 상태 정리
         /// </summary>
         public static void CleanupStealthState(Player player)
         {
@@ -144,11 +113,10 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 스텔스 + 어그로 제거 상태 전체 정리 (CleanupRogueSkillsOnDeath에서 호출, lock 내부)
+        /// 스텔스 상태 전체 정리 (CleanupRogueSkillsOnDeath에서 호출, lock 내부)
         /// </summary>
         internal static void CleanupStealthAndAggroState(Player player)
         {
-            // 스텔스 코루틴 정리
             if (stealthDurationCoroutine.TryGetValue(player, out var stealthCo) && stealthCo != null)
             {
                 try
@@ -161,216 +129,6 @@ namespace CaptainSkillTree.SkillTree
             stealthDurationCoroutine.Remove(player);
             stealthEndTime.Remove(player);
             stealthActive.Remove(player);
-
-            // 어그로 제거 루프 코루틴 정리
-            if (aggroRemovalLoopCoroutine.TryGetValue(player, out var aggroLoop) && aggroLoop != null)
-            {
-                try
-                {
-                    if (Plugin.Instance != null) Plugin.Instance.StopCoroutine(aggroLoop);
-                    else if (player != null) player.StopCoroutine(aggroLoop);
-                }
-                catch (Exception) { }
-            }
-            aggroRemovalLoopCoroutine.Remove(player);
-            aggroRemovalEndTime.Remove(player);
-            aggroRemovalActive.Remove(player);
-        }
-
-        // ==================== 어그로 제거 시스템 ====================
-
-        /// <summary>
-        /// 주변 몬스터 어그로 제거
-        /// </summary>
-        private static int RemoveNearbyMonsterAggro(Player player)
-        {
-            int count = 0;
-            try
-            {
-                float aggroRange = Rogue_Config.RogueShadowStrikeAggroRangeValue;
-                Vector3 playerPos = player.transform.position;
-
-                var nearbyEnemies = Character.GetAllCharacters()
-                    .Where(c => c != null && !c.IsDead() && c != player && !c.IsPlayer())
-                    .Where(c => Vector3.Distance(playerPos, c.transform.position) <= aggroRange)
-                    .ToList();
-
-                foreach (var enemy in nearbyEnemies)
-                {
-                    if (enemy == null) continue;
-                    try
-                    {
-                        var baseAI = enemy.GetBaseAI();
-                        if (baseAI != null && SafeRemoveAggro(player, enemy, baseAI, enemy.GetHoverName() ?? enemy.name ?? "Unknown"))
-                            count++;
-                    }
-                    catch (Exception) { }
-                }
-            }
-            catch (System.Exception) { }
-            return count;
-        }
-
-        /// <summary>
-        /// 어그로 제거 반복 코루틴 (1초마다 실행, 버프 시간 동안 지속)
-        /// </summary>
-        private static IEnumerator AggroRemovalLoopCoroutine(Player player, float duration)
-        {
-            int ticks = Mathf.Max(1, Mathf.RoundToInt(duration));
-            Plugin.Log.LogInfo($"[어그로 루프] 시작: duration={duration}, ticks={ticks}");
-
-            for (int i = 0; i < ticks; i++)
-            {
-                yield return new WaitForSeconds(1f);
-
-                try
-                {
-                    if (player == null || player.IsDead())
-                    {
-                        Plugin.Log.LogInfo($"[어그로 루프] 중단 (tick {i + 1}/{ticks}): 플레이어 사망/null");
-                        break;
-                    }
-                    if (Player.m_localPlayer == null || Player.m_localPlayer != player)
-                    {
-                        Plugin.Log.LogInfo($"[어그로 루프] 중단 (tick {i + 1}/{ticks}): 씬 전환 감지");
-                        break;
-                    }
-
-                    Plugin.Log.LogInfo($"[어그로 루프] tick {i + 1}/{ticks} 실행");
-
-                    // VFX를 어그로 제거보다 먼저 실행 (어그로 해제 성공 여부와 무관하게 항상 재생)
-                    try
-                    {
-                        var vfxObj = SimpleVFX.Play("statusailment_01", player.transform.position, 0.5f);
-                        if (vfxObj == null) Plugin.Log.LogWarning($"[어그로 루프] VFX null (tick {i + 1}/{ticks})");
-                    }
-                    catch (Exception ex) { Plugin.Log.LogWarning($"[어그로 루프] VFX 예외: {ex.Message}"); }
-
-                    RemoveNearbyMonsterAggro(player);
-                }
-                catch (Exception ex)
-                {
-                    Plugin.Log.LogError($"[어그로 루프] tick {i + 1}/{ticks} 예외: {ex.Message}");
-                    // 예외가 발생해도 루프 계속 진행 (break 없음)
-                }
-            }
-
-            Plugin.Log.LogInfo($"[어그로 루프] 완료: {ticks}회 반복 끝");
-            aggroRemovalLoopCoroutine.Remove(player);
-            aggroRemovalActive.Remove(player);
-            aggroRemovalEndTime.Remove(player);
-        }
-
-        /// <summary>
-        /// 안전한 어그로 제거 - 다단계 해제 시스템
-        /// </summary>
-        private static bool SafeRemoveAggro(Player player, Character enemy, BaseAI ai, string enemyName)
-        {
-            bool success = false;
-            try
-            {
-                // 버프 지속 중에는 m_targetCreature가 UpdateAI Postfix에 의해 매 프레임 null로 유지됨
-                // → null 체크로 "이미 어그로 없음" 판단 불가 → 무조건 해제 로직 실행
-                var monsterAI = ai as MonsterAI;
-                if (monsterAI != null)
-                    success = TryRemoveMonsterAIHuntPlayer(monsterAI, enemyName);
-
-                TrySetMonsterAIToIdle(monsterAI, enemyName);
-                success |= TryResetTargetCreature(ai, enemyName);
-
-                return VerifyAggroRemoval(player, ai, enemyName, success);
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[❌ 안전한 어그로 제거] {enemyName} 처리 실패: {ex.Message}");
-                return false;
-            }
-        }
-
-        private static bool TryRemoveMonsterAIHuntPlayer(MonsterAI monsterAI, string enemyName)
-        {
-            try
-            {
-                var flags = BindingFlags.NonPublic | BindingFlags.Instance;
-                bool success = false;
-
-                var setHuntMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer", flags);
-                if (setHuntMethod != null) { setHuntMethod.Invoke(monsterAI, new object[] { false }); success = true; }
-
-                var huntPlayerField = typeof(MonsterAI).GetField("m_huntPlayer", flags);
-                if (huntPlayerField != null) { huntPlayerField.SetValue(monsterAI, false); success = true; }
-
-                return success;
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogWarning($"[안전한 어그로 제거] {enemyName} MonsterAI hunt 해제 실패: {ex.Message}");
-                return false;
-            }
-        }
-
-        private static void TrySetMonsterAIToIdle(MonsterAI monsterAI, string enemyName)
-        {
-            if (monsterAI == null) return;
-            try
-            {
-                var stateField = typeof(MonsterAI).GetField("m_state", BindingFlags.NonPublic | BindingFlags.Instance);
-                stateField?.SetValue(monsterAI, 0); // 0 = State.Idle
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogWarning($"[안전한 어그로 제거] {enemyName} Idle 전환 실패: {ex.Message}");
-            }
-        }
-
-        private static bool TryResetTargetCreature(BaseAI ai, string enemyName)
-        {
-            bool success = false;
-            try
-            {
-                var flags = BindingFlags.NonPublic | BindingFlags.Instance;
-
-                var setTargetMethod = ai.GetType().GetMethod("SetTarget", new[] { typeof(Character) });
-                if (setTargetMethod != null) { setTargetMethod.Invoke(ai, new object[] { null }); success = true; }
-
-                ai.GetType().GetField("m_target", flags)?.SetValue(ai, null);
-                ai.GetType().GetField("m_targetCreature", flags)?.SetValue(ai, null);
-                if (success) success = true;
-
-                var setAlerted = ai.GetType().GetMethod("SetAlerted", flags, null, new[] { typeof(bool) }, null);
-                if (setAlerted != null) { setAlerted.Invoke(ai, new object[] { false }); success = true; }
-
-                ai.GetType().GetField("m_timeSinceHurt", flags)?.SetValue(ai, 999f);
-                ai.GetType().GetField("m_lastDamageTime", flags)?.SetValue(ai, 0f);
-
-                return success;
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogWarning($"[안전한 어그로 제거] {enemyName} 타겟 리셋 실패: {ex.Message}");
-                return false;
-            }
-        }
-
-        private static bool VerifyAggroRemoval(Player player, BaseAI ai, string enemyName, bool successSoFar)
-        {
-            try
-            {
-                // raw field 접근: Harmony 패치 우회
-                var finalTarget = s_targetCreatureFieldRaw?.GetValue(ai) as Character;
-                if (finalTarget == null || finalTarget.gameObject != player.gameObject)
-                {
-                    Plugin.Log.LogInfo($"[✅ 안전한 어그로 제거] {enemyName} 어그로 해제 확인됨");
-                    return true;
-                }
-                Plugin.Log.LogWarning($"[❌ 안전한 어그로 제거] {enemyName} 어그로 해제 실패");
-                return successSoFar;
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogWarning($"[안전한 어그로 제거] {enemyName} 최종 확인 실패: {ex.Message}");
-                return successSoFar;
-            }
         }
     }
 }

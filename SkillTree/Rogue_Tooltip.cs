@@ -46,22 +46,26 @@ namespace CaptainSkillTree.SkillTree
                 var buffDuration = Rogue_Config.RogueShadowStrikeBuffDurationValue;
                 var cooldown = Rogue_Config.RogueShadowStrikeCooldownValue;
                 var staminaCost = Rogue_Config.RogueShadowStrikeStaminaCostValue;
-                var aggroRange = Rogue_Config.RogueShadowStrikeAggroRangeValue;
+                var poisonRange = Rogue_Config.RoguePoisonRangeValue;
+                var poisonInstant = Rogue_Config.RoguePoisonInstantDamageValue;
+                var poisonDot = Rogue_Config.RoguePoisonDotDamageValue;
+                var poisonDotDur = Rogue_Config.RoguePoisonDotDurationValue;
+                var vfxCount = Rogue_Config.RoguePoisonVFXCountValue;
 
                 // 로그 패시브 스킬 컨피그 값 가져오기
                 var attackSpeedBonus = Rogue_Config.RogueAttackSpeedBonusValue;
                 var staminaReduction = Rogue_Config.RogueStaminaReductionValue;
                 var elementalDebuff = Rogue_Config.RogueElementalResistanceDebuffValue;
 
-                Plugin.Log.LogDebug($"[로그 툴팁] 컨피그 값들 - 은신시간: {stealthDuration}초, 공격력: +{attackBonus}%, 쿨타임: {cooldown}초, 스태미나: {staminaCost}");
+                Plugin.Log.LogDebug($"[로그 툴팁] 독 폭발 {vfxCount}회, 범위: {poisonRange}m, 즉시: {poisonInstant}, DoT: {poisonDot}/초 {poisonDotDur}초");
 
                 // 메이지 스타일 데이터 구조
                 var data = new RogueTooltipData
                 {
                     skillName = L.Get("job_rogue"),
-                    description = L.Get("rogue_desc_shadow_strike", stealthDuration, aggroRange),
+                    description = L.Get("rogue_desc_shadow_strike", stealthDuration, poisonRange),
                     additionalInfo = L.Get("rogue_desc_attack_bonus", buffDuration, attackBonus),
-                    range = $"{aggroRange}m",
+                    range = $"{poisonRange}m",
                     consumeStamina = $"{staminaCost:F0}",
                     consumeArrow = "",
                     skillType = L.Get("skill_type_job_active", "Y"),
@@ -194,9 +198,9 @@ namespace CaptainSkillTree.SkillTree
             var data = new RogueTooltipData
             {
                 skillName = L.Get("job_rogue"),
-                description = L.Get("rogue_desc_shadow_strike", Rogue_Config.RogueShadowStrikeStealthDurationValue, Rogue_Config.RogueShadowStrikeAggroRangeValue),
+                description = L.Get("rogue_desc_shadow_strike", Rogue_Config.RogueShadowStrikeStealthDurationValue, Rogue_Config.RoguePoisonRangeValue),
                 additionalInfo = L.Get("rogue_desc_attack_bonus", Rogue_Config.RogueShadowStrikeBuffDurationValue, Rogue_Config.RogueShadowStrikeAttackBonusValue),
-                range = $"{Rogue_Config.RogueShadowStrikeAggroRangeValue}m",
+                range = $"{Rogue_Config.RoguePoisonRangeValue}m",
                 consumeStamina = $"{Rogue_Config.RogueShadowStrikeStaminaCostValue:F0}",
                 consumeArrow = "",
                 skillType = L.Get("skill_type_job_active", "Y"),

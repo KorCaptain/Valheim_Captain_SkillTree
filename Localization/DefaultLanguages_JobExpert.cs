@@ -164,7 +164,7 @@ namespace CaptainSkillTree.Localization
                 // === Rogue Skill Messages ===
                 ["rogue_shadow_strike_cooldown"] = "그림자 일격 쿨타임: {0}초",
                 ["rogue_stamina_insufficient"] = "스태미나가 부족합니다.",
-                ["rogue_shadow_strike_success"] = "🗡️ 그림자 일격! (어그로 제거 + {0}초간 데미지 +{1}%)",
+                ["rogue_shadow_strike_success"] = "🗡️ 그림자 일격! (독성 폭발 8회 + {0}초간 데미지 +{1}%)",
                 ["rogue_shadow_strike_end"] = "그림자 일격 종료",
 
                 // === Mage Skill Messages ===
@@ -613,7 +613,7 @@ namespace CaptainSkillTree.Localization
                 // === Rogue Skill Messages ===
                 ["rogue_shadow_strike_cooldown"] = "Shadow Strike cooldown: {0}s",
                 ["rogue_stamina_insufficient"] = "Not enough stamina.",
-                ["rogue_shadow_strike_success"] = "🗡️ Shadow Strike! (Aggro removed + {1}% damage for {0}s)",
+                ["rogue_shadow_strike_success"] = "🗡️ Shadow Strike! (Poison Blast x8 + {1}% damage for {0}s)",
                 ["rogue_shadow_strike_end"] = "Shadow Strike ended",
 
                 // === Mage Skill Messages ===

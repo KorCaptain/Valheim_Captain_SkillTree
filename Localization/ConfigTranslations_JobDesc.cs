@@ -326,15 +326,35 @@ namespace CaptainSkillTree.Localization
                 "공격력 증가 버프가 지속되는 시간입니다.\n" +
                 "권장값: 6-12초",
 
-                ["Rogue_ShadowStrike_SmokeScale"] =
-                "【연막 효과 크기 배율】\n" +
-                "연막 VFX 효과의 크기 배율입니다.\n" +
-                "권장값: 1.5-3.0",
+                ["Rogue_Poison_Range"] =
+                "【독 폭발 범위 (m)】\n" +
+                "각 독 폭발의 영향 범위입니다.\n" +
+                "권장값: 8-15m",
 
-                ["Rogue_ShadowStrike_AggroRange"] =
-                "【어그로 제거 범위 (m)】\n" +
-                "이 범위 내의 적 어그로를 초기화합니다.\n" +
-                "권장값: 10-20m",
+                ["Rogue_Poison_InstantDamage"] =
+                "【즉시 독데미지】\n" +
+                "VFX 1회마다 적에게 가하는 즉시 독데미지입니다.\n" +
+                "권장값: 8-20",
+
+                ["Rogue_Poison_DotDamage"] =
+                "【독 DoT 초당 데미지】\n" +
+                "독 지속 데미지(DoT)의 초당 피해량입니다.\n" +
+                "권장값: 3-8",
+
+                ["Rogue_Poison_DotDuration"] =
+                "【독 DoT 지속시간 (초)】\n" +
+                "독 지속 데미지가 유지되는 시간입니다.\n" +
+                "권장값: 8-15초",
+
+                ["Rogue_Poison_VFXCount"] =
+                "【독 폭발 횟수】\n" +
+                "스킬 시전 시 독 폭발 VFX 반복 횟수입니다.\n" +
+                "권장값: 6-10",
+
+                ["Rogue_Poison_VFXInterval"] =
+                "【독 폭발 간격 (초)】\n" +
+                "각 독 폭발 사이의 시간 간격입니다.\n" +
+                "권장값: 0.3-1.0초",
 
                 ["Rogue_ShadowStrike_StealthDuration"] =
                 "【스텔스 지속시간 (초)】\n" +
@@ -792,15 +812,35 @@ namespace CaptainSkillTree.Localization
                 "Duration of the attack power increase buff.\n" +
                 "Recommended: 6-12 sec",
 
-                ["Rogue_ShadowStrike_SmokeScale"] =
-                "【Smoke Effect Scale】\n" +
-                "Size multiplier for the smoke VFX effect.\n" +
-                "Recommended: 1.5-3.0",
+                ["Rogue_Poison_Range"] =
+                "【Poison Blast Range (m)】\n" +
+                "Radius of each poison blast VFX.\n" +
+                "Recommended: 8-15m",
 
-                ["Rogue_ShadowStrike_AggroRange"] =
-                "【Aggro Clear Range (m)】\n" +
-                "Resets aggro of all enemies within this range.\n" +
-                "Recommended: 10-20m",
+                ["Rogue_Poison_InstantDamage"] =
+                "【Instant Poison Damage】\n" +
+                "Immediate poison damage dealt per VFX trigger.\n" +
+                "Recommended: 8-20",
+
+                ["Rogue_Poison_DotDamage"] =
+                "【Poison DoT Damage per Second】\n" +
+                "Damage per second from the poison DoT effect.\n" +
+                "Recommended: 3-8",
+
+                ["Rogue_Poison_DotDuration"] =
+                "【Poison DoT Duration (sec)】\n" +
+                "Duration of the poison damage over time effect.\n" +
+                "Recommended: 8-15 sec",
+
+                ["Rogue_Poison_VFXCount"] =
+                "【Poison Blast Count】\n" +
+                "Number of times the poison blast VFX repeats.\n" +
+                "Recommended: 6-10",
+
+                ["Rogue_Poison_VFXInterval"] =
+                "【Poison Blast Interval (sec)】\n" +
+                "Time between each poison blast.\n" +
+                "Recommended: 0.3-1.0 sec",
 
                 ["Rogue_ShadowStrike_StealthDuration"] =
                 "【Stealth Duration (sec)】\n" +
