@@ -129,6 +129,7 @@ namespace CaptainSkillTree.SkillTree
 
                 try
                 {
+                    VFX.VFXManager.PlayVFXMultiplayer("fx_greenroots_projectile_hit", "", player.transform.position, Quaternion.identity, 1f);
                     SimpleVFX.Play("statusailment_01", player.transform.position, 1.5f);
                     DealPoisonToNearbyEnemies(player);
                 }
