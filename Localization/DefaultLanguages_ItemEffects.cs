@@ -65,6 +65,7 @@ namespace CaptainSkillTree.Localization
                 ["armor_stat_parry"]             = "패링",
                 ["armor_stat_block_stamina"]     = "블럭 스태미나",
                 ["armor_stat_sec"]               = "초",
+                ["weapon_effect_phys_and_elem"]   = "물리, 속성 공격력",
                 ["weapon_effect_producer_buff"]  = "장인의 축복",
                 ["armor_effect_producer_buff"]   = "장인의 축복",
             };
@@ -131,6 +132,7 @@ namespace CaptainSkillTree.Localization
                 ["armor_stat_parry"]             = "Parry",
                 ["armor_stat_block_stamina"]     = "Block Stamina",
                 ["armor_stat_sec"]               = "s",
+                ["weapon_effect_phys_and_elem"]   = "Phys. & Elemental DMG",
                 ["weapon_effect_producer_buff"]  = "Artisan's Blessing",
                 ["armor_effect_producer_buff"]   = "Artisan's Blessing",
             };

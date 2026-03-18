@@ -99,6 +99,8 @@ namespace CaptainSkillTree.SkillTree
 
             // 시전 VFX (시전자 위치)
             VFXManager.PlayVFXAtPosition("fx_Fader_Spin", player.transform.position);
+            // 시전 SFX
+            VFXManager.PlayVFXAtPosition("sfx_charred_twitcher_alert", player.transform.position);
 
             player.Message(MessageHud.MessageType.Center, L.Get("producer_buff_applied"));
             Plugin.Log.LogDebug($"[제작 전문가] {player.GetPlayerName()} 장인의 축복 발동 ({duration}초)");
@@ -112,7 +114,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 로컬 플레이어 버프 등록 (자신 포함)
             SetPlayerBuff(caster, duration);
-            SimpleVFX.Play("buff_01", caster.transform.position + Vector3.up * 1.5f);
+            SimpleVFX.Play("buff_01", caster.transform.position);
             StartProducerStatusVFX(caster, duration);
 
             // 근처 파티원 버프 (Player 목록에서 범위 내 검색)
@@ -122,7 +124,7 @@ namespace CaptainSkillTree.SkillTree
                 if (Vector3.Distance(p.transform.position, caster.transform.position) <= range)
                 {
                     SetPlayerBuff(p, duration);
-                    SimpleVFX.Play("buff_01", p.transform.position + Vector3.up * 1.5f);
+                    SimpleVFX.Play("buff_01", p.transform.position);
                     StartProducerStatusVFX(p, duration);
                     p.Message(MessageHud.MessageType.Center, L.Get("producer_buff_applied"));
                 }
@@ -245,31 +247,6 @@ namespace CaptainSkillTree.SkillTree
                     if (!IsProducerBuffActive(__instance)) return;
                     float bonus = Producer_Config.ProducerBuff_MaxHealthBonusValue / 100f;
                     hp += hp * bonus;
-                }
-                catch (Exception) { }
-            }
-        }
-
-        // === 버프 중 공격력 +15% (아웃고잉 데미지) ===
-        [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
-        public static class Producer_Character_Damage_AttackBonus_Patch
-        {
-            public static void Prefix(Character __instance, ref HitData hit)
-            {
-                try
-                {
-                    if (hit.GetAttacker() is Player attacker && IsProducerBuffActive(attacker))
-                    {
-                        float bonus = 1f + Producer_Config.ProducerBuff_AttackBonusValue / 100f;
-                        hit.m_damage.m_blunt     *= bonus;
-                        hit.m_damage.m_slash     *= bonus;
-                        hit.m_damage.m_pierce    *= bonus;
-                        hit.m_damage.m_fire      *= bonus;
-                        hit.m_damage.m_frost     *= bonus;
-                        hit.m_damage.m_lightning *= bonus;
-                        hit.m_damage.m_poison    *= bonus;
-                        hit.m_damage.m_spirit    *= bonus;
-                    }
                 }
                 catch (Exception) { }
             }

@@ -12,6 +12,9 @@ namespace CaptainSkillTree.Gui
         public Dictionary<string, GameObject> nodeObjects = new Dictionary<string, GameObject>();
         public Dictionary<(string from, string to), Image> connectionLines = new Dictionary<(string, string), Image>();
 
+        // 애니메이션 중 배지 표시 억제 노드 ID 집합
+        private readonly HashSet<string> _suppressBadge = new HashSet<string>();
+
         // job_icon 번들 우선, skill_node 번들 보조로 아이콘 로딩
         private Sprite TryLoadSprite(string iconName)
         {
@@ -288,13 +291,13 @@ namespace CaptainSkillTree.Gui
                         }
 
                         img.pixelsPerUnitMultiplier = 1.0f;
-                        
+
                         // 표준 해제 투명도 설정 (100% 불투명)
                         img.color = new Color(1f, 1f, 1f, 1f);
-                        
+
                         // 모든 언락된 아이콘은 노드선 위에 렌더링
                         nodeObj.transform.SetAsLastSibling();
-                        
+
                         // 직업 아이콘의 Canvas 제거 (클릭 시 배경 뒤로 사라지는 문제 방지)
                         if (isJobIconOrForced)
                         {
@@ -306,7 +309,19 @@ namespace CaptainSkillTree.Gui
                                 if (raycaster != null) UnityEngine.Object.Destroy(raycaster);
                             }
                         }
-                        
+
+                        // 다중 레벨 직업 아이콘에 붉은 레벨 배지 표시 (Lv2 이상)
+                        if ((node.Id == "Archer" || node.Id == "Producer") && level >= 2)
+                        {
+                            if (!_suppressBadge.Contains(node.Id))
+                                UpdateLevelBadge(nodeObj, level);
+                            // 억제 중이면 기존 상태 유지 (배지 미표시)
+                        }
+                        else
+                        {
+                            RemoveLevelBadge(nodeObj);
+                        }
+
                     }
                     else
                     {
@@ -327,10 +342,10 @@ namespace CaptainSkillTree.Gui
                         }
 
                         img.pixelsPerUnitMultiplier = 1.0f;
-                        
+
                         // 표준 잠김 투명도 설정 (50% 투명)
                         img.color = new Color(1f, 1f, 1f, 0.5f);
-                        
+
                         // 잠김 상태의 직업 아이콘도 Canvas 제거 확인
                         if (isJobIconOrForced)
                         {
@@ -342,6 +357,9 @@ namespace CaptainSkillTree.Gui
                                 if (raycaster != null) UnityEngine.Object.Destroy(raycaster);
                             }
                         }
+
+                        // 잠김 상태에서는 레벨 배지 제거
+                        RemoveLevelBadge(nodeObj);
                     }
                 }
             }
@@ -382,6 +400,62 @@ namespace CaptainSkillTree.Gui
             // 직업 아이콘 Z-Order 재설정 완료 (로그 제거)
         }
         
+
+        public void SuppressBadge(string nodeId) => _suppressBadge.Add(nodeId);
+
+        public void RevealBadge(string nodeId, int level)
+        {
+            _suppressBadge.Remove(nodeId);
+            if (nodeObjects.TryGetValue(nodeId, out var nodeObj))
+                UpdateLevelBadge(nodeObj, level);
+        }
+
+        /// <summary>
+        /// 직업 아이콘 위에 붉은 레벨 숫자 배지를 표시/갱신 (Lv2 이상)
+        /// </summary>
+        private void UpdateLevelBadge(GameObject nodeObj, int level)
+        {
+            const string badgeName = "LevelBadge";
+            var existing = nodeObj.transform.Find(badgeName);
+            UnityEngine.UI.Text badgeText;
+
+            if (existing == null)
+            {
+                var badgeGo = new GameObject(badgeName, typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Text));
+                badgeGo.transform.SetParent(nodeObj.transform, false);
+                badgeText = badgeGo.GetComponent<UnityEngine.UI.Text>();
+                badgeText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                badgeText.fontSize = 22;
+                badgeText.fontStyle = FontStyle.Bold;
+                badgeText.color = new Color(1f, 0.15f, 0.15f, 1f);
+                badgeText.alignment = TextAnchor.MiddleCenter;
+                badgeText.raycastTarget = false;
+
+                var badgeRect = badgeGo.GetComponent<RectTransform>();
+                badgeRect.anchorMin = new Vector2(0.5f, 1f);
+                badgeRect.anchorMax = new Vector2(0.5f, 1f);
+                badgeRect.pivot     = new Vector2(0.5f, 0f);
+                badgeRect.anchoredPosition = new Vector2(0f, 8f);
+                badgeRect.sizeDelta = new Vector2(50f, 28f);
+            }
+            else
+            {
+                badgeText = existing.GetComponent<UnityEngine.UI.Text>();
+            }
+
+            if (badgeText != null)
+                badgeText.text = $"Lv{level}";
+        }
+
+        /// <summary>
+        /// 레벨 배지 제거
+        /// </summary>
+        private void RemoveLevelBadge(GameObject nodeObj)
+        {
+            var existing = nodeObj.transform.Find("LevelBadge");
+            if (existing != null)
+                UnityEngine.Object.Destroy(existing.gameObject);
+        }
 
         private Image CreateLine(RectTransform parent, RectTransform from, RectTransform to)
         {

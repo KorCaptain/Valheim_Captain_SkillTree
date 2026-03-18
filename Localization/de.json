@@ -1111,6 +1111,7 @@
   "producer_level_req_items": "Lv{0} benötigte Gegenstände",
   "producer_max_level": "★ Maximales Level erreicht!",
   "requirement_job_producer": "Klasse: Handwerksmeister",
+  "job_change_announce": "{0} hat den Beruf zu {1} gewechselt.",
   "item_trophy_bear": "Bären-Trophäe",
   "farmgrid_planted": "{0} Samen zusätzlich gepflanzt",
   "farmgrid_no_seeds": "Nicht genug Samen"

@@ -422,6 +422,15 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug($"[공속] 분노의 망치 1타 버프: +{furyHammerBonus}%");
                 }
 
+                // crafting_lv2 무기 마법부여 공격속도 보너스
+                if (weapon?.m_customData != null &&
+                    weapon.m_customData.TryGetValue("csct_weapon_spd", out string spdVal) &&
+                    float.TryParse(spdVal, out float craftSpdBonus) && craftSpdBonus > 0f)
+                {
+                    bonus += craftSpdBonus;
+                    Plugin.Log.LogDebug($"[공속] 제작 Lv2 마법부여: +{craftSpdBonus}%");
+                }
+
                 // 최종 보너스 로그 출력
                 if (bonus > 0f)
                 {

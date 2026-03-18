@@ -1115,6 +1115,7 @@
 "producer_level_req_items": "Lv{0}所需物品",
 "producer_max_level": "★ 已达到最高等级！",
 "requirement_job_producer": "职业: 制作专家",
+"job_change_announce": "{0} 已转职为 {1}。",
 "item_trophy_bear": "熊战利品",
 "farmgrid_planted": "{0}粒种子额外种植",
 "farmgrid_no_seeds": "种子不足"

@@ -1237,6 +1237,7 @@
     "producer_level_req_items": "Itens para Lv{0}",
     "producer_max_level": "★ Nível máximo atingido!",
     "requirement_job_producer": "Classe: Mestre Artesão",
+    "job_change_announce": "{0} mudou de profissão para {1}.",
     "item_trophy_bear": "Troféu de Urso",
     "farmgrid_planted": "{0} sementes plantadas adicionalmente",
     "farmgrid_no_seeds": "Sementes insuficientes"

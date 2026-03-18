@@ -121,16 +121,23 @@ namespace CaptainSkillTree.SkillTree
             };
         }
 
-        // === 레벨별 농사 그리드 수 반환 헬퍼 ===
-        public static int GetFarmGridCount(int level)
+        // === 레벨별 농사 그리드 (rows, cols) 반환 ===
+        // lv1=1x2, lv2=2x2, lv3=2x3, lv4=3x3, lv5=3x4
+        public static (int rows, int cols) GetFarmGridDimensions(int level)
         {
             return level switch {
-                1 => ProducerFarmGrid_Lv1Value,
-                2 => ProducerFarmGrid_Lv2Value,
-                3 => ProducerFarmGrid_Lv3Value,
-                4 => ProducerFarmGrid_Lv4Value,
-                _ => level >= 5 ? ProducerFarmGrid_Lv5Value : 0
+                1 => (1, 2),
+                2 => (2, 2),
+                3 => (2, 3),
+                4 => (3, 3),
+                _ => level >= 5 ? (3, 4) : (0, 0)
             };
+        }
+
+        public static int GetFarmGridCount(int level)
+        {
+            var (rows, cols) = GetFarmGridDimensions(level);
+            return rows * cols;
         }
 
         /// <summary>

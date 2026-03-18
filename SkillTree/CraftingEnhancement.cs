@@ -2,6 +2,7 @@ using HarmonyLib;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -387,7 +388,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 if (__instance?.m_customData == null) return;
-                
+
                 if (__instance.m_customData.TryGetValue("CraftingDurabilityBonus", out string bonusStr) &&
                     float.TryParse(bonusStr, out float bonus))
                 {
@@ -401,6 +402,126 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[내구도 패치] 오류: {ex.Message}");
             }
+        }
+    }
+
+    // ============================================================
+    // crafting_lv2 무기 마법부여: InventoryGui.DoCrafting Postfix
+    // 25% 확률로 무기에 공격력+5 또는 공격속도+5% 부여
+    // ============================================================
+    [HarmonyPatch(typeof(InventoryGui), "DoCrafting")]
+    public static class CraftingEnhancement_DoCrafting_Patch
+    {
+        private const string CRAFT_DMG_KEY = "csct_weapon_dmg";
+        private const string CRAFT_SPD_KEY = "csct_weapon_spd";
+
+        public static void Postfix(InventoryGui __instance, Player player)
+        {
+            try
+            {
+                if (player != Player.m_localPlayer) return;
+
+                var manager = SkillTreeManager.Instance;
+                if (manager == null || manager.GetSkillLevel("crafting_lv2") <= 0) return;
+
+                var crafted = FindLastWeapon(player);
+                if (crafted == null) return;
+
+                // 중복 방지
+                if (crafted.m_customData != null &&
+                    (crafted.m_customData.ContainsKey(CRAFT_DMG_KEY) ||
+                     crafted.m_customData.ContainsKey(CRAFT_SPD_KEY))) return;
+
+                // 25% 확률
+                if (UnityEngine.Random.Range(0f, 1f) > 0.25f) return;
+
+                if (crafted.m_customData == null)
+                    crafted.m_customData = new Dictionary<string, string>();
+
+                bool useDmg = UnityEngine.Random.Range(0, 2) == 0;
+                if (useDmg)
+                {
+                    crafted.m_customData[CRAFT_DMG_KEY] = "5";
+                    player.Message(MessageHud.MessageType.Center, L.Get("crafting_lv2_enchant_dmg"));
+                }
+                else
+                {
+                    crafted.m_customData[CRAFT_SPD_KEY] = "5";
+                    player.Message(MessageHud.MessageType.Center, L.Get("crafting_lv2_enchant_spd"));
+                }
+                Plugin.Log.LogDebug($"[제작 Lv2 마법부여] {crafted.m_shared.m_name}: {(useDmg ? "공격력+5" : "공격속도+5%")}");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[제작 Lv2 마법부여] 오류: {ex.Message}");
+            }
+        }
+
+        private static ItemDrop.ItemData FindLastWeapon(Player player)
+        {
+            var inv = player.GetInventory();
+            if (inv == null) return null;
+
+            ItemDrop.ItemData newest = null;
+            foreach (var item in inv.GetAllItems())
+            {
+                if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.OneHandedWeapon ||
+                    item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon ||
+                    item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Bow)
+                {
+                    newest = item;
+                }
+            }
+            return newest;
+        }
+    }
+
+    // ============================================================
+    // crafting_lv2 무기 공격력 보너스 적용: ItemDrop.ItemData.GetDamage
+    // ============================================================
+    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetDamage), new[] { typeof(int), typeof(float) })]
+    public static class ItemData_GetDamage_CraftWeaponBonus_Patch
+    {
+        [HarmonyPriority(Priority.Low)]
+        public static void Postfix(ItemDrop.ItemData __instance, ref HitData.DamageTypes __result)
+        {
+            try
+            {
+                if (__instance?.m_customData == null) return;
+                if (__instance.m_customData.TryGetValue("csct_weapon_dmg", out string val) &&
+                    float.TryParse(val, out float bonus) && bonus > 0f)
+                {
+                    __result.m_slash  += bonus;
+                    __result.m_blunt  += bonus;
+                    __result.m_pierce += bonus;
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[제작 Lv2 데미지 패치] 오류: {ex.Message}");
+            }
+        }
+    }
+
+    // ============================================================
+    // crafting_lv2 무기 마법부여 툴팁 표시
+    // ============================================================
+    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip),
+        new Type[] { typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int) })]
+    public static class ItemData_GetTooltip_CraftEnchant_Patch
+    {
+        public static void Postfix(ref string __result, ItemDrop.ItemData item)
+        {
+            try
+            {
+                if (item?.m_customData == null) return;
+
+                if (item.m_customData.TryGetValue("csct_weapon_dmg", out string dmg))
+                    __result += $"\n<color=#FFD700>{L.Get("crafting_lv2_enchant_dmg_tooltip", dmg)}</color>";
+                else if (item.m_customData.TryGetValue("csct_weapon_spd", out string spd))
+                    __result += $"\n<color=#FFD700>{L.Get("crafting_lv2_enchant_spd_tooltip", spd)}</color>";
+            }
+            catch (Exception) { }
         }
     }
 }

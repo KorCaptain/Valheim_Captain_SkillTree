@@ -299,6 +299,13 @@ namespace CaptainSkillTree.SkillTree
                         }
                     }
 
+                    // === 제작 전문가 장인의 축복 버프 (물리+속성 15% 증가) ===
+                    if (ProducerSkills.IsProducerBuffActive(player))
+                    {
+                        float producerBonus = Producer_Config.ProducerBuff_AttackBonusValue / 100f;
+                        totalDamageMultiplier *= (1f + producerBonus);
+                    }
+
                     // 총 데미지 배율 적용
                     if (totalDamageMultiplier > 1f)
                     {

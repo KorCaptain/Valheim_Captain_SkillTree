@@ -121,6 +121,10 @@ namespace CaptainSkillTree.Localization
                 ["crafting_lv2_effect"] = "🔨 제작 Lv2 습득!",
                 ["crafting_lv3_effect"] = "🔨 제작 Lv3 습득!",
                 ["crafting_lv4_effect"] = "🔨 제작 Lv4 습득! 은 검+헬멧 보유 시 제작 강화 효과!",
+                ["crafting_lv2_enchant_dmg"] = "✨ 마법부여: 공격력 +5 적용됨!",
+                ["crafting_lv2_enchant_spd"] = "✨ 마법부여: 공격속도 +5% 적용됨!",
+                ["crafting_lv2_enchant_dmg_tooltip"] = "✨ 마법부여: 공격력 +{0}",
+                ["crafting_lv2_enchant_spd_tooltip"] = "✨ 마법부여: 공격속도 +{0}%",
 
                 // === Crossbow Skills ===
                 ["crossbow_skill_expert"] = "석궁 전문가",
@@ -462,6 +466,10 @@ namespace CaptainSkillTree.Localization
                 ["crafting_lv2_effect"] = "Crafting Lv2 acquired!",
                 ["crafting_lv3_effect"] = "Crafting Lv3 acquired!",
                 ["crafting_lv4_effect"] = "Crafting Lv4 acquired! Crafting boost with silver sword+helmet!",
+                ["crafting_lv2_enchant_dmg"] = "✨ Enchant: ATK +5 applied!",
+                ["crafting_lv2_enchant_spd"] = "✨ Enchant: ATK SPD +5% applied!",
+                ["crafting_lv2_enchant_dmg_tooltip"] = "✨ Enchant: ATK +{0}",
+                ["crafting_lv2_enchant_spd_tooltip"] = "✨ Enchant: ATK SPD +{0}%",
 
                 // === Crossbow Skills ===
                 ["crossbow_skill_expert"] = "Crossbow Expert",

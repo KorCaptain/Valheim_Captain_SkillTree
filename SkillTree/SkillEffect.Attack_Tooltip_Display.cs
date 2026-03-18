@@ -57,6 +57,7 @@ namespace CaptainSkillTree.SkillTree
         public float HeroStrikeChance;    // 영웅 타격 스태거 확률
         public bool HasSpearThrow;        // 투창 전문가 레이블 표시용
         public float SpearThrowBonus;
+        public float ProducerEnchantPct;  // Producer 무기 인챈트 % (AppendExtraStats 중복표시 방지용)
 
         public bool HasAny()
         {
@@ -356,6 +357,39 @@ namespace CaptainSkillTree.SkillTree
                     break;
             }
 
+            // 제작 전문가 버프 — 물리+속성 모두 적용 (툴팁 수치 반영용)
+            if (ProducerSkills.IsProducerBuffActive(Player.m_localPlayer))
+            {
+                float producerPct = Producer_Config.ProducerBuff_AttackBonusValue;
+                physPct += producerPct;
+                elemPct += producerPct;
+            }
+
+            // crafting_lv2 무기 마법부여 — 아이템 customData에서 직접 읽기
+            if (item?.m_customData != null)
+            {
+                if (item.m_customData.TryGetValue("csct_weapon_dmg", out string craftDmgStr) &&
+                    float.TryParse(craftDmgStr, out float craftDmg) && craftDmg > 0f)
+                    b.FlatAllPhysical += craftDmg;
+
+                if (item.m_customData.TryGetValue("csct_weapon_spd", out string craftSpdStr) &&
+                    float.TryParse(craftSpdStr, out float craftSpd) && craftSpd > 0f)
+                    b.AttackSpeed += craftSpd;
+            }
+
+            // ProducerCrafting 무기 인챈트 % 반영 (WeaponDmg 타입 — 물리+속성 모두 적용)
+            var pEnchantType = ProducerCrafting.GetEnchantType(item);
+            if (pEnchantType == ProducerCrafting.EnchantType.WeaponDmg)
+            {
+                float pEnchantVal = ProducerCrafting.GetEnchantValue(item);
+                if (pEnchantVal > 0f)
+                {
+                    physPct += pEnchantVal;
+                    elemPct += pEnchantVal;
+                    b.ProducerEnchantPct = pEnchantVal;
+                }
+            }
+
             b.PctPhysical  = physPct;
             b.PctElemental = elemPct;
             return b;
@@ -479,11 +513,14 @@ namespace CaptainSkillTree.SkillTree
         // ─────────────────────────────────────────────────────────────────
         public static void AppendExtraStats(ref string result, WeaponBonuses b, HitData.DamageTypes raw)
         {
-            float displayPhysPct = b.PctPhysical - (b.HasSuppressAttack ? b.SuppressAttackPct : 0f);
+            float producerDisplayPct = ProducerSkills.IsProducerBuffActive(Player.m_localPlayer)
+                ? Producer_Config.ProducerBuff_AttackBonusValue : 0f;
+            float displayPhysPct = b.PctPhysical - (b.HasSuppressAttack ? b.SuppressAttackPct : 0f) - producerDisplayPct - b.ProducerEnchantPct;
+            float displayElemPct = b.PctElemental - producerDisplayPct - b.ProducerEnchantPct;
             if (displayPhysPct > 0.01f)
                 result += $"\n<color={COL_ATK_PHY}>⚔️ {L.Get("weapon_effect_phys_atk")}: +{displayPhysPct:F0}%</color>";
-            if (b.PctElemental > 0.01f)
-                result += $"\n<color={COL_ATK_ELEM}>🔥 {L.Get("weapon_effect_elem_atk")}: +{b.PctElemental:F0}%</color>";
+            if (displayElemPct > 0.01f)
+                result += $"\n<color={COL_ATK_ELEM}>🔥 {L.Get("weapon_effect_elem_atk")}: +{displayElemPct:F0}%</color>";
             if (b.MoveSpeed > 0.01f)
                 result += $"\n<color={COL_MOVE_SPD}>💨 {L.Get("weapon_effect_move_spd")}: +{b.MoveSpeed:F0}%</color>";
             if (b.AttackSpeed > 0.01f)
