@@ -795,6 +795,19 @@ namespace CaptainSkillTree.Localization
                 }
                 File.WriteAllText(zhPath, DictToJson(zhData), System.Text.Encoding.UTF8);
                 Plugin.Log.LogDebug($"[Localization] Translation/zh-cn.json exported ({zhData.Count} keys, {zhTranslations?.Count ?? 0} ZH-CN translated)");
+
+                // ja.json: EN 전체 키를 기준으로, JA 번역값으로 덮어씌우기
+                var jaPath = Path.Combine(translationPath, "ja.json");
+                var jaData = new Dictionary<string, string>(enData);
+                var jaTranslations = LoadFromEmbeddedResource("ja") ??
+                                     (_translations.ContainsKey("ja") ? _translations["ja"] : null);
+                if (jaTranslations != null)
+                {
+                    foreach (var kvp in jaTranslations)
+                        jaData[kvp.Key] = kvp.Value;
+                }
+                File.WriteAllText(jaPath, DictToJson(jaData), System.Text.Encoding.UTF8);
+                Plugin.Log.LogDebug($"[Localization] Translation/ja.json exported ({jaData.Count} keys, {jaTranslations?.Count ?? 0} JA translated)");
             }
             catch (Exception ex)
             {

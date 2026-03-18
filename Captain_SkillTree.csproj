@@ -161,6 +161,8 @@
     <EmbeddedResource Include="Localization/pt_BR.json" />
     <!-- 중국어(간체) 번역 JSON -->
     <EmbeddedResource Include="Localization/zh-cn.json" />
+    <!-- 일본어 번역 JSON -->
+    <EmbeddedResource Include="Localization/ja.json" />
   </ItemGroup>
   <ItemGroup>
     <!-- VFX 효과 에셋들 (VFX 폴더의 모든 프리팹을 EmbeddedResource로 포함) -->
