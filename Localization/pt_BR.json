@@ -38,16 +38,10 @@
     "rogue_shadow_strike_success": "🗡️ Golpe Sombrio! (Aggro removido + {1}% de dano por {0}s)",
     "rogue_shadow_strike_no_enemy": "Golpe Sombrio ativado! (Nenhum inimigo próximo)",
 
-    "rogue_stealth_start": "Modo furtivo ativado! ({0}s)",
-    "rogue_stealth_end": "Furtividade encerrada! (Motivo: {0})",
-
     "rogue_buff_end": "Bônus do Golpe Sombrio encerrado!",
     "rogue_smoke": "Cortina de fumaça!",
 
-    "rogue_passive_fall_damage": "Passiva do Ladino: -{0}% de dano de queda",
-
     "rogue_shadow_strike_activate": "💥 Golpe Sombrio ativado!",
-    "rogue_aggro_protection_end": "Proteção de aggro encerrada",
 
     "tanker_taunt_cooldown": "Provocação em recarga! Restam {0}s",
     "tanker_shield_required": "É necessário um escudo",
@@ -464,10 +458,21 @@
     "berserker_default_tooltip": "Descrição:\n[Habilidade Ativa - Tecla Y]\n+2% de dano por -1% de vida por 20s, mais forte com vida baixa\n\n[Habilidade Passiva]\n• Regeneração de stamina +20% (sempre ativo)\n• 7s de invencibilidade quando vida abaixo de 10% (recarga 300s)\n\nAdicional: Limite máximo de +200% de dano, efeito de aura vermelha/dourada\nAlcance: Próprio\nCusto: Stamina 20 (somente ativo)\nRecarga: 45s (ativo), 300s (passivo)\nRequisito: Classe Berserker\nNota: Apenas uma classe pode ser selecionada, Nv 10+\nItem Necessário: Lança de Casca Ancestral",
     "requirement_job_berserker": "Classe Berserker",
 
-    "rogue_desc_shadow_strike": "{0}s de furtividade, alcance de remoção de aggro {1}m",
+    "rogue_desc_shadow_strike": "Explosão de Veneno x{0}, alcance {1}m",
     "rogue_desc_attack_bonus": "+{1}% de ataque por {0}s",
     "rogue_passive_desc": "Velocidade de ataque +{0}%, Uso de stamina -{1}%, Resist. elemental +{2}%",
     "requirement_rogue": "Faca ou Garra equipada, classe Ladino",
+    "rogue_passive_lv1": "Vel. Ataque +{0}%, Stamina -{1}%, Resist. Elemental +{2}%",
+    "rogue_passive_lv2": "Vel. Ataque +{0}%, Stamina -{1}%, Resist. Elemental +{2}%, Vel. Mov. +{3}%, Resist. Veneno +{4}%",
+    "rogue_passive_lv3": "Vel. Ataque +{0}%, Stamina -{1}%, Resist. Elemental +{2}%, Vel. Mov. +{3}%, Resist. Veneno/Frio +{4}%",
+    "rogue_passive_lv4": "Vel. Ataque +{0}%, Stamina -{1}%, Resist. Elemental +{2}%, Vel. Mov. +{3}%, Resist. Veneno/Frio/Fogo +{4}%",
+    "rogue_passive_lv5": "Vel. Ataque +{0}%, Stamina -{1}%, Resist. Elemental +{2}%, Vel. Mov. +{3}%, Todas Resist. Elementais +{4}%",
+    "rogue_effect_strike": "Buff ATQ {0}% ({1}s), Explosão Veneno x{2}",
+    "rogue_preview_attack": "Buff ATQ +{0}%, Explosão Veneno +{1}",
+    "rogue_preview_charges": "Carga de Golpe Sombrio +{0}",
+    "rogue_max_level": "★ Nível Máximo Alcançado!",
+    "rogue_level_req_items": "Itens Necessários Lv{0}",
+    "rogue_charges_display": "{0} Carga(s)",
 
     "mage_desc_aoe": "Dano em área {0}%",
     "mage_passive_resistance": "Resistência mágica +{0}%",

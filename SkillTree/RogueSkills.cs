@@ -11,9 +11,9 @@ using CaptainSkillTree.Localization;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 로그 직업 전용 스킬 시스템
-    /// Y키: 그림자 일격 → 8회 연속 독 폭발 (10m 범위, 즉시 독데미지 +10, 10초간 초당 5 독데미지)
-    /// 스텔스 시스템은 RogueStealthSystem.cs (partial class) 참조
+    /// 로그 직업 전용 스킬 시스템 (Lv1~5)
+    /// Y키: 그림자 일격 → 연속 독 폭발 (범위, 즉시 독데미지, DoT 레벨별 성장)
+    /// 헬퍼 메서드: RogueSkillHelpers.cs (partial class)
     /// </summary>
     public static partial class RogueSkills
     {
@@ -23,6 +23,9 @@ namespace CaptainSkillTree.SkillTree
         // === 그림자 일격 버프 상태 관리 ===
         private static Dictionary<Player, float> rogueAttackBuffExpiry = new Dictionary<Player, float>();
         private static Dictionary<Player, Coroutine> rogueAttackBuffCoroutine = new Dictionary<Player, Coroutine>();
+
+        // === 충전 시스템 ===
+        private static Dictionary<Player, int> rogueShadowStrikeChargesLeft = new Dictionary<Player, int>();
 
         // === 버프 VFX 시스템 ===
         private static Dictionary<Player, GameObject> rogueBuffVFXInstances = new Dictionary<Player, GameObject>();
@@ -41,7 +44,7 @@ namespace CaptainSkillTree.SkillTree
                 Name = "로그",
                 Description = Rogue_Tooltip.GetRogueTooltip(),
                 RequiredPoints = 0,
-                MaxLevel = 1,
+                MaxLevel = 5,
                 Tier = 7,
                 Position = new Vector2(350, 395),
                 Category = "직업",
@@ -78,7 +81,11 @@ namespace CaptainSkillTree.SkillTree
         {
             if (player == null) return;
 
-            if (JobSkillsUtility.IsOnCooldown(player, "Rogue"))
+            int lv = GetRogueLevel();
+
+            // 충전 시스템: 남은 충전이 없으면 쿨다운 체크
+            bool hasCharge = rogueShadowStrikeChargesLeft.TryGetValue(player, out int charges) && charges > 0;
+            if (!hasCharge && JobSkillsUtility.IsOnCooldown(player, "Rogue"))
             {
                 float remainingTime = JobSkillsUtility.GetRemainingCooldown(player, "Rogue");
                 player.Message(MessageHud.MessageType.Center, L.Get("rogue_shadow_strike_cooldown", remainingTime.ToString("F1")));
@@ -99,28 +106,40 @@ namespace CaptainSkillTree.SkillTree
             }
 
             player.UseStamina(requiredStamina);
-            JobSkillsUtility.SetCooldown(player, "Rogue", Rogue_Config.RogueShadowStrikeCooldownValue);
-            ActiveSkillCooldownRegistry.SetCooldown("Y", Rogue_Config.RogueShadowStrikeCooldownValue);
+
+            // 충전 소모 또는 쿨다운 설정
+            if (hasCharge)
+            {
+                rogueShadowStrikeChargesLeft[player] = charges - 1;
+            }
+            else
+            {
+                float cooldown = GetCooldownForLevel(lv);
+                JobSkillsUtility.SetCooldown(player, "Rogue", cooldown);
+                ActiveSkillCooldownRegistry.SetCooldown("Y", cooldown);
+
+                // 충전 시스템: 최대 충전 수 복원 예약 (Lv5 이상: 2회)
+                int maxCharges = GetChargesForLevel(lv) - 1; // 현재 사용한 1회 빼고
+                if (maxCharges > 0)
+                    rogueShadowStrikeChargesLeft[player] = maxCharges;
+            }
 
             try
             {
                 player.Message(MessageHud.MessageType.Center, L.Get("rogue_shadow_strike_activate"));
-
-                ApplyStealthState(player);
                 ApplyRogueAttackBuff(player);
-
                 PlayRogueCastSound(player);
-                Plugin.Instance?.StartCoroutine(RoguePoisonBlastCoroutine(player));
+                Plugin.Instance?.StartCoroutine(RoguePoisonBlastCoroutine(player, lv));
             }
             catch (System.Exception) { }
         }
 
         /// <summary>
-        /// 8회 연속 독 폭발 코루틴 (0.5초 간격)
+        /// 연속 독 폭발 코루틴 (레벨별 횟수)
         /// </summary>
-        private static IEnumerator RoguePoisonBlastCoroutine(Player player)
+        private static IEnumerator RoguePoisonBlastCoroutine(Player player, int lv)
         {
-            int count = Rogue_Config.RoguePoisonVFXCountValue;
+            int count = GetPoisonBlastsForLevel(lv);
             float interval = Rogue_Config.RoguePoisonVFXIntervalValue;
 
             for (int i = 0; i < count; i++)
@@ -131,7 +150,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     VFX.VFXManager.PlayVFXMultiplayer("fx_greenroots_projectile_hit", "", player.transform.position, Quaternion.identity, 1f);
                     SimpleVFX.Play("statusailment_01", player.transform.position, 1.5f);
-                    DealPoisonToNearbyEnemies(player);
+                    DealPoisonToNearbyEnemies(player, lv);
                 }
                 catch (Exception ex)
                 {
@@ -143,12 +162,12 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 주변 10m 범위 적에게 즉시 독데미지 + DoT 적용
+        /// 주변 범위 적에게 즉시 독데미지 + DoT 적용 (레벨별)
         /// </summary>
-        private static void DealPoisonToNearbyEnemies(Player player)
+        private static void DealPoisonToNearbyEnemies(Player player, int lv)
         {
             float range = Rogue_Config.RoguePoisonRangeValue;
-            float instantDmg = Rogue_Config.RoguePoisonInstantDamageValue;
+            float instantDmg = GetPoisonInstantForLevel(lv);
             Vector3 pos = player.transform.position;
 
             var enemies = Character.GetAllCharacters()
@@ -172,7 +191,7 @@ namespace CaptainSkillTree.SkillTree
                     if (poisonDotCoroutines.TryGetValue(enemy, out var existing) && existing != null)
                         Plugin.Instance?.StopCoroutine(existing);
 
-                    var dotCo = Plugin.Instance?.StartCoroutine(PoisonDotCoroutine(player, enemy));
+                    var dotCo = Plugin.Instance?.StartCoroutine(PoisonDotCoroutine(player, enemy, lv));
                     if (dotCo != null)
                         poisonDotCoroutines[enemy] = dotCo;
                 }
@@ -181,11 +200,11 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 독 DoT 코루틴: 10초간 초당 5 독데미지
+        /// 독 DoT 코루틴: 레벨별 초당 데미지
         /// </summary>
-        private static IEnumerator PoisonDotCoroutine(Player player, Character enemy)
+        private static IEnumerator PoisonDotCoroutine(Player player, Character enemy, int lv)
         {
-            float dotDmg = Rogue_Config.RoguePoisonDotDamageValue;
+            float dotDmg = GetPoisonDotForLevel(lv);
             float duration = Rogue_Config.RoguePoisonDotDurationValue;
             float elapsed = 0f;
 
@@ -252,7 +271,8 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                float buffDuration = Rogue_Config.RogueShadowStrikeBuffDurationValue;
+                int lv = GetRogueLevel();
+                float buffDuration = GetBuffDurationForLevel(lv);
 
                 if (rogueAttackBuffCoroutine.TryGetValue(player, out var existing) && existing != null)
                     Plugin.Instance?.StopCoroutine(existing);
@@ -332,7 +352,8 @@ namespace CaptainSkillTree.SkillTree
         public static float GetRogueAttackBuffMultiplier(Player player)
         {
             if (!IsRogueAttackBuffActive(player)) return 1f;
-            float attackBonus = Rogue_Config.RogueShadowStrikeAttackBonusValue;
+            int lv = GetRogueLevel();
+            float attackBonus = GetAttackBonusForLevel(lv);
             return 1f + (attackBonus / 100f);
         }
 
@@ -372,8 +393,8 @@ namespace CaptainSkillTree.SkillTree
                     rogueAttackBuffExpiry.Remove(player);
                     StopAndRemoveCoroutine(rogueAttackBuffCoroutine, player);
                     RemoveRogueBuffVFX(player);
+                    rogueShadowStrikeChargesLeft.Remove(player);
 
-                    CleanupStealthAndAggroState(player);
                 }
                 catch (Exception ex)
                 {
@@ -442,6 +463,11 @@ namespace CaptainSkillTree.SkillTree
             if (manager.GetSkillLevel("knife_step3_move_speed") > 0 && WeaponHelper.IsUsingDagger(player))
                 totalBonus += Knife_Config.KnifeMoveSpeedBonusValue;
 
+            // 로그 패시브: Lv2~5 이동속도 보너스
+            int rogueLv = manager.GetSkillLevel("Rogue");
+            if (rogueLv >= 2)
+                totalBonus += GetMoveSpeedForLevel(rogueLv);
+
             float conditionalBonus = Speed.GetConditionalSpeedBonus(player);
             if (conditionalBonus > 0f)
                 totalBonus += conditionalBonus * 100f;
@@ -462,9 +488,6 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (hit.GetAttacker() is Player player)
                 {
-                    if (RogueSkills.IsPlayerInStealth(player))
-                        RogueSkills.RemoveStealthState(player, "공격");
-
                     if (RogueSkills.IsRogueAttackBuffActive(player))
                     {
                         float buffMultiplier = RogueSkills.GetRogueAttackBuffMultiplier(player);
@@ -496,14 +519,22 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 if (!(__instance is Player player)) return;
-                if (!RogueSkills.IsRogue(player)) return;
+                int lv = RogueSkills.GetRogueLevel();
+                if (lv <= 0) return;
 
-                float resist = Rogue_Config.RogueElementalResistanceDebuffValue / 100f;
+                // 기본 속성 저항 (Lv1부터)
+                float resist = RogueSkills.GetElementalResistForLevel(lv) / 100f;
                 hit.m_damage.m_fire      *= (1f - resist);
                 hit.m_damage.m_frost     *= (1f - resist);
                 hit.m_damage.m_lightning *= (1f - resist);
-                hit.m_damage.m_poison    *= (1f - resist);
                 hit.m_damage.m_spirit    *= (1f - resist);
+
+                // 독 저항 (Lv2부터 추가)
+                float poisonResist = RogueSkills.GetRoguePoisonResist(lv) / 100f;
+                if (poisonResist > 0f)
+                    hit.m_damage.m_poison *= (1f - (resist + poisonResist));
+                else
+                    hit.m_damage.m_poison *= (1f - resist);
             }
             catch (System.Exception) { }
         }
@@ -519,9 +550,10 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                if (!RogueSkills.IsRogue(__instance)) return;
+                int lv = RogueSkills.GetRogueLevel();
+                if (lv <= 0) return;
                 if (!__instance.InAttack()) return;
-                float reduction = Rogue_Config.RogueStaminaReductionValue / 100f;
+                float reduction = RogueSkills.GetStaminaReductionForLevel(lv) / 100f;
                 v *= (1f - reduction);
             }
             catch (System.Exception) { }
