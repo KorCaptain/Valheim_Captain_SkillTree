@@ -326,20 +326,75 @@ namespace CaptainSkillTree.Localization
                 "공격력 증가 버프가 지속되는 시간입니다.\n" +
                 "권장값: 6-12초",
 
-                ["Rogue_ShadowStrike_SmokeScale"] =
-                "【연막 효과 크기 배율】\n" +
-                "연막 VFX 효과의 크기 배율입니다.\n" +
-                "권장값: 1.5-3.0",
+                ["Rogue_Poison_Range"] =
+                "【독 폭발 범위 (m)】\n" +
+                "각 독 폭발의 영향 범위입니다.\n" +
+                "권장값: 8-15m",
 
-                ["Rogue_ShadowStrike_AggroRange"] =
-                "【어그로 제거 범위 (m)】\n" +
-                "이 범위 내의 적 어그로를 초기화합니다.\n" +
-                "권장값: 10-20m",
+                ["Rogue_Poison_InstantDamage"] =
+                "【즉시 독데미지】\n" +
+                "VFX 1회마다 적에게 가하는 즉시 독데미지입니다.\n" +
+                "권장값: 8-20",
 
-                ["Rogue_ShadowStrike_StealthDuration"] =
-                "【스텔스 지속시간 (초)】\n" +
-                "은신 상태가 지속되는 시간입니다.\n" +
-                "권장값: 5-10초",
+                ["Rogue_Poison_DotDamage"] =
+                "【독 DoT 초당 데미지】\n" +
+                "독 지속 데미지(DoT)의 초당 피해량입니다.\n" +
+                "권장값: 3-8",
+
+                ["Rogue_Poison_DotDuration"] =
+                "【독 DoT 지속시간 (초)】\n" +
+                "독 지속 데미지가 유지되는 시간입니다.\n" +
+                "권장값: 8-15초",
+
+                ["Rogue_Poison_VFXCount"] =
+                "【독 폭발 횟수】\n" +
+                "스킬 시전 시 독 폭발 VFX 반복 횟수입니다.\n" +
+                "권장값: 6-10",
+
+                ["Rogue_Poison_VFXInterval"] =
+                "【독 폭발 간격 (초)】\n" +
+                "각 독 폭발 사이의 시간 간격입니다.\n" +
+                "권장값: 0.3-1.0초",
+
+                // === Rogue Job: Lv2~5 쿨다운 ===
+                ["Rogue_Lv2_Cooldown"] = "【Lv2 그림자 일격 쿨다운 (초)】\n권장값: 25-30초",
+                ["Rogue_Lv3_Cooldown"] = "【Lv3 그림자 일격 쿨다운 (초)】\n권장값: 22-28초",
+                ["Rogue_Lv4_Cooldown"] = "【Lv4 그림자 일격 쿨다운 (초)】\n권장값: 20-26초",
+                ["Rogue_Lv5_Cooldown"] = "【Lv5 그림자 일격 쿨다운 (초)】\n권장값: 18-24초",
+
+                // === Rogue Job: Lv2~5 공격력 버프 ===
+                ["Rogue_Lv2_AttackBonus"] = "【Lv2 공격력 버프 (%)】\n권장값: 35-50%",
+                ["Rogue_Lv3_AttackBonus"] = "【Lv3 공격력 버프 (%)】\n권장값: 40-55%",
+                ["Rogue_Lv4_AttackBonus"] = "【Lv4 공격력 버프 (%)】\n권장값: 45-60%",
+                ["Rogue_Lv5_AttackBonus"] = "【Lv5 공격력 버프 (%)】\n권장값: 50-65%",
+
+                // === Rogue Job: Lv2~5 버프 지속시간 ===
+                ["Rogue_Lv2_BuffDuration"] = "【Lv2 버프 지속시간 (초)】\n권장값: 8-12초",
+                ["Rogue_Lv3_BuffDuration"] = "【Lv3 버프 지속시간 (초)】\n권장값: 9-13초",
+                ["Rogue_Lv4_BuffDuration"] = "【Lv4 버프 지속시간 (초)】\n권장값: 10-14초",
+                ["Rogue_Lv5_BuffDuration"] = "【Lv5 버프 지속시간 (초)】\n권장값: 11-15초",
+
+                // === Rogue Job: Lv2~5 독 폭발 횟수 ===
+                ["Rogue_Lv2_PoisonBlasts"] = "【Lv2 독 폭발 횟수】\n권장값: 8-12",
+                ["Rogue_Lv3_PoisonBlasts"] = "【Lv3 독 폭발 횟수】\n권장값: 9-13",
+                ["Rogue_Lv4_PoisonBlasts"] = "【Lv4 독 폭발 횟수】\n권장값: 10-14",
+                ["Rogue_Lv5_PoisonBlasts"] = "【Lv5 독 폭발 횟수】\n권장값: 11-15",
+
+                // === Rogue Job: Lv2~5 독 즉시 데미지 ===
+                ["Rogue_Lv2_PoisonInstant"] = "【Lv2 즉시 독데미지】\n권장값: 10-15",
+                ["Rogue_Lv3_PoisonInstant"] = "【Lv3 즉시 독데미지】\n권장값: 12-18",
+                ["Rogue_Lv4_PoisonInstant"] = "【Lv4 즉시 독데미지】\n권장값: 14-20",
+                ["Rogue_Lv5_PoisonInstant"] = "【Lv5 즉시 독데미지】\n권장값: 16-25",
+
+                // === Rogue Job: Lv2~5 독 DoT ===
+                ["Rogue_Lv2_PoisonDot"] = "【Lv2 독 DoT 초당 데미지】\n권장값: 5-8",
+                ["Rogue_Lv3_PoisonDot"] = "【Lv3 독 DoT 초당 데미지】\n권장값: 6-9",
+                ["Rogue_Lv4_PoisonDot"] = "【Lv4 독 DoT 초당 데미지】\n권장값: 7-10",
+                ["Rogue_Lv5_PoisonDot"] = "【Lv5 독 DoT 초당 데미지】\n권장값: 8-12",
+
+                // === Rogue Job: 충전 시스템 ===
+                ["Rogue_ShadowStrike_Charges"] = "【그림자 일격 기본 충전 횟수】\n기본 충전 가능 횟수입니다.\n권장값: 1",
+                ["Rogue_Lv5_BonusCharges"] = "【Lv5 추가 충전 횟수】\nLv5 달성 시 추가되는 충전 횟수입니다.\n권장값: 1",
 
                 // === Rogue Job: 패시브 (3개) ===
                 ["Rogue_AttackSpeed_Bonus"] =
@@ -356,6 +411,28 @@ namespace CaptainSkillTree.Localization
                 "【속성 저항 증가 (%)】\n" +
                 "로그 직업 패시브: 속성 피해에 대한 저항을 증가시킵니다.\n" +
                 "권장값: 8-15%",
+
+                // === Rogue Job: 패시브 Lv2~5 성장 ===
+                ["Rogue_Lv2_AttackSpeed"] = "【Lv2 공격속도 보너스 (%)】\n권장값: 10-15%",
+                ["Rogue_Lv3_AttackSpeed"] = "【Lv3 공격속도 보너스 (%)】\n권장값: 12-18%",
+                ["Rogue_Lv4_AttackSpeed"] = "【Lv4 공격속도 보너스 (%)】\n권장값: 14-20%",
+                ["Rogue_Lv5_AttackSpeed"] = "【Lv5 공격속도 보너스 (%)】\n권장값: 16-22%",
+
+                ["Rogue_Lv2_StaminaReduction"] = "【Lv2 스태미나 감소 (%)】\n권장값: 15-20%",
+                ["Rogue_Lv3_StaminaReduction"] = "【Lv3 스태미나 감소 (%)】\n권장값: 17-22%",
+                ["Rogue_Lv4_StaminaReduction"] = "【Lv4 스태미나 감소 (%)】\n권장값: 19-25%",
+                ["Rogue_Lv5_StaminaReduction"] = "【Lv5 스태미나 감소 (%)】\n권장값: 22-30%",
+
+                ["Rogue_Lv2_ElementalResist"] = "【Lv2 속성 저항 (%)】\n권장값: 10-15%",
+                ["Rogue_Lv3_ElementalResist"] = "【Lv3 속성 저항 (%)】\n권장값: 12-18%",
+                ["Rogue_Lv4_ElementalResist"] = "【Lv4 속성 저항 (%)】\n권장값: 14-20%",
+                ["Rogue_Lv5_ElementalResist"] = "【Lv5 속성 저항 (%)】\n권장값: 16-25%",
+
+                ["Rogue_Lv1_MoveSpeed"] = "【Lv1 이동속도 보너스 (%)】\n권장값: 3-7%",
+                ["Rogue_Lv2_MoveSpeed"] = "【Lv2 이동속도 보너스 (%)】\n권장값: 5-10%",
+                ["Rogue_Lv3_MoveSpeed"] = "【Lv3 이동속도 보너스 (%)】\n권장값: 7-12%",
+                ["Rogue_Lv4_MoveSpeed"] = "【Lv4 이동속도 보너스 (%)】\n권장값: 10-15%",
+                ["Rogue_Lv5_MoveSpeed"] = "【Lv5 이동속도 보너스 (%)】\n권장값: 12-18%",
 
                 // ========================================
                 // Paladin Job Skills (성기사 직업 스킬)
@@ -792,20 +869,75 @@ namespace CaptainSkillTree.Localization
                 "Duration of the attack power increase buff.\n" +
                 "Recommended: 6-12 sec",
 
-                ["Rogue_ShadowStrike_SmokeScale"] =
-                "【Smoke Effect Scale】\n" +
-                "Size multiplier for the smoke VFX effect.\n" +
-                "Recommended: 1.5-3.0",
+                ["Rogue_Poison_Range"] =
+                "【Poison Blast Range (m)】\n" +
+                "Radius of each poison blast VFX.\n" +
+                "Recommended: 8-15m",
 
-                ["Rogue_ShadowStrike_AggroRange"] =
-                "【Aggro Clear Range (m)】\n" +
-                "Resets aggro of all enemies within this range.\n" +
-                "Recommended: 10-20m",
+                ["Rogue_Poison_InstantDamage"] =
+                "【Instant Poison Damage】\n" +
+                "Immediate poison damage dealt per VFX trigger.\n" +
+                "Recommended: 8-20",
 
-                ["Rogue_ShadowStrike_StealthDuration"] =
-                "【Stealth Duration (sec)】\n" +
-                "Duration of the stealth (hidden) state.\n" +
-                "Recommended: 5-10 sec",
+                ["Rogue_Poison_DotDamage"] =
+                "【Poison DoT Damage per Second】\n" +
+                "Damage per second from the poison DoT effect.\n" +
+                "Recommended: 3-8",
+
+                ["Rogue_Poison_DotDuration"] =
+                "【Poison DoT Duration (sec)】\n" +
+                "Duration of the poison damage over time effect.\n" +
+                "Recommended: 8-15 sec",
+
+                ["Rogue_Poison_VFXCount"] =
+                "【Poison Blast Count】\n" +
+                "Number of times the poison blast VFX repeats.\n" +
+                "Recommended: 6-10",
+
+                ["Rogue_Poison_VFXInterval"] =
+                "【Poison Blast Interval (sec)】\n" +
+                "Time between each poison blast.\n" +
+                "Recommended: 0.3-1.0 sec",
+
+                // === Rogue Job: Lv2~5 Cooldown ===
+                ["Rogue_Lv2_Cooldown"] = "【Lv2 Shadow Strike Cooldown (sec)】\nRecommended: 25-30s",
+                ["Rogue_Lv3_Cooldown"] = "【Lv3 Shadow Strike Cooldown (sec)】\nRecommended: 22-28s",
+                ["Rogue_Lv4_Cooldown"] = "【Lv4 Shadow Strike Cooldown (sec)】\nRecommended: 20-26s",
+                ["Rogue_Lv5_Cooldown"] = "【Lv5 Shadow Strike Cooldown (sec)】\nRecommended: 18-24s",
+
+                // === Rogue Job: Lv2~5 Attack Bonus ===
+                ["Rogue_Lv2_AttackBonus"] = "【Lv2 Attack Buff (%)】\nRecommended: 35-50%",
+                ["Rogue_Lv3_AttackBonus"] = "【Lv3 Attack Buff (%)】\nRecommended: 40-55%",
+                ["Rogue_Lv4_AttackBonus"] = "【Lv4 Attack Buff (%)】\nRecommended: 45-60%",
+                ["Rogue_Lv5_AttackBonus"] = "【Lv5 Attack Buff (%)】\nRecommended: 50-65%",
+
+                // === Rogue Job: Lv2~5 Buff Duration ===
+                ["Rogue_Lv2_BuffDuration"] = "【Lv2 Buff Duration (sec)】\nRecommended: 8-12s",
+                ["Rogue_Lv3_BuffDuration"] = "【Lv3 Buff Duration (sec)】\nRecommended: 9-13s",
+                ["Rogue_Lv4_BuffDuration"] = "【Lv4 Buff Duration (sec)】\nRecommended: 10-14s",
+                ["Rogue_Lv5_BuffDuration"] = "【Lv5 Buff Duration (sec)】\nRecommended: 11-15s",
+
+                // === Rogue Job: Lv2~5 Poison Blasts ===
+                ["Rogue_Lv2_PoisonBlasts"] = "【Lv2 Poison Blast Count】\nRecommended: 8-12",
+                ["Rogue_Lv3_PoisonBlasts"] = "【Lv3 Poison Blast Count】\nRecommended: 9-13",
+                ["Rogue_Lv4_PoisonBlasts"] = "【Lv4 Poison Blast Count】\nRecommended: 10-14",
+                ["Rogue_Lv5_PoisonBlasts"] = "【Lv5 Poison Blast Count】\nRecommended: 11-15",
+
+                // === Rogue Job: Lv2~5 Instant Poison ===
+                ["Rogue_Lv2_PoisonInstant"] = "【Lv2 Instant Poison Damage】\nRecommended: 10-15",
+                ["Rogue_Lv3_PoisonInstant"] = "【Lv3 Instant Poison Damage】\nRecommended: 12-18",
+                ["Rogue_Lv4_PoisonInstant"] = "【Lv4 Instant Poison Damage】\nRecommended: 14-20",
+                ["Rogue_Lv5_PoisonInstant"] = "【Lv5 Instant Poison Damage】\nRecommended: 16-25",
+
+                // === Rogue Job: Lv2~5 Poison DoT ===
+                ["Rogue_Lv2_PoisonDot"] = "【Lv2 Poison DoT per Second】\nRecommended: 5-8",
+                ["Rogue_Lv3_PoisonDot"] = "【Lv3 Poison DoT per Second】\nRecommended: 6-9",
+                ["Rogue_Lv4_PoisonDot"] = "【Lv4 Poison DoT per Second】\nRecommended: 7-10",
+                ["Rogue_Lv5_PoisonDot"] = "【Lv5 Poison DoT per Second】\nRecommended: 8-12",
+
+                // === Rogue Job: Charge System ===
+                ["Rogue_ShadowStrike_Charges"] = "【Shadow Strike Base Charges】\nBase number of charges available.\nRecommended: 1",
+                ["Rogue_Lv5_BonusCharges"] = "【Lv5 Bonus Charges】\nExtra charges unlocked at Lv5.\nRecommended: 1",
 
                 // === Rogue Job: Passive (3 keys) ===
                 ["Rogue_AttackSpeed_Bonus"] =
@@ -822,6 +954,28 @@ namespace CaptainSkillTree.Localization
                 "【Elemental Resistance Increase (%)】\n" +
                 "Rogue passive: Increases resistance to elemental damage.\n" +
                 "Recommended: 8-15%",
+
+                // === Rogue Job: Passive Lv2~5 Growth ===
+                ["Rogue_Lv2_AttackSpeed"] = "【Lv2 Attack Speed Bonus (%)】\nRecommended: 10-15%",
+                ["Rogue_Lv3_AttackSpeed"] = "【Lv3 Attack Speed Bonus (%)】\nRecommended: 12-18%",
+                ["Rogue_Lv4_AttackSpeed"] = "【Lv4 Attack Speed Bonus (%)】\nRecommended: 14-20%",
+                ["Rogue_Lv5_AttackSpeed"] = "【Lv5 Attack Speed Bonus (%)】\nRecommended: 16-22%",
+
+                ["Rogue_Lv2_StaminaReduction"] = "【Lv2 Stamina Reduction (%)】\nRecommended: 15-20%",
+                ["Rogue_Lv3_StaminaReduction"] = "【Lv3 Stamina Reduction (%)】\nRecommended: 17-22%",
+                ["Rogue_Lv4_StaminaReduction"] = "【Lv4 Stamina Reduction (%)】\nRecommended: 19-25%",
+                ["Rogue_Lv5_StaminaReduction"] = "【Lv5 Stamina Reduction (%)】\nRecommended: 22-30%",
+
+                ["Rogue_Lv2_ElementalResist"] = "【Lv2 Elemental Resistance (%)】\nRecommended: 10-15%",
+                ["Rogue_Lv3_ElementalResist"] = "【Lv3 Elemental Resistance (%)】\nRecommended: 12-18%",
+                ["Rogue_Lv4_ElementalResist"] = "【Lv4 Elemental Resistance (%)】\nRecommended: 14-20%",
+                ["Rogue_Lv5_ElementalResist"] = "【Lv5 Elemental Resistance (%)】\nRecommended: 16-25%",
+
+                ["Rogue_Lv1_MoveSpeed"] = "【Lv1 Move Speed Bonus (%)】\nRecommended: 3-7%",
+                ["Rogue_Lv2_MoveSpeed"] = "【Lv2 Move Speed Bonus (%)】\nRecommended: 5-10%",
+                ["Rogue_Lv3_MoveSpeed"] = "【Lv3 Move Speed Bonus (%)】\nRecommended: 7-12%",
+                ["Rogue_Lv4_MoveSpeed"] = "【Lv4 Move Speed Bonus (%)】\nRecommended: 10-15%",
+                ["Rogue_Lv5_MoveSpeed"] = "【Lv5 Move Speed Bonus (%)】\nRecommended: 12-18%",
 
                 // ========================================
                 // Paladin Job Skills

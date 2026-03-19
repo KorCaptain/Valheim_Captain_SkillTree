@@ -40,14 +40,12 @@ namespace CaptainSkillTree.Localization
                 // === Rogue Skills ===
                 ["rogue_shadow_strike_cooldown"] = "그림자 일격 쿨다운 중! 남은 시간: {0}초",
                 ["rogue_dagger_required"] = "단검 또는 클로 착용이 필요합니다",
-                ["rogue_shadow_strike_success"] = "그림자 일격! {0}마리 어그로 해제!",
-                ["rogue_shadow_strike_no_enemy"] = "그림자 일격! (주변에 적이 없음)",
+                ["rogue_shadow_strike_success"] = "그림자 일격! 독성 폭발 시작!",
                 ["rogue_stealth_start"] = "스텔스 시작! ({0}초)",
                 ["rogue_stealth_end"] = "스텔스 해제! (이유: {0})",
                 ["rogue_buff_end"] = "그림자 일격 버프 종료!",
                 ["rogue_smoke"] = "연막!",
                 ["rogue_passive_fall_damage"] = "로그 패시브: -{0} 낙사 데미지 감소!",
-                ["rogue_aggro_protection_end"] = "어그로 보호 해제됨",
 
                 // === Tanker Skills ===
                 ["tanker_taunt_cooldown"] = "도발 쿨다운 중! 남은 시간: {0}초",
@@ -353,15 +351,13 @@ namespace CaptainSkillTree.Localization
                 // === Rogue Skills ===
                 ["rogue_shadow_strike_cooldown"] = "Shadow Strike on cooldown! Remaining: {0}s",
                 ["rogue_dagger_required"] = "Dagger or Claw required",
-                ["rogue_shadow_strike_success"] = "Shadow Strike! {0} enemies lost aggro!",
-                ["rogue_shadow_strike_no_enemy"] = "Shadow Strike! (No enemies nearby)",
+                ["rogue_shadow_strike_success"] = "Shadow Strike! Poison Blast started!",
                 ["rogue_stealth_start"] = "Stealth started! ({0}s)",
                 ["rogue_stealth_end"] = "Stealth ended! (Reason: {0})",
                 ["rogue_buff_end"] = "Shadow Strike buff ended!",
                 ["rogue_smoke"] = "Smoke!",
                 ["rogue_passive_fall_damage"] = "Rogue Passive: -{0} fall damage!",
-                ["rogue_shadow_strike_activate"] = "💥 Shadow Strike!",
-                ["rogue_aggro_protection_end"] = "Aggro protection ended",
+                ["rogue_shadow_strike_activate"] = "💥 Shadow Strike! Poison Blast!",
 
                 // === Tanker Skills ===
                 ["tanker_taunt_cooldown"] = "Taunt on cooldown! Remaining: {0}s",

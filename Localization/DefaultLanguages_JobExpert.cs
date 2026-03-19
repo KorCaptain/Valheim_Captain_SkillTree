@@ -164,8 +164,12 @@ namespace CaptainSkillTree.Localization
                 // === Rogue Skill Messages ===
                 ["rogue_shadow_strike_cooldown"] = "그림자 일격 쿨타임: {0}초",
                 ["rogue_stamina_insufficient"] = "스태미나가 부족합니다.",
-                ["rogue_shadow_strike_success"] = "🗡️ 그림자 일격! (어그로 제거 + {0}초간 데미지 +{1}%)",
+                ["rogue_shadow_strike_success"] = "🗡️ 그림자 일격! (독성 폭발 8회 + {0}초간 데미지 +{1}%)",
                 ["rogue_shadow_strike_end"] = "그림자 일격 종료",
+                ["rogue_dagger_required"] = "단검 또는 발톱이 필요합니다",
+                ["rogue_buff_end"] = "그림자 일격 버프 종료!",
+                ["rogue_smoke"] = "연막!",
+                ["rogue_shadow_strike_no_enemy"] = "그림자 일격! (주변에 적 없음)",
 
                 // === Mage Skill Messages ===
                 ["mage_explosion_cooldown"] = "마법 폭발 쿨타임: {0}초",
@@ -374,6 +378,25 @@ namespace CaptainSkillTree.Localization
                 ["archer_preview_arrows_damage"] = "추가 발사체 +{0}, 1발당 공격력 {1}%",
                 ["archer_preview_charges"] = "추가 발사 회수 +{0}",
                 ["archer_job_requirement"] = "활 착용, 아처 직업",
+
+                // === Rogue Job ===
+                ["rogue_desc_shadow_strike"] = "독폭발 {0}회, 범위 {1}m",
+                ["rogue_desc_attack_bonus"] = "{0}초간 공격력 +{1}%",
+                ["rogue_passive_desc"] = "공격 속도 +{0}%, 스태미나 사용 -{1}%, 원소 저항 +{2}%",
+                ["requirement_rogue"] = "단검 또는 발톱 장착, 로그 직업",
+                ["rogue_passive_lv1"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%",
+                ["rogue_passive_lv2"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%, 독저항 +{4}%, 암살자의 심장 +1회(30초)",
+                ["rogue_passive_lv3"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%, 독/냉기 저항 +{4}%",
+                ["rogue_passive_lv4"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%, 독/냉기/화염 저항 +{4}%",
+                ["rogue_passive_lv5"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%, 모든 속성 저항 +{4}%",
+                ["rogue_effect_strike"] = "공격력버프 {0}% ({1}초), 독폭발 {2}회",
+                ["rogue_preview_attack"] = "공격력버프 +{0}%, 독폭발 +{1}회",
+                ["rogue_preview_charges"] = "그림자 일격 충전 +{0}회",
+                ["rogue_max_level"] = "★ 최대 레벨 달성!",
+                ["rogue_level_req_items"] = "Lv{0} 필요아이템",
+                ["rogue_charges_display"] = "{0}회 충전",
+                ["rogue_lv2_unlock_cond"] = "암살자의 심장 스킬 해금 필요",
+                ["rogue_level_item_required"] = "로그 Lv{0} 업그레이드 재료가 부족합니다",
             };
         }
 
@@ -399,6 +422,9 @@ namespace CaptainSkillTree.Localization
                 ["producer_level_item_required"] = "Not enough trophies for Producer Lv{0} advancement",
                 ["archer_upgrade_confirm"] = "Upgrade Archer to Lv{0}?",
                 ["archer_missing_items"] = "Missing: {0}",
+                ["rogue_upgrade_title"] = "⚔️ Rogue Class Ascension",
+                ["rogue_upgrade_confirm"] = "Upgrade Rogue to Lv{0}?",
+                ["rogue_missing_items"] = "Missing: {0}",
                 ["item_trophy_skeleton"] = "Skeleton Trophy",
                 ["item_trophy_greydwarf"] = "Greydwarf Trophy",
                 ["item_trophy_greydwarfbrute"] = "Greydwarf Brute Trophy",
@@ -438,10 +464,23 @@ namespace CaptainSkillTree.Localization
                 ["requirement_job_berserker"] = "Berserker job",
 
                 // === Rogue Job ===
-                ["rogue_desc_shadow_strike"] = "{0}s stealth, aggro removal range {1}m",
+                ["rogue_desc_shadow_strike"] = "Poison Blast x{0}, range {1}m",
                 ["rogue_desc_attack_bonus"] = "+{1}% attack for {0}s",
                 ["rogue_passive_desc"] = "Attack speed +{0}%, Stamina use -{1}%, Elemental resist +{2}%",
                 ["requirement_rogue"] = "Knife or Claw equipped, Rogue job",
+                ["rogue_passive_lv1"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%",
+                ["rogue_passive_lv2"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%, Poison Resist +{4}%, Assassin's Heart +1 use (30s)",
+                ["rogue_passive_lv3"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%, Poison/Cold Resist +{4}%",
+                ["rogue_passive_lv4"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%, Poison/Cold/Fire Resist +{4}%",
+                ["rogue_passive_lv5"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%, All Elemental Resist +{4}%",
+                ["rogue_effect_strike"] = "ATK Buff {0}% ({1}s), Poison Blast x{2}",
+                ["rogue_preview_attack"] = "ATK Buff +{0}%, Poison Blast +{1}",
+                ["rogue_preview_charges"] = "Shadow Strike Charge +{0}",
+                ["rogue_max_level"] = "★ Max Level Reached!",
+                ["rogue_level_req_items"] = "Lv{0} Required Items",
+                ["rogue_charges_display"] = "{0} Charge(s)",
+                ["rogue_lv2_unlock_cond"] = "Requires Assassin's Heart skill",
+                ["rogue_level_item_required"] = "Not enough materials for Rogue Lv{0} upgrade",
 
                 // === Mage Job ===
                 ["mage_desc_aoe"] = "Area damage {0}%",
@@ -613,8 +652,13 @@ namespace CaptainSkillTree.Localization
                 // === Rogue Skill Messages ===
                 ["rogue_shadow_strike_cooldown"] = "Shadow Strike cooldown: {0}s",
                 ["rogue_stamina_insufficient"] = "Not enough stamina.",
-                ["rogue_shadow_strike_success"] = "🗡️ Shadow Strike! (Aggro removed + {1}% damage for {0}s)",
+                ["rogue_shadow_strike_success"] = "🗡️ Shadow Strike! (Poison Blast x8 + {1}% damage for {0}s)",
                 ["rogue_shadow_strike_end"] = "Shadow Strike ended",
+                ["rogue_shadow_strike_activate"] = "💥 Shadow Strike!",
+                ["rogue_dagger_required"] = "Dagger or Claw required",
+                ["rogue_buff_end"] = "Shadow Strike buff ended!",
+                ["rogue_smoke"] = "Smoke!",
+                ["rogue_shadow_strike_no_enemy"] = "Shadow Strike! (No enemies nearby)",
 
                 // === Mage Skill Messages ===
                 ["mage_explosion_cooldown"] = "Magic Explosion cooldown: {0}s",

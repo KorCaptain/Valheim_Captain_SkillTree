@@ -21,6 +21,7 @@ namespace CaptainSkillTree.Localization
                  : (lang == "zh-cn") ? GetChineseCategories()
                  : (lang == "de") ? GetGermanCategories()
                  : (lang == "pt_BR") ? GetPortugueseBrazilianCategories()
+                 : (lang == "ja") ? GetJapaneseCategories()
                  : GetEnglishCategories();
         }
 
@@ -34,6 +35,7 @@ namespace CaptainSkillTree.Localization
             if (lang == "de") return GetGermanDescriptions();
             if (lang == "ru") return GetRussianDescriptions();
             if (lang == "pt_BR") return GetPortugueseBrazilianDescriptions();
+            if (lang == "ja") return GetJapaneseDescriptions();
             return GetEnglishDescriptions();
         }
 
@@ -48,6 +50,7 @@ namespace CaptainSkillTree.Localization
             if (lang == "de") return GetGermanKeyNames();
             if (lang == "ru") return GetRussianKeyNames();
             if (lang == "pt_BR") return GetPortugueseBrazilianKeyNames();
+            if (lang == "ja") return GetJapaneseKeyNames();
             return GetEnglishKeyNames();
         }
 
@@ -280,10 +283,53 @@ namespace CaptainSkillTree.Localization
         // GetGermanKeyNames()  → ConfigTranslations_KeyNames_DE.cs + _DE_Part2.cs
         // GetRussianKeyNames() → ConfigTranslations_KeyNames_RU.cs
         // GetChineseKeyNames() → ConfigTranslations_KeyNames_CN.cs + _CN_Part2.cs
+        // GetJapaneseKeyNames() → GetEnglishKeyNames() fallback (JP 전용 파일 없음)
         // GetExpertDescriptions_KO/EN/DE/RU/CN()     → ConfigTranslations_ExpertDesc.cs / *_DE.cs / *_RU.cs / *_CN.cs
         // GetRangedDescriptions_KO/EN/DE/RU/CN()     → ConfigTranslations_RangedDesc.cs / *_DE.cs / *_RU.cs / *_CN.cs
         // GetSwordKnifeDescriptions_KO/EN/DE/RU/CN() → ConfigTranslations_SwordKnifeDesc.cs / *_DE.cs / *_RU.cs / *_CN.cs
         // GetHeavyMeleeDescriptions_KO/EN/DE/RU/CN() → ConfigTranslations_HeavyMeleeDesc.cs / *_DE.cs / *_RU.cs / *_CN.cs
         // GetJobDescriptions_KO/EN/DE/RU/CN()        → ConfigTranslations_JobDesc.cs / *_DE.cs / *_RU.cs / *_CN.cs
+
+        // ============================================
+        // 카테고리 번역 (일본어)
+        // ============================================
+        private static Dictionary<string, string> GetJapaneseCategories()
+        {
+            return new Dictionary<string, string>
+            {
+                ["Attack Tree"] = "攻撃ツリー",
+                ["Defense Tree"] = "防御ツリー",
+                ["Production Tree"] = "生産ツリー",
+                ["Staff Tree"] = "杖ツリー",
+                ["Crossbow Tree"] = "クロスボウツリー",
+                ["Bow Tree"] = "弓ツリー",
+                ["Sword Tree"] = "剣ツリー",
+                ["Spear Tree"] = "槍ツリー",
+                ["Mace Tree"] = "メイスツリー",
+                ["Polearm Tree"] = "ポールアームツリー",
+                ["Knife Tree"] = "ナイフツリー",
+                ["Speed Tree"] = "速度ツリー",
+                ["Archer Job Skills"] = "アーチャー職業スキル",
+                ["Mage Job Skills"] = "メイジ職業スキル",
+                ["Tanker Job Skills"] = "タンカー職業スキル",
+                ["Rogue Job Skills"] = "ローグ職業スキル",
+                ["Paladin Job Skills"] = "パラディン職業スキル",
+                ["Berserker Job Skills"] = "バーサーカー職業スキル",
+            };
+        }
+
+        // ============================================
+        // 설명 번역 집합 (일본어) - EN fallback
+        // ============================================
+        private static Dictionary<string, string> GetJapaneseDescriptions()
+        {
+            return GetEnglishDescriptions();
+        }
+
+        // GetJapaneseKeyNames() → EN fallback
+        private static Dictionary<string, string> GetJapaneseKeyNames()
+        {
+            return GetEnglishKeyNames();
+        }
     }
 }

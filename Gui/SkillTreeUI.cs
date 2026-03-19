@@ -1211,6 +1211,127 @@ namespace CaptainSkillTree.Gui
             confirmDialog.transform.SetAsLastSibling();
         }
 
+        private void ShowRogueUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
+        {
+            if (confirmDialog != null)
+                DestroyImmediate(confirmDialog);
+
+            confirmDialog = new GameObject("RogueUpgradeDialog");
+            confirmDialog.transform.SetParent(panel.transform, false);
+
+            var bgImage = confirmDialog.AddComponent<Image>();
+            bgImage.color = new Color(0, 0, 0, 0.7f);
+
+            var bgRect = confirmDialog.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.sizeDelta = Vector2.zero;
+            bgRect.anchoredPosition = Vector2.zero;
+
+            var dialogPanel = new GameObject("GoldBorder");
+            dialogPanel.transform.SetParent(confirmDialog.transform, false);
+
+            var dialogImage = dialogPanel.AddComponent<Image>();
+            dialogImage.color = new Color(0.85f, 0.7f, 0.1f, 0.85f);
+
+            var dialogRect = dialogPanel.GetComponent<RectTransform>();
+            dialogRect.sizeDelta = new Vector2(380, 220);
+            dialogRect.anchoredPosition = Vector2.zero;
+
+            var darkBgGo = new GameObject("DarkBg");
+            darkBgGo.transform.SetParent(dialogPanel.transform, false);
+
+            var darkBgImage = darkBgGo.AddComponent<Image>();
+            darkBgImage.color = new Color(0.08f, 0.07f, 0.20f, 0.97f);
+
+            var darkBgRect = darkBgGo.GetComponent<RectTransform>();
+            darkBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+            darkBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+            darkBgRect.pivot = new Vector2(0.5f, 0.5f);
+            darkBgRect.sizeDelta = new Vector2(374, 214);
+            darkBgRect.anchoredPosition = Vector2.zero;
+
+            var titleBarGo = new GameObject("TitleBar");
+            titleBarGo.transform.SetParent(darkBgGo.transform, false);
+
+            var titleBarImage = titleBarGo.AddComponent<Image>();
+            titleBarImage.color = new Color(0.10f, 0.08f, 0.25f, 1f);
+            titleBarImage.raycastTarget = false;
+
+            var titleBarRect = titleBarGo.GetComponent<RectTransform>();
+            titleBarRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleBarRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleBarRect.pivot = new Vector2(0.5f, 0.5f);
+            titleBarRect.sizeDelta = new Vector2(374, 44);
+            titleBarRect.anchoredPosition = new Vector2(0, 88);
+
+            var titleObj = new GameObject("Title");
+            titleObj.transform.SetParent(darkBgGo.transform, false);
+
+            var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
+            titleText.text = L10n.Get("rogue_upgrade_title");
+            titleText.fontSize = 20;
+            titleText.fontStyle = FontStyle.Bold;
+            titleText.color = new Color(1f, 0.85f, 0f, 1f);
+            titleText.alignment = TextAnchor.MiddleCenter;
+            titleText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+
+            var titleShadow = titleObj.AddComponent<UnityEngine.UI.Shadow>();
+            titleShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            titleShadow.effectDistance = new Vector2(1f, -1f);
+
+            var titleRect = titleObj.GetComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRect.pivot = new Vector2(0.5f, 0.5f);
+            titleRect.sizeDelta = new Vector2(340, 34);
+            titleRect.anchoredPosition = new Vector2(0, 78);
+
+            var contentObj = new GameObject("Content");
+            contentObj.transform.SetParent(darkBgGo.transform, false);
+
+            var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
+            contentText.text = L10n.Get("rogue_upgrade_confirm", targetLevel);
+            contentText.fontSize = 20;
+            contentText.color = Color.white;
+            contentText.alignment = TextAnchor.MiddleCenter;
+            contentText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+
+            var contentShadow = contentObj.AddComponent<UnityEngine.UI.Shadow>();
+            contentShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            contentShadow.effectDistance = new Vector2(1f, -1f);
+
+            var contentRect = contentObj.GetComponent<RectTransform>();
+            contentRect.anchorMin = new Vector2(0.5f, 0.5f);
+            contentRect.anchorMax = new Vector2(0.5f, 0.5f);
+            contentRect.pivot = new Vector2(0.5f, 0.5f);
+            contentRect.sizeDelta = new Vector2(340, 70);
+            contentRect.anchoredPosition = new Vector2(0, 10);
+
+            var capturedNodeRect = nodeRect;
+            confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"),
+                new Vector2(-68f, -82f), new Color(0.60f, 0.10f, 0.10f, 1f), darkBgGo.transform, () => {
+                PlayConfirmSound();
+                HideResetConfirmDialog();
+                var mgr = SkillTree.SkillTreeManager.Instance;
+                mgr.AddPendingInvestment("Rogue");
+                mgr.ConfirmInvestments();
+                CaptainSkillTree.SkillTree.Rogue_Tooltip.UpdateRogueTooltip();
+                if (capturedNodeRect != null)
+                    StartCoroutine(PlayArcherLevelUpAnimation(capturedNodeRect, targetLevel));
+                nodeUI.RefreshNodeStates();
+                RefreshUI();
+            });
+
+            cancelButton = CreateLuxuryButton("CancelButton", L10n.Get("ui_cancel"),
+                new Vector2(68f, -82f), new Color(0.22f, 0.22f, 0.30f, 1f), darkBgGo.transform, () => {
+                PlayCancelSound();
+                HideResetConfirmDialog();
+            });
+
+            confirmDialog.transform.SetAsLastSibling();
+        }
+
         /// <summary>
         /// 제작 전문가 Lv2+ 업그레이드 확인 다이얼로그 (아처 패턴 동일)
         /// </summary>
@@ -1881,6 +2002,30 @@ namespace CaptainSkillTree.Gui
                         var msg = L10n.Get("archer_level_item_required", targetLevel);
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("archer_missing_items", string.Join(", ", missing));
+                        ShowWarning(msg);
+                        return;
+                    }
+                }
+                else if (node.Id == "Rogue" && manager.GetSkillLevel("Rogue") >= 1)
+                {
+                    int targetLevel = manager.GetSkillLevel("Rogue") + 1;
+                    if (manager.HasRogueLevelItems(targetLevel))
+                    {
+                        RectTransform nodeRect = null;
+                        if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
+                        {
+                            var nodeObj = nodeUI.nodeObjects[node.Id];
+                            if (nodeObj != null) nodeRect = nodeObj.GetComponent<RectTransform>();
+                        }
+                        ShowRogueUpgradeConfirmDialog(targetLevel, nodeRect);
+                        return;
+                    }
+                    else
+                    {
+                        var missing = manager.GetMissingRogueItems(targetLevel);
+                        var msg = L10n.Get("rogue_level_item_required", targetLevel);
+                        if (missing.Count > 0)
+                            msg += "\n" + L10n.Get("rogue_missing_items", string.Join(", ", missing));
                         ShowWarning(msg);
                         return;
                     }

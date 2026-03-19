@@ -95,6 +95,7 @@ namespace CaptainSkillTree.SkillTree
                                   : (configLang == "de") ? "de"
                                   : (configLang == "ru") ? "ru"
                                   : (configLang == "pt_br" || configLang == "pt") ? "pt_BR"
+                                  : (configLang == "jp" || configLang == "ja") ? "ja"
                                   : "en";
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using config language: {rawVal} -> {result}");
                     return result;
@@ -110,6 +111,7 @@ namespace CaptainSkillTree.SkillTree
                                   : (langLow.Contains("german") || langLow == "deutsch") ? "de"
                                   : (langLow == "russian") ? "ru"
                                   : (langLow == "portuguese_brazilian") ? "pt_BR"
+                                  : (langLow.Contains("japanese") || langLow.Contains("日本語")) ? "ja"
                                   : "en";
                     Plugin.Log.LogDebug($"[SkillTreeConfig] Using Valheim language: {valheimLang} -> {result}");
                     return result;
@@ -125,6 +127,7 @@ namespace CaptainSkillTree.SkillTree
                          : (currentLang == "de") ? "de"
                          : (currentLang == "ru") ? "ru"
                          : (currentLang == "pt_BR") ? "pt_BR"
+                         : (currentLang == "ja") ? "ja"
                          : "en";
                 }
 
@@ -161,6 +164,8 @@ namespace CaptainSkillTree.SkillTree
                         ? "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó."
                     : _detectedConfigLanguage == "de"
                         ? "【Erforderliche Punkte】\nFähigkeitspunkte zum Freischalten dieses Knotens."
+                    : _detectedConfigLanguage == "ja"
+                        ? "【必要ポイント】\nこのノードを解放するために必要なスキルポイント数。"
                     : _detectedConfigLanguage == "en"
                         ? "【Required Points】\nPoints required to unlock this node."
                         : "【필요 포인트】\n이 노드를 해금하기 위해 필요한 스킬 포인트 개수입니다.";
@@ -185,6 +190,8 @@ namespace CaptainSkillTree.SkillTree
                         ? $"{tierPart}: Pontos Necessários"
                     : _detectedConfigLanguage == "de"
                         ? $"{tierPart}: Erforderliche Punkte"
+                    : _detectedConfigLanguage == "ja"
+                        ? $"{tierPart}: 必要ポイント"
                     : _detectedConfigLanguage == "en"
                         ? $"{tierPart}: Required Points"
                         : $"{tierPart}: 필요 포인트";
@@ -646,7 +653,7 @@ namespace CaptainSkillTree.SkillTree
                     "   Config Manager (F1) descriptions are set at game startup.\n\n" +
                     "⚠️ 중요: 이 설정 변경 후 게임 재시작이 필요합니다!\n" +
                     "   Config Manager (F1) 설명은 게임 시작 시 설정됩니다.",
-                    new AcceptableValueList<string>("Auto", "KR", "EN", "CN", "DE", "RU", "PT_BR")
+                    new AcceptableValueList<string>("Auto", "KR", "EN", "CN", "DE", "RU", "PT_BR", "JP")
                 )
             );
 
