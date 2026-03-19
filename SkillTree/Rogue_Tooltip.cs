@@ -111,7 +111,7 @@ namespace CaptainSkillTree.SkillTree
 
             return lv switch
             {
-                1 => L.Get("rogue_passive_lv1", (int)atkSpd, (int)stamRed, (int)elemRes),
+                1 => L.Get("rogue_passive_lv1", (int)atkSpd, (int)stamRed, (int)elemRes, (int)moveSpd),
                 2 => L.Get("rogue_passive_lv2", (int)atkSpd, (int)stamRed, (int)elemRes, (int)moveSpd, (int)poisonR),
                 3 => L.Get("rogue_passive_lv3", (int)atkSpd, (int)stamRed, (int)elemRes, (int)moveSpd, (int)poisonR),
                 4 => L.Get("rogue_passive_lv4", (int)atkSpd, (int)stamRed, (int)elemRes, (int)moveSpd, (int)poisonR),
@@ -127,7 +127,7 @@ namespace CaptainSkillTree.SkillTree
             return $"<color=#FFD700><size=22>{L.Get("job_rogue")}</size></color>\n" +
                    $"<color=#E0E0E0><size=16>Lv1 : {L.Get("rogue_effect_strike", 35, 8, 8)}</size></color>\n" +
                    $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>" +
-                   $"<color=#ADFF2F><size=16>{L.Get("rogue_passive_lv1", 10, 15, 10)}</size></color>";
+                   $"<color=#ADFF2F><size=16>{L.Get("rogue_passive_lv1", 7, 15, 10, 5)}</size></color>";
         }
 
         /// <summary>

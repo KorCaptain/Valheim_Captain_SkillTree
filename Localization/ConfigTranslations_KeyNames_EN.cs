@@ -896,6 +896,7 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv3_ElementalResist"] = "Lv3 Passive: Elemental Resist (%)",
                 ["Rogue_Lv4_ElementalResist"] = "Lv4 Passive: Elemental Resist (%)",
                 ["Rogue_Lv5_ElementalResist"] = "Lv5 Passive: Elemental Resist (%)",
+                ["Rogue_Lv1_MoveSpeed"] = "Lv1 Passive: Move Speed (%)",
                 ["Rogue_Lv2_MoveSpeed"] = "Lv2 Passive: Move Speed (%)",
                 ["Rogue_Lv3_MoveSpeed"] = "Lv3 Passive: Move Speed (%)",
                 ["Rogue_Lv4_MoveSpeed"] = "Lv4 Passive: Move Speed (%)",

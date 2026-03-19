@@ -282,13 +282,27 @@ namespace CaptainSkillTree.SkillTree
 
             float currentTime = Time.time;
 
-            // 쿨타임 체크
-            if (knifeAssassinHeartCooldownEndTime.TryGetValue(player, out float cooldownEnd) &&
-                currentTime < cooldownEnd)
+            // 로그 Lv2 패시브: 추가 1회 사용 가능 여부 확인
+            bool rogueExtraChargeActive = false;
+            if (RogueSkills.GetRogueLevel() >= 2)
             {
-                float remainingCooldown = cooldownEnd - currentTime;
-                DrawFloatingText(player, L.Get("assassin_heart_cooldown", $"{remainingCooldown:F1}"), Color.gray);
-                return false;
+                if (rogueExtraChargeWindowEnd.TryGetValue(player, out float windowEnd) &&
+                    currentTime < windowEnd && !rogueExtraChargeUsed.Contains(player))
+                {
+                    rogueExtraChargeActive = true;
+                }
+            }
+
+            // 쿨타임 체크 (로그 Lv2 추가 사용 시 스킵)
+            if (!rogueExtraChargeActive)
+            {
+                if (knifeAssassinHeartCooldownEndTime.TryGetValue(player, out float cooldownEnd) &&
+                    currentTime < cooldownEnd)
+                {
+                    float remainingCooldown = cooldownEnd - currentTime;
+                    DrawFloatingText(player, L.Get("assassin_heart_cooldown", $"{remainingCooldown:F1}"), Color.gray);
+                    return false;
+                }
             }
 
             // 정면 몬스터 탐색
@@ -338,8 +352,22 @@ namespace CaptainSkillTree.SkillTree
 
             // 쿨타임 설정
             float cooldown = Knife_Config.KnifeAssassinHeartCooldownValue;
-            knifeAssassinHeartCooldownEndTime[player] = currentTime + cooldown;
-            ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+            if (!rogueExtraChargeActive)
+            {
+                knifeAssassinHeartCooldownEndTime[player] = currentTime + cooldown;
+                ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+            }
+
+            // 로그 Lv2: 추가 사용 추적
+            if (rogueExtraChargeActive)
+            {
+                rogueExtraChargeUsed.Add(player);
+            }
+            else if (RogueSkills.GetRogueLevel() >= 2)
+            {
+                rogueExtraChargeWindowEnd[player] = currentTime + 30f;
+                rogueExtraChargeUsed.Remove(player);
+            }
 
             // 액티브 스킬: VFX/SFX 사용
             PlaySkillEffect(player, "knife_step9_assassin_heart", player.transform.position);

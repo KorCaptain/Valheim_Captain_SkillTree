@@ -17,8 +17,8 @@
     "rogue_desc_attack_bonus": "{0}秒間 攻撃力 +{1}%",
     "rogue_passive_desc": "攻撃速度 +{0}%、スタミナ消費 -{1}%、属性耐性 +{2}%",
     "requirement_rogue": "ダガーまたはクロー装備、ローグ職業",
-    "rogue_passive_lv1": "攻撃速度 +{0}%、スタミナ -{1}%、属性耐性 +{2}%",
-    "rogue_passive_lv2": "攻撃速度 +{0}%、スタミナ -{1}%、属性耐性 +{2}%、移動速度 +{3}%、毒耐性 +{4}%",
+    "rogue_passive_lv1": "攻撃速度 +{0}%、スタミナ -{1}%、属性耐性 +{2}%、移動速度 +{3}%",
+    "rogue_passive_lv2": "攻撃速度 +{0}%、スタミナ -{1}%、属性耐性 +{2}%、移動速度 +{3}%、毒耐性 +{4}%、暗殺者の心臓 +1回（30秒）",
     "rogue_passive_lv3": "攻撃速度 +{0}%、スタミナ -{1}%、属性耐性 +{2}%、移動速度 +{3}%、毒/冷気耐性 +{4}%",
     "rogue_passive_lv4": "攻撃速度 +{0}%、スタミナ -{1}%、属性耐性 +{2}%、移動速度 +{3}%、毒/冷気/火炎耐性 +{4}%",
     "rogue_passive_lv5": "攻撃速度 +{0}%、スタミナ -{1}%、属性耐性 +{2}%、移動速度 +{3}%、全属性耐性 +{4}%",
@@ -27,5 +27,10 @@
     "rogue_preview_charges": "シャドーストライク チャージ +{0}",
     "rogue_max_level": "★ 最大レベル達成！",
     "rogue_level_req_items": "Lv{0} 必要アイテム",
-    "rogue_charges_display": "{0}回チャージ"
+    "rogue_charges_display": "{0}回チャージ",
+    "rogue_lv2_unlock_cond": "暗殺者の心臓スキル習得が必要",
+    "rogue_level_item_required": "ローグLv{0}強化の素材が不足しています",
+    "rogue_upgrade_title": "⚔️ ローグ職業昇格",
+    "rogue_upgrade_confirm": "ローグをLv{0}にアップグレードしますか？",
+    "rogue_missing_items": "不足: {0}"
 }

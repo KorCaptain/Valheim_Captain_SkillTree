@@ -384,8 +384,8 @@ namespace CaptainSkillTree.Localization
                 ["rogue_desc_attack_bonus"] = "{0}초간 공격력 +{1}%",
                 ["rogue_passive_desc"] = "공격 속도 +{0}%, 스태미나 사용 -{1}%, 원소 저항 +{2}%",
                 ["requirement_rogue"] = "단검 또는 발톱 장착, 로그 직업",
-                ["rogue_passive_lv1"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%",
-                ["rogue_passive_lv2"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%, 독저항 +{4}%",
+                ["rogue_passive_lv1"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%",
+                ["rogue_passive_lv2"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%, 독저항 +{4}%, 암살자의 심장 +1회(30초)",
                 ["rogue_passive_lv3"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%, 독/냉기 저항 +{4}%",
                 ["rogue_passive_lv4"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%, 독/냉기/화염 저항 +{4}%",
                 ["rogue_passive_lv5"] = "공격속도 +{0}%, 스태미나 -{1}%, 속성저항 +{2}%, 이동속도 +{3}%, 모든 속성 저항 +{4}%",
@@ -395,6 +395,8 @@ namespace CaptainSkillTree.Localization
                 ["rogue_max_level"] = "★ 최대 레벨 달성!",
                 ["rogue_level_req_items"] = "Lv{0} 필요아이템",
                 ["rogue_charges_display"] = "{0}회 충전",
+                ["rogue_lv2_unlock_cond"] = "암살자의 심장 스킬 해금 필요",
+                ["rogue_level_item_required"] = "로그 Lv{0} 업그레이드 재료가 부족합니다",
             };
         }
 
@@ -420,6 +422,9 @@ namespace CaptainSkillTree.Localization
                 ["producer_level_item_required"] = "Not enough trophies for Producer Lv{0} advancement",
                 ["archer_upgrade_confirm"] = "Upgrade Archer to Lv{0}?",
                 ["archer_missing_items"] = "Missing: {0}",
+                ["rogue_upgrade_title"] = "⚔️ Rogue Class Ascension",
+                ["rogue_upgrade_confirm"] = "Upgrade Rogue to Lv{0}?",
+                ["rogue_missing_items"] = "Missing: {0}",
                 ["item_trophy_skeleton"] = "Skeleton Trophy",
                 ["item_trophy_greydwarf"] = "Greydwarf Trophy",
                 ["item_trophy_greydwarfbrute"] = "Greydwarf Brute Trophy",
@@ -463,8 +468,8 @@ namespace CaptainSkillTree.Localization
                 ["rogue_desc_attack_bonus"] = "+{1}% attack for {0}s",
                 ["rogue_passive_desc"] = "Attack speed +{0}%, Stamina use -{1}%, Elemental resist +{2}%",
                 ["requirement_rogue"] = "Knife or Claw equipped, Rogue job",
-                ["rogue_passive_lv1"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%",
-                ["rogue_passive_lv2"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%, Poison Resist +{4}%",
+                ["rogue_passive_lv1"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%",
+                ["rogue_passive_lv2"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%, Poison Resist +{4}%, Assassin's Heart +1 use (30s)",
                 ["rogue_passive_lv3"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%, Poison/Cold Resist +{4}%",
                 ["rogue_passive_lv4"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%, Poison/Cold/Fire Resist +{4}%",
                 ["rogue_passive_lv5"] = "ATK Speed +{0}%, Stamina -{1}%, Elemental Resist +{2}%, Move Speed +{3}%, All Elemental Resist +{4}%",
@@ -474,6 +479,8 @@ namespace CaptainSkillTree.Localization
                 ["rogue_max_level"] = "★ Max Level Reached!",
                 ["rogue_level_req_items"] = "Lv{0} Required Items",
                 ["rogue_charges_display"] = "{0} Charge(s)",
+                ["rogue_lv2_unlock_cond"] = "Requires Assassin's Heart skill",
+                ["rogue_level_item_required"] = "Not enough materials for Rogue Lv{0} upgrade",
 
                 // === Mage Job ===
                 ["mage_desc_aoe"] = "Area damage {0}%",

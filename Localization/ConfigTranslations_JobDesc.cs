@@ -428,10 +428,11 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv4_ElementalResist"] = "【Lv4 속성 저항 (%)】\n권장값: 14-20%",
                 ["Rogue_Lv5_ElementalResist"] = "【Lv5 속성 저항 (%)】\n권장값: 16-25%",
 
-                ["Rogue_Lv2_MoveSpeed"] = "【Lv2 이동속도 보너스 (%)】\n권장값: 2-5%",
-                ["Rogue_Lv3_MoveSpeed"] = "【Lv3 이동속도 보너스 (%)】\n권장값: 4-7%",
-                ["Rogue_Lv4_MoveSpeed"] = "【Lv4 이동속도 보너스 (%)】\n권장값: 6-10%",
-                ["Rogue_Lv5_MoveSpeed"] = "【Lv5 이동속도 보너스 (%)】\n권장값: 8-12%",
+                ["Rogue_Lv1_MoveSpeed"] = "【Lv1 이동속도 보너스 (%)】\n권장값: 3-7%",
+                ["Rogue_Lv2_MoveSpeed"] = "【Lv2 이동속도 보너스 (%)】\n권장값: 5-10%",
+                ["Rogue_Lv3_MoveSpeed"] = "【Lv3 이동속도 보너스 (%)】\n권장값: 7-12%",
+                ["Rogue_Lv4_MoveSpeed"] = "【Lv4 이동속도 보너스 (%)】\n권장값: 10-15%",
+                ["Rogue_Lv5_MoveSpeed"] = "【Lv5 이동속도 보너스 (%)】\n권장값: 12-18%",
 
                 // ========================================
                 // Paladin Job Skills (성기사 직업 스킬)
@@ -970,10 +971,11 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv4_ElementalResist"] = "【Lv4 Elemental Resistance (%)】\nRecommended: 14-20%",
                 ["Rogue_Lv5_ElementalResist"] = "【Lv5 Elemental Resistance (%)】\nRecommended: 16-25%",
 
-                ["Rogue_Lv2_MoveSpeed"] = "【Lv2 Move Speed Bonus (%)】\nRecommended: 2-5%",
-                ["Rogue_Lv3_MoveSpeed"] = "【Lv3 Move Speed Bonus (%)】\nRecommended: 4-7%",
-                ["Rogue_Lv4_MoveSpeed"] = "【Lv4 Move Speed Bonus (%)】\nRecommended: 6-10%",
-                ["Rogue_Lv5_MoveSpeed"] = "【Lv5 Move Speed Bonus (%)】\nRecommended: 8-12%",
+                ["Rogue_Lv1_MoveSpeed"] = "【Lv1 Move Speed Bonus (%)】\nRecommended: 3-7%",
+                ["Rogue_Lv2_MoveSpeed"] = "【Lv2 Move Speed Bonus (%)】\nRecommended: 5-10%",
+                ["Rogue_Lv3_MoveSpeed"] = "【Lv3 Move Speed Bonus (%)】\nRecommended: 7-12%",
+                ["Rogue_Lv4_MoveSpeed"] = "【Lv4 Move Speed Bonus (%)】\nRecommended: 10-15%",
+                ["Rogue_Lv5_MoveSpeed"] = "【Lv5 Move Speed Bonus (%)】\nRecommended: 12-18%",
 
                 // ========================================
                 // Paladin Job Skills

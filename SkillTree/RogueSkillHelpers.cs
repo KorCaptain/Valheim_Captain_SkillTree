@@ -120,9 +120,10 @@ namespace CaptainSkillTree.SkillTree
             _ => Rogue_Config.RogueElementalResistanceDebuffValue
         };
 
-        /// <summary>이동속도 보너스 (%) - 레벨별 (Lv1: 0, Lv2~5: 성장)</summary>
+        /// <summary>이동속도 보너스 (%) - 레벨별 (Lv1~5: 성장)</summary>
         public static float GetMoveSpeedForLevel(int lv) => lv switch
         {
+            1 => Rogue_Config.RogueLv1MoveSpeedValue,
             2 => Rogue_Config.RogueLv2MoveSpeedValue,
             3 => Rogue_Config.RogueLv3MoveSpeedValue,
             4 => Rogue_Config.RogueLv4MoveSpeedValue,
@@ -158,7 +159,7 @@ namespace CaptainSkillTree.SkillTree
                 return lv switch
                 {
                     1 => $"{CaptainSkillTree.Localization.L.Get("item_trophy_greydwarf_brute")} x1 + {CaptainSkillTree.Localization.L.Get("item_eikthyr_trophy")} x1",
-                    2 => $"{CaptainSkillTree.Localization.L.Get("item_eikthyr_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_elder_trophy")} x1",
+                    2 => $"{CaptainSkillTree.Localization.L.Get("item_eikthyr_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_elder_trophy")} x1\n+ {CaptainSkillTree.Localization.L.Get("rogue_lv2_unlock_cond")}",
                     3 => $"{CaptainSkillTree.Localization.L.Get("item_hatchling_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_elder_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_bonemass_trophy")} x1",
                     4 => $"{CaptainSkillTree.Localization.L.Get("item_abomination_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_bonemass_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_dragon_queen_trophy")} x1",
                     5 => $"{CaptainSkillTree.Localization.L.Get("item_dragon_queen_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_goblin_king_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_seeker_queen_trophy")} x1",

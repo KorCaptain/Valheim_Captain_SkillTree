@@ -379,6 +379,12 @@ namespace CaptainSkillTree.SkillTree
                 int targetLevel = currentLevel + 1;
                 if (!HasArcherLevelItems(targetLevel)) return false;
             }
+            else if (skillId == "Rogue")
+            {
+                // 로그 직업: 레벨별 아이템 요구사항 체크
+                int targetLevel = currentLevel + 1;
+                if (!HasRogueLevelItems(targetLevel)) return false;
+            }
             else
             {
                 // 일반 스킬: 포인트 체크 (대기 중인 투자 고려)
@@ -1041,6 +1047,22 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
             }
+            else if (skillId == "Rogue")
+            {
+                int targetLevel = GetSkillLevel(skillId) + 1;
+                if (!HasRogueLevelItems(targetLevel))
+                {
+                    if ((System.Object)Player.m_localPlayer != null)
+                    {
+                        var missing = GetMissingRogueItems(targetLevel);
+                        string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
+                        SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                            "⚠️ " + L.Get("rogue_level_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : ""), Color.red);
+                    }
+                    return;
+                }
+            }
             else if (node.RequiredPoints > 0 && GetAvailablePoints(true) < node.RequiredPoints) return;
 
             // === 상호 배타적 스킬 체크 ===
@@ -1107,6 +1129,12 @@ namespace CaptainSkillTree.SkillTree
                 {
                     int targetLevel = currentLevel + 1;
                     ConsumeProducerLevelItems(targetLevel);
+                }
+                // 로그 직업: 레벨별 트로피 소모
+                else if (pending.Key == "Rogue")
+                {
+                    int targetLevel = currentLevel + 1;
+                    ConsumeRogueLevelItems(targetLevel);
                 }
                 // 다른 직업 스킬: 레벨 0에서 1로 올라가는 경우(처음 전직)에만 아이템 소모
                 else if (IsJobSkill(pending.Key) && currentLevel == 0)
@@ -1244,6 +1272,106 @@ namespace CaptainSkillTree.SkillTree
         }
 
         private void ConsumeArcherLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            switch (targetLevel)
+            {
+                case 1:
+                    inventory.RemoveItem("$item_trophy_greydwarfbrute", 1);
+                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    break;
+                case 2:
+                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_trophy_elder", 1);
+                    break;
+                case 3:
+                    inventory.RemoveItem("$item_trophy_hatchling", 1);
+                    inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    break;
+                case 4:
+                    inventory.RemoveItem("$item_trophy_abomination", 1);
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_trophy_goblinking", 1);
+                    inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    break;
+            }
+        }
+
+        public bool HasRogueLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return false;
+            var inventory = player.GetInventory();
+            if (inventory == null) return false;
+
+            switch (targetLevel)
+            {
+                case 1: return inventory.HaveItem("$item_trophy_greydwarfbrute") &&
+                               inventory.HaveItem("$item_trophy_eikthyr");
+                case 2: return inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.HaveItem("$item_trophy_elder") &&
+                               GetSkillLevel("knife_step9_assassin_heart") > 0;
+                case 3: return inventory.HaveItem("$item_trophy_hatchling") &&
+                               inventory.HaveItem("$item_trophy_elder") &&
+                               inventory.HaveItem("$item_trophy_bonemass");
+                case 4: return inventory.HaveItem("$item_trophy_abomination") &&
+                               inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.HaveItem("$item_trophy_dragonqueen");
+                case 5: return inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.HaveItem("$item_trophy_goblinking") &&
+                               inventory.HaveItem("$item_trophy_seekerqueen");
+                default: return false;
+            }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingRogueItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            var missing = new System.Collections.Generic.List<string>();
+            if (player == null) return missing;
+            var inventory = player.GetInventory();
+            if (inventory == null) return missing;
+
+            switch (targetLevel)
+            {
+                case 1:
+                    if (!inventory.HaveItem("$item_trophy_greydwarfbrute")) missing.Add(L.Get("item_trophy_greydwarfbrute"));
+                    if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    break;
+                case 2:
+                    if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
+                    if (GetSkillLevel("knife_step9_assassin_heart") <= 0) missing.Add(L.Get("rogue_lv2_unlock_cond"));
+                    break;
+                case 3:
+                    if (!inventory.HaveItem("$item_trophy_hatchling")) missing.Add(L.Get("item_trophy_hatchling"));
+                    if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
+                    if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    break;
+                case 4:
+                    if (!inventory.HaveItem("$item_trophy_abomination")) missing.Add(L.Get("item_trophy_abomination"));
+                    if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    break;
+                case 5:
+                    if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
+                    if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    break;
+            }
+            return missing;
+        }
+
+        private void ConsumeRogueLevelItems(int targetLevel)
         {
             var player = Player.m_localPlayer;
             if (player == null) return;

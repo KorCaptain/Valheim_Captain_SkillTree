@@ -38,6 +38,10 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, float> knifeAssassinHeartEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> knifeAssassinHeartCooldownEndTime = new Dictionary<Player, float>();
 
+        // 로그 Lv2 패시브: 암살자의 심장 추가 사용 추적
+        public static Dictionary<Player, float> rogueExtraChargeWindowEnd = new Dictionary<Player, float>();
+        public static HashSet<Player> rogueExtraChargeUsed = new HashSet<Player>();
+
         // 암살자의 심장 연속 공격 시스템
         public static Dictionary<Player, int> assassinHeartHitCount = new Dictionary<Player, int>();
         public static Dictionary<Player, bool> assassinHeartAttackMode = new Dictionary<Player, bool>();
