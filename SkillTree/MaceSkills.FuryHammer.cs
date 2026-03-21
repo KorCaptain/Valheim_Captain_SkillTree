@@ -20,6 +20,10 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, bool> furyHammer1stHitBuff = new Dictionary<Player, bool>(); // 1타 공격속도 버프
         private static float lastMaceSkillTime = 0f;
 
+        // === Paladin Lv2 추가 사용 창 ===
+        private static Dictionary<Player, float> _furyHammerPendingWindow = new Dictionary<Player, float>();
+        private const float FuryHammerExtraWindow = 30f;
+
         // === 하드코딩 상수 (수정 불가) ===
         private const int ATTACK_COUNT = 5;           // 연속공격 횟수 고정
         private const float ATTACK_INTERVAL = 0.5f;   // 공격간 딜레이 고정 (초)
@@ -45,7 +49,16 @@ namespace CaptainSkillTree.SkillTree
             bool canFuryHammer = SkillEffect.HasSkill("mace_Step7_fury_hammer");
             float cooldown = Mace_Config.FuryHammerCooldownValue;
 
-            if (canFuryHammer && nowG - lastMaceSkillTime > cooldown)
+            // Paladin Lv2 / Berserker Lv2 / Tanker Lv2 추가 사용 창 확인
+            bool hasPaladinLv2 = (SkillTreeManager.Instance?.GetSkillLevel("Paladin") ?? 0) >= 2;
+            bool hasBerserkerLv2 = (SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0) >= 2;
+            bool hasTankerLv2 = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2;
+            bool hasExtraUse = hasPaladinLv2 || hasBerserkerLv2 || hasTankerLv2;
+            bool inPendingWindow = hasExtraUse
+                && _furyHammerPendingWindow.TryGetValue(player, out float windowExpiry)
+                && nowG <= windowExpiry;
+
+            if (canFuryHammer && (nowG - lastMaceSkillTime > cooldown || inPendingWindow))
             {
                 Plugin.Log.LogInfo("[분노의 망치] H키 누름 - 즉시 스킬 발동");
 
@@ -56,9 +69,22 @@ namespace CaptainSkillTree.SkillTree
                     furyHammerCoroutine.Remove(player);
                 }
 
+                // Paladin Lv2 / Berserker Lv2 분기: 창 내 2번째 사용이면 쿨타임 시작, 1번째 사용이면 창 오픈
+                if (hasExtraUse && !inPendingWindow && nowG - lastMaceSkillTime > cooldown)
+                {
+                    // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
+                    _furyHammerPendingWindow[player] = nowG + FuryHammerExtraWindow;
+                    SkillTreeInputListener.Instance?.StartCoroutine(ExpireFuryHammerWindow(player));
+                }
+                else
+                {
+                    // 2번째 사용(창 내) or 비팔라딘: 쿨타임 즉시 시작
+                    _furyHammerPendingWindow.Remove(player);
+                    lastMaceSkillTime = nowG;
+                    ActiveSkillCooldownRegistry.SetCooldown("H", cooldown);
+                }
+
                 // 새 코루틴 시작
-                lastMaceSkillTime = Time.time;
-                ActiveSkillCooldownRegistry.SetCooldown("H", cooldown);
                 var coroutine = SkillTreeInputListener.Instance.StartCoroutine(ApplyFuryHammer(player, 0f));
                 furyHammerCoroutine[player] = coroutine;
             }
@@ -400,6 +426,21 @@ namespace CaptainSkillTree.SkillTree
         // [제거됨] ApplyGravityEffectSmoothly - 중력 효과 제거
 
         /// <summary>
+        /// Paladin Lv2 추가 사용 창 만료 처리
+        /// </summary>
+        private static System.Collections.IEnumerator ExpireFuryHammerWindow(Player player)
+        {
+            yield return new WaitForSeconds(FuryHammerExtraWindow);
+            if (_furyHammerPendingWindow.ContainsKey(player))
+            {
+                _furyHammerPendingWindow.Remove(player);
+                lastMaceSkillTime = Time.time;
+                ActiveSkillCooldownRegistry.SetCooldown("H", Mace_Config.FuryHammerCooldownValue);
+                Plugin.Log.LogDebug("[분노의 망치] Paladin 추가 사용 창 만료 - 쿨타임 시작");
+            }
+        }
+
+        /// <summary>
         /// 플레이어 사망 시 분노의 망치 정리 (무한 로딩 방지)
         /// </summary>
         public static void CleanupFuryHammerOnDeath(Player player)
@@ -435,6 +476,9 @@ namespace CaptainSkillTree.SkillTree
                     furyHammer1stHitBuff.Remove(player);
                     Plugin.Log.LogInfo("[분노의 망치] 1타 공격속도 버프 정리 완료");
                 }
+
+                // 4. Paladin Lv2 추가 사용 창 정리
+                _furyHammerPendingWindow.Remove(player);
             }
             catch (Exception ex)
             {

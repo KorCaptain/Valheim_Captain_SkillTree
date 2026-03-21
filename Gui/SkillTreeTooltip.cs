@@ -190,7 +190,7 @@ namespace CaptainSkillTree.Gui
             }
             else if (node.Id == "Paladin")
             {
-                tooltipText = Paladin_Config.GetPaladinTooltip();
+                tooltipText = Paladin_Tooltip.GetPaladinTooltip();
             }
             else if (node.Id == "Rogue")
             {
@@ -607,7 +607,7 @@ namespace CaptainSkillTree.Gui
 
                 // === 직업 스킬들 - 실제 노드 ID 사용 ===
                 case "Paladin": // Paladin - 상세 툴팁 시스템 사용 (컨피그 연동)
-                    result = Paladin_Config.GetPaladinTooltip();
+                    result = Paladin_Tooltip.GetPaladinTooltip();
                     break;
                 case "Tanker": // 탱커 - 상세 툴팁 시스템 사용
                     result = Tanker_Tooltip.GetTankerTooltip();
@@ -1235,7 +1235,7 @@ namespace CaptainSkillTree.Gui
             float minWidth = 300f;
             float maxWidth = 600f;
             float minHeight = 120f;
-            float maxHeight = 500f;
+            float maxHeight = 700f;
             
             // 여백 계산
             float padding = 30f; // 좌우 여백

@@ -101,6 +101,11 @@ namespace CaptainSkillTree.SkillTree
                             return;
                     }
 
+                    // Producer 마법부여 방어력 보너스 (% 방식)
+                    float enchantPct = 0f;
+                    if (ProducerCrafting.GetEnchantType(item) == ProducerCrafting.EnchantType.Armor)
+                        enchantPct = ProducerCrafting.GetEnchantValue(item);
+
                     // 추가 스킬 체크
                     bool bodyActive         = manager.GetSkillLevel("defense_Step6_body") > 0;
                     bool jotunnShieldActive = manager.GetSkillLevel("defense_Step6_true") > 0;
@@ -190,8 +195,11 @@ namespace CaptainSkillTree.SkillTree
                             float baseArmor = item.GetArmor(qualityLevel, worldLevel);
                             SkillEffect_DefenseTree.ItemData_GetArmor_DefenseTree_Patch.SuppressPatch = false;
 
-                            lines[i] = BuildLine(label, baseArmor, flatBonus,
-                                                  rockSkinActive, rockSkinPct, rockSkinMult);
+                            // 마법부여 % + Rock Skin % 덧셈 합산 → BuildLine에 통합 %로 전달
+                            float totalPct  = (rockSkinActive ? rockSkinPct : 0f) + enchantPct;
+                            bool  hasPercent = totalPct > 0f;
+                            float totalMult  = 1f + totalPct / 100f;
+                            lines[i] = BuildLine(label, baseArmor, flatBonus, hasPercent, totalPct, totalMult);
                             break;
                         }
                     }

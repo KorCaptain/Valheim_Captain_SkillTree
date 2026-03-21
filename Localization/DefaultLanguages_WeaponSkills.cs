@@ -175,7 +175,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Staff Skill Names ===
                 ["staff_skill_expert"] = "지팡이 전문가",
-                ["staff_skill_dual_cast"] = "연속 발사",
+                ["staff_skill_dual_cast"] = "이중시전",
                 ["staff_skill_heal"] = "힐",
 
                 // === Staff Skill Descriptions ===
@@ -279,7 +279,7 @@ namespace CaptainSkillTree.Localization
                 ["archer_desc_arrow_damage_fallback"] = "화살 1발은 활+화살 공격력의 50%",
                 ["archer_passive_skills"] = "점프 높이 +{0}%, 낙하 데미지 -{1}%",
                 ["archer_passive_lv1"] = "점프 +{0}%, 낙하 데미지 -{1}%",
-                ["archer_passive_lv2"] = "점프 +{0}%, 독 저항 +{1}%",
+                ["archer_passive_lv2"] = "점프 +{0}%, 독 저항 +{1}%, 단 한 발/폭발사격 30초 내 추가 사용 가능",
                 ["archer_passive_lv3"] = "점프 +{0}%, 낙하 데미지 -{1}%, 독/냉기 저항 +{2}%",
                 ["archer_passive_lv4"] = "점프 +{0}%, 낙하 데미지 -{1}%, 독/냉기/화염 저항 +{2}%",
                 ["archer_passive_lv5"] = "점프 +{0}%, 낙하 데미지 -{1}%, 독/냉기/화염/번개 저항 +{2}%",
@@ -636,7 +636,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Staff Skill Names ===
                 ["staff_skill_expert"] = "Staff Expert",
-                ["staff_skill_dual_cast"] = "Rapid Barrage",
+                ["staff_skill_dual_cast"] = "Double Casting",
                 ["staff_skill_heal"] = "Heal",
 
                 // === Staff Skill Descriptions ===

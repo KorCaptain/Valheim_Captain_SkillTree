@@ -205,6 +205,37 @@ namespace CaptainSkillTree.Localization
                 "Cura funciona corretamente (incluído em m_baseHP).\n" +
                 "Valor recomendado: 100%",
 
+                // === Berserker Lv2~5 Passivo Config ===
+                ["Berserker_Lv2_CooldownReduction"] =
+                "【Berserker Lv2: Redução de CD da Fúria (seg)】\n" +
+                "No Lv2, reduz o cooldown da Fúria por este valor.\n" +
+                "Recomendado: 5 segundos",
+
+                ["Berserker_Lv3_RageDamageReduction"] =
+                "【Berserker Lv3: Redução de dano em fúria (%)】\n" +
+                "No Lv3, reduz o dano recebido durante o estado de fúria.\n" +
+                "Recomendado: 15%",
+
+                ["Berserker_Lv4_LowHpAttackBonus"] =
+                "【Berserker Lv4: Bônus de ataque com HP baixo (%)】\n" +
+                "No Lv4, aumenta o ataque quando o HP fica abaixo do limiar.\n" +
+                "Recomendado: 15%",
+
+                ["Berserker_Lv4_LowHpAttackThreshold"] =
+                "【Berserker Lv4: Limiar de HP baixo (%)】\n" +
+                "Abaixo desta % de HP, o bônus de ataque do Lv4 se ativa.\n" +
+                "Recomendado: 50%",
+
+                ["Berserker_Lv5_PassiveCooldownReduction"] =
+                "【Berserker Lv5: Redução CD Desafio à Morte (seg)】\n" +
+                "No Lv5, reduz o cooldown do passivo por este valor.\n" +
+                "Recomendado: 120 segundos",
+
+                ["Berserker_Lv5_InvincibilityBonus"] =
+                "【Berserker Lv5: Bônus de invencibilidade (seg)】\n" +
+                "No Lv5, estende a duração da invencibilidade ao ativar Desafio à Morte.\n" +
+                "Recomendado: 2 segundos",
+
                 // ========================================
                 // Tanker Job (tanque)
                 // ========================================
@@ -261,6 +292,28 @@ namespace CaptainSkillTree.Localization
                 "【Redução Passiva de Dano do Tanque (%)】\n" +
                 "Tanque passivo: reduz continuamente o dano recebido.\n" +
                 "Valor recomendado: 10-20%",
+
+                ["Tanker_Hp_Bonus"] =
+                "【HP Base do Tanque】\n" +
+                "Bônus de HP passivo do Tanque.\n" +
+                "Padrão: 100",
+
+                ["Tanker_Lv2_AllResist"] =
+                "【Resistência Total do Tanque Lv2 (%)】\n" +
+                "Resistência passiva a todos os tipos de dano (Lv2+).\n" +
+                "Padrão: 5%",
+
+                ["Tanker_Lv3_AllResist"] =
+                "【Resistência Total do Tanque Lv3 (%)】\n" +
+                "Padrão: 8%",
+
+                ["Tanker_Lv4_AllResist"] =
+                "【Resistência Total do Tanque Lv4 (%)】\n" +
+                "Padrão: 12%",
+
+                ["Tanker_Lv5_AllResist"] =
+                "【Resistência Total do Tanque Lv5 (%)】\n" +
+                "Padrão: 15%",
 
                 // ========================================
                 // Rogue Job (ladino)
@@ -369,6 +422,28 @@ namespace CaptainSkillTree.Localization
                 "Paladino passivo: aumenta a resistência a dano físico e elemental.\n" +
                 "Valor recomendado: 5-12%",
 
+                // === Paladino Lv2-5 ===
+                ["Paladin_Lv2_SelfHealPercent"] = "【Lv2 Auto-cura (%)】\nRecomendado: 15-20%",
+                ["Paladin_Lv2_AllyHealPercent"] = "【Lv2 Cura de Aliados (%/tick)】\nRecomendado: 2-3%",
+                ["Paladin_Lv3_SelfHealPercent"] = "【Lv3 Auto-cura (%)】\nRecomendado: 17-22%",
+                ["Paladin_Lv3_AllyHealPercent"] = "【Lv3 Cura de Aliados (%/tick)】\nRecomendado: 2.5-3.5%",
+                ["Paladin_Lv3_HealRange"] = "【Lv3 Alcance de Cura (m)】\nRecomendado: 5-7m",
+                ["Paladin_Lv4_SelfHealPercent"] = "【Lv4 Auto-cura (%)】\nRecomendado: 19-24%",
+                ["Paladin_Lv4_AllyHealPercent"] = "【Lv4 Cura de Aliados (%/tick)】\nRecomendado: 3-4%",
+                ["Paladin_Lv4_HealRange"] = "【Lv4 Alcance de Cura (m)】\nRecomendado: 6-8m",
+                ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 Auto-cura (%)】\nRecomendado: 22-28%",
+                ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 Cura de Aliados (%/tick)】\nRecomendado: 3.5-5%",
+                ["Paladin_Lv5_HealRange"] = "【Lv5 Alcance de Cura (m)】\nRecomendado: 7-10m",
+                ["Paladin_Lv5_Cooldown"] = "【Lv5 Tempo de Recarga (seg)】\nRecomendado: 20-30 seg",
+                ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 Redução de Resistência (%)】\nRecomendado: 6-10%",
+                ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 Redução de Resistência (%)】\nRecomendado: 8-12%",
+                ["Paladin_Lv4_ResistanceReduction"] = "【Lv4 Redução de Resistência (%)】\nRecomendado: 10-14%",
+                ["Paladin_Lv5_ResistanceReduction"] = "【Lv5 Redução de Resistência (%)】\nRecomendado: 12-18%",
+                ["Paladin_Lv2_StaminaBonus"] = "【Lv2 Bônus Stamina Máx.】\nRecomendado: 8-15",
+                ["Paladin_Lv3_StaminaBonus"] = "【Lv3 Bônus Stamina Máx.】\nRecomendado: 12-20",
+                ["Paladin_Lv4_StaminaBonus"] = "【Lv4 Bônus Stamina Máx.】\nRecomendado: 15-25",
+                ["Paladin_Lv5_StaminaBonus"] = "【Lv5 Bônus Stamina Máx.】\nRecomendado: 20-30",
+
                 // ========================================
                 // Berserker Job (berserker)
                 // ========================================
@@ -420,7 +495,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_Cooldown"] =
                 "【Recarga do Passivo (seg)】\n" +
                 "Tempo de espera até o próximo acionamento da invencibilidade passiva.\n" +
-                "Padrão: 180 seg (3 minutos)\n" +
+                "Padrão: 540 seg (9 minutos)\n" +
                 "Valor recomendado: 120-300 seg",
 
                 // === Berserker Job: Bônus passivo de HP (chave com correção de capitalização) ===

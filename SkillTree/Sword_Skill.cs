@@ -31,6 +31,12 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, Coroutine> swordSlashCoroutines => rushSlashCoroutines;
         private static Dictionary<Player, int> swordSlashAttackCount => rushSlashAttackCount;
 
+        // === Paladin Lv2 추가 사용 창 ===
+        private static Dictionary<Player, float> _swordSlashPendingWindow = new Dictionary<Player, float>();
+        private static Dictionary<Player, float> _parryRushPendingWindow = new Dictionary<Player, float>();
+        private const float SwordSlashExtraWindow = 30f;
+        private const float ParryRushExtraWindow = 30f;
+
         /// <summary>
         /// 플레이어가 방패를 착용 중인지 확인
         /// </summary>
@@ -149,7 +155,15 @@ namespace CaptainSkillTree.SkillTree
 
                 // 3. 쿨타임 확인
                 float now = Time.time;
-                if (rushSlashCooldowns.ContainsKey(player) && now < rushSlashCooldowns[player])
+                bool hasPaladinLv2_rush = (SkillTreeManager.Instance?.GetSkillLevel("Paladin") ?? 0) >= 2;
+                bool hasBerserkerLv2_rush = (SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0) >= 2;
+                bool hasTankerLv2_rush = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2;
+                bool hasExtraUse_rush = hasPaladinLv2_rush || hasBerserkerLv2_rush || hasTankerLv2_rush;
+                bool inRushSlashWindow = hasExtraUse_rush
+                    && _swordSlashPendingWindow.TryGetValue(player, out float rushWinExpiry)
+                    && now <= rushWinExpiry;
+
+                if (!inRushSlashWindow && rushSlashCooldowns.ContainsKey(player) && now < rushSlashCooldowns[player])
                 {
                     float remaining = rushSlashCooldowns[player] - now;
                     SkillEffect.DrawFloatingText(player, L.Get("cooldown_remaining", Mathf.CeilToInt(remaining)), Color.yellow);
@@ -177,9 +191,22 @@ namespace CaptainSkillTree.SkillTree
 
                 rushSlashActive[player] = true;
                 rushSlashEndTime[player] = now + duration;
-                rushSlashCooldowns[player] = now + cooldown;
                 rushSlashAttackCount[player] = 0;
-                ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+
+                // Paladin Lv2 / Berserker Lv2 분기
+                if (hasExtraUse_rush && !inRushSlashWindow)
+                {
+                    // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
+                    _swordSlashPendingWindow[player] = now + SwordSlashExtraWindow;
+                    player.StartCoroutine(ExpireSwordSlashWindow(player));
+                }
+                else
+                {
+                    // 2번째 사용(창 내) or 비팔라딘: 쿨타임 즉시 시작
+                    _swordSlashPendingWindow.Remove(player);
+                    rushSlashCooldowns[player] = now + cooldown;
+                    ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+                }
 
                 // 7. 스태미나 소모
                 player.UseStamina(requiredStamina);
@@ -670,6 +697,20 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 검 베기 액티브 스킬 사망 시 정리 시스템
         /// </summary>
+        /// <summary>Paladin Lv2 돌진베기 추가 사용 창 만료</summary>
+        private static IEnumerator ExpireSwordSlashWindow(Player player)
+        {
+            yield return new WaitForSeconds(SwordSlashExtraWindow);
+            if (_swordSlashPendingWindow.ContainsKey(player))
+            {
+                _swordSlashPendingWindow.Remove(player);
+                float cd = Sword_Config.RushSlashCooldownValue;
+                rushSlashCooldowns[player] = Time.time + cd;
+                ActiveSkillCooldownRegistry.SetCooldown("G", cd);
+                Plugin.Log.LogDebug("[돌진베기] Paladin 추가 사용 창 만료 - 쿨타임 시작");
+            }
+        }
+
         public static void CleanupSwordSkillOnDeath(Player player)
         {
             try
@@ -677,6 +718,7 @@ namespace CaptainSkillTree.SkillTree
                 rushSlashCooldowns.Remove(player);
                 rushSlashActive.Remove(player);
                 rushSlashEndTime.Remove(player);
+                _swordSlashPendingWindow.Remove(player);
 
                 if (rushSlashCoroutines.ContainsKey(player) && rushSlashCoroutines[player] != null)
                 {
@@ -774,7 +816,13 @@ namespace CaptainSkillTree.SkillTree
 
                 // 3. 쿨타임 확인
                 float now = Time.time;
-                if (parryRushCooldowns.TryGetValue(player, out float cdEnd) && now < cdEnd)
+                bool hasPaladinLv2_parry = (SkillTreeManager.Instance?.GetSkillLevel("Paladin") ?? 0) >= 2;
+                bool hasExtraUse_parry = hasPaladinLv2_parry;
+                bool inParryRushWindow = hasExtraUse_parry
+                    && _parryRushPendingWindow.TryGetValue(player, out float parryWinExpiry)
+                    && now <= parryWinExpiry;
+
+                if (!inParryRushWindow && parryRushCooldowns.TryGetValue(player, out float cdEnd) && now < cdEnd)
                 {
                     float remaining = cdEnd - now;
                     SkillEffect.DrawFloatingText(player, L.Get("cooldown_remaining", Mathf.CeilToInt(remaining)), Color.yellow);
@@ -802,8 +850,22 @@ namespace CaptainSkillTree.SkillTree
 
                 parryRushActive[player] = true;
                 parryRushExpiry[player] = now + duration;
-                parryRushCooldowns[player] = now + cooldown;
-                ActiveSkillCooldownRegistry.SetCooldown("H", cooldown);
+
+                // Paladin/Tanker Lv2 분기
+                if (hasExtraUse_parry && !inParryRushWindow)
+                {
+                    // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
+                    _parryRushPendingWindow[player] = now + ParryRushExtraWindow;
+                    player.StartCoroutine(ExpireParryRushWindow(player));
+                    ActiveSkillCooldownRegistry.SetCooldown("H", ParryRushExtraWindow); // HUD에 30초 창 표시
+                }
+                else
+                {
+                    // 2번째 사용(창 내) or 비팔라딘: 쿨타임 즉시 시작
+                    _parryRushPendingWindow.Remove(player);
+                    parryRushCooldowns[player] = now + cooldown;
+                    ActiveSkillCooldownRegistry.SetCooldown("H", cooldown);
+                }
 
                 // 7. 스태미나 소모
                 player.UseStamina(staminaCost);
@@ -1010,6 +1072,20 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        /// <summary>Paladin Lv2 패링돌격 추가 사용 창 만료</summary>
+        private static IEnumerator ExpireParryRushWindow(Player player)
+        {
+            yield return new WaitForSeconds(ParryRushExtraWindow);
+            if (_parryRushPendingWindow.ContainsKey(player))
+            {
+                _parryRushPendingWindow.Remove(player);
+                float cd = Sword_Config.ParryRushCooldownValue;
+                parryRushCooldowns[player] = Time.time + cd;
+                ActiveSkillCooldownRegistry.SetCooldown("H", cd);
+                Plugin.Log.LogDebug("[패링돌격] Paladin 추가 사용 창 만료 - 쿨타임 시작");
+            }
+        }
+
         /// <summary>
         /// 패링 돌격 사망 시 정리
         /// </summary>
@@ -1021,6 +1097,7 @@ namespace CaptainSkillTree.SkillTree
                 parryRushActive.Remove(player);
                 parryRushExpiry.Remove(player);
                 parryRushCharging.Remove(player);
+                _parryRushPendingWindow.Remove(player);
             }
             catch (Exception ex)
             {

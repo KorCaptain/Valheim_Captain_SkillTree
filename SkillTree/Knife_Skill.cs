@@ -13,6 +13,10 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static class Knife_Skill
     {
+        // 암살자의 심장 Lv2: 30초 추가 사용 창 관리 (playerID → 창 만료 Time.time)
+        private static Dictionary<long, float> _assassinHeartPendingWindow = new Dictionary<long, float>();
+        private const float AssassinHeartExtraWindow = 30f;
+
         #region 단검 무기 감지
 
         /// <summary>
@@ -299,13 +303,17 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
-                // 쿨타임 확인 (JobSkillsUtility 사용)
+                // 쿨타임 확인 (JobSkillsUtility 사용) - Rogue Lv2 창이 열려 있으면 건너뜀
                 string skillName = "암살자의 심장";
-                if (JobSkillsUtility.IsOnCooldown(player, skillName))
+                long pid = player.GetPlayerID();
+                bool inPendingWindow = _assassinHeartPendingWindow.TryGetValue(pid, out float windowEnd)
+                    && Time.time <= windowEnd;
+
+                if (!inPendingWindow && JobSkillsUtility.IsOnCooldown(player, skillName))
                 {
                     float remaining = JobSkillsUtility.GetRemainingCooldown(player, skillName);
-                    SkillEffect.ShowSkillEffectText(player, 
-                        $"쿨타임 {remaining:F1}초 남음", 
+                    SkillEffect.ShowSkillEffectText(player,
+                        $"쿨타임 {remaining:F1}초 남음",
                         Color.red, SkillEffect.SkillEffectTextType.Passive);
                     return false;
                 }
@@ -314,8 +322,8 @@ namespace CaptainSkillTree.SkillTree
                 float staminaCost = Knife_Config.KnifeAssassinHeartStaminaCostValue;
                 if (player.GetStamina() < staminaCost)
                 {
-                    SkillEffect.ShowSkillEffectText(player, 
-                        "스태미나 부족!", 
+                    SkillEffect.ShowSkillEffectText(player,
+                        "스태미나 부족!",
                         Color.red, SkillEffect.SkillEffectTextType.Passive);
                     return false;
                 }
@@ -355,10 +363,33 @@ namespace CaptainSkillTree.SkillTree
                 float staminaCost = Knife_Config.KnifeAssassinHeartStaminaCostValue;
                 player.UseStamina(staminaCost);
 
-                // 쿨타임 설정 (JobSkillsUtility 사용)
+                // 쿨타임 설정 (JobSkillsUtility 사용) - Rogue Lv2: 30초 추가 사용 창 시스템
                 string skillName = "암살자의 심장";
                 float cooldown = Knife_Config.KnifeAssassinHeartCooldownValue;
-                JobSkillsUtility.SetCooldown(player, skillName, cooldown);
+                long pid = player.GetPlayerID();
+                bool hasRogueLv2 = SkillTreeManager.Instance != null && SkillTreeManager.Instance.GetSkillLevel("Rogue") >= 2;
+
+                if (hasRogueLv2)
+                {
+                    if (_assassinHeartPendingWindow.TryGetValue(pid, out float we) && Time.time <= we)
+                    {
+                        // 2번째 사용: 창 종료 → 쿨타임 시작
+                        _assassinHeartPendingWindow.Remove(pid);
+                        JobSkillsUtility.SetCooldown(player, skillName, cooldown);
+                        Plugin.Log.LogDebug("[암살자의 심장] Lv2 2번째 사용 → 쿨타임 시작");
+                    }
+                    else
+                    {
+                        // 1번째 사용: 쿨타임 보류, 30초 창 시작
+                        _assassinHeartPendingWindow[pid] = Time.time + AssassinHeartExtraWindow;
+                        player.StartCoroutine(ExpireAssassinHeartWindow(pid, skillName, cooldown));
+                        Plugin.Log.LogDebug("[암살자의 심장] Lv2 1번째 사용 → 30초 창 시작");
+                    }
+                }
+                else
+                {
+                    JobSkillsUtility.SetCooldown(player, skillName, cooldown);
+                }
 
                 // 원래 위치 저장 (복귀용)
                 Vector3 originalPosition = player.transform.position;
@@ -384,6 +415,23 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[암살자의 심장] 스킬 사용 실패: {ex.Message}");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Rogue Lv2 암살자의 심장 30초 창 만료 처리 코루틴
+        /// </summary>
+        private static IEnumerator ExpireAssassinHeartWindow(long pid, string skillName, float cooldown)
+        {
+            yield return new WaitForSeconds(AssassinHeartExtraWindow);
+            if (_assassinHeartPendingWindow.ContainsKey(pid))
+            {
+                // 30초 내 2번째 사용 없음 → 쿨타임 시작
+                _assassinHeartPendingWindow.Remove(pid);
+                var player = Player.m_localPlayer;
+                if (player != null && player.GetPlayerID() == pid)
+                    JobSkillsUtility.SetCooldown(player, skillName, cooldown);
+                Plugin.Log.LogDebug("[암살자의 심장] Lv2 창 만료 → 쿨타임 시작");
             }
         }
 

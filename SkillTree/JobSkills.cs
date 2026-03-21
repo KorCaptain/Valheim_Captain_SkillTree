@@ -29,7 +29,7 @@ namespace CaptainSkillTree.SkillTree
                 Name = "버서커",
                 Description = Berserker_Tooltip.GetBerserkerTooltip(),
                 RequiredPoints = 0,
-                MaxLevel = 1,
+                MaxLevel = 5,
                 Tier = 7,
                 Position = new Vector2(465, -90),
                 Category = "직업",
@@ -38,7 +38,12 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "Berserker_unlock",
                 NextNodes = new List<string>(),
                 RequiredPlayerLevel = 10,
-                ApplyEffect = (lv) => { }
+                ApplyEffect = (lv) => {
+                    if (Player.m_localPlayer != null)
+                        SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                            L.Get("berserker_upgrade_msg", lv), Color.red);
+                    Berserker_Tooltip.UpdateBerserkerTooltip();
+                }
             });
             
             // 탱커 (별도 파일에서 관리)
@@ -65,13 +70,13 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
             
-            // 메이지 (동적 툴팁 시스템)
+            // 메이지 (동적 툴팁 시스템 + 레벨업 메시지)
             manager.AddSkill(new SkillNode {
                 Id = "Mage",
-                Name = "메이지",
+                Name = L.Get("job_mage"),
                 Description = Mage_Tooltip.GetMageTooltip(),
                 RequiredPoints = 0,
-                MaxLevel = 1,
+                MaxLevel = 5,
                 Tier = 7,
                 Position = new Vector2(-490, 150),
                 Category = "직업",
@@ -80,19 +85,25 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "Mage_unlock",
                 NextNodes = new List<string>(),
                 RequiredPlayerLevel = 10,
-                ApplyEffect = (lv) => { }
+                ApplyEffect = (lv) => {
+                    if (Player.m_localPlayer != null)
+                        SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                            L.Get("mage_upgrade_msg", lv), UnityEngine.Color.cyan);
+                    Mage_Tooltip.UpdateMageTooltip();
+                    MageSkills.RefreshMageStatusCache();
+                }
             });
             
             // 제작 전문가 (Producer)
             ProducerSkills.RegisterProducerSkill();
 
-            // 성기사 (컨피그 기반 동적 툴팁)
+            // 성기사 (Lv1~5 레벨업 시스템)
             manager.AddSkill(new SkillNode {
                 Id = "Paladin",
                 Name = L.Get("job_skill_paladin"),
-                Description = Paladin_Config.GetPaladinTooltip(),
+                Description = Paladin_Tooltip.GetPaladinTooltip(),
                 RequiredPoints = 0,
-                MaxLevel = 1,
+                MaxLevel = 5,
                 Tier = 7,
                 Position = new Vector2(-490, -100),
                 Category = "직업",
@@ -101,7 +112,13 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "paladin_unlock",
                 NextNodes = new List<string>(),
                 RequiredPlayerLevel = 10,
-                ApplyEffect = (lv) => { }
+                ApplyEffect = (lv) => {
+                    if (Player.m_localPlayer != null)
+                        SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                            L.Get("paladin_upgrade_msg", lv), new UnityEngine.Color(1f, 0.9f, 0.3f));
+                    Paladin_Tooltip.UpdatePaladinTooltip();
+                    PaladinSkills.RefreshPaladinStatusCache();
+                }
             });
             
             // 스킬 등록 완료 후 동적 툴팁 강제 업데이트 (동적 툴팁 적용 보장)
@@ -212,7 +229,7 @@ namespace CaptainSkillTree.SkillTree
                 var manager = SkillTreeManager.Instance;
                 if (manager?.SkillNodes != null && manager.SkillNodes.ContainsKey("Paladin"))
                 {
-                    var newTooltip = Paladin_Config.GetPaladinTooltip();
+                    var newTooltip = Paladin_Tooltip.GetPaladinTooltip();
                     manager.SkillNodes["Paladin"].Description = newTooltip;
                     Plugin.Log.LogDebug($"[성기사 툴팁] 직접 업데이트 완료 - 새 툴팁 길이: {newTooltip?.Length ?? 0}");
                 }
@@ -351,7 +368,7 @@ namespace CaptainSkillTree.SkillTree
             // 성능 최적화: 첫 번째로 찾은 직업만 실행
             if (holyKnightLevel > 0)
             {
-                ExecuteHolyKnightHeal(player, currentTime);
+                ExecuteHolyKnightHeal(player, currentTime, holyKnightLevel);
                 return;
             }
 
@@ -404,7 +421,7 @@ namespace CaptainSkillTree.SkillTree
         /// 컨피그에서 설정된 값에 따라 아군을 지속 힐링하고 시전자는 즉시 회복
         /// 필요조건: 한손 근접무기 착용, 성기사
         /// </summary>
-        private static void ExecuteHolyKnightHeal(Player player, float currentTime)
+        private static void ExecuteHolyKnightHeal(Player player, float currentTime, int paladinLevel = 1)
         {
             // 한손 근접무기 착용 확인
             if (!IsUsingOneHandedMeleeWeapon(player))
@@ -458,8 +475,8 @@ namespace CaptainSkillTree.SkillTree
             // 2. 시전자 발밑에 힐링 효과 1회 표시 (Valheim 내장 VFX 사용)
             PlayPaladinActivationEffect(player);
 
-            // 3. 시전자 즉시 회복 (컨피그 비율)
-            float selfHealAmount = player.GetMaxHealth() * Paladin_Config.SelfHealPercentValue;
+            // 3. 시전자 즉시 회복 (레벨별 비율)
+            float selfHealAmount = player.GetMaxHealth() * (Paladin_Config.GetSelfHealPercent(paladinLevel) / 100f);
             player.Heal(selfHealAmount, true);
             
             // 시전자 본인에게도 힐링 오라 효과 추가 (도트 힐 지속시간과 동일)
@@ -472,7 +489,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 4. 범위 내 다른 플레이어들에게 지속 힐링 적용 (컨피그 설정)
             var nearbyPlayers = Player.GetAllPlayers()
-                .Where(p => p != player && Vector3.Distance(p.transform.position, player.transform.position) <= Paladin_Config.RangeValue && !p.IsDead())
+                .Where(p => p != player && Vector3.Distance(p.transform.position, player.transform.position) <= Paladin_Config.GetHealRange(paladinLevel) && !p.IsDead())
                 .ToList();
 
             int healedCount = nearbyPlayers.Count;
@@ -488,13 +505,14 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 새로운 지속 힐링 시작
-                var healCoroutine = player.StartCoroutine(ContinuousHealCoroutine(targetPlayer));
+                var healCoroutine = player.StartCoroutine(ContinuousHealCoroutine(targetPlayer, paladinLevel));
                 activeHealCoroutines[targetPlayer] = healCoroutine;
             }
 
-            // 쿨타임 설정 (컨피그에서 설정)
-            holyKnightHealCooldownEnd = currentTime + Paladin_Config.CooldownValue;
-            ActiveSkillCooldownRegistry.SetCooldown("Y", Paladin_Config.CooldownValue);
+            // 쿨타임 설정 (레벨별)
+            float cooldown = Paladin_Config.GetCooldown(paladinLevel);
+            holyKnightHealCooldownEnd = currentTime + cooldown;
+            ActiveSkillCooldownRegistry.SetCooldown("Y", cooldown);
 
             ShowMessage(player, L.Get("job_paladin_heal_success", healedCount));
             
@@ -506,7 +524,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 지속 힐링 코루틴 (컨피그 설정에 따른 지속 회복)
         /// </summary>
-        private static IEnumerator ContinuousHealCoroutine(Player target)
+        private static IEnumerator ContinuousHealCoroutine(Player target, int paladinLevel = 1)
         {
             if (target == null || target.IsDead())
             {
@@ -517,7 +535,7 @@ namespace CaptainSkillTree.SkillTree
             int healTicks = 0;
             float healDuration = Paladin_Config.HealDurationValue;
             float healInterval = Paladin_Config.HealIntervalValue;
-            float healPercentPerTick = Paladin_Config.AllyHealPercentValue;
+            float healPercentPerTick = Paladin_Config.GetAllyHealPercent(paladinLevel) / 100f;
             int totalTicks = Paladin_Config.TotalHealTicks;
             bool showNumbers = Paladin_Config.ShowHealNumbersValue;
             bool showProgress = Paladin_Config.ShowHealProgressValue;
@@ -1221,15 +1239,16 @@ namespace CaptainSkillTree.SkillTree
 
                 // 성기사가 아니면 무시
                 var manager = SkillTreeManager.Instance;
-                if (manager == null || manager.GetSkillLevel("Paladin") <= 0)
+                int paladinLevel = manager?.GetSkillLevel("Paladin") ?? 0;
+                if (manager == null || paladinLevel <= 0)
                     return;
 
                 // 피격자가 몬스터인지 확인 (플레이어는 제외)
                 if (__instance is Player)
                     return;
 
-                // 저항 감소 비율 가져오기
-                float resistanceReduction = Paladin_Config.ElementalResistanceReductionValue / 100f; // 8% = 0.08
+                // 저항 감소 비율 가져오기 (레벨별)
+                float resistanceReduction = Paladin_Config.GetResistanceReduction(paladinLevel) / 100f;
                 if (resistanceReduction <= 0f)
                     return;
 

@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using CaptainSkillTree.Localization;
 using CaptainSkillTree.VFX;
@@ -17,6 +18,10 @@ namespace CaptainSkillTree.SkillTree
         // === 폭발 화살 관련 변수 ===
         private static Dictionary<Player, float> explosiveArrowCooldown = new Dictionary<Player, float>();
         private static Dictionary<Player, bool> explosiveArrowReady = new Dictionary<Player, bool>();
+
+        // Archer Lv2: 30초 추가 사용 창 관리
+        private static Dictionary<Player, float> _explosiveArrowPendingWindow = new Dictionary<Player, float>();
+        private const float ExplosiveArrowExtraWindow = 30f;
 
         // 버프 상태 VFX 관리 (머리 위 statusailment_01_aura)
         private static Dictionary<Player, GameObject> explosiveArrowStatusEffects = new Dictionary<Player, GameObject>();
@@ -47,15 +52,22 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 2. 쿨타임 확인 (석궁 단 한발과 동일)
-                if (!explosiveArrowCooldown.ContainsKey(player))
-                    explosiveArrowCooldown[player] = 0f;
-                    
-                if (Time.time - explosiveArrowCooldown[player] < SkillTreeConfig.BowExplosiveArrowCooldownValue)
+                // Archer Lv2 추가 사용 창이 열려 있으면 쿨타임 체크 건너뜀
+                bool inPendingWindow = _explosiveArrowPendingWindow.TryGetValue(player, out float windowEnd)
+                    && Time.time <= windowEnd;
+
+                if (!inPendingWindow)
                 {
-                    float remainingCooldown = SkillTreeConfig.BowExplosiveArrowCooldownValue - (Time.time - explosiveArrowCooldown[player]);
-                    ShowSkillEffectText(player, L.Get("cooldown_format", $"{remainingCooldown:F1}"), Color.yellow, SkillEffectTextType.Passive);
-                    Plugin.Log.LogInfo($"[폭발 화살] 쿨타임 중 - 남은 시간: {remainingCooldown:F1}초");
-                    return;
+                    if (!explosiveArrowCooldown.ContainsKey(player))
+                        explosiveArrowCooldown[player] = 0f;
+
+                    if (Time.time - explosiveArrowCooldown[player] < SkillTreeConfig.BowExplosiveArrowCooldownValue)
+                    {
+                        float remainingCooldown = SkillTreeConfig.BowExplosiveArrowCooldownValue - (Time.time - explosiveArrowCooldown[player]);
+                        ShowSkillEffectText(player, L.Get("cooldown_format", $"{remainingCooldown:F1}"), Color.yellow, SkillEffectTextType.Passive);
+                        Plugin.Log.LogInfo($"[폭발 화살] 쿨타임 중 - 남은 시간: {remainingCooldown:F1}초");
+                        return;
+                    }
                 }
 
                 // 3. 활 착용 확인
@@ -77,9 +89,34 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 5. 스킬 발동 (석궁 단 한발과 동일 - 즉시 준비 상태)
-                explosiveArrowCooldown[player] = Time.time;
-                explosiveArrowReady[player] = true;
-                ActiveSkillCooldownRegistry.SetCooldown("R", SkillTreeConfig.BowExplosiveArrowCooldownValue);
+                explosiveArrowReady[player] = true;  // 항상 준비 상태 설정
+
+                bool hasArcherLv2 = SkillTreeManager.Instance != null
+                    && SkillTreeManager.Instance.GetSkillLevel("Archer") >= 2;
+
+                if (hasArcherLv2)
+                {
+                    if (_explosiveArrowPendingWindow.TryGetValue(player, out float we) && Time.time <= we)
+                    {
+                        // 2번째 사용: 창 종료 → 쿨타임 시작
+                        _explosiveArrowPendingWindow.Remove(player);
+                        explosiveArrowCooldown[player] = Time.time;
+                        ActiveSkillCooldownRegistry.SetCooldown("R", SkillTreeConfig.BowExplosiveArrowCooldownValue);
+                        Plugin.Log.LogDebug("[폭발화살] Archer Lv2 2번째 사용 → 쿨타임 시작");
+                    }
+                    else
+                    {
+                        // 1번째 사용: 쿨타임 보류, 30초 창 시작
+                        _explosiveArrowPendingWindow[player] = Time.time + ExplosiveArrowExtraWindow;
+                        Plugin.Instance.StartCoroutine(ExpireExplosiveArrowWindow(player));
+                        Plugin.Log.LogDebug("[폭발화살] Archer Lv2 1번째 사용 → 30초 창 시작");
+                    }
+                }
+                else
+                {
+                    explosiveArrowCooldown[player] = Time.time;
+                    ActiveSkillCooldownRegistry.SetCooldown("R", SkillTreeConfig.BowExplosiveArrowCooldownValue);
+                }
 
                 // 스태미나 소모
                 player.UseStamina(requiredStamina);
@@ -97,6 +134,22 @@ namespace CaptainSkillTree.SkillTree
             }
         }
         
+        /// <summary>
+        /// Archer Lv2 폭발화살 30초 추가 사용 창 만료 코루틴
+        /// </summary>
+        private static IEnumerator ExpireExplosiveArrowWindow(Player player)
+        {
+            yield return new WaitForSeconds(ExplosiveArrowExtraWindow);
+            if (_explosiveArrowPendingWindow.ContainsKey(player))
+            {
+                // 30초 내 2번째 사용 없음 → 쿨타임 시작
+                _explosiveArrowPendingWindow.Remove(player);
+                explosiveArrowCooldown[player] = Time.time;
+                ActiveSkillCooldownRegistry.SetCooldown("R", SkillTreeConfig.BowExplosiveArrowCooldownValue);
+                Plugin.Log.LogDebug("[폭발화살] Archer Lv2 창 만료 → 쿨타임 시작");
+            }
+        }
+
         /// <summary>
         /// 폭발 화살 R키 활성화 시 VFX/SFX 효과 (아처 멀티샷과 동일한 방식)
         /// </summary>
@@ -241,6 +294,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 explosiveArrowCooldown.Remove(player);
                 explosiveArrowReady.Remove(player);
+                _explosiveArrowPendingWindow.Remove(player);
 
                 // 상태 효과 GameObject 제거 (statusailment_01_aura)
                 if (explosiveArrowStatusEffects.ContainsKey(player))

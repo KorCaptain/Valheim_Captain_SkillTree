@@ -205,6 +205,37 @@ namespace CaptainSkillTree.Localization
                 "治疗正常生效（包含在m_baseHP中）。\n" +
                 "推荐：100%",
 
+                // === 狂战士 Lv2~5 被动 Config ===
+                ["Berserker_Lv2_CooldownReduction"] =
+                "【狂战士 Lv2：狂怒冷却缩减(秒)】\n" +
+                "Lv2时，狂怒技能冷却时间减少此数值。\n" +
+                "推荐：5秒",
+
+                ["Berserker_Lv3_RageDamageReduction"] =
+                "【狂战士 Lv3：狂怒中受到伤害减免(%)】\n" +
+                "Lv3时，狂怒状态下受到的伤害减少此比例。\n" +
+                "推荐：15%",
+
+                ["Berserker_Lv4_LowHpAttackBonus"] =
+                "【狂战士 Lv4：低生命值攻击加成(%)】\n" +
+                "Lv4时，生命值低于阈值时攻击力增加。\n" +
+                "推荐：15%",
+
+                ["Berserker_Lv4_LowHpAttackThreshold"] =
+                "【狂战士 Lv4：低生命值触发阈值(%)】\n" +
+                "低于此生命值%时，Lv4攻击加成激活。\n" +
+                "推荐：50%",
+
+                ["Berserker_Lv5_PassiveCooldownReduction"] =
+                "【狂战士 Lv5：不屈之死冷却缩减(秒)】\n" +
+                "Lv5时，被动技能冷却时间减少此数值。\n" +
+                "推荐：120秒",
+
+                ["Berserker_Lv5_InvincibilityBonus"] =
+                "【狂战士 Lv5：额外无敌时间(秒)】\n" +
+                "Lv5时，不屈之死触发时无敌时间延长。\n" +
+                "推荐：2秒",
+
                 // ========================================
                 // 坦克职业技能 (Tanker Job)
                 // ========================================
@@ -261,6 +292,28 @@ namespace CaptainSkillTree.Localization
                 "【坦克被动伤害减少(%)】\n" +
                 "坦克被动：持续减少受到的伤害。\n" +
                 "推荐：10-20%",
+
+                ["Tanker_Hp_Bonus"] =
+                "【坦克基础HP】\n" +
+                "坦克被动HP加成。\n" +
+                "默认：100",
+
+                ["Tanker_Lv2_AllResist"] =
+                "【坦克Lv2全抗性(%)】\n" +
+                "对所有伤害类型的被动抗性(Lv2+)。\n" +
+                "默认：5%",
+
+                ["Tanker_Lv3_AllResist"] =
+                "【坦克Lv3全抗性(%)】\n" +
+                "默认：8%",
+
+                ["Tanker_Lv4_AllResist"] =
+                "【坦克Lv4全抗性(%)】\n" +
+                "默认：12%",
+
+                ["Tanker_Lv5_AllResist"] =
+                "【坦克Lv5全抗性(%)】\n" +
+                "默认：15%",
 
                 // ========================================
                 // 盗贼职业技能 (Rogue Job)
@@ -369,6 +422,28 @@ namespace CaptainSkillTree.Localization
                 "圣骑士被动：提升对物理和元素伤害的抗性。\n" +
                 "推荐：5-12%",
 
+                // === 圣骑士 Lv2-5 ===
+                ["Paladin_Lv2_SelfHealPercent"] = "【Lv2 自身治疗率(%)】\n推荐：15-20%",
+                ["Paladin_Lv2_AllyHealPercent"] = "【Lv2 盟友治疗率(%/次)】\n推荐：2-3%",
+                ["Paladin_Lv3_SelfHealPercent"] = "【Lv3 自身治疗率(%)】\n推荐：17-22%",
+                ["Paladin_Lv3_AllyHealPercent"] = "【Lv3 盟友治疗率(%/次)】\n推荐：2.5-3.5%",
+                ["Paladin_Lv3_HealRange"] = "【Lv3 治疗范围(m)】\n推荐：5-7m",
+                ["Paladin_Lv4_SelfHealPercent"] = "【Lv4 自身治疗率(%)】\n推荐：19-24%",
+                ["Paladin_Lv4_AllyHealPercent"] = "【Lv4 盟友治疗率(%/次)】\n推荐：3-4%",
+                ["Paladin_Lv4_HealRange"] = "【Lv4 治疗范围(m)】\n推荐：6-8m",
+                ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 自身治疗率(%)】\n推荐：22-28%",
+                ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 盟友治疗率(%/次)】\n推荐：3.5-5%",
+                ["Paladin_Lv5_HealRange"] = "【Lv5 治疗范围(m)】\n推荐：7-10m",
+                ["Paladin_Lv5_Cooldown"] = "【Lv5 冷却时间(秒)】\n推荐：20-30秒",
+                ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 抵抗减少(%)】\n推荐：6-10%",
+                ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 抵抗减少(%)】\n推荐：8-12%",
+                ["Paladin_Lv4_ResistanceReduction"] = "【Lv4 抵抗减少(%)】\n推荐：10-14%",
+                ["Paladin_Lv5_ResistanceReduction"] = "【Lv5 抵抗减少(%)】\n推荐：12-18%",
+                ["Paladin_Lv2_StaminaBonus"] = "【Lv2 最大耐力加成】\n推荐：8-15",
+                ["Paladin_Lv3_StaminaBonus"] = "【Lv3 最大耐力加成】\n推荐：12-20",
+                ["Paladin_Lv4_StaminaBonus"] = "【Lv4 最大耐力加成】\n推荐：15-25",
+                ["Paladin_Lv5_StaminaBonus"] = "【Lv5 最大耐力加成】\n推荐：20-30",
+
                 // ========================================
                 // 狂战士职业技能 (Berserker Job)
                 // ========================================
@@ -420,7 +495,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_Cooldown"] =
                 "【被动冷却时间（秒）】\n" +
                 "下次被动无敌激活前的等待时间。\n" +
-                "默认：180秒（3分钟）\n" +
+                "默认：540秒（9分钟）\n" +
                 "推荐：120-300秒",
 
                 // === 狂战士：被动生命值加成 ===

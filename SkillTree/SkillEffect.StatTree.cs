@@ -149,13 +149,18 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogDebug($"[스탯 트리] 방어력 보너스 적용: +{armorBonus} (합계 전: {__result})");
                     }
 
-                    // defense_Step4_tanker: 바위피부 - 전체 방어력 +X%
+                    // 바위피부 % + 제작 마법부여 방어력 % 합산 적용 (덧셈)
+                    float totalArmorPct = 0f;
                     if (manager.GetSkillLevel("defense_Step4_tanker") > 0)
+                        totalArmorPct += Defense_Config.TankerArmorBonusValue;
+
+                    float enchantArmorPct = ProducerCrafting.GetEquippedArmorEnchantTotal(player, ProducerCrafting.EnchantType.Armor);
+                    totalArmorPct += enchantArmorPct;
+
+                    if (totalArmorPct > 0f)
                     {
-                        float multiplier = Defense_Config.TankerArmorBonusValue / 100f;
-                        float rockBonus = __result * multiplier;
-                        __result += rockBonus;
-                        Plugin.Log.LogDebug($"[스탯 트리] 바위피부 방어력 +{Defense_Config.TankerArmorBonusValue}% 적용 (총 방어력: {__result})");
+                        __result += __result * (totalArmorPct / 100f);
+                        Plugin.Log.LogDebug($"[스탯 트리] 방어력% 합산 적용: +{totalArmorPct}% (바위피부:{Defense_Config.TankerArmorBonusValue}% + 인챈트:{enchantArmorPct}%, 총: {__result})");
                     }
                 }
                 catch (System.Exception ex)
@@ -248,7 +253,7 @@ namespace CaptainSkillTree.SkillTree
         public static class Player_GetTotalFoodValue_Stamina_StatTree_Patch
         {
             [HarmonyPriority(Priority.Low)]
-            public static void Postfix(ref float stamina)
+            public static void Postfix(Player __instance, ref float stamina)
             {
                 try
                 {
@@ -272,7 +277,20 @@ namespace CaptainSkillTree.SkillTree
                     if (staminaBonus > 0)
                     {
                         stamina += staminaBonus;
-                        Plugin.Log.LogDebug($"[스탯 트리] 스태미나 보너스 적용: +{staminaBonus} (최종 최대 스태미나: {stamina})");
+                        Plugin.Log.LogDebug($"[스탯 트리] 스태미나 보너스 적용: +{staminaBonus}");
+                    }
+
+                    // 인챈트 MaxStamina: 퍼센트 증가 (GetMaxStamina 패치 대신 여기서 처리)
+                    if (__instance != null)
+                    {
+                        float enchantPct = ProducerCrafting.GetEquippedArmorEnchantTotal(
+                            __instance, ProducerCrafting.EnchantType.MaxStamina);
+                        if (enchantPct > 0f)
+                        {
+                            float add = stamina * (enchantPct / 100f);
+                            stamina += add;
+                            Plugin.Log.LogDebug($"[인챈트] 스태미나 +{enchantPct}% = +{add:F1}");
+                        }
                     }
                 }
                 catch (System.Exception ex)

@@ -21,6 +21,10 @@ namespace CaptainSkillTree.SkillTree
         private static readonly float crossbowOneShotCooldownTime = 60f;
         private static readonly float crossbowOneShotDuration = 30f;
 
+        // Archer Lv2: 30초 추가 사용 창 관리
+        private static Dictionary<Player, float> _crossbowOneShotPendingWindow = new Dictionary<Player, float>();
+        private const float CrossbowOneShotExtraWindow = 30f;
+
         // === 버프 이펙트 변수 ===
         private static Dictionary<Player, GameObject> followingBuffEffects = new Dictionary<Player, GameObject>();
         private static Dictionary<Player, Coroutine> followingBuffCoroutines = new Dictionary<Player, Coroutine>();
@@ -33,11 +37,18 @@ namespace CaptainSkillTree.SkillTree
             if (!crossbowOneShotCooldown.ContainsKey(player))
                 crossbowOneShotCooldown[player] = 0f;
 
-            if (Time.time - crossbowOneShotCooldown[player] < crossbowOneShotCooldownTime)
+            // Archer Lv2 추가 사용 창이 열려 있으면 쿨타임 체크 건너뜀
+            bool inPendingWindow = _crossbowOneShotPendingWindow.TryGetValue(player, out float windowEnd)
+                && Time.time <= windowEnd;
+
+            if (!inPendingWindow)
             {
-                float remainingCooldown = crossbowOneShotCooldownTime - (Time.time - crossbowOneShotCooldown[player]);
-                DrawFloatingText(player, L.Get("crossbow_oneshot_cooldown", $"{remainingCooldown:F1}"));
-                return;
+                if (Time.time - crossbowOneShotCooldown[player] < crossbowOneShotCooldownTime)
+                {
+                    float remainingCooldown = crossbowOneShotCooldownTime - (Time.time - crossbowOneShotCooldown[player]);
+                    DrawFloatingText(player, L.Get("crossbow_oneshot_cooldown", $"{remainingCooldown:F1}"));
+                    return;
+                }
             }
 
             if (!WeaponHelper.IsUsingCrossbow(player))
@@ -49,7 +60,31 @@ namespace CaptainSkillTree.SkillTree
             crossbowOneShotCooldown[player] = Time.time;
             crossbowOneShotReady[player] = true;
             crossbowOneShotExpiry[player] = Time.time + crossbowOneShotDuration;
-            ActiveSkillCooldownRegistry.SetCooldown("R", crossbowOneShotCooldownTime);
+
+            bool hasArcherLv2 = SkillTreeManager.Instance != null
+                && SkillTreeManager.Instance.GetSkillLevel("Archer") >= 2;
+
+            if (hasArcherLv2)
+            {
+                if (_crossbowOneShotPendingWindow.TryGetValue(player, out float we) && Time.time <= we)
+                {
+                    // 2번째 사용: 창 종료 → 쿨타임 시작
+                    _crossbowOneShotPendingWindow.Remove(player);
+                    ActiveSkillCooldownRegistry.SetCooldown("R", crossbowOneShotCooldownTime);
+                    Plugin.Log.LogDebug("[단 한 발] Archer Lv2 2번째 사용 → 쿨타임 시작");
+                }
+                else
+                {
+                    // 1번째 사용: 쿨타임 보류, 30초 창 시작
+                    _crossbowOneShotPendingWindow[player] = Time.time + CrossbowOneShotExtraWindow;
+                    Plugin.Instance.StartCoroutine(ExpireCrossbowOneShotWindow(player));
+                    Plugin.Log.LogDebug("[단 한 발] Archer Lv2 1번째 사용 → 30초 창 시작");
+                }
+            }
+            else
+            {
+                ActiveSkillCooldownRegistry.SetCooldown("R", crossbowOneShotCooldownTime);
+            }
 
             if (crossbowOneShotCoroutine.ContainsKey(player) && crossbowOneShotCoroutine[player] != null)
             {
@@ -212,6 +247,18 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        private static IEnumerator ExpireCrossbowOneShotWindow(Player player)
+        {
+            yield return new WaitForSeconds(CrossbowOneShotExtraWindow);
+            if (_crossbowOneShotPendingWindow.ContainsKey(player))
+            {
+                // 30초 내 2번째 사용 없음 → 쿨타임 시작
+                _crossbowOneShotPendingWindow.Remove(player);
+                ActiveSkillCooldownRegistry.SetCooldown("R", crossbowOneShotCooldownTime);
+                Plugin.Log.LogDebug("[단 한 발] Archer Lv2 창 만료 → 쿨타임 시작");
+            }
+        }
+
         private static IEnumerator ShowCooldownDisplay(Player player, float cooldownTime, string skillName)
         {
             float elapsed = 0f;
@@ -318,6 +365,7 @@ namespace CaptainSkillTree.SkillTree
                 crossbowOneShotReady.Remove(player);
                 crossbowOneShotCooldown.Remove(player);
                 crossbowOneShotExpiry.Remove(player);
+                _crossbowOneShotPendingWindow.Remove(player);
             }
             catch (Exception ex)
             {

@@ -431,6 +431,30 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug($"[공속] 제작 Lv2 마법부여: +{craftSpdBonus}%");
                 }
 
+                // crafting_lv5 무기 마법부여 공격속도 보너스
+                if (weapon?.m_customData != null &&
+                    weapon.m_customData.TryGetValue("csct5_type", out string t5type) &&
+                    t5type == "weapon_spd" &&
+                    weapon.m_customData.TryGetValue("csct5_value", out string t5spdVal) &&
+                    float.TryParse(t5spdVal, out float craftLv5SpdBonus) && craftLv5SpdBonus > 0f)
+                {
+                    bonus += craftLv5SpdBonus;
+                    Plugin.Log.LogDebug($"[공속] 제작 Lv5 마법부여: +{craftLv5SpdBonus}%");
+                }
+
+                // 제작 전문가 WeaponSpd 마법부여 공격속도 보너스
+                if (weapon?.m_customData != null &&
+                    weapon.m_customData.TryGetValue("cspt_enchant_type", out string csptType) &&
+                    csptType == "4" &&
+                    weapon.m_customData.TryGetValue("cspt_enchant_value", out string csptSpdVal) &&
+                    float.TryParse(csptSpdVal, System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out float csptSpdBonus) &&
+                    csptSpdBonus > 0f)
+                {
+                    bonus += csptSpdBonus;
+                    Plugin.Log.LogDebug($"[공속] 제작 전문가 마법부여(WeaponSpd): +{csptSpdBonus}%");
+                }
+
                 // 최종 보너스 로그 출력
                 if (bonus > 0f)
                 {

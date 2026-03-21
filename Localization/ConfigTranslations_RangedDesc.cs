@@ -84,7 +84,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5-1: 이중 시전 (Double Cast - R키 액티브) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] =
                 "【추가 발사체 개수】\n" +
-                "연속 발사 시 추가로 발사되는 마법 발사체 수입니다.\n" +
+                "이중시전 시 추가로 발사되는 마법 발사체 수입니다.\n" +
                 "권장값: 5~10발",
 
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] =
@@ -170,7 +170,7 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【필요 포인트】\n" +
-                "연속 발사 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "이중시전 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3",
 
                 ["Tier5_InstantAreaHeal_RequiredPoints"] =
@@ -689,7 +689,7 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【Required Points】\n" +
-                "Skill points required to unlock the Rapid Barrage node.\n" +
+                "Skill points required to unlock the Double Casting node.\n" +
                 "Recommended: 3",
 
                 ["Tier5_InstantAreaHeal_RequiredPoints"] =

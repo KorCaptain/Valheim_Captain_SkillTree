@@ -108,7 +108,7 @@ namespace CaptainSkillTree.Localization
                 ["producer_enchant_weapon_dmg"] = "✨ 제작 축복: 공격력 +{0}%",
                 ["producer_enchant_armor"] = "✨ 제작 축복: 방어력 +{0}%",
                 ["producer_enchant_hp"] = "✨ 제작 축복: 체력 +{0}%",
-                ["producer_enchant_notify"] = "✨ 마법부여 성공!",
+                ["producer_enchant_notify"] = "✨ 제작 축복 적용!",
                 ["producer_level_req_items"] = "Lv{0} 달성 재료",
                 ["producer_level_item_required"] = "제작 전문가 Lv{0} 전직 트로피가 부족합니다",
                 ["producer_max_level"] = "★ 최대 레벨 달성!",
@@ -116,6 +116,10 @@ namespace CaptainSkillTree.Localization
                 ["item_trophy_bear"] = "곰 트로피",
                 ["farmgrid_planted"] = "씨앗 {0}개 추가 식재",
                 ["farmgrid_no_seeds"] = "씨앗 부족",
+                ["farmgrid_spacing"] = "격자 간격: {0}",
+                ["farmgrid_rotation"] = "경작 각도: {0}",
+                ["producer_enchant_weapon_spd"] = "✨ 제작 축복: 공격속도 +{0}%",
+                ["producer_enchant_stamina"]    = "✨ 제작 축복: 스태미나 +{0}",
 
                 // === Prerequisite Text ===
                 ["prerequisite_label"] = "🔗 필요",
@@ -161,6 +165,22 @@ namespace CaptainSkillTree.Localization
                 ["job_continuous_heal_complete"] = "✨ 지속 치유 완료!",
                 ["job_skill_error"] = "스킬 시전 중 오류가 발생했습니다.",
 
+                // === Paladin Level System ===
+                ["paladin_upgrade_msg"] = "⚔️ 성기사 Lv{0}로 업그레이드 하였습니다.",
+                ["paladin_level_req_items"] = "Lv{0} 달성 재료",
+                ["paladin_level_item_required"] = "성기사 Lv{0} 전직 트로피가 부족합니다",
+                ["paladin_max_level"] = "★ 최대 레벨 달성!",
+                ["paladin_missing_items"] = "부족한 재료: {0}",
+                ["paladin_upgrade_title"] = "⚔️ 성기사 레벨업",
+                ["paladin_upgrade_confirm"] = "성기사 Lv{0}으로 업그레이드합니까?\n트로피가 소모됩니다.",
+                ["paladin_lv2_skill_required"] = "분노의 망치 또는 돌진베기 중 1개 필요",
+                ["paladin_active_desc"] = "자가 {0}% 즉시 회복, 주변 아군 {1}%/틱 x{2}초 치유",
+                ["paladin_passive_lv1"] = "적이 받는 데미지 +{0}% 증가",
+                ["paladin_passive_lv2"] = "최대 스태미나 +{0}, 적이 받는 데미지 +{1}% 증가, 보유 스킬 30초 내 추가 사용",
+                ["paladin_passive_lv3"] = "최대 스태미나 +{0}, 적이 받는 데미지 +{1}% 증가",
+                ["paladin_passive_lv4"] = "최대 스태미나 +{0}, 적이 받는 데미지 +{1}% 증가",
+                ["paladin_passive_lv5"] = "최대 스태미나 +{0}, 적이 받는 데미지 +{1}% 증가",
+
                 // === Rogue Skill Messages ===
                 ["rogue_shadow_strike_cooldown"] = "그림자 일격 쿨타임: {0}초",
                 ["rogue_stamina_insufficient"] = "스태미나가 부족합니다.",
@@ -176,6 +196,18 @@ namespace CaptainSkillTree.Localization
                 ["mage_eitr_insufficient"] = "에이트르가 부족합니다.",
                 ["mage_explosion_success"] = "🔮 마법 폭발! ({0}초간 마법 데미지 +{1}%, 범위 +{2}m)",
                 ["mage_explosion_end"] = "마법 폭발 종료",
+                // === Mage Level System ===
+                ["mage_passive_lv1"] = "속성 저항 +{0}%, AOE 데미지 {1}%",
+                ["mage_passive_lv2"] = "속성 저항 +{0}%, AOE 데미지 {1}%, 연속 발사 +1회 시전 (30초 이내)",
+                ["mage_level_req_items"] = "Lv{0} 달성 재료",
+                ["mage_level_item_required"] = "메이지 Lv{0} 전직 트로피가 부족합니다",
+                ["mage_max_level"] = "★ 최대 레벨 달성!",
+                ["mage_upgrade_msg"] = "🔮 메이지 Lv{0}로 업그레이드 하였습니다.",
+                ["mage_upgrade_title"] = "🔮 메이지 레벨업",
+                ["mage_upgrade_confirm"] = "메이지 Lv{0}으로 업그레이드합니까?\n트로피가 소모됩니다.",
+                ["item_missing_msg"] = "{0}이 부족합니다",
+                ["item_trophy_surtling"] = "유황 짐승 트로피",
+                ["item_trophy_wraith"] = "망자 트로피",
 
                 // === Archer Skill Messages ===
                 ["archer_multishot_cooldown"] = "멀티샷 쿨타임: {0}초",
@@ -193,6 +225,19 @@ namespace CaptainSkillTree.Localization
                 ["tanker_defense_buff_activated"] = "<color=#FFD700>⚔ 방어 버프 활성화! ⚔</color>",
                 ["tanker_shield_required"] = "방패 착용이 필요합니다",
                 ["stamina_insufficient"] = "스태미나가 부족합니다",
+
+                // === Tanker Level-Up System ===
+                ["tanker_upgrade_title"] = "탱커 업그레이드",
+                ["tanker_upgrade_confirm"] = "Lv{0}으로 업그레이드합니까?",
+                ["tanker_max_level"] = "★ 탱커 최대 레벨 달성!",
+                ["tanker_level_item_required"] = "레벨업 재료 부족 (Lv{0})",
+                ["tanker_missing_items"] = "부족한 아이템: {0}",
+                ["tanker_lv2_skill_prereq_required"] = "Lv2 조건 미충족: 분노의 망치 / 돌진베기 중 1개 이상 필요",
+                ["tanker_level_req_items"] = "Lv{0} 필요 아이템",
+                ["tanker_taunt_effect"] = "도발 {0}m, {1}초",
+                ["tanker_passive_lv1"] = "생명력 +{0}, 피해 감소 -{1}%",
+                ["tanker_passive_lv2"] = "생명력 +{0}, 피해 감소 -{1}%, 모든 저항 +{2}%\n분노의 망치/돌진베기 배운 경우 30초 추가 사용",
+                ["tanker_passive_lv3"] = "생명력 +{0}, 피해 감소 -{1}%, 모든 저항 +{2}%",
 
                 // === Rogue Active Skill Messages ===
                 ["rogue_shadow_strike_activate"] = "💥 그림자 일격!",
@@ -261,6 +306,21 @@ namespace CaptainSkillTree.Localization
                 ["berserker_rage"] = "버서커 분노!",
                 ["death_ignore"] = "죽음의 무시",
                 ["berserker_ranged_30pct"] = "(원거리 공격력은 30%만 적용)",
+
+                // === Berserker Lv1~5 레벨업 시스템 ===
+                ["berserker_upgrade_msg"] = "버서커 Lv{0} 달성!",
+                ["berserker_active_desc"] = "분노: 쿨{0}초, 지속{1}초, 최대+{2}%",
+                ["berserker_passive_lv1"] = "죽음의 무시: 체력+{0}%, 스태미나 리젠+20%, {1}% 이하 {2}초 무적({3}분 쿨)",
+                ["berserker_passive_lv2"] = "Lv1 + 분노의 망치/돌진베기/관통 돌격 30초 추가 사용 가능",
+                ["berserker_passive_lv3"] = "Lv2 + 분노 중 받는 피해 -{4}%",
+                ["berserker_passive_lv4"] = "Lv3 + 체력 {6}% 이하 시 공격력 +{5}%",
+                ["berserker_passive_lv5"] = "Lv4 + 죽음의 무시 강화 (쿨 -{7}분 단축, 무적 +{8}초)",
+                ["berserker_max_level"] = "★ 최대 레벨 달성!",
+                ["berserker_level_req_items"] = "Lv{0} 달성 재료",
+                ["berserker_lv2_skill_prereq_required"] = "Lv2 조건 미충족: 분노의 망치 / 돌진 연속 베기 / 관통 돌격 중 1개 이상 필요",
+                ["berserker_missing_items"] = "부족한 재료: {0}",
+                ["berserker_upgrade_title"] = "🪓 버서커 레벨업",
+                ["berserker_upgrade_confirm"] = "버서커 Lv{0}으로 업그레이드합니까?\n트로피가 소모됩니다.",
 
                 // === Staff Heal Effect Messages ===
                 ["heal_cooldown"] = "힐 쿨타임: {0}초",
@@ -392,11 +452,20 @@ namespace CaptainSkillTree.Localization
                 ["rogue_effect_strike"] = "공격력버프 {0}% ({1}초), 독폭발 {2}회",
                 ["rogue_preview_attack"] = "공격력버프 +{0}%, 독폭발 +{1}회",
                 ["rogue_preview_charges"] = "그림자 일격 충전 +{0}회",
+                ["rogue_preview_poison"] = "독데미지: 즉시 +{0}%, DoT +{1}%/s",
+                ["rogue_poison_info"] = "독 범위 {0}m │ 즉시 {1}% │ 초당 {2}%",
+                ["rogue_preview_cd"] = "쿨다운 -{0}초",
                 ["rogue_max_level"] = "★ 최대 레벨 달성!",
                 ["rogue_level_req_items"] = "Lv{0} 필요아이템",
                 ["rogue_charges_display"] = "{0}회 충전",
                 ["rogue_lv2_unlock_cond"] = "암살자의 심장 스킬 해금 필요",
+                ["archer_lv2_unlock_cond"] = "단 한 발 또는 폭발사격 스킬 중 하나 필요",
+                ["mage_lv2_unlock_cond"] = "이중시전 스킬 해금 필요",
                 ["rogue_level_item_required"] = "로그 Lv{0} 업그레이드 재료가 부족합니다",
+
+                // === UI 메시지 ===
+                ["skill_acquired_count"] = "✅ {0}개 스킬 습득 완료!",
+                ["skill_acquired_name"]  = "🌟 {0} 습득!",
             };
         }
 
@@ -409,7 +478,7 @@ namespace CaptainSkillTree.Localization
                 ["archer_desc_arrow_damage_fallback"] = "Each arrow deals 50% of bow+arrow damage",
                 ["archer_passive_skills"] = "Jump height +{0}%, Fall damage -{1}%",
                 ["archer_passive_lv1"] = "Jump +{0}%, Fall Damage -{1}%",
-                ["archer_passive_lv2"] = "Jump +{0}%, Poison Resist +{1}%",
+                ["archer_passive_lv2"] = "Jump +{0}%, Poison Resist +{1}%, OneShot/ExplosiveArrow extra use within 30s",
                 ["archer_passive_lv3"] = "Jump +{0}%, Fall Damage -{1}%, Poison/Cold Resist +{2}%",
                 ["archer_passive_lv4"] = "Jump +{0}%, Fall Damage -{1}%, Poison/Cold/Fire Resist +{2}%",
                 ["archer_passive_lv5"] = "Jump +{0}%, Fall Damage -{1}%, All Elemental Resist +{2}%",
@@ -463,6 +532,21 @@ namespace CaptainSkillTree.Localization
                 ["berserker_default_tooltip"] = "Description:\n[Active Skill - Y Key]\n+2% damage per -1% health for 20s, stronger at lower health\n\n[Passive Skill]\n• Stamina regen +20% (always active)\n• 7s invincibility when health below 10% (300s cooldown)\n\nAdditional: Max +200% damage limit, red/gold aura effect\nRange: Self\nCost: Stamina 20 (active only)\nCooldown: 45s (active), 300s (passive)\nRequirement: Berserker job\nNotice: Only one job can be selected, Lv 10+\nRequired Item: Ancient Bark Spear",
                 ["requirement_job_berserker"] = "Berserker job",
 
+                // === Berserker Lv1~5 Level-Up System ===
+                ["berserker_upgrade_msg"] = "Berserker Lv{0} Reached!",
+                ["berserker_active_desc"] = "Rage: {0}s CD, {1}s duration, max+{2}%",
+                ["berserker_passive_lv1"] = "Death Defiance: HP+{0}%, Stamina regen+20%, Invincible {2}s when below {1}% HP ({3}min CD)",
+                ["berserker_passive_lv2"] = "Lv1 + Fury Hammer/Rush Slash/Pierce Charge: 1 extra use in 30s",
+                ["berserker_passive_lv3"] = "Lv2 + Damage received during rage -{4}%",
+                ["berserker_passive_lv4"] = "Lv3 + Attack+{5}% when HP below {6}%",
+                ["berserker_passive_lv5"] = "Lv4 + Death Defiance enhanced (CD -{7}min, Invincibility +{8}s)",
+                ["berserker_max_level"] = "★ Max Level Reached!",
+                ["berserker_level_req_items"] = "Lv{0} Required Items",
+                ["berserker_lv2_skill_prereq_required"] = "Lv2 condition not met: Need at least 1 of Fury Hammer / Rush Slash / Pierce Charge",
+                ["berserker_missing_items"] = "Missing items: {0}",
+                ["berserker_upgrade_title"] = "🪓 Berserker Level Up",
+                ["berserker_upgrade_confirm"] = "Upgrade Berserker to Lv{0}?\nTrophies will be consumed.",
+
                 // === Rogue Job ===
                 ["rogue_desc_shadow_strike"] = "Poison Blast x{0}, range {1}m",
                 ["rogue_desc_attack_bonus"] = "+{1}% attack for {0}s",
@@ -476,16 +560,33 @@ namespace CaptainSkillTree.Localization
                 ["rogue_effect_strike"] = "ATK Buff {0}% ({1}s), Poison Blast x{2}",
                 ["rogue_preview_attack"] = "ATK Buff +{0}%, Poison Blast +{1}",
                 ["rogue_preview_charges"] = "Shadow Strike Charge +{0}",
+                ["rogue_preview_poison"] = "Poison: Instant +{0}%, DoT +{1}%/s",
+                ["rogue_poison_info"] = "Poison Range {0}m │ Instant {1}% │ Per Sec {2}%",
+                ["rogue_preview_cd"] = "Cooldown -{0}s",
                 ["rogue_max_level"] = "★ Max Level Reached!",
                 ["rogue_level_req_items"] = "Lv{0} Required Items",
                 ["rogue_charges_display"] = "{0} Charge(s)",
                 ["rogue_lv2_unlock_cond"] = "Requires Assassin's Heart skill",
+                ["archer_lv2_unlock_cond"] = "Need OneShot or ExplosiveArrow skill for Lv2",
+                ["mage_lv2_unlock_cond"] = "Must learn Double Casting for Lv2 upgrade",
                 ["rogue_level_item_required"] = "Not enough materials for Rogue Lv{0} upgrade",
 
                 // === Mage Job ===
                 ["mage_desc_aoe"] = "Area damage {0}%",
                 ["mage_passive_resistance"] = "Magic resistance +{0}%",
                 ["requirement_mage"] = "Staff equipped, Mage job",
+                // === Mage Level System ===
+                ["mage_passive_lv1"] = "Elemental Resist +{0}%, AOE Damage {1}%",
+                ["mage_passive_lv2"] = "Elemental Resist +{0}%, AOE Damage {1}%, Extra Cast +1 (within 30s)",
+                ["mage_level_req_items"] = "Lv{0} Required Items",
+                ["mage_level_item_required"] = "Not enough trophies for Mage Lv{0} upgrade",
+                ["mage_max_level"] = "★ Max Level Reached!",
+                ["mage_upgrade_msg"] = "🔮 Upgraded to Mage Lv{0}!",
+                ["mage_upgrade_title"] = "🔮 Mage Level Up",
+                ["mage_upgrade_confirm"] = "Upgrade Mage to Lv{0}?\nTrophies will be consumed.",
+                ["item_missing_msg"] = "{0} is required",
+                ["item_trophy_surtling"] = "Surtling Trophy",
+                ["item_trophy_wraith"] = "Wraith Trophy",
 
                 // === Healer/Staff ===
                 ["healer_self_heal_included"] = "Includes caster",
@@ -597,13 +698,17 @@ namespace CaptainSkillTree.Localization
                 ["producer_enchant_weapon_dmg"] = "✨ Crafting Blessing: Attack +{0}%",
                 ["producer_enchant_armor"] = "✨ Crafting Blessing: Armor +{0}%",
                 ["producer_enchant_hp"] = "✨ Crafting Blessing: Max HP +{0}%",
-                ["producer_enchant_notify"] = "✨ Enchantment succeeded!",
+                ["producer_enchant_notify"] = "✨ Crafting Blessing!",
                 ["producer_level_req_items"] = "Lv{0} Required Items",
                 ["producer_max_level"] = "★ Max Level Reached!",
                 ["requirement_job_producer"] = "Job: Producer",
                 ["item_trophy_bear"] = "Bear Trophy",
                 ["farmgrid_planted"] = "{0} seeds additionally planted",
                 ["farmgrid_no_seeds"] = "Not enough seeds",
+                ["farmgrid_spacing"] = "Grid spacing: {0}",
+                ["farmgrid_rotation"] = "Farm grid angle: {0}",
+                ["producer_enchant_weapon_spd"] = "✨ Crafting Blessing: ATK SPD +{0}%",
+                ["producer_enchant_stamina"]    = "✨ Crafting Blessing: Stamina +{0}",
 
                 // === Prerequisite Text ===
                 ["prerequisite_label"] = "🔗 Required",
@@ -649,6 +754,22 @@ namespace CaptainSkillTree.Localization
                 ["job_continuous_heal_complete"] = "✨ Continuous healing complete!",
                 ["job_skill_error"] = "Error during skill cast.",
 
+                // === Paladin Level System ===
+                ["paladin_upgrade_msg"] = "⚔️ Upgraded to Paladin Lv{0}!",
+                ["paladin_level_req_items"] = "Lv{0} Required Items",
+                ["paladin_level_item_required"] = "Not enough trophies for Paladin Lv{0} upgrade",
+                ["paladin_max_level"] = "★ Max Level Reached!",
+                ["paladin_missing_items"] = "Missing items: {0}",
+                ["paladin_upgrade_title"] = "⚔️ Paladin Level Up",
+                ["paladin_upgrade_confirm"] = "Upgrade Paladin to Lv{0}?\nTrophies will be consumed.",
+                ["paladin_lv2_skill_required"] = "Requires 1 of: Fury Hammer or Rush Slash",
+                ["paladin_active_desc"] = "Self-heal {0}% instantly, nearby allies {1}%/tick x{2}s heal",
+                ["paladin_passive_lv1"] = "Enemy Damage Taken +{0}%",
+                ["paladin_passive_lv2"] = "Max stamina +{0}, Enemy Damage Taken +{1}%, bonus skill use within 30s",
+                ["paladin_passive_lv3"] = "Max stamina +{0}, Enemy Damage Taken +{1}%",
+                ["paladin_passive_lv4"] = "Max stamina +{0}, Enemy Damage Taken +{1}%",
+                ["paladin_passive_lv5"] = "Max stamina +{0}, Enemy Damage Taken +{1}%",
+
                 // === Rogue Skill Messages ===
                 ["rogue_shadow_strike_cooldown"] = "Shadow Strike cooldown: {0}s",
                 ["rogue_stamina_insufficient"] = "Not enough stamina.",
@@ -677,6 +798,19 @@ namespace CaptainSkillTree.Localization
 
                 // === Berserker Skill Messages ===
                 ["berserker_rage_end"] = "Berserker Rage ended",
+
+                // === Tanker Level-Up System ===
+                ["tanker_upgrade_title"] = "Tanker Upgrade",
+                ["tanker_upgrade_confirm"] = "Upgrade to Lv{0}?",
+                ["tanker_max_level"] = "★ Tanker Max Level!",
+                ["tanker_level_item_required"] = "Insufficient items for Lv{0}",
+                ["tanker_missing_items"] = "Missing: {0}",
+                ["tanker_lv2_skill_prereq_required"] = "Lv2 Requirement: Learn Fury Hammer or Rush Slash first",
+                ["tanker_level_req_items"] = "Lv{0} Required Items",
+                ["tanker_taunt_effect"] = "Taunt {0}m, {1}s",
+                ["tanker_passive_lv1"] = "HP +{0}, Dmg taken -{1}%",
+                ["tanker_passive_lv2"] = "HP +{0}, Dmg taken -{1}%, All resist +{2}%\nBonus use within 30s (Fury Hammer / Rush Slash)",
+                ["tanker_passive_lv3"] = "HP +{0}, Dmg taken -{1}%, All resist +{2}%",
 
                 // === Sword Active Skill Messages ===
                 ["sword_or_shield_required"] = "You must equip a sword or shield",
@@ -739,6 +873,10 @@ namespace CaptainSkillTree.Localization
                 ["archer_preview_arrows_damage"] = "+{0} projectiles, {1}% damage per arrow",
                 ["archer_preview_charges"] = "+{0} additional charges",
                 ["archer_job_requirement"] = "Bow equipped, Archer job",
+
+                // === UI Messages ===
+                ["skill_acquired_count"] = "✅ {0} skill(s) acquired!",
+                ["skill_acquired_name"]  = "🌟 {0} acquired!",
             };
         }
     }

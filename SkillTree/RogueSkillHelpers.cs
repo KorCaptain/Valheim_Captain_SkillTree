@@ -158,11 +158,11 @@ namespace CaptainSkillTree.SkillTree
             {
                 return lv switch
                 {
-                    1 => $"{CaptainSkillTree.Localization.L.Get("item_trophy_greydwarf_brute")} x1 + {CaptainSkillTree.Localization.L.Get("item_eikthyr_trophy")} x1",
-                    2 => $"{CaptainSkillTree.Localization.L.Get("item_eikthyr_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_elder_trophy")} x1\n+ {CaptainSkillTree.Localization.L.Get("rogue_lv2_unlock_cond")}",
-                    3 => $"{CaptainSkillTree.Localization.L.Get("item_hatchling_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_elder_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_bonemass_trophy")} x1",
-                    4 => $"{CaptainSkillTree.Localization.L.Get("item_abomination_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_bonemass_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_dragon_queen_trophy")} x1",
-                    5 => $"{CaptainSkillTree.Localization.L.Get("item_dragon_queen_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_goblin_king_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_seeker_queen_trophy")} x1",
+                    1 => $"{CaptainSkillTree.Localization.L.Get("item_trophy_greydwarfbrute")} x1 + {CaptainSkillTree.Localization.L.Get("item_eikthyr_trophy")} x1",
+                    2 => $"{CaptainSkillTree.Localization.L.Get("item_eikthyr_trophy")} x1 + {CaptainSkillTree.Localization.L.Get("item_trophy_theelder")} x1\n+ {CaptainSkillTree.Localization.L.Get("rogue_lv2_unlock_cond")}",
+                    3 => $"{CaptainSkillTree.Localization.L.Get("item_trophy_hatchling")} x1 + {CaptainSkillTree.Localization.L.Get("item_trophy_theelder")} x1 + {CaptainSkillTree.Localization.L.Get("item_trophy_bonemass")} x1",
+                    4 => $"{CaptainSkillTree.Localization.L.Get("item_trophy_abomination")} x1 + {CaptainSkillTree.Localization.L.Get("item_trophy_bonemass")} x1 + {CaptainSkillTree.Localization.L.Get("item_trophy_dragonqueen")} x1",
+                    5 => $"{CaptainSkillTree.Localization.L.Get("item_trophy_dragonqueen")} x1 + {CaptainSkillTree.Localization.L.Get("item_trophy_goblinking")} x1 + {CaptainSkillTree.Localization.L.Get("item_trophy_seekerqueen")} x1",
                     _ => ""
                 };
             }

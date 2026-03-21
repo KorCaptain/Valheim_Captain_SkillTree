@@ -401,8 +401,9 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                float duration = Berserker_Config.BerserkerPassiveInvincibilityDurationValue;
-                float cooldown = Berserker_Config.BerserkerPassiveCooldownValue;
+                int bLvPassive = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 1;
+                float duration = Berserker_Config.GetEffectiveInvincibilityDuration(bLvPassive);
+                float cooldown = Berserker_Config.GetEffectivePassiveCooldown(bLvPassive);
                 // Config 오설정 보호: 최소 60초 (쿨다운이 무적 지속시간보다 짧으면 무한 반복 방지)
                 cooldown = Mathf.Max(cooldown, 60f);
 
@@ -618,51 +619,78 @@ namespace CaptainSkillTree.SkillTree
             {
                 try
                 {
-                    if (!(__instance is Player player)) return;
-                    if (!HasBerserkerSkill(player)) return;
-
-                    // === 1. 패시브 무적 활성 중 → 데미지 전량 차단 ===
-                    if (IsPassiveInvincibilityActive(player))
+                    // === 방어 측: 피격자가 버서커 플레이어 ===
+                    if (__instance is Player player && HasBerserkerSkill(player))
                     {
-                        hit.m_damage = new HitData.DamageTypes();
-                        return;
-                    }
-
-                    // === 2. 무적 발동 조건 체크 (쿨다운 중이면 스킵) ===
-                    if (!IsPassiveInvincibilityOnCooldown(player))
-                    {
-                        float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
-                        float currentHP = player.GetHealth();
-                        float maxHP = player.GetMaxHealth();
-                        float rawDamage = hit.GetTotalDamage();
-                        // 방어력 적용 후 예상 데미지 계산 (Valheim 공식: max(raw*0.1, raw-armor))
-                        float armor = player.GetBodyArmor();
-                        float estimatedDamage = Mathf.Max(rawDamage * 0.1f, rawDamage - armor);
-                        float hpAfterHit = currentHP - estimatedDamage;
-                        // 실제 데미지가 있고, 이 공격 후 체력이 threshold% 이하로 떨어질 때만 발동
-                        bool wouldDropToLow = rawDamage > 0f && maxHP > 0f && (hpAfterHit / maxHP) <= threshold;
-
-                        if (wouldDropToLow)
+                        // 1. 패시브 무적 활성 중 → 데미지 전량 차단
+                        if (IsPassiveInvincibilityActive(player))
                         {
-                            if (!passiveStates.ContainsKey(player))
-                                passiveStates[player] = new PassiveState();
-
-                            ApplyPassiveInvincibility(player, passiveStates[player]);
-                            hit.m_damage = new HitData.DamageTypes(); // 발동 트리거 공격도 차단
+                            hit.m_damage = new HitData.DamageTypes();
                             return;
+                        }
+
+                        // 2. 무적 발동 조건 체크 (쿨다운 중이면 스킵)
+                        if (!IsPassiveInvincibilityOnCooldown(player))
+                        {
+                            float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
+                            float rawDamage = hit.GetTotalDamage();
+                            float armor = player.GetBodyArmor();
+                            float estimatedDamage = Mathf.Max(rawDamage * 0.1f, rawDamage - armor);
+                            float hpAfterHit = player.GetHealth() - estimatedDamage;
+                            float maxHP = player.GetMaxHealth();
+                            bool wouldDropToLow = rawDamage > 0f && maxHP > 0f && (hpAfterHit / maxHP) <= threshold;
+
+                            if (wouldDropToLow)
+                            {
+                                if (!passiveStates.ContainsKey(player))
+                                    passiveStates[player] = new PassiveState();
+                                ApplyPassiveInvincibility(player, passiveStates[player]);
+                                hit.m_damage = new HitData.DamageTypes();
+                                return;
+                            }
+                        }
+
+                        // 3. Lv3: 분노 중 받는 피해 감소
+                        if (IsPlayerInRage(player))
+                        {
+                            int bLv = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0;
+                            if (bLv >= 3)
+                            {
+                                float reduction = 1f - Berserker_Config.BerserkerLv3RageDamageReductionValue / 100f;
+                                hit.m_damage.Modify(reduction);
+                            }
                         }
                     }
 
-                    // === 3. 분노 데미지 보너스 (기존 코드 유지) ===
-                    if (IsPlayerInRage(player))
+                    // === 공격 측: 공격자가 버서커 플레이어 (Lv4 저체력 공격력 보너스) ===
+                    var localPlayer = Player.m_localPlayer;
+                    if (localPlayer != null && !(__instance is Player) && HasBerserkerSkill(localPlayer))
                     {
-                        float damageBonus = GetRageDamageBonus(player);
-                        if (damageBonus > 0f)
+                        var attacker = hit.GetAttacker();
+                        if (attacker == localPlayer)
                         {
-                            float multiplier = 1f + (damageBonus / 100f);
-                            hit.m_damage.Modify(multiplier);
-                            if (__instance != player)
-                                CreateMonsterHitEffect(__instance);
+                            int bLvAtk = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0;
+                            if (bLvAtk >= 4)
+                            {
+                                float hpPct = localPlayer.GetHealthPercentage() * 100f;
+                                if (hpPct <= Berserker_Config.BerserkerLv4LowHpAttackThresholdValue)
+                                {
+                                    float bonus = 1f + Berserker_Config.BerserkerLv4LowHpAttackBonusValue / 100f;
+                                    hit.m_damage.Modify(bonus);
+                                    CreateMonsterHitEffect(__instance);
+                                }
+                            }
+
+                            // 분노 데미지 보너스 (공격자가 분노 상태일 때)
+                            if (IsPlayerInRage(localPlayer))
+                            {
+                                float damageBonus = GetRageDamageBonus(localPlayer);
+                                if (damageBonus > 0f)
+                                {
+                                    hit.m_damage.Modify(1f + damageBonus / 100f);
+                                    CreateMonsterHitEffect(__instance);
+                                }
+                            }
                         }
                     }
                 }

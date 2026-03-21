@@ -5,271 +5,335 @@ using CaptainSkillTree.Localization;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 성기사(Paladin) 직업 스킬 설정
-    /// 신성한 치유 - 지속 힐링 스킬의 모든 파라미터 관리
+    /// 성기사(Paladin) 직업 스킬 설정 - Lv1~5 레벨업 시스템
+    /// 신성한 치유 액티브 + 패시브(저항 감소, 스태미나 보너스) 관리
     /// </summary>
     public static class Paladin_Config
     {
-        // === 기본 스킬 설정 ===
+        // === 기본 스킬 설정 (공통/소모/간격) ===
         public static ConfigEntry<float> PaladinHealCooldown { get; set; }
         public static ConfigEntry<float> PaladinHealRange { get; set; }
         public static ConfigEntry<float> PaladinHealEitrCost { get; set; }
         public static ConfigEntry<float> PaladinHealStaminaCost { get; set; }
-        
-        // === 힐링 효과 설정 ===
-        public static ConfigEntry<float> PaladinHealSelfPercent { get; set; }
-        public static ConfigEntry<float> PaladinHealAllyPercentOverTime { get; set; }
         public static ConfigEntry<float> PaladinHealDuration { get; set; }
         public static ConfigEntry<float> PaladinHealInterval { get; set; }
-        
-        // === 패시브 효과 설정 ===
+
+        // === Lv1: 액티브 + 패시브 ===
+        public static ConfigEntry<float> PaladinHealSelfPercent { get; set; }
+        public static ConfigEntry<float> PaladinHealAllyPercentOverTime { get; set; }
         public static ConfigEntry<float> PaladinElementalResistanceReduction { get; set; }
-        
+
+        // === Lv2: 액티브 + 패시브 ===
+        public static ConfigEntry<float> PaladinLv2SelfHealPercent { get; set; }
+        public static ConfigEntry<float> PaladinLv2AllyHealPercent { get; set; }
+        public static ConfigEntry<float> PaladinLv2StaminaBonus { get; set; }
+        public static ConfigEntry<float> PaladinLv2ResistanceReduction { get; set; }
+
+        // === Lv3: 액티브 + 패시브 ===
+        public static ConfigEntry<float> PaladinLv3SelfHealPercent { get; set; }
+        public static ConfigEntry<float> PaladinLv3AllyHealPercent { get; set; }
+        public static ConfigEntry<float> PaladinLv3HealRange { get; set; }
+        public static ConfigEntry<float> PaladinLv3ResistanceReduction { get; set; }
+        public static ConfigEntry<float> PaladinLv3StaminaBonus { get; set; }
+
+        // === Lv4: 액티브 + 패시브 ===
+        public static ConfigEntry<float> PaladinLv4SelfHealPercent { get; set; }
+        public static ConfigEntry<float> PaladinLv4AllyHealPercent { get; set; }
+        public static ConfigEntry<float> PaladinLv4HealRange { get; set; }
+        public static ConfigEntry<float> PaladinLv4ResistanceReduction { get; set; }
+        public static ConfigEntry<float> PaladinLv4StaminaBonus { get; set; }
+
+        // === Lv5: 액티브 + 패시브 ===
+        public static ConfigEntry<float> PaladinLv5SelfHealPercent { get; set; }
+        public static ConfigEntry<float> PaladinLv5AllyHealPercent { get; set; }
+        public static ConfigEntry<float> PaladinLv5HealRange { get; set; }
+        public static ConfigEntry<float> PaladinLv5Cooldown { get; set; }
+        public static ConfigEntry<float> PaladinLv5ResistanceReduction { get; set; }
+        public static ConfigEntry<float> PaladinLv5StaminaBonus { get; set; }
+
         /// <summary>
         /// 성기사 컨피그 초기화
         /// </summary>
         public static void InitializePaladinConfig()
         {
-            // === 액티브 스킬 설정 ===
+            // === 공통 설정 ===
             PaladinHealCooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "Paladin_Active_Cooldown",
-                30f,
-                SkillTreeConfig.GetConfigDescription("Paladin_Active_Cooldown")
-            );
+                "Paladin Job Skills", "Paladin_Active_Cooldown", 30f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Active_Cooldown"));
 
             PaladinHealRange = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "Paladin_Active_Range",
-                5f,
-                SkillTreeConfig.GetConfigDescription("Paladin_Active_Range")
-            );
+                "Paladin Job Skills", "Paladin_Active_Range", 5f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Active_Range"));
 
             PaladinHealEitrCost = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "Paladin_Active_EitrCost",
-                10f,
-                SkillTreeConfig.GetConfigDescription("Paladin_Active_EitrCost")
-            );
+                "Paladin Job Skills", "Paladin_Active_EitrCost", 10f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Active_EitrCost"));
 
             PaladinHealStaminaCost = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "Paladin_Active_StaminaCost",
-                10f,
-                SkillTreeConfig.GetConfigDescription("Paladin_Active_StaminaCost")
-            );
-
-            // === 액티브 힐링 효과 설정 ===
-            PaladinHealSelfPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "Paladin_Active_SelfHealPercent",
-                15f,
-                SkillTreeConfig.GetConfigDescription("Paladin_Active_SelfHealPercent")
-            );
-
-            PaladinHealAllyPercentOverTime = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "Paladin_Active_AllyHealPercentOverTime",
-                2f,
-                SkillTreeConfig.GetConfigDescription("Paladin_Active_AllyHealPercentOverTime")
-            );
+                "Paladin Job Skills", "Paladin_Active_StaminaCost", 10f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Active_StaminaCost"));
 
             PaladinHealDuration = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "Paladin_Active_Duration",
-                10f,
-                SkillTreeConfig.GetConfigDescription("Paladin_Active_Duration")
-            );
+                "Paladin Job Skills", "Paladin_Active_Duration", 10f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Active_Duration"));
 
             PaladinHealInterval = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "Paladin_Active_Interval",
-                1f,
-                SkillTreeConfig.GetConfigDescription("Paladin_Active_Interval")
-            );
+                "Paladin Job Skills", "Paladin_Active_Interval", 1f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Active_Interval"));
 
-            // === 패시브 효과 설정 ===
+            // === Lv1: 액티브 + 패시브 ===
+            PaladinHealSelfPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Active_SelfHealPercent", 15f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Active_SelfHealPercent"));
+
+            PaladinHealAllyPercentOverTime = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Active_AllyHealPercentOverTime", 2f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Active_AllyHealPercentOverTime"));
+
             PaladinElementalResistanceReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills",
-                "Paladin_Passive_ElementalResistanceReduction",
-                8f,
-                SkillTreeConfig.GetConfigDescription("Paladin_Passive_ElementalResistanceReduction")
-            );
-            
-            // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
+                "Paladin Job Skills", "Paladin_Passive_ElementalResistanceReduction", 5f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Passive_ElementalResistanceReduction"));
+            if (PaladinElementalResistanceReduction.Value == 8f)
+                PaladinElementalResistanceReduction.Value = 5f;
+
+            // === Lv2: 액티브 + 패시브 ===
+            PaladinLv2SelfHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv2_SelfHealPercent", 17f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv2_SelfHealPercent"));
+
+            PaladinLv2AllyHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv2_AllyHealPercent", 2.5f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv2_AllyHealPercent"));
+
+            PaladinLv2StaminaBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv2_StaminaBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv2_StaminaBonus"));
+
+            PaladinLv2ResistanceReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv2_ResistanceReduction", 8f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv2_ResistanceReduction"));
+
+            // === Lv3: 액티브 + 패시브 ===
+            PaladinLv3SelfHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv3_SelfHealPercent", 19f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv3_SelfHealPercent"));
+
+            PaladinLv3AllyHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv3_AllyHealPercent", 3f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv3_AllyHealPercent"));
+
+            PaladinLv3HealRange = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv3_HealRange", 6f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv3_HealRange"));
+
+            PaladinLv3ResistanceReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv3_ResistanceReduction", 10f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv3_ResistanceReduction"));
+
+            PaladinLv3StaminaBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv3_StaminaBonus", 15f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv3_StaminaBonus"));
+
+            // === Lv4: 액티브 + 패시브 ===
+            PaladinLv4SelfHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv4_SelfHealPercent", 21f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv4_SelfHealPercent"));
+
+            PaladinLv4AllyHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv4_AllyHealPercent", 3.5f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv4_AllyHealPercent"));
+
+            PaladinLv4HealRange = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv4_HealRange", 7f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv4_HealRange"));
+
+            PaladinLv4ResistanceReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv4_ResistanceReduction", 13f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv4_ResistanceReduction"));
+            if (PaladinLv4ResistanceReduction.Value == 12f)
+                PaladinLv4ResistanceReduction.Value = 13f;
+
+            PaladinLv4StaminaBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv4_StaminaBonus", 20f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv4_StaminaBonus"));
+
+            // === Lv5: 액티브 + 패시브 ===
+            PaladinLv5SelfHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv5_SelfHealPercent", 24f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv5_SelfHealPercent"));
+
+            PaladinLv5AllyHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv5_AllyHealPercent", 4f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv5_AllyHealPercent"));
+
+            PaladinLv5HealRange = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv5_HealRange", 8f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv5_HealRange"));
+
+            PaladinLv5Cooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv5_Cooldown", 25f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv5_Cooldown"));
+
+            PaladinLv5ResistanceReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv5_ResistanceReduction", 15f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv5_ResistanceReduction"));
+
+            PaladinLv5StaminaBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv5_StaminaBonus", 25f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv5_StaminaBonus"));
+
             RegisterPaladinEventHandlers();
-            
-            Plugin.Log.LogDebug("[Paladin Config] 성기사 컨피그 초기화 완료");
+            Plugin.Log.LogDebug("[Paladin Config] 성기사 컨피그 초기화 완료 (Lv1~5)");
         }
 
-        /// <summary>
-        /// 성기사 컨피그 변경 시 툴팁 자동 업데이트 이벤트 등록
-        /// </summary>
         private static void RegisterPaladinEventHandlers()
         {
             try
             {
-                PaladinHealCooldown.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinHealRange.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinHealEitrCost.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinHealStaminaCost.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinHealSelfPercent.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinHealAllyPercentOverTime.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinHealDuration.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinHealInterval.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-                PaladinElementalResistanceReduction.SettingChanged += (sender, args) => UpdatePaladinTooltip();
-
-                Plugin.Log.LogDebug("[Paladin Config] 이벤트 핸들러 등록 완룄 - 툴팁 자동 업데이트 활성화");
+                PaladinHealCooldown.SettingChanged              += (s, a) => UpdatePaladinTooltip();
+                PaladinHealRange.SettingChanged                 += (s, a) => UpdatePaladinTooltip();
+                PaladinHealEitrCost.SettingChanged              += (s, a) => UpdatePaladinTooltip();
+                PaladinHealStaminaCost.SettingChanged           += (s, a) => UpdatePaladinTooltip();
+                PaladinHealSelfPercent.SettingChanged           += (s, a) => UpdatePaladinTooltip();
+                PaladinHealAllyPercentOverTime.SettingChanged   += (s, a) => UpdatePaladinTooltip();
+                PaladinLv2SelfHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
+                PaladinLv2AllyHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
+                PaladinLv3SelfHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
+                PaladinLv3AllyHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
+                PaladinLv3HealRange.SettingChanged              += (s, a) => UpdatePaladinTooltip();
+                PaladinLv4SelfHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
+                PaladinLv4AllyHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
+                PaladinLv4HealRange.SettingChanged              += (s, a) => UpdatePaladinTooltip();
+                PaladinLv5SelfHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
+                PaladinLv5AllyHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
+                PaladinLv5HealRange.SettingChanged              += (s, a) => UpdatePaladinTooltip();
+                PaladinLv5Cooldown.SettingChanged               += (s, a) => UpdatePaladinTooltip();
+                PaladinElementalResistanceReduction.SettingChanged += (s, a) => UpdatePaladinTooltip();
+                PaladinLv3ResistanceReduction.SettingChanged    += (s, a) => UpdatePaladinTooltip();
+                PaladinLv2ResistanceReduction.SettingChanged    += (s, a) => UpdatePaladinTooltip();
+                PaladinLv4ResistanceReduction.SettingChanged    += (s, a) => UpdatePaladinTooltip();
+                PaladinLv5ResistanceReduction.SettingChanged    += (s, a) => UpdatePaladinTooltip();
+                PaladinLv2StaminaBonus.SettingChanged           += (s, a) => UpdatePaladinTooltip();
+                PaladinLv3StaminaBonus.SettingChanged           += (s, a) => UpdatePaladinTooltip();
+                PaladinLv4StaminaBonus.SettingChanged           += (s, a) => UpdatePaladinTooltip();
+                PaladinLv5StaminaBonus.SettingChanged           += (s, a) => UpdatePaladinTooltip();
+                Plugin.Log.LogDebug("[Paladin Config] 이벤트 핸들러 등록 완료");
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[Paladin Config] 이벤트 핸들러 등록 실패: {ex.Message}");
             }
         }
-        
-        /// <summary>
-        /// 성기사 툴팁 업데이트 (컨피그 변경 시 호출)
-        /// </summary>
+
         private static void UpdatePaladinTooltip()
         {
-            try
-            {
-                Plugin.Log.LogInfo("[Paladin Config] UpdatePaladinTooltip 호출됨");
-                
-                // JobSkills의 UpdatePaladinTooltip 호출
-                JobSkills.UpdatePaladinTooltip();
-            }
+            try { Paladin_Tooltip.UpdatePaladinTooltip(); }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[Paladin Config] UpdatePaladinTooltip 실패: {ex.Message}");
             }
         }
-        
-        // === 편의성 프로퍼티 ===
-        
-        /// <summary>
-        /// 쿨타임 값 (초)
-        /// </summary>
-        public static float CooldownValue => PaladinHealCooldown?.Value ?? 30f;
-        
-        /// <summary>
-        /// 범위 값 (미터)
-        /// </summary>
-        public static float RangeValue => PaladinHealRange?.Value ?? 5f;
-        
-        /// <summary>
-        /// 에이트르 소모량
-        /// </summary>
-        public static float EitrCostValue => PaladinHealEitrCost?.Value ?? 10f;
-        
-        /// <summary>
-        /// 스태미나 소모량
-        /// </summary>
-        public static float StaminaCostValue => PaladinHealStaminaCost?.Value ?? 10f;
-        
-        /// <summary>
-        /// 자가 치유 비율 (0-1 범위)
-        /// </summary>
-        public static float SelfHealPercentValue => (PaladinHealSelfPercent?.Value ?? 15f) / 100f;
-        
-        /// <summary>
-        /// 아군 지속 치유 비율 (0-1 범위)
-        /// </summary>
-        public static float AllyHealPercentValue => (PaladinHealAllyPercentOverTime?.Value ?? 2f) / 100f;
-        
-        /// <summary>
-        /// 지속 치유 지속 시간 (초)
-        /// </summary>
-        public static float HealDurationValue => PaladinHealDuration?.Value ?? 10f;
-        
-        /// <summary>
-        /// 지속 치유 간격 (초)
-        /// </summary>
-        public static float HealIntervalValue => PaladinHealInterval?.Value ?? 1f;
 
-        /// <summary>
-        /// 물리 및 속성 저항 감소 비율 (%)
-        /// </summary>
-        public static float ElementalResistanceReductionValue => PaladinElementalResistanceReduction?.Value ?? 8f;
-        
-        /// <summary>
-        /// 총 힐 틱 수 계산
-        /// </summary>
-        public static int TotalHealTicks => (int)(HealDurationValue / HealIntervalValue);
+        // ===================================================
+        // 레벨별 헬퍼 메서드
+        // ===================================================
 
-        /// <summary>
-        /// 아군이 받는 총 힐량 비율 계산 (0-1 범위)
-        /// </summary>
-        public static float TotalAllyHealPercent => AllyHealPercentValue * TotalHealTicks;
+        /// <summary>자가 치유 비율 (%) - 레벨별</summary>
+        public static float GetSelfHealPercent(int level)
+        {
+            return level switch {
+                2 => PaladinLv2SelfHealPercent?.Value ?? 17f,
+                3 => PaladinLv3SelfHealPercent?.Value ?? 19f,
+                4 => PaladinLv4SelfHealPercent?.Value ?? 21f,
+                _ => level >= 5 ? (PaladinLv5SelfHealPercent?.Value ?? 24f)
+                                 : (PaladinHealSelfPercent?.Value ?? 15f)
+            };
+        }
 
-        /// <summary>
-        /// 힐링 숫자 표시 여부
-        /// </summary>
-        public static bool ShowHealNumbersValue => true;
+        /// <summary>아군 지속 치유 비율 (%/틱) - 레벨별</summary>
+        public static float GetAllyHealPercent(int level)
+        {
+            return level switch {
+                2 => PaladinLv2AllyHealPercent?.Value ?? 2.5f,
+                3 => PaladinLv3AllyHealPercent?.Value ?? 3f,
+                4 => PaladinLv4AllyHealPercent?.Value ?? 3.5f,
+                _ => level >= 5 ? (PaladinLv5AllyHealPercent?.Value ?? 4f)
+                                 : (PaladinHealAllyPercentOverTime?.Value ?? 2f)
+            };
+        }
 
-        /// <summary>
-        /// 힐링 진행 상황 표시 여부
-        /// </summary>
-        public static bool ShowHealProgressValue => true;
-        
-        /// <summary>
-        /// 성기사 툴팁용 설명 생성 - 동적 연동 (액티브 + 패시브 효과)
-        /// </summary>
-        public static string GetPaladinTooltip()
+        /// <summary>치유 범위 (m) - 레벨별</summary>
+        public static float GetHealRange(int level)
+        {
+            return level switch {
+                3 => PaladinLv3HealRange?.Value ?? 6f,
+                4 => PaladinLv4HealRange?.Value ?? 7f,
+                _ => level >= 5 ? (PaladinLv5HealRange?.Value ?? 8f)
+                                 : (PaladinHealRange?.Value ?? 5f)
+            };
+        }
+
+        /// <summary>쿨타임 (초) - 레벨별 (Lv5만 25초)</summary>
+        public static float GetCooldown(int level)
+        {
+            return level >= 5 ? (PaladinLv5Cooldown?.Value ?? 25f)
+                              : (PaladinHealCooldown?.Value ?? 30f);
+        }
+
+        /// <summary>최대 스태미나 보너스 - 레벨별 (Lv2부터 시작)</summary>
+        public static float GetStaminaBonus(int level)
+        {
+            return level switch {
+                2 => PaladinLv2StaminaBonus?.Value ?? 10f,
+                3 => PaladinLv3StaminaBonus?.Value ?? 15f,
+                4 => PaladinLv4StaminaBonus?.Value ?? 20f,
+                _ => level >= 5 ? (PaladinLv5StaminaBonus?.Value ?? 25f) : 0f
+            };
+        }
+
+        /// <summary>적 저항 감소 (%) - 레벨별</summary>
+        public static float GetResistanceReduction(int level)
+        {
+            return level switch {
+                2 => PaladinLv2ResistanceReduction?.Value ?? 8f,
+                3 => PaladinLv3ResistanceReduction?.Value ?? 10f,
+                4 => PaladinLv4ResistanceReduction?.Value ?? 13f,
+                _ => level >= 5 ? (PaladinLv5ResistanceReduction?.Value ?? 15f)
+                                 : (PaladinElementalResistanceReduction?.Value ?? 5f)
+            };
+        }
+
+        /// <summary>레벨 업그레이드 필요 트로피 텍스트</summary>
+        public static string GetPaladinLevelCostText(int targetLevel)
         {
             try
             {
-                // 컨피그에서 실제 값 가져오기
-                var selfHealPercent = PaladinHealSelfPercent?.Value ?? 15f;
-                var allyHealPercent = PaladinHealAllyPercentOverTime?.Value ?? 2f;
-                var duration = HealDurationValue;
-                var interval = HealIntervalValue;
-                var resistanceReduction = ElementalResistanceReductionValue;
-                var range = RangeValue;
-                var cooldown = CooldownValue;
-                var staminaCost = StaminaCostValue;
-                var eitrCost = EitrCostValue;
-
-                // 메이지 스타일 툴팁 생성
-                var tooltip = "";
-
-                // 스킬 이름 (황금색, 크기 22)
-                tooltip += $"<color=#FFD700><size=22>{L.Get("paladin_name")}</size></color>\n\n";
-
-                // 설명 섹션
-                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("paladin_tooltip_desc", allyHealPercent, interval, duration, selfHealPercent)}</size></color>\n";
-
-                // 범위 섹션
-                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{range}m</size></color>\n";
-
-                // 소모 섹션
-                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("tooltip_stamina")} {staminaCost}, {L.Get("tooltip_eitr")} {eitrCost}</size></color>\n";
-
-                // 스킬유형 섹션
-                tooltip += $"<color=#DDA0DD><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#E6E6FA><size=16>{L.Get("tooltip_job_active_y")}</size></color>\n";
-
-                // 패시브 섹션
-                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color><color=#ADFF2F><size=16>{L.Get("paladin_passive_resistance", resistanceReduction)}</size></color>\n";
-
-                // 쿨타임 섹션
-                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{cooldown}{L.Get("tooltip_seconds")}</size></color>\n";
-
-                // 필요조건 섹션
-                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirement")}: </size></color><color=#00FF00><size=16>{L.Get("paladin_requirement")}</size></color>\n";
-
-                // 확인사항 섹션
-                tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_confirmation")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_job_limit")}</size></color>\n";
-
-                // 필요 아이템 섹션
-                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_item")}: </size></color><color=#FF6B6B><size=16>{L.Get("paladin_required_item")}</size></color>";
-
-                return tooltip.TrimEnd('\n');
+                return targetLevel switch {
+                    2 => $"{L.Get("item_trophy_troll")} x1 + {L.Get("item_trophy_theelder")} x1",
+                    3 => $"{L.Get("item_trophy_abomination")} x1 + {L.Get("item_trophy_bonemass")} x1",
+                    4 => $"{L.Get("item_trophy_bonemass")} x1 + {L.Get("item_trophy_dragonqueen")} x1",
+                    5 => $"{L.Get("item_trophy_goblinking")} x1 + {L.Get("item_trophy_seekerqueen")} x1",
+                    _ => $"{L.Get("item_trophy_bear")} x1 + {L.Get("item_eikthyr_trophy")} x1"
+                };
             }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[Paladin Config] GetPaladinTooltip 실패: {ex.Message}");
-                return L.Get("paladin_tooltip_error");
-            }
+            catch { return ""; }
         }
+
+        // ===================================================
+        // 하위 호환 편의 프로퍼티 (기존 코드 호환)
+        // ===================================================
+        public static float CooldownValue        => PaladinHealCooldown?.Value ?? 30f;
+        public static float RangeValue           => PaladinHealRange?.Value ?? 5f;
+        public static float EitrCostValue        => PaladinHealEitrCost?.Value ?? 10f;
+        public static float StaminaCostValue     => PaladinHealStaminaCost?.Value ?? 10f;
+        public static float SelfHealPercentValue => (PaladinHealSelfPercent?.Value ?? 15f) / 100f;
+        public static float AllyHealPercentValue => (PaladinHealAllyPercentOverTime?.Value ?? 2f) / 100f;
+        public static float HealDurationValue    => PaladinHealDuration?.Value ?? 10f;
+        public static float HealIntervalValue    => PaladinHealInterval?.Value ?? 1f;
+        public static float ElementalResistanceReductionValue => PaladinElementalResistanceReduction?.Value ?? 8f;
+        public static int   TotalHealTicks       => (int)(HealDurationValue / HealIntervalValue);
+        public static float TotalAllyHealPercent => AllyHealPercentValue * TotalHealTicks;
+        public static bool  ShowHealNumbersValue => true;
+        public static bool  ShowHealProgressValue => true;
     }
 }

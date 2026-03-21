@@ -105,6 +105,8 @@ namespace CaptainSkillTree.Localization
                 ["crafting_lv3_desc"] = "25% 확률로 강화+1, 내구도 최대치 25% 증가",
                 ["crafting_lv4_name"] = "제작 Lv4",
                 ["crafting_lv4_desc"] = "25% 확률로 강화+1, 내구도 최대치 25% 증가",
+                ["crafting_lv5_name"] = "제작 Lv5",
+                ["crafting_lv5_desc"] = "내구도 +30%, 재료 -30%, 35% 확률 랜덤 마법부여\n팜그리드 3×4",
 
                 // === Production Skills - Effect Texts ===
                 ["production_root_effect"] = "🌲 생산 전문가 습득!",
@@ -121,11 +123,11 @@ namespace CaptainSkillTree.Localization
                 ["crafting_lv2_effect"] = "🔨 제작 Lv2 습득!",
                 ["crafting_lv3_effect"] = "🔨 제작 Lv3 습득!",
                 ["crafting_lv4_effect"] = "🔨 제작 Lv4 습득! 은 검+헬멧 보유 시 제작 강화 효과!",
-                ["crafting_lv2_enchant_dmg"] = "✨ 마법부여: 공격력 +5 적용됨!",
-                ["crafting_lv2_enchant_spd"] = "✨ 마법부여: 공격속도 +5% 적용됨!",
-                ["crafting_lv2_enchant_dmg_tooltip"] = "✨ 마법부여: 공격력 +{0}",
-                ["crafting_lv2_enchant_spd_tooltip"] = "✨ 마법부여: 공격속도 +{0}%",
-
+                ["crafting_lv5_effect"] = "🔨 제작 Lv5 습득! 장인의 극의에 도달!",
+                ["crafting_lv5_enchant_msg"] = "✨ Lv5 마법부여: {0} +{1} 적용됨!",
+                ["crafting_lv5_enchant_tooltip"] = "✨ Lv5 마법부여: {0} +{1}",
+                ["crafting_lv2_enchant_dmg"] = "⚔️ Lv2 마법부여: 공격력 +5% 적용됨!",
+                ["crafting_lv2_enchant_spd"] = "⚡ Lv2 마법부여: 공격속도 +5% 적용됨!",
                 // === Crossbow Skills ===
                 ["crossbow_skill_expert"] = "석궁 전문가",
                 ["crossbow_rapid_fire_lv1_name"] = "연속 발사 Lv1",
@@ -159,7 +161,7 @@ namespace CaptainSkillTree.Localization
                 ["staff_fire_name"] = "화염 속성",
                 ["staff_lightning_name"] = "번개 속성",
                 ["staff_luck_mana_name"] = "행운 마력",
-                ["staff_dual_cast_name"] = "연속 발사",
+                ["staff_dual_cast_name"] = "이중시전",
                 ["staff_heal_name"] = "힐",
 
                 // === Ranged/Crossbow/Bow Descriptions ===
@@ -224,7 +226,7 @@ namespace CaptainSkillTree.Localization
                 ["archer_job_required"] = "아처 직업이 필요합니다!",
                 ["spear_penetrate_cooldown"] = "꿰뚫는 창 쿨타임 ({0}초)",
                 ["spear_penetrate_activated"] = "꿰뚫는 창 발동! ({0}초)",
-                ["staff_dual_cast_activated"] = "연속 발사 발동! {0}발 추가 발사",
+                ["staff_dual_cast_activated"] = "이중시전 발동! {0}발 추가 발사",
                 ["knife_assassin_heart_activated"] = "암살자의 심장 발동!",
 
                 // === Sword Skill Messages ===
@@ -241,11 +243,11 @@ namespace CaptainSkillTree.Localization
                 ["spear_lightning_shock"] = "번개 충격! ({0})",
 
                 // === Staff Skill Messages ===
-                ["staff_dual_cast_cooldown"] = "연속 발사 쿨타임: {0}초",
+                ["staff_dual_cast_cooldown"] = "이중시전 쿨타임: {0}초",
                 ["staff_eitr_insufficient"] = "에이트르가 부족합니다 ({0} 필요)",
-                ["staff_dual_cast_ready"] = "연속 발사 준비! ({0}초간)",
-                ["staff_dual_cast_remaining"] = "연속 발사 준비됨 ({0}초)",
-                ["staff_dual_cast_expired"] = "연속 발사 버프 만료",
+                ["staff_dual_cast_ready"] = "이중시전 준비! ({0}초간)",
+                ["staff_dual_cast_remaining"] = "이중시전 준비됨 ({0}초)",
+                ["staff_dual_cast_expired"] = "이중시전 버프 만료",
 
                 // ===== Config Descriptions =====
                 // Sword Tree
@@ -450,6 +452,8 @@ namespace CaptainSkillTree.Localization
                 ["crafting_lv3_desc"] = "25% chance +1 upgrade, Max durability +25%",
                 ["crafting_lv4_name"] = "Crafting Lv4",
                 ["crafting_lv4_desc"] = "25% chance +1 upgrade, Max durability +25%",
+                ["crafting_lv5_name"] = "Crafting Lv5",
+                ["crafting_lv5_desc"] = "Durability +30%, Materials -30%, 35% random enchant\nFarm Grid 3×4",
 
                 // === Production Skills - Effect Texts ===
                 ["production_root_effect"] = "Production Expert acquired!",
@@ -466,11 +470,11 @@ namespace CaptainSkillTree.Localization
                 ["crafting_lv2_effect"] = "Crafting Lv2 acquired!",
                 ["crafting_lv3_effect"] = "Crafting Lv3 acquired!",
                 ["crafting_lv4_effect"] = "Crafting Lv4 acquired! Crafting boost with silver sword+helmet!",
-                ["crafting_lv2_enchant_dmg"] = "✨ Enchant: ATK +5 applied!",
-                ["crafting_lv2_enchant_spd"] = "✨ Enchant: ATK SPD +5% applied!",
-                ["crafting_lv2_enchant_dmg_tooltip"] = "✨ Enchant: ATK +{0}",
-                ["crafting_lv2_enchant_spd_tooltip"] = "✨ Enchant: ATK SPD +{0}%",
-
+                ["crafting_lv5_effect"] = "Crafting Lv5 acquired! Reached the pinnacle of craftsmanship!",
+                ["crafting_lv5_enchant_msg"] = "✨ Lv5 Enchant: {0} +{1} applied!",
+                ["crafting_lv5_enchant_tooltip"] = "✨ Lv5 Enchant: {0} +{1}",
+                ["crafting_lv2_enchant_dmg"] = "⚔️ Lv2 Enchant: Attack +5% applied!",
+                ["crafting_lv2_enchant_spd"] = "⚡ Lv2 Enchant: Attack Speed +5% applied!",
                 // === Crossbow Skills ===
                 ["crossbow_skill_expert"] = "Crossbow Expert",
                 ["crossbow_rapid_fire_lv1_name"] = "Rapid Fire Lv1",
@@ -504,7 +508,7 @@ namespace CaptainSkillTree.Localization
                 ["staff_fire_name"] = "Fire Element",
                 ["staff_lightning_name"] = "Lightning Element",
                 ["staff_luck_mana_name"] = "Lucky Mana",
-                ["staff_dual_cast_name"] = "Rapid Barrage",
+                ["staff_dual_cast_name"] = "Double Casting",
                 ["staff_heal_name"] = "Heal",
 
                 // === Ranged/Crossbow/Bow Descriptions ===
@@ -569,7 +573,7 @@ namespace CaptainSkillTree.Localization
                 ["archer_job_required"] = "Archer job required!",
                 ["spear_penetrate_cooldown"] = "Piercing Spear cooldown ({0}s)",
                 ["spear_penetrate_activated"] = "Piercing Spear activated! ({0}s)",
-                ["staff_dual_cast_activated"] = "Rapid Barrage! Firing {0} additional projectiles",
+                ["staff_dual_cast_activated"] = "Double Casting! Firing {0} additional projectiles",
                 ["knife_assassin_heart_activated"] = "Assassin's Heart activated!",
 
                 // === Sword Skill Messages ===
@@ -586,11 +590,11 @@ namespace CaptainSkillTree.Localization
                 ["spear_lightning_shock"] = "Lightning Shock! ({0})",
 
                 // === Staff Skill Messages ===
-                ["staff_dual_cast_cooldown"] = "Rapid Barrage cooldown: {0}s",
+                ["staff_dual_cast_cooldown"] = "Double Casting cooldown: {0}s",
                 ["staff_eitr_insufficient"] = "Not enough Eitr ({0} required)",
-                ["staff_dual_cast_ready"] = "Rapid Barrage ready! ({0}s)",
-                ["staff_dual_cast_remaining"] = "Rapid Barrage ready ({0}s)",
-                ["staff_dual_cast_expired"] = "Rapid Barrage buff expired",
+                ["staff_dual_cast_ready"] = "Double Casting ready! ({0}s)",
+                ["staff_dual_cast_remaining"] = "Double Casting ready ({0}s)",
+                ["staff_dual_cast_expired"] = "Double Casting buff expired",
 
                 // ===== Config Descriptions =====
                 // Sword Tree

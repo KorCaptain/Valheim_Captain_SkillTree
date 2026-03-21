@@ -234,10 +234,7 @@ namespace CaptainSkillTree.SkillTree
                     {
                         Plugin.Log.LogInfo($"[제작 완료] 제작된 아이템: {recentItem.m_shared?.m_name}");
                         
-                        // 제작 강화 효과 적용
-                        CraftingEnhancement.ApplyCraftingEnhancement(__instance, recentItem);
-                        
-                        Plugin.Log.LogInfo($"[제작 강화] 적용 완료: {recentItem.m_shared?.m_name}");
+                        Plugin.Log.LogInfo($"[제작 감지] 아이템 감지됨 (강화는 DoCrafting 패치 처리): {recentItem.m_shared?.m_name}");
                         
                         // 제작 완료 후 플래그 리셋
                         CraftButtonDetector.ResetAllFlags();

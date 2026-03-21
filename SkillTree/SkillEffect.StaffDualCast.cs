@@ -16,6 +16,10 @@ namespace CaptainSkillTree.SkillTree
         // === 연속 발사 쿨타임 관리 ===
         private static Dictionary<Player, float> staffDualExplosionCooldowns = new Dictionary<Player, float>();
 
+        // Mage Lv2: 30초 추가 사용 창 관리
+        private static Dictionary<Player, float> _staffDualCastPendingWindow = new Dictionary<Player, float>();
+        private const float StaffDualCastExtraWindow = 30f;
+
         // === 연속 발사 버프 상태 관리 ===
         private static Dictionary<Player, bool> staffDualCastReady = new Dictionary<Player, bool>();
         private static Dictionary<Player, float> staffDualCastExpiry = new Dictionary<Player, float>();
@@ -39,12 +43,18 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 쿨타임 확인
-                if (staffDualExplosionCooldowns.ContainsKey(player) && Time.time < staffDualExplosionCooldowns[player])
+                // Mage Lv2 추가 사용 창이 열려 있으면 쿨타임 체크 건너뜀
+                bool inPendingWindow = _staffDualCastPendingWindow.TryGetValue(player, out float windowEnd)
+                    && Time.time <= windowEnd;
+
+                if (!inPendingWindow)
                 {
-                    float remaining = staffDualExplosionCooldowns[player] - Time.time;
-                    DrawFloatingText(player, L.Get("staff_dual_cast_cooldown", Mathf.CeilToInt(remaining)), Color.red);
-                    return;
+                    if (staffDualExplosionCooldowns.ContainsKey(player) && Time.time < staffDualExplosionCooldowns[player])
+                    {
+                        float remaining = staffDualExplosionCooldowns[player] - Time.time;
+                        DrawFloatingText(player, L.Get("staff_dual_cast_cooldown", Mathf.CeilToInt(remaining)), Color.red);
+                        return;
+                    }
                 }
 
                 // 에이트르 확인
@@ -58,9 +68,33 @@ namespace CaptainSkillTree.SkillTree
                 // 에이트르 소모
                 player.UseEitr(eitrCost);
 
-                // 쿨타임 적용
-                staffDualExplosionCooldowns[player] = Time.time + Staff_Config.StaffDoubleCastCooldownValue;
-                ActiveSkillCooldownRegistry.SetCooldown("R", Staff_Config.StaffDoubleCastCooldownValue);
+                // Mage Lv2 추가 사용 창 시스템
+                bool hasMageLv2 = SkillTreeManager.Instance != null
+                    && SkillTreeManager.Instance.GetSkillLevel("Mage") >= 2;
+
+                if (hasMageLv2)
+                {
+                    if (_staffDualCastPendingWindow.TryGetValue(player, out float we) && Time.time <= we)
+                    {
+                        // 2번째 사용: 창 종료 → 쿨타임 시작
+                        _staffDualCastPendingWindow.Remove(player);
+                        staffDualExplosionCooldowns[player] = Time.time + Staff_Config.StaffDoubleCastCooldownValue;
+                        ActiveSkillCooldownRegistry.SetCooldown("R", Staff_Config.StaffDoubleCastCooldownValue);
+                        Plugin.Log.LogDebug("[연속발사] Mage Lv2 2번째 사용 → 쿨타임 시작");
+                    }
+                    else
+                    {
+                        // 1번째 사용: 쿨타임 보류, 30초 창 시작
+                        _staffDualCastPendingWindow[player] = Time.time + StaffDualCastExtraWindow;
+                        SkillTreeInputListener.Instance.StartCoroutine(ExpireStaffDualCastWindow(player));
+                        Plugin.Log.LogDebug("[연속발사] Mage Lv2 1번째 사용 → 30초 창 시작");
+                    }
+                }
+                else
+                {
+                    staffDualExplosionCooldowns[player] = Time.time + Staff_Config.StaffDoubleCastCooldownValue;
+                    ActiveSkillCooldownRegistry.SetCooldown("R", Staff_Config.StaffDoubleCastCooldownValue);
+                }
 
                 // 버프 활성화 (30초간 지속)
                 float buffDuration = 30f;
@@ -87,6 +121,22 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[연속 발사] 버프 활성화 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Mage Lv2 연속발사 30초 추가 사용 창 만료 코루틴
+        /// </summary>
+        private static IEnumerator ExpireStaffDualCastWindow(Player player)
+        {
+            yield return new WaitForSeconds(StaffDualCastExtraWindow);
+            if (_staffDualCastPendingWindow.ContainsKey(player))
+            {
+                // 30초 내 2번째 사용 없음 → 쿨타임 시작
+                _staffDualCastPendingWindow.Remove(player);
+                staffDualExplosionCooldowns[player] = Time.time + Staff_Config.StaffDoubleCastCooldownValue;
+                ActiveSkillCooldownRegistry.SetCooldown("R", Staff_Config.StaffDoubleCastCooldownValue);
+                Plugin.Log.LogDebug("[연속발사] Mage Lv2 창 만료 → 쿨타임 시작");
             }
         }
 
@@ -394,6 +444,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeInputListener.Instance.StopCoroutine(staffDualCastBuffCoroutines[player]);
                     staffDualCastBuffCoroutines.Remove(player);
                 }
+                _staffDualCastPendingWindow.Remove(player);
                 ClearStaffDualCastBuff(player);
             }
             catch (Exception ex)

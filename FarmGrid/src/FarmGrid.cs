@@ -111,6 +111,16 @@ namespace CaptainSkillTree.SkillTree
 
         #region Grid Visualization (LineRenderer)
 
+        private static float _spacingMultiplier = 1.0f;
+        private const float SPACING_STEP = 0.1f;
+        private const float SPACING_MIN = 0.5f;
+        private const float SPACING_MAX = 3.0f;
+
+        private static float _gridRotation = 0f;
+        private const float ROTATION_STEP = 5f;
+        private const float ROTATION_MIN = -180f;
+        private const float ROTATION_MAX = 180f;
+
         private static GameObject[] gridLines = null;
         private static bool gridVisible = false;
         private static Material lineMaterial = null;
@@ -209,8 +219,9 @@ namespace CaptainSkillTree.SkillTree
             var (rows, cols) = Producer_Config.GetFarmGridDimensions(level);
             if (rows == 0 || cols == 0) { HideGridLines(); return; }
 
-            float spacing = GetSpacingFromObject(ghost);
-            var positions = GetGridPositions2D(ghost.transform.position, player.transform.right, player.transform.forward, rows, cols, spacing);
+            float spacing = GetSpacingFromObject(ghost) * _spacingMultiplier;
+            var rot = Quaternion.Euler(0f, _gridRotation, 0f);
+            var positions = GetGridPositions2D(ghost.transform.position, rot * Vector3.right, rot * Vector3.forward, rows, cols, spacing);
             DrawGridLines(positions, spacing);
         }
 
@@ -241,6 +252,29 @@ namespace CaptainSkillTree.SkillTree
                 if (__instance != Player.m_localPlayer) return;
                 if (!ProducerSkills.IsProducer(__instance)) { HideGridLines(); return; }
                 if (!IsUsingCultivator(__instance)) { HideGridLines(); return; }
+
+                // 스크롤: 간격(Alt+휠) 또는 회전(휠 단독)
+                float scroll = Input.GetAxis("Mouse ScrollWheel");
+                if (scroll != 0f)
+                {
+                    if (Input.GetKey(KeyCode.LeftAlt))
+                    {
+                        _spacingMultiplier = Mathf.Clamp(
+                            _spacingMultiplier + (scroll > 0f ? SPACING_STEP : -SPACING_STEP),
+                            SPACING_MIN, SPACING_MAX);
+                        __instance.Message(MessageHud.MessageType.TopLeft,
+                            L.Get("farmgrid_spacing", $"{_spacingMultiplier:F1}x"));
+                    }
+                    else
+                    {
+                        _gridRotation = Mathf.Clamp(
+                            _gridRotation + (scroll > 0f ? ROTATION_STEP : -ROTATION_STEP),
+                            ROTATION_MIN, ROTATION_MAX);
+                        __instance.Message(MessageHud.MessageType.TopLeft,
+                            L.Get("farmgrid_rotation", $"{_gridRotation:F0}°"));
+                    }
+                }
+
                 UpdateGridDisplay(__instance);
             }
         }
@@ -287,8 +321,9 @@ namespace CaptainSkillTree.SkillTree
                     if (prefab == null) { Plugin.Log.LogWarning($"[팜그리드] 프리팹 '{prefabName}' 없음"); return; }
 
                     Vector3 plantedPos = __instance.transform.position;
-                    float spacing = GetSpacingFromObject(__instance.gameObject);
-                    var positions = GetGridPositions2D(plantedPos, player.transform.right, player.transform.forward, rows, cols, spacing);
+                    float spacing = GetSpacingFromObject(__instance.gameObject) * _spacingMultiplier;
+                    var rot = Quaternion.Euler(0f, _gridRotation, 0f);
+                    var positions = GetGridPositions2D(plantedPos, rot * Vector3.right, rot * Vector3.forward, rows, cols, spacing);
 
                     int planted = 0;
                     _isAutoPlanting = true;
@@ -330,6 +365,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     HideGridLines();
                     DestroyGridLines();
+                    _spacingMultiplier = 1.0f;
+                    _gridRotation = 0f;
                 }
             }
         }

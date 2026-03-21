@@ -319,17 +319,31 @@ namespace CaptainSkillTree.Localization
         }
 
         // ============================================
-        // 설명 번역 집합 (일본어) - EN fallback
+        // 설명 번역 집합 (일본어)
+        // GetExpertDescriptions_JP()     → ConfigTranslations_ExpertDesc_JP.cs
+        // GetRangedDescriptions_JP()     → ConfigTranslations_RangedDesc_JP.cs
+        // GetSwordKnifeDescriptions_JP() → ConfigTranslations_SwordKnifeDesc_JP.cs
+        // GetHeavyMeleeDescriptions_JP() → ConfigTranslations_HeavyMeleeDesc_JP.cs
+        // GetJobDescriptions_JP()        → ConfigTranslations_JobDesc_JP.cs
         // ============================================
         private static Dictionary<string, string> GetJapaneseDescriptions()
         {
-            return GetEnglishDescriptions();
+            var dict = new Dictionary<string, string>();
+            foreach (var kv in GetExpertDescriptions_JP()) dict[kv.Key] = kv.Value;
+            foreach (var kv in GetRangedDescriptions_JP()) dict[kv.Key] = kv.Value;
+            foreach (var kv in GetSwordKnifeDescriptions_JP()) dict[kv.Key] = kv.Value;
+            foreach (var kv in GetHeavyMeleeDescriptions_JP()) dict[kv.Key] = kv.Value;
+            foreach (var kv in GetJobDescriptions_JP()) dict[kv.Key] = kv.Value;
+            return dict;
         }
 
-        // GetJapaneseKeyNames() → EN fallback
+        // GetJapaneseKeyNames() → ConfigTranslations_KeyNames_JP.cs + _JP_Part2.cs
         private static Dictionary<string, string> GetJapaneseKeyNames()
         {
-            return GetEnglishKeyNames();
+            var dict = new Dictionary<string, string>();
+            foreach (var kv in GetJapaneseKeyNames_Part1()) dict[kv.Key] = kv.Value;
+            foreach (var kv in GetJapaneseKeyNames_Part2()) dict[kv.Key] = kv.Value;
+            return dict;
         }
     }
 }

@@ -17,6 +17,8 @@ namespace CaptainSkillTree.SkillTree
         // 메이지 액티브 스킬 상태 관리
         private static readonly Dictionary<string, float> lastActivationTime = new Dictionary<string, float>();
         private static readonly HashSet<string> pendingExplosions = new HashSet<string>();
+        // Lv2+ 연속 발사 충전 (30초 이내 추가 시전 가능)
+        private static readonly Dictionary<string, float> extraChargeExpiry = new Dictionary<string, float>();
 
         /// <summary>
         /// 메이지 패시브 및 액티브 스킬을 SkillTreeManager에 등록
@@ -92,13 +94,22 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 메이지 속성 저항 보너스 가져오기
+        /// 현재 메이지 레벨 가져오기
+        /// </summary>
+        public static int GetMageLevel(Player player)
+        {
+            var manager = SkillTreeManager.Instance;
+            return manager?.GetSkillLevel("Mage") ?? 0;
+        }
+
+        /// <summary>
+        /// 메이지 속성 저항 보너스 가져오기 (레벨 기반)
         /// </summary>
         public static float GetMageElementalResistance(Player player)
         {
             if (!IsMage(player)) return 0f;
-            
-            return Mage_Config.MageElementalResistanceValue / 100f; // 퍼센트를 소수로 변환
+            int level = GetMageLevel(player);
+            return Mage_Config.GetElementalResistance(level) / 100f; // 퍼센트를 소수로 변환
         }
 
         /// <summary>
@@ -113,13 +124,44 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
-                // 쿨타임 체크
                 string playerKey = player.GetPlayerID().ToString();
                 float currentTime = Time.time;
-                
+                int mageLevel = GetMageLevel(player);
+
+                // Lv2+ 연속 발사 충전 체크
+                bool hasExtraCharge = mageLevel >= 2 &&
+                    extraChargeExpiry.TryGetValue(playerKey, out float expiry) &&
+                    currentTime < expiry;
+
+                if (hasExtraCharge)
+                {
+                    // 지팡이 착용 체크
+                    if (!IsWieldingStaff(player))
+                    {
+                        player.Message(MessageHud.MessageType.Center, L.Get("staff_required"));
+                        return false;
+                    }
+                    // Eitr 체크
+                    int eitrCost2 = Mage_Config.MageEitrCostValue;
+                    if (player.GetEitr() < eitrCost2)
+                    {
+                        player.Message(MessageHud.MessageType.Center, L.Get("eitr_insufficient", eitrCost2.ToString()));
+                        return false;
+                    }
+                    // 충전 소모 후 추가 시전
+                    extraChargeExpiry.Remove(playerKey);
+                    ExecuteMageAOESkill(player, mageLevel);
+                    lastActivationTime[playerKey] = currentTime;
+                    player.AddEitr(-eitrCost2);
+                    ActiveSkillCooldownRegistry.SetCooldown("Y", Mage_Config.GetCooldown(mageLevel));
+                    Plugin.Log.LogInfo($"[메이지 액티브] {player.GetPlayerName()} 연속 발사 충전 사용");
+                    return true;
+                }
+
+                // 쿨타임 체크
                 if (lastActivationTime.TryGetValue(playerKey, out float lastTime))
                 {
-                    float cooldownRemaining = Mage_Config.MageCooldownValue - (currentTime - lastTime);
+                    float cooldownRemaining = Mage_Config.GetCooldown(mageLevel) - (currentTime - lastTime);
                     if (cooldownRemaining > 0)
                     {
                         player.Message(MessageHud.MessageType.Center, L.Get("mage_cooldown", cooldownRemaining.ToString("F1")));
@@ -143,16 +185,22 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 스킬 실행
-                ExecuteMageAOESkill(player);
-                
+                ExecuteMageAOESkill(player, mageLevel);
+
+                // Lv2+이면 30초 추가 충전 부여
+                if (mageLevel >= 2)
+                {
+                    extraChargeExpiry[playerKey] = currentTime + 30f;
+                }
+
                 // 쿨타임 설정
                 lastActivationTime[playerKey] = currentTime;
-                ActiveSkillCooldownRegistry.SetCooldown("Y", Mage_Config.MageCooldownValue);
+                ActiveSkillCooldownRegistry.SetCooldown("Y", Mage_Config.GetCooldown(mageLevel));
 
                 // Eitr 소모
                 player.AddEitr(-eitrCost);
-                
-                Plugin.Log.LogInfo($"[메이지 액티브] {player.GetPlayerName()} 메이지 스킬 사용");
+
+                Plugin.Log.LogInfo($"[메이지 액티브] {player.GetPlayerName()} 메이지 스킬 사용 (Lv{mageLevel})");
                 return true;
             }
             catch (System.Exception ex)
@@ -191,9 +239,9 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 메이지 AOE 스킬 실행 - 시전시 vfx_GodExplosion + 몬스터에 vfx_HealthUpgrade 2초 후 150% 데미지
+        /// 메이지 AOE 스킬 실행 - 시전시 vfx_GodExplosion + 몬스터에 vfx_HealthUpgrade 2초 후 데미지
         /// </summary>
-        private static void ExecuteMageAOESkill(Player player)
+        private static void ExecuteMageAOESkill(Player player, int mageLevel = 1)
         {
             try
             {
@@ -268,8 +316,8 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 가까운 순서로 정렬 후 최대 N마리로 제한 (Config 연동)
-                int maxTargets = Mage_Config.MageAOEMaxTargetsValue;
+                // 가까운 순서로 정렬 후 최대 N마리로 제한 (레벨별 Config 연동)
+                int maxTargets = Mage_Config.GetMaxTargets(mageLevel);
                 targets = targets
                     .OrderBy(c => Vector3.Distance(playerPos, c.transform.position))
                     .Take(maxTargets)
@@ -283,7 +331,7 @@ namespace CaptainSkillTree.SkillTree
                     if (target != null && !target.IsDead())
                     {
                         // 각 몬스터별로 지연 데미지 적용 시작
-                        Plugin.Instance?.StartCoroutine(AttachVFXToMonster(player, target, 2f));
+                        Plugin.Instance?.StartCoroutine(AttachVFXToMonster(player, target, 2f, mageLevel));
                         validTargets++;
                         
                         Plugin.Log.LogDebug($"[메이지 지연 폭발] {target.GetHoverName()}에게 2초 후 폭발 예정");
@@ -305,7 +353,7 @@ namespace CaptainSkillTree.SkillTree
         /// 몬스터에 VFX 재생 후 지연 데미지 적용
         /// ✅ EpicMMOSystem 방식으로 단순화 - while 루프 제거
         /// </summary>
-        private static IEnumerator AttachVFXToMonster(Player caster, Character target, float duration)
+        private static IEnumerator AttachVFXToMonster(Player caster, Character target, float duration, int mageLevel = 1)
         {
             if (caster == null || target == null) yield break;
 
@@ -327,14 +375,14 @@ namespace CaptainSkillTree.SkillTree
             // 지연 데미지 적용
             if (target != null && !target.IsDead() && caster != null && !caster.IsDead())
             {
-                ApplyDelayedDamage(caster, target);
+                ApplyDelayedDamage(caster, target, mageLevel);
             }
         }
         
         /// <summary>
-        /// 지연된 데미지 적용 - 2초 후 150% 공격 효과
+        /// 지연된 데미지 적용 - 2초 후 레벨 기반 데미지 적용
         /// </summary>
-        private static void ApplyDelayedDamage(Player caster, Character target)
+        private static void ApplyDelayedDamage(Player caster, Character target, int mageLevel = 1)
         {
             try
             {
@@ -344,10 +392,10 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug("[메이지 지연 폭발] 타겟 또는 시전자가 유효하지 않아 폭발 취소");
                     return;
                 }
-                
-                // 기본 공격력 계산 + 150% 데미지 배수 적용
+
+                // 기본 공격력 계산 + 레벨별 데미지 배수 적용
                 float baseDamage = CalculatePlayerBaseDamage(caster);
-                float damageMultiplier = Mage_Config.MageDamageMultiplierValue / 100f;
+                float damageMultiplier = Mage_Config.GetDamageMultiplier(mageLevel) / 100f;
                 float finalDamage = baseDamage * damageMultiplier;
                 
                 // 폭발 효과 - vfx_HealthUpgrade 종료와 함께 데미지 적용
@@ -418,6 +466,7 @@ namespace CaptainSkillTree.SkillTree
         {
             lastActivationTime.Clear();
             pendingExplosions.Clear();
+            extraChargeExpiry.Clear();
             mageStatusCache.Clear(); // 캐시도 함께 정리
             Plugin.Log.LogInfo("[메이지 스킬] 모든 상태 정리 완료 (캐시 포함)");
         }

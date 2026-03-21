@@ -155,14 +155,9 @@ namespace CaptainSkillTree.SkillTree
         {
             if (player == null || player.IsDead()) return;
 
-            // 1. 검: 패링 돌격 (sword_step5_defswitch)
+            // 1. 검/방패: 패링 돌격 (sword_step5_defswitch) - 내부에서 방패/검 체크
             if (HasSkill("sword_step5_defswitch"))
             {
-                if (!Sword_Skill.IsUsingSword(player))
-                {
-                    DrawFloatingText(player, L.Get("sword_equip_required"), Color.red);
-                    return;
-                }
                 Sword_Skill.ActivateParryRush(player);
                 return;
             }

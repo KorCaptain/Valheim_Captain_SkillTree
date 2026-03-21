@@ -217,24 +217,109 @@ namespace CaptainSkillTree.Localization
                 "강력한 폭발 마법으로 적을 섬멸합니다.\n" +
                 "권장값: 250-350%",
 
-                ["Mage_Cooldown"] =
-                "【쿨타임 (초)】\n" +
-                "스킬 재사용 대기 시간입니다.\n" +
-                "강력한 스킬이므로 긴 쿨타임을 가집니다.\n" +
-                "권장값: 150-200초",
+                // === Mage Job: 쿨타임 (레벨별) ===
+                ["Mage_Lv1_Cooldown"] =
+                "【쿨타임 Lv1 (초)】\n" +
+                "Lv1 메이지 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 120초",
 
-                ["Mage_AOE_Max_Targets"] =
-                "【최대 타겟 수】\n" +
-                "AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
-                "가까운 순서로 선택됩니다. 높을수록 랙이 발생할 수 있습니다.\n" +
-                "권장값: 4-8마리",
+                ["Mage_Lv2_Cooldown"] =
+                "【쿨타임 Lv2 (초)】\n" +
+                "Lv2 메이지 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 110초",
 
-                // === Mage Job: 패시브 스킬 (1개) ===
-                ["Mage_Elemental_Resistance"] =
-                "【마법 속성 저항 (%)】\n" +
-                "화염, 냉기, 번개, 독, 영혼 속성 저항을 증가시킵니다.\n" +
-                "물리 피해는 제외되며 마법 피해만 감소합니다.\n" +
-                "권장값: 12-20%",
+                ["Mage_Lv3_Cooldown"] =
+                "【쿨타임 Lv3 (초)】\n" +
+                "Lv3 메이지 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 100초",
+
+                ["Mage_Lv4_Cooldown"] =
+                "【쿨타임 Lv4 (초)】\n" +
+                "Lv4 메이지 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 90초",
+
+                ["Mage_Lv5_Cooldown"] =
+                "【쿨타임 Lv5 (초)】\n" +
+                "Lv5 메이지 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 80초",
+
+                // === Mage Job: 최대 타겟 수 (레벨별) ===
+                ["Mage_Lv1_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv1】\n" +
+                "Lv1 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
+                "권장값: 6마리",
+
+                ["Mage_Lv2_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv2】\n" +
+                "Lv2 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
+                "권장값: 7마리",
+
+                ["Mage_Lv3_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv3】\n" +
+                "Lv3 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
+                "권장값: 8마리",
+
+                ["Mage_Lv4_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv4】\n" +
+                "Lv4 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
+                "권장값: 9마리",
+
+                ["Mage_Lv5_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv5】\n" +
+                "Lv5 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
+                "권장값: 10마리",
+
+                // === Mage Job: 패시브 속성 저항 (레벨별) ===
+                ["Mage_Lv1_Elemental_Resistance"] =
+                "【마법 속성 저항 Lv1 (%)】\n" +
+                "Lv1 메이지 속성 저항입니다. 화염/냉기/번개/독/영혼 감소.\n" +
+                "권장값: 5%",
+
+                ["Mage_Lv2_Elemental_Resistance"] =
+                "【마법 속성 저항 Lv2 (%)】\n" +
+                "Lv2 메이지 속성 저항입니다. 연속 발사 +1회 시전 포함.\n" +
+                "권장값: 7%",
+
+                ["Mage_Lv3_Elemental_Resistance"] =
+                "【마법 속성 저항 Lv3 (%)】\n" +
+                "Lv3 메이지 속성 저항입니다.\n" +
+                "권장값: 9%",
+
+                ["Mage_Lv4_Elemental_Resistance"] =
+                "【마법 속성 저항 Lv4 (%)】\n" +
+                "Lv4 메이지 속성 저항입니다.\n" +
+                "권장값: 12%",
+
+                ["Mage_Lv5_Elemental_Resistance"] =
+                "【마법 속성 저항 Lv5 (%)】\n" +
+                "Lv5 메이지 속성 저항입니다.\n" +
+                "권장값: 15%",
+
+                // === Mage Job: AOE 데미지 배수 (레벨별) ===
+                ["Mage_Lv1_Damage_Multiplier"] =
+                "【AOE 데미지 배수 Lv1 (%)】\n" +
+                "Lv1 메이지 AOE 공격 데미지 배수입니다.\n" +
+                "권장값: 70%",
+
+                ["Mage_Lv2_Damage_Multiplier"] =
+                "【AOE 데미지 배수 Lv2 (%)】\n" +
+                "Lv2 메이지 AOE 공격 데미지 배수입니다.\n" +
+                "권장값: 90%",
+
+                ["Mage_Lv3_Damage_Multiplier"] =
+                "【AOE 데미지 배수 Lv3 (%)】\n" +
+                "Lv3 메이지 AOE 공격 데미지 배수입니다.\n" +
+                "권장값: 110%",
+
+                ["Mage_Lv4_Damage_Multiplier"] =
+                "【AOE 데미지 배수 Lv4 (%)】\n" +
+                "Lv4 메이지 AOE 공격 데미지 배수입니다.\n" +
+                "권장값: 130%",
+
+                ["Mage_Lv5_Damage_Multiplier"] =
+                "【AOE 데미지 배수 Lv5 (%)】\n" +
+                "Lv5 메이지 AOE 공격 데미지 배수입니다.\n" +
+                "권장값: 150%",
 
                 // === Berserker Job: 패시브 스킬 체력 보너스 ===
                 ["berserker_passive_health_bonus"] =
@@ -243,6 +328,37 @@ namespace CaptainSkillTree.Localization
                 "발헤임 기본 체력 + MMO 스탯 효과 + 모든 체력 증감의 총합 기준으로 비율 적용.\n" +
                 "힐링 정상 작동 (m_baseHP에 포함).\n" +
                 "권장값: 100%",
+
+                // === Berserker Lv2~5 패시브 Config ===
+                ["Berserker_Lv2_CooldownReduction"] =
+                "【버서커 Lv2: 분노 쿨타임 감소 (초)】\n" +
+                "Lv2 달성 시 분노 스킬 쿨타임이 이 수치만큼 줄어듭니다.\n" +
+                "권장값: 5초",
+
+                ["Berserker_Lv3_RageDamageReduction"] =
+                "【버서커 Lv3: 분노 중 피해 감소 (%)】\n" +
+                "Lv3 달성 시 분노 상태에서 받는 피해가 이 비율만큼 감소합니다.\n" +
+                "권장값: 15%",
+
+                ["Berserker_Lv4_LowHpAttackBonus"] =
+                "【버서커 Lv4: 저체력 공격력 보너스 (%)】\n" +
+                "Lv4 달성 시 체력이 임계값 이하일 때 공격력이 증가합니다.\n" +
+                "권장값: 15%",
+
+                ["Berserker_Lv4_LowHpAttackThreshold"] =
+                "【버서커 Lv4: 저체력 공격력 발동 임계값 (%)】\n" +
+                "체력이 이 비율 이하일 때 Lv4 공격력 보너스가 활성화됩니다.\n" +
+                "권장값: 50%",
+
+                ["Berserker_Lv5_PassiveCooldownReduction"] =
+                "【버서커 Lv5: 죽음의 무시 쿨타임 단축 (초)】\n" +
+                "Lv5 달성 시 죽음의 무시 패시브 쿨타임이 이 수치만큼 줄어듭니다.\n" +
+                "권장값: 120초 (2분)",
+
+                ["Berserker_Lv5_InvincibilityBonus"] =
+                "【버서커 Lv5: 죽음의 무시 무적 시간 추가 (초)】\n" +
+                "Lv5 달성 시 죽음의 무시 발동 시 무적 지속시간이 이 수치만큼 증가합니다.\n" +
+                "권장값: 2초",
 
                 // ========================================
                 // Tanker Job Skills (탱커 직업 스킬)
@@ -299,6 +415,32 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Passive_DamageReduction"] =
                 "【탱커 패시브 피해 감소 (%)】\n" +
                 "탱커 직업 패시브: 항상 받는 피해를 감소시킵니다.\n" +
+                "권장값: 10-20%",
+
+                // === Tanker Job: 레벨업 패시브 (5개) ===
+                ["Tanker_Hp_Bonus"] =
+                "【탱커 기본 체력 보너스】\n" +
+                "탱커 Lv1 이상 시 최대 체력이 고정값만큼 증가합니다.\n" +
+                "권장값: 50-150",
+
+                ["Tanker_Lv2_AllResist"] =
+                "【탱커 Lv2 모든 저항 (%)】\n" +
+                "탱커 Lv2 달성 시 모든 속성 피해를 감소시킵니다.\n" +
+                "권장값: 3-8%",
+
+                ["Tanker_Lv3_AllResist"] =
+                "【탱커 Lv3 모든 저항 (%)】\n" +
+                "탱커 Lv3 달성 시 모든 속성 피해를 감소시킵니다.\n" +
+                "권장값: 5-12%",
+
+                ["Tanker_Lv4_AllResist"] =
+                "【탱커 Lv4 모든 저항 (%)】\n" +
+                "탱커 Lv4 달성 시 모든 속성 피해를 감소시킵니다.\n" +
+                "권장값: 8-15%",
+
+                ["Tanker_Lv5_AllResist"] =
+                "【탱커 Lv5 모든 저항 (%)】\n" +
+                "탱커 Lv5 달성 시 모든 속성 피해를 감소시킵니다.\n" +
                 "권장값: 10-20%",
 
                 // ========================================
@@ -485,6 +627,112 @@ namespace CaptainSkillTree.Localization
                 "성기사 직업 패시브: 물리 및 속성 피해에 대한 저항을 증가시킵니다.\n" +
                 "권장값: 5-12%",
 
+                // === Paladin Job: Lv2 액티브 ===
+                ["Paladin_Lv2_SelfHealPercent"] =
+                "【Lv2 자가 치유 비율 (%)】\n" +
+                "성기사 Lv2에서 자신이 회복하는 최대 체력 비율입니다.\n" +
+                "권장값: 15-20%",
+
+                ["Paladin_Lv2_AllyHealPercent"] =
+                "【Lv2 아군 치유 비율 (%/틱)】\n" +
+                "성기사 Lv2에서 아군에게 적용되는 매 틱 힐 비율입니다.\n" +
+                "권장값: 2-3%",
+
+                // === Paladin Job: Lv3 액티브 ===
+                ["Paladin_Lv3_SelfHealPercent"] =
+                "【Lv3 자가 치유 비율 (%)】\n" +
+                "성기사 Lv3에서 자신이 회복하는 최대 체력 비율입니다.\n" +
+                "권장값: 17-22%",
+
+                ["Paladin_Lv3_AllyHealPercent"] =
+                "【Lv3 아군 치유 비율 (%/틱)】\n" +
+                "성기사 Lv3에서 아군에게 적용되는 매 틱 힐 비율입니다.\n" +
+                "권장값: 2.5-3.5%",
+
+                ["Paladin_Lv3_HealRange"] =
+                "【Lv3 치유 범위 (m)】\n" +
+                "성기사 Lv3에서 적용되는 아군 힐링 범위입니다.\n" +
+                "권장값: 5-7m",
+
+                // === Paladin Job: Lv4 액티브 ===
+                ["Paladin_Lv4_SelfHealPercent"] =
+                "【Lv4 자가 치유 비율 (%)】\n" +
+                "성기사 Lv4에서 자신이 회복하는 최대 체력 비율입니다.\n" +
+                "권장값: 19-24%",
+
+                ["Paladin_Lv4_AllyHealPercent"] =
+                "【Lv4 아군 치유 비율 (%/틱)】\n" +
+                "성기사 Lv4에서 아군에게 적용되는 매 틱 힐 비율입니다.\n" +
+                "권장값: 3-4%",
+
+                ["Paladin_Lv4_HealRange"] =
+                "【Lv4 치유 범위 (m)】\n" +
+                "성기사 Lv4에서 적용되는 아군 힐링 범위입니다.\n" +
+                "권장값: 6-8m",
+
+                // === Paladin Job: Lv5 액티브 ===
+                ["Paladin_Lv5_SelfHealPercent"] =
+                "【Lv5 자가 치유 비율 (%)】\n" +
+                "성기사 Lv5에서 자신이 회복하는 최대 체력 비율입니다.\n" +
+                "권장값: 22-28%",
+
+                ["Paladin_Lv5_AllyHealPercent"] =
+                "【Lv5 아군 치유 비율 (%/틱)】\n" +
+                "성기사 Lv5에서 아군에게 적용되는 매 틱 힐 비율입니다.\n" +
+                "권장값: 3.5-5%",
+
+                ["Paladin_Lv5_HealRange"] =
+                "【Lv5 치유 범위 (m)】\n" +
+                "성기사 Lv5에서 적용되는 아군 힐링 범위입니다.\n" +
+                "권장값: 7-10m",
+
+                ["Paladin_Lv5_Cooldown"] =
+                "【Lv5 쿨타임 (초)】\n" +
+                "성기사 Lv5에서 적용되는 단축된 쿨타임입니다.\n" +
+                "권장값: 20-30초",
+
+                // === Paladin Job: 패시브 Lv2~5 저항 감소 ===
+                ["Paladin_Lv2_ResistanceReduction"] =
+                "【Lv2 저항 감소 (%)】\n" +
+                "성기사 Lv2 패시브: 적의 모든 저항을 감소시킵니다.\n" +
+                "권장값: 6-10%",
+
+                ["Paladin_Lv3_ResistanceReduction"] =
+                "【Lv3 저항 감소 (%)】\n" +
+                "성기사 Lv3 패시브: 적의 모든 저항을 감소시킵니다.\n" +
+                "권장값: 8-12%",
+
+                ["Paladin_Lv4_ResistanceReduction"] =
+                "【Lv4 저항 감소 (%)】\n" +
+                "성기사 Lv4 패시브: 적의 모든 저항을 감소시킵니다.\n" +
+                "권장값: 10-14%",
+
+                ["Paladin_Lv5_ResistanceReduction"] =
+                "【Lv5 저항 감소 (%)】\n" +
+                "성기사 Lv5 패시브: 적의 모든 저항을 감소시킵니다.\n" +
+                "권장값: 12-18%",
+
+                // === Paladin Job: 패시브 Lv2~5 스태미나 보너스 ===
+                ["Paladin_Lv2_StaminaBonus"] =
+                "【Lv2 최대 스태미나 보너스】\n" +
+                "성기사 Lv2 패시브: 최대 스태미나를 고정값만큼 증가시킵니다.\n" +
+                "권장값: 8-15",
+
+                ["Paladin_Lv3_StaminaBonus"] =
+                "【Lv3 최대 스태미나 보너스】\n" +
+                "성기사 Lv3 패시브: 최대 스태미나를 고정값만큼 증가시킵니다.\n" +
+                "권장값: 12-20",
+
+                ["Paladin_Lv4_StaminaBonus"] =
+                "【Lv4 최대 스태미나 보너스】\n" +
+                "성기사 Lv4 패시브: 최대 스태미나를 고정값만큼 증가시킵니다.\n" +
+                "권장값: 15-25",
+
+                ["Paladin_Lv5_StaminaBonus"] =
+                "【Lv5 최대 스태미나 보너스】\n" +
+                "성기사 Lv5 패시브: 최대 스태미나를 고정값만큼 증가시킵니다.\n" +
+                "권장값: 20-30",
+
                 // ========================================
                 // Berserker Job Skills (버서커 직업 스킬)
                 // ========================================
@@ -536,7 +784,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_Cooldown"] =
                 "【패시브 스킬 쿨타임 (초)】\n" +
                 "패시브 무적 효과의 재발동 대기시간입니다.\n" +
-                "기본값: 180초 (3분)\n" +
+                "기본값: 540초 (9분)\n" +
                 "권장값: 120-300초",
 
                 // === Berserker Job: 패시브 HP 보너스 (대소문자 수정 키) ===
@@ -760,24 +1008,109 @@ namespace CaptainSkillTree.Localization
                 "Powerful explosive magic to annihilate enemies.\n" +
                 "Recommended: 250-350%",
 
-                ["Mage_Cooldown"] =
-                "【Cooldown (sec)】\n" +
-                "Skill reactivation wait time.\n" +
-                "Long cooldown due to powerful effect.\n" +
-                "Recommended: 150-200 sec",
+                // === Mage Job: Cooldown (level-based) ===
+                ["Mage_Lv1_Cooldown"] =
+                "【Cooldown Lv1 (sec)】\n" +
+                "Mage Lv1 skill reactivation wait time.\n" +
+                "Recommended: 120 sec",
 
-                ["Mage_AOE_Max_Targets"] =
-                "[Max Target Count]\n" +
-                "Maximum number of monsters the AOE skill can hit simultaneously.\n" +
-                "Targets are selected by proximity. Higher values may cause lag.\n" +
-                "Recommended: 4-8 targets",
+                ["Mage_Lv2_Cooldown"] =
+                "【Cooldown Lv2 (sec)】\n" +
+                "Mage Lv2 skill reactivation wait time.\n" +
+                "Recommended: 110 sec",
 
-                // === Mage Job: Passive Skill (1 key) ===
-                ["Mage_Elemental_Resistance"] =
-                "【Elemental Resistance (%)】\n" +
-                "Increases resistance to Fire, Frost, Lightning, Poison, and Spirit.\n" +
-                "Physical damage excluded, only reduces magic damage.\n" +
-                "Recommended: 12-20%",
+                ["Mage_Lv3_Cooldown"] =
+                "【Cooldown Lv3 (sec)】\n" +
+                "Mage Lv3 skill reactivation wait time.\n" +
+                "Recommended: 100 sec",
+
+                ["Mage_Lv4_Cooldown"] =
+                "【Cooldown Lv4 (sec)】\n" +
+                "Mage Lv4 skill reactivation wait time.\n" +
+                "Recommended: 90 sec",
+
+                ["Mage_Lv5_Cooldown"] =
+                "【Cooldown Lv5 (sec)】\n" +
+                "Mage Lv5 skill reactivation wait time.\n" +
+                "Recommended: 80 sec",
+
+                // === Mage Job: Max Targets (level-based) ===
+                ["Mage_Lv1_AOE_Max_Targets"] =
+                "【Max Target Count Lv1】\n" +
+                "Mage Lv1 max monsters hit simultaneously. Selected by proximity.\n" +
+                "Recommended: 6",
+
+                ["Mage_Lv2_AOE_Max_Targets"] =
+                "【Max Target Count Lv2】\n" +
+                "Mage Lv2 max monsters hit simultaneously.\n" +
+                "Recommended: 7",
+
+                ["Mage_Lv3_AOE_Max_Targets"] =
+                "【Max Target Count Lv3】\n" +
+                "Mage Lv3 max monsters hit simultaneously.\n" +
+                "Recommended: 8",
+
+                ["Mage_Lv4_AOE_Max_Targets"] =
+                "【Max Target Count Lv4】\n" +
+                "Mage Lv4 max monsters hit simultaneously.\n" +
+                "Recommended: 9",
+
+                ["Mage_Lv5_AOE_Max_Targets"] =
+                "【Max Target Count Lv5】\n" +
+                "Mage Lv5 max monsters hit simultaneously.\n" +
+                "Recommended: 10",
+
+                // === Mage Job: Passive Elemental Resistance (level-based) ===
+                ["Mage_Lv1_Elemental_Resistance"] =
+                "【Elemental Resistance Lv1 (%)】\n" +
+                "Mage Lv1 elemental resistance. Reduces Fire/Frost/Lightning/Poison/Spirit.\n" +
+                "Recommended: 5%",
+
+                ["Mage_Lv2_Elemental_Resistance"] =
+                "【Elemental Resistance Lv2 (%)】\n" +
+                "Mage Lv2 elemental resistance. Includes extra cast +1 (within 30s).\n" +
+                "Recommended: 7%",
+
+                ["Mage_Lv3_Elemental_Resistance"] =
+                "【Elemental Resistance Lv3 (%)】\n" +
+                "Mage Lv3 elemental resistance.\n" +
+                "Recommended: 9%",
+
+                ["Mage_Lv4_Elemental_Resistance"] =
+                "【Elemental Resistance Lv4 (%)】\n" +
+                "Mage Lv4 elemental resistance.\n" +
+                "Recommended: 12%",
+
+                ["Mage_Lv5_Elemental_Resistance"] =
+                "【Elemental Resistance Lv5 (%)】\n" +
+                "Mage Lv5 elemental resistance.\n" +
+                "Recommended: 15%",
+
+                // === Mage Job: AOE Damage Multiplier (level-based) ===
+                ["Mage_Lv1_Damage_Multiplier"] =
+                "【AOE Damage Multiplier Lv1 (%)】\n" +
+                "Mage Lv1 AOE damage multiplier.\n" +
+                "Recommended: 70%",
+
+                ["Mage_Lv2_Damage_Multiplier"] =
+                "【AOE Damage Multiplier Lv2 (%)】\n" +
+                "Mage Lv2 AOE damage multiplier.\n" +
+                "Recommended: 90%",
+
+                ["Mage_Lv3_Damage_Multiplier"] =
+                "【AOE Damage Multiplier Lv3 (%)】\n" +
+                "Mage Lv3 AOE damage multiplier.\n" +
+                "Recommended: 110%",
+
+                ["Mage_Lv4_Damage_Multiplier"] =
+                "【AOE Damage Multiplier Lv4 (%)】\n" +
+                "Mage Lv4 AOE damage multiplier.\n" +
+                "Recommended: 130%",
+
+                ["Mage_Lv5_Damage_Multiplier"] =
+                "【AOE Damage Multiplier Lv5 (%)】\n" +
+                "Mage Lv5 AOE damage multiplier.\n" +
+                "Recommended: 150%",
 
                 // === Berserker Job: Passive HP Bonus ===
                 ["berserker_passive_health_bonus"] =
@@ -786,6 +1119,37 @@ namespace CaptainSkillTree.Localization
                 "Applied as a percentage of total HP (base + MMO stats + all bonuses).\n" +
                 "Healing works correctly (included in m_baseHP).\n" +
                 "Recommended: 100%",
+
+                // === Berserker Lv2~5 Passive Config ===
+                ["Berserker_Lv2_CooldownReduction"] =
+                "【Berserker Lv2: Rage Cooldown Reduction (s)】\n" +
+                "At Lv2, reduces the Rage skill cooldown by this amount.\n" +
+                "Recommended: 5 seconds",
+
+                ["Berserker_Lv3_RageDamageReduction"] =
+                "【Berserker Lv3: Damage Reduction While Raging (%)】\n" +
+                "At Lv3, reduces incoming damage by this percentage while in rage.\n" +
+                "Recommended: 15%",
+
+                ["Berserker_Lv4_LowHpAttackBonus"] =
+                "【Berserker Lv4: Low HP Attack Bonus (%)】\n" +
+                "At Lv4, increases attack power when HP falls below the threshold.\n" +
+                "Recommended: 15%",
+
+                ["Berserker_Lv4_LowHpAttackThreshold"] =
+                "【Berserker Lv4: Low HP Attack Threshold (%)】\n" +
+                "The HP percentage below which the Lv4 attack bonus activates.\n" +
+                "Recommended: 50%",
+
+                ["Berserker_Lv5_PassiveCooldownReduction"] =
+                "【Berserker Lv5: Death Defiance Cooldown Reduction (s)】\n" +
+                "At Lv5, reduces the Death Defiance passive cooldown by this amount.\n" +
+                "Recommended: 120 seconds (2 minutes)",
+
+                ["Berserker_Lv5_InvincibilityBonus"] =
+                "【Berserker Lv5: Death Defiance Invincibility Bonus (s)】\n" +
+                "At Lv5, extends invincibility duration when Death Defiance triggers.\n" +
+                "Recommended: 2 seconds",
 
                 // ========================================
                 // Tanker Job Skills
@@ -842,6 +1206,32 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Passive_DamageReduction"] =
                 "【Tanker Passive Damage Reduction (%)】\n" +
                 "Tanker passive: Permanently reduces incoming damage.\n" +
+                "Recommended: 10-20%",
+
+                // === Tanker Job: Level-Up Passives (5 keys) ===
+                ["Tanker_Hp_Bonus"] =
+                "【Tanker Base HP Bonus】\n" +
+                "Flat HP bonus granted at Tanker Lv1+.\n" +
+                "Recommended: 50-150",
+
+                ["Tanker_Lv2_AllResist"] =
+                "【Tanker Lv2 All Resistance (%)】\n" +
+                "All damage resistance granted at Tanker Lv2.\n" +
+                "Recommended: 3-8%",
+
+                ["Tanker_Lv3_AllResist"] =
+                "【Tanker Lv3 All Resistance (%)】\n" +
+                "All damage resistance granted at Tanker Lv3.\n" +
+                "Recommended: 5-12%",
+
+                ["Tanker_Lv4_AllResist"] =
+                "【Tanker Lv4 All Resistance (%)】\n" +
+                "All damage resistance granted at Tanker Lv4.\n" +
+                "Recommended: 8-15%",
+
+                ["Tanker_Lv5_AllResist"] =
+                "【Tanker Lv5 All Resistance (%)】\n" +
+                "All damage resistance granted at Tanker Lv5.\n" +
                 "Recommended: 10-20%",
 
                 // ========================================
@@ -1028,6 +1418,112 @@ namespace CaptainSkillTree.Localization
                 "Paladin passive: Increases resistance to physical and elemental damage.\n" +
                 "Recommended: 5-12%",
 
+                // === Paladin Job: Lv2 Active ===
+                ["Paladin_Lv2_SelfHealPercent"] =
+                "【Lv2 Self Heal Ratio (%)】\n" +
+                "Percentage of max HP restored to self at Paladin Lv2.\n" +
+                "Recommended: 15-20%",
+
+                ["Paladin_Lv2_AllyHealPercent"] =
+                "【Lv2 Ally Heal Ratio (%/tick)】\n" +
+                "Percentage of max HP restored per tick to allies at Paladin Lv2.\n" +
+                "Recommended: 2-3%",
+
+                // === Paladin Job: Lv3 Active ===
+                ["Paladin_Lv3_SelfHealPercent"] =
+                "【Lv3 Self Heal Ratio (%)】\n" +
+                "Percentage of max HP restored to self at Paladin Lv3.\n" +
+                "Recommended: 17-22%",
+
+                ["Paladin_Lv3_AllyHealPercent"] =
+                "【Lv3 Ally Heal Ratio (%/tick)】\n" +
+                "Percentage of max HP restored per tick to allies at Paladin Lv3.\n" +
+                "Recommended: 2.5-3.5%",
+
+                ["Paladin_Lv3_HealRange"] =
+                "【Lv3 Heal Range (m)】\n" +
+                "Ally healing radius at Paladin Lv3.\n" +
+                "Recommended: 5-7m",
+
+                // === Paladin Job: Lv4 Active ===
+                ["Paladin_Lv4_SelfHealPercent"] =
+                "【Lv4 Self Heal Ratio (%)】\n" +
+                "Percentage of max HP restored to self at Paladin Lv4.\n" +
+                "Recommended: 19-24%",
+
+                ["Paladin_Lv4_AllyHealPercent"] =
+                "【Lv4 Ally Heal Ratio (%/tick)】\n" +
+                "Percentage of max HP restored per tick to allies at Paladin Lv4.\n" +
+                "Recommended: 3-4%",
+
+                ["Paladin_Lv4_HealRange"] =
+                "【Lv4 Heal Range (m)】\n" +
+                "Ally healing radius at Paladin Lv4.\n" +
+                "Recommended: 6-8m",
+
+                // === Paladin Job: Lv5 Active ===
+                ["Paladin_Lv5_SelfHealPercent"] =
+                "【Lv5 Self Heal Ratio (%)】\n" +
+                "Percentage of max HP restored to self at Paladin Lv5.\n" +
+                "Recommended: 22-28%",
+
+                ["Paladin_Lv5_AllyHealPercent"] =
+                "【Lv5 Ally Heal Ratio (%/tick)】\n" +
+                "Percentage of max HP restored per tick to allies at Paladin Lv5.\n" +
+                "Recommended: 3.5-5%",
+
+                ["Paladin_Lv5_HealRange"] =
+                "【Lv5 Heal Range (m)】\n" +
+                "Ally healing radius at Paladin Lv5.\n" +
+                "Recommended: 7-10m",
+
+                ["Paladin_Lv5_Cooldown"] =
+                "【Lv5 Cooldown (sec)】\n" +
+                "Reduced cooldown applied at Paladin Lv5.\n" +
+                "Recommended: 20-30 sec",
+
+                // === Paladin Job: Passive Lv2~5 Resistance Reduction ===
+                ["Paladin_Lv2_ResistanceReduction"] =
+                "【Lv2 Resistance Reduction (%)】\n" +
+                "Paladin Lv2 passive: Reduces all enemy resistances.\n" +
+                "Recommended: 6-10%",
+
+                ["Paladin_Lv3_ResistanceReduction"] =
+                "【Lv3 Resistance Reduction (%)】\n" +
+                "Paladin Lv3 passive: Reduces all enemy resistances.\n" +
+                "Recommended: 8-12%",
+
+                ["Paladin_Lv4_ResistanceReduction"] =
+                "【Lv4 Resistance Reduction (%)】\n" +
+                "Paladin Lv4 passive: Reduces all enemy resistances.\n" +
+                "Recommended: 10-14%",
+
+                ["Paladin_Lv5_ResistanceReduction"] =
+                "【Lv5 Resistance Reduction (%)】\n" +
+                "Paladin Lv5 passive: Reduces all enemy resistances.\n" +
+                "Recommended: 12-18%",
+
+                // === Paladin Job: Passive Lv2~5 Stamina Bonus ===
+                ["Paladin_Lv2_StaminaBonus"] =
+                "【Lv2 Max Stamina Bonus】\n" +
+                "Paladin Lv2 passive: Increases max stamina by a flat amount.\n" +
+                "Recommended: 8-15",
+
+                ["Paladin_Lv3_StaminaBonus"] =
+                "【Lv3 Max Stamina Bonus】\n" +
+                "Paladin Lv3 passive: Increases max stamina by a flat amount.\n" +
+                "Recommended: 12-20",
+
+                ["Paladin_Lv4_StaminaBonus"] =
+                "【Lv4 Max Stamina Bonus】\n" +
+                "Paladin Lv4 passive: Increases max stamina by a flat amount.\n" +
+                "Recommended: 15-25",
+
+                ["Paladin_Lv5_StaminaBonus"] =
+                "【Lv5 Max Stamina Bonus】\n" +
+                "Paladin Lv5 passive: Increases max stamina by a flat amount.\n" +
+                "Recommended: 20-30",
+
                 // ========================================
                 // Berserker Job Skills
                 // ========================================
@@ -1079,7 +1575,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_Cooldown"] =
                 "【Passive Cooldown (sec)】\n" +
                 "Cooldown before the passive invincibility can trigger again.\n" +
-                "Default: 180 sec (3 minutes)\n" +
+                "Default: 540 sec (9 minutes)\n" +
                 "Recommended: 120-300 sec",
 
                 // === Berserker Job: Passive HP Bonus (case-corrected key) ===

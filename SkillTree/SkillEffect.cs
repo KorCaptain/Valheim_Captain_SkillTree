@@ -635,9 +635,14 @@ namespace CaptainSkillTree.SkillTree
                 
                 // === 체력 보너스 ===
                 float hpBonus = 0f;
-                
-                // 방어 전문가 체력 효과는 별도 구현 예정
-                
+
+                var manager = SkillTreeManager.Instance;
+                if (manager != null)
+                {
+                    if (manager.GetSkillLevel("Tanker") > 0)
+                        hpBonus += Tanker_Config.TankerHpBonusValue;
+                }
+
                 __result += hpBonus;
                 
                 // 로그 제거: 불필요한 반복 출력

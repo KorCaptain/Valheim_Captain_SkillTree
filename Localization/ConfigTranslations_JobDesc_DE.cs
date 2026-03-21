@@ -205,6 +205,37 @@ namespace CaptainSkillTree.Localization
                 "Heilung funktioniert korrekt (in m_baseHP enthalten).\n" +
                 "Empfehlung: 100%",
 
+                // === Berserker Lv2~5 Passive Config ===
+                ["Berserker_Lv2_CooldownReduction"] =
+                "【Berserker Lv2: Wut-KZ Reduzierung (Sek)】\n" +
+                "Auf Lv2 reduziert sich die Wut-Abklingzeit um diesen Wert.\n" +
+                "Empfehlung: 5 Sekunden",
+
+                ["Berserker_Lv3_RageDamageReduction"] =
+                "【Berserker Lv3: Schadensreduzierung in Wut (%)】\n" +
+                "Auf Lv3 reduziert sich der erhaltene Schaden im Wutzustand.\n" +
+                "Empfehlung: 15%",
+
+                ["Berserker_Lv4_LowHpAttackBonus"] =
+                "【Berserker Lv4: Angriffsbonus bei wenig LP (%)】\n" +
+                "Auf Lv4 erhöht sich der Angriff wenn LP unter dem Schwellenwert.\n" +
+                "Empfehlung: 15%",
+
+                ["Berserker_Lv4_LowHpAttackThreshold"] =
+                "【Berserker Lv4: Schwellenwert für wenig LP (%)】\n" +
+                "Unter diesem LP-Prozentsatz aktiviert sich der Angriffsbonus Lv4.\n" +
+                "Empfehlung: 50%",
+
+                ["Berserker_Lv5_PassiveCooldownReduction"] =
+                "【Berserker Lv5: Todestrotz KZ Reduzierung (Sek)】\n" +
+                "Auf Lv5 reduziert sich die passive Abklingzeit.\n" +
+                "Empfehlung: 120 Sekunden",
+
+                ["Berserker_Lv5_InvincibilityBonus"] =
+                "【Berserker Lv5: Zusätzliche Unverwundbarkeit (Sek)】\n" +
+                "Auf Lv5 verlängert sich die Unverwundbarkeitszeit bei Todestrotz.\n" +
+                "Empfehlung: 2 Sekunden",
+
                 // ========================================
                 // Tanker-Fähigkeiten (Tanker Job)
                 // ========================================
@@ -261,6 +292,28 @@ namespace CaptainSkillTree.Localization
                 "【Passive Tanker-Schadensreduzierung (%)】\n" +
                 "Tanker Passiv: Reduziert kontinuierlich den eingehenden Schaden.\n" +
                 "Empfehlung: 10-20%",
+
+                ["Tanker_Hp_Bonus"] =
+                "【Tanker-Basis-HP】\n" +
+                "Passiver HP-Bonus des Tankers.\n" +
+                "Standard: 100",
+
+                ["Tanker_Lv2_AllResist"] =
+                "【Tanker Lv2 Gesamt-Resistenz (%)】\n" +
+                "Passiver Widerstand gegen alle Schadensarten (Lv2+).\n" +
+                "Standard: 5%",
+
+                ["Tanker_Lv3_AllResist"] =
+                "【Tanker Lv3 Gesamt-Resistenz (%)】\n" +
+                "Standard: 8%",
+
+                ["Tanker_Lv4_AllResist"] =
+                "【Tanker Lv4 Gesamt-Resistenz (%)】\n" +
+                "Standard: 12%",
+
+                ["Tanker_Lv5_AllResist"] =
+                "【Tanker Lv5 Gesamt-Resistenz (%)】\n" +
+                "Standard: 15%",
 
                 // ========================================
                 // Schurken-Fähigkeiten (Rogue Job)
@@ -369,6 +422,28 @@ namespace CaptainSkillTree.Localization
                 "Paladin Passiv: Erhöht die Resistenz gegen physischen und elementaren Schaden.\n" +
                 "Empfehlung: 5-12%",
 
+                // === Paladin Lv2-5 ===
+                ["Paladin_Lv2_SelfHealPercent"] = "【Lv2 Selbstheilung (%)】\nEmpfehlung: 15-20%",
+                ["Paladin_Lv2_AllyHealPercent"] = "【Lv2 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 2-3%",
+                ["Paladin_Lv3_SelfHealPercent"] = "【Lv3 Selbstheilung (%)】\nEmpfehlung: 17-22%",
+                ["Paladin_Lv3_AllyHealPercent"] = "【Lv3 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 2.5-3.5%",
+                ["Paladin_Lv3_HealRange"] = "【Lv3 Heilungsreichweite (m)】\nEmpfehlung: 5-7m",
+                ["Paladin_Lv4_SelfHealPercent"] = "【Lv4 Selbstheilung (%)】\nEmpfehlung: 19-24%",
+                ["Paladin_Lv4_AllyHealPercent"] = "【Lv4 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 3-4%",
+                ["Paladin_Lv4_HealRange"] = "【Lv4 Heilungsreichweite (m)】\nEmpfehlung: 6-8m",
+                ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 Selbstheilung (%)】\nEmpfehlung: 22-28%",
+                ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 3.5-5%",
+                ["Paladin_Lv5_HealRange"] = "【Lv5 Heilungsreichweite (m)】\nEmpfehlung: 7-10m",
+                ["Paladin_Lv5_Cooldown"] = "【Lv5 Abklingzeit (sek)】\nEmpfehlung: 20-30 sek",
+                ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 Resistenzreduzierung (%)】\nEmpfehlung: 6-10%",
+                ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 Resistenzreduzierung (%)】\nEmpfehlung: 8-12%",
+                ["Paladin_Lv4_ResistanceReduction"] = "【Lv4 Resistenzreduzierung (%)】\nEmpfehlung: 10-14%",
+                ["Paladin_Lv5_ResistanceReduction"] = "【Lv5 Resistenzreduzierung (%)】\nEmpfehlung: 12-18%",
+                ["Paladin_Lv2_StaminaBonus"] = "【Lv2 Max. Ausdauer-Bonus】\nEmpfehlung: 8-15",
+                ["Paladin_Lv3_StaminaBonus"] = "【Lv3 Max. Ausdauer-Bonus】\nEmpfehlung: 12-20",
+                ["Paladin_Lv4_StaminaBonus"] = "【Lv4 Max. Ausdauer-Bonus】\nEmpfehlung: 15-25",
+                ["Paladin_Lv5_StaminaBonus"] = "【Lv5 Max. Ausdauer-Bonus】\nEmpfehlung: 20-30",
+
                 // ========================================
                 // Berserker-Fähigkeiten (Berserker Job)
                 // ========================================
@@ -420,7 +495,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_Cooldown"] =
                 "【Passiv-Abklingzeit (Sek.)】\n" +
                 "Wartezeit bis zur nächsten Passiv-Unverwundbarkeitsaktivierung.\n" +
-                "Standard: 180 Sek. (3 Minuten)\n" +
+                "Standard: 540 Sek. (9 Minuten)\n" +
                 "Empfehlung: 120-300 Sek.",
 
                 // === Berserker: Passiver LP-Bonus ===

@@ -2,6 +2,7 @@ using HarmonyLib;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
@@ -118,8 +119,9 @@ namespace CaptainSkillTree.SkillTree
                 int lv2 = manager.GetSkillLevel("crafting_lv2");
                 int lv3 = manager.GetSkillLevel("crafting_lv3");
                 int lv4 = manager.GetSkillLevel("crafting_lv4");
-                
-                Plugin.Log.LogInfo($"[제작 보너스] 스킬 레벨 - Lv2:{lv2}, Lv3:{lv3}, Lv4:{lv4}");
+                int lv5 = manager.GetSkillLevel("crafting_lv5");
+
+                Plugin.Log.LogInfo($"[제작 보너스] 스킬 레벨 - Lv2:{lv2}, Lv3:{lv3}, Lv4:{lv4}, Lv5:{lv5}");
                 
                 if (lv2 > 0)
                 {
@@ -140,6 +142,13 @@ namespace CaptainSkillTree.SkillTree
                     totalEnhanceChance += 0.25f; // 제작 Lv4: +25% (누적 75%)
                     totalDurabilityBonus += 0.25f; // 내구도 +25%
                     Plugin.Log.LogInfo("[제작 보너스] Lv4 보너스 적용: 강화 +25%, 내구도 +25%");
+                }
+
+                if (lv5 > 0)
+                {
+                    float lv5Durability = Production_Config.CraftingLv5DurabilityBonusValue / 100f;
+                    totalDurabilityBonus += lv5Durability; // 내구도 +30%
+                    Plugin.Log.LogInfo($"[제작 보너스] Lv5 보너스 적용: 내구도 +{lv5Durability * 100:F0}%");
                 }
                 
                 Plugin.Log.LogInfo($"[제작 보너스] 총 보너스 - 강화확률: {totalEnhanceChance * 100:F0}%, 내구도보너스: {totalDurabilityBonus * 100:F0}%");
@@ -164,7 +173,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 아이템 품질(강화 레벨) 향상
         /// </summary>
-        private static void ApplyQualityEnhancement(ItemDrop.ItemData item, int enhanceLevel)
+        internal static void ApplyQualityEnhancement(ItemDrop.ItemData item, int enhanceLevel)
         {
             try
             {
@@ -194,41 +203,31 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 아이템 내구도 최대치 증가 (올바른 최대치 내구도 증가)
         /// </summary>
-        private static void ApplyDurabilityBonus(ItemDrop.ItemData item, float bonusPercent)
+        internal static void ApplyDurabilityBonus(ItemDrop.ItemData item, float bonusPercent)
         {
             try
             {
                 if (item?.m_shared == null) return;
-                
+
                 // 중복 적용 방지: 이미 보너스가 적용되어 있으면 스킵
                 if (item.m_customData != null && item.m_customData.ContainsKey("CraftingDurabilityBonus"))
                 {
                     Plugin.Log.LogInfo($"[내구도 강화] {item.m_shared.m_name}: 이미 내구도 보너스 적용됨");
                     return;
                 }
-                
-                // 원본 기본 내구도 계산 (shared 데이터에서 직접)
-                float baseDurability = item.m_shared.m_maxDurability;
-                float bonusDurability = baseDurability * bonusPercent;
-                
-                // 내구도 보너스 적용 (커스텀 데이터로 저장)
+
                 if (item.m_customData == null)
-                {
                     item.m_customData = new Dictionary<string, string>();
-                }
-                
-                item.m_customData["CraftingDurabilityBonus"] = bonusDurability.ToString();
-                
-                // 현재 내구도 비율 계산
-                float currentDurabilityRatio = item.m_durability / baseDurability;
-                
-                // 새로운 최대 내구도 계산
-                float newMaxDurability = baseDurability + bonusDurability;
-                
-                // 현재 내구도를 새로운 최대치로 올림 (내구도 25% 증가 효과)
-                item.m_durability = newMaxDurability;
-                
-                Plugin.Log.LogInfo($"[내구도 강화] {item.m_shared.m_name}: 최대 내구도 {baseDurability:F1} → {newMaxDurability:F1} (+{bonusPercent * 100:F0}%)");
+
+                // 배율 방식으로 저장 → GetMaxDurability 패치에서 분모도 동일하게 증가 (NNN/NNN 표시)
+                float mult = 1f + bonusPercent;
+                item.m_customData["CraftingDurabilityBonus"] = mult.ToString(
+                    System.Globalization.CultureInfo.InvariantCulture);
+
+                float oldDurability = item.m_durability;
+                item.m_durability *= mult;
+
+                Plugin.Log.LogInfo($"[내구도 강화] {item.m_shared.m_name}: 내구도 {oldDurability:F1} → {item.m_durability:F1} (+{bonusPercent * 100:F0}%)");
             }
             catch (Exception ex)
             {
@@ -242,16 +241,17 @@ namespace CaptainSkillTree.SkillTree
         public static float GetEnhancedMaxDurability(ItemDrop.ItemData item)
         {
             if (item?.m_shared == null) return 0f;
-            
+
             float baseDurability = item.GetMaxDurability();
-            
-            if (item.m_customData != null && 
+
+            if (item.m_customData != null &&
                 item.m_customData.TryGetValue("CraftingDurabilityBonus", out string bonusStr) &&
-                float.TryParse(bonusStr, out float bonus))
+                float.TryParse(bonusStr, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out float mult))
             {
-                return baseDurability + bonus;
+                return baseDurability * mult;
             }
-            
+
             return baseDurability;
         }
         
@@ -301,7 +301,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 화살과 볼트 아이템 판별
         /// </summary>
-        private static bool IsArrowOrBolt(ItemDrop.ItemData item)
+        internal static bool IsArrowOrBolt(ItemDrop.ItemData item)
         {
             try
             {
@@ -380,7 +380,7 @@ namespace CaptainSkillTree.SkillTree
     /// ItemDrop.ItemData.GetMaxDurability 패치 - 내구도 보너스 반영
     /// MMO 시스템 연동 우선 - 안전한 매개변수 없는 GetMaxDurability 메서드 타겟
     /// </summary>
-    [HarmonyPatch(typeof(ItemDrop.ItemData), "GetMaxDurability", new Type[0])]
+    [HarmonyPatch(typeof(ItemDrop.ItemData), "GetMaxDurability", new[] { typeof(int) })]
     public static class ItemData_GetMaxDurability_Enhancement_Patch
     {
         private static void Postfix(ItemDrop.ItemData __instance, ref float __result)
@@ -390,11 +390,12 @@ namespace CaptainSkillTree.SkillTree
                 if (__instance?.m_customData == null) return;
 
                 if (__instance.m_customData.TryGetValue("CraftingDurabilityBonus", out string bonusStr) &&
-                    float.TryParse(bonusStr, out float bonus))
+                    float.TryParse(bonusStr, System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out float mult))
                 {
-                    __result += bonus;
+                    __result *= mult;
                     #if DEBUG
-                    Plugin.Log.LogDebug($"[내구도 패치] {__instance.m_shared?.m_name}: +{bonus} 내구도 보너스 적용");
+                    Plugin.Log.LogDebug($"[내구도 패치] {__instance.m_shared?.m_name}: x{mult:F2} 내구도 배율 적용");
                     #endif
                 }
             }
@@ -402,6 +403,68 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[내구도 패치] 오류: {ex.Message}");
             }
+        }
+    }
+
+    // ============================================================
+    // crafting_lv2~4 내구도 최대치 증가: DoCrafting Prefix/Postfix
+    // ConsumeResources 타이밍 버그 수정 - 스냅샷 방식으로 새 아이템 탐지
+    // ProducerCrafting.cs의 Producer_InventoryGui_DoCrafting_Patch와 동일 구조
+    // ============================================================
+    [HarmonyPatch(typeof(InventoryGui), "DoCrafting")]
+    public static class CraftingDurability_DoCrafting_Patch
+    {
+        private static readonly HashSet<string> _preSnapshot = new HashSet<string>();
+
+        public static void Prefix(InventoryGui __instance, Player player)
+        {
+            _preSnapshot.Clear();
+            if (player != Player.m_localPlayer) return;
+            var manager = SkillTreeManager.Instance;
+            if (manager == null || manager.GetSkillLevel("crafting_lv2") <= 0) return;
+            var inv = player.GetInventory();
+            if (inv == null) return;
+            foreach (var item in inv.GetAllItems())
+                if (!CraftingEnhancement.IsArrowOrBolt(item))
+                    _preSnapshot.Add($"{item.m_gridPos.x},{item.m_gridPos.y}");
+        }
+
+        public static void Postfix(InventoryGui __instance, Player player)
+        {
+            if (_preSnapshot.Count == 0) return;
+            if (player != Player.m_localPlayer) return;
+            var inv = player.GetInventory();
+            if (inv == null) { _preSnapshot.Clear(); return; }
+
+            // 스냅샷에 없는 새 아이템 탐지 (ProducerCrafting과 동일 패턴)
+            ItemDrop.ItemData crafted = null;
+            foreach (var item in inv.GetAllItems())
+            {
+                if (CraftingEnhancement.IsArrowOrBolt(item)) continue;
+                if (!_preSnapshot.Contains($"{item.m_gridPos.x},{item.m_gridPos.y}"))
+                { crafted = item; break; }
+            }
+            _preSnapshot.Clear();
+
+            if (crafted == null) return;
+
+            var bonus = CraftingEnhancement.GetPlayerCraftingBonus(player);
+            if (bonus == null) return;
+
+            // 품질 강화 (확률)
+            bool enhanceSuccess = UnityEngine.Random.value <= bonus.EnhanceChance;
+            if (enhanceSuccess)
+                CraftingEnhancement.ApplyQualityEnhancement(crafted, bonus.EnhanceLevel);
+
+            // 내구도 보너스 (항상 - 중복 방지 내장)
+            if (bonus.DurabilityBonus > 0f && crafted.m_durability > 0f)
+            {
+                bool durApplied = !(crafted.m_customData?.ContainsKey("CraftingDurabilityBonus") ?? false);
+                if (durApplied)
+                    CraftingEnhancement.ApplyDurabilityBonus(crafted, bonus.DurabilityBonus);
+            }
+
+            Plugin.Log.LogDebug($"[제작 보너스] {crafted.m_shared?.m_name}: 강화={enhanceSuccess}, 내구도+{bonus.DurabilityBonus * 100:F0}%");
         }
     }
 
@@ -462,17 +525,17 @@ namespace CaptainSkillTree.SkillTree
             var inv = player.GetInventory();
             if (inv == null) return null;
 
-            ItemDrop.ItemData newest = null;
+            // CraftingDurabilityBonus가 있으면 이 세션에 제작된 아이템 (CraftingDurability_DoCrafting_Patch에서 설정)
             foreach (var item in inv.GetAllItems())
             {
-                if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.OneHandedWeapon ||
-                    item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon ||
-                    item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Bow)
-                {
-                    newest = item;
-                }
+                if (item.m_customData == null || !item.m_customData.ContainsKey("CraftingDurabilityBonus")) continue;
+                var t = item.m_shared.m_itemType;
+                if (t == ItemDrop.ItemData.ItemType.OneHandedWeapon ||
+                    t == ItemDrop.ItemData.ItemType.TwoHandedWeapon ||
+                    t == ItemDrop.ItemData.ItemType.Bow)
+                    return item;
             }
-            return newest;
+            return null;
         }
     }
 
@@ -516,12 +579,63 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (item?.m_customData == null) return;
 
-                if (item.m_customData.TryGetValue("csct_weapon_dmg", out string dmg))
-                    __result += $"\n<color=#FFD700>{L.Get("crafting_lv2_enchant_dmg_tooltip", dmg)}</color>";
-                else if (item.m_customData.TryGetValue("csct_weapon_spd", out string spd))
-                    __result += $"\n<color=#FFD700>{L.Get("crafting_lv2_enchant_spd_tooltip", spd)}</color>";
+                if (item.m_customData.TryGetValue("csct5_type", out string t5type) &&
+                    item.m_customData.TryGetValue("csct5_value", out string t5val))
+                    __result += $"\n<color=#FF8C00>{L.Get("crafting_lv5_enchant_tooltip", t5type, t5val)}</color>";
             }
             catch (Exception) { }
         }
+    }
+
+    // ============================================================
+    // crafting_lv5 마법부여: DoCrafting Postfix (무기/방어구 랜덤 부여)
+    // 35% 확률로 무기: dmg 10~12 OR spd 10~12
+    //              방어구: armor 10~12 OR hp 6~8 OR stamina 9~12
+    // ============================================================
+    [HarmonyPatch(typeof(InventoryGui), "DoCrafting")]
+    public static class CraftingLv5Enchant_DoCrafting_Patch
+    {
+        private const string T5_TYPE = "csct5_type";
+        private const string T5_VAL  = "csct5_value";
+
+        public static void Postfix(Player player) { } // crafting_lv5 제거됨 - ProducerCrafting.cs 담당
+    }
+
+    // ============================================================
+    // crafting_lv5 공격력 보너스: ItemDrop.ItemData.GetDamage
+    // ============================================================
+    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetDamage), new[] { typeof(int), typeof(float) })]
+    public static class ItemData_GetDamage_Lv5WeaponBonus_Patch
+    {
+        [HarmonyPriority(Priority.Low)]
+        public static void Postfix(ItemDrop.ItemData __instance, ref HitData.DamageTypes __result)
+        {
+            try
+            {
+                if (__instance?.m_customData == null) return;
+                if (__instance.m_customData.TryGetValue("csct5_type", out string t) && t == "weapon_dmg" &&
+                    __instance.m_customData.TryGetValue("csct5_value", out string v) &&
+                    float.TryParse(v, out float bonus))
+                {
+                    __result.m_slash  += bonus;
+                    __result.m_blunt  += bonus;
+                    __result.m_pierce += bonus;
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[제작 Lv5 데미지 패치] 오류: {ex.Message}");
+            }
+        }
+    }
+
+    // ============================================================
+    // crafting_lv5 재료 절감: DoCrafting Postfix (별도 클래스)
+    // 30% 비율로 각 레시피 재료 환불
+    // ============================================================
+    [HarmonyPatch(typeof(InventoryGui), "DoCrafting")]
+    public static class CraftingLv5MaterialRefund_DoCrafting_Patch
+    {
+        public static void Postfix(InventoryGui __instance, Player player) { } // crafting_lv5 제거됨 - ProducerCrafting.cs 담당
     }
 }

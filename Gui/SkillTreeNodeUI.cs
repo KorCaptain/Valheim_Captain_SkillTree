@@ -311,10 +311,10 @@ namespace CaptainSkillTree.Gui
                         }
 
                         // 다중 레벨 직업 아이콘에 붉은 레벨 배지 표시 (Lv2 이상)
-                        if ((node.Id == "Archer" || node.Id == "Producer") && level >= 2)
+                        if ((node.Id == "Archer" || node.Id == "Producer" || node.Id == "Rogue" || node.Id == "Berserker" || node.Id == "Tanker") && level >= 2)
                         {
                             if (!_suppressBadge.Contains(node.Id))
-                                UpdateLevelBadge(nodeObj, level);
+                                UpdateLevelBadge(nodeObj, level, node.Id == "Tanker");
                             // 억제 중이면 기존 상태 유지 (배지 미표시)
                         }
                         else
@@ -407,13 +407,13 @@ namespace CaptainSkillTree.Gui
         {
             _suppressBadge.Remove(nodeId);
             if (nodeObjects.TryGetValue(nodeId, out var nodeObj))
-                UpdateLevelBadge(nodeObj, level);
+                UpdateLevelBadge(nodeObj, level, nodeId == "Tanker");
         }
 
         /// <summary>
         /// 직업 아이콘 위에 붉은 레벨 숫자 배지를 표시/갱신 (Lv2 이상)
         /// </summary>
-        private void UpdateLevelBadge(GameObject nodeObj, int level)
+        private void UpdateLevelBadge(GameObject nodeObj, int level, bool overlayTopRight = false)
         {
             const string badgeName = "LevelBadge";
             var existing = nodeObj.transform.Find(badgeName);
@@ -432,11 +432,24 @@ namespace CaptainSkillTree.Gui
                 badgeText.raycastTarget = false;
 
                 var badgeRect = badgeGo.GetComponent<RectTransform>();
-                badgeRect.anchorMin = new Vector2(0.5f, 1f);
-                badgeRect.anchorMax = new Vector2(0.5f, 1f);
-                badgeRect.pivot     = new Vector2(0.5f, 0f);
-                badgeRect.anchoredPosition = new Vector2(0f, 8f);
-                badgeRect.sizeDelta = new Vector2(50f, 28f);
+                if (overlayTopRight)
+                {
+                    // 아이콘 우상단에 겹치는 알림 배지 스타일
+                    badgeRect.anchorMin        = new Vector2(1f, 1f);
+                    badgeRect.anchorMax        = new Vector2(1f, 1f);
+                    badgeRect.pivot            = new Vector2(0.5f, 0.5f);
+                    badgeRect.anchoredPosition = new Vector2(-10f, -10f);  // 우상단 코너에서 10px 안쪽
+                    badgeRect.sizeDelta        = new Vector2(50f, 28f);
+                }
+                else
+                {
+                    // 기존 방식 (아이콘 위)
+                    badgeRect.anchorMin        = new Vector2(0.5f, 1f);
+                    badgeRect.anchorMax        = new Vector2(0.5f, 1f);
+                    badgeRect.pivot            = new Vector2(0.5f, 0f);
+                    badgeRect.anchoredPosition = new Vector2(0f, 8f);
+                    badgeRect.sizeDelta        = new Vector2(50f, 28f);
+                }
             }
             else
             {

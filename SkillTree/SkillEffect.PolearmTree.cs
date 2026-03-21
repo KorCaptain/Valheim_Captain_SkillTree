@@ -27,6 +27,10 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, bool> polearmPierceChargeActive = new Dictionary<Player, bool>();
         public static Dictionary<Player, Coroutine> polearmPierceChargeCoroutines = new Dictionary<Player, Coroutine>();
 
+        // Berserker Lv2 관통 돌격 추가 사용 창
+        private static Dictionary<Player, float> _pierceChargePendingWindow = new Dictionary<Player, float>();
+        private const float PierceChargeExtraWindow = 30f;
+
         /// <summary>
         /// 폴암 공격 범위 보너스 계산
         /// polearm_expert (15%), polearm_step4_moon (15%)
@@ -106,9 +110,13 @@ namespace CaptainSkillTree.SkillTree
             if (player == null || !HasSkill("polearm_step5_king")) return false;
 
             float now = Time.time;
+            bool hasBerserkerLv2_pierce = (SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0) >= 2;
+            bool inPierceWindow = hasBerserkerLv2_pierce
+                && _pierceChargePendingWindow.TryGetValue(player, out float pierceWinExpiry)
+                && now <= pierceWinExpiry;
 
-            // 쿨타임 체크
-            if (polearmPierceChargeLastUseTime.ContainsKey(player))
+            // 쿨타임 체크 (추가 사용 창 내에서는 쿨타임 무시)
+            if (!inPierceWindow && polearmPierceChargeLastUseTime.ContainsKey(player))
             {
                 float timeSinceLastUse = now - polearmPierceChargeLastUseTime[player];
                 float cooldown = Polearm_Config.PolearmPierceChargeCooldownValue;
@@ -148,8 +156,21 @@ namespace CaptainSkillTree.SkillTree
 
             // 스킬 활성화
             polearmPierceChargeActive[player] = true;
-            polearmPierceChargeLastUseTime[player] = now;
-            ActiveSkillCooldownRegistry.SetCooldown("G", Polearm_Config.PolearmPierceChargeCooldownValue);
+
+            // Berserker Lv2 추가 사용 창 분기
+            if (hasBerserkerLv2_pierce && !inPierceWindow)
+            {
+                // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
+                _pierceChargePendingWindow[player] = now + PierceChargeExtraWindow;
+                player.StartCoroutine(ExpirePierceChargeWindow(player));
+            }
+            else
+            {
+                // 2번째 사용(창 내) or 비버서커: 쿨타임 즉시 시작
+                _pierceChargePendingWindow.Remove(player);
+                polearmPierceChargeLastUseTime[player] = now;
+                ActiveSkillCooldownRegistry.SetCooldown("G", Polearm_Config.PolearmPierceChargeCooldownValue);
+            }
 
             // 코루틴 시작
             if (polearmPierceChargeCoroutines.ContainsKey(player) && polearmPierceChargeCoroutines[player] != null)
@@ -648,6 +669,22 @@ namespace CaptainSkillTree.SkillTree
             if (player != null && polearmPierceChargeActive.ContainsKey(player))
             {
                 polearmPierceChargeActive[player] = false;
+            }
+        }
+
+        /// <summary>
+        /// Berserker Lv2 관통 돌격 추가 사용 창 만료 처리
+        /// </summary>
+        private static IEnumerator ExpirePierceChargeWindow(Player player)
+        {
+            yield return new WaitForSeconds(PierceChargeExtraWindow);
+            if (_pierceChargePendingWindow.ContainsKey(player))
+            {
+                _pierceChargePendingWindow.Remove(player);
+                float cd = Polearm_Config.PolearmPierceChargeCooldownValue;
+                polearmPierceChargeLastUseTime[player] = Time.time;
+                ActiveSkillCooldownRegistry.SetCooldown("G", cd);
+                Plugin.Log.LogDebug("[관통 돌격] Berserker 추가 사용 창 만료 - 쿨타임 시작");
             }
         }
 

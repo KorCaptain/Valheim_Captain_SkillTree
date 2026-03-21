@@ -24,7 +24,7 @@ try {
     $currentVersion = $versionNode.Version
     Write-Host "[VERSION] Current: $currentVersion" -ForegroundColor Yellow
 
-    # 2. Parse Semantic Versioning (0.1.0)
+    # 2. Parse Semantic Versioning (0.1.000)
     if ($currentVersion -match '^(\d+)\.(\d+)\.(\d+)$') {
         $major = [int]$matches[1]
         $minor = [int]$matches[2]
@@ -32,7 +32,7 @@ try {
         $newVersion = "$major.$minor.$patch"
         $newAssemblyVersion = "$major.$minor.$patch.0"
     } else {
-        throw "Version format error: $currentVersion (expected: 0.1.0)"
+        throw "Version format error: $currentVersion (expected: 0.1.000)"
     }
 
     Write-Host "[VERSION] New: $newVersion" -ForegroundColor Green

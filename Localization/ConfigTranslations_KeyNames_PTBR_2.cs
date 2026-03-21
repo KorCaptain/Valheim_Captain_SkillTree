@@ -99,13 +99,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [Mana Sortuda] Chance de Conjuração Gratuita (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [Mana Sortuda] Pontos Necessários",
 
-                // === Tier 5-1: Rajada Rápida - Ativo Tecla R (6) ===
-                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Rajada Rápida] Qtd. Extra de Projéteis",
-                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Rajada Rápida] Dano do Projétil (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Rajada Rápida] Deslocamento de Ângulo (Não Usado)",
-                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Rajada Rápida] Custo de Eitr",
-                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Rajada Rápida] Recarga (seg)",
-                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Rajada Rápida] Pontos Necessários",
+                // === Tier 5-1: Conjuração Dupla - Ativo Tecla R (6) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Conjuração Dupla] Qtd. Extra de Projéteis",
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Conjuração Dupla] Dano do Projétil (%)",
+                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Conjuração Dupla] Deslocamento de Ângulo (Não Usado)",
+                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Conjuração Dupla] Custo de Eitr",
+                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Conjuração Dupla] Recarga (seg)",
+                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Conjuração Dupla] Pontos Necessários",
 
                 // === Tier 5-2: Cura em Área Instantânea - Ativo Tecla H (5) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [Cura] Recarga (seg)",

@@ -101,13 +101,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [幸运法力] 免费施法触发概率 (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [幸运法力] 所需点数",
 
-                // === Tier 5-1: 快速连发 - R键主动 (6) ===
-                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [快速连发] 额外弹射物数量",
-                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [快速连发] 弹射物伤害百分比 (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [快速连发] 角度偏移 (未使用)",
-                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [快速连发] 以特尔消耗",
-                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [快速连发] 冷却时间 (秒)",
-                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [快速连发] 所需点数",
+                // === Tier 5-1: 双重施法 - R键主动 (6) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [双重施法] 额外弹射物数量",
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [双重施法] 弹射物伤害百分比 (%)",
+                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [双重施法] 角度偏移 (未使用)",
+                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [双重施法] 以特尔消耗",
+                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [双重施法] 冷却时间 (秒)",
+                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [双重施法] 所需点数",
 
                 // === Tier 5-2: 即时范围治疗 - H键主动 (5) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [治疗] 冷却时间 (秒)",

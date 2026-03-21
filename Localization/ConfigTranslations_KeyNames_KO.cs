@@ -308,6 +308,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_MiningLv4_BonusChance"] = "Tier 4: 채광 Lv4 - 광석 +1 보너스 확률 (%)",
                 ["Tier4_CraftingLv4_UpgradeChance"] = "Tier 4: 제작 Lv4 - 업그레이드 +1 보너스 확률 (%)",
                 ["Tier4_CraftingLv4_DurabilityBonus"] = "Tier 4: 제작 Lv4 - 내구도 최대치 증가 (%)",
+                ["Tier5_CraftingLv5_DurabilityBonus"] = "Tier 5: 제작 Lv5 - 내구도 보너스 (%)",
+                ["Tier5_CraftingLv5_MaterialReduction"] = "Tier 5: 제작 Lv5 - 재료 절감 (%)",
+                ["Tier5_CraftingLv5_EnchantChance"] = "Tier 5: 제작 Lv5 - 마법부여 확률 (%)",
 
                 // === Production Tree: RequiredPoints (14개) ===
                 ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [생산 전문가] 필요 포인트",
@@ -508,13 +511,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [행운 마력] Eitr 무소모 발동 확률 (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [행운 마력] 필요 포인트",
 
-                // === Tier 5-1: 연속 발사 - R키 액티브 (6개) ===
-                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [연속 발사] 추가 발사체 개수",
-                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [연속 발사] 발사체 데미지 비율 (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [연속 발사] 각도 오프셋 (미사용)",
-                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [연속 발사] Eitr 소모량",
-                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [연속 발사] 쿨타임 (초)",
-                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [연속 발사] 필요 포인트",
+                // === Tier 5-1: 이중시전 - R키 액티브 (6개) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [이중시전] 추가 발사체 개수",
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [이중시전] 발사체 데미지 비율 (%)",
+                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [이중시전] 각도 오프셋 (미사용)",
+                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [이중시전] Eitr 소모량",
+                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [이중시전] 쿨타임 (초)",
+                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [이중시전] 필요 포인트",
 
                 // === Tier 5-2: 즉시 범위 힐 - H키 액티브 (6개) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [힐] 쿨타임 (초)",
@@ -828,7 +831,26 @@ namespace CaptainSkillTree.Localization
                 ["Mage_Eitr_Cost"] = "액티브: 에이트르 소모",
                 ["Mage_Damage_Multiplier"] = "액티브: 데미지 배수 (%)",
                 ["Mage_Cooldown"] = "액티브: 쿨타임 (초)",
-                ["Mage_Elemental_Resistance"] = "패시브: 속성 저항 (%)",
+                ["Mage_Lv1_Cooldown"] = "액티브: 쿨타임 Lv1 (초)",
+                ["Mage_Lv2_Cooldown"] = "액티브: 쿨타임 Lv2 (초)",
+                ["Mage_Lv3_Cooldown"] = "액티브: 쿨타임 Lv3 (초)",
+                ["Mage_Lv4_Cooldown"] = "액티브: 쿨타임 Lv4 (초)",
+                ["Mage_Lv5_Cooldown"] = "액티브: 쿨타임 Lv5 (초)",
+                ["Mage_Lv1_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv1",
+                ["Mage_Lv2_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv2",
+                ["Mage_Lv3_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv3",
+                ["Mage_Lv4_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv4",
+                ["Mage_Lv5_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv5",
+                ["Mage_Lv1_Elemental_Resistance"] = "패시브: 속성 저항 Lv1 (%)",
+                ["Mage_Lv2_Elemental_Resistance"] = "패시브: 속성 저항 Lv2 (%)",
+                ["Mage_Lv3_Elemental_Resistance"] = "패시브: 속성 저항 Lv3 (%)",
+                ["Mage_Lv4_Elemental_Resistance"] = "패시브: 속성 저항 Lv4 (%)",
+                ["Mage_Lv5_Elemental_Resistance"] = "패시브: 속성 저항 Lv5 (%)",
+                ["Mage_Lv1_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv1 (%)",
+                ["Mage_Lv2_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv2 (%)",
+                ["Mage_Lv3_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv3 (%)",
+                ["Mage_Lv4_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv4 (%)",
+                ["Mage_Lv5_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv5 (%)",
 
                 // ============================================
                 // Tanker Job Skills (탱커 직업 스킬) - 10개

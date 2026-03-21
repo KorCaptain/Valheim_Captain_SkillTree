@@ -164,10 +164,24 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 주변 범위 적에게 즉시 독데미지 + DoT 적용 (레벨별)
         /// </summary>
+        private static float GetWeaponAttackPower(Player player)
+        {
+            try
+            {
+                var weapon = player?.GetCurrentWeapon();
+                if (weapon?.m_shared == null) return 10f;
+                var dmg = weapon.GetDamage();
+                float total = dmg.m_slash + dmg.m_pierce + dmg.m_blunt;
+                return total > 0f ? total : 10f;
+            }
+            catch { return 10f; }
+        }
+
         private static void DealPoisonToNearbyEnemies(Player player, int lv)
         {
             float range = Rogue_Config.RoguePoisonRangeValue;
-            float instantDmg = GetPoisonInstantForLevel(lv);
+            float weaponDmg = GetWeaponAttackPower(player);
+            float instantDmg = weaponDmg * (GetPoisonInstantForLevel(lv) / 100f);
             Vector3 pos = player.transform.position;
 
             var enemies = Character.GetAllCharacters()
@@ -191,7 +205,7 @@ namespace CaptainSkillTree.SkillTree
                     if (poisonDotCoroutines.TryGetValue(enemy, out var existing) && existing != null)
                         Plugin.Instance?.StopCoroutine(existing);
 
-                    var dotCo = Plugin.Instance?.StartCoroutine(PoisonDotCoroutine(player, enemy, lv));
+                    var dotCo = Plugin.Instance?.StartCoroutine(PoisonDotCoroutine(player, enemy, lv, weaponDmg));
                     if (dotCo != null)
                         poisonDotCoroutines[enemy] = dotCo;
                 }
@@ -202,9 +216,9 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 독 DoT 코루틴: 레벨별 초당 데미지
         /// </summary>
-        private static IEnumerator PoisonDotCoroutine(Player player, Character enemy, int lv)
+        private static IEnumerator PoisonDotCoroutine(Player player, Character enemy, int lv, float weaponDmg)
         {
-            float dotDmg = GetPoisonDotForLevel(lv);
+            float dotDmg = weaponDmg * (GetPoisonDotForLevel(lv) / 100f);
             float duration = Rogue_Config.RoguePoisonDotDurationValue;
             float elapsed = 0f;
 

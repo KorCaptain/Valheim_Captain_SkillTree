@@ -167,8 +167,8 @@ namespace CaptainSkillTree.Localization
                 ["skill_cooldown_format"] = "{0} 쿨다운: {1}초",
 
                 // === Staff Skills ===
-                ["staff_dual_cast_cooldown"] = "연속 발사 쿨다운 중! 남은 시간: {0}초",
-                ["staff_dual_cast_success"] = "연속 발사! 추가 마법 발사체!",
+                ["staff_dual_cast_cooldown"] = "이중시전 쿨다운 중! 남은 시간: {0}초",
+                ["staff_dual_cast_success"] = "이중시전! 추가 마법 발사체!",
                 ["staff_heal_cooldown"] = "힐 쿨다운 중! 남은 시간: {0}초",
                 ["staff_heal_success"] = "힐! +{0} 체력 회복!",
 
@@ -475,8 +475,8 @@ namespace CaptainSkillTree.Localization
                 ["skill_cooldown_format"] = "{0} cooldown: {1}s",
 
                 // === Staff Skills ===
-                ["staff_dual_cast_cooldown"] = "Rapid Barrage on cooldown! Remaining: {0}s",
-                ["staff_dual_cast_success"] = "Rapid Barrage! Extra magic projectile!",
+                ["staff_dual_cast_cooldown"] = "Double Casting on cooldown! Remaining: {0}s",
+                ["staff_dual_cast_success"] = "Double Casting! Extra magic projectile!",
                 ["staff_heal_cooldown"] = "Heal on cooldown! Remaining: {0}s",
                 ["staff_heal_success"] = "Heal! +{0} HP!",
 

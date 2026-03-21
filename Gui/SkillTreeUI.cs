@@ -1317,9 +1317,10 @@ namespace CaptainSkillTree.Gui
                 mgr.AddPendingInvestment("Rogue");
                 mgr.ConfirmInvestments();
                 CaptainSkillTree.SkillTree.Rogue_Tooltip.UpdateRogueTooltip();
-                if (capturedNodeRect != null)
-                    StartCoroutine(PlayArcherLevelUpAnimation(capturedNodeRect, targetLevel));
+                nodeUI.SuppressBadge("Rogue");
                 nodeUI.RefreshNodeStates();
+                if (capturedNodeRect != null)
+                    StartCoroutine(PlayRogueLevelUpAnimation(capturedNodeRect, targetLevel));
                 RefreshUI();
             });
 
@@ -1330,6 +1331,501 @@ namespace CaptainSkillTree.Gui
             });
 
             confirmDialog.transform.SetAsLastSibling();
+        }
+
+        /// <summary>
+        /// 탱커 Lv2+ 업그레이드 확인 다이얼로그
+        /// </summary>
+        private void ShowTankerUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
+        {
+            if (confirmDialog != null)
+                DestroyImmediate(confirmDialog);
+
+            confirmDialog = new GameObject("TankerUpgradeDialog");
+            confirmDialog.transform.SetParent(panel.transform, false);
+
+            var bgImage = confirmDialog.AddComponent<Image>();
+            bgImage.color = new Color(0, 0, 0, 0.7f);
+
+            var bgRect = confirmDialog.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.sizeDelta = Vector2.zero;
+            bgRect.anchoredPosition = Vector2.zero;
+
+            var dialogPanel = new GameObject("GoldBorder");
+            dialogPanel.transform.SetParent(confirmDialog.transform, false);
+
+            var dialogImage = dialogPanel.AddComponent<Image>();
+            dialogImage.color = new Color(0.85f, 0.7f, 0.1f, 0.85f);
+
+            var dialogRect = dialogPanel.GetComponent<RectTransform>();
+            dialogRect.sizeDelta = new Vector2(380, 220);
+            dialogRect.anchoredPosition = Vector2.zero;
+
+            var darkBgGo = new GameObject("DarkBg");
+            darkBgGo.transform.SetParent(dialogPanel.transform, false);
+
+            var darkBgImage = darkBgGo.AddComponent<Image>();
+            darkBgImage.color = new Color(0.08f, 0.07f, 0.20f, 0.97f);
+
+            var darkBgRect = darkBgGo.GetComponent<RectTransform>();
+            darkBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+            darkBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+            darkBgRect.pivot = new Vector2(0.5f, 0.5f);
+            darkBgRect.sizeDelta = new Vector2(374, 214);
+            darkBgRect.anchoredPosition = Vector2.zero;
+
+            var titleBarGo = new GameObject("TitleBar");
+            titleBarGo.transform.SetParent(darkBgGo.transform, false);
+            var titleBarImage = titleBarGo.AddComponent<Image>();
+            titleBarImage.color = new Color(0.10f, 0.08f, 0.25f, 1f);
+            titleBarImage.raycastTarget = false;
+            var titleBarRect = titleBarGo.GetComponent<RectTransform>();
+            titleBarRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleBarRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleBarRect.pivot = new Vector2(0.5f, 0.5f);
+            titleBarRect.sizeDelta = new Vector2(374, 44);
+            titleBarRect.anchoredPosition = new Vector2(0, 88);
+
+            var titleObj = new GameObject("Title");
+            titleObj.transform.SetParent(darkBgGo.transform, false);
+            var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
+            titleText.text = L10n.Get("tanker_upgrade_title");
+            titleText.fontSize = 20;
+            titleText.fontStyle = FontStyle.Bold;
+            titleText.color = new Color(1f, 0.85f, 0f, 1f);
+            titleText.alignment = TextAnchor.MiddleCenter;
+            titleText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            var titleShadow = titleObj.AddComponent<UnityEngine.UI.Shadow>();
+            titleShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            titleShadow.effectDistance = new Vector2(1f, -1f);
+            var titleRect = titleObj.GetComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRect.pivot = new Vector2(0.5f, 0.5f);
+            titleRect.sizeDelta = new Vector2(340, 34);
+            titleRect.anchoredPosition = new Vector2(0, 78);
+
+            var contentObj = new GameObject("Content");
+            contentObj.transform.SetParent(darkBgGo.transform, false);
+            var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
+            contentText.text = L10n.Get("tanker_upgrade_confirm", targetLevel);
+            contentText.fontSize = 20;
+            contentText.color = Color.white;
+            contentText.alignment = TextAnchor.MiddleCenter;
+            contentText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            var contentShadow = contentObj.AddComponent<UnityEngine.UI.Shadow>();
+            contentShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            contentShadow.effectDistance = new Vector2(1f, -1f);
+            var contentRect = contentObj.GetComponent<RectTransform>();
+            contentRect.anchorMin = new Vector2(0.5f, 0.5f);
+            contentRect.anchorMax = new Vector2(0.5f, 0.5f);
+            contentRect.pivot = new Vector2(0.5f, 0.5f);
+            contentRect.sizeDelta = new Vector2(340, 70);
+            contentRect.anchoredPosition = new Vector2(0, 10);
+
+            var capturedNodeRect = nodeRect;
+            confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"),
+                new Vector2(-68f, -82f), new Color(0.60f, 0.10f, 0.10f, 1f), darkBgGo.transform, () => {
+                PlayConfirmSound();
+                HideResetConfirmDialog();
+                var mgr = SkillTree.SkillTreeManager.Instance;
+                mgr.AddPendingInvestment("Tanker");
+                mgr.ConfirmInvestments();
+                CaptainSkillTree.SkillTree.Tanker_Tooltip.UpdateTankerTooltip();
+                nodeUI.SuppressBadge("Tanker");
+                nodeUI.RefreshNodeStates();
+                if (capturedNodeRect != null)
+                    StartCoroutine(PlayTankerLevelUpAnimation(capturedNodeRect, targetLevel));
+                RefreshUI();
+            });
+
+            cancelButton = CreateLuxuryButton("CancelButton", L10n.Get("ui_cancel"),
+                new Vector2(68f, -82f), new Color(0.22f, 0.22f, 0.30f, 1f), darkBgGo.transform, () => {
+                PlayCancelSound();
+                HideResetConfirmDialog();
+            });
+
+            confirmDialog.transform.SetAsLastSibling();
+        }
+
+        /// <summary>
+        /// 성기사 Lv2+ 업그레이드 확인 다이얼로그
+        /// </summary>
+        private void ShowPaladinUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
+        {
+            if (confirmDialog != null)
+                DestroyImmediate(confirmDialog);
+
+            confirmDialog = new GameObject("PaladinUpgradeDialog");
+            confirmDialog.transform.SetParent(panel.transform, false);
+
+            var bgImage = confirmDialog.AddComponent<Image>();
+            bgImage.color = new Color(0, 0, 0, 0.7f);
+
+            var bgRect = confirmDialog.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.sizeDelta = Vector2.zero;
+            bgRect.anchoredPosition = Vector2.zero;
+
+            var dialogPanel = new GameObject("GoldBorder");
+            dialogPanel.transform.SetParent(confirmDialog.transform, false);
+
+            var dialogImage = dialogPanel.AddComponent<Image>();
+            dialogImage.color = new Color(0.85f, 0.7f, 0.1f, 0.85f);
+
+            var dialogRect = dialogPanel.GetComponent<RectTransform>();
+            dialogRect.sizeDelta = new Vector2(380, 220);
+            dialogRect.anchoredPosition = Vector2.zero;
+
+            var darkBgGo = new GameObject("DarkBg");
+            darkBgGo.transform.SetParent(dialogPanel.transform, false);
+
+            var darkBgImage = darkBgGo.AddComponent<Image>();
+            darkBgImage.color = new Color(0.08f, 0.07f, 0.20f, 0.97f);
+
+            var darkBgRect = darkBgGo.GetComponent<RectTransform>();
+            darkBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+            darkBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+            darkBgRect.pivot = new Vector2(0.5f, 0.5f);
+            darkBgRect.sizeDelta = new Vector2(374, 214);
+            darkBgRect.anchoredPosition = Vector2.zero;
+
+            var titleBarGo = new GameObject("TitleBar");
+            titleBarGo.transform.SetParent(darkBgGo.transform, false);
+            var titleBarImage = titleBarGo.AddComponent<Image>();
+            titleBarImage.color = new Color(0.10f, 0.08f, 0.25f, 1f);
+            titleBarImage.raycastTarget = false;
+            var titleBarRect = titleBarGo.GetComponent<RectTransform>();
+            titleBarRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleBarRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleBarRect.pivot = new Vector2(0.5f, 0.5f);
+            titleBarRect.sizeDelta = new Vector2(374, 44);
+            titleBarRect.anchoredPosition = new Vector2(0, 88);
+
+            var titleObj = new GameObject("Title");
+            titleObj.transform.SetParent(darkBgGo.transform, false);
+            var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
+            titleText.text = L10n.Get("paladin_upgrade_title");
+            titleText.fontSize = 20;
+            titleText.fontStyle = FontStyle.Bold;
+            titleText.color = new Color(1f, 0.85f, 0f, 1f);
+            titleText.alignment = TextAnchor.MiddleCenter;
+            titleText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            var titleShadow = titleObj.AddComponent<UnityEngine.UI.Shadow>();
+            titleShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            titleShadow.effectDistance = new Vector2(1f, -1f);
+            var titleRect = titleObj.GetComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRect.pivot = new Vector2(0.5f, 0.5f);
+            titleRect.sizeDelta = new Vector2(340, 34);
+            titleRect.anchoredPosition = new Vector2(0, 78);
+
+            var contentObj = new GameObject("Content");
+            contentObj.transform.SetParent(darkBgGo.transform, false);
+            var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
+            contentText.text = L10n.Get("paladin_upgrade_confirm", targetLevel);
+            contentText.fontSize = 20;
+            contentText.color = Color.white;
+            contentText.alignment = TextAnchor.MiddleCenter;
+            contentText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            var contentShadow = contentObj.AddComponent<UnityEngine.UI.Shadow>();
+            contentShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            contentShadow.effectDistance = new Vector2(1f, -1f);
+            var contentRect = contentObj.GetComponent<RectTransform>();
+            contentRect.anchorMin = new Vector2(0.5f, 0.5f);
+            contentRect.anchorMax = new Vector2(0.5f, 0.5f);
+            contentRect.pivot = new Vector2(0.5f, 0.5f);
+            contentRect.sizeDelta = new Vector2(340, 70);
+            contentRect.anchoredPosition = new Vector2(0, 10);
+
+            var capturedNodeRect = nodeRect;
+            confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"),
+                new Vector2(-68f, -82f), new Color(0.60f, 0.10f, 0.10f, 1f), darkBgGo.transform, () => {
+                PlayConfirmSound();
+                HideResetConfirmDialog();
+                var mgr = SkillTree.SkillTreeManager.Instance;
+                mgr.AddPendingInvestment("Paladin");
+                mgr.ConfirmInvestments();
+                mgr.ConsumePaladinLevelItems(targetLevel);
+                CaptainSkillTree.SkillTree.Paladin_Tooltip.UpdatePaladinTooltip();
+                CaptainSkillTree.SkillTree.PaladinSkills.RefreshPaladinStatusCache();
+                nodeUI.SuppressBadge("Paladin");
+                nodeUI.RefreshNodeStates();
+                if (capturedNodeRect != null)
+                    StartCoroutine(PlayPaladinLevelUpAnimation(capturedNodeRect, targetLevel));
+                RefreshUI();
+            });
+
+            cancelButton = CreateLuxuryButton("CancelButton", L10n.Get("ui_cancel"),
+                new Vector2(68f, -82f), new Color(0.22f, 0.22f, 0.30f, 1f), darkBgGo.transform, () => {
+                PlayCancelSound();
+                HideResetConfirmDialog();
+            });
+
+            confirmDialog.transform.SetAsLastSibling();
+        }
+
+        private System.Collections.IEnumerator PlayPaladinLevelUpAnimation(RectTransform nodeRect, int level)
+        {
+            if (nodeRect == null) yield break;
+
+            StartCoroutine(PlayJobIconSpecialEffect(nodeRect));
+            yield return StartCoroutine(PlayFloatingLevelText(nodeRect, level));
+            nodeUI.RevealBadge("Paladin", level);
+        }
+
+        /// <summary>
+        /// 버서커 Lv2+ 업그레이드 확인 다이얼로그
+        /// </summary>
+        private void ShowBerserkerUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
+        {
+            if (confirmDialog != null)
+                DestroyImmediate(confirmDialog);
+
+            confirmDialog = new GameObject("BerserkerUpgradeDialog");
+            confirmDialog.transform.SetParent(panel.transform, false);
+
+            var bgImage = confirmDialog.AddComponent<Image>();
+            bgImage.color = new Color(0, 0, 0, 0.7f);
+
+            var bgRect = confirmDialog.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.sizeDelta = Vector2.zero;
+            bgRect.anchoredPosition = Vector2.zero;
+
+            var dialogPanel = new GameObject("RedBorder");
+            dialogPanel.transform.SetParent(confirmDialog.transform, false);
+
+            var dialogImage = dialogPanel.AddComponent<Image>();
+            dialogImage.color = new Color(0.85f, 0.1f, 0.1f, 0.85f);
+
+            var dialogRect = dialogPanel.GetComponent<RectTransform>();
+            dialogRect.sizeDelta = new Vector2(380, 220);
+            dialogRect.anchoredPosition = Vector2.zero;
+
+            var darkBgGo = new GameObject("DarkBg");
+            darkBgGo.transform.SetParent(dialogPanel.transform, false);
+
+            var darkBgImage = darkBgGo.AddComponent<Image>();
+            darkBgImage.color = new Color(0.08f, 0.07f, 0.20f, 0.97f);
+
+            var darkBgRect = darkBgGo.GetComponent<RectTransform>();
+            darkBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+            darkBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+            darkBgRect.pivot = new Vector2(0.5f, 0.5f);
+            darkBgRect.sizeDelta = new Vector2(374, 214);
+            darkBgRect.anchoredPosition = Vector2.zero;
+
+            var titleBarGo = new GameObject("TitleBar");
+            titleBarGo.transform.SetParent(darkBgGo.transform, false);
+            var titleBarImage = titleBarGo.AddComponent<Image>();
+            titleBarImage.color = new Color(0.10f, 0.08f, 0.25f, 1f);
+            titleBarImage.raycastTarget = false;
+            var titleBarRect = titleBarGo.GetComponent<RectTransform>();
+            titleBarRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleBarRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleBarRect.pivot = new Vector2(0.5f, 0.5f);
+            titleBarRect.sizeDelta = new Vector2(374, 44);
+            titleBarRect.anchoredPosition = new Vector2(0, 88);
+
+            var titleObj = new GameObject("Title");
+            titleObj.transform.SetParent(darkBgGo.transform, false);
+            var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
+            titleText.text = L10n.Get("berserker_upgrade_title");
+            titleText.fontSize = 20;
+            titleText.fontStyle = FontStyle.Bold;
+            titleText.color = new Color(1f, 0.3f, 0.1f, 1f);
+            titleText.alignment = TextAnchor.MiddleCenter;
+            titleText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            var titleShadow = titleObj.AddComponent<UnityEngine.UI.Shadow>();
+            titleShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            titleShadow.effectDistance = new Vector2(1f, -1f);
+            var titleRect = titleObj.GetComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRect.pivot = new Vector2(0.5f, 0.5f);
+            titleRect.sizeDelta = new Vector2(340, 34);
+            titleRect.anchoredPosition = new Vector2(0, 78);
+
+            var contentObj = new GameObject("Content");
+            contentObj.transform.SetParent(darkBgGo.transform, false);
+            var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
+            contentText.text = L10n.Get("berserker_upgrade_confirm", targetLevel);
+            contentText.fontSize = 20;
+            contentText.color = Color.white;
+            contentText.alignment = TextAnchor.MiddleCenter;
+            contentText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            var contentShadow = contentObj.AddComponent<UnityEngine.UI.Shadow>();
+            contentShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            contentShadow.effectDistance = new Vector2(1f, -1f);
+            var contentRect = contentObj.GetComponent<RectTransform>();
+            contentRect.anchorMin = new Vector2(0.5f, 0.5f);
+            contentRect.anchorMax = new Vector2(0.5f, 0.5f);
+            contentRect.pivot = new Vector2(0.5f, 0.5f);
+            contentRect.sizeDelta = new Vector2(340, 70);
+            contentRect.anchoredPosition = new Vector2(0, 10);
+
+            var capturedNodeRect = nodeRect;
+            confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"),
+                new Vector2(-68f, -82f), new Color(0.60f, 0.10f, 0.10f, 1f), darkBgGo.transform, () => {
+                PlayConfirmSound();
+                HideResetConfirmDialog();
+                var mgr = SkillTree.SkillTreeManager.Instance;
+                mgr.AddPendingInvestment("Berserker");
+                mgr.ConfirmInvestments();
+                CaptainSkillTree.SkillTree.Berserker_Tooltip.UpdateBerserkerTooltip();
+                nodeUI.SuppressBadge("Berserker");
+                nodeUI.RefreshNodeStates();
+                if (capturedNodeRect != null)
+                    StartCoroutine(PlayBerserkerLevelUpAnimation(capturedNodeRect, targetLevel));
+                RefreshUI();
+            });
+
+            cancelButton = CreateLuxuryButton("CancelButton", L10n.Get("ui_cancel"),
+                new Vector2(68f, -82f), new Color(0.22f, 0.22f, 0.30f, 1f), darkBgGo.transform, () => {
+                PlayCancelSound();
+                HideResetConfirmDialog();
+            });
+
+            confirmDialog.transform.SetAsLastSibling();
+        }
+
+        private System.Collections.IEnumerator PlayBerserkerLevelUpAnimation(RectTransform nodeRect, int level)
+        {
+            if (nodeRect == null) yield break;
+            StartCoroutine(PlayJobIconSpecialEffect(nodeRect));
+            yield return StartCoroutine(PlayFloatingLevelText(nodeRect, level));
+            nodeUI.RevealBadge("Berserker", level);
+        }
+
+        /// <summary>
+        /// 메이지 Lv2+ 업그레이드 확인 다이얼로그
+        /// </summary>
+        private void ShowMageUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
+        {
+            if (confirmDialog != null)
+                DestroyImmediate(confirmDialog);
+
+            confirmDialog = new GameObject("MageUpgradeDialog");
+            confirmDialog.transform.SetParent(panel.transform, false);
+
+            var bgImage = confirmDialog.AddComponent<Image>();
+            bgImage.color = new Color(0, 0, 0, 0.7f);
+
+            var bgRect = confirmDialog.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.sizeDelta = Vector2.zero;
+            bgRect.anchoredPosition = Vector2.zero;
+
+            var dialogPanel = new GameObject("PurpleBorder");
+            dialogPanel.transform.SetParent(confirmDialog.transform, false);
+
+            var dialogImage = dialogPanel.AddComponent<Image>();
+            dialogImage.color = new Color(0.1f, 0.1f, 0.60f, 0.85f);
+
+            var dialogRect = dialogPanel.GetComponent<RectTransform>();
+            dialogRect.sizeDelta = new Vector2(380, 220);
+            dialogRect.anchoredPosition = Vector2.zero;
+
+            var darkBgGo = new GameObject("DarkBg");
+            darkBgGo.transform.SetParent(dialogPanel.transform, false);
+
+            var darkBgImage = darkBgGo.AddComponent<Image>();
+            darkBgImage.color = new Color(0.07f, 0.05f, 0.20f, 0.97f);
+
+            var darkBgRect = darkBgGo.GetComponent<RectTransform>();
+            darkBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+            darkBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+            darkBgRect.pivot = new Vector2(0.5f, 0.5f);
+            darkBgRect.sizeDelta = new Vector2(374, 214);
+            darkBgRect.anchoredPosition = Vector2.zero;
+
+            var titleBarGo = new GameObject("TitleBar");
+            titleBarGo.transform.SetParent(darkBgGo.transform, false);
+            var titleBarImage = titleBarGo.AddComponent<Image>();
+            titleBarImage.color = new Color(0.10f, 0.08f, 0.25f, 1f);
+            titleBarImage.raycastTarget = false;
+            var titleBarRect = titleBarGo.GetComponent<RectTransform>();
+            titleBarRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleBarRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleBarRect.pivot = new Vector2(0.5f, 0.5f);
+            titleBarRect.sizeDelta = new Vector2(374, 44);
+            titleBarRect.anchoredPosition = new Vector2(0, 88);
+
+            var titleObj = new GameObject("Title");
+            titleObj.transform.SetParent(darkBgGo.transform, false);
+            var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
+            titleText.text = L10n.Get("mage_upgrade_title");
+            titleText.fontSize = 20;
+            titleText.fontStyle = FontStyle.Bold;
+            titleText.color = new Color(0.4f, 0.2f, 1.0f, 1f);
+            titleText.alignment = TextAnchor.MiddleCenter;
+            titleText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            var titleShadow = titleObj.AddComponent<UnityEngine.UI.Shadow>();
+            titleShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            titleShadow.effectDistance = new Vector2(1f, -1f);
+            var titleRect = titleObj.GetComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRect.pivot = new Vector2(0.5f, 0.5f);
+            titleRect.sizeDelta = new Vector2(340, 34);
+            titleRect.anchoredPosition = new Vector2(0, 78);
+
+            var contentObj = new GameObject("Content");
+            contentObj.transform.SetParent(darkBgGo.transform, false);
+            var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
+            contentText.text = L10n.Get("mage_upgrade_confirm", targetLevel);
+            contentText.fontSize = 20;
+            contentText.color = Color.white;
+            contentText.alignment = TextAnchor.MiddleCenter;
+            contentText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            var contentShadow = contentObj.AddComponent<UnityEngine.UI.Shadow>();
+            contentShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            contentShadow.effectDistance = new Vector2(1f, -1f);
+            var contentRect = contentObj.GetComponent<RectTransform>();
+            contentRect.anchorMin = new Vector2(0.5f, 0.5f);
+            contentRect.anchorMax = new Vector2(0.5f, 0.5f);
+            contentRect.pivot = new Vector2(0.5f, 0.5f);
+            contentRect.sizeDelta = new Vector2(340, 70);
+            contentRect.anchoredPosition = new Vector2(0, 10);
+
+            var capturedNodeRect = nodeRect;
+            confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"),
+                new Vector2(-68f, -82f), new Color(0.20f, 0.10f, 0.60f, 1f), darkBgGo.transform, () => {
+                PlayConfirmSound();
+                HideResetConfirmDialog();
+                var mgr = SkillTree.SkillTreeManager.Instance;
+                mgr.AddPendingInvestment("Mage");
+                mgr.ConfirmInvestments();
+                CaptainSkillTree.SkillTree.Mage_Tooltip.UpdateMageTooltip();
+                nodeUI.SuppressBadge("Mage");
+                nodeUI.RefreshNodeStates();
+                if (capturedNodeRect != null)
+                    StartCoroutine(PlayMageLevelUpAnimation(capturedNodeRect, targetLevel));
+                RefreshUI();
+            });
+
+            cancelButton = CreateLuxuryButton("CancelButton", L10n.Get("ui_cancel"),
+                new Vector2(68f, -82f), new Color(0.22f, 0.22f, 0.30f, 1f), darkBgGo.transform, () => {
+                PlayCancelSound();
+                HideResetConfirmDialog();
+            });
+
+            confirmDialog.transform.SetAsLastSibling();
+        }
+
+        private System.Collections.IEnumerator PlayMageLevelUpAnimation(RectTransform nodeRect, int level)
+        {
+            if (nodeRect == null) yield break;
+            StartCoroutine(PlayJobIconSpecialEffect(nodeRect));
+            yield return StartCoroutine(PlayFloatingLevelText(nodeRect, level));
+            nodeUI.RevealBadge("Mage", level);
         }
 
         /// <summary>
@@ -1461,6 +1957,15 @@ namespace CaptainSkillTree.Gui
             yield return StartCoroutine(PlayJobIconSpecialEffect(nodeRect));
         }
 
+        private System.Collections.IEnumerator PlayTankerLevelUpAnimation(RectTransform nodeRect, int level)
+        {
+            if (nodeRect == null) yield break;
+
+            StartCoroutine(PlayJobIconSpecialEffect(nodeRect));
+            yield return StartCoroutine(PlayFloatingLevelText(nodeRect, level));
+            nodeUI.RevealBadge("Tanker", level);
+        }
+
         private System.Collections.IEnumerator PlayProducerLevelUpAnimation(RectTransform nodeRect, int level)
         {
             if (nodeRect == null) yield break;
@@ -1468,6 +1973,15 @@ namespace CaptainSkillTree.Gui
             StartCoroutine(PlayJobIconSpecialEffect(nodeRect));
             yield return StartCoroutine(PlayFloatingLevelText(nodeRect, level)); // 3초 대기
             nodeUI.RevealBadge("Producer", level); // 플로팅 끝난 후 배지 표시
+        }
+
+        private System.Collections.IEnumerator PlayRogueLevelUpAnimation(RectTransform nodeRect, int level)
+        {
+            if (nodeRect == null) yield break;
+
+            StartCoroutine(PlayJobIconSpecialEffect(nodeRect));
+            yield return StartCoroutine(PlayFloatingLevelText(nodeRect, level)); // 3초 대기
+            nodeUI.RevealBadge("Rogue", level); // 플로팅 끝난 후 배지 표시
         }
 
         private System.Collections.IEnumerator PlayFloatingLevelText(RectTransform nodeRect, int level)
@@ -1695,13 +2209,11 @@ namespace CaptainSkillTree.Gui
                 return new InvestResult(false, "");
             }
 
-            // 2. 직업 스킬은 트로피 체크, 생산 스킬은 아이템 체크, 일반 스킬은 포인트 체크
-            if (node.Id == "Paladin" || node.Id == "Tanker" || node.Id == "Berserker" ||
-                node.Id == "Rogue" || node.Id == "Mage" || node.Id == "Archer")
+            // 2. 직업 중복 선택 방지 (Producer 포함, 최우선 체크)
+            string[] allJobIds = { "Paladin", "Tanker", "Berserker", "Rogue", "Mage", "Archer", "Producer" };
+            if (System.Array.IndexOf(allJobIds, node.Id) >= 0)
             {
-                // === 직업 중복 선택 방지 (우선 체크) ===
-                string[] jobIds = { "Paladin", "Tanker", "Berserker", "Rogue", "Mage", "Archer" };
-                foreach (var jobId in jobIds)
+                foreach (var jobId in allJobIds)
                 {
                     if (jobId != node.Id)
                     {
@@ -1713,7 +2225,12 @@ namespace CaptainSkillTree.Gui
                         }
                     }
                 }
+            }
 
+            // 3. 직업 스킬은 트로피 체크, 생산 스킬은 아이템 체크, 일반 스킬은 포인트 체크
+            if (node.Id == "Paladin" || node.Id == "Tanker" || node.Id == "Berserker" ||
+                node.Id == "Rogue" || node.Id == "Mage" || node.Id == "Archer")
+            {
                 // 직업 스킬: Eikthyr 트로피 체크
                 var player = Player.m_localPlayer;
                 if (player == null)
@@ -1750,6 +2267,37 @@ namespace CaptainSkillTree.Gui
                         return new InvestResult(false, msg);
                     }
                 }
+                else if (node.Id == "Paladin")
+                {
+                    // Lv1+ 성기사 업그레이드: 재료 체크
+                    int targetLevel = currentLevel + 1;
+                    if (targetLevel > 5)
+                        return new InvestResult(false, L10n.Get("paladin_max_level"));
+                    if (!manager.HasPaladinLevelItems(targetLevel))
+                    {
+                        var missing = manager.GetMissingPaladinItems(targetLevel);
+                        var msg = L10n.Get("paladin_level_item_required", targetLevel);
+                        if (missing.Count > 0)
+                            msg += "\n" + L10n.Get("paladin_missing_items", string.Join(", ", missing));
+                        return new InvestResult(false, msg);
+                    }
+                }
+            }
+            else if (node.Id == "Producer" && manager.GetSkillLevel("Producer") >= 1)
+            {
+                // Producer Lv1+ 업그레이드: 트로피 아이템 체크
+                int targetLevel = manager.GetSkillLevel("Producer") + 1;
+                if (targetLevel > 5)
+                    return new InvestResult(false, L10n.Get("producer_max_level"));
+                if (!manager.HasProducerLevelItems(targetLevel))
+                {
+                    var missing = manager.GetMissingProducerItems(targetLevel);
+                    var msg = L10n.Get("producer_level_item_required", targetLevel);
+                    if (missing.Count > 0)
+                        msg += "\n" + L10n.Get("producer_missing_items", string.Join(", ", missing));
+                    return new InvestResult(false, msg);
+                }
+                // 트로피 있으면 canInvest = true → InvestPoint가 업그레이드 다이얼로그 표시
             }
             else if (SkillTree.SkillItemRequirements.IsProductionSkill(node.Id))
             {
@@ -2027,6 +2575,140 @@ namespace CaptainSkillTree.Gui
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("rogue_missing_items", string.Join(", ", missing));
                         ShowWarning(msg);
+                        return;
+                    }
+                }
+
+                // 버서커 Lv1+ 업그레이드: 확인 다이얼로그 표시
+                if (node.Id == "Berserker" && manager.GetSkillLevel("Berserker") >= 1)
+                {
+                    int targetLevel = manager.GetSkillLevel("Berserker") + 1;
+                    if (targetLevel > 5)
+                    {
+                        ShowWarning(L10n.Get("berserker_max_level"));
+                        return;
+                    }
+                    if (targetLevel == 2 && !manager.HasBerserkerLv2SkillPrereq())
+                    {
+                        ShowWarning(L10n.Get("berserker_lv2_skill_prereq_required"));
+                        return;
+                    }
+                    if (manager.HasBerserkerLevelItems(targetLevel))
+                    {
+                        RectTransform nodeRect = null;
+                        if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
+                        {
+                            var nodeObj = nodeUI.nodeObjects[node.Id];
+                            if (nodeObj != null) nodeRect = nodeObj.GetComponent<RectTransform>();
+                        }
+                        ShowBerserkerUpgradeConfirmDialog(targetLevel, nodeRect);
+                        return;
+                    }
+                    else
+                    {
+                        var missing = manager.GetMissingBerserkerItems(targetLevel);
+                        var msg = L10n.Get("berserker_level_req_items", targetLevel);
+                        if (missing.Count > 0)
+                            msg += "\n" + L10n.Get("berserker_missing_items", string.Join(", ", missing));
+                        ShowWarning(msg);
+                        return;
+                    }
+                }
+
+                // 탱커 Lv1+ 업그레이드: 확인 다이얼로그 표시
+                if (node.Id == "Tanker" && manager.GetSkillLevel("Tanker") >= 1)
+                {
+                    int targetLevel = manager.GetSkillLevel("Tanker") + 1;
+                    if (targetLevel > 5)
+                    {
+                        ShowWarning(L10n.Get("tanker_max_level"));
+                        return;
+                    }
+                    // Lv2 스킬 선행 조건: 분노의 망치 / 돌진베기 / 패링돌격 중 1개 이상 필요
+                    if (targetLevel == 2 && !manager.HasTankerLv2SkillPrereq())
+                    {
+                        ShowWarning(L10n.Get("tanker_lv2_skill_prereq_required"));
+                        return;
+                    }
+                    if (manager.HasTankerLevelItems(targetLevel))
+                    {
+                        RectTransform nodeRect = null;
+                        if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
+                        {
+                            var nodeObj = nodeUI.nodeObjects[node.Id];
+                            if (nodeObj != null) nodeRect = nodeObj.GetComponent<RectTransform>();
+                        }
+                        ShowTankerUpgradeConfirmDialog(targetLevel, nodeRect);
+                        return;
+                    }
+                    else
+                    {
+                        var missing = manager.GetMissingTankerItems(targetLevel);
+                        var msg = L10n.Get("tanker_level_item_required", targetLevel);
+                        if (missing.Count > 0)
+                            msg += "\n" + L10n.Get("tanker_missing_items", string.Join(", ", missing));
+                        ShowWarning(msg);
+                        return;
+                    }
+                }
+
+                // 성기사 Lv1+ 업그레이드: 확인 다이얼로그 표시
+                if (node.Id == "Paladin" && manager.GetSkillLevel("Paladin") >= 1)
+                {
+                    int targetLevel = manager.GetSkillLevel("Paladin") + 1;
+                    if (targetLevel > 5)
+                    {
+                        ShowWarning(L10n.Get("paladin_max_level"));
+                        return;
+                    }
+                    if (manager.HasPaladinLevelItems(targetLevel))
+                    {
+                        RectTransform nodeRect = null;
+                        if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
+                        {
+                            var nodeObj = nodeUI.nodeObjects[node.Id];
+                            if (nodeObj != null) nodeRect = nodeObj.GetComponent<RectTransform>();
+                        }
+                        ShowPaladinUpgradeConfirmDialog(targetLevel, nodeRect);
+                        return;
+                    }
+                    else
+                    {
+                        var missing = manager.GetMissingPaladinItems(targetLevel);
+                        var msg = L10n.Get("paladin_level_item_required", targetLevel);
+                        if (missing.Count > 0)
+                            msg += "\n" + L10n.Get("paladin_missing_items", string.Join(", ", missing));
+                        ShowWarning(msg);
+                        return;
+                    }
+                }
+
+                // 메이지 Lv1+ 업그레이드: 확인 다이얼로그 표시
+                if (node.Id == "Mage" && manager.GetSkillLevel("Mage") >= 1)
+                {
+                    int targetLevel = manager.GetSkillLevel("Mage") + 1;
+                    if (targetLevel > 5)
+                    {
+                        ShowWarning(L10n.Get("mage_max_level"));
+                        return;
+                    }
+                    if (manager.HasMageLevelItems(targetLevel))
+                    {
+                        RectTransform nodeRect = null;
+                        if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
+                        {
+                            var nodeObj = nodeUI.nodeObjects[node.Id];
+                            if (nodeObj != null) nodeRect = nodeObj.GetComponent<RectTransform>();
+                        }
+                        ShowMageUpgradeConfirmDialog(targetLevel, nodeRect);
+                        return;
+                    }
+                    else
+                    {
+                        var missing = manager.GetMissingMageItems(targetLevel);
+                        string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
+                        ShowWarning("⚠️ " + L10n.Get("mage_level_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : ""));
                         return;
                     }
                 }
@@ -2318,7 +3000,7 @@ namespace CaptainSkillTree.Gui
             var player = Player.m_localPlayer;
             if (player != null && totalInvestedSkills > 0)
             {
-                player.Message(MessageHud.MessageType.TopLeft, $"✅ {totalInvestedSkills}개 스킬 습득 완료!", 0, null);
+                player.Message(MessageHud.MessageType.TopLeft, L.Get("skill_acquired_count", totalInvestedSkills), 0, null);
             }
 
             // 투자 예정인 노드들에 이펙트 적용
@@ -2332,7 +3014,9 @@ namespace CaptainSkillTree.Gui
                     // 스킬 이름 표시
                     if (player != null)
                     {
-                        CaptainSkillTree.SkillTree.SkillEffect.ShowSkillEffectText(player, $"🌟 {node.Name} 습득!",
+                        string displayName = GetJobDisplayName(node.Id);
+                        string acquiredMsg = L.Get("skill_acquired_name", string.IsNullOrEmpty(displayName) ? node.Name : displayName);
+                        CaptainSkillTree.SkillTree.SkillEffect.ShowSkillEffectText(player, acquiredMsg,
                             new Color(1f, 0.8f, 0.2f), CaptainSkillTree.SkillTree.SkillEffect.SkillEffectTextType.Standard);
                     }
 
@@ -2927,19 +3611,21 @@ namespace CaptainSkillTree.Gui
             float elapsed = 0f;
             while (elapsed < fadeInTime)
             {
+                if (overlay == null) yield break;
                 elapsed += Time.deltaTime;
                 float alpha = (elapsed / fadeInTime) * 0.5f;
                 overlayImg.color = new Color(0, 0, 0, alpha);
                 yield return null;
             }
-            
+
             // Hold
             yield return new WaitForSeconds(holdTime);
-            
+
             // Fade Out
             elapsed = 0f;
             while (elapsed < fadeOutTime)
             {
+                if (overlay == null) yield break;
                 elapsed += Time.deltaTime;
                 float alpha = 0.5f * (1f - elapsed / fadeOutTime);
                 overlayImg.color = new Color(0, 0, 0, alpha);
@@ -3074,23 +3760,33 @@ namespace CaptainSkillTree.Gui
         // 직업 이름 매핑
         private string GetJobDisplayName(string nodeId)
         {
-            // nodeId 직접 매핑 (iconName이 직업명을 포함하지 않는 경우)
-            if (nodeId == "Producer") return L.Get("job_producer");
+            // nodeId 직접 매핑 (job 노드)
+            switch (nodeId)
+            {
+                case "Producer":  return L.Get("job_producer");
+                case "Archer":    return L.Get("job_archer");
+                case "Tanker":    return L.Get("job_tanker");
+                case "Berserker": return L.Get("job_berserker");
+                case "Rogue":     return L.Get("job_rogue");
+                case "Mage":      return L.Get("job_mage");
+                case "Paladin":   return L.Get("job_paladin");
+            }
 
+            // 비직업 노드: iconName 검색 (레거시 대응)
             var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
             if (manager.SkillNodes.ContainsKey(nodeId))
             {
                 var node = manager.SkillNodes[nodeId];
                 string iconName = node.IconName;
-
-                if (iconName.Contains("Archer"))   return L.Get("job_archer");
-                if (iconName.Contains("Tanker"))   return L.Get("job_tanker");
+                if (iconName.Contains("Archer"))    return L.Get("job_archer");
+                if (iconName.Contains("Tanker"))    return L.Get("job_tanker");
                 if (iconName.Contains("Berserker")) return L.Get("job_berserker");
-                if (iconName.Contains("Rogue"))    return L.Get("job_rogue");
-                if (iconName.Contains("Mage"))     return L.Get("job_mage");
-                if (iconName.Contains("Paladin"))  return L.Get("job_paladin");
+                if (iconName.Contains("Rogue"))     return L.Get("job_rogue");
+                if (iconName.Contains("Mage"))      return L.Get("job_mage");
+                if (iconName.Contains("Paladin"))   return L.Get("job_paladin");
+                if (iconName.Contains("Producer"))  return L.Get("job_producer");
             }
-            return L.Get("job_archer"); // 기본값
+            return ""; // 비직업 노드 → node.Name 사용
         }
 
         // 월드 메시지 표시

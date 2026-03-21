@@ -99,13 +99,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [Glücksmagie] Chance auf kostenlose Beschwörung (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [Glücksmagie] Benötigte Punkte",
 
-                // === Tier 5-1: Schnellsalve - Aktiv R-Taste (6) ===
-                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Schnellsalve] Zusätzliche Projektile",
-                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Schnellsalve] Projektilschaden (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Schnellsalve] Winkelversatz (Nicht verwendet)",
-                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Schnellsalve] Eitr-Kosten",
-                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Schnellsalve] Abklingzeit (Sek)",
-                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Schnellsalve] Benötigte Punkte",
+                // === Tier 5-1: Doppelzauber - Aktiv R-Taste (6) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Doppelzauber] Zusätzliche Projektile",
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Doppelzauber] Projektilschaden (%)",
+                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Doppelzauber] Winkelversatz (Nicht verwendet)",
+                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Doppelzauber] Eitr-Kosten",
+                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Doppelzauber] Abklingzeit (Sek)",
+                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Doppelzauber] Benötigte Punkte",
 
                 // === Tier 5-2: Sofortflächenheilung - Aktiv H-Taste (5) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [Heilung] Abklingzeit (Sek)",

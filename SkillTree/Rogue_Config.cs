@@ -121,9 +121,9 @@ namespace CaptainSkillTree.SkillTree
         public static float RogueLv5BuffDurationValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_BuffDuration", RogueLv5BuffDuration?.Value ?? 12f);
 
         // 독 폭발 Lv1 기본
-        public static float RoguePoisonRangeValue        => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_Range",        RoguePoisonRange?.Value        ?? 10f);
-        public static float RoguePoisonInstantDamageValue => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_InstantDamage", RoguePoisonInstantDamage?.Value ?? 10f);
-        public static float RoguePoisonDotDamageValue    => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_DotDamage",    RoguePoisonDotDamage?.Value    ?? 5f);
+        public static float RoguePoisonRangeValue        => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_Range",        RoguePoisonRange?.Value        ?? 15f);
+        public static float RoguePoisonInstantDamageValue => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_InstantDamage", RoguePoisonInstantDamage?.Value ?? 40f);
+        public static float RoguePoisonDotDamageValue    => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_DotDamage",    RoguePoisonDotDamage?.Value    ?? 30f);
         public static float RoguePoisonDotDurationValue  => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_DotDuration",  RoguePoisonDotDuration?.Value  ?? 10f);
         public static int   RoguePoisonVFXCountValue     => (int)SkillTreeConfig.GetEffectiveValue("Rogue_Poison_VFXCount", RoguePoisonVFXCount?.Value      ?? 6f);
         public static float RoguePoisonVFXIntervalValue  => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_VFXInterval",  RoguePoisonVFXInterval?.Value  ?? 0.5f);
@@ -135,16 +135,16 @@ namespace CaptainSkillTree.SkillTree
         public static int RogueLv5PoisonBlastsValue => (int)SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_PoisonBlasts", RogueLv5PoisonBlasts?.Value ?? 10f);
 
         // 독 즉시 데미지 Lv2~5
-        public static float RogueLv2PoisonInstantValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_PoisonInstant", RogueLv2PoisonInstant?.Value ?? 12f);
-        public static float RogueLv3PoisonInstantValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv3_PoisonInstant", RogueLv3PoisonInstant?.Value ?? 14f);
-        public static float RogueLv4PoisonInstantValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv4_PoisonInstant", RogueLv4PoisonInstant?.Value ?? 16f);
-        public static float RogueLv5PoisonInstantValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_PoisonInstant", RogueLv5PoisonInstant?.Value ?? 20f);
+        public static float RogueLv2PoisonInstantValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_PoisonInstant", RogueLv2PoisonInstant?.Value ?? 45f);
+        public static float RogueLv3PoisonInstantValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv3_PoisonInstant", RogueLv3PoisonInstant?.Value ?? 50f);
+        public static float RogueLv4PoisonInstantValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv4_PoisonInstant", RogueLv4PoisonInstant?.Value ?? 55f);
+        public static float RogueLv5PoisonInstantValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_PoisonInstant", RogueLv5PoisonInstant?.Value ?? 60f);
 
         // 독 DoT 데미지 Lv2~5
-        public static float RogueLv2PoisonDotValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_PoisonDot", RogueLv2PoisonDot?.Value ?? 6f);
-        public static float RogueLv3PoisonDotValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv3_PoisonDot", RogueLv3PoisonDot?.Value ?? 7f);
-        public static float RogueLv4PoisonDotValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv4_PoisonDot", RogueLv4PoisonDot?.Value ?? 8f);
-        public static float RogueLv5PoisonDotValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_PoisonDot", RogueLv5PoisonDot?.Value ?? 10f);
+        public static float RogueLv2PoisonDotValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_PoisonDot", RogueLv2PoisonDot?.Value ?? 35f);
+        public static float RogueLv3PoisonDotValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv3_PoisonDot", RogueLv3PoisonDot?.Value ?? 40f);
+        public static float RogueLv4PoisonDotValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv4_PoisonDot", RogueLv4PoisonDot?.Value ?? 45f);
+        public static float RogueLv5PoisonDotValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_PoisonDot", RogueLv5PoisonDot?.Value ?? 50f);
 
         // 충전 시스템
         public static int RogueShadowStrikeChargesValue => (int)SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_Charges",  RogueShadowStrikeCharges?.Value ?? 1f);
@@ -211,9 +211,9 @@ namespace CaptainSkillTree.SkillTree
                 RogueLv5BuffDuration = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_BuffDuration", 12f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_BuffDuration"));
 
                 // === 독 폭발 Lv1 기본 ===
-                RoguePoisonRange = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Poison_Range", 10f, SkillTreeConfig.GetConfigDescription("Rogue_Poison_Range"));
-                RoguePoisonInstantDamage = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Poison_InstantDamage", 10f, SkillTreeConfig.GetConfigDescription("Rogue_Poison_InstantDamage"));
-                RoguePoisonDotDamage = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Poison_DotDamage", 5f, SkillTreeConfig.GetConfigDescription("Rogue_Poison_DotDamage"));
+                RoguePoisonRange = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Poison_Range", 15f, SkillTreeConfig.GetConfigDescription("Rogue_Poison_Range"));
+                RoguePoisonInstantDamage = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Poison_InstantDamage", 40f, SkillTreeConfig.GetConfigDescription("Rogue_Poison_InstantDamage"));
+                RoguePoisonDotDamage = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Poison_DotDamage", 30f, SkillTreeConfig.GetConfigDescription("Rogue_Poison_DotDamage"));
                 RoguePoisonDotDuration = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Poison_DotDuration", 10f, SkillTreeConfig.GetConfigDescription("Rogue_Poison_DotDuration"));
                 RoguePoisonVFXCount = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Poison_VFXCount", 6f, SkillTreeConfig.GetConfigDescription("Rogue_Poison_VFXCount"));
                 RoguePoisonVFXInterval = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Poison_VFXInterval", 0.5f, SkillTreeConfig.GetConfigDescription("Rogue_Poison_VFXInterval"));
@@ -225,16 +225,16 @@ namespace CaptainSkillTree.SkillTree
                 RogueLv5PoisonBlasts = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_PoisonBlasts", 10f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_PoisonBlasts"));
 
                 // === 독 즉시 데미지 Lv2~5 ===
-                RogueLv2PoisonInstant = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_PoisonInstant", 12f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_PoisonInstant"));
-                RogueLv3PoisonInstant = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv3_PoisonInstant", 14f, SkillTreeConfig.GetConfigDescription("Rogue_Lv3_PoisonInstant"));
-                RogueLv4PoisonInstant = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv4_PoisonInstant", 16f, SkillTreeConfig.GetConfigDescription("Rogue_Lv4_PoisonInstant"));
-                RogueLv5PoisonInstant = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_PoisonInstant", 20f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_PoisonInstant"));
+                RogueLv2PoisonInstant = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_PoisonInstant", 45f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_PoisonInstant"));
+                RogueLv3PoisonInstant = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv3_PoisonInstant", 50f, SkillTreeConfig.GetConfigDescription("Rogue_Lv3_PoisonInstant"));
+                RogueLv4PoisonInstant = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv4_PoisonInstant", 55f, SkillTreeConfig.GetConfigDescription("Rogue_Lv4_PoisonInstant"));
+                RogueLv5PoisonInstant = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_PoisonInstant", 60f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_PoisonInstant"));
 
                 // === 독 DoT 데미지 Lv2~5 ===
-                RogueLv2PoisonDot = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_PoisonDot", 6f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_PoisonDot"));
-                RogueLv3PoisonDot = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv3_PoisonDot", 7f, SkillTreeConfig.GetConfigDescription("Rogue_Lv3_PoisonDot"));
-                RogueLv4PoisonDot = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv4_PoisonDot", 8f, SkillTreeConfig.GetConfigDescription("Rogue_Lv4_PoisonDot"));
-                RogueLv5PoisonDot = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_PoisonDot", 10f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_PoisonDot"));
+                RogueLv2PoisonDot = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_PoisonDot", 35f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_PoisonDot"));
+                RogueLv3PoisonDot = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv3_PoisonDot", 40f, SkillTreeConfig.GetConfigDescription("Rogue_Lv3_PoisonDot"));
+                RogueLv4PoisonDot = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv4_PoisonDot", 45f, SkillTreeConfig.GetConfigDescription("Rogue_Lv4_PoisonDot"));
+                RogueLv5PoisonDot = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_PoisonDot", 50f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_PoisonDot"));
 
                 // === 충전 시스템 ===
                 RogueShadowStrikeCharges = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_ShadowStrike_Charges", 1f, SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_Charges"));

@@ -58,6 +58,7 @@ namespace CaptainSkillTree.SkillTree
         public bool HasSpearThrow;        // 투창 전문가 레이블 표시용
         public float SpearThrowBonus;
         public float ProducerEnchantPct;  // Producer 무기 인챈트 % (AppendExtraStats 중복표시 방지용)
+        public float ProducerEnchantSpd;  // Producer WeaponSpd 인챈트 (AppendExtraStats ATK SPD 중복표시 방지용)
 
         public bool HasAny()
         {
@@ -365,19 +366,7 @@ namespace CaptainSkillTree.SkillTree
                 elemPct += producerPct;
             }
 
-            // crafting_lv2 무기 마법부여 — 아이템 customData에서 직접 읽기
-            if (item?.m_customData != null)
-            {
-                if (item.m_customData.TryGetValue("csct_weapon_dmg", out string craftDmgStr) &&
-                    float.TryParse(craftDmgStr, out float craftDmg) && craftDmg > 0f)
-                    b.FlatAllPhysical += craftDmg;
-
-                if (item.m_customData.TryGetValue("csct_weapon_spd", out string craftSpdStr) &&
-                    float.TryParse(craftSpdStr, out float craftSpd) && craftSpd > 0f)
-                    b.AttackSpeed += craftSpd;
-            }
-
-            // ProducerCrafting 무기 인챈트 % 반영 (WeaponDmg 타입 — 물리+속성 모두 적용)
+            // ProducerCrafting 무기 인챈트 % 반영 (먼저 확인 — 레거시와 중복 방지)
             var pEnchantType = ProducerCrafting.GetEnchantType(item);
             if (pEnchantType == ProducerCrafting.EnchantType.WeaponDmg)
             {
@@ -388,6 +377,26 @@ namespace CaptainSkillTree.SkillTree
                     elemPct += pEnchantVal;
                     b.ProducerEnchantPct = pEnchantVal;
                 }
+            }
+            else if (pEnchantType == ProducerCrafting.EnchantType.WeaponSpd)
+            {
+                float pEnchantVal = ProducerCrafting.GetEnchantValue(item);
+                if (pEnchantVal > 0f)
+                    b.ProducerEnchantSpd = pEnchantVal;  // 별도 추적, b.AttackSpeed에 미포함
+            }
+
+            // crafting_lv2 무기 마법부여 — 아이템 customData에서 직접 읽기 (새 인챈트 없는 경우만)
+            if (item?.m_customData != null)
+            {
+                if (item.m_customData.TryGetValue("csct_weapon_dmg", out string craftDmgStr) &&
+                    float.TryParse(craftDmgStr, out float craftDmg) && craftDmg > 0f &&
+                    pEnchantType != ProducerCrafting.EnchantType.WeaponDmg)
+                    b.FlatAllPhysical += craftDmg;
+
+                if (item.m_customData.TryGetValue("csct_weapon_spd", out string craftSpdStr) &&
+                    float.TryParse(craftSpdStr, out float craftSpd) && craftSpd > 0f &&
+                    pEnchantType != ProducerCrafting.EnchantType.WeaponSpd)
+                    b.AttackSpeed += craftSpd;
             }
 
             b.PctPhysical  = physPct;
@@ -523,7 +532,8 @@ namespace CaptainSkillTree.SkillTree
                 result += $"\n<color={COL_ATK_ELEM}>🔥 {L.Get("weapon_effect_elem_atk")}: +{displayElemPct:F0}%</color>";
             if (b.MoveSpeed > 0.01f)
                 result += $"\n<color={COL_MOVE_SPD}>💨 {L.Get("weapon_effect_move_spd")}: +{b.MoveSpeed:F0}%</color>";
-            if (b.AttackSpeed > 0.01f)
+            // WeaponSpd 인챈트 없을 때만 스킬 공격속도 표시 (있으면 Producer 패치가 처리)
+            if (b.AttackSpeed > 0.01f && b.ProducerEnchantSpd < 0.01f)
                 result += $"\n<color={COL_ATK_SPD}>⚡ {L.Get("weapon_effect_atk_spd")}: +{b.AttackSpeed:F0}%</color>";
             if (b.MultishotLv1Chance > 0.01f)
                 result += $"\n<color={COL_ATK_PHY}>🎯 {L.Get("weapon_effect_multishot_lv1")}:</color> <color=orange>{b.MultishotLv1Chance:F0}%</color> <color=white>{L.Get("weapon_effect_prob")} +{b.MultishotLv1Arrows:F0}{L.Get("weapon_effect_arrows")}</color>";

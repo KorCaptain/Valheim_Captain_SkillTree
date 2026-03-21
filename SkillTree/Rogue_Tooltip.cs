@@ -33,6 +33,11 @@ namespace CaptainSkillTree.SkillTree
 
                 tooltip += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {L.Get("rogue_effect_strike", (int)atk, (int)dur, blasts)}</size></color>\n";
 
+                float instant = RogueSkills.GetPoisonInstantForLevel(mainLevel);
+                float dot = RogueSkills.GetPoisonDotForLevel(mainLevel);
+                float range = Rogue_Config.RoguePoisonRangeValue;
+                tooltip += $"<color=#90EE90><size=16>{L.Get("rogue_poison_info", (int)range, (int)instant, (int)dot)}</size></color>\n";
+
                 // 패시브
                 tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
                 tooltip += $"<color=#ADFF2F><size=16>{GetPassiveStr(mainLevel)}</size></color>\n";
@@ -74,17 +79,33 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
                     for (int lv = mainLevel + 1; lv <= 5; lv++)
                     {
-                        float pvAtk    = RogueSkills.GetAttackBonusForLevel(lv);
-                        float pvDur    = RogueSkills.GetBuffDurationForLevel(lv);
-                        int   pvBlasts = RogueSkills.GetPoisonBlastsForLevel(lv);
-                        float prevAtk  = RogueSkills.GetAttackBonusForLevel(lv - 1);
-                        int   prevBlasts = RogueSkills.GetPoisonBlastsForLevel(lv - 1);
+                        float pvAtk      = RogueSkills.GetAttackBonusForLevel(lv);
+                        float pvDur      = RogueSkills.GetBuffDurationForLevel(lv);
+                        int   pvBlasts   = RogueSkills.GetPoisonBlastsForLevel(lv);
+                        float pvInstant  = RogueSkills.GetPoisonInstantForLevel(lv);
+                        float pvDot      = RogueSkills.GetPoisonDotForLevel(lv);
+                        float pvCooldown = RogueSkills.GetCooldownForLevel(lv);
+                        float prevAtk      = RogueSkills.GetAttackBonusForLevel(lv - 1);
+                        int   prevBlasts   = RogueSkills.GetPoisonBlastsForLevel(lv - 1);
+                        float prevInstant  = RogueSkills.GetPoisonInstantForLevel(lv - 1);
+                        float prevDot      = RogueSkills.GetPoisonDotForLevel(lv - 1);
+                        float prevCooldown = RogueSkills.GetCooldownForLevel(lv - 1);
 
                         string activePreview = (lv == 5 && RogueSkills.GetChargesForLevel(lv) > RogueSkills.GetChargesForLevel(lv - 1))
                             ? L.Get("rogue_preview_charges", 1)
                             : L.Get("rogue_preview_attack", (int)(pvAtk - prevAtk), pvBlasts - prevBlasts);
 
                         tooltip += $"<color=#808080><size=14>Lv{lv} : {activePreview}\n";
+
+                        float instantDelta = pvInstant - prevInstant;
+                        float dotDelta = pvDot - prevDot;
+                        if (instantDelta > 0 || dotDelta > 0)
+                            tooltip += $"  {L.Get("rogue_preview_poison", (int)instantDelta, (int)dotDelta)}\n";
+
+                        float cdReduction = prevCooldown - pvCooldown;
+                        if (cdReduction > 0.01f)
+                            tooltip += $"  {L.Get("rogue_preview_cd", (int)Math.Round(cdReduction))}\n";
+
                         tooltip += $"  {L.Get("tooltip_passive")}: {GetPassiveStr(lv)}</size></color>\n";
                     }
                 }

@@ -33,7 +33,7 @@ namespace CaptainSkillTree.SkillTree
                 Name = "탱커",
                 Description = Tanker_Tooltip.GetTankerTooltip(), // 컨피그 연동 동적 툴팁
                 RequiredPoints = 0,
-                MaxLevel = 1,
+                MaxLevel = 5,
                 Tier = 7,
                 Position = new Vector2(550, 180),
                 Category = "직업",
@@ -44,6 +44,20 @@ namespace CaptainSkillTree.SkillTree
                 RequiredPlayerLevel = 10,
                 ApplyEffect = (lv) => { }
             });
+        }
+
+        /// <summary>
+        /// 레벨별 모든 저항 수치 반환 (Lv2부터 적용)
+        /// </summary>
+        public static float GetTankerResistForLevel(int level)
+        {
+            return level switch {
+                2 => Tanker_Config.TankerLv2AllResistValue,
+                3 => Tanker_Config.TankerLv3AllResistValue,
+                4 => Tanker_Config.TankerLv4AllResistValue,
+                >= 5 => Tanker_Config.TankerLv5AllResistValue,
+                _ => 0f
+            };
         }
 
         /// <summary>

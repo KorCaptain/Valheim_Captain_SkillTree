@@ -5,7 +5,7 @@ model 사용에 대한 규칙을 명시하고 다음 규칙을 따른다.
 2. model은 hairu 로 에러 및 로그 수정
 3. model은 hairu 로 Crypto 에러 로그 수정
 4. sonnet은 종합 분석
- 
+
 # 테스트 + 품질 동시 점검
 1. model은 hairu 로 pytest 실패 목록
 2. model은 hairu 로 bare except 패턴
@@ -35,7 +35,13 @@ model 사용에 대한 규칙을 명시하고 다음 규칙을 따른다.
 3. 최종 검토
 4. 복잡한 추론
 
-
+## 코드 진행 후 검증 시스템
+1. C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\md 
+   api의 경우 valheim_all_api.md 맞는지 확인하고 수정보완한다.
+2. 액티브 및 패시브 스킬을 만들거나 수정했을 경우 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\md 
+ 의 알맞는 md 파일을 확인해서 문제 없는 지 확인하고 수정 보완한다.
+3. 최종 빌드 해보고 에러가 생기면 에러가 안생기게 수정하고 빌드한다. 
+ 
 ## 빠른 참조 맵 & 시스템 상세
 
 ### A. 수정 목적별 파일 빠른 참조 맵
@@ -56,165 +62,13 @@ model 사용에 대한 규칙을 명시하고 다음 규칙을 따른다.
 | 시스템 초기화 순서 | `Plugin.Systems.cs` (497줄) |
 | 입력 처리 | `Gui/SkillTreeInputListener.cs` (**수정 금지!**) |
 
----
-
-### B. UI 시스템 상세 (Gui/)
-
-**SkillTreeUI.cs** (3223줄 – 최대 파일)
-- `BuildUI()`: 전체 패널 생성
-- `RenderNodes()`: 노드 아이콘 배치
-- `DrawConnections()`: 연결선 그리기
-- `OnLanguageChanged()`: 언어 변경 이벤트 수신 → 전체 텍스트 갱신
-- `ShowConfirmDialog()` / `HideConfirmDialog()`: 확인/취소 대화상자
-- SetSiblingIndex 렌더링 순서: 0=배경, 1=연결선, 2=노드, 3=직업아이콘, 최상위=툴팁
-
-**SkillTreeTooltip.cs** (1298줄)
-- `ShowTooltip(SkillNode)`: 툴팁 표시
-- `HideTooltip()`: ESC/Tab/우클릭/휠클릭으로 닫기
-- Canvas 최상위 레이어에 항상 배치 (`SetAsLastSibling`)
-
-**ActiveSkillHUD.cs** (603줄)
-- 액티브 스킬 쿨다운/버튼 표시
-- `UpdateHUD()`: 매 프레임 상태 갱신
-
-| 파일 | 역할 |
-|------|------|
-| `SkillTreeNodeUI.cs` | 개별 노드 아이콘 렌더링, 잠금/해제 상태 시각화 |
-| `SkillBuffDisplay.cs` | 버프 아이콘 HUD 표시 |
-| `SkillTreeZoomCntrl.cs` | 스킬트리 패널 줌 인/아웃 |
-| `SkillTreeInputListener.cs` | 키 입력 처리 (**수정 금지**) |
-
----
-
-### C. 다국어 시스템 상세 (Localization/)
-
-**지원 언어**: KR(한국어), EN(영어), JP(일본어), CN(중국어), DE(독일어), FR(프랑스어), ES(스페인어), RU(러시아어), PT_BR(포르투갈어)
-
-| 파일 | 역할 |
-|------|------|
-| `LocalizationManager.cs` (916줄) | 자동 언어 감지, JSON+코드 번역 로딩, 이벤트 기반 UI 갱신 |
-| `L.cs` | `L.Get("key")` 축약 헬퍼 (27줄) |
-| `DefaultLanguages.cs` | partial class 진입점 – 5개 분류 파일 병합 |
-| `DefaultLanguages_GameMessages.cs` | 게임 메시지 KO/EN 번역 |
-| `DefaultLanguages_WeaponSkills.cs` | 무기 스킬 KO/EN 번역 |
-| `DefaultLanguages_JobExpert.cs` | 직업/전문가 KO/EN 번역 |
-| `DefaultLanguages_AttackProduction.cs` | 공격/생산 KO/EN 번역 |
-| `DefaultLanguages_ItemEffects.cs` | 아이템 효과 KO/EN 번역 |
-| `ConfigTranslations.cs` | F1 Config Manager 번역 오케스트레이터 |
-| `ConfigTranslations_ExpertDesc.cs` (1387줄) | 전문가 트리 Config 설명 |
-| `ConfigTranslations_HeavyMeleeDesc.cs` (1240줄) | 중무장 근접 Config 설명 |
-| `ConfigTranslations_SwordKnifeDesc.cs` (1110줄) | 검/단검 Config 설명 |
-| `ConfigTranslations_RangedDesc.cs` (1045줄) | 원거리 Config 설명 |
-| `ConfigTranslations_JobDesc.cs` (939줄) | 직업 Config 설명 |
-| `ConfigTranslations_KeyNames_KO.cs` (896줄) | F1 키 이름 한국어 |
-| `ConfigTranslations_KeyNames_EN.cs` | F1 키 이름 영어 |
-| `de.json`, `ru.json`, `pt_BR.json`, `zh-cn.json` | 외부 JSON 번역 파일 |
-
-**키 추가 워크플로우**:
-1. `DefaultLanguages_{분류}.cs`에 KO + EN 키 등록
-2. `ConfigTranslations_{분류}Desc.cs`에 설명 번역 추가
-3. `ConfigTranslations_KeyNames_KO.cs` + `_EN.cs`에 표시명 추가
-4. `ru.json` 동기화 (EN 원문으로 임시 등록 가능)
-5. 검증: `scripts/validate_loc_keys.ps1` 실행
-
----
-
-### D. Config 시스템 상세 (SkillTree/*_Config.cs)
-
-**Config 파일 목록**:
-
-| 파일 | 담당 트리 |
-|------|----------|
-| `Attack_Config.cs` | 공격 전문가 |
-| `Speed_Config.cs` | 속도 전문가 |
-| `Defense_Config.cs` | 방어 전문가 |
-| `Production_Config.cs` | 생산 전문가 |
-| `Bow_Config.cs` | 활 트리 |
-| `Crossbow_Config.cs` | 석궁 트리 |
-| `Staff_Config.cs` | 지팡이 트리 |
-| `Knife_Config.cs` | 단검 트리 |
-| `Sword_Config.cs` | 검 트리 |
-| `Mace_Config.cs` | 둔기 트리 |
-| `Spear_Config.cs` | 창 트리 |
-| `Polearm_Config.cs` | 폴암 트리 |
-| `Archer_Config.cs` | 궁수 직업 |
-| `Berserker_Config.cs` | 광전사 직업 |
-| `Mage_Config.cs` | 마법사 직업 |
-| `Paladin_Config.cs` | 성기사 직업 |
-| `Rogue_Config.cs` | 로그 직업 |
-
-**Config 오케스트레이터**: `SkillTreeConfig.cs` (1059줄)
-- `InitializeAll()`: 모든 Config 파일 순차 초기화
-- `GetConfigDescription(key)`: 다국어 설명 반환 (하드코딩 금지)
-- Jotunn `BindServerSync`: 멀티플레이어 서버 동기화
-
----
-
-### E. 스킬 트리 구조 상세
-
-**트리별 핵심 파일 매핑**:
-
-| 트리 | 데이터 | 스킬 구현 | 효과 패치 | 툴팁 |
-|------|--------|----------|----------|------|
-| 활(Bow) | `RangedSkillData.cs` | `ArcherSkills.cs` | `SkillEffect.RangedSkills.cs` | `Archer_Tooltip.cs` |
-| 석궁 | `RangedSkillData.cs` | - | `SkillEffect.CrossbowOneShot.cs` | - |
-| 지팡이 | `RangedSkillData.cs` | `MageSkills.cs` | `SkillEffect.cs` | `Mage_Tooltip.cs` |
-| 검 | `MeleeSkillData.cs` | `Sword_Skill.cs` | `SkillEffect.SwordSpearSkillEffects.cs` | `Sword_Tooltip.cs` |
-| 단검 | `MeleeSkillData.cs` | `Knife_Skill.cs` | `SkillEffect.KnifeSkillEffects.cs` | `Knife_Tooltip.cs` |
-| 둔기 | `MeleeSkillData.cs` | `MaceSkills.cs` | `SkillEffect.MeleeSkills.cs` | `Mace_Tooltip.cs` |
-| 창 | `MeleeSkillData.cs` | - | `SkillEffect.SwordSpearSkillEffects.cs` | `Spear_Tooltip.cs` |
-| 폴암 | `MeleeSkillData.cs` | - | `SkillEffect.PolearmTree.cs` | `Polearm_Tooltip.cs` |
-| 속도전문가 | `SpeedSkillData.cs` | - | `SkillEffect.SpeedTree.cs` + `SpeedTree2.cs` | - |
-| 방어전문가 | `Defense_SkillData.cs` | `TankerSkills.cs` | `SkillEffect.cs` | `Tanker_Tooltip.cs` |
-| 공격전문가 | `AttackSkillData.cs` | - | `SkillEffect.cs` | - |
-| 생산전문가 | `ProductionSkillData.cs` | - | `SkillEffect.cs` | - |
-| 직업시스템 | `JobSkills.cs` | `JobSkills.cs` | `Plugin.Patches.cs` | 직업별 `*_Tooltip.cs` |
-
-**SkillTreeData.cs 등록 순서** (RegisterAll):
-JobSkills → RangedSkillData → MeleeSkillData → DefenseTreeData → AttackSkillData → ProductionSkillData → SpeedSkillData
-
-**SkillNode 핵심 속성**:
-```csharp
-Id, NameKey, DescriptionKey,  // 로컬라이제이션 키
-Tier, Category, Position,     // 트리 위치
-Prerequisites, MutuallyExclusive, // 선행/상호배제
-MaxLevel, GetEffectValue, ApplyEffect // 효과
-```
-
----
-
-### F. VFX 시스템 상세
-
-| 구분 | 위치 | 사용 방법 |
-|------|------|---------|
-| 커스텀 VFX | `asset/VFX/*.png` (35+ 파일) | `SimpleVFX.Play()` 또는 `VFXManager.PlayVFXFollowPlayer()` |
-| 발헤임 기본 VFX | `VFX/Valheim_prefab.txt` 목록 | `VFXManager.PlayVFXMultiplayer()` (**Destroy 호출 금지**) |
-
-**커스텀 VFX 파일 분류** (asset/VFX/): `area_*` 범위, `buff_*` 버프, `debuff_*` 디버프, `flash_*` 순간, `hit_*` 피격, `shine_*` 광채
-
-**VFX 핵심 클래스**:
-- `SimpleVFX.cs` (692줄): AssetBundle 로딩/캐싱/재생 코어
-- `VFXManager.cs`: 고수준 API
-  - `PlayVFXFollowPlayer(name, player)`: 플레이어 추적 VFX
-  - `PlayVFXAtPosition(name, pos)`: 위치 고정 VFX
-  - `PlayVFXMultiplayer(name, pos)`: ZNetScene 기반 멀티플레이어 동기화
-
-⚠️ **VFX 무한 로딩 방지**: 발헤임 기본 VFX 오브젝트에 `Destroy()` 절대 호출 금지 → `md/VFX_SOUND_INFINITE_LOADING_FIX.md` 참조
-
----
-
-### G. MMO 시스템 상세 (MMO_System/)
-
-| 파일 | 역할 | 라인 |
-|------|------|------|
-| `CaptainMMOBridge.cs` | EpicMMO 감지 및 연동 (리플렉션 기반) | 951 |
-| `CaptainLevelSystem.cs` | 자체 레벨 시스템 (EpicMMO 없을 때 fallback) | 499 |
-| `CaptainExpHud.cs` | 경험치 HUD | - |
-| `CaptainExpTable.cs` | 레벨별 경험치 테이블 | - |
-| `CaptainMonsterExp.cs` | 몬스터 경험치 처리 | - |
-| `CaptainPartyExp.cs` | 파티 경험치 분배 | - |
-| `MMODifficultyManager.cs` | 난이도 관리 | - |
-| `EpicMMOReflectionHelper.cs` | MMO API 리플렉션 접근 헬퍼 | - |
+> 시스템 상세 가이드:
+> - UI 시스템 → `md/UI_SYSTEM_RULES.md`
+> - 다국어 시스템 → `md/MULTILANGUAGE_GUIDE.md`
+> - Config 시스템 → `md/CONFIG_GUIDE.md`
+> - 스킬 트리 구조 → `md/SKILL_DEVELOPMENT_WORKFLOW.md`
+> - VFX 시스템 → `md/ZNETSCENE_VFX_RULES.md`
+> - MMO 시스템 → `md/MMO_INTEGRATION_GUIDE.md`
 
 ---
 
@@ -228,56 +82,6 @@ MaxLevel, GetEffectValue, ApplyEffect // 효과
 | `L` (헬퍼) | `Localization/L.cs` | `L.Get("key")` – 모든 텍스트에 사용 |
 
 ---
-
-1. Think Before Coding
-Don't assume. Don't hide confusion. Surface tradeoffs.
-
-Before implementing:
-
-State your assumptions explicitly. If uncertain, ask.
-If multiple interpretations exist, present them - don't pick silently.
-If a simpler approach exists, say so. Push back when warranted.
-If something is unclear, stop. Name what's confusing. Ask.
-2. Simplicity First
-Minimum code that solves the problem. Nothing speculative.
-
-No features beyond what was asked.
-No abstractions for single-use code.
-No "flexibility" or "configurability" that wasn't requested.
-No error handling for impossible scenarios.
-If you write 200 lines and it could be 50, rewrite it.
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
-
-3. Surgical Changes
-Touch only what you must. Clean up only your own mess.
-
-When editing existing code:
-
-Don't "improve" adjacent code, comments, or formatting.
-Don't refactor things that aren't broken.
-Match existing style, even if you'd do it differently.
-If you notice unrelated dead code, mention it - don't delete it.
-When your changes create orphans:
-
-Remove imports/variables/functions that YOUR changes made unused.
-Don't remove pre-existing dead code unless asked.
-The test: Every changed line should trace directly to the user's request.
-
-4. Goal-Driven Execution
-Define success criteria. Loop until verified.
-
-Transform tasks into verifiable goals:
-
-"Add validation" → "Write tests for invalid inputs, then make them pass"
-"Fix the bug" → "Write a test that reproduces it, then make it pass"
-"Refactor X" → "Ensure tests pass before and after"
-For multi-step tasks, state a brief plan:
-
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-
 
 # CaptainSkillTree - Valheim Skill Tree Mod
 
@@ -294,7 +98,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ## 글로벌 규칙
 1. 한국어로 대화할 것
 2. 메모리 최적화
-3. 코드는 800줄 이상시 사용자에 경고안내 하고 800~1000줄 이내로 하고 필요 시 분할연동으로 만들 것
+3. 코드는 800줄 이상시 사용자에 경고안내 하고 800~1000줄 이내로 하고 분할 하여 만든다
 
 ## Project Overview
 CaptainSkillTree는 Valheim용 스킬트리 모드. BepInEx 플러그인 + Harmony 패치로 구현. EpicMMOSystem을 확장하여 스킬 기반 캐릭터 성장 시스템 추가.
@@ -366,7 +170,7 @@ CaptainSkillTree/
 | **UI 다국어** | `Localization/DefaultLanguages.cs` | 모든 언어 키 동시 수정 |
 | **Config 다국어** | `Localization/ConfigTranslations.cs` | 【】형식 번역 추가 |
 
-> 상세 규칙 → `md/CONFIG_GUIDE.md`, `md/LOCALIZATION_GUIDE.md`
+> 상세 규칙 → `md/CONFIG_GUIDE.md`, `md/MULTILANGUAGE_GUIDE.md`
 
 ### 4. EmbeddedResource 시스템
 - 모든 asset 파일은 EmbeddedResource로 DLL에 포함
@@ -383,7 +187,7 @@ CaptainSkillTree/
 ### 6. 액티브 스킬 키 바인딩 및 제한
 | 키 | 용도 | 제한 |
 |----|------|------|
-| R키 | 원거리 액티브 | 1개만 선택 가능 |
+| Z키 | 원거리 액티브 | 1개만 선택 가능 |
 | G키 | 근접 메인 액티브 | 같은 무기 트리만 |
 | H키 | 보조 액티브 | G키와 연동, 같은 무기 트리만 |
 | Y키 | 직업 액티브 | 1개만 선택 가능 |
@@ -402,10 +206,10 @@ CaptainSkillTree/
 
 ### 8. Config 초기화 순서 (SkillTreeConfig.cs)
 ```
-전문가: (구분선) Attack → Speed → Defense → Production 
-원거리:  (구분선) Bow → Staff → Crossbow                 
-근접:   (구분선) Knife → Sword → Mace → Spear → Polearm  
-직업:   (구분선) Archer → Mage → Tanker → Rogue → Paladin → Berserker
+전문가: (구분선) Attack → Speed → Defense → Production
+원거리:  (구분선) Bow → Staff → Crossbow
+근접:   (구분선) Knife → Sword → Mace → Spear → Polearm
+직업:   (구분선) Archer → Mage → Tanker → Rogue → Paladin → Berserker -> Producer
 ```
 > 상세 규칙 (구분선 형식, 파일 구조 등) → `md/CONFIG_GUIDE.md`
 
@@ -431,39 +235,31 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 | `SkillNodeBuilder` | `SkillTree/SkillNodeBuilder.cs` | 스킬 노드 생성 빌더 패턴 |
 
 ### 11. 로컬라이제이션 키 누락 방지
-- 코드 작성 전 DefaultLanguages.cs에 KO + EN 키 먼저 등록
+- 코드 작성 전 DefaultLanguages.cs에 KO + EN 키 **먼저** 등록
+- `ru.json` 동기화 필수 (번역 없으면 EN 원문 사용)
 - 빌드 전 검증 스크립트 필수 실행:
   ```bash
   cd CaptainSkillTree/scripts
   powershell -ExecutionPolicy Bypass -File validate_loc_keys.ps1
   ```
-> 상세 워크플로우 → `md/LOCALIZATION_GUIDE.md`
+> 상세 규칙 및 체크리스트 → `md/MULTILANGUAGE_GUIDE.md`
 
 ### 12. Config 다국어 번역
 - `BindServerSync` Description에 **하드코딩된 영어 문자열 절대 금지**
 - 반드시 `SkillTreeConfig.GetConfigDescription("키이름")` 사용
 - 번역은 `Localization/ConfigTranslations.cs`에 【】형식으로 추가
-> 상세 규칙 및 체크리스트 → `md/CONFIG_GUIDE.md`
+> 상세 규칙 및 체크리스트 → `md/CONFIG_GUIDE.md`, `md/MULTILANGUAGE_GUIDE.md`
 
-### 13. 새 Config 키 추가 시 3종 세트 필수 (Config 번역 완성 규칙)
-새 Config 키(`BindServerSync`)를 추가할 때 **반드시 아래 3가지를 동시에 등록**:
-
-| 항목 | 파일 | 내용 |
-|------|------|------|
-| **① 2차 항목 표시명 (DispName)** | `ConfigTranslations.cs` → `GetKoreanKeyNames()` + `GetEnglishKeyNames()` | F1 Config Manager에서 키 이름 표시 |
-| **② 마우스오버 세부설명 (Description)** | `ConfigTranslations.cs` → `GetDescriptionTranslations()` (KO + EN) | 마우스오버 시 나타나는 상세 설명 |
-| **③ GetConfigDescription() 호출** | `*_Config.cs` → `BindServerSync()` description 파라미터 | 하드코딩 문자열 대신 반드시 사용 |
-
-> ❌ ①②③ 중 하나라도 빠지면 F1 Config Manager에서 번역이 깨짐
-> ❌ 특히 ②를 누락하면 마우스오버 설명이 영어 키 이름 그대로 표시됨
+### 13. 새 Config 키 추가 시 3종 세트 필수
+반드시 ①DispName ②Description ③GetConfigDescription() 동시 등록.
+> ❌ 하나라도 빠지면 F1 Config Manager에서 번역이 깨짐
+> 상세 형식 및 예시 → `md/MULTILANGUAGE_GUIDE.md`
 
 ### 14. ru.json 자동 동기화 (필수)
 - **DefaultLanguages*.cs에 키를 추가/수정/삭제할 때마다 `Localization/ru.json`도 반드시 동시 수정**
 - 추가: 동일 키를 ru.json에 추가 (번역문 없으면 EN 원문을 임시값으로 사용)
 - 삭제: ru.json에서도 해당 키 제거
-- 수정: 의미가 바뀐 경우 ru.json 값도 갱신
-
-> ❌ ru.json 누락 시 러시아어 클라이언트에서 텍스트가 fallback(EN/KO)으로 표시됨
+> `md/MULTILANGUAGE_GUIDE.md` 참조
 
 ---
 
@@ -490,11 +286,14 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 | 문서 | 내용 |
 |------|------|
 | `CONFIG_GUIDE.md` | Config 키 규칙, 초기화 순서, 다국어 번역, 툴팁, 멀티플레이어 동기화 |
-| `LOCALIZATION_GUIDE.md` | 로컬라이제이션 키 관리, 검증 스크립트 |
+| `MULTILANGUAGE_GUIDE.md` | 다국어 키 관리, Config 번역, 검증 스크립트, 체크리스트 |
 | `ACTIVE_SKILL_SYSTEM.md` | 액티브 스킬 상세 규칙 |
 | `MMO_INTEGRATION_GUIDE.md` | MMO getParameter 패치 |
 | `DAMAGE_SYSTEM_RULES.md` | 데미지 시스템 |
 | `QUICK_REFERENCE.md` | 빠른 참조 |
+| `UI_SYSTEM_RULES.md` | UI 시스템 상세 |
+| `ZNETSCENE_VFX_RULES.md` | VFX 시스템 상세 |
+| `SKILL_DEVELOPMENT_WORKFLOW.md` | 스킬 트리 구조 상세 |
 
 ### 자동 트리거 Skill (Claude Code) - `.claude/skills/` 키워드 기반 자동 활성화
 

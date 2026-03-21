@@ -308,6 +308,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_MiningLv4_BonusChance"] = "Tier 4: Mining Lv4 - Ore +1 Bonus Chance (%)",
                 ["Tier4_CraftingLv4_UpgradeChance"] = "Tier 4: Crafting Lv4 - Upgrade +1 Bonus Chance (%)",
                 ["Tier4_CraftingLv4_DurabilityBonus"] = "Tier 4: Crafting Lv4 - Max Durability Increase (%)",
+                ["Tier5_CraftingLv5_DurabilityBonus"] = "Tier 5: Crafting Lv5 - Durability Bonus (%)",
+                ["Tier5_CraftingLv5_MaterialReduction"] = "Tier 5: Crafting Lv5 - Material Reduction (%)",
+                ["Tier5_CraftingLv5_EnchantChance"] = "Tier 5: Crafting Lv5 - Enchant Chance (%)",
 
                 // === Production Tree: RequiredPoints (14) ===
                 ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [Production Expert] Required Points",
@@ -506,13 +509,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [Lucky Mana] Free Cast Trigger Chance (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [Lucky Mana] Required Points",
 
-                // === Tier 5-1: Rapid Barrage - R-Key Active (6) ===
-                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Rapid Barrage] Extra Projectile Count",
-                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Rapid Barrage] Projectile Damage Percent (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Rapid Barrage] Angle Offset (Unused)",
-                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Rapid Barrage] Eitr Cost",
-                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Rapid Barrage] Cooldown (sec)",
-                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Rapid Barrage] Required Points",
+                // === Tier 5-1: Double Casting - R-Key Active (6) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Double Casting] Extra Projectile Count",
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Double Casting] Projectile Damage Percent (%)",
+                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Double Casting] Angle Offset (Unused)",
+                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Double Casting] Eitr Cost",
+                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Double Casting] Cooldown (sec)",
+                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Double Casting] Required Points",
 
                 // === Tier 5-2: Instant Area Heal - H-Key Active (6) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [Heal] Cooldown (sec)",
@@ -826,7 +829,26 @@ namespace CaptainSkillTree.Localization
                 ["Mage_Eitr_Cost"] = "Active: Eitr Cost",
                 ["Mage_Damage_Multiplier"] = "Active: Damage Multiplier (%)",
                 ["Mage_Cooldown"] = "Active: Cooldown (sec)",
-                ["Mage_Elemental_Resistance"] = "Passive: Elemental Resistance (%)",
+                ["Mage_Lv1_Cooldown"] = "Active: Cooldown Lv1 (sec)",
+                ["Mage_Lv2_Cooldown"] = "Active: Cooldown Lv2 (sec)",
+                ["Mage_Lv3_Cooldown"] = "Active: Cooldown Lv3 (sec)",
+                ["Mage_Lv4_Cooldown"] = "Active: Cooldown Lv4 (sec)",
+                ["Mage_Lv5_Cooldown"] = "Active: Cooldown Lv5 (sec)",
+                ["Mage_Lv1_AOE_Max_Targets"] = "Active: Max Target Count Lv1",
+                ["Mage_Lv2_AOE_Max_Targets"] = "Active: Max Target Count Lv2",
+                ["Mage_Lv3_AOE_Max_Targets"] = "Active: Max Target Count Lv3",
+                ["Mage_Lv4_AOE_Max_Targets"] = "Active: Max Target Count Lv4",
+                ["Mage_Lv5_AOE_Max_Targets"] = "Active: Max Target Count Lv5",
+                ["Mage_Lv1_Elemental_Resistance"] = "Passive: Elemental Resistance Lv1 (%)",
+                ["Mage_Lv2_Elemental_Resistance"] = "Passive: Elemental Resistance Lv2 (%)",
+                ["Mage_Lv3_Elemental_Resistance"] = "Passive: Elemental Resistance Lv3 (%)",
+                ["Mage_Lv4_Elemental_Resistance"] = "Passive: Elemental Resistance Lv4 (%)",
+                ["Mage_Lv5_Elemental_Resistance"] = "Passive: Elemental Resistance Lv5 (%)",
+                ["Mage_Lv1_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv1 (%)",
+                ["Mage_Lv2_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv2 (%)",
+                ["Mage_Lv3_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv3 (%)",
+                ["Mage_Lv4_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv4 (%)",
+                ["Mage_Lv5_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv5 (%)",
 
                 // ============================================
                 // Tanker Job Skills - 10 Keys

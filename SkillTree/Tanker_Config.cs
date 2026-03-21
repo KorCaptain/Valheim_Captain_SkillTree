@@ -24,6 +24,13 @@ namespace CaptainSkillTree.SkillTree
         // === 패시브 효과 설정 ===
         public static ConfigEntry<float> TankerPassiveDamageReduction; // 탱커 패시브 피해 감소 (%)
 
+        // === 레벨업 패시브 효과 설정 ===
+        public static ConfigEntry<float> TankerHpBonus;         // 기본 체력 보너스 (고정값)
+        public static ConfigEntry<float> TankerLv2AllResist;    // Lv2 모든 저항 (%)
+        public static ConfigEntry<float> TankerLv3AllResist;    // Lv3 모든 저항 (%)
+        public static ConfigEntry<float> TankerLv4AllResist;    // Lv4 모든 저항 (%)
+        public static ConfigEntry<float> TankerLv5AllResist;    // Lv5 모든 저항 (%)
+
         // === 동적 값 접근자 (MMO 시스템 연동) ===
         public static float TankerTauntCooldownValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_Cooldown", TankerTauntCooldown?.Value ?? 60f);
         public static float TankerTauntStaminaCostValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_StaminaCost", TankerTauntStaminaCost?.Value ?? 25f);
@@ -35,6 +42,11 @@ namespace CaptainSkillTree.SkillTree
         public static float TankerTauntEffectHeightValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_EffectHeight", TankerTauntEffectHeight?.Value ?? 2.0f);
         public static float TankerTauntEffectScaleValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_EffectScale", TankerTauntEffectScale?.Value ?? 0.8f);
         public static float TankerPassiveDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Tanker_Passive_DamageReduction", TankerPassiveDamageReduction?.Value ?? 15f);
+        public static float TankerHpBonusValue => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus", TankerHpBonus?.Value ?? 100f);
+        public static float TankerLv2AllResistValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv2_AllResist", TankerLv2AllResist?.Value ?? 5f);
+        public static float TankerLv3AllResistValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv3_AllResist", TankerLv3AllResist?.Value ?? 8f);
+        public static float TankerLv4AllResistValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv4_AllResist", TankerLv4AllResist?.Value ?? 12f);
+        public static float TankerLv5AllResistValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv5_AllResist", TankerLv5AllResist?.Value ?? 15f);
         
         /// <summary>
         /// Tanker 컨피그 초기화 (SkillTreeConfig에서 호출)
@@ -120,7 +132,43 @@ namespace CaptainSkillTree.SkillTree
                     15f,
                     SkillTreeConfig.GetConfigDescription("Tanker_Passive_DamageReduction")
                 );
-                
+
+                // === 레벨업 패시브 설정 ===
+                TankerHpBonus = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Hp_Bonus",
+                    100f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus")
+                );
+
+                TankerLv2AllResist = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Lv2_AllResist",
+                    5f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Lv2_AllResist")
+                );
+
+                TankerLv3AllResist = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Lv3_AllResist",
+                    8f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Lv3_AllResist")
+                );
+
+                TankerLv4AllResist = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Lv4_AllResist",
+                    12f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Lv4_AllResist")
+                );
+
+                TankerLv5AllResist = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Lv5_AllResist",
+                    15f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Lv5_AllResist")
+                );
+
                 Plugin.Log.LogDebug("[탱커 컨피그] 설정 항목 생성 완료");
                 
                 // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
@@ -151,6 +199,11 @@ namespace CaptainSkillTree.SkillTree
                 TankerTauntEffectHeight.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerTauntEffectScale.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerPassiveDamageReduction.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerHpBonus.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerLv2AllResist.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerLv3AllResist.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerLv4AllResist.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerLv5AllResist.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
 
                 Plugin.Log.LogDebug("[탱커 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화");
             }

@@ -205,6 +205,37 @@ namespace CaptainSkillTree.Localization
                 "Лечение работает корректно (включено в m_baseHP).\n" +
                 "Рекомендуемое значение: 100%",
 
+                // === Berserker Lv2~5 Пассивные Config ===
+                ["Berserker_Lv2_CooldownReduction"] =
+                "【Берсерк Lv2: Сниж. КД Ярости (сек)】\n" +
+                "На Lv2 уменьшает перезарядку Ярости на это значение.\n" +
+                "Рекомендуемое: 5 секунд",
+
+                ["Berserker_Lv3_RageDamageReduction"] =
+                "【Берсерк Lv3: Снижение урона в ярости (%)】\n" +
+                "На Lv3 уменьшает получаемый урон в состоянии ярости.\n" +
+                "Рекомендуемое: 15%",
+
+                ["Berserker_Lv4_LowHpAttackBonus"] =
+                "【Берсерк Lv4: Бонус атаки при низком ХП (%)】\n" +
+                "На Lv4 увеличивает атаку при ХП ниже порогового значения.\n" +
+                "Рекомендуемое: 15%",
+
+                ["Berserker_Lv4_LowHpAttackThreshold"] =
+                "【Берсерк Lv4: Порог низкого ХП (%)】\n" +
+                "Процент ХП ниже которого активируется бонус атаки Lv4.\n" +
+                "Рекомендуемое: 50%",
+
+                ["Berserker_Lv5_PassiveCooldownReduction"] =
+                "【Берсерк Lv5: Сниж. КД «Вопреки Смерти» (сек)】\n" +
+                "На Lv5 уменьшает перезарядку пассивного навыка.\n" +
+                "Рекомендуемое: 120 секунд",
+
+                ["Berserker_Lv5_InvincibilityBonus"] =
+                "【Берсерк Lv5: Доп. время неуязвимости (сек)】\n" +
+                "На Lv5 увеличивает длительность неуязвимости при «Вопреки Смерти».\n" +
+                "Рекомендуемое: 2 секунды",
+
                 // ========================================
                 // Tanker Job (танк)
                 // ========================================
@@ -261,6 +292,28 @@ namespace CaptainSkillTree.Localization
                 "【Пассивное снижение урона танка (%)】\n" +
                 "Пассивный танк: постоянно снижает получаемый урон.\n" +
                 "Рекомендуемое значение: 10-20%",
+
+                ["Tanker_Hp_Bonus"] =
+                "【Базовый HP танка】\n" +
+                "Пассивный бонус HP танка.\n" +
+                "По умолчанию: 100",
+
+                ["Tanker_Lv2_AllResist"] =
+                "【Все сопротивления танка Lv2 (%)】\n" +
+                "Пассивное сопротивление всем типам урона (Lv2+).\n" +
+                "По умолчанию: 5%",
+
+                ["Tanker_Lv3_AllResist"] =
+                "【Все сопротивления танка Lv3 (%)】\n" +
+                "По умолчанию: 8%",
+
+                ["Tanker_Lv4_AllResist"] =
+                "【Все сопротивления танка Lv4 (%)】\n" +
+                "По умолчанию: 12%",
+
+                ["Tanker_Lv5_AllResist"] =
+                "【Все сопротивления танка Lv5 (%)】\n" +
+                "По умолчанию: 15%",
 
                 // ========================================
                 // Rogue Job (разбойник)
@@ -369,6 +422,28 @@ namespace CaptainSkillTree.Localization
                 "Пассивный паладин: увеличивает сопротивление физическому и стихийному урону.\n" +
                 "Рекомендуемое значение: 5-12%",
 
+                // === Paladin Job: Lv2-5 Активные и Пассивные ===
+                ["Paladin_Lv2_SelfHealPercent"] = "【Lv2 Self Heal Ratio (%)】\nSelf heal % at Paladin Lv2.\nRecommended: 15-20%",
+                ["Paladin_Lv2_AllyHealPercent"] = "【Lv2 Ally Heal Ratio (%/tick)】\nAlly HoT % at Paladin Lv2.\nRecommended: 2-3%",
+                ["Paladin_Lv3_SelfHealPercent"] = "【Lv3 Self Heal Ratio (%)】\nSelf heal % at Paladin Lv3.\nRecommended: 17-22%",
+                ["Paladin_Lv3_AllyHealPercent"] = "【Lv3 Ally Heal Ratio (%/tick)】\nAlly HoT % at Paladin Lv3.\nRecommended: 2.5-3.5%",
+                ["Paladin_Lv3_HealRange"] = "【Lv3 Heal Range (m)】\nHealing radius at Paladin Lv3.\nRecommended: 5-7m",
+                ["Paladin_Lv4_SelfHealPercent"] = "【Lv4 Self Heal Ratio (%)】\nSelf heal % at Paladin Lv4.\nRecommended: 19-24%",
+                ["Paladin_Lv4_AllyHealPercent"] = "【Lv4 Ally Heal Ratio (%/tick)】\nAlly HoT % at Paladin Lv4.\nRecommended: 3-4%",
+                ["Paladin_Lv4_HealRange"] = "【Lv4 Heal Range (m)】\nHealing radius at Paladin Lv4.\nRecommended: 6-8m",
+                ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 Self Heal Ratio (%)】\nSelf heal % at Paladin Lv5.\nRecommended: 22-28%",
+                ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 Ally Heal Ratio (%/tick)】\nAlly HoT % at Paladin Lv5.\nRecommended: 3.5-5%",
+                ["Paladin_Lv5_HealRange"] = "【Lv5 Heal Range (m)】\nHealing radius at Paladin Lv5.\nRecommended: 7-10m",
+                ["Paladin_Lv5_Cooldown"] = "【Lv5 Cooldown (sec)】\nReduced cooldown at Paladin Lv5.\nRecommended: 20-30 sec",
+                ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 Resistance Reduction (%)】\nPaladin Lv2 passive resistance reduction.\nRecommended: 6-10%",
+                ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 Resistance Reduction (%)】\nPaladin Lv3 passive resistance reduction.\nRecommended: 8-12%",
+                ["Paladin_Lv4_ResistanceReduction"] = "【Lv4 Resistance Reduction (%)】\nPaladin Lv4 passive resistance reduction.\nRecommended: 10-14%",
+                ["Paladin_Lv5_ResistanceReduction"] = "【Lv5 Resistance Reduction (%)】\nPaladin Lv5 passive resistance reduction.\nRecommended: 12-18%",
+                ["Paladin_Lv2_StaminaBonus"] = "【Lv2 Max Stamina Bonus】\nFlat stamina bonus at Paladin Lv2.\nRecommended: 8-15",
+                ["Paladin_Lv3_StaminaBonus"] = "【Lv3 Max Stamina Bonus】\nFlat stamina bonus at Paladin Lv3.\nRecommended: 12-20",
+                ["Paladin_Lv4_StaminaBonus"] = "【Lv4 Max Stamina Bonus】\nFlat stamina bonus at Paladin Lv4.\nRecommended: 15-25",
+                ["Paladin_Lv5_StaminaBonus"] = "【Lv5 Max Stamina Bonus】\nFlat stamina bonus at Paladin Lv5.\nRecommended: 20-30",
+
                 // ========================================
                 // Berserker Job (берсерк)
                 // ========================================
@@ -420,7 +495,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_Cooldown"] =
                 "【Перезарядка пассива (сек)】\n" +
                 "Время ожидания до повторного срабатывания пассивной неуязвимости.\n" +
-                "По умолчанию: 180 сек (3 минуты)\n" +
+                "По умолчанию: 540 сек (9 минут)\n" +
                 "Рекомендуемое значение: 120-300 сек",
 
                 // === Berserker Job: Пассивный бонус ХП (ключ с исправлением регистра) ===
