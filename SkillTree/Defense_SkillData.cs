@@ -86,9 +86,9 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                Plugin.Log.LogInfo($"[방어 스킬 데이터] === 수호자의 진심 현재 설정값 ===");
-                Plugin.Log.LogInfo($"[방어 스킬 데이터] 지속시간: {Mace_Config.GuardianHeartDurationValue}초");
-                Plugin.Log.LogInfo($"[방어 스킬 데이터] 반사 데미지: {Mace_Config.GuardianHeartReflectPercentValue}%");
+                Plugin.Log.LogInfo($"[방어 스킬 데이터] === 방패돌진 현재 설정값 ===");
+                Plugin.Log.LogInfo($"[방어 스킬 데이터] 돌진 거리: 8m");
+                Plugin.Log.LogInfo($"[방어 스킬 데이터] 충돌 데미지: {Mace_Config.ShieldChargeDamagePercentValue}%");
                 Plugin.Log.LogInfo($"[방어 스킬 데이터] 스태미나 소모: {Mace_Config.GuardianHeartStaminaCostValue}");
                 Plugin.Log.LogInfo($"[방어 스킬 데이터] 쿨타임: {Mace_Config.GuardianHeartCooldownValue}초");
                 Plugin.Log.LogInfo($"[방어 스킬 데이터] 필요 포인트: {Mace_Config.GuardianHeartRequiredPointsValue}");

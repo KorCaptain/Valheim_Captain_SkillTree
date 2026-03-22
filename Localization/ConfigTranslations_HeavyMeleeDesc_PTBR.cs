@@ -351,33 +351,24 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Martelo da Fúria.",
 
-                // === Tier 7: Coração do Guardião (Ativa G) ===
+                // === Tier 7: Investida com Escudo (Ativa G) ===
                 ["Tier7_GuardianHeart_Cooldown"] =
                 "【Recarga (seg)】\n" +
-                "Tempo de espera para reutilizar a habilidade G.\n" +
-                "Menos = pode adotar postura defensiva com mais frequência.\n" +
-                "Valor recomendado: 100-140 seg",
+                "Tempo de espera para reutilizar a Investida com Escudo.\n" +
+                "Valor recomendado: 30-40 seg",
 
                 ["Tier7_GuardianHeart_StaminaCost"] =
                 "【Custo de Resistência】\n" +
-                "Resistência ao usar a habilidade.\n" +
-                "No papel de tanque, gerenciar resistência é importante.\n" +
-                "Valor recomendado: 20-30",
+                "Resistência ao usar Investida com Escudo.\n" +
+                "Valor recomendado: 15-25",
 
-                ["Tier7_GuardianHeart_Duration"] =
-                "【Duração do Buff (seg)】\n" +
-                "Duração da postura defensiva.\n" +
-                "Durante esse tempo você reflete dano e mantém alta defesa.\n" +
-                "Valor recomendado: 40-50 seg",
-
-                ["Tier7_GuardianHeart_ReflectPercent"] =
-                "【Porcentagem de Reflexão de Dano (%)】\n" +
-                "Porcentagem do dano recebido que é refletido ao atacante.\n" +
-                "Como tanque, devolva o dano ao inimigo.\n" +
-                "Valor recomendado: 5-8%",
+                ["Tier7_ShieldCharge_DamagePercent"] =
+                "【Dano do Bloqueio do Escudo (%)】\n" +
+                "Dano causado na colisão como porcentagem do poder de bloqueio.\n" +
+                "Valor recomendado: 60-80%",
 
                 ["Tier7_GuardianHeart_RequiredPoints"] =
-                "【Pontos Necessários】\nPontos para desbloquear Coração do Guardião.",
+                "【Pontos Necessários】\nPontos para desbloquear Investida com Escudo.",
 
                 // ========================================
                 // Polearm Tree (Árvore de Haste)

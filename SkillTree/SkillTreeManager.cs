@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
@@ -391,6 +391,30 @@ namespace CaptainSkillTree.SkillTree
                 int targetLevel = currentLevel + 1;
                 if (!HasMageLevelItems(targetLevel)) return false;
             }
+            else if (skillId == "Berserker")
+            {
+                // 버서커 직업: 레벨별 아이템 요구사항 체크
+                int targetLevel = currentLevel + 1;
+                if (!HasBerserkerLevelItems(targetLevel)) return false;
+            }
+            else if (skillId == "Tanker")
+            {
+                // 탱커 직업: 레벨별 아이템 요구사항 체크
+                int targetLevel = currentLevel + 1;
+                if (!HasTankerLevelItems(targetLevel)) return false;
+            }
+            else if (skillId == "Paladin")
+            {
+                // 성기사 직업: 레벨별 아이템 요구사항 체크
+                int targetLevel = currentLevel + 1;
+                if (!HasPaladinLevelItems(targetLevel)) return false;
+            }
+            else if (skillId == "Producer")
+            {
+                // 제작 전문가 직업: 레벨별 아이템 요구사항 체크
+                int targetLevel = currentLevel + 1;
+                if (!HasProducerLevelItems(targetLevel)) return false;
+            }
             else
             {
                 // 일반 스킬: 포인트 체크 (대기 중인 투자 고려)
@@ -476,7 +500,8 @@ namespace CaptainSkillTree.SkillTree
                 "sword_step5_defswitch",      // 검: 패링 돌격
                 "spear_Step5_combo",          // 창: 연공창
                 "mace_Step7_fury_hammer",     // 둔기: 분노의 망치
-                "staff_Step6_heal"            // 지팡이: 범위 힐
+                "staff_Step6_heal",           // 지팡이: 범위 힐
+                "bow_Step6_arrow_rain"        // 활: 화살비
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
@@ -511,6 +536,7 @@ namespace CaptainSkillTree.SkillTree
             var maceGSkills = new[] { "mace_Step7_guardian_heart" };
             var maceHSkills = new[] { "mace_Step7_fury_hammer" };
             var staffHSkills = new[] { "staff_Step6_heal" };
+            var bowHSkills   = new[] { "bow_Step6_arrow_rain" };
 
             // 무기 타입 판별 함수
             string GetWeaponType(string id)
@@ -521,6 +547,7 @@ namespace CaptainSkillTree.SkillTree
                 if (polearmGSkills.Contains(id)) return "폴암";
                 if (maceGSkills.Contains(id) || maceHSkills.Contains(id)) return "둔기";
                 if (staffHSkills.Contains(id)) return "지팡이";
+                if (bowHSkills.Contains(id)) return "활";
                 return "";
             }
 
@@ -622,7 +649,8 @@ namespace CaptainSkillTree.SkillTree
                 "sword_step5_defswitch",      // 검: 패링 돌격
                 "spear_Step5_combo",          // 창: 연공창
                 "mace_Step7_fury_hammer",     // 둔기: 분노의 망치
-                "staff_Step6_heal"            // 지팡이: 범위 힐
+                "staff_Step6_heal",           // 지팡이: 범위 힐
+                "bow_Step6_arrow_rain"        // 활: 화살비
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
@@ -657,6 +685,7 @@ namespace CaptainSkillTree.SkillTree
             var maceGSkills = new[] { "mace_Step7_guardian_heart" };
             var maceHSkills = new[] { "mace_Step7_fury_hammer" };
             var staffHSkills = new[] { "staff_Step6_heal" };
+            var bowHSkills   = new[] { "bow_Step6_arrow_rain" };
 
             // 무기 타입 판별 함수
             string GetWeaponType(string id)
@@ -667,6 +696,7 @@ namespace CaptainSkillTree.SkillTree
                 if (polearmGSkills.Contains(id)) return "폴암";
                 if (maceGSkills.Contains(id) || maceHSkills.Contains(id)) return "둔기";
                 if (staffHSkills.Contains(id)) return "지팡이";
+                if (bowHSkills.Contains(id)) return "활";
                 return "";
             }
 
@@ -942,17 +972,17 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 var player = Player.m_localPlayer;
-                if (player == null) return "플레이어 정보 없음";
+                if (player == null) return null;
                 
                 // ItemRequirement 시스템을 통한 검증 메시지
                 var requirements = SkillItemRequirements.GetRequirements(skillId);
                 if (requirements.Count == 0)
                 {
-                    return "요구사항 없음";
+                    return null;
                 }
-                
+
                 var inventory = player.GetInventory();
-                if (inventory == null) return "인벤토리 없음";
+                if (inventory == null) return null;
                 
                 var missingItems = new List<string>();
                 foreach (var req in requirements)
@@ -963,7 +993,7 @@ namespace CaptainSkillTree.SkillTree
                         bool isEquipped = IsItemEquipped(player, equipReq.ItemName);
                         if (!isEquipped)
                         {
-                            missingItems.Add($"{equipReq.DisplayName} 착용 필요");
+                            missingItems.Add(L.Get("item_equip_required", equipReq.DisplayName));
                         }
                     }
                     else if (req is ItemQuantityRequirement qtyReq)
@@ -986,12 +1016,12 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
                 
-                return missingItems.Count > 0 ? string.Join(", ", missingItems) : "조건 충족";
+                return missingItems.Count > 0 ? string.Join(", ", missingItems) : null;
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[생산 스킬 메시지] 오류: {ex.Message}");
-                return "검증 중 오류 발생";
+                return null;
             }
         }
 
@@ -1036,8 +1066,8 @@ namespace CaptainSkillTree.SkillTree
                         var missing = GetMissingArcherItems(targetLevel);
                         string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "⚠️ " + L.Get("archer_level_item_required", targetLevel) +
-                            (missingText.Length > 0 ? $"\n({missingText})" : ""), Color.red);
+                            "<size=20>⚠️ " + L.Get("archer_level_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : "") + "</size>", Color.red);
                     }
                     return;
                 }
@@ -1052,8 +1082,8 @@ namespace CaptainSkillTree.SkillTree
                         var missing = GetMissingProducerItems(targetLevel);
                         string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "⚠️ " + L.Get("producer_level_item_required", targetLevel) +
-                            (missingText.Length > 0 ? $"\n({missingText})" : ""), Color.red);
+                            "<size=20>⚠️ " + L.Get("producer_level_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : "") + "</size>", Color.red);
                     }
                     return;
                 }
@@ -1066,7 +1096,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if ((System.Object)Player.m_localPlayer != null)
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "⚠️ " + L.Get("berserker_lv2_skill_prereq_required"), Color.red);
+                            "<size=20>⚠️ " + L.Get("berserker_lv2_skill_prereq_required") + "</size>", Color.red);
                     return;
                 }
                 if (!HasBerserkerLevelItems(targetLevel))
@@ -1076,8 +1106,8 @@ namespace CaptainSkillTree.SkillTree
                         var missing = GetMissingBerserkerItems(targetLevel);
                         string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "⚠️ " + L.Get("berserker_level_req_items", targetLevel) +
-                            (missingText.Length > 0 ? $"\n({missingText})" : ""), Color.red);
+                            "<size=20>⚠️ " + L.Get("berserker_level_req_items", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : "") + "</size>", Color.red);
                     }
                     return;
                 }
@@ -1092,8 +1122,8 @@ namespace CaptainSkillTree.SkillTree
                         var missing = GetMissingRogueItems(targetLevel);
                         string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "⚠️ " + L.Get("rogue_level_item_required", targetLevel) +
-                            (missingText.Length > 0 ? $"\n({missingText})" : ""), Color.red);
+                            "<size=20>⚠️ " + L.Get("rogue_level_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : "") + "</size>", Color.red);
                     }
                     return;
                 }
@@ -1108,19 +1138,19 @@ namespace CaptainSkillTree.SkillTree
                         var missing = GetMissingMageItems(targetLevel);
                         string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "⚠️ " + L.Get("mage_level_item_required", targetLevel) +
-                            (missingText.Length > 0 ? $"\n({missingText})" : ""), Color.red);
+                            "<size=20>⚠️ " + L.Get("mage_level_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : "") + "</size>", Color.red);
                     }
                     return;
                 }
             }
-            else if (skillId == "Tanker" && GetSkillLevel(skillId) >= 1)
+            else if (skillId == "Tanker")
             {
                 int targetLevel = GetSkillLevel(skillId) + 1;
                 if (targetLevel > 5)
                 {
                     if ((System.Object)Player.m_localPlayer != null)
-                        SkillEffect.DrawFloatingText(Player.m_localPlayer, L.Get("tanker_max_level"), Color.yellow);
+                        SkillEffect.DrawFloatingText(Player.m_localPlayer, "<size=20>" + L.Get("tanker_max_level") + "</size>", Color.yellow);
                     return;
                 }
                 // Lv2 스킬 선행 조건 체크
@@ -1128,7 +1158,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if ((System.Object)Player.m_localPlayer != null)
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "⚠️ " + L.Get("tanker_lv2_skill_prereq_required"), Color.red);
+                            "<size=20>⚠️ " + L.Get("tanker_lv2_skill_prereq_required") + "</size>", Color.red);
                     return;
                 }
                 if (!HasTankerLevelItems(targetLevel))
@@ -1138,8 +1168,24 @@ namespace CaptainSkillTree.SkillTree
                         var missing = GetMissingTankerItems(targetLevel);
                         string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "⚠️ " + L.Get("tanker_level_item_required", targetLevel) +
-                            (missingText.Length > 0 ? $"\n({missingText})" : ""), Color.red);
+                            "<size=20>⚠️ " + L.Get("tanker_level_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : "") + "</size>", Color.red);
+                    }
+                    return;
+                }
+            }
+            else if (skillId == "Paladin")
+            {
+                int targetLevel = GetSkillLevel(skillId) + 1;
+                if (!HasPaladinLevelItems(targetLevel))
+                {
+                    if ((System.Object)Player.m_localPlayer != null)
+                    {
+                        var missing = GetMissingPaladinItems(targetLevel);
+                        string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
+                        SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                            "<size=20>⚠️ " + L.Get("paladin_level_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : "") + "</size>", Color.red);
                     }
                     return;
                 }
@@ -1235,6 +1281,12 @@ namespace CaptainSkillTree.SkillTree
                     int targetLevel = currentLevel + 1;
                     ConsumeTankerLevelItems(targetLevel);
                 }
+                // 성기사 직업: 레벨별 트로피+코인 소모
+                else if (pending.Key == "Paladin")
+                {
+                    int targetLevel = currentLevel + 1;
+                    ConsumePaladinLevelItems(targetLevel);
+                }
                 // 다른 직업 스킬: 레벨 0에서 1로 올라가는 경우(처음 전직)에만 아이템 소모
                 else if (IsJobSkill(pending.Key) && currentLevel == 0)
                 {
@@ -1317,19 +1369,24 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 1: return inventory.HaveItem("$item_trophy_greydwarfbrute") &&
-                               inventory.HaveItem("$item_trophy_eikthyr");
+                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 2: return inventory.HaveItem("$item_trophy_eikthyr") &&
                                inventory.HaveItem("$item_trophy_elder") &&
-                               (GetSkillLevel("bow_Step6_critboost") > 0 || GetSkillLevel("crossbow_Step6_expert") > 0);
+                               (GetSkillLevel("bow_Step6_critboost") > 0 || GetSkillLevel("crossbow_Step6_expert") > 0) &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 3: return inventory.HaveItem("$item_trophy_hatchling") &&
                                inventory.HaveItem("$item_trophy_elder") &&
-                               inventory.HaveItem("$item_trophy_bonemass");
+                               inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 4: return inventory.HaveItem("$item_trophy_abomination") &&
                                inventory.HaveItem("$item_trophy_bonemass") &&
-                               inventory.HaveItem("$item_trophy_dragonqueen");
+                               inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 5: return inventory.HaveItem("$item_trophy_dragonqueen") &&
                                inventory.HaveItem("$item_trophy_goblinking") &&
-                               inventory.HaveItem("$item_trophy_seekerqueen");
+                               inventory.HaveItem("$item_trophy_seekerqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 default: return false;
             }
         }
@@ -1347,27 +1404,32 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     if (!inventory.HaveItem("$item_trophy_greydwarfbrute")) missing.Add(L.Get("item_trophy_greydwarfbrute"));
                     if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 2:
                     if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
                     if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
                     if (GetSkillLevel("bow_Step6_critboost") <= 0 && GetSkillLevel("crossbow_Step6_expert") <= 0)
                         missing.Add(L.Get("archer_lv2_unlock_cond"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 3:
                     if (!inventory.HaveItem("$item_trophy_hatchling")) missing.Add(L.Get("item_trophy_hatchling"));
                     if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 4:
                     if (!inventory.HaveItem("$item_trophy_abomination")) missing.Add(L.Get("item_trophy_abomination"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
                     if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 5:
                     if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
                     if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
                     if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
             }
             return missing;
@@ -1385,25 +1447,30 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     inventory.RemoveItem("$item_trophy_greydwarfbrute", 1);
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
                     inventory.RemoveItem("$item_trophy_theelder", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 3:
                     inventory.RemoveItem("$item_trophy_hatchling", 1);
                     inventory.RemoveItem("$item_trophy_theelder", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 4:
                     inventory.RemoveItem("$item_trophy_abomination", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 5:
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
                     inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
             }
         }
@@ -1418,19 +1485,24 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 1: return inventory.HaveItem("$item_trophy_greydwarfbrute") &&
-                               inventory.HaveItem("$item_trophy_eikthyr");
+                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 2: return inventory.HaveItem("$item_trophy_eikthyr") &&
                                inventory.HaveItem("$item_trophy_theelder") &&
-                               GetSkillLevel("knife_step9_assassin_heart") > 0;
+                               GetSkillLevel("knife_step9_assassin_heart") > 0 &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 3: return inventory.HaveItem("$item_trophy_hatchling") &&
                                inventory.HaveItem("$item_trophy_theelder") &&
-                               inventory.HaveItem("$item_trophy_bonemass");
+                               inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 4: return inventory.HaveItem("$item_trophy_abomination") &&
                                inventory.HaveItem("$item_trophy_bonemass") &&
-                               inventory.HaveItem("$item_trophy_dragonqueen");
+                               inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 5: return inventory.HaveItem("$item_trophy_dragonqueen") &&
                                inventory.HaveItem("$item_trophy_goblinking") &&
-                               inventory.HaveItem("$item_trophy_seekerqueen");
+                               inventory.HaveItem("$item_trophy_seekerqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 default: return false;
             }
         }
@@ -1448,26 +1520,31 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     if (!inventory.HaveItem("$item_trophy_greydwarfbrute")) missing.Add(L.Get("item_trophy_greydwarfbrute"));
                     if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 2:
                     if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
                     if (!inventory.HaveItem("$item_trophy_theelder")) missing.Add(L.Get("item_trophy_theelder"));
                     if (GetSkillLevel("knife_step9_assassin_heart") <= 0) missing.Add(L.Get("rogue_lv2_unlock_cond"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 3:
                     if (!inventory.HaveItem("$item_trophy_hatchling")) missing.Add(L.Get("item_trophy_hatchling"));
                     if (!inventory.HaveItem("$item_trophy_theelder")) missing.Add(L.Get("item_trophy_theelder"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 4:
                     if (!inventory.HaveItem("$item_trophy_abomination")) missing.Add(L.Get("item_trophy_abomination"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
                     if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 5:
                     if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
                     if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
                     if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
             }
             return missing;
@@ -1485,25 +1562,30 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     inventory.RemoveItem("$item_trophy_greydwarfbrute", 1);
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
                     inventory.RemoveItem("$item_trophy_theelder", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 3:
                     inventory.RemoveItem("$item_trophy_hatchling", 1);
                     inventory.RemoveItem("$item_trophy_theelder", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 4:
                     inventory.RemoveItem("$item_trophy_abomination", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 5:
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
                     inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
             }
         }
@@ -1529,15 +1611,20 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 1: return inventory.HaveItem("$item_trophy_bjorn") &&
-                               inventory.HaveItem("$item_trophy_eikthyr");
+                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 2: return inventory.HaveItem("$item_trophy_troll") &&
-                               inventory.HaveItem("$item_trophy_elder");
+                               inventory.HaveItem("$item_trophy_elder") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 3: return inventory.HaveItem("$item_trophy_abomination") &&
-                               inventory.HaveItem("$item_trophy_bonemass");
+                               inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 4: return inventory.HaveItem("$item_trophy_bonemass") &&
-                               inventory.HaveItem("$item_trophy_dragonqueen");
+                               inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 5: return inventory.HaveItem("$item_trophy_goblinking") &&
-                               inventory.HaveItem("$item_trophy_seekerqueen");
+                               inventory.HaveItem("$item_trophy_seekerqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 default: return false;
             }
         }
@@ -1555,22 +1642,27 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     if (!inventory.HaveItem("$item_trophy_bjorn")) missing.Add(L.Get("item_trophy_bear"));
                     if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 2:
                     if (!inventory.HaveItem("$item_trophy_troll")) missing.Add(L.Get("item_trophy_troll"));
                     if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 3:
                     if (!inventory.HaveItem("$item_trophy_abomination")) missing.Add(L.Get("item_trophy_abomination"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 4:
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
                     if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 5:
                     if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
                     if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
             }
             return missing;
@@ -1588,22 +1680,27 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     inventory.RemoveItem("$item_trophy_bjorn", 1);
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_troll", 1);
                     inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 3:
                     inventory.RemoveItem("$item_trophy_abomination", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 4:
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 5:
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
                     inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
             }
         }
@@ -1623,16 +1720,21 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 1: return inventory.HaveItem("$item_trophy_bjorn") &&
-                               inventory.HaveItem("$item_trophy_eikthyr");
+                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 2: return inventory.HaveItem("$item_trophy_troll") &&
                                inventory.HaveItem("$item_trophy_elder") &&
-                               hasRequiredSkill;
+                               hasRequiredSkill &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 3: return inventory.HaveItem("$item_trophy_abomination") &&
-                               inventory.HaveItem("$item_trophy_bonemass");
+                               inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 4: return inventory.HaveItem("$item_trophy_bonemass") &&
-                               inventory.HaveItem("$item_trophy_dragonqueen");
+                               inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 5: return inventory.HaveItem("$item_trophy_goblinking") &&
-                               inventory.HaveItem("$item_trophy_seekerqueen");
+                               inventory.HaveItem("$item_trophy_seekerqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 default: return false;
             }
         }
@@ -1650,6 +1752,7 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     if (!inventory.HaveItem("$item_trophy_bjorn"))    missing.Add(L.Get("item_trophy_bear"));
                     if (!inventory.HaveItem("$item_trophy_eikthyr"))  missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 2:
                     if (!inventory.HaveItem("$item_trophy_troll"))    missing.Add(L.Get("item_trophy_troll"));
@@ -1657,18 +1760,22 @@ namespace CaptainSkillTree.SkillTree
                     bool hasSkill = GetSkillLevel("mace_Step7_fury_hammer") > 0 ||
                                     GetSkillLevel("sword_step5_finalcut")   > 0;
                     if (!hasSkill) missing.Add(L.Get("paladin_lv2_skill_required"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 3:
                     if (!inventory.HaveItem("$item_trophy_abomination")) missing.Add(L.Get("item_trophy_abomination"));
                     if (!inventory.HaveItem("$item_trophy_bonemass"))    missing.Add(L.Get("item_trophy_bonemass"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 4:
                     if (!inventory.HaveItem("$item_trophy_bonemass"))    missing.Add(L.Get("item_trophy_bonemass"));
                     if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 5:
                     if (!inventory.HaveItem("$item_trophy_goblinking"))   missing.Add(L.Get("item_trophy_goblinking"));
                     if (!inventory.HaveItem("$item_trophy_seekerqueen"))  missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
             }
             return missing;
@@ -1686,22 +1793,27 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     inventory.RemoveItem("$item_trophy_bjorn", 1);
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_troll", 1);
                     inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 3:
                     inventory.RemoveItem("$item_trophy_abomination", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 4:
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 5:
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
                     inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
             }
         }
@@ -1716,15 +1828,20 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 1: return inventory.HaveItem("$item_trophy_bjorn") &&
-                               inventory.HaveItem("$item_trophy_eikthyr");
+                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 2: return inventory.HaveItem("$item_trophy_troll") &&
-                               inventory.HaveItem("$item_trophy_elder");
+                               inventory.HaveItem("$item_trophy_elder") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 3: return inventory.HaveItem("$item_trophy_abomination") &&
-                               inventory.HaveItem("$item_trophy_bonemass");
+                               inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 4: return inventory.HaveItem("$item_trophy_bonemass") &&
-                               inventory.HaveItem("$item_trophy_dragonqueen");
+                               inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 5: return inventory.HaveItem("$item_trophy_goblinking") &&
-                               inventory.HaveItem("$item_trophy_seekerqueen");
+                               inventory.HaveItem("$item_trophy_seekerqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 default: return false;
             }
         }
@@ -1742,22 +1859,27 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     if (!inventory.HaveItem("$item_trophy_bjorn")) missing.Add(L.Get("item_trophy_bear"));
                     if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 2:
                     if (!inventory.HaveItem("$item_trophy_troll")) missing.Add(L.Get("item_trophy_troll"));
                     if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 3:
                     if (!inventory.HaveItem("$item_trophy_abomination")) missing.Add(L.Get("item_trophy_abomination"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 4:
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
                     if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 5:
                     if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
                     if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
             }
             return missing;
@@ -1775,22 +1897,27 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     inventory.RemoveItem("$item_trophy_bjorn", 1);
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_troll", 1);
                     inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 3:
                     inventory.RemoveItem("$item_trophy_abomination", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 4:
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 5:
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
                     inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
             }
         }
@@ -1817,15 +1944,20 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 1: return inventory.HaveItem("$item_trophy_bjorn") &&
-                               inventory.HaveItem("$item_trophy_eikthyr");
+                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 2: return inventory.HaveItem("$item_trophy_troll") &&
-                               inventory.HaveItem("$item_trophy_elder");
+                               inventory.HaveItem("$item_trophy_elder") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 3: return inventory.HaveItem("$item_trophy_abomination") &&
-                               inventory.HaveItem("$item_trophy_bonemass");
+                               inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 4: return inventory.HaveItem("$item_trophy_bonemass") &&
-                               inventory.HaveItem("$item_trophy_dragonqueen");
+                               inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 5: return inventory.HaveItem("$item_trophy_goblinking") &&
-                               inventory.HaveItem("$item_trophy_seekerqueen");
+                               inventory.HaveItem("$item_trophy_seekerqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 default: return false;
             }
         }
@@ -1843,22 +1975,27 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     if (!inventory.HaveItem("$item_trophy_bjorn")) missing.Add(L.Get("item_trophy_bear"));
                     if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 2:
                     if (!inventory.HaveItem("$item_trophy_troll")) missing.Add(L.Get("item_trophy_troll"));
                     if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 3:
                     if (!inventory.HaveItem("$item_trophy_abomination")) missing.Add(L.Get("item_trophy_abomination"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 4:
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
                     if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 5:
                     if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
                     if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
             }
             return missing;
@@ -1876,22 +2013,27 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     inventory.RemoveItem("$item_trophy_bjorn", 1);
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_troll", 1);
                     inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 3:
                     inventory.RemoveItem("$item_trophy_abomination", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 4:
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 5:
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
                     inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
             }
         }
@@ -1907,16 +2049,21 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 1: return inventory.HaveItem("$item_trophy_greydwarfshaman") &&
-                               inventory.HaveItem("$item_trophy_eikthyr");
+                               inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 2: return inventory.HaveItem("$item_trophy_troll") &&
                                inventory.HaveItem("$item_trophy_elder") &&
-                               GetSkillLevel("staff_Step6_dual_cast") > 0;
+                               GetSkillLevel("staff_Step6_dual_cast") > 0 &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 3: return inventory.HaveItem("$item_trophy_wraith") &&
-                               inventory.HaveItem("$item_trophy_bonemass");
+                               inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 4: return inventory.HaveItem("$item_trophy_hatchling") &&
-                               inventory.HaveItem("$item_trophy_dragonqueen");
+                               inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 5: return inventory.HaveItem("$item_trophy_goblinking") &&
-                               inventory.HaveItem("$item_trophy_seekerqueen");
+                               inventory.HaveItem("$item_trophy_seekerqueen") &&
+                               inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 default: return false;
             }
         }
@@ -1934,23 +2081,28 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     if (!inventory.HaveItem("$item_trophy_greydwarfshaman")) missing.Add(L.Get("item_trophy_greydwarfshaman"));
                     if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 2:
                     if (!inventory.HaveItem("$item_trophy_troll")) missing.Add(L.Get("item_trophy_troll"));
                     if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_theelder"));
                     if (GetSkillLevel("staff_Step6_dual_cast") <= 0) missing.Add(L.Get("mage_lv2_unlock_cond"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 3:
                     if (!inventory.HaveItem("$item_trophy_wraith")) missing.Add(L.Get("item_trophy_wraith"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 4:
                     if (!inventory.HaveItem("$item_trophy_hatchling")) missing.Add(L.Get("item_trophy_hatchling"));
                     if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 5:
                     if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
                     if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
             }
             return missing;
@@ -1968,22 +2120,27 @@ namespace CaptainSkillTree.SkillTree
                 case 1:
                     inventory.RemoveItem("$item_trophy_greydwarfshaman", 1);
                     inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_troll", 1);
                     inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 3:
                     inventory.RemoveItem("$item_trophy_wraith", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 4:
                     inventory.RemoveItem("$item_trophy_hatchling", 1);
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 5:
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
                     inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
             }
         }
@@ -2496,7 +2653,7 @@ namespace CaptainSkillTree.SkillTree
                 
                 if (learnedCount >= 1)
                 {
-                    return new ActiveSkillValidationResult(false, true, "원거리 전문가 액티브 스킬은 1개만 선택할 수 있습니다.");
+                    return new ActiveSkillValidationResult(false, true, L.Get("active_skill_ranged_only_one"));
                 }
             }
             
@@ -2532,8 +2689,27 @@ namespace CaptainSkillTree.SkillTree
                     {
                         if (GetSkillLevel(skill) > 0 || pendingInvestments.ContainsKey(skill))
                         {
-                            return new ActiveSkillValidationResult(false, true, $"다른 무기의 근접 액티브 스킬이 이미 습득됨");
+                            return new ActiveSkillValidationResult(false, true, L.Get("active_skill_weapon_conflict"));
                         }
+                    }
+                }
+            }
+
+            // H키 액티브 스킬 상호 배제 (1개만 선택 가능)
+            var hKeyExclusiveSkills = new List<string> {
+                "sword_step5_defswitch",
+                "spear_Step5_combo",
+                "mace_Step7_fury_hammer",
+                "staff_Step6_heal",
+                "bow_Step6_arrow_rain"
+            };
+            if (hKeyExclusiveSkills.Contains(skillId))
+            {
+                foreach (var hSkill in hKeyExclusiveSkills)
+                {
+                    if (hSkill != skillId && (GetSkillLevel(hSkill) > 0 || pendingInvestments.ContainsKey(hSkill)))
+                    {
+                        return new ActiveSkillValidationResult(false, true, L.Get("h_key_skill_exclusive"));
                     }
                 }
             }
@@ -2541,7 +2717,7 @@ namespace CaptainSkillTree.SkillTree
             // 지팡이 전문가는 2개 선택 가능 (예외 처리)
             // staff_Step6_dual_cast + staff_Step6_heal 모두 가능
             // mace_Step7_fury_hammer + defense_Step7_guardian_heart 모두 가능
-            
+
             // 액티브 스킬 학습 허용
             return new ActiveSkillValidationResult(true, false, "");
         }

@@ -325,12 +325,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [狂怒之锤] AOE半径 (米)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [狂怒之锤] 所需点数",
 
-                // === Tier 7-2: 守护之心 - G键主动 (5) ===
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [守护之心] 冷却时间 (秒)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [守护之心] 体力消耗",
-                ["Tier7_GuardianHeart_Duration"] = "Tier 7-2: [守护之心] 效果持续时间 (秒)",
-                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7-2: [守护之心] 伤害反弹百分比 (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [守护之心] 所需点数",
+                // === Tier 7-2: 盾击冲锋 - G键主动 (4) ===
+                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [盾击冲锋] 冷却时间 (秒)",
+                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [盾击冲锋] 体力消耗",
+                ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [盾击冲锋] 格挡力伤害比例 (%)",
+                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [盾击冲锋] 所需点数",
 
                 // ============================================
                 // 长柄武器树 - 37个键

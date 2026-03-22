@@ -220,6 +220,11 @@ namespace CaptainSkillTree.Gui
                 // 폭발 화살 스킬 전용 동적 툴팁 처리
                 tooltipText = RangedSkillData.GetExplosiveArrowTooltip();
             }
+            else if (node.Id == "bow_Step6_arrow_rain")
+            {
+                // 화살비 스킬 전용 동적 툴팁 처리
+                tooltipText = RangedSkillData.GetArrowRainTooltip();
+            }
             else if (node.Id == "crossbow_Step6_expert")
             {
                 // 단 한 발 스킬 전용 동적 툴팁 처리
@@ -332,13 +337,15 @@ namespace CaptainSkillTree.Gui
             warningObj = new GameObject("Warning", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
             warningObj.transform.SetParent(parent, false);
             var rect = warningObj.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(400, 65);
+            rect.sizeDelta = new Vector2(800, 120);
             rect.anchoredPosition = new Vector2(0, 120);
             warningText = warningObj.GetComponent<Text>();
-            warningText.font = Resources.GetBuiltinResource<Font>("Arial.ttf"); // 포인트 초기화 버튼과 동일한 폰트
-            warningText.fontSize = 20;
+            warningText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            warningText.fontSize = 35;
+            warningText.fontStyle = FontStyle.Bold;
             warningText.color = Color.red;
             warningText.alignment = TextAnchor.MiddleCenter;
+            warningText.horizontalOverflow = HorizontalWrapMode.Wrap;
             warningText.verticalOverflow = VerticalWrapMode.Overflow;
             warningObj.SetActive(false);
         }
@@ -382,10 +389,10 @@ namespace CaptainSkillTree.Gui
             {
                 warningObj.SetActive(true);
                 warningText.color = Color.red;
-                warningText.text = msg;
+                warningText.text = $"<b><size=35>{msg}</size></b>";
                 warningObj.transform.SetAsLastSibling();
                 CancelInvoke(nameof(HideWarning));
-                Invoke(nameof(HideWarning), 1.5f);
+                Invoke(nameof(HideWarning), 3.5f);
             }
             catch (System.Exception ex)
             {

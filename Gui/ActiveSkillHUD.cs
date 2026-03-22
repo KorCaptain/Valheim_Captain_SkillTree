@@ -29,15 +29,17 @@ namespace CaptainSkillTree.Gui
         };
         private static readonly string[] GIconNames = {
             "sword_unlock", "dagger_unlock",
-            "spear_unlock", "polearm_unlock", "mace_unlock"
+            "spear_unlock", "polearm_unlock", "defense_unlock"
         };
         private static readonly string[] HSkillIds = {
             "sword_step5_defswitch", "spear_Step5_combo",
-            "mace_Step7_fury_hammer", "staff_Step6_heal"
+            "mace_Step7_fury_hammer", "staff_Step6_heal",
+            "bow_Step6_arrow_rain"
         };
         private static readonly string[] HIconNames = {
             "defense_unlock", "attack_unlock",
-            "attack_unlock", "ranged_unlock"
+            "mace_unlock", "ranged_unlock",
+            "ranged_unlock"
         };
 
         // HUD 슬롯 정보

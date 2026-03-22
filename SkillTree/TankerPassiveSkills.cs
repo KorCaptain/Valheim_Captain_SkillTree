@@ -3,8 +3,9 @@ using HarmonyLib;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 탱커 직업 패시브 저항 패치 (Lv2+)
-    /// TankerSkills.cs가 한계 초과이므로 분리
+    /// 탱커 직업 패시브 패치
+    /// Lv1+: 패시브 피해 감소 (15%)
+    /// Lv2+: 추가 모든 저항
     /// 패시브이므로 VFX/SFX 없음 (텍스트/로그만)
     /// </summary>
     [HarmonyPatch(typeof(Character), "Damage")]
@@ -20,25 +21,46 @@ namespace CaptainSkillTree.SkillTree
                 if (hit.m_attacker.IsNone()) return;
 
                 int level = SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0;
-                if (level < 2) return;
+                if (level < 1) return;
 
-                float resistPct = TankerSkills.GetTankerResistForLevel(level);
-                if (resistPct <= 0f) return;
+                // Lv1+: 패시브 피해 감소 (15%)
+                float passiveReduct = Tanker_Config.TankerPassiveDamageReductionValue;
+                if (passiveReduct > 0f)
+                {
+                    float mult = 1f - (passiveReduct / 100f);
+                    hit.m_damage.m_blunt     *= mult;
+                    hit.m_damage.m_slash     *= mult;
+                    hit.m_damage.m_pierce    *= mult;
+                    hit.m_damage.m_fire      *= mult;
+                    hit.m_damage.m_frost     *= mult;
+                    hit.m_damage.m_lightning *= mult;
+                    hit.m_damage.m_poison    *= mult;
+                    hit.m_damage.m_spirit    *= mult;
+                    hit.m_damage.m_damage    *= mult;
+                }
 
-                float mult = 1f - (resistPct / 100f);
-                hit.m_damage.m_blunt     *= mult;
-                hit.m_damage.m_slash     *= mult;
-                hit.m_damage.m_pierce    *= mult;
-                hit.m_damage.m_fire      *= mult;
-                hit.m_damage.m_frost     *= mult;
-                hit.m_damage.m_lightning *= mult;
-                hit.m_damage.m_poison    *= mult;
-                hit.m_damage.m_spirit    *= mult;
-                hit.m_damage.m_damage    *= mult;
+                // Lv2+: 추가 모든 저항
+                if (level >= 2)
+                {
+                    float resistPct = TankerSkills.GetTankerResistForLevel(level);
+                    if (resistPct > 0f)
+                    {
+                        float mult2 = 1f - (resistPct / 100f);
+                        hit.m_damage.m_blunt     *= mult2;
+                        hit.m_damage.m_slash     *= mult2;
+                        hit.m_damage.m_pierce    *= mult2;
+                        hit.m_damage.m_fire      *= mult2;
+                        hit.m_damage.m_frost     *= mult2;
+                        hit.m_damage.m_lightning *= mult2;
+                        hit.m_damage.m_poison    *= mult2;
+                        hit.m_damage.m_spirit    *= mult2;
+                        hit.m_damage.m_damage    *= mult2;
+                    }
+                }
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[탱커 저항 패치] 오류: {ex.Message}");
+                Plugin.Log.LogError($"[탱커 패시브 패치] 오류: {ex.Message}");
             }
         }
     }

@@ -376,6 +376,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [Explosive Arrow] Stamina Cost (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [Explosive Arrow] Required Points",
 
+                // === Tier 6: [Arrow Rain] (6) ===
+                ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [Arrow Rain] Damage per Arrow (%)",
+                ["Tier6_ArrowRain_ArrowCount"] = "Tier 6: [Arrow Rain] Arrow Count",
+                ["Tier6_ArrowRain_Radius"] = "Tier 6: [Arrow Rain] Rain Radius (m)",
+                ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [Arrow Rain] Cooldown (sec)",
+                ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [Arrow Rain] Stamina Cost (%)",
+                ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [Arrow Rain] Required Points",
+
                 // ============================================
                 // Sword Tree - 30 Keys
                 // ============================================
@@ -735,12 +743,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [Fury Hammer] AOE Radius (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [Fury Hammer] Required Points",
 
-                // === Tier 7-2: Guardian Heart - G-Key Active (5) ===
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Guardian Heart] Cooldown (sec)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [Guardian Heart] Stamina Cost",
-                ["Tier7_GuardianHeart_Duration"] = "Tier 7-2: [Guardian Heart] Buff Duration (sec)",
-                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7-2: [Guardian Heart] Reflect Damage Percent (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [Guardian Heart] Required Points",
+                // === Tier 7-2: Shield Charge - G-Key Active (4) ===
+                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Shield Charge] Cooldown (sec)",
+                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [Shield Charge] Stamina Cost",
+                ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [Shield Charge] Block Power Damage Percent (%)",
+                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [Shield Charge] Required Points",
 
                 // ========================================
                 // Polearm Tree (37 keys)
@@ -999,6 +1006,15 @@ namespace CaptainSkillTree.Localization
                 // Sword Tree - Path Hit addition
                 // ============================================
                 ["Tier6_RushSlash_PathWidth"] = "Tier 6: [Rush Slash] Path Hit Width (m)",
+
+                // ============================================
+                // Job Level Coin Cost
+                // ============================================
+                ["Job_Lv1_Cost"] = "Job Lv1 Coin Cost",
+                ["Job_Lv2_Cost"] = "Job Lv2 Coin Cost",
+                ["Job_Lv3_Cost"] = "Job Lv3 Coin Cost",
+                ["Job_Lv4_Cost"] = "Job Lv4 Coin Cost",
+                ["Job_Lv5_Cost"] = "Job Lv5 Coin Cost",
             };
         }
     }

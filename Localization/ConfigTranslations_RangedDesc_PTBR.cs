@@ -437,6 +437,25 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_ExplosiveArrow_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Flecha Explosiva.",
+
+                // === Tier 6: Chuva de Flechas ===
+                ["Tier6_ArrowRain_DamagePercent"] =
+                "【Dano por Flecha (%)】\nCada flecha causa esta porcentagem do dano (Arco+Flecha).\nValor recomendado: 10-20%",
+
+                ["Tier6_ArrowRain_ArrowCount"] =
+                "【Quantidade de Flechas】\nNúmero de flechas que caem na chuva.\nValor recomendado: 20-40",
+
+                ["Tier6_ArrowRain_Radius"] =
+                "【Raio da Chuva (m)】\nRaio da área onde as flechas caem.\nValor recomendado: 10-20m",
+
+                ["Tier6_ArrowRain_Cooldown"] =
+                "【Recarga (seg)】\nTempo de espera para reutilizar a habilidade.\nValor recomendado: 35-60 seg",
+
+                ["Tier6_ArrowRain_StaminaCost"] =
+                "【Custo de Stamina (%)】\nPorcentagem de stamina máxima consumida ao usar a habilidade.\nValor recomendado: 20-30%",
+
+                ["Tier6_ArrowRain_RequiredPoints"] =
+                "【Pontos Necessários】\nPontos para desbloquear Chuva de Flechas.",
             };
         }
     }

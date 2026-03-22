@@ -69,8 +69,8 @@ namespace CaptainSkillTree
                     stompPreHitHP[player] = player.GetHealthPercentage();
                     shockwavePreHitHP[player] = player.GetHealthPercentage();
 
-                    // 수호자의 진심: 원본 데미지 저장 (막기 처리 전)
-                    SkillEffect.SaveOriginalDamage(player, hit);
+                    // 탱커 반사: 원본 데미지 저장 (막기 처리 전)
+                    TankerReflect.SaveTankerReflectOriginalDamage(player, hit);
 
                     // 회피 적용
                     float dodgeChance = player.GetCustomDodgeChance();

@@ -415,34 +415,26 @@ namespace CaptainSkillTree.Localization
                 "분노의 망치 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3",
 
-                // === Tier 7: 수호자의 진심 (Guardian Heart - G키 액티브) ===
+                // === Tier 7: 방패돌진 (Shield Charge - G키 액티브) ===
                 ["Tier7_GuardianHeart_Cooldown"] =
                 "【쿨타임 (초)】\n" +
-                "G키 스킬 '수호자의 진심' 재사용 대기 시간입니다.\n" +
-                "짧을수록 자주 방어 자세를 취할 수 있습니다.\n" +
-                "권장값: 100-140초",
+                "G키 스킬 '방패돌진' 재사용 대기 시간입니다.\n" +
+                "권장값: 30-40초",
 
                 ["Tier7_GuardianHeart_StaminaCost"] =
                 "【스태미나 소모】\n" +
-                "스킬 사용 시 소모되는 스태미나입니다.\n" +
-                "탱커 역할 시 스태미나 관리가 중요합니다.\n" +
-                "권장값: 20-30",
+                "방패돌진 사용 시 소모되는 스태미나입니다.\n" +
+                "권장값: 15-25",
 
-                ["Tier7_GuardianHeart_Duration"] =
-                "【버프 지속시간 (초)】\n" +
-                "방어 자세의 지속 시간입니다.\n" +
-                "이 시간 동안 피해를 반사하며 높은 방어력을 유지합니다.\n" +
-                "권장값: 40-50초",
-
-                ["Tier7_GuardianHeart_ReflectPercent"] =
-                "【반사 데미지 비율 (%)】\n" +
-                "받은 피해를 공격자에게 반사하는 비율입니다.\n" +
-                "탱커로서 적에게 피해를 돌려줄 수 있습니다.\n" +
-                "권장값: 5-8%",
+                ["Tier7_ShieldCharge_DamagePercent"] =
+                "【방패 막기력 데미지 비율 (%)】\n" +
+                "방패돌진 충돌 시 방패 막기력 대비 가하는 데미지 비율입니다.\n" +
+                "높을수록 방패 방어력이 공격력으로 전환됩니다.\n" +
+                "권장값: 60-80%",
 
                 ["Tier7_GuardianHeart_RequiredPoints"] =
                 "【필요 포인트】\n" +
-                "수호자의 진심 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "방패돌진 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3",
 
 
@@ -1031,34 +1023,26 @@ namespace CaptainSkillTree.Localization
                 "Skill points required to unlock the Fury Hammer node.\n" +
                 "Recommended: 3",
 
-                // === Tier 7: Guardian Heart (G-Key Active) ===
+                // === Tier 7: Shield Charge (G-Key Active) ===
                 ["Tier7_GuardianHeart_Cooldown"] =
                 "【Cooldown (sec)】\n" +
-                "Reuse delay for G-key skill 'Guardian Heart'.\n" +
-                "Shorter cooldown allows more frequent defensive stance.\n" +
-                "Recommended: 100-140 sec",
+                "Reuse delay for G-key skill 'Shield Charge'.\n" +
+                "Recommended: 30-40 sec",
 
                 ["Tier7_GuardianHeart_StaminaCost"] =
                 "【Stamina Cost】\n" +
-                "Stamina consumed on skill use.\n" +
-                "Stamina management is crucial for tanking.\n" +
-                "Recommended: 20-30",
+                "Stamina consumed when using Shield Charge.\n" +
+                "Recommended: 15-25",
 
-                ["Tier7_GuardianHeart_Duration"] =
-                "【Buff Duration (sec)】\n" +
-                "Duration of the defensive stance.\n" +
-                "Reflects damage and maintains high defense during this time.\n" +
-                "Recommended: 40-50 sec",
-
-                ["Tier7_GuardianHeart_ReflectPercent"] =
-                "【Reflect Damage Ratio (%)】\n" +
-                "Percentage of received damage reflected to attacker.\n" +
-                "Deals damage back to enemies as a tank.\n" +
-                "Recommended: 5-8%",
+                ["Tier7_ShieldCharge_DamagePercent"] =
+                "【Shield Block Power Damage Ratio (%)】\n" +
+                "Damage dealt on Shield Charge collision as a percentage of shield block power.\n" +
+                "Higher values convert more of your shield's defense into offensive power.\n" +
+                "Recommended: 60-80%",
 
                 ["Tier7_GuardianHeart_RequiredPoints"] =
                 "【Required Points】\n" +
-                "Skill points required to unlock the Guardian Heart node.\n" +
+                "Skill points required to unlock the Shield Charge node.\n" +
                 "Recommended: 3",
 
 

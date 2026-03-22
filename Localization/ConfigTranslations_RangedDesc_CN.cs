@@ -437,6 +437,25 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_ExplosiveArrow_RequiredPoints"] =
                 "【所需点数】\n解锁爆裂箭所需的点数。",
+
+                // === Tier 6: 箭雨 ===
+                ["Tier6_ArrowRain_DamagePercent"] =
+                "【每箭伤害比例(%)】\n每箭造成(弓+箭)伤害的该比例。\n推荐：10-20%",
+
+                ["Tier6_ArrowRain_ArrowCount"] =
+                "【箭数量】\n箭雨中落下的箭矢数量。\n推荐：20-40",
+
+                ["Tier6_ArrowRain_Radius"] =
+                "【落箭半径(米)】\n箭矢落下的范围半径。\n推荐：10-20m",
+
+                ["Tier6_ArrowRain_Cooldown"] =
+                "【冷却时间(秒)】\n技能再次使用的等待时间。\n推荐：35-60秒",
+
+                ["Tier6_ArrowRain_StaminaCost"] =
+                "【体力消耗(%)】\n使用技能时消耗的最大体力百分比。\n推荐：20-30%",
+
+                ["Tier6_ArrowRain_RequiredPoints"] =
+                "【所需点数】\n解锁箭雨节点所需的技能点数。",
             };
         }
     }

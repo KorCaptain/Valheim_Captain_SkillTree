@@ -323,12 +323,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [Martelo Furioso] Raio AOE (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [Martelo Furioso] Pontos Necessários",
 
-                // === Tier 7-2: Coração do Guardião - Ativo Tecla G (5) ===
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Coração do Guardião] Recarga (seg)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [Coração do Guardião] Custo de Stamina",
-                ["Tier7_GuardianHeart_Duration"] = "Tier 7-2: [Coração do Guardião] Duração do Buff (seg)",
-                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7-2: [Coração do Guardião] Porcentagem de Reflexão de Dano (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [Coração do Guardião] Pontos Necessários",
+                // === Tier 7-2: Investida com Escudo - Ativo Tecla G (4) ===
+                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Investida com Escudo] Recarga (seg)",
+                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [Investida com Escudo] Custo de Stamina",
+                ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [Investida com Escudo] Dano do Bloqueio (%)",
+                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [Investida com Escudo] Pontos Necessários",
 
                 // ============================================
                 // Árvore de Alabarda - 37 Chaves

@@ -473,6 +473,37 @@ namespace CaptainSkillTree.Localization
                 "스킬 사용 시 소모되는 스태미나 비율입니다.\n" +
                 "권장값: 10-20%",
 
+                // === Tier 6: 화살비 (H키 액티브) ===
+                ["Tier6_ArrowRain_DamagePercent"] =
+                "【화살당 데미지 비율 (%)】\n" +
+                "(활 데미지) × 이 비율로 화살 1발당 데미지를 계산합니다.\n" +
+                "권장값: 10-20%",
+
+                ["Tier6_ArrowRain_ArrowCount"] =
+                "【화살 수】\n" +
+                "화살비에서 떨어지는 화살 개수입니다.\n" +
+                "권장값: 20-40",
+
+                ["Tier6_ArrowRain_Radius"] =
+                "【낙하 반경 (미터)】\n" +
+                "화살이 떨어지는 범위의 반경입니다.\n" +
+                "권장값: 10-20m",
+
+                ["Tier6_ArrowRain_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 35-60초",
+
+                ["Tier6_ArrowRain_StaminaCost"] =
+                "【스태미나 소모 (%)】\n" +
+                "스킬 사용 시 소모되는 최대 스태미나 비율입니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier6_ArrowRain_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "화살비 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 4",
+
                 // === Bow Tree RequiredPoints ===
                 ["Tier0_BowExpert_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -991,6 +1022,37 @@ namespace CaptainSkillTree.Localization
                 "【Stamina Cost (%)】\n" +
                 "Stamina percentage consumed when using skill.\n" +
                 "Recommended: 10-20%",
+
+                // === Tier 6: Arrow Rain (H-key Active) ===
+                ["Tier6_ArrowRain_DamagePercent"] =
+                "【Damage per Arrow (%)】\n" +
+                "(Bow damage) x this ratio to calculate damage per arrow.\n" +
+                "Recommended: 10-20%",
+
+                ["Tier6_ArrowRain_ArrowCount"] =
+                "【Arrow Count】\n" +
+                "Number of arrows that fall in Arrow Rain.\n" +
+                "Recommended: 20-40",
+
+                ["Tier6_ArrowRain_Radius"] =
+                "【Rain Radius (meters)】\n" +
+                "Radius of the area where arrows fall.\n" +
+                "Recommended: 10-20m",
+
+                ["Tier6_ArrowRain_Cooldown"] =
+                "【Cooldown (seconds)】\n" +
+                "Skill reuse wait time.\n" +
+                "Recommended: 35-60s",
+
+                ["Tier6_ArrowRain_StaminaCost"] =
+                "【Stamina Cost (%)】\n" +
+                "Maximum stamina percentage consumed when using skill.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier6_ArrowRain_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Arrow Rain node.\n" +
+                "Recommended: 4",
 
                 // === Bow Tree RequiredPoints ===
                 ["Tier0_BowExpert_RequiredPoints"] =

@@ -91,6 +91,7 @@ namespace CaptainSkillTree.Localization
                 ["r_key_skill_condition_not_met"] = "Z키 스킬 조건이 충족되지 않았습니다",
                 ["g_key_skill_required"] = "G키 스킬이 필요합니다",
                 ["h_key_skill_required"] = "H키 스킬이 필요합니다",
+                ["h_key_skill_exclusive"] = "액티브 H 키 스킬은 1가지만 배울 수 있습니다.",
 
                 // === Mace Skills ===
                 ["mace_guardian_cooldown"] = "수호자의 진심 쿨다운 중! 남은 시간: {0}초",
@@ -201,6 +202,8 @@ namespace CaptainSkillTree.Localization
                 ["skill_acquire_title"] = "{0} 습득",
                 ["skill_acquire_materials"] = "소모될 재료:",
                 ["skill_acquire_confirm"] = "정말로 습득하시겠습니까?",
+                ["production_skill_materials_missing"] = "재료 부족:\n{0}",
+                ["production_skill_unlock_failed"] = "스킬을 배울 수 없습니다.",
 
                 // === Skill Types ===
                 ["skill_type_passive"] = "패시브스킬",
@@ -269,6 +272,20 @@ namespace CaptainSkillTree.Localization
                 ["item_copper_knife"] = "구리 단검",
                 ["item_crude_bow"] = "조잡한 활",
                 ["item_spear"] = "창",
+                ["item_roundlog"] = "둥근 통나무",
+                ["item_corewood"] = "코어 우드",
+                ["item_yggdrasilwood"] = "위그드라실 나무",
+                ["item_stone"] = "돌",
+                ["item_bronze"] = "청동",
+                ["item_iron"] = "철",
+                ["item_copper"] = "구리",
+                ["item_tin"] = "주석",
+                ["item_silver"] = "은",
+                ["item_flint"] = "부싯돌",
+                ["item_mushroomyellow"] = "노란버섯",
+                ["item_mushroomblue"] = "파란버섯",
+                ["item_coal"] = "석탄",
+                ["item_obsidian"] = "흑요석",
 
                 // === Item Requirement Formats ===
                 ["item_consumed"] = "(소모)",
@@ -285,6 +302,9 @@ namespace CaptainSkillTree.Localization
                 ["bow_explosive_tooltip_desc"] = "폭발 화살 발사, 적중 시 주변 적에게 폭발 피해",
                 ["bow_explosive_damage_format"] = "공격력의 {0}% 폭발 피해",
                 ["bow_explosive_range_format"] = "폭발 범위 {0}m",
+                ["bow_arrow_rain_tooltip_desc"] = "버프 활성화 후 활로 대상에 적중, 상공 200m에서 화살 낙하",
+                ["bow_arrow_rain_damage_format"] = "{0}발 × (활+화살) {1}% 데미지",
+                ["bow_arrow_rain_range_format"] = "낙하 반경 {0}m • AOE 3m",
                 ["crossbow_oneshot_tooltip_desc"] = "{0}초간 버프 활성화, 다음 석궁 발사 시 강력한 일격",
 
                 // === Common Tooltip Text ===
@@ -404,6 +424,7 @@ namespace CaptainSkillTree.Localization
                 ["r_key_skill_condition_not_met"] = "R key skill condition not met",
                 ["g_key_skill_required"] = "G key skill required",
                 ["h_key_skill_required"] = "H key skill required",
+                ["h_key_skill_exclusive"] = "Only one H-Key active skill can be learned.",
 
                 // === Mace Skills ===
                 ["mace_guardian_cooldown"] = "Guardian's Heart on cooldown! Remaining: {0}s",
@@ -568,6 +589,8 @@ namespace CaptainSkillTree.Localization
                 ["material_consumed"] = "Material Consumed: {0}",
 
                 // === Skill Tree Manager Messages ===
+                ["production_skill_materials_missing"] = "Missing materials:\n{0}",
+                ["production_skill_unlock_failed"] = "Cannot learn this skill.",
                 ["cannot_learn_with"] = "Cannot learn with {0}",
                 ["active_skill_ranged_only_one"] = "Only 1 ranged active skill allowed",
                 ["active_skill_weapon_conflict"] = "Active skill from another weapon already selected",

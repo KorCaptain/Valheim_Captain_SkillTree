@@ -277,6 +277,12 @@ namespace CaptainSkillTree.Localization
                 "激活后伤害减少增益的生效时间。\n" +
                 "推荐：4-8秒",
 
+                ["Tanker_Taunt_ReflectPercent"] =
+                "【嘲讽反射伤害 (%)】\n" +
+                "战吼增益期间将受到的伤害反射给攻击者。\n" +
+                "在增益持续时间内有效。\n" +
+                "推荐：5-20%",
+
                 ["Tanker_Taunt_EffectHeight"] =
                 "【嘲讽标志高度（米）】\n" +
                 "嘲讽标志显示在怪物上方的高度。\n" +
@@ -314,6 +320,26 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Lv5_AllResist"] =
                 "【坦克Lv5全抗性(%)】\n" +
                 "默认：15%",
+
+                ["Tanker_ReflectDuration_Lv1"] =
+                "【坦克反射持续时间Lv1 (秒)】\n" +
+                "默认：10秒",
+
+                ["Tanker_ReflectDuration_Lv2"] =
+                "【坦克反射持续时间Lv2 (秒)】\n" +
+                "默认：12秒",
+
+                ["Tanker_ReflectDuration_Lv3"] =
+                "【坦克反射持续时间Lv3 (秒)】\n" +
+                "默认：14秒",
+
+                ["Tanker_ReflectDuration_Lv4"] =
+                "【坦克反射持续时间Lv4 (秒)】\n" +
+                "默认：16秒",
+
+                ["Tanker_ReflectDuration_Lv5"] =
+                "【坦克反射持续时间Lv5 (秒)】\n" +
+                "默认：20秒",
 
                 // ========================================
                 // 盗贼职业技能 (Rogue Job)
@@ -576,6 +602,12 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantHpMax_Lv4"] = "【HP附魔最大值 Lv4 (%)】\nLv4附魔最大HP最大加成。\n默认：5%",
                 ["Producer_EnchantHpMin_Lv5"] = "【HP附魔最小值 Lv5 (%)】\nLv5附魔最大HP最小加成。\n默认：6%",
                 ["Producer_EnchantHpMax_Lv5"] = "【HP附魔最大值 Lv5 (%)】\nLv5附魔最大HP最大加成。\n默认：8%",
+
+                ["Job_Lv1_Cost"] = "【职业Lv1金币消耗】\n所有职业升级到Lv1时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：1000",
+                ["Job_Lv2_Cost"] = "【职业Lv2金币消耗】\n所有职业升级到Lv2时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：2000",
+                ["Job_Lv3_Cost"] = "【职业Lv3金币消耗】\n所有职业升级到Lv3时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：3000",
+                ["Job_Lv4_Cost"] = "【职业Lv4金币消耗】\n所有职业升级到Lv4时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：4000",
+                ["Job_Lv5_Cost"] = "【职业Lv5金币消耗】\n所有职业升级到Lv5时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：5000",
             };
         }
     }

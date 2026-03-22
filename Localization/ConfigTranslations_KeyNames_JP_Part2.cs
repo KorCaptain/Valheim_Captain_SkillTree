@@ -296,11 +296,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Tier 7-1: [怒りの鎚] クールダウン (秒)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [怒りの鎚] AOE範囲 (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [怒りの鎚] 必要ポイント",
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [守護の心臓] クールダウン (秒)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [守護の心臓] スタミナコスト",
-                ["Tier7_GuardianHeart_Duration"] = "Tier 7-2: [守護の心臓] バフ持続時間 (秒)",
-                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7-2: [守護の心臓] ダメージ反射率 (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [守護の心臓] 必要ポイント",
+                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [シールドチャージ] クールダウン (秒)",
+                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [シールドチャージ] スタミナコスト",
+                ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [シールドチャージ] ブロック力ダメージ率 (%)",
+                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [シールドチャージ] 必要ポイント",
 
                 // ============================================
                 // ポールアームツリー - 37キー

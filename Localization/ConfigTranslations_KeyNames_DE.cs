@@ -377,6 +377,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [Explosivpfeil] Ausdauerkosten (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [Explosivpfeil] Benötigte Punkte",
 
+                // === Tier 6: Pfeilregen (6) ===
+                ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [Pfeilregen] Schaden pro Pfeil (%)",
+                ["Tier6_ArrowRain_ArrowCount"] = "Tier 6: [Pfeilregen] Pfeilanzahl",
+                ["Tier6_ArrowRain_Radius"] = "Tier 6: [Pfeilregen] Regenradius (m)",
+                ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [Pfeilregen] Abklingzeit (Sek.)",
+                ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [Pfeilregen] Ausdauerkosten (%)",
+                ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [Pfeilregen] Benötigte Punkte",
+
                 // ============================================
                 // Schwert-Skilltree (Legacy) - 30 Schlüssel
                 // ============================================

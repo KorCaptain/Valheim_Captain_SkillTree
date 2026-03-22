@@ -376,6 +376,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [폭발 화살] 스태미나 소모 (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [폭발 화살] 필요 포인트",
 
+                // === Tier 6: [화살비] (6) ===
+                ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [화살비] 화살당 데미지 (%)",
+                ["Tier6_ArrowRain_ArrowCount"] = "Tier 6: [화살비] 화살 수",
+                ["Tier6_ArrowRain_Radius"] = "Tier 6: [화살비] 낙하 반경 (m)",
+                ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [화살비] 쿨타임 (초)",
+                ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [화살비] 스태미나 소모 (%)",
+                ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [화살비] 필요 포인트",
+
                 // ============================================
                 // Sword Tree (검 트리) - 30개
                 // ============================================
@@ -737,12 +745,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [분노의 망치] AOE 범위 (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [분노의 망치] 필요 포인트",
 
-                // === Tier 7-2: 수호자의 진심 - G키 액티브 (5개) ===
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [수호자의 진심] 쿨타임 (초)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [수호자의 진심] 스태미나 소모",
-                ["Tier7_GuardianHeart_Duration"] = "Tier 7-2: [수호자의 진심] 버프 지속시간 (초)",
-                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7-2: [수호자의 진심] 반사 데미지 비율 (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [수호자의 진심] 필요 포인트",
+                // === Tier 7-2: 방패돌진 - G키 액티브 (4개) ===
+                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [방패돌진] 쿨타임 (초)",
+                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [방패돌진] 스태미나 소모",
+                ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [방패돌진] 막기력 데미지 비율 (%)",
+                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [방패돌진] 필요 포인트",
 
                 // ========================================
                 // Polearm Tree (37개 키)
@@ -1001,6 +1008,15 @@ namespace CaptainSkillTree.Localization
                 // Sword Tree (검 트리) - 경로 히트 추가분
                 // ============================================
                 ["Tier6_RushSlash_PathWidth"] = "Tier 6: [돌진 연속 베기] 경로 베기 너비 (m)",
+
+                // ============================================
+                // Job Level Coin Cost (직업 레벨업 코인 비용)
+                // ============================================
+                ["Job_Lv1_Cost"] = "직업 Lv1 코인 비용",
+                ["Job_Lv2_Cost"] = "직업 Lv2 코인 비용",
+                ["Job_Lv3_Cost"] = "직업 Lv3 코인 비용",
+                ["Job_Lv4_Cost"] = "직업 Lv4 코인 비용",
+                ["Job_Lv5_Cost"] = "직업 Lv5 코인 비용",
 
             };
         }

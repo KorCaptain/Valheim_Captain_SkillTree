@@ -55,7 +55,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Mace Skill Names ===
                 ["mace_skill_expert"] = "둔기 전문가",
-                ["mace_skill_guardian"] = "수호자의 진심",
+                ["mace_skill_guardian"] = "방패돌진",
                 ["mace_skill_fury"] = "분노의 망치",
                 ["mace_skill_damage_boost"] = "둔기 강화",
                 ["mace_skill_stun_boost"] = "기절 강화",
@@ -80,13 +80,12 @@ namespace CaptainSkillTree.Localization
                 ["mace_desc_fury_attack"] = "{0}회 연속 타격",
                 ["mace_desc_fury_interval"] = "공격 간격 {0}초, 약 {1}초간 공격",
                 ["mace_desc_fury_damage"] = "1~4타 {0}%, 5타(마무리) {1}%",
-                ["mace_desc_guardian_buff"] = "{0}초간 방어 버프 활성화",
-                ["mace_desc_guardian_reflect"] = "받는 데미지의 {0}%를 공격자에게 반사",
-                ["mace_desc_guardian_note"] = "방어 태세로 아군을 보호",
-                ["mace_effect_buff"] = "버프 지속시간",
-                ["mace_effect_reflect"] = "데미지 반사",
+                ["mace_desc_guardian_buff"] = "{0}m 방패 돌진",
+                ["mace_desc_guardian_damage"] = "방패 막기력의 {0}% 데미지",
+                ["mace_desc_guardian_note"] = "방패로 적을 가격한다",
+                ["mace_effect_buff"] = "돌진 거리",
                 ["requirement_two_hand_mace"] = "양손 둔기 착용",
-                ["requirement_mace_shield"] = "둔기 + 방패 착용",
+                ["requirement_mace_shield"] = "방패 착용",
                 ["tooltip_effect"] = "효과",
                 ["tooltip_special_note"] = "특별안내",
 
@@ -189,6 +188,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Bow Skill Names ===
                 ["bow_skill_explosive"] = "폭발 화살",
+                ["bow_arrow_rain_tooltip_desc"] = "버프 활성화 후 활로 대상에 조준 — 200m 위에서 화살이 쏟아진다",
+                ["bow_arrow_rain_damage_format"] = "화살 {0}발 × (활+화살) {1}% 데미지",
+                ["bow_arrow_rain_range_format"] = "낙하 반경 {0}m • 범위 3m",
 
                 // === Crossbow Skill Names ===
                 ["crossbow_skill_oneshot"] = "단 한 발",
@@ -443,6 +445,20 @@ namespace CaptainSkillTree.Localization
                 ["item_copper_knife"] = "Copper Knife",
                 ["item_crude_bow"] = "Crude Bow",
                 ["item_spear"] = "Spear",
+                ["item_roundlog"] = "Round Log",
+                ["item_corewood"] = "Core Wood",
+                ["item_yggdrasilwood"] = "Yggdrasil Wood",
+                ["item_stone"] = "Stone",
+                ["item_bronze"] = "Bronze",
+                ["item_iron"] = "Iron",
+                ["item_copper"] = "Copper",
+                ["item_tin"] = "Tin",
+                ["item_silver"] = "Silver",
+                ["item_flint"] = "Flint",
+                ["item_mushroomyellow"] = "Yellow Mushroom",
+                ["item_mushroomblue"] = "Blue Mushroom",
+                ["item_coal"] = "Coal",
+                ["item_obsidian"] = "Obsidian",
 
                 // === Item Requirement Formats ===
                 ["item_consumed"] = "(consumed)",
@@ -459,6 +475,9 @@ namespace CaptainSkillTree.Localization
                 ["bow_explosive_tooltip_desc"] = "Fire explosive arrow, deals explosion damage to nearby enemies on hit",
                 ["bow_explosive_damage_format"] = "Explosion damage {0}% of attack power",
                 ["bow_explosive_range_format"] = "Explosion radius {0}m",
+                ["bow_arrow_rain_tooltip_desc"] = "Activate buff, then fire bow at target — arrows rain from 200m above",
+                ["bow_arrow_rain_damage_format"] = "{0} arrows × (Bow+Arrow) {1}% damage",
+                ["bow_arrow_rain_range_format"] = "Fall radius {0}m • AOE 3m",
                 ["crossbow_oneshot_tooltip_desc"] = "Buff active for {0}s, next crossbow shot deals powerful strike",
 
                 // === Common Tooltip Text ===
@@ -516,7 +535,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Mace Skill Names ===
                 ["mace_skill_expert"] = "Mace Expert",
-                ["mace_skill_guardian"] = "Guardian's Heart",
+                ["mace_skill_guardian"] = "Shield Charge",
                 ["mace_skill_fury"] = "Fury Hammer",
                 ["mace_skill_damage_boost"] = "Mace Enhancement",
                 ["mace_skill_stun_boost"] = "Stun Enhancement",
@@ -541,13 +560,12 @@ namespace CaptainSkillTree.Localization
                 ["mace_desc_fury_attack"] = "{0} consecutive strikes",
                 ["mace_desc_fury_interval"] = "Attack interval {0}s, about {1}s total",
                 ["mace_desc_fury_damage"] = "Hit 1-4: {0}%, Hit 5 (Finisher): {1}%",
-                ["mace_desc_guardian_buff"] = "Activate defense buff for {0}s",
-                ["mace_desc_guardian_reflect"] = "Reflect {0}% of damage taken to attacker",
-                ["mace_desc_guardian_note"] = "Protect allies with defensive stance",
-                ["mace_effect_buff"] = "Buff duration",
-                ["mace_effect_reflect"] = "Damage reflect",
+                ["mace_desc_guardian_buff"] = "Shield charge {0}m forward",
+                ["mace_desc_guardian_damage"] = "Deal {0}% of block power as damage",
+                ["mace_desc_guardian_note"] = "Strike enemies with your shield",
+                ["mace_effect_buff"] = "Dash distance",
                 ["requirement_two_hand_mace"] = "Two-handed mace equipped",
-                ["requirement_mace_shield"] = "Mace + Shield equipped",
+                ["requirement_mace_shield"] = "Shield equipped",
                 ["tooltip_effect"] = "Effect",
                 ["tooltip_special_note"] = "Special Note",
 

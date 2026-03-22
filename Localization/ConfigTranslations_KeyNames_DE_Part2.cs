@@ -323,12 +323,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [Wuthammer] AOE-Radius (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [Wuthammer] Benötigte Punkte",
 
-                // === Tier 7-2: Wächterherz - Aktiv G-Taste (5) ===
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Wächterherz] Abklingzeit (Sek)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [Wächterherz] Ausdauerkosten",
-                ["Tier7_GuardianHeart_Duration"] = "Tier 7-2: [Wächterherz] Buff-Dauer (Sek)",
-                ["Tier7_GuardianHeart_ReflectPercent"] = "Tier 7-2: [Wächterherz] Schadensreflexion (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [Wächterherz] Benötigte Punkte",
+                // === Tier 7-2: Schildsturm - Aktiv G-Taste (4) ===
+                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Schildsturm] Abklingzeit (Sek)",
+                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [Schildsturm] Ausdauerkosten",
+                ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [Schildsturm] Blockschaden (%)",
+                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [Schildsturm] Benötigte Punkte",
 
                 // ============================================
                 // Stangenwaffen-Skilltree - 37 Schlüssel

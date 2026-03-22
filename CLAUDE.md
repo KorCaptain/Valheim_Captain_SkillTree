@@ -269,7 +269,7 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 3. **800 Line Limit** - 파일은 800라인 이하, 초과 시 분할
 4. **실제 존재하는 Valheim 효과만 사용**
 5. **EmbeddedResource 방식** - 모든 에셋을 DLL에 포함
-6. **스킬 변경 5종 세트 원칙** - Config·효과·툴팁·UI다국어·Config다국어 동시 수정
+6. **스킬 변경 7종 세트 원칙** - Config·효과·툴팁·UI다국어·Config다국어 동시 수정·스킬관련 메시지 수정(한국어, English, Русский, Português-Brasil, das Deutsche, 中国话, 日本語)
 
 ## 금지 사항
 - `Plugin.cs`, `SkillTreeInputListener.cs` 수정 금지
@@ -348,6 +348,7 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 | `cst-mcp-setup` | MCP setup, MCP 설정 |
 | `cst-buff-vfx` | 버프 VFX, buff visual |
 | `cst-speed-tree-edit` | speed tree edit |
+| `cst-changelog` | changelog, 변경로그, CHANGELOG, 버전업, version up, 배포 준비 |
 
 
 <claude-mem-context>

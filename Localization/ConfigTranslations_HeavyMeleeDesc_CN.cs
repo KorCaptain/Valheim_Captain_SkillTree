@@ -351,33 +351,24 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_RequiredPoints"] =
                 "【所需点数】\n解锁愤怒之锤所需的点数。",
 
-                // === Tier 7: 守护之心（主动G键）===
+                // === Tier 7: 盾击冲锋（主动G键）===
                 ["Tier7_GuardianHeart_Cooldown"] =
                 "【冷却时间（秒）】\n" +
-                "再次使用G键技能的等待时间。\n" +
-                "冷却越短，防御姿态使用越频繁。\n" +
-                "推荐：100-140秒",
+                "盾击冲锋的再使用等待时间。\n" +
+                "推荐：30-40秒",
 
                 ["Tier7_GuardianHeart_StaminaCost"] =
                 "【体力消耗】\n" +
-                "使用技能时消耗的体力。\n" +
-                "作为坦克，体力管理至关重要。\n" +
-                "推荐：20-30",
+                "使用盾击冲锋时消耗的体力。\n" +
+                "推荐：15-25",
 
-                ["Tier7_GuardianHeart_Duration"] =
-                "【效果持续时间（秒）】\n" +
-                "防御姿态的持续时间。\n" +
-                "在此期间可以反弹伤害并拥有高防御力。\n" +
-                "推荐：40-50秒",
-
-                ["Tier7_GuardianHeart_ReflectPercent"] =
-                "【伤害反弹百分比(%)】\n" +
-                "将受到的伤害反射给攻击者的百分比。\n" +
-                "作为坦克，将伤害反还给敌人。\n" +
-                "推荐：5-8%",
+                ["Tier7_ShieldCharge_DamagePercent"] =
+                "【盾格挡力伤害比例(%)】\n" +
+                "碰撞时以盾格挡力的百分比造成伤害。\n" +
+                "推荐：60-80%",
 
                 ["Tier7_GuardianHeart_RequiredPoints"] =
-                "【所需点数】\n解锁守护之心所需的点数。",
+                "【所需点数】\n解锁盾击冲锋所需的点数。",
 
                 // ========================================
                 // 长柄武器树 (Polearm Tree)

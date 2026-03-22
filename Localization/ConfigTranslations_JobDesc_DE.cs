@@ -277,6 +277,12 @@ namespace CaptainSkillTree.Localization
                 "Wirkungsdauer des Schadensreduzierungs-Buffs nach Aktivierung.\n" +
                 "Empfehlung: 4-8 Sek.",
 
+                ["Tanker_Taunt_ReflectPercent"] =
+                "【Spott-Reflektionsschaden (%)】\n" +
+                "Reflektiert eingehenden Schaden an Angreifer während des Kriegsruf-Buffs.\n" +
+                "Aktiv für die Buff-Dauer.\n" +
+                "Empfehlung: 5-20%",
+
                 ["Tanker_Taunt_EffectHeight"] =
                 "【Provokationssymbol-Höhe (m)】\n" +
                 "Höhe über dem Monster, wo das Provokationssymbol angezeigt wird.\n" +
@@ -314,6 +320,26 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Lv5_AllResist"] =
                 "【Tanker Lv5 Gesamt-Resistenz (%)】\n" +
                 "Standard: 15%",
+
+                ["Tanker_ReflectDuration_Lv1"] =
+                "【Tanker Reflektionsdauer Lv1 (Sek)】\n" +
+                "Standard: 10 Sek",
+
+                ["Tanker_ReflectDuration_Lv2"] =
+                "【Tanker Reflektionsdauer Lv2 (Sek)】\n" +
+                "Standard: 12 Sek",
+
+                ["Tanker_ReflectDuration_Lv3"] =
+                "【Tanker Reflektionsdauer Lv3 (Sek)】\n" +
+                "Standard: 14 Sek",
+
+                ["Tanker_ReflectDuration_Lv4"] =
+                "【Tanker Reflektionsdauer Lv4 (Sek)】\n" +
+                "Standard: 16 Sek",
+
+                ["Tanker_ReflectDuration_Lv5"] =
+                "【Tanker Reflektionsdauer Lv5 (Sek)】\n" +
+                "Standard: 20 Sek",
 
                 // ========================================
                 // Schurken-Fähigkeiten (Rogue Job)
@@ -576,6 +602,12 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantHpMax_Lv4"] = "【LP Verzauberung Max-Bonus Lv4 (%)】\nMax. max. LP-Bonus durch Verzauberung (Lv4).\nStandard: 5%",
                 ["Producer_EnchantHpMin_Lv5"] = "【LP Verzauberung Min-Bonus Lv5 (%)】\nMin. max. LP-Bonus durch Verzauberung (Lv5).\nStandard: 6%",
                 ["Producer_EnchantHpMax_Lv5"] = "【LP Verzauberung Max-Bonus Lv5 (%)】\nMax. max. LP-Bonus durch Verzauberung (Lv5).\nStandard: 8%",
+
+                ["Job_Lv1_Cost"] = "【Job Lv1 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv1.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 1000",
+                ["Job_Lv2_Cost"] = "【Job Lv2 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv2.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 2000",
+                ["Job_Lv3_Cost"] = "【Job Lv3 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv3.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 3000",
+                ["Job_Lv4_Cost"] = "【Job Lv4 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv4.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 4000",
+                ["Job_Lv5_Cost"] = "【Job Lv5 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv5.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 5000",
             };
         }
     }

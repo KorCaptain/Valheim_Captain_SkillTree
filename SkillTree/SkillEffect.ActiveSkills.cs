@@ -124,15 +124,15 @@ namespace CaptainSkillTree.SkillTree
 
             // 7. 양손 둔기: 분노의 망치 - H키로 이동됨
 
-            // 8. 방패 + 한손 둔기: 수호자의 진심
+            // 8. 방패돌진 (방패 착용만 필요)
             if (HasSkill("mace_Step7_guardian_heart"))
             {
-                if (!WeaponHelper.HasShield(player) || !WeaponHelper.IsUsingOneHandedMace(player))
+                if (!WeaponHelper.HasShield(player))
                 {
-                    DrawFloatingText(player, L.Get("one_hand_mace_shield_required"), Color.red);
+                    DrawFloatingText(player, L.Get("shield_equip_required"), Color.red);
                     return;
                 }
-                ActivateGuardianHeart(player);
+                ActivateShieldCharge(player);
                 return;
             }
 
@@ -154,6 +154,18 @@ namespace CaptainSkillTree.SkillTree
         public static void HandleHKeySkills(Player player)
         {
             if (player == null || player.IsDead()) return;
+
+            // 0. 활: 화살비 (원거리 H키 - 근접보다 먼저 체크)
+            if (HasSkill("bow_Step6_arrow_rain"))
+            {
+                if (!WeaponHelper.IsUsingBow(player))
+                {
+                    DrawFloatingText(player, L.Get("bow_equip_required"), Color.red);
+                    return;
+                }
+                ExecuteArrowRain(player);
+                return;
+            }
 
             // 1. 검/방패: 패링 돌격 (sword_step5_defswitch) - 내부에서 방패/검 체크
             if (HasSkill("sword_step5_defswitch"))

@@ -277,6 +277,12 @@ namespace CaptainSkillTree.Localization
                 "発動後にダメージ減少バフが有効な時間。\n" +
                 "推奨：4-8秒",
 
+                ["Tanker_Taunt_ReflectPercent"] =
+                "【挑発反射ダメージ (%)】\n" +
+                "戦吼バフ中に受けたダメージの一部を攻撃者に反射します。\n" +
+                "バフ持続時間中に有効。\n" +
+                "推奨：5-20%",
+
                 ["Tanker_Taunt_EffectHeight"] =
                 "【挑発マーカー高度（メートル）】\n" +
                 "モンスターの上に表示される挑発マーカーの高さ。\n" +
@@ -314,6 +320,26 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Lv5_AllResist"] =
                 "【タンカーLv5全耐性(%)】\n" +
                 "デフォルト：15%",
+
+                ["Tanker_ReflectDuration_Lv1"] =
+                "【タンカー反射持続時間Lv1 (秒)】\n" +
+                "デフォルト：10秒",
+
+                ["Tanker_ReflectDuration_Lv2"] =
+                "【タンカー反射持続時間Lv2 (秒)】\n" +
+                "デフォルト：12秒",
+
+                ["Tanker_ReflectDuration_Lv3"] =
+                "【タンカー反射持続時間Lv3 (秒)】\n" +
+                "デフォルト：14秒",
+
+                ["Tanker_ReflectDuration_Lv4"] =
+                "【タンカー反射持続時間Lv4 (秒)】\n" +
+                "デフォルト：16秒",
+
+                ["Tanker_ReflectDuration_Lv5"] =
+                "【タンカー反射持続時間Lv5 (秒)】\n" +
+                "デフォルト：20秒",
 
                 // ========================================
                 // ローグ職業スキル (Rogue Job)
@@ -577,6 +603,12 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantHpMax_Lv4"] = "【HPエンチャント最大値 Lv4 (%)】\nLv4エンチャント最大HP最大ボーナス。\nデフォルト：5%",
                 ["Producer_EnchantHpMin_Lv5"] = "【HPエンチャント最小値 Lv5 (%)】\nLv5エンチャント最大HP最小ボーナス。\nデフォルト：6%",
                 ["Producer_EnchantHpMax_Lv5"] = "【HPエンチャント最大値 Lv5 (%)】\nLv5エンチャント最大HP最大ボーナス。\nデフォルト：8%",
+
+                ["Job_Lv1_Cost"] = "【職業Lv1コインコスト】\nすべての職業をLv1にアップグレードする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：1000",
+                ["Job_Lv2_Cost"] = "【職業Lv2コインコスト】\nすべての職業をLv2にアップグレードする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：2000",
+                ["Job_Lv3_Cost"] = "【職業Lv3コインコスト】\nすべての職業をLv3にアップグレードする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：3000",
+                ["Job_Lv4_Cost"] = "【職業Lv4コインコスト】\nすべての職業をLv4にアップグレードする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：4000",
+                ["Job_Lv5_Cost"] = "【職業Lv5コインコスト】\nすべての職業をLv5にアップグレードする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：5000",
             };
         }
     }

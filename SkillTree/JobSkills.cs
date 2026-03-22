@@ -287,7 +287,8 @@ namespace CaptainSkillTree.SkillTree
                 Skills.SkillType.Swords,     // 검
                 Skills.SkillType.Knives,     // 단검
                 Skills.SkillType.Clubs,      // 둔기 (한손)
-                Skills.SkillType.Axes        // 도끼 (한손)
+                Skills.SkillType.Axes,       // 도끼 (한손)
+                Skills.SkillType.Spears      // 창 (한손)
             };
             
             var skillType = weapon.m_shared?.m_skillType;
@@ -1088,7 +1089,7 @@ namespace CaptainSkillTree.SkillTree
                 // 0-8. 수호자의 진심 정리 (둔기 G키 액티브)
                 try
                 {
-                    SkillEffect.CleanupGuardianHeartOnDeath(player);
+                    SkillEffect.CleanupShieldChargeOnDeath(player);
                 }
                 catch (Exception ex)
                 {

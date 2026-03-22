@@ -377,6 +377,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [Flecha Explosiva] Custo de Stamina (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [Flecha Explosiva] Pontos Necessários",
 
+                // === Tier 6: Chuva de Flechas (6) ===
+                ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [Chuva de Flechas] Dano por Flecha (%)",
+                ["Tier6_ArrowRain_ArrowCount"] = "Tier 6: [Chuva de Flechas] Quantidade de Flechas",
+                ["Tier6_ArrowRain_Radius"] = "Tier 6: [Chuva de Flechas] Raio da Chuva (m)",
+                ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [Chuva de Flechas] Recarga (seg)",
+                ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [Chuva de Flechas] Custo de Stamina (%)",
+                ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [Chuva de Flechas] Pontos Necessários",
+
                 // ============================================
                 // Árvore de Espada (Legado) - 30 Chaves
                 // ============================================

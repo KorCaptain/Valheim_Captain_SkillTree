@@ -377,6 +377,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [爆炸箭] 体力消耗 (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [爆炸箭] 所需点数",
 
+                // === Tier 6: 箭雨 (6) ===
+                ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [箭雨] 每箭伤害 (%)",
+                ["Tier6_ArrowRain_ArrowCount"] = "Tier 6: [箭雨] 箭数量",
+                ["Tier6_ArrowRain_Radius"] = "Tier 6: [箭雨] 落箭半径 (m)",
+                ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [箭雨] 冷却时间 (秒)",
+                ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [箭雨] 体力消耗 (%)",
+                ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [箭雨] 所需点数",
+
                 // ============================================
                 // 剑树 (旧版) - 30个键
                 // ============================================

@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using HarmonyLib;
-using System.Linq;
 using CaptainSkillTree;
 using CaptainSkillTree.Gui;
 using CaptainSkillTree.VFX;
@@ -13,64 +13,59 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 둔기(Mace) 액티브 스킬 전용 클래스
-    /// - 수호자의 진심 (Guardian Heart) G키 액티브 스킬
+    /// - 방패돌진 (Shield Charge) G키 액티브 스킬
     /// </summary>
     public static partial class SkillEffect
     {
-        // ==================== 수호자의 진심 (Guardian Heart) ====================
+        // ==================== 방패돌진 (Shield Charge) ====================
 
-        // 수호자의 진심 상태 관리
-        private static Dictionary<Player, float> guardianHeartCooldowns = new Dictionary<Player, float>();
-        private static Dictionary<Player, bool> guardianHeartActive = new Dictionary<Player, bool>();
-        private static Dictionary<Player, float> guardianHeartExpiry = new Dictionary<Player, float>();
+        // 쿨타임 관리 (버프 없음 - 쿨타임만 추적)
+        private static Dictionary<Player, float> shieldChargeCooldowns = new Dictionary<Player, float>();
 
-        // 원본 데미지 저장 (막기 전 데미지)
-        private static Dictionary<Player, HitData.DamageTypes> guardianHeartOriginalDamage = new Dictionary<Player, HitData.DamageTypes>();
-
-        // 머리 위 상태 효과 GameObject 추적
-        private static Dictionary<Player, GameObject> guardianHeartStatusEffects = new Dictionary<Player, GameObject>();
-        private static GameObject cachedGuardianHeartStatusPrefab = null;
+        // 돌진 중 중복 발동 방지
+        private static HashSet<Player> shieldChargeActive = new HashSet<Player>();
 
         /// <summary>
-        /// 수호자의 진심 액티브 스킬 발동
-        /// G키로 활성화, 방패 막기 시 반사 데미지 버프 적용
+        /// 방패돌진 액티브 스킬 발동
+        /// G키로 활성화, 카메라 방향 8m 돌진 후 방패 막기력의 70% 데미지
         /// </summary>
-        public static void ActivateGuardianHeart(Player player)
+        public static void ActivateShieldCharge(Player player)
         {
             try
             {
-                if (player == null || player.IsDead())
-                {
-                    return;
-                }
+                if (player == null || player.IsDead()) return;
 
                 // 1. 스킬 보유 확인
-                bool hasSkill = HasSkill("mace_Step7_guardian_heart");
-                if (!hasSkill)
+                if (!HasSkill("mace_Step7_guardian_heart"))
                 {
                     DrawFloatingText(player, L.Get("guardian_heart_skill_required"), Color.red);
                     return;
                 }
 
-                // 2. 방패 + 한손둔기 착용 확인
-                bool isUsingShield = HasShield(player);
-                bool isUsingOneHandedMace = IsUsingOneHandedMace(player);
-                if (!isUsingShield || !isUsingOneHandedMace)
+                // 2. 방패 착용 확인 (한손둔기 불필요)
+                if (!HasShield(player))
                 {
-                    DrawFloatingText(player, L.Get("mace_shield_required"), Color.red);
+                    DrawFloatingText(player, L.Get("shield_equip_required"), Color.red);
                     return;
                 }
 
-                // 3. 쿨타임 확인
-                float now = Time.time;
-                if (guardianHeartCooldowns.ContainsKey(player) && now < guardianHeartCooldowns[player])
+                // 3. 돌진 중 중복 발동 방지
+                if (shieldChargeActive.Contains(player))
                 {
-                    float remaining = guardianHeartCooldowns[player] - now;
+                    DrawFloatingText(player, L.Get("cooldown_active"), Color.yellow);
+                    return;
+                }
+
+                // 4. 쿨타임 확인
+                float now = Time.time;
+                if (shieldChargeCooldowns.ContainsKey(player) && now < shieldChargeCooldowns[player])
+                {
+                    float remaining = shieldChargeCooldowns[player] - now;
                     DrawFloatingText(player, L.Get("cooldown_seconds", Mathf.CeilToInt(remaining).ToString()), Color.yellow);
                     return;
                 }
 
-                // 4. 스태미나 소모 확인
+                // 5. 스태미나 소모 확인
                 float requiredStamina = Mace_Config.GuardianHeartStaminaCostValue;
                 if (player.GetStamina() < requiredStamina)
                 {
@@ -78,372 +73,321 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 5. 스킬 발동
-                ExecuteGuardianHeart(player);
+                // 6. 스킬 발동
+                player.StartCoroutine(ShieldChargeCoroutine(player));
 
-                // 6. 쿨타임 및 스태미나 소모 적용
-                guardianHeartCooldowns[player] = now + Mace_Config.GuardianHeartCooldownValue;
+                // 7. 쿨타임 및 스태미나 소모 적용
+                shieldChargeCooldowns[player] = now + Mace_Config.GuardianHeartCooldownValue;
                 ActiveSkillCooldownRegistry.SetCooldown("G", Mace_Config.GuardianHeartCooldownValue);
                 player.UseStamina(requiredStamina);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                Plugin.Log.LogError($"[수호자의 진심] 오류: {ex.Message}");
+                Plugin.Log.LogError($"[방패돌진] 발동 오류: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 수호자의 진심 실제 실행 로직
+        /// 방패돌진 핵심 코루틴
+        /// 카메라 방향 8m 돌진 → 첫 적 충돌 시 데미지+스태거+AoE+도발
         /// </summary>
-        private static void ExecuteGuardianHeart(Player player)
+        private static IEnumerator ShieldChargeCoroutine(Player player)
         {
+            shieldChargeActive.Add(player);
+            ZSyncAnimation zanim = null;
+
             try
             {
-                // 1. 버프 활성화
-                float duration = Mace_Config.GuardianHeartDurationValue;
-                guardianHeartActive[player] = true;
-                guardianHeartExpiry[player] = Time.time + duration;
+                // 1. 돌진 방향 (카메라 방향, 수평)
+                Vector3 dashDir = player.GetLookDir();
+                dashDir.y = 0f;
+                dashDir.Normalize();
 
-                // 2. 버프 표시
-                SkillBuffDisplay.Instance.ShowBuff(
-                    "guardian_heart",
-                    L.Get("guardian_heart_buff_name"),
-                    duration,
-                    new Color(0.2f, 0.8f, 1f, 1f), // 파란색
-                    "🛡️"
-                );
+                float dashDist = 8f;
+                Vector3 startPos = player.transform.position;
+                Vector3 endPos = startPos + dashDir * dashDist;
 
-                // 3. 플로팅 텍스트
-                DrawFloatingText(player, L.Get("guardian_heart_activated"), new Color(0.2f, 0.8f, 1f, 1f));
+                // 2. blocking 모션 시작
+                zanim = player.GetComponentInChildren<ZSyncAnimation>();
+                if (zanim != null)
+                    zanim.SetBool("blocking", true);
 
-                // 3-0. 시전 효과음
-                SimpleVFX.Play("sfx_dragon_scream", player.transform.position, 3f);
+                // 3. 시전 VFX + 사운드
+                VFXManager.PlayVFXMultiplayer("fx_shieldgenerator_domehit", "", player.GetCenterPoint(), Quaternion.identity, 2f);
+                VFXManager.PlayVFXMultiplayer("sfx_fader_taunt", "", player.GetCenterPoint(), Quaternion.identity, 2f);
 
-                // 3-1. 머리 위 상태 효과 VFX 재생 (45초 지속)
-                PlayGuardianHeartStatusEffect(player);
+                // 5. Rigidbody 가져오기 (physics-safe 이동)
+                var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
 
-                // 4. 버프 유지 코루틴 시작
-                player.StartCoroutine(GuardianHeartBuffCoroutine(player, duration));
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[수호자의 진심 실행] 오류: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 수호자의 진심 시작 VFX 효과
-        /// </summary>
-        /// <summary>
-        /// 수호자의 진심 머리 위 상태 효과 재생 (statusailment_01_aura - 45초 지속)
-        /// </summary>
-        private static void PlayGuardianHeartStatusEffect(Player player)
-        {
-            try
-            {
-                // 캐시된 프리팹이 없으면 한 번만 로드
-                if (cachedGuardianHeartStatusPrefab == null)
-                {
-                    cachedGuardianHeartStatusPrefab = VFXManager.GetVFXPrefab("statusailment_01_aura");
-                    if (cachedGuardianHeartStatusPrefab != null)
-                    {
-                        Plugin.Log.LogInfo("[수호자의 진심] statusailment_01_aura 프리팹 캐시됨");
-                    }
-                    else
-                    {
-                        Plugin.Log.LogWarning("[수호자의 진심] VFXManager에서 statusailment_01_aura를 찾을 수 없음");
-                        return;
-                    }
-                }
-
-                // 기존 상태 효과가 있으면 제거
-                if (guardianHeartStatusEffects.ContainsKey(player) && guardianHeartStatusEffects[player] != null)
-                {
-                    UnityEngine.Object.Destroy(guardianHeartStatusEffects[player]);
-                    guardianHeartStatusEffects.Remove(player);
-                    Plugin.Log.LogInfo("[수호자의 진심] 기존 상태 효과 제거");
-                }
-
-                // statusailment_01_aura 효과 생성 (머리 위에서 45초 지속)
-                if (cachedGuardianHeartStatusPrefab != null)
-                {
-                    // 머리 위 위치 계산 (1.4m 위)
-                    var headPosition = player.transform.position + Vector3.up * 1.4f;
-                    var statusInstance = UnityEngine.Object.Instantiate(cachedGuardianHeartStatusPrefab, headPosition, Quaternion.identity);
-
-                    // 플레이어를 따라다니도록 부모 설정
-                    statusInstance.transform.SetParent(player.transform, false);
-                    statusInstance.transform.localPosition = Vector3.up * 1.4f; // 머리 위 고정
-
-                    // 크기 조정 (1배)
-                    statusInstance.transform.localScale = Vector3.one * 1f;
-
-                    // 상태 효과 인스턴스 저장 (버프 종료 시 제거)
-                    guardianHeartStatusEffects[player] = statusInstance;
-
-                    Plugin.Log.LogInfo("[수호자의 진심] statusailment_01_aura 상태 효과 재생 완료 (머리 위 1.4m, 플레이어 추적)");
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[수호자의 진심] 상태 효과 재생 실패: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 수호자의 진심 버프 유지 코루틴
-        /// </summary>
-        private static IEnumerator GuardianHeartBuffCoroutine(Player player, float duration)
-        {
-            float elapsed = 0f;
-
-            while (elapsed < duration && guardianHeartActive.ContainsKey(player) && guardianHeartActive[player])
-            {
-                // 플레이어 사망 체크
-                if (player == null || player.IsDead())
-                {
-                    // 버프 상태 정리
-                    if (guardianHeartActive.ContainsKey(player))
-                    {
-                        guardianHeartActive[player] = false;
-                    }
-                    if (guardianHeartExpiry.ContainsKey(player))
-                    {
-                        guardianHeartExpiry.Remove(player);
-                    }
-
-                    // 상태 효과 제거
-                    if (guardianHeartStatusEffects.ContainsKey(player) && guardianHeartStatusEffects[player] != null)
-                    {
-                        UnityEngine.Object.Destroy(guardianHeartStatusEffects[player]);
-                        guardianHeartStatusEffects.Remove(player);
-                        Plugin.Log.LogInfo("[수호자의 진심] 사망 시 상태 효과 제거");
-                    }
-
-                    yield break;
-                }
-
-                yield return new WaitForSeconds(1f);
-                elapsed += 1f;
-
-                // 중간 알림 (15초마다)
-                if (elapsed % 15f < 1f)
-                {
-                    float remaining = duration - elapsed;
-                    if (remaining > 0)
-                    {
-                        try
-                        {
-                            DrawFloatingText(player, L.Get("guardian_heart_remaining", $"{remaining:F0}"), new Color(0.2f, 0.8f, 1f, 1f));
-                        }
-                        catch (System.Exception ex)
-                        {
-                            Plugin.Log.LogError($"[수호자의 진심] 플로팅 텍스트 오류: {ex.Message}");
-                        }
-                    }
-                }
-            }
-
-            // 버프 종료
-            try
-            {
-                if (guardianHeartActive.ContainsKey(player))
-                {
-                    guardianHeartActive[player] = false;
-                }
-                if (guardianHeartExpiry.ContainsKey(player))
-                {
-                    guardianHeartExpiry.Remove(player);
-                }
-
-                // 상태 효과 GameObject 제거
-                if (guardianHeartStatusEffects.ContainsKey(player) && guardianHeartStatusEffects[player] != null)
-                {
-                    UnityEngine.Object.Destroy(guardianHeartStatusEffects[player]);
-                    guardianHeartStatusEffects.Remove(player);
-                    Plugin.Log.LogInfo("[수호자의 진심] 버프 종료 - 상태 효과 제거");
-                }
-
-                DrawFloatingText(player, L.Get("guardian_heart_ended"), Color.gray);
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[수호자의 진심] 버프 종료 오류: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 수호자의 진심 버프가 활성화되어 있는지 확인
-        /// </summary>
-        public static bool IsGuardianHeartActive(Player player)
-        {
-            if (player == null) return false;
-
-            return guardianHeartActive.ContainsKey(player) &&
-                   guardianHeartActive[player] &&
-                   guardianHeartExpiry.ContainsKey(player) &&
-                   Time.time < guardianHeartExpiry[player];
-        }
-
-        /// <summary>
-        /// 원본 데미지 저장 (막기 처리 전에 호출)
-        /// </summary>
-        public static void SaveOriginalDamage(Player player, HitData hit)
-        {
-            if (player == null || hit == null) return;
-
-            // 버프 활성화 중에만 저장
-            if (IsGuardianHeartActive(player))
-            {
-                // HitData.DamageTypes는 구조체이므로 자동으로 복사됨
-                guardianHeartOriginalDamage[player] = hit.m_damage;
-            }
-        }
-
-        /// <summary>
-        /// 저장된 원본 데미지 가져오기 및 제거
-        /// </summary>
-        public static bool TryGetOriginalDamage(Player player, out HitData.DamageTypes originalDamage)
-        {
-            if (player != null && guardianHeartOriginalDamage.ContainsKey(player))
-            {
-                originalDamage = guardianHeartOriginalDamage[player];
-                guardianHeartOriginalDamage.Remove(player); // 사용 후 제거
-                return true;
-            }
-
-            originalDamage = new HitData.DamageTypes();
-            return false;
-        }
-
-        /// <summary>
-        /// 방패 막기 시 반사 데미지 적용 (MMO getParameter 패치에서 호출)
-        /// </summary>
-        public static void ApplyGuardianHeartReflectDamage(Player player, Character attacker, HitData hit)
-        {
-            try
-            {
-                Plugin.Log.LogInfo($"[수호자의 진심] ApplyGuardianHeartReflectDamage 호출됨");
-
-                if (!IsGuardianHeartActive(player))
-                {
-                    Plugin.Log.LogInfo($"[수호자의 진심] 버프 비활성화 상태로 반사 스킵");
-                    return;
-                }
-
-                if (attacker == null || attacker == player)
-                {
-                    Plugin.Log.LogInfo($"[수호자의 진심] 공격자 없음 또는 자기 자신 - 반사 스킵");
-                    return;
-                }
-
-                // 반사 데미지 계산 (막기 전 저장된 원본 데미지 사용)
-                float reflectPercent = Mace_Config.GuardianHeartReflectPercentValue / 100f;
-
-                // 저장된 원본 데미지 가져오기
-                float originalDamage = 0f;
-
-                if (TryGetOriginalDamage(player, out HitData.DamageTypes originalDamageTypes))
-                {
-                    // 저장된 원본 데미지 사용 (Rule 11 준수 - 모든 데미지 타입)
-                    originalDamage = originalDamageTypes.m_blunt + originalDamageTypes.m_slash +
-                                   originalDamageTypes.m_pierce + originalDamageTypes.m_chop +
-                                   originalDamageTypes.m_pickaxe + originalDamageTypes.m_fire +
-                                   originalDamageTypes.m_frost + originalDamageTypes.m_lightning +
-                                   originalDamageTypes.m_poison + originalDamageTypes.m_spirit;
-                }
-                else
-                {
-                    // 저장된 데이터 없음 - 현재 HitData 사용 (폴백)
-                    originalDamage = hit.GetTotalDamage();
-                }
-
-                float reflectDamage = originalDamage * reflectPercent;
-
-                // 최소 반사 데미지 보장 (원본 데미지가 있을 때만)
-                if (originalDamage > 0f && reflectDamage < 1f)
-                {
-                    reflectDamage = 1f;
-                }
-
-                // 반사 데미지 적용 (Tanker 어그로 코드 참고하여 완전한 HitData 구성)
-                var reflectHit = new HitData();
-                reflectHit.m_damage.m_blunt = reflectDamage; // 블런트(둔기) 데미지로 반사
-                reflectHit.m_attacker = player.GetZDOID();
-                reflectHit.m_point = attacker.GetCenterPoint(); // 정확한 충돌 지점
-                reflectHit.m_dir = (attacker.transform.position - player.transform.position).normalized;
-                reflectHit.m_skill = Skills.SkillType.Clubs; // 둔기 스킬
-                reflectHit.m_pushForce = 0f; // 밀침 없음
-                reflectHit.m_blockable = false; // 막을 수 없음
-                reflectHit.m_dodgeable = false; // 회피 불가
-                reflectHit.m_ranged = false; // 근접 공격
-                reflectHit.m_staggerMultiplier = 0f; // 스태거 없음
-                reflectHit.m_toolTier = 0; // 무기 티어 없음
-
-                Plugin.Log.LogInfo($"[수호자의 진심] 반사 데미지 적용: {reflectDamage:F0}, 공격자 위치: {attacker.transform.position}");
-
-                attacker.Damage(reflectHit);
-
-                // 반사 효과 표시
-                Plugin.Log.LogInfo($"[수호자의 진심] VFX 재생 직전 - 플레이어 방패 위치");
-                PlayGuardianHeartReflectEffect(player);
-                DrawFloatingText(player, L.Get("guardian_heart_reflect", $"{reflectDamage:F0}"), new Color(1f, 0.5f, 0f, 1f));
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[수호자의 진심] 반사 데미지 적용 오류: {ex.Message}\n스택: {ex.StackTrace}");
-            }
-        }
-
-        /// <summary>
-        /// 반사 데미지 VFX 효과 (방패 앞 위치)
-        /// </summary>
-        private static void PlayGuardianHeartReflectEffect(Player player)
-        {
-            try
-            {
-                // 시전자(플레이어 본체) 위치에 guard_01 VFX 재생
-                Vector3 casterPosition = player.GetCenterPoint();
-
-                Plugin.Log.LogInfo($"[수호자의 진심] 반사 VFX 재생 시도 - 시전자 위치: {casterPosition}");
-
-                // ✅ 반사 시 시전자에게 guard_01 VFX 재생
-                SimpleVFX.Play("guard_01", casterPosition, 1.5f);
-
-                Plugin.Log.LogInfo($"[수호자의 진심] guard_01 VFX 재생 완료 (시전자)");
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[수호자의 진심 반사] VFX 오류: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 수호자의 진심 정리 메서드 (플레이어 사망 시 호출)
-        /// Dictionary 정리 (Valheim 기본 VFX 사용으로 GameObject 정리 불필요)
-        /// </summary>
-        public static void CleanupGuardianHeartOnDeath(Player player)
-        {
-            try
-            {
-                // 상태 효과 GameObject 제거
-                if (guardianHeartStatusEffects.ContainsKey(player) && guardianHeartStatusEffects[player] != null)
-                {
-                    UnityEngine.Object.Destroy(guardianHeartStatusEffects[player]);
-                    guardianHeartStatusEffects.Remove(player);
-                    Plugin.Log.LogInfo("[수호자의 진심] 사망 시 상태 효과 GameObject 제거");
-                }
-
-                // 상태 초기화 (5개 Dictionary)
-                guardianHeartActive.Remove(player);
-                guardianHeartCooldowns.Remove(player);
-                guardianHeartExpiry.Remove(player);
-                guardianHeartOriginalDamage.Remove(player);
-                guardianHeartStatusEffects.Remove(player);
+                Plugin.Log.LogInfo("[방패돌진] 돌진 시작 (8m, 0.1초)");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[수호자의 진심] 정리 실패: {ex.Message}");
+                Plugin.Log.LogError($"[방패돌진] 초기화 오류: {ex.Message}");
+                shieldChargeActive.Remove(player);
+                yield break;
+            }
+
+            // 5. 돌진 루프
+            float elapsed = 0f;
+            float vfxTimer = 0f;
+            bool hitEnemy = false;
+            Vector3 dashDir2 = player.GetLookDir();
+            dashDir2.y = 0f;
+            dashDir2.Normalize();
+            Vector3 startPos2 = player.transform.position;
+            Vector3 endPos2 = startPos2 + dashDir2 * 8f;
+            var body2 = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
+
+            while (elapsed < 0.5f && !hitEnemy)
+            {
+                if (player == null || player.IsDead()) break;
+
+                elapsed += Time.deltaTime;
+                vfxTimer += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / 0.5f);
+                Vector3 newPos = Vector3.Lerp(startPos2, endPos2, t);
+
+                // 캐릭터를 돌진 방향으로 매 프레임 강제 회전 (캐릭터 컨트롤러 덮어쓰기 방지)
+                if (dashDir2 != Vector3.zero)
+                {
+                    player.transform.rotation = Quaternion.LookRotation(dashDir2);
+                    HarmonyLib.Traverse.Create(player).Field("m_lookDir").SetValue(dashDir2);
+                }
+
+                // 돌진 중 VFX 0.05초마다 반복 재생 (연속 돔 이펙트)
+                if (vfxTimer >= 0.05f)
+                {
+                    VFXManager.PlayVFXMultiplayer("fx_shieldgenerator_domehit", "", player.GetCenterPoint(), Quaternion.identity, 2f);
+                    vfxTimer = 0f;
+                }
+
+                // 지면 높이 보정
+                if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
+                    LayerMask.GetMask("terrain", "Default")))
+                {
+                    newPos.y = groundHit.point.y + 0.3f;
+                }
+
+                // Rigidbody 이동 (physics-safe)
+                if (body2 != null)
+                {
+                    body2.velocity = Vector3.zero;
+                    body2.MovePosition(newPos);
+                }
+                else
+                {
+                    player.transform.position = newPos;
+                }
+
+                // SphereCast로 전방 적 감지 (0.8m 반경)
+                Vector3 castOrigin = player.GetCenterPoint();
+                if (Physics.SphereCast(castOrigin, 0.8f, dashDir2, out RaycastHit sphereHit, 2.0f,
+                    LayerMask.GetMask("character")))
+                {
+                    var enemy = sphereHit.collider.GetComponentInParent<Character>();
+                    if (enemy != null && enemy != player && !enemy.IsDead() &&
+                        enemy.GetFaction() != Character.Faction.Players)
+                    {
+                        hitEnemy = true;
+                        Vector3 hitPoint = enemy.GetCenterPoint();
+
+                        try
+                        {
+                            ApplyShieldChargeHit(player, enemy, dashDir2, hitPoint);
+                        }
+                        catch (Exception ex)
+                        {
+                            Plugin.Log.LogError($"[방패돌진] 충돌 처리 오류: {ex.Message}");
+                        }
+                    }
+                }
+
+                yield return null;
+            }
+
+            // 6. blocking 해제
+            try
+            {
+                if (zanim != null && player != null && !player.IsDead())
+                    zanim.SetBool("blocking", false);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[방패돌진] blocking 해제 오류: {ex.Message}");
+            }
+
+            shieldChargeActive.Remove(player);
+            Plugin.Log.LogInfo($"[방패돌진] 돌진 완료 (적중: {hitEnemy})");
+        }
+
+        /// <summary>
+        /// 방패돌진 충돌 처리: 데미지, 스태거, AoE, 도발
+        /// </summary>
+        private static void ApplyShieldChargeHit(Player player, Character enemy, Vector3 dashDir, Vector3 hitPoint)
+        {
+            // 방패 막기력 계산
+            float skillFactor = player.GetSkillFactor(Skills.SkillType.Blocking);
+            var shieldItem = HarmonyLib.Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+
+            float blockPower = 0f;
+            if (shieldItem != null && shieldItem.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+                blockPower = shieldItem.GetBlockPower(skillFactor);
+
+            float damageRatio = Mace_Config.ShieldChargeDamagePercentValue / 100f;
+            float damage = blockPower * damageRatio;
+            if (damage < 1f) damage = 1f;
+
+            // 주 타겟 데미지
+            var chargeHit = new HitData();
+            chargeHit.m_damage.m_blunt = damage;
+            chargeHit.m_attacker = player.GetZDOID();
+            chargeHit.SetAttacker(player);
+            chargeHit.m_point = enemy.GetCenterPoint();
+            chargeHit.m_dir = dashDir;
+            chargeHit.m_skill = Skills.SkillType.Clubs;
+            chargeHit.m_pushForce = 5f;
+            chargeHit.m_blockable = false;
+            chargeHit.m_dodgeable = true;
+            chargeHit.m_staggerMultiplier = 2f;
+
+            enemy.Damage(chargeHit);
+            enemy.Stagger(dashDir);  // 1.5초 기절
+
+            // 충돌 VFX (파링 효과음)
+            VFXManager.PlayVFXMultiplayer("vfx_blocked", "", hitPoint, Quaternion.identity, 2f);
+
+            DrawFloatingText(player, "🛡️ " + L.Get("guardian_heart_activated") + $" {Mathf.RoundToInt(damage)}", new Color(0.2f, 0.8f, 1f, 1f));
+            Plugin.Log.LogInfo($"[방패돌진] 주 타겟 적중: {enemy.name}, 막기력 {blockPower:F0} x {Mace_Config.ShieldChargeDamagePercentValue}% = {damage:F0}");
+
+            // AoE 6m 범위 데미지 (주 타겟 제외)
+            float aoeDamage = damage * 0.5f;
+            var aoeTargets = Character.GetAllCharacters()
+                .Where(c => c != null && !c.IsDead() && c != player && c != enemy &&
+                            JobSkillsUtility.IsMonsterFaction(c.GetFaction()) &&
+                            Vector3.Distance(c.transform.position, hitPoint) < 6f)
+                .ToList();
+
+            foreach (var aoeTarget in aoeTargets)
+            {
+                try
+                {
+                    var aoeHit = new HitData();
+                    aoeHit.m_damage.m_blunt = aoeDamage;
+                    aoeHit.m_attacker = player.GetZDOID();
+                    aoeHit.SetAttacker(player);
+                    aoeHit.m_point = aoeTarget.GetCenterPoint();
+                    aoeHit.m_dir = (aoeTarget.transform.position - hitPoint).normalized;
+                    aoeHit.m_skill = Skills.SkillType.Clubs;
+                    aoeHit.m_pushForce = 2f;
+                    aoeHit.m_blockable = false;
+                    aoeHit.m_dodgeable = true;
+                    aoeTarget.Damage(aoeHit);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[방패돌진 AoE] {aoeTarget?.name} 데미지 오류: {ex.Message}");
+                }
+            }
+
+            // AoE VFX/SFX
+            SimpleVFX.Play("flash_star_ellow_purple", hitPoint, 3f);
+            VFXManager.PlayVFXMultiplayer("sfx_metal_shield_blocked", "", hitPoint, Quaternion.identity, 2f);
+
+            if (aoeTargets.Count > 0)
+                Plugin.Log.LogInfo($"[방패돌진 AoE] 6m 범위 {aoeTargets.Count}마리 적중, AoE 데미지: {aoeDamage:F0}");
+
+            // 도발 - 6m 내 모든 몬스터 (주 타겟 포함)
+            var tauntTargets = Character.GetAllCharacters()
+                .Where(c => c != null && !c.IsDead() && c != player &&
+                            JobSkillsUtility.IsMonsterFaction(c.GetFaction()) &&
+                            Vector3.Distance(c.transform.position, hitPoint) < 6f)
+                .ToList();
+
+            foreach (var tauntTarget in tauntTargets)
+            {
+                try
+                {
+                    TankerTauntAIPatch.AddTauntedMonster(tauntTarget, player, 5f);
+
+                    // 머리 위 도발 VFX (탱커 패턴 동일)
+                    float headHeight = 2.0f;
+                    SimpleVFX.PlayFollowing("taunt", tauntTarget.transform, Vector3.up * headHeight, 5f);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[방패돌진 도발] {tauntTarget?.name} 도발 오류: {ex.Message}");
+                }
+            }
+
+            // 도발 펄스 코루틴 시작 (1초 간격 5회, 플레이어에게 fx_Fader_Spin)
+            if (Plugin.Instance != null)
+                Plugin.Instance.StartCoroutine(ShieldChargeTauntPulseCoroutine(player, hitPoint));
+
+            Plugin.Log.LogInfo($"[방패돌진 도발] 6m 범위 {tauntTargets.Count}마리 도발 시작");
+        }
+
+        /// <summary>
+        /// 방패돌진 도발 펄스 코루틴
+        /// 1초 간격 5회: 플레이어에게 fx_Fader_Spin VFX + 6m 내 몬스터 어그로 유지
+        /// 탱커 TauntPulseRoutine 패턴 동일
+        /// </summary>
+        private static IEnumerator ShieldChargeTauntPulseCoroutine(Player player, Vector3 hitPoint)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (player == null || player.IsDead()) yield break;
+
+                // 플레이어에게 fx_Fader_Spin VFX + sfx_metal_shield_blocked_overlay (1초마다)
+                try
+                {
+                    VFXManager.PlayVFXMultiplayer("fx_Fader_Spin", "", player.GetCenterPoint(), Quaternion.identity, 1.5f);
+                    VFXManager.PlayVFXMultiplayer("sfx_metal_shield_blocked_overlay", "", player.GetCenterPoint(), Quaternion.identity, 1.5f);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[방패돌진 펄스] VFX 오류: {ex.Message}");
+                }
+
+                // 6m 내 몬스터 재수집 → 어그로 유지
+                try
+                {
+                    var nearbyEnemies = Character.GetAllCharacters()
+                        .Where(c => c != null && !c.IsDead() && c != player &&
+                                    JobSkillsUtility.IsMonsterFaction(c.GetFaction()) &&
+                                    Vector3.Distance(c.transform.position, hitPoint) < 6f)
+                        .ToList();
+
+                    foreach (var enemy in nearbyEnemies)
+                    {
+                        TankerTauntAIPatch.AddTauntedMonster(enemy, player, 1f);
+                    }
+
+                    Plugin.Log.LogDebug($"[방패돌진 펄스] {i + 1}/5회 - {nearbyEnemies.Count}마리 어그로 갱신");
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[방패돌진 펄스] 어그로 갱신 오류: {ex.Message}");
+                }
+
+                if (i < 4)
+                    yield return new WaitForSeconds(1f);
+            }
+        }
+
+        /// <summary>
+        /// 방패돌진 정리 메서드 (플레이어 사망 시 호출)
+        /// </summary>
+        public static void CleanupShieldChargeOnDeath(Player player)
+        {
+            try
+            {
+                shieldChargeCooldowns.Remove(player);
+                shieldChargeActive.Remove(player);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[방패돌진] 정리 실패: {ex.Message}");
             }
         }
     }

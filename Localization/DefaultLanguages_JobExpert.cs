@@ -201,6 +201,7 @@ namespace CaptainSkillTree.Localization
                 ["mage_passive_lv2"] = "속성 저항 +{0}%, AOE 데미지 {1}%, 연속 발사 +1회 시전 (30초 이내)",
                 ["mage_level_req_items"] = "Lv{0} 달성 재료",
                 ["mage_level_item_required"] = "메이지 Lv{0} 전직 트로피가 부족합니다",
+                ["mage_missing_items"] = "부족한 재료: {0}",
                 ["mage_max_level"] = "★ 최대 레벨 달성!",
                 ["mage_upgrade_msg"] = "🔮 메이지 Lv{0}로 업그레이드 하였습니다.",
                 ["mage_upgrade_title"] = "🔮 메이지 레벨업",
@@ -230,14 +231,17 @@ namespace CaptainSkillTree.Localization
                 ["tanker_upgrade_title"] = "탱커 업그레이드",
                 ["tanker_upgrade_confirm"] = "Lv{0}으로 업그레이드합니까?",
                 ["tanker_max_level"] = "★ 탱커 최대 레벨 달성!",
-                ["tanker_level_item_required"] = "레벨업 재료 부족 (Lv{0})",
-                ["tanker_missing_items"] = "부족한 아이템: {0}",
+                ["tanker_level_item_required"] = "탱커 Lv{0} 업그레이드 재료가 부족합니다",
+                ["tanker_missing_items"] = "부족한 재료: {0}",
                 ["tanker_lv2_skill_prereq_required"] = "Lv2 조건 미충족: 분노의 망치 / 돌진베기 중 1개 이상 필요",
                 ["tanker_level_req_items"] = "Lv{0} 필요 아이템",
                 ["tanker_taunt_effect"] = "도발 {0}m, {1}초",
-                ["tanker_passive_lv1"] = "생명력 +{0}, 피해 감소 -{1}%",
-                ["tanker_passive_lv2"] = "생명력 +{0}, 피해 감소 -{1}%, 모든 저항 +{2}%\n분노의 망치/돌진베기 배운 경우 30초 추가 사용",
-                ["tanker_passive_lv3"] = "생명력 +{0}, 피해 감소 -{1}%, 모든 저항 +{2}%",
+                ["tanker_passive_lv1"] = "생명력 +{0}, 피해감소 {1}%, 피격시 {2}초간 반사",
+                ["tanker_passive_lv2"] = "생명력 +{0}, 피해감소 {1}%, 모든 저항 +{2}%, 피격시 {3}초간 반사",
+                ["tanker_passive_lv3"] = "생명력 +{0}, 피해감소 {1}%, 모든 저항 +{2}%, 피격시 {3}초간 반사",
+                ["tanker_reflect_activated"] = "🛡️ 도발 반사 활성화!",
+                ["tanker_reflect_damage"] = "🛡️ 도발 반사: {0}",
+                ["tanker_reflect_info"] = "피격 시 {0}% 반사",
 
                 // === Rogue Active Skill Messages ===
                 ["rogue_shadow_strike_activate"] = "💥 그림자 일격!",
@@ -317,6 +321,7 @@ namespace CaptainSkillTree.Localization
                 ["berserker_passive_lv5"] = "Lv4 + 죽음의 무시 강화 (쿨 -{7}분 단축, 무적 +{8}초)",
                 ["berserker_max_level"] = "★ 최대 레벨 달성!",
                 ["berserker_level_req_items"] = "Lv{0} 달성 재료",
+                ["berserker_level_item_required"] = "버서커 Lv{0} 업그레이드 재료가 부족합니다",
                 ["berserker_lv2_skill_prereq_required"] = "Lv2 조건 미충족: 분노의 망치 / 돌진 연속 베기 / 관통 돌격 중 1개 이상 필요",
                 ["berserker_missing_items"] = "부족한 재료: {0}",
                 ["berserker_upgrade_title"] = "🪓 버서커 레벨업",
@@ -466,6 +471,9 @@ namespace CaptainSkillTree.Localization
                 // === UI 메시지 ===
                 ["skill_acquired_count"] = "✅ {0}개 스킬 습득 완료!",
                 ["skill_acquired_name"]  = "🌟 {0} 습득!",
+
+                // === 아이템 표시명 ===
+                ["item_coins"] = "코인",
             };
         }
 
@@ -515,6 +523,9 @@ namespace CaptainSkillTree.Localization
                 ["tanker_desc_warcry_fallback"] = "Taunt enemies for 5s (boss 1s), caster gets 20% damage reduction for 5s",
                 ["tanker_skill_type_taunt"] = "Active Taunt Skill - Y Key",
                 ["tanker_passive_damage_reduction"] = "Damage taken -{0}%",
+                ["tanker_reflect_activated"] = "🛡️ Taunt Reflect activated!",
+                ["tanker_reflect_damage"] = "🛡️ Taunt Reflect: {0}",
+                ["tanker_reflect_info"] = "Reflect {0}% on hit",
 
                 // === Berserker Job ===
                 ["berserker_skill_rage"] = "Berserker Rage",
@@ -542,6 +553,7 @@ namespace CaptainSkillTree.Localization
                 ["berserker_passive_lv5"] = "Lv4 + Death Defiance enhanced (CD -{7}min, Invincibility +{8}s)",
                 ["berserker_max_level"] = "★ Max Level Reached!",
                 ["berserker_level_req_items"] = "Lv{0} Required Items",
+                ["berserker_level_item_required"] = "Not enough materials for Berserker Lv{0} upgrade",
                 ["berserker_lv2_skill_prereq_required"] = "Lv2 condition not met: Need at least 1 of Fury Hammer / Rush Slash / Pierce Charge",
                 ["berserker_missing_items"] = "Missing items: {0}",
                 ["berserker_upgrade_title"] = "🪓 Berserker Level Up",
@@ -580,6 +592,7 @@ namespace CaptainSkillTree.Localization
                 ["mage_passive_lv2"] = "Elemental Resist +{0}%, AOE Damage {1}%, Extra Cast +1 (within 30s)",
                 ["mage_level_req_items"] = "Lv{0} Required Items",
                 ["mage_level_item_required"] = "Not enough trophies for Mage Lv{0} upgrade",
+                ["mage_missing_items"] = "Missing items: {0}",
                 ["mage_max_level"] = "★ Max Level Reached!",
                 ["mage_upgrade_msg"] = "🔮 Upgraded to Mage Lv{0}!",
                 ["mage_upgrade_title"] = "🔮 Mage Level Up",
@@ -803,14 +816,14 @@ namespace CaptainSkillTree.Localization
                 ["tanker_upgrade_title"] = "Tanker Upgrade",
                 ["tanker_upgrade_confirm"] = "Upgrade to Lv{0}?",
                 ["tanker_max_level"] = "★ Tanker Max Level!",
-                ["tanker_level_item_required"] = "Insufficient items for Lv{0}",
-                ["tanker_missing_items"] = "Missing: {0}",
+                ["tanker_level_item_required"] = "Insufficient materials for Tanker Lv{0} upgrade",
+                ["tanker_missing_items"] = "Missing items: {0}",
                 ["tanker_lv2_skill_prereq_required"] = "Lv2 Requirement: Learn Fury Hammer or Rush Slash first",
                 ["tanker_level_req_items"] = "Lv{0} Required Items",
                 ["tanker_taunt_effect"] = "Taunt {0}m, {1}s",
-                ["tanker_passive_lv1"] = "HP +{0}, Dmg taken -{1}%",
-                ["tanker_passive_lv2"] = "HP +{0}, Dmg taken -{1}%, All resist +{2}%\nBonus use within 30s (Fury Hammer / Rush Slash)",
-                ["tanker_passive_lv3"] = "HP +{0}, Dmg taken -{1}%, All resist +{2}%",
+                ["tanker_passive_lv1"] = "HP +{0}, Dmg taken {1}%, Reflect for {2}s on hit",
+                ["tanker_passive_lv2"] = "HP +{0}, Dmg taken {1}%, All resist +{2}%, Reflect for {3}s on hit",
+                ["tanker_passive_lv3"] = "HP +{0}, Dmg taken {1}%, All resist +{2}%, Reflect for {3}s on hit",
 
                 // === Sword Active Skill Messages ===
                 ["sword_or_shield_required"] = "You must equip a sword or shield",
@@ -877,6 +890,9 @@ namespace CaptainSkillTree.Localization
                 // === UI Messages ===
                 ["skill_acquired_count"] = "✅ {0} skill(s) acquired!",
                 ["skill_acquired_name"]  = "🌟 {0} acquired!",
+
+                // === Item Display Names ===
+                ["item_coins"] = "Coins",
             };
         }
     }

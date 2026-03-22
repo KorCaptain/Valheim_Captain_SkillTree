@@ -878,7 +878,7 @@ namespace CaptainSkillTree.SkillTree
                 Id = "mace_Step7_guardian_heart",
                 NameKey = "mace_skill_guardian",
                 DescriptionKey = "mace_desc_guardian_buff",
-                DescriptionArgs = new object[] { Mace_Config.GuardianHeartDurationValue },
+                DescriptionArgs = new object[] { 8f },
                 RequiredPoints = Mace_Config.GuardianHeartRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 7,

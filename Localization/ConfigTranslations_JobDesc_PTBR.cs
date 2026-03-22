@@ -277,6 +277,12 @@ namespace CaptainSkillTree.Localization
                 "Tempo de ação do buff de redução de dano após ativação.\n" +
                 "Valor recomendado: 4-8 seg",
 
+                ["Tanker_Taunt_ReflectPercent"] =
+                "【Dano de Reflexo de Provocação (%)】\n" +
+                "Reflete parte do dano recebido de volta aos atacantes durante o buff de Grito de Guerra.\n" +
+                "Ativo durante a duração do buff.\n" +
+                "Valor recomendado: 5-20%",
+
                 ["Tanker_Taunt_EffectHeight"] =
                 "【Altura do Ícone de Provocação (m)】\n" +
                 "Altura acima do monstro onde o ícone de provocação é exibido.\n" +
@@ -314,6 +320,26 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Lv5_AllResist"] =
                 "【Resistência Total do Tanque Lv5 (%)】\n" +
                 "Padrão: 15%",
+
+                ["Tanker_ReflectDuration_Lv1"] =
+                "【Duração do Reflexo do Tanque Lv1 (seg)】\n" +
+                "Padrão: 10 seg",
+
+                ["Tanker_ReflectDuration_Lv2"] =
+                "【Duração do Reflexo do Tanque Lv2 (seg)】\n" +
+                "Padrão: 12 seg",
+
+                ["Tanker_ReflectDuration_Lv3"] =
+                "【Duração do Reflexo do Tanque Lv3 (seg)】\n" +
+                "Padrão: 14 seg",
+
+                ["Tanker_ReflectDuration_Lv4"] =
+                "【Duração do Reflexo do Tanque Lv4 (seg)】\n" +
+                "Padrão: 16 seg",
+
+                ["Tanker_ReflectDuration_Lv5"] =
+                "【Duração do Reflexo do Tanque Lv5 (seg)】\n" +
+                "Padrão: 20 seg",
 
                 // ========================================
                 // Rogue Job (ladino)
@@ -576,6 +602,12 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantHpMax_Lv4"] = "【Encantamento HP Máx Lv4 (%)】\nBônus máximo de HP máximo por encantamento (Lv4).\nPadrão: 5%",
                 ["Producer_EnchantHpMin_Lv5"] = "【Encantamento HP Mín Lv5 (%)】\nBônus mínimo de HP máximo por encantamento (Lv5).\nPadrão: 6%",
                 ["Producer_EnchantHpMax_Lv5"] = "【Encantamento HP Máx Lv5 (%)】\nBônus máximo de HP máximo por encantamento (Lv5).\nPadrão: 8%",
+
+                ["Job_Lv1_Cost"] = "【Custo de Moedas Lv1 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv1.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 1000",
+                ["Job_Lv2_Cost"] = "【Custo de Moedas Lv2 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv2.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 2000",
+                ["Job_Lv3_Cost"] = "【Custo de Moedas Lv3 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv3.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 3000",
+                ["Job_Lv4_Cost"] = "【Custo de Moedas Lv4 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv4.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 4000",
+                ["Job_Lv5_Cost"] = "【Custo de Moedas Lv5 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv5.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 5000",
             };
         }
     }

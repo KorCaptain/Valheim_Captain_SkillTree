@@ -878,69 +878,16 @@ namespace CaptainSkillTree.SkillTree
                     // 로그 제거: 불필요한 반복 출력
                 }
                 
-                // === 수호자의 진심 반사 효과 ===
+                // === 탱커 도발 반사 효과 ===
                 var player = __instance as Player;
+                var attacker = hit.GetAttacker();
                 if (player != null)
                 {
-                    // 버프 상태 확인 (디버깅)
-                    bool isBuffActive = IsGuardianHeartActive(player);
-
-                    // 피격 시 항상 버프 상태 로그 출력
-                    var attacker = hit.GetAttacker();
-                    // 새로운 수호자의 진심 버프가 활성화되어 있는지 확인
-                    if (isBuffActive)
+                    if (TankerReflect.IsTankerReflectActive(player))
                     {
-                        // 방패로 막은 공격에 대해서만 반사 적용
-                        bool isBlocking = player.IsBlocking();
-                        bool hasShield = HasShield(player);
-
-                        if (isBlocking && hasShield)
+                        if (attacker != null && attacker != player)
                         {
-                            if (attacker != null && attacker != player)
-                            {
-                                // Valheim 기본 vfx_blocked 사용 (중복 VFX 방지)
-
-                                // Config에서 반사 데미지 비율 가져오기
-                                ApplyGuardianHeartReflectDamage(player, attacker, hit);
-                            }
-                        }
-                    }
-                    // 기존 guardianSoulReflectionEndTime 시스템 (하위 호환성)
-                    else if (Time.time < guardianSoulReflectionEndTime)
-                    {
-                        // 방패로 막은 공격에 대해서만 반사 적용
-                        if (player.IsBlocking() && HasShield(player))
-                        {
-                            // attacker 변수는 이미 Line 859에서 선언됨
-                            if (attacker != null && attacker != player)
-                            {
-                                // 받은 피해의 Config% 를 반사 데미지로 계산
-                                float reflectPercent = Mace_Config.GuardianHeartReflectPercentValue / 100f;
-                                float reflectionDamage = hit.m_damage.GetTotalDamage() * reflectPercent;
-
-                                // 반사 데미지 적용 (Tanker 어그로 코드 참고하여 완전한 HitData 구성)
-                                HitData reflectionHit = new HitData();
-                                reflectionHit.m_damage.m_blunt = reflectionDamage; // 블런트(둔기) 데미지로 반사
-                                reflectionHit.m_attacker = player.GetZDOID();
-                                reflectionHit.m_point = attacker.GetCenterPoint(); // 정확한 충돌 지점
-                                reflectionHit.m_dir = (attacker.transform.position - player.transform.position).normalized;
-                                reflectionHit.m_skill = Skills.SkillType.Clubs; // 둔기 스킬
-                                reflectionHit.m_pushForce = 0f; // 밀침 없음
-                                reflectionHit.m_blockable = false; // 막을 수 없음
-                                reflectionHit.m_dodgeable = false; // 회피 불가
-                                reflectionHit.m_ranged = false; // 근접 공격
-                                reflectionHit.m_staggerMultiplier = 0f; // 스태거 없음
-                                reflectionHit.m_toolTier = 0; // 무기 티어 없음
-
-                                // 몬스터 체력 변화 확인
-                                float beforeHP = attacker.GetHealth();
-                                attacker.Damage(reflectionHit);
-                                float afterHP = attacker.GetHealth();
-
-                                // 반사 효과 표시
-                                SkillEffect.DrawFloatingText(player, "🛡️ " + L.Get("reflect_damage", $"{reflectionDamage:F0}"), Color.yellow);
-                                Plugin.Log.LogInfo($"[구버전 반사] {attacker.name} 체력: {beforeHP:F1} → {afterHP:F1} (피해: {beforeHP - afterHP:F1})");
-                            }
+                            TankerReflect.ApplyTankerReflectDamage(player, attacker);
                         }
                     }
                 }

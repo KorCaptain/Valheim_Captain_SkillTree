@@ -2083,7 +2083,7 @@ namespace CaptainSkillTree.Gui
                         // 빈 메시지는 표시하지 않음 (이미 습득한 스킬에 대한 조용한 처리)
                         if (!string.IsNullOrEmpty(investResult.message))
                         {
-                            ShowWarning(investResult.message);
+                            tooltipUI.ShowWarning(investResult.message);
                         }
                     }
                 });
@@ -2510,14 +2510,7 @@ namespace CaptainSkillTree.Gui
             else if (!string.IsNullOrEmpty(validation.message))
             {
                 // 경고 메시지 - 노란색으로 표시하되 투자는 허용
-                if (validation.message.Contains("권장되지 않습니다"))
-                {
-                    ShowColoredWarning(validation.message, Color.yellow);
-                }
-                else
-                {
-                    ShowColoredWarning(validation.message, Color.green);
-                }
+                ShowColoredWarning(validation.message, Color.green);
             }
             
             // 생산 스킬은 아이템 소모, 일반 스킬은 포인트 소모
@@ -2550,7 +2543,7 @@ namespace CaptainSkillTree.Gui
                         var msg = L10n.Get("archer_level_item_required", targetLevel);
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("archer_missing_items", string.Join(", ", missing));
-                        ShowWarning(msg);
+                        tooltipUI.ShowWarning(msg);
                         return;
                     }
                 }
@@ -2574,7 +2567,7 @@ namespace CaptainSkillTree.Gui
                         var msg = L10n.Get("rogue_level_item_required", targetLevel);
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("rogue_missing_items", string.Join(", ", missing));
-                        ShowWarning(msg);
+                        tooltipUI.ShowWarning(msg);
                         return;
                     }
                 }
@@ -2585,12 +2578,12 @@ namespace CaptainSkillTree.Gui
                     int targetLevel = manager.GetSkillLevel("Berserker") + 1;
                     if (targetLevel > 5)
                     {
-                        ShowWarning(L10n.Get("berserker_max_level"));
+                        tooltipUI.ShowWarning(L10n.Get("berserker_max_level"));
                         return;
                     }
                     if (targetLevel == 2 && !manager.HasBerserkerLv2SkillPrereq())
                     {
-                        ShowWarning(L10n.Get("berserker_lv2_skill_prereq_required"));
+                        tooltipUI.ShowWarning(L10n.Get("berserker_lv2_skill_prereq_required"));
                         return;
                     }
                     if (manager.HasBerserkerLevelItems(targetLevel))
@@ -2607,10 +2600,10 @@ namespace CaptainSkillTree.Gui
                     else
                     {
                         var missing = manager.GetMissingBerserkerItems(targetLevel);
-                        var msg = L10n.Get("berserker_level_req_items", targetLevel);
+                        var msg = L10n.Get("berserker_level_item_required", targetLevel);
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("berserker_missing_items", string.Join(", ", missing));
-                        ShowWarning(msg);
+                        tooltipUI.ShowWarning(msg);
                         return;
                     }
                 }
@@ -2621,13 +2614,13 @@ namespace CaptainSkillTree.Gui
                     int targetLevel = manager.GetSkillLevel("Tanker") + 1;
                     if (targetLevel > 5)
                     {
-                        ShowWarning(L10n.Get("tanker_max_level"));
+                        tooltipUI.ShowWarning(L10n.Get("tanker_max_level"));
                         return;
                     }
                     // Lv2 스킬 선행 조건: 분노의 망치 / 돌진베기 / 패링돌격 중 1개 이상 필요
                     if (targetLevel == 2 && !manager.HasTankerLv2SkillPrereq())
                     {
-                        ShowWarning(L10n.Get("tanker_lv2_skill_prereq_required"));
+                        tooltipUI.ShowWarning(L10n.Get("tanker_lv2_skill_prereq_required"));
                         return;
                     }
                     if (manager.HasTankerLevelItems(targetLevel))
@@ -2647,7 +2640,7 @@ namespace CaptainSkillTree.Gui
                         var msg = L10n.Get("tanker_level_item_required", targetLevel);
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("tanker_missing_items", string.Join(", ", missing));
-                        ShowWarning(msg);
+                        tooltipUI.ShowWarning(msg);
                         return;
                     }
                 }
@@ -2658,7 +2651,7 @@ namespace CaptainSkillTree.Gui
                     int targetLevel = manager.GetSkillLevel("Paladin") + 1;
                     if (targetLevel > 5)
                     {
-                        ShowWarning(L10n.Get("paladin_max_level"));
+                        tooltipUI.ShowWarning(L10n.Get("paladin_max_level"));
                         return;
                     }
                     if (manager.HasPaladinLevelItems(targetLevel))
@@ -2678,7 +2671,7 @@ namespace CaptainSkillTree.Gui
                         var msg = L10n.Get("paladin_level_item_required", targetLevel);
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("paladin_missing_items", string.Join(", ", missing));
-                        ShowWarning(msg);
+                        tooltipUI.ShowWarning(msg);
                         return;
                     }
                 }
@@ -2689,7 +2682,7 @@ namespace CaptainSkillTree.Gui
                     int targetLevel = manager.GetSkillLevel("Mage") + 1;
                     if (targetLevel > 5)
                     {
-                        ShowWarning(L10n.Get("mage_max_level"));
+                        tooltipUI.ShowWarning(L10n.Get("mage_max_level"));
                         return;
                     }
                     if (manager.HasMageLevelItems(targetLevel))
@@ -2706,9 +2699,10 @@ namespace CaptainSkillTree.Gui
                     else
                     {
                         var missing = manager.GetMissingMageItems(targetLevel);
-                        string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
-                        ShowWarning("⚠️ " + L10n.Get("mage_level_item_required", targetLevel) +
-                            (missingText.Length > 0 ? $"\n({missingText})" : ""));
+                        var msg = L10n.Get("mage_level_item_required", targetLevel);
+                        if (missing.Count > 0)
+                            msg += "\n" + L10n.Get("mage_missing_items", string.Join(", ", missing));
+                        tooltipUI.ShowWarning(msg);
                         return;
                     }
                 }
@@ -2719,7 +2713,7 @@ namespace CaptainSkillTree.Gui
                     int targetLevel = manager.GetSkillLevel("Producer") + 1;
                     if (targetLevel > 5)
                     {
-                        ShowWarning(L10n.Get("producer_max_level"));
+                        tooltipUI.ShowWarning(L10n.Get("producer_max_level"));
                         return;
                     }
                     if (manager.HasProducerLevelItems(targetLevel))
@@ -2739,7 +2733,7 @@ namespace CaptainSkillTree.Gui
                         var msg = L10n.Get("producer_level_item_required", targetLevel);
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("producer_missing_items", string.Join(", ", missing));
-                        ShowWarning(msg);
+                        tooltipUI.ShowWarning(msg);
                         return;
                     }
                 }
@@ -2790,11 +2784,11 @@ namespace CaptainSkillTree.Gui
             warningObj = new GameObject("Warning", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
             warningObj.transform.SetParent(parent, false);
             var rect = warningObj.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(400, 30); // 너비 증가, 높이 감소
-            rect.anchoredPosition = new Vector2(0, 120); // 100에서 120으로 변경 (+20)
+            rect.sizeDelta = new Vector2(500, 50);
+            rect.anchoredPosition = new Vector2(0, 120);
             warningText = warningObj.GetComponent<Text>();
-            warningText.font = Resources.GetBuiltinResource<Font>("Arial.ttf"); // 포인트 초기화 버튼과 동일한 폰트
-            warningText.fontSize = 20; // 16에서 20으로 변경
+            warningText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            warningText.fontSize = 30;
             warningText.color = Color.red;
             warningText.alignment = TextAnchor.MiddleCenter; // 중앙 정렬
             warningObj.SetActive(false);
@@ -2810,10 +2804,10 @@ namespace CaptainSkillTree.Gui
             {
                 warningObj.SetActive(true);
                 warningText.color = Color.red;
-                warningText.text = msg;
+                warningText.text = $"<size=30>{msg}</size>";
                 warningObj.transform.SetAsLastSibling();
                 CancelInvoke(nameof(HideWarning));
-                Invoke(nameof(HideWarning), 1.5f);
+                Invoke(nameof(HideWarning), 3.5f);
             }
             catch (System.Exception ex)
             {
@@ -2837,10 +2831,10 @@ namespace CaptainSkillTree.Gui
             
             warningObj.SetActive(true);
             warningText.color = color;
-            warningText.text = msg;
+            warningText.text = $"<size=30>{msg}</size>";
             warningObj.transform.SetAsLastSibling();
             CancelInvoke(nameof(HideWarning));
-            Invoke(nameof(HideWarning), 2.5f); // 경고 메시지는 조금 더 오래 표시
+            Invoke(nameof(HideWarning), 4.5f);
         }
         public void ShowTooltip(CaptainSkillTree.SkillTree.SkillNode node, Vector2 nodePos)
         {
@@ -3084,13 +3078,13 @@ namespace CaptainSkillTree.Gui
             {
                 // 생산 스킬 언락 실패
                 var validationMessage = manager.GetProductionSkillValidationMessage(node.Id);
-                if (validationMessage != "조건 충족")
+                if (!string.IsNullOrEmpty(validationMessage))
                 {
-                    tooltipUI.ShowWarning($"재료 부족:\n{validationMessage}");
+                    tooltipUI.ShowWarning(L10n.Get("production_skill_materials_missing", validationMessage));
                 }
                 else
                 {
-                    tooltipUI.ShowWarning("스킬 언락에 실패했습니다.");
+                    tooltipUI.ShowWarning(L10n.Get("production_skill_unlock_failed"));
                 }
                 return;
             }

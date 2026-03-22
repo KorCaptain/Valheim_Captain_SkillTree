@@ -99,27 +99,23 @@ namespace CaptainSkillTree.SkillTree
             float hp = Tanker_Config.TankerHpBonusValue;
             float passive = Tanker_Config.TankerPassiveDamageReductionValue;
             float resist = TankerSkills.GetTankerResistForLevel(level);
+            int reflectDuration = (int)Tanker_Config.GetTankerReflectDurationForLevel(level);
 
-            switch (level)
-            {
-                case 1:
-                    return L.Get("tanker_passive_lv1", (int)hp, (int)passive);
-                case 2:
-                    return L.Get("tanker_passive_lv2", (int)hp, (int)passive, (int)resist);
-                default:
-                    return L.Get("tanker_passive_lv3", (int)hp, (int)passive, (int)resist);
-            }
+            if (level <= 1)
+                return L.Get("tanker_passive_lv1", (int)hp, (int)passive, reflectDuration);
+            else
+                return L.Get("tanker_passive_lv2", (int)hp, (int)passive, (int)resist, reflectDuration);
         }
 
         private static string GetTankerLevelCostText(int targetLevel)
         {
             switch (targetLevel)
             {
-                case 1: return L.Get("item_trophy_bear") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1";
-                case 2: return L.Get("item_trophy_troll") + " x1 + " + L.Get("item_trophy_theelder") + " x1";
-                case 3: return L.Get("item_trophy_abomination") + " x1 + " + L.Get("item_trophy_bonemass") + " x1";
-                case 4: return L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_dragonqueen") + " x1";
-                case 5: return L.Get("item_trophy_goblinking") + " x1 + " + L.Get("item_trophy_seekerqueen") + " x1";
+                case 1: return L.Get("item_trophy_bear") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(1);
+                case 2: return L.Get("item_trophy_troll") + " x1 + " + L.Get("item_trophy_theelder") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(2);
+                case 3: return L.Get("item_trophy_abomination") + " x1 + " + L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(3);
+                case 4: return L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_dragonqueen") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(4);
+                case 5: return L.Get("item_trophy_goblinking") + " x1 + " + L.Get("item_trophy_seekerqueen") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(5);
                 default: return "";
             }
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using UnityEngine;
 using CaptainSkillTree.VFX;
 using CaptainSkillTree.Localization;
@@ -23,6 +24,9 @@ namespace CaptainSkillTree.SkillTree
         // === Paladin Lv2 추가 사용 창 ===
         private static Dictionary<Player, float> _furyHammerPendingWindow = new Dictionary<Player, float>();
         private const float FuryHammerExtraWindow = 30f;
+
+        // === 경직 면역 (스킬 활성 중) ===
+        private static HashSet<Player> _furyHammerImmune = new HashSet<Player>();
 
         // === 하드코딩 상수 (수정 불가) ===
         private const int ATTACK_COUNT = 5;           // 연속공격 횟수 고정
@@ -62,6 +66,14 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogInfo("[분노의 망치] H키 누름 - 즉시 스킬 발동");
 
+                // 스태미나 체크
+                float requiredStamina = Mace_Config.FuryHammerStaminaCostValue;
+                if (player.GetStamina() < requiredStamina)
+                {
+                    SkillEffect.DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
+                    return;
+                }
+
                 // 기존 코루틴 중단
                 if (furyHammerCoroutine.ContainsKey(player))
                 {
@@ -87,6 +99,9 @@ namespace CaptainSkillTree.SkillTree
                 // 새 코루틴 시작
                 var coroutine = SkillTreeInputListener.Instance.StartCoroutine(ApplyFuryHammer(player, 0f));
                 furyHammerCoroutine[player] = coroutine;
+
+                // 스태미나 소모 (발동 확정 후)
+                player.UseStamina(requiredStamina);
             }
             else if (canFuryHammer)
             {
@@ -144,28 +159,84 @@ namespace CaptainSkillTree.SkillTree
 
             Plugin.Log.LogInfo($"[분노의 망치 디버그] 플레이어 상태 체크 완료 - IsAlive: {!player.IsDead()}, Health: {player.GetHealth():F1}/{player.GetMaxHealth():F1}");
 
+            // === 도약 돌진: transform.position 포물선 아크 ===
+            _furyHammerImmune.Add(player); // 경직 면역 시작
+
+            // 무기 사전 조회 (대시 중 공격 모션에 필요)
+            var weapon = player.GetCurrentWeapon();
+            if (weapon == null)
+            {
+                Plugin.Log.LogWarning("[분노의 망치 디버그] 무기가 없어서 스킬 중단");
+                _furyHammerImmune.Remove(player);
+                yield break;
+            }
+            float baseWeaponDamage = weapon.GetDamage().GetTotalDamage();
+
+            Vector3 dashDir = player.GetLookDir();
+            dashDir.y = 0f;
+            dashDir.Normalize();
+
+            float dashTime   = 0.5f;   // 전체 도약 시간 (초)
+            float dashDist   = 10f;    // 수평 이동 거리 (m)
+            float peakHeight = 3.5f;   // 최고 점프 높이 (m, 5m의 70%)
+
+            Vector3 startPos = player.transform.position;
+            Vector3 endPos   = startPos + dashDir * dashDist;
+            float elapsed    = 0f;
+            bool attackMotionTriggered = false;
+            float originalPushForce = 0f;
+
+            Plugin.Log.LogInfo("[분노의 망치] 도약 돌진 시작 (0.7초, 10m, 높이 3.5m)");
+            while (elapsed < dashTime)
+            {
+                if (player == null || player.IsDead()) break;
+                elapsed += Time.deltaTime;
+
+                // 0.35초에 공격 모션 트리거 (1회만, 공중 스윙)
+                if (!attackMotionTriggered && elapsed >= 0.25f)
+                {
+                    attackMotionTriggered = true;
+                    furyHammer1stHitBuff[player] = true;
+                    if (weapon.m_shared != null)
+                    {
+                        originalPushForce = weapon.m_shared.m_attackForce;
+                        weapon.m_shared.m_attackForce = 0f;
+                    }
+                    player.StartAttack(null, false);
+                    Plugin.Log.LogInfo("[분노의 망치] 0.35초 - 공중 공격 모션 시작");
+                }
+
+                float t = Mathf.Clamp01(elapsed / dashTime);
+                Vector3 pos = Vector3.Lerp(startPos, endPos, t);
+                pos.y = startPos.y + peakHeight * 4f * t * (1f - t);
+                player.transform.position = pos;
+                yield return null;
+            }
+
+            // 착지: 목적지 확정 + 낙하 데미지 방지 + 모션 버프 정리
+            if (player != null && !player.IsDead())
+            {
+                player.transform.position = endPos;
+                var altField = typeof(Character).GetField("m_maxAirAltitude",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                altField?.SetValue(player, endPos.y);
+                if (weapon.m_shared != null)
+                    weapon.m_shared.m_attackForce = originalPushForce;
+                furyHammer1stHitBuff[player] = false;
+                CaptainSkillTree.AttackSpeedHandler_Game_Awake_Patch.ClearAttackSpeedWarningState(player);
+            }
+            Plugin.Log.LogInfo("[분노의 망치] 착지 완료 → 5연타 시작");
+
             // 하드코딩 상수 사용 (수정 불가)
             int attackCount = ATTACK_COUNT;               // 5타 고정
             float attackInterval = ATTACK_INTERVAL;       // 0.5초 고정
 
             // Config에서 값 가져오기 (데미지 배율, AOE 범위만)
-            float normalHitMultiplier = Mace_Config.FuryHammerNormalHitMultiplierValue / 100f; // 80% = 0.8
-            float finalHitMultiplier = Mace_Config.FuryHammerFinalHitMultiplierValue / 100f;   // 150% = 1.5
+            float normalHitMultiplier = Mace_Config.FuryHammerNormalHitMultiplierValue / 100f;
+            float finalHitMultiplier = Mace_Config.FuryHammerFinalHitMultiplierValue / 100f;
             float aoeRadius = Mace_Config.FuryHammerAoeRadiusValue;
 
             Plugin.Log.LogInfo($"[분노의 망치 디버그] Config 로드 완료 - 타격 횟수: {attackCount} (고정), 간격: {attackInterval}초 (고정), AOE: {aoeRadius}m");
-
-            // 플레이어 현재 공격력 계산 (무기 + 스킬트리 보너스)
-            var weapon = player.GetCurrentWeapon();
-            if (weapon == null)
-            {
-                Plugin.Log.LogWarning("[분노의 망치 디버그] 무기가 없어서 스킬 중단");
-                yield break;
-            }
-
-            // 무기의 기본 데미지 가져오기
-            var weaponDamage = weapon.GetDamage();
-            float baseWeaponDamage = weaponDamage.GetTotalDamage();
 
             Plugin.Log.LogInfo($"[분노의 망치 디버그] 무기 기본 데미지: {baseWeaponDamage:F1}, 1~4타 배율: {normalHitMultiplier * 100}%, 5타 배율: {finalHitMultiplier * 100}%");
 
@@ -174,10 +245,10 @@ namespace CaptainSkillTree.SkillTree
             // 데미지 5회 자동 적용 (1타만 플레이어 공격 모션, 나머지는 VFX만)
             Plugin.Log.LogInfo("[분노의 망치 디버그] ========== 5연타 루프 시작 ==========");
 
-            // ✅ 스킬 시작 위치: 화면 중앙 카메라 방향
+            // ✅ 스킬 위치: 돌진 완료 후 플레이어 위치 기준
             Vector3 fixedVfxOffset = player.GetLookDir() * 2f;
             Vector3 fixedVfxPosition = player.transform.position + fixedVfxOffset;
-            Plugin.Log.LogInfo($"[분노의 망치] 스킬 시작 위치 (카메라 방향): {fixedVfxPosition}");
+            Plugin.Log.LogInfo($"[분노의 망치] 스킬 위치 (돌진 후 카메라 방향): {fixedVfxPosition}");
 
             for (int i = 0; i < attackCount; i++)
             {
@@ -199,51 +270,10 @@ namespace CaptainSkillTree.SkillTree
 
                 Plugin.Log.LogInfo($"[분노의 망치 디버그] {i + 1}타 데미지 계산: {baseWeaponDamage:F1} × {damageMultiplier * 100}% = {totalDamage:F1}");
 
-                // === 1타: 플레이어 공격 모션 → 데미지 → 적중 확인 → 중력+VFX ===
+                // === 1타: 모션은 도약 중 0.35초에 이미 실행됨 → 착지 즉시 데미지 적용 ===
                 if (i == 0)
                 {
-                    // 1타 공격속도 버프 활성화
-                    furyHammer1stHitBuff[player] = true;
-                    Plugin.Log.LogInfo("[분노의 망치] 1타 공격속도 버프 활성화 (+200%)");
-
-                    // ✅ 공격 모션 중 넉백 차단 (무기 넉백 힘 임시 저장)
-                    float originalPushForce = 0f;
-                    if (weapon != null && weapon.m_shared != null)
-                    {
-                        originalPushForce = weapon.m_shared.m_attackForce;
-                        weapon.m_shared.m_attackForce = 0f;
-                        Plugin.Log.LogInfo($"[분노의 망치] 무기 넉백 임시 차단 (원본: {originalPushForce})");
-                    }
-
-                    // 일반 공격 모션 실행 (넉백 없음)
-                    player.StartAttack(null, false);
-                    Plugin.Log.LogInfo("[분노의 망치] 1타: 일반 공격 모션 시작 (+200% 공격속도 적용, 넉백 차단)");
-
-                    // 공격 모션 완료 대기 (3배 빠르므로 약 0.27초)
-                    yield return new WaitForSeconds(0.27f);
-
-                    // ✅ 무기 넉백 힘 복원
-                    if (weapon != null && weapon.m_shared != null)
-                    {
-                        weapon.m_shared.m_attackForce = originalPushForce;
-                        Plugin.Log.LogInfo($"[분노의 망치] 무기 넉백 복원 (복원값: {originalPushForce})");
-                    }
-
-                    // 모션 완료 후 사망 체크
-                    if (player == null || player.IsDead())
-                    {
-                        Plugin.Log.LogInfo("[분노의 망치] 1타 공격 모션 대기 중 사망 감지 - 중단");
-                        yield break;
-                    }
-
-                    // 1타 공격속도 버프 비활성화
-                    furyHammer1stHitBuff[player] = false;
-                    // 경고 상태 초기화: 다음 일반 공격 시 속도가 캡 하에서 정상 동작하도록
-                    CaptainSkillTree.AttackSpeedHandler_Game_Awake_Patch.ClearAttackSpeedWarningState(player);
-                    Plugin.Log.LogInfo("[분노의 망치] 1타 공격속도 버프 비활성화 (일반 공격 완료)");
-
-                    // ✅ 데미지 먼저 적용 (넉백 0)
-                    Plugin.Log.LogInfo($"[분노의 망치 디버그] 1타 데미지 적용 시작");
+                    Plugin.Log.LogInfo($"[분노의 망치 디버그] 1타 데미지 적용 시작 (착지 타격)");
 
                     Vector3 hitPosition = fixedVfxPosition;
                     var mobs = Character.GetAllCharacters().Where(c =>
@@ -408,6 +438,9 @@ namespace CaptainSkillTree.SkillTree
 
             Plugin.Log.LogInfo("[분노의 망치 디버그] ========== 5연타 루프 완료 ==========");
 
+            // 경직 면역 해제
+            _furyHammerImmune.Remove(player);
+
             // 최종 완료 메시지
             SkillEffect.DrawFloatingText(player, L.Get("fury_hammer_combo_complete", totalHits.ToString()), new Color(1f, 0.5f, 0f));
             Plugin.Log.LogInfo($"[분노의 망치 디버그] 5연타 완료 - 총 적중: {totalHits}명");
@@ -437,6 +470,23 @@ namespace CaptainSkillTree.SkillTree
                 lastMaceSkillTime = Time.time;
                 ActiveSkillCooldownRegistry.SetCooldown("H", Mace_Config.FuryHammerCooldownValue);
                 Plugin.Log.LogDebug("[분노의 망치] Paladin 추가 사용 창 만료 - 쿨타임 시작");
+            }
+        }
+
+        /// <summary>
+        /// 경직(Stagger) 면역 패치 - 스킬 활성 중에는 경직 무시
+        /// </summary>
+        [HarmonyPatch(typeof(Character), "Stagger")]
+        public static class FuryHammer_StaggerImmune_Patch
+        {
+            static bool Prefix(Character __instance)
+            {
+                if (__instance is Player player && _furyHammerImmune.Contains(player))
+                {
+                    Plugin.Log.LogDebug("[분노의 망치] 경직 차단 (스킬 활성 중)");
+                    return false;
+                }
+                return true;
             }
         }
 
@@ -479,6 +529,9 @@ namespace CaptainSkillTree.SkillTree
 
                 // 4. Paladin Lv2 추가 사용 창 정리
                 _furyHammerPendingWindow.Remove(player);
+
+                // 5. 경직 면역 해제
+                _furyHammerImmune.Remove(player);
             }
             catch (Exception ex)
             {

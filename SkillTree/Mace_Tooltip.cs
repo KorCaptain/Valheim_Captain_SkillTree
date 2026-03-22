@@ -352,8 +352,8 @@ namespace CaptainSkillTree.SkillTree
             public string skillName = "";
             public string description = "";
             public string additionalInfo = "";
-            public string duration = "";
-            public string reflectPercent = "";
+            public string dashDistance = "";
+            public string damagePercent = "";
             public string staminaCost = "";
             public string cooldown = "";
             public string skillType = "";
@@ -372,27 +372,27 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep7GuardianHeartTooltip() 호출됨");
 
                 // Config에서 동적 설정값 가져오기
-                float duration = Mace_Config.GuardianHeartDurationValue;
-                float reflectPercent = Mace_Config.GuardianHeartReflectPercentValue;
+                float dashDistance = 8f;
+                float damagePercent = Mace_Config.ShieldChargeDamagePercentValue;
                 float staminaCost = Mace_Config.GuardianHeartStaminaCostValue;
                 float cooldown = Mace_Config.GuardianHeartCooldownValue;
                 int requiredPoints = Mace_Config.GuardianHeartRequiredPointsValue;
 
-                Plugin.Log.LogDebug($"[수호자의 진심 툴팁] 컨피그 값들 - 지속시간: {duration}초, 반사: {reflectPercent}%, 스태미나: {staminaCost}, 쿨타임: {cooldown}초");
+                Plugin.Log.LogDebug($"[방패돌진 툴팁] 컨피그 값들 - 돌진거리: {dashDistance}m, 데미지: {damagePercent}%, 스태미나: {staminaCost}, 쿨타임: {cooldown}초");
 
                 // 상세 툴팁 데이터 생성
                 var data = new GuardianHeartTooltipData
                 {
                     skillName = L.Get("mace_skill_guardian"),
-                    description = L.Get("mace_desc_guardian_buff", duration),
-                    additionalInfo = L.Get("mace_desc_guardian_reflect", reflectPercent),
-                    duration = $"{duration:F0}{L.Get("unit_seconds")}",
-                    reflectPercent = $"{reflectPercent:F0}%",
+                    description = L.Get("mace_desc_guardian_buff", dashDistance),
+                    additionalInfo = L.Get("mace_desc_guardian_damage", damagePercent),
+                    dashDistance = $"{dashDistance:F0}m",
+                    damagePercent = $"{damagePercent:F0}%",
                     staminaCost = $"{staminaCost:F0}",
                     cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
                     skillType = L.Get("skill_type_active_key", "G"),
                     requirement = L.Get("requirement_mace_shield"),
-                    confirmation = L.Get("tooltip_same_weapon_only"),
+                    confirmation = "",
                     specialNote = $"{L.Get("mace_desc_guardian_note")}\n\n<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
                 };
 
@@ -435,16 +435,16 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += "</size></color>\n";
                 }
 
-                // 3. 효과 - 버프 지속시간 + 데미지 반사 (#FF6B6B / #FFB6C1)
-                if (!string.IsNullOrEmpty(data.duration) || !string.IsNullOrEmpty(data.reflectPercent))
+                // 3. 효과 - 돌진 거리 + 충돌 데미지 (#FF6B6B / #FFB6C1)
+                if (!string.IsNullOrEmpty(data.dashDistance) || !string.IsNullOrEmpty(data.damagePercent))
                 {
                     string effectText = "";
-                    if (!string.IsNullOrEmpty(data.duration))
-                        effectText += $"{L.Get("mace_effect_buff")} {data.duration}";
-                    if (!string.IsNullOrEmpty(data.reflectPercent))
+                    if (!string.IsNullOrEmpty(data.dashDistance))
+                        effectText += $"{L.Get("mace_effect_buff")} {data.dashDistance}";
+                    if (!string.IsNullOrEmpty(data.damagePercent))
                     {
                         if (!string.IsNullOrEmpty(effectText)) effectText += ", ";
-                        effectText += $"{L.Get("mace_effect_reflect")} {data.reflectPercent}";
+                        effectText += $"{L.Get("mace_desc_guardian_damage", data.damagePercent)}";
                     }
                     tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_effect")}: </size></color><color=#FFB6C1><size=16>{effectText}</size></color>\n";
                 }
@@ -503,13 +503,14 @@ namespace CaptainSkillTree.SkillTree
         {
             int requiredPoints = Mace_Config.GuardianHeartRequiredPointsValue;
 
-            return "<color=#FFD700><size=22>수호자의 진심</size></color>\n\n" +
-                   "<color=#E0E0E0><size=16>G키: 45초간 방어 버프 활성화 (받는 데미지의 6%를 공격자에게 반사)\n\n" +
-                   "• 버프 지속시간: 45초\n" +
-                   "• 데미지 반사: 6%\n" +
-                   "• 소모: 스태미나 25\n" +
-                   "• 쿨타임: 75초\n" +
-                   "• 필요조건: 둔기 착용\n\n" +
+            return "<color=#FFD700><size=22>방패돌진</size></color>\n\n" +
+                   "<color=#E0E0E0><size=16>G키: 8m 방패 돌진 - 방패 막기력의 70% 데미지\n\n" +
+                   "• 돌진 거리: 8m\n" +
+                   "• 충돌 데미지: 방패 막기력 70%\n" +
+                   "• 범위 피해: 충돌 데미지 50% (6m)\n" +
+                   "• 소모: 스태미나 20\n" +
+                   "• 쿨타임: 35초\n" +
+                   "• 필요조건: 방패 착용\n\n" +
                    "스킬유형: 액티브 스킬 - G키\n\n" +
                    $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";
         }

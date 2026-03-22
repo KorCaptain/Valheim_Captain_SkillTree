@@ -90,14 +90,12 @@ namespace CaptainSkillTree.SkillTree
         private static Vector3[] GetGridPositions2D(Vector3 origin, Vector3 right, Vector3 forward, int rows, int cols, float spacing)
         {
             var positions = new Vector3[rows * cols];
-            float halfRow = (rows - 1) / 2f;
-            float halfCol = (cols - 1) / 2f;
             int idx = 0;
             for (int r = 0; r < rows; r++)
                 for (int c = 0; c < cols; c++)
                     positions[idx++] = origin
-                        + right   * ((c - halfCol) * spacing)
-                        + forward * ((r - halfRow) * spacing);
+                        + right   * (c * spacing)
+                        + forward * (r * spacing);
             return positions;
         }
 

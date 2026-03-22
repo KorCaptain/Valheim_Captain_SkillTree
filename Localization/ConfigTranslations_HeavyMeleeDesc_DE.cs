@@ -351,33 +351,24 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Wuthammers.",
 
-                // === Tier 7: Wächterherz (Aktiv G) ===
+                // === Tier 7: Schildsturm (Aktiv G) ===
                 ["Tier7_GuardianHeart_Cooldown"] =
                 "【Abklingzeit (Sek.)】\n" +
-                "Wartezeit bis zur erneuten Verwendung der G-Fähigkeit.\n" +
-                "Weniger = häufigere Defensivhaltung möglich.\n" +
-                "Empfehlung: 100-140 Sek.",
+                "Wartezeit für erneuten Schildsturm.\n" +
+                "Empfehlung: 30-40 Sek.",
 
                 ["Tier7_GuardianHeart_StaminaCost"] =
                 "【Ausdauerkosten】\n" +
-                "Ausdauer bei Fähigkeitsnutzung.\n" +
-                "Als Tanker ist Ausdauermanagement wichtig.\n" +
-                "Empfehlung: 20-30",
+                "Ausdauer bei Schildsturm-Nutzung.\n" +
+                "Empfehlung: 15-25",
 
-                ["Tier7_GuardianHeart_Duration"] =
-                "【Buff-Dauer (Sek.)】\n" +
-                "Dauer der Defensivhaltung.\n" +
-                "In dieser Zeit reflektierst du Schaden und hast hohe Verteidigung.\n" +
-                "Empfehlung: 40-50 Sek.",
-
-                ["Tier7_GuardianHeart_ReflectPercent"] =
-                "【Schadensreflexionsprozentsatz (%)】\n" +
-                "Prozentsatz des eingehenden Schadens, der zum Angreifer reflektiert wird.\n" +
-                "Als Tanker den Schaden an den Feind zurückgeben.\n" +
-                "Empfehlung: 5-8%",
+                ["Tier7_ShieldCharge_DamagePercent"] =
+                "【Schildblock-Schaden (%)】\n" +
+                "Schaden beim Aufprall als Prozentsatz der Schildblockkraft.\n" +
+                "Empfehlung: 60-80%",
 
                 ["Tier7_GuardianHeart_RequiredPoints"] =
-                "【Benötigte Punkte】\nPunkte zum Freischalten des Wächterherzes.",
+                "【Benötigte Punkte】\nPunkte zum Freischalten des Schildsturms.",
 
                 // ========================================
                 // Stangenwaffen-Skilltree (Polearm Tree)

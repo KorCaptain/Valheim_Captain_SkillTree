@@ -1,6 +1,8 @@
 using HarmonyLib;
 using UnityEngine;
 using System.Collections.Generic;
+using CaptainSkillTree.Localization;
+using CaptainSkillTree.VFX;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -352,17 +354,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (woodPrefab != null)
                 {
-                    // 나무 종류별 한국어 이름 매핑
-                    string displayName = woodItemName switch
-                    {
-                        "Wood" => "나무",
-                        "FineWood" => "질 좋은 나무",
-                        "RoundLog" => "둥근 통나무",
-                        "ElderBark" => "고대의 나무껍질",
-                        "YggdrasilWood" => "위그드라실 나무",
-                        "CoreWood" => "코어 우드",
-                        _ => woodItemName
-                    };
+                    string displayName = GetItemDisplayName(woodItemName);
 
                     for (int i = 0; i < dropCount; i++)
                     {
@@ -383,6 +375,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillEffect.DrawFloatingText(Player.m_localPlayer,
                         $"🪓 {displayName} +{dropCount}",
                         new Color(0.4f, 0.8f, 0.2f, 1f)); // 자연스러운 초록색
+                    VFXManager.PlaySound("sfx_lootspawn", dropPosition, 2f);
 
                     Plugin.Log.LogInfo($"[생산 효과] 벌목 보너스 발동 성공: {effectSource} - {displayName} +{dropCount} 월드에 드롭됨");
                 }
@@ -498,6 +491,38 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 아이템 내부 이름을 현재 언어로 번역된 표시 이름으로 변환
+        /// </summary>
+        private static string GetItemDisplayName(string resourceName)
+        {
+            string key = (resourceName ?? "").ToLower() switch
+            {
+                "wood"           => "item_wood",
+                "finewood"       => "item_finewood",
+                "roundlog"       => "item_roundlog",
+                "elderbark"      => "item_elderbark",
+                "yggdrasilwood"  => "item_yggdrasilwood",
+                "corewood"       => "item_corewood",
+                "stone"          => "item_stone",
+                "bronze"         => "item_bronze",
+                "iron"           => "item_iron",
+                "copper"         => "item_copper",
+                "tin"            => "item_tin",
+                "silver"         => "item_silver",
+                "flint"          => "item_flint",
+                "raspberry"      => "item_raspberry",
+                "blueberries"    => "item_blueberries",
+                "mushroom"       => "item_mushroom",
+                "mushroomyellow" => "item_mushroomyellow",
+                "mushroomblue"   => "item_mushroomblue",
+                "coal"           => "item_coal",
+                "obsidian"       => "item_obsidian",
+                _                => null
+            };
+            return key != null ? L.Get(key) : resourceName;
+        }
+
+        /// <summary>
         /// 실제 자원 아이템을 월드에 드롭
         /// </summary>
         private static void DropResourceItem(string resourceName, Vector3 dropPosition, string effectSource)
@@ -516,31 +541,13 @@ namespace CaptainSkillTree.SkillTree
                 {
                     GameObject droppedItem = UnityEngine.Object.Instantiate(resourcePrefab, finalDropPosition, Quaternion.identity);
                     
-                    // 자원별 한국어 이름 매핑
-                    string displayName = resourceName switch
-                    {
-                        "Wood" => "나무",
-                        "Stone" => "돌",
-                        "Bronze" => "청동",
-                        "Iron" => "철",
-                        "Copper" => "구리",
-                        "Tin" => "주석",
-                        "Silver" => "은",
-                        "Flint" => "부싯돌",
-                        "Raspberry" => "산딸기",
-                        "Blueberries" => "블루베리",
-                        "Mushroom" => "버섯",
-                        "MushroomYellow" => "노란버섯",
-                        "MushroomBlue" => "파란버섯",
-                        "Coal" => "석탄",
-                        "Obsidian" => "흑요석",
-                        _ => resourceName
-                    };
-                    
+                    string displayName = GetItemDisplayName(resourceName);
+
                     // 플레이어 머리 위에 메시지 표시 (MMO 방식 DamageText)
-                    SkillEffect.DrawFloatingText(Player.m_localPlayer, 
-                        $"⚒️ {displayName} +1", 
+                    SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                        $"⚒️ {displayName} +1",
                         new Color(0.2f, 0.8f, 0.9f, 1f)); // 자연스러운 청록색
+                    VFXManager.PlaySound("sfx_lootspawn", finalDropPosition, 2f);
                     
                     Plugin.Log.LogInfo($"[생산 효과] {effectSource} 보너스 발동: {displayName} +1 월드에 드롭됨");
                 }
@@ -595,20 +602,13 @@ namespace CaptainSkillTree.SkillTree
                         bool added = inventory.AddItem(materialPrefab, 1);
                         if (added)
                         {
-                            // 한국어 이름으로 변환
-                            string displayName = selectedMaterial switch
-                            {
-                                "Wood" => "나무",
-                                "Stone" => "석재", 
-                                "Bronze" => "청동",
-                                "Iron" => "철",
-                                _ => selectedMaterial
-                            };
-                            
+                            string displayName = GetItemDisplayName(selectedMaterial);
+
                             // 플레이어 머리 위에 메시지 표시 (MMO 방식 DamageText)
-                            SkillEffect.DrawFloatingText(Player.m_localPlayer, 
-                                $"🔨 {displayName} +1", 
+                            SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                                $"🔨 {displayName} +1",
                                 new Color(1f, 0.9f, 0.3f, 1f)); // 자연스러운 노란색
+                            VFXManager.PlaySound("sfx_lootspawn", Player.m_localPlayer.transform.position, 2f);
                             
                             Plugin.Log.LogInfo($"[생산 효과] 제작 보너스 발동: {effectSource} - {displayName} +1");
                         }

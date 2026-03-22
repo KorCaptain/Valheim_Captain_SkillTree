@@ -401,6 +401,12 @@ namespace CaptainSkillTree.Localization
                 "피해 감소 버프가 지속되는 시간입니다.\n" +
                 "권장값: 4-8초",
 
+                ["Tanker_Taunt_ReflectPercent"] =
+                "【도발 반사 데미지 비율 (%)】\n" +
+                "전장의 함성 발동 시 피격 데미지의 일부를 공격자에게 반사합니다.\n" +
+                "버프 지속시간 동안 활성화됩니다.\n" +
+                "권장값: 5-20%",
+
                 ["Tanker_Taunt_EffectHeight"] =
                 "【도발 효과 표시 높이 (m)】\n" +
                 "몬스터 머리 위에 표시되는 도발 아이콘의 높이입니다.\n" +
@@ -442,6 +448,32 @@ namespace CaptainSkillTree.Localization
                 "【탱커 Lv5 모든 저항 (%)】\n" +
                 "탱커 Lv5 달성 시 모든 속성 피해를 감소시킵니다.\n" +
                 "권장값: 10-20%",
+
+                // === Tanker Job: 레벨별 반사 지속시간 (5개) ===
+                ["Tanker_ReflectDuration_Lv1"] =
+                "【탱커 반사 지속시간 Lv1 (초)】\n" +
+                "도발 발동 시 Lv1에서 반사 효과가 지속되는 시간입니다.\n" +
+                "기본값: 10초",
+
+                ["Tanker_ReflectDuration_Lv2"] =
+                "【탱커 반사 지속시간 Lv2 (초)】\n" +
+                "도발 발동 시 Lv2에서 반사 효과가 지속되는 시간입니다.\n" +
+                "기본값: 12초",
+
+                ["Tanker_ReflectDuration_Lv3"] =
+                "【탱커 반사 지속시간 Lv3 (초)】\n" +
+                "도발 발동 시 Lv3에서 반사 효과가 지속되는 시간입니다.\n" +
+                "기본값: 14초",
+
+                ["Tanker_ReflectDuration_Lv4"] =
+                "【탱커 반사 지속시간 Lv4 (초)】\n" +
+                "도발 발동 시 Lv4에서 반사 효과가 지속되는 시간입니다.\n" +
+                "기본값: 16초",
+
+                ["Tanker_ReflectDuration_Lv5"] =
+                "【탱커 반사 지속시간 Lv5 (초)】\n" +
+                "도발 발동 시 Lv5에서 반사 효과가 지속되는 시간입니다.\n" +
+                "기본값: 20초",
 
                 // ========================================
                 // Rogue Job Skills (로그 직업 스킬)
@@ -1192,6 +1224,12 @@ namespace CaptainSkillTree.Localization
                 "Duration of the damage reduction buff after activation.\n" +
                 "Recommended: 4-8 sec",
 
+                ["Tanker_Taunt_ReflectPercent"] =
+                "【Taunt Reflect Damage (%)】\n" +
+                "Reflects incoming damage to attackers during War Cry buff.\n" +
+                "Active for the buff duration.\n" +
+                "Recommended: 5-20%",
+
                 ["Tanker_Taunt_EffectHeight"] =
                 "【Taunt Effect Height (m)】\n" +
                 "Height above monster where the taunt icon appears.\n" +
@@ -1233,6 +1271,32 @@ namespace CaptainSkillTree.Localization
                 "【Tanker Lv5 All Resistance (%)】\n" +
                 "All damage resistance granted at Tanker Lv5.\n" +
                 "Recommended: 10-20%",
+
+                // === Tanker Job: Level-Up Reflect Duration (5 keys) ===
+                ["Tanker_ReflectDuration_Lv1"] =
+                "【Tanker Reflect Duration Lv1 (sec)】\n" +
+                "Duration of reflect effect when taunting at Lv1.\n" +
+                "Default: 10 sec",
+
+                ["Tanker_ReflectDuration_Lv2"] =
+                "【Tanker Reflect Duration Lv2 (sec)】\n" +
+                "Duration of reflect effect when taunting at Lv2.\n" +
+                "Default: 12 sec",
+
+                ["Tanker_ReflectDuration_Lv3"] =
+                "【Tanker Reflect Duration Lv3 (sec)】\n" +
+                "Duration of reflect effect when taunting at Lv3.\n" +
+                "Default: 14 sec",
+
+                ["Tanker_ReflectDuration_Lv4"] =
+                "【Tanker Reflect Duration Lv4 (sec)】\n" +
+                "Duration of reflect effect when taunting at Lv4.\n" +
+                "Default: 16 sec",
+
+                ["Tanker_ReflectDuration_Lv5"] =
+                "【Tanker Reflect Duration Lv5 (sec)】\n" +
+                "Duration of reflect effect when taunting at Lv5.\n" +
+                "Default: 20 sec",
 
                 // ========================================
                 // Rogue Job Skills
@@ -1664,6 +1728,15 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantHpMax_Lv4"] = "【HP 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 5%",
                 ["Producer_EnchantHpMin_Lv5"] = "【HP 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 6%",
                 ["Producer_EnchantHpMax_Lv5"] = "【HP 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 8%",
+
+                // ============================================
+                // Job Level Coin Cost (직업 레벨업 코인 비용)
+                // ============================================
+                ["Job_Lv1_Cost"] = "【직업 Lv1 코인 비용】\n모든 직업을 Lv1로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 1000",
+                ["Job_Lv2_Cost"] = "【직업 Lv2 코인 비용】\n모든 직업을 Lv2로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 2000",
+                ["Job_Lv3_Cost"] = "【직업 Lv3 코인 비용】\n모든 직업을 Lv3로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 3000",
+                ["Job_Lv4_Cost"] = "【직업 Lv4 코인 비용】\n모든 직업을 Lv4로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 4000",
+                ["Job_Lv5_Cost"] = "【직업 Lv5 코인 비용】\n모든 직업을 Lv5로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 5000",
             };
         }
     }

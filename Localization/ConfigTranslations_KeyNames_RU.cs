@@ -234,6 +234,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Ур.5: [Взрывная стрела] Расход выносливости (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Ур.5: [Взрывная стрела] Необходимые очки",
 
+                // === Tier 6: Дождь стрел (6) ===
+                ["Tier6_ArrowRain_DamagePercent"] = "Ур.6: [Дождь стрел] Урон за стрелу (%)",
+                ["Tier6_ArrowRain_ArrowCount"] = "Ур.6: [Дождь стрел] Количество стрел",
+                ["Tier6_ArrowRain_Radius"] = "Ур.6: [Дождь стрел] Радиус дождя (м)",
+                ["Tier6_ArrowRain_Cooldown"] = "Ур.6: [Дождь стрел] Перезарядка (сек)",
+                ["Tier6_ArrowRain_StaminaCost"] = "Ур.6: [Дождь стрел] Расход выносливости (%)",
+                ["Tier6_ArrowRain_RequiredPoints"] = "Ур.6: [Дождь стрел] Необходимые очки",
+
                 // ============================================
                 // Sword Tree (старый формат) - 20 ключей
                 // ============================================
@@ -466,11 +474,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Ур.7-1: [Молот ярости] Перезарядка (сек)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Ур.7-1: [Молот ярости] Радиус AOE (м)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Ур.7-1: [Молот ярости] Необходимые очки",
-                ["Tier7_GuardianHeart_Cooldown"] = "Ур.7-2: [Сердце стража] Перезарядка (сек)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Ур.7-2: [Сердце стража] Расход выносливости",
-                ["Tier7_GuardianHeart_Duration"] = "Ур.7-2: [Сердце стража] Длительность эффекта (сек)",
-                ["Tier7_GuardianHeart_ReflectPercent"] = "Ур.7-2: [Сердце стража] Отражение урона (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Ур.7-2: [Сердце стража] Необходимые очки",
+                ["Tier7_GuardianHeart_Cooldown"] = "Ур.7-2: [Щитовой натиск] Перезарядка (сек)",
+                ["Tier7_GuardianHeart_StaminaCost"] = "Ур.7-2: [Щитовой натиск] Расход выносливости",
+                ["Tier7_ShieldCharge_DamagePercent"] = "Ур.7-2: [Щитовой натиск] Урон от блока (%)",
+                ["Tier7_GuardianHeart_RequiredPoints"] = "Ур.7-2: [Щитовой натиск] Необходимые очки",
 
                 // ============================================
                 // Polearm Tree - 37 ключей

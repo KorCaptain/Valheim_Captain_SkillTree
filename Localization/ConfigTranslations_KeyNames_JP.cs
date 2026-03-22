@@ -371,6 +371,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_Cooldown"] = "Tier 5: [爆発矢] クールダウン (秒)",
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [爆発矢] スタミナコスト (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [爆発矢] 必要ポイント",
+
+                // === Tier 6: 矢の雨 (6) ===
+                ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [矢の雨] 矢1本のダメージ (%)",
+                ["Tier6_ArrowRain_ArrowCount"] = "Tier 6: [矢の雨] 矢の数",
+                ["Tier6_ArrowRain_Radius"] = "Tier 6: [矢の雨] 降下範囲 (m)",
+                ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [矢の雨] クールダウン (秒)",
+                ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [矢の雨] スタミナコスト (%)",
+                ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [矢の雨] 必要ポイント",
             };
         }
     }

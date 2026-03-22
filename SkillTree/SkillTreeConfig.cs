@@ -278,6 +278,13 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<string> HotKeyG;
         public static ConfigEntry<string> HotKeyH;
 
+        // 직업 레벨업 코인 비용 (모든 직업 공통, 서버 동기화)
+        public static ConfigEntry<int> JobLv1Cost;
+        public static ConfigEntry<int> JobLv2Cost;
+        public static ConfigEntry<int> JobLv3Cost;
+        public static ConfigEntry<int> JobLv4Cost;
+        public static ConfigEntry<int> JobLv5Cost;
+
         // HUD 위치 Config
         public static ConfigEntry<int> HudPosX;
         public static ConfigEntry<int> HudPosY;
@@ -294,6 +301,26 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+
+        // 직업 레벨업 코인 비용 접근자
+        public static int JobLv1CostValue => (int)GetEffectiveValue("Job_Lv1_Cost", (float)(JobLv1Cost?.Value ?? 1000));
+        public static int JobLv2CostValue => (int)GetEffectiveValue("Job_Lv2_Cost", (float)(JobLv2Cost?.Value ?? 2000));
+        public static int JobLv3CostValue => (int)GetEffectiveValue("Job_Lv3_Cost", (float)(JobLv3Cost?.Value ?? 3000));
+        public static int JobLv4CostValue => (int)GetEffectiveValue("Job_Lv4_Cost", (float)(JobLv4Cost?.Value ?? 4000));
+        public static int JobLv5CostValue => (int)GetEffectiveValue("Job_Lv5_Cost", (float)(JobLv5Cost?.Value ?? 5000));
+
+        /// <summary>레벨별 직업 코인 비용 반환 (모든 직업 공통)</summary>
+        public static int GetJobLevelCost(int level)
+        {
+            switch (level) {
+                case 1: return JobLv1CostValue;
+                case 2: return JobLv2CostValue;
+                case 3: return JobLv3CostValue;
+                case 4: return JobLv4CostValue;
+                case 5: return JobLv5CostValue;
+                default: return level * 1000;
+            }
+        }
 
         // 동적 값 접근 프로퍼티
         public static string LanguageValue => Language?.Value ?? "Korean";
@@ -771,6 +798,18 @@ namespace CaptainSkillTree.SkillTree
                     new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("PassiveMessageDisplay"), Order = -16 }
                 )
             );
+
+            // === 직업 레벨업 코인 비용 (서버 관리자 전용, 클라이언트 자동 동기화) ===
+            JobLv1Cost = BindServerSync(config, "Skill_Tree_Base", "Job_Lv1_Cost", 1000,
+                GetConfigDescription("Job_Lv1_Cost"), order: -20);
+            JobLv2Cost = BindServerSync(config, "Skill_Tree_Base", "Job_Lv2_Cost", 2000,
+                GetConfigDescription("Job_Lv2_Cost"), order: -21);
+            JobLv3Cost = BindServerSync(config, "Skill_Tree_Base", "Job_Lv3_Cost", 3000,
+                GetConfigDescription("Job_Lv3_Cost"), order: -22);
+            JobLv4Cost = BindServerSync(config, "Skill_Tree_Base", "Job_Lv4_Cost", 4000,
+                GetConfigDescription("Job_Lv4_Cost"), order: -23);
+            JobLv5Cost = BindServerSync(config, "Skill_Tree_Base", "Job_Lv5_Cost", 5000,
+                GetConfigDescription("Job_Lv5_Cost"), order: -24);
 
             // en.json 항상 자동 생성 (커뮤니티 번역 템플릿)
             CaptainSkillTree.Localization.LocalizationExporter.ExportEnJson();

@@ -78,11 +78,12 @@ try {
 {
   "name": "CaptainSkillTree",
   "version_number": "$newVersion",
-  "website_url": "https://github.com/yourusername/CaptainSkillTree",
+  "website_url": "https://discord.gg/W26PTxYhug",
   "description": "Valheim Skill Tree Expansion - EpicMMOSystem Expert System",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2200",
-    "blacks7ar-EpicMMOSystem-1.6.9"
+    "Wacky-WackyEpicMMOSystem-1.9.58",
+    "ValheimModding-Jotunn-2.27.1"
   ]
 }
 "@

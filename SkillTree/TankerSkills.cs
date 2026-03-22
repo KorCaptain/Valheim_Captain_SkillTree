@@ -107,14 +107,18 @@ namespace CaptainSkillTree.SkillTree
                 // 탱커 방어 버프 시작 (피해 감소 + 지속 이펙트)
                 StartTankerDefenseBuff(player);
 
+                // 도발 반사데미지 활성화 (레벨별 지속시간)
+                int tankerLevel = SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 1;
+                TankerReflect.ActivateTankerReflect(player, Tanker_Config.GetTankerReflectDurationForLevel(tankerLevel));
+
                 // 시전 효과음 1회 재생
                 VFXManager.PlayVFX("sfx_dragon_scream", player.transform.position);
 
-                // 5회 반복 도발 코루틴 시작 (1초 간격)
+                // 8회 반복 도발 코루틴 시작 (1초 간격)
                 if (Plugin.Instance != null)
                     Plugin.Instance.StartCoroutine(TauntPulseRoutine(player));
 
-                Plugin.Log.LogDebug($"[탱커 도발] {player.GetPlayerName()} 5회 반복 도발 시작");
+                Plugin.Log.LogDebug($"[탱커 도발] {player.GetPlayerName()} 8회 반복 도발 시작");
             }
             catch (System.Exception ex)
             {
@@ -123,20 +127,21 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 도발 5회 반복 코루틴 - 1초 간격으로 어그로+VFX 발동
+        /// 도발 8회 반복 코루틴 - 1초 간격으로 어그로+VFX 발동
         /// </summary>
         private static IEnumerator TauntPulseRoutine(Player player)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
             {
                 if (player == null || !player || player.IsDead()) yield break;
 
                 TauntNearbyEnemies(player);
                 PlayTankerEffects(player);
+                VFXManager.PlayVFX("sfx_metal_shield_blocked_overlay", player.transform.position);
 
-                Plugin.Log.LogDebug($"[탱커 도발] {player.GetPlayerName()} {i + 1}/5회 펄스 발동");
+                Plugin.Log.LogDebug($"[탱커 도발] {player.GetPlayerName()} {i + 1}/8회 펄스 발동");
 
-                if (i < 4)
+                if (i < 7)
                     yield return new WaitForSeconds(1f);
             }
         }

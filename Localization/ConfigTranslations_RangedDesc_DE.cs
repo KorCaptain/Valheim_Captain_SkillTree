@@ -437,6 +437,25 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_ExplosiveArrow_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Explosivpfeils.",
+
+                // === Tier 6: Pfeilregen ===
+                ["Tier6_ArrowRain_DamagePercent"] =
+                "【Schaden pro Pfeil (%)】\nJeder Pfeil verursacht diesen Prozentsatz des (Bogen+Pfeil)-Schadens.\nEmpfehlung: 10-20%",
+
+                ["Tier6_ArrowRain_ArrowCount"] =
+                "【Pfeilanzahl】\nAnzahl der fallenden Pfeile im Pfeilregen.\nEmpfehlung: 20-40",
+
+                ["Tier6_ArrowRain_Radius"] =
+                "【Regenradius (m)】\nRadius des Bereichs, in dem Pfeile fallen.\nEmpfehlung: 10-20m",
+
+                ["Tier6_ArrowRain_Cooldown"] =
+                "【Abklingzeit (Sek.)】\nWartezeit bis zur erneuten Verwendung.\nEmpfehlung: 35-60 Sek.",
+
+                ["Tier6_ArrowRain_StaminaCost"] =
+                "【Ausdauerkosten (%)】\nProzentsatz der maximalen Ausdauer bei Fähigkeitsnutzung.\nEmpfehlung: 20-30%",
+
+                ["Tier6_ArrowRain_RequiredPoints"] =
+                "【Benötigte Punkte】\nPunkte zum Freischalten des Pfeilregens.",
             };
         }
     }

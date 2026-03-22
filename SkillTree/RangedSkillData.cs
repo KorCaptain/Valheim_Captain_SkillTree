@@ -366,7 +366,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "bow_Step3_silentshot", "bow_Step4_multishot2", "bow_Step5_instinct" },
-                NextNodes = new List<string> { "bow_Step6_critboost" },
+                NextNodes = new List<string> { "bow_Step6_critboost", "bow_Step6_arrow_rain" },
                 ApplyEffect = (lv) => { }
             });
 
@@ -380,6 +380,30 @@ namespace CaptainSkillTree.SkillTree
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(-365, 475),
+                Category = "원거리",
+                IconNameLocked = "all_skill_lock",
+                IconNameUnlocked = "all_skill_unlock",
+                Prerequisites = new List<string> { "bow_Step5_master" },
+                NextNodes = new List<string>(),
+                ApplyEffect = (lv) => { }
+            });
+
+            // Step 6-2: 화살비 (H키 액티브 스킬)
+            manager.AddSkill(new SkillNode {
+                Id = "bow_Step6_arrow_rain",
+                NameKey = "bow_arrow_rain_name",
+                DescriptionKey = "bow_arrow_rain_desc",
+                DescriptionArgs = new object[] {
+                    Bow_Config.ArrowRainArrowCountValue,
+                    Bow_Config.ArrowRainDamagePercentValue,
+                    Bow_Config.ArrowRainRadiusValue,
+                    Bow_Config.ArrowRainStaminaCostValue,
+                    Bow_Config.ArrowRainCooldownValue
+                },
+                RequiredPoints = Bow_Config.ArrowRainRequiredPointsValue,
+                MaxLevel = 1,
+                Tier = 6,
+                Position = new Vector2(-280, 475),
                 Category = "원거리",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
@@ -660,6 +684,44 @@ namespace CaptainSkillTree.SkillTree
 
             // 7. 쿨타임
             tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Bow_Config.BowExplosiveArrowCooldownValue)}</size></color>\n";
+
+            // 8. 필요조건
+            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_bow_equip")}</size></color>\n";
+
+            // 9. 필요포인트
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>4</size></color>";
+
+            return tooltip.TrimEnd('\n');
+        }
+
+        /// <summary>
+        /// 화살비 동적 툴팁 생성 (H키 액티브 스킬)
+        /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형 → 쿨타임 → 필요조건 → 필요포인트
+        /// </summary>
+        public static string GetArrowRainTooltip()
+        {
+            var tooltip = "";
+
+            // 1. 스킬명
+            tooltip += $"<color=#FFD700><size=22>{L.Get("bow_arrow_rain_name")}</size></color>\n\n";
+
+            // 2. 설명
+            tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("bow_arrow_rain_tooltip_desc")}</size></color>\n";
+
+            // 3. 데미지 (화살 수 × 데미지%)
+            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("bow_arrow_rain_damage_format", Bow_Config.ArrowRainArrowCountValue, Bow_Config.ArrowRainDamagePercentValue)}</size></color>\n";
+
+            // 4. 범위 (낙하 반경 / AOE)
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("bow_arrow_rain_range_format", Bow_Config.ArrowRainRadiusValue)}</size></color>\n";
+
+            // 5. 소모
+            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_percent_format", Bow_Config.ArrowRainStaminaCostValue)}</size></color>\n";
+
+            // 6. 스킬유형 (H키 강조)
+            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_h")}</size></color>\n";
+
+            // 7. 쿨타임
+            tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Bow_Config.ArrowRainCooldownValue)}</size></color>\n";
 
             // 8. 필요조건
             tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_bow_equip")}</size></color>\n";

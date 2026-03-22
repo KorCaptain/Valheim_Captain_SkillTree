@@ -437,6 +437,25 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_ExplosiveArrow_RequiredPoints"] =
                 "【必要ポイント】\n爆裂矢を解放するための必要ポイントです。",
+
+                // === Tier 6: 矢の雨 ===
+                ["Tier6_ArrowRain_DamagePercent"] =
+                "【矢1本のダメージ比率 (%)】\n(弓+矢)ダメージのこの割合で矢1本分のダメージを計算します。\n推奨: 10-20%",
+
+                ["Tier6_ArrowRain_ArrowCount"] =
+                "【矢の数】\n矢の雨で降り注ぐ矢の本数です。\n推奨: 20-40",
+
+                ["Tier6_ArrowRain_Radius"] =
+                "【降下範囲 (m)】\n矢が降り注ぐ範囲の半径です。\n推奨: 10-20m",
+
+                ["Tier6_ArrowRain_Cooldown"] =
+                "【クールダウン (秒)】\nスキル再使用までの待機時間です。\n推奨: 35-60秒",
+
+                ["Tier6_ArrowRain_StaminaCost"] =
+                "【スタミナ消費 (%)】\nスキル使用時に消費する最大スタミナの割合です。\n推奨: 20-30%",
+
+                ["Tier6_ArrowRain_RequiredPoints"] =
+                "【必要ポイント】\n矢の雨を解放するための必要ポイントです。",
             };
         }
     }
