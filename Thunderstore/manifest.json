@@ -5,7 +5,7 @@
   "description": "Valheim Skill Tree Expansion - EpicMMOSystem Expert System",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2200",
-    "Wacky-WackyEpicMMOSystem-1.9.58",
+    "WackyMole-WackyEpicMMOSystem-1.9.58",
     "ValheimModding-Jotunn-2.27.1"
   ]
 }

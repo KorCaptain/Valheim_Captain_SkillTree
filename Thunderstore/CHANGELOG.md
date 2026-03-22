@@ -1,6 +1,6 @@
 # Changelog / 변경 로그
 ## Update
-# [1.1.61] - 2026-03-22
+# [1.1.78] - 2026-03-22
 - ✅new1 : Arrow Rain: Added AOE damage (3m radius) when falling arrows land on monsters/terrain
 - ✅new2 : Arrow Rain: Added structured tooltip matching Explosive Arrow format (desc/damage/range/cooldown/skill type)
 - ✅new3 : Tanker - Reflect duration now scales by level (Lv1:10s / Lv2:12s / Lv3:14s / Lv4:16s / Lv5:20s), configurable per level
