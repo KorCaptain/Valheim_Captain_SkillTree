@@ -1,28 +1,53 @@
 # CaptainSkillTree - Valheim Skill Tree Mod
 
-**[The English description is below](#-English)**
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/korcaptain)
+
+**[한국어 설명 보기](#-한국어-korean)** | **[English Description](#-english)**
 
 ---
+
 ## 📸 ScreenShot~!
+
+### 🌳 Skill Tree Overview
 ![Tree](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Skill_Tree.gif)
+
+### ⚔️ Skill Icons
 ![Skill](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Skill_Icon_2.gif)
 
 ## 🎥 Play~
+
+### 🗡️ Assassin - Stealth Strike (Knife / G)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Assasin.gif)
+
+### 🏃 Rush Slash (Sword / G)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Rush.gif)
+
+### 🛡️ Parry Rush (Sword / H)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/parry.gif)
+
+### 🏹 Explosive Arrow (Bow / Z)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/ExArrow.gif)
+
+### 💚 Heal (Staff / H)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Heal.gif)
+
+### 🌧️ Arrow Rain (Bow / H)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Arrow_Rain2.gif)
+
+### 🔨 Fury Hammer (Mace / G)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/hammer.gif)
+
+### ⚡ Rush Shield (Mace / H)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Rush_SH.gif)
 
 #Language support: 한국어, English, Русский, Português-Brasil, das Deutsche, 中国话, 日本語
 
-# 한국어 (Korean)
+---
+
+# 🇰🇷 한국어 (Korean)
 
 ## 개요
-CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 모드입니다. 
+CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 모드입니다.
 전문가 트리, 무기 트리, 직업 시스템을 통해 바이킹의 능력을 강화하세요!
 
 ## 필수 모드 (Dependencies)
@@ -75,7 +100,7 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 |----|------|------|
 | **Z** | 원거리 액티브 | 석궁/활/지팡이 중 택1 |
 | **G** | 근접 메인 액티브 | 같은 무기 트리만 |
-| **H** | 보조 액티브 | G키와 같은 무기 트리 |
+| **H** | 보조 액티브 | 화살비(활), 패링돌격(검), 방패돌진(둔기) 등 |
 | **Y** | 직업 액티브 | 7개 직업 중 택1 |
 
 ## 스킬 트리
@@ -93,7 +118,7 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 **원거리**
 | 트리 | 설명 | 액티브 스킬 |
 |------|------|-----------|
-| Bow | 활 전문가 | 폭발화살 (Z키) |
+| Bow | 활 전문가 | 폭발화살 (Z키), 화살비 (H키) |
 | Staff | 지팡이 전문가 | 연속시전, 힐 (Z/H키) |
 | Crossbow | 석궁 전문가 | 단한발 (Z키) |
 
@@ -101,8 +126,8 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 | 트리   |     설명           |         액티브 스킬                    |
 |------- |-------------------|-------------------------------------|
 | Knife  | 단검 전문가     | 암살자 (G키) |
-| Sword |  검 전문가      | 돌진베기, 패링돌격 (G/H키) |
-| Mace  | 둔기 전문가    | 수호자진심, 분노의망치 (G/H키) |
+| Sword |  검 전문가      | 돌진베기 (G키), 패링돌격 (H키) |
+| Mace  | 둔기 전문가    | 분노의망치 (G키), 방패돌진 (H키) |
 | Spear  | 창 전문가       | 꿰뚫기, 연공창 (G/H키) |
 | Polearm | 폴암 전문가 | 장창제왕 (G키) |
 
@@ -112,7 +137,7 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 |------|------|------------|--------|
 | Archer | 궁수 | 멀티샷 | 점프 높이+, 낙사 감소 |
 | Mage | 마법사 | 마나폭발 | Eitr 보너스 |
-| Tanker | 탱커 | 충격파방출 | 피해감소, 체력+ |
+| Tanker | 탱커 | 전장의 함성 (범위 도발 + 반사 + 피해감소) | 피해감소, 체력+ |
 | Rogue | 로그 | 암살 | 크리티컬+, 은신 |
 | Berserker | 광전사 | 광전사의 분노 | 체력 낮을수록 데미지+ |
 | Paladin | 성기사 | 신성한 빛 | 힐, 버프 |
@@ -212,17 +237,17 @@ BepInEx/config/CaptainSkillTree.cfg
 | **Speed Tree** | 속도 전문가 설정 | 이동속도 %, 공격속도 % |
 | **Defense Tree** | 방어 전문가 설정 | 체력 보너스, 방어력 보너스, 회피율 |
 | **Production Tree** | 생산 전문가 설정 | 채집 효율 % |
-| **Bow Tree** | 활 스킬 설정 | 멀티샷 확률, 화살 수 |
+| **Bow Tree** | 활 스킬 설정 | 멀티샷 확률, 화살 수, 화살비 데미지/범위 |
 | **Staff Tree** | 지팡이 스킬 설정 | 이중시전 확률, 힐량 |
 | **Crossbow Tree** | 석궁 스킬 설정 | 단한발 데미지 |
-| **Sword Tree** | 검 스킬 설정 | 돌진베기 데미지, 쿨타임 |
+| **Sword Tree** | 검 스킬 설정 | 돌진베기 데미지, 패링돌격 쿨타임 |
 | **Knife Tree** | 단검 스킬 설정 | 암살자 데미지 배율 |
 | **Spear Tree** | 창 스킬 설정 | 꿰뚫기 데미지, 콤보 횟수 |
 | **Polearm Tree** | 폴암 스킬 설정 | 장창제왕 범위, 넉백 |
-| **Mace Tree** | 둔기 스킬 설정 | 수호자 반경, 분노 데미지 |
+| **Mace Tree** | 둔기 스킬 설정 | 방패돌진 반경, 분노의망치 데미지 |
 | **Archer Job Skills** | 궁수 직업 설정 | 멀티샷 화살 수, 쿨타임 |
 | **Mage Job Skills** | 마법사 직업 설정 | 마나폭발 데미지, Eitr 소모 |
-| **Tanker Job Skills** | 탱커 직업 설정 | 충격파 반경, 체력 보너스 |
+| **Tanker Job Skills** | 탱커 직업 설정 | 전장의 함성 범위/지속시간, 피해 반사 |
 | **Rogue Job Skills** | 로그 직업 설정 | 암살 배율 |
 | **Berserker Job Skills** | 광전사 직업 설정 | 분노 지속시간, HP당 데미지 |
 | **Paladin Job Skills** | 성기사 직업 설정 | 힐량, 버프 지속시간 |
@@ -239,7 +264,8 @@ BepInEx/config/CaptainSkillTree.cfg
 2. **수동**: `BepInEx/plugins/CaptainSkillTree/` 폴더에 DLL 복사
 
 ---
-# English
+
+# 🏴󠁧󠁢󠁥󠁮󠁧󠁿 English
 
 ## Overview
 CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert Trees, Weapon Trees, and a Job System. Enhance your Viking's abilities with passive bonuses and powerful active skills!
@@ -259,8 +285,8 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 
 ### Comprehensive Skill Tree System
 - **4 Expert Trees**: Attack, Speed, Defense, Production
-- **7 Weapon Trees**: Bow, Staff, Crossbow, Knife, Sword, Mace, Spear, Polearm
-- **6 Job Classes**: Archer, Mage, Tanker, Rogue, Berserker, Paladin
+- **8 Weapon Trees**: Bow, Staff, Crossbow, Knife, Sword, Mace, Spear, Polearm
+- **7 Job Classes**: Archer, Mage, Tanker, Rogue, Berserker, Paladin, Producer
 
 ### Passive & Active Skills
 - **Passive Skills**: Automatic stat bonuses (no VFX/SFX)
@@ -285,7 +311,8 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 
 1. Press **TAB** to open inventory
 2. Click the **Skill Tree Icon** (sword icon) near the level system button
-3. Skill Tree UI opens with custom BGM
+3. Without EpicMMO: click the **Skill Tree Icon** above your character's head
+4. Skill Tree UI opens with custom BGM
 
 ## Key Bindings
 
@@ -293,8 +320,8 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 |-----|----------|-------------|
 | **Z** | Ranged Active | Crossbow/Bow/Staff skill (choose 1) |
 | **G** | Melee Main Active | Same weapon tree only |
-| **H** | Sub Active | Same weapon tree as G key |
-| **Y** | Job Active | 1 of 6 jobs |
+| **H** | Sub Active | Arrow Rain (Bow), Parry Rush (Sword), Rush Shield (Mace), etc. |
+| **Y** | Job Active | 1 of 7 jobs |
 
 ## Skill Trees
 
@@ -311,25 +338,25 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 **Ranged**
 | Tree | Description | Active Skill |
 |------|-------------|--------------|
-| Bow | Bow Expert | Explosive Arrow (Z) |
-| Staff | Staff Expert | Double Cast, Heal Z/H) |
+| Bow | Bow Expert | Explosive Arrow (Z), Arrow Rain (H) |
+| Staff | Staff Expert | Double Cast, Heal (Z/H) |
 | Crossbow | Crossbow Expert | Single Shot (Z) |
 
 **Melee**
 | Tree | Description | Active Skill |
 |------|-------------|--------------|
-| Sword | Sword Expert | Rush Slash, Parry Rush (G/H) |
+| Sword | Sword Expert | Rush Slash (G), Parry Rush (H) |
 | Knife | Knife Expert | Assassin (G) |
 | Spear | Spear Expert | Penetrate, Combo Spear (G/H) |
 | Polearm | Polearm Expert | Polearm King (G) |
-| Mace | Mace Expert | Guardian Heart, Fury Hammer (G/H) |
+| Mace | Mace Expert | Fury Hammer (G), Rush Shield (H) |
 
 ### Job Classes
 | Job | Description | Active (Y) | Passive |
 |-----|-------------|------------|---------|
 | Archer | Bowman | Multi-Shot | Jump Height+, Fall Damage- |
 | Mage | Wizard | Mana Burst | Eitr Bonus |
-| Tanker | Tank | Shockwave | Damage Reduction, HP+ |
+| Tanker | Tank | War Cry (AOE Taunt + Reflect + Damage Reduction) | Damage Reduction, HP+ |
 | Rogue | Assassin | Assassination | Critical+, Stealth |
 | Berserker | Berserker | Berserker Rage | Lower HP = Higher Damage |
 | Paladin | Holy Knight | Holy Light | Heal, Buffs |
@@ -429,17 +456,17 @@ BepInEx/config/CaptainSkillTree.cfg
 | **Speed Tree** | Speed Expert settings | Move speed %, Attack speed % |
 | **Defense Tree** | Defense Expert settings | HP bonus, Armor bonus, Dodge rate |
 | **Production Tree** | Production Expert settings | Gathering efficiency % |
-| **Bow Tree** | Bow skill settings | Multi-shot chance, Arrow count |
+| **Bow Tree** | Bow skill settings | Multi-shot chance, Arrow count, Arrow Rain damage/radius |
 | **Staff Tree** | Staff skill settings | Double cast chance, Heal amount |
 | **Crossbow Tree** | Crossbow skill settings | Single shot damage |
-| **Sword Tree** | Sword skill settings | Rush slash damage, Cooldown |
+| **Sword Tree** | Sword skill settings | Rush slash damage, Parry Rush cooldown |
 | **Knife Tree** | Knife skill settings | Assassin damage multiplier |
 | **Spear Tree** | Spear skill settings | Penetrate damage, Combo count |
 | **Polearm Tree** | Polearm skill settings | King skill range, Knockback |
-| **Mace Tree** | Mace skill settings | Guardian radius, Fury damage |
+| **Mace Tree** | Mace skill settings | Rush Shield radius, Fury Hammer damage |
 | **Archer Job Skills** | Archer job settings | Multi-shot arrows, Cooldown |
 | **Mage Job Skills** | Mage job settings | Mana burst damage, Eitr cost |
-| **Tanker Job Skills** | Tanker job settings | Shockwave radius, HP bonus |
+| **Tanker Job Skills** | Tanker job settings | War Cry range/duration, Damage reflect |
 | **Rogue Job Skills** | Rogue job settings | Assassination multiplier |
 | **Berserker Job Skills** | Berserker job settings | Rage duration, Damage per HP% |
 | **Paladin Job Skills** | Paladin job settings | Heal amount, Buff duration |
@@ -468,6 +495,7 @@ BepInEx/config/CaptainSkillTree.cfg
 ## 💬 Support / 지원
 
 - **Discord**: KorCaptainSkillTree_MOD_Server - https://discord.gg/W26PTxYhug
+- **Ko-fi**: https://ko-fi.com/korcaptain
 - **E-mail**: ssunyme@naver.com
 - **Issues**: Report bugs and suggestions on Discord
 - **문제 보고**: Discord에서 버그 및 제안사항 보고
@@ -481,4 +509,3 @@ BepInEx/config/CaptainSkillTree.cfg
 ---
 
 **Enjoy your enhanced Valheim adventure! / 향상된 발헤임 모험을 즐기세요!**
-
