@@ -28,7 +28,7 @@
 ### 🏹 Explosive Arrow (Bow / Z)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/ExArrow.gif)
 
-### 💚 Heal (Staff / H)
+### 💚 Heal (Paladin / Y)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Heal.gif)
 
 ### 🌧️ Arrow Rain (Bow / H)
@@ -50,22 +50,30 @@
 CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 모드입니다.
 전문가 트리, 무기 트리, 직업 시스템을 통해 바이킹의 능력을 강화하세요!
 
-## 필수 모드 (Dependencies)
+---
+
+<details>
+<summary>📦 필수 모드 (Dependencies)</summary>
 
 | 모드 | 버전 | 필수 여부 |
 |------|------|----------|
 | BepInExPack_Valheim | 5.4.2200+ | 필수 |
 | Jotunn | 2.20.0+ | 필수 |
-| WackyEpicMMOSystem | 최신 | 권장 (없어도 동작) |
+| WackyEpicMMOSystem | 최신 | 권장 |
 | ConfigurationManager | 최신 | 권장 (GUI 설정용) |
 
 > **참고**: CaptainSkillTree는 자체 레벨 시스템을 내장하고 있습니다. WackyEpicMMOSystem이 설치되지 않은 경우 자동으로 내장 레벨 시스템을 사용합니다.(보조적인 진행을 위함입니다. 가능한 WackyEpicMMOSystem을 설치하고 플레이 바랍니다.)
 
-## 주요 특징
+</details>
+
+---
+
+<details>
+<summary>✨ 주요 특징</summary>
 
 ### 종합 스킬트리 시스템
 - **4개 전문가 트리**: 공격, 속도, 방어, 생산
-- **7개 무기 트리**: 활, 지팡이, 석궁, 단검, 검, 둔기, 창, 폴암
+- **8개 무기 트리**: 활, 지팡이, 석궁, 단검, 검, 둔기, 창, 폴암
 - **7개 직업**: 궁수, 마법사, 탱커, 로그, 광전사, 성기사, 제작전문가
 
 ### 패시브 & 액티브 스킬
@@ -87,14 +95,24 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 - 스킬트리 UI가 열리면 자동 재생
 - 발헤임 음악을 일시정지하고, 닫으면 자동 재개
 
-## 스킬트리 여는 방법
+</details>
+
+---
+
+<details>
+<summary>🗺️ 스킬트리 여는 방법</summary>
 
 1. **TAB** 키로 인벤토리 열기
 2. 레벨 시스템 버튼 옆의 **스킬트리 아이콘** (검 아이콘) 클릭
 3. EpicMMO 모드 없을때는 캐릭터 머리위 **스킬트리 아이콘** (검 아이콘) 클릭
 4. 전용 BGM과 함께 스킬트리 UI 열림
 
-## 키 바인딩
+</details>
+
+---
+
+<details>
+<summary>⌨️ 키 바인딩</summary>
 
 | 키 | 용도 | 설명 |
 |----|------|------|
@@ -103,7 +121,12 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 | **H** | 보조 액티브 | 화살비(활), 패링돌격(검), 방패돌진(둔기) 등 |
 | **Y** | 직업 액티브 | 7개 직업 중 택1 |
 
-## 스킬 트리
+</details>
+
+---
+
+<details>
+<summary>🌳 스킬 트리</summary>
 
 ### 전문가 트리 (Expert Trees)
 | 트리 | 설명 | 주요 효과 |
@@ -123,14 +146,13 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 | Crossbow | 석궁 전문가 | 단한발 (Z키) |
 
 **근접**
-| 트리   |     설명           |         액티브 스킬                    |
-|------- |-------------------|-------------------------------------|
-| Knife  | 단검 전문가     | 암살자 (G키) |
-| Sword |  검 전문가      | 돌진베기 (G키), 패링돌격 (H키) |
-| Mace  | 둔기 전문가    | 분노의망치 (G키), 방패돌진 (H키) |
-| Spear  | 창 전문가       | 꿰뚫기, 연공창 (G/H키) |
+| 트리 | 설명 | 액티브 스킬 |
+|------|------|-----------|
+| Knife | 단검 전문가 | 암살자 (G키) |
+| Sword | 검 전문가 | 돌진베기 (G키), 패링돌격 (H키) |
+| Mace | 둔기 전문가 | 분노의망치 (G키), 방패돌진 (H키) |
+| Spear | 창 전문가 | 꿰뚫기, 연공창 (G/H키) |
 | Polearm | 폴암 전문가 | 장창제왕 (G키) |
-
 
 ### 직업 트리 (Job Classes)
 | 직업 | 설명 | 액티브 (Y키) | 패시브 |
@@ -143,7 +165,8 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 | Paladin | 성기사 | 신성한 빛 | 힐, 버프 |
 | Producer | 제작전문가 | 장인의 축복 | 팜그리드, 내구도+, 재료감소, 마법부여 |
 
-### 제작전문가 (Producer) 상세
+<details>
+<summary>🌾 제작전문가 (Producer) 상세</summary>
 
 #### 팜그리드 (Farm Grid)
 - 경작 도구(Cultivator/Hoe) 장착 시 **녹색 격자** 시각화 자동 표시
@@ -193,43 +216,52 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 | 종류 | Lv3 | Lv4 | Lv5 |
 |------|-----|-----|-----|
 | 방어력 (Armor) | 5% | 7~9% | 10~12% |
-| 최대체력 (MaxHP) | +2 | +4~5 | +6~8 |
-| 최대스태미나 (MaxStamina) | +5~8 | +8~12 | +12~15 |
+| 최대체력 (MaxHP) | +2% | +4~5% | +6~8% |
+| 최대스태미나 (MaxStamina) | +5~8% | +8~12% | +12~15% |
 
-> 적용 가능 아이템: 한손/양손무기, 활, 투구, 상의, 하의, 장갑, 어깨
+> 적용 가능 아이템: 한손/양손무기, 활, 투구, 상의, 하의, 망토
 
-## 관리자 명령어
+</details>
+
+</details>
+
+---
+
+<details>
+<summary>🛠️ 관리자 명령어</summary>
 
 | 명령어 | 설명 |
 |--------|------|
 | `skillreset <플레이어이름>` | 플레이어 스킬 초기화 |
 | `skilladd <숫자> <캐릭터이름>` | 스킬 포인트 추가 |
 
-## 설정 관리 (Configuration Management)
+</details>
 
-### ConfigurationManager 사용하기 (권장)
+---
+
+<details>
+<summary>⚙️ 설정 관리 (Configuration Management)</summary>
 
 **ConfigurationManager**를 사용하면 게임 내에서 GUI로 모든 모드 설정을 편리하게 조정할 수 있습니다.
 게임 내 간편한 설정을 위해 **ConfigurationManager 사용을 강력히 권장**합니다:
+
 1. Thunderstore에서 **BepInEx.ConfigurationManager** 설치
 2. 게임 내에서 **F1** 키를 눌러 Configuration Manager 열기
 3. 모드 목록에서 **CaptainSkillTree** 찾기
 4. 슬라이더, 체크박스, 입력 필드로 원하는 설정 조정
 5. 변경사항이 **즉시 적용** - 재시작 불필요!
 
-### GUI 기능
+**GUI 기능**
 - **실시간 미리보기**: 변경사항을 즉시 확인
 - **검색 기능**: 특정 설정을 빠르게 찾기
 - **카테고리 정리**: 트리/스킬 타입별로 그룹화
 - **기본값 복원**: 원클릭으로 원래 값으로 복원
 - **서버 싱크 표시**: 서버에서 동기화되는 설정 표시
 
-### Config 파일 위치
+**Config 파일 위치**
 ```
 BepInEx/config/CaptainSkillTree.cfg
 ```
-
-### Config 카테고리
 
 | 카테고리 | 설명 | 예시 설정 |
 |----------|------|----------|
@@ -253,15 +285,23 @@ BepInEx/config/CaptainSkillTree.cfg
 | **Paladin Job Skills** | 성기사 직업 설정 | 힐량, 버프 지속시간 |
 | **Producer Job Skills** | 제작전문가 직업 설정 | 팜그리드 크기, 내구도 보너스%, 재료감소%, 마법부여 확률/수치 |
 
-### 서버 관리자 참고사항
+**서버 관리자 참고사항**
 - 모든 설정은 `IsAdminOnly = true`로 자동 서버 싱크
 - 서버 설정이 클라이언트 설정을 자동으로 덮어씀
 - Config 파일 변경이 감지되어 모든 클라이언트에 자동 전송
 - 서버 재시작 불필요 - 변경사항이 실시간 적용
 
-## 설치 방법
+</details>
+
+---
+
+<details>
+<summary>📥 설치 방법</summary>
+
 1. **권장**: r2modman/Thunderstore에서 자동 설치
 2. **수동**: `BepInEx/plugins/CaptainSkillTree/` 폴더에 DLL 복사
+
+</details>
 
 ---
 
@@ -270,7 +310,10 @@ BepInEx/config/CaptainSkillTree.cfg
 ## Overview
 CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert Trees, Weapon Trees, and a Job System. Enhance your Viking's abilities with passive bonuses and powerful active skills!
 
-## Required Mods (Dependencies)
+---
+
+<details>
+<summary>📦 Required Mods (Dependencies)</summary>
 
 | Mod | Version | Required |
 |-----|---------|----------|
@@ -281,7 +324,12 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 
 > **Note**: CaptainSkillTree has its own built-in level system. If EpicMMOSystem is not installed, the mod will automatically use its internal leveling system.
 
-## Features
+</details>
+
+---
+
+<details>
+<summary>✨ Features</summary>
 
 ### Comprehensive Skill Tree System
 - **4 Expert Trees**: Attack, Speed, Defense, Production
@@ -307,14 +355,24 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 - Plays when skill tree UI is open
 - Automatically pauses Valheim's music and resumes when closed
 
-## How to Open Skill Tree
+</details>
+
+---
+
+<details>
+<summary>🗺️ How to Open Skill Tree</summary>
 
 1. Press **TAB** to open inventory
 2. Click the **Skill Tree Icon** (sword icon) near the level system button
 3. Without EpicMMO: click the **Skill Tree Icon** above your character's head
 4. Skill Tree UI opens with custom BGM
 
-## Key Bindings
+</details>
+
+---
+
+<details>
+<summary>⌨️ Key Bindings</summary>
 
 | Key | Function | Description |
 |-----|----------|-------------|
@@ -323,7 +381,12 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 | **H** | Sub Active | Arrow Rain (Bow), Parry Rush (Sword), Rush Shield (Mace), etc. |
 | **Y** | Job Active | 1 of 7 jobs |
 
-## Skill Trees
+</details>
+
+---
+
+<details>
+<summary>🌳 Skill Trees</summary>
 
 ### Expert Trees
 | Tree | Description | Main Effects |
@@ -362,7 +425,8 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 | Paladin | Holy Knight | Holy Light | Heal, Buffs |
 | Producer | Artisan | Artisan's Blessing | Farm Grid, Durability+, Material Reduction, Enchanting |
 
-### Producer (Artisan) Details
+<details>
+<summary>🌾 Producer (Artisan) Details</summary>
 
 #### Farm Grid
 - Equipping a **Cultivator or Hoe** automatically shows a **green grid overlay** at planting positions
@@ -412,21 +476,31 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 | Type | Lv3 | Lv4 | Lv5 |
 |------|-----|-----|-----|
 | Armor | 5% | 7~9% | 10~12% |
-| Max HP | +2 | +4~5 | +6~8 |
-| Max Stamina | +5~8 | +8~12 | +12~15 |
+| Max HP | +2% | +4~5% | +6~8% |
+| Max Stamina | +5~8% | +8~12% | +12~15% |
 
-> Applicable items: One-handed weapons, two-handed weapons, bows, helmets, chest, legs, hands, shoulders
+> Applicable items: One-handed weapons, two-handed weapons, bows, helmets, chest, legs, Capes
 
-## Admin Commands
+</details>
+
+</details>
+
+---
+
+<details>
+<summary>🛠️ Admin Commands</summary>
 
 | Command | Description |
 |---------|-------------|
 | `skillreset <player>` | Reset player's skills |
 | `skilladd <amount> <player>` | Add skill points to player |
 
-## Configuration Management
+</details>
 
-### Using ConfigurationManager (Recommended)
+---
+
+<details>
+<summary>⚙️ Configuration Management</summary>
 
 **ConfigurationManager** provides a convenient in-game GUI for adjusting all mod settings.
 
@@ -436,19 +510,17 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 4. Adjust any setting with sliders, checkboxes, and input fields
 5. Changes apply **immediately** - no restart required!
 
-### GUI Features
+**GUI Features**
 - **Real-time Preview**: See changes instantly
 - **Search Function**: Quickly find specific settings
 - **Category Organization**: Settings grouped by tree/skill type
 - **Reset to Default**: One-click restore original values
 - **Server Sync Indicator**: Shows which settings sync from server
 
-### Config File Location
+**Config File Location**
 ```
 BepInEx/config/CaptainSkillTree.cfg
 ```
-
-### Config Categories
 
 | Category | Description | Example Settings |
 |----------|-------------|------------------|
@@ -472,23 +544,43 @@ BepInEx/config/CaptainSkillTree.cfg
 | **Paladin Job Skills** | Paladin job settings | Heal amount, Buff duration |
 | **Producer Job Skills** | Producer job settings | Farm grid size, Durability bonus%, Material reduction%, Enchant chance/values |
 
-### Server Admin Notes
+**Server Admin Notes**
 - All settings have `IsAdminOnly = true` for automatic server sync
 - Server settings override client settings automatically
 - Config file changes are detected and broadcast to all clients
 - No server restart needed - changes apply in real-time
 
-## Installation
+</details>
+
+---
+
+<details>
+<summary>📥 Installation</summary>
+
 1. **Recommended**: Install via r2modman/Thunderstore
 2. **Manual**: Extract to `BepInEx/plugins/CaptainSkillTree/`
+
+</details>
+
+---
+
+## 🎮 My Other Mods / 함께 즐기면 더 좋은 모드
+
+### 🎵 [CaptainAudio](https://thunderstore.io/c/valheim/p/korCaptain/CaptainAudio/)
+
+> 🎶 **발헤임의 전투를 음악으로 더욱 생동감 있게!**
+> CaptainSkillTree와 함께 설치하면 스킬 발동 시 웅장한 BGM과 효과음이 추가되어 **재미가 100% 상승**합니다!
+>
+> 🎶 **Bring your Valheim battles to life with music!**
+> Install alongside CaptainSkillTree for epic BGM and sound effects on skill activation — **100% more fun guaranteed!**
 
 ---
 
 ## 📝 Credits / 크레딧
 
--**Developer / 개발자**: KorCaptain
--**Framework / 프레임워크**: BepInEx, Jotunn
--**Compatible with / 호환 모드**: WackyMoleEpicMMOSystem, ConfigurationManager
+- **Developer / 개발자**: KorCaptain
+- **Framework / 프레임워크**: BepInEx, Jotunn
+- **Compatible with / 호환 모드**: WackyMoleEpicMMOSystem, ConfigurationManager
 
 ---
 
