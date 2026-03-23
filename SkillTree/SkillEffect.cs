@@ -307,7 +307,6 @@ namespace CaptainSkillTree.SkillTree
             if (HasSkill("defense_Step5_focus"))
             {
                 bonus += Defense_Config.FocusRunStaminaReductionValue;
-                Plugin.Log.LogDebug($"[지구력] 달리기/점프 스태미나 감소: -{Defense_Config.FocusRunStaminaReductionValue}%");
             }
 
             return bonus;
@@ -1181,33 +1180,19 @@ namespace CaptainSkillTree.SkillTree
                 {
                     // 속도 전문가 루트 - 기본 이동속도 보너스 (MMO Agility 연동)
                     if (SkillEffect.HasSkill("speed_root"))
-                    {
                         bonus += (int)(SkillTreeConfig.SpeedRootMoveSpeedValue * 2f); // 5% * 2 = +10 Agility
-                        Plugin.Log.LogDebug($"[속도 전문가] speed_root - MMO Agility 증가: +10 (이동속도 +5%)");
-                    }
-                    
+
                     // knife_step3_move_speed는 RogueSkills.cs GetJogSpeedFactor Postfix에서 직접 처리
                     // Agility 경로로 추가 시 EpicMMO 재계산 시 누적 발생 → 제거
 
-                    // 속도 마스터 - 추가 보너스 (있는 경우)
                     if (SkillEffect.HasSkill("speed_master"))
-                    {
-                        bonus += 5; // 고정 보너스
-                        Plugin.Log.LogDebug($"[속도 전문가] speed_master - MMO Agility 증가: +5");
-                    }
-                    
-                    // 점프 숙련자 - 민첩성 보너스
+                        bonus += 5;
+
                     if (SkillEffect.HasSkill("agility_peak"))
-                    {
-                        bonus += 8; // 점프 능력 향상으로 인한 민첩성 증가
-                        Plugin.Log.LogDebug($"[속도 전문가] agility_peak - MMO Agility 증가: +8");
-                    }
-                    
+                        bonus += 8;
+
                     if (bonus > 0)
-                    {
                         __result += bonus;
-                        Plugin.Log.LogDebug($"[속도 전문가] 총 MMO Agility 증가: +{bonus}");
-                    }
                 }
             }
             catch (System.Exception ex)

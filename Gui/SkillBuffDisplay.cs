@@ -25,6 +25,8 @@ namespace CaptainSkillTree.Gui
         private Dictionary<string, BuffUI> activeBuffs = new Dictionary<string, BuffUI>();
         private GameObject buffContainer;
         private Canvas worldCanvas;
+        private Camera _camera;
+        private readonly List<string> _tempBuffKeys = new List<string>();
 
         private void Awake()
         {
@@ -33,6 +35,7 @@ namespace CaptainSkillTree.Gui
                 instance = this;
                 DontDestroyOnLoad(gameObject);
                 InitializeBuffDisplay();
+                _camera = Camera.main;
             }
             else if (instance != this)
             {
@@ -127,7 +130,9 @@ namespace CaptainSkillTree.Gui
                 if (Player.m_localPlayer != null && Player.m_localPlayer.IsDead() && activeBuffs.Count > 0)
                 {
                     // 플레이어 사망으로 모든 버프 UI 제거
-                    foreach (var buffId in new List<string>(activeBuffs.Keys))
+                    _tempBuffKeys.Clear();
+                    _tempBuffKeys.AddRange(activeBuffs.Keys);
+                    foreach (var buffId in _tempBuffKeys)
                     {
                         RemoveBuff(buffId);
                     }
@@ -143,10 +148,11 @@ namespace CaptainSkillTree.Gui
             Vector3 playerHeadPos = Player.m_localPlayer.transform.position + Vector3.up * 2.5f;
             worldCanvas.transform.position = playerHeadPos;
 
-            // 카메라를 향해 회전 (성능 최적화)
-            if (Camera.main != null)
+            // 카메라를 향해 회전 (캐시된 카메라 사용)
+            if (_camera == null) _camera = Camera.main;
+            if (_camera != null)
             {
-                Vector3 directionToCamera = Camera.main.transform.position - worldCanvas.transform.position;
+                Vector3 directionToCamera = _camera.transform.position - worldCanvas.transform.position;
                 worldCanvas.transform.rotation = Quaternion.LookRotation(-directionToCamera);
             }
         }

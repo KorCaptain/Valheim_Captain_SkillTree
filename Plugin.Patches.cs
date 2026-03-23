@@ -630,31 +630,21 @@ namespace CaptainSkillTree
                             return 1.0 + (Sword_Config.RushSlashAttackSpeedBonusValue / 100.0);
                         }
 
-                        // 공격속도 보너스 계산 (원래 speed를 기반으로 곱산)
+                        // 공격속도 보너스 계산 (200ms 캐시 적용)
                         float attackSpeedBonus = SkillEffect.GetTotalAttackSpeedBonus(player);
-
-                        // 디버그: 공격속도 보너스 계산 확인
-                        if (attackSpeedBonus > 0f)
-                        {
-                            Plugin.Log.LogDebug($"[공격속도] {player.GetPlayerName()}: 보너스 {attackSpeedBonus:F1}%, 입력 speed={speed:F3}");
-                        }
 
                         if (attackSpeedBonus > 0f)
                         {
                             // 분노의 망치 1타 버프 활성 시 캡 우회 (200% 그대로 적용)
                             if (FuryHammerSkill.IsFuryHammer1stHitBuffActive(player))
                             {
-                                double bonusMultiplier = 1.0 + (attackSpeedBonus / 100.0);
-                                Plugin.Log.LogDebug($"[공격속도] 분노의 망치 버프 활성 - 캡 우회: {attackSpeedBonus:F1}%");
-                                return speed * bonusMultiplier;
+                                return speed * (1.0 + (attackSpeedBonus / 100.0));
                             }
 
                             // 창 전문가 proc 활성 시 캡 우회 (공격 적중 전까지 매 프레임 유지)
                             if (SkillEffect.IsSpearExpertProcActive(player))
                             {
-                                double bonusMultiplier = 1.0 + (attackSpeedBonus / 100.0);
-                                Plugin.Log.LogDebug($"[공격속도] 창 전문가 proc - 캡 우회: {attackSpeedBonus:F1}%");
-                                return speed * bonusMultiplier;
+                                return speed * (1.0 + (attackSpeedBonus / 100.0));
                             }
 
                             // 최대치 제한 적용 (v0.1.226+)
@@ -673,9 +663,7 @@ namespace CaptainSkillTree
                                 attackSpeedBonus = maxBonus;
                             }
 
-                            double mult = 1.0 + (attackSpeedBonus / 100.0);
-                            Plugin.Log.LogDebug($"[공격속도] {player.GetPlayerName()}: 기본={speed:F3} × {mult:F3} = {speed * mult:F3}");
-                            return speed * mult;
+                            return speed * (1.0 + (attackSpeedBonus / 100.0));
                         }
 
                         return speed;

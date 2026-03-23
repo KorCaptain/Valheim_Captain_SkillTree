@@ -358,11 +358,17 @@ namespace CaptainSkillTree.Gui
         }
 
         private float _updateTimer = 0f;
-        private const float UPDATE_INTERVAL = 0.05f;
+        private const float UPDATE_INTERVAL = 1.0f; // 스킬 구성은 자주 안 바뀜 (0.05→1.0, ~560→28 calls/sec)
 
         // 드래그 이동
         private bool _isDragging = false;
         private Vector2 _dragOffset;
+
+        /// <summary>스킬 변경 시 즉시 슬롯 갱신 (SkillTreeManager.SetSkillLevel에서 호출)</summary>
+        public void RefreshSlots()
+        {
+            _updateTimer = UPDATE_INTERVAL; // 다음 Update()에서 즉시 갱신
+        }
 
         private void Update()
         {

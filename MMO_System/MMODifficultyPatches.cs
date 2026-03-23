@@ -62,9 +62,6 @@ namespace CaptainSkillTree.MMO_System
                 {
                     int newLevel = Mathf.Max(1, __instance.GetLevel() + bonus);
                     __instance.SetLevel(newLevel);
-                    Plugin.Log.LogInfo(
-                        $"[MMODifficulty] 몬스터 레벨 상향: {__instance.name} +{bonus}레벨 " +
-                        $"(SP:{totalSP}, 최종 레벨:{newLevel})");
                 }
 
                 // 10. 적용 완료 마킹

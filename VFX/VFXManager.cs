@@ -1,3 +1,5 @@
+using System;
+using HarmonyLib;
 using UnityEngine;
 
 namespace CaptainSkillTree.VFX
@@ -188,5 +190,15 @@ namespace CaptainSkillTree.VFX
         Registry,
         RPC,
         Fallback
+    }
+
+    /// <summary>
+    /// Valheim 내부 ShieldDomeParticleColor.Start()의 NullReferenceException 억제
+    /// fx_shieldgenerator_domehit 프리팹 사용 시 발생하는 게임 내부 버그 우회
+    /// </summary>
+    [HarmonyPatch(typeof(ShieldDomeParticleColor), "Start")]
+    internal static class Patch_ShieldDomeParticleColor_Start
+    {
+        static Exception Finalizer(Exception __exception) => null;
     }
 }

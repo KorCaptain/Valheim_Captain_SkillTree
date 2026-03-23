@@ -425,7 +425,7 @@ namespace CaptainSkillTree.Localization
                 ["speed_2_desc"] = "스태미나 최대치 +{0}",
                 ["speed_3_desc"] = "에이트르 최대치 +{0}",
                 ["all_master_desc"] = "달리기 숙련 +{0}, 점프 숙련 +{1}",
-                ["melee_speed1_desc"] = "근접 공격속도 +{0}%, 3연속 적중 시 다음 공격속도 +{1}%",
+                ["melee_speed1_desc"] = "근접 공격속도 +{0}%, 3연속 공격 시 공격속도 +{1}%",
                 ["crossbow_draw1_desc"] = "석궁 재장전 +{0}%, 재장전 중 이동속도 +{1}%",
                 ["bow_draw1_desc"] = "활 장전 +{0}%, 장전 중 이동속도 +{1}%",
                 ["staff_speed1_desc"] = "마법 공격속도 +{0}%, 3연속 적중 시 에이트르 최대치의 {1}% 회복",

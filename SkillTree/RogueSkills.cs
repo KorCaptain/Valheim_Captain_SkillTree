@@ -236,6 +236,7 @@ namespace CaptainSkillTree.SkillTree
                     hit.m_attacker = player?.GetZDOID() ?? ZDOID.None;
                     hit.m_point = enemy.transform.position;
                     enemy.Damage(hit);
+                    VFXManager.PlayVFXMultiplayer("fx_crit", "", enemy.GetCenterPoint(), Quaternion.identity, 1.5f);
                 }
                 catch (Exception) { }
             }

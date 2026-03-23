@@ -240,187 +240,135 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        // === 공격속도 캐시 시스템 (성능 최적화: 매 애니메이션 프레임 호출 방지) ===
+        private static float _cachedAttackSpeedBonus = 0f;
+        private static float _attackSpeedCacheTime = -1f;
+        private static Skills.SkillType _cachedWeaponSkillType = Skills.SkillType.None;
+        private const float ATTACK_SPEED_CACHE_TTL = 0.2f; // 200ms
+
+        /// <summary>공격속도 캐시 무효화 (스킬 변경 시 호출)</summary>
+        public static void InvalidateAttackSpeedCache()
+        {
+            _attackSpeedCacheTime = -1f;
+        }
+
         /// <summary>
-        /// 전체 공격 속도 보너스 계산 (MMO getParameter 패치용)
+        /// 전체 공격 속도 보너스 계산 (200ms TTL 캐시 래퍼)
+        /// AnimationSpeedManager에서 매 프레임 호출되므로 캐싱 필수
         /// </summary>
         public static float GetTotalAttackSpeedBonus(Player player)
         {
             if (player == null) return 0f;
+            var weapon = player.GetCurrentWeapon();
+            if (weapon == null) return 0f;
 
+            var skillType = weapon.m_shared.m_skillType;
+            float now = Time.time;
+
+            if (now - _attackSpeedCacheTime < ATTACK_SPEED_CACHE_TTL
+                && skillType == _cachedWeaponSkillType)
+            {
+                return _cachedAttackSpeedBonus;
+            }
+
+            float bonus = CalculateAttackSpeedBonusInternal(player, weapon, skillType);
+            _cachedAttackSpeedBonus = bonus;
+            _attackSpeedCacheTime = now;
+            _cachedWeaponSkillType = skillType;
+            return bonus;
+        }
+
+        private static float CalculateAttackSpeedBonusInternal(Player player, ItemDrop.ItemData weapon, Skills.SkillType skillType)
+        {
             try
             {
                 float bonus = 0f;
-                var weapon = player.GetCurrentWeapon();
-                if (weapon == null) return 0f;
-
-                var skillType = weapon.m_shared.m_skillType;
 
                 // 속도 트리 1단계: 민첩함의 기초 (speed_base) - 모든 무기 공격속도
-                int speedBaseLevel = SkillTreeManager.Instance?.GetSkillLevel("speed_base") ?? -1;
-                bool hasSpeedBase = speedBaseLevel > 0;
-                if (hasSpeedBase)
-                {
-                    float speedBaseValue = SkillTreeConfig.SpeedBaseAttackSpeedValue;
-                    bonus += speedBaseValue;
-                    Plugin.Log.LogDebug($"[공속] speed_base: +{speedBaseValue}%");
-                }
+                if ((SkillTreeManager.Instance?.GetSkillLevel("speed_base") ?? 0) > 0)
+                    bonus += SkillTreeConfig.SpeedBaseAttackSpeedValue;
 
                 // 검 빠른 베기 (sword_step1_fastslash) - 검 착용 시만
-                if (HasSkill("sword_step1_fastslash"))
-                {
-                    Plugin.Log.LogDebug($"[공속] sword_step1_fastslash 스킬 보유, 무기타입: {weapon.m_shared.m_skillType}");
-                    if (weapon.m_shared.m_skillType == Skills.SkillType.Swords)
-                    {
-                        float swordSpeedValue = SkillTreeConfig.SwordStep1FastSlashSpeedValue;
-                        bonus += swordSpeedValue;
-                        Plugin.Log.LogDebug($"[공속] 검 빠른 베기: +{swordSpeedValue}%");
-                    }
-                }
+                if (skillType == Skills.SkillType.Swords && HasSkill("sword_step1_fastslash"))
+                    bonus += SkillTreeConfig.SwordStep1FastSlashSpeedValue;
 
                 // 검 진검승부 (sword_step4_duel) - 검 착용 시만
-                if (HasSkill("sword_step4_duel"))
+                if (skillType == Skills.SkillType.Swords && HasSkill("sword_step4_duel"))
+                    bonus += SkillTreeConfig.SwordStep4TrueDuelSpeedValue;
+
+                // 창 전문가 (spear_expert) - proc 활성 시 +100% 공격속도 - 창/폴암 착용 시만
+                if ((skillType == Skills.SkillType.Spears || skillType == Skills.SkillType.Polearms)
+                    && HasSkill("spear_expert") && IsSpearExpertProcActive(player))
                 {
-                    if (weapon.m_shared.m_skillType == Skills.SkillType.Swords)
-                    {
-                        bonus += SkillTreeConfig.SwordStep4TrueDuelSpeedValue;
-                    }
+                    bonus += Spear_Config.SpearExpertSpeedBoostPercentValue;
                 }
 
-                // 창 전문가 (spear_expert) - proc 활성 시 +100% 공격속도 - 창 착용 시만
-                if (HasSkill("spear_expert") && IsSpearExpertProcActive(player))
+                // 빠른창 (spear_Step3_quick) - 공격 속도 +20% - 창/폴암 착용 시만
+                if ((skillType == Skills.SkillType.Spears || skillType == Skills.SkillType.Polearms)
+                    && HasSkill("spear_Step3_quick"))
                 {
-                    if (weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
-                        weapon.m_shared.m_skillType == Skills.SkillType.Polearms)
-                    {
-                        bonus += Spear_Config.SpearExpertSpeedBoostPercentValue;
-                        Plugin.Log.LogDebug($"[공속] 창 전문가 proc: +{Spear_Config.SpearExpertSpeedBoostPercentValue}%");
-                    }
-                }
-
-                // 빠른창 (spear_Step3_quick) - 공격 속도 +20% - 창 착용 시만
-                if (HasSkill("spear_Step3_quick"))
-                {
-                    if (weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
-                        weapon.m_shared.m_skillType == Skills.SkillType.Polearms)
-                    {
-                        bonus += SkillTreeConfig.SpearQuickAttackSpeedValue;
-                    }
+                    bonus += SkillTreeConfig.SpearQuickAttackSpeedValue;
                 }
 
                 // 민첩 스탯 (speed_1) - 공격속도 보너스 - 모든 무기
                 if (HasSkill("speed_1"))
-                {
                     bonus += SkillTreeConfig.SpeedDexterityAttackSpeedBonusValue;
-                }
 
                 // 연속의 흐름 (melee_combo) - 2연속 적중 시 공격속도 보너스
-                float meleeComboBonus = GetMeleeComboAttackSpeedBonus(player);
-                if (meleeComboBonus > 0f)
-                {
-                    bonus += meleeComboBonus;
-                    Plugin.Log.LogDebug($"[공속] 연속의 흐름 보너스: +{meleeComboBonus}%");
-                }
+                bonus += GetMeleeComboAttackSpeedBonus(player);
 
                 // 근접 가속 (melee_speed1)
                 if (HasSkill("melee_speed1"))
                 {
-                    bool isMelee = weapon.m_shared.m_skillType == Skills.SkillType.Swords ||
-                                   weapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
-                                   weapon.m_shared.m_skillType == Skills.SkillType.Knives ||
-                                   weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
-                                   weapon.m_shared.m_skillType == Skills.SkillType.Polearms;
-
+                    bool isMelee = skillType == Skills.SkillType.Swords ||
+                                   skillType == Skills.SkillType.Clubs ||
+                                   skillType == Skills.SkillType.Knives ||
+                                   skillType == Skills.SkillType.Spears ||
+                                   skillType == Skills.SkillType.Polearms;
                     if (isMelee)
                     {
                         bonus += SkillTreeConfig.SpeedMeleeAttackSpeedValue;
-
-                        // 3연속 공격 보너스
                         if (IsTier8MeleeComboActive(player))
-                        {
                             bonus += SkillTreeConfig.SpeedMeleeComboTripleBonusValue;
-                            Plugin.Log.LogDebug($"[공속] 근접 3연속 보너스: +{SkillTreeConfig.SpeedMeleeComboTripleBonusValue}%");
-                        }
                     }
                 }
 
-                // 활 가속 (bow_draw1)
-                if (weapon.m_shared.m_skillType == Skills.SkillType.Bows)
+                // 활 가속
+                if (skillType == Skills.SkillType.Bows)
                 {
                     if (HasSkill("bow_draw1"))
-                    {
                         bonus += SkillTreeConfig.SpeedBowDrawSpeedValue;
-                    }
-
-                    // 활 숙련자 (bow_speed2) - 2연속 적중 시 다음 장전 속도 보너스
-                    float bowExpertBonus = GetBowExpertDrawSpeedBonus(player);
-                    if (bowExpertBonus > 0f)
-                    {
-                        bonus += bowExpertBonus;
-                        Plugin.Log.LogDebug($"[공속] 활 숙련자 장전속도: +{bowExpertBonus}%");
-                    }
+                    bonus += GetBowExpertDrawSpeedBonus(player);
                 }
 
-                // 석궁 가속 (crossbow_draw1)
-                if (weapon.m_shared.m_skillType == Skills.SkillType.Crossbows)
+                // 석궁 가속
+                if (skillType == Skills.SkillType.Crossbows)
                 {
                     if (HasSkill("crossbow_draw1"))
-                    {
                         bonus += SkillTreeConfig.SpeedCrossbowDrawSpeedValue;
-                    }
-
-                    // 석궁 숙련자 (crossbow_reload2) - 버프 중 재장전 속도 보너스
-                    float crossbowExpertBonus = GetCrossbowExpertReloadBonus(player);
-                    if (crossbowExpertBonus > 0f)
-                    {
-                        bonus += crossbowExpertBonus;
-                        Plugin.Log.LogDebug($"[공속] 석궁 숙련자 재장전: +{crossbowExpertBonus}%");
-                    }
+                    bonus += GetCrossbowExpertReloadBonus(player);
                 }
 
                 // 지팡이 가속 (staff_speed1)
-                if (HasSkill("staff_speed1"))
+                if ((skillType == Skills.SkillType.ElementalMagic || skillType == Skills.SkillType.BloodMagic)
+                    && HasSkill("staff_speed1"))
                 {
-                    if (weapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic ||
-                        weapon.m_shared.m_skillType == Skills.SkillType.BloodMagic)
-                    {
-                        bonus += SkillTreeConfig.SpeedStaffCastSpeedFinalValue;
-                    }
+                    bonus += SkillTreeConfig.SpeedStaffCastSpeedFinalValue;
                 }
 
                 // 둔기 공격속도 보너스 (Tier 6 속공: +10%)
-                bool isUsingMace = WeaponHelper.IsUsingMace(player);
-                if (isUsingMace)
-                {
-                    float maceBonus = MaceSkills.GetMaceSokgongAttackSpeedBonus();
-                    if (maceBonus > 0f)
-                    {
-                        bonus += maceBonus;
-                    }
-                }
+                if (WeaponHelper.IsUsingMace(player))
+                    bonus += MaceSkills.GetMaceSokgongAttackSpeedBonus();
 
                 // 암살자의 심장 공격속도 보너스 (500%)
-                float assassinHeartBonus = GetAssassinHeartAttackSpeedBonus(player);
-                if (assassinHeartBonus > 0f)
-                {
-                    bonus += assassinHeartBonus;
-                    Plugin.Log.LogDebug($"[공속] 암살자의 심장: +{assassinHeartBonus}%");
-                }
+                bonus += GetAssassinHeartAttackSpeedBonus(player);
 
-                // 로그 직업 패시브 공격속도 보너스 (AnimationSpeedManager 통합)
+                // 로그 직업 패시브 공격속도 보너스
                 if (RogueSkills.IsRogue(player))
-                {
-                    float rogueBonus = Rogue_Config.RogueAttackSpeedBonusValue;
-                    bonus += rogueBonus;
-                    Plugin.Log.LogDebug($"[공속] 로그 패시브: +{rogueBonus}%");
-                }
+                    bonus += Rogue_Config.RogueAttackSpeedBonusValue;
 
                 // 분노의 망치 1타 공격속도 버프 (+200%)
-                float furyHammerBonus = FuryHammerSkill.GetFuryHammer1stHitSpeedBonus(player);
-                if (furyHammerBonus > 0f)
-                {
-                    bonus += furyHammerBonus;
-                    Plugin.Log.LogDebug($"[공속] 분노의 망치 1타 버프: +{furyHammerBonus}%");
-                }
+                bonus += FuryHammerSkill.GetFuryHammer1stHitSpeedBonus(player);
 
                 // crafting_lv2 무기 마법부여 공격속도 보너스
                 if (weapon?.m_customData != null &&
@@ -428,7 +376,6 @@ namespace CaptainSkillTree.SkillTree
                     float.TryParse(spdVal, out float craftSpdBonus) && craftSpdBonus > 0f)
                 {
                     bonus += craftSpdBonus;
-                    Plugin.Log.LogDebug($"[공속] 제작 Lv2 마법부여: +{craftSpdBonus}%");
                 }
 
                 // crafting_lv5 무기 마법부여 공격속도 보너스
@@ -439,7 +386,6 @@ namespace CaptainSkillTree.SkillTree
                     float.TryParse(t5spdVal, out float craftLv5SpdBonus) && craftLv5SpdBonus > 0f)
                 {
                     bonus += craftLv5SpdBonus;
-                    Plugin.Log.LogDebug($"[공속] 제작 Lv5 마법부여: +{craftLv5SpdBonus}%");
                 }
 
                 // 제작 전문가 WeaponSpd 마법부여 공격속도 보너스
@@ -452,13 +398,6 @@ namespace CaptainSkillTree.SkillTree
                     csptSpdBonus > 0f)
                 {
                     bonus += csptSpdBonus;
-                    Plugin.Log.LogDebug($"[공속] 제작 전문가 마법부여(WeaponSpd): +{csptSpdBonus}%");
-                }
-
-                // 최종 보너스 로그 출력
-                if (bonus > 0f)
-                {
-                    Plugin.Log.LogDebug($"[공속] 최종 보너스: {bonus:F1}% (무기: {weapon.m_shared.m_name})");
                 }
 
                 return bonus;

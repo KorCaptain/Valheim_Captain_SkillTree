@@ -21,7 +21,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.1.78")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.1.85")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -52,6 +52,9 @@ namespace CaptainSkillTree
         private static bool _emergencyMode = false;
         private static int _iconCreationAttempts = 0;
         private const int MAX_ICON_ATTEMPTS = 5;
+        // 성능 최적화: mmoType 캐시 (매 인벤 오픈마다 Type.GetType() 재호출 방지)
+        private static Type _cachedMmoType = null;
+        private static bool _mmoTypeChecked = false;
 
         private void Awake()
         {
@@ -544,6 +547,13 @@ namespace CaptainSkillTree
 
         private static void ShowSkillTreeIcon()
         {
+            // 성능 최적화: 아이콘 이미 생성됨 → SetActive만 하고 리턴 (매 인벤 오픈마다 재계산 방지)
+            if (skillTreeIconObj != null)
+            {
+                skillTreeIconObj.SetActive(true);
+                return;
+            }
+
             if (_emergencyMode || _iconCreationAttempts >= MAX_ICON_ATTEMPTS)
             {
                 Log.LogWarning("[안전 장치] 비상 모드 또는 최대 시도 횟수 초과 - 아이콘 생성 건너뛰기");
@@ -558,7 +568,13 @@ namespace CaptainSkillTree
                     return;
                 }
 
-                var mmoType = Type.GetType("EpicMMOSystem.MyUI, EpicMMOSystem");
+                // 성능 최적화: mmoType 한 번만 조회하여 캐시
+                if (!_mmoTypeChecked)
+                {
+                    _cachedMmoType = Type.GetType("EpicMMOSystem.MyUI, EpicMMOSystem");
+                    _mmoTypeChecked = true;
+                }
+                var mmoType = _cachedMmoType;
 
                 if (mmoType != null)
                 {
@@ -661,7 +677,8 @@ namespace CaptainSkillTree
         {
             try
             {
-                var mmoType = Type.GetType("EpicMMOSystem.MyUI, EpicMMOSystem");
+                // 성능 최적화: ShowSkillTreeIcon()에서 이미 캐싱된 타입 사용
+                var mmoType = _cachedMmoType;
                 if (mmoType == null) { Plugin.Log.LogWarning("EpicMMOSystem.MyUI 타입을 찾을 수 없음"); return false; }
                 var navigationPanelField = mmoType.GetField("navigationPanel", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
                 if (navigationPanelField == null) { Plugin.Log.LogWarning("navigationPanel 필드를 찾을 수 없음"); return false; }

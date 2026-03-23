@@ -10,6 +10,11 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static class SkillBonusCalculator
     {
+        // 성능 최적화: 프레임 단위 캐시
+        // GetDamage/GetTooltip 등 15+ 패치 체인이 한 프레임에 실행될 때 중복 계산 방지
+        private static int _lastCacheFrame = -1;
+        private static readonly Dictionary<string, float> _frameCache = new Dictionary<string, float>();
+
         /// <summary>
         /// 여러 스킬의 보너스를 합산하여 총합 반환
         /// </summary>
@@ -26,6 +31,19 @@ namespace CaptainSkillTree.SkillTree
             var manager = SkillTreeManager.Instance;
             if (manager == null) return 0f;
 
+            // 프레임 캐시: 새 프레임 시작 시 초기화
+            int currentFrame = UnityEngine.Time.frameCount;
+            if (currentFrame != _lastCacheFrame)
+            {
+                _lastCacheFrame = currentFrame;
+                _frameCache.Clear();
+            }
+
+            // 캐시 키: 스킬 ID 조합
+            string key = string.Join("|", bonuses.Select(b => b.skillId));
+            if (_frameCache.TryGetValue(key, out float cached))
+                return cached;
+
             float total = 0f;
             foreach (var (skillId, getValue) in bonuses)
             {
@@ -34,6 +52,7 @@ namespace CaptainSkillTree.SkillTree
                     total += getValue();
                 }
             }
+            _frameCache[key] = total;
             return total;
         }
 
@@ -45,9 +64,27 @@ namespace CaptainSkillTree.SkillTree
             var manager = SkillTreeManager.Instance;
             if (manager == null) return 0f;
 
-            return bonuses
-                .Where(b => manager.GetSkillLevel(b.skillId) > 0)
-                .Sum(b => b.getValue());
+            // 프레임 캐시 적용
+            int currentFrame = UnityEngine.Time.frameCount;
+            if (currentFrame != _lastCacheFrame)
+            {
+                _lastCacheFrame = currentFrame;
+                _frameCache.Clear();
+            }
+
+            var bonusList = bonuses.ToList();
+            string key = "list|" + string.Join("|", bonusList.Select(b => b.skillId));
+            if (_frameCache.TryGetValue(key, out float cached))
+                return cached;
+
+            float total = 0f;
+            foreach (var (skillId, getValue) in bonusList)
+            {
+                if (manager.GetSkillLevel(skillId) > 0)
+                    total += getValue();
+            }
+            _frameCache[key] = total;
+            return total;
         }
 
         /// <summary>

@@ -1,5 +1,31 @@
 # Changelog / 변경 로그
 ## Update
+# [1.1.85] - 2026-03-24
+- ✅fix1 : Performance - Fixed inventory open lag caused by Type.GetType("EpicMMOSystem.MyUI") being called twice on every inventory open (now cached, called once only)
+- ✅fix2 : Performance - Fixed item click lag (manual drag/drop) caused by 15+ Harmony patches (GetDamage/GetTooltip/GetBlockPower etc.) all running in one frame when recipe panel updates; added per-frame result cache to SkillBonusCalculator
+- ✅fix3 : All Jobs - Fixed trophy name mismatch causing upgrade failure at Lv2+: "$item_trophy_elder" (non-existent) corrected to "$item_trophy_theelder" across all job functions (Berserker/Tanker/Mage/Paladin/Archer/Producer — HaveItem/GetMissing/Consume)
+- ✅fix4 : Performance - Removed 5 LogDebug string allocations from hot paths (GetStaminaReduction every frame while running / getParameter Postfix per stat query / MonsterSpawn per dungeon spawn) eliminating GC pressure during combat and movement
+- ✅fix5 : Performance - Reduced ActiveSkillHUD polling from 50ms to 1000ms (560→28 GetSkillLevel calls/sec); added RefreshSlots() for immediate update on skill invest
+- ✅fix6 : Performance - Cached Camera.main in SkillBuffDisplay._camera field to avoid FindObjectOfType call every 50ms
+- ✅fix7 : Performance - Replaced LINQ .Where().Sum() with foreach in SkillBonusCalculator, eliminating 2 enumerator allocations per damage calculation
+- ✅fix8 : Performance - Replaced per-frame new List<string>(activeBuffs.Keys) on player death with a reusable _tempBuffKeys list
+-
+- ✅fix1 : 성능 - 인벤토리 열기 시 순간 멈춤 수정 — Type.GetType("EpicMMOSystem.MyUI")이 인벤 열 때마다 2회 호출되던 문제를 캐시로 해결 (최초 1회만 조회)
+- ✅fix2 : 성능 - 아이템 수동 클릭 이동 시 랙 수정 — 제작 패널 업데이트 시 GetDamage/GetTooltip 등 15+ Harmony 패치가 한 프레임에 연속 실행되던 문제를 SkillBonusCalculator 프레임 단위 캐시로 해결 (Ctrl+클릭은 정상, 수동 클릭만 랙 발생하던 현상)
+- ✅fix3 : 전 직업 - Lv2 이상 업그레이드 시 엘더 트로피를 인벤에 보유하고 있어도 "부족함" 메시지 뜨는 버그 수정 — "$item_trophy_elder"(존재하지 않는 ID) → "$item_trophy_theelder"로 전체 직업(버서커/탱커/메이지/성기사/아처/생산자) Has/GetMissing/Consume 함수 전부 교정
+- ✅fix4 : 성능 - 달리기/전투/던전 스폰 중 매 프레임 string GC를 유발하던 핫패스 LogDebug 5개 제거 (GetStaminaReduction·getParameter Postfix·몬스터 스폰)
+- ✅fix5 : 성능 - ActiveSkillHUD 스킬 폴링 간격 50ms→1000ms (초당 560→28회 호출), 스킬 투자 시 RefreshSlots() 즉시 갱신 연동
+- ✅fix6 : 성능 - SkillBuffDisplay에서 매 50ms Camera.main(내부 FindObjectOfType) 호출을 _camera 캐시 필드로 교체
+- ✅fix7 : 성능 - SkillBonusCalculator IEnumerable 오버로드의 LINQ .Where().Sum() → foreach 교체, 데미지 호출마다 열거자 2개 할당 제거
+- ✅fix8 : 성능 - 플레이어 사망 시 매 프레임 new List<string>(activeBuffs.Keys) 생성을 재사용 리스트(_tempBuffKeys)로 교체
+
+# [1.2.00] - 2026-03-23
+- ✅fix1 : Tanker - Fixed 11 missing multilingual KeyNames (ReflectPercent, Hp_Bonus, Lv2~5_AllResist, ReflectDuration_Lv1~5) not displaying translated names in F1 Config Manager
+- ✅improve1 : Tanker - Passive HP bonus now scales by level (Lv1:+35 / Lv2:+50 / Lv3:+65 / Lv4:+80 / Lv5:+100), configurable per level
+-
+- ✅fix1 : 탱커 - F1 Config Manager에서 번역 없이 표시되던 KeyNames 11개 누락 수정 (ReflectPercent, Hp_Bonus, Lv2~5_AllResist, ReflectDuration_Lv1~5)
+- ✅improve1 : 탱커 - 패시브 체력 보너스 레벨별 차등 적용 (Lv1:+35 / Lv2:+50 / Lv3:+65 / Lv4:+80 / Lv5:+100), Config에서 조정 가능
+
 # [1.1.78] - 2026-03-22
 - ✅new1 : Arrow Rain: Added AOE damage (3m radius) when falling arrows land on monsters/terrain
 - ✅new2 : Arrow Rain: Added structured tooltip matching Explosive Arrow format (desc/damage/range/cooldown/skill type)

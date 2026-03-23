@@ -11,18 +11,7 @@
 사용하지 않는 스크립트 화일 제거해줘
 --
 ------------------
--
 
---== 잘 안되는 문제 **
-로그 스킬
-몬스터가 있으면 1회만 실행되고 쿨타임도 초기화가 안되 고 있어
-버프 시간동안 1초당 1회 즉, 8초면 8회 어그로 제거 및 VFX도 반복 실행해주고 공격을 하거나 해도 어그로풀지 말아줘
-VFX는 발헤임 vfx 이면 일반VFX 로 해야하고 커스텀 VFX 이면 심플VFX  로 해야되 
-로그 스킬 자체를 시전자가 공격하거나 맞거나 또는 이동 등 어떤 상황이 되든 8초 동안 8회 어그로 제거 시전해줘 
-
-
---==**
-버서커 쿨타임 적용안되고 무적 작동 체력 % 비정상적
 
 --==
 공격 전문가 수정건
@@ -112,14 +101,51 @@ Lv5 : 추가 발사 회수 +1
 충격파방출 의 발동은  생명력이 45%이하로 줄어 들때 작동되어야해, 쿨타임은 30초 남았을때 와 0초로 초기화 되었을때 화면중앙에 메시지 뛰어줘(공격당할때 마데 메시지 뜨는데 이건 제거해줘 ) 
 --
 버서커 스킬사용시 sfx_dragon_scream(VFX매니저) 추가로 넣어줘
+
+------------------------------------
+ 
 --
+C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\docs 리뷰 전, 후 스킬, 모션, 효과, 등등 같아야 하는데 달라진거
+찾아서 수정해야되 공격전문가, 원거리, 속도,생산,방어,근접 전문가 별로 점검해야 하고 스킬트리 ui, 직업스킬 등 모두 리뷰
+전과 후 기능적인 부분은 똑같아야되
+--
+로그 기록 안뜨게 제거해줘 
+화살비 관련 
+[Info   :Captain SkillTree Mod] [SimpleVFX] flash_magic_blue_pink ID=-874144 생성 (prefabID=15406)
+[Info   :Captain SkillTree Mod] [SimpleVFX] flash_magic_blue_pink ID=-874294 생성 (prefabID=15406)
+아처 멀티샷
+[Info   :Captain SkillTree Mod] [아처 멀티샷] 버프 활성화 상태 - 기본 화살 차단하고 아처 멀티샷 실행
+[Info   :Captain SkillTree Mod] [아처 멀티샷] 버프 활성화 상태 - 기본 화살 차단하고 아처 멀티샷 실행
+분노의 망치 관련도 로그 기록 안뜨게 해야되 
+--
+생산 전문가 트리의
+제작 Lv2~4 아이템 강화 효과 발동시 VFX 및 효과음 을 Producer 의 제작축복(마법부여) 효과 발동될때 와 같은걸로 해줘(vfx는 심플vfx고 효과음은 vfx매니저야)
+--
+액티브 또는 직업 스킬 배우면 아이콘 생기는데 이후 스킬 초기화 하면 배웠던 스킬이 없어지면 아이콘도 사라져야하는데 남아 있어
+(리접하면 정상적으로 없어져 있고 )
 게임 상에서 표시되는 아이콘은 ActiveSkillHUD.cs 
-지팡이 전문가의 힐 스킬 아이콘 이미지를 원거리 전문가 이미지로 변경해줘 
----
-직업스킬의 변화
-각 무기 전문가의 액티브 스킬을 강화한다.
-예) 패시브 스킬 시전 1회 추가, 에이트르 또는 스테미나 추가
 --
-로그 스킬의 수정
-현재 어그로 관련은 모두 제거하고 스킬 시전시 VFX 를 8회 시전한다. 그리고 VFX1회마다 범위 10m의 독데미지 +10 과 10초 동안 초당 5의 독데미지를 입힌다.
+인벤 열때 끊킴 현상 발생(살짝 멈췄다 풀림)
+[Info   : Unity Log] 03/24/2026 05:07:28: Setting selected recipe 418
+[Info   : Unity Log] 03/24/2026 05:08:09: Setting selected recipe 418
+[Info   : Unity Log] 03/24/2026 05:08:12: Setting selected recipe 418
+--
+로그 Lv2 업그레이드 시 엘더 트로피 인벤에 있는데 부족하다고 메시지나와 
+코드상 매칭 잘못된듯 확인해줘  lv2~5 다른 트로피도 점검해줘 
+--
+속도 전문가의 근접 가속 툴팁수정
+"3연속 적중 시 다음 공격속도 +25%"를 "3연속 공격 시 공격속도 +25%" 로 수정
+--
+로그 스킬 로 몬스터 도트데미지 들어갈때 vfx매니저로 fx_crit 몬스터에게 효과 적용해줘 
+--
+[Error  : Unity Log] NullReferenceException: Object reference not set to an instance of an object
+Stack trace:
+ShieldDomeParticleColor.Start () (at <e4cfc70261ab46d19f39cc2deb9bc839>:0)
+--
+I also found the mod was impactful on performance by quite a bit as it was making many calls per second as I continued to run through the world causing constant stutters as I moved into new zones.
+--
+
+서버 과부하, 랙, 메모리 관련 최적화를 위해 문제점 및 개선할사항 파악해줘 
+
+
 
