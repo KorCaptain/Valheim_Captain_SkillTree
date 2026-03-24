@@ -608,7 +608,8 @@ namespace CaptainSkillTree.SkillTree
                             SkillEffect.DrawFloatingText(Player.m_localPlayer,
                                 $"🔨 {displayName} +1",
                                 new Color(1f, 0.9f, 0.3f, 1f)); // 자연스러운 노란색
-                            VFXManager.PlaySound("sfx_lootspawn", Player.m_localPlayer.transform.position, 2f);
+                            SimpleVFX.Play("statusailment_01", Player.m_localPlayer.transform.position);
+                            VFXManager.PlayVFXAtPosition("sfx_fader_bell", Player.m_localPlayer.transform.position);
                             
                             Plugin.Log.LogInfo($"[생산 효과] 제작 보너스 발동: {effectSource} - {displayName} +1");
                         }

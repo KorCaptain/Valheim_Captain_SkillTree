@@ -340,8 +340,6 @@ namespace CaptainSkillTree.SkillTree
                 // 1. 아커 멀티샷 버프 활성화 상태 확인 (최우선순위)
                 if (SkillEffect.IsArcherMultiShotReady(player))
                 {
-                    Plugin.Log.LogInfo($"[아처 멀티샷] 버프 활성화 상태 - 기본 화살 차단하고 아처 멀티샷 실행");
-                    
                     // 공격 방향 계산
                     Vector3 attackDir = player.GetLookDir();
                     

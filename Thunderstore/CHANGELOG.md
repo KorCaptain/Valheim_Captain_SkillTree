@@ -1,5 +1,12 @@
 # Changelog / 변경 로그
 ## Update
+# [1.1.86] - 2026-03-24
+- ✅improve1 : Performance - Replaced fixed 1s polling in ActiveSkillHUD with adaptive 2-stage polling: completely stops when no cooldown is active (0 calls/frame), switches to 60s interval when remaining > 60s, and 1s interval when ≤ 60s — reduces UpdateSlot calls by ~87% (e.g. 540 → 68 for a 9-minute cooldown)
+- ✅improve2 : Performance - Added ActiveSkillCooldownRegistry.GetMinRemaining() for interval recalculation; SetCooldown() / RecalculateCooldown() now notify HUD via OnCooldownStarted() / OnCooldownChanged() for immediate response without wasted polling
+-
+- ✅improve1 : 성능 - ActiveSkillHUD 쿨타임 폴링을 고정 1초에서 2단계 적응형으로 교체: 쿨타임 없을 시 완전 중지(호출 0), 잔여 >60s 이면 60초 간격, ≤60s 이면 1초 간격으로 전환 — 9분 쿨타임 기준 UpdateSlot 호출 540회 → 68회 (약 87% 감소)
+- ✅improve2 : 성능 - ActiveSkillCooldownRegistry.GetMinRemaining() 추가로 폴링 간격 동적 재계산; SetCooldown() / RecalculateCooldown() 에서 HUD의 OnCooldownStarted() / OnCooldownChanged() 를 직접 호출하여 불필요한 폴링 없이 즉각 반응
+
 # [1.1.85] - 2026-03-24
 - ✅fix1 : Performance - Fixed inventory open lag caused by Type.GetType("EpicMMOSystem.MyUI") being called twice on every inventory open (now cached, called once only)
 - ✅fix2 : Performance - Fixed item click lag (manual drag/drop) caused by 15+ Harmony patches (GetDamage/GetTooltip/GetBlockPower etc.) all running in one frame when recipe panel updates; added per-frame result cache to SkillBonusCalculator
@@ -19,7 +26,7 @@
 - ✅fix7 : 성능 - SkillBonusCalculator IEnumerable 오버로드의 LINQ .Where().Sum() → foreach 교체, 데미지 호출마다 열거자 2개 할당 제거
 - ✅fix8 : 성능 - 플레이어 사망 시 매 프레임 new List<string>(activeBuffs.Keys) 생성을 재사용 리스트(_tempBuffKeys)로 교체
 
-# [1.2.00] - 2026-03-23
+# [1.1.80] - 2026-03-23
 - ✅fix1 : Tanker - Fixed 11 missing multilingual KeyNames (ReflectPercent, Hp_Bonus, Lv2~5_AllResist, ReflectDuration_Lv1~5) not displaying translated names in F1 Config Manager
 - ✅improve1 : Tanker - Passive HP bonus now scales by level (Lv1:+35 / Lv2:+50 / Lv3:+65 / Lv4:+80 / Lv5:+100), configurable per level
 -

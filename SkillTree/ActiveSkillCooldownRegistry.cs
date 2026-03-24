@@ -29,6 +29,7 @@ namespace CaptainSkillTree.SkillTree
                 EndTime = Time.time + totalDuration,
                 TotalTime = totalDuration
             };
+            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.OnCooldownStarted();
         }
 
         /// <summary>
@@ -71,6 +72,22 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
             _entries[slot] = new CooldownEntry { EndTime = newEndTime, TotalTime = newTotalTime };
+            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.OnCooldownChanged();
+        }
+
+        /// <summary>
+        /// 모든 활성 쿨타임 중 최소 잔여시간 반환.
+        /// 활성 쿨타임 없으면 0f 반환. HUD 폴링 간격 결정에 사용.
+        /// </summary>
+        public static float GetMinRemaining()
+        {
+            float min = float.MaxValue;
+            foreach (var e in _entries.Values)
+            {
+                float r = e.EndTime - Time.time;
+                if (r > 0f && r < min) min = r;
+            }
+            return min == float.MaxValue ? 0f : min;
         }
     }
 }

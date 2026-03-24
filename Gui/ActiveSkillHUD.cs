@@ -358,7 +358,10 @@ namespace CaptainSkillTree.Gui
         }
 
         private float _updateTimer = 0f;
-        private const float UPDATE_INTERVAL = 1.0f; // 스킬 구성은 자주 안 바뀜 (0.05→1.0, ~560→28 calls/sec)
+        private const float UPDATE_INTERVAL = 1.0f; // 초 단위 폴링 기본 간격
+        // 2단계 적응형 폴링: 쿨타임 없으면 완전 중지, >60s이면 60s 간격, ≤60s이면 1s 간격
+        private bool _cooldownActive = false;
+        private float _currentInterval = 1f; // 현재 폴링 간격 (60f or 1f)
 
         // 드래그 이동
         private bool _isDragging = false;
@@ -367,7 +370,31 @@ namespace CaptainSkillTree.Gui
         /// <summary>스킬 변경 시 즉시 슬롯 갱신 (SkillTreeManager.SetSkillLevel에서 호출)</summary>
         public void RefreshSlots()
         {
-            _updateTimer = UPDATE_INTERVAL; // 다음 Update()에서 즉시 갱신
+            _updateTimer = _currentInterval; // 다음 Update()에서 즉시 갱신
+        }
+
+        /// <summary>스킬 사용 시 ActiveSkillCooldownRegistry.SetCooldown에서 호출</summary>
+        public void OnCooldownStarted()
+        {
+            _cooldownActive = true;
+            _updateTimer = _currentInterval; // 다음 프레임에서 즉시 1회 갱신
+        }
+
+        /// <summary>Config로 쿨타임 변경 시 RecalculateCooldown에서 호출 - interval 재계산</summary>
+        public void OnCooldownChanged()
+        {
+            if (!_cooldownActive) return;
+            float minRemaining = SkillTree.ActiveSkillCooldownRegistry.GetMinRemaining();
+            if (minRemaining <= 0f)
+            {
+                _cooldownActive = false;
+            }
+            else if (minRemaining <= 60f)
+            {
+                _currentInterval = 1f;
+                _updateTimer = _currentInterval; // 즉시 갱신
+            }
+            // 길어진 경우: 기존 interval 유지
         }
 
         private void Update()
@@ -377,9 +404,12 @@ namespace CaptainSkillTree.Gui
             // 매 프레임: 스케일 + 카운트다운 애니메이션
             UpdateAnimations();
 
-            // 0.05초마다: 쿨타임/아이콘 폴링
+            // 쿨타임 없으면 즉시 종료 (폴링 0)
+            if (!_cooldownActive) return;
+
+            // 적응형 간격 폴링 (>60s: 60초, ≤60s: 1초)
             _updateTimer += Time.deltaTime;
-            if (_updateTimer < UPDATE_INTERVAL) return;
+            if (_updateTimer < _currentInterval) return;
             _updateTimer = 0f;
 
             // 플레이어가 로드되지 않은 경우 HUD 숨김
@@ -405,6 +435,15 @@ namespace CaptainSkillTree.Gui
             UpdateSlot(1, "R", mgr);
             UpdateSlot(2, "G", mgr);
             UpdateSlot(3, "H", mgr);
+
+            // 갱신 후 다음 폴링 간격 재계산
+            float minRemaining = SkillTree.ActiveSkillCooldownRegistry.GetMinRemaining();
+            if (minRemaining <= 0f)
+                _cooldownActive = false;          // 모든 쿨타임 종료 → Idle
+            else if (minRemaining <= 60f)
+                _currentInterval = 1f;            // 초 단위 전환
+            else
+                _currentInterval = 60f;           // 분 단위 유지
         }
 
         // =========================================================

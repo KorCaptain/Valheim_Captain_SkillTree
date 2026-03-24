@@ -498,7 +498,6 @@ namespace CaptainSkillTree
             var vfxObj = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
             if (vfxObj != null)
             {
-                Plugin.Log?.LogInfo($"[SimpleVFX] {vfxName} ID={vfxObj.GetInstanceID()} 생성 (prefabID={prefab.GetInstanceID()})");
                 // 커스텀 VFX만 Destroy 호출
                 if (!string.IsNullOrEmpty(vfxName) && IsCustomVFX(vfxName))
                 {
