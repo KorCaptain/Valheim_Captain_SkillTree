@@ -21,7 +21,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.1.89")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.1.94")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -131,7 +131,20 @@ namespace CaptainSkillTree
 
             // 핵심 시스템 초기화 완료 표시
             _coreSystemsInitialized = true;
-            Log.LogWarning("========== Captain SkillTree Mod 로딩 성공 ==========");
+            try
+            {
+                var mgr = typeof(BaseUnityPlugin).Assembly.GetType("BepInEx.ConsoleManager");
+                var setColor = mgr?.GetMethod("SetConsoleColor", BindingFlags.Public | BindingFlags.Static);
+                var stdOut = mgr?.GetProperty("StandardOutStream", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) as System.IO.TextWriter;
+                if (setColor != null && stdOut != null)
+                {
+                    setColor.Invoke(null, new object[] { ConsoleColor.Cyan });
+                    stdOut.WriteLine("[CaptainSkillTree] CaptainSkillTree loading Success!");
+                    setColor.Invoke(null, new object[] { ConsoleColor.Gray });
+                }
+                else Log.LogMessage("[CaptainSkillTree] CaptainSkillTree loading Success!");
+            }
+            catch { Log.LogMessage("[CaptainSkillTree] CaptainSkillTree loading Success!"); }
         }
 
         /// <summary>

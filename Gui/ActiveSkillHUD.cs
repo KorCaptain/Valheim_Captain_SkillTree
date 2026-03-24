@@ -96,6 +96,7 @@ namespace CaptainSkillTree.Gui
             for (int i = 0; i < 4; i++)
             {
                 _slots[i] = CreateSlot(containerGO.transform, SlotKeys[i]);
+                _slots[i].Root?.SetActive(false); // 초기 숨김 (메인메뉴/캐릭선택 화면에서 빈 박스 방지)
             }
         }
 
@@ -362,6 +363,7 @@ namespace CaptainSkillTree.Gui
         // 2단계 적응형 폴링: 쿨타임 없으면 완전 중지, >60s이면 60s 간격, ≤60s이면 1s 간격
         private bool _cooldownActive = false;
         private float _currentInterval = 1f; // 현재 폴링 간격 (60f or 1f)
+        private bool _playerWasNull = true;  // 플레이어 스폰 감지용
 
         // 드래그 이동
         private bool _isDragging = false;
@@ -370,6 +372,7 @@ namespace CaptainSkillTree.Gui
         /// <summary>스킬 변경 시 즉시 슬롯 갱신 (SkillTreeManager.SetSkillLevel에서 호출)</summary>
         public void RefreshSlots()
         {
+            _cooldownActive = true;          // 강제 폴링 활성화 (쿨타임 없어도 슬롯 갱신)
             _updateTimer = _currentInterval; // 다음 Update()에서 즉시 갱신
         }
 
@@ -401,6 +404,22 @@ namespace CaptainSkillTree.Gui
         {
             HandleDrag();
 
+            // 플레이어 스폰 감지: null→non-null 전환 시 HUD 강제 갱신
+            // Game.instance != null 조건으로 캐릭터선택/메인메뉴 프리뷰 캐릭터 제외
+            bool playerExists = Player.m_localPlayer != null && Game.instance != null;
+            if (playerExists && _playerWasNull)
+            {
+                _playerWasNull = false;
+                RefreshSlots();
+            }
+            else if (!playerExists && !_playerWasNull)
+            {
+                _playerWasNull = true;
+                _cooldownActive = false;  // 폴링 중지 (로그아웃 후 CPU 낭비 방지)
+                foreach (var s in _slots)
+                    s?.Root?.SetActive(false);
+            }
+
             // 매 프레임: 스케일 + 카운트다운 애니메이션
             UpdateAnimations();
 
@@ -412,13 +431,8 @@ namespace CaptainSkillTree.Gui
             if (_updateTimer < _currentInterval) return;
             _updateTimer = 0f;
 
-            // 플레이어가 로드되지 않은 경우 HUD 숨김
-            if (Player.m_localPlayer == null)
-            {
-                foreach (var s in _slots)
-                    s?.Root?.SetActive(false);
-                return;
-            }
+            // 안전가드: UpdateSlot NullRef 방지
+            if (Player.m_localPlayer == null) return;
 
             // Config 위치 실시간 반영 (드래그 중 제외)
             if (!_isDragging && _containerRt != null)
