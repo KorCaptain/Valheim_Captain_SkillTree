@@ -367,9 +367,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_BowExpert_DamageBonus"] = "Tier 0: [Espec. em Arco] Bônus de Dano com Arco (%)",
                 ["Tier0_BowExpert_RequiredPoints"] = "Tier 0: [Espec. em Arco] Pontos Necessários",
 
-                // === Tier 1-1: Tiro Focado (2) ===
-                ["Tier1_FocusedShot_CritBonus"] = "Tier 1-1: [Tiro Focado] Bônus de Chance Crítica (%)",
-                ["Tier1_FocusedShot_RequiredPoints"] = "Tier 1-1: [Tiro Focado] Pontos Necessários",
+                // === Tier 1-1: Tiro na Cabeça (2) ===
+                ["Tier1_Headshot_HeadZoneRatio"] = "Tier 1-1: [Tiro na Cabeça] Proporção da Zona da Cabeça",
+                ["Tier1_FocusedShot_RequiredPoints"] = "Tier 1-1: [Tiro na Cabeça] Pontos Necessários",
 
                 // === Tier 1-2: Disparo Múltiplo Nv1 (5) ===
                 ["Tier1_MultishotLv1_ActivationChance"] = "Tier 1-2: [Disp. Múltiplo Nv1] Chance de Ativação (%)",

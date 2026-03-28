@@ -374,13 +374,13 @@ namespace CaptainSkillTree.Localization
                 "활과 화살 무기의 기본 공격력을 증가시킵니다.\n" +
                 "권장값: 8-12%",
 
-                // === Tier 1-1: 집중 사격 (Focused Shot) ===
+                // === Tier 1-1: 헤드샷 (Headshot) ===
 
-                ["Tier1_FocusedShot_CritBonus"] =
-                "【치명타 확률 보너스 (%)】\n" +
-                "집중 사격으로 크리티컬 확률을 증가시킵니다.\n" +
-                "조준에 집중할수록 치명타 기회가 높아집니다.\n" +
-                "권장값: 5-10%",
+                ["Tier1_Headshot_HeadZoneRatio"] =
+                "【머리 영역 비율】\n" +
+                "몬스터 전체 높이 중 머리로 판정하는 상위 비율입니다.\n" +
+                "0.2 = 상위 20%를 머리로 판정. 높을수록 판정 범위 확대.\n" +
+                "권장값: 0.15-0.30",
 
                 // === Tier 1-2: 멀티샷 Lv1 ===
 
@@ -924,13 +924,13 @@ namespace CaptainSkillTree.Localization
                 "Increases base damage of bows and arrows.\n" +
                 "Recommended: 8-12%",
 
-                // === Tier 1-1: Focused Shot ===
+                // === Tier 1-1: Headshot ===
 
-                ["Tier1_FocusedShot_CritBonus"] =
-                "【Critical Chance Bonus (%)】\n" +
-                "Focused shot increases critical hit chance.\n" +
-                "Higher focus leads to more critical opportunities.\n" +
-                "Recommended: 5-10%",
+                ["Tier1_Headshot_HeadZoneRatio"] =
+                "【Head Zone Ratio】\n" +
+                "The ratio of the monster's height considered as the head zone.\n" +
+                "0.2 = top 20% is head. Higher value = larger head detection area.\n" +
+                "Recommended: 0.15-0.30",
 
                 // === Tier 1-2: Multi-Shot Lv1 ===
 

@@ -167,7 +167,8 @@ namespace CaptainSkillTree.Localization
 
                 // === Bow Skills ===
                 ["bow_skill_expert"] = "활 전문가",
-                ["bow_focus_name"] = "집중 사격",
+                ["bow_focus_name"] = "헤드샷",
+                ["bow_headshot_text"] = "헤드샷",
                 ["bow_multishot_lv1_name"] = "멀티샷 Lv1",
                 ["bow_proficiency_name"] = "활 숙련",
                 ["bow_basic_attack_name"] = "기본 활공격",
@@ -203,7 +204,7 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_final_desc"] = "크리티컬 데미지 +{0}%",
                 ["crossbow_oneshot_desc"] = "석궁 데미지 +{0}%, 다음 사격까지 {1}초 장전 지연",
                 ["bow_expert_desc"] = "활 공격력 +{0}%",
-                ["bow_focus_desc"] = "치명타 확률 +{0}%",
+                ["bow_focus_desc"] = "몬스터 머리 적중 시 크리티컬 100% 발동",
                 ["bow_multishot_lv1_desc"] = "{0}% 확률로 추가 화살 1발 발사 (+3도 각도)",
                 ["bow_proficiency_desc"] = "활 기술(숙련도) +{0}",
                 ["bow_proficiency_note"] = "※ 사망해도 보너스 유지",
@@ -537,7 +538,8 @@ namespace CaptainSkillTree.Localization
 
                 // === Bow Skills ===
                 ["bow_skill_expert"] = "Bow Expert",
-                ["bow_focus_name"] = "Focused Shot",
+                ["bow_focus_name"] = "Headshot",
+                ["bow_headshot_text"] = "Headshot",
                 ["bow_multishot_lv1_name"] = "Multi-Shot Lv1",
                 ["bow_proficiency_name"] = "Bow Proficiency",
                 ["bow_basic_attack_name"] = "Basic Bow Attack",
@@ -573,7 +575,7 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_final_desc"] = "Critical damage +{0}%",
                 ["crossbow_oneshot_desc"] = "Crossbow damage +{0}%, {1}s reload delay until next shot",
                 ["bow_expert_desc"] = "Bow damage +{0}%",
-                ["bow_focus_desc"] = "Critical chance +{0}%",
+                ["bow_focus_desc"] = "Arrows hitting a monster's head guarantee a 100% critical hit",
                 ["bow_multishot_lv1_desc"] = "{0}% chance to fire 1 extra arrow (+3° angle)",
                 ["bow_proficiency_desc"] = "Bow skill (proficiency) +{0}",
                 ["bow_proficiency_note"] = "※ Bonus persists through death",

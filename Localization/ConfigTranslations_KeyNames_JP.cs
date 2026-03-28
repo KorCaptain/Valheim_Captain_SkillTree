@@ -362,9 +362,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_BowExpert_DamageBonus"] = "Tier 0: [弓エキスパート] 弓ダメージボーナス (%)",
                 ["Tier0_BowExpert_RequiredPoints"] = "Tier 0: [弓エキスパート] 必要ポイント",
 
-                // === Tier 1-1: 集中射撃 (2) ===
-                ["Tier1_FocusedShot_CritBonus"] = "Tier 1-1: [集中射撃] クリティカル確率ボーナス (%)",
-                ["Tier1_FocusedShot_RequiredPoints"] = "Tier 1-1: [集中射撃] 必要ポイント",
+                // === Tier 1-1: ヘッドショット (2) ===
+                ["Tier1_Headshot_HeadZoneRatio"] = "Tier 1-1: [ヘッドショット] 頭部ゾーン比率",
+                ["Tier1_FocusedShot_RequiredPoints"] = "Tier 1-1: [ヘッドショット] 必要ポイント",
 
                 // === Tier 1-2: 多重射撃Lv1 (5) ===
                 ["Tier1_MultishotLv1_ActivationChance"] = "Tier 1-2: [多重射撃Lv1] 発動確率 (%)",

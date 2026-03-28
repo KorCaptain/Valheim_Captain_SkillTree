@@ -383,9 +383,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_BowExpert_DamageBonus"] = "Tier 0: [활 전문가] 활 공격력 보너스 (%)",
                 ["Tier0_BowExpert_RequiredPoints"] = "Tier 0: [활 전문가] 필요 포인트",
 
-                // === Tier 1-1: [집중 사격] (2개) ===
-                ["Tier1_FocusedShot_CritBonus"] = "Tier 1-1: [집중 사격] 치명타 확률 보너스 (%)",
-                ["Tier1_FocusedShot_RequiredPoints"] = "Tier 1-1: [집중 사격] 필요 포인트",
+                // === Tier 1-1: [헤드샷] (2개) ===
+                ["Tier1_Headshot_HeadZoneRatio"] = "Tier 1-1: [헤드샷] 머리 영역 비율",
+                ["Tier1_FocusedShot_RequiredPoints"] = "Tier 1-1: [헤드샷] 필요 포인트",
 
                 // === Tier 1-2: [멀티샷 Lv1] (5개) ===
                 ["Tier1_MultishotLv1_ActivationChance"] = "Tier 1-2: [멀티샷 Lv1] 발동 확률 (%)",

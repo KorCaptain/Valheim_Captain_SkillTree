@@ -36,7 +36,7 @@ namespace CaptainSkillTree.SkillTree
 
         // === 활 전문가 스킬 설정 ===
         public static ConfigEntry<float> BowStep1ExpertDamageBonus;
-        public static ConfigEntry<float> BowStep2FocusCritBonus;
+        public static ConfigEntry<float> BowHeadshotZoneRatio;  // 헤드샷 머리 영역 비율 (상위 %)
         public static ConfigEntry<float> BowStep3SpeedShotSkillBonus;
         public static ConfigEntry<float> BowStep3SilentShotDamageBonus;
         public static ConfigEntry<float> BowStep3SpecialArrowChance;
@@ -73,7 +73,7 @@ namespace CaptainSkillTree.SkillTree
         public static int BowMultishotArrowConsumptionValue => (int)SkillTreeConfig.GetEffectiveValue("Bow_MultiShot_ArrowConsumption", BowMultishotArrowConsumption.Value);
         public static float BowMultishotDamagePercentValue => SkillTreeConfig.GetEffectiveValue("Bow_MultiShot_DamagePercent", BowMultishotDamagePercent.Value);
         public static float BowStep1ExpertDamageBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step1_expert_damage_bonus", BowStep1ExpertDamageBonus.Value);
-        public static float BowStep2FocusCritBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step2_focus_crit_bonus", BowStep2FocusCritBonus.Value);
+        public static float BowHeadshotZoneRatioValue => SkillTreeConfig.GetEffectiveValue("bow_Step2_headshot_zone_ratio", BowHeadshotZoneRatio.Value);
         public static float BowStep3SpeedShotSkillBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step3_speedshot_skill_bonus", BowStep3SpeedShotSkillBonus.Value);
         public static float BowStep3SilentShotDamageBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step3_silentshot_damage_bonus", BowStep3SilentShotDamageBonus.Value);
         public static float BowStep3SpecialArrowChanceValue => SkillTreeConfig.GetEffectiveValue("bow_Step3_special_arrow_chance", BowStep3SpecialArrowChance.Value);
@@ -103,10 +103,10 @@ namespace CaptainSkillTree.SkillTree
                 "Bow Tree", "Tier0_BowExpert_RequiredPoints", 2,
                 SkillTreeConfig.GetConfigDescription("Tier0_BowExpert_RequiredPoints"), order: 59);
 
-            // === Tier 1-1: [집중 사격] ===
-            BowStep2FocusCritBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier1_FocusedShot_CritBonus", 7f,
-                SkillTreeConfig.GetConfigDescription("Tier1_FocusedShot_CritBonus"), order: 50);
+            // === Tier 1-1: [헤드샷] ===
+            BowHeadshotZoneRatio = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier1_Headshot_HeadZoneRatio", 0.2f,
+                SkillTreeConfig.GetConfigDescription("Tier1_Headshot_HeadZoneRatio"), order: 50);
 
             BowFocusShotRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Bow Tree", "Tier1_FocusedShot_RequiredPoints", 2,

@@ -323,12 +323,12 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_BowExpert_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear o Mestre do Arco.",
 
-                // === Tier 1-1: Tiro Concentrado ===
-                ["Tier1_FocusedShot_CritBonus"] =
-                "【Bônus de Chance Crítica (%)】\n" +
-                "Tiro Concentrado aumenta a chance de acerto crítico.\n" +
-                "Maior concentração = mais chance de crítico.\n" +
-                "Valor recomendado: 5-10%",
+                // === Tier 1-1: Tiro na Cabeça ===
+                ["Tier1_Headshot_HeadZoneRatio"] =
+                "【Proporção da Zona da Cabeça】\n" +
+                "A proporção superior da altura do monstro considerada como zona da cabeça.\n" +
+                "0.2 = 20% superior é cabeça. Valor maior = área de detecção maior.\n" +
+                "Valor recomendado: 0.15-0.30",
 
                 ["Tier1_FocusedShot_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Tiro Concentrado.",

@@ -367,9 +367,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_BowExpert_DamageBonus"] = "Tier 0: [弓专家] 弓伤害加成 (%)",
                 ["Tier0_BowExpert_RequiredPoints"] = "Tier 0: [弓专家] 所需点数",
 
-                // === Tier 1-1: 精准射击 (2) ===
-                ["Tier1_FocusedShot_CritBonus"] = "Tier 1-1: [精准射击] 暴击率加成 (%)",
-                ["Tier1_FocusedShot_RequiredPoints"] = "Tier 1-1: [精准射击] 所需点数",
+                // === Tier 1-1: 爆头 (2) ===
+                ["Tier1_Headshot_HeadZoneRatio"] = "Tier 1-1: [爆头] 头部区域比例",
+                ["Tier1_FocusedShot_RequiredPoints"] = "Tier 1-1: [爆头] 所需点数",
 
                 // === Tier 1-2: 多重射击Lv1 (5) ===
                 ["Tier1_MultishotLv1_ActivationChance"] = "Tier 1-2: [多重射击Lv1] 触发概率 (%)",

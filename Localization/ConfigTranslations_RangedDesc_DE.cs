@@ -323,12 +323,12 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_BowExpert_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Bogen-Experten.",
 
-                // === Tier 1-1: Fokussierter Schuss ===
-                ["Tier1_FocusedShot_CritBonus"] =
-                "【Kritische Trefferchance-Bonus (%)】\n" +
-                "Fokussierter Schuss erhöht die kritische Trefferchance.\n" +
-                "Mehr Konzentration = höhere Kritchance.\n" +
-                "Empfehlung: 5-10%",
+                // === Tier 1-1: Kopfschuss ===
+                ["Tier1_Headshot_HeadZoneRatio"] =
+                "【Kopfzone-Verhältnis】\n" +
+                "Das obere Verhältnis der Monsterhöhe, das als Kopfzone gilt.\n" +
+                "0.2 = obere 20% ist Kopf. Höherer Wert = größerer Erkennungsbereich.\n" +
+                "Empfehlung: 0.15-0.30",
 
                 ["Tier1_FocusedShot_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des fokussierten Schusses.",

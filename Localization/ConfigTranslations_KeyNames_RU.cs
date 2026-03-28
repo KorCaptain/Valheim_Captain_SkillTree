@@ -238,8 +238,8 @@ namespace CaptainSkillTree.Localization
                 // ============================================
                 ["Tier0_BowExpert_DamageBonus"] = "Ур.0: [Мастер Лука] Бонус урона лука (%)",
                 ["Tier0_BowExpert_RequiredPoints"] = "Ур.0: [Мастер Лука] Необходимые очки",
-                ["Tier1_FocusedShot_CritBonus"] = "Ур.1-1: [Точный выстрел] Шанс крит. удара (%)",
-                ["Tier1_FocusedShot_RequiredPoints"] = "Ур.1-1: [Точный выстрел] Необходимые очки",
+                ["Tier1_Headshot_HeadZoneRatio"] = "Ур.1-1: [Хедшот] Зона головы (соотношение)",
+                ["Tier1_FocusedShot_RequiredPoints"] = "Ур.1-1: [Хедшот] Необходимые очки",
                 ["Tier1_MultishotLv1_ActivationChance"] = "Ур.1-2: [Мультивыстр. Ур.1] Шанс срабатывания (%)",
                 ["Tier1_MultishotLv1_AdditionalArrows"] = "Ур.1-2: [Мультивыстр. Ур.1] Доп. стрелы",
                 ["Tier1_MultishotLv1_ArrowConsumption"] = "Ур.1-2: [Мультивыстр. Ур.1] Расход стрел",

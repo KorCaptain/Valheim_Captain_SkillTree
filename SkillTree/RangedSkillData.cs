@@ -221,12 +221,11 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // Step 2-1: 집중 사격
+            // Step 2-1: 헤드샷
             manager.AddSkill(new SkillNode {
                 Id = "bow_Step2_focus",
                 NameKey = "bow_focus_name",
                 DescriptionKey = "bow_focus_desc",
-                DescriptionArgs = new object[] { Bow_Config.BowStep2FocusCritBonusValue },
                 RequiredPoints = Bow_Config.BowFocusShotRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,

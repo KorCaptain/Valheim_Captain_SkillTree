@@ -552,7 +552,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> BowMultishotArrowConsumption => Bow_Config.BowMultishotArrowConsumption;
         public static ConfigEntry<float> BowMultishotDamagePercent => Bow_Config.BowMultishotDamagePercent;
         public static ConfigEntry<float> BowStep1ExpertDamageBonus => Bow_Config.BowStep1ExpertDamageBonus;
-        public static ConfigEntry<float> BowStep2FocusCritBonus => Bow_Config.BowStep2FocusCritBonus;
+        public static ConfigEntry<float> BowHeadshotZoneRatio => Bow_Config.BowHeadshotZoneRatio;
         public static ConfigEntry<float> BowStep3SpeedShotSkillBonus => Bow_Config.BowStep3SpeedShotSkillBonus;
         public static ConfigEntry<float> BowStep3SilentShotDamageBonus => Bow_Config.BowStep3SilentShotDamageBonus;
         public static ConfigEntry<float> BowStep3SpecialArrowChance => Bow_Config.BowStep3SpecialArrowChance;
@@ -569,7 +569,7 @@ namespace CaptainSkillTree.SkillTree
         public static int BowMultishotArrowConsumptionValue => Bow_Config.BowMultishotArrowConsumptionValue;
         public static float BowMultishotDamagePercentValue => Bow_Config.BowMultishotDamagePercentValue;
         public static float BowStep1ExpertDamageBonusValue => Bow_Config.BowStep1ExpertDamageBonusValue;
-        public static float BowStep2FocusCritBonusValue => Bow_Config.BowStep2FocusCritBonusValue;
+        public static float BowHeadshotZoneRatioValue => Bow_Config.BowHeadshotZoneRatioValue;
         public static float BowStep3SpeedShotSkillBonusValue => Bow_Config.BowStep3SpeedShotSkillBonusValue;
         public static float BowStep3SilentShotDamageBonusValue => Bow_Config.BowStep3SilentShotDamageBonusValue;
         public static float BowStep3SpecialArrowChanceValue => Bow_Config.BowStep3SpecialArrowChanceValue;

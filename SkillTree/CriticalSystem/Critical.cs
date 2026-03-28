@@ -124,6 +124,39 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
 
         #endregion
 
+        #region 헤드샷 감지
+
+        /// <summary>
+        /// 화살이 몬스터의 머리를 맞췄는지 판별
+        /// HitData.m_point(충돌 좌표)와 Character.GetTopPoint()를 비교
+        /// </summary>
+        /// <param name="target">피격 대상</param>
+        /// <param name="hitPoint">HitData.m_point (화살 충돌 좌표)</param>
+        /// <returns>헤드샷 여부</returns>
+        public static bool IsHeadshot(Character target, Vector3 hitPoint)
+        {
+            if (target == null || target.IsPlayer()) return false;
+
+            Vector3 topPoint = target.GetTopPoint();
+            float bottom = target.transform.position.y;
+            float totalHeight = topPoint.y - bottom;
+
+            if (totalHeight <= 0.1f) return false;
+
+            // 상위 20% 영역을 머리로 정의 (Config에서 비율 조정 가능)
+            float headThreshold = topPoint.y - (totalHeight * Bow_Config.BowHeadshotZoneRatioValue);
+            bool isHead = hitPoint.y >= headThreshold;
+
+            if (isHead)
+            {
+                Plugin.Log.LogDebug($"[헤드샷] 판정 성공! hitY={hitPoint.y:F2}, threshold={headThreshold:F2}, top={topPoint.y:F2}");
+            }
+
+            return isHead;
+        }
+
+        #endregion
+
         #region 다른 무기 치명타 확률 (향후 확장)
 
         /// <summary>
@@ -136,13 +169,7 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
             // === 공통 보너스 (공격 전문가 트리) ===
             bonus += GetCommonCritChanceBonus(player);
 
-            // Tier 2: 집중 사격 - 치명타 확률 +7%
-            if (SkillEffect.HasSkill("bow_Step2_focus"))
-            {
-                float tierBonus = SkillTreeConfig.BowStep2FocusCritBonusValue;
-                bonus += tierBonus;
-                Plugin.Log.LogDebug($"[치명타] Tier 2 집중 사격 (패시브): +{tierBonus}%");
-            }
+            // Tier 2: 헤드샷 - 머리 적중 시 100% 크리티컬 (Plugin.Patches.cs에서 처리, 여기선 패시브 보너스 없음)
 
             // Tier 5: 사냥 본능 - 치명타 확률 +[CONFIG]%
             if (SkillEffect.HasSkill("bow_Step5_instinct"))

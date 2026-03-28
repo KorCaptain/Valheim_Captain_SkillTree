@@ -323,12 +323,12 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_BowExpert_RequiredPoints"] =
                 "【所需点数】\n解锁弓专家所需的点数。",
 
-                // === Tier 1-1: 专注射击 ===
-                ["Tier1_FocusedShot_CritBonus"] =
-                "【暴击率加成(%)】\n" +
-                "专注射击提升暴击概率。\n" +
-                "专注度越高，暴击率越高。\n" +
-                "推荐：5-10%",
+                // === Tier 1-1: 爆头 ===
+                ["Tier1_Headshot_HeadZoneRatio"] =
+                "【头部区域比例】\n" +
+                "判定为头部的怪物高度上部比例。\n" +
+                "0.2 = 上部20%判定为头部。值越大判定范围越广。\n" +
+                "推荐：0.15-0.30",
 
                 ["Tier1_FocusedShot_RequiredPoints"] =
                 "【所需点数】\n解锁专注射击所需的点数。",

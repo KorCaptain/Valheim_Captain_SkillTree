@@ -91,14 +91,31 @@ namespace CaptainSkillTree
                     }
                 }
 
-                // === 치명타 시스템 (모듈화) ===
-                float critChance = Critical.CalculateCritChance(player, weaponType);
-
-                if (Critical.RollCritical(critChance))
+                // === 헤드샷 크리티컬 (활 + bow_Step2_focus 보유 + 머리 적중 시 100%) ===
+                if (weaponType == Skills.SkillType.Bows
+                    && SkillEffect.HasSkill("bow_Step2_focus")
+                    && Critical.IsHeadshot(__instance, hit.m_point))
                 {
                     float critMultiplier = CriticalDamage.CalculateCritDamageMultiplier(player, weaponType);
                     CriticalDamage.ApplyCriticalDamage(player, ref hit, critMultiplier, weaponType);
+                    SkillEffect.ShowSkillEffectText(player, L.Get("bow_headshot_text") + "!",
+                        new Color(1f, 0.3f, 0.1f), SkillEffect.SkillEffectTextType.Combat);
+                    // 헤드샷 VFX: 피격 지점에 confetti 효과
+                    SimpleVFX.Play("confetti_directional_multicolor", hit.m_point, 2f);
                     showDamageText = false;
+                    Log.LogInfo("[헤드샷] 머리 적중 → 100% 크리티컬 발동!");
+                }
+                else
+                {
+                    // === 기존 치명타 시스템 (모듈화) ===
+                    float critChance = Critical.CalculateCritChance(player, weaponType);
+
+                    if (Critical.RollCritical(critChance))
+                    {
+                        float critMultiplier = CriticalDamage.CalculateCritDamageMultiplier(player, weaponType);
+                        CriticalDamage.ApplyCriticalDamage(player, ref hit, critMultiplier, weaponType);
+                        showDamageText = false;
+                    }
                 }
 
                 // === knife_stagger 제거됨 - 실제 스킬 트리에 존재하지 않음 ===

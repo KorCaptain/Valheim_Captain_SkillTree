@@ -323,12 +323,12 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_BowExpert_RequiredPoints"] =
                 "【必要ポイント】\n弓専家を解放するための必要ポイントです。",
 
-                // === Tier 1-1: 集中射撃 ===
-                ["Tier1_FocusedShot_CritBonus"] =
-                "【クリティカル率ボーナス (%)】\n" +
-                "集中射撃でクリティカル確率を増加させます。\n" +
-                "集中度が高いほどクリティカル率が上昇します。\n" +
-                "推奨: 5-10%",
+                // === Tier 1-1: ヘッドショット ===
+                ["Tier1_Headshot_HeadZoneRatio"] =
+                "【頭部ゾーン比率】\n" +
+                "モンスターの全高さのうち頭部と判定される上部の比率です。\n" +
+                "0.2 = 上部20%が頭部。値が高いほど判定範囲が広がります。\n" +
+                "推奨: 0.15-0.30",
 
                 ["Tier1_FocusedShot_RequiredPoints"] =
                 "【必要ポイント】\n集中射撃を解放するための必要ポイントです。",
