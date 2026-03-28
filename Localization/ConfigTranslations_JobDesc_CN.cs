@@ -299,43 +299,66 @@ namespace CaptainSkillTree.Localization
                 "坦克被动：持续减少受到的伤害。\n" +
                 "推荐：10-20%",
 
-                ["Tanker_Hp_Bonus"] =
-                "【坦克基础HP】\n" +
-                "坦克被动HP加成。\n" +
-                "默认：100",
-
-                ["Tanker_Lv2_AllResist"] =
-                "【坦克Lv2全抗性(%)】\n" +
-                "对所有伤害类型的被动抗性(Lv2+)。\n" +
-                "默认：5%",
-
-                ["Tanker_Lv3_AllResist"] =
-                "【坦克Lv3全抗性(%)】\n" +
-                "默认：8%",
-
-                ["Tanker_Lv4_AllResist"] =
-                "【坦克Lv4全抗性(%)】\n" +
-                "默认：12%",
-
-                ["Tanker_Lv5_AllResist"] =
-                "【坦克Lv5全抗性(%)】\n" +
-                "默认：15%",
-
+                // === Lv1 ===
                 ["Tanker_ReflectDuration_Lv1"] =
                 "【坦克反射持续时间Lv1 (秒)】\n" +
                 "默认：10秒",
+
+                // === Lv2 ===
+                ["Tanker_Hp_Bonus_Lv2"] =
+                "【坦克 Lv2 HP加成】\n" +
+                "坦克Lv2被动HP加成。\n" +
+                "默认：35",
+
+                ["Tanker_Lv2_BlockPower"] =
+                "【坦克 Lv2 格挡防御力】\n" +
+                "坦克Lv2被动格挡防御力。\n" +
+                "默认：5",
 
                 ["Tanker_ReflectDuration_Lv2"] =
                 "【坦克反射持续时间Lv2 (秒)】\n" +
                 "默认：12秒",
 
+                // === Lv3 ===
+                ["Tanker_Hp_Bonus_Lv3"] =
+                "【坦克 Lv3 HP加成】\n" +
+                "坦克Lv3被动HP加成。\n" +
+                "默认：50",
+
+                ["Tanker_Lv3_BlockPower"] =
+                "【坦克 Lv3 格挡防御力】\n" +
+                "坦克Lv3被动格挡防御力。\n" +
+                "默认：8",
+
                 ["Tanker_ReflectDuration_Lv3"] =
                 "【坦克反射持续时间Lv3 (秒)】\n" +
                 "默认：14秒",
 
+                // === Lv4 ===
+                ["Tanker_Hp_Bonus_Lv4"] =
+                "【坦克 Lv4 HP加成】\n" +
+                "坦克Lv4被动HP加成。\n" +
+                "默认：70",
+
+                ["Tanker_Lv4_BlockPower"] =
+                "【坦克 Lv4 格挡防御力】\n" +
+                "坦克Lv4被动格挡防御力。\n" +
+                "默认：12",
+
                 ["Tanker_ReflectDuration_Lv4"] =
                 "【坦克反射持续时间Lv4 (秒)】\n" +
                 "默认：16秒",
+
+                // === Lv5 ===
+                ["Tanker_Hp_Bonus_Lv5"] =
+                "【坦克 Lv5 HP加成】\n" +
+                "坦克Lv5被动HP加成。\n" +
+                "默认：100",
+
+                ["Tanker_Lv5_BlockPower"] =
+                "【坦克 Lv5 格挡防御力】\n" +
+                "坦克Lv5被动格挡防御力。\n" +
+                "默认：15",
 
                 ["Tanker_ReflectDuration_Lv5"] =
                 "【坦克反射持续时间Lv5 (秒)】\n" +
@@ -392,10 +415,14 @@ namespace CaptainSkillTree.Localization
                 "盗贼被动：减少攻击消耗的体力。\n" +
                 "推荐：10-20%",
 
-                ["Rogue_ElementalResistance_Debuff"] =
-                "【元素抗性提升(%)】\n" +
-                "盗贼被动：提升对元素伤害的抗性。\n" +
-                "推荐：8-15%",
+                ["Rogue_Lv1_DodgeChance"] =
+                "【Lv1 回避率(%)】\n" +
+                "盗贼被动：提升命中回避率，与技能树合计叠加。\n" +
+                "推荐：3-6%",
+                ["Rogue_Lv2_DodgeChance"] = "【Lv2 回避率(%)】\n推荐：5-8%",
+                ["Rogue_Lv3_DodgeChance"] = "【Lv3 回避率(%)】\n推荐：7-10%",
+                ["Rogue_Lv4_DodgeChance"] = "【Lv4 回避率(%)】\n推荐：9-12%",
+                ["Rogue_Lv5_DodgeChance"] = "【Lv5 回避率(%)】\n推荐：11-15%",
 
                 // ========================================
                 // 圣骑士职业技能 (Paladin Job)
@@ -562,46 +589,61 @@ namespace CaptainSkillTree.Localization
                 "激活Buff时消耗的体力值。\n" +
                 "默认：20",
 
+                // === Producer Lv1 ===
                 ["Producer_FarmGrid_Lv1"] = "【农耕格大小 Lv1】\nLv1时农耕格中的额外格子数。\n默认：2",
+
+                // === Producer Lv2 ===
                 ["Producer_FarmGrid_Lv2"] = "【农耕格大小 Lv2】\nLv2时农耕格中的额外格子数。\n默认：2",
-                ["Producer_FarmGrid_Lv3"] = "【农耕格大小 Lv3】\nLv3时农耕格中的额外格子数。\n默认：4",
-                ["Producer_FarmGrid_Lv4"] = "【农耕格大小 Lv4】\nLv4时农耕格中的额外格子数。\n默认：6",
-                ["Producer_FarmGrid_Lv5"] = "【农耕格大小 Lv5】\nLv5时农耕格中的额外格子数。\n默认：8",
-
                 ["Producer_Durability_Lv2"] = "【制作品耐久度加成 Lv2 (%)】\nLv2时制作物品的耐久度加成。\n默认：10%",
-                ["Producer_Durability_Lv3"] = "【制作品耐久度加成 Lv3 (%)】\nLv3时制作物品的耐久度加成。\n默认：15%",
-                ["Producer_Durability_Lv4"] = "【制作品耐久度加成 Lv4 (%)】\nLv4时制作物品的耐久度加成。\n默认：20%",
-                ["Producer_Durability_Lv5"] = "【制作品耐久度加成 Lv5 (%)】\nLv5时制作物品的耐久度加成。\n默认：30%",
-
                 ["Producer_MaterialReduction_Lv2"] = "【材料消耗减少 Lv2 (%)】\nLv2时每次制作节省的材料。\n默认：10%",
+
+                // === Producer Lv3 ===
+                ["Producer_FarmGrid_Lv3"] = "【农耕格大小 Lv3】\nLv3时农耕格中的额外格子数。\n默认：4",
+                ["Producer_Durability_Lv3"] = "【制作品耐久度加成 Lv3 (%)】\nLv3时制作物品的耐久度加成。\n默认：15%",
                 ["Producer_MaterialReduction_Lv3"] = "【材料消耗减少 Lv3 (%)】\nLv3时每次制作节省的材料。\n默认：15%",
-                ["Producer_MaterialReduction_Lv4"] = "【材料消耗减少 Lv4 (%)】\nLv4时每次制作节省的材料。\n默认：20%",
-                ["Producer_MaterialReduction_Lv5"] = "【材料消耗减少 Lv5 (%)】\nLv5时每次制作节省的材料。\n默认：30%",
-
                 ["Producer_EnchantChance_Lv3"] = "【附魔概率 Lv3 (%)】\nLv3时对制作物品附魔的概率。\n默认：25%",
-                ["Producer_EnchantChance_Lv4"] = "【附魔概率 Lv4 (%)】\nLv4时对制作物品附魔的概率。\n默认：30%",
-                ["Producer_EnchantChance_Lv5"] = "【附魔概率 Lv5 (%)】\nLv5时对制作物品附魔的概率。\n默认：35%",
-
                 ["Producer_EnchantWeaponDmgMin_Lv3"] = "【武器伤害附魔最小值 Lv3 (%)】\nLv3附魔武器伤害最小加成。\n默认：5%",
                 ["Producer_EnchantWeaponDmgMax_Lv3"] = "【武器伤害附魔最大值 Lv3 (%)】\nLv3附魔武器伤害最大加成。\n默认：5%",
-                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【武器伤害附魔最小值 Lv4 (%)】\nLv4附魔武器伤害最小加成。\n默认：7%",
-                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【武器伤害附魔最大值 Lv4 (%)】\nLv4附魔武器伤害最大加成。\n默认：9%",
-                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【武器伤害附魔最小值 Lv5 (%)】\nLv5附魔武器伤害最小加成。\n默认：10%",
-                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【武器伤害附魔最大值 Lv5 (%)】\nLv5附魔武器伤害最大加成。\n默认：12%",
-
                 ["Producer_EnchantArmorMin_Lv3"] = "【护甲附魔最小值 Lv3 (%)】\nLv3附魔护甲最小加成。\n默认：5%",
                 ["Producer_EnchantArmorMax_Lv3"] = "【护甲附魔最大值 Lv3 (%)】\nLv3附魔护甲最大加成。\n默认：5%",
-                ["Producer_EnchantArmorMin_Lv4"] = "【护甲附魔最小值 Lv4 (%)】\nLv4附魔护甲最小加成。\n默认：7%",
-                ["Producer_EnchantArmorMax_Lv4"] = "【护甲附魔最大值 Lv4 (%)】\nLv4附魔护甲最大加成。\n默认：9%",
-                ["Producer_EnchantArmorMin_Lv5"] = "【护甲附魔最小值 Lv5 (%)】\nLv5附魔护甲最小加成。\n默认：10%",
-                ["Producer_EnchantArmorMax_Lv5"] = "【护甲附魔最大值 Lv5 (%)】\nLv5附魔护甲最大加成。\n默认：12%",
-
                 ["Producer_EnchantHpMin_Lv3"] = "【HP附魔最小值 Lv3 (%)】\nLv3附魔最大HP最小加成。\n默认：2%",
                 ["Producer_EnchantHpMax_Lv3"] = "【HP附魔最大值 Lv3 (%)】\nLv3附魔最大HP最大加成。\n默认：2%",
+                ["Producer_EnchantWeaponSpdMin_Lv3"] = "【攻击速度附魔最小值 Lv3 (%)】\nLv3附魔攻击速度最小加成。\n默认：3%",
+                ["Producer_EnchantWeaponSpdMax_Lv3"] = "【攻击速度附魔最大值 Lv3 (%)】\nLv3附魔攻击速度最大加成。\n默认：5%",
+                ["Producer_EnchantStaminaMin_Lv3"] = "【体力附魔最小值 Lv3 (%)】\nLv3附魔最大体力最小加成。\n默认：3%",
+                ["Producer_EnchantStaminaMax_Lv3"] = "【体力附魔最大值 Lv3 (%)】\nLv3附魔最大体力最大加成。\n默认：5%",
+
+                // === Producer Lv4 ===
+                ["Producer_FarmGrid_Lv4"] = "【农耕格大小 Lv4】\nLv4时农耕格中的额外格子数。\n默认：6",
+                ["Producer_Durability_Lv4"] = "【制作品耐久度加成 Lv4 (%)】\nLv4时制作物品的耐久度加成。\n默认：20%",
+                ["Producer_MaterialReduction_Lv4"] = "【材料消耗减少 Lv4 (%)】\nLv4时每次制作节省的材料。\n默认：20%",
+                ["Producer_EnchantChance_Lv4"] = "【附魔概率 Lv4 (%)】\nLv4时对制作物品附魔的概率。\n默认：30%",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【武器伤害附魔最小值 Lv4 (%)】\nLv4附魔武器伤害最小加成。\n默认：7%",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【武器伤害附魔最大值 Lv4 (%)】\nLv4附魔武器伤害最大加成。\n默认：9%",
+                ["Producer_EnchantArmorMin_Lv4"] = "【护甲附魔最小值 Lv4 (%)】\nLv4附魔护甲最小加成。\n默认：7%",
+                ["Producer_EnchantArmorMax_Lv4"] = "【护甲附魔最大值 Lv4 (%)】\nLv4附魔护甲最大加成。\n默认：9%",
                 ["Producer_EnchantHpMin_Lv4"] = "【HP附魔最小值 Lv4 (%)】\nLv4附魔最大HP最小加成。\n默认：4%",
                 ["Producer_EnchantHpMax_Lv4"] = "【HP附魔最大值 Lv4 (%)】\nLv4附魔最大HP最大加成。\n默认：5%",
+                ["Producer_EnchantWeaponSpdMin_Lv4"] = "【攻击速度附魔最小值 Lv4 (%)】\nLv4附魔攻击速度最小加成。\n默认：5%",
+                ["Producer_EnchantWeaponSpdMax_Lv4"] = "【攻击速度附魔最大值 Lv4 (%)】\nLv4附魔攻击速度最大加成。\n默认：8%",
+                ["Producer_EnchantStaminaMin_Lv4"] = "【体力附魔最小值 Lv4 (%)】\nLv4附魔最大体力最小加成。\n默认：5%",
+                ["Producer_EnchantStaminaMax_Lv4"] = "【体力附魔最大值 Lv4 (%)】\nLv4附魔最大体力最大加成。\n默认：8%",
+
+                // === Producer Lv5 ===
+                ["Producer_FarmGrid_Lv5"] = "【农耕格大小 Lv5】\nLv5时农耕格中的额外格子数。\n默认：8",
+                ["Producer_Durability_Lv5"] = "【制作品耐久度加成 Lv5 (%)】\nLv5时制作物品的耐久度加成。\n默认：30%",
+                ["Producer_MaterialReduction_Lv5"] = "【材料消耗减少 Lv5 (%)】\nLv5时每次制作节省的材料。\n默认：30%",
+                ["Producer_EnchantChance_Lv5"] = "【附魔概率 Lv5 (%)】\nLv5时对制作物品附魔的概率。\n默认：35%",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【武器伤害附魔最小值 Lv5 (%)】\nLv5附魔武器伤害最小加成。\n默认：10%",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【武器伤害附魔最大值 Lv5 (%)】\nLv5附魔武器伤害最大加成。\n默认：12%",
+                ["Producer_EnchantArmorMin_Lv5"] = "【护甲附魔最小值 Lv5 (%)】\nLv5附魔护甲最小加成。\n默认：10%",
+                ["Producer_EnchantArmorMax_Lv5"] = "【护甲附魔最大值 Lv5 (%)】\nLv5附魔护甲最大加成。\n默认：12%",
                 ["Producer_EnchantHpMin_Lv5"] = "【HP附魔最小值 Lv5 (%)】\nLv5附魔最大HP最小加成。\n默认：6%",
                 ["Producer_EnchantHpMax_Lv5"] = "【HP附魔最大值 Lv5 (%)】\nLv5附魔最大HP最大加成。\n默认：8%",
+                ["Producer_EnchantWeaponSpdMin_Lv5"] = "【攻击速度附魔最小值 Lv5 (%)】\nLv5附魔攻击速度最小加成。\n默认：8%",
+                ["Producer_EnchantWeaponSpdMax_Lv5"] = "【攻击速度附魔最大值 Lv5 (%)】\nLv5附魔攻击速度最大加成。\n默认：12%",
+                ["Producer_EnchantStaminaMin_Lv5"] = "【体力附魔最小值 Lv5 (%)】\nLv5附魔最大体力最小加成。\n默认：8%",
+                ["Producer_EnchantStaminaMax_Lv5"] = "【体力附魔最大值 Lv5 (%)】\nLv5附魔最大体力最大加成。\n默认：12%",
 
                 ["Job_Lv1_Cost"] = "【职业Lv1金币消耗】\n所有职业升级到Lv1时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：1000",
                 ["Job_Lv2_Cost"] = "【职业Lv2金币消耗】\n所有职业升级到Lv2时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：2000",

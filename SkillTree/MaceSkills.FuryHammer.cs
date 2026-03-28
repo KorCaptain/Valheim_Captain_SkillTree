@@ -28,6 +28,10 @@ namespace CaptainSkillTree.SkillTree
         // === 경직 면역 (스킬 활성 중) ===
         private static HashSet<Player> _furyHammerImmune = new HashSet<Player>();
 
+        // === 철슬랫지 공격 모션 캐시 ===
+        private static Attack s_sledgeIronAttackCache = null;
+        private static Attack s_sledgeIronSecondaryAttackCache = null; // 2차 공격 모션 캐시
+
         // === 하드코딩 상수 (수정 불가) ===
         private const int ATTACK_COUNT = 5;           // 연속공격 횟수 고정
         private const float ATTACK_INTERVAL = 0.5f;   // 공격간 딜레이 고정 (초)
@@ -73,9 +77,9 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 기존 코루틴 중단
-                if (furyHammerCoroutine.ContainsKey(player))
+                if (furyHammerCoroutine.TryGetValue(player, out var prevFHCoroutine))
                 {
-                    SkillTreeInputListener.Instance?.StopCoroutine(furyHammerCoroutine[player]);
+                    SkillTreeInputListener.Instance?.StopCoroutine(prevFHCoroutine);
                     furyHammerCoroutine.Remove(player);
                 }
 
@@ -128,7 +132,7 @@ namespace CaptainSkillTree.SkillTree
         public static bool IsFuryHammer1stHitBuffActive(Player player)
         {
             if (player == null) return false;
-            return furyHammer1stHitBuff.ContainsKey(player) && furyHammer1stHitBuff[player];
+            return furyHammer1stHitBuff.TryGetValue(player, out bool fhBuff) && fhBuff;
         }
 
         /// <summary>
@@ -193,7 +197,17 @@ namespace CaptainSkillTree.SkillTree
                         originalPushForce = weapon.m_shared.m_attackForce;
                         weapon.m_shared.m_attackForce = 0f;
                     }
+                    // 철슬랫지 2차 공격 모션 강제 적용
+                    Attack originalAttack = null;
+                    var sledgeAttack = GetCachedSledgeIronSecondaryAttack();
+                    if (sledgeAttack != null && weapon.m_shared != null)
+                    {
+                        originalAttack = weapon.m_shared.m_attack;
+                        weapon.m_shared.m_attack = sledgeAttack;
+                    }
                     player.StartAttack(null, false);
+                    if (originalAttack != null && weapon.m_shared != null)
+                        weapon.m_shared.m_attack = originalAttack;
                 }
 
                 float t = Mathf.Clamp01(elapsed / dashTime);
@@ -444,13 +458,13 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 // 1. 코루틴 중단
-                if (furyHammerCoroutine.ContainsKey(player))
+                if (furyHammerCoroutine.TryGetValue(player, out var fhCleanupCoroutine))
                 {
-                    if (furyHammerCoroutine[player] != null)
+                    if (fhCleanupCoroutine != null)
                     {
                         try
                         {
-                            SkillTreeInputListener.Instance?.StopCoroutine(furyHammerCoroutine[player]);
+                            SkillTreeInputListener.Instance?.StopCoroutine(fhCleanupCoroutine);
                         }
                         catch (Exception ex)
                         {
@@ -477,6 +491,71 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[분노의 망치] 정리 실패: {ex.Message}\n{ex.StackTrace}");
+            }
+        }
+
+        /// <summary>
+        /// 철슬랫지 1차 공격 모션 캐시 반환 (MaceSkills.GetCachedPolearmSecondary 패턴 동일)
+        /// </summary>
+        internal static Attack GetCachedSledgeIronAttack()
+        {
+            if (s_sledgeIronAttackCache != null) return s_sledgeIronAttackCache;
+            if (ObjectDB.instance == null) return null;
+
+            string[] candidates = { "SledgeIron", "SledgeStagbreaker", "SledgeDemolisher" };
+            foreach (var prefabName in candidates)
+            {
+                var prefab = ObjectDB.instance.GetItemPrefab(prefabName);
+                if (prefab == null) continue;
+                var item = prefab.GetComponent<ItemDrop>();
+                var attack = item?.m_itemData?.m_shared?.m_attack;
+                if (attack == null) continue;
+                s_sledgeIronAttackCache = attack;
+                Plugin.Log.LogInfo($"[분노의 망치] 철슬랫지 1차 공격 모션 캐시 완료: {prefabName}");
+                return s_sledgeIronAttackCache;
+            }
+
+            Plugin.Log.LogWarning("[분노의 망치] SledgeIron 프리팹을 찾지 못했습니다");
+            return null;
+        }
+
+        /// <summary>
+        /// 철슬랫지 2차 공격 모션 캐시 반환
+        /// </summary>
+        internal static Attack GetCachedSledgeIronSecondaryAttack()
+        {
+            if (s_sledgeIronSecondaryAttackCache != null) return s_sledgeIronSecondaryAttackCache;
+            if (ObjectDB.instance == null) return null;
+
+            string[] candidates = { "SledgeIron", "SledgeStagbreaker", "SledgeDemolisher" };
+            foreach (var prefabName in candidates)
+            {
+                var prefab = ObjectDB.instance.GetItemPrefab(prefabName);
+                if (prefab == null) continue;
+                var item = prefab.GetComponent<ItemDrop>();
+                var attack = item?.m_itemData?.m_shared?.m_secondaryAttack;
+                if (attack == null) continue;
+                s_sledgeIronSecondaryAttackCache = attack;
+                Plugin.Log.LogInfo($"[분노의 망치] 철슬랫지 2차 공격 모션 캐시 완료: {prefabName}");
+                return s_sledgeIronSecondaryAttackCache;
+            }
+
+            Plugin.Log.LogWarning("[분노의 망치] SledgeIron 2차 공격 모션을 찾지 못했습니다");
+            return null;
+        }
+
+        [HarmonyPatch(typeof(Player), "OnDestroy")]
+        public static class FuryHammer_Player_OnDestroy_Patch
+        {
+            static void Postfix(Player __instance)
+            {
+                if (__instance == null) return;
+                if (furyHammerCoroutine.TryGetValue(__instance, out var co) && co != null)
+                    SkillTreeInputListener.Instance?.StopCoroutine(co);
+                furyHammerCoroutine.Remove(__instance);
+                furyHammer1stHitBuff.Remove(__instance);
+                _furyHammerPendingWindow.Remove(__instance);
+                _furyHammerImmune.Remove(__instance);
             }
         }
     }

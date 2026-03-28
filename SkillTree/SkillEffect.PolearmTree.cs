@@ -74,7 +74,7 @@ namespace CaptainSkillTree.SkillTree
                 polearmAreaComboCount[player] = 0;
 
             // 3초 내 연속 공격 체크
-            if (polearmAreaLastHitTime.ContainsKey(player) && now - polearmAreaLastHitTime[player] < 3f)
+            if (polearmAreaLastHitTime.TryGetValue(player, out float paLastHit) && now - paLastHit < 3f)
             {
                 polearmAreaComboCount[player]++;
             }
@@ -116,9 +116,9 @@ namespace CaptainSkillTree.SkillTree
                 && now <= pierceWinExpiry;
 
             // 쿨타임 체크 (추가 사용 창 내에서는 쿨타임 무시)
-            if (!inPierceWindow && polearmPierceChargeLastUseTime.ContainsKey(player))
+            if (!inPierceWindow && polearmPierceChargeLastUseTime.TryGetValue(player, out float ppLastUse))
             {
-                float timeSinceLastUse = now - polearmPierceChargeLastUseTime[player];
+                float timeSinceLastUse = now - ppLastUse;
                 float cooldown = Polearm_Config.PolearmPierceChargeCooldownValue;
 
                 if (timeSinceLastUse < cooldown)
@@ -145,7 +145,7 @@ namespace CaptainSkillTree.SkillTree
             }
 
             // 이미 스킬 실행 중인지 확인
-            if (polearmPierceChargeActive.ContainsKey(player) && polearmPierceChargeActive[player])
+            if (polearmPierceChargeActive.TryGetValue(player, out bool ppActive) && ppActive)
             {
                 DrawFloatingText(player, "⚠️ " + L.Get("pierce_charge_in_progress"));
                 return false;
@@ -173,9 +173,9 @@ namespace CaptainSkillTree.SkillTree
             }
 
             // 코루틴 시작
-            if (polearmPierceChargeCoroutines.ContainsKey(player) && polearmPierceChargeCoroutines[player] != null)
+            if (polearmPierceChargeCoroutines.TryGetValue(player, out var ppPrevCoroutine) && ppPrevCoroutine != null)
             {
-                player.StopCoroutine(polearmPierceChargeCoroutines[player]);
+                player.StopCoroutine(ppPrevCoroutine);
             }
 
             var coroutine = ExecutePierceChargeSequence(player);
@@ -908,8 +908,7 @@ namespace CaptainSkillTree.SkillTree
         public static bool IsRecentSecondaryAttack(Player player)
         {
             if (player == null) return false;
-            if (!lastSecondaryAttackTime.ContainsKey(player)) return false;
-            return Time.time - lastSecondaryAttackTime[player] < 0.5f;
+            return lastSecondaryAttackTime.TryGetValue(player, out float ppSecAtk) && Time.time - ppSecAtk < 0.5f;
         }
 
         /// <summary>
@@ -986,11 +985,11 @@ namespace CaptainSkillTree.SkillTree
                 polearmPierceChargeLastUseTime.Remove(player);
                 polearmPierceChargeActive.Remove(player);
 
-                if (polearmPierceChargeCoroutines.ContainsKey(player) && polearmPierceChargeCoroutines[player] != null)
+                if (polearmPierceChargeCoroutines.TryGetValue(player, out var ppCleanupCoroutine) && ppCleanupCoroutine != null)
                 {
                     try
                     {
-                        player.StopCoroutine(polearmPierceChargeCoroutines[player]);
+                        player.StopCoroutine(ppCleanupCoroutine);
                     }
                     catch { }
                     polearmPierceChargeCoroutines.Remove(player);

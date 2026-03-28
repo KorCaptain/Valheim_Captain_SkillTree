@@ -110,14 +110,15 @@ namespace CaptainSkillTree.SkillTree
             _ => Rogue_Config.RogueStaminaReductionValue
         };
 
-        /// <summary>속성 저항 보너스 (%) - 레벨별</summary>
-        public static float GetElementalResistForLevel(int lv) => lv switch
+        /// <summary>회피율 (%) - 레벨별 (Lv1~5: 4/6/8/10/12%)</summary>
+        public static float GetRogueDodgeChance(int lv) => lv switch
         {
-            2 => Rogue_Config.RogueLv2ElementalResistValue,
-            3 => Rogue_Config.RogueLv3ElementalResistValue,
-            4 => Rogue_Config.RogueLv4ElementalResistValue,
-            5 => Rogue_Config.RogueLv5ElementalResistValue,
-            _ => Rogue_Config.RogueElementalResistanceDebuffValue
+            1 => Rogue_Config.RogueLv1DodgeChanceValue,
+            2 => Rogue_Config.RogueLv2DodgeChanceValue,
+            3 => Rogue_Config.RogueLv3DodgeChanceValue,
+            4 => Rogue_Config.RogueLv4DodgeChanceValue,
+            5 => Rogue_Config.RogueLv5DodgeChanceValue,
+            _ => 0f
         };
 
         /// <summary>이동속도 보너스 (%) - 레벨별 (Lv1~5: 성장)</summary>
@@ -132,20 +133,8 @@ namespace CaptainSkillTree.SkillTree
         };
 
         // ====================================================
-        // 패시브 - 속성별 저항 (레벨 누적)
+        // 패시브 - 회피율 (스킬트리 전체 합산용)
         // ====================================================
-
-        /// <summary>독 저항 (Lv2부터: +10%, +20%, +30%, +40%)</summary>
-        public static float GetRoguePoisonResist(int lv) => lv >= 2 ? (lv - 1) * 10f : 0f;
-
-        /// <summary>냉기 저항 (Lv3부터: +10%, +20%, +30%)</summary>
-        public static float GetRogueColdResist(int lv) => lv >= 3 ? (lv - 2) * 10f : 0f;
-
-        /// <summary>화염 저항 (Lv4부터: +10%, +20%)</summary>
-        public static float GetRogueFireResist(int lv) => lv >= 4 ? (lv - 3) * 10f : 0f;
-
-        /// <summary>번개 저항 (Lv5: +10%)</summary>
-        public static float GetRogueLightningResist(int lv) => lv >= 5 ? 10f : 0f;
 
         // ====================================================
         // 레벨업 필요 아이템 텍스트

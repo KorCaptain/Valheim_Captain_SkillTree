@@ -4,41 +4,38 @@ using CaptainSkillTree.Localization;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 메이지 직업 전용 툴팁 시스템 - Producer 패턴 기반 다중 레벨
+    /// 메이지 직업 전용 툴팁 시스템 - 불의 비 (Fire Rain) 스킬
     /// </summary>
     public static class Mage_Tooltip
     {
-        /// <summary>
-        /// 메이지 상세 툴팁 생성
-        /// </summary>
+        /// <summary>메이지 상세 툴팁 생성</summary>
         public static string GetMageTooltip()
         {
             var manager = SkillTreeManager.Instance;
             int currentLevel = manager?.GetSkillLevel("Mage") ?? 0;
-            int displayLevel = Math.Min(currentLevel + 1, 5); // 다음 레벨 (필요 아이템용)
+            int displayLevel = Math.Min(currentLevel + 1, 5);
             int mainLevel    = currentLevel == 0 ? 1 : currentLevel;
 
-            float range      = Mage_Config.MageAOERangeValue;
-            int   maxTargets = Mage_Config.GetMaxTargets(mainLevel);
-            int   eitrCost   = Mage_Config.MageEitrCostValue;
-            float cooldown   = Mage_Config.GetCooldown(mainLevel);
-            float dmgMult    = Mage_Config.GetDamageMultiplier(mainLevel);
-            float resistance = Mage_Config.GetElementalResistance(mainLevel);
+            int   eitrCost      = Mage_Config.MageEitrCostValue;
+            float cooldown      = Mage_Config.GetCooldown(mainLevel);
+            float dmgMult       = Mage_Config.GetDamageMultiplier(mainLevel);
+            float rainRadius    = Mage_Config.MageFireRainRadiusValue;
+            float impactRadius  = Mage_Config.MageFireRainImpactRadiusValue;
+            int   projCount     = Mage_Config.MageFireRainProjectileCountValue;
 
             var tooltip = $"<color=#FFD700><size=22>{L.Get("job_mage")}</size></color>\n";
 
-            // 메인 블록: 현재 레벨 스탯
-            tooltip += $"<color=#E0E0E0><size=16>Lv{mainLevel}: ";
-            tooltip += L.Get("mage_desc_aoe", (int)dmgMult);
-            tooltip += $"</size></color>\n";
+            // 설명
+            tooltip += $"<color=#E0E0E0><size=16>{L.Get("tooltip_description")}: </size></color>";
+            tooltip += $"<color=#FFA0A0><size=16>{L.Get("mage_desc_firerain")}</size></color>\n";
 
-            // 패시브 라인
-            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
-            tooltip += $"<color=#ADFF2F><size=16>{GetPassiveStr(mainLevel)}</size></color>\n";
+            // 데미지
+            tooltip += $"<color=#FF6347><size=16>{L.Get("tooltip_damage")}: </size></color>";
+            tooltip += $"<color=#FF8C69><size=16>{L.Get("mage_firerain_damage", projCount, (int)dmgMult)}</size></color>\n";
 
-            // 범위 + 최대 타겟
+            // 범위
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color>";
-            tooltip += $"<color=#B0E0E6><size=16>{range}m</size></color>\n";
+            tooltip += $"<color=#B0E0E6><size=16>{L.Get("mage_firerain_range", rainRadius, impactRadius)}</size></color>\n";
 
             // 소모
             tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
@@ -60,6 +57,10 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color>";
             tooltip += $"<color=#FFE4B5><size=16>{L.Get("confirmation_job_only")}</size></color>\n";
 
+            // 패시브 (현재 레벨)
+            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
+            tooltip += $"<color=#ADFF2F><size=16>{GetPassiveStr(mainLevel)}</size></color>\n";
+
             // 필요 아이템 or 최대레벨
             if (currentLevel < 5)
             {
@@ -71,7 +72,7 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#FFD700><size=16>{L.Get("mage_max_level")}</size></color>\n";
             }
 
-            // 구분선 + 프리뷰 (mainLevel < 5인 경우)
+            // 구분선 + 미리보기
             if (mainLevel < 5)
             {
                 tooltip += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
@@ -86,15 +87,16 @@ namespace CaptainSkillTree.SkillTree
 
         private static string GetPassiveStr(int level)
         {
-            float resist = Mage_Config.GetElementalResistance(level);
-            float dmg    = Mage_Config.GetDamageMultiplier(level);
+            float resist   = Mage_Config.GetElementalResistance(level);
+            float dmg      = Mage_Config.GetDamageMultiplier(level);
+            float cooldown = Mage_Config.GetCooldown(level);
 
             switch (level)
             {
                 case 2:
-                    return L.Get("mage_passive_lv2", (int)resist, (int)dmg);
+                    return L.Get("mage_passive_lv2", (int)dmg, (int)resist, (int)cooldown);
                 default:
-                    return L.Get("mage_passive_lv1", (int)resist, (int)dmg);
+                    return L.Get("mage_passive_lv1", (int)dmg, (int)resist, (int)cooldown);
             }
         }
 
@@ -111,9 +113,7 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>
-        /// 메이지 툴팁 강제 업데이트
-        /// </summary>
+        /// <summary>메이지 툴팁 강제 업데이트</summary>
         public static void UpdateMageTooltip()
         {
             try

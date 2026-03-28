@@ -299,43 +299,66 @@ namespace CaptainSkillTree.Localization
                 "Пассивный танк: постоянно снижает получаемый урон.\n" +
                 "Рекомендуемое значение: 10-20%",
 
-                ["Tanker_Hp_Bonus"] =
-                "【Базовый HP танка】\n" +
-                "Пассивный бонус HP танка.\n" +
-                "По умолчанию: 100",
-
-                ["Tanker_Lv2_AllResist"] =
-                "【Все сопротивления танка Lv2 (%)】\n" +
-                "Пассивное сопротивление всем типам урона (Lv2+).\n" +
-                "По умолчанию: 5%",
-
-                ["Tanker_Lv3_AllResist"] =
-                "【Все сопротивления танка Lv3 (%)】\n" +
-                "По умолчанию: 8%",
-
-                ["Tanker_Lv4_AllResist"] =
-                "【Все сопротивления танка Lv4 (%)】\n" +
-                "По умолчанию: 12%",
-
-                ["Tanker_Lv5_AllResist"] =
-                "【Все сопротивления танка Lv5 (%)】\n" +
-                "По умолчанию: 15%",
-
+                // === Lv1 ===
                 ["Tanker_ReflectDuration_Lv1"] =
                 "【Длительность отражения танка Ур.1 (сек)】\n" +
                 "По умолчанию: 10 сек",
+
+                // === Lv2 ===
+                ["Tanker_Hp_Bonus_Lv2"] =
+                "【Бонус HP танка Lv2】\n" +
+                "Пассивный бонус HP танка на уровне 2.\n" +
+                "По умолчанию: 35",
+
+                ["Tanker_Lv2_BlockPower"] =
+                "【Сила блока танка Lv2】\n" +
+                "Пассивная сила блока танка на уровне 2.\n" +
+                "По умолчанию: 5",
 
                 ["Tanker_ReflectDuration_Lv2"] =
                 "【Длительность отражения танка Ур.2 (сек)】\n" +
                 "По умолчанию: 12 сек",
 
+                // === Lv3 ===
+                ["Tanker_Hp_Bonus_Lv3"] =
+                "【Бонус HP танка Lv3】\n" +
+                "Пассивный бонус HP танка на уровне 3.\n" +
+                "По умолчанию: 50",
+
+                ["Tanker_Lv3_BlockPower"] =
+                "【Сила блока танка Lv3】\n" +
+                "Пассивная сила блока танка на уровне 3.\n" +
+                "По умолчанию: 8",
+
                 ["Tanker_ReflectDuration_Lv3"] =
                 "【Длительность отражения танка Ур.3 (сек)】\n" +
                 "По умолчанию: 14 сек",
 
+                // === Lv4 ===
+                ["Tanker_Hp_Bonus_Lv4"] =
+                "【Бонус HP танка Lv4】\n" +
+                "Пассивный бонус HP танка на уровне 4.\n" +
+                "По умолчанию: 70",
+
+                ["Tanker_Lv4_BlockPower"] =
+                "【Сила блока танка Lv4】\n" +
+                "Пассивная сила блока танка на уровне 4.\n" +
+                "По умолчанию: 12",
+
                 ["Tanker_ReflectDuration_Lv4"] =
                 "【Длительность отражения танка Ур.4 (сек)】\n" +
                 "По умолчанию: 16 сек",
+
+                // === Lv5 ===
+                ["Tanker_Hp_Bonus_Lv5"] =
+                "【Бонус HP танка Lv5】\n" +
+                "Пассивный бонус HP танка на уровне 5.\n" +
+                "По умолчанию: 100",
+
+                ["Tanker_Lv5_BlockPower"] =
+                "【Сила блока танка Lv5】\n" +
+                "Пассивная сила блока танка на уровне 5.\n" +
+                "По умолчанию: 15",
 
                 ["Tanker_ReflectDuration_Lv5"] =
                 "【Длительность отражения танка Ур.5 (сек)】\n" +
@@ -392,10 +415,14 @@ namespace CaptainSkillTree.Localization
                 "Пассивный разбойник: снижает расход выносливости при атаках.\n" +
                 "Рекомендуемое значение: 10-20%",
 
-                ["Rogue_ElementalResistance_Debuff"] =
-                "【Увеличение стихийного сопротивления (%)】\n" +
-                "Пассивный разбойник: увеличивает сопротивление стихийному урону.\n" +
-                "Рекомендуемое значение: 8-15%",
+                ["Rogue_Lv1_DodgeChance"] =
+                "【Lv1 Шанс уклонения (%)】\n" +
+                "Пассивный разбойник: увеличивает шанс уклонения от атак. Суммируется с деревом навыков.\n" +
+                "Рекомендуемое значение: 3-6%",
+                ["Rogue_Lv2_DodgeChance"] = "【Lv2 Шанс уклонения (%)】\nРекомендуемое значение: 5-8%",
+                ["Rogue_Lv3_DodgeChance"] = "【Lv3 Шанс уклонения (%)】\nРекомендуемое значение: 7-10%",
+                ["Rogue_Lv4_DodgeChance"] = "【Lv4 Шанс уклонения (%)】\nРекомендуемое значение: 9-12%",
+                ["Rogue_Lv5_DodgeChance"] = "【Lv5 Шанс уклонения (%)】\nРекомендуемое значение: 11-15%",
 
                 // ========================================
                 // Paladin Job (паладин)
@@ -449,26 +476,26 @@ namespace CaptainSkillTree.Localization
                 "Рекомендуемое значение: 5-12%",
 
                 // === Paladin Job: Lv2-5 Активные и Пассивные ===
-                ["Paladin_Lv2_SelfHealPercent"] = "【Lv2 Self Heal Ratio (%)】\nSelf heal % at Paladin Lv2.\nRecommended: 15-20%",
-                ["Paladin_Lv2_AllyHealPercent"] = "【Lv2 Ally Heal Ratio (%/tick)】\nAlly HoT % at Paladin Lv2.\nRecommended: 2-3%",
-                ["Paladin_Lv3_SelfHealPercent"] = "【Lv3 Self Heal Ratio (%)】\nSelf heal % at Paladin Lv3.\nRecommended: 17-22%",
-                ["Paladin_Lv3_AllyHealPercent"] = "【Lv3 Ally Heal Ratio (%/tick)】\nAlly HoT % at Paladin Lv3.\nRecommended: 2.5-3.5%",
-                ["Paladin_Lv3_HealRange"] = "【Lv3 Heal Range (m)】\nHealing radius at Paladin Lv3.\nRecommended: 5-7m",
-                ["Paladin_Lv4_SelfHealPercent"] = "【Lv4 Self Heal Ratio (%)】\nSelf heal % at Paladin Lv4.\nRecommended: 19-24%",
-                ["Paladin_Lv4_AllyHealPercent"] = "【Lv4 Ally Heal Ratio (%/tick)】\nAlly HoT % at Paladin Lv4.\nRecommended: 3-4%",
-                ["Paladin_Lv4_HealRange"] = "【Lv4 Heal Range (m)】\nHealing radius at Paladin Lv4.\nRecommended: 6-8m",
-                ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 Self Heal Ratio (%)】\nSelf heal % at Paladin Lv5.\nRecommended: 22-28%",
-                ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 Ally Heal Ratio (%/tick)】\nAlly HoT % at Paladin Lv5.\nRecommended: 3.5-5%",
-                ["Paladin_Lv5_HealRange"] = "【Lv5 Heal Range (m)】\nHealing radius at Paladin Lv5.\nRecommended: 7-10m",
-                ["Paladin_Lv5_Cooldown"] = "【Lv5 Cooldown (sec)】\nReduced cooldown at Paladin Lv5.\nRecommended: 20-30 sec",
-                ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 Resistance Reduction (%)】\nPaladin Lv2 passive resistance reduction.\nRecommended: 6-10%",
-                ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 Resistance Reduction (%)】\nPaladin Lv3 passive resistance reduction.\nRecommended: 8-12%",
-                ["Paladin_Lv4_ResistanceReduction"] = "【Lv4 Resistance Reduction (%)】\nPaladin Lv4 passive resistance reduction.\nRecommended: 10-14%",
-                ["Paladin_Lv5_ResistanceReduction"] = "【Lv5 Resistance Reduction (%)】\nPaladin Lv5 passive resistance reduction.\nRecommended: 12-18%",
-                ["Paladin_Lv2_StaminaBonus"] = "【Lv2 Max Stamina Bonus】\nFlat stamina bonus at Paladin Lv2.\nRecommended: 8-15",
-                ["Paladin_Lv3_StaminaBonus"] = "【Lv3 Max Stamina Bonus】\nFlat stamina bonus at Paladin Lv3.\nRecommended: 12-20",
-                ["Paladin_Lv4_StaminaBonus"] = "【Lv4 Max Stamina Bonus】\nFlat stamina bonus at Paladin Lv4.\nRecommended: 15-25",
-                ["Paladin_Lv5_StaminaBonus"] = "【Lv5 Max Stamina Bonus】\nFlat stamina bonus at Paladin Lv5.\nRecommended: 20-30",
+                ["Paladin_Lv2_SelfHealPercent"] = "【Lv2 Самоисцеление (%)】\nСамоисцеление на Lv2 паладина.\nРекомендуемое: 15-20%",
+                ["Paladin_Lv2_AllyHealPercent"] = "【Lv2 Исцеление союзников (%/тик)】\nHoT союзников на Lv2 паладина.\nРекомендуемое: 2-3%",
+                ["Paladin_Lv3_SelfHealPercent"] = "【Lv3 Самоисцеление (%)】\nСамоисцеление на Lv3 паладина.\nРекомендуемое: 17-22%",
+                ["Paladin_Lv3_AllyHealPercent"] = "【Lv3 Исцеление союзников (%/тик)】\nHoT союзников на Lv3 паладина.\nРекомендуемое: 2.5-3.5%",
+                ["Paladin_Lv3_HealRange"] = "【Lv3 Радиус исцеления (м)】\nРадиус исцеления союзников на Lv3.\nРекомендуемое: 5-7м",
+                ["Paladin_Lv4_SelfHealPercent"] = "【Lv4 Самоисцеление (%)】\nСамоисцеление на Lv4 паладина.\nРекомендуемое: 19-24%",
+                ["Paladin_Lv4_AllyHealPercent"] = "【Lv4 Исцеление союзников (%/тик)】\nHoT союзников на Lv4 паладина.\nРекомендуемое: 3-4%",
+                ["Paladin_Lv4_HealRange"] = "【Lv4 Радиус исцеления (м)】\nРадиус исцеления союзников на Lv4.\nРекомендуемое: 6-8м",
+                ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 Самоисцеление (%)】\nСамоисцеление на Lv5 паладина.\nРекомендуемое: 22-28%",
+                ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 Исцеление союзников (%/тик)】\nHoT союзников на Lv5 паладина.\nРекомендуемое: 3.5-5%",
+                ["Paladin_Lv5_HealRange"] = "【Lv5 Радиус исцеления (м)】\nРадиус исцеления союзников на Lv5.\nРекомендуемое: 7-10м",
+                ["Paladin_Lv5_Cooldown"] = "【Lv5 Перезарядка (сек)】\nСниженная перезарядка на Lv5 паладина.\nРекомендуемое: 20-30 сек",
+                ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 Снижение сопротивления (%)】\nПассив паладина Lv2.\nРекомендуемое: 6-10%",
+                ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 Снижение сопротивления (%)】\nПассив паладина Lv3.\nРекомендуемое: 8-12%",
+                ["Paladin_Lv4_ResistanceReduction"] = "【Lv4 Снижение сопротивления (%)】\nПассив паладина Lv4.\nРекомендуемое: 10-14%",
+                ["Paladin_Lv5_ResistanceReduction"] = "【Lv5 Снижение сопротивления (%)】\nПассив паладина Lv5.\nРекомендуемое: 12-18%",
+                ["Paladin_Lv2_StaminaBonus"] = "【Lv2 Бонус выносливости】\nПассив паладина Lv2.\nРекомендуемое: 8-15",
+                ["Paladin_Lv3_StaminaBonus"] = "【Lv3 Бонус выносливости】\nПассив паладина Lv3.\nРекомендуемое: 12-20",
+                ["Paladin_Lv4_StaminaBonus"] = "【Lv4 Бонус выносливости】\nПассив паладина Lv4.\nРекомендуемое: 15-25",
+                ["Paladin_Lv5_StaminaBonus"] = "【Lv5 Бонус выносливости】\nПассив паладина Lv5.\nРекомендуемое: 20-30",
 
                 // ========================================
                 // Berserker Job (берсерк)
@@ -562,46 +589,61 @@ namespace CaptainSkillTree.Localization
                 "Выносливость, расходуемая при активации баффа.\n" +
                 "По умолчанию: 20",
 
+                // === Producer Lv1 패시브 ===
                 ["Producer_FarmGrid_Lv1"] = "【Размер сетки фермы Lv1】\nКоличество дополнительных клеток в сетке фермы на Lv1.\nПо умолчанию: 2",
+
+                // === Producer Lv2 패시브 ===
                 ["Producer_FarmGrid_Lv2"] = "【Размер сетки фермы Lv2】\nКоличество дополнительных клеток в сетке фермы на Lv2.\nПо умолчанию: 2",
-                ["Producer_FarmGrid_Lv3"] = "【Размер сетки фермы Lv3】\nКоличество дополнительных клеток в сетке фермы на Lv3.\nПо умолчанию: 4",
-                ["Producer_FarmGrid_Lv4"] = "【Размер сетки фермы Lv4】\nКоличество дополнительных клеток в сетке фермы на Lv4.\nПо умолчанию: 6",
-                ["Producer_FarmGrid_Lv5"] = "【Размер сетки фермы Lv5】\nКоличество дополнительных клеток в сетке фермы на Lv5.\nПо умолчанию: 8",
-
                 ["Producer_Durability_Lv2"] = "【Бонус прочности изделия Lv2 (%)】\nДоп. прочность изготовленных предметов на Lv2.\nПо умолчанию: 10%",
-                ["Producer_Durability_Lv3"] = "【Бонус прочности изделия Lv3 (%)】\nДоп. прочность изготовленных предметов на Lv3.\nПо умолчанию: 15%",
-                ["Producer_Durability_Lv4"] = "【Бонус прочности изделия Lv4 (%)】\nДоп. прочность изготовленных предметов на Lv4.\nПо умолчанию: 20%",
-                ["Producer_Durability_Lv5"] = "【Бонус прочности изделия Lv5 (%)】\nДоп. прочность изготовленных предметов на Lv5.\nПо умолчанию: 30%",
-
                 ["Producer_MaterialReduction_Lv2"] = "【Экономия материалов Lv2 (%)】\nЭкономия материалов за крафт на Lv2.\nПо умолчанию: 10%",
+
+                // === Producer Lv3 패시브 ===
+                ["Producer_FarmGrid_Lv3"] = "【Размер сетки фермы Lv3】\nКоличество дополнительных клеток в сетке фермы на Lv3.\nПо умолчанию: 4",
+                ["Producer_Durability_Lv3"] = "【Бонус прочности изделия Lv3 (%)】\nДоп. прочность изготовленных предметов на Lv3.\nПо умолчанию: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【Экономия материалов Lv3 (%)】\nЭкономия материалов за крафт на Lv3.\nПо умолчанию: 15%",
-                ["Producer_MaterialReduction_Lv4"] = "【Экономия материалов Lv4 (%)】\nЭкономия материалов за крафт на Lv4.\nПо умолчанию: 20%",
-                ["Producer_MaterialReduction_Lv5"] = "【Экономия материалов Lv5 (%)】\nЭкономия материалов за крафт на Lv5.\nПо умолчанию: 30%",
-
                 ["Producer_EnchantChance_Lv3"] = "【Шанс зачарования Lv3 (%)】\nШанс зачаровать изготовленный предмет на Lv3.\nПо умолчанию: 25%",
-                ["Producer_EnchantChance_Lv4"] = "【Шанс зачарования Lv4 (%)】\nШанс зачаровать изготовленный предмет на Lv4.\nПо умолчанию: 30%",
-                ["Producer_EnchantChance_Lv5"] = "【Шанс зачарования Lv5 (%)】\nШанс зачаровать изготовленный предмет на Lv5.\nПо умолчанию: 35%",
-
                 ["Producer_EnchantWeaponDmgMin_Lv3"] = "【Зачарование оружия: мин. урон Lv3 (%)】\nМин. бонус урона оружия от зачарования (Lv3).\nПо умолчанию: 5%",
                 ["Producer_EnchantWeaponDmgMax_Lv3"] = "【Зачарование оружия: макс. урон Lv3 (%)】\nМакс. бонус урона оружия от зачарования (Lv3).\nПо умолчанию: 5%",
-                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【Зачарование оружия: мин. урон Lv4 (%)】\nМин. бонус урона оружия от зачарования (Lv4).\nПо умолчанию: 7%",
-                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【Зачарование оружия: макс. урон Lv4 (%)】\nМакс. бонус урона оружия от зачарования (Lv4).\nПо умолчанию: 9%",
-                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【Зачарование оружия: мин. урон Lv5 (%)】\nМин. бонус урона оружия от зачарования (Lv5).\nПо умолчанию: 10%",
-                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【Зачарование оружия: макс. урон Lv5 (%)】\nМакс. бонус урона оружия от зачарования (Lv5).\nПо умолчанию: 12%",
-
                 ["Producer_EnchantArmorMin_Lv3"] = "【Зачарование брони: мин. бонус Lv3 (%)】\nМин. бонус брони от зачарования (Lv3).\nПо умолчанию: 5%",
                 ["Producer_EnchantArmorMax_Lv3"] = "【Зачарование брони: макс. бонус Lv3 (%)】\nМакс. бонус брони от зачарования (Lv3).\nПо умолчанию: 5%",
-                ["Producer_EnchantArmorMin_Lv4"] = "【Зачарование брони: мин. бонус Lv4 (%)】\nМин. бонус брони от зачарования (Lv4).\nПо умолчанию: 7%",
-                ["Producer_EnchantArmorMax_Lv4"] = "【Зачарование брони: макс. бонус Lv4 (%)】\nМакс. бонус брони от зачарования (Lv4).\nПо умолчанию: 9%",
-                ["Producer_EnchantArmorMin_Lv5"] = "【Зачарование брони: мин. бонус Lv5 (%)】\nМин. бонус брони от зачарования (Lv5).\nПо умолчанию: 10%",
-                ["Producer_EnchantArmorMax_Lv5"] = "【Зачарование брони: макс. бонус Lv5 (%)】\nМакс. бонус брони от зачарования (Lv5).\nПо умолчанию: 12%",
-
                 ["Producer_EnchantHpMin_Lv3"] = "【Зачарование ХП: мин. бонус Lv3 (%)】\nМин. бонус макс. ХП от зачарования (Lv3).\nПо умолчанию: 2%",
                 ["Producer_EnchantHpMax_Lv3"] = "【Зачарование ХП: макс. бонус Lv3 (%)】\nМакс. бонус макс. ХП от зачарования (Lv3).\nПо умолчанию: 2%",
+                ["Producer_EnchantWeaponSpdMin_Lv3"] = "【Зачарование скорости атаки: мин. бонус Lv3 (%)】\nМин. бонус скорости атаки от зачарования (Lv3).\nПо умолчанию: 3%",
+                ["Producer_EnchantWeaponSpdMax_Lv3"] = "【Зачарование скорости атаки: макс. бонус Lv3 (%)】\nМакс. бонус скорости атаки от зачарования (Lv3).\nПо умолчанию: 5%",
+                ["Producer_EnchantStaminaMin_Lv3"] = "【Зачарование выносливости: мин. бонус Lv3 (%)】\nМин. бонус макс. выносливости от зачарования (Lv3).\nПо умолчанию: 3%",
+                ["Producer_EnchantStaminaMax_Lv3"] = "【Зачарование выносливости: макс. бонус Lv3 (%)】\nМакс. бонус макс. выносливости от зачарования (Lv3).\nПо умолчанию: 5%",
+
+                // === Producer Lv4 패시브 ===
+                ["Producer_FarmGrid_Lv4"] = "【Размер сетки фермы Lv4】\nКоличество дополнительных клеток в сетке фермы на Lv4.\nПо умолчанию: 6",
+                ["Producer_Durability_Lv4"] = "【Бонус прочности изделия Lv4 (%)】\nДоп. прочность изготовленных предметов на Lv4.\nПо умолчанию: 20%",
+                ["Producer_MaterialReduction_Lv4"] = "【Экономия материалов Lv4 (%)】\nЭкономия материалов за крафт на Lv4.\nПо умолчанию: 20%",
+                ["Producer_EnchantChance_Lv4"] = "【Шанс зачарования Lv4 (%)】\nШанс зачаровать изготовленный предмет на Lv4.\nПо умолчанию: 30%",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【Зачарование оружия: мин. урон Lv4 (%)】\nМин. бонус урона оружия от зачарования (Lv4).\nПо умолчанию: 7%",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【Зачарование оружия: макс. урон Lv4 (%)】\nМакс. бонус урона оружия от зачарования (Lv4).\nПо умолчанию: 9%",
+                ["Producer_EnchantArmorMin_Lv4"] = "【Зачарование брони: мин. бонус Lv4 (%)】\nМин. бонус брони от зачарования (Lv4).\nПо умолчанию: 7%",
+                ["Producer_EnchantArmorMax_Lv4"] = "【Зачарование брони: макс. бонус Lv4 (%)】\nМакс. бонус брони от зачарования (Lv4).\nПо умолчанию: 9%",
                 ["Producer_EnchantHpMin_Lv4"] = "【Зачарование ХП: мин. бонус Lv4 (%)】\nМин. бонус макс. ХП от зачарования (Lv4).\nПо умолчанию: 4%",
                 ["Producer_EnchantHpMax_Lv4"] = "【Зачарование ХП: макс. бонус Lv4 (%)】\nМакс. бонус макс. ХП от зачарования (Lv4).\nПо умолчанию: 5%",
+                ["Producer_EnchantWeaponSpdMin_Lv4"] = "【Зачарование скорости атаки: мин. бонус Lv4 (%)】\nМин. бонус скорости атаки от зачарования (Lv4).\nПо умолчанию: 5%",
+                ["Producer_EnchantWeaponSpdMax_Lv4"] = "【Зачарование скорости атаки: макс. бонус Lv4 (%)】\nМакс. бонус скорости атаки от зачарования (Lv4).\nПо умолчанию: 8%",
+                ["Producer_EnchantStaminaMin_Lv4"] = "【Зачарование выносливости: мин. бонус Lv4 (%)】\nМин. бонус макс. выносливости от зачарования (Lv4).\nПо умолчанию: 5%",
+                ["Producer_EnchantStaminaMax_Lv4"] = "【Зачарование выносливости: макс. бонус Lv4 (%)】\nМакс. бонус макс. выносливости от зачарования (Lv4).\nПо умолчанию: 8%",
+
+                // === Producer Lv5 패시브 ===
+                ["Producer_FarmGrid_Lv5"] = "【Размер сетки фермы Lv5】\nКоличество дополнительных клеток в сетке фермы на Lv5.\nПо умолчанию: 8",
+                ["Producer_Durability_Lv5"] = "【Бонус прочности изделия Lv5 (%)】\nДоп. прочность изготовленных предметов на Lv5.\nПо умолчанию: 30%",
+                ["Producer_MaterialReduction_Lv5"] = "【Экономия материалов Lv5 (%)】\nЭкономия материалов за крафт на Lv5.\nПо умолчанию: 30%",
+                ["Producer_EnchantChance_Lv5"] = "【Шанс зачарования Lv5 (%)】\nШанс зачаровать изготовленный предмет на Lv5.\nПо умолчанию: 35%",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【Зачарование оружия: мин. урон Lv5 (%)】\nМин. бонус урона оружия от зачарования (Lv5).\nПо умолчанию: 10%",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【Зачарование оружия: макс. урон Lv5 (%)】\nМакс. бонус урона оружия от зачарования (Lv5).\nПо умолчанию: 12%",
+                ["Producer_EnchantArmorMin_Lv5"] = "【Зачарование брони: мин. бонус Lv5 (%)】\nМин. бонус брони от зачарования (Lv5).\nПо умолчанию: 10%",
+                ["Producer_EnchantArmorMax_Lv5"] = "【Зачарование брони: макс. бонус Lv5 (%)】\nМакс. бонус брони от зачарования (Lv5).\nПо умолчанию: 12%",
                 ["Producer_EnchantHpMin_Lv5"] = "【Зачарование ХП: мин. бонус Lv5 (%)】\nМин. бонус макс. ХП от зачарования (Lv5).\nПо умолчанию: 6%",
                 ["Producer_EnchantHpMax_Lv5"] = "【Зачарование ХП: макс. бонус Lv5 (%)】\nМакс. бонус макс. ХП от зачарования (Lv5).\nПо умолчанию: 8%",
+                ["Producer_EnchantWeaponSpdMin_Lv5"] = "【Зачарование скорости атаки: мин. бонус Lv5 (%)】\nМин. бонус скорости атаки от зачарования (Lv5).\nПо умолчанию: 8%",
+                ["Producer_EnchantWeaponSpdMax_Lv5"] = "【Зачарование скорости атаки: макс. бонус Lv5 (%)】\nМакс. бонус скорости атаки от зачарования (Lv5).\nПо умолчанию: 12%",
+                ["Producer_EnchantStaminaMin_Lv5"] = "【Зачарование выносливости: мин. бонус Lv5 (%)】\nМин. бонус макс. выносливости от зачарования (Lv5).\nПо умолчанию: 8%",
+                ["Producer_EnchantStaminaMax_Lv5"] = "【Зачарование выносливости: макс. бонус Lv5 (%)】\nМакс. бонус макс. выносливости от зачарования (Lv5).\nПо умолчанию: 12%",
 
                 ["Job_Lv1_Cost"] = "【Монеты для Ур.1 профессии】\nКол-во монет при повышении любой профессии до Ур.1.\nТолько для администратора сервера, синхронизируется с клиентами.\nПо умолчанию: 1000",
                 ["Job_Lv2_Cost"] = "【Монеты для Ур.2 профессии】\nКол-во монет при повышении любой профессии до Ур.2.\nТолько для администратора сервера, синхронизируется с клиентами.\nПо умолчанию: 2000",

@@ -137,6 +137,108 @@ namespace CaptainSkillTree.Localization
                 "提升3连击中最后一击的伤害。\n" +
                 "推荐：12-20%",
 
+                // ======================================== [新: 攻击系统 4阶段]
+                ["Tier1_Opener_DamageBonus"] =
+                "【先手攻击伤害加成 (%)】\n" +
+                "战斗开始后数秒内伤害提升。\n" +
+                "推荐：15-25%",
+
+                ["Tier1_Opener_StaminaReduction"] =
+                "【体力消耗削减 (%)】\n" +
+                "先手攻击阶段期间减少体力消耗。\n" +
+                "推荐：20-30%",
+
+                ["Tier1_Opener_Duration"] =
+                "【先手攻击持续时间 (秒)】\n" +
+                "战斗开始后先手攻击效果的持续时间。\n" +
+                "推荐：4-6 秒",
+
+                ["Tier1_Opener_Cooldown"] =
+                "【冷却时间 (秒)】\n" +
+                "先手攻击效果再次激活前的等待时间。\n" +
+                "推荐：25-35 秒",
+
+                ["Tier2_OpenerMelee_FinisherBonus"] =
+                "【近战终结加成 (%)】\n" +
+                "战斗开始后首次攻击命中后提升终结倍率。\n" +
+                "推荐：15-25%",
+
+                ["Tier2_OpenerBow_CritChance"] =
+                "【弓暴击率 (%)】\n" +
+                "战斗开始后第一支箭的暴击率提升。\n" +
+                "推荐：10-20%",
+
+                ["Tier2_OpenerCrossbow_FirstShotBonus"] =
+                "【弩首发加成 (%)】\n" +
+                "战斗开始后第一发弩矢伤害提升。\n" +
+                "推荐：40-60%",
+
+                ["Tier2_OpenerMagic_StaggerProc"] =
+                "【魔法硬直触发 (0/1)】\n" +
+                "战斗开始后首次魔法攻击必定触发硬直。\n" +
+                "0 = 禁用, 1 = 启用",
+
+                ["Tier3_Pursuit_DamageBonus"] =
+                "【追击伤害加成 (%)】\n" +
+                "对移动中或逃跑中的敌人造成更多伤害。\n" +
+                "推荐：12-18%",
+
+                ["Tier3_Pursuit_ChainDamageBonus"] =
+                "【追击连锁加成 (%)】\n" +
+                "先手攻击连锁触发后追击伤害进一步提升。\n" +
+                "推荐：20-30%",
+
+                ["Tier3_Pursuit_ChainWindow"] =
+                "【连锁时间窗口 (秒)】\n" +
+                "先手攻击后追击连锁的有效时间。\n" +
+                "推荐：4-6 秒",
+
+                ["Tier4_PursuitSpeed_SpeedBonus"] =
+                "【移动速度加成 (%)】\n" +
+                "战斗中提升移动速度。\n" +
+                "推荐：10-15%",
+
+                ["Tier4_FrenzyTrigger_StaminaReduction"] =
+                "【混战体力削减 (%)】\n" +
+                "附近有多个敌人时减少体力消耗。\n" +
+                "推荐：15-25%",
+
+                ["Tier5_Frenzy_StackBonusBase"] =
+                "【混战层数基础加成 (%)】\n" +
+                "无连锁时每层的伤害加成。\n" +
+                "推荐：4-6%",
+
+                ["Tier5_Frenzy_StackBonusChain"] =
+                "【混战连锁层数加成 (%)】\n" +
+                "追击连锁激活时每层的强化伤害加成。\n" +
+                "推荐：7-10%",
+
+                ["Tier5_Frenzy_MaxStacks"] =
+                "【最大层数】\n" +
+                "混战层数的最大值。\n" +
+                "推荐：4-6",
+
+                ["Tier5_Frenzy_HitsPerStack"] =
+                "【每层所需命中数】\n" +
+                "积累一层所需的命中次数。\n" +
+                "推荐：2-4",
+
+                ["Tier5_Frenzy_Tier6Amplifier"] =
+                "【满层时Tier6增幅倍率 (×)】\n" +
+                "达到最大层数时所有Tier6效果的倍率。\n" +
+                "推荐：1.2-1.4",
+
+                // === 新4阶段系统所需点数 ===
+                ["Tier1_Opener_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+                ["Tier2_OpenerMelee_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+                ["Tier2_OpenerBow_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+                ["Tier2_OpenerCrossbow_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+                ["Tier2_OpenerMagic_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+                ["Tier3_Pursuit_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+                ["Tier4_PursuitSpeed_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+                ["Tier5_Frenzy_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
                 // ========================================
                 // 防御树 (Defense Tree)
                 // ========================================

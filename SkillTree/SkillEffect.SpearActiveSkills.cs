@@ -29,6 +29,10 @@ namespace CaptainSkillTree.SkillTree
         // 버프 VFX 인스턴스 저장 (상태 관리용)
         private static Dictionary<Player, GameObject> spearBuffVFXInstances = new Dictionary<Player, GameObject>();
 
+        // === Paladin Lv2 연공창 추가 사용 창 ===
+        private static Dictionary<Player, float> _spearComboPendingWindow = new Dictionary<Player, float>();
+        private const float SpearComboExtraWindow = 30f;
+
         /// <summary>
         /// 투창 전문가 패시브 쿨타임 확인
         /// </summary>
@@ -95,9 +99,26 @@ namespace CaptainSkillTree.SkillTree
                 // 버프 활성화 (즉시 공격 X)
                 ActivateSpearComboThrowBuff(player);
 
-                // 쿨타임 및 스태미나 소모 적용
-                spearEnhancedThrowCooldowns[player] = now + Spear_Config.SpearStep6ComboCooldownValue;
-                ActiveSkillCooldownRegistry.SetCooldown("H", Spear_Config.SpearStep6ComboCooldownValue);
+                // Paladin Lv2 분기: 첫 사용 시 쿨타임 보류 + 30초 창, 창 내 재사용 시 실제 쿨타임
+                bool hasPaladinLv2 = (SkillTreeManager.Instance?.GetSkillLevel("Paladin") ?? 0) >= 2;
+                bool inSpearComboWindow = hasPaladinLv2
+                    && _spearComboPendingWindow.TryGetValue(player, out float spearWinExpiry)
+                    && now <= spearWinExpiry;
+
+                if (hasPaladinLv2 && !inSpearComboWindow)
+                {
+                    // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
+                    _spearComboPendingWindow[player] = now + SpearComboExtraWindow;
+                    player.StartCoroutine(ExpireSpearComboWindow(player));
+                    ActiveSkillCooldownRegistry.SetCooldown("H", SpearComboExtraWindow);
+                }
+                else
+                {
+                    // 2번째 사용(창 내) or 비팔라딘: 실제 쿨타임 시작
+                    _spearComboPendingWindow.Remove(player);
+                    spearEnhancedThrowCooldowns[player] = now + Spear_Config.SpearStep6ComboCooldownValue;
+                    ActiveSkillCooldownRegistry.SetCooldown("H", Spear_Config.SpearStep6ComboCooldownValue);
+                }
                 player.UseStamina(requiredStamina);
             }
             catch (Exception ex)
@@ -436,10 +457,28 @@ namespace CaptainSkillTree.SkillTree
                 spearEnhancedThrowBuffEndTime.Remove(player);
                 spearComboThrowUsesRemaining.Remove(player);
                 lastThrownSpear.Remove(player);
+                _spearComboPendingWindow.Remove(player);
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogWarning($"[창 강화 투척] 정리 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Paladin Lv2 연공창 추가 사용 창 만료 코루틴
+        /// 30초 후 쿨타임 시작
+        /// </summary>
+        private static IEnumerator ExpireSpearComboWindow(Player player)
+        {
+            yield return new WaitForSeconds(SpearComboExtraWindow);
+            if (_spearComboPendingWindow.ContainsKey(player))
+            {
+                _spearComboPendingWindow.Remove(player);
+                float cd = Spear_Config.SpearStep6ComboCooldownValue;
+                spearEnhancedThrowCooldowns[player] = Time.time + cd;
+                ActiveSkillCooldownRegistry.SetCooldown("H", cd);
+                Plugin.Log.LogDebug("[연공창] Paladin 추가 사용 창 만료 - 쿨타임 시작");
             }
         }
     }

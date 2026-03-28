@@ -141,6 +141,108 @@ namespace CaptainSkillTree.Localization
                 "Aumenta o dano do golpe final em combo de 3 ataques corpo a corpo.\n" +
                 "Valor recomendado: 12-20%",
 
+                // ======================================== [Novo: Sistema de Ataque 4 Fases]
+                ["Tier1_Opener_DamageBonus"] =
+                "【Bônus de Dano Golpe Inicial (%)】\n" +
+                "Aumenta o dano nos primeiros segundos após o início do combate.\n" +
+                "Valor recomendado: 15-25%",
+
+                ["Tier1_Opener_StaminaReduction"] =
+                "【Redução de Consumo de Resistência (%)】\n" +
+                "Reduz o consumo de resistência durante a fase do golpe inicial.\n" +
+                "Valor recomendado: 20-30%",
+
+                ["Tier1_Opener_Duration"] =
+                "【Duração do Golpe Inicial (seg.)】\n" +
+                "Duração do efeito do golpe inicial após o início do combate.\n" +
+                "Valor recomendado: 4-6 seg.",
+
+                ["Tier1_Opener_Cooldown"] =
+                "【Tempo de Recarga (seg.)】\n" +
+                "Tempo de espera para a próxima ativação do efeito do golpe inicial.\n" +
+                "Valor recomendado: 25-35 seg.",
+
+                ["Tier2_OpenerMelee_FinisherBonus"] =
+                "【Bônus Finalizador Corpo a Corpo (%)】\n" +
+                "Aumenta o multiplicador finalizador após o primeiro golpe no combate.\n" +
+                "Valor recomendado: 15-25%",
+
+                ["Tier2_OpenerBow_CritChance"] =
+                "【Chance Crítica de Arco (%)】\n" +
+                "Aumenta a chance de acerto crítico na primeira flecha após o início do combate.\n" +
+                "Valor recomendado: 10-20%",
+
+                ["Tier2_OpenerCrossbow_FirstShotBonus"] =
+                "【Bônus Primeiro Tiro de Besta (%)】\n" +
+                "Aumenta o dano do primeiro projétil de besta após o início do combate.\n" +
+                "Valor recomendado: 40-60%",
+
+                ["Tier2_OpenerMagic_StaggerProc"] =
+                "【Ativação de Stagger Mágico (0/1)】\n" +
+                "O primeiro ataque mágico após o início do combate causa stagger garantido.\n" +
+                "0 = Desativado, 1 = Ativado",
+
+                ["Tier3_Pursuit_DamageBonus"] =
+                "【Bônus de Dano de Perseguição (%)】\n" +
+                "Aumenta o dano contra inimigos em movimento ou em fuga.\n" +
+                "Valor recomendado: 12-18%",
+
+                ["Tier3_Pursuit_ChainDamageBonus"] =
+                "【Bônus de Cadeia de Perseguição (%)】\n" +
+                "Bônus aumentado quando ativado em cadeia após o golpe inicial.\n" +
+                "Valor recomendado: 20-30%",
+
+                ["Tier3_Pursuit_ChainWindow"] =
+                "【Janela de Cadeia (seg.)】\n" +
+                "Tempo disponível para ativar a cadeia de perseguição após o golpe inicial.\n" +
+                "Valor recomendado: 4-6 seg.",
+
+                ["Tier4_PursuitSpeed_SpeedBonus"] =
+                "【Bônus de Velocidade de Movimento (%)】\n" +
+                "Aumenta a velocidade de movimento durante o combate.\n" +
+                "Valor recomendado: 10-15%",
+
+                ["Tier4_FrenzyTrigger_StaminaReduction"] =
+                "【Redução de Resistência em Combate Múltiplo (%)】\n" +
+                "Reduz o consumo de resistência quando há múltiplos inimigos próximos.\n" +
+                "Valor recomendado: 15-25%",
+
+                ["Tier5_Frenzy_StackBonusBase"] =
+                "【Bônus Base por Carga de Frenesi (%)】\n" +
+                "Bônus de dano por carga sem cadeia de perseguição.\n" +
+                "Valor recomendado: 4-6%",
+
+                ["Tier5_Frenzy_StackBonusChain"] =
+                "【Bônus em Cadeia por Carga de Frenesi (%)】\n" +
+                "Bônus de dano por carga aprimorado com cadeia de perseguição ativa.\n" +
+                "Valor recomendado: 7-10%",
+
+                ["Tier5_Frenzy_MaxStacks"] =
+                "【Cargas Máximas】\n" +
+                "Número máximo de cargas de frenesi.\n" +
+                "Valor recomendado: 4-6",
+
+                ["Tier5_Frenzy_HitsPerStack"] =
+                "【Golpes por Carga】\n" +
+                "Número de golpes necessários para acumular uma carga.\n" +
+                "Valor recomendado: 2-4",
+
+                ["Tier5_Frenzy_Tier6Amplifier"] =
+                "【Amplificador Tier6 na Carga Máxima (×)】\n" +
+                "Multiplicador para todos os efeitos Tier6 ao atingir o máximo de cargas.\n" +
+                "Valor recomendado: 1,2-1,4",
+
+                // === Novos RequiredPoints: Sistema 4 Fases ===
+                ["Tier1_Opener_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+                ["Tier2_OpenerMelee_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+                ["Tier2_OpenerBow_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+                ["Tier2_OpenerCrossbow_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+                ["Tier2_OpenerMagic_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+                ["Tier3_Pursuit_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+                ["Tier4_PursuitSpeed_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+                ["Tier5_Frenzy_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+
                 // ========================================
                 // Defense Tree (Árvore de Defesa)
                 // ========================================

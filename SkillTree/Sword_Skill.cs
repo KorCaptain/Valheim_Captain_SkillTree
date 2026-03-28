@@ -163,9 +163,9 @@ namespace CaptainSkillTree.SkillTree
                     && _swordSlashPendingWindow.TryGetValue(player, out float rushWinExpiry)
                     && now <= rushWinExpiry;
 
-                if (!inRushSlashWindow && rushSlashCooldowns.ContainsKey(player) && now < rushSlashCooldowns[player])
+                if (!inRushSlashWindow && rushSlashCooldowns.TryGetValue(player, out float cdEnd) && now < cdEnd)
                 {
-                    float remaining = rushSlashCooldowns[player] - now;
+                    float remaining = cdEnd - now;
                     SkillEffect.DrawFloatingText(player, L.Get("cooldown_remaining", Mathf.CeilToInt(remaining)), Color.yellow);
                     return;
                 }
@@ -179,7 +179,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 5. 이미 스킬 실행 중인지 확인
-                if (rushSlashActive.ContainsKey(player) && rushSlashActive[player])
+                if (rushSlashActive.TryGetValue(player, out bool alreadyActive) && alreadyActive)
                 {
                     SkillEffect.DrawFloatingText(player, L.Get("rush_slash_in_progress"), Color.yellow);
                     return;
@@ -215,9 +215,9 @@ namespace CaptainSkillTree.SkillTree
                 SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("rush_slash_activate"), Color.red);
 
                 // 9. 코루틴 시작
-                if (rushSlashCoroutines.ContainsKey(player) && rushSlashCoroutines[player] != null)
+                if (rushSlashCoroutines.TryGetValue(player, out var existingCoroutine) && existingCoroutine != null)
                 {
-                    player.StopCoroutine(rushSlashCoroutines[player]);
+                    player.StopCoroutine(existingCoroutine);
                 }
 
                 var coroutine = ExecuteRushSlashSequence(player);
@@ -273,7 +273,7 @@ namespace CaptainSkillTree.SkillTree
             yield return MoveToPositionWithPathHit(player, dashTarget, initialDist, moveSpeed,
                 weapon, weaponDamage, skillData.damage1stRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
 
-            if (player == null || player.IsDead() || !rushSlashActive.ContainsKey(player) || !rushSlashActive[player])
+            if (player == null || player.IsDead() || !rushSlashActive.TryGetValue(player, out bool rsActive1) || !rsActive1)
             {
                 CleanupRushSlash(player);
                 yield break;
@@ -302,7 +302,7 @@ namespace CaptainSkillTree.SkillTree
             yield return MoveToPositionWithPathHit(player, rightPos, sideDist, moveSpeed,
                 weapon, weaponDamage, skillData.damage2ndRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
 
-            if (player == null || player.IsDead() || !rushSlashActive.ContainsKey(player) || !rushSlashActive[player])
+            if (player == null || player.IsDead() || !rushSlashActive.TryGetValue(player, out bool rsActive2) || !rsActive2)
             {
                 CleanupRushSlash(player);
                 yield break;
@@ -331,7 +331,7 @@ namespace CaptainSkillTree.SkillTree
             yield return MoveToPositionWithPathHit(player, leftPos, sideDist, moveSpeed,
                 weapon, weaponDamage, skillData.damage3rdRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
 
-            if (player == null || player.IsDead() || !rushSlashActive.ContainsKey(player) || !rushSlashActive[player])
+            if (player == null || player.IsDead() || !rushSlashActive.TryGetValue(player, out bool rsActive3) || !rsActive3)
             {
                 CleanupRushSlash(player);
                 yield break;
@@ -636,9 +636,9 @@ namespace CaptainSkillTree.SkillTree
                     rushSlashActive[player] = false;
                 }
 
-                if (rushSlashCoroutines.ContainsKey(player) && rushSlashCoroutines[player] != null)
+                if (rushSlashCoroutines.TryGetValue(player, out var stopCoroutine1) && stopCoroutine1 != null)
                 {
-                    player.StopCoroutine(rushSlashCoroutines[player]);
+                    player.StopCoroutine(stopCoroutine1);
                     rushSlashCoroutines[player] = null;
                 }
 
@@ -720,11 +720,11 @@ namespace CaptainSkillTree.SkillTree
                 rushSlashEndTime.Remove(player);
                 _swordSlashPendingWindow.Remove(player);
 
-                if (rushSlashCoroutines.ContainsKey(player) && rushSlashCoroutines[player] != null)
+                if (rushSlashCoroutines.TryGetValue(player, out var stopCoroutine2) && stopCoroutine2 != null)
                 {
                     try
                     {
-                        Plugin.Instance?.StopCoroutine(rushSlashCoroutines[player]);
+                        Plugin.Instance?.StopCoroutine(stopCoroutine2);
                     }
                     catch { }
                     rushSlashCoroutines.Remove(player);

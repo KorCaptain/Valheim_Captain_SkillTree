@@ -19,7 +19,11 @@ namespace CaptainSkillTree.MMO_System
         public static void TryApplyPatch()
         {
             if (_applied) return;
-            if (!EpicMMOReflectionHelper.IsAvailable) return;
+            if (!EpicMMOReflectionHelper.IsAvailable)
+            {
+                Plugin.Log?.LogWarning("[EpicMMO] IsAvailable=false - 패치 스킵");
+                return;
+            }
 
             try
             {
@@ -27,19 +31,35 @@ namespace CaptainSkillTree.MMO_System
                 var target = uiType?.GetMethod("UIReload",
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-                if (target == null)
-                {
-                    Plugin.Log?.LogDebug("[EpicMMO] UIReload 메서드 없음 - 패치 스킵");
-                    return;
-                }
+                if (target == null) return;
 
                 var finalizer = typeof(EpicMMOUIPatch).GetMethod(
                     nameof(Finalizer), BindingFlags.Public | BindingFlags.Static);
 
+                var postfix = typeof(EpicMMOPanelExtension).GetMethod(
+                    nameof(EpicMMOPanelExtension.OnUIReload_Postfix),
+                    BindingFlags.Public | BindingFlags.Static);
+
                 var harmony = new Harmony("captainskilltree.epicmmo.uipatch");
-                harmony.Patch(target, finalizer: new HarmonyMethod(finalizer));
+                harmony.Patch(target,
+                    postfix:   postfix   != null ? new HarmonyMethod(postfix)   : null,
+                    finalizer: new HarmonyMethod(finalizer));
+
+                // OnEnable도 패치 — 패널 열릴 때마다(SetActive true) 주입 실행
+                var onEnable = uiType?.GetMethod("OnEnable",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (onEnable != null && postfix != null)
+                {
+                    harmony.Patch(onEnable, postfix: new HarmonyMethod(postfix));
+                    Plugin.Log?.LogDebug("[EpicMMO] OnEnable 패치 추가 완료");
+                }
+                else
+                {
+                    Plugin.Log?.LogDebug($"[EpicMMO] OnEnable 패치 스킵 (onEnable={onEnable != null}, postfix={postfix != null})");
+                }
+
                 _applied = true;
-                Plugin.Log?.LogInfo("[EpicMMO] UIReload NullRef 억제 패치 적용 완료");
+                Plugin.Log?.LogInfo("[EpicMMO] UIReload + OnEnable 패치 적용 완료 (NullRef 억제 + 패널 확장)");
             }
             catch (Exception ex)
             {

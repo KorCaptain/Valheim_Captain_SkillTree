@@ -217,39 +217,51 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        // 스킬 ID → 표시용 이름 캐시 (최초 호출 시 한 번만 초기화)
+        private static Dictionary<string, string> _allSkillDisplayNames = null;
+
         // 스킬 ID를 표시용 이름으로 변환
         private static string GetSkillDisplayName(string skillId)
         {
-            var displayNames = new Dictionary<string, string>
+            if (_allSkillDisplayNames == null)
             {
-                ["knife_master"] = "단검 마스터",
-                ["knife_crit1"] = "단검 크리티컬",
-                ["knife_crit2"] = "단검 치명타",
-                ["knife_stealth"] = "은신 공격",
-                ["sword_combo"] = "검 연계",
-                ["sword_defense"] = "검 방어",
-                ["sword_power"] = "검 강화",
-                ["defense_evasion"] = "회피 강화",
-                ["defense_armor"] = "방어 강화",
-                ["defense_heal"] = "치유 강화",
-            };
-            
-            // 원거리 스킬 이름 추가
-            RegisterRangedSkillNames(displayNames);
-            
-            // 근접 스킬 이름 추가
-            RegisterMeleeSkillNames(displayNames);
-            
-            // 속도 스킬 이름 추가
-            RegisterSpeedSkillNames(displayNames);
-            
-            return displayNames.ContainsKey(skillId) ? displayNames[skillId] : skillId;
+                var d = new Dictionary<string, string>
+                {
+                    ["knife_master"] = "단검 마스터",
+                    ["knife_crit1"] = "단검 크리티컬",
+                    ["knife_crit2"] = "단검 치명타",
+                    ["knife_stealth"] = "은신 공격",
+                    ["sword_combo"] = "검 연계",
+                    ["sword_defense"] = "검 방어",
+                    ["sword_power"] = "검 강화",
+                    ["defense_evasion"] = "회피 강화",
+                    ["defense_armor"] = "방어 강화",
+                    ["defense_heal"] = "치유 강화",
+                };
+                RegisterRangedSkillNames(d);
+                RegisterMeleeSkillNames(d);
+                RegisterSpeedSkillNames(d);
+                _allSkillDisplayNames = d;
+            }
+            return _allSkillDisplayNames.TryGetValue(skillId, out var name) ? name : skillId;
         }
 
-        // 스킬 레벨 확인 헬퍼
+        // 스킬 레벨 확인 헬퍼 (퍼-프레임 캐싱으로 30+ 중복 호출 최적화)
+        private static int _hasSkillCacheFrame = -1;
+        private static readonly Dictionary<string, bool> _hasSkillCache = new Dictionary<string, bool>();
+
         public static bool HasSkill(string skillId)
         {
-            return SkillTreeManager.Instance.GetSkillLevel(skillId) > 0;
+            int frame = Time.frameCount;
+            if (frame != _hasSkillCacheFrame)
+            {
+                _hasSkillCacheFrame = frame;
+                _hasSkillCache.Clear();
+            }
+            if (_hasSkillCache.TryGetValue(skillId, out bool cached)) return cached;
+            bool result = SkillTreeManager.Instance.GetSkillLevel(skillId) > 0;
+            _hasSkillCache[skillId] = result;
+            return result;
         }
 
         // 적의 체력 비율 확인
@@ -638,8 +650,8 @@ namespace CaptainSkillTree.SkillTree
                 var manager = SkillTreeManager.Instance;
                 if (manager != null)
                 {
-                    if (manager.GetSkillLevel("Tanker") > 0)
-                        hpBonus += Tanker_Config.TankerHpBonusValue;
+                    int tankerLv = manager.GetSkillLevel("Tanker");
+                    hpBonus += TankerSkills.GetTankerHpBonusForLevel(tankerLv);
                 }
 
                 __result += hpBonus;
@@ -940,6 +952,11 @@ namespace CaptainSkillTree.SkillTree
     [HarmonyPatch(typeof(Player), "Update")]
     public static class SkillTree_Player_Update_TrollRegen_Patch
     {
+        // 스킬 레벨 캐시 - 1초마다 갱신하여 매 프레임 GetSkillLevel 호출 방지
+        private static float _skillCheckTimer = 0f;
+        private static bool _hasSkill = false;
+        private const float SkillCheckInterval = 1f;
+
         [HarmonyPriority(Priority.Low)]
         public static void Postfix(Player __instance)
         {
@@ -947,11 +964,17 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (__instance != Player.m_localPlayer) return;
 
-                var manager = SkillTreeManager.Instance;
-                if (manager == null) return;
+                // 스킬 레벨을 1초마다만 체크 (매 프레임 GetSkillLevel 호출 방지)
+                _skillCheckTimer += Time.deltaTime;
+                if (_skillCheckTimer >= SkillCheckInterval)
+                {
+                    _skillCheckTimer = 0f;
+                    var manager = SkillTreeManager.Instance;
+                    _hasSkill = manager != null && manager.GetSkillLevel("defense_Step5_heal") > 0;
+                }
 
                 // defense_Step5_heal: 트롤의 재생력
-                if (manager.GetSkillLevel("defense_Step5_heal") > 0)
+                if (_hasSkill)
                 {
                     // 타이머 초기화
                     if (!trollRegenTimers.ContainsKey(__instance))
@@ -1106,7 +1129,7 @@ namespace CaptainSkillTree.SkillTree
             if (__instance == Player.m_localPlayer)
             {
                 // MMO getParameter 패치를 통해 자동 적용되므로 별도 처리 불필요
-                Plugin.Log.LogInfo($"[속도 전문가] 플레이어 {__instance.GetPlayerName()} MMO 연동 준비 완료");
+                Plugin.Log.LogDebug($"[속도 전문가] 플레이어 {__instance.GetPlayerName()} MMO 연동 준비 완료");
             }
         }
     }
@@ -1308,8 +1331,8 @@ namespace CaptainSkillTree.SkillTree
                 // 2. 폭발 화살 정리 (Dictionary 정리)
                 SkillEffect.CleanupExplosiveArrowOnDeath(player);
 
-                // 3. 기타 활성화된 스킬 효과 정리 (필요 시 추가)
-                // 예: 버서커 분노, 성기사 버프 등
+                // 3. 트롤 재생력 타이머 정리
+                trollRegenTimers.Remove(player);
 
                 Plugin.Log.LogInfo($"[스킬 정리] {player.GetPlayerName()} 모든 스킬 효과 정리 완료");
             }

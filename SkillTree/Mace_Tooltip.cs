@@ -384,8 +384,8 @@ namespace CaptainSkillTree.SkillTree
                 var data = new GuardianHeartTooltipData
                 {
                     skillName = L.Get("mace_skill_guardian"),
-                    description = L.Get("mace_desc_guardian_buff", dashDistance),
-                    additionalInfo = L.Get("mace_desc_guardian_damage", damagePercent),
+                    description = L.Get("mace_desc_guardian_buff", damagePercent),
+                    additionalInfo = "",
                     dashDistance = $"{dashDistance:F0}m",
                     damagePercent = $"{damagePercent:F0}%",
                     staminaCost = $"{staminaCost:F0}",
@@ -435,18 +435,11 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += "</size></color>\n";
                 }
 
-                // 3. 효과 - 돌진 거리 + 충돌 데미지 (#FF6B6B / #FFB6C1)
-                if (!string.IsNullOrEmpty(data.dashDistance) || !string.IsNullOrEmpty(data.damagePercent))
+                // 3. 범위 - 돌진 거리 (#FF6B6B / #FFB6C1)
+                if (!string.IsNullOrEmpty(data.dashDistance))
                 {
-                    string effectText = "";
-                    if (!string.IsNullOrEmpty(data.dashDistance))
-                        effectText += $"{L.Get("mace_effect_buff")} {data.dashDistance}";
-                    if (!string.IsNullOrEmpty(data.damagePercent))
-                    {
-                        if (!string.IsNullOrEmpty(effectText)) effectText += ", ";
-                        effectText += $"{L.Get("mace_desc_guardian_damage", data.damagePercent)}";
-                    }
-                    tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_effect")}: </size></color><color=#FFB6C1><size=16>{effectText}</size></color>\n";
+                    string effectText = $"{L.Get("mace_effect_buff")} {data.dashDistance}";
+                    tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_range")}: </size></color><color=#FFB6C1><size=16>{effectText}</size></color>\n";
                 }
 
                 // 4. 범위 - 생략 (자기 자신)
@@ -504,15 +497,14 @@ namespace CaptainSkillTree.SkillTree
             int requiredPoints = Mace_Config.GuardianHeartRequiredPointsValue;
 
             return "<color=#FFD700><size=22>방패돌진</size></color>\n\n" +
-                   "<color=#E0E0E0><size=16>G키: 8m 방패 돌진 - 방패 막기력의 70% 데미지\n\n" +
-                   "• 돌진 거리: 8m\n" +
-                   "• 충돌 데미지: 방패 막기력 70%\n" +
-                   "• 범위 피해: 충돌 데미지 50% (6m)\n" +
-                   "• 소모: 스태미나 20\n" +
-                   "• 쿨타임: 35초\n" +
-                   "• 필요조건: 방패 착용\n\n" +
-                   "스킬유형: 액티브 스킬 - G키\n\n" +
-                   $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";
+                   "<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>방패 돌진하여 방패 막기력의 70% 데미지</size></color>\n" +
+                   "<color=#FF6B6B><size=16>범위: </size></color><color=#FFB6C1><size=16>돌진 거리 8m</size></color>\n" +
+                   "<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 20</size></color>\n" +
+                   "<color=#FF4500><size=16>스킬유형: </size></color><color=#00FF00><size=16>액티브 스킬 - G키</size></color>\n" +
+                   "<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>35초</size></color>\n" +
+                   "<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>방패 착용</size></color>\n" +
+                   "<color=#DDA0DD><size=16>특별안내: </size></color><color=#E6E6FA><size=16>방패로 적을 가격하고 주변 5m 적을 도발한다.</size></color>\n\n" +
+                   $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>";
         }
 
         // [DEPRECATED] - Use MeleeTooltipUtils.GenerateTooltip() instead

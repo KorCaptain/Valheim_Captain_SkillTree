@@ -110,7 +110,7 @@ namespace CaptainSkillTree.SkillTree
         {
             for (int i = 0; i < 10; i++)
             {
-                VFXManager.PlaySound("sfx_dverger_fireball_rain_shot", center, 20f);
+                VFXManager.PlaySound("sfx_fader_spawn_meteor_impact", center, 20f);
                 yield return new WaitForSeconds(0.15f);
             }
         }
@@ -404,8 +404,7 @@ namespace CaptainSkillTree.SkillTree
                     if (tag.Processed) return;
                     tag.Processed = true;
 
-                    SimpleVFX.Play("flash_magic_blue_pink", hitPoint, 1.5f);
-                    VFXManager.PlayVFXAtPosition("vfx_frostarrow_hit", hitPoint, 1.5f);
+                    VFXManager.PlayVFXAtPosition("fx_DvergerMage_Ice_hit", hitPoint, 1.5f);
                     VFXManager.PlaySound("sfx_arrow_hit", hitPoint, 5f);
                     SkillEffect.ApplyArrowRainFrostSlow(hitPoint);
                     SkillEffect.ApplyArrowRainAOEDamage(tag.Owner, hitPoint);

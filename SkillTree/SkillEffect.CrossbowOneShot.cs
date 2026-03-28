@@ -366,6 +366,18 @@ namespace CaptainSkillTree.SkillTree
                 crossbowOneShotCooldown.Remove(player);
                 crossbowOneShotExpiry.Remove(player);
                 _crossbowOneShotPendingWindow.Remove(player);
+
+                // 버프 이펙트 정리
+                if (followingBuffCoroutines.ContainsKey(player))
+                {
+                    try { player.StopCoroutine(followingBuffCoroutines[player]); } catch { }
+                    followingBuffCoroutines.Remove(player);
+                }
+                if (followingBuffEffects.ContainsKey(player) && followingBuffEffects[player] != null)
+                {
+                    UnityEngine.Object.Destroy(followingBuffEffects[player]);
+                }
+                followingBuffEffects.Remove(player);
             }
             catch (Exception ex)
             {

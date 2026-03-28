@@ -172,23 +172,27 @@ namespace CaptainSkillTree.SkillTree
                 cameraForward.Normalize();
             }
 
-            // 카메라 방향 시야각 내의 몬스터만 필터링, 거리순 정렬
-            var frontMonster = Character.GetAllCharacters()
-                .Where(c => c != null && !c.IsDead() && c != player && !c.IsPlayer())
-                .Where(c => c.GetFaction() != Character.Faction.Players)
-                .Where(c => Vector3.Distance(playerPos, c.transform.position) <= range)
-                .Where(c =>
+            // 카메라 방향 시야각 내 가장 가까운 몬스터 탐색 (OrderBy 제거 - 수동 최솟값)
+            Character frontMonster = null;
+            float minDist = float.MaxValue;
+            foreach (var c in Character.GetAllCharacters())
+            {
+                if (c == null || c.IsDead() || c == player || c.IsPlayer()) continue;
+                if (c.GetFaction() == Character.Faction.Players) continue;
+                float dist = Vector3.Distance(playerPos, c.transform.position);
+                if (dist > range) continue;
+
+                Vector3 dirToMonster = (c.transform.position - playerPos);
+                dirToMonster.y = 0;
+                dirToMonster.Normalize();
+                if (Vector3.Angle(cameraForward, dirToMonster) > maxAngle) continue;
+
+                if (dist < minDist)
                 {
-                    // 플레이어 → 몬스터 방향 벡터
-                    Vector3 dirToMonster = (c.transform.position - playerPos).normalized;
-                    dirToMonster.y = 0;
-                    dirToMonster.Normalize();
-                    // 카메라 방향과의 각도 계산
-                    float angle = Vector3.Angle(cameraForward, dirToMonster);
-                    return angle <= maxAngle;
-                })
-                .OrderBy(c => Vector3.Distance(playerPos, c.transform.position))
-                .FirstOrDefault();
+                    minDist = dist;
+                    frontMonster = c;
+                }
+            }
 
             return frontMonster;
         }

@@ -131,16 +131,6 @@ namespace CaptainSkillTree.SkillTree
                 physPct += pct;
                 elemPct += pct;
             }
-            if (SkillEffect.HasSkill("atk_twohand_drain"))
-            {
-                physPct += Attack_Config.AttackTwoHandDrainPhysicalDamageValue;
-                elemPct += Attack_Config.AttackTwoHandDrainElementalDamageValue;
-            }
-            if (SkillEffect.HasSkill("atk_base"))
-            {
-                b.FlatAllPhysical  += Attack_Config.AttackBasePhysicalDamageValue;
-                b.FlatAllElemental += Attack_Config.AttackBaseElementalDamageValue;
-            }
 
             // 공통: 공격속도 상시 패시브
             if (SkillEffect.HasSkill("speed_base")) b.AttackSpeed += Speed_Config.SpeedBaseAttackSpeedValue;
@@ -174,12 +164,13 @@ namespace CaptainSkillTree.SkillTree
                         b.MoveSpeed += Knife_Config.KnifeMoveSpeedBonusValue;
                     if (SkillEffect.HasSkill("knife_step6_combat_damage"))
                         physPct += Knife_Config.KnifeCombatDamageBonusValue;
-                    if (SkillEffect.HasSkill("atk_melee_bonus"))
-                        physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedMeleeAttackSpeedValue;
                     if (RogueSkills.IsRogue(player))
                         b.AttackSpeed += Rogue_Config.RogueAttackSpeedBonusValue;
+                    // T6: 연속 근접의 대가 — 한손 무기 +5%
+                    if (SkillEffect.HasSkill("atk_finisher_melee"))
+                        physPct += Attack_Config.AttackFinisherMeleeBonusValue;
                     break;
 
                 case WeaponGroup.Sword:
@@ -195,21 +186,23 @@ namespace CaptainSkillTree.SkillTree
                         physPct += SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue;
                         b.BlockPower += Sword_Config.SwordStep3AllInOneDefenseBonusValue;
                     }
-                    if (SkillEffect.HasSkill("atk_melee_bonus"))
-                        physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedMeleeAttackSpeedValue;
                     if (SkillEffect.HasSkill("sword_step1_fastslash"))
                         b.AttackSpeed += Sword_Config.SwordStep1FastSlashSpeedValue;
                     if (SkillEffect.HasSkill("sword_step4_duel"))
                         b.AttackSpeed += Sword_Config.SwordStep4TrueDuelSpeedValue;
+                    // T6: 검 — 1H/2H에 따라 분기
+                    bool is2HSword = item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon;
+                    if (SkillEffect.HasSkill("atk_finisher_melee") && !is2HSword)
+                        physPct += Attack_Config.AttackFinisherMeleeBonusValue;
+                    if (SkillEffect.HasSkill("atk_twohand_crush") && is2HSword)
+                        physPct += Attack_Config.AttackTwoHandedBonusValue;
                     break;
 
                 case WeaponGroup.Mace:
                     if (SkillEffect.HasSkill("mace_Step1_damage"))
                         physPct += Mace_Config.MaceExpertDamageBonusValue;
-                    if (SkillEffect.HasSkill("atk_melee_bonus"))
-                        physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedMeleeAttackSpeedValue;
                     if (SkillEffect.HasSkill("mace_Step3_branch_heavy"))
@@ -225,6 +218,9 @@ namespace CaptainSkillTree.SkillTree
                     {
                         b.AttackSpeed += Mace_Config.MaceStep6AttackSpeedBonusValue;
                     }
+                    // T6: 양손 분쇄 — Clubs 전체 적용 (IsTwoHandedWeapon 기준)
+                    if (SkillEffect.HasSkill("atk_twohand_crush"))
+                        physPct += Attack_Config.AttackTwoHandedBonusValue;
                     break;
 
                 case WeaponGroup.Spear:
@@ -243,15 +239,14 @@ namespace CaptainSkillTree.SkillTree
                     // 빠른창 - 공격속도 (SpeedTree에서 실제 적용)
                     if (SkillEffect.HasSkill("spear_Step3_quick"))
                         b.AttackSpeed += Spear_Config.SpearQuickAttackSpeedValue;
-                    if (SkillEffect.HasSkill("atk_melee_bonus"))
-                        physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedMeleeAttackSpeedValue;
+                    // T6: 양손 분쇄 — Spears 포함 (IsTwoHandedWeapon 기준)
+                    if (SkillEffect.HasSkill("atk_twohand_crush"))
+                        physPct += Attack_Config.AttackTwoHandedBonusValue;
                     break;
 
                 case WeaponGroup.Polearm:
-                    if (SkillEffect.HasSkill("atk_melee_bonus"))
-                        physPct += Attack_Config.AttackMeleeBonusDamageValue;
                     if (SkillEffect.HasSkill("melee_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedMeleeAttackSpeedValue;
                     // 제압 공격 - 물리 데미지 % 보너스 + named label
@@ -275,6 +270,9 @@ namespace CaptainSkillTree.SkillTree
                     // 회전베기 - 2차 공격(특수공격) 데미지 보너스 표시
                     if (SkillEffect.HasSkill("polearm_step1_spin"))
                         b.SpinAttackBonus += SkillTreeConfig.PolearmStep1SpinWheelDamageValue;
+                    // T6: 양손 분쇄 — Polearms 포함 (IsTwoHandedWeapon 기준)
+                    if (SkillEffect.HasSkill("atk_twohand_crush"))
+                        physPct += Attack_Config.AttackTwoHandedBonusValue;
                     break;
 
                 case WeaponGroup.Bow:
@@ -287,10 +285,9 @@ namespace CaptainSkillTree.SkillTree
                         b.FlatPierce += Bow_Config.BowStep3SilentShotDamageBonusValue;
                     if (SkillEffect.HasSkill("bow_Step1_damage"))
                         physPct += Bow_Config.BowStep1ExpertDamageBonusValue;
-                    if (SkillEffect.HasSkill("atk_bow_bonus"))
-                        physPct += Attack_Config.AttackBowBonusDamageValue;
-                    if (SkillEffect.HasSkill("atk_ranged_enhance"))
-                        physPct += Attack_Config.AttackRangedEnhancementValue;
+                    // atk_opener_bow: 크리확률 +15% 상시 패시브
+                    if (SkillEffect.HasSkill("atk_opener_bow"))
+                        b.CritChance += Attack_Config.AtkOpenerBowCritChanceValue;
                     if (SkillEffect.HasSkill("bow_draw1"))
                         b.AttackSpeed += Speed_Config.SpeedBowDrawSpeedValue;
                     if (SkillEffect.HasSkill("bow_Step2_multishot"))
@@ -317,10 +314,6 @@ namespace CaptainSkillTree.SkillTree
                     }
                     if (SkillEffect.HasSkill("crossbow_Step1_damage"))
                         physPct += Crossbow_Config.CrossbowExpertDamageBonusValue;
-                    if (SkillEffect.HasSkill("atk_crossbow_bonus"))
-                        physPct += Attack_Config.AttackCrossbowBonusDamageValue;
-                    if (SkillEffect.HasSkill("atk_ranged_enhance"))
-                        physPct += Attack_Config.AttackRangedEnhancementValue;
                     if (SkillEffect.HasSkill("crossbow_draw1"))
                         b.AttackSpeed += Speed_Config.SpeedCrossbowDrawSpeedValue;
                     if (SkillEffect.HasSkill("crossbow_Step2_rapid_fire"))
@@ -341,12 +334,8 @@ namespace CaptainSkillTree.SkillTree
                     }
                     if (SkillEffect.HasSkill("staff_Step1_damage"))
                         elemPct += Staff_Config.StaffExpertDamageValue;
-                    if (SkillEffect.HasSkill("atk_staff_bonus"))
-                        elemPct += Attack_Config.AttackStaffBonusDamageValue;
                     if (SkillEffect.HasSkill("atk_staff_mage"))
                         elemPct += Attack_Config.AttackStaffElementalValue;
-                    if (SkillEffect.HasSkill("atk_ranged_enhance"))
-                        elemPct += Attack_Config.AttackRangedEnhancementValue;
                     if (SkillEffect.HasSkill("staff_speed1"))
                         b.AttackSpeed += Speed_Config.SpeedStaffCastSpeedFinalValue;
                     if (SkillEffect.HasSkill("staff_Step4_range"))
@@ -532,9 +521,10 @@ namespace CaptainSkillTree.SkillTree
                 result += $"\n<color={COL_ATK_ELEM}>🔥 {L.Get("weapon_effect_elem_atk")}: +{displayElemPct:F0}%</color>";
             if (b.MoveSpeed > 0.01f)
                 result += $"\n<color={COL_MOVE_SPD}>💨 {L.Get("weapon_effect_move_spd")}: +{b.MoveSpeed:F0}%</color>";
-            // WeaponSpd 인챈트 없을 때만 스킬 공격속도 표시 (있으면 Producer 패치가 처리)
-            if (b.AttackSpeed > 0.01f && b.ProducerEnchantSpd < 0.01f)
-                result += $"\n<color={COL_ATK_SPD}>⚡ {L.Get("weapon_effect_atk_spd")}: +{b.AttackSpeed:F0}%</color>";
+            // 공격속도: 스킬 속도 + WeaponSpd 인챈트 합산 표시 (출처 라인은 WeaponTooltip.cs에서 별도 추가)
+            float displayAtkSpd = b.AttackSpeed + b.ProducerEnchantSpd;
+            if (displayAtkSpd > 0.01f)
+                result += $"\n<color={COL_ATK_SPD}>⚡ {L.Get("weapon_effect_atk_spd")}: +{displayAtkSpd:F0}%</color>";
             if (b.MultishotLv1Chance > 0.01f)
                 result += $"\n<color={COL_ATK_PHY}>🎯 {L.Get("weapon_effect_multishot_lv1")}:</color> <color=orange>{b.MultishotLv1Chance:F0}%</color> <color=white>{L.Get("weapon_effect_prob")} +{b.MultishotLv1Arrows:F0}{L.Get("weapon_effect_arrows")}</color>";
             if (b.MultishotLv2Chance > 0.01f)

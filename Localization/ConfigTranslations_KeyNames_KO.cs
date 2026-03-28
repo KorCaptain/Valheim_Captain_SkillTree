@@ -28,6 +28,52 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_AttackExpert_AllDamageBonus"] = "Tier 0: [공격 전문가] 모든 공격력 보너스 (%)",
                 ["Tier0_AttackExpert_RequiredPoints"] = "Tier 0: [공격 전문가] 필요 포인트",
 
+                // === 4국면 연쇄 시스템 신규 키 (Tier1~5) ===
+                // === Tier 1: 선빵 (5개) ===
+                ["Tier1_Opener_DamageBonus"] = "Tier 1: [선빵] 데미지 보너스 (%)",
+                ["Tier1_Opener_StaminaReduction"] = "Tier 1: [선빵] 스태미나 소비 감소 (%)",
+                ["Tier1_Opener_Duration"] = "Tier 1: [선빵] 지속 시간 (초)",
+                ["Tier1_Opener_Cooldown"] = "Tier 1: [선빵] 쿨다운 (초)",
+                ["Tier1_Opener_RequiredPoints"] = "Tier 1: [선빵] 필요 포인트",
+
+                // === Tier 2-1: 근접 (2개) ===
+                ["Tier2_OpenerMelee_FinisherBonus"] = "Tier 2-1: [근접] 마무리 보너스 (%)",
+                ["Tier2_OpenerMelee_RequiredPoints"] = "Tier 2-1: [근접] 필요 포인트",
+
+                // === Tier 2-2: 활 (2개) ===
+                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [활] 크리 확률 보너스 (%)",
+                ["Tier2_OpenerBow_RequiredPoints"] = "Tier 2-2: [활] 필요 포인트",
+
+                // === Tier 2-3: 석궁 (2개) ===
+                ["Tier2_OpenerCrossbow_FirstShotBonus"] = "Tier 2-3: [석궁] 첫 발 보너스 (%)",
+                ["Tier2_OpenerCrossbow_RequiredPoints"] = "Tier 2-3: [석궁] 필요 포인트",
+
+                // === Tier 2-4: 마법 (2개) ===
+                ["Tier2_OpenerMagic_StaggerProc"] = "Tier 2-4: [마법] 스태거 발동 (1=활성)",
+                ["Tier2_OpenerMagic_RequiredPoints"] = "Tier 2-4: [마법] 필요 포인트",
+
+                // === Tier 3: 추격전 (4개) ===
+                ["Tier3_Pursuit_DamageBonus"] = "Tier 3: [추격전] 기본 데미지 보너스 (%)",
+                ["Tier3_Pursuit_ChainDamageBonus"] = "Tier 3: [추격전] 연쇄 데미지 보너스 (%)",
+                ["Tier3_Pursuit_ChainWindow"] = "Tier 3: [추격전] 연쇄 윈도우 (초)",
+                ["Tier3_Pursuit_RequiredPoints"] = "Tier 3: [추격전] 필요 포인트",
+
+                // === Tier 4-1: 질풍 추격 (2개) ===
+                ["Tier4_PursuitSpeed_SpeedBonus"] = "Tier 4-1: [질풍 추격] 이동속도 보너스 (%)",
+                ["Tier4_PursuitSpeed_RequiredPoints"] = "Tier 4-1: [질풍 추격] 필요 포인트",
+
+                // === Tier 4-2: 혼전 돌입 (2개) ===
+                ["Tier4_FrenzyTrigger_StaminaReduction"] = "Tier 4-2: [혼전 돌입] 스태미나 감소 (%)",
+                ["Tier4_FrenzyTrigger_RequiredPoints"] = "Tier 4-2: [혼전 돌입] 필요 포인트",
+
+                // === Tier 5: 난전 (6개) ===
+                ["Tier5_Frenzy_StackBonusBase"] = "Tier 5: [난전] 기본 스택 보너스 (%)",
+                ["Tier5_Frenzy_StackBonusChain"] = "Tier 5: [난전] 연쇄 스택 보너스 (%)",
+                ["Tier5_Frenzy_MaxStacks"] = "Tier 5: [난전] 최대 스택 수",
+                ["Tier5_Frenzy_HitsPerStack"] = "Tier 5: [난전] 스택당 필요 히트 수",
+                ["Tier5_Frenzy_Tier6Amplifier"] = "Tier 5: [난전] Max 달성 시 Tier6 증폭 배율",
+                ["Tier5_Frenzy_RequiredPoints"] = "Tier 5: [난전] 필요 포인트",
+
                 // === Tier 1: 기본 공격 강화 (3개) ===
                 ["Tier1_BaseAttack_PhysicalDamageBonus"] = "Tier 1: [기본 공격] 물리 데미지 보너스 (%)",
                 ["Tier1_BaseAttack_ElementalDamageBonus"] = "Tier 1: [기본 공격] 속성 데미지 보너스 (%)",
@@ -68,7 +114,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 6: 최종 강화 (8개) ===
                 ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 (%)",
                 ["Tier6_WeakPointAttack_RequiredPoints"] = "Tier 6-1: [약점 공격] 필요 포인트",
-                ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [한손 무기] 상시 보너스 (%)",
+                ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [연속 근접] 상시 보너스 (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Tier 6-2: [연속 근접] 필요 포인트",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Tier 6-3: [양손 분쇄] 양손 데미지 보너스 (%)",
                 ["Tier6_TwoHandCrush_RequiredPoints"] = "Tier 6-3: [양손 분쇄] 필요 포인트",
@@ -836,28 +882,31 @@ namespace CaptainSkillTree.Localization
                 ["Mage_AOE_Range"] = "액티브: 범위 (m)",
                 ["Mage_AOE_Max_Targets"] = "액티브: 최대 타겟 수",
                 ["Mage_Eitr_Cost"] = "액티브: 에이트르 소모",
+                ["Mage_Fire_Rain_Radius"] = "낙하 반경 (m)",
+                ["Mage_Fire_Rain_Impact_Radius"] = "착지 데미지 범위 (m)",
+                ["Mage_Fire_Rain_Projectile_Count"] = "버스트당 발사체 수 (개)",
                 ["Mage_Damage_Multiplier"] = "액티브: 데미지 배수 (%)",
                 ["Mage_Cooldown"] = "액티브: 쿨타임 (초)",
-                ["Mage_Lv1_Cooldown"] = "액티브: 쿨타임 Lv1 (초)",
-                ["Mage_Lv2_Cooldown"] = "액티브: 쿨타임 Lv2 (초)",
-                ["Mage_Lv3_Cooldown"] = "액티브: 쿨타임 Lv3 (초)",
-                ["Mage_Lv4_Cooldown"] = "액티브: 쿨타임 Lv4 (초)",
-                ["Mage_Lv5_Cooldown"] = "액티브: 쿨타임 Lv5 (초)",
+                ["Mage_Lv1_Damage_Multiplier"] = "Lv1 AOE 데미지 배수 (%)",
+                ["Mage_Lv1_Cooldown"] = "Lv1 쿨타임 (초)",
+                ["Mage_Lv1_Elemental_Resistance"] = "Lv1 속성 저항 (%)",
+                ["Mage_Lv2_Damage_Multiplier"] = "Lv2 AOE 데미지 배수 (%)",
+                ["Mage_Lv2_Cooldown"] = "Lv2 쿨타임 (초)",
+                ["Mage_Lv2_Elemental_Resistance"] = "Lv2 속성 저항 (%)",
+                ["Mage_Lv3_Damage_Multiplier"] = "Lv3 AOE 데미지 배수 (%)",
+                ["Mage_Lv3_Cooldown"] = "Lv3 쿨타임 (초)",
+                ["Mage_Lv3_Elemental_Resistance"] = "Lv3 속성 저항 (%)",
+                ["Mage_Lv4_Damage_Multiplier"] = "Lv4 AOE 데미지 배수 (%)",
+                ["Mage_Lv4_Cooldown"] = "Lv4 쿨타임 (초)",
+                ["Mage_Lv4_Elemental_Resistance"] = "Lv4 속성 저항 (%)",
+                ["Mage_Lv5_Damage_Multiplier"] = "Lv5 AOE 데미지 배수 (%)",
+                ["Mage_Lv5_Cooldown"] = "Lv5 쿨타임 (초)",
+                ["Mage_Lv5_Elemental_Resistance"] = "Lv5 속성 저항 (%)",
                 ["Mage_Lv1_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv1",
                 ["Mage_Lv2_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv2",
                 ["Mage_Lv3_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv3",
                 ["Mage_Lv4_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv4",
                 ["Mage_Lv5_AOE_Max_Targets"] = "액티브: 최대 타겟 수 Lv5",
-                ["Mage_Lv1_Elemental_Resistance"] = "패시브: 속성 저항 Lv1 (%)",
-                ["Mage_Lv2_Elemental_Resistance"] = "패시브: 속성 저항 Lv2 (%)",
-                ["Mage_Lv3_Elemental_Resistance"] = "패시브: 속성 저항 Lv3 (%)",
-                ["Mage_Lv4_Elemental_Resistance"] = "패시브: 속성 저항 Lv4 (%)",
-                ["Mage_Lv5_Elemental_Resistance"] = "패시브: 속성 저항 Lv5 (%)",
-                ["Mage_Lv1_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv1 (%)",
-                ["Mage_Lv2_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv2 (%)",
-                ["Mage_Lv3_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv3 (%)",
-                ["Mage_Lv4_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv4 (%)",
-                ["Mage_Lv5_Damage_Multiplier"] = "액티브: AOE 데미지 배수 Lv5 (%)",
 
                 // ============================================
                 // Tanker Job Skills (탱커 직업 스킬) - 10개
@@ -871,7 +920,26 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_BuffDuration"] = "전장의 함성: 버프 지속시간 (초)",
                 ["Tanker_Taunt_EffectHeight"] = "전장의 함성: 효과 높이 (m)",
                 ["Tanker_Taunt_EffectScale"] = "전장의 함성: 효과 크기 배율",
+                ["Tanker_Taunt_ReflectPercent"] = "전장의 함성: 반사 데미지 비율 (%)",
                 ["Tanker_Passive_DamageReduction"] = "패시브: 피해 감소 (%)",
+                // --- Lv1 ---
+                ["Tanker_ReflectDuration_Lv1"] = "Lv1 패시브: 반사 지속시간 (초)",
+                // --- Lv2 ---
+                ["Tanker_Hp_Bonus_Lv2"] = "Lv2 패시브: 추가 체력",
+                ["Tanker_Lv2_BlockPower"] = "Lv2 패시브: 방패 막기 방어력",
+                ["Tanker_ReflectDuration_Lv2"] = "Lv2 패시브: 반사 지속시간 (초)",
+                // --- Lv3 ---
+                ["Tanker_Hp_Bonus_Lv3"] = "Lv3 패시브: 추가 체력",
+                ["Tanker_Lv3_BlockPower"] = "Lv3 패시브: 방패 막기 방어력",
+                ["Tanker_ReflectDuration_Lv3"] = "Lv3 패시브: 반사 지속시간 (초)",
+                // --- Lv4 ---
+                ["Tanker_Hp_Bonus_Lv4"] = "Lv4 패시브: 추가 체력",
+                ["Tanker_Lv4_BlockPower"] = "Lv4 패시브: 방패 막기 방어력",
+                ["Tanker_ReflectDuration_Lv4"] = "Lv4 패시브: 반사 지속시간 (초)",
+                // --- Lv5 ---
+                ["Tanker_Hp_Bonus_Lv5"] = "Lv5 패시브: 추가 체력",
+                ["Tanker_Lv5_BlockPower"] = "Lv5 패시브: 방패 막기 방어력",
+                ["Tanker_ReflectDuration_Lv5"] = "Lv5 패시브: 반사 지속시간 (초)",
 
                 // ============================================
                 // Rogue Job Skills (로그 직업 스킬) - 10개
@@ -914,7 +982,7 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv5_BonusCharges"] = "Lv5: 추가 충전",
                 ["Rogue_AttackSpeed_Bonus"] = "패시브: 공격 속도 보너스 (%)",
                 ["Rogue_Stamina_Reduction"] = "패시브: 스태미나 사용 감소 (%)",
-                ["Rogue_ElementalResistance_Debuff"] = "패시브: 속성 저항 증가 (%)",
+                ["Rogue_Lv1_DodgeChance"] = "Lv1 패시브: 회피율 (%)",
                 ["Rogue_Lv2_AttackSpeed"] = "Lv2 패시브: 공격속도 (%)",
                 ["Rogue_Lv3_AttackSpeed"] = "Lv3 패시브: 공격속도 (%)",
                 ["Rogue_Lv4_AttackSpeed"] = "Lv4 패시브: 공격속도 (%)",
@@ -923,10 +991,10 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv3_StaminaReduction"] = "Lv3 패시브: 스태미나 감소 (%)",
                 ["Rogue_Lv4_StaminaReduction"] = "Lv4 패시브: 스태미나 감소 (%)",
                 ["Rogue_Lv5_StaminaReduction"] = "Lv5 패시브: 스태미나 감소 (%)",
-                ["Rogue_Lv2_ElementalResist"] = "Lv2 패시브: 속성 저항 (%)",
-                ["Rogue_Lv3_ElementalResist"] = "Lv3 패시브: 속성 저항 (%)",
-                ["Rogue_Lv4_ElementalResist"] = "Lv4 패시브: 속성 저항 (%)",
-                ["Rogue_Lv5_ElementalResist"] = "Lv5 패시브: 속성 저항 (%)",
+                ["Rogue_Lv2_DodgeChance"] = "Lv2 패시브: 회피율 (%)",
+                ["Rogue_Lv3_DodgeChance"] = "Lv3 패시브: 회피율 (%)",
+                ["Rogue_Lv4_DodgeChance"] = "Lv4 패시브: 회피율 (%)",
+                ["Rogue_Lv5_DodgeChance"] = "Lv5 패시브: 회피율 (%)",
                 ["Rogue_Lv1_MoveSpeed"] = "Lv1 패시브: 이동속도 (%)",
                 ["Rogue_Lv2_MoveSpeed"] = "Lv2 패시브: 이동속도 (%)",
                 ["Rogue_Lv3_MoveSpeed"] = "Lv3 패시브: 이동속도 (%)",
@@ -945,6 +1013,26 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Active_Duration"] = "신성한 치유: 지속시간 (초)",
                 ["Paladin_Active_Interval"] = "신성한 치유: 치유 간격 (초)",
                 ["Paladin_Passive_ElementalResistanceReduction"] = "패시브: 저항 증가 (%)",
+                ["Paladin_Lv2_SelfHealPercent"] = "Lv2: 자가 치유 (%)",
+                ["Paladin_Lv2_AllyHealPercent"] = "Lv2: 아군 치유 (%/틱)",
+                ["Paladin_Lv3_SelfHealPercent"] = "Lv3: 자가 치유 (%)",
+                ["Paladin_Lv3_AllyHealPercent"] = "Lv3: 아군 치유 (%/틱)",
+                ["Paladin_Lv3_HealRange"] = "Lv3: 치유 범위 (m)",
+                ["Paladin_Lv4_SelfHealPercent"] = "Lv4: 자가 치유 (%)",
+                ["Paladin_Lv4_AllyHealPercent"] = "Lv4: 아군 치유 (%/틱)",
+                ["Paladin_Lv4_HealRange"] = "Lv4: 치유 범위 (m)",
+                ["Paladin_Lv5_SelfHealPercent"] = "Lv5: 자가 치유 (%)",
+                ["Paladin_Lv5_AllyHealPercent"] = "Lv5: 아군 치유 (%/틱)",
+                ["Paladin_Lv5_HealRange"] = "Lv5: 치유 범위 (m)",
+                ["Paladin_Lv5_Cooldown"] = "Lv5: 쿨타임 (초)",
+                ["Paladin_Lv2_ResistanceReduction"] = "Lv2: 저항 감소 (%)",
+                ["Paladin_Lv3_ResistanceReduction"] = "Lv3: 저항 감소 (%)",
+                ["Paladin_Lv4_ResistanceReduction"] = "Lv4: 저항 감소 (%)",
+                ["Paladin_Lv5_ResistanceReduction"] = "Lv5: 저항 감소 (%)",
+                ["Paladin_Lv2_StaminaBonus"] = "Lv2: 스태미나 보너스",
+                ["Paladin_Lv3_StaminaBonus"] = "Lv3: 스태미나 보너스",
+                ["Paladin_Lv4_StaminaBonus"] = "Lv4: 스태미나 보너스",
+                ["Paladin_Lv5_StaminaBonus"] = "Lv5: 스태미나 보너스",
 
                 // ============================================
                 // Berserker Job Skills (버서커 직업 스킬) - 10개
@@ -959,6 +1047,12 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_InvincibilityDuration"] = "죽음의 도전: 무적 지속시간 (초)",
                 ["Berserker_Passive_Cooldown"] = "죽음의 도전: 쿨타임 (초)",
                 ["Berserker_Passive_HealthBonus"] = "패시브: 최대 체력 보너스 (%)",
+                ["Berserker_Lv2_CooldownReduction"] = "Lv2: 분노 쿨타임 감소 (초)",
+                ["Berserker_Lv3_RageDamageReduction"] = "Lv3: 분노 중 피해 감소 (%)",
+                ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: 저체력 공격 보너스 (%)",
+                ["Berserker_Lv4_LowHpAttackThreshold"] = "Lv4: 저체력 임계값 (%)",
+                ["Berserker_Lv5_PassiveCooldownReduction"] = "Lv5: 패시브 쿨타임 감소 (초)",
+                ["Berserker_Lv5_InvincibilityBonus"] = "Lv5: 추가 무적 시간 (초)",
 
                 // ============================================
                 // Producer Job Skills (제작 전문가 직업)

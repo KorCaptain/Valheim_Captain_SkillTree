@@ -32,8 +32,6 @@ namespace CaptainSkillTree.Localization
             Directory.CreateDirectory(dir);
             string path = Path.Combine(dir, "en.json");
             File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
-
-            Plugin.Log.LogInfo($"[LocalizationExporter] en.json 내보내기 완료: {path} ({en.Count}개 키)");
         }
     }
 }

@@ -382,50 +382,75 @@ namespace CaptainSkillTree.SkillTree
 
         #region === Proxy: 공격 전문가 (Attack_Config) ===
 
-        public static ConfigEntry<float> AttackRootDamageBonus => Attack_Config.AttackRootDamageBonus;
-        public static ConfigEntry<float> AttackMeleeBonusChance => Attack_Config.AttackMeleeBonusChance;
-        public static ConfigEntry<float> AttackMeleeBonusDamage => Attack_Config.AttackMeleeBonusDamage;
-        public static ConfigEntry<float> AttackBowBonusChance => Attack_Config.AttackBowBonusChance;
-        public static ConfigEntry<float> AttackBowBonusDamage => Attack_Config.AttackBowBonusDamage;
-        public static ConfigEntry<float> AttackCrossbowBonusChance => Attack_Config.AttackCrossbowBonusChance;
-        public static ConfigEntry<float> AttackCrossbowBonusDamage => Attack_Config.AttackCrossbowBonusDamage;
-        public static ConfigEntry<float> AttackStaffBonusChance => Attack_Config.AttackStaffBonusChance;
-        public static ConfigEntry<float> AttackStaffBonusDamage => Attack_Config.AttackStaffBonusDamage;
-        public static ConfigEntry<float> AttackBasePhysicalDamage => Attack_Config.AttackBasePhysicalDamage;
-        public static ConfigEntry<float> AttackBaseElementalDamage => Attack_Config.AttackBaseElementalDamage;
-        public static ConfigEntry<float> AttackTwoHandDrainPhysicalDamage => Attack_Config.AttackTwoHandDrainPhysicalDamage;
-        public static ConfigEntry<float> AttackTwoHandDrainElementalDamage => Attack_Config.AttackTwoHandDrainElementalDamage;
-        public static ConfigEntry<float> AttackCritChance => Attack_Config.AttackCritChance;
-        public static ConfigEntry<float> AttackMeleeEnhancement => Attack_Config.AttackMeleeEnhancement;
-        public static ConfigEntry<float> AttackRangedEnhancement => Attack_Config.AttackRangedEnhancement;
-        public static ConfigEntry<float> AttackSpecialStat => Attack_Config.AttackSpecialStat;
-        public static ConfigEntry<float> AttackCritDamageBonus => Attack_Config.AttackCritDamageBonus;
-        public static ConfigEntry<float> AttackTwoHandedBonus => Attack_Config.AttackTwoHandedBonus;
-        public static ConfigEntry<float> AttackStaffElemental => Attack_Config.AttackStaffElemental;
+        // ConfigEntry 프록시 (Tier 0 + Tier 6 활성 노드)
+        public static ConfigEntry<float> AttackRootDamageBonus   => Attack_Config.AttackRootDamageBonus;
+        public static ConfigEntry<float> AttackCritDamageBonus   => Attack_Config.AttackCritDamageBonus;
+        public static ConfigEntry<float> AttackTwoHandedBonus    => Attack_Config.AttackTwoHandedBonus;
+        public static ConfigEntry<float> AttackStaffElemental    => Attack_Config.AttackStaffElemental;
         public static ConfigEntry<float> AttackFinisherMeleeBonus => Attack_Config.AttackFinisherMeleeBonus;
 
-        public static float AttackRootDamageBonusValue => Attack_Config.AttackRootDamageBonusValue;
-        public static float AttackMeleeBonusChanceValue => Attack_Config.AttackMeleeBonusChanceValue;
-        public static float AttackMeleeBonusDamageValue => Attack_Config.AttackMeleeBonusDamageValue;
-        public static float AttackBowBonusChanceValue => Attack_Config.AttackBowBonusChanceValue;
-        public static float AttackBowBonusDamageValue => Attack_Config.AttackBowBonusDamageValue;
-        public static float AttackCrossbowBonusChanceValue => Attack_Config.AttackCrossbowBonusChanceValue;
-        public static float AttackCrossbowBonusDamageValue => Attack_Config.AttackCrossbowBonusDamageValue;
-        public static float AttackStaffBonusChanceValue => Attack_Config.AttackStaffBonusChanceValue;
-        public static float AttackStaffBonusDamageValue => Attack_Config.AttackStaffBonusDamageValue;
-        public static float AttackBasePhysicalDamageValue => Attack_Config.AttackBasePhysicalDamageValue;
-        public static float AttackBaseElementalDamageValue => Attack_Config.AttackBaseElementalDamageValue;
-        public static float AttackTwoHandDrainPhysicalDamageValue => Attack_Config.AttackTwoHandDrainPhysicalDamageValue;
-        public static float AttackTwoHandDrainElementalDamageValue => Attack_Config.AttackTwoHandDrainElementalDamageValue;
-        public static float AttackCritChanceValue => Attack_Config.AttackCritChanceValue;
-        public static float AttackMeleeEnhancementValue => Attack_Config.AttackMeleeEnhancementValue;
-        public static float AttackRangedEnhancementValue => Attack_Config.AttackRangedEnhancementValue;
-        public static float AttackSpecialStatValue => Attack_Config.AttackSpecialStatValue;
-        public static float AttackCritDamageBonusValue => Attack_Config.AttackCritDamageBonusValue;
-        public static float AttackTwoHandedBonusValue => Attack_Config.AttackTwoHandedBonusValue;
-        public static float AttackStaffElementalValue => Attack_Config.AttackStaffElementalValue;
-        public static float AttackFinisherMeleeBonusValue => Attack_Config.AttackFinisherMeleeBonusValue;
-        public static float AttackOneHandedBonusValue => Attack_Config.AttackOneHandedBonusValue;
+        // 새 노드 ConfigEntry 프록시 (Tier 1~5)
+        public static ConfigEntry<float> AtkOpenerDamageBonus              => Attack_Config.AtkOpenerDamageBonus;
+        public static ConfigEntry<float> AtkOpenerStaminaReduction         => Attack_Config.AtkOpenerStaminaReduction;
+        public static ConfigEntry<float> AtkOpenerDuration                 => Attack_Config.AtkOpenerDuration;
+        public static ConfigEntry<float> AtkOpenerCooldown                 => Attack_Config.AtkOpenerCooldown;
+        public static ConfigEntry<float> AtkOpenerMeleeFinisherBonus       => Attack_Config.AtkOpenerMeleeFinisherBonus;
+        public static ConfigEntry<float> AtkOpenerBowCritChance            => Attack_Config.AtkOpenerBowCritChance;
+        public static ConfigEntry<float> AtkOpenerCrossbowFirstShotBonus   => Attack_Config.AtkOpenerCrossbowFirstShotBonus;
+        public static ConfigEntry<float> AtkOpenerMagicStaggerProc         => Attack_Config.AtkOpenerMagicStaggerProc;
+        public static ConfigEntry<float> AtkPursuitDamageBonus             => Attack_Config.AtkPursuitDamageBonus;
+        public static ConfigEntry<float> AtkPursuitChainDamageBonus        => Attack_Config.AtkPursuitChainDamageBonus;
+        public static ConfigEntry<float> AtkPursuitChainWindow             => Attack_Config.AtkPursuitChainWindow;
+        public static ConfigEntry<float> AtkPursuitSpeedBonus              => Attack_Config.AtkPursuitSpeedBonus;
+        public static ConfigEntry<float> AtkFrenzyTriggerStaminaReduction  => Attack_Config.AtkFrenzyTriggerStaminaReduction;
+        public static ConfigEntry<float> AtkFrenzyStackBonusBase           => Attack_Config.AtkFrenzyStackBonusBase;
+        public static ConfigEntry<float> AtkFrenzyStackBonusChain          => Attack_Config.AtkFrenzyStackBonusChain;
+        public static ConfigEntry<float> AtkFrenzyTier6Amplifier           => Attack_Config.AtkFrenzyTier6Amplifier;
+
+        // Value 프록시 — 신규
+        public static float AttackRootDamageBonusValue              => Attack_Config.AttackRootDamageBonusValue;
+        public static float AtkOpenerDamageBonusValue               => Attack_Config.AtkOpenerDamageBonusValue;
+        public static float AtkOpenerStaminaReductionValue          => Attack_Config.AtkOpenerStaminaReductionValue;
+        public static float AtkOpenerDurationValue                  => Attack_Config.AtkOpenerDurationValue;
+        public static float AtkOpenerCooldownValue                  => Attack_Config.AtkOpenerCooldownValue;
+        public static float AtkOpenerMeleeFinisherBonusValue        => Attack_Config.AtkOpenerMeleeFinisherBonusValue;
+        public static float AtkOpenerBowCritChanceValue             => Attack_Config.AtkOpenerBowCritChanceValue;
+        public static float AtkOpenerCrossbowFirstShotBonusValue    => Attack_Config.AtkOpenerCrossbowFirstShotBonusValue;
+        public static float AtkOpenerMagicStaggerProcValue          => Attack_Config.AtkOpenerMagicStaggerProcValue;
+        public static float AtkPursuitDamageBonusValue              => Attack_Config.AtkPursuitDamageBonusValue;
+        public static float AtkPursuitChainDamageBonusValue         => Attack_Config.AtkPursuitChainDamageBonusValue;
+        public static float AtkPursuitChainWindowValue              => Attack_Config.AtkPursuitChainWindowValue;
+        public static float AtkPursuitSpeedBonusValue               => Attack_Config.AtkPursuitSpeedBonusValue;
+        public static float AtkFrenzyTriggerStaminaReductionValue   => Attack_Config.AtkFrenzyTriggerStaminaReductionValue;
+        public static float AtkFrenzyStackBonusBaseValue            => Attack_Config.AtkFrenzyStackBonusBaseValue;
+        public static float AtkFrenzyStackBonusChainValue           => Attack_Config.AtkFrenzyStackBonusChainValue;
+        public static int   AtkFrenzyMaxStacksValue                 => Attack_Config.AtkFrenzyMaxStacksValue;
+        public static int   AtkFrenzyHitsPerStackValue              => Attack_Config.AtkFrenzyHitsPerStackValue;
+        public static float AtkFrenzyTier6AmplifierValue            => Attack_Config.AtkFrenzyTier6AmplifierValue;
+        public static float AttackCritDamageBonusValue              => Attack_Config.AttackCritDamageBonusValue;
+        public static float AttackTwoHandedBonusValue               => Attack_Config.AttackTwoHandedBonusValue;
+        public static float AttackStaffElementalValue               => Attack_Config.AttackStaffElementalValue;
+        public static float AttackFinisherMeleeBonusValue           => Attack_Config.AttackFinisherMeleeBonusValue;
+
+        // Value 프록시 — 레거시 스텁 (기존 파일 컴파일 오류 방지, 항상 0f 반환)
+        public static float AttackMeleeBonusChanceValue             => Attack_Config.AttackMeleeBonusChanceValue;
+        public static float AttackMeleeBonusDamageValue             => Attack_Config.AttackMeleeBonusDamageValue;
+        public static float AttackBowBonusChanceValue               => Attack_Config.AttackBowBonusChanceValue;
+        public static float AttackBowBonusDamageValue               => Attack_Config.AttackBowBonusDamageValue;
+        public static float AttackCrossbowBonusChanceValue          => Attack_Config.AttackCrossbowBonusChanceValue;
+        public static float AttackCrossbowBonusDamageValue          => Attack_Config.AttackCrossbowBonusDamageValue;
+        public static float AttackStaffBonusChanceValue             => Attack_Config.AttackStaffBonusChanceValue;
+        public static float AttackStaffBonusDamageValue             => Attack_Config.AttackStaffBonusDamageValue;
+        public static float AttackBasePhysicalDamageValue           => Attack_Config.AttackBasePhysicalDamageValue;
+        public static float AttackBaseElementalDamageValue          => Attack_Config.AttackBaseElementalDamageValue;
+        public static float AttackTwoHandDrainPhysicalDamageValue   => Attack_Config.AttackTwoHandDrainPhysicalDamageValue;
+        public static float AttackTwoHandDrainElementalDamageValue  => Attack_Config.AttackTwoHandDrainElementalDamageValue;
+        public static float AttackCritChanceValue                   => Attack_Config.AttackCritChanceValue;
+        public static float AttackMeleeEnhancementValue             => Attack_Config.AttackMeleeEnhancementValue;
+        public static float AttackRangedEnhancementValue            => Attack_Config.AttackRangedEnhancementValue;
+        public static float AttackSpecialStatValue                  => Attack_Config.AttackSpecialStatValue;
+        public static float AttackSpecialChanceValue                => Attack_Config.AttackSpecialChanceValue;
+        public static float AttackOneHandedBonusValue               => Attack_Config.AttackOneHandedBonusValue;
 
         #endregion
 
@@ -658,7 +683,6 @@ namespace CaptainSkillTree.SkillTree
             // Language.Bind() 전에 INI 파일을 직접 읽어 저장된 언어 값 우선 적용
             string rawLang = TryReadRawLanguage(config);
             _detectedConfigLanguage = DetectConfigLanguage(rawLang);
-            Plugin.Log.LogInfo($"[SkillTreeConfig] Config Manager language detected: {_detectedConfigLanguage}");
 
             DetectServerClientMode();
 
@@ -991,9 +1015,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     // Attack Tree
                     ["Attack_Expert_Damage"] = Attack_Config.AttackRootDamageBonus.Value,
-                    ["Attack_Step2_MeleeBonusChance"] = Attack_Config.AttackMeleeBonusChance.Value,
-                    ["Attack_Step2_MeleeBonusDamage"] = Attack_Config.AttackMeleeBonusDamage.Value,
-                    ["Attack_Step4_CritChance"] = Attack_Config.AttackCritChance.Value,
+                    ["Tier1_Opener_DamageBonus"] = Attack_Config.AtkOpenerDamageBonus?.Value ?? 20f,
+                    ["Tier5_Frenzy_StackBonusBase"] = Attack_Config.AtkFrenzyStackBonusBase?.Value ?? 5f,
 
                     // Speed Tree
                     ["Speed_Expert_MoveSpeed"] = Speed_Config.SpeedRootMoveSpeed.Value,

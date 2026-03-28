@@ -28,6 +28,52 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_AttackExpert_AllDamageBonus"] = "Tier 0: [Attack Expert] All Damage Bonus (%)",
                 ["Tier0_AttackExpert_RequiredPoints"] = "Tier 0: [Attack Expert] Required Points",
 
+                // === 4-Phase Chain System New Keys (Tier1~5) ===
+                // === Tier 1: First Strike (5) ===
+                ["Tier1_Opener_DamageBonus"] = "Tier 1: [First Strike] Damage Bonus (%)",
+                ["Tier1_Opener_StaminaReduction"] = "Tier 1: [First Strike] Stamina Cost Reduction (%)",
+                ["Tier1_Opener_Duration"] = "Tier 1: [First Strike] Duration (sec)",
+                ["Tier1_Opener_Cooldown"] = "Tier 1: [First Strike] Cooldown (sec)",
+                ["Tier1_Opener_RequiredPoints"] = "Tier 1: [First Strike] Required Points",
+
+                // === Tier 2-1: Melee (2) ===
+                ["Tier2_OpenerMelee_FinisherBonus"] = "Tier 2-1: [Melee] Finisher Bonus (%)",
+                ["Tier2_OpenerMelee_RequiredPoints"] = "Tier 2-1: [Melee] Required Points",
+
+                // === Tier 2-2: Bow (2) ===
+                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [Bow] Crit Chance Bonus (%)",
+                ["Tier2_OpenerBow_RequiredPoints"] = "Tier 2-2: [Bow] Required Points",
+
+                // === Tier 2-3: Crossbow (2) ===
+                ["Tier2_OpenerCrossbow_FirstShotBonus"] = "Tier 2-3: [Crossbow] First Shot Bonus (%)",
+                ["Tier2_OpenerCrossbow_RequiredPoints"] = "Tier 2-3: [Crossbow] Required Points",
+
+                // === Tier 2-4: Magic (2) ===
+                ["Tier2_OpenerMagic_StaggerProc"] = "Tier 2-4: [Magic] Stagger Proc (1=Active)",
+                ["Tier2_OpenerMagic_RequiredPoints"] = "Tier 2-4: [Magic] Required Points",
+
+                // === Tier 3: Pursuit (4) ===
+                ["Tier3_Pursuit_DamageBonus"] = "Tier 3: [Pursuit] Base Damage Bonus (%)",
+                ["Tier3_Pursuit_ChainDamageBonus"] = "Tier 3: [Pursuit] Chain Damage Bonus (%)",
+                ["Tier3_Pursuit_ChainWindow"] = "Tier 3: [Pursuit] Chain Window (sec)",
+                ["Tier3_Pursuit_RequiredPoints"] = "Tier 3: [Pursuit] Required Points",
+
+                // === Tier 4-1: Swift Chase (2) ===
+                ["Tier4_PursuitSpeed_SpeedBonus"] = "Tier 4-1: [Swift Chase] Move Speed Bonus (%)",
+                ["Tier4_PursuitSpeed_RequiredPoints"] = "Tier 4-1: [Swift Chase] Required Points",
+
+                // === Tier 4-2: Frenzy Rush (2) ===
+                ["Tier4_FrenzyTrigger_StaminaReduction"] = "Tier 4-2: [Frenzy Rush] Stamina Reduction (%)",
+                ["Tier4_FrenzyTrigger_RequiredPoints"] = "Tier 4-2: [Frenzy Rush] Required Points",
+
+                // === Tier 5: Frenzy (6) ===
+                ["Tier5_Frenzy_StackBonusBase"] = "Tier 5: [Frenzy] Base Stack Bonus (%)",
+                ["Tier5_Frenzy_StackBonusChain"] = "Tier 5: [Frenzy] Chain Stack Bonus (%)",
+                ["Tier5_Frenzy_MaxStacks"] = "Tier 5: [Frenzy] Max Stacks",
+                ["Tier5_Frenzy_HitsPerStack"] = "Tier 5: [Frenzy] Hits Per Stack",
+                ["Tier5_Frenzy_Tier6Amplifier"] = "Tier 5: [Frenzy] Tier6 Amplifier at Max Stacks",
+                ["Tier5_Frenzy_RequiredPoints"] = "Tier 5: [Frenzy] Required Points",
+
                 // === Tier 1: Base Attack (3) ===
                 ["Tier1_BaseAttack_PhysicalDamageBonus"] = "Tier 1: [Base Attack] Physical Damage Bonus (%)",
                 ["Tier1_BaseAttack_ElementalDamageBonus"] = "Tier 1: [Base Attack] Elemental Damage Bonus (%)",
@@ -68,7 +114,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 6: Final Enhancement (8) ===
                 ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [Weak Point] Crit Damage Bonus (%)",
                 ["Tier6_WeakPointAttack_RequiredPoints"] = "Tier 6-1: [Weak Point] Required Points",
-                ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [One-Hand] Always Bonus (%)",
+                ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [Combo Finisher] Always Bonus (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Tier 6-2: [Combo Finisher] Required Points",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Tier 6-3: [Two-Hand Crush] Damage Bonus (%)",
                 ["Tier6_TwoHandCrush_RequiredPoints"] = "Tier 6-3: [Two-Hand Crush] Required Points",
@@ -834,28 +880,31 @@ namespace CaptainSkillTree.Localization
                 ["Mage_AOE_Range"] = "Active: Range (m)",
                 ["Mage_AOE_Max_Targets"] = "Active: Max Target Count",
                 ["Mage_Eitr_Cost"] = "Active: Eitr Cost",
+                ["Mage_Fire_Rain_Radius"] = "Fire Rain Drop Radius (m)",
+                ["Mage_Fire_Rain_Impact_Radius"] = "Impact Damage Radius (m)",
+                ["Mage_Fire_Rain_Projectile_Count"] = "Projectile Count per Burst",
                 ["Mage_Damage_Multiplier"] = "Active: Damage Multiplier (%)",
                 ["Mage_Cooldown"] = "Active: Cooldown (sec)",
-                ["Mage_Lv1_Cooldown"] = "Active: Cooldown Lv1 (sec)",
-                ["Mage_Lv2_Cooldown"] = "Active: Cooldown Lv2 (sec)",
-                ["Mage_Lv3_Cooldown"] = "Active: Cooldown Lv3 (sec)",
-                ["Mage_Lv4_Cooldown"] = "Active: Cooldown Lv4 (sec)",
-                ["Mage_Lv5_Cooldown"] = "Active: Cooldown Lv5 (sec)",
+                ["Mage_Lv1_Damage_Multiplier"] = "Lv1 AOE Damage Multiplier (%)",
+                ["Mage_Lv1_Cooldown"] = "Lv1 Cooldown (sec)",
+                ["Mage_Lv1_Elemental_Resistance"] = "Lv1 Elemental Resistance (%)",
+                ["Mage_Lv2_Damage_Multiplier"] = "Lv2 AOE Damage Multiplier (%)",
+                ["Mage_Lv2_Cooldown"] = "Lv2 Cooldown (sec)",
+                ["Mage_Lv2_Elemental_Resistance"] = "Lv2 Elemental Resistance (%)",
+                ["Mage_Lv3_Damage_Multiplier"] = "Lv3 AOE Damage Multiplier (%)",
+                ["Mage_Lv3_Cooldown"] = "Lv3 Cooldown (sec)",
+                ["Mage_Lv3_Elemental_Resistance"] = "Lv3 Elemental Resistance (%)",
+                ["Mage_Lv4_Damage_Multiplier"] = "Lv4 AOE Damage Multiplier (%)",
+                ["Mage_Lv4_Cooldown"] = "Lv4 Cooldown (sec)",
+                ["Mage_Lv4_Elemental_Resistance"] = "Lv4 Elemental Resistance (%)",
+                ["Mage_Lv5_Damage_Multiplier"] = "Lv5 AOE Damage Multiplier (%)",
+                ["Mage_Lv5_Cooldown"] = "Lv5 Cooldown (sec)",
+                ["Mage_Lv5_Elemental_Resistance"] = "Lv5 Elemental Resistance (%)",
                 ["Mage_Lv1_AOE_Max_Targets"] = "Active: Max Target Count Lv1",
                 ["Mage_Lv2_AOE_Max_Targets"] = "Active: Max Target Count Lv2",
                 ["Mage_Lv3_AOE_Max_Targets"] = "Active: Max Target Count Lv3",
                 ["Mage_Lv4_AOE_Max_Targets"] = "Active: Max Target Count Lv4",
                 ["Mage_Lv5_AOE_Max_Targets"] = "Active: Max Target Count Lv5",
-                ["Mage_Lv1_Elemental_Resistance"] = "Passive: Elemental Resistance Lv1 (%)",
-                ["Mage_Lv2_Elemental_Resistance"] = "Passive: Elemental Resistance Lv2 (%)",
-                ["Mage_Lv3_Elemental_Resistance"] = "Passive: Elemental Resistance Lv3 (%)",
-                ["Mage_Lv4_Elemental_Resistance"] = "Passive: Elemental Resistance Lv4 (%)",
-                ["Mage_Lv5_Elemental_Resistance"] = "Passive: Elemental Resistance Lv5 (%)",
-                ["Mage_Lv1_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv1 (%)",
-                ["Mage_Lv2_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv2 (%)",
-                ["Mage_Lv3_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv3 (%)",
-                ["Mage_Lv4_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv4 (%)",
-                ["Mage_Lv5_Damage_Multiplier"] = "Active: AOE Damage Multiplier Lv5 (%)",
 
                 // ============================================
                 // Tanker Job Skills - 10 Keys
@@ -869,7 +918,21 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_BuffDuration"] = "War Cry: Buff Duration (sec)",
                 ["Tanker_Taunt_EffectHeight"] = "War Cry: Effect Height (m)",
                 ["Tanker_Taunt_EffectScale"] = "War Cry: Effect Scale",
+                ["Tanker_Taunt_ReflectPercent"] = "War Cry: Reflect Damage (%)",
                 ["Tanker_Passive_DamageReduction"] = "Passive: Damage Reduction (%)",
+                ["Tanker_ReflectDuration_Lv1"] = "Lv1 Passive: Reflect Duration (sec)",
+                ["Tanker_Hp_Bonus_Lv2"] = "Lv2 Passive: HP Bonus",
+                ["Tanker_Lv2_BlockPower"] = "Lv2 Passive: Block Power",
+                ["Tanker_ReflectDuration_Lv2"] = "Lv2 Passive: Reflect Duration (sec)",
+                ["Tanker_Hp_Bonus_Lv3"] = "Lv3 Passive: HP Bonus",
+                ["Tanker_Lv3_BlockPower"] = "Lv3 Passive: Block Power",
+                ["Tanker_ReflectDuration_Lv3"] = "Lv3 Passive: Reflect Duration (sec)",
+                ["Tanker_Hp_Bonus_Lv4"] = "Lv4 Passive: HP Bonus",
+                ["Tanker_Lv4_BlockPower"] = "Lv4 Passive: Block Power",
+                ["Tanker_ReflectDuration_Lv4"] = "Lv4 Passive: Reflect Duration (sec)",
+                ["Tanker_Hp_Bonus_Lv5"] = "Lv5 Passive: HP Bonus",
+                ["Tanker_Lv5_BlockPower"] = "Lv5 Passive: Block Power",
+                ["Tanker_ReflectDuration_Lv5"] = "Lv5 Passive: Reflect Duration (sec)",
 
                 // ============================================
                 // Rogue Job Skills - 10 Keys
@@ -912,7 +975,7 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv5_BonusCharges"] = "Lv5: Bonus Charges",
                 ["Rogue_AttackSpeed_Bonus"] = "Passive: Attack Speed Bonus (%)",
                 ["Rogue_Stamina_Reduction"] = "Passive: Stamina Usage Reduction (%)",
-                ["Rogue_ElementalResistance_Debuff"] = "Passive: Elemental Resistance Increase (%)",
+                ["Rogue_Lv1_DodgeChance"] = "Lv1 Passive: Evasion (%)",
                 ["Rogue_Lv2_AttackSpeed"] = "Lv2 Passive: Attack Speed (%)",
                 ["Rogue_Lv3_AttackSpeed"] = "Lv3 Passive: Attack Speed (%)",
                 ["Rogue_Lv4_AttackSpeed"] = "Lv4 Passive: Attack Speed (%)",
@@ -921,10 +984,10 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv3_StaminaReduction"] = "Lv3 Passive: Stamina Reduction (%)",
                 ["Rogue_Lv4_StaminaReduction"] = "Lv4 Passive: Stamina Reduction (%)",
                 ["Rogue_Lv5_StaminaReduction"] = "Lv5 Passive: Stamina Reduction (%)",
-                ["Rogue_Lv2_ElementalResist"] = "Lv2 Passive: Elemental Resist (%)",
-                ["Rogue_Lv3_ElementalResist"] = "Lv3 Passive: Elemental Resist (%)",
-                ["Rogue_Lv4_ElementalResist"] = "Lv4 Passive: Elemental Resist (%)",
-                ["Rogue_Lv5_ElementalResist"] = "Lv5 Passive: Elemental Resist (%)",
+                ["Rogue_Lv2_DodgeChance"] = "Lv2 Passive: Evasion (%)",
+                ["Rogue_Lv3_DodgeChance"] = "Lv3 Passive: Evasion (%)",
+                ["Rogue_Lv4_DodgeChance"] = "Lv4 Passive: Evasion (%)",
+                ["Rogue_Lv5_DodgeChance"] = "Lv5 Passive: Evasion (%)",
                 ["Rogue_Lv1_MoveSpeed"] = "Lv1 Passive: Move Speed (%)",
                 ["Rogue_Lv2_MoveSpeed"] = "Lv2 Passive: Move Speed (%)",
                 ["Rogue_Lv3_MoveSpeed"] = "Lv3 Passive: Move Speed (%)",
@@ -943,6 +1006,26 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Active_Duration"] = "Holy Healing: Duration (sec)",
                 ["Paladin_Active_Interval"] = "Holy Healing: Interval (sec)",
                 ["Paladin_Passive_ElementalResistanceReduction"] = "Passive: Resistance Bonus (%)",
+                ["Paladin_Lv2_SelfHealPercent"] = "Lv2: Self Heal (%)",
+                ["Paladin_Lv2_AllyHealPercent"] = "Lv2: Ally HoT (%/tick)",
+                ["Paladin_Lv3_SelfHealPercent"] = "Lv3: Self Heal (%)",
+                ["Paladin_Lv3_AllyHealPercent"] = "Lv3: Ally HoT (%/tick)",
+                ["Paladin_Lv3_HealRange"] = "Lv3: Heal Range (m)",
+                ["Paladin_Lv4_SelfHealPercent"] = "Lv4: Self Heal (%)",
+                ["Paladin_Lv4_AllyHealPercent"] = "Lv4: Ally HoT (%/tick)",
+                ["Paladin_Lv4_HealRange"] = "Lv4: Heal Range (m)",
+                ["Paladin_Lv5_SelfHealPercent"] = "Lv5: Self Heal (%)",
+                ["Paladin_Lv5_AllyHealPercent"] = "Lv5: Ally HoT (%/tick)",
+                ["Paladin_Lv5_HealRange"] = "Lv5: Heal Range (m)",
+                ["Paladin_Lv5_Cooldown"] = "Lv5: Cooldown (sec)",
+                ["Paladin_Lv2_ResistanceReduction"] = "Lv2: Resistance Reduction (%)",
+                ["Paladin_Lv3_ResistanceReduction"] = "Lv3: Resistance Reduction (%)",
+                ["Paladin_Lv4_ResistanceReduction"] = "Lv4: Resistance Reduction (%)",
+                ["Paladin_Lv5_ResistanceReduction"] = "Lv5: Resistance Reduction (%)",
+                ["Paladin_Lv2_StaminaBonus"] = "Lv2: Stamina Bonus",
+                ["Paladin_Lv3_StaminaBonus"] = "Lv3: Stamina Bonus",
+                ["Paladin_Lv4_StaminaBonus"] = "Lv4: Stamina Bonus",
+                ["Paladin_Lv5_StaminaBonus"] = "Lv5: Stamina Bonus",
 
                 // ============================================
                 // Berserker Job Skills - 10 Keys
@@ -957,6 +1040,12 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_InvincibilityDuration"] = "Death Defiance: Invincibility Duration (sec)",
                 ["Berserker_Passive_Cooldown"] = "Death Defiance: Cooldown (sec)",
                 ["Berserker_Passive_HealthBonus"] = "Passive: Max HP Bonus (%)",
+                ["Berserker_Lv2_CooldownReduction"] = "Lv2: Rage CD Reduction (sec)",
+                ["Berserker_Lv3_RageDamageReduction"] = "Lv3: Damage Reduction in Rage (%)",
+                ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: Low HP Attack Bonus (%)",
+                ["Berserker_Lv4_LowHpAttackThreshold"] = "Lv4: Low HP Threshold (%)",
+                ["Berserker_Lv5_PassiveCooldownReduction"] = "Lv5: Passive CD Reduction (sec)",
+                ["Berserker_Lv5_InvincibilityBonus"] = "Lv5: Extra Invincibility (sec)",
 
                 // ============================================
                 // Producer Job Skills

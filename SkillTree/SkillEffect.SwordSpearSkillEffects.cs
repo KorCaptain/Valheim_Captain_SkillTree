@@ -39,7 +39,7 @@ namespace CaptainSkillTree.SkillTree
                 swordComboCount[player] = 0;
 
             float now = Time.time;
-            if (swordLastHitTime.ContainsKey(player) && now - swordLastHitTime[player] < 5f)
+            if (swordLastHitTime.TryGetValue(player, out float lastSwordHit1) && now - lastSwordHit1 < 5f)
             {
                 swordComboCount[player]++;
             }
@@ -72,7 +72,7 @@ namespace CaptainSkillTree.SkillTree
             if (!swordComboCount.ContainsKey(player))
                 swordComboCount[player] = 0;
 
-            if (swordLastHitTime.ContainsKey(player) && now - swordLastHitTime[player] < 5f)
+            if (swordLastHitTime.TryGetValue(player, out float lastSwordHit2) && now - lastSwordHit2 < 5f)
             {
                 swordComboCount[player]++;
             }
@@ -104,7 +104,7 @@ namespace CaptainSkillTree.SkillTree
             if (!swordComboCount.ContainsKey(player))
                 swordComboCount[player] = 0;
 
-            if (swordLastHitTime.ContainsKey(player) && now - swordLastHitTime[player] < 10f)
+            if (swordLastHitTime.TryGetValue(player, out float lastSwordHit3) && now - lastSwordHit3 < 10f)
             {
                 swordComboCount[player]++;
             }
@@ -226,7 +226,7 @@ namespace CaptainSkillTree.SkillTree
             if (!spearExpertComboCount.ContainsKey(player))
                 spearExpertComboCount[player] = 0;
 
-            if (spearExpertLastHitTime.ContainsKey(player) && now - spearExpertLastHitTime[player] < 5f)
+            if (spearExpertLastHitTime.TryGetValue(player, out float lastSpearExpertHit) && now - lastSpearExpertHit < 5f)
             {
                 spearExpertComboCount[player]++;
             }
@@ -252,10 +252,10 @@ namespace CaptainSkillTree.SkillTree
                 spearComboCount[player] = 0;
 
             // [Fix 2] 0.05초 이내 중복 히트 무시 (폭발창 AoE 다중 히트 대응)
-            if (spearLastHitTime.ContainsKey(player) && now - spearLastHitTime[player] < 0.05f)
+            if (spearLastHitTime.TryGetValue(player, out float lastSpearHit) && now - lastSpearHit < 0.05f)
                 return;
 
-            if (spearLastHitTime.ContainsKey(player) && now - spearLastHitTime[player] < 5f)
+            if (now - lastSpearHit < 5f)
             {
                 spearComboCount[player]++;
             }
@@ -410,8 +410,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static bool IsSpearPenetrateBuffActive(Player player)
         {
-            if (!spearPenetrateBuffEndTime.ContainsKey(player)) return false;
-            return Time.time < spearPenetrateBuffEndTime[player];
+            return spearPenetrateBuffEndTime.TryGetValue(player, out float endTime) && Time.time < endTime;
         }
 
         /// <summary>
@@ -436,7 +435,7 @@ namespace CaptainSkillTree.SkillTree
             if (!spearPenetrateComboCount.ContainsKey(player))
                 spearPenetrateComboCount[player] = 0;
 
-            if (spearPenetrateLastHitTime.ContainsKey(player) && now - spearPenetrateLastHitTime[player] < 5f)
+            if (spearPenetrateLastHitTime.TryGetValue(player, out float lastPenHit) && now - lastPenHit < 5f)
             {
                 spearPenetrateComboCount[player]++;
             }

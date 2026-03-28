@@ -25,8 +25,8 @@
 | 폴암 | Polearm | `m_pierce` + `m_slash` | - | `SkillType.Polearms` |
 | 활 | Bow | `m_pierce` | - | `SkillType.Bows` |
 | 석궁 | Crossbow | `m_pierce` | - | `SkillType.Crossbows` |
-| 지팡이 | Staff | - | `m_fire` / `m_frost` / `m_lightning` | `SkillType.ElementalMagic` |
-| 완드 | Wand | - | `m_blunt` / `m_pierce` / `m_spirit` / `m_poison` | `SkillType.Elementalmagic` |
+| 지팡이 | Staff | - | `m_fire` / `m_frost` / `m_fire` / `m_lightning` /`m_poison` / `m_spirit` | `SkillType.ElementalMagic` |
+| 완드 | Wand | - | `m_fire` / `m_frost` / `m_fire` / `m_lightning` /`m_poison` / `m_spirit`  | `SkillType.Elementalmagic` |
 
 ### 분류 특이사항
 
@@ -236,10 +236,31 @@ private static void Postfix(...)
 
 | 스킬 ID | 효과 | 타입 |
 |---------|------|------|
-| `attack_root` | 공격 전문가 데미지 | 물리+속성% |
-| `atk_twohand_drain` | 양손 드레인 | 물리+속성% |
-| `atk_base` | 기본 강화 고정값 | 물리+속성 flat |
+| `attack_root` | 공격 전문가 전 데미지 +3% | 물리+속성% |
+| `atk_pursuit_speed` | 이동속도 +12% (상시 패시브) | MoveSpeed |
 | `speed_base` | 공격속도 | 공격속도% |
+
+### 공격 전문가 트리 4국면 시스템
+
+| Tier | 스킬 ID | 효과 유형 | 툴팁 표시 방식 |
+|------|---------|----------|--------------|
+| T0 | `attack_root` | 전 데미지 +3% (항시) | physPct + elemPct |
+| T1 | `atk_opener` | 전투 개시 5초 +20% (조건부) | **미표시** (시간 기반 동적) |
+| T2 | `atk_opener_melee` | 마무리 예열 (조건부) | **미표시** (전투 조건부) |
+| T2 | `atk_opener_bow` | 크리확률 +15% **(상시 패시브)** | `b.CritChance += 15f` (Bow 전용) |
+| T2 | `atk_opener_crossbow` | 첫발 +50% (조건부) | **미표시** (조건부 재충전) |
+| T2 | `atk_opener_magic` | 스태거 확정 (조건부) | **미표시** (조건부) |
+| T3 | `atk_pursuit` | 이동 적 +15~25% (조건부) | **미표시** (적 상태 조건부) |
+| T4 | `atk_pursuit_speed` | 이동속도 +12% **(상시 패시브)** | `b.MoveSpeed += 12f` (공통) |
+| T4 | `atk_frenzy_trigger` | 스태미나 -20% (조건부) | **미표시** (거리 조건부) |
+| T5 | `atk_frenzy` | 스택 데미지 +5~40% (동적) | **미표시** (동적 스택) |
+| T6 | `atk_crit_dmg` | 크리피해 +12% | Critical 시스템 통합 |
+| T6 | `atk_finisher_melee` | 근접 +5% | physPct (근접 무기만) |
+| T6 | `atk_twohand_crush` | 양손 +10% | physPct (양손 무기만) |
+| T6 | `atk_staff_mage` | 속성 +5% | elemPct (지팡이만) |
+
+> **동적/조건부 효과 미표시 원칙**: 전투 상태(`AttackTreeTracker`)에 따라 수치가 변하는 효과는
+> 정적 아이템 툴팁에 표시하지 않음. 인게임 화면 텍스트(`ShowSkillEffectText`)로 대신 표시.
 
 ### 제작 전문가 버프 및 인챈트
 
@@ -260,17 +281,16 @@ private static void Postfix(...)
 | `spear_Step1_crit` | `Spear_Config.SpearStep2CritDamageBonusValue` | 급소 찌르기 | 물리% |
 | `bow_Step1_damage` | `Bow_Config.BowStep1ExpertDamageBonusValue` | 전문가 데미지 | 물리% |
 | `crossbow_Step1_damage` | `Crossbow_Config.CrossbowExpertDamageBonusValue` | 전문가 데미지 | 물리% |
-| `atk_melee_bonus` | `Attack_Config.AttackMeleeBonusDamageValue` | 근접 강화 | 물리% |
-| `atk_bow_bonus` | `Attack_Config.AttackBowBonusDamageValue` | 활 강화 | 물리% |
-| `atk_ranged_enhance` | `Attack_Config.AttackRangedEnhancementValue` | 원거리 강화 | 물리+속성% |
+| `atk_opener_bow` | `Attack_Config.AtkOpenerBowCritChanceValue` | 크리확률 +15% (Bow 전용, 상시) | CritChance |
+| `atk_finisher_melee` | `Attack_Config.AttackFinisherMeleeBonusValue` | 근접 +5% (T6) | 물리% |
+| `atk_twohand_crush` | `Attack_Config.AttackTwoHandedBonusValue` | 양손 +10% (T6) | 물리% |
 
 ### 속성 무기 (Staff/Wand)
 
 | 스킬 ID | Config 프로퍼티 | 효과 | 타입 |
 |---------|---------------|------|------|
 | `staff_Step1_damage` | `Staff_Config.StaffExpertDamageValue` | 전문가 데미지 | 속성% |
-| `atk_staff_bonus` | `Attack_Config.AttackStaffBonusDamageValue` | 지팡이 강화 | 속성% |
-| `atk_staff_mage` | `Attack_Config.AttackStaffElementalValue` | 속성 마스터 | 속성% |
+| `atk_staff_mage` | `Attack_Config.AttackStaffElementalValue` | 속성 마스터 +5% (T6) | 속성% |
 
 ---
 

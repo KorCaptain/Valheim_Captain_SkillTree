@@ -174,7 +174,7 @@ namespace CaptainSkillTree.SkillTree
             SpearStep1CritDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier1_VitalStrike_DamageBonus",
-                20f,
+                5f,
                 SkillTreeConfig.GetConfigDescription("Tier1_VitalStrike_DamageBonus"));
 
             SpearStep3PierceDamageBonus = SkillTreeConfig.BindServerSync(config,
@@ -237,7 +237,7 @@ namespace CaptainSkillTree.SkillTree
             SpearStep5PenetrateLightningDamage = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_LightningDamage",
-                260f,
+                125f,
                 SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_LightningDamage"));
 
             SpearStep5PenetrateComboCount = SkillTreeConfig.BindServerSync(config,

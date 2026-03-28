@@ -10,7 +10,7 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 메이지 직업 전용 액티브 스킬 및 패시브 스킬 시스템
-    /// 메이지 마법 폭발 (AOE 즉시 공격) 및 속성 저항 증가
+    /// 불의 비 (Fire Rain): 전방 타겟 지정 → 좌측 상공에서 파이어볼 N개×2회 낙하 (1초 간격)
     /// </summary>
     public static class MageSkills
     {
@@ -20,9 +20,7 @@ namespace CaptainSkillTree.SkillTree
         // Lv2+ 연속 발사 충전 (30초 이내 추가 시전 가능)
         private static readonly Dictionary<string, float> extraChargeExpiry = new Dictionary<string, float>();
 
-        /// <summary>
-        /// 메이지 패시브 및 액티브 스킬을 SkillTreeManager에 등록
-        /// </summary>
+        /// <summary>메이지 스킬 등록</summary>
         public static void RegisterMageSkills()
         {
             Plugin.Log.LogInfo("[메이지 스킬] 패시브 및 액티브 스킬 등록 완료");
@@ -31,33 +29,25 @@ namespace CaptainSkillTree.SkillTree
         // 메이지 상태 캐시 (직업 변경 후 갱신 필요)
         private static readonly Dictionary<string, bool> mageStatusCache = new Dictionary<string, bool>();
         private static float lastCacheUpdate = 0f;
-        private static readonly float CACHE_UPDATE_INTERVAL = 1f; // 1초마다 캐시 갱신
-        
-        /// <summary>
-        /// 메이지인지 확인 (캐시 기반으로 성능 개선 및 직업 변경 후 갱신 보장)
-        /// </summary>
+        private static readonly float CACHE_UPDATE_INTERVAL = 1f;
+
+        /// <summary>메이지인지 확인 (캐시 기반)</summary>
         public static bool IsMage(Player player)
         {
             try
             {
                 if (player == null) return false;
-                
                 string playerId = player.GetPlayerID().ToString();
                 float currentTime = Time.time;
-                
-                // 캐시 갱신 조건: 캐시가 없거나, 일정 시간 경과 시
-                if (!mageStatusCache.ContainsKey(playerId) || 
+                if (!mageStatusCache.ContainsKey(playerId) ||
                     (currentTime - lastCacheUpdate) > CACHE_UPDATE_INTERVAL)
                 {
                     var manager = SkillTreeManager.Instance;
                     bool isMageResult = manager != null && manager.GetSkillLevel("Mage") > 0;
-                    
                     mageStatusCache[playerId] = isMageResult;
                     lastCacheUpdate = currentTime;
-                    
                     Plugin.Log.LogDebug($"[메이지 스킬] 메이지 상태 캐시 갱신: {player.GetPlayerName()} = {isMageResult}");
                 }
-                
                 return mageStatusCache[playerId];
             }
             catch (System.Exception ex)
@@ -66,26 +56,18 @@ namespace CaptainSkillTree.SkillTree
                 return false;
             }
         }
-        
-        /// <summary>
-        /// 메이지 상태 캐시 강제 갱신 (직업 변경 후 호출)
-        /// </summary>
+
+        /// <summary>메이지 상태 캐시 강제 갱신 (직업 변경 후 호출)</summary>
         public static void RefreshMageStatusCache(Player player = null)
         {
             try
             {
                 if (player != null)
-                {
-                    string playerId = player.GetPlayerID().ToString();
-                    mageStatusCache.Remove(playerId); // 특정 플레이어 캐시 제거
-                }
+                    mageStatusCache.Remove(player.GetPlayerID().ToString());
                 else
-                {
-                    mageStatusCache.Clear(); // 전체 캐시 초기화
-                }
-                
-                lastCacheUpdate = 0f; // 강제 갱신을 위해 시간 리셋
-                Plugin.Log.LogInfo($"[메이지 스킬] 메이지 상태 캐시 강제 갱신 완료");
+                    mageStatusCache.Clear();
+                lastCacheUpdate = 0f;
+                Plugin.Log.LogInfo("[메이지 스킬] 메이지 상태 캐시 강제 갱신 완료");
             }
             catch (System.Exception ex)
             {
@@ -93,34 +75,25 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>
-        /// 현재 메이지 레벨 가져오기
-        /// </summary>
+        /// <summary>현재 메이지 레벨 가져오기</summary>
         public static int GetMageLevel(Player player)
         {
             var manager = SkillTreeManager.Instance;
             return manager?.GetSkillLevel("Mage") ?? 0;
         }
 
-        /// <summary>
-        /// 메이지 속성 저항 보너스 가져오기 (레벨 기반)
-        /// </summary>
+        /// <summary>메이지 속성 저항 보너스 가져오기 (레벨 기반)</summary>
         public static float GetMageElementalResistance(Player player)
         {
             if (!IsMage(player)) return 0f;
             int level = GetMageLevel(player);
-            return Mage_Config.GetElementalResistance(level) / 100f; // 퍼센트를 소수로 변환
+            return Mage_Config.GetElementalResistance(level) / 100f;
         }
 
-        /// <summary>
-        /// 메이지 액티브 스킬 실행 (Y키)
-        /// </summary>
+        /// <summary>메이지 액티브 스킬 실행 (Y키) - 불의 비</summary>
         public static bool TryExecuteMageActiveSkill(Player player)
         {
-            if (!IsMage(player))
-            {
-                return false;
-            }
+            if (!IsMage(player)) return false;
 
             try
             {
@@ -135,26 +108,23 @@ namespace CaptainSkillTree.SkillTree
 
                 if (hasExtraCharge)
                 {
-                    // 지팡이 착용 체크
                     if (!IsWieldingStaff(player))
                     {
                         player.Message(MessageHud.MessageType.Center, L.Get("staff_required"));
                         return false;
                     }
-                    // Eitr 체크
                     int eitrCost2 = Mage_Config.MageEitrCostValue;
                     if (player.GetEitr() < eitrCost2)
                     {
                         player.Message(MessageHud.MessageType.Center, L.Get("eitr_insufficient", eitrCost2.ToString()));
                         return false;
                     }
-                    // 충전 소모 후 추가 시전
                     extraChargeExpiry.Remove(playerKey);
-                    ExecuteMageAOESkill(player, mageLevel);
+                    ExecuteFireRainSkill(player, mageLevel);
                     lastActivationTime[playerKey] = currentTime;
                     player.AddEitr(-eitrCost2);
                     ActiveSkillCooldownRegistry.SetCooldown("Y", Mage_Config.GetCooldown(mageLevel));
-                    Plugin.Log.LogInfo($"[메이지 액티브] {player.GetPlayerName()} 연속 발사 충전 사용");
+                    Plugin.Log.LogInfo($"[불의 비] {player.GetPlayerName()} 연속 발사 충전 사용");
                     return true;
                 }
 
@@ -185,34 +155,27 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 스킬 실행
-                ExecuteMageAOESkill(player, mageLevel);
+                ExecuteFireRainSkill(player, mageLevel);
 
                 // Lv2+이면 30초 추가 충전 부여
                 if (mageLevel >= 2)
-                {
                     extraChargeExpiry[playerKey] = currentTime + 30f;
-                }
 
-                // 쿨타임 설정
                 lastActivationTime[playerKey] = currentTime;
                 ActiveSkillCooldownRegistry.SetCooldown("Y", Mage_Config.GetCooldown(mageLevel));
-
-                // Eitr 소모
                 player.AddEitr(-eitrCost);
 
-                Plugin.Log.LogInfo($"[메이지 액티브] {player.GetPlayerName()} 메이지 스킬 사용 (Lv{mageLevel})");
+                Plugin.Log.LogInfo($"[불의 비] {player.GetPlayerName()} 스킬 사용 (Lv{mageLevel})");
                 return true;
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[메이지 액티브] 스킬 실행 실패: {ex.Message}");
+                Plugin.Log.LogError($"[불의 비] 스킬 실행 실패: {ex.Message}");
                 return false;
             }
         }
 
-        /// <summary>
-        /// 지팡이 착용 여부 확인
-        /// </summary>
+        /// <summary>지팡이 착용 여부 확인</summary>
         private static bool IsWieldingStaff(Player player)
         {
             try
@@ -220,15 +183,11 @@ namespace CaptainSkillTree.SkillTree
                 var rightItem = player.GetCurrentWeapon();
                 if (rightItem?.m_shared != null)
                 {
-                    // 지팡이 아이템 이름으로 확인 (Staff 타입이 없으므로)
                     string itemName = rightItem.m_shared.m_name?.ToLower() ?? "";
-                    if (itemName.Contains("staff") || itemName.Contains("wand") || 
+                    if (itemName.Contains("staff") || itemName.Contains("wand") ||
                         itemName.Contains("$item_staff"))
-                    {
                         return true;
-                    }
                 }
-
                 return false;
             }
             catch (System.Exception ex)
@@ -238,276 +197,316 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        /// <summary>카메라 전방 range 이내에서 가장 정렬된 적 반환</summary>
+        private static Character FindTargetInFront(Player player, float range)
+        {
+            Vector3 playerPos = player.transform.position;
+            Vector3 camForward = GameCamera.instance != null
+                ? GameCamera.instance.transform.forward
+                : player.transform.forward;
+
+            Collider[] cols = Physics.OverlapSphere(playerPos, range);
+            Character bestTarget = null;
+            float bestScore = float.MaxValue;
+
+            foreach (var col in cols)
+            {
+                var ch = col.GetComponent<Character>() ?? col.GetComponentInParent<Character>();
+                if (ch == null || ch.IsDead() || ch.IsPlayer()) continue;
+
+                Vector3 toTarget = ch.transform.position - playerPos;
+                float dot = Vector3.Dot(camForward.normalized, toTarget.normalized);
+                if (dot < 0.3f) continue; // 전방 약 72도 이내만
+
+                float score = toTarget.magnitude * (1f - dot); // 가깝고 정렬된 적 우선
+                if (score < bestScore)
+                {
+                    bestScore = score;
+                    bestTarget = ch;
+                }
+            }
+            return bestTarget;
+        }
+
         /// <summary>
-        /// 메이지 AOE 스킬 실행 - 시전시 vfx_GodExplosion + 몬스터에 vfx_HealthUpgrade 2초 후 데미지
+        /// 불의 비(Fire Rain) 스킬 실행
+        /// 타겟 발밑 VFX + SFX + 상공에서 파이어볼 30개 낙하
         /// </summary>
-        private static void ExecuteMageAOESkill(Player player, int mageLevel = 1)
+        private static void ExecuteFireRainSkill(Player player, int mageLevel)
         {
             try
             {
                 float range = Mage_Config.MageAOERangeValue;
 
-                Vector3 playerPos = player.transform.position;
-
-                // SimpleVFX로 VFX 재생
-                SimpleVFX.Play("vfx_GodExplosion", playerPos, 3f);
-
-                // 범위 내 모든 몬스터 찾기 (개선된 검색 로직)
-                List<Character> targets = new List<Character>();
-                Collider[] colliders = Physics.OverlapSphere(playerPos, range);
-                
-                foreach (var collider in colliders)
-                {
-                    var character = collider.GetComponent<Character>();
-                    if (character != null && character != player && !character.IsDead())
-                    {
-                        // 플레이어가 아닌 캐릭터인지 확인
-                        if (!character.IsPlayer())
-                        {
-                            // 다양한 방법으로 적대적 몬스터 확인
-                            bool isHostileMonster = false;
-                            
-                            // 방법 1: 팩션 비교 (기본)
-                            if (character.GetFaction() != player.GetFaction())
-                            {
-                                isHostileMonster = true;
-                            }
-                            
-                            // 방법 2: 몬스터 AI 확인
-                            var monsterAI = character.GetComponent<MonsterAI>();
-                            if (monsterAI != null)
-                            {
-                                isHostileMonster = true;
-                            }
-                            
-                            // 방법 3: Humanoid가 아닌 캐릭터 (일반적으로 몬스터)
-                            var humanoid = character.GetComponent<Humanoid>();
-                            if (humanoid == null || !humanoid.IsPlayer())
-                            {
-                                // 이름으로 확인 (일반적인 몬스터 패턴)
-                                string charName = character.GetHoverName()?.ToLower() ?? "";
-                                if (charName.Contains("greydwarf") || charName.Contains("skeleton") || 
-                                    charName.Contains("draugr") || charName.Contains("troll") || 
-                                    charName.Contains("boar") || charName.Contains("deer") ||
-                                    !charName.Contains("player"))
-                                {
-                                    isHostileMonster = true;
-                                }
-                            }
-                            
-                            // 방법 4: 마지막 수단 - 플레이어가 아니고 죽지 않았으면 몬스터로 간주
-                            if (!isHostileMonster && !character.IsPlayer() && !character.IsDead())
-                            {
-                                isHostileMonster = true;
-                            }
-                            
-                            if (isHostileMonster)
-                            {
-                                targets.Add(character);
-                                Plugin.Log.LogDebug($"[메이지 AOE] 타겟 추가: {character.GetHoverName()} (팩션: {character.GetFaction()})");
-                            }
-                        }
-                    }
-                }
-
-                if (targets.Count == 0)
+                // 타겟 탐색
+                Character target = FindTargetInFront(player, range);
+                if (target == null)
                 {
                     player.Message(MessageHud.MessageType.Center, L.Get("no_targets_in_range"));
                     return;
                 }
 
-                // 가까운 순서로 정렬 후 최대 N마리로 제한 (레벨별 Config 연동)
-                int maxTargets = Mage_Config.GetMaxTargets(mageLevel);
-                targets = targets
-                    .OrderBy(c => Vector3.Distance(playerPos, c.transform.position))
-                    .Take(maxTargets)
-                    .ToList();
+                Vector3 targetPos = target.transform.position;
 
-                // 각 몬스터에게 개별적으로 vfx_HealthUpgrade 효과를 적용하고 2초 후 데미지 적용
-                int validTargets = 0;
-                
-                foreach (var target in targets)
+                // 캐릭터를 카메라 방향으로 회전
+                if (GameCamera.instance != null)
                 {
-                    if (target != null && !target.IsDead())
-                    {
-                        // 각 몬스터별로 지연 데미지 적용 시작
-                        Plugin.Instance?.StartCoroutine(AttachVFXToMonster(player, target, 2f, mageLevel));
-                        validTargets++;
-                        
-                        Plugin.Log.LogDebug($"[메이지 지연 폭발] {target.GetHoverName()}에게 2초 후 폭발 예정");
-                    }
+                    Vector3 camFlat = Vector3.ProjectOnPlane(
+                        GameCamera.instance.transform.forward, Vector3.up);
+                    if (camFlat.sqrMagnitude > 0.01f)
+                        player.transform.rotation = Quaternion.LookRotation(camFlat.normalized);
                 }
-                
-                // 플레이어에게 피드백
-                player.Message(MessageHud.MessageType.Center, L.Get("mage_spell_cast", validTargets.ToString()));
-                
-                Plugin.Log.LogInfo($"[메이지 AOE] {player.GetPlayerName()} - {validTargets}마리에게 지연 폭발 주문 시전");
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[메이지 AOE] 스킬 실행 실패: {ex.Message}");
-            }
-        }
 
-        /// <summary>
-        /// 몬스터에 VFX 재생 후 지연 데미지 적용
-        /// ✅ EpicMMOSystem 방식으로 단순화 - while 루프 제거
-        /// </summary>
-        private static IEnumerator AttachVFXToMonster(Player caster, Character target, float duration, int mageLevel = 1)
-        {
-            if (caster == null || target == null) yield break;
+                // 환호 모션
+                player.StartEmote("cheer", false);
 
-            // ✅ VFX 재생 (SimpleVFX 방식)
-            try
-            {
-                Vector3 targetPos = target.transform.position + Vector3.up * 1.5f;
-                SimpleVFX.Play("vfx_HealthUpgrade", targetPos, duration);
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[메이지 VFX] VFX 생성 실패: {ex.Message}");
-                yield break;
-            }
-
-            // ✅ 단순 대기 (while 루프 제거)
-            yield return new WaitForSeconds(duration);
-
-            // 지연 데미지 적용
-            if (target != null && !target.IsDead() && caster != null && !caster.IsDead())
-            {
-                ApplyDelayedDamage(caster, target, mageLevel);
-            }
-        }
-        
-        /// <summary>
-        /// 지연된 데미지 적용 - 2초 후 레벨 기반 데미지 적용
-        /// </summary>
-        private static void ApplyDelayedDamage(Player caster, Character target, int mageLevel = 1)
-        {
-            try
-            {
-                // 타겟이 여전히 유효한지 확인
-                if (target == null || target.IsDead() || caster == null)
+                // 발밑 debuff_03 VFX (2배 크기, 2초)
+                var debuff03 = VFXManager.GetVFXPrefab("debuff_03");
+                if (debuff03 != null)
                 {
-                    Plugin.Log.LogDebug("[메이지 지연 폭발] 타겟 또는 시전자가 유효하지 않아 폭발 취소");
+                    var vfxGo = UnityEngine.Object.Instantiate(
+                        debuff03, player.transform.position, Quaternion.identity);
+                    vfxGo.transform.localScale = Vector3.one * 2f;
+                    UnityEngine.Object.Destroy(vfxGo, 2f);
+                }
+
+                // 타겟 VFX + SFX 코루틴
+                Plugin.Instance?.StartCoroutine(FireRainVFXAndSFXCoroutine(targetPos));
+
+                // 파이어볼 낙하 코루틴
+                Plugin.Instance?.StartCoroutine(FireRainProjectileCoroutine(player, target, mageLevel));
+
+                // 시전 피드백
+                player.Message(MessageHud.MessageType.Center,
+                    L.Get("mage_firerain_cast", target.GetHoverName()));
+
+                Plugin.Log.LogInfo($"[불의 비] {player.GetPlayerName()} → {target.GetHoverName()} 시전 (Lv{mageLevel})");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[불의 비] 스킬 실행 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>타겟 발밑 area_fire_red 2초 + sfx 8회 (0.25초 간격)</summary>
+        private static IEnumerator FireRainVFXAndSFXCoroutine(Vector3 targetPos)
+        {
+            SimpleVFX.Play("area_fire_red", targetPos, 2f);
+
+            for (int i = 0; i < 8; i++)
+            {
+                VFXManager.PlaySound("sfx_dverger_fireball_rain_shot", targetPos, 15f);
+                yield return new WaitForSeconds(0.25f);
+            }
+        }
+
+        /// <summary>타겟 좌측에서 버스트당 N개 × 2회 낙하 (0.05초 간격, 버스트 사이 1초 대기)</summary>
+        private static IEnumerator FireRainProjectileCoroutine(Player player, Character target, int mageLevel)
+        {
+            if (player == null || target == null) yield break;
+
+            Vector3 targetPos = target.transform.position;
+            float radius = Mage_Config.MageFireRainRadiusValue;
+            int countPerBurst = Mage_Config.MageFireRainProjectileCountValue;
+
+            // 스폰 원점: 카메라 기준 타겟 좌측 + 상공 (11시 위치)
+            Vector3 camRight = GameCamera.instance != null
+                ? GameCamera.instance.transform.right
+                : player.transform.right;
+            Vector3 spawnOrigin = targetPos - camRight * 40f + Vector3.up * 40f;
+
+            // 11시→5시 고정 방향 벡터 (모든 파이어볼 평행 낙하)
+            Vector3 mainDir = (targetPos - spawnOrigin).normalized;
+
+            // mainDir 수직 평면의 기저 벡터 (스폰 위치 분산용)
+            Vector3 scatterRight = Vector3.Cross(mainDir, Vector3.up).normalized;
+            if (scatterRight.magnitude < 0.1f)
+                scatterRight = Vector3.Cross(mainDir, Vector3.forward).normalized;
+            Vector3 scatterUp = Vector3.Cross(scatterRight, mainDir).normalized;
+
+            // 1차 버스트
+            for (int i = 0; i < countPerBurst; i++)
+            {
+                if (player == null || player.IsDead()) yield break;
+                Vector2 rnd = UnityEngine.Random.insideUnitCircle * radius;
+                Vector3 spawnPos = spawnOrigin + scatterRight * rnd.x + scatterUp * rnd.y;
+                SpawnFireRainProjectile(player, spawnPos, mainDir, mageLevel);
+                yield return new WaitForSeconds(0.05f);
+            }
+
+            // 1초 대기
+            yield return new WaitForSeconds(1f);
+
+            // 2차 버스트
+            for (int i = 0; i < countPerBurst; i++)
+            {
+                if (player == null || player.IsDead()) yield break;
+                Vector2 rnd = UnityEngine.Random.insideUnitCircle * radius;
+                Vector3 spawnPos = spawnOrigin + scatterRight * rnd.x + scatterUp * rnd.y;
+                SpawnFireRainProjectile(player, spawnPos, mainDir, mageLevel);
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
+
+        /// <summary>staff_fireball_projectile 단발 생성 (상공 낙하)</summary>
+        private static void SpawnFireRainProjectile(Player player, Vector3 spawnPos, Vector3 dir, int mageLevel)
+        {
+            try
+            {
+                var prefab = ZNetScene.instance?.GetPrefab("staff_fireball_projectile");
+                if (prefab == null)
+                {
+                    Plugin.Log.LogWarning("[불의 비] staff_fireball_projectile 프리팹 없음");
                     return;
                 }
 
-                // 기본 공격력 계산 + 레벨별 데미지 배수 적용
-                float baseDamage = CalculatePlayerBaseDamage(caster);
-                float damageMultiplier = Mage_Config.GetDamageMultiplier(mageLevel) / 100f;
-                float finalDamage = baseDamage * damageMultiplier;
-                
-                // 폭발 효과 - vfx_HealthUpgrade 종료와 함께 데미지 적용
-                Vector3 targetPos = target.transform.position;
+                var go = UnityEngine.Object.Instantiate(prefab, spawnPos, Quaternion.LookRotation(dir));
 
-                // SimpleVFX로 VFX + 사운드 재생
-                SimpleVFX.PlayWithSound("fx_siegebomb_explosion", "sfx_GiantDemolisher_rock_destroyed", targetPos, 2f);
+                // 데미지 처리는 OnHit 패치에서 담당
+                var tag = go.AddComponent<FireRainProjectileTag>();
+                tag.Owner = player;
+                tag.MageLevel = mageLevel;
+                tag.Processed = false;
 
-                // 데미지 적용
-                HitData hitData = new HitData();
-                hitData.m_damage.m_damage = finalDamage;
-                hitData.m_point = target.GetCenterPoint();
-                hitData.m_dir = (targetPos - caster.transform.position).normalized;
-                hitData.m_attacker = caster.GetZDOID();
-                hitData.m_skill = Skills.SkillType.ElementalMagic;
-                
-                // 실제 데미지 적용
-                target.Damage(hitData);
-                
-                // 시전자에게 피드백
-                if (caster is Player player)
+                // Projectile: 0 데미지 설정 (패치에서 AOE 데미지 처리)
+                var proj = go.GetComponent<Projectile>();
+                if (proj != null)
                 {
-                    player.Message(MessageHud.MessageType.TopLeft, L.Get("mage_explosion_damage", target.GetHoverName(), finalDamage.ToString("F0")));
+                    var hitData = new HitData();
+                    hitData.m_damage = new HitData.DamageTypes();
+                    hitData.m_dir = dir;
+                    hitData.m_skill = Skills.SkillType.ElementalMagic;
+                    hitData.m_attacker = player.GetZDOID();
+                    var weapon = player.GetCurrentWeapon();
+                    proj.Setup(player, dir * 60f, 0f, hitData, null, weapon);
                 }
-                
-                Plugin.Log.LogInfo($"[메이지 지연 폭발] {target.GetHoverName()}에게 {finalDamage:F1} 데미지 적용 완료 (2초 지연)");
+
+                // 물리: 중력 없이 직선 낙하
+                var rb = go.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.velocity = dir * 60f;
+                    rb.useGravity = false;
+                    rb.isKinematic = false;
+                }
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[메이지 지연 폭발] 데미지 적용 실패: {ex.Message}");
+                Plugin.Log.LogError($"[불의 비] 발사체 스폰 실패: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// 플레이어 기본 공격력 계산
-        /// </summary>
-        private static float CalculatePlayerBaseDamage(Player player)
+        /// <summary>파이어볼 착지 반경 3m AOE 데미지 (패치에서 호출)</summary>
+        public static void ApplyFireRainAOEDamage(Player owner, Vector3 point, int mageLevel)
         {
             try
             {
-                // 기본 마법 공격력
-                float baseDamage = 50f;
-                
-                // 지팡이 공격력 추가
-                var weapon = player.GetCurrentWeapon();
-                if (weapon != null)
+                if (owner == null) return;
+                var weapon = owner.GetCurrentWeapon();
+                var dmg = weapon != null ? weapon.GetDamage() : new HitData.DamageTypes();
+                float pct = Mage_Config.GetDamageMultiplier(mageLevel) / 100f;
+                dmg.Modify(pct);
+
+                float impactRadius = Mage_Config.MageFireRainImpactRadiusValue;
+                var cols = Physics.OverlapSphere(point, impactRadius);
+                foreach (var col in cols)
                 {
-                    baseDamage += weapon.GetDamage().GetTotalDamage();
+                    var ch = col.GetComponent<Character>() ?? col.GetComponentInParent<Character>();
+                    if (ch == null || ch.IsDead() || ch.IsPlayer()) continue;
+
+                    var hit = new HitData();
+                    hit.m_damage = dmg;
+                    hit.m_point = point;
+                    hit.m_dir = (ch.transform.position - point).normalized;
+                    hit.m_skill = Skills.SkillType.ElementalMagic;
+                    hit.m_attacker = owner.GetZDOID();
+                    ch.Damage(hit);
                 }
-                
-                // 마법 스킬 레벨 보너스
-                var elementalMagicLevel = player.GetSkillLevel(Skills.SkillType.ElementalMagic);
-                baseDamage += elementalMagicLevel * 2f; // 스킬 레벨당 +2 데미지
-                
-                return baseDamage;
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[메이지 스킬] 기본 데미지 계산 실패: {ex.Message}");
-                return 50f; // 기본값 반환
+                Plugin.Log.LogError($"[불의 비] AOE 데미지 실패: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// 모든 메이지 스킬 상태 정리 (플러그인 종료시)
-        /// </summary>
+        /// <summary>특정 플레이어 상태 정리 (로그아웃/사망 시)</summary>
+        public static void CleanupPlayerData(Player player)
+        {
+            if (player == null) return;
+            string playerKey = player.GetPlayerID().ToString();
+            lastActivationTime.Remove(playerKey);
+            extraChargeExpiry.Remove(playerKey);
+            mageStatusCache.Remove(playerKey);
+        }
+
+        /// <summary>모든 메이지 스킬 상태 정리 (플러그인 종료시)</summary>
         public static void ClearAllStates()
         {
             lastActivationTime.Clear();
             pendingExplosions.Clear();
             extraChargeExpiry.Clear();
-            mageStatusCache.Clear(); // 캐시도 함께 정리
+            mageStatusCache.Clear();
             Plugin.Log.LogInfo("[메이지 스킬] 모든 상태 정리 완료 (캐시 포함)");
         }
     }
 
-    /// <summary>
-    /// 메이지 속성 저항 패시브 스킬 패치
-    /// Character.Damage에서 속성 데미지 감소 적용
-    /// </summary>
+    // ================================================================
+    // 불의 비 낙하 파이어볼 태그 컴포넌트
+    // ================================================================
+    public class FireRainProjectileTag : MonoBehaviour
+    {
+        public bool Processed = false;
+        public Player Owner;
+        public int MageLevel;
+    }
+
+    // ================================================================
+    // Projectile.OnHit 패치 - 불의 비 발사체 착지 시 AOE 데미지
+    // ================================================================
+    [HarmonyPatch(typeof(Projectile), "OnHit",
+        new System.Type[] { typeof(Collider), typeof(Vector3), typeof(bool), typeof(Vector3) })]
+    [HarmonyPriority(Priority.Low)]
+    public static class FireRain_ProjectileHit_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(Projectile __instance,
+            Collider collider, Vector3 hitPoint, bool water, Vector3 normal)
+        {
+            try
+            {
+                if (water) return;
+                var tag = __instance.GetComponent<FireRainProjectileTag>();
+                if (tag == null || tag.Processed) return;
+                tag.Processed = true;
+                MageSkills.ApplyFireRainAOEDamage(tag.Owner, hitPoint, tag.MageLevel);
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[불의 비] OnHit 패치 오류: {ex.Message}");
+            }
+        }
+    }
+
+    // ================================================================
+    // 메이지 속성 저항 패시브 스킬 패치 (기존 유지)
+    // ================================================================
     [HarmonyPatch(typeof(Character), "Damage")]
     public static class MageElementalResistancePatch
     {
-        /// <summary>
-        /// Character.Damage 실행 전 호출 - 메이지 속성 저항 적용
-        /// </summary>
         static void Prefix(Character __instance, ref HitData hit)
         {
             try
             {
-                // 플레이어가 아니면 무시
-                if (!(__instance is Player player))
-                    return;
+                if (!(__instance is Player player)) return;
+                if (!MageSkills.IsMage(player)) return;
 
-                // 메이지가 아니면 무시
-                if (!MageSkills.IsMage(player))
-                    return;
-
-                // 속성 저항 보너스 가져오기
                 float resistance = MageSkills.GetMageElementalResistance(player);
-                if (resistance <= 0f)
-                    return;
+                if (resistance <= 0f) return;
 
-                // 원래 속성 데미지 저장
                 var originalElementalDamage = GetElementalDamage(hit);
-                
                 if (originalElementalDamage > 0f)
                 {
-                    // 속성 저항 적용 (감소 배수 계산)
                     float reductionMultiplier = 1f - resistance;
-                    
-                    // 모든 속성 데미지에 저항 적용
                     hit.m_damage.m_fire *= reductionMultiplier;
                     hit.m_damage.m_frost *= reductionMultiplier;
                     hit.m_damage.m_lightning *= reductionMultiplier;
@@ -517,11 +516,9 @@ namespace CaptainSkillTree.SkillTree
                     var reducedElementalDamage = GetElementalDamage(hit);
                     float damageReduced = originalElementalDamage - reducedElementalDamage;
 
-                    if (damageReduced > 0.1f) // 의미있는 감소량일 때만 로그/메시지
+                    if (damageReduced > 0.1f)
                     {
                         Plugin.Log.LogInfo($"[메이지 속성 저항] {player.GetPlayerName()} 속성 데미지 감소 - 원래: {originalElementalDamage:F1} → 감소후: {reducedElementalDamage:F1} (감소량: {damageReduced:F1})");
-                        
-                        // 플레이어에게 속성 저항 적용 메시지 표시
                         player.Message(MessageHud.MessageType.TopLeft, L.Get("mage_elemental_resist", damageReduced.ToString("F0")));
                     }
                 }
@@ -532,13 +529,20 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>
-        /// 총 속성 데미지 계산
-        /// </summary>
         private static float GetElementalDamage(HitData hit)
         {
             return hit.m_damage.m_fire + hit.m_damage.m_frost + hit.m_damage.m_lightning +
                    hit.m_damage.m_poison + hit.m_damage.m_spirit;
         }
-  }
+    }
+
+    [HarmonyPatch(typeof(Player), "OnDestroy")]
+    public static class MageSkills_Player_OnDestroy_Patch
+    {
+        static void Postfix(Player __instance)
+        {
+            if (__instance == null) return;
+            try { MageSkills.CleanupPlayerData(__instance); } catch { }
+        }
+    }
 }

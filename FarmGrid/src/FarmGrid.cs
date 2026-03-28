@@ -73,15 +73,25 @@ namespace CaptainSkillTree.SkillTree
             return piece.GetComponent<Plant>() != null || piece.GetComponent<Pickable>() != null;
         }
 
+        // ghost 오브젝트 기준 spacing 캐시 (매 프레임 GetComponent 방지)
+        private static GameObject _cachedSpacingGhost = null;
+        private static float _cachedSpacingValue = 1.0f;
+
         private static float GetSpacingFromObject(GameObject go)
         {
+            if (go == _cachedSpacingGhost) return _cachedSpacingValue;
+            _cachedSpacingGhost = go;
+
             var plant = go.GetComponent<Plant>();
-            if (plant != null) return Mathf.Max(plant.m_growRadius * 2f + 0.01f, 1.0f);
+            if (plant != null)
+            {
+                _cachedSpacingValue = Mathf.Max(plant.m_growRadius * 2f + 0.01f, 1.0f);
+                return _cachedSpacingValue;
+            }
 
             string prefabName = Utils.GetPrefabName(go);
-            if (plantsConfiguration.TryGetValue(prefabName, out float size))
-                return size * 2f + 0.01f;
-            return 1.0f;
+            _cachedSpacingValue = plantsConfiguration.TryGetValue(prefabName, out float size) ? size * 2f + 0.01f : 1.0f;
+            return _cachedSpacingValue;
         }
 
         /// <summary>

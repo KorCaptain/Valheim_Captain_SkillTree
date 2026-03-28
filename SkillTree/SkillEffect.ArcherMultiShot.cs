@@ -186,7 +186,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static bool IsArcherMultiShotReady(Player player)
         {
-            return archerMultiShotCharges.ContainsKey(player) && archerMultiShotCharges[player] > 0;
+            return archerMultiShotCharges.TryGetValue(player, out int amCharges) && amCharges > 0;
         }
         
         /// <summary>
@@ -194,7 +194,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static int GetArcherMultiShotCharges(Player player)
         {
-            return archerMultiShotCharges.ContainsKey(player) ? archerMultiShotCharges[player] : 0;
+            return archerMultiShotCharges.TryGetValue(player, out int amChargeCount) ? amChargeCount : 0;
         }
         
         /// <summary>
@@ -233,16 +233,16 @@ namespace CaptainSkillTree.SkillTree
                     archerMultiShotCharges.Remove(player);
                     
                     // 버프 효과 제거 (buff_02a)
-                    if (archerMultiShotBuffEffects.ContainsKey(player) && archerMultiShotBuffEffects[player] != null)
+                    if (archerMultiShotBuffEffects.TryGetValue(player, out var amBuffEffect) && amBuffEffect != null)
                     {
-                        UnityEngine.Object.Destroy(archerMultiShotBuffEffects[player]);
+                        UnityEngine.Object.Destroy(amBuffEffect);
                         archerMultiShotBuffEffects.Remove(player);
                     }
 
                     // 상태 효과 제거 (statusailment_01_aura)
-                    if (archerMultiShotStatusEffects.ContainsKey(player) && archerMultiShotStatusEffects[player] != null)
+                    if (archerMultiShotStatusEffects.TryGetValue(player, out var amStatusEffect) && amStatusEffect != null)
                     {
-                        UnityEngine.Object.Destroy(archerMultiShotStatusEffects[player]);
+                        UnityEngine.Object.Destroy(amStatusEffect);
                         archerMultiShotStatusEffects.Remove(player);
                     }
 
@@ -783,14 +783,13 @@ namespace CaptainSkillTree.SkillTree
                 archerMultiShotCharges.Remove(player);
 
                 // 버프 효과 GameObject 제거 (buff_02a)
-                if (archerMultiShotBuffEffects.ContainsKey(player))
+                if (archerMultiShotBuffEffects.TryGetValue(player, out var amOnDestroyBuff))
                 {
-                    var buffEffect = archerMultiShotBuffEffects[player];
-                    if (buffEffect != null)
+                    if (amOnDestroyBuff != null)
                     {
                         try
                         {
-                            UnityEngine.Object.Destroy(buffEffect);
+                            UnityEngine.Object.Destroy(amOnDestroyBuff);
                         }
                         catch { }
                     }
@@ -798,14 +797,13 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 상태 효과 GameObject 제거 (statusailment_01_aura)
-                if (archerMultiShotStatusEffects.ContainsKey(player))
+                if (archerMultiShotStatusEffects.TryGetValue(player, out var amOnDestroyStatus))
                 {
-                    var statusEffect = archerMultiShotStatusEffects[player];
-                    if (statusEffect != null)
+                    if (amOnDestroyStatus != null)
                     {
                         try
                         {
-                            UnityEngine.Object.Destroy(statusEffect);
+                            UnityEngine.Object.Destroy(amOnDestroyStatus);
                         }
                         catch { }
                     }

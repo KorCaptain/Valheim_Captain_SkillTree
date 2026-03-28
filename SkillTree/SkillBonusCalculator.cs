@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -14,6 +15,8 @@ namespace CaptainSkillTree.SkillTree
         // GetDamage/GetTooltip 등 15+ 패치 체인이 한 프레임에 실행될 때 중복 계산 방지
         private static int _lastCacheFrame = -1;
         private static readonly Dictionary<string, float> _frameCache = new Dictionary<string, float>();
+        // 캐시 키 생성용 StringBuilder 재사용 (Unity 메인스레드 단일 호출 보장)
+        private static readonly StringBuilder _keyBuilder = new StringBuilder(128);
 
         /// <summary>
         /// 여러 스킬의 보너스를 합산하여 총합 반환
@@ -39,8 +42,14 @@ namespace CaptainSkillTree.SkillTree
                 _frameCache.Clear();
             }
 
-            // 캐시 키: 스킬 ID 조합
-            string key = string.Join("|", bonuses.Select(b => b.skillId));
+            // 캐시 키: StringBuilder 재사용으로 string 할당 최소화
+            _keyBuilder.Clear();
+            foreach (var (skillId, _) in bonuses)
+            {
+                _keyBuilder.Append(skillId);
+                _keyBuilder.Append('|');
+            }
+            string key = _keyBuilder.ToString();
             if (_frameCache.TryGetValue(key, out float cached))
                 return cached;
 
@@ -72,13 +81,19 @@ namespace CaptainSkillTree.SkillTree
                 _frameCache.Clear();
             }
 
-            var bonusList = bonuses.ToList();
-            string key = "list|" + string.Join("|", bonusList.Select(b => b.skillId));
+            _keyBuilder.Clear();
+            _keyBuilder.Append("list|");
+            foreach (var (skillId, _) in bonuses)
+            {
+                _keyBuilder.Append(skillId);
+                _keyBuilder.Append('|');
+            }
+            string key = _keyBuilder.ToString();
             if (_frameCache.TryGetValue(key, out float cached))
                 return cached;
 
             float total = 0f;
-            foreach (var (skillId, getValue) in bonusList)
+            foreach (var (skillId, getValue) in bonuses)
             {
                 if (manager.GetSkillLevel(skillId) > 0)
                     total += getValue();

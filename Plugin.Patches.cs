@@ -305,16 +305,24 @@ namespace CaptainSkillTree
 
             private static void Prefix(Character __instance, HitData hit)
             {
-                if (hit.GetAttacker() is Player player)
+                try
                 {
-                    var seman = player.GetSEMan();
-                    if (seman.HaveStatusEffect(SwordRiposteHash))
+                    if (hit == null) return;
+                    if (hit.GetAttacker() is Player player && player != null)
                     {
-                        hit.m_damage.m_blunt *= 1.2f;
-                        hit.m_damage.m_slash *= 1.2f;
-                        hit.m_damage.m_pierce *= 1.2f;
-                        seman.RemoveStatusEffect(SwordRiposteHash);
+                        var seman = player.GetSEMan();
+                        if (seman != null && seman.HaveStatusEffect(SwordRiposteHash))
+                        {
+                            hit.m_damage.m_blunt *= 1.2f;
+                            hit.m_damage.m_slash *= 1.2f;
+                            hit.m_damage.m_pierce *= 1.2f;
+                            seman.RemoveStatusEffect(SwordRiposteHash);
+                        }
                     }
+                }
+                catch (System.Exception ex)
+                {
+                    Plugin.Log.LogError($"[반격 자세] ApplyDamage 패치 오류: {ex.Message}");
                 }
             }
         }
@@ -421,6 +429,9 @@ namespace CaptainSkillTree
         {
             public static void Postfix()
             {
+                // 마법부여 테두리 글로우 스프라이트 선행 GPU 업로드 (드래그/상자 시점 freeze 방지)
+                SkillTree.ProducerEnchantUI.PreloadSprite();
+
                 // Hud 초기화 후 약간의 지연을 두고 아이콘 숨김 처리
                 if (Instance != null)
                 {

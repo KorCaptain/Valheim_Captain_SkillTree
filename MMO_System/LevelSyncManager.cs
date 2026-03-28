@@ -108,7 +108,6 @@ namespace CaptainSkillTree.MMO_System
                 OnLevelIncreased += HandleLevelIncreaseEvent;
 
                 IsInitialized = true;
-                Plugin.Log.LogInfo($"[LevelSyncManager] 초기화 완료 - 현재 레벨: {_lastKnownLevel}");
             }
             catch (Exception ex)
             {

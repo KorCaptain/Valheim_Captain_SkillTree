@@ -61,6 +61,10 @@ namespace CaptainSkillTree.SkillTree
                         {
                             blockPowerBonus += Defense_Config.ParryMasterBlockPowerBonusValue;
                         }
+
+                        // 탱커 직업 패시브: 방패 막기 방어력 보너스 (Lv2+)
+                        int tankerLv = manager.GetSkillLevel("Tanker");
+                        blockPowerBonus += TankerSkills.GetTankerBlockPowerForLevel(tankerLv);
                     }
 
                     // 공방일체: 양손검 착용 시 막기 방어력 +15% (비율)
@@ -165,6 +169,22 @@ namespace CaptainSkillTree.SkillTree
         {
             internal static bool SuppressPatch = false;
 
+            // FieldInfo 캐시 - Traverse.Create 반복 제거 (GetArmor는 자주 호출됨)
+            private static System.Reflection.FieldInfo _fiHelmet;
+            private static System.Reflection.FieldInfo _fiChest;
+            private static System.Reflection.FieldInfo _fiLegs;
+            private static bool _fieldsCached;
+
+            private static void EnsureFieldCache()
+            {
+                if (_fieldsCached) return;
+                _fieldsCached = true;
+                var bf = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public;
+                _fiHelmet = typeof(Humanoid).GetField("m_helmetItem", bf);
+                _fiChest  = typeof(Humanoid).GetField("m_chestItem",  bf);
+                _fiLegs   = typeof(Humanoid).GetField("m_legItem",    bf);
+            }
+
             [HarmonyPriority(Priority.Low)]
             public static void Postfix(ItemDrop.ItemData __instance, int quality, float worldLevel, ref float __result)
             {
@@ -181,14 +201,15 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player == null) return;
 
-                    var tr = Traverse.Create(player);
+                    // 캐시된 FieldInfo 사용 (Traverse.Create 반복 제거)
+                    EnsureFieldCache();
                     ItemDrop.ItemData equipped = null;
                     if (itemType == ItemDrop.ItemData.ItemType.Helmet)
-                        equipped = tr.Field("m_helmetItem").GetValue<ItemDrop.ItemData>();
+                        equipped = _fiHelmet?.GetValue(player) as ItemDrop.ItemData;
                     else if (itemType == ItemDrop.ItemData.ItemType.Chest)
-                        equipped = tr.Field("m_chestItem").GetValue<ItemDrop.ItemData>();
+                        equipped = _fiChest?.GetValue(player)  as ItemDrop.ItemData;
                     else if (itemType == ItemDrop.ItemData.ItemType.Legs)
-                        equipped = tr.Field("m_legItem").GetValue<ItemDrop.ItemData>();
+                        equipped = _fiLegs?.GetValue(player)   as ItemDrop.ItemData;
 
                     if (equipped != __instance) return;
 

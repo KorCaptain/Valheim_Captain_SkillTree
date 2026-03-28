@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
@@ -10,11 +9,90 @@ using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
-    // ===== 공격 전문가 트리 상태 추적 (통합됨) =====
+    // ===== 공격 전문가 트리 상태 추적 =====
     public static class AttackTreeTracker
     {
-        public static Dictionary<Player, int> meleeComboCount = new Dictionary<Player, int>();
-        public static Dictionary<Player, float> meleeLastHitTime = new Dictionary<Player, float>();
+        // === 선빵 상태 ===
+        public static Dictionary<Player, float> openerStartTime     = new Dictionary<Player, float>();
+        public static Dictionary<Player, float> openerLastUsedTime  = new Dictionary<Player, float>();
+        public static Dictionary<Player, bool>  firstMeleeUsed      = new Dictionary<Player, bool>();
+        public static Dictionary<Player, bool>  firstBowUsed        = new Dictionary<Player, bool>();
+        public static Dictionary<Player, bool>  firstCrossbowUsed   = new Dictionary<Player, bool>();
+        public static Dictionary<Player, bool>  firstMagicUsed      = new Dictionary<Player, bool>();
+
+        // === 추격전 상태 ===
+        public static Dictionary<Player, bool>  pursuitTriggered    = new Dictionary<Player, bool>();
+
+        // === 난전 스택 상태 ===
+        public static Dictionary<Player, int>   frenzyStack         = new Dictionary<Player, int>();
+        public static Dictionary<Player, int>   frenzyHitCount      = new Dictionary<Player, int>();
+        public static Dictionary<Player, float> frenzyLastHitTime   = new Dictionary<Player, float>();
+        public static Dictionary<Player, bool>  frenzyMaxReached    = new Dictionary<Player, bool>();
+
+        // 선빵 버프 활성 여부
+        public static bool IsOpenerActive(Player p)
+        {
+            if (!openerStartTime.TryGetValue(p, out float t)) return false;
+            return Time.time - t < Attack_Config.AtkOpenerDurationValue;
+        }
+
+        // 선빵→추격 연쇄 윈도우 여부 (5초)
+        public static bool IsOpenerChainActive(Player p)
+        {
+            if (!openerStartTime.TryGetValue(p, out float t)) return false;
+            return Time.time - t < Attack_Config.AtkPursuitChainWindowValue;
+        }
+
+        // 선빵 쿨다운 완료 여부
+        public static bool IsOpenerReady(Player p)
+        {
+            if (!openerLastUsedTime.TryGetValue(p, out float t)) return true;
+            return Time.time - t >= Attack_Config.AtkOpenerCooldownValue;
+        }
+
+        // 선빵 발동 (첫 타격 시)
+        public static void TriggerOpener(Player p)
+        {
+            openerStartTime[p]    = Time.time;
+            openerLastUsedTime[p] = Time.time;
+            firstMeleeUsed[p]     = false;
+            firstBowUsed[p]       = false;
+            firstCrossbowUsed[p]  = false;
+            firstMagicUsed[p]     = false;
+            pursuitTriggered[p]   = false;
+        }
+
+        // 난전 스택 업데이트 (3히트마다 +1스택)
+        public static void UpdateFrenzyStack(Player p)
+        {
+            float now = Time.time;
+            if (!frenzyHitCount.ContainsKey(p))  frenzyHitCount[p]  = 0;
+            if (!frenzyStack.ContainsKey(p))      frenzyStack[p]     = 0;
+            if (!frenzyLastHitTime.ContainsKey(p)) frenzyLastHitTime[p] = 0f;
+            if (!frenzyMaxReached.ContainsKey(p)) frenzyMaxReached[p] = false;
+
+            // 8초 내 연속 공격 아닐 경우 초기화
+            if (now - frenzyLastHitTime[p] > 8f)
+            {
+                frenzyHitCount[p]  = 0;
+                frenzyStack[p]     = 0;
+                frenzyMaxReached[p] = false;
+            }
+
+            frenzyLastHitTime[p] = now;
+            frenzyHitCount[p]++;
+
+            int hitsPerStack = Attack_Config.AtkFrenzyHitsPerStackValue;
+            int maxStacks    = Attack_Config.AtkFrenzyMaxStacksValue;
+
+            if (frenzyHitCount[p] >= hitsPerStack && frenzyStack[p] < maxStacks)
+            {
+                frenzyStack[p]++;
+                frenzyHitCount[p] = 0;
+                if (frenzyStack[p] >= maxStacks)
+                    frenzyMaxReached[p] = true;
+            }
+        }
     }
 
     // ===== 공격 전문가 종합 데미지 보너스 패치 =====
@@ -25,432 +103,303 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 공격자가 플레이어인지 확인
-                if (hit.GetAttacker() is Player player)
+                if (!(hit.GetAttacker() is Player player)) return;
+                var manager = SkillTreeManager.Instance;
+                if (manager == null) return;
+
+                float totalDamageMultiplier = 1f;
+                var currentWeapon = player.GetCurrentWeapon();
+
+                bool isMelee     = WeaponHelper.IsUsingMeleeWeapon(player);
+                bool isBow       = WeaponHelper.IsUsingBow(player);
+                bool isCrossbow  = WeaponHelper.IsUsingCrossbow(player);
+                bool isStaff     = WeaponHelper.IsUsingStaffOrWand(player);
+
+                // ──────────────────────────────────────────────
+                // 버서커 분노 데미지 보너스 (기존 유지)
+                // ──────────────────────────────────────────────
+                if (BerserkerSkills.IsPlayerInRage(player))
                 {
-                    var manager = SkillTreeManager.Instance;
-                    if (manager == null) return;
-
-                    float totalDamageMultiplier = 1f;
-                    bool showEffect = false;
-                    bool isAttackTreeEffect = false; // 공격 전문가 스킬 효과인지 추적
-                    bool showAttackRootEffect = false; // attack_root 스킬 전용 효과 표시 플래그
-
-                    // === 버서커 분노 데미지 보너스 ===
-                    if (BerserkerSkills.IsPlayerInRage(player))
+                    float rageDmg = BerserkerSkills.GetRageDamageBonus(player);
+                    if (rageDmg > 0f)
                     {
-                        float rageDamageBonus = BerserkerSkills.GetRageDamageBonus(player);
-                        if (rageDamageBonus > 0f)
+                        if (currentWeapon != null)
                         {
-                            // 원거리/연공창 사용 시 30% 스케일링
-                            var rageWeapon = player.GetCurrentWeapon();
-                            if (rageWeapon != null)
-                            {
-                                bool isRageBow = rageWeapon.m_shared.m_skillType == Skills.SkillType.Bows;
-                                bool isRageCrossbow = rageWeapon.m_shared.m_skillType == Skills.SkillType.Crossbows;
-                                bool isRageStaff = rageWeapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic ||
-                                                   rageWeapon.m_shared.m_skillType == Skills.SkillType.BloodMagic;
-                                bool isRageSpear = rageWeapon.m_shared.m_skillType == Skills.SkillType.Spears;
-                                bool isSpearComboActive = isRageSpear &&
-                                    SkillEffect.spearEnhancedThrowBuffEndTime.TryGetValue(player, out float spearBuffEnd) &&
-                                    Time.time < spearBuffEnd;
-                                if (isRageBow || isRageCrossbow || isRageStaff || isSpearComboActive)
-                                    rageDamageBonus *= 0.3f;
-                            }
+                            bool isRangedOrSpearCombo =
+                                isBow || isCrossbow || isStaff ||
+                                (WeaponHelper.IsUsingSpear(player) &&
+                                 SkillEffect.spearEnhancedThrowBuffEndTime.TryGetValue(player, out float se) &&
+                                 Time.time < se);
+                            if (isRangedOrSpearCombo) rageDmg *= 0.3f;
+                        }
+                        totalDamageMultiplier *= 1f + rageDmg / 100f;
+                        BerserkerSkills.CreateMonsterHitEffect(__instance);
+                        if (Random.Range(0f, 1f) < 0.15f)
+                            SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("rage_bonus", $"{rageDmg:F0}"),
+                                new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
+                    }
+                }
 
-                            float rageMultiplier = 1f + (rageDamageBonus / 100f);
-                            totalDamageMultiplier *= rageMultiplier;
-                            showEffect = true;
+                // ──────────────────────────────────────────────
+                // Tier 0: 공격 전문가 루트 (+3%)
+                // ──────────────────────────────────────────────
+                if (manager.GetSkillLevel("attack_root") > 0)
+                    totalDamageMultiplier *= 1f + Attack_Config.AttackRootDamageBonusValue / 100f;
 
-                            // 몬스터 적중시 flash_round_ellow 이팩트 생성
-                            BerserkerSkills.CreateMonsterHitEffect(__instance);
+                // ──────────────────────────────────────────────
+                // Tier 1: 선빵 발동 감지 + 데미지 보너스 적용
+                // ──────────────────────────────────────────────
+                if (manager.GetSkillLevel("atk_opener") > 0)
+                {
+                    // 쿨다운 완료 시 첫 타격에 선빵 발동
+                    if (AttackTreeTracker.IsOpenerReady(player))
+                    {
+                        AttackTreeTracker.TriggerOpener(player);
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_activated"),
+                            new Color(1f, 0.7f, 0.1f), SkillEffect.SkillEffectTextType.Critical);
+                    }
 
-                            // 시각적 효과 (가끔씩만 표시)
-                            if (UnityEngine.Random.Range(0f, 1f) < 0.15f)
-                            {
-                                SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("rage_bonus", $"{rageDamageBonus:F0}"),
-                                    new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
-                            }
+                    if (AttackTreeTracker.IsOpenerActive(player))
+                        totalDamageMultiplier *= 1f + Attack_Config.AtkOpenerDamageBonusValue / 100f;
+                }
+
+                // ──────────────────────────────────────────────
+                // Tier 2: 무기별 선빵 특화
+                // ──────────────────────────────────────────────
+                bool openerActive = AttackTreeTracker.IsOpenerActive(player);
+
+                // 근접: 마무리 예열 — 선빵 윈도우 내 첫 근접 타격 +20%
+                {
+                    bool meleeUsed = AttackTreeTracker.firstMeleeUsed.TryGetValue(player, out var mu) && mu;
+                    if (openerActive && isMelee && manager.GetSkillLevel("atk_opener_melee") > 0 && !meleeUsed)
+                    {
+                        AttackTreeTracker.firstMeleeUsed[player] = true;
+                        totalDamageMultiplier *= 1f + Attack_Config.AtkOpenerMeleeFinisherBonusValue / 100f;
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_melee_activated"),
+                            new Color(1f, 0.5f, 0.1f), SkillEffect.SkillEffectTextType.Combat);
+                    }
+                }
+
+                // 활: 선빵 윈도우 내 첫발 크리 확정
+                {
+                    bool bowUsed = AttackTreeTracker.firstBowUsed.TryGetValue(player, out var bu) && bu;
+                    if (openerActive && isBow && manager.GetSkillLevel("atk_opener_bow") > 0 && !bowUsed)
+                    {
+                        AttackTreeTracker.firstBowUsed[player] = true;
+                        float critBonus = CriticalDamage.CalculateCritDamageMultiplier(player, Skills.SkillType.Bows);
+                        CriticalDamage.ApplyCriticalDamage(player, ref hit, critBonus, Skills.SkillType.Bows);
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_bow_activated"),
+                            new Color(0.2f, 1f, 0.4f), SkillEffect.SkillEffectTextType.Critical);
+                    }
+                }
+
+                // 석궁: 첫 볼트 +50%
+                {
+                    bool xbowUsed = AttackTreeTracker.firstCrossbowUsed.TryGetValue(player, out var xu) && xu;
+                    if (openerActive && isCrossbow && manager.GetSkillLevel("atk_opener_crossbow") > 0 && !xbowUsed)
+                    {
+                        AttackTreeTracker.firstCrossbowUsed[player] = true;
+                        totalDamageMultiplier *= 1f + Attack_Config.AtkOpenerCrossbowFirstShotBonusValue / 100f;
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_crossbow_activated"),
+                            new Color(0.3f, 0.7f, 1f), SkillEffect.SkillEffectTextType.Critical);
+                    }
+                }
+
+                // 기존 석궁 "단 한 발" 스킬
+                if (isCrossbow && SkillEffect.CheckAndConsumeCrossbowOneShot(player, __instance))
+                {
+                    float oneShotBonus = Crossbow_Config.CrossbowOneShotDamageBonusValue / 100f;
+                    totalDamageMultiplier *= 1f + oneShotBonus;
+                    SkillEffect.ShowSkillEffectText(player, "🎯 " + L.Get("one_shot", Crossbow_Config.CrossbowOneShotDamageBonusValue),
+                        new Color(1f, 0.8f, 0f), SkillEffect.SkillEffectTextType.Critical);
+                }
+
+                // 마법: 첫 마법 공격 스태거 확정
+                {
+                    bool magicUsed = AttackTreeTracker.firstMagicUsed.TryGetValue(player, out var mgu) && mgu;
+                    if (openerActive && isStaff && manager.GetSkillLevel("atk_opener_magic") > 0 && !magicUsed)
+                    {
+                        AttackTreeTracker.firstMagicUsed[player] = true;
+                        hit.m_staggerMultiplier = 10f;
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_magic_activated"),
+                            new Color(0.8f, 0.2f, 1f), SkillEffect.SkillEffectTextType.Critical);
+                    }
+                }
+
+                // ──────────────────────────────────────────────
+                // Tier 3: 추격전 — 이동/도주 중인 적 데미지 보너스
+                // ──────────────────────────────────────────────
+                if (manager.GetSkillLevel("atk_pursuit") > 0)
+                {
+                    bool targetMoving = __instance.GetVelocity().magnitude > 0.5f;
+                    if (targetMoving)
+                    {
+                        bool chainActive = AttackTreeTracker.IsOpenerChainActive(player);
+                        float pursuitBonus = chainActive
+                            ? Attack_Config.AtkPursuitChainDamageBonusValue
+                            : Attack_Config.AtkPursuitDamageBonusValue;
+                        totalDamageMultiplier *= 1f + pursuitBonus / 100f;
+
+                        if (!AttackTreeTracker.pursuitTriggered.TryGetValue(player, out bool pt) || !pt)
+                        {
+                            AttackTreeTracker.pursuitTriggered[player] = true;
+                            if (chainActive)
+                                SkillEffect.ShowSkillEffectText(player, L.Get("atk_pursuit_chain"),
+                                    new Color(0.3f, 0.9f, 1f), SkillEffect.SkillEffectTextType.Combat);
                         }
                     }
+                }
 
-                    // 공격 전문가 루트: 모든 공격력 +[CONFIG]% (물리, 속성)
-                    if (manager.GetSkillLevel("attack_root") > 0)
+                // ──────────────────────────────────────────────
+                // Tier 4: atk_frenzy_trigger — 주변 3m 적 2명↑ 시 난전 진입 가속
+                // (스태미나 감소는 UseStamina 패치에서 별도 처리)
+                // ──────────────────────────────────────────────
+
+                // ──────────────────────────────────────────────
+                // Tier 5: 난전 — 연속 히트 스택 데미지
+                // ──────────────────────────────────────────────
+                if (manager.GetSkillLevel("atk_frenzy") > 0)
+                {
+                    AttackTreeTracker.UpdateFrenzyStack(player);
+
+                    int stack     = AttackTreeTracker.frenzyStack.TryGetValue(player, out int s) ? s : 0;
+                    bool pursuit  = AttackTreeTracker.pursuitTriggered.TryGetValue(player, out bool pt2) && pt2;
+                    float bonusPerStack = pursuit
+                        ? Attack_Config.AtkFrenzyStackBonusChainValue
+                        : Attack_Config.AtkFrenzyStackBonusBaseValue;
+
+                    if (stack > 0)
                     {
-                        float bonus = SkillTreeConfig.AttackRootDamageBonusValue / 100f;
-                        totalDamageMultiplier *= (1f + bonus);
-                        isAttackTreeEffect = true;
-                        showAttackRootEffect = true; // attack_root 전용 플래그 설정
-                    }
-
-                    // 1단계: 기본 공격 - 물리/속성 데미지 직접 증가 (MMO 독립)
-                    if (manager.GetSkillLevel("atk_base") > 0)
-                    {
-                        float physicalBonus = SkillTreeConfig.AttackBasePhysicalDamageValue;
-                        float elementalBonus = SkillTreeConfig.AttackBaseElementalDamageValue;
-
-                        // 물리 데미지 증가 (무기가 해당 타입 보유 시만)
-                        if (hit.m_damage.m_blunt > 0) hit.m_damage.m_blunt += physicalBonus;
-                        if (hit.m_damage.m_slash > 0) hit.m_damage.m_slash += physicalBonus;
-                        if (hit.m_damage.m_pierce > 0) hit.m_damage.m_pierce += physicalBonus;
-
-                        // 속성 데미지 증가 (무기가 해당 타입 보유 시만)
-                        if (hit.m_damage.m_fire > 0) hit.m_damage.m_fire += elementalBonus;
-                        if (hit.m_damage.m_frost > 0) hit.m_damage.m_frost += elementalBonus;
-                        if (hit.m_damage.m_lightning > 0) hit.m_damage.m_lightning += elementalBonus;
-                        if (hit.m_damage.m_poison > 0) hit.m_damage.m_poison += elementalBonus;
-                        if (hit.m_damage.m_spirit > 0) hit.m_damage.m_spirit += elementalBonus;
-
-                        isAttackTreeEffect = true;
-                    }
-
-                    // 2단계: 무기별 특화 ([CONFIG]% 확률로 +[CONFIG]% 추가 피해)
-                    var currentWeapon = player.GetCurrentWeapon();
-                    
-                    // 무기 타입 변수들을 상위 스코프에 정의
-                    bool isMelee = false;
-                    bool isBow = false;
-                    bool isCrossbow = false;
-                    bool isStaff = false;
-                    
-                    if (currentWeapon != null)
-                    {
-                        isMelee = currentWeapon.m_shared.m_skillType == Skills.SkillType.Swords ||
-                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
-                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.Knives ||
-                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.Spears ||
-                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.Polearms ||
-                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.Unarmed;
-
-                        isBow = currentWeapon.m_shared.m_skillType == Skills.SkillType.Bows;
-                        isCrossbow = currentWeapon.m_shared.m_skillType == Skills.SkillType.Crossbows;
-                        isStaff = currentWeapon.m_shared.m_skillType == Skills.SkillType.ElementalMagic ||
-                                  currentWeapon.m_shared.m_skillType == Skills.SkillType.BloodMagic;
-
-                        // 근접 특화 (상시 +2%)
-                        if (isMelee && manager.GetSkillLevel("atk_melee_bonus") > 0)
-                        {
-                            float bonus = SkillTreeConfig.AttackMeleeBonusDamageValue / 100f;
-                            totalDamageMultiplier *= (1f + bonus);
-                            isAttackTreeEffect = true;
-                        }
-
-                        // 활 특화 (상시 +1%)
-                        if (isBow && manager.GetSkillLevel("atk_bow_bonus") > 0)
-                        {
-                            float bonus = SkillTreeConfig.AttackBowBonusDamageValue / 100f;
-                            totalDamageMultiplier *= (1f + bonus);
-                            isAttackTreeEffect = true;
-                        }
-
-                        // 석궁 특화 (상시 +1%)
-                        if (isCrossbow && manager.GetSkillLevel("atk_crossbow_bonus") > 0)
-                        {
-                            float bonus = SkillTreeConfig.AttackCrossbowBonusDamageValue / 100f;
-                            totalDamageMultiplier *= (1f + bonus);
-                            isAttackTreeEffect = true;
-                        }
-
-                        // 석궁 "단 한 발" 스킬 효과 확인 및 적용
-                        if (isCrossbow)
-                        {
-                            bool oneShotActivated = SkillEffect.CheckAndConsumeCrossbowOneShot(player, __instance);
-                            if (oneShotActivated)
-                            {
-                                // 공격력 +120% 보너스 적용
-                                float damageBonus = Crossbow_Config.CrossbowOneShotDamageBonusValue / 100f;
-                                totalDamageMultiplier *= (1f + damageBonus);
-                                showEffect = true;
-                                isAttackTreeEffect = true;
-
-                                SkillEffect.ShowSkillEffectText(player, "🎯 " + L.Get("one_shot", Crossbow_Config.CrossbowOneShotDamageBonusValue),
-                                    new Color(1f, 0.8f, 0f), SkillEffect.SkillEffectTextType.Critical);
-                            }
-                        }
-
-                        // 지팡이 특화 (상시 +2%)
-                        if (isStaff && manager.GetSkillLevel("atk_staff_bonus") > 0)
-                        {
-                            float bonus = SkillTreeConfig.AttackStaffBonusDamageValue / 100f;
-                            totalDamageMultiplier *= (1f + bonus);
-                            isAttackTreeEffect = true;
-                        }
-                    }
-
-                    // 3단계: 공격 증가 (물리 공격력 +[CONFIG]%, 속성 공격력 +[CONFIG]%)
-                    if (manager.GetSkillLevel("atk_twohand_drain") > 0)
-                    {
-                        float physicalBonus = SkillTreeConfig.AttackTwoHandDrainPhysicalDamageValue / 100f;
-                        float elementalBonus = SkillTreeConfig.AttackTwoHandDrainElementalDamageValue / 100f;
-
-                        // 물리 데미지 증가
-                        hit.m_damage.m_blunt *= (1f + physicalBonus);
-                        hit.m_damage.m_slash *= (1f + physicalBonus);
-                        hit.m_damage.m_pierce *= (1f + physicalBonus);
-
-                        // 속성 데미지 증가
-                        hit.m_damage.m_fire *= (1f + elementalBonus);
-                        hit.m_damage.m_frost *= (1f + elementalBonus);
-                        hit.m_damage.m_lightning *= (1f + elementalBonus);
-                        hit.m_damage.m_poison *= (1f + elementalBonus);
-                        hit.m_damage.m_spirit *= (1f + elementalBonus);
-
-                        isAttackTreeEffect = true;
-                    }
-
-                    // 4단계: 정밀 공격 - Valheim GetRandomSkillFactor 패치(하단)에서 처리됨 (중복 적용 금지)
-
-                    // 4단계: 근접 강화 (근접무기 2연속 공격 시 +10% 추가 피해)
-                    if (manager.GetSkillLevel("atk_melee_crit") > 0 && currentWeapon != null)
-                    {
-                        CheckMeleeCombo(player, ref totalDamageMultiplier, ref showEffect, ref isAttackTreeEffect);
-                    }
-
-                    // 연속 근접의 대가 - 한손 무기 상시 +5%
-                    if (manager.GetSkillLevel("atk_finisher_melee") > 0 && currentWeapon != null)
-                    {
-                        bool isOneHanded = currentWeapon.m_shared.m_skillType == Skills.SkillType.Swords ||
-                                           currentWeapon.m_shared.m_skillType == Skills.SkillType.Knives ||
-                                           currentWeapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
-                                           currentWeapon.m_shared.m_skillType == Skills.SkillType.Axes;
-                        if (isOneHanded)
-                        {
-                            float bonus = SkillTreeConfig.AttackFinisherMeleeBonusValue / 100f;
-                            totalDamageMultiplier *= (1f + bonus);
-                            isAttackTreeEffect = true;
-                        }
-                    }
-
-                    // 연속베기 지속 버프 (sword_Step2_combo_slash)
-                    if (isMelee && SkillEffect.IsUsingSword(player) &&
-                        SkillEffect.swordComboSlashBuffEndTime.TryGetValue(player, out float comboSlashEnd) &&
-                        Time.time < comboSlashEnd)
-                    {
-                        float bonus = SkillTreeConfig.SwordStep2ComboSlashBonusValue / 100f;
-                        totalDamageMultiplier *= (1f + bonus);
-                        isAttackTreeEffect = true;
-                    }
-
-                    // 6단계: 약점 공격 - Valheim GetRandomSkillFactor 패치(하단)에서 치명타 시 처리됨 (중복 적용 금지)
-
-                    // 6단계: 양손 분쇄 (양손 무기 공격력 +[CONFIG]%)
-                    if (manager.GetSkillLevel("atk_twohand_crush") > 0 && currentWeapon != null)
-                    {
-                        if (IsTwoHandedWeapon(currentWeapon))
-                        {
-                            float bonus = SkillTreeConfig.AttackTwoHandedBonusValue / 100f;
-                            totalDamageMultiplier *= (1f + bonus);
-                            showEffect = true;
-                            isAttackTreeEffect = true;
-                        }
-                    }
-
-                    // 6단계: 속성 공격 (활, 지팡이 속성 공격 +[CONFIG]%)
-                    if (manager.GetSkillLevel("atk_staff_mage") > 0 && currentWeapon != null)
-                    {
-                        bool isElementalWeapon = isBow || isStaff;
-                        if (isElementalWeapon)
-                        {
-                            float bonus = SkillTreeConfig.AttackStaffElementalValue / 100f;
-                            float multiplier = 1f + bonus;
-                            hit.m_damage.m_fire *= multiplier;
-                            hit.m_damage.m_frost *= multiplier;
-                            hit.m_damage.m_lightning *= multiplier;
-                            hit.m_damage.m_poison *= multiplier;
-                            hit.m_damage.m_spirit *= multiplier;
-                            
-                            isAttackTreeEffect = true;
-                            
-                            // 시각적 효과 표시
-                            if (UnityEngine.Random.Range(0f, 1f) < 0.1f)
-                            {
-                                showEffect = true;
-                                SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("elemental_attack"),
-                                    new Color(0.8f, 0.2f, 0.8f), SkillEffect.SkillEffectTextType.Combat);
-                            }
-                        }
-                    }
-
-                    // 5단계: 충전 - 공격 시 33% 확률로 스태미나 회복
-                    if (manager.GetSkillLevel("atk_special") > 0)
-                    {
-                        if (UnityEngine.Random.Range(0f, 100f) < Attack_Config.AttackSpecialChanceValue)
-                        {
-                            float maxStamina = player.GetMaxStamina();
-                            float recoveryAmount = maxStamina * (Attack_Config.AttackSpecialStatValue / 100f);
-                            player.UseStamina(-recoveryAmount);
-                            SimpleVFX.PlayOnPlayer(player, "debuff_03_aura", 2f, Vector3.zero);
+                        totalDamageMultiplier *= 1f + (bonusPerStack * stack) / 100f;
+                        if (Random.Range(0f, 1f) < 0.12f)
                             SkillEffect.ShowSkillEffectText(player,
-                                $"+{recoveryAmount:F0}",
-                                Color.yellow,
-                                SkillEffect.SkillEffectTextType.Combat);
-                        }
+                                L.Get("atk_frenzy_stack", stack, (int)(bonusPerStack * stack)),
+                                new Color(1f, 0.3f, 0.1f), SkillEffect.SkillEffectTextType.Combat);
                     }
+                }
 
-                    // 4단계: 원거리 강화 (원거리 무기 공격력 +5%)
-                    if (manager.GetSkillLevel("atk_ranged_enhance") > 0 && currentWeapon != null)
+                // ──────────────────────────────────────────────
+                // 연속베기: 검 콤보 슬래시 버프 (기존 유지)
+                // ──────────────────────────────────────────────
+                if (isMelee && SkillEffect.IsUsingSword(player) &&
+                    SkillEffect.swordComboSlashBuffEndTime.TryGetValue(player, out float comboEnd) &&
+                    Time.time < comboEnd)
+                {
+                    totalDamageMultiplier *= 1f + SkillTreeConfig.SwordStep2ComboSlashBonusValue / 100f;
+                }
+
+                // ──────────────────────────────────────────────
+                // Tier 6: 마무리 최종 (난전 Max 스택 시 ×1.3 증폭 포함)
+                // ──────────────────────────────────────────────
+                bool frenzyMax = AttackTreeTracker.frenzyMaxReached.TryGetValue(player, out bool fm) && fm;
+                float tier6Amp = (frenzyMax && manager.GetSkillLevel("atk_frenzy") > 0)
+                    ? Attack_Config.AtkFrenzyTier6AmplifierValue
+                    : 1f;
+
+                // 연속 근접의 대가: 한손 무기 상시 +5% (난전 Max 시 ×1.3)
+                if (manager.GetSkillLevel("atk_finisher_melee") > 0 && currentWeapon != null)
+                {
+                    bool isOneHanded = (currentWeapon.m_shared.m_skillType == Skills.SkillType.Swords &&
+                                        currentWeapon.m_shared.m_itemType != ItemDrop.ItemData.ItemType.TwoHandedWeapon) ||
+                                       currentWeapon.m_shared.m_skillType == Skills.SkillType.Knives ||
+                                       WeaponHelper.IsUsingOneHandedMace(player) ||
+                                       (currentWeapon.m_shared.m_skillType == Skills.SkillType.Axes &&
+                                        currentWeapon.m_shared.m_itemType != ItemDrop.ItemData.ItemType.TwoHandedWeapon);
+                    if (isOneHanded)
+                        totalDamageMultiplier *= (1f + Attack_Config.AttackFinisherMeleeBonusValue / 100f) * tier6Amp;
+                }
+
+                // 양손 분쇄: 양손 무기 +10% (난전 Max 시 ×1.3)
+                if (manager.GetSkillLevel("atk_twohand_crush") > 0 && currentWeapon != null)
+                {
+                    if (IsTwoHandedWeapon(currentWeapon))
+                        totalDamageMultiplier *= (1f + Attack_Config.AttackTwoHandedBonusValue / 100f) * tier6Amp;
+                }
+
+                // 속성 공격: 활/지팡이 속성 데미지 +5% (난전 Max 시 ×1.3)
+                if (manager.GetSkillLevel("atk_staff_mage") > 0 && currentWeapon != null && (isBow || isStaff))
+                {
+                    float elemBonus = (1f + Attack_Config.AttackStaffElementalValue / 100f) * tier6Amp;
+                    hit.m_damage.m_fire      *= elemBonus;
+                    hit.m_damage.m_frost     *= elemBonus;
+                    hit.m_damage.m_lightning *= elemBonus;
+                    hit.m_damage.m_poison    *= elemBonus;
+                    hit.m_damage.m_spirit    *= elemBonus;
+                    if (frenzyMax && Random.Range(0f, 1f) < 0.15f)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_frenzy_max_elemental"),
+                            new Color(1f, 0.5f, 0f), SkillEffect.SkillEffectTextType.Critical);
+                }
+
+                // 약점 공격: 크리티컬 피해 +12% (Critical.cs에서 처리, tier6Amp는 전달)
+                // CriticalDamage.AttackTreeTier6Amp = tier6Amp; // 필요시 전달 가능
+
+                // ──────────────────────────────────────────────
+                // 제작 전문가 장인의 축복 버프 (기존 유지)
+                // ──────────────────────────────────────────────
+                if (ProducerSkills.IsProducerBuffActive(player))
+                    totalDamageMultiplier *= 1f + Producer_Config.ProducerBuff_AttackBonusValue / 100f;
+
+                // ──────────────────────────────────────────────
+                // 총 데미지 배율 적용
+                // ──────────────────────────────────────────────
+                if (totalDamageMultiplier > 1f)
+                {
+                    hit.m_damage.m_damage   *= totalDamageMultiplier;
+                    hit.m_damage.m_blunt    *= totalDamageMultiplier;
+                    hit.m_damage.m_slash    *= totalDamageMultiplier;
+                    hit.m_damage.m_pierce   *= totalDamageMultiplier;
+                    hit.m_damage.m_chop     *= totalDamageMultiplier;
+                    hit.m_damage.m_pickaxe  *= totalDamageMultiplier;
+                    hit.m_damage.m_fire     *= totalDamageMultiplier;
+                    hit.m_damage.m_frost    *= totalDamageMultiplier;
+                    hit.m_damage.m_lightning *= totalDamageMultiplier;
+                    hit.m_damage.m_poison   *= totalDamageMultiplier;
+                    hit.m_damage.m_spirit   *= totalDamageMultiplier;
+
+                    if (Random.Range(0f, 1f) < 0.02f)
                     {
-                        bool isRanged = isBow || isCrossbow || isStaff;
-                        if (isRanged)
-                        {
-                            float bonus = SkillTreeConfig.AttackRangedEnhancementValue / 100f;
-                            totalDamageMultiplier *= (1f + bonus);
-                            isAttackTreeEffect = true;
-                        }
+                        bool dbgPursuit = AttackTreeTracker.pursuitTriggered.TryGetValue(player, out var pp) && pp;
+                        int  dbgStack   = AttackTreeTracker.frenzyStack.TryGetValue(player, out var fs) ? fs : 0;
+                        Plugin.Log.LogInfo($"[공격 트리] 총 배율: {totalDamageMultiplier:F2}x " +
+                            $"(선빵={openerActive}, 추격={dbgPursuit}, 난전스택={dbgStack}, MaxAmplify={frenzyMax})");
                     }
+                }
 
-                    // === 제작 전문가 장인의 축복 버프 (물리+속성 15% 증가) ===
-                    if (ProducerSkills.IsProducerBuffActive(player))
+                // ──────────────────────────────────────────────
+                // 커스텀 치명타 시스템 (기존 유지)
+                // ──────────────────────────────────────────────
+                if (currentWeapon != null)
+                {
+                    var skillType = currentWeapon.m_shared.m_skillType;
+                    float critChance = Critical.CalculateCritChance(player, skillType);
+                    if (Critical.RollCritical(critChance))
                     {
-                        float producerBonus = Producer_Config.ProducerBuff_AttackBonusValue / 100f;
-                        totalDamageMultiplier *= (1f + producerBonus);
-                    }
-
-                    // 총 데미지 배율 적용
-                    if (totalDamageMultiplier > 1f)
-                    {
-                        hit.m_damage.m_damage *= totalDamageMultiplier;
-                        hit.m_damage.m_blunt *= totalDamageMultiplier;
-                        hit.m_damage.m_slash *= totalDamageMultiplier;
-                        hit.m_damage.m_pierce *= totalDamageMultiplier;
-                        hit.m_damage.m_chop *= totalDamageMultiplier;
-                        hit.m_damage.m_pickaxe *= totalDamageMultiplier;
-                        hit.m_damage.m_fire *= totalDamageMultiplier;
-                        hit.m_damage.m_frost *= totalDamageMultiplier;
-                        hit.m_damage.m_lightning *= totalDamageMultiplier;
-                        hit.m_damage.m_poison *= totalDamageMultiplier;
-                        hit.m_damage.m_spirit *= totalDamageMultiplier;
-
-                        // attack_root 스킬 전용 효과 표시 (배운 경우에만)
-                        if (showAttackRootEffect && UnityEngine.Random.Range(0f, 1f) < 0.1f)
-                        {
-                            SkillEffect.ShowSkillEffectText(player, "⚔️ " + L.Get("attack_expert"),
-                                new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
-                        }
-
-                        // 디버깅 로그 (가끔씩만)
-                        if (UnityEngine.Random.Range(0f, 1f) < 0.02f)
-                        {
-                            Plugin.Log.LogInfo($"[공격 트리] 총 데미지 배율: {totalDamageMultiplier:F2}x");
-                        }
-                    }
-
-                    // === 커스텀 치명타 시스템 (모든 무기 통합 처리) ===
-                    // Critical.cs에서 무기별 보너스 + 공통 보너스(atk_crit_chance 등) 모두 합산
-                    if (currentWeapon != null)
-                    {
-                        var weaponSkillType = currentWeapon.m_shared.m_skillType;
-                        float critChance = Critical.CalculateCritChance(player, weaponSkillType);
-                        if (Critical.RollCritical(critChance))
-                        {
-                            float critDmgBonus = CriticalDamage.CalculateCritDamageMultiplier(player, weaponSkillType);
-                            CriticalDamage.ApplyCriticalDamage(player, ref hit, critDmgBonus, weaponSkillType);
-                        }
+                        float critDmg = CriticalDamage.CalculateCritDamageMultiplier(player, skillType);
+                        // 난전 Max 시 약점 공격도 ×1.3
+                        if (frenzyMax && manager.GetSkillLevel("atk_crit_dmg") > 0)
+                            critDmg *= tier6Amp;
+                        CriticalDamage.ApplyCriticalDamage(player, ref hit, critDmg, skillType);
                     }
                 }
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[공격 트리] 데미지 보너스 패치 오류: {ex.Message}");
-            }
-        }
-
-        private static void CheckMeleeCombo(Player player, ref float totalDamageMultiplier, ref bool showEffect, ref bool isAttackTreeEffect)
-        {
-            float currentTime = Time.time;
-            
-            if (!AttackTreeTracker.meleeComboCount.ContainsKey(player))
-                AttackTreeTracker.meleeComboCount[player] = 0;
-            if (!AttackTreeTracker.meleeLastHitTime.ContainsKey(player))
-                AttackTreeTracker.meleeLastHitTime[player] = 0;
-
-            // 5초 내 연속 공격인지 확인
-            if (currentTime - AttackTreeTracker.meleeLastHitTime[player] < 5f)
-            {
-                AttackTreeTracker.meleeComboCount[player]++;
-            }
-            else
-            {
-                AttackTreeTracker.meleeComboCount[player] = 1;
-            }
-
-            AttackTreeTracker.meleeLastHitTime[player] = currentTime;
-
-            // 2연속 공격 시 보너스 (근접 강화)
-            var manager = SkillTreeManager.Instance;
-            if (manager != null && manager.GetSkillLevel("atk_melee_crit") > 0 && 
-                AttackTreeTracker.meleeComboCount[player] >= 2)
-            {
-                float bonus = SkillTreeConfig.AttackMeleeEnhancementValue / 100f;
-                totalDamageMultiplier *= (1f + bonus);
-                showEffect = true;
-                isAttackTreeEffect = true;
-                if (AttackTreeTracker.meleeComboCount[player] == 2)
-                {
-                    SkillEffect.ShowSkillEffectText(player, "⚔️ " + L.Get("melee_enhance"),
-                        new Color(0.3f, 0.8f, 0.8f), SkillEffect.SkillEffectTextType.Combat);
-                }
-            }
-
-        }
-
-        private static void ApplyStaffAreaDamage(Player player, HitData originalHit)
-        {
-            try
-            {
-                // Valheim 표준 방식: 특정 위치 기준으로 반경 내 적들 찾기
-                var targetPosition = originalHit.m_point; // 타격 지점 기준
-                var nearbyEnemies = Character.GetAllCharacters()
-                    .Where(c => c != null && 
-                           !c.IsPlayer() && // 플레이어 제외
-                           !c.IsTamed() && // 길들여지지 않은 생물만
-                           BaseAI.IsEnemy(c, player) && // 적대적인 관계 확인
-                           Vector3.Distance(c.transform.position, targetPosition) < 8f)
-                    .Take(3); // 최대 3마리
-
-                foreach (var enemy in nearbyEnemies)
-                {
-                    // Valheim 표준 HitData 생성
-                    var areaHit = new HitData();
-                    areaHit.m_attacker = player.GetZDOID();
-                    areaHit.m_point = enemy.transform.position;
-                    areaHit.m_dir = (enemy.transform.position - targetPosition).normalized;
-                    
-                    // 속성 피해만 적용 (물리 피해는 제외)
-                    areaHit.m_damage.m_fire = originalHit.m_damage.m_fire * 0.3f;
-                    areaHit.m_damage.m_frost = originalHit.m_damage.m_frost * 0.3f;
-                    areaHit.m_damage.m_lightning = originalHit.m_damage.m_lightning * 0.3f;
-                    areaHit.m_damage.m_poison = originalHit.m_damage.m_poison * 0.3f;
-                    areaHit.m_damage.m_spirit = originalHit.m_damage.m_spirit * 0.3f;
-                    
-                    enemy.Damage(areaHit);
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[지팡이 특화] 광역 피해 적용 실패: {ex.Message}");
+                Plugin.Log.LogError($"[공격 트리] 데미지 패치 오류: {ex.Message}");
             }
         }
 
         private static bool IsTwoHandedWeapon(ItemDrop.ItemData weapon)
         {
             if (weapon?.m_shared == null) return false;
-            
-            // Valheim 표준 아이템 타입 확인 (ItemData.ItemType.TwoHandedWeapon 사용)
             if (weapon.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
                 return true;
-                
-            // 스킬 타입 기반으로도 확인 (양손 무기 스킬 타입들)
             return weapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
                    weapon.m_shared.m_skillType == Skills.SkillType.Polearms ||
                    weapon.m_shared.m_skillType == Skills.SkillType.Spears;
         }
     }
 
-    // ===== 중복 패치 제거 완료 =====
-    // 모든 공격 전문화 로직은 Character_Damage_AttackTree_Patch에서 통합 처리됨
-
-    // 양손 무기 공격력 증가 패치
+    // ===== 양손 분쇄 GetDamage 패치 (기존 유지) =====
     [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetDamage), new[] { typeof(int), typeof(float) })]
     public static class SkillTree_ItemData_GetDamage_TwoHandedCrush_Patch
     {
@@ -460,27 +409,20 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 if (__instance?.m_shared == null) return;
-                
-                // 양손 분쇄: 양손 무기 공격력 +[CONFIG]%
-                if (SkillEffect.HasSkill("atk_twohand_crush") && __instance.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
+                if (SkillEffect.HasSkill("atk_twohand_crush") &&
+                    __instance.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
                 {
-                    float multiplier = 1f + (SkillTreeConfig.AttackTwoHandedBonusValue / 100f);
-                    __result.m_damage *= multiplier;
-                    __result.m_blunt *= multiplier;
-                    __result.m_slash *= multiplier;
-                    __result.m_pierce *= multiplier;
+                    float m = 1f + Attack_Config.AttackTwoHandedBonusValue / 100f;
+                    __result.m_damage *= m;
+                    __result.m_blunt  *= m;
+                    __result.m_slash  *= m;
+                    __result.m_pierce *= m;
                 }
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[스킬트리→발하임] GetDamage 양손분쇄 패치 오류: {ex.Message}");
+                Plugin.Log.LogError($"[양손 분쇄] GetDamage 패치 오류: {ex.Message}");
             }
         }
     }
-
-    // 근접 전문가 효과 패치는 SkillEffect.MeleeSkills.cs로 이동됨
-
-    // MMO 방식에 맞게 공격 상태 추적 시스템 제거
-    // 스킬 효과는 MMO getParameter 패치를 통해 구현
-    // CLAUDE.md 규칙: 프레임별 패치 금지, 이벤트 기반 업데이트만 사용
 }

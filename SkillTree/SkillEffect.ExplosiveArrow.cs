@@ -58,12 +58,12 @@ namespace CaptainSkillTree.SkillTree
 
                 if (!inPendingWindow)
                 {
-                    if (!explosiveArrowCooldown.ContainsKey(player))
-                        explosiveArrowCooldown[player] = 0f;
+                    if (!explosiveArrowCooldown.TryGetValue(player, out float eaCooldown))
+                        eaCooldown = 0f;
 
-                    if (Time.time - explosiveArrowCooldown[player] < SkillTreeConfig.BowExplosiveArrowCooldownValue)
+                    if (Time.time - eaCooldown < SkillTreeConfig.BowExplosiveArrowCooldownValue)
                     {
-                        float remainingCooldown = SkillTreeConfig.BowExplosiveArrowCooldownValue - (Time.time - explosiveArrowCooldown[player]);
+                        float remainingCooldown = SkillTreeConfig.BowExplosiveArrowCooldownValue - (Time.time - eaCooldown);
                         ShowSkillEffectText(player, L.Get("cooldown_format", $"{remainingCooldown:F1}"), Color.yellow, SkillEffectTextType.Passive);
                         Plugin.Log.LogInfo($"[폭발 화살] 쿨타임 중 - 남은 시간: {remainingCooldown:F1}초");
                         return;
@@ -208,9 +208,9 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 기존 상태 효과가 있으면 제거
-                if (explosiveArrowStatusEffects.ContainsKey(player) && explosiveArrowStatusEffects[player] != null)
+                if (explosiveArrowStatusEffects.TryGetValue(player, out var eaPrevStatus) && eaPrevStatus != null)
                 {
-                    UnityEngine.Object.Destroy(explosiveArrowStatusEffects[player]);
+                    UnityEngine.Object.Destroy(eaPrevStatus);
                     explosiveArrowStatusEffects.Remove(player);
                 }
 
@@ -241,10 +241,8 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static bool IsExplosiveArrowReady(Player player)
         {
-            if (!explosiveArrowReady.ContainsKey(player)) return false;
-            
-            bool isReady = explosiveArrowReady[player];
-            
+            if (!explosiveArrowReady.TryGetValue(player, out bool isReady)) return false;
+
             if (isReady)
             {
                 Plugin.Log.LogInfo($"[폭발 화살] {player.GetPlayerName()} 폭발 화살 준비 상태 확인됨");
@@ -258,14 +256,14 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static void ConsumeExplosiveArrow(Player player)
         {
-            if (explosiveArrowReady.ContainsKey(player) && explosiveArrowReady[player])
+            if (explosiveArrowReady.TryGetValue(player, out bool eaConsume) && eaConsume)
             {
                 explosiveArrowReady[player] = false;
 
                 // 상태 효과 제거 (statusailment_01_aura)
-                if (explosiveArrowStatusEffects.ContainsKey(player) && explosiveArrowStatusEffects[player] != null)
+                if (explosiveArrowStatusEffects.TryGetValue(player, out var eaConsumeStatus) && eaConsumeStatus != null)
                 {
-                    UnityEngine.Object.Destroy(explosiveArrowStatusEffects[player]);
+                    UnityEngine.Object.Destroy(eaConsumeStatus);
                     explosiveArrowStatusEffects.Remove(player);
                 }
 
@@ -297,14 +295,13 @@ namespace CaptainSkillTree.SkillTree
                 _explosiveArrowPendingWindow.Remove(player);
 
                 // 상태 효과 GameObject 제거 (statusailment_01_aura)
-                if (explosiveArrowStatusEffects.ContainsKey(player))
+                if (explosiveArrowStatusEffects.TryGetValue(player, out var eaDestroyStatus))
                 {
-                    var statusEffect = explosiveArrowStatusEffects[player];
-                    if (statusEffect != null)
+                    if (eaDestroyStatus != null)
                     {
                         try
                         {
-                            UnityEngine.Object.Destroy(statusEffect);
+                            UnityEngine.Object.Destroy(eaDestroyStatus);
                         }
                         catch { }
                     }

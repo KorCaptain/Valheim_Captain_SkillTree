@@ -306,6 +306,10 @@ namespace CaptainSkillTree.SkillTree
         
         // 성기사 지속 힐링 관리
         private static Dictionary<Player, Coroutine> activeHealCoroutines = new Dictionary<Player, Coroutine>();
+        // buff_03a_aura 시전자 어깨/머리 VFX (도트힐 종료 시 명시적 Destroy)
+        private static GameObject s_auraVFXLeft = null;
+        private static GameObject s_auraVFXHead = null;
+        private static GameObject s_auraVFXRight = null;
         
         // 탱커 관련 변수들은 TankerSkills.cs로 이동됨
         
@@ -459,21 +463,7 @@ namespace CaptainSkillTree.SkillTree
             player.UseStamina(requiredStamina);
             player.UseEitr(requiredEitr);
 
-            // 1. 스킬 발동 시 이펙트 및 사운드 (하이브리드 VFX 방식으로 모든 유저가 볼 수 있도록)
-            try
-            {
-                Vector3 playerPos = player.transform.position;
-                
-                // ZRoutedRpc를 통한 멀티플레이어 VFX/사운드
-                SimpleVFX.PlayWithSound("shaman_heal_aoe", "sfx_dverger_heal_finish", playerPos, 3f);
-                Plugin.Log.LogInfo("[성기사] shaman_heal_aoe VFX/사운드 재생");
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[성기사] 하이브리드 이펙트/사운드 재생 실패: {ex.Message}");
-            }
-
-            // 2. 시전자 발밑에 힐링 효과 1회 표시 (Valheim 내장 VFX 사용)
+            // 1. 시전자 발밑에 힐링 효과 1회 표시 (Valheim 내장 VFX 사용)
             PlayPaladinActivationEffect(player);
 
             // 3. 시전자 즉시 회복 (레벨별 비율)
@@ -482,21 +472,44 @@ namespace CaptainSkillTree.SkillTree
             
             // 시전자 본인에게도 힐링 오라 효과 추가 (도트 힐 지속시간과 동일)
             CreatePaladinAuraEffect(player, Paladin_Config.HealDurationValue);
+
+            // 시전자 VFX: healing 1초 순간 이펙트 + buff_03a_aura 3개 (도트힐 지속)
+            try
+            {
+                // healing: 1초 후 자동 소멸
+                SimpleVFX.PlayOnPlayer(player, "healing", 1f, new Vector3(0f, 0f, 0f));
+
+                // buff_03a_aura: 왼쪽 어깨 / 머리 위 / 오른쪽 어깨 - 도트힐 종료 시 명시적 Destroy
+                if (s_auraVFXLeft != null) { UnityEngine.Object.Destroy(s_auraVFXLeft); s_auraVFXLeft = null; }
+                if (s_auraVFXHead != null) { UnityEngine.Object.Destroy(s_auraVFXHead); s_auraVFXHead = null; }
+                if (s_auraVFXRight != null) { UnityEngine.Object.Destroy(s_auraVFXRight); s_auraVFXRight = null; }
+                float healDur = Paladin_Config.HealDurationValue;
+                s_auraVFXLeft  = SimpleVFX.PlayOnPlayer(player, "buff_03a_aura", healDur + 1f, new Vector3(-0.3f, 1.5f, 0f));
+                s_auraVFXHead  = SimpleVFX.PlayOnPlayer(player, "buff_03a_aura", healDur + 1f, new Vector3(0f, 1.8f, 0f));
+                s_auraVFXRight = SimpleVFX.PlayOnPlayer(player, "buff_03a_aura", healDur + 1f, new Vector3(0.3f, 1.5f, 0f));
+                player.StartCoroutine(StopCasterAuraVFXAfterDelay(healDur));
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[성기사] 시전자 VFX 실패: {ex.Message}");
+            }
             
             if (Paladin_Config.ShowHealNumbersValue)
             {
                 ShowMessage(player, L.Get("job_self_heal", $"{selfHealAmount:F0}"));
             }
 
-            // 4. 범위 내 다른 플레이어들에게 지속 힐링 적용 (컨피그 설정)
-            var nearbyPlayers = Player.GetAllPlayers()
-                .Where(p => p != player && Vector3.Distance(p.transform.position, player.transform.position) <= Paladin_Config.GetHealRange(paladinLevel) && !p.IsDead())
-                .ToList();
-
-            int healedCount = nearbyPlayers.Count;
-            
-            foreach (var targetPlayer in nearbyPlayers)
+            // 4. 범위 내 다른 플레이어들에게 지속 힐링 적용 (ToList 제거 - 직접 순회)
+            int healedCount = 0;
+            float healRange = Paladin_Config.GetHealRange(paladinLevel);
+            Vector3 healerPos = player.transform.position;
+            foreach (var targetPlayer in Player.GetAllPlayers())
             {
+                if (targetPlayer == player || targetPlayer.IsDead() ||
+                    Vector3.Distance(targetPlayer.transform.position, healerPos) > healRange) continue;
+
+                healedCount++;
+
                 // 기존 힐링 코루틴이 있으면 정지
                 if (activeHealCoroutines.ContainsKey(targetPlayer))
                 {
@@ -543,9 +556,17 @@ namespace CaptainSkillTree.SkillTree
             
             // 성기사 전용 힐링 오라 효과 추가 (도트 힐 동안 지속)
             GameObject personalAuraEffect = null;
+            GameObject allyAuraLeft = null;
+            GameObject allyAuraHead = null;
+            GameObject allyAuraRight = null;
             try
             {
                 personalAuraEffect = CreatePaladinAuraEffect(target, healDuration);
+
+                // buff_03a_aura: 아군 왼쪽 어깨 / 머리 위 / 오른쪽 어깨 (도트힐 종료 시 명시적 Destroy)
+                allyAuraLeft  = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(-0.3f, 1.5f, 0f));
+                allyAuraHead  = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(0f, 1.8f, 0f));
+                allyAuraRight = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(0.3f, 1.5f, 0f));
 
                 // ZRoutedRpc를 통한 멀티플레이어 사운드
                 SimpleVFX.Play("sfx_dverger_heal_finish", target.transform.position, 2f);
@@ -602,19 +623,24 @@ namespace CaptainSkillTree.SkillTree
                 elapsed += healInterval;
             }
             
+            // 아군 buff_03a_aura VFX 종료
+            if (allyAuraLeft  != null) { UnityEngine.Object.Destroy(allyAuraLeft);  allyAuraLeft  = null; }
+            if (allyAuraHead  != null) { UnityEngine.Object.Destroy(allyAuraHead);  allyAuraHead  = null; }
+            if (allyAuraRight != null) { UnityEngine.Object.Destroy(allyAuraRight); allyAuraRight = null; }
+
             // 지속 힐링 완료
             if (target != null && !target.IsDead() && showNumbers)
             {
                 ShowMessage(target, L.Get("job_continuous_heal_complete"));
                 PlayJobEffect(target, "fx_greydwarf_shaman_heal", target.transform.position); // 치유 효과로 변경
             }
-            
+
             // 완료된 코루틴 제거
             if (activeHealCoroutines.ContainsKey(target))
             {
                 activeHealCoroutines.Remove(target);
             }
-            
+
             Plugin.Log.LogInfo($"[성기사] 지속 힐링 완료 - {target?.GetPlayerName() ?? "Unknown"} (총 {healTicks}회 힐링)");
         }
 
@@ -667,6 +693,18 @@ namespace CaptainSkillTree.SkillTree
             }
         }
         
+        /// <summary>
+        /// 도트힐 종료 후 시전자 buff_03a_aura VFX 3개 명시적 종료 코루틴
+        /// </summary>
+        private static IEnumerator StopCasterAuraVFXAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (s_auraVFXLeft != null) { UnityEngine.Object.Destroy(s_auraVFXLeft); s_auraVFXLeft = null; }
+            if (s_auraVFXHead != null) { UnityEngine.Object.Destroy(s_auraVFXHead); s_auraVFXHead = null; }
+            if (s_auraVFXRight != null) { UnityEngine.Object.Destroy(s_auraVFXRight); s_auraVFXRight = null; }
+            Plugin.Log.LogInfo("[성기사] buff_03a_aura VFX 3개 종료");
+        }
+
         /// <summary>
         /// 성기사 aura 효과 지속시간 후 제거하는 코루틴
         /// </summary>
@@ -743,13 +781,10 @@ namespace CaptainSkillTree.SkillTree
             // 자원 소모
             player.UseStamina(player.GetMaxStamina() * RogueShadowStaminaCost);
 
-            // 모든 적의 어그로 제거
-            var enemies = Character.GetAllCharacters()
-                .Where(c => c.IsMonsterFaction(0f))
-                .ToList();
-
-            foreach (var enemy in enemies)
+            // 모든 적의 어그로 제거 (ToList 제거 - 직접 순회)
+            foreach (var enemy in Character.GetAllCharacters())
             {
+                if (enemy == null || !enemy.IsMonsterFaction(0f)) continue;
                 var ai = enemy.GetComponent<BaseAI>();
                 if (ai != null)
                 {

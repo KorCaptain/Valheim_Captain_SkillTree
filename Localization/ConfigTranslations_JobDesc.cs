@@ -195,81 +195,64 @@ namespace CaptainSkillTree.Localization
                 "권장값: 10%",
 
                 // ========================================
-                // Mage Job (Y-Key Active, 6 keys)
+                // Mage Job - 불의 비 (Fire Rain) Y-Key Active
                 // ========================================
 
-                // === Mage Job: AOE 액티브 스킬 (5개) ===
+                // === Mage Job: 액티브 스킬 고정값 ===
                 ["Mage_AOE_Range"] =
-                "【AOE 범위 (m)】\n" +
-                "광역 마법 공격의 범위입니다.\n" +
-                "넓은 범위로 다수의 적을 공격합니다.\n" +
+                "【타겟팅 범위 (m)】\n" +
+                "불의 비 타겟 탐색 범위입니다.\n" +
+                "카메라 전방 이 범위 내 적을 타겟팅합니다.\n" +
                 "권장값: 10-15m",
 
                 ["Mage_Eitr_Cost"] =
                 "【Eitr 소모량】\n" +
                 "스킬 사용 시 소모되는 Eitr입니다.\n" +
-                "마법 자원 관리가 중요합니다.\n" +
                 "권장값: 30-45",
 
-                ["Mage_Damage_Multiplier"] =
-                "【공격 피해 배율 (%)】\n" +
-                "광역 마법 공격의 피해 배율입니다.\n" +
-                "강력한 폭발 마법으로 적을 섬멸합니다.\n" +
-                "권장값: 250-350%",
+                ["Mage_Fire_Rain_Radius"] =
+                "【불의 비 낙하 반경 (m)】\n" +
+                "파이어볼 30개가 타겟 주변에 낙하하는 반경입니다.\n" +
+                "권장값: 6-10m",
 
-                // === Mage Job: 쿨타임 (레벨별) ===
+                ["Mage_Fire_Rain_Impact_Radius"] =
+                "【파이어볼 착지 데미지 범위 (m)】\n" +
+                "각 파이어볼 착지 시 데미지를 입히는 범위입니다.\n" +
+                "권장값: 2-4m",
+
+                ["Mage_Fire_Rain_Projectile_Count"] =
+                "【버스트당 발사체 수 (개)】\n" +
+                "1회 버스트당 낙하하는 파이어볼 수입니다.\n" +
+                "총 2회 버스트로 발사됩니다 (1버스트 → 1초 → 2버스트).\n" +
+                "권장값: 15-25개",
+
+                // === Mage Job: 쿨타임 (레벨별 - 기본 45초) ===
                 ["Mage_Lv1_Cooldown"] =
                 "【쿨타임 Lv1 (초)】\n" +
-                "Lv1 메이지 스킬 재사용 대기 시간입니다.\n" +
-                "권장값: 120초",
+                "Lv1 불의 비 재사용 대기 시간입니다.\n" +
+                "권장값: 45초",
 
                 ["Mage_Lv2_Cooldown"] =
                 "【쿨타임 Lv2 (초)】\n" +
-                "Lv2 메이지 스킬 재사용 대기 시간입니다.\n" +
-                "권장값: 110초",
+                "Lv2 불의 비 재사용 대기 시간입니다.\n" +
+                "권장값: 45초",
 
                 ["Mage_Lv3_Cooldown"] =
                 "【쿨타임 Lv3 (초)】\n" +
-                "Lv3 메이지 스킬 재사용 대기 시간입니다.\n" +
-                "권장값: 100초",
+                "Lv3 불의 비 재사용 대기 시간입니다.\n" +
+                "권장값: 45초",
 
                 ["Mage_Lv4_Cooldown"] =
                 "【쿨타임 Lv4 (초)】\n" +
-                "Lv4 메이지 스킬 재사용 대기 시간입니다.\n" +
-                "권장값: 90초",
+                "Lv4 불의 비 재사용 대기 시간입니다.\n" +
+                "권장값: 45초",
 
                 ["Mage_Lv5_Cooldown"] =
                 "【쿨타임 Lv5 (초)】\n" +
-                "Lv5 메이지 스킬 재사용 대기 시간입니다.\n" +
-                "권장값: 80초",
+                "Lv5 불의 비 재사용 대기 시간입니다.\n" +
+                "권장값: 45초",
 
-                // === Mage Job: 최대 타겟 수 (레벨별) ===
-                ["Mage_Lv1_AOE_Max_Targets"] =
-                "【최대 타겟 수 Lv1】\n" +
-                "Lv1 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
-                "권장값: 6마리",
-
-                ["Mage_Lv2_AOE_Max_Targets"] =
-                "【최대 타겟 수 Lv2】\n" +
-                "Lv2 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
-                "권장값: 7마리",
-
-                ["Mage_Lv3_AOE_Max_Targets"] =
-                "【최대 타겟 수 Lv3】\n" +
-                "Lv3 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
-                "권장값: 8마리",
-
-                ["Mage_Lv4_AOE_Max_Targets"] =
-                "【최대 타겟 수 Lv4】\n" +
-                "Lv4 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
-                "권장값: 9마리",
-
-                ["Mage_Lv5_AOE_Max_Targets"] =
-                "【최대 타겟 수 Lv5】\n" +
-                "Lv5 AOE 스킬이 동시에 공격할 수 있는 최대 몬스터 수입니다.\n" +
-                "권장값: 10마리",
-
-                // === Mage Job: 패시브 속성 저항 (레벨별) ===
+                // === Mage Job: 패시브 속성 저항 (레벨별, 기존 유지) ===
                 ["Mage_Lv1_Elemental_Resistance"] =
                 "【마법 속성 저항 Lv1 (%)】\n" +
                 "Lv1 메이지 속성 저항입니다. 화염/냉기/번개/독/영혼 감소.\n" +
@@ -295,31 +278,31 @@ namespace CaptainSkillTree.Localization
                 "Lv5 메이지 속성 저항입니다.\n" +
                 "권장값: 15%",
 
-                // === Mage Job: AOE 데미지 배수 (레벨별) ===
+                // === Mage Job: 공격력 배수 (무기 공격력 %) ===
                 ["Mage_Lv1_Damage_Multiplier"] =
-                "【AOE 데미지 배수 Lv1 (%)】\n" +
-                "Lv1 메이지 AOE 공격 데미지 배수입니다.\n" +
-                "권장값: 70%",
+                "【공격력 배수 Lv1 (%)】\n" +
+                "Lv1 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
+                "권장값: 22%",
 
                 ["Mage_Lv2_Damage_Multiplier"] =
-                "【AOE 데미지 배수 Lv2 (%)】\n" +
-                "Lv2 메이지 AOE 공격 데미지 배수입니다.\n" +
-                "권장값: 90%",
+                "【공격력 배수 Lv2 (%)】\n" +
+                "Lv2 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
+                "권장값: 24%",
 
                 ["Mage_Lv3_Damage_Multiplier"] =
-                "【AOE 데미지 배수 Lv3 (%)】\n" +
-                "Lv3 메이지 AOE 공격 데미지 배수입니다.\n" +
-                "권장값: 110%",
+                "【공격력 배수 Lv3 (%)】\n" +
+                "Lv3 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
+                "권장값: 26%",
 
                 ["Mage_Lv4_Damage_Multiplier"] =
-                "【AOE 데미지 배수 Lv4 (%)】\n" +
-                "Lv4 메이지 AOE 공격 데미지 배수입니다.\n" +
-                "권장값: 130%",
+                "【공격력 배수 Lv4 (%)】\n" +
+                "Lv4 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
+                "권장값: 28%",
 
                 ["Mage_Lv5_Damage_Multiplier"] =
-                "【AOE 데미지 배수 Lv5 (%)】\n" +
-                "Lv5 메이지 AOE 공격 데미지 배수입니다.\n" +
-                "권장값: 150%",
+                "【공격력 배수 Lv5 (%)】\n" +
+                "Lv5 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
+                "권장값: 30%",
 
                 // === Berserker Job: 패시브 스킬 체력 보너스 ===
                 ["berserker_passive_health_bonus"] =
@@ -423,52 +406,71 @@ namespace CaptainSkillTree.Localization
                 "탱커 직업 패시브: 항상 받는 피해를 감소시킵니다.\n" +
                 "권장값: 10-20%",
 
-                // === Tanker Job: 레벨업 패시브 (5개) ===
-                ["Tanker_Hp_Bonus"] =
-                "【탱커 기본 체력 보너스】\n" +
-                "탱커 Lv1 이상 시 최대 체력이 고정값만큼 증가합니다.\n" +
-                "권장값: 50-150",
-
-                ["Tanker_Lv2_AllResist"] =
-                "【탱커 Lv2 모든 저항 (%)】\n" +
-                "탱커 Lv2 달성 시 모든 속성 피해를 감소시킵니다.\n" +
-                "권장값: 3-8%",
-
-                ["Tanker_Lv3_AllResist"] =
-                "【탱커 Lv3 모든 저항 (%)】\n" +
-                "탱커 Lv3 달성 시 모든 속성 피해를 감소시킵니다.\n" +
-                "권장값: 5-12%",
-
-                ["Tanker_Lv4_AllResist"] =
-                "【탱커 Lv4 모든 저항 (%)】\n" +
-                "탱커 Lv4 달성 시 모든 속성 피해를 감소시킵니다.\n" +
-                "권장값: 8-15%",
-
-                ["Tanker_Lv5_AllResist"] =
-                "【탱커 Lv5 모든 저항 (%)】\n" +
-                "탱커 Lv5 달성 시 모든 속성 피해를 감소시킵니다.\n" +
-                "권장값: 10-20%",
-
-                // === Tanker Job: 레벨별 반사 지속시간 (5개) ===
+                // === Tanker Job: 레벨별 패시브 (Lv 묶음) ===
+                // --- Lv1 ---
                 ["Tanker_ReflectDuration_Lv1"] =
                 "【탱커 반사 지속시간 Lv1 (초)】\n" +
                 "도발 발동 시 Lv1에서 반사 효과가 지속되는 시간입니다.\n" +
                 "기본값: 10초",
+
+                // --- Lv2 ---
+                ["Tanker_Hp_Bonus_Lv2"] =
+                "【탱커 Lv2 체력 보너스】\n" +
+                "탱커 Lv2 달성 시 최대 체력이 증가합니다.\n" +
+                "기본값: 35",
+
+                ["Tanker_Lv2_BlockPower"] =
+                "【탱커 Lv2 방패 막기 방어력】\n" +
+                "탱커 Lv2 달성 시 방패 막기 방어력이 증가합니다.\n" +
+                "기본값: 5",
 
                 ["Tanker_ReflectDuration_Lv2"] =
                 "【탱커 반사 지속시간 Lv2 (초)】\n" +
                 "도발 발동 시 Lv2에서 반사 효과가 지속되는 시간입니다.\n" +
                 "기본값: 12초",
 
+                // --- Lv3 ---
+                ["Tanker_Hp_Bonus_Lv3"] =
+                "【탱커 Lv3 체력 보너스】\n" +
+                "탱커 Lv3 달성 시 최대 체력이 증가합니다.\n" +
+                "기본값: 55",
+
+                ["Tanker_Lv3_BlockPower"] =
+                "【탱커 Lv3 방패 막기 방어력】\n" +
+                "탱커 Lv3 달성 시 방패 막기 방어력이 증가합니다.\n" +
+                "기본값: 10",
+
                 ["Tanker_ReflectDuration_Lv3"] =
                 "【탱커 반사 지속시간 Lv3 (초)】\n" +
                 "도발 발동 시 Lv3에서 반사 효과가 지속되는 시간입니다.\n" +
                 "기본값: 14초",
 
+                // --- Lv4 ---
+                ["Tanker_Hp_Bonus_Lv4"] =
+                "【탱커 Lv4 체력 보너스】\n" +
+                "탱커 Lv4 달성 시 최대 체력이 증가합니다.\n" +
+                "기본값: 75",
+
+                ["Tanker_Lv4_BlockPower"] =
+                "【탱커 Lv4 방패 막기 방어력】\n" +
+                "탱커 Lv4 달성 시 방패 막기 방어력이 증가합니다.\n" +
+                "기본값: 15",
+
                 ["Tanker_ReflectDuration_Lv4"] =
                 "【탱커 반사 지속시간 Lv4 (초)】\n" +
                 "도발 발동 시 Lv4에서 반사 효과가 지속되는 시간입니다.\n" +
                 "기본값: 16초",
+
+                // --- Lv5 ---
+                ["Tanker_Hp_Bonus_Lv5"] =
+                "【탱커 Lv5 체력 보너스】\n" +
+                "탱커 Lv5 달성 시 최대 체력이 증가합니다.\n" +
+                "기본값: 100",
+
+                ["Tanker_Lv5_BlockPower"] =
+                "【탱커 Lv5 방패 막기 방어력】\n" +
+                "탱커 Lv5 달성 시 방패 막기 방어력이 증가합니다.\n" +
+                "기본값: 20",
 
                 ["Tanker_ReflectDuration_Lv5"] =
                 "【탱커 반사 지속시간 Lv5 (초)】\n" +
@@ -581,10 +583,10 @@ namespace CaptainSkillTree.Localization
                 "로그 직업 패시브: 공격 시 스태미나 소모를 감소시킵니다.\n" +
                 "권장값: 10-20%",
 
-                ["Rogue_ElementalResistance_Debuff"] =
-                "【속성 저항 증가 (%)】\n" +
-                "로그 직업 패시브: 속성 피해에 대한 저항을 증가시킵니다.\n" +
-                "권장값: 8-15%",
+                ["Rogue_Lv1_DodgeChance"] =
+                "【Lv1 회피율 (%)】\n" +
+                "로그 직업 패시브: 적중에 대한 회피율을 증가시킵니다. 스킬트리 전체 합산 적용.\n" +
+                "권장값: 3-6%",
 
                 // === Rogue Job: 패시브 Lv2~5 성장 ===
                 ["Rogue_Lv2_AttackSpeed"] = "【Lv2 공격속도 보너스 (%)】\n권장값: 10-15%",
@@ -597,10 +599,10 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv4_StaminaReduction"] = "【Lv4 스태미나 감소 (%)】\n권장값: 19-25%",
                 ["Rogue_Lv5_StaminaReduction"] = "【Lv5 스태미나 감소 (%)】\n권장값: 22-30%",
 
-                ["Rogue_Lv2_ElementalResist"] = "【Lv2 속성 저항 (%)】\n권장값: 10-15%",
-                ["Rogue_Lv3_ElementalResist"] = "【Lv3 속성 저항 (%)】\n권장값: 12-18%",
-                ["Rogue_Lv4_ElementalResist"] = "【Lv4 속성 저항 (%)】\n권장값: 14-20%",
-                ["Rogue_Lv5_ElementalResist"] = "【Lv5 속성 저항 (%)】\n권장값: 16-25%",
+                ["Rogue_Lv2_DodgeChance"] = "【Lv2 회피율 (%)】\n권장값: 5-8%",
+                ["Rogue_Lv3_DodgeChance"] = "【Lv3 회피율 (%)】\n권장값: 7-10%",
+                ["Rogue_Lv4_DodgeChance"] = "【Lv4 회피율 (%)】\n권장값: 9-12%",
+                ["Rogue_Lv5_DodgeChance"] = "【Lv5 회피율 (%)】\n권장값: 11-15%",
 
                 ["Rogue_Lv1_MoveSpeed"] = "【Lv1 이동속도 보너스 (%)】\n권장값: 3-7%",
                 ["Rogue_Lv2_MoveSpeed"] = "【Lv2 이동속도 보너스 (%)】\n권장값: 5-10%",
@@ -824,6 +826,95 @@ namespace CaptainSkillTree.Localization
                 "【최대 체력 보너스 (%)】\n" +
                 "버서커 패시브: 최대 체력을 증가시킵니다.\n" +
                 "권장값: 100%",
+
+                // ========================================
+                // Producer Job Skills (제작 전문가 직업)
+                // ========================================
+                ["Producer_Buff_Cooldown"] =
+                "【장인의 축복 쿨타임 (초)】\n" +
+                "제작 전문가 버프 재사용 대기 시간입니다.\n" +
+                "권장값: 120-180초",
+
+                ["Producer_Buff_Duration"] =
+                "【장인의 축복 지속시간 (초)】\n" +
+                "공격력/체력 버프가 유지되는 시간입니다.\n" +
+                "권장값: 90-120초",
+
+                ["Producer_Buff_Range"] =
+                "【장인의 축복 범위 (m)】\n" +
+                "파티원에게 버프가 적용되는 범위입니다.\n" +
+                "권장값: 12-20m",
+
+                ["Producer_Buff_AttackBonus"] =
+                "【버프 공격력 보너스 (%)】\n" +
+                "버프 적용 중 증가하는 공격력 비율입니다.\n" +
+                "권장값: 10-20%",
+
+                ["Producer_Buff_MaxHealthBonus"] =
+                "【버프 최대 체력 보너스 (%)】\n" +
+                "버프 적용 중 증가하는 최대 체력 비율입니다.\n" +
+                "권장값: 10-20%",
+
+                ["Producer_Buff_StaminaCost"] =
+                "【버프 스태미나 소모】\n" +
+                "장인의 축복 발동 시 소모되는 스태미나입니다.\n" +
+                "권장값: 15-25",
+
+                // --- Lv1 ---
+                ["Producer_FarmGrid_Lv1"] = "【농사 그리드 크기 Lv1】\nLv1에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 2",
+
+                // --- Lv2 ---
+                ["Producer_FarmGrid_Lv2"] = "【농사 그리드 크기 Lv2】\nLv2에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 2",
+                ["Producer_Durability_Lv2"] = "【제작 아이템 내구도 보너스 Lv2 (%)】\nLv2에서 제작 아이템의 내구도 증가율입니다.\n기본값: 10%",
+                ["Producer_MaterialReduction_Lv2"] = "【제작 재료 감소 Lv2 (%)】\nLv2에서 제작 시 절약되는 재료 비율입니다.\n기본값: 10%",
+
+                // --- Lv3 ---
+                ["Producer_FarmGrid_Lv3"] = "【농사 그리드 크기 Lv3】\nLv3에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 4",
+                ["Producer_Durability_Lv3"] = "【제작 아이템 내구도 보너스 Lv3 (%)】\nLv3에서 제작 아이템의 내구도 증가율입니다.\n기본값: 15%",
+                ["Producer_MaterialReduction_Lv3"] = "【제작 재료 감소 Lv3 (%)】\nLv3에서 제작 시 절약되는 재료 비율입니다.\n기본값: 15%",
+                ["Producer_EnchantChance_Lv3"] = "【마법부여 확률 Lv3 (%)】\nLv3에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 25%",
+                ["Producer_EnchantWeaponDmgMin_Lv3"] = "【무기 데미지 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 무기의 데미지 보너스 최솟값입니다.\n기본값: 5%",
+                ["Producer_EnchantWeaponDmgMax_Lv3"] = "【무기 데미지 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 무기의 데미지 보너스 최댓값입니다.\n기본값: 5%",
+                ["Producer_EnchantArmorMin_Lv3"] = "【방어구 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 방어구의 방어력 보너스 최솟값입니다.\n기본값: 5%",
+                ["Producer_EnchantArmorMax_Lv3"] = "【방어구 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 방어구의 방어력 보너스 최댓값입니다.\n기본값: 5%",
+                ["Producer_EnchantHpMin_Lv3"] = "【HP 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 2%",
+                ["Producer_EnchantHpMax_Lv3"] = "【HP 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 2%",
+                ["Producer_EnchantWeaponSpdMin_Lv3"] = "【무기 공속 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 무기의 공격속도 보너스 최솟값입니다.\n기본값: 3%",
+                ["Producer_EnchantWeaponSpdMax_Lv3"] = "【무기 공속 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 무기의 공격속도 보너스 최댓값입니다.\n기본값: 5%",
+                ["Producer_EnchantStaminaMin_Lv3"] = "【스태미나 마법부여 최솟값 Lv3】\nLv3 마법부여 아이템의 최대 스태미나 보너스 최솟값입니다.\n기본값: 5",
+                ["Producer_EnchantStaminaMax_Lv3"] = "【스태미나 마법부여 최댓값 Lv3】\nLv3 마법부여 아이템의 최대 스태미나 보너스 최댓값입니다.\n기본값: 8",
+
+                // --- Lv4 ---
+                ["Producer_FarmGrid_Lv4"] = "【농사 그리드 크기 Lv4】\nLv4에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 6",
+                ["Producer_Durability_Lv4"] = "【제작 아이템 내구도 보너스 Lv4 (%)】\nLv4에서 제작 아이템의 내구도 증가율입니다.\n기본값: 20%",
+                ["Producer_MaterialReduction_Lv4"] = "【제작 재료 감소 Lv4 (%)】\nLv4에서 제작 시 절약되는 재료 비율입니다.\n기본값: 20%",
+                ["Producer_EnchantChance_Lv4"] = "【마법부여 확률 Lv4 (%)】\nLv4에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 30%",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【무기 데미지 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 무기의 데미지 보너스 최솟값입니다.\n기본값: 7%",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【무기 데미지 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 무기의 데미지 보너스 최댓값입니다.\n기본값: 9%",
+                ["Producer_EnchantArmorMin_Lv4"] = "【방어구 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 방어구의 방어력 보너스 최솟값입니다.\n기본값: 7%",
+                ["Producer_EnchantArmorMax_Lv4"] = "【방어구 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 방어구의 방어력 보너스 최댓값입니다.\n기본값: 9%",
+                ["Producer_EnchantHpMin_Lv4"] = "【HP 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 4%",
+                ["Producer_EnchantHpMax_Lv4"] = "【HP 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 5%",
+                ["Producer_EnchantWeaponSpdMin_Lv4"] = "【무기 공속 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 무기의 공격속도 보너스 최솟값입니다.\n기본값: 5%",
+                ["Producer_EnchantWeaponSpdMax_Lv4"] = "【무기 공속 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 무기의 공격속도 보너스 최댓값입니다.\n기본값: 8%",
+                ["Producer_EnchantStaminaMin_Lv4"] = "【스태미나 마법부여 최솟값 Lv4】\nLv4 마법부여 아이템의 최대 스태미나 보너스 최솟값입니다.\n기본값: 8",
+                ["Producer_EnchantStaminaMax_Lv4"] = "【스태미나 마법부여 최댓값 Lv4】\nLv4 마법부여 아이템의 최대 스태미나 보너스 최댓값입니다.\n기본값: 12",
+
+                // --- Lv5 ---
+                ["Producer_FarmGrid_Lv5"] = "【농사 그리드 크기 Lv5】\nLv5에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 8",
+                ["Producer_Durability_Lv5"] = "【제작 아이템 내구도 보너스 Lv5 (%)】\nLv5에서 제작 아이템의 내구도 증가율입니다.\n기본값: 30%",
+                ["Producer_MaterialReduction_Lv5"] = "【제작 재료 감소 Lv5 (%)】\nLv5에서 제작 시 절약되는 재료 비율입니다.\n기본값: 30%",
+                ["Producer_EnchantChance_Lv5"] = "【마법부여 확률 Lv5 (%)】\nLv5에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 35%",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【무기 데미지 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 무기의 데미지 보너스 최솟값입니다.\n기본값: 10%",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【무기 데미지 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 무기의 데미지 보너스 최댓값입니다.\n기본값: 12%",
+                ["Producer_EnchantArmorMin_Lv5"] = "【방어구 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 방어구의 방어력 보너스 최솟값입니다.\n기본값: 10%",
+                ["Producer_EnchantArmorMax_Lv5"] = "【방어구 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 방어구의 방어력 보너스 최댓값입니다.\n기본값: 12%",
+                ["Producer_EnchantHpMin_Lv5"] = "【HP 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 6%",
+                ["Producer_EnchantHpMax_Lv5"] = "【HP 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 8%",
+                ["Producer_EnchantWeaponSpdMin_Lv5"] = "【무기 공속 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 무기의 공격속도 보너스 최솟값입니다.\n기본값: 8%",
+                ["Producer_EnchantWeaponSpdMax_Lv5"] = "【무기 공속 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 무기의 공격속도 보너스 최댓값입니다.\n기본값: 12%",
+                ["Producer_EnchantStaminaMin_Lv5"] = "【스태미나 마법부여 최솟값 Lv5】\nLv5 마법부여 아이템의 최대 스태미나 보너스 최솟값입니다.\n기본값: 12",
+                ["Producer_EnchantStaminaMax_Lv5"] = "【스태미나 마법부여 최댓값 Lv5】\nLv5 마법부여 아이템의 최대 스태미나 보너스 최댓값입니다.\n기본값: 15",
             };
         }
 
@@ -1246,52 +1337,71 @@ namespace CaptainSkillTree.Localization
                 "Tanker passive: Permanently reduces incoming damage.\n" +
                 "Recommended: 10-20%",
 
-                // === Tanker Job: Level-Up Passives (5 keys) ===
-                ["Tanker_Hp_Bonus"] =
-                "【Tanker Base HP Bonus】\n" +
-                "Flat HP bonus granted at Tanker Lv1+.\n" +
-                "Recommended: 50-150",
-
-                ["Tanker_Lv2_AllResist"] =
-                "【Tanker Lv2 All Resistance (%)】\n" +
-                "All damage resistance granted at Tanker Lv2.\n" +
-                "Recommended: 3-8%",
-
-                ["Tanker_Lv3_AllResist"] =
-                "【Tanker Lv3 All Resistance (%)】\n" +
-                "All damage resistance granted at Tanker Lv3.\n" +
-                "Recommended: 5-12%",
-
-                ["Tanker_Lv4_AllResist"] =
-                "【Tanker Lv4 All Resistance (%)】\n" +
-                "All damage resistance granted at Tanker Lv4.\n" +
-                "Recommended: 8-15%",
-
-                ["Tanker_Lv5_AllResist"] =
-                "【Tanker Lv5 All Resistance (%)】\n" +
-                "All damage resistance granted at Tanker Lv5.\n" +
-                "Recommended: 10-20%",
-
-                // === Tanker Job: Level-Up Reflect Duration (5 keys) ===
+                // === Tanker Job: Level-Up Passives (by level) ===
+                // --- Lv1 ---
                 ["Tanker_ReflectDuration_Lv1"] =
                 "【Tanker Reflect Duration Lv1 (sec)】\n" +
                 "Duration of reflect effect when taunting at Lv1.\n" +
                 "Default: 10 sec",
+
+                // --- Lv2 ---
+                ["Tanker_Hp_Bonus_Lv2"] =
+                "【Tanker Lv2 HP Bonus】\n" +
+                "Max HP increase granted at Tanker Lv2.\n" +
+                "Default: 35",
+
+                ["Tanker_Lv2_BlockPower"] =
+                "【Tanker Lv2 Block Power】\n" +
+                "Shield block armor increase at Tanker Lv2.\n" +
+                "Default: 5",
 
                 ["Tanker_ReflectDuration_Lv2"] =
                 "【Tanker Reflect Duration Lv2 (sec)】\n" +
                 "Duration of reflect effect when taunting at Lv2.\n" +
                 "Default: 12 sec",
 
+                // --- Lv3 ---
+                ["Tanker_Hp_Bonus_Lv3"] =
+                "【Tanker Lv3 HP Bonus】\n" +
+                "Max HP increase granted at Tanker Lv3.\n" +
+                "Default: 55",
+
+                ["Tanker_Lv3_BlockPower"] =
+                "【Tanker Lv3 Block Power】\n" +
+                "Shield block armor increase at Tanker Lv3.\n" +
+                "Default: 10",
+
                 ["Tanker_ReflectDuration_Lv3"] =
                 "【Tanker Reflect Duration Lv3 (sec)】\n" +
                 "Duration of reflect effect when taunting at Lv3.\n" +
                 "Default: 14 sec",
 
+                // --- Lv4 ---
+                ["Tanker_Hp_Bonus_Lv4"] =
+                "【Tanker Lv4 HP Bonus】\n" +
+                "Max HP increase granted at Tanker Lv4.\n" +
+                "Default: 75",
+
+                ["Tanker_Lv4_BlockPower"] =
+                "【Tanker Lv4 Block Power】\n" +
+                "Shield block armor increase at Tanker Lv4.\n" +
+                "Default: 15",
+
                 ["Tanker_ReflectDuration_Lv4"] =
                 "【Tanker Reflect Duration Lv4 (sec)】\n" +
                 "Duration of reflect effect when taunting at Lv4.\n" +
                 "Default: 16 sec",
+
+                // --- Lv5 ---
+                ["Tanker_Hp_Bonus_Lv5"] =
+                "【Tanker Lv5 HP Bonus】\n" +
+                "Max HP increase granted at Tanker Lv5.\n" +
+                "Default: 100",
+
+                ["Tanker_Lv5_BlockPower"] =
+                "【Tanker Lv5 Block Power】\n" +
+                "Shield block armor increase at Tanker Lv5.\n" +
+                "Default: 20",
 
                 ["Tanker_ReflectDuration_Lv5"] =
                 "【Tanker Reflect Duration Lv5 (sec)】\n" +
@@ -1404,10 +1514,10 @@ namespace CaptainSkillTree.Localization
                 "Rogue passive: Reduces stamina cost on attacks.\n" +
                 "Recommended: 10-20%",
 
-                ["Rogue_ElementalResistance_Debuff"] =
-                "【Elemental Resistance Increase (%)】\n" +
-                "Rogue passive: Increases resistance to elemental damage.\n" +
-                "Recommended: 8-15%",
+                ["Rogue_Lv1_DodgeChance"] =
+                "【Lv1 Evasion (%)】\n" +
+                "Rogue passive: Increases hit evasion rate (not dodge roll). Stacks with skill tree total.\n" +
+                "Recommended: 3-6%",
 
                 // === Rogue Job: Passive Lv2~5 Growth ===
                 ["Rogue_Lv2_AttackSpeed"] = "【Lv2 Attack Speed Bonus (%)】\nRecommended: 10-15%",
@@ -1420,10 +1530,10 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv4_StaminaReduction"] = "【Lv4 Stamina Reduction (%)】\nRecommended: 19-25%",
                 ["Rogue_Lv5_StaminaReduction"] = "【Lv5 Stamina Reduction (%)】\nRecommended: 22-30%",
 
-                ["Rogue_Lv2_ElementalResist"] = "【Lv2 Elemental Resistance (%)】\nRecommended: 10-15%",
-                ["Rogue_Lv3_ElementalResist"] = "【Lv3 Elemental Resistance (%)】\nRecommended: 12-18%",
-                ["Rogue_Lv4_ElementalResist"] = "【Lv4 Elemental Resistance (%)】\nRecommended: 14-20%",
-                ["Rogue_Lv5_ElementalResist"] = "【Lv5 Elemental Resistance (%)】\nRecommended: 16-25%",
+                ["Rogue_Lv2_DodgeChance"] = "【Lv2 Evasion (%)】\nRecommended: 5-8%",
+                ["Rogue_Lv3_DodgeChance"] = "【Lv3 Evasion (%)】\nRecommended: 7-10%",
+                ["Rogue_Lv4_DodgeChance"] = "【Lv4 Evasion (%)】\nRecommended: 9-12%",
+                ["Rogue_Lv5_DodgeChance"] = "【Lv5 Evasion (%)】\nRecommended: 11-15%",
 
                 ["Rogue_Lv1_MoveSpeed"] = "【Lv1 Move Speed Bonus (%)】\nRecommended: 3-7%",
                 ["Rogue_Lv2_MoveSpeed"] = "【Lv2 Move Speed Bonus (%)】\nRecommended: 5-10%",
@@ -1649,85 +1759,93 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 100%",
 
                 // ========================================
-                // Producer Job Skills (제작 전문가 직업)
+                // Producer Job Skills
                 // ========================================
                 ["Producer_Buff_Cooldown"] =
-                "【장인의 축복 쿨타임 (초)】\n" +
-                "제작 전문가 버프 재사용 대기 시간입니다.\n" +
-                "짧을수록 자주 사용할 수 있습니다.\n" +
-                "권장값: 120-180초",
+                "【Artisan's Blessing Cooldown (sec)】\n" +
+                "Cooldown time before the Producer buff can be used again.\n" +
+                "Recommended: 120-180 sec",
 
                 ["Producer_Buff_Duration"] =
-                "【장인의 축복 지속시간 (초)】\n" +
-                "공격력/체력 버프가 유지되는 시간입니다.\n" +
-                "길수록 전투 지속력이 높아집니다.\n" +
-                "권장값: 90-120초",
+                "【Artisan's Blessing Duration (sec)】\n" +
+                "Duration of the attack/health buff.\n" +
+                "Recommended: 90-120 sec",
 
                 ["Producer_Buff_Range"] =
-                "【장인의 축복 범위 (m)】\n" +
-                "파티원에게 버프가 적용되는 범위입니다.\n" +
-                "넓을수록 더 멀리 있는 동료에게 적용됩니다.\n" +
-                "권장값: 12-20m",
+                "【Artisan's Blessing Range (m)】\n" +
+                "Range in which party members receive the buff.\n" +
+                "Recommended: 12-20 m",
 
                 ["Producer_Buff_AttackBonus"] =
-                "【버프 공격력 보너스 (%)】\n" +
-                "버프 적용 중 증가하는 공격력 비율입니다.\n" +
-                "높을수록 전투 화력이 강화됩니다.\n" +
-                "권장값: 10-20%",
+                "【Buff Attack Bonus (%)】\n" +
+                "Attack power increase while the buff is active.\n" +
+                "Recommended: 10-20%",
 
                 ["Producer_Buff_MaxHealthBonus"] =
-                "【버프 최대 체력 보너스 (%)】\n" +
-                "버프 적용 중 증가하는 최대 체력 비율입니다.\n" +
-                "높을수록 생존력이 향상됩니다.\n" +
-                "권장값: 10-20%",
+                "【Buff Max Health Bonus (%)】\n" +
+                "Max health increase while the buff is active.\n" +
+                "Recommended: 10-20%",
 
                 ["Producer_Buff_StaminaCost"] =
-                "【버프 스태미나 소모】\n" +
-                "장인의 축복 발동 시 소모되는 스태미나입니다.\n" +
-                "스태미나 관리가 중요합니다.\n" +
-                "권장값: 15-25",
+                "【Buff Stamina Cost】\n" +
+                "Stamina consumed when activating Artisan's Blessing.\n" +
+                "Recommended: 15-25",
 
-                // === 레벨별 패시브 ===
-                ["Producer_FarmGrid_Lv1"] = "【농사 그리드 크기 Lv1】\nLv1에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 2",
-                ["Producer_FarmGrid_Lv2"] = "【농사 그리드 크기 Lv2】\nLv2에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 2",
-                ["Producer_FarmGrid_Lv3"] = "【농사 그리드 크기 Lv3】\nLv3에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 4",
-                ["Producer_FarmGrid_Lv4"] = "【농사 그리드 크기 Lv4】\nLv4에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 6",
-                ["Producer_FarmGrid_Lv5"] = "【농사 그리드 크기 Lv5】\nLv5에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 8",
+                // --- Lv1 ---
+                ["Producer_FarmGrid_Lv1"] = "【Farm Grid Size Lv1】\nAdditional farm grid slots at Lv1.\nDefault: 2",
 
-                ["Producer_Durability_Lv2"] = "【제작 아이템 내구도 보너스 Lv2 (%)】\nLv2에서 제작 아이템의 내구도 증가율입니다.\n기본값: 10%",
-                ["Producer_Durability_Lv3"] = "【제작 아이템 내구도 보너스 Lv3 (%)】\nLv3에서 제작 아이템의 내구도 증가율입니다.\n기본값: 15%",
-                ["Producer_Durability_Lv4"] = "【제작 아이템 내구도 보너스 Lv4 (%)】\nLv4에서 제작 아이템의 내구도 증가율입니다.\n기본값: 20%",
-                ["Producer_Durability_Lv5"] = "【제작 아이템 내구도 보너스 Lv5 (%)】\nLv5에서 제작 아이템의 내구도 증가율입니다.\n기본값: 30%",
+                // --- Lv2 ---
+                ["Producer_FarmGrid_Lv2"] = "【Farm Grid Size Lv2】\nAdditional farm grid slots at Lv2.\nDefault: 2",
+                ["Producer_Durability_Lv2"] = "【Crafted Item Durability Bonus Lv2 (%)】\nDurability bonus of crafted items at Lv2.\nDefault: 10%",
+                ["Producer_MaterialReduction_Lv2"] = "【Material Reduction Lv2 (%)】\nMaterials saved per craft at Lv2.\nDefault: 10%",
 
-                ["Producer_MaterialReduction_Lv2"] = "【제작 재료 감소 Lv2 (%)】\nLv2에서 제작 시 절약되는 재료 비율입니다.\n기본값: 10%",
-                ["Producer_MaterialReduction_Lv3"] = "【제작 재료 감소 Lv3 (%)】\nLv3에서 제작 시 절약되는 재료 비율입니다.\n기본값: 15%",
-                ["Producer_MaterialReduction_Lv4"] = "【제작 재료 감소 Lv4 (%)】\nLv4에서 제작 시 절약되는 재료 비율입니다.\n기본값: 20%",
-                ["Producer_MaterialReduction_Lv5"] = "【제작 재료 감소 Lv5 (%)】\nLv5에서 제작 시 절약되는 재료 비율입니다.\n기본값: 30%",
+                // --- Lv3 ---
+                ["Producer_FarmGrid_Lv3"] = "【Farm Grid Size Lv3】\nAdditional farm grid slots at Lv3.\nDefault: 4",
+                ["Producer_Durability_Lv3"] = "【Crafted Item Durability Bonus Lv3 (%)】\nDurability bonus of crafted items at Lv3.\nDefault: 15%",
+                ["Producer_MaterialReduction_Lv3"] = "【Material Reduction Lv3 (%)】\nMaterials saved per craft at Lv3.\nDefault: 15%",
+                ["Producer_EnchantChance_Lv3"] = "【Enchant Chance Lv3 (%)】\nChance for crafted items to receive an enchantment at Lv3.\nDefault: 25%",
+                ["Producer_EnchantWeaponDmgMin_Lv3"] = "【Weapon Damage Enchant Min Lv3 (%)】\nMin weapon damage bonus from enchantment at Lv3.\nDefault: 5%",
+                ["Producer_EnchantWeaponDmgMax_Lv3"] = "【Weapon Damage Enchant Max Lv3 (%)】\nMax weapon damage bonus from enchantment at Lv3.\nDefault: 5%",
+                ["Producer_EnchantArmorMin_Lv3"] = "【Armor Enchant Min Lv3 (%)】\nMin armor bonus from enchantment at Lv3.\nDefault: 5%",
+                ["Producer_EnchantArmorMax_Lv3"] = "【Armor Enchant Max Lv3 (%)】\nMax armor bonus from enchantment at Lv3.\nDefault: 5%",
+                ["Producer_EnchantHpMin_Lv3"] = "【HP Enchant Min Lv3 (%)】\nMin max HP bonus from enchantment at Lv3.\nDefault: 2%",
+                ["Producer_EnchantHpMax_Lv3"] = "【HP Enchant Max Lv3 (%)】\nMax max HP bonus from enchantment at Lv3.\nDefault: 2%",
+                ["Producer_EnchantWeaponSpdMin_Lv3"] = "【Weapon Speed Enchant Min Lv3 (%)】\nMin attack speed bonus from enchantment at Lv3.\nDefault: 3%",
+                ["Producer_EnchantWeaponSpdMax_Lv3"] = "【Weapon Speed Enchant Max Lv3 (%)】\nMax attack speed bonus from enchantment at Lv3.\nDefault: 5%",
+                ["Producer_EnchantStaminaMin_Lv3"] = "【Stamina Enchant Min Lv3】\nMin max stamina bonus from enchantment at Lv3.\nDefault: 5",
+                ["Producer_EnchantStaminaMax_Lv3"] = "【Stamina Enchant Max Lv3】\nMax max stamina bonus from enchantment at Lv3.\nDefault: 8",
 
-                ["Producer_EnchantChance_Lv3"] = "【마법부여 확률 Lv3 (%)】\nLv3에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 25%",
-                ["Producer_EnchantChance_Lv4"] = "【마법부여 확률 Lv4 (%)】\nLv4에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 30%",
-                ["Producer_EnchantChance_Lv5"] = "【마법부여 확률 Lv5 (%)】\nLv5에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 35%",
+                // --- Lv4 ---
+                ["Producer_FarmGrid_Lv4"] = "【Farm Grid Size Lv4】\nAdditional farm grid slots at Lv4.\nDefault: 6",
+                ["Producer_Durability_Lv4"] = "【Crafted Item Durability Bonus Lv4 (%)】\nDurability bonus of crafted items at Lv4.\nDefault: 20%",
+                ["Producer_MaterialReduction_Lv4"] = "【Material Reduction Lv4 (%)】\nMaterials saved per craft at Lv4.\nDefault: 20%",
+                ["Producer_EnchantChance_Lv4"] = "【Enchant Chance Lv4 (%)】\nChance for crafted items to receive an enchantment at Lv4.\nDefault: 30%",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【Weapon Damage Enchant Min Lv4 (%)】\nMin weapon damage bonus from enchantment at Lv4.\nDefault: 7%",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【Weapon Damage Enchant Max Lv4 (%)】\nMax weapon damage bonus from enchantment at Lv4.\nDefault: 9%",
+                ["Producer_EnchantArmorMin_Lv4"] = "【Armor Enchant Min Lv4 (%)】\nMin armor bonus from enchantment at Lv4.\nDefault: 7%",
+                ["Producer_EnchantArmorMax_Lv4"] = "【Armor Enchant Max Lv4 (%)】\nMax armor bonus from enchantment at Lv4.\nDefault: 9%",
+                ["Producer_EnchantHpMin_Lv4"] = "【HP Enchant Min Lv4 (%)】\nMin max HP bonus from enchantment at Lv4.\nDefault: 4%",
+                ["Producer_EnchantHpMax_Lv4"] = "【HP Enchant Max Lv4 (%)】\nMax max HP bonus from enchantment at Lv4.\nDefault: 5%",
+                ["Producer_EnchantWeaponSpdMin_Lv4"] = "【Weapon Speed Enchant Min Lv4 (%)】\nMin attack speed bonus from enchantment at Lv4.\nDefault: 5%",
+                ["Producer_EnchantWeaponSpdMax_Lv4"] = "【Weapon Speed Enchant Max Lv4 (%)】\nMax attack speed bonus from enchantment at Lv4.\nDefault: 8%",
+                ["Producer_EnchantStaminaMin_Lv4"] = "【Stamina Enchant Min Lv4】\nMin max stamina bonus from enchantment at Lv4.\nDefault: 8",
+                ["Producer_EnchantStaminaMax_Lv4"] = "【Stamina Enchant Max Lv4】\nMax max stamina bonus from enchantment at Lv4.\nDefault: 12",
 
-                ["Producer_EnchantWeaponDmgMin_Lv3"] = "【무기 데미지 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 무기의 데미지 보너스 최솟값입니다.\n기본값: 5%",
-                ["Producer_EnchantWeaponDmgMax_Lv3"] = "【무기 데미지 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 무기의 데미지 보너스 최댓값입니다.\n기본값: 5%",
-                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【무기 데미지 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 무기의 데미지 보너스 최솟값입니다.\n기본값: 7%",
-                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【무기 데미지 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 무기의 데미지 보너스 최댓값입니다.\n기본값: 9%",
-                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【무기 데미지 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 무기의 데미지 보너스 최솟값입니다.\n기본값: 10%",
-                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【무기 데미지 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 무기의 데미지 보너스 최댓값입니다.\n기본값: 12%",
-
-                ["Producer_EnchantArmorMin_Lv3"] = "【방어구 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 방어구의 방어력 보너스 최솟값입니다.\n기본값: 5%",
-                ["Producer_EnchantArmorMax_Lv3"] = "【방어구 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 방어구의 방어력 보너스 최댓값입니다.\n기본값: 5%",
-                ["Producer_EnchantArmorMin_Lv4"] = "【방어구 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 방어구의 방어력 보너스 최솟값입니다.\n기본값: 7%",
-                ["Producer_EnchantArmorMax_Lv4"] = "【방어구 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 방어구의 방어력 보너스 최댓값입니다.\n기본값: 9%",
-                ["Producer_EnchantArmorMin_Lv5"] = "【방어구 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 방어구의 방어력 보너스 최솟값입니다.\n기본값: 10%",
-                ["Producer_EnchantArmorMax_Lv5"] = "【방어구 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 방어구의 방어력 보너스 최댓값입니다.\n기본값: 12%",
-
-                ["Producer_EnchantHpMin_Lv3"] = "【HP 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 2%",
-                ["Producer_EnchantHpMax_Lv3"] = "【HP 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 2%",
-                ["Producer_EnchantHpMin_Lv4"] = "【HP 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 4%",
-                ["Producer_EnchantHpMax_Lv4"] = "【HP 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 5%",
-                ["Producer_EnchantHpMin_Lv5"] = "【HP 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 6%",
-                ["Producer_EnchantHpMax_Lv5"] = "【HP 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 8%",
+                // --- Lv5 ---
+                ["Producer_FarmGrid_Lv5"] = "【Farm Grid Size Lv5】\nAdditional farm grid slots at Lv5.\nDefault: 8",
+                ["Producer_Durability_Lv5"] = "【Crafted Item Durability Bonus Lv5 (%)】\nDurability bonus of crafted items at Lv5.\nDefault: 30%",
+                ["Producer_MaterialReduction_Lv5"] = "【Material Reduction Lv5 (%)】\nMaterials saved per craft at Lv5.\nDefault: 30%",
+                ["Producer_EnchantChance_Lv5"] = "【Enchant Chance Lv5 (%)】\nChance for crafted items to receive an enchantment at Lv5.\nDefault: 35%",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【Weapon Damage Enchant Min Lv5 (%)】\nMin weapon damage bonus from enchantment at Lv5.\nDefault: 10%",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【Weapon Damage Enchant Max Lv5 (%)】\nMax weapon damage bonus from enchantment at Lv5.\nDefault: 12%",
+                ["Producer_EnchantArmorMin_Lv5"] = "【Armor Enchant Min Lv5 (%)】\nMin armor bonus from enchantment at Lv5.\nDefault: 10%",
+                ["Producer_EnchantArmorMax_Lv5"] = "【Armor Enchant Max Lv5 (%)】\nMax armor bonus from enchantment at Lv5.\nDefault: 12%",
+                ["Producer_EnchantHpMin_Lv5"] = "【HP Enchant Min Lv5 (%)】\nMin max HP bonus from enchantment at Lv5.\nDefault: 6%",
+                ["Producer_EnchantHpMax_Lv5"] = "【HP Enchant Max Lv5 (%)】\nMax max HP bonus from enchantment at Lv5.\nDefault: 8%",
+                ["Producer_EnchantWeaponSpdMin_Lv5"] = "【Weapon Speed Enchant Min Lv5 (%)】\nMin attack speed bonus from enchantment at Lv5.\nDefault: 8%",
+                ["Producer_EnchantWeaponSpdMax_Lv5"] = "【Weapon Speed Enchant Max Lv5 (%)】\nMax attack speed bonus from enchantment at Lv5.\nDefault: 12%",
+                ["Producer_EnchantStaminaMin_Lv5"] = "【Stamina Enchant Min Lv5】\nMin max stamina bonus from enchantment at Lv5.\nDefault: 12",
+                ["Producer_EnchantStaminaMax_Lv5"] = "【Stamina Enchant Max Lv5】\nMax max stamina bonus from enchantment at Lv5.\nDefault: 15",
 
                 // ============================================
                 // Job Level Coin Cost (직업 레벨업 코인 비용)

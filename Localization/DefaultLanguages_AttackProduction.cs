@@ -8,36 +8,62 @@ namespace CaptainSkillTree.Localization
         {
             return new Dictionary<string, string>
             {
-                // === Attack Expert Tree - Skill Names ===
+                // === Attack Expert Tree - Skill Names (Tier 0~6) ===
                 ["attack_root_name"] = "공격 전문가",
-                ["atk_base_name"] = "기본 공격",
-                ["atk_melee_bonus_name"] = "근접 특화",
-                ["atk_bow_bonus_name"] = "활 특화",
-                ["atk_crossbow_bonus_name"] = "석궁 특화",
-                ["atk_staff_bonus_name"] = "지팡이 특화",
-                ["atk_twohand_drain_name"] = "공격 증가",
-                ["atk_melee_crit_name"] = "근접 강화",
-                ["atk_crit_chance_name"] = "정밀 공격",
-                ["atk_ranged_enhance_name"] = "원거리 강화",
-                ["atk_special_name"] = "충전",
+                // Tier 1
+                ["atk_opener_name"] = "선빵",
+                // Tier 2: 무기별 선빵 특화
+                ["atk_opener_melee_name"] = "근접: 마무리 예열",
+                ["atk_opener_bow_name"] = "활: 사냥의 눈",
+                ["atk_opener_crossbow_name"] = "석궁: 결전의 일격",
+                ["atk_opener_magic_name"] = "마법: 혼돈의 시작",
+                // Tier 3
+                ["atk_pursuit_name"] = "추격전",
+                // Tier 4
+                ["atk_pursuit_speed_name"] = "질풍 추격",
+                ["atk_frenzy_trigger_name"] = "혼전 돌입",
+                // Tier 5
+                ["atk_frenzy_name"] = "난전",
+                // Tier 6 (기존 유지)
                 ["atk_crit_dmg_name"] = "약점 공격",
                 ["atk_finisher_melee_name"] = "연속 근접의 대가",
                 ["atk_twohand_crush_name"] = "양손 분쇄",
                 ["atk_staff_mage_name"] = "속성 공격",
 
                 // === Attack Expert Tree - Skill Descriptions ===
-                ["atk_base_desc"] = "관통 공격 +{0}, 화염 속성 +1",
-                ["atk_twohand_drain_desc"] = "물리 공격력 +{0}%, 속성 공격력 +{1}%",
-                ["atk_ranged_enhance_desc"] = "원거리 무기 공격력 +{0}% (석궁, 활, 지팡이)",
-                ["atk_special_desc"] = "공격 시 {0}% 확률으로 스태미나 {1}% 회복",
+                ["attack_root_desc"] = "모든 공격력 +{0}%",
+                ["atk_opener_desc"] = "전투 시작 후 {2}초간 데미지 +{0}%, 스태미나 소비 -{1}%\n(쿨다운 {3}초)",
+                ["atk_opener_melee_desc"] = "선빵 윈도우 내 첫 근접 타격 마무리 배율 +{0}%",
+                ["atk_opener_bow_desc"] = "선빵 윈도우 내 첫 화살 크리티컬 확정 + 크리확률 +{0}%",
+                ["atk_opener_crossbow_desc"] = "선빵 윈도우 내 첫 볼트 데미지 +{0}%",
+                ["atk_opener_magic_desc"] = "선빵 윈도우 내 첫 마법 공격 스태거 확정",
+                ["atk_pursuit_desc"] = "이동/도주 중인 적 데미지 +{0}%\n선빵 {2}초 연쇄 시 +{1}%로 증폭",
+                ["atk_pursuit_speed_desc"] = "전투 중 이동속도 +{0}%",
+                ["atk_frenzy_trigger_desc"] = "주변 3m 내 적 2명 이상 시 스태미나 소비 -{0}%",
+                ["atk_frenzy_desc"] = "연속 {0}히트마다 데미지 스택 +{1}% (최대 {2}스택)\n추격전 연쇄 시 스택당 +{3}%, Max 달성 시 최종 노드 ×{4}",
 
                 // === Attack Expert Tree - Effect Texts ===
-                ["atk_base_effect"] = "💪 기본 공격 습득!",
-                ["atk_melee_bonus_effect"] = "⚔️ 근접 특화 습득!",
-                ["atk_twohand_drain_effect"] = "💪 공격 증가!",
-                ["atk_ranged_enhance_effect"] = "🏹 원거리 강화!",
-                ["atk_special_effect"] = "⚡ 충전 습득! 공격 시 {0}% 확률으로 스태미나 {1}% 회복",
+                ["attack_root_effect"] = "⚔️ 공격 전문가 습득! 모든 공격력 +3%",
+                ["atk_opener_effect"] = "⚡ 선빵 습득! 전투 개시 5초간 데미지 +20%",
+                ["atk_opener_melee_effect"] = "⚔️ 근접: 마무리 예열 습득!",
+                ["atk_opener_bow_effect"] = "🏹 활: 사냥의 눈 습득!",
+                ["atk_opener_crossbow_effect"] = "🎯 석궁: 결전의 일격 습득!",
+                ["atk_opener_magic_effect"] = "🔥 마법: 혼돈의 시작 습득!",
+                ["atk_pursuit_effect"] = "🏃 추격전 습득! 이동 중 적 데미지 +15%",
+                ["atk_pursuit_speed_effect"] = "💨 질풍 추격 습득! 이동속도 +12%",
+                ["atk_frenzy_trigger_effect"] = "🔥 혼전 돌입 습득!",
+                ["atk_frenzy_effect"] = "🔥 난전 습득! 연속 타격으로 스택 쌓기 시작!",
                 ["atk_staff_mage_effect"] = "🔥 속성 공격!",
+
+                // === Opener Activated Texts (인게임 표시) ===
+                ["atk_opener_activated"] = "⚡ 선빵!",
+                ["atk_opener_melee_activated"] = "⚔️ 마무리 예열!",
+                ["atk_opener_bow_activated"] = "🏹 사냥의 눈!",
+                ["atk_opener_crossbow_activated"] = "🎯 결전의 일격!",
+                ["atk_opener_magic_activated"] = "✨ 혼돈의 시작!",
+                ["atk_pursuit_chain"] = "🔗 선빵→추격 연쇄!",
+                ["atk_frenzy_stack"] = "🔥 난전 {0}스택 (+{1}%)",
+                ["atk_frenzy_max_elemental"] = "🌟 난전 MAX! 속성 증폭!",
 
                 // === Paladin Skill ===
                 ["paladin_name"] = "성기사",
@@ -359,36 +385,55 @@ namespace CaptainSkillTree.Localization
         {
             return new Dictionary<string, string>
             {
-                // === Attack Expert Tree - Skill Names ===
+                // === Attack Expert Tree - Skill Names (Tier 0~6) ===
                 ["attack_root_name"] = "Attack Expert",
-                ["atk_base_name"] = "Basic Attack",
-                ["atk_melee_bonus_name"] = "Melee Specialization",
-                ["atk_bow_bonus_name"] = "Bow Specialization",
-                ["atk_crossbow_bonus_name"] = "Crossbow Specialization",
-                ["atk_staff_bonus_name"] = "Staff Specialization",
-                ["atk_twohand_drain_name"] = "Attack Boost",
-                ["atk_melee_crit_name"] = "Melee Enhancement",
-                ["atk_crit_chance_name"] = "Precision Strike",
-                ["atk_ranged_enhance_name"] = "Ranged Enhancement",
-                ["atk_special_name"] = "Charge",
+                ["atk_opener_name"] = "First Strike",
+                ["atk_opener_melee_name"] = "Melee: Finisher Warmup",
+                ["atk_opener_bow_name"] = "Bow: Hunter's Eye",
+                ["atk_opener_crossbow_name"] = "Crossbow: Decisive Shot",
+                ["atk_opener_magic_name"] = "Magic: Chaos Initiation",
+                ["atk_pursuit_name"] = "Pursuit",
+                ["atk_pursuit_speed_name"] = "Swift Pursuit",
+                ["atk_frenzy_trigger_name"] = "Melee Frenzy",
+                ["atk_frenzy_name"] = "Frenzy",
                 ["atk_crit_dmg_name"] = "Weak Point Strike",
                 ["atk_finisher_melee_name"] = "Combo Finisher",
                 ["atk_twohand_crush_name"] = "Two-Hand Crush",
                 ["atk_staff_mage_name"] = "Elemental Strike",
 
                 // === Attack Expert Tree - Skill Descriptions (English) ===
-                ["atk_base_desc"] = "Pierce attack +{0}, Fire attribute +1",
-                ["atk_twohand_drain_desc"] = "Physical attack +{0}%, Elemental attack +{1}%",
-                ["atk_ranged_enhance_desc"] = "Ranged weapon damage +{0}% (Crossbow, Bow, Staff)",
-                ["atk_special_desc"] = "{0}% chance on attack to recover {1}% stamina",
+                ["attack_root_desc"] = "All damage +{0}%",
+                ["atk_opener_desc"] = "+{0}% damage for {2}s after combat start, stamina cost -{1}%\n(Cooldown: {3}s)",
+                ["atk_opener_melee_desc"] = "First melee hit during opener window +{0}% finisher bonus",
+                ["atk_opener_bow_desc"] = "First arrow guaranteed crit + crit chance +{0}%",
+                ["atk_opener_crossbow_desc"] = "First bolt +{0}% damage",
+                ["atk_opener_magic_desc"] = "First magic attack causes guaranteed stagger",
+                ["atk_pursuit_desc"] = "+{0}% damage vs moving/fleeing enemies\nChain from First Strike within {2}s: +{1}%",
+                ["atk_pursuit_speed_desc"] = "+{0}% movement speed in combat",
+                ["atk_frenzy_trigger_desc"] = "-{0}% stamina cost when 2+ enemies within 3m",
+                ["atk_frenzy_desc"] = "+{1}% damage stack per {0} hits (max {2} stacks)\nPursuit chain: +{3}%/stack, Max stacks: final nodes ×{4}",
 
                 // === Attack Expert Tree - Effect Texts (English) ===
-                ["atk_base_effect"] = "💪 Basic Attack Learned!",
-                ["atk_melee_bonus_effect"] = "⚔️ Melee Specialization Learned!",
-                ["atk_twohand_drain_effect"] = "💪 Attack Boost!",
-                ["atk_ranged_enhance_effect"] = "🏹 Ranged Enhancement!",
-                ["atk_special_effect"] = "⚡ Charge! {0}% chance to recover {1}% stamina on attack",
+                ["attack_root_effect"] = "⚔️ Attack Expert! All damage +3%",
+                ["atk_opener_effect"] = "⚡ First Strike! +20% damage for 5s",
+                ["atk_opener_melee_effect"] = "⚔️ Melee: Finisher Warmup!",
+                ["atk_opener_bow_effect"] = "🏹 Bow: Hunter's Eye!",
+                ["atk_opener_crossbow_effect"] = "🎯 Crossbow: Decisive Shot!",
+                ["atk_opener_magic_effect"] = "🔥 Magic: Chaos Initiation!",
+                ["atk_pursuit_effect"] = "🏃 Pursuit! +15% vs fleeing enemies",
+                ["atk_pursuit_speed_effect"] = "💨 Swift Pursuit! +12% move speed",
+                ["atk_frenzy_trigger_effect"] = "🔥 Melee Frenzy!",
+                ["atk_frenzy_effect"] = "🔥 Frenzy! Stack hits to amplify!",
                 ["atk_staff_mage_effect"] = "🔥 Elemental Strike!",
+
+                ["atk_opener_activated"] = "⚡ First Strike!",
+                ["atk_opener_melee_activated"] = "⚔️ Finisher Warmup!",
+                ["atk_opener_bow_activated"] = "🏹 Hunter's Eye!",
+                ["atk_opener_crossbow_activated"] = "🎯 Decisive Shot!",
+                ["atk_opener_magic_activated"] = "✨ Chaos Initiation!",
+                ["atk_pursuit_chain"] = "🔗 Strike→Pursuit Chain!",
+                ["atk_frenzy_stack"] = "🔥 Frenzy {0} stacks (+{1}%)",
+                ["atk_frenzy_max_elemental"] = "🌟 Frenzy MAX! Elemental Amplified!",
 
                 // === Paladin Skill ===
                 ["paladin_name"] = "Paladin",

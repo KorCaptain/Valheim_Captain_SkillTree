@@ -408,7 +408,7 @@ namespace CaptainSkillTree.SkillTree
 
         // === Tier 5: 트롤의 재생력 ===
         public static float TrollRegenBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Defense_TrollRegen_Bonus", TrollRegenBonus?.Value ?? 5f);
+            SkillTreeConfig.GetEffectiveValue("Defense_TrollRegen_Bonus", TrollRegenBonus?.Value ?? 2f);
 
         public static float TrollRegenIntervalValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_TrollRegen_Interval", TrollRegenInterval?.Value ?? 2f);
@@ -664,7 +664,7 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             TrollRegenBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier5_TrollRegen_HPRegenBonus", 5f,
+                "Defense Tree", "Tier5_TrollRegen_HPRegenBonus", 2f,
                 SkillTreeConfig.GetConfigDescription("Tier5_TrollRegen_HPRegenBonus"), order: 28);
 
             TrollRegenInterval = SkillTreeConfig.BindServerSync(config,

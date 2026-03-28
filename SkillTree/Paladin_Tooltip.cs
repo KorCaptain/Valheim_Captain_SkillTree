@@ -78,7 +78,10 @@ namespace CaptainSkillTree.SkillTree
                     float pAlly = Paladin_Config.GetAllyHealPercent(lv);
                     float pRange = Paladin_Config.GetHealRange(lv);
                     float pCd   = Paladin_Config.GetCooldown(lv);
-                    tooltip += $"<color=#808080><size=14>Lv{lv}: {L.Get("paladin_active_desc", pSelf, pAlly, (int)duration)} | {GetPassiveStr(lv)}</size></color>\n";
+                    if (lv == 2)
+                        tooltip += $"<color=#808080><size=14>Lv{lv}: {L.Get("paladin_active_desc", pSelf, pAlly, (int)duration)}\n  {GetPassiveStr(lv)}</size></color>\n";
+                    else
+                        tooltip += $"<color=#808080><size=14>Lv{lv}: {L.Get("paladin_active_desc", pSelf, pAlly, (int)duration)} | {GetPassiveStr(lv)}</size></color>\n";
                     if (lv == 5)
                         tooltip += $"<color=#808080><size=14>  {L.Get("tooltip_range")} {pRange}m, {L.Get("tooltip_cooldown")} {(int)pCd}{L.Get("unit_seconds")}</size></color>\n";
                 }

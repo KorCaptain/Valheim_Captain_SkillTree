@@ -39,24 +39,6 @@ namespace CaptainSkillTree.SkillTree
                     hit.m_damage.m_damage    *= mult;
                 }
 
-                // Lv2+: 추가 모든 저항
-                if (level >= 2)
-                {
-                    float resistPct = TankerSkills.GetTankerResistForLevel(level);
-                    if (resistPct > 0f)
-                    {
-                        float mult2 = 1f - (resistPct / 100f);
-                        hit.m_damage.m_blunt     *= mult2;
-                        hit.m_damage.m_slash     *= mult2;
-                        hit.m_damage.m_pierce    *= mult2;
-                        hit.m_damage.m_fire      *= mult2;
-                        hit.m_damage.m_frost     *= mult2;
-                        hit.m_damage.m_lightning *= mult2;
-                        hit.m_damage.m_poison    *= mult2;
-                        hit.m_damage.m_spirit    *= mult2;
-                        hit.m_damage.m_damage    *= mult2;
-                    }
-                }
             }
             catch (System.Exception ex)
             {

@@ -98,6 +98,22 @@ namespace CaptainSkillTree.SkillTree
         [HarmonyPatch(typeof(Character), nameof(Character.GetBodyArmor))]
         public static class Character_GetBodyArmor_StatTree_Patch
         {
+            // FieldInfo 캐시 - Traverse.Create 3회 반복 제거 (GetBodyArmor는 매우 자주 호출됨)
+            private static System.Reflection.FieldInfo _fiHelmet;
+            private static System.Reflection.FieldInfo _fiChest;
+            private static System.Reflection.FieldInfo _fiLegs;
+            private static bool _fieldsCached;
+
+            private static void EnsureFieldCache()
+            {
+                if (_fieldsCached) return;
+                _fieldsCached = true;
+                var bf = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public;
+                _fiHelmet = typeof(Humanoid).GetField("m_helmetItem", bf);
+                _fiChest  = typeof(Humanoid).GetField("m_chestItem",  bf);
+                _fiLegs   = typeof(Humanoid).GetField("m_legItem",    bf);
+            }
+
             [HarmonyPriority(Priority.Low)]
             public static void Postfix(Character __instance, ref float __result)
             {
@@ -117,36 +133,33 @@ namespace CaptainSkillTree.SkillTree
                     var humanoid = player as Humanoid;
                     if (humanoid == null) return;
 
-                    // Traverse를 사용하여 private 필드 접근
-                    var helmetItem = Traverse.Create(humanoid).Field("m_helmetItem").GetValue<ItemDrop.ItemData>();
-                    var chestItem = Traverse.Create(humanoid).Field("m_chestItem").GetValue<ItemDrop.ItemData>();
-                    var legItem = Traverse.Create(humanoid).Field("m_legItem").GetValue<ItemDrop.ItemData>();
+                    // 캐시된 FieldInfo 사용 (Traverse.Create 3회 반복 제거)
+                    EnsureFieldCache();
+                    var helmetItem = _fiHelmet?.GetValue(humanoid) as ItemDrop.ItemData;
+                    var chestItem  = _fiChest?.GetValue(humanoid)  as ItemDrop.ItemData;
+                    var legItem    = _fiLegs?.GetValue(humanoid)   as ItemDrop.ItemData;
 
                     // defense_root: 투구 방어력 +2
                     if (manager.GetSkillLevel("defense_root") > 0 && helmetItem != null)
                     {
                         armorBonus += Defense_Config.DefenseRootArmorBonusValue;
-                        Plugin.Log.LogDebug($"[스탯 트리] 방어 전문가 - 투구 방어력 +{Defense_Config.DefenseRootArmorBonusValue}");
                     }
 
                     // defense_Step1_survival: 흉갑 방어력 +5
                     if (manager.GetSkillLevel("defense_Step1_survival") > 0 && chestItem != null)
                     {
                         armorBonus += Defense_Config.SurvivalArmorBonusValue;
-                        Plugin.Log.LogDebug($"[스탯 트리] 피부경화 - 흉갑 방어력 +{Defense_Config.SurvivalArmorBonusValue}");
                     }
 
                     // defense_Step2_health: 레깅스 방어력 +5
                     if (manager.GetSkillLevel("defense_Step2_health") > 0 && legItem != null)
                     {
                         armorBonus += Defense_Config.HealthArmorBonusValue;
-                        Plugin.Log.LogDebug($"[스탯 트리] 체력단련 - 레깅스 방어력 +{Defense_Config.HealthArmorBonusValue}");
                     }
 
                     if (armorBonus > 0)
                     {
                         __result += armorBonus;
-                        Plugin.Log.LogDebug($"[스탯 트리] 방어력 보너스 적용: +{armorBonus} (합계 전: {__result})");
                     }
 
                     // 바위피부 % + 제작 마법부여 방어력 % 합산 적용 (덧셈)
@@ -160,8 +173,10 @@ namespace CaptainSkillTree.SkillTree
                     if (totalArmorPct > 0f)
                     {
                         __result += __result * (totalArmorPct / 100f);
-                        Plugin.Log.LogDebug($"[스탯 트리] 방어력% 합산 적용: +{totalArmorPct}% (바위피부:{Defense_Config.TankerArmorBonusValue}% + 인챈트:{enchantArmorPct}%, 총: {__result})");
                     }
+
+                    // 소수점 1자리 반올림 (표시 정리: 98.56001 → 98.6)
+                    __result = Mathf.Round(__result * 10f) / 10f;
                 }
                 catch (System.Exception ex)
                 {
@@ -190,52 +205,30 @@ namespace CaptainSkillTree.SkillTree
 
                     // defense_root: 방어 전문가 체력 보너스
                     if (manager.GetSkillLevel("defense_root") > 0)
-                    {
-                        float bonus = Defense_Config.DefenseRootHealthBonusValue;
-                        healthBonus += bonus;
-                        Plugin.Log.LogDebug($"[방어→음식] defense_root 체력: +{bonus}");
-                    }
+                        healthBonus += Defense_Config.DefenseRootHealthBonusValue;
 
                     // defense_Step1_survival: 피부경화 체력 보너스
                     if (manager.GetSkillLevel("defense_Step1_survival") > 0)
-                    {
-                        float bonus = Defense_Config.SurvivalHealthBonusValue;
-                        healthBonus += bonus;
-                        Plugin.Log.LogDebug($"[방어→음식] 피부경화 체력: +{bonus}");
-                    }
+                        healthBonus += Defense_Config.SurvivalHealthBonusValue;
 
                     // defense_Step2_health: 체력단련 체력 보너스
                     if (manager.GetSkillLevel("defense_Step2_health") > 0)
-                    {
-                        float bonus = Defense_Config.HealthBonusValue;
-                        healthBonus += bonus;
-                        Plugin.Log.LogDebug($"[방어→음식] 체력단련 체력: +{bonus}");
-                    }
+                        healthBonus += Defense_Config.HealthBonusValue;
 
                     // defense_Step3_boost: 체력증강 체력 보너스
                     if (manager.GetSkillLevel("defense_Step3_boost") > 0)
-                    {
-                        float bonus = Defense_Config.BoostHealthBonusValue;
-                        healthBonus += bonus;
-                        Plugin.Log.LogDebug($"[방어→음식] 체력증강 체력: +{bonus}");
-                    }
+                        healthBonus += Defense_Config.BoostHealthBonusValue;
 
                     // defense_Step6_body: 요툰의 생명력 - 체력 +30% (비율→고정값 변환)
                     // ✅ 힐링 깜빡임 방지: 비율 보너스를 고정 수치로 변환하여 m_baseHP에 포함
                     if (manager.GetSkillLevel("defense_Step6_body") > 0)
                     {
-                        float baseHealthBeforeBonus = hp + healthBonus;  // 현재까지의 총 기본 체력
-                        float bonusPercent = Defense_Config.BodyHealthBonusValue / 100f;  // 30% = 0.3
-                        float bonusHealth = baseHealthBeforeBonus * bonusPercent;  // 고정 체력 계산
-                        healthBonus += bonusHealth;  // m_baseHP에 포함
-                        Plugin.Log.LogDebug($"[요툰의 생명력→음식] 기본 체력 +{Defense_Config.BodyHealthBonusValue}%: {baseHealthBeforeBonus:F0} * {bonusPercent:F2} = +{bonusHealth:F0}");
+                        float baseHealthBeforeBonus = hp + healthBonus;
+                        healthBonus += baseHealthBeforeBonus * (Defense_Config.BodyHealthBonusValue / 100f);
                     }
 
                     if (healthBonus > 0)
-                    {
                         hp += healthBonus;
-                        Plugin.Log.LogDebug($"[스탯 트리] 체력 보너스 적용: +{healthBonus} (최종 최대 체력: {hp})");
-                    }
                 }
                 catch (System.Exception ex)
                 {
@@ -264,21 +257,14 @@ namespace CaptainSkillTree.SkillTree
 
                     // defense_Step2_dodge: 심신단련 스태미나 보너스
                     if (manager.GetSkillLevel("defense_Step2_dodge") > 0)
-                    {
-                        float bonus = Defense_Config.DodgeStaminaBonusValue;
-                        staminaBonus += bonus;
-                        Plugin.Log.LogDebug($"[방어→음식] 심신단련 스태미나: +{bonus}");
-                    }
+                        staminaBonus += Defense_Config.DodgeStaminaBonusValue;
 
                     // speed_2: 스태미나 +15
                     if (manager.GetSkillLevel("speed_2") > 0)
                         staminaBonus += SkillTreeConfig.SpeedEnduranceStaminaBonusValue;
 
                     if (staminaBonus > 0)
-                    {
                         stamina += staminaBonus;
-                        Plugin.Log.LogDebug($"[스탯 트리] 스태미나 보너스 적용: +{staminaBonus}");
-                    }
 
                     // 인챈트 MaxStamina: 퍼센트 증가 (GetMaxStamina 패치 대신 여기서 처리)
                     if (__instance != null)
@@ -286,11 +272,7 @@ namespace CaptainSkillTree.SkillTree
                         float enchantPct = ProducerCrafting.GetEquippedArmorEnchantTotal(
                             __instance, ProducerCrafting.EnchantType.MaxStamina);
                         if (enchantPct > 0f)
-                        {
-                            float add = stamina * (enchantPct / 100f);
-                            stamina += add;
-                            Plugin.Log.LogDebug($"[인챈트] 스태미나 +{enchantPct}% = +{add:F1}");
-                        }
+                            stamina += stamina * (enchantPct / 100f);
                     }
                 }
                 catch (System.Exception ex)
@@ -346,10 +328,7 @@ namespace CaptainSkillTree.SkillTree
                     }
 
                     if (eitrBonus > 0)
-                    {
                         eitr += eitrBonus;
-                        Plugin.Log.LogDebug($"[스탯 트리] 에이트르 보너스 적용: +{eitrBonus} (최종 최대 에이트르: {eitr})");
-                    }
                 }
                 catch (System.Exception ex)
                 {
@@ -512,6 +491,15 @@ namespace CaptainSkillTree.SkillTree
             {
                 totalDodge += Spear_Config.SpearStep3EvasionBonusValue / 100f;
                 Plugin.Log.LogDebug($"[회피 찌르기] 창 회피율 +{Spear_Config.SpearStep3EvasionBonusValue}%");
+            }
+
+            // === 로그 직업 회피율 ===
+            int rogueLevel = manager.GetSkillLevel("Rogue");
+            if (rogueLevel > 0)
+            {
+                float rogueDodge = RogueSkills.GetRogueDodgeChance(rogueLevel) / 100f;
+                totalDodge += rogueDodge;
+                Plugin.Log.LogDebug($"[로그 패시브] 회피율 +{RogueSkills.GetRogueDodgeChance(rogueLevel)}%");
             }
 
             player.SetCustomDodgeChance(totalDodge);

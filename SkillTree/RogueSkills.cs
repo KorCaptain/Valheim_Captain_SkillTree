@@ -184,18 +184,15 @@ namespace CaptainSkillTree.SkillTree
             float instantDmg = weaponDmg * (GetPoisonInstantForLevel(lv) / 100f);
             Vector3 pos = player.transform.position;
 
-            var enemies = Character.GetAllCharacters()
-                .Where(c => c != null && !c.IsDead() && c != player && !c.IsPlayer())
-                .Where(c => Vector3.Distance(pos, c.transform.position) <= range)
-                .ToList();
-
-            foreach (var enemy in enemies)
+            foreach (var enemy in Character.GetAllCharacters())
             {
+                if (enemy == null || enemy.IsDead() || enemy == player || enemy.IsPlayer()) continue;
+                if (Vector3.Distance(pos, enemy.transform.position) > range) continue;
                 try
                 {
-                    // 즉시 독 데미지
+                    // 즉시 독 데미지 (m_poison은 SE_Poison 상태효과라 즉시 HP감소 없음 → m_slash로 즉시 처리)
                     var hit = new HitData();
-                    hit.m_damage.m_poison = instantDmg;
+                    hit.m_damage.m_slash = instantDmg;
                     hit.m_attacker = player.GetZDOID();
                     hit.m_point = enemy.transform.position;
                     hit.m_dir = (enemy.transform.position - pos).normalized;
@@ -232,7 +229,7 @@ namespace CaptainSkillTree.SkillTree
                 try
                 {
                     var hit = new HitData();
-                    hit.m_damage.m_poison = dotDmg;
+                    hit.m_damage.m_slash = dotDmg;  // m_poison은 SE_Poison 갱신이라 틱 데미지 1/5로 줄어듦 → m_slash로 즉시 처리
                     hit.m_attacker = player?.GetZDOID() ?? ZDOID.None;
                     hit.m_point = enemy.transform.position;
                     enemy.Damage(hit);
@@ -516,6 +513,10 @@ namespace CaptainSkillTree.SkillTree
                         hit.m_damage.m_lightning *= buffMultiplier;
                         hit.m_damage.m_poison    *= buffMultiplier;
                         hit.m_damage.m_spirit    *= buffMultiplier;
+
+                        // 버프 중 적 적중 시 flash_blue_purple VFX
+                        if (!(__instance is Player))
+                            SimpleVFX.Play("flash_blue_purple", __instance.GetCenterPoint(), 1.5f);
                     }
                 }
             }
@@ -523,37 +524,6 @@ namespace CaptainSkillTree.SkillTree
         }
     }
 
-    /// <summary>
-    /// 로그 패시브 - 속성 저항 증가 패치
-    /// </summary>
-    [HarmonyPatch(typeof(Character), "Damage")]
-    public static class RoguePassivePatch
-    {
-        static void Prefix(Character __instance, ref HitData hit)
-        {
-            try
-            {
-                if (!(__instance is Player player)) return;
-                int lv = RogueSkills.GetRogueLevel();
-                if (lv <= 0) return;
-
-                // 기본 속성 저항 (Lv1부터)
-                float resist = RogueSkills.GetElementalResistForLevel(lv) / 100f;
-                hit.m_damage.m_fire      *= (1f - resist);
-                hit.m_damage.m_frost     *= (1f - resist);
-                hit.m_damage.m_lightning *= (1f - resist);
-                hit.m_damage.m_spirit    *= (1f - resist);
-
-                // 독 저항 (Lv2부터 추가)
-                float poisonResist = RogueSkills.GetRoguePoisonResist(lv) / 100f;
-                if (poisonResist > 0f)
-                    hit.m_damage.m_poison *= (1f - (resist + poisonResist));
-                else
-                    hit.m_damage.m_poison *= (1f - resist);
-            }
-            catch (System.Exception) { }
-        }
-    }
 
     /// <summary>
     /// 로그 패시브 - 스태미나 사용량 감소 패치
@@ -647,6 +617,20 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[달리기속도 패치] 오류: {ex.Message}");
             }
+        }
+    }
+
+    /// <summary>
+    /// 로그/이동속도 Dictionary 메모리 정리 (OnDestroy)
+    /// </summary>
+    [HarmonyPatch(typeof(Player), "OnDestroy")]
+    public static class RogueSkills_Player_OnDestroy_Patch
+    {
+        static void Postfix(Player __instance)
+        {
+            if (__instance == null) return;
+            RogueSkills.CleanupRogueSkillsOnDeath(__instance);
+            ImprovedMoveSpeedPatch.ClearWarningState(__instance);
         }
     }
 }

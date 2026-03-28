@@ -101,10 +101,19 @@ namespace CaptainSkillTree.SkillTree
                             return;
                     }
 
-                    // Producer 마법부여 방어력 보너스 (% 방식)
-                    float enchantPct = 0f;
-                    if (ProducerCrafting.GetEnchantType(item) == ProducerCrafting.EnchantType.Armor)
-                        enchantPct = ProducerCrafting.GetEnchantValue(item);
+                    // Producer 마법부여 타입별 값 읽기
+                    float enchantPct        = 0f;
+                    float enchantHp         = 0f;
+                    float enchantStaminaPct = 0f;
+                    switch (ProducerCrafting.GetEnchantType(item))
+                    {
+                        case ProducerCrafting.EnchantType.Armor:
+                            enchantPct        = ProducerCrafting.GetEnchantValue(item); break;
+                        case ProducerCrafting.EnchantType.MaxHP:
+                            enchantHp         = ProducerCrafting.GetEnchantValue(item); break;
+                        case ProducerCrafting.EnchantType.MaxStamina:
+                            enchantStaminaPct = ProducerCrafting.GetEnchantValue(item); break;
+                    }
 
                     // 추가 스킬 체크
                     bool bodyActive         = manager.GetSkillLevel("defense_Step6_body") > 0;
@@ -144,16 +153,14 @@ namespace CaptainSkillTree.SkillTree
                     bool mageActive = manager.GetSkillLevel("Mage") > 0;
                     if (mageActive)
                         elemResist += Mage_Config.MageElementalResistanceValue;
-                    bool rogueActive = manager.GetSkillLevel("Rogue") > 0;
-                    if (rogueActive)
-                        elemResist += Rogue_Config.RogueElementalResistanceDebuffValue;
                     bool resistActive = physResist > 0f || elemResist > 0f;
 
                     if (!isShield)
                     {
                         bool hasBonus = flatBonus != 0f || rockSkinActive || resistActive
                                         || boostActive || berserkerActive || dodgeTotal > 0f
-                                        || moveSpeedTotal > 0f || producerBuffActive;
+                                        || moveSpeedTotal > 0f || producerBuffActive
+                                        || enchantPct > 0f || enchantHp > 0f || enchantStaminaPct > 0f;
                         if (!hasBonus) return;
                     }
 
@@ -255,6 +262,12 @@ namespace CaptainSkillTree.SkillTree
                             }
                             if (producerBuffActive)
                                 bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
+                            if (enchantPct > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_armor", $"{enchantPct:F1}")}</color>";
+                            if (enchantHp > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_hp", $"{enchantHp:F1}")}</color>";
+                            if (enchantStaminaPct > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_stamina", $"{enchantStaminaPct:F1}")}</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Chest:
                             if (flatBonus > 0f)
@@ -283,6 +296,12 @@ namespace CaptainSkillTree.SkillTree
                             }
                             if (producerBuffActive)
                                 bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
+                            if (enchantPct > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_armor", $"{enchantPct:F1}")}</color>";
+                            if (enchantHp > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_hp", $"{enchantHp:F1}")}</color>";
+                            if (enchantStaminaPct > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_stamina", $"{enchantStaminaPct:F1}")}</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Legs:
                             if (flatBonus > 0f)
@@ -307,6 +326,12 @@ namespace CaptainSkillTree.SkillTree
                             }
                             if (producerBuffActive)
                                 bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
+                            if (enchantPct > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_armor", $"{enchantPct:F1}")}</color>";
+                            if (enchantHp > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_hp", $"{enchantHp:F1}")}</color>";
+                            if (enchantStaminaPct > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_stamina", $"{enchantStaminaPct:F1}")}</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Shield:
                             if (manager.GetSkillLevel("defense_Step3_shield") > 0)

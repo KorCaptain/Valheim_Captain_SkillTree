@@ -415,9 +415,32 @@ namespace CaptainSkillTree.Localization
                 ["Mage_AOE_Range"] = "主动: 范围 (米)",
                 ["Mage_AOE_Max_Targets"] = "主动: 最大目标数",
                 ["Mage_Eitr_Cost"] = "主动: 以特尔消耗",
+                ["Mage_Fire_Rain_Radius"] = "降落半径 (米)",
+                ["Mage_Fire_Rain_Impact_Radius"] = "落地伤害范围 (米)",
+                ["Mage_Fire_Rain_Projectile_Count"] = "每次爆发弹数 (个)",
                 ["Mage_Damage_Multiplier"] = "主动: 伤害倍率 (%)",
                 ["Mage_Cooldown"] = "主动: 冷却时间 (秒)",
                 ["Mage_Elemental_Resistance"] = "被动: 元素抗性 (%)",
+                ["Mage_Lv1_Damage_Multiplier"] = "Lv1 AOE伤害倍率 (%)",
+                ["Mage_Lv1_Cooldown"] = "Lv1 冷却时间 (秒)",
+                ["Mage_Lv1_Elemental_Resistance"] = "Lv1 元素抗性 (%)",
+                ["Mage_Lv2_Damage_Multiplier"] = "Lv2 AOE伤害倍率 (%)",
+                ["Mage_Lv2_Cooldown"] = "Lv2 冷却时间 (秒)",
+                ["Mage_Lv2_Elemental_Resistance"] = "Lv2 元素抗性 (%)",
+                ["Mage_Lv3_Damage_Multiplier"] = "Lv3 AOE伤害倍率 (%)",
+                ["Mage_Lv3_Cooldown"] = "Lv3 冷却时间 (秒)",
+                ["Mage_Lv3_Elemental_Resistance"] = "Lv3 元素抗性 (%)",
+                ["Mage_Lv4_Damage_Multiplier"] = "Lv4 AOE伤害倍率 (%)",
+                ["Mage_Lv4_Cooldown"] = "Lv4 冷却时间 (秒)",
+                ["Mage_Lv4_Elemental_Resistance"] = "Lv4 元素抗性 (%)",
+                ["Mage_Lv5_Damage_Multiplier"] = "Lv5 AOE伤害倍率 (%)",
+                ["Mage_Lv5_Cooldown"] = "Lv5 冷却时间 (秒)",
+                ["Mage_Lv5_Elemental_Resistance"] = "Lv5 元素抗性 (%)",
+                ["Mage_Lv1_AOE_Max_Targets"] = "主动: 最大目标数 Lv1",
+                ["Mage_Lv2_AOE_Max_Targets"] = "主动: 最大目标数 Lv2",
+                ["Mage_Lv3_AOE_Max_Targets"] = "主动: 最大目标数 Lv3",
+                ["Mage_Lv4_AOE_Max_Targets"] = "主动: 最大目标数 Lv4",
+                ["Mage_Lv5_AOE_Max_Targets"] = "主动: 最大目标数 Lv5",
 
                 // ============================================
                 // 坦克职业技能 - 10个键
@@ -431,6 +454,7 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_BuffDuration"] = "战吼: 效果持续时间 (秒)",
                 ["Tanker_Taunt_EffectHeight"] = "战吼: 效果高度 (米)",
                 ["Tanker_Taunt_EffectScale"] = "战吼: 效果比例",
+                ["Tanker_Taunt_ReflectPercent"] = "战吼: 反射伤害比例 (%)",
                 ["Tanker_Passive_DamageReduction"] = "被动: 伤害减少 (%)",
 
                 // ============================================
@@ -445,7 +469,11 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_ShadowStrike_StealthDuration"] = "暗影打击: 隐身持续时间 (秒)",
                 ["Rogue_AttackSpeed_Bonus"] = "被动: 攻击速度加成 (%)",
                 ["Rogue_Stamina_Reduction"] = "被动: 体力消耗减少 (%)",
-                ["Rogue_ElementalResistance_Debuff"] = "被动: 元素抗性提升 (%)",
+                ["Rogue_Lv1_DodgeChance"] = "Lv1 被动: 回避率 (%)",
+                ["Rogue_Lv2_DodgeChance"] = "Lv2 被动: 回避率 (%)",
+                ["Rogue_Lv3_DodgeChance"] = "Lv3 被动: 回避率 (%)",
+                ["Rogue_Lv4_DodgeChance"] = "Lv4 被动: 回避率 (%)",
+                ["Rogue_Lv5_DodgeChance"] = "Lv5 被动: 回避率 (%)",
 
                 // ============================================
                 // 圣骑士职业技能 - 9个键
@@ -459,6 +487,26 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Active_Duration"] = "神圣治愈: 持续时间 (秒)",
                 ["Paladin_Active_Interval"] = "神圣治愈: 间隔时间 (秒)",
                 ["Paladin_Passive_ElementalResistanceReduction"] = "被动: 抗性加成 (%)",
+                ["Paladin_Lv2_SelfHealPercent"] = "Lv2: 自身治疗率 (%)",
+                ["Paladin_Lv2_AllyHealPercent"] = "Lv2: 盟友治疗率 (%/次)",
+                ["Paladin_Lv3_SelfHealPercent"] = "Lv3: 自身治疗率 (%)",
+                ["Paladin_Lv3_AllyHealPercent"] = "Lv3: 盟友治疗率 (%/次)",
+                ["Paladin_Lv3_HealRange"] = "Lv3: 治疗范围 (m)",
+                ["Paladin_Lv4_SelfHealPercent"] = "Lv4: 自身治疗率 (%)",
+                ["Paladin_Lv4_AllyHealPercent"] = "Lv4: 盟友治疗率 (%/次)",
+                ["Paladin_Lv4_HealRange"] = "Lv4: 治疗范围 (m)",
+                ["Paladin_Lv5_SelfHealPercent"] = "Lv5: 自身治疗率 (%)",
+                ["Paladin_Lv5_AllyHealPercent"] = "Lv5: 盟友治疗率 (%/次)",
+                ["Paladin_Lv5_HealRange"] = "Lv5: 治疗范围 (m)",
+                ["Paladin_Lv5_Cooldown"] = "Lv5: 冷却时间 (秒)",
+                ["Paladin_Lv2_ResistanceReduction"] = "Lv2: 抗性减少 (%)",
+                ["Paladin_Lv3_ResistanceReduction"] = "Lv3: 抗性减少 (%)",
+                ["Paladin_Lv4_ResistanceReduction"] = "Lv4: 抗性减少 (%)",
+                ["Paladin_Lv5_ResistanceReduction"] = "Lv5: 抗性减少 (%)",
+                ["Paladin_Lv2_StaminaBonus"] = "Lv2: 体力加成",
+                ["Paladin_Lv3_StaminaBonus"] = "Lv3: 体力加成",
+                ["Paladin_Lv4_StaminaBonus"] = "Lv4: 体力加成",
+                ["Paladin_Lv5_StaminaBonus"] = "Lv5: 体力加成",
 
                 // ============================================
                 // 狂战士职业技能 - 10个键
@@ -473,6 +521,12 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_InvincibilityDuration"] = "死亡蔑视: 无敌持续时间 (秒)",
                 ["Berserker_Passive_Cooldown"] = "死亡蔑视: 冷却时间 (秒)",
                 ["Berserker_Passive_HealthBonus"] = "被动: 最大HP加成 (%)",
+                ["Berserker_Lv2_CooldownReduction"] = "Lv2: 狂怒冷却减少 (秒)",
+                ["Berserker_Lv3_RageDamageReduction"] = "Lv3: 狂怒中减伤 (%)",
+                ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: 低血量攻击加成 (%)",
+                ["Berserker_Lv4_LowHpAttackThreshold"] = "Lv4: 低血量阈值 (%)",
+                ["Berserker_Lv5_PassiveCooldownReduction"] = "Lv5: 被动冷却减少 (秒)",
+                ["Berserker_Lv5_InvincibilityBonus"] = "Lv5: 额外无敌时间 (秒)",
 
                 // ============================================
                 // 剑树 - 路径命中补充

@@ -299,43 +299,66 @@ namespace CaptainSkillTree.Localization
                 "Tanque passivo: reduz continuamente o dano recebido.\n" +
                 "Valor recomendado: 10-20%",
 
-                ["Tanker_Hp_Bonus"] =
-                "【HP Base do Tanque】\n" +
-                "Bônus de HP passivo do Tanque.\n" +
-                "Padrão: 100",
-
-                ["Tanker_Lv2_AllResist"] =
-                "【Resistência Total do Tanque Lv2 (%)】\n" +
-                "Resistência passiva a todos os tipos de dano (Lv2+).\n" +
-                "Padrão: 5%",
-
-                ["Tanker_Lv3_AllResist"] =
-                "【Resistência Total do Tanque Lv3 (%)】\n" +
-                "Padrão: 8%",
-
-                ["Tanker_Lv4_AllResist"] =
-                "【Resistência Total do Tanque Lv4 (%)】\n" +
-                "Padrão: 12%",
-
-                ["Tanker_Lv5_AllResist"] =
-                "【Resistência Total do Tanque Lv5 (%)】\n" +
-                "Padrão: 15%",
-
+                // === Lv1 ===
                 ["Tanker_ReflectDuration_Lv1"] =
                 "【Duração do Reflexo do Tanque Lv1 (seg)】\n" +
                 "Padrão: 10 seg",
+
+                // === Lv2 ===
+                ["Tanker_Hp_Bonus_Lv2"] =
+                "【Bônus de HP do Tanque Lv2】\n" +
+                "Bônus de HP passivo do Tanque no Lv2.\n" +
+                "Padrão: 35",
+
+                ["Tanker_Lv2_BlockPower"] =
+                "【Poder de Bloqueio do Tanque Lv2】\n" +
+                "Poder de bloqueio passivo do Tanque no Lv2.\n" +
+                "Padrão: 5",
 
                 ["Tanker_ReflectDuration_Lv2"] =
                 "【Duração do Reflexo do Tanque Lv2 (seg)】\n" +
                 "Padrão: 12 seg",
 
+                // === Lv3 ===
+                ["Tanker_Hp_Bonus_Lv3"] =
+                "【Bônus de HP do Tanque Lv3】\n" +
+                "Bônus de HP passivo do Tanque no Lv3.\n" +
+                "Padrão: 50",
+
+                ["Tanker_Lv3_BlockPower"] =
+                "【Poder de Bloqueio do Tanque Lv3】\n" +
+                "Poder de bloqueio passivo do Tanque no Lv3.\n" +
+                "Padrão: 8",
+
                 ["Tanker_ReflectDuration_Lv3"] =
                 "【Duração do Reflexo do Tanque Lv3 (seg)】\n" +
                 "Padrão: 14 seg",
 
+                // === Lv4 ===
+                ["Tanker_Hp_Bonus_Lv4"] =
+                "【Bônus de HP do Tanque Lv4】\n" +
+                "Bônus de HP passivo do Tanque no Lv4.\n" +
+                "Padrão: 70",
+
+                ["Tanker_Lv4_BlockPower"] =
+                "【Poder de Bloqueio do Tanque Lv4】\n" +
+                "Poder de bloqueio passivo do Tanque no Lv4.\n" +
+                "Padrão: 12",
+
                 ["Tanker_ReflectDuration_Lv4"] =
                 "【Duração do Reflexo do Tanque Lv4 (seg)】\n" +
                 "Padrão: 16 seg",
+
+                // === Lv5 ===
+                ["Tanker_Hp_Bonus_Lv5"] =
+                "【Bônus de HP do Tanque Lv5】\n" +
+                "Bônus de HP passivo do Tanque no Lv5.\n" +
+                "Padrão: 100",
+
+                ["Tanker_Lv5_BlockPower"] =
+                "【Poder de Bloqueio do Tanque Lv5】\n" +
+                "Poder de bloqueio passivo do Tanque no Lv5.\n" +
+                "Padrão: 15",
 
                 ["Tanker_ReflectDuration_Lv5"] =
                 "【Duração do Reflexo do Tanque Lv5 (seg)】\n" +
@@ -392,10 +415,14 @@ namespace CaptainSkillTree.Localization
                 "Ladino passivo: reduz o consumo de stamina em ataques.\n" +
                 "Valor recomendado: 10-20%",
 
-                ["Rogue_ElementalResistance_Debuff"] =
-                "【Aumento de Resistência Elemental (%)】\n" +
-                "Ladino passivo: aumenta a resistência a dano elemental.\n" +
-                "Valor recomendado: 8-15%",
+                ["Rogue_Lv1_DodgeChance"] =
+                "【Lv1 Taxa de Esquiva (%)】\n" +
+                "Ladino passivo: aumenta a taxa de esquiva. Acumula com total da árvore de habilidades.\n" +
+                "Valor recomendado: 3-6%",
+                ["Rogue_Lv2_DodgeChance"] = "【Lv2 Taxa de Esquiva (%)】\nValor recomendado: 5-8%",
+                ["Rogue_Lv3_DodgeChance"] = "【Lv3 Taxa de Esquiva (%)】\nValor recomendado: 7-10%",
+                ["Rogue_Lv4_DodgeChance"] = "【Lv4 Taxa de Esquiva (%)】\nValor recomendado: 9-12%",
+                ["Rogue_Lv5_DodgeChance"] = "【Lv5 Taxa de Esquiva (%)】\nValor recomendado: 11-15%",
 
                 // ========================================
                 // Paladin Job (paladino)
@@ -562,46 +589,61 @@ namespace CaptainSkillTree.Localization
                 "Stamina consumida ao ativar o buff.\n" +
                 "Padrão: 20",
 
+                // === Producer Lv1 ===
                 ["Producer_FarmGrid_Lv1"] = "【Tamanho da Grade de Plantio Lv1】\nNúmero de células extras na grade de plantio em Lv1.\nPadrão: 2",
+
+                // === Producer Lv2 ===
                 ["Producer_FarmGrid_Lv2"] = "【Tamanho da Grade de Plantio Lv2】\nNúmero de células extras na grade de plantio em Lv2.\nPadrão: 2",
-                ["Producer_FarmGrid_Lv3"] = "【Tamanho da Grade de Plantio Lv3】\nNúmero de células extras na grade de plantio em Lv3.\nPadrão: 4",
-                ["Producer_FarmGrid_Lv4"] = "【Tamanho da Grade de Plantio Lv4】\nNúmero de células extras na grade de plantio em Lv4.\nPadrão: 6",
-                ["Producer_FarmGrid_Lv5"] = "【Tamanho da Grade de Plantio Lv5】\nNúmero de células extras na grade de plantio em Lv5.\nPadrão: 8",
-
                 ["Producer_Durability_Lv2"] = "【Bônus de Durabilidade Lv2 (%)】\nBônus de durabilidade em itens fabricados em Lv2.\nPadrão: 10%",
-                ["Producer_Durability_Lv3"] = "【Bônus de Durabilidade Lv3 (%)】\nBônus de durabilidade em itens fabricados em Lv3.\nPadrão: 15%",
-                ["Producer_Durability_Lv4"] = "【Bônus de Durabilidade Lv4 (%)】\nBônus de durabilidade em itens fabricados em Lv4.\nPadrão: 20%",
-                ["Producer_Durability_Lv5"] = "【Bônus de Durabilidade Lv5 (%)】\nBônus de durabilidade em itens fabricados em Lv5.\nPadrão: 30%",
-
                 ["Producer_MaterialReduction_Lv2"] = "【Redução de Material Lv2 (%)】\nMateriais economizados por fabricação em Lv2.\nPadrão: 10%",
+
+                // === Producer Lv3 ===
+                ["Producer_FarmGrid_Lv3"] = "【Tamanho da Grade de Plantio Lv3】\nNúmero de células extras na grade de plantio em Lv3.\nPadrão: 4",
+                ["Producer_Durability_Lv3"] = "【Bônus de Durabilidade Lv3 (%)】\nBônus de durabilidade em itens fabricados em Lv3.\nPadrão: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【Redução de Material Lv3 (%)】\nMateriais economizados por fabricação em Lv3.\nPadrão: 15%",
-                ["Producer_MaterialReduction_Lv4"] = "【Redução de Material Lv4 (%)】\nMateriais economizados por fabricação em Lv4.\nPadrão: 20%",
-                ["Producer_MaterialReduction_Lv5"] = "【Redução de Material Lv5 (%)】\nMateriais economizados por fabricação em Lv5.\nPadrão: 30%",
-
                 ["Producer_EnchantChance_Lv3"] = "【Chance de Encantamento Lv3 (%)】\nChance de encantar item fabricado em Lv3.\nPadrão: 25%",
-                ["Producer_EnchantChance_Lv4"] = "【Chance de Encantamento Lv4 (%)】\nChance de encantar item fabricado em Lv4.\nPadrão: 30%",
-                ["Producer_EnchantChance_Lv5"] = "【Chance de Encantamento Lv5 (%)】\nChance de encantar item fabricado em Lv5.\nPadrão: 35%",
-
                 ["Producer_EnchantWeaponDmgMin_Lv3"] = "【Encantamento Arma Dano Mín Lv3 (%)】\nBônus mínimo de dano de arma por encantamento (Lv3).\nPadrão: 5%",
                 ["Producer_EnchantWeaponDmgMax_Lv3"] = "【Encantamento Arma Dano Máx Lv3 (%)】\nBônus máximo de dano de arma por encantamento (Lv3).\nPadrão: 5%",
-                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【Encantamento Arma Dano Mín Lv4 (%)】\nBônus mínimo de dano de arma por encantamento (Lv4).\nPadrão: 7%",
-                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【Encantamento Arma Dano Máx Lv4 (%)】\nBônus máximo de dano de arma por encantamento (Lv4).\nPadrão: 9%",
-                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【Encantamento Arma Dano Mín Lv5 (%)】\nBônus mínimo de dano de arma por encantamento (Lv5).\nPadrão: 10%",
-                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【Encantamento Arma Dano Máx Lv5 (%)】\nBônus máximo de dano de arma por encantamento (Lv5).\nPadrão: 12%",
-
                 ["Producer_EnchantArmorMin_Lv3"] = "【Encantamento Armadura Mín Lv3 (%)】\nBônus mínimo de armadura por encantamento (Lv3).\nPadrão: 5%",
                 ["Producer_EnchantArmorMax_Lv3"] = "【Encantamento Armadura Máx Lv3 (%)】\nBônus máximo de armadura por encantamento (Lv3).\nPadrão: 5%",
-                ["Producer_EnchantArmorMin_Lv4"] = "【Encantamento Armadura Mín Lv4 (%)】\nBônus mínimo de armadura por encantamento (Lv4).\nPadrão: 7%",
-                ["Producer_EnchantArmorMax_Lv4"] = "【Encantamento Armadura Máx Lv4 (%)】\nBônus máximo de armadura por encantamento (Lv4).\nPadrão: 9%",
-                ["Producer_EnchantArmorMin_Lv5"] = "【Encantamento Armadura Mín Lv5 (%)】\nBônus mínimo de armadura por encantamento (Lv5).\nPadrão: 10%",
-                ["Producer_EnchantArmorMax_Lv5"] = "【Encantamento Armadura Máx Lv5 (%)】\nBônus máximo de armadura por encantamento (Lv5).\nPadrão: 12%",
-
                 ["Producer_EnchantHpMin_Lv3"] = "【Encantamento HP Mín Lv3 (%)】\nBônus mínimo de HP máximo por encantamento (Lv3).\nPadrão: 2%",
                 ["Producer_EnchantHpMax_Lv3"] = "【Encantamento HP Máx Lv3 (%)】\nBônus máximo de HP máximo por encantamento (Lv3).\nPadrão: 2%",
+                ["Producer_EnchantWeaponSpdMin_Lv3"] = "【Velocidade de Ataque Mín Lv3 (%)】\nBônus mínimo de velocidade de ataque por encantamento (Lv3).\nPadrão: 3%",
+                ["Producer_EnchantWeaponSpdMax_Lv3"] = "【Velocidade de Ataque Máx Lv3 (%)】\nBônus máximo de velocidade de ataque por encantamento (Lv3).\nPadrão: 5%",
+                ["Producer_EnchantStaminaMin_Lv3"] = "【Encantamento Stamina Mín Lv3 (%)】\nBônus mínimo de stamina máxima por encantamento (Lv3).\nPadrão: 3%",
+                ["Producer_EnchantStaminaMax_Lv3"] = "【Encantamento Stamina Máx Lv3 (%)】\nBônus máximo de stamina máxima por encantamento (Lv3).\nPadrão: 5%",
+
+                // === Producer Lv4 ===
+                ["Producer_FarmGrid_Lv4"] = "【Tamanho da Grade de Plantio Lv4】\nNúmero de células extras na grade de plantio em Lv4.\nPadrão: 6",
+                ["Producer_Durability_Lv4"] = "【Bônus de Durabilidade Lv4 (%)】\nBônus de durabilidade em itens fabricados em Lv4.\nPadrão: 20%",
+                ["Producer_MaterialReduction_Lv4"] = "【Redução de Material Lv4 (%)】\nMateriais economizados por fabricação em Lv4.\nPadrão: 20%",
+                ["Producer_EnchantChance_Lv4"] = "【Chance de Encantamento Lv4 (%)】\nChance de encantar item fabricado em Lv4.\nPadrão: 30%",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【Encantamento Arma Dano Mín Lv4 (%)】\nBônus mínimo de dano de arma por encantamento (Lv4).\nPadrão: 7%",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【Encantamento Arma Dano Máx Lv4 (%)】\nBônus máximo de dano de arma por encantamento (Lv4).\nPadrão: 9%",
+                ["Producer_EnchantArmorMin_Lv4"] = "【Encantamento Armadura Mín Lv4 (%)】\nBônus mínimo de armadura por encantamento (Lv4).\nPadrão: 7%",
+                ["Producer_EnchantArmorMax_Lv4"] = "【Encantamento Armadura Máx Lv4 (%)】\nBônus máximo de armadura por encantamento (Lv4).\nPadrão: 9%",
                 ["Producer_EnchantHpMin_Lv4"] = "【Encantamento HP Mín Lv4 (%)】\nBônus mínimo de HP máximo por encantamento (Lv4).\nPadrão: 4%",
                 ["Producer_EnchantHpMax_Lv4"] = "【Encantamento HP Máx Lv4 (%)】\nBônus máximo de HP máximo por encantamento (Lv4).\nPadrão: 5%",
+                ["Producer_EnchantWeaponSpdMin_Lv4"] = "【Velocidade de Ataque Mín Lv4 (%)】\nBônus mínimo de velocidade de ataque por encantamento (Lv4).\nPadrão: 5%",
+                ["Producer_EnchantWeaponSpdMax_Lv4"] = "【Velocidade de Ataque Máx Lv4 (%)】\nBônus máximo de velocidade de ataque por encantamento (Lv4).\nPadrão: 8%",
+                ["Producer_EnchantStaminaMin_Lv4"] = "【Encantamento Stamina Mín Lv4 (%)】\nBônus mínimo de stamina máxima por encantamento (Lv4).\nPadrão: 5%",
+                ["Producer_EnchantStaminaMax_Lv4"] = "【Encantamento Stamina Máx Lv4 (%)】\nBônus máximo de stamina máxima por encantamento (Lv4).\nPadrão: 8%",
+
+                // === Producer Lv5 ===
+                ["Producer_FarmGrid_Lv5"] = "【Tamanho da Grade de Plantio Lv5】\nNúmero de células extras na grade de plantio em Lv5.\nPadrão: 8",
+                ["Producer_Durability_Lv5"] = "【Bônus de Durabilidade Lv5 (%)】\nBônus de durabilidade em itens fabricados em Lv5.\nPadrão: 30%",
+                ["Producer_MaterialReduction_Lv5"] = "【Redução de Material Lv5 (%)】\nMateriais economizados por fabricação em Lv5.\nPadrão: 30%",
+                ["Producer_EnchantChance_Lv5"] = "【Chance de Encantamento Lv5 (%)】\nChance de encantar item fabricado em Lv5.\nPadrão: 35%",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【Encantamento Arma Dano Mín Lv5 (%)】\nBônus mínimo de dano de arma por encantamento (Lv5).\nPadrão: 10%",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【Encantamento Arma Dano Máx Lv5 (%)】\nBônus máximo de dano de arma por encantamento (Lv5).\nPadrão: 12%",
+                ["Producer_EnchantArmorMin_Lv5"] = "【Encantamento Armadura Mín Lv5 (%)】\nBônus mínimo de armadura por encantamento (Lv5).\nPadrão: 10%",
+                ["Producer_EnchantArmorMax_Lv5"] = "【Encantamento Armadura Máx Lv5 (%)】\nBônus máximo de armadura por encantamento (Lv5).\nPadrão: 12%",
                 ["Producer_EnchantHpMin_Lv5"] = "【Encantamento HP Mín Lv5 (%)】\nBônus mínimo de HP máximo por encantamento (Lv5).\nPadrão: 6%",
                 ["Producer_EnchantHpMax_Lv5"] = "【Encantamento HP Máx Lv5 (%)】\nBônus máximo de HP máximo por encantamento (Lv5).\nPadrão: 8%",
+                ["Producer_EnchantWeaponSpdMin_Lv5"] = "【Velocidade de Ataque Mín Lv5 (%)】\nBônus mínimo de velocidade de ataque por encantamento (Lv5).\nPadrão: 8%",
+                ["Producer_EnchantWeaponSpdMax_Lv5"] = "【Velocidade de Ataque Máx Lv5 (%)】\nBônus máximo de velocidade de ataque por encantamento (Lv5).\nPadrão: 12%",
+                ["Producer_EnchantStaminaMin_Lv5"] = "【Encantamento Stamina Mín Lv5 (%)】\nBônus mínimo de stamina máxima por encantamento (Lv5).\nPadrão: 8%",
+                ["Producer_EnchantStaminaMax_Lv5"] = "【Encantamento Stamina Máx Lv5 (%)】\nBônus máximo de stamina máxima por encantamento (Lv5).\nPadrão: 12%",
 
                 ["Job_Lv1_Cost"] = "【Custo de Moedas Lv1 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv1.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 1000",
                 ["Job_Lv2_Cost"] = "【Custo de Moedas Lv2 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv2.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 2000",

@@ -139,104 +139,45 @@ namespace CaptainSkillTree.SkillTree
     }
     
     /// <summary>
-    /// 3단계: 재료 소모 감지 패치 (Player.ConsumeResources) - 정밀 컨텍스트 분석
+    /// 3단계: 재료 소모 감지 패치 (Player.ConsumeResources)
+    /// DoCrafting Prefix가 materialConsumed 플래그를 먼저 설정하므로
+    /// StackTrace 분석 없이 플래그만으로 실제 제작 여부 판단 가능
     /// </summary>
     [HarmonyPatch(typeof(Player), "ConsumeResources")]
     public static class Player_ConsumeResources_MaterialDetector
     {
+        // Reflection 캐시 (한 번만 조회)
+        private static FieldInfo _selectedRecipeField;
+        private static bool _fieldsCached = false;
+
+        private static void EnsureFieldCache()
+        {
+            if (_fieldsCached) return;
+            var flags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+            _selectedRecipeField = typeof(InventoryGui).GetField("m_selectedRecipe", flags);
+            _fieldsCached = true;
+        }
+
         private static void Postfix(Player __instance, Piece.Requirement[] requirements)
         {
             try
             {
                 if (__instance != Player.m_localPlayer || requirements == null || requirements.Length == 0)
-                {
                     return;
-                }
-                
-                // 호출 컨텍스트 정밀 분석
-                var callStack = new System.Diagnostics.StackTrace();
-                string callerInfo = "";
-                for (int i = 1; i < Math.Min(callStack.FrameCount, 5); i++)
-                {
-                    var frame = callStack.GetFrame(i);
-                    if (frame?.GetMethod() != null)
-                    {
-                        callerInfo += $"{frame.GetMethod().DeclaringType?.Name}.{frame.GetMethod().Name} -> ";
-                    }
-                }
-                
-                Plugin.Log.LogInfo($"[제작 감지] ConsumeResources 호출 - 호출 스택: {callerInfo}");
-                
-                // 인벤토리 GUI 상태 확인
-                bool inventoryOpen = InventoryGui.IsVisible();
-                var inventoryGui = InventoryGui.instance;
-                
-                // InventoryGui 필드들 안전하게 확인 (reflection 사용)
-                bool craftingPanelActive = false;
-                string currentRecipe = "없음";
-                
-                try
-                {
-                    var craftingPanelField = typeof(InventoryGui).GetField("m_craftingPanel", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-                    if (craftingPanelField != null && inventoryGui != null)
-                    {
-                        var craftingPanel = craftingPanelField.GetValue(inventoryGui) as GameObject;
-                        craftingPanelActive = craftingPanel?.activeSelf ?? false;
-                    }
-                    
-                    var selectedRecipeField = typeof(InventoryGui).GetField("m_selectedRecipe", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-                    if (selectedRecipeField != null && inventoryGui != null)
-                    {
-                        var selectedRecipe = selectedRecipeField.GetValue(inventoryGui);
-                        if (selectedRecipe != null)
-                        {
-                            var itemField = selectedRecipe.GetType().GetField("m_item", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-                            if (itemField != null)
-                            {
-                                var item = itemField.GetValue(selectedRecipe);
-                                var itemDataField = item?.GetType().GetField("m_itemData", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-                                if (itemDataField != null)
-                                {
-                                    var itemData = itemDataField.GetValue(item) as ItemDrop.ItemData;
-                                    currentRecipe = itemData?.m_shared?.m_name ?? "파싱불가";
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception reflectionEx)
-                {
-                    Plugin.Log.LogDebug($"[제작 상태] Reflection 오류: {reflectionEx.Message}");
-                }
-                
-                Plugin.Log.LogInfo($"[제작 상태] 인벤토리열림:{inventoryOpen}, 제작패널:{craftingPanelActive}, 현재레시피:{currentRecipe}");
-                
-                // 소모된 재료 로그
-                string materialsInfo = "";
-                foreach (var req in requirements)
-                {
-                    materialsInfo += $"{req.m_resItem?.m_itemData?.m_shared?.m_name ?? "알수없음"}({req.m_amount}), ";
-                }
-                Plugin.Log.LogInfo($"[소모 재료] {materialsInfo}");
-                
-                // 실제 제작 상황 판단 (DoCrafting 패치와 연동)
-                bool isActualCrafting = CraftButtonDetector.materialConsumed && 
-                                       CraftButtonDetector.craftButtonClicked &&
-                                       callerInfo.Contains("DoCrafting");
-                
+
+                // DoCrafting Prefix가 materialConsumed = true를 설정함
+                // craftButtonClicked도 확인하여 실제 제작 여부 판단
+                bool isActualCrafting = CraftButtonDetector.materialConsumed &&
+                                       CraftButtonDetector.craftButtonClicked;
+
                 if (isActualCrafting)
                 {
-                    Plugin.Log.LogInfo($"[제작 감지] ✅ 실제 제작 상황 확인됨");
-                    
-                    // 제작된 아이템 찾기
+                    Plugin.Log.LogInfo("[제작 감지] ✅ 실제 제작 상황 확인됨");
+
                     var recentItem = GetRecentlyCraftedItem(__instance);
                     if (recentItem != null)
                     {
-                        Plugin.Log.LogInfo($"[제작 완료] 제작된 아이템: {recentItem.m_shared?.m_name}");
-                        
                         Plugin.Log.LogInfo($"[제작 감지] 아이템 감지됨 (강화는 DoCrafting 패치 처리): {recentItem.m_shared?.m_name}");
-                        
-                        // 제작 완료 후 플래그 리셋
                         CraftButtonDetector.ResetAllFlags();
                     }
                     else
@@ -246,7 +187,7 @@ namespace CaptainSkillTree.SkillTree
                 }
                 else
                 {
-                    Plugin.Log.LogInfo($"[제작 감지] ❌ 제작이 아닌 상황 - materialConsumed:{CraftButtonDetector.materialConsumed}, craftButtonClicked:{CraftButtonDetector.craftButtonClicked}, DoCrafting호출:{callerInfo.Contains("DoCrafting")}");
+                    Plugin.Log.LogDebug($"[제작 감지] 제작이 아닌 ConsumeResources - materialConsumed:{CraftButtonDetector.materialConsumed}, craftButtonClicked:{CraftButtonDetector.craftButtonClicked}");
                 }
             }
             catch (Exception ex)
@@ -290,44 +231,60 @@ namespace CaptainSkillTree.SkillTree
     [HarmonyPatch(typeof(InventoryGui), "DoCrafting")]
     public static class InventoryGui_DoCrafting_DirectDetector
     {
+        // Reflection 캐시
+        private static FieldInfo _selectedRecipeField;
+        private static FieldInfo _recipeItemField;
+        private static FieldInfo _itemDataField;
+        private static bool _fieldsCached = false;
+
+        private static void EnsureFieldCache()
+        {
+            if (_fieldsCached) return;
+            var flags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+            _selectedRecipeField = typeof(InventoryGui).GetField("m_selectedRecipe", flags);
+            _fieldsCached = true;
+        }
+
         private static void Prefix(InventoryGui __instance, Player player)
         {
             try
             {
                 if (player != Player.m_localPlayer) return;
-                
+
                 Plugin.Log.LogInfo("[DoCrafting] ✅ 실제 제작 메서드 직접 호출됨!");
-                
+
                 // DoCrafting 호출 플래그 설정 (ConsumeResources 검증용)
                 CraftButtonDetector.materialConsumed = true;
                 CraftButtonDetector.materialConsumedTime = Time.time;
-                
-                // 현재 선택된 레시피 로그 (reflection 사용)
-                try
+
+                // 선택된 레시피 로그 (캐시된 reflection)
+                EnsureFieldCache();
+                if (_selectedRecipeField != null)
                 {
-                    var selectedRecipeField = typeof(InventoryGui).GetField("m_selectedRecipe", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-                    if (selectedRecipeField != null)
+                    try
                     {
-                        var recipe = selectedRecipeField.GetValue(__instance);
+                        var recipe = _selectedRecipeField.GetValue(__instance);
                         if (recipe != null)
                         {
-                            var itemField = recipe.GetType().GetField("m_item", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-                            if (itemField != null)
+                            // m_item 필드는 recipe 타입에서 한 번만 캐시
+                            if (_recipeItemField == null)
+                                _recipeItemField = recipe.GetType().GetField("m_item", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+                            var item = _recipeItemField?.GetValue(recipe);
+                            if (item != null)
                             {
-                                var item = itemField.GetValue(recipe);
-                                var itemDataField = item?.GetType().GetField("m_itemData", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-                                if (itemDataField != null)
-                                {
-                                    var itemData = itemDataField.GetValue(item) as ItemDrop.ItemData;
-                                    Plugin.Log.LogInfo($"[DoCrafting] 제작 중인 레시피: {itemData?.m_shared?.m_name ?? "알수없음"}");
-                                }
+                                if (_itemDataField == null)
+                                    _itemDataField = item.GetType().GetField("m_itemData", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+                                var itemData = _itemDataField?.GetValue(item) as ItemDrop.ItemData;
+                                Plugin.Log.LogInfo($"[DoCrafting] 제작 중인 레시피: {itemData?.m_shared?.m_name ?? "알수없음"}");
                             }
                         }
                     }
-                }
-                catch (Exception reflectionEx)
-                {
-                    Plugin.Log.LogDebug($"[DoCrafting] 레시피 정보 추출 오류: {reflectionEx.Message}");
+                    catch (Exception reflectionEx)
+                    {
+                        Plugin.Log.LogDebug($"[DoCrafting] 레시피 정보 추출 오류: {reflectionEx.Message}");
+                    }
                 }
             }
             catch (Exception ex)

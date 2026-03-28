@@ -19,6 +19,7 @@ namespace CaptainSkillTree.Localization
             foreach (var kv in GetKorean_JobExpert())       d[kv.Key] = kv.Value;
             foreach (var kv in GetKorean_AttackProduction()) d[kv.Key] = kv.Value;
             foreach (var kv in GetKorean_ItemEffects())      d[kv.Key] = kv.Value;
+            foreach (var kv in GetKorean_MMOPanel())          d[kv.Key] = kv.Value;
             return d;
         }
 
@@ -33,6 +34,7 @@ namespace CaptainSkillTree.Localization
             foreach (var kv in GetEnglish_JobExpert())       d[kv.Key] = kv.Value;
             foreach (var kv in GetEnglish_AttackProduction()) d[kv.Key] = kv.Value;
             foreach (var kv in GetEnglish_ItemEffects())     d[kv.Key] = kv.Value;
+            foreach (var kv in GetEnglish_MMOPanel())         d[kv.Key] = kv.Value;
             return d;
         }
     }

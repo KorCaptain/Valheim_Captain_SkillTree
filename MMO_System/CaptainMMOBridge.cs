@@ -54,7 +54,6 @@ namespace CaptainSkillTree.MMO_System
                 if (UseEpicMMO)
                 {
                     CaptainLevelConfig.EnableCaptainLevel.Value = false;
-                    Plugin.Log.LogInfo("[CaptainMMOBridge] EpicMMOSystem 감지됨 - 자체 레벨 시스템 OFF");
                     EpicMMOUIPatch.TryApplyPatch();
                 }
                 else

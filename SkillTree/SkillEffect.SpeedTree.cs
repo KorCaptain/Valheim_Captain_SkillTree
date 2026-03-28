@@ -88,21 +88,13 @@ namespace CaptainSkillTree.SkillTree
             
             float currentTime = Time.time;
             
-            if (!speedMeleeComboCount.ContainsKey(player))
-                speedMeleeComboCount[player] = 0;
-            if (!speedMeleeLastHitTime.ContainsKey(player))
-                speedMeleeLastHitTime[player] = 0;
+            if (!speedMeleeComboCount.TryGetValue(player, out int stMeleeCombo))
+                stMeleeCombo = 0;
+            if (!speedMeleeLastHitTime.TryGetValue(player, out float stMeleeLastHit))
+                stMeleeLastHit = 0f;
 
             // 5초 내 연속 공격인지 확인
-            if (currentTime - speedMeleeLastHitTime[player] < 5f)
-            {
-                speedMeleeComboCount[player]++;
-            }
-            else
-            {
-                speedMeleeComboCount[player] = 1;
-            }
-
+            speedMeleeComboCount[player] = currentTime - stMeleeLastHit < 5f ? stMeleeCombo + 1 : 1;
             speedMeleeLastHitTime[player] = currentTime;
 
             // 2연속 공격 시 스태미나 감소 효과 적용
@@ -126,21 +118,13 @@ namespace CaptainSkillTree.SkillTree
             
             float currentTime = Time.time;
             
-            if (!bowComboCount.ContainsKey(player))
-                bowComboCount[player] = 0;
-            if (!bowLastHitTime.ContainsKey(player))
-                bowLastHitTime[player] = 0;
+            if (!bowComboCount.TryGetValue(player, out int stBowCombo))
+                stBowCombo = 0;
+            if (!bowLastHitTime.TryGetValue(player, out float stBowLastHit))
+                stBowLastHit = 0f;
 
             // 5초 내 연속 공격인지 확인
-            if (currentTime - bowLastHitTime[player] < 5f)
-            {
-                bowComboCount[player]++;
-            }
-            else
-            {
-                bowComboCount[player] = 1;
-            }
-
+            bowComboCount[player] = currentTime - stBowLastHit < 5f ? stBowCombo + 1 : 1;
             bowLastHitTime[player] = currentTime;
 
             // 2연타 달성 시 스태미나 감소 효과 적용
@@ -509,46 +493,19 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 // 조건부 이동속도 추적 정리
-                if (meleeComboSpeedEndTime.ContainsKey(player))
-                {
-                    meleeComboSpeedEndTime.Remove(player);
-                }
-                if (crossbowExpertSpeedEndTime.ContainsKey(player))
-                {
-                    crossbowExpertSpeedEndTime.Remove(player);
-                }
-                if (bowExpertStaminaEndTime.ContainsKey(player))
-                {
-                    bowExpertStaminaEndTime.Remove(player);
-                }
-                if (staffCasting.ContainsKey(player))
-                {
-                    staffCasting.Remove(player);
-                }
+                meleeComboSpeedEndTime.Remove(player);
+                crossbowExpertSpeedEndTime.Remove(player);
+                bowExpertStaminaEndTime.Remove(player);
+                staffCasting.Remove(player);
 
                 // 연속 공격 카운트 정리
-                if (speedMeleeComboCount.ContainsKey(player))
-                {
-                    speedMeleeComboCount.Remove(player);
-                }
-                if (speedMeleeLastHitTime.ContainsKey(player))
-                {
-                    speedMeleeLastHitTime.Remove(player);
-                }
-                if (bowComboCount.ContainsKey(player))
-                {
-                    bowComboCount.Remove(player);
-                }
-                if (bowLastHitTime.ContainsKey(player))
-                {
-                    bowLastHitTime.Remove(player);
-                }
+                speedMeleeComboCount.Remove(player);
+                speedMeleeLastHitTime.Remove(player);
+                bowComboCount.Remove(player);
+                bowLastHitTime.Remove(player);
 
                 // 석궁 장전 상태 정리
-                if (crossbowReloading.ContainsKey(player))
-                {
-                    crossbowReloading.Remove(player);
-                }
+                crossbowReloading.Remove(player);
 
                 // Speed.cs의 캐시 정리 호출
                 Speed.ClearPlayerCache(player);

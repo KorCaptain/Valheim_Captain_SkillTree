@@ -84,10 +84,11 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 상태 가져오기 (없으면 생성)
-                if (!rageStates.ContainsKey(player))
-                    rageStates[player] = new RageState();
-
-                var state = rageStates[player];
+                if (!rageStates.TryGetValue(player, out var state))
+                {
+                    state = new RageState();
+                    rageStates[player] = state;
+                }
 
                 // 쿨다운 확인
                 if (state.OnCooldown)
@@ -150,8 +151,7 @@ namespace CaptainSkillTree.SkillTree
         public static bool IsPlayerInRage(Player player)
         {
             if (player == null) return false;
-            if (!rageStates.ContainsKey(player)) return false;
-            return rageStates[player].IsActive;
+            return rageStates.TryGetValue(player, out var bsRageIsActive) && bsRageIsActive.IsActive;
         }
 
         /// <summary>
@@ -193,9 +193,7 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                if (!rageStates.ContainsKey(player)) return;
-
-                var state = rageStates[player];
+                if (!rageStates.TryGetValue(player, out var state)) return;
                 int currentTier = Mathf.FloorToInt(currentDamageBonus / 20f);
                 currentTier = Mathf.Min(currentTier, 10);  // 최대 200%
 
@@ -339,10 +337,11 @@ namespace CaptainSkillTree.SkillTree
                 if (player == null) return;
 
                 // 상태 가져오기 (없으면 생성)
-                if (!passiveStates.ContainsKey(player))
-                    passiveStates[player] = new PassiveState();
-
-                var state = passiveStates[player];
+                if (!passiveStates.TryGetValue(player, out var state))
+                {
+                    state = new PassiveState();
+                    passiveStates[player] = state;
+                }
 
                 // 이미 패시브 무적 상태면 패스
                 if (state.IsActive) return;
@@ -371,8 +370,7 @@ namespace CaptainSkillTree.SkillTree
         public static bool IsPassiveInvincibilityActive(Player player)
         {
             if (player == null) return false;
-            if (!passiveStates.ContainsKey(player)) return false;
-            return passiveStates[player].IsActive;
+            return passiveStates.TryGetValue(player, out var bsPassiveActive) && bsPassiveActive.IsActive;
         }
 
         /// <summary>
@@ -381,8 +379,7 @@ namespace CaptainSkillTree.SkillTree
         public static bool IsPassiveInvincibilityOnCooldown(Player player)
         {
             if (player == null) return false;
-            if (!passiveStates.ContainsKey(player)) return false;
-            return passiveStates[player].OnCooldown;
+            return passiveStates.TryGetValue(player, out var bsPassiveCd) && bsPassiveCd.OnCooldown;
         }
 
         /// <summary>
@@ -453,9 +450,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 if (player == null) return;
-                if (!passiveStates.ContainsKey(player)) return;
-
-                var state = passiveStates[player];
+                if (!passiveStates.TryGetValue(player, out var state)) return;
                 if (!state.OnCooldown) return;
 
                 float remainingTime = state.CooldownEndTime - Time.time;
@@ -536,9 +531,9 @@ namespace CaptainSkillTree.SkillTree
                 // 상태 제거 (예외 무시)
                 try
                 {
-                    if (rageStates != null && rageStates.ContainsKey(player))
+                    if (rageStates != null && rageStates.TryGetValue(player, out var bsDeathRage))
                     {
-                        try { rageStates[player]?.Clear(); } catch { }
+                        try { bsDeathRage?.Clear(); } catch { }
                         try { rageStates.Remove(player); } catch { }
                     }
                 }
@@ -546,13 +541,16 @@ namespace CaptainSkillTree.SkillTree
 
                 try
                 {
-                    if (passiveStates != null && passiveStates.ContainsKey(player))
+                    if (passiveStates != null && passiveStates.TryGetValue(player, out var bsDeathPassive))
                     {
-                        try { passiveStates[player]?.Clear(); } catch { }
+                        try { bsDeathPassive?.Clear(); } catch { }
                         try { passiveStates.Remove(player); } catch { }
                     }
                 }
                 catch { }
+
+                // 분노 버프 VFX 정리
+                try { RemoveRageBuffVFX(player); } catch { }
             }
             catch
             {
@@ -599,8 +597,6 @@ namespace CaptainSkillTree.SkillTree
                     float bonusPercent = Berserker_Config.BerserkerPassiveHealthBonusValue / 100f;
                     float bonusHealth = hp * bonusPercent;
                     hp += bonusHealth;
-
-                    Plugin.Log.LogDebug($"[버서커 패시브→음식] 최대 체력 +{Berserker_Config.BerserkerPassiveHealthBonusValue}%: {hp - bonusHealth:F0} * {bonusPercent:F2} = +{bonusHealth:F0}, 최종: {hp:F0}");
                 }
                 catch (Exception ex)
                 {
@@ -642,9 +638,12 @@ namespace CaptainSkillTree.SkillTree
 
                             if (wouldDropToLow)
                             {
-                                if (!passiveStates.ContainsKey(player))
-                                    passiveStates[player] = new PassiveState();
-                                ApplyPassiveInvincibility(player, passiveStates[player]);
+                                if (!passiveStates.TryGetValue(player, out var bsPassiveHit))
+                                {
+                                    bsPassiveHit = new PassiveState();
+                                    passiveStates[player] = bsPassiveHit;
+                                }
+                                ApplyPassiveInvincibility(player, bsPassiveHit);
                                 hit.m_damage = new HitData.DamageTypes();
                                 return;
                             }
@@ -703,6 +702,28 @@ namespace CaptainSkillTree.SkillTree
 
         // Player Update 패치 제거 - 무한 로딩 원인
         // 분노 종료는 Coroutine으로 처리하거나 시간 제한 없이 영구 적용
+
+        #endregion
+
+        #region Cleanup
+
+        [HarmonyPatch(typeof(Player), "OnDestroy")]
+        public static class Berserker_Player_OnDestroy_Patch
+        {
+            static void Postfix(Player __instance)
+            {
+                if (__instance == null) return;
+                if (rageStates.ContainsKey(__instance))
+                {
+                    // VFX 인스턴스 먼저 파괴
+                    if (rageBuffVFXInstances.TryGetValue(__instance, out var vfx) && vfx != null)
+                        UnityEngine.Object.Destroy(vfx);
+                    rageBuffVFXInstances.Remove(__instance);
+                    rageStates.Remove(__instance);
+                }
+                passiveStates.Remove(__instance);
+            }
+        }
 
         #endregion
     }

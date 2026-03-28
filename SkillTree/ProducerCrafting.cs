@@ -73,11 +73,28 @@ namespace CaptainSkillTree.SkillTree
         public static class Producer_InventoryGui_DoCrafting_Patch
         {
             private static readonly HashSet<string> _preItemPositionSnapshot = new HashSet<string>();
+            // 수리 감지용 Reflection 캐시 (DoCrafting은 수리에도 호출됨)
+            private static System.Reflection.FieldInfo _craftTimerField;
+
+            private static bool IsRepairAction(InventoryGui gui)
+            {
+                try
+                {
+                    if (_craftTimerField == null)
+                        _craftTimerField = typeof(InventoryGui).GetField("m_craftTimer",
+                            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    if (_craftTimerField != null)
+                        return (float)_craftTimerField.GetValue(gui) < 0f;
+                }
+                catch { }
+                return false;
+            }
 
             public static void Prefix(InventoryGui __instance, Player player)
             {
                 _preItemPositionSnapshot.Clear();
                 if (!ProducerSkills.IsProducer(player)) return;
+                if (IsRepairAction(__instance)) return; // 수리 시 인벤토리 순회 스킵
                 var inv = player.GetInventory();
                 if (inv == null) return;
                 foreach (var item in inv.GetAllItems())
@@ -96,6 +113,7 @@ namespace CaptainSkillTree.SkillTree
                     if (crafted == null) return;
 
                     // --- 내구도 보너스 (Lv2+) ---
+                    bool durApplied = false;
                     float durBonus = Producer_Config.GetDurabilityBonus(level);
                     if (durBonus > 0f && crafted.m_durability > 0f)
                     {
@@ -107,13 +125,27 @@ namespace CaptainSkillTree.SkillTree
                         crafted.m_customData[DUR_BONUS_KEY] = mult.ToString(
                             System.Globalization.CultureInfo.InvariantCulture);
                         Plugin.Log.LogDebug($"[제작 전문가] 내구도 +{durBonus}%: {crafted.m_shared.m_name}");
+                        durApplied = true;
                     }
 
                     // --- 마법부여 (Lv3+) ---
+                    bool enchantApplied = false;
                     float enchChance = Producer_Config.GetEnchantChance(level);
                     if (enchChance > 0f && UnityEngine.Random.Range(0f, 100f) < enchChance)
                     {
-                        ApplyEnchantment(player, crafted, level);
+                        ApplyEnchantment(player, crafted, level); // 내부에서 VFX 처리
+                        enchantApplied = true;
+                    }
+
+                    // 내구도만 적용된 경우 VFX (마법부여는 ApplyEnchantment 내부에서 처리)
+                    if (durApplied && !enchantApplied)
+                    {
+                        try
+                        {
+                            SimpleVFX.Play("statusailment_01", player.transform.position);
+                            VFXManager.PlayVFXAtPosition("sfx_fader_bell", player.transform.position);
+                        }
+                        catch (Exception) { }
                     }
                 }
                 catch (Exception ex)
@@ -212,6 +244,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     SimpleVFX.Play("statusailment_01", player.transform.position);
                     VFXManager.PlayVFXAtPosition("sfx_fader_bell", player.transform.position);
+                    CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_shieldgenerator_refuel", "", player.transform.position, Quaternion.identity, 3f);
                 }
                 catch (Exception) { }
             }
@@ -377,19 +410,7 @@ namespace CaptainSkillTree.SkillTree
                     if (lines.Length > 0)
                         lines[0] = $"<color=#FFD700>✨</color> {lines[0]}";
                     __result = string.Join("\n", lines);
-
-                    float val = GetEnchantValue(item);
-                    string enchantLine = type switch {
-                        EnchantType.WeaponDmg  => L.Get("producer_enchant_weapon_dmg", $"{val:F1}"),
-                        EnchantType.WeaponSpd  => L.Get("producer_enchant_weapon_spd", $"{val:F1}"),
-                        EnchantType.Armor      => L.Get("producer_enchant_armor",      $"{val:F1}"),
-                        EnchantType.MaxHP      => L.Get("producer_enchant_hp",         $"{val:F1}"),
-                        EnchantType.MaxStamina => L.Get("producer_enchant_stamina",    $"{val:F1}"),
-                        _                      => ""
-                    };
-
-                    if (!string.IsNullOrEmpty(enchantLine))
-                        __result += $"\n<color=#FFD700>{enchantLine}</color>";
+                    // 인챈트 출처 라인은 WeaponTooltip.cs / ArmorTooltip.cs에서 처리 (중복 방지)
                 }
                 catch (Exception) { }
             }

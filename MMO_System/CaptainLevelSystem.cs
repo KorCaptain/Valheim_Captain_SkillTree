@@ -449,7 +449,6 @@ namespace CaptainSkillTree.MMO_System
                 // 화면 중앙 메시지
                 MessageHud.instance?.ShowMessage(MessageHud.MessageType.Center, $"<color=yellow>{L.Get("level_up")}</color> Lv.{Level}");
 
-                Plugin.Log.LogDebug("[CaptainLevelSystem] 레벨업 이펙트 표시");
             }
             catch (Exception ex)
             {

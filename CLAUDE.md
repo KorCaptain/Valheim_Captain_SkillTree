@@ -61,6 +61,8 @@ model 사용에 대한 규칙을 명시하고 다음 규칙을 따른다.
 | HUD 수정 | `Gui/ActiveSkillHUD.cs` + `Gui/SkillBuffDisplay.cs` |
 | 시스템 초기화 순서 | `Plugin.Systems.cs` (497줄) |
 | 입력 처리 | `Gui/SkillTreeInputListener.cs` (**수정 금지!**) |
+| **인벤토리 관련 패치 수정** | **⚠️ `md/INVENTORY_PATCH_CHECKLIST.md` 반드시 먼저 확인** |
+| **신규/수정 스킬 구현** | **⚠️ 완성 후 §15 성능 체크리스트 자가 점검 필수** |
 
 > 시스템 상세 가이드:
 > - UI 시스템 → `md/UI_SYSTEM_RULES.md`
@@ -69,6 +71,7 @@ model 사용에 대한 규칙을 명시하고 다음 규칙을 따른다.
 > - 스킬 트리 구조 → `md/SKILL_DEVELOPMENT_WORKFLOW.md`
 > - VFX 시스템 → `md/ZNETSCENE_VFX_RULES.md`
 > - MMO 시스템 → `md/MMO_INTEGRATION_GUIDE.md`
+> - **인벤토리 패치 규칙 → `md/INVENTORY_PATCH_CHECKLIST.md` ← 멈춤 재발 방지**
 
 ---
 
@@ -255,11 +258,103 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 > ❌ 하나라도 빠지면 F1 Config Manager에서 번역이 깨짐
 > 상세 형식 및 예시 → `md/MULTILANGUAGE_GUIDE.md`
 
-### 14. ru.json 자동 동기화 (필수)
+### 14. 다국어 7개 언어 모두 자동 동기화 (필수)
+## C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\Localizationd 의 *.json 화일 모두 밑의 동기화 예실르 진행한다.
+## 동기화 예시
 - **DefaultLanguages*.cs에 키를 추가/수정/삭제할 때마다 `Localization/ru.json`도 반드시 동시 수정**
-- 추가: 동일 키를 ru.json에 추가 (번역문 없으면 EN 원문을 임시값으로 사용)
-- 삭제: ru.json에서도 해당 키 제거
+- 추가: 동일 키를 ru.json, de.json, ja.json, zh-cn.json, pt_BR.json, *ja.json 에 추가 (번역문 없으면 각 언어로 모두 번역사용)
+- 삭제: ru.json, *.json에서도 해당 키 제거
 > `md/MULTILANGUAGE_GUIDE.md` 참조
+
+### 15. ⚠️ 성능 안전 규칙 — 메모리·서버 과부하·멈춤 방지 (신규/수정 스킬 모두 적용)
+
+> 스킬을 **신규 생성하거나 수정할 때마다** 아래 항목을 반드시 확인할 것.
+> 인벤토리 관련 패치는 추가로 `md/INVENTORY_PATCH_CHECKLIST.md` 확인.
+
+#### 🔴 패치 발동 빈도 — 프레임 단위 패치 금지
+
+| 금지 패턴 | 이유 | 대안 |
+|---------|------|------|
+| `Player.Update()` / `Character.Update()` Postfix 내 무거운 연산 | 초당 60회 실행 → CPU 과부하 | 이벤트 기반 패치로 대체 |
+| `InventoryGrid.UpdateGui()` Postfix 내 `GetAllItems()` 무제한 호출 | 드래그 중 매 프레임 실행 | throttle (0.25s 이상) 필수 |
+| `Hud.Update()` Postfix 내 스킬 계산 | 초당 60회 → 스태터 발생 | `SkillBonusCalculator` 프레임 캐시 사용 |
+| `GetAllItems()` 반복 호출 (throttle 없음) | 인벤토리 크기에 비례해 느려짐 | static Dictionary 캐시 + 0.25s throttle |
+
+#### 🔴 코루틴 무한 루프 — 반드시 탈출 조건 확인
+
+```csharp
+// ✅ 안전: 탈출 조건 명확
+while (elapsed < duration && player != null && !player.IsDead())
+{
+    yield return new WaitForSeconds(0.1f); // 반드시 yield 포함
+    elapsed += 0.1f;
+}
+
+// ❌ 위험: 탈출 조건 없음 → 무한 루프 → 서버 과부하
+while (isActive)
+{
+    DoHeavyWork();
+    yield return null; // yield 없으면 게임 완전 멈춤
+}
+```
+
+- 모든 코루틴에 **최대 지속시간 또는 명확한 종료 플래그** 필수
+- 코루틴 실행 중 플레이어 사망/로그아웃 시 자동 종료 조건 포함
+- 동일 코루틴 중복 실행 방지: `if (coroutine != null) StopCoroutine()` 패턴 사용
+
+#### 🔴 Harmony 패치 — 수리/상자/드래그 경로 오발동 방지
+
+| 패치 메서드 | 실제 발동 상황 | 필수 early return |
+|------------|--------------|-----------------|
+| `InventoryGui.DoCrafting` | 제작 + **수리** 모두 호출 | `IsRepairAction()` 체크 후 수리 시 return |
+| `InventoryGui.Show()` | 인벤토리 열기 + **상자 열기** 모두 호출 | 컨테이너 여부 확인 필요 시 체크 |
+| `InventoryGrid.UpdateGui()` | **드래그 중 매 프레임** + 아이템 이동 | 0.25s throttle 필수 |
+| `Player.ConsumeResources()` | 제작뿐 아니라 **일부 스킬 발동 시**도 호출 | craftButtonClicked 플래그 확인 |
+
+#### 🟡 메모리 누수 방지
+
+- `Dictionary<Player, Coroutine>` 등 플레이어 키 Dictionary: 플레이어 로그아웃 시 반드시 `Remove(player)` 처리
+- `HashSet<string>` 강화 기록 (`enhancedItems`): 인벤토리 닫기 또는 일정 주기로 `Clear()` 필수
+- static Texture2D / Sprite: `HideFlags.HideAndDontSave` 설정 후 씬 전환 시 재생성 여부 점검
+- 이벤트 리스너 (`onClick.AddListener`): 중복 등록 방지 — `RemoveAllListeners()` 후 재등록
+
+#### 🟡 Reflection 성능
+
+```csharp
+// ✅ 안전: 1회 캐싱
+private static FieldInfo _myField;
+private static FieldInfo GetMyField() =>
+    _myField ??= typeof(TargetClass).GetField("m_field", BindingFlags.NonPublic | BindingFlags.Instance);
+
+// ❌ 위험: 패치 메서드 호출마다 실행 → GC + 느림
+void Postfix(...) {
+    var field = typeof(TargetClass).GetField("m_field", ...); // 매번 실행!
+}
+```
+
+#### 🟡 ZNet RPC / 멀티플레이어 부하
+
+- `ZNetScene.instance.SpawnObject()` 또는 RPC 호출: 루프 내 반복 금지, 단발성만 허용
+- `VFXManager.PlayVFXMultiplayer()`: 패시브 스킬에서 호출 금지 (피격마다 실행 → 서버 패킷 폭증)
+- `ZDO.Set()` — **이벤트 발생 시 1회 호출이 원칙**:
+  - ✅ 올바름: 스킬 발동, 버프 시작/종료, 상태 변경 **시점**에만 호출
+  - ❌ 잘못됨: 코루틴 내 주기적 반복 호출 (`while` 루프 안에서 매 틱마다 `ZDO.Set()`)
+  - ⚠️ 불가피한 경우만 예외: 버프 잔여시간처럼 값이 지속 변하는 경우에 한해 주기적 호출 허용 — 이때도 최소 0.5s 간격 유지. 단, 이 구조 자체가 설계 냄새이므로 이벤트 기반으로 리팩터링 검토 필요
+
+#### 신규/수정 스킬 완성 후 자가 점검 체크리스트
+
+```
+[ ] 이 스킬의 Harmony 패치가 초당 몇 번 발동되는가?
+    → 이벤트성(제작/피격/사용)이면 OK, Update급이면 캐시/throttle 추가
+[ ] 코루틴에 최대 지속시간 또는 종료 플래그가 있는가?
+[ ] DoCrafting 패치라면 IsRepairAction() early return이 있는가?
+[ ] GetAllItems() 호출에 throttle이 있는가?
+[ ] Reflection이 static 캐시를 사용하는가?
+[ ] 플레이어 키 Dictionary가 있다면 퇴장 시 정리되는가?
+[ ] ZNet RPC / VFX가 루프 내에서 반복 호출되지 않는가?
+```
+
+> 인벤토리 관련 추가 체크 → `md/INVENTORY_PATCH_CHECKLIST.md`
 
 ---
 
@@ -270,6 +365,7 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 4. **실제 존재하는 Valheim 효과만 사용**
 5. **EmbeddedResource 방식** - 모든 에셋을 DLL에 포함
 6. **스킬 변경 7종 세트 원칙** - Config·효과·툴팁·UI다국어·Config다국어 동시 수정·스킬관련 메시지 수정(한국어, English, Русский, Português-Brasil, das Deutsche, 中国话, 日本語)
+7. **성능 3종 체크 원칙** - 신규/수정 스킬마다 ①패치 발동빈도 ②코루틴 탈출조건 ③메모리 정리 반드시 확인 (규칙 §15 참조)
 
 ## 금지 사항
 - `Plugin.cs`, `SkillTreeInputListener.cs` 수정 금지
@@ -327,6 +423,7 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 | `cst-build` | build error, 빌드 오류, CS0 |
 | `cst-naming` | skill ID, naming, 명명 규칙 |
 | `cst-prod-text` | production damage text, farming, 생산 데미지 |
+| `cst-producer-display` | producer enchant, 제작 축복, 제작 전문가 툴팁, crafting blessing, producer tooltip, weapon enchant display, armor enchant display |
 | `cst-effect-text` | effect text, tooltip format, 효과 텍스트 |
 | `cst-speed-expert` | speed tree, speed expert, 속도 전문가 |
 | `cst-stagger-guide` | stagger verification, 스태거 검증 |

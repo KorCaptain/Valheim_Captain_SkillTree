@@ -21,7 +21,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.1.94")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.2.067")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -139,12 +139,27 @@ namespace CaptainSkillTree
                 if (setColor != null && stdOut != null)
                 {
                     setColor.Invoke(null, new object[] { ConsoleColor.Cyan });
-                    stdOut.WriteLine("[CaptainSkillTree] CaptainSkillTree loading Success!");
+                    stdOut.WriteLine("================================ Captain SkillTree Mod Load Success ================================");
+                    stdOut.WriteLine("        ====================================");
+                    stdOut.WriteLine("       =    =                          =    =");
+                    stdOut.WriteLine("      =       =                      =       =");
+                    stdOut.WriteLine("     =            =              =            =");
+                    stdOut.WriteLine("    =                 =      =                 =");
+                    stdOut.WriteLine("    =                   =  =                   =");
+                    stdOut.WriteLine("    =                 =      =                 =");
+                    stdOut.WriteLine("     =            =              =            =");
+                    stdOut.WriteLine("      =       =                      =       =");
+                    stdOut.WriteLine("       =    =                          =    =");
+                    stdOut.WriteLine("        =                                  =");
+                    stdOut.WriteLine("         ========                  ========");
+                    stdOut.WriteLine("                 ========  ========");
+                    stdOut.WriteLine("                         ==");
+                    stdOut.WriteLine("================================ Captain SkillTree Mod Load Success ================================");
                     setColor.Invoke(null, new object[] { ConsoleColor.Gray });
                 }
-                else Log.LogMessage("[CaptainSkillTree] CaptainSkillTree loading Success!");
+                else Log.LogMessage("================================ Captain SkillTree Mod Load Success ================================");
             }
-            catch { Log.LogMessage("[CaptainSkillTree] CaptainSkillTree loading Success!"); }
+            catch { Log.LogMessage("================================ Captain SkillTree Mod Load Success ================================"); }
         }
 
         /// <summary>
@@ -159,9 +174,7 @@ namespace CaptainSkillTree
             // Awake에서 초기화됐지만 Auto 모드일 경우 Valheim 언어로 재설정
             if (Localization.LocalizationManager.LanguageConfig?.Value?.Equals("Auto", StringComparison.OrdinalIgnoreCase) == true)
             {
-                Log.LogInfo("[Plugin] Valheim 초기화 완료 - Auto 언어 재감지 시도...");
                 Localization.LocalizationManager.ReloadLanguage();
-                Log.LogInfo("[Plugin] ✓ Auto 언어 재감지 완료");
             }
         }
 

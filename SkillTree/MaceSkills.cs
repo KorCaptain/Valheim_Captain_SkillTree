@@ -445,11 +445,16 @@ namespace CaptainSkillTree.SkillTree
                 s_applyingAoe = true;
                 try
                 {
-                    var mobs = Character.GetAllCharacters().Where(c =>
-                        c != __instance &&
-                        c.IsMonsterFaction(0f) &&
-                        Vector3.Distance(c.transform.position, attacker.transform.position) < spinRange
-                    ).ToList();
+                    var allChars = Character.GetAllCharacters();
+                    var mobs = new System.Collections.Generic.List<Character>(allChars.Count);
+                    var attackerPos = attacker.transform.position;
+                    foreach (var c in allChars)
+                    {
+                        if (c == null || c == __instance) continue;
+                        if (!c.IsMonsterFaction(0f)) continue;
+                        if (Vector3.Distance(c.transform.position, attackerPos) < spinRange)
+                            mobs.Add(c);
+                    }
 
                     foreach (var mob in mobs)
                     {

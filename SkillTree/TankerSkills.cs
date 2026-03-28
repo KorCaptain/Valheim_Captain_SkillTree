@@ -47,15 +47,29 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 레벨별 모든 저항 수치 반환 (Lv2부터 적용)
+        /// 레벨별 체력 보너스 반환 (Lv2부터 적용)
         /// </summary>
-        public static float GetTankerResistForLevel(int level)
+        public static float GetTankerHpBonusForLevel(int level)
         {
             return level switch {
-                2 => Tanker_Config.TankerLv2AllResistValue,
-                3 => Tanker_Config.TankerLv3AllResistValue,
-                4 => Tanker_Config.TankerLv4AllResistValue,
-                >= 5 => Tanker_Config.TankerLv5AllResistValue,
+                2 => Tanker_Config.TankerHpBonusLv2Value,
+                3 => Tanker_Config.TankerHpBonusLv3Value,
+                4 => Tanker_Config.TankerHpBonusLv4Value,
+                >= 5 => Tanker_Config.TankerHpBonusLv5Value,
+                _ => 0f
+            };
+        }
+
+        /// <summary>
+        /// 레벨별 방패 막기 방어력 보너스 반환 (Lv2부터 적용)
+        /// </summary>
+        public static float GetTankerBlockPowerForLevel(int level)
+        {
+            return level switch {
+                2 => Tanker_Config.TankerLv2BlockPowerValue,
+                3 => Tanker_Config.TankerLv3BlockPowerValue,
+                4 => Tanker_Config.TankerLv4BlockPowerValue,
+                >= 5 => Tanker_Config.TankerLv5BlockPowerValue,
                 _ => 0f
             };
         }
@@ -155,10 +169,16 @@ namespace CaptainSkillTree.SkillTree
             float tauntRange = Tanker_Config.TankerTauntRangeValue;
 
             // 주변 적들 찾기
-            var nearbyEnemies = Character.GetAllCharacters()
-                .Where(c => c != null && !c.IsDead() && c != player && JobSkillsUtility.IsMonsterFaction(c.GetFaction()))
-                .Where(c => Vector3.Distance(player.transform.position, c.transform.position) <= tauntRange)
-                .ToList();
+            var allChars = Character.GetAllCharacters();
+            var nearbyEnemies = new System.Collections.Generic.List<Character>(allChars.Count);
+            var playerPos = player.transform.position;
+            foreach (var c in allChars)
+            {
+                if (c == null || c.IsDead() || c == player) continue;
+                if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                if (Vector3.Distance(playerPos, c.transform.position) <= tauntRange)
+                    nearbyEnemies.Add(c);
+            }
 
             Plugin.Log.LogDebug($"[탱커 도발] 범위 {tauntRange}m 내 {nearbyEnemies.Count}마리 몬스터 발견");
 
@@ -596,17 +616,11 @@ namespace CaptainSkillTree.SkillTree
                 var inventory = player.GetInventory();
                 if (inventory != null)
                 {
-                    var equippedShields = inventory.GetAllItems()
-                        .Where(item => item != null && 
-                                     item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield &&
-                                     item.m_equipped)
-                        .ToList();
-                    
-                    if (equippedShields.Any())
+                    foreach (var item in inventory.GetAllItems())
                     {
-                        var shield = equippedShields.First();
-                        Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 인벤토리 장착 방패: {shield.m_shared.m_name}");
-                        return true;
+                        if (item == null) continue;
+                        if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield && item.m_equipped)
+                            return true;
                     }
                 }
                 

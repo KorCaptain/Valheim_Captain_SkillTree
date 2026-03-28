@@ -49,9 +49,9 @@ namespace CaptainSkillTree.SkillTree
 
                 if (!inPendingWindow)
                 {
-                    if (staffDualExplosionCooldowns.ContainsKey(player) && Time.time < staffDualExplosionCooldowns[player])
+                    if (staffDualExplosionCooldowns.TryGetValue(player, out float sdcExpiryCd) && Time.time < sdcExpiryCd)
                     {
-                        float remaining = staffDualExplosionCooldowns[player] - Time.time;
+                        float remaining = sdcExpiryCd - Time.time;
                         DrawFloatingText(player, L.Get("staff_dual_cast_cooldown", Mathf.CeilToInt(remaining)), Color.red);
                         return;
                     }
@@ -105,9 +105,9 @@ namespace CaptainSkillTree.SkillTree
                 PlayStaffDualCastBuffActivationEffects(player);
 
                 // 기존 코루틴 중단
-                if (staffDualCastBuffCoroutines.ContainsKey(player))
+                if (staffDualCastBuffCoroutines.TryGetValue(player, out var sdcPrevCoroutine))
                 {
-                    SkillTreeInputListener.Instance.StopCoroutine(staffDualCastBuffCoroutines[player]);
+                    SkillTreeInputListener.Instance.StopCoroutine(sdcPrevCoroutine);
                     staffDualCastBuffCoroutines.Remove(player);
                 }
 
@@ -169,9 +169,9 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 기존 효과 제거
-                if (staffDualCastBuffEffects.ContainsKey(player) && staffDualCastBuffEffects[player] != null)
+                if (staffDualCastBuffEffects.TryGetValue(player, out var sdcPrevBuff) && sdcPrevBuff != null)
                 {
-                    UnityEngine.Object.Destroy(staffDualCastBuffEffects[player]);
+                    UnityEngine.Object.Destroy(sdcPrevBuff);
                     staffDualCastBuffEffects.Remove(player);
                 }
 
@@ -202,9 +202,9 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 기존 효과 제거
-                if (staffDualCastStatusEffects.ContainsKey(player) && staffDualCastStatusEffects[player] != null)
+                if (staffDualCastStatusEffects.TryGetValue(player, out var sdcPrevStatus) && sdcPrevStatus != null)
                 {
-                    UnityEngine.Object.Destroy(staffDualCastStatusEffects[player]);
+                    UnityEngine.Object.Destroy(sdcPrevStatus);
                     staffDualCastStatusEffects.Remove(player);
                 }
 
@@ -276,7 +276,7 @@ namespace CaptainSkillTree.SkillTree
             float startTime = Time.time;
             float nextRemindTime = startTime + 10f;
 
-            while (staffDualCastReady.ContainsKey(player) && staffDualCastReady[player] &&
+            while (staffDualCastReady.TryGetValue(player, out bool sdcReadyLoop) && sdcReadyLoop &&
                    Time.time < staffDualCastExpiry[player])
             {
                 if (player == null || player.IsDead())
@@ -298,7 +298,7 @@ namespace CaptainSkillTree.SkillTree
                 yield return new WaitForSeconds(1f);
             }
 
-            if (staffDualCastReady.ContainsKey(player) && staffDualCastReady[player])
+            if (staffDualCastReady.TryGetValue(player, out bool sdcReadyExpired) && sdcReadyExpired)
             {
                 DrawFloatingText(player, L.Get("staff_dual_cast_expired"), Color.yellow);
                 ClearStaffDualCastBuff(player);
@@ -310,8 +310,8 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static bool IsStaffDualCastReady(Player player)
         {
-            return staffDualCastReady.ContainsKey(player) &&
-                   staffDualCastReady[player] &&
+            return staffDualCastReady.TryGetValue(player, out bool sdcReadyCheck) &&
+                   sdcReadyCheck &&
                    Time.time < staffDualCastExpiry[player];
         }
 
@@ -327,15 +327,15 @@ namespace CaptainSkillTree.SkillTree
                 staffDualCastReady.Remove(player);
                 staffDualCastExpiry.Remove(player);
 
-                if (staffDualCastBuffEffects.ContainsKey(player) && staffDualCastBuffEffects[player] != null)
+                if (staffDualCastBuffEffects.TryGetValue(player, out var sdcClearBuff) && sdcClearBuff != null)
                 {
-                    UnityEngine.Object.Destroy(staffDualCastBuffEffects[player]);
+                    UnityEngine.Object.Destroy(sdcClearBuff);
                     staffDualCastBuffEffects.Remove(player);
                 }
 
-                if (staffDualCastStatusEffects.ContainsKey(player) && staffDualCastStatusEffects[player] != null)
+                if (staffDualCastStatusEffects.TryGetValue(player, out var sdcClearStatus) && sdcClearStatus != null)
                 {
-                    UnityEngine.Object.Destroy(staffDualCastStatusEffects[player]);
+                    UnityEngine.Object.Destroy(sdcClearStatus);
                     staffDualCastStatusEffects.Remove(player);
                 }
 
@@ -439,9 +439,9 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                if (staffDualCastBuffCoroutines.ContainsKey(player))
+                if (staffDualCastBuffCoroutines.TryGetValue(player, out var sdcDeathCoroutine))
                 {
-                    SkillTreeInputListener.Instance.StopCoroutine(staffDualCastBuffCoroutines[player]);
+                    SkillTreeInputListener.Instance.StopCoroutine(sdcDeathCoroutine);
                     staffDualCastBuffCoroutines.Remove(player);
                 }
                 _staffDualCastPendingWindow.Remove(player);

@@ -20,8 +20,67 @@ namespace CaptainSkillTree.Localization
                 "※ 스킬 배울 때, 생산 전문가 메시지는 항상 중앙에 표시됩니다.",
 
                 // ========================================
-                // Attack Tree (공격 트리)
+                // Attack Tree (공격 트리) — 4국면 연쇄 시스템
                 // ========================================
+
+                // === Tier 1: 선빵 ===
+                ["Tier1_Opener_DamageBonus"] =
+                "【선빵 데미지 보너스 (%)】\n전투 시작 후 첫 N초간 전체 데미지가 증가합니다.\n권장값: 15-25%",
+
+                ["Tier1_Opener_StaminaReduction"] =
+                "【선빵 스태미나 소비 감소 (%)】\n선빵 발동 중 스태미나 소비가 감소합니다.\n권장값: 20-30%",
+
+                ["Tier1_Opener_Duration"] =
+                "【선빵 지속 시간 (초)】\n선빵 데미지 보너스가 유지되는 시간입니다.\n권장값: 4-6초",
+
+                ["Tier1_Opener_Cooldown"] =
+                "【선빵 쿨다운 (초)】\n선빵을 다시 발동할 수 있을 때까지의 대기 시간입니다.\n권장값: 25-35초",
+
+                // === Tier 2: 무기별 선빵 특화 ===
+                ["Tier2_OpenerMelee_FinisherBonus"] =
+                "【근접 마무리 예열 보너스 (%)】\n선빵 윈도우 내 첫 근접 타격의 마무리 배율 증가량입니다.\n권장값: 15-25%",
+
+                ["Tier2_OpenerBow_CritChance"] =
+                "【활 사냥의 눈 크리 확률 (%)】\n선빵 윈도우 내 크리티컬 확률 추가 증가량입니다.\n권장값: 10-20%",
+
+                ["Tier2_OpenerCrossbow_FirstShotBonus"] =
+                "【석궁 결전의 일격 보너스 (%)】\n선빵 윈도우 내 첫 볼트 데미지 증가량입니다.\n권장값: 40-60%",
+
+                ["Tier2_OpenerMagic_StaggerProc"] =
+                "【마법 혼돈의 시작 스태거 (1=활성)】\n1이면 선빵 윈도우 내 첫 마법 공격 시 스태거 확정 발동.\n권장값: 1",
+
+                // === Tier 3: 추격전 ===
+                ["Tier3_Pursuit_DamageBonus"] =
+                "【추격전 기본 데미지 보너스 (%)】\n이동/도주 중인 적에게 주는 데미지 증가량입니다.\n권장값: 12-18%",
+
+                ["Tier3_Pursuit_ChainDamageBonus"] =
+                "【추격전 연쇄 데미지 보너스 (%)】\n선빵 발동 후 연쇄 윈도우 내 적에게 주는 데미지 증가량입니다.\n권장값: 20-30%",
+
+                ["Tier3_Pursuit_ChainWindow"] =
+                "【선빵→추격 연쇄 윈도우 (초)】\n선빵 발동 후 이 시간 내 추격전이 연쇄 보너스를 받습니다.\n권장값: 4-6초",
+
+                // === Tier 4: 전환 분기 ===
+                ["Tier4_PursuitSpeed_SpeedBonus"] =
+                "【질풍 추격 이동속도 보너스 (%)】\n전투 중 이동속도 증가량입니다.\n권장값: 10-15%",
+
+                ["Tier4_FrenzyTrigger_StaminaReduction"] =
+                "【혼전 돌입 스태미나 소비 감소 (%)】\n주변 3m 내 적 2명 이상일 때 스태미나 소비 감소량입니다.\n권장값: 15-25%",
+
+                // === Tier 5: 난전 ===
+                ["Tier5_Frenzy_StackBonusBase"] =
+                "【난전 기본 스택 보너스 (%)】\n스택당 증가하는 데미지 보너스 기본값입니다.\n권장값: 4-6%",
+
+                ["Tier5_Frenzy_StackBonusChain"] =
+                "【난전 연쇄 스택 보너스 (%)】\n추격전 연쇄 시 스택당 증가하는 데미지 보너스입니다.\n권장값: 6-10%",
+
+                ["Tier5_Frenzy_MaxStacks"] =
+                "【난전 최대 스택 수】\n쌓을 수 있는 최대 스택 수입니다.\n권장값: 4-6",
+
+                ["Tier5_Frenzy_HitsPerStack"] =
+                "【난전 스택당 필요 히트 수】\n스택 1개를 쌓기 위해 필요한 연속 타격 수입니다.\n권장값: 2-4",
+
+                ["Tier5_Frenzy_Tier6Amplifier"] =
+                "【난전 Max 달성 시 Tier6 증폭 배율】\n최대 스택 달성 시 Tier6 최종 노드 효과에 곱해지는 배율입니다.\n권장값: 1.2-1.5",
 
 
 
@@ -670,6 +729,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_PrecisionAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier4_RangedEnhance_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier5_SpecialStat_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                // === 4국면 시스템 신규 RequiredPoints ===
+                ["Tier1_Opener_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_OpenerMelee_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_OpenerBow_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_OpenerCrossbow_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_OpenerMagic_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier3_Pursuit_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_PursuitSpeed_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier5_Frenzy_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier6_WeakPointAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier6_TwoHandCrush_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
@@ -710,11 +779,67 @@ namespace CaptainSkillTree.Localization
                 "※ Skill learn and production expert messages always show at center.",
 
                 // ========================================
-                // Attack Tree
+                // Attack Tree — 4-Phase Chain System
                 // ========================================
 
+                // === Tier 1: First Strike ===
+                ["Tier1_Opener_DamageBonus"] =
+                "【First Strike Damage Bonus (%)】\nIncreases all damage for the first N seconds of combat.\nRecommended: 15-25%",
 
+                ["Tier1_Opener_StaminaReduction"] =
+                "【First Strike Stamina Cost Reduction (%)】\nReduces stamina cost while First Strike is active.\nRecommended: 20-30%",
 
+                ["Tier1_Opener_Duration"] =
+                "【First Strike Duration (sec)】\nHow long the First Strike damage bonus lasts.\nRecommended: 4-6 sec",
+
+                ["Tier1_Opener_Cooldown"] =
+                "【First Strike Cooldown (sec)】\nTime before First Strike can trigger again.\nRecommended: 25-35 sec",
+
+                // === Tier 2: Weapon-Specific Specialization ===
+                ["Tier2_OpenerMelee_FinisherBonus"] =
+                "【Melee Finisher Warmup Bonus (%)】\nIncreases finisher multiplier on first melee hit within the First Strike window.\nRecommended: 15-25%",
+
+                ["Tier2_OpenerBow_CritChance"] =
+                "【Bow Hunter's Eye Crit Chance (%)】\nAdditional critical chance within the First Strike window.\nRecommended: 10-20%",
+
+                ["Tier2_OpenerCrossbow_FirstShotBonus"] =
+                "【Crossbow Decisive Strike Bonus (%)】\nIncreases damage of the first bolt within the First Strike window.\nRecommended: 40-60%",
+
+                ["Tier2_OpenerMagic_StaggerProc"] =
+                "【Magic Chaos Start Stagger (1=Active)】\n1 = guaranteed stagger on first magic hit within the First Strike window.\nRecommended: 1",
+
+                // === Tier 3: Pursuit ===
+                ["Tier3_Pursuit_DamageBonus"] =
+                "【Pursuit Base Damage Bonus (%)】\nIncreases damage against moving or fleeing enemies.\nRecommended: 12-18%",
+
+                ["Tier3_Pursuit_ChainDamageBonus"] =
+                "【Pursuit Chain Damage Bonus (%)】\nBonus damage within the chain window after First Strike activates.\nRecommended: 20-30%",
+
+                ["Tier3_Pursuit_ChainWindow"] =
+                "【First Strike → Pursuit Chain Window (sec)】\nTime after First Strike during which Pursuit gains chain bonus.\nRecommended: 4-6 sec",
+
+                // === Tier 4: Branch Split ===
+                ["Tier4_PursuitSpeed_SpeedBonus"] =
+                "【Swift Chase Move Speed Bonus (%)】\nIncreases movement speed during combat.\nRecommended: 10-15%",
+
+                ["Tier4_FrenzyTrigger_StaminaReduction"] =
+                "【Frenzy Rush Stamina Cost Reduction (%)】\nReduces stamina cost when 2+ enemies are within 3m.\nRecommended: 15-25%",
+
+                // === Tier 5: Frenzy ===
+                ["Tier5_Frenzy_StackBonusBase"] =
+                "【Frenzy Base Stack Bonus (%)】\nBase damage bonus added per stack.\nRecommended: 4-6%",
+
+                ["Tier5_Frenzy_StackBonusChain"] =
+                "【Frenzy Chain Stack Bonus (%)】\nDamage bonus per stack when chaining from Pursuit.\nRecommended: 6-10%",
+
+                ["Tier5_Frenzy_MaxStacks"] =
+                "【Frenzy Max Stacks】\nMaximum number of stacks that can be accumulated.\nRecommended: 4-6",
+
+                ["Tier5_Frenzy_HitsPerStack"] =
+                "【Frenzy Hits Per Stack】\nNumber of consecutive hits required to build one stack.\nRecommended: 2-4",
+
+                ["Tier5_Frenzy_Tier6Amplifier"] =
+                "【Frenzy Max Stack Tier6 Amplifier】\nMultiplier applied to Tier6 finisher effects when max stacks are reached.\nRecommended: 1.2-1.5",
 
 
 
@@ -1360,6 +1485,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_PrecisionAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier4_RangedEnhance_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier5_SpecialStat_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                // === 4-Phase System New RequiredPoints ===
+                ["Tier1_Opener_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_OpenerMelee_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_OpenerBow_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_OpenerCrossbow_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_OpenerMagic_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier3_Pursuit_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_PursuitSpeed_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier5_Frenzy_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier6_WeakPointAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier6_TwoHandCrush_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",

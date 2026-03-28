@@ -27,11 +27,14 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> TankerPassiveDamageReduction; // 탱커 패시브 피해 감소 (%)
 
         // === 레벨업 패시브 효과 설정 ===
-        public static ConfigEntry<float> TankerHpBonus;         // 기본 체력 보너스 (고정값)
-        public static ConfigEntry<float> TankerLv2AllResist;    // Lv2 모든 저항 (%)
-        public static ConfigEntry<float> TankerLv3AllResist;    // Lv3 모든 저항 (%)
-        public static ConfigEntry<float> TankerLv4AllResist;    // Lv4 모든 저항 (%)
-        public static ConfigEntry<float> TankerLv5AllResist;    // Lv5 모든 저항 (%)
+        public static ConfigEntry<float> TankerHpBonusLv2;      // Lv2 체력 보너스
+        public static ConfigEntry<float> TankerHpBonusLv3;      // Lv3 체력 보너스
+        public static ConfigEntry<float> TankerHpBonusLv4;      // Lv4 체력 보너스
+        public static ConfigEntry<float> TankerHpBonusLv5;      // Lv5 체력 보너스
+        public static ConfigEntry<float> TankerLv2BlockPower;   // Lv2 방패 막기 방어력
+        public static ConfigEntry<float> TankerLv3BlockPower;   // Lv3 방패 막기 방어력
+        public static ConfigEntry<float> TankerLv4BlockPower;   // Lv4 방패 막기 방어력
+        public static ConfigEntry<float> TankerLv5BlockPower;   // Lv5 방패 막기 방어력
 
         // === 레벨별 반사 지속시간 설정 ===
         public static ConfigEntry<float> TankerReflectDurationLv1; // Lv1 반사 지속시간 (초)
@@ -52,11 +55,14 @@ namespace CaptainSkillTree.SkillTree
         public static float TankerTauntEffectScaleValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_EffectScale", TankerTauntEffectScale?.Value ?? 0.8f);
         public static float TankerTauntReflectPercentValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_ReflectPercent", TankerTauntReflectPercent?.Value ?? 10f);
         public static float TankerPassiveDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Tanker_Passive_DamageReduction", TankerPassiveDamageReduction?.Value ?? 15f);
-        public static float TankerHpBonusValue => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus", TankerHpBonus?.Value ?? 100f);
-        public static float TankerLv2AllResistValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv2_AllResist", TankerLv2AllResist?.Value ?? 5f);
-        public static float TankerLv3AllResistValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv3_AllResist", TankerLv3AllResist?.Value ?? 8f);
-        public static float TankerLv4AllResistValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv4_AllResist", TankerLv4AllResist?.Value ?? 12f);
-        public static float TankerLv5AllResistValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv5_AllResist", TankerLv5AllResist?.Value ?? 15f);
+        public static float TankerHpBonusLv2Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv2", TankerHpBonusLv2?.Value ?? 35f);
+        public static float TankerHpBonusLv3Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv3", TankerHpBonusLv3?.Value ?? 55f);
+        public static float TankerHpBonusLv4Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv4", TankerHpBonusLv4?.Value ?? 75f);
+        public static float TankerHpBonusLv5Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv5", TankerHpBonusLv5?.Value ?? 100f);
+        public static float TankerLv2BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv2_BlockPower", TankerLv2BlockPower?.Value ?? 5f);
+        public static float TankerLv3BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv3_BlockPower", TankerLv3BlockPower?.Value ?? 10f);
+        public static float TankerLv4BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv4_BlockPower", TankerLv4BlockPower?.Value ?? 15f);
+        public static float TankerLv5BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv5_BlockPower", TankerLv5BlockPower?.Value ?? 20f);
         public static float TankerReflectDurationLv1Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv1", TankerReflectDurationLv1?.Value ?? 10f);
         public static float TankerReflectDurationLv2Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv2", TankerReflectDurationLv2?.Value ?? 12f);
         public static float TankerReflectDurationLv3Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv3", TankerReflectDurationLv3?.Value ?? 14f);
@@ -162,79 +168,117 @@ namespace CaptainSkillTree.SkillTree
                     "Tanker Job Skills",
                     "Tanker_Passive_DamageReduction",
                     15f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_Passive_DamageReduction")
+                    SkillTreeConfig.GetConfigDescription("Tanker_Passive_DamageReduction"),
+                    order: -1
                 );
 
-                // === 레벨업 패시브 설정 ===
-                TankerHpBonus = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills",
-                    "Tanker_Hp_Bonus",
-                    100f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus")
-                );
-
-                TankerLv2AllResist = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills",
-                    "Tanker_Lv2_AllResist",
-                    5f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_Lv2_AllResist")
-                );
-
-                TankerLv3AllResist = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills",
-                    "Tanker_Lv3_AllResist",
-                    8f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_Lv3_AllResist")
-                );
-
-                TankerLv4AllResist = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills",
-                    "Tanker_Lv4_AllResist",
-                    12f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_Lv4_AllResist")
-                );
-
-                TankerLv5AllResist = SkillTreeConfig.BindServerSync(config,
-                    "Tanker Job Skills",
-                    "Tanker_Lv5_AllResist",
-                    15f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_Lv5_AllResist")
-                );
-
-                // === 레벨별 반사 지속시간 설정 ===
+                // === Lv1 패시브 ===
                 TankerReflectDurationLv1 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv1",
                     10f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv1")
+                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv1"),
+                    order: -2
+                );
+
+                // === Lv2 패시브 ===
+                TankerHpBonusLv2 = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Hp_Bonus_Lv2",
+                    35f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus_Lv2"),
+                    order: -3
+                );
+
+                TankerLv2BlockPower = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Lv2_BlockPower",
+                    5f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Lv2_BlockPower"),
+                    order: -4
                 );
 
                 TankerReflectDurationLv2 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv2",
                     12f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv2")
+                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv2"),
+                    order: -5
+                );
+
+                // === Lv3 패시브 ===
+                TankerHpBonusLv3 = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Hp_Bonus_Lv3",
+                    55f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus_Lv3"),
+                    order: -6
+                );
+
+                TankerLv3BlockPower = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Lv3_BlockPower",
+                    10f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Lv3_BlockPower"),
+                    order: -7
                 );
 
                 TankerReflectDurationLv3 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv3",
                     14f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv3")
+                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv3"),
+                    order: -8
+                );
+
+                // === Lv4 패시브 ===
+                TankerHpBonusLv4 = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Hp_Bonus_Lv4",
+                    75f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus_Lv4"),
+                    order: -9
+                );
+
+                TankerLv4BlockPower = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Lv4_BlockPower",
+                    15f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Lv4_BlockPower"),
+                    order: -10
                 );
 
                 TankerReflectDurationLv4 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv4",
                     16f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv4")
+                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv4"),
+                    order: -11
+                );
+
+                // === Lv5 패시브 ===
+                TankerHpBonusLv5 = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Hp_Bonus_Lv5",
+                    100f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus_Lv5"),
+                    order: -12
+                );
+
+                TankerLv5BlockPower = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Lv5_BlockPower",
+                    20f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Lv5_BlockPower"),
+                    order: -13
                 );
 
                 TankerReflectDurationLv5 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv5",
                     20f,
-                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv5")
+                    SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv5"),
+                    order: -14
                 );
 
                 Plugin.Log.LogDebug("[탱커 컨피그] 설정 항목 생성 완료");
@@ -268,11 +312,14 @@ namespace CaptainSkillTree.SkillTree
                 TankerTauntEffectScale.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerTauntReflectPercent.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerPassiveDamageReduction.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
-                TankerHpBonus.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
-                TankerLv2AllResist.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
-                TankerLv3AllResist.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
-                TankerLv4AllResist.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
-                TankerLv5AllResist.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerHpBonusLv2.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerHpBonusLv3.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerHpBonusLv4.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerHpBonusLv5.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerLv2BlockPower.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerLv3BlockPower.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerLv4BlockPower.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerLv5BlockPower.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerReflectDurationLv1.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerReflectDurationLv2.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerReflectDurationLv3.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();

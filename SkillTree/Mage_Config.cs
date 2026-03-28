@@ -1,53 +1,51 @@
-﻿using BepInEx.Configuration;
+using BepInEx.Configuration;
 
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 메이지 직업 전용 컨피그 시스템
-    /// 메이지 액티브 스킬과 패시브 스킬의 모든 설정값들을 관리
+    /// 불의 비 (Fire Rain) 액티브 스킬 및 패시브 스킬의 설정값 관리
     /// </summary>
     public static class Mage_Config
     {
         // === 메이지 액티브 스킬 고정 컨피그 ===
-        public static ConfigEntry<float> MageAOERange;                   // 범위 (기본: 12m)
-        public static ConfigEntry<int>   MageEitrCost;                   // Eitr 소모량 (기본: 35)
+        public static ConfigEntry<float> MageAOERange;                     // 타겟팅 범위 (기본: 12m)
+        public static ConfigEntry<int>   MageEitrCost;                     // Eitr 소모량 (기본: 35)
+        public static ConfigEntry<float> MageFireRainRadius;               // 낙하 반경 (기본: 8m)
+        public static ConfigEntry<float> MageFireRainImpactRadius;         // 착지 데미지 범위 (기본: 3m)
+        public static ConfigEntry<int>   MageFireRainProjectileCount;     // 버스트당 발사체 수 (기본: 20개)
 
-        // === 메이지 쿨타임 (레벨별) ===
-        public static ConfigEntry<float> MageCooldown_Lv1;   // Lv1: 120s
-        public static ConfigEntry<float> MageCooldown_Lv2;   // Lv2: 110s
-        public static ConfigEntry<float> MageCooldown_Lv3;   // Lv3: 100s
-        public static ConfigEntry<float> MageCooldown_Lv4;   // Lv4: 90s
-        public static ConfigEntry<float> MageCooldown_Lv5;   // Lv5: 80s
+        // === 메이지 쿨타임 (레벨별 - 모두 45초) ===
+        public static ConfigEntry<float> MageCooldown_Lv1;
+        public static ConfigEntry<float> MageCooldown_Lv2;
+        public static ConfigEntry<float> MageCooldown_Lv3;
+        public static ConfigEntry<float> MageCooldown_Lv4;
+        public static ConfigEntry<float> MageCooldown_Lv5;
 
-        // === 메이지 최대 타겟 수 (레벨별) ===
-        public static ConfigEntry<int> MageAOEMaxTargets_Lv1;   // Lv1: 6
-        public static ConfigEntry<int> MageAOEMaxTargets_Lv2;   // Lv2: 7
-        public static ConfigEntry<int> MageAOEMaxTargets_Lv3;   // Lv3: 8
-        public static ConfigEntry<int> MageAOEMaxTargets_Lv4;   // Lv4: 9
-        public static ConfigEntry<int> MageAOEMaxTargets_Lv5;   // Lv5: 10
-
-        // === 메이지 패시브 속성 저항 (레벨별) ===
+        // === 메이지 패시브 속성 저항 (레벨별, 기존 유지) ===
         public static ConfigEntry<float> MageElementalResistance_Lv1;   // Lv1: 5%
         public static ConfigEntry<float> MageElementalResistance_Lv2;   // Lv2: 7%
         public static ConfigEntry<float> MageElementalResistance_Lv3;   // Lv3: 9%
         public static ConfigEntry<float> MageElementalResistance_Lv4;   // Lv4: 12%
         public static ConfigEntry<float> MageElementalResistance_Lv5;   // Lv5: 15%
 
-        // === 메이지 AOE 데미지 배수 (레벨별) ===
-        public static ConfigEntry<float> MageDamageMultiplier_Lv1;      // Lv1: 70%
-        public static ConfigEntry<float> MageDamageMultiplier_Lv2;      // Lv2: 90%
-        public static ConfigEntry<float> MageDamageMultiplier_Lv3;      // Lv3: 110%
-        public static ConfigEntry<float> MageDamageMultiplier_Lv4;      // Lv4: 130%
-        public static ConfigEntry<float> MageDamageMultiplier_Lv5;      // Lv5: 150%
+        // === 메이지 공격력 배수 (레벨별 - 무기 공격력 %) ===
+        public static ConfigEntry<float> MageDamageMultiplier_Lv1;      // Lv1: 22%
+        public static ConfigEntry<float> MageDamageMultiplier_Lv2;      // Lv2: 24%
+        public static ConfigEntry<float> MageDamageMultiplier_Lv3;      // Lv3: 26%
+        public static ConfigEntry<float> MageDamageMultiplier_Lv4;      // Lv4: 28%
+        public static ConfigEntry<float> MageDamageMultiplier_Lv5;      // Lv5: 30%
 
         // === 동적 값 접근자 ===
         public static float MageAOERangeValue => SkillTreeConfig.GetEffectiveValue("Mage_AOE_Range", MageAOERange.Value);
         public static int   MageEitrCostValue => (int)SkillTreeConfig.GetEffectiveValue("Mage_Eitr_Cost", (float)MageEitrCost.Value);
+        public static float MageFireRainRadiusValue => SkillTreeConfig.GetEffectiveValue("Mage_Fire_Rain_Radius", MageFireRainRadius.Value);
+        public static float MageFireRainImpactRadiusValue => SkillTreeConfig.GetEffectiveValue("Mage_Fire_Rain_Impact_Radius", MageFireRainImpactRadius.Value);
+        public static int   MageFireRainProjectileCountValue => (int)SkillTreeConfig.GetEffectiveValue("Mage_Fire_Rain_Projectile_Count", (float)(MageFireRainProjectileCount?.Value ?? 20));
 
-        // === 호환성 접근자 (기존 코드 호환 - Lv1 기본값 반환) ===
-        public static float MageCooldownValue       => GetCooldown(1);
-        public static int   MageAOEMaxTargetsValue  => GetMaxTargets(1);
-        public static float MageDamageMultiplierValue => GetDamageMultiplier(1);
+        // === 호환성 접근자 (기존 코드 호환) ===
+        public static float MageCooldownValue            => GetCooldown(1);
+        public static float MageDamageMultiplierValue    => GetDamageMultiplier(1);
         public static float MageElementalResistanceValue => GetElementalResistance(1);
 
         // === 레벨별 헬퍼 메서드 ===
@@ -55,25 +53,12 @@ namespace CaptainSkillTree.SkillTree
         {
             switch (level)
             {
-                case 1: return SkillTreeConfig.GetEffectiveValue("Mage_Lv1_Cooldown", MageCooldown_Lv1?.Value ?? 120f);
-                case 2: return SkillTreeConfig.GetEffectiveValue("Mage_Lv2_Cooldown", MageCooldown_Lv2?.Value ?? 110f);
-                case 3: return SkillTreeConfig.GetEffectiveValue("Mage_Lv3_Cooldown", MageCooldown_Lv3?.Value ?? 100f);
-                case 4: return SkillTreeConfig.GetEffectiveValue("Mage_Lv4_Cooldown", MageCooldown_Lv4?.Value ?? 90f);
-                case 5: return SkillTreeConfig.GetEffectiveValue("Mage_Lv5_Cooldown", MageCooldown_Lv5?.Value ?? 80f);
-                default: return 120f;
-            }
-        }
-
-        public static int GetMaxTargets(int level)
-        {
-            switch (level)
-            {
-                case 1: return (int)SkillTreeConfig.GetEffectiveValue("Mage_Lv1_AOE_Max_Targets", (float)(MageAOEMaxTargets_Lv1?.Value ?? 6));
-                case 2: return (int)SkillTreeConfig.GetEffectiveValue("Mage_Lv2_AOE_Max_Targets", (float)(MageAOEMaxTargets_Lv2?.Value ?? 7));
-                case 3: return (int)SkillTreeConfig.GetEffectiveValue("Mage_Lv3_AOE_Max_Targets", (float)(MageAOEMaxTargets_Lv3?.Value ?? 8));
-                case 4: return (int)SkillTreeConfig.GetEffectiveValue("Mage_Lv4_AOE_Max_Targets", (float)(MageAOEMaxTargets_Lv4?.Value ?? 9));
-                case 5: return (int)SkillTreeConfig.GetEffectiveValue("Mage_Lv5_AOE_Max_Targets", (float)(MageAOEMaxTargets_Lv5?.Value ?? 10));
-                default: return 6;
+                case 1: return SkillTreeConfig.GetEffectiveValue("Mage_Lv1_Cooldown", MageCooldown_Lv1?.Value ?? 45f);
+                case 2: return SkillTreeConfig.GetEffectiveValue("Mage_Lv2_Cooldown", MageCooldown_Lv2?.Value ?? 45f);
+                case 3: return SkillTreeConfig.GetEffectiveValue("Mage_Lv3_Cooldown", MageCooldown_Lv3?.Value ?? 45f);
+                case 4: return SkillTreeConfig.GetEffectiveValue("Mage_Lv4_Cooldown", MageCooldown_Lv4?.Value ?? 45f);
+                case 5: return SkillTreeConfig.GetEffectiveValue("Mage_Lv5_Cooldown", MageCooldown_Lv5?.Value ?? 45f);
+                default: return 45f;
             }
         }
 
@@ -94,18 +79,16 @@ namespace CaptainSkillTree.SkillTree
         {
             switch (level)
             {
-                case 1: return SkillTreeConfig.GetEffectiveValue("Mage_Lv1_Damage_Multiplier", MageDamageMultiplier_Lv1?.Value ?? 70f);
-                case 2: return SkillTreeConfig.GetEffectiveValue("Mage_Lv2_Damage_Multiplier", MageDamageMultiplier_Lv2?.Value ?? 90f);
-                case 3: return SkillTreeConfig.GetEffectiveValue("Mage_Lv3_Damage_Multiplier", MageDamageMultiplier_Lv3?.Value ?? 110f);
-                case 4: return SkillTreeConfig.GetEffectiveValue("Mage_Lv4_Damage_Multiplier", MageDamageMultiplier_Lv4?.Value ?? 130f);
-                case 5: return SkillTreeConfig.GetEffectiveValue("Mage_Lv5_Damage_Multiplier", MageDamageMultiplier_Lv5?.Value ?? 150f);
-                default: return 70f;
+                case 1: return SkillTreeConfig.GetEffectiveValue("Mage_Lv1_Damage_Multiplier", MageDamageMultiplier_Lv1?.Value ?? 22f);
+                case 2: return SkillTreeConfig.GetEffectiveValue("Mage_Lv2_Damage_Multiplier", MageDamageMultiplier_Lv2?.Value ?? 24f);
+                case 3: return SkillTreeConfig.GetEffectiveValue("Mage_Lv3_Damage_Multiplier", MageDamageMultiplier_Lv3?.Value ?? 26f);
+                case 4: return SkillTreeConfig.GetEffectiveValue("Mage_Lv4_Damage_Multiplier", MageDamageMultiplier_Lv4?.Value ?? 28f);
+                case 5: return SkillTreeConfig.GetEffectiveValue("Mage_Lv5_Damage_Multiplier", MageDamageMultiplier_Lv5?.Value ?? 30f);
+                default: return 22f;
             }
         }
 
-        /// <summary>
-        /// 메이지 컨피그 초기화 (SkillTreeConfig에서 호출)
-        /// </summary>
+        /// <summary>메이지 컨피그 초기화 (SkillTreeConfig에서 호출)</summary>
         public static void InitializeMageConfig(ConfigFile config)
         {
             try
@@ -121,75 +104,73 @@ namespace CaptainSkillTree.SkillTree
                     "Mage Job Skills", "Mage_Eitr_Cost", 35,
                     SkillTreeConfig.GetConfigDescription("Mage_Eitr_Cost"));
 
-                // === Lv1 ===
+                MageFireRainRadius = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Fire_Rain_Radius", 8.0f,
+                    SkillTreeConfig.GetConfigDescription("Mage_Fire_Rain_Radius"));
+
+                MageFireRainImpactRadius = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Fire_Rain_Impact_Radius", 3.0f,
+                    SkillTreeConfig.GetConfigDescription("Mage_Fire_Rain_Impact_Radius"));
+
+                MageFireRainProjectileCount = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Fire_Rain_Projectile_Count", 20,
+                    SkillTreeConfig.GetConfigDescription("Mage_Fire_Rain_Projectile_Count"));
+
+                // === 레벨별 그룹 (AOE 데미지 배수 → 쿨타임 → 속성 저항) ===
+                // --- Lv1 ---
+                MageDamageMultiplier_Lv1 = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Lv1_Damage_Multiplier", 22.0f,
+                    SkillTreeConfig.GetConfigDescription("Mage_Lv1_Damage_Multiplier"));
                 MageCooldown_Lv1 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv1_Cooldown", 120.0f,
+                    "Mage Job Skills", "Mage_Lv1_Cooldown", 45.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv1_Cooldown"));
-                MageAOEMaxTargets_Lv1 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv1_AOE_Max_Targets", 6,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv1_AOE_Max_Targets"));
                 MageElementalResistance_Lv1 = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills", "Mage_Lv1_Elemental_Resistance", 5.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv1_Elemental_Resistance"));
-                MageDamageMultiplier_Lv1 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv1_Damage_Multiplier", 70.0f,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv1_Damage_Multiplier"));
 
-                // === Lv2 ===
+                // --- Lv2 ---
+                MageDamageMultiplier_Lv2 = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Lv2_Damage_Multiplier", 24.0f,
+                    SkillTreeConfig.GetConfigDescription("Mage_Lv2_Damage_Multiplier"));
                 MageCooldown_Lv2 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv2_Cooldown", 110.0f,
+                    "Mage Job Skills", "Mage_Lv2_Cooldown", 45.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv2_Cooldown"));
-                MageAOEMaxTargets_Lv2 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv2_AOE_Max_Targets", 7,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv2_AOE_Max_Targets"));
                 MageElementalResistance_Lv2 = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills", "Mage_Lv2_Elemental_Resistance", 7.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv2_Elemental_Resistance"));
-                MageDamageMultiplier_Lv2 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv2_Damage_Multiplier", 90.0f,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv2_Damage_Multiplier"));
 
-                // === Lv3 ===
+                // --- Lv3 ---
+                MageDamageMultiplier_Lv3 = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Lv3_Damage_Multiplier", 26.0f,
+                    SkillTreeConfig.GetConfigDescription("Mage_Lv3_Damage_Multiplier"));
                 MageCooldown_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv3_Cooldown", 100.0f,
+                    "Mage Job Skills", "Mage_Lv3_Cooldown", 45.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv3_Cooldown"));
-                MageAOEMaxTargets_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv3_AOE_Max_Targets", 8,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv3_AOE_Max_Targets"));
                 MageElementalResistance_Lv3 = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills", "Mage_Lv3_Elemental_Resistance", 9.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv3_Elemental_Resistance"));
-                MageDamageMultiplier_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv3_Damage_Multiplier", 110.0f,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv3_Damage_Multiplier"));
 
-                // === Lv4 ===
+                // --- Lv4 ---
+                MageDamageMultiplier_Lv4 = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Lv4_Damage_Multiplier", 28.0f,
+                    SkillTreeConfig.GetConfigDescription("Mage_Lv4_Damage_Multiplier"));
                 MageCooldown_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv4_Cooldown", 90.0f,
+                    "Mage Job Skills", "Mage_Lv4_Cooldown", 45.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv4_Cooldown"));
-                MageAOEMaxTargets_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv4_AOE_Max_Targets", 9,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv4_AOE_Max_Targets"));
                 MageElementalResistance_Lv4 = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills", "Mage_Lv4_Elemental_Resistance", 12.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv4_Elemental_Resistance"));
-                MageDamageMultiplier_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv4_Damage_Multiplier", 130.0f,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv4_Damage_Multiplier"));
 
-                // === Lv5 ===
+                // --- Lv5 ---
+                MageDamageMultiplier_Lv5 = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Lv5_Damage_Multiplier", 30.0f,
+                    SkillTreeConfig.GetConfigDescription("Mage_Lv5_Damage_Multiplier"));
                 MageCooldown_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv5_Cooldown", 80.0f,
+                    "Mage Job Skills", "Mage_Lv5_Cooldown", 45.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv5_Cooldown"));
-                MageAOEMaxTargets_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv5_AOE_Max_Targets", 10,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv5_AOE_Max_Targets"));
                 MageElementalResistance_Lv5 = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills", "Mage_Lv5_Elemental_Resistance", 15.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Lv5_Elemental_Resistance"));
-                MageDamageMultiplier_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Lv5_Damage_Multiplier", 150.0f,
-                    SkillTreeConfig.GetConfigDescription("Mage_Lv5_Damage_Multiplier"));
 
                 Plugin.Log.LogDebug("[메이지 컨피그] 설정 항목 생성 완료");
 
@@ -207,20 +188,17 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                MageAOERange.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
-                MageEitrCost.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
+                MageAOERange.SettingChanged              += (s, a) => Mage_Tooltip.UpdateMageTooltip();
+                MageEitrCost.SettingChanged              += (s, a) => Mage_Tooltip.UpdateMageTooltip();
+                MageFireRainRadius.SettingChanged        += (s, a) => Mage_Tooltip.UpdateMageTooltip();
+                MageFireRainImpactRadius.SettingChanged  += (s, a) => Mage_Tooltip.UpdateMageTooltip();
+                MageFireRainProjectileCount.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
 
                 MageCooldown_Lv1.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
                 MageCooldown_Lv2.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
                 MageCooldown_Lv3.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
                 MageCooldown_Lv4.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
                 MageCooldown_Lv5.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
-
-                MageAOEMaxTargets_Lv1.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
-                MageAOEMaxTargets_Lv2.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
-                MageAOEMaxTargets_Lv3.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
-                MageAOEMaxTargets_Lv4.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
-                MageAOEMaxTargets_Lv5.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
 
                 MageElementalResistance_Lv1.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
                 MageElementalResistance_Lv2.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
@@ -247,11 +225,11 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 Plugin.Log.LogInfo($"[메이지 컨피그] === 현재 설정값 ===");
-                Plugin.Log.LogInfo($"[메이지 컨피그] 범위: {MageAOERangeValue}m / Eitr 소모: {MageEitrCostValue}");
-                Plugin.Log.LogInfo($"[메이지 컨피그] 쿨타임: Lv1={GetCooldown(1)}s / Lv2={GetCooldown(2)}s / Lv3={GetCooldown(3)}s / Lv4={GetCooldown(4)}s / Lv5={GetCooldown(5)}s");
-                Plugin.Log.LogInfo($"[메이지 컨피그] 최대 타겟: Lv1={GetMaxTargets(1)} / Lv2={GetMaxTargets(2)} / Lv3={GetMaxTargets(3)} / Lv4={GetMaxTargets(4)} / Lv5={GetMaxTargets(5)}");
+                Plugin.Log.LogInfo($"[메이지 컨피그] 타겟팅 범위: {MageAOERangeValue}m / Eitr 소모: {MageEitrCostValue}");
+                Plugin.Log.LogInfo($"[메이지 컨피그] 낙하 반경: {MageFireRainRadiusValue}m / 착지 범위: {MageFireRainImpactRadiusValue}m");
+                Plugin.Log.LogInfo($"[메이지 컨피그] 쿨타임: {GetCooldown(1)}s (모든 레벨 동일)");
                 Plugin.Log.LogInfo($"[메이지 컨피그] 속성 저항: Lv1={GetElementalResistance(1)}% / Lv2={GetElementalResistance(2)}% / Lv3={GetElementalResistance(3)}% / Lv4={GetElementalResistance(4)}% / Lv5={GetElementalResistance(5)}%");
-                Plugin.Log.LogInfo($"[메이지 컨피그] AOE 데미지: Lv1={GetDamageMultiplier(1)}% / Lv2={GetDamageMultiplier(2)}% / Lv3={GetDamageMultiplier(3)}% / Lv4={GetDamageMultiplier(4)}% / Lv5={GetDamageMultiplier(5)}%");
+                Plugin.Log.LogInfo($"[메이지 컨피그] 공격력 배수: Lv1={GetDamageMultiplier(1)}% / Lv2={GetDamageMultiplier(2)}% / Lv3={GetDamageMultiplier(3)}% / Lv4={GetDamageMultiplier(4)}% / Lv5={GetDamageMultiplier(5)}%");
             }
             catch (System.Exception ex)
             {

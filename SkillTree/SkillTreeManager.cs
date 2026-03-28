@@ -361,7 +361,8 @@ namespace CaptainSkillTree.SkillTree
                    skillId == "defense_Step3_agile" ||
                    skillId == "defense_Step5_stamina" ||
                    skillId == "defense_Step6_attack" ||
-                   skillId == "knife_step2_evasion"; // 단검 회피 숙련
+                   skillId == "knife_step2_evasion" || // 단검 회피 숙련
+                   skillId == "Rogue";                 // 로그 패시브 회피율
         }
 
         public bool CanLevelUp(string skillId)
@@ -419,6 +420,14 @@ namespace CaptainSkillTree.SkillTree
                 // 성기사 직업: 레벨별 아이템 요구사항 체크
                 int targetLevel = currentLevel + 1;
                 if (!HasPaladinLevelItems(targetLevel)) return false;
+
+                // Lv2 업그레이드 조건: 패링돌격 또는 연공창 보유 필요
+                if (targetLevel == 2)
+                {
+                    bool hasParryRush  = GetSkillLevel("sword_step5_defswitch") > 0;
+                    bool hasSpearCombo = GetSkillLevel("spear_Step5_combo") > 0;
+                    if (!hasParryRush && !hasSpearCombo) return false;
+                }
             }
             else if (skillId == "Producer")
             {
@@ -2179,6 +2188,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 방어 스킬 초기화 시 회피율 리셋 (중요!)
             SkillEffect.UpdateDefenseDodgeRate(Player.m_localPlayer);
+            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
         }
 
         // 생산 전문가를 제외한 스킬 초기화 (직업 스킬도 제외, UI 포인트 초기화 버튼용)
@@ -2194,6 +2204,7 @@ namespace CaptainSkillTree.SkillTree
             }
             pendingInvestments.Clear();
             SkillEffect.UpdateDefenseDodgeRate(Player.m_localPlayer);
+            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
         }
 
         // 직업 스킬만 초기화 (UI 직업 초기화 버튼용)
@@ -2207,6 +2218,7 @@ namespace CaptainSkillTree.SkillTree
                 Player.m_localPlayer.m_customData[key] = "0";
             }
             pendingInvestments.Clear();
+            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
         }
 
         // 생산 전문가 스킬만 초기화
@@ -2219,6 +2231,7 @@ namespace CaptainSkillTree.SkillTree
                 Player.m_localPlayer.m_customData[key] = "0";
             }
             pendingInvestments.Clear();
+            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
         }
 
         // 전체 투자 포인트 합계 반환

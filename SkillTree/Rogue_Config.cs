@@ -67,7 +67,6 @@ namespace CaptainSkillTree.SkillTree
         // === 로그 패시브 Lv1 기본 ===
         public static ConfigEntry<float> RogueAttackSpeedBonus;
         public static ConfigEntry<float> RogueStaminaReduction;
-        public static ConfigEntry<float> RogueElementalResistanceDebuff;
 
         // === 패시브 Lv2~5 공격속도 ===
         public static ConfigEntry<float> RogueLv2AttackSpeed;
@@ -81,11 +80,12 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> RogueLv4StaminaReduction;
         public static ConfigEntry<float> RogueLv5StaminaReduction;
 
-        // === 패시브 Lv2~5 속성 저항 ===
-        public static ConfigEntry<float> RogueLv2ElementalResist;
-        public static ConfigEntry<float> RogueLv3ElementalResist;
-        public static ConfigEntry<float> RogueLv4ElementalResist;
-        public static ConfigEntry<float> RogueLv5ElementalResist;
+        // === 패시브 회피율 Lv1~5 ===
+        public static ConfigEntry<float> RogueLv1DodgeChance;
+        public static ConfigEntry<float> RogueLv2DodgeChance;
+        public static ConfigEntry<float> RogueLv3DodgeChance;
+        public static ConfigEntry<float> RogueLv4DodgeChance;
+        public static ConfigEntry<float> RogueLv5DodgeChance;
 
         // === 패시브 이동속도 Lv1~5 ===
         public static ConfigEntry<float> RogueLv1MoveSpeed;
@@ -98,7 +98,7 @@ namespace CaptainSkillTree.SkillTree
         // 동적 값 접근자 (Lv1 기본)
         // ====================================================
         public static float RogueShadowStrikeCooldownValue        => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_Cooldown",      RogueShadowStrikeCooldown?.Value      ?? 35f);
-        public static float RogueShadowStrikeStaminaCostValue     => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_StaminaCost",   RogueShadowStrikeStaminaCost?.Value   ?? 25f);
+        public static float RogueShadowStrikeStaminaCostValue     => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_StaminaCost",   RogueShadowStrikeStaminaCost?.Value   ?? 20f);
         public static float RogueShadowStrikeAttackBonusValue     => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_AttackBonus",   RogueShadowStrikeAttackBonus?.Value   ?? 35f);
         public static float RogueShadowStrikeBuffDurationValue    => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_BuffDuration",  RogueShadowStrikeBuffDuration?.Value  ?? 8f);
 
@@ -122,7 +122,7 @@ namespace CaptainSkillTree.SkillTree
 
         // 독 폭발 Lv1 기본
         public static float RoguePoisonRangeValue        => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_Range",        RoguePoisonRange?.Value        ?? 15f);
-        public static float RoguePoisonInstantDamageValue => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_InstantDamage", RoguePoisonInstantDamage?.Value ?? 40f);
+        public static float RoguePoisonInstantDamageValue => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_InstantDamage", RoguePoisonInstantDamage?.Value ?? 20f);
         public static float RoguePoisonDotDamageValue    => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_DotDamage",    RoguePoisonDotDamage?.Value    ?? 30f);
         public static float RoguePoisonDotDurationValue  => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_DotDuration",  RoguePoisonDotDuration?.Value  ?? 10f);
         public static int   RoguePoisonVFXCountValue     => (int)SkillTreeConfig.GetEffectiveValue("Rogue_Poison_VFXCount", RoguePoisonVFXCount?.Value      ?? 6f);
@@ -151,9 +151,8 @@ namespace CaptainSkillTree.SkillTree
         public static int RogueLv5BonusChargesValue     => (int)SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_BonusCharges",      RogueLv5BonusCharges?.Value    ?? 1f);
 
         // 패시브 Lv1 기본
-        public static float RogueAttackSpeedBonusValue           => SkillTreeConfig.GetEffectiveValue("Rogue_AttackSpeed_Bonus",          RogueAttackSpeedBonus?.Value           ?? 7f);
-        public static float RogueStaminaReductionValue            => SkillTreeConfig.GetEffectiveValue("Rogue_Stamina_Reduction",          RogueStaminaReduction?.Value           ?? 15f);
-        public static float RogueElementalResistanceDebuffValue   => SkillTreeConfig.GetEffectiveValue("Rogue_ElementalResistance_Debuff", RogueElementalResistanceDebuff?.Value  ?? 10f);
+        public static float RogueAttackSpeedBonusValue           => SkillTreeConfig.GetEffectiveValue("Rogue_AttackSpeed_Bonus", RogueAttackSpeedBonus?.Value ?? 7f);
+        public static float RogueStaminaReductionValue            => SkillTreeConfig.GetEffectiveValue("Rogue_Stamina_Reduction", RogueStaminaReduction?.Value ?? 15f);
 
         // 패시브 공격속도 Lv2~5
         public static float RogueLv2AttackSpeedValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_AttackSpeed", RogueLv2AttackSpeed?.Value ?? 9f);
@@ -167,11 +166,12 @@ namespace CaptainSkillTree.SkillTree
         public static float RogueLv4StaminaReductionValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv4_StaminaReduction", RogueLv4StaminaReduction?.Value ?? 21f);
         public static float RogueLv5StaminaReductionValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_StaminaReduction", RogueLv5StaminaReduction?.Value ?? 25f);
 
-        // 패시브 속성 저항 Lv2~5
-        public static float RogueLv2ElementalResistValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_ElementalResist", RogueLv2ElementalResist?.Value ?? 12f);
-        public static float RogueLv3ElementalResistValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv3_ElementalResist", RogueLv3ElementalResist?.Value ?? 14f);
-        public static float RogueLv4ElementalResistValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv4_ElementalResist", RogueLv4ElementalResist?.Value ?? 16f);
-        public static float RogueLv5ElementalResistValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_ElementalResist", RogueLv5ElementalResist?.Value ?? 20f);
+        // 패시브 회피율 Lv1~5
+        public static float RogueLv1DodgeChanceValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv1_DodgeChance", RogueLv1DodgeChance?.Value ?? 4f);
+        public static float RogueLv2DodgeChanceValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_DodgeChance", RogueLv2DodgeChance?.Value ?? 6f);
+        public static float RogueLv3DodgeChanceValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv3_DodgeChance", RogueLv3DodgeChance?.Value ?? 8f);
+        public static float RogueLv4DodgeChanceValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv4_DodgeChance", RogueLv4DodgeChance?.Value ?? 10f);
+        public static float RogueLv5DodgeChanceValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_DodgeChance", RogueLv5DodgeChance?.Value ?? 12f);
 
         // 패시브 이동속도 Lv1~5
         public static float RogueLv1MoveSpeedValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv1_MoveSpeed", RogueLv1MoveSpeed?.Value ?? 5f);
@@ -243,7 +243,6 @@ namespace CaptainSkillTree.SkillTree
                 // === 패시브 Lv1 기본 ===
                 RogueAttackSpeedBonus = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_AttackSpeed_Bonus", 7f, SkillTreeConfig.GetConfigDescription("Rogue_AttackSpeed_Bonus"));
                 RogueStaminaReduction = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Stamina_Reduction", 15f, SkillTreeConfig.GetConfigDescription("Rogue_Stamina_Reduction"));
-                RogueElementalResistanceDebuff = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_ElementalResistance_Debuff", 10f, SkillTreeConfig.GetConfigDescription("Rogue_ElementalResistance_Debuff"));
 
                 // === 패시브 공격속도 Lv2~5 ===
                 RogueLv2AttackSpeed = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_AttackSpeed", 9f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_AttackSpeed"));
@@ -257,11 +256,12 @@ namespace CaptainSkillTree.SkillTree
                 RogueLv4StaminaReduction = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv4_StaminaReduction", 21f, SkillTreeConfig.GetConfigDescription("Rogue_Lv4_StaminaReduction"));
                 RogueLv5StaminaReduction = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_StaminaReduction", 25f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_StaminaReduction"));
 
-                // === 패시브 속성 저항 Lv2~5 ===
-                RogueLv2ElementalResist = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_ElementalResist", 12f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_ElementalResist"));
-                RogueLv3ElementalResist = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv3_ElementalResist", 14f, SkillTreeConfig.GetConfigDescription("Rogue_Lv3_ElementalResist"));
-                RogueLv4ElementalResist = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv4_ElementalResist", 16f, SkillTreeConfig.GetConfigDescription("Rogue_Lv4_ElementalResist"));
-                RogueLv5ElementalResist = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_ElementalResist", 20f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_ElementalResist"));
+                // === 패시브 회피율 Lv1~5 ===
+                RogueLv1DodgeChance = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv1_DodgeChance", 4f, SkillTreeConfig.GetConfigDescription("Rogue_Lv1_DodgeChance"));
+                RogueLv2DodgeChance = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_DodgeChance", 6f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_DodgeChance"));
+                RogueLv3DodgeChance = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv3_DodgeChance", 8f, SkillTreeConfig.GetConfigDescription("Rogue_Lv3_DodgeChance"));
+                RogueLv4DodgeChance = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv4_DodgeChance", 10f, SkillTreeConfig.GetConfigDescription("Rogue_Lv4_DodgeChance"));
+                RogueLv5DodgeChance = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_DodgeChance", 12f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_DodgeChance"));
 
                 // === 패시브 이동속도 Lv1~5 ===
                 RogueLv1MoveSpeed = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv1_MoveSpeed", 5f, SkillTreeConfig.GetConfigDescription("Rogue_Lv1_MoveSpeed"));
@@ -300,7 +300,7 @@ namespace CaptainSkillTree.SkillTree
                 RoguePoisonDotDamage.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
                 RogueAttackSpeedBonus.SettingChanged        += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
                 RogueStaminaReduction.SettingChanged        += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
-                RogueElementalResistanceDebuff.SettingChanged+=(s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv1DodgeChance.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
                 RogueLv1MoveSpeed.SettingChanged             += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
 
                 Plugin.Log.LogDebug("[로그 컨피그] 이벤트 핸들러 등록 완료");

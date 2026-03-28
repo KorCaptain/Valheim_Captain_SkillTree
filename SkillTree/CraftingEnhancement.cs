@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using CaptainSkillTree.Localization;
+using CaptainSkillTree.VFX;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -415,11 +416,28 @@ namespace CaptainSkillTree.SkillTree
     public static class CraftingDurability_DoCrafting_Patch
     {
         private static readonly HashSet<string> _preSnapshot = new HashSet<string>();
+        // 수리 감지용 Reflection 캐시 (DoCrafting은 수리에도 호출됨)
+        private static FieldInfo _craftTimerField;
+
+        private static bool IsRepairAction(InventoryGui gui)
+        {
+            try
+            {
+                if (_craftTimerField == null)
+                    _craftTimerField = typeof(InventoryGui).GetField("m_craftTimer",
+                        BindingFlags.NonPublic | BindingFlags.Instance);
+                if (_craftTimerField != null)
+                    return (float)_craftTimerField.GetValue(gui) < 0f;
+            }
+            catch { }
+            return false;
+        }
 
         public static void Prefix(InventoryGui __instance, Player player)
         {
             _preSnapshot.Clear();
             if (player != Player.m_localPlayer) return;
+            if (IsRepairAction(__instance)) return; // 수리 시 인벤토리 순회 스킵
             var manager = SkillTreeManager.Instance;
             if (manager == null || manager.GetSkillLevel("crafting_lv2") <= 0) return;
             var inv = player.GetInventory();
@@ -457,14 +475,27 @@ namespace CaptainSkillTree.SkillTree
                 CraftingEnhancement.ApplyQualityEnhancement(crafted, bonus.EnhanceLevel);
 
             // 내구도 보너스 (항상 - 중복 방지 내장)
+            bool durApplied = false;
             if (bonus.DurabilityBonus > 0f && crafted.m_durability > 0f)
             {
-                bool durApplied = !(crafted.m_customData?.ContainsKey("CraftingDurabilityBonus") ?? false);
+                durApplied = !(crafted.m_customData?.ContainsKey("CraftingDurabilityBonus") ?? false);
                 if (durApplied)
                     CraftingEnhancement.ApplyDurabilityBonus(crafted, bonus.DurabilityBonus);
             }
 
             Plugin.Log.LogDebug($"[제작 보너스] {crafted.m_shared?.m_name}: 강화={enhanceSuccess}, 내구도+{bonus.DurabilityBonus * 100:F0}%");
+
+            // VFX/SFX - 제작 효과(강화/내구도/production_root) 발동 시 재생
+            bool hasProductionRoot = SkillTreeManager.Instance?.GetSkillLevel("production_root") > 0;
+            if (enhanceSuccess || durApplied || hasProductionRoot)
+            {
+                try
+                {
+                    SimpleVFX.Play("statusailment_01", player.transform.position);
+                    VFXManager.PlayVFXAtPosition("sfx_fader_bell", player.transform.position);
+                }
+                catch (Exception) { }
+            }
         }
     }
 
@@ -512,6 +543,13 @@ namespace CaptainSkillTree.SkillTree
                     crafted.m_customData[CRAFT_SPD_KEY] = "5";
                     player.Message(MessageHud.MessageType.Center, L.Get("crafting_lv2_enchant_spd"));
                 }
+                // VFX/SFX - 무기 마법부여 발동 시 재생
+                try
+                {
+                    SimpleVFX.Play("statusailment_01", player.transform.position);
+                    VFXManager.PlayVFXAtPosition("sfx_fader_bell", player.transform.position);
+                }
+                catch (Exception) { }
                 Plugin.Log.LogDebug($"[제작 Lv2 마법부여] {crafted.m_shared.m_name}: {(useDmg ? "공격력+5" : "공격속도+5%")}");
             }
             catch (Exception ex)

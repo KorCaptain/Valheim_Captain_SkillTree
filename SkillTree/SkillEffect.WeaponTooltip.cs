@@ -34,13 +34,24 @@ namespace CaptainSkillTree.SkillTree
                                  || itemType == ItemDrop.ItemData.ItemType.Bow;
                     if (!isWeapon) return;
 
-                    if (!ProducerSkills.IsProducerBuffActive(player)) return;
-
-                    float atkBonus = Producer_Config.ProducerBuff_AttackBonusValue;
-                    if (atkBonus <= 0f) return;
-
                     // 버프 출처 표시 (데미지 라인 수치는 Attack_Tooltip_Display.cs CollectBonuses에서 처리)
-                    __result += $"\n<color=#FF8C00>⚒️</color><color=#4FC3F7>{L.Get("weapon_effect_producer_buff")}</color> : {L.Get("weapon_stat_atk_power")} <color=orange>+{atkBonus:F0}%</color>";
+                    if (ProducerSkills.IsProducerBuffActive(player))
+                    {
+                        float atkBonus = Producer_Config.ProducerBuff_AttackBonusValue;
+                        if (atkBonus > 0f)
+                            __result += $"\n<color=#FF8C00>⚒️</color><color=#4FC3F7>{L.Get("weapon_effect_producer_buff")}</color> : {L.Get("weapon_stat_atk_power")} <color=orange>+{atkBonus:F0}%</color>";
+                    }
+
+                    // 제작 축복 인챈트 출처 라인 (ProducerCrafting.cs 중복 방지 → 여기서 처리)
+                    var enchantType = ProducerCrafting.GetEnchantType(item);
+                    float enchantVal = ProducerCrafting.GetEnchantValue(item);
+                    if (enchantVal > 0f)
+                    {
+                        if (enchantType == ProducerCrafting.EnchantType.WeaponDmg)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_weapon_dmg", $"{enchantVal:F1}")}</color>";
+                        else if (enchantType == ProducerCrafting.EnchantType.WeaponSpd)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_weapon_spd", $"{enchantVal:F1}")}</color>";
+                    }
                 }
                 catch (Exception ex)
                 {

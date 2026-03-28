@@ -101,8 +101,8 @@ namespace CaptainSkillTree.Gui
             int index = 0;
             foreach (var buffUI in activeBuffs.Values)
             {
-                var rect = buffUI.GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector2(0, -index * 25);
+                if (buffUI._rectTransform != null)
+                    buffUI._rectTransform.anchoredPosition = new Vector2(0, -index * 25);
                 index++;
             }
         }
@@ -166,6 +166,9 @@ namespace CaptainSkillTree.Gui
             private Text timeText;
             private Image iconImage;
             private Image backgroundImage;
+            public RectTransform _rectTransform;
+            private static readonly WaitForSeconds _wait01 = new WaitForSeconds(0.1f);
+            private float _lastDisplayedTime = -1f;
 
             public void Initialize(string id, string name, float duration, Color textColor, string icon)
             {
@@ -179,8 +182,8 @@ namespace CaptainSkillTree.Gui
 
             private void CreateUI(Color textColor, string icon)
             {
-                var rect = gameObject.AddComponent<RectTransform>();
-                rect.sizeDelta = new Vector2(250, 20);
+                _rectTransform = gameObject.AddComponent<RectTransform>();
+                _rectTransform.sizeDelta = new Vector2(250, 20);
 
                 // 배경 이미지
                 backgroundImage = gameObject.AddComponent<Image>();
@@ -257,7 +260,7 @@ namespace CaptainSkillTree.Gui
                     }
 
                     UpdateTimeDisplay();
-                    yield return new WaitForSeconds(0.1f);
+                    yield return _wait01;
                     remainingTime -= 0.1f;
                 }
 
@@ -267,6 +270,10 @@ namespace CaptainSkillTree.Gui
 
             private void UpdateTimeDisplay()
             {
+                float displayKey = Mathf.Round(remainingTime * 10f) / 10f;
+                if (displayKey == _lastDisplayedTime) return;
+                _lastDisplayedTime = displayKey;
+
                 if (remainingTime > 60)
                 {
                     int minutes = Mathf.FloorToInt(remainingTime / 60);

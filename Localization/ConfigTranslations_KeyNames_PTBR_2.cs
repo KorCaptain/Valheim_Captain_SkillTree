@@ -412,9 +412,32 @@ namespace CaptainSkillTree.Localization
                 ["Mage_AOE_Range"] = "Ativo: Alcance (m)",
                 ["Mage_AOE_Max_Targets"] = "Ativo: Qtd. Máxima de Alvos",
                 ["Mage_Eitr_Cost"] = "Ativo: Custo de Eitr",
+                ["Mage_Fire_Rain_Radius"] = "Raio de Queda (m)",
+                ["Mage_Fire_Rain_Impact_Radius"] = "Raio de Dano no Impacto (m)",
+                ["Mage_Fire_Rain_Projectile_Count"] = "Projéteis por Salva",
                 ["Mage_Damage_Multiplier"] = "Ativo: Multiplicador de Dano (%)",
                 ["Mage_Cooldown"] = "Ativo: Recarga (seg)",
                 ["Mage_Elemental_Resistance"] = "Passivo: Resistência Elemental (%)",
+                ["Mage_Lv1_Damage_Multiplier"] = "Lv1 Multiplicador AOE (%)",
+                ["Mage_Lv1_Cooldown"] = "Lv1 Recarga (seg)",
+                ["Mage_Lv1_Elemental_Resistance"] = "Lv1 Resistência Elemental (%)",
+                ["Mage_Lv2_Damage_Multiplier"] = "Lv2 Multiplicador AOE (%)",
+                ["Mage_Lv2_Cooldown"] = "Lv2 Recarga (seg)",
+                ["Mage_Lv2_Elemental_Resistance"] = "Lv2 Resistência Elemental (%)",
+                ["Mage_Lv3_Damage_Multiplier"] = "Lv3 Multiplicador AOE (%)",
+                ["Mage_Lv3_Cooldown"] = "Lv3 Recarga (seg)",
+                ["Mage_Lv3_Elemental_Resistance"] = "Lv3 Resistência Elemental (%)",
+                ["Mage_Lv4_Damage_Multiplier"] = "Lv4 Multiplicador AOE (%)",
+                ["Mage_Lv4_Cooldown"] = "Lv4 Recarga (seg)",
+                ["Mage_Lv4_Elemental_Resistance"] = "Lv4 Resistência Elemental (%)",
+                ["Mage_Lv5_Damage_Multiplier"] = "Lv5 Multiplicador AOE (%)",
+                ["Mage_Lv5_Cooldown"] = "Lv5 Recarga (seg)",
+                ["Mage_Lv5_Elemental_Resistance"] = "Lv5 Resistência Elemental (%)",
+                ["Mage_Lv1_AOE_Max_Targets"] = "Ativo: Qtd. Máxima Lv1",
+                ["Mage_Lv2_AOE_Max_Targets"] = "Ativo: Qtd. Máxima Lv2",
+                ["Mage_Lv3_AOE_Max_Targets"] = "Ativo: Qtd. Máxima Lv3",
+                ["Mage_Lv4_AOE_Max_Targets"] = "Ativo: Qtd. Máxima Lv4",
+                ["Mage_Lv5_AOE_Max_Targets"] = "Ativo: Qtd. Máxima Lv5",
 
                 // ============================================
                 // Habilidades de Classe - Tanque
@@ -428,6 +451,7 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_BuffDuration"] = "Grito de Guerra: Duração do Buff (seg)",
                 ["Tanker_Taunt_EffectHeight"] = "Grito de Guerra: Altura do Efeito (m)",
                 ["Tanker_Taunt_EffectScale"] = "Grito de Guerra: Escala do Efeito",
+                ["Tanker_Taunt_ReflectPercent"] = "Grito de Guerra: Dano de Reflexo (%)",
                 ["Tanker_Passive_DamageReduction"] = "Passivo: Redução de Dano (%)",
 
                 // ============================================
@@ -442,7 +466,11 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_ShadowStrike_StealthDuration"] = "Golpe das Sombras: Duração do Furtividade (seg)",
                 ["Rogue_AttackSpeed_Bonus"] = "Passivo: Bônus de Vel. de Ataque (%)",
                 ["Rogue_Stamina_Reduction"] = "Passivo: Redução de Uso de Stamina (%)",
-                ["Rogue_ElementalResistance_Debuff"] = "Passivo: Aumento de Resistência Elemental (%)",
+                ["Rogue_Lv1_DodgeChance"] = "Lv1 Passivo: Taxa de Esquiva (%)",
+                ["Rogue_Lv2_DodgeChance"] = "Lv2 Passivo: Taxa de Esquiva (%)",
+                ["Rogue_Lv3_DodgeChance"] = "Lv3 Passivo: Taxa de Esquiva (%)",
+                ["Rogue_Lv4_DodgeChance"] = "Lv4 Passivo: Taxa de Esquiva (%)",
+                ["Rogue_Lv5_DodgeChance"] = "Lv5 Passivo: Taxa de Esquiva (%)",
 
                 // ============================================
                 // Habilidades de Classe - Paladino
@@ -456,6 +484,26 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Active_Duration"] = "Cura Sagrada: Duração (seg)",
                 ["Paladin_Active_Interval"] = "Cura Sagrada: Intervalo (seg)",
                 ["Paladin_Passive_ElementalResistanceReduction"] = "Passivo: Bônus de Resistência (%)",
+                ["Paladin_Lv2_SelfHealPercent"] = "Lv2: Auto-cura (%)",
+                ["Paladin_Lv2_AllyHealPercent"] = "Lv2: Cura de Aliados (%/tick)",
+                ["Paladin_Lv3_SelfHealPercent"] = "Lv3: Auto-cura (%)",
+                ["Paladin_Lv3_AllyHealPercent"] = "Lv3: Cura de Aliados (%/tick)",
+                ["Paladin_Lv3_HealRange"] = "Lv3: Alcance de Cura (m)",
+                ["Paladin_Lv4_SelfHealPercent"] = "Lv4: Auto-cura (%)",
+                ["Paladin_Lv4_AllyHealPercent"] = "Lv4: Cura de Aliados (%/tick)",
+                ["Paladin_Lv4_HealRange"] = "Lv4: Alcance de Cura (m)",
+                ["Paladin_Lv5_SelfHealPercent"] = "Lv5: Auto-cura (%)",
+                ["Paladin_Lv5_AllyHealPercent"] = "Lv5: Cura de Aliados (%/tick)",
+                ["Paladin_Lv5_HealRange"] = "Lv5: Alcance de Cura (m)",
+                ["Paladin_Lv5_Cooldown"] = "Lv5: Tempo de Recarga (seg)",
+                ["Paladin_Lv2_ResistanceReduction"] = "Lv2: Redução de Resistência (%)",
+                ["Paladin_Lv3_ResistanceReduction"] = "Lv3: Redução de Resistência (%)",
+                ["Paladin_Lv4_ResistanceReduction"] = "Lv4: Redução de Resistência (%)",
+                ["Paladin_Lv5_ResistanceReduction"] = "Lv5: Redução de Resistência (%)",
+                ["Paladin_Lv2_StaminaBonus"] = "Lv2: Bônus de Stamina",
+                ["Paladin_Lv3_StaminaBonus"] = "Lv3: Bônus de Stamina",
+                ["Paladin_Lv4_StaminaBonus"] = "Lv4: Bônus de Stamina",
+                ["Paladin_Lv5_StaminaBonus"] = "Lv5: Bônus de Stamina",
 
                 // ============================================
                 // Habilidades de Classe - Berserker
@@ -470,6 +518,12 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_InvincibilityDuration"] = "Desafio da Morte: Duração da Invencibilidade (seg)",
                 ["Berserker_Passive_Cooldown"] = "Desafio da Morte: Recarga (seg)",
                 ["Berserker_Passive_HealthBonus"] = "Passivo: Bônus de HP Máximo (%)",
+                ["Berserker_Lv2_CooldownReduction"] = "Lv2: Redução CD Fúria (seg)",
+                ["Berserker_Lv3_RageDamageReduction"] = "Lv3: Redução de Dano na Fúria (%)",
+                ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: Bônus Ataque Pouco HP (%)",
+                ["Berserker_Lv4_LowHpAttackThreshold"] = "Lv4: Limite Pouco HP (%)",
+                ["Berserker_Lv5_PassiveCooldownReduction"] = "Lv5: Redução CD Passiva (seg)",
+                ["Berserker_Lv5_InvincibilityBonus"] = "Lv5: Invencibilidade Extra (seg)",
 
                 // ============================================
                 // Árvore de Espada - Adição de golpe de caminho

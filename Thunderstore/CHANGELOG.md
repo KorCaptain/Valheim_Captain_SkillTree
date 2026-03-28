@@ -1,5 +1,30 @@
 # Changelog / 변경 로그
 ## Update
+# [1.2.07 - 2026-03-28
+- ✅fix1 : Performance - Fixed inventory freeze/stutter
+- ✅fix2 : Performance - Correction of stopping when opening the box (storage)
+- ✅fix3 : Correct Paladin Hill Malfunction and Change Effect
+- ✅improve1 : Revise the entire attack specialist
+-
+- ✅fix1 : 성능 - 인벤토리 멈춤 현상 수정
+- ✅fix2 : 상자(보관함) 열때 멈춤 현상 수정
+- ✅fix3 : 성기사 힐 오작동 수정 및 효과 변경 
+- ✅improve1 : 공격 전문가 전체 새롭게 수정
+
+# [1.2.03] - 2026-03-26
+- ✅new1 : Mage (Y-key) - Complete skill redesign: "Fire Rain" replaces old AOE explosion. Targets nearest enemy in camera direction (12m range), spawns 30 fireballs from upper-left sky falling in 8m radius, each with 3m AOE impact. Damage: weapon dmg × 22/24/26/28/30% per level. Cooldown 45s (all levels). Player rotates to camera direction and plays cheer emote on cast; debuff_03 VFX spawns at feet.
+-
+- ✅new1 : 메이지 (Y키) - 스킬 전면 교체: "불의 비(Fire Rain)"로 개편. 카메라 방향 12m 내 최근접 적 타겟팅, 좌측 상공에서 파이어볼 30개 낙하(반경 8m), 각 파이어볼 3m AOE 적중. 무기 공격력 × 레벨별 22/24/26/28/30%. 쿨타임 45초(전 레벨). 시전 시 캐릭터 카메라 방향 전환 + 환호 모션, 발 밑에 debuff_03 이팩트 재생.
+
+# [1.2.02] - 2026-03-25
+- ✅improve1 : Rogue - Passive changed: Elemental Resistance replaced with Evasion (Lv1:4% / Lv2:6% / Lv3:8% / Lv4:10% / Lv5:12%)
+- ✅improve2 : Tanker - Reworked passive system: HP bonus changed from flat +100 (all levels) to level-based (Lv1: none, Lv2: +35, Lv3: +55, Lv4: +75, Lv5: +100). AllResist (%) removed and replaced with Shield Block Power per level (Lv2: +5, Lv3: +10, Lv4: +15, Lv5: +20)
+- ✅improve3 : Attack Expert - Combo Finisher: Always-on +5% one-handed weapon damage; improved one-hand detection (excludes two-handed swords, axes, and mauls)
+-
+- ✅improve1 : 로그 - 패시브 변경: 속성 저항 → 회피율로 교체 (Lv1:4% / Lv2:6% / Lv3:8% / Lv4:10% / Lv5:12%),
+- ✅improve2 : 탱커 - 패시브 시스템 개편: 체력 보너스가 고정 +100(전 레벨)에서 레벨별로 변경(Lv1: 없음, Lv2: +35, Lv3: +55, Lv4: +75, Lv5: +100). 모든 저항(%) 제거, 방패 막기 방어력으로 교체(Lv2: +5, Lv3: +10, Lv4: +15, Lv5: +20)
+- ✅improve3 : 공격 전문가 - 연속 근접의 대가: 한손 무기 상시 공격력 +5%로 변경; 한손 무기 감지 개선 (양손검·양손 도끼·양손 둔기 제외)
+
 # [1.1.86] - 2026-03-24
 - ✅improve1 : Performance - Replaced fixed 1s polling in ActiveSkillHUD with adaptive 2-stage polling: completely stops when no cooldown is active (0 calls/frame), switches to 60s interval when remaining > 60s, and 1s interval when ≤ 60s — reduces UpdateSlot calls by ~87% (e.g. 540 → 68 for a 9-minute cooldown)
 - ✅improve2 : Performance - Added ActiveSkillCooldownRegistry.GetMinRemaining() for interval recalculation; SetCooldown() / RecalculateCooldown() now notify HUD via OnCooldownStarted() / OnCooldownChanged() for immediate response without wasted polling

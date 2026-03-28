@@ -392,12 +392,11 @@ namespace CaptainSkillTree.Gui
             {
                 _cooldownActive = false;
             }
-            else if (minRemaining <= 60f)
+            else
             {
                 _currentInterval = 1f;
                 _updateTimer = _currentInterval; // 즉시 갱신
             }
-            // 길어진 경우: 기존 interval 유지
         }
 
         private void Update()
@@ -454,10 +453,8 @@ namespace CaptainSkillTree.Gui
             float minRemaining = SkillTree.ActiveSkillCooldownRegistry.GetMinRemaining();
             if (minRemaining <= 0f)
                 _cooldownActive = false;          // 모든 쿨타임 종료 → Idle
-            else if (minRemaining <= 60f)
-                _currentInterval = 1f;            // 초 단위 전환
             else
-                _currentInterval = 60f;           // 분 단위 유지
+                _currentInterval = 1f;            // 쿨타임 있으면 항상 1초 간격
         }
 
         // =========================================================

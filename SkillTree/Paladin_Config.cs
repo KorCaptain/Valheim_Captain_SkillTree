@@ -102,8 +102,9 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv2_SelfHealPercent"));
 
             PaladinLv2AllyHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills", "Paladin_Lv2_AllyHealPercent", 2.5f,
+                "Paladin Job Skills", "Paladin_Lv2_AllyHealPercent", 2.2f,
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv2_AllyHealPercent"));
+            if (PaladinLv2AllyHealPercent.Value == 2.5f) PaladinLv2AllyHealPercent.Value = 2.2f;
 
             PaladinLv2StaminaBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills", "Paladin_Lv2_StaminaBonus", 10f,
@@ -119,8 +120,9 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv3_SelfHealPercent"));
 
             PaladinLv3AllyHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills", "Paladin_Lv3_AllyHealPercent", 3f,
+                "Paladin Job Skills", "Paladin_Lv3_AllyHealPercent", 2.5f,
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv3_AllyHealPercent"));
+            if (PaladinLv3AllyHealPercent.Value == 3f) PaladinLv3AllyHealPercent.Value = 2.5f;
 
             PaladinLv3HealRange = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills", "Paladin_Lv3_HealRange", 6f,
@@ -140,8 +142,9 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv4_SelfHealPercent"));
 
             PaladinLv4AllyHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills", "Paladin_Lv4_AllyHealPercent", 3.5f,
+                "Paladin Job Skills", "Paladin_Lv4_AllyHealPercent", 2.7f,
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv4_AllyHealPercent"));
+            if (PaladinLv4AllyHealPercent.Value == 3.5f) PaladinLv4AllyHealPercent.Value = 2.7f;
 
             PaladinLv4HealRange = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills", "Paladin_Lv4_HealRange", 7f,
@@ -163,8 +166,9 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv5_SelfHealPercent"));
 
             PaladinLv5AllyHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills", "Paladin_Lv5_AllyHealPercent", 4f,
+                "Paladin Job Skills", "Paladin_Lv5_AllyHealPercent", 3.0f,
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv5_AllyHealPercent"));
+            if (PaladinLv5AllyHealPercent.Value == 4f) PaladinLv5AllyHealPercent.Value = 3.0f;
 
             PaladinLv5HealRange = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills", "Paladin_Lv5_HealRange", 8f,
@@ -254,10 +258,10 @@ namespace CaptainSkillTree.SkillTree
         public static float GetAllyHealPercent(int level)
         {
             return level switch {
-                2 => PaladinLv2AllyHealPercent?.Value ?? 2.5f,
-                3 => PaladinLv3AllyHealPercent?.Value ?? 3f,
-                4 => PaladinLv4AllyHealPercent?.Value ?? 3.5f,
-                _ => level >= 5 ? (PaladinLv5AllyHealPercent?.Value ?? 4f)
+                2 => PaladinLv2AllyHealPercent?.Value ?? 2.2f,
+                3 => PaladinLv3AllyHealPercent?.Value ?? 2.5f,
+                4 => PaladinLv4AllyHealPercent?.Value ?? 2.7f,
+                _ => level >= 5 ? (PaladinLv5AllyHealPercent?.Value ?? 3.0f)
                                  : (PaladinHealAllyPercentOverTime?.Value ?? 2f)
             };
         }
@@ -309,7 +313,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 return targetLevel switch {
-                    2 => $"{L.Get("item_trophy_troll")} x1 + {L.Get("item_trophy_theelder")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(2)}",
+                    2 => $"{L.Get("item_trophy_troll")} x1 + {L.Get("item_trophy_theelder")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(2)}\n+ {L.Get("paladin_lv2_skill_required")}",
                     3 => $"{L.Get("item_trophy_abomination")} x1 + {L.Get("item_trophy_bonemass")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(3)}",
                     4 => $"{L.Get("item_trophy_bonemass")} x1 + {L.Get("item_trophy_dragonqueen")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(4)}",
                     5 => $"{L.Get("item_trophy_goblinking")} x1 + {L.Get("item_trophy_seekerqueen")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(5)}",

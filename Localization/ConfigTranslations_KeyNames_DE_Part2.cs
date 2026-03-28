@@ -412,9 +412,32 @@ namespace CaptainSkillTree.Localization
                 ["Mage_AOE_Range"] = "Aktiv: Reichweite (m)",
                 ["Mage_AOE_Max_Targets"] = "Aktiv: Max. Zielanzahl",
                 ["Mage_Eitr_Cost"] = "Aktiv: Eitr-Kosten",
+                ["Mage_Fire_Rain_Radius"] = "Fallradius (m)",
+                ["Mage_Fire_Rain_Impact_Radius"] = "Aufprallschadensradius (m)",
+                ["Mage_Fire_Rain_Projectile_Count"] = "Projektile pro Schusssalve",
                 ["Mage_Damage_Multiplier"] = "Aktiv: Schadensbonus (%)",
                 ["Mage_Cooldown"] = "Aktiv: Abklingzeit (Sek)",
                 ["Mage_Elemental_Resistance"] = "Passiv: Elementarwiderstand (%)",
+                ["Mage_Lv1_Damage_Multiplier"] = "Lv1 AOE-Schadensbonus (%)",
+                ["Mage_Lv1_Cooldown"] = "Lv1 Abklingzeit (Sek)",
+                ["Mage_Lv1_Elemental_Resistance"] = "Lv1 Elementarwiderstand (%)",
+                ["Mage_Lv2_Damage_Multiplier"] = "Lv2 AOE-Schadensbonus (%)",
+                ["Mage_Lv2_Cooldown"] = "Lv2 Abklingzeit (Sek)",
+                ["Mage_Lv2_Elemental_Resistance"] = "Lv2 Elementarwiderstand (%)",
+                ["Mage_Lv3_Damage_Multiplier"] = "Lv3 AOE-Schadensbonus (%)",
+                ["Mage_Lv3_Cooldown"] = "Lv3 Abklingzeit (Sek)",
+                ["Mage_Lv3_Elemental_Resistance"] = "Lv3 Elementarwiderstand (%)",
+                ["Mage_Lv4_Damage_Multiplier"] = "Lv4 AOE-Schadensbonus (%)",
+                ["Mage_Lv4_Cooldown"] = "Lv4 Abklingzeit (Sek)",
+                ["Mage_Lv4_Elemental_Resistance"] = "Lv4 Elementarwiderstand (%)",
+                ["Mage_Lv5_Damage_Multiplier"] = "Lv5 AOE-Schadensbonus (%)",
+                ["Mage_Lv5_Cooldown"] = "Lv5 Abklingzeit (Sek)",
+                ["Mage_Lv5_Elemental_Resistance"] = "Lv5 Elementarwiderstand (%)",
+                ["Mage_Lv1_AOE_Max_Targets"] = "Aktiv: Max. Zielanzahl Lv1",
+                ["Mage_Lv2_AOE_Max_Targets"] = "Aktiv: Max. Zielanzahl Lv2",
+                ["Mage_Lv3_AOE_Max_Targets"] = "Aktiv: Max. Zielanzahl Lv3",
+                ["Mage_Lv4_AOE_Max_Targets"] = "Aktiv: Max. Zielanzahl Lv4",
+                ["Mage_Lv5_AOE_Max_Targets"] = "Aktiv: Max. Zielanzahl Lv5",
 
                 // ============================================
                 // Klassenfähigkeiten - Verteidiger
@@ -428,6 +451,7 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_BuffDuration"] = "Kriegsschrei: Buff-Dauer (Sek)",
                 ["Tanker_Taunt_EffectHeight"] = "Kriegsschrei: Effekthöhe (m)",
                 ["Tanker_Taunt_EffectScale"] = "Kriegsschrei: Effektskalierung",
+                ["Tanker_Taunt_ReflectPercent"] = "Kriegsschrei: Reflexschaden (%)",
                 ["Tanker_Passive_DamageReduction"] = "Passiv: Schadensreduzierung (%)",
 
                 // ============================================
@@ -442,7 +466,11 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_ShadowStrike_StealthDuration"] = "Schattenschlag: Tarndauer (Sek)",
                 ["Rogue_AttackSpeed_Bonus"] = "Passiv: Angriffsgeschwindigkeitsbonus (%)",
                 ["Rogue_Stamina_Reduction"] = "Passiv: Ausdauerverbrauch-Reduzierung (%)",
-                ["Rogue_ElementalResistance_Debuff"] = "Passiv: Elementarwiderstand-Bonus (%)",
+                ["Rogue_Lv1_DodgeChance"] = "Lv1 Passiv: Ausweichrate (%)",
+                ["Rogue_Lv2_DodgeChance"] = "Lv2 Passiv: Ausweichrate (%)",
+                ["Rogue_Lv3_DodgeChance"] = "Lv3 Passiv: Ausweichrate (%)",
+                ["Rogue_Lv4_DodgeChance"] = "Lv4 Passiv: Ausweichrate (%)",
+                ["Rogue_Lv5_DodgeChance"] = "Lv5 Passiv: Ausweichrate (%)",
 
                 // ============================================
                 // Klassenfähigkeiten - Paladin
@@ -456,6 +484,26 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Active_Duration"] = "Heilige Heilung: Dauer (Sek)",
                 ["Paladin_Active_Interval"] = "Heilige Heilung: Intervall (Sek)",
                 ["Paladin_Passive_ElementalResistanceReduction"] = "Passiv: Widerstandsbonus (%)",
+                ["Paladin_Lv2_SelfHealPercent"] = "Lv2: Selbstheilung (%)",
+                ["Paladin_Lv2_AllyHealPercent"] = "Lv2: Verbündeten-HoT (%/Tick)",
+                ["Paladin_Lv3_SelfHealPercent"] = "Lv3: Selbstheilung (%)",
+                ["Paladin_Lv3_AllyHealPercent"] = "Lv3: Verbündeten-HoT (%/Tick)",
+                ["Paladin_Lv3_HealRange"] = "Lv3: Heilungsreichweite (m)",
+                ["Paladin_Lv4_SelfHealPercent"] = "Lv4: Selbstheilung (%)",
+                ["Paladin_Lv4_AllyHealPercent"] = "Lv4: Verbündeten-HoT (%/Tick)",
+                ["Paladin_Lv4_HealRange"] = "Lv4: Heilungsreichweite (m)",
+                ["Paladin_Lv5_SelfHealPercent"] = "Lv5: Selbstheilung (%)",
+                ["Paladin_Lv5_AllyHealPercent"] = "Lv5: Verbündeten-HoT (%/Tick)",
+                ["Paladin_Lv5_HealRange"] = "Lv5: Heilungsreichweite (m)",
+                ["Paladin_Lv5_Cooldown"] = "Lv5: Abklingzeit (Sek)",
+                ["Paladin_Lv2_ResistanceReduction"] = "Lv2: Resistenzreduzierung (%)",
+                ["Paladin_Lv3_ResistanceReduction"] = "Lv3: Resistenzreduzierung (%)",
+                ["Paladin_Lv4_ResistanceReduction"] = "Lv4: Resistenzreduzierung (%)",
+                ["Paladin_Lv5_ResistanceReduction"] = "Lv5: Resistenzreduzierung (%)",
+                ["Paladin_Lv2_StaminaBonus"] = "Lv2: Ausdauerbonus",
+                ["Paladin_Lv3_StaminaBonus"] = "Lv3: Ausdauerbonus",
+                ["Paladin_Lv4_StaminaBonus"] = "Lv4: Ausdauerbonus",
+                ["Paladin_Lv5_StaminaBonus"] = "Lv5: Ausdauerbonus",
 
                 // ============================================
                 // Klassenfähigkeiten - Berserker
@@ -470,6 +518,12 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_InvincibilityDuration"] = "Todesherausforderung: Unverwundbarkeits-Dauer (Sek)",
                 ["Berserker_Passive_Cooldown"] = "Todesherausforderung: Abklingzeit (Sek)",
                 ["Berserker_Passive_HealthBonus"] = "Passiv: Max. LP-Bonus (%)",
+                ["Berserker_Lv2_CooldownReduction"] = "Lv2: Wut CD-Reduktion (sek)",
+                ["Berserker_Lv3_RageDamageReduction"] = "Lv3: Wutschadenreduktion (%)",
+                ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: Niedriger-HP-Angriff (%)",
+                ["Berserker_Lv4_LowHpAttackThreshold"] = "Lv4: Niedriger-HP-Schwelle (%)",
+                ["Berserker_Lv5_PassiveCooldownReduction"] = "Lv5: Passiv-CD-Reduktion (sek)",
+                ["Berserker_Lv5_InvincibilityBonus"] = "Lv5: Extra Unverwundbarkeit (sek)",
 
                 // ============================================
                 // Schwert-Skilltree - Pfadangriff-Erweiterung

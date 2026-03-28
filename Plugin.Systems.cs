@@ -294,6 +294,36 @@ namespace CaptainSkillTree
                     player.Message(MessageHud.MessageType.Center, L.Get("shockwave_ready"));
                 shockwaveNotifyCoroutines.Remove(player);
             }
+
+            /// <summary>
+            /// 플레이어 접속 해제/사망 시 Damage_Patch 내 Dictionary 정리
+            /// </summary>
+            public static void CleanupPlayerData(Player player)
+            {
+                if (player == null) return;
+                stompCooldowns.Remove(player);
+                shockwaveCooldowns.Remove(player);
+                stompPreHitHP.Remove(player);
+                shockwavePreHitHP.Remove(player);
+                if (stompNotifyCoroutines.TryGetValue(player, out var sc) && sc != null)
+                    try { player.StopCoroutine(sc); } catch { }
+                stompNotifyCoroutines.Remove(player);
+                if (shockwaveNotifyCoroutines.TryGetValue(player, out var swc) && swc != null)
+                    try { player.StopCoroutine(swc); } catch { }
+                shockwaveNotifyCoroutines.Remove(player);
+            }
+        }
+    }
+
+    public partial class Plugin
+    {
+        [HarmonyPatch(typeof(Player), "OnDestroy")]
+        public static class Plugin_Player_OnDestroy_DamagePatch_Cleanup
+        {
+            static void Postfix(Player __instance)
+            {
+                try { NerveEnhancementSystem.Damage_Patch.CleanupPlayerData(__instance); } catch { }
+            }
         }
     }
 

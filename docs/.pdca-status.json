@@ -1,0 +1,17 @@
+{
+  "project": {
+    "name": "CaptainSkillTree",
+    "version": "1.2.08",
+    "lastUpdated": "2026-03-26"
+  },
+  "features": {
+    "SkillTree-PerformanceFix": {
+      "phase": "archived",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "startedAt": "2026-03-26T00:00:00Z",
+      "archivedAt": "2026-03-26T00:00:00Z",
+      "archivedTo": "docs/archive/2026-03/SkillTree/"
+    }
+  }
+}

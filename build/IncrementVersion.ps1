@@ -24,18 +24,31 @@ try {
     $currentVersion = $versionNode.Version
     Write-Host "[VERSION] Current: $currentVersion" -ForegroundColor Yellow
 
-    # 2. Parse Semantic Versioning (0.1.000)
+    # 2. Parse Semantic Versioning (major.minor.patch) - patch is zero-padded 3 digits
     if ($currentVersion -match '^(\d+)\.(\d+)\.(\d+)$') {
         $major = [int]$matches[1]
         $minor = [int]$matches[2]
         $patch = [int]$matches[3] + 1
-        $newVersion = "$major.$minor.$patch"
+
+        # PATCH rollover: x.y.999 -> x.(y+1).001
+        if ($patch -ge 1000) {
+            $minor = $minor + 1
+            $patch = 1
+        }
+
+        $patchStr = $patch.ToString("D3")
+        $newVersion = "$major.$minor.$patchStr"
         $newAssemblyVersion = "$major.$minor.$patch.0"
+
+        # Changelog version: every 10 builds = 1 changelog group (001-010 -> 01, 011-020 -> 02, ...)
+        $changelogPatchNum = [int][Math]::Ceiling($patch / 10)
+        $changelogPatchStr = $changelogPatchNum.ToString("D2")
+        $changelogVersion = "$major.$minor.$changelogPatchStr"
     } else {
-        throw "Version format error: $currentVersion (expected: 0.1.000)"
+        throw "Version format error: $currentVersion (expected: 1.2.001)"
     }
 
-    Write-Host "[VERSION] New: $newVersion" -ForegroundColor Green
+    Write-Host "[VERSION] New: $newVersion (changelog: $changelogVersion)" -ForegroundColor Green
 
     # 3. Update Plugin.cs
     $pluginPath = Join-Path $ProjectDir "Plugin.cs"
@@ -77,7 +90,7 @@ try {
     $manifest = @"
 {
   "name": "CaptainSkillTree",
-  "version_number": "$newVersion",
+  "version_number": "$changelogVersion",
   "website_url": "https://discord.gg/W26PTxYhug",
   "description": "Valheim Skill Tree Expansion - EpicMMOSystem Expert System",
   "dependencies": [
@@ -96,7 +109,7 @@ try {
     $csproj.Save($ProjectFile)
     Write-Host "[OK] .csproj version saved" -ForegroundColor Green
 
-    Write-Host "[SUCCESS] Version updated: $currentVersion -> $newVersion" -ForegroundColor Magenta
+    Write-Host "[SUCCESS] Version updated: $currentVersion -> $newVersion (manifest: $changelogVersion)" -ForegroundColor Magenta
     exit 0
 
 } catch {

@@ -299,43 +299,66 @@ namespace CaptainSkillTree.Localization
                 "Tanker Passiv: Reduziert kontinuierlich den eingehenden Schaden.\n" +
                 "Empfehlung: 10-20%",
 
-                ["Tanker_Hp_Bonus"] =
-                "【Tanker-Basis-HP】\n" +
-                "Passiver HP-Bonus des Tankers.\n" +
-                "Standard: 100",
-
-                ["Tanker_Lv2_AllResist"] =
-                "【Tanker Lv2 Gesamt-Resistenz (%)】\n" +
-                "Passiver Widerstand gegen alle Schadensarten (Lv2+).\n" +
-                "Standard: 5%",
-
-                ["Tanker_Lv3_AllResist"] =
-                "【Tanker Lv3 Gesamt-Resistenz (%)】\n" +
-                "Standard: 8%",
-
-                ["Tanker_Lv4_AllResist"] =
-                "【Tanker Lv4 Gesamt-Resistenz (%)】\n" +
-                "Standard: 12%",
-
-                ["Tanker_Lv5_AllResist"] =
-                "【Tanker Lv5 Gesamt-Resistenz (%)】\n" +
-                "Standard: 15%",
-
+                // === Lv1 ===
                 ["Tanker_ReflectDuration_Lv1"] =
                 "【Tanker Reflektionsdauer Lv1 (Sek)】\n" +
                 "Standard: 10 Sek",
+
+                // === Lv2 ===
+                ["Tanker_Hp_Bonus_Lv2"] =
+                "【Tanker Lv2 LP-Bonus】\n" +
+                "Passiver LP-Bonus des Tankers auf Lv2.\n" +
+                "Standard: 35",
+
+                ["Tanker_Lv2_BlockPower"] =
+                "【Tanker Lv2 Blockstärke】\n" +
+                "Passive Blockstärke des Tankers auf Lv2.\n" +
+                "Standard: 5",
 
                 ["Tanker_ReflectDuration_Lv2"] =
                 "【Tanker Reflektionsdauer Lv2 (Sek)】\n" +
                 "Standard: 12 Sek",
 
+                // === Lv3 ===
+                ["Tanker_Hp_Bonus_Lv3"] =
+                "【Tanker Lv3 LP-Bonus】\n" +
+                "Passiver LP-Bonus des Tankers auf Lv3.\n" +
+                "Standard: 50",
+
+                ["Tanker_Lv3_BlockPower"] =
+                "【Tanker Lv3 Blockstärke】\n" +
+                "Passive Blockstärke des Tankers auf Lv3.\n" +
+                "Standard: 8",
+
                 ["Tanker_ReflectDuration_Lv3"] =
                 "【Tanker Reflektionsdauer Lv3 (Sek)】\n" +
                 "Standard: 14 Sek",
 
+                // === Lv4 ===
+                ["Tanker_Hp_Bonus_Lv4"] =
+                "【Tanker Lv4 LP-Bonus】\n" +
+                "Passiver LP-Bonus des Tankers auf Lv4.\n" +
+                "Standard: 70",
+
+                ["Tanker_Lv4_BlockPower"] =
+                "【Tanker Lv4 Blockstärke】\n" +
+                "Passive Blockstärke des Tankers auf Lv4.\n" +
+                "Standard: 12",
+
                 ["Tanker_ReflectDuration_Lv4"] =
                 "【Tanker Reflektionsdauer Lv4 (Sek)】\n" +
                 "Standard: 16 Sek",
+
+                // === Lv5 ===
+                ["Tanker_Hp_Bonus_Lv5"] =
+                "【Tanker Lv5 LP-Bonus】\n" +
+                "Passiver LP-Bonus des Tankers auf Lv5.\n" +
+                "Standard: 100",
+
+                ["Tanker_Lv5_BlockPower"] =
+                "【Tanker Lv5 Blockstärke】\n" +
+                "Passive Blockstärke des Tankers auf Lv5.\n" +
+                "Standard: 15",
 
                 ["Tanker_ReflectDuration_Lv5"] =
                 "【Tanker Reflektionsdauer Lv5 (Sek)】\n" +
@@ -392,10 +415,14 @@ namespace CaptainSkillTree.Localization
                 "Schurke Passiv: Reduziert den Ausdauerverbrauch bei Angriffen.\n" +
                 "Empfehlung: 10-20%",
 
-                ["Rogue_ElementalResistance_Debuff"] =
-                "【Elementarresistenz-Erhöhung (%)】\n" +
-                "Schurke Passiv: Erhöht die Resistenz gegen elementaren Schaden.\n" +
-                "Empfehlung: 8-15%",
+                ["Rogue_Lv1_DodgeChance"] =
+                "【Lv1 Ausweichrate (%)】\n" +
+                "Schurke Passiv: Erhöht die Ausweichrate. Wird mit Fähigkeitenbaum kumuliert.\n" +
+                "Empfehlung: 3-6%",
+                ["Rogue_Lv2_DodgeChance"] = "【Lv2 Ausweichrate (%)】\nEmpfehlung: 5-8%",
+                ["Rogue_Lv3_DodgeChance"] = "【Lv3 Ausweichrate (%)】\nEmpfehlung: 7-10%",
+                ["Rogue_Lv4_DodgeChance"] = "【Lv4 Ausweichrate (%)】\nEmpfehlung: 9-12%",
+                ["Rogue_Lv5_DodgeChance"] = "【Lv5 Ausweichrate (%)】\nEmpfehlung: 11-15%",
 
                 // ========================================
                 // Paladin-Fähigkeiten (Paladin Job)
@@ -562,46 +589,61 @@ namespace CaptainSkillTree.Localization
                 "Verbrauchte Ausdauer beim Aktivieren des Buffs.\n" +
                 "Standard: 20",
 
+                // === Producer Lv1 ===
                 ["Producer_FarmGrid_Lv1"] = "【Anbaufeld-Größe Lv1】\nZusätzliche Felder im Anbauraster bei Lv1.\nStandard: 2",
+
+                // === Producer Lv2 ===
                 ["Producer_FarmGrid_Lv2"] = "【Anbaufeld-Größe Lv2】\nZusätzliche Felder im Anbauraster bei Lv2.\nStandard: 2",
-                ["Producer_FarmGrid_Lv3"] = "【Anbaufeld-Größe Lv3】\nZusätzliche Felder im Anbauraster bei Lv3.\nStandard: 4",
-                ["Producer_FarmGrid_Lv4"] = "【Anbaufeld-Größe Lv4】\nZusätzliche Felder im Anbauraster bei Lv4.\nStandard: 6",
-                ["Producer_FarmGrid_Lv5"] = "【Anbaufeld-Größe Lv5】\nZusätzliche Felder im Anbauraster bei Lv5.\nStandard: 8",
-
                 ["Producer_Durability_Lv2"] = "【Haltbarkeitsbonus Lv2 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv2.\nStandard: 10%",
-                ["Producer_Durability_Lv3"] = "【Haltbarkeitsbonus Lv3 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv3.\nStandard: 15%",
-                ["Producer_Durability_Lv4"] = "【Haltbarkeitsbonus Lv4 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv4.\nStandard: 20%",
-                ["Producer_Durability_Lv5"] = "【Haltbarkeitsbonus Lv5 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv5.\nStandard: 30%",
-
                 ["Producer_MaterialReduction_Lv2"] = "【Materialeinsparung Lv2 (%)】\nEingesparte Materialien pro Herstellung bei Lv2.\nStandard: 10%",
+
+                // === Producer Lv3 ===
+                ["Producer_FarmGrid_Lv3"] = "【Anbaufeld-Größe Lv3】\nZusätzliche Felder im Anbauraster bei Lv3.\nStandard: 4",
+                ["Producer_Durability_Lv3"] = "【Haltbarkeitsbonus Lv3 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv3.\nStandard: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【Materialeinsparung Lv3 (%)】\nEingesparte Materialien pro Herstellung bei Lv3.\nStandard: 15%",
-                ["Producer_MaterialReduction_Lv4"] = "【Materialeinsparung Lv4 (%)】\nEingesparte Materialien pro Herstellung bei Lv4.\nStandard: 20%",
-                ["Producer_MaterialReduction_Lv5"] = "【Materialeinsparung Lv5 (%)】\nEingesparte Materialien pro Herstellung bei Lv5.\nStandard: 30%",
-
                 ["Producer_EnchantChance_Lv3"] = "【Verzauberungschance Lv3 (%)】\nChance auf Verzauberung bei Herstellung (Lv3).\nStandard: 25%",
-                ["Producer_EnchantChance_Lv4"] = "【Verzauberungschance Lv4 (%)】\nChance auf Verzauberung bei Herstellung (Lv4).\nStandard: 30%",
-                ["Producer_EnchantChance_Lv5"] = "【Verzauberungschance Lv5 (%)】\nChance auf Verzauberung bei Herstellung (Lv5).\nStandard: 35%",
-
                 ["Producer_EnchantWeaponDmgMin_Lv3"] = "【Waffe Verzauberung Min-Schaden Lv3 (%)】\nMin. Waffenschaden-Bonus durch Verzauberung (Lv3).\nStandard: 5%",
                 ["Producer_EnchantWeaponDmgMax_Lv3"] = "【Waffe Verzauberung Max-Schaden Lv3 (%)】\nMax. Waffenschaden-Bonus durch Verzauberung (Lv3).\nStandard: 5%",
-                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【Waffe Verzauberung Min-Schaden Lv4 (%)】\nMin. Waffenschaden-Bonus durch Verzauberung (Lv4).\nStandard: 7%",
-                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【Waffe Verzauberung Max-Schaden Lv4 (%)】\nMax. Waffenschaden-Bonus durch Verzauberung (Lv4).\nStandard: 9%",
-                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【Waffe Verzauberung Min-Schaden Lv5 (%)】\nMin. Waffenschaden-Bonus durch Verzauberung (Lv5).\nStandard: 10%",
-                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【Waffe Verzauberung Max-Schaden Lv5 (%)】\nMax. Waffenschaden-Bonus durch Verzauberung (Lv5).\nStandard: 12%",
-
                 ["Producer_EnchantArmorMin_Lv3"] = "【Rüstung Verzauberung Min-Bonus Lv3 (%)】\nMin. Rüstungsbonus durch Verzauberung (Lv3).\nStandard: 5%",
                 ["Producer_EnchantArmorMax_Lv3"] = "【Rüstung Verzauberung Max-Bonus Lv3 (%)】\nMax. Rüstungsbonus durch Verzauberung (Lv3).\nStandard: 5%",
-                ["Producer_EnchantArmorMin_Lv4"] = "【Rüstung Verzauberung Min-Bonus Lv4 (%)】\nMin. Rüstungsbonus durch Verzauberung (Lv4).\nStandard: 7%",
-                ["Producer_EnchantArmorMax_Lv4"] = "【Rüstung Verzauberung Max-Bonus Lv4 (%)】\nMax. Rüstungsbonus durch Verzauberung (Lv4).\nStandard: 9%",
-                ["Producer_EnchantArmorMin_Lv5"] = "【Rüstung Verzauberung Min-Bonus Lv5 (%)】\nMin. Rüstungsbonus durch Verzauberung (Lv5).\nStandard: 10%",
-                ["Producer_EnchantArmorMax_Lv5"] = "【Rüstung Verzauberung Max-Bonus Lv5 (%)】\nMax. Rüstungsbonus durch Verzauberung (Lv5).\nStandard: 12%",
-
                 ["Producer_EnchantHpMin_Lv3"] = "【LP Verzauberung Min-Bonus Lv3 (%)】\nMin. max. LP-Bonus durch Verzauberung (Lv3).\nStandard: 2%",
                 ["Producer_EnchantHpMax_Lv3"] = "【LP Verzauberung Max-Bonus Lv3 (%)】\nMax. max. LP-Bonus durch Verzauberung (Lv3).\nStandard: 2%",
+                ["Producer_EnchantWeaponSpdMin_Lv3"] = "【Angriffsgeschwindigkeit Min-Bonus Lv3 (%)】\nMin. Angriffsgeschwindigkeitsbonus durch Verzauberung (Lv3).\nStandard: 3%",
+                ["Producer_EnchantWeaponSpdMax_Lv3"] = "【Angriffsgeschwindigkeit Max-Bonus Lv3 (%)】\nMax. Angriffsgeschwindigkeitsbonus durch Verzauberung (Lv3).\nStandard: 5%",
+                ["Producer_EnchantStaminaMin_Lv3"] = "【Ausdauer Verzauberung Min-Bonus Lv3 (%)】\nMin. max. Ausdauerbonus durch Verzauberung (Lv3).\nStandard: 3%",
+                ["Producer_EnchantStaminaMax_Lv3"] = "【Ausdauer Verzauberung Max-Bonus Lv3 (%)】\nMax. max. Ausdauerbonus durch Verzauberung (Lv3).\nStandard: 5%",
+
+                // === Producer Lv4 ===
+                ["Producer_FarmGrid_Lv4"] = "【Anbaufeld-Größe Lv4】\nZusätzliche Felder im Anbauraster bei Lv4.\nStandard: 6",
+                ["Producer_Durability_Lv4"] = "【Haltbarkeitsbonus Lv4 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv4.\nStandard: 20%",
+                ["Producer_MaterialReduction_Lv4"] = "【Materialeinsparung Lv4 (%)】\nEingesparte Materialien pro Herstellung bei Lv4.\nStandard: 20%",
+                ["Producer_EnchantChance_Lv4"] = "【Verzauberungschance Lv4 (%)】\nChance auf Verzauberung bei Herstellung (Lv4).\nStandard: 30%",
+                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【Waffe Verzauberung Min-Schaden Lv4 (%)】\nMin. Waffenschaden-Bonus durch Verzauberung (Lv4).\nStandard: 7%",
+                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【Waffe Verzauberung Max-Schaden Lv4 (%)】\nMax. Waffenschaden-Bonus durch Verzauberung (Lv4).\nStandard: 9%",
+                ["Producer_EnchantArmorMin_Lv4"] = "【Rüstung Verzauberung Min-Bonus Lv4 (%)】\nMin. Rüstungsbonus durch Verzauberung (Lv4).\nStandard: 7%",
+                ["Producer_EnchantArmorMax_Lv4"] = "【Rüstung Verzauberung Max-Bonus Lv4 (%)】\nMax. Rüstungsbonus durch Verzauberung (Lv4).\nStandard: 9%",
                 ["Producer_EnchantHpMin_Lv4"] = "【LP Verzauberung Min-Bonus Lv4 (%)】\nMin. max. LP-Bonus durch Verzauberung (Lv4).\nStandard: 4%",
                 ["Producer_EnchantHpMax_Lv4"] = "【LP Verzauberung Max-Bonus Lv4 (%)】\nMax. max. LP-Bonus durch Verzauberung (Lv4).\nStandard: 5%",
+                ["Producer_EnchantWeaponSpdMin_Lv4"] = "【Angriffsgeschwindigkeit Min-Bonus Lv4 (%)】\nMin. Angriffsgeschwindigkeitsbonus durch Verzauberung (Lv4).\nStandard: 5%",
+                ["Producer_EnchantWeaponSpdMax_Lv4"] = "【Angriffsgeschwindigkeit Max-Bonus Lv4 (%)】\nMax. Angriffsgeschwindigkeitsbonus durch Verzauberung (Lv4).\nStandard: 8%",
+                ["Producer_EnchantStaminaMin_Lv4"] = "【Ausdauer Verzauberung Min-Bonus Lv4 (%)】\nMin. max. Ausdauerbonus durch Verzauberung (Lv4).\nStandard: 5%",
+                ["Producer_EnchantStaminaMax_Lv4"] = "【Ausdauer Verzauberung Max-Bonus Lv4 (%)】\nMax. max. Ausdauerbonus durch Verzauberung (Lv4).\nStandard: 8%",
+
+                // === Producer Lv5 ===
+                ["Producer_FarmGrid_Lv5"] = "【Anbaufeld-Größe Lv5】\nZusätzliche Felder im Anbauraster bei Lv5.\nStandard: 8",
+                ["Producer_Durability_Lv5"] = "【Haltbarkeitsbonus Lv5 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv5.\nStandard: 30%",
+                ["Producer_MaterialReduction_Lv5"] = "【Materialeinsparung Lv5 (%)】\nEingesparte Materialien pro Herstellung bei Lv5.\nStandard: 30%",
+                ["Producer_EnchantChance_Lv5"] = "【Verzauberungschance Lv5 (%)】\nChance auf Verzauberung bei Herstellung (Lv5).\nStandard: 35%",
+                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【Waffe Verzauberung Min-Schaden Lv5 (%)】\nMin. Waffenschaden-Bonus durch Verzauberung (Lv5).\nStandard: 10%",
+                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【Waffe Verzauberung Max-Schaden Lv5 (%)】\nMax. Waffenschaden-Bonus durch Verzauberung (Lv5).\nStandard: 12%",
+                ["Producer_EnchantArmorMin_Lv5"] = "【Rüstung Verzauberung Min-Bonus Lv5 (%)】\nMin. Rüstungsbonus durch Verzauberung (Lv5).\nStandard: 10%",
+                ["Producer_EnchantArmorMax_Lv5"] = "【Rüstung Verzauberung Max-Bonus Lv5 (%)】\nMax. Rüstungsbonus durch Verzauberung (Lv5).\nStandard: 12%",
                 ["Producer_EnchantHpMin_Lv5"] = "【LP Verzauberung Min-Bonus Lv5 (%)】\nMin. max. LP-Bonus durch Verzauberung (Lv5).\nStandard: 6%",
                 ["Producer_EnchantHpMax_Lv5"] = "【LP Verzauberung Max-Bonus Lv5 (%)】\nMax. max. LP-Bonus durch Verzauberung (Lv5).\nStandard: 8%",
+                ["Producer_EnchantWeaponSpdMin_Lv5"] = "【Angriffsgeschwindigkeit Min-Bonus Lv5 (%)】\nMin. Angriffsgeschwindigkeitsbonus durch Verzauberung (Lv5).\nStandard: 8%",
+                ["Producer_EnchantWeaponSpdMax_Lv5"] = "【Angriffsgeschwindigkeit Max-Bonus Lv5 (%)】\nMax. Angriffsgeschwindigkeitsbonus durch Verzauberung (Lv5).\nStandard: 12%",
+                ["Producer_EnchantStaminaMin_Lv5"] = "【Ausdauer Verzauberung Min-Bonus Lv5 (%)】\nMin. max. Ausdauerbonus durch Verzauberung (Lv5).\nStandard: 8%",
+                ["Producer_EnchantStaminaMax_Lv5"] = "【Ausdauer Verzauberung Max-Bonus Lv5 (%)】\nMax. max. Ausdauerbonus durch Verzauberung (Lv5).\nStandard: 12%",
 
                 ["Job_Lv1_Cost"] = "【Job Lv1 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv1.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 1000",
                 ["Job_Lv2_Cost"] = "【Job Lv2 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv2.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 2000",

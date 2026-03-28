@@ -260,16 +260,15 @@ namespace CaptainSkillTree.SkillTree
             DrawFloatingText(player, "🛡️ " + L.Get("guardian_heart_activated") + $" {Mathf.RoundToInt(damage)}", new Color(0.2f, 0.8f, 1f, 1f));
             Plugin.Log.LogInfo($"[방패돌진] 주 타겟 적중: {enemy.name}, 막기력 {blockPower:F0} x {Mace_Config.ShieldChargeDamagePercentValue}% = {damage:F0}");
 
-            // AoE 6m 범위 데미지 (주 타겟 제외)
+            // AoE 6m 범위 데미지 (주 타겟 제외, ToList 제거 - 직접 순회)
             float aoeDamage = damage * 0.5f;
-            var aoeTargets = Character.GetAllCharacters()
-                .Where(c => c != null && !c.IsDead() && c != player && c != enemy &&
-                            JobSkillsUtility.IsMonsterFaction(c.GetFaction()) &&
-                            Vector3.Distance(c.transform.position, hitPoint) < 6f)
-                .ToList();
-
-            foreach (var aoeTarget in aoeTargets)
+            int aoeCount = 0;
+            foreach (var aoeTarget in Character.GetAllCharacters())
             {
+                if (aoeTarget == null || aoeTarget.IsDead() || aoeTarget == player || aoeTarget == enemy) continue;
+                if (!JobSkillsUtility.IsMonsterFaction(aoeTarget.GetFaction())) continue;
+                if (Vector3.Distance(aoeTarget.transform.position, hitPoint) >= 6f) continue;
+                aoeCount++;
                 try
                 {
                     var aoeHit = new HitData();
@@ -294,18 +293,17 @@ namespace CaptainSkillTree.SkillTree
             SimpleVFX.Play("flash_star_ellow_purple", hitPoint, 3f);
             VFXManager.PlayVFXMultiplayer("sfx_metal_shield_blocked", "", hitPoint, Quaternion.identity, 2f);
 
-            if (aoeTargets.Count > 0)
-                Plugin.Log.LogInfo($"[방패돌진 AoE] 6m 범위 {aoeTargets.Count}마리 적중, AoE 데미지: {aoeDamage:F0}");
+            if (aoeCount > 0)
+                Plugin.Log.LogInfo($"[방패돌진 AoE] 6m 범위 {aoeCount}마리 적중, AoE 데미지: {aoeDamage:F0}");
 
-            // 도발 - 6m 내 모든 몬스터 (주 타겟 포함)
-            var tauntTargets = Character.GetAllCharacters()
-                .Where(c => c != null && !c.IsDead() && c != player &&
-                            JobSkillsUtility.IsMonsterFaction(c.GetFaction()) &&
-                            Vector3.Distance(c.transform.position, hitPoint) < 6f)
-                .ToList();
-
-            foreach (var tauntTarget in tauntTargets)
+            // 도발 - 6m 내 모든 몬스터 (주 타겟 포함, ToList 제거 - 직접 순회)
+            int tauntCount = 0;
+            foreach (var tauntTarget in Character.GetAllCharacters())
             {
+                if (tauntTarget == null || tauntTarget.IsDead() || tauntTarget == player) continue;
+                if (!JobSkillsUtility.IsMonsterFaction(tauntTarget.GetFaction())) continue;
+                if (Vector3.Distance(tauntTarget.transform.position, hitPoint) >= 6f) continue;
+                tauntCount++;
                 try
                 {
                     TankerTauntAIPatch.AddTauntedMonster(tauntTarget, player, 5f);
@@ -324,7 +322,7 @@ namespace CaptainSkillTree.SkillTree
             if (Plugin.Instance != null)
                 Plugin.Instance.StartCoroutine(ShieldChargeTauntPulseCoroutine(player, hitPoint));
 
-            Plugin.Log.LogInfo($"[방패돌진 도발] 6m 범위 {tauntTargets.Count}마리 도발 시작");
+            Plugin.Log.LogInfo($"[방패돌진 도발] 6m 범위 {tauntCount}마리 도발 시작");
         }
 
         /// <summary>
@@ -352,18 +350,15 @@ namespace CaptainSkillTree.SkillTree
                 // 6m 내 몬스터 재수집 → 어그로 유지
                 try
                 {
-                    var nearbyEnemies = Character.GetAllCharacters()
-                        .Where(c => c != null && !c.IsDead() && c != player &&
-                                    JobSkillsUtility.IsMonsterFaction(c.GetFaction()) &&
-                                    Vector3.Distance(c.transform.position, hitPoint) < 6f)
-                        .ToList();
-
-                    foreach (var enemy in nearbyEnemies)
+                    foreach (var enemy in Character.GetAllCharacters())
                     {
+                        if (enemy == null || enemy.IsDead() || enemy == player) continue;
+                        if (!JobSkillsUtility.IsMonsterFaction(enemy.GetFaction())) continue;
+                        if (Vector3.Distance(enemy.transform.position, hitPoint) >= 6f) continue;
                         TankerTauntAIPatch.AddTauntedMonster(enemy, player, 1f);
                     }
 
-                    Plugin.Log.LogDebug($"[방패돌진 펄스] {i + 1}/5회 - {nearbyEnemies.Count}마리 어그로 갱신");
+                    Plugin.Log.LogDebug($"[방패돌진 펄스] {i + 1}/5회 어그로 갱신");
                 }
                 catch (Exception ex)
                 {

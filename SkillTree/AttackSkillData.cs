@@ -6,6 +6,7 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 공격 전문가 스킬트리 노드 등록
+    /// 선빵(T1) → 무기특화(T2) → 추격전(T3) → 전환(T4) → 난전(T5) → 마무리(T6)
     /// </summary>
     public static class AttackSkillData
     {
@@ -13,262 +14,273 @@ namespace CaptainSkillTree.SkillTree
         {
             var manager = SkillTreeManager.Instance;
 
-            // === 공격 전문가 루트 ===
+            // ========================================================
+            // Tier 0: 공격 전문가 루트
+            // ========================================================
             manager.AddSkill(new SkillNode {
                 Id = "attack_root",
                 NameKey = "attack_root_name",
                 DescriptionKey = "attack_root_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackRootDamageBonusValue },
+                DescriptionArgs = new object[] { Attack_Config.AttackRootDamageBonusValue },
                 RequiredPoints = Attack_Config.AttackRootRequiredPointsValue,
                 MaxLevel = 1,
                 Position = new Vector2(0, 95),
                 Category = "공격",
                 IconNameLocked = "attack_lock",
                 IconNameUnlocked = "attack_unlock",
-                NextNodes = new List<string> { "atk_base" },
+                NextNodes = new List<string> { "atk_opener" },
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
-                    if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, $"⚔️ {L.Get("attack_expert_acquired")}",
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("attack_root_effect"),
                             new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
-                        Plugin.Log.LogInfo("[공격 전문가] 효과 적용 완료 - 모든 데미지 +5% (Harmony 패치를 통해 자동 적용)");
-                    }
                 }
             });
 
-            // 1단계: 기본 공격
+            // ========================================================
+            // Tier 1: 선빵
+            // ========================================================
             manager.AddSkill(new SkillNode {
-                Id = "atk_base",
-                NameKey = "atk_base_name",
-                DescriptionKey = "atk_base_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackBasePhysicalDamageValue },
-                RequiredPoints = Attack_Config.AttackStep1RequiredPointsValue,
+                Id = "atk_opener",
+                NameKey = "atk_opener_name",
+                DescriptionKey = "atk_opener_desc",
+                DescriptionArgs = new object[] {
+                    Attack_Config.AtkOpenerDamageBonusValue,
+                    Attack_Config.AtkOpenerStaminaReductionValue,
+                    Attack_Config.AtkOpenerDurationValue,
+                    Attack_Config.AtkOpenerCooldownValue
+                },
+                RequiredPoints = Attack_Config.AtkOpenerRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
-                Position = new Vector2(0, 155),
+                Position = new Vector2(0, 145),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "attack_root" },
-                NextNodes = new List<string> { "atk_melee_bonus", "atk_bow_bonus", "atk_crossbow_bonus", "atk_staff_bonus" },
+                NextNodes = new List<string> { "atk_opener_melee", "atk_opener_bow", "atk_opener_crossbow", "atk_opener_magic" },
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
-                    if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_base_effect"),
-                            new Color(0.8f, 0.6f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
-                    }
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_effect"),
+                            new Color(1f, 0.6f, 0.1f), SkillEffect.SkillEffectTextType.Standard);
                 }
             });
 
-            // 2단계: 무기별 특화
+            // ========================================================
+            // Tier 2: 무기별 선빵 특화 (복수 선택 가능)
+            // ========================================================
             manager.AddSkill(new SkillNode {
-                Id = "atk_melee_bonus",
-                NameKey = "atk_melee_bonus_name",
-                DescriptionKey = "atk_melee_bonus_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackMeleeBonusChanceValue, SkillTreeConfig.AttackMeleeBonusDamageValue },
-                RequiredPoints = Attack_Config.AttackStep2MeleeRequiredPointsValue,
+                Id = "atk_opener_melee",
+                NameKey = "atk_opener_melee_name",
+                DescriptionKey = "atk_opener_melee_desc",
+                DescriptionArgs = new object[] { Attack_Config.AtkOpenerMeleeFinisherBonusValue },
+                RequiredPoints = Attack_Config.AtkOpenerMeleeRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(-90, 205),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_base" },
-                NextNodes = new List<string> { "atk_twohand_drain" },
+                Prerequisites = new List<string> { "atk_opener" },
+                NextNodes = new List<string> { "atk_pursuit" },
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
-                    if (player != null) {
-                        SkillEffect.DrawFloatingText(player, L.Get("atk_melee_bonus_effect"));
-                        Plugin.Log.LogInfo("[근접 특화] 효과 적용 완료");
-                    }
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_melee_effect"),
+                            new Color(0.9f, 0.4f, 0.1f), SkillEffect.SkillEffectTextType.Standard);
                 }
             });
 
             manager.AddSkill(new SkillNode {
-                Id = "atk_bow_bonus",
-                NameKey = "atk_bow_bonus_name",
-                DescriptionKey = "atk_bow_bonus_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackBowBonusChanceValue, SkillTreeConfig.AttackBowBonusDamageValue },
-                RequiredPoints = Attack_Config.AttackStep2BowRequiredPointsValue,
+                Id = "atk_opener_bow",
+                NameKey = "atk_opener_bow_name",
+                DescriptionKey = "atk_opener_bow_desc",
+                DescriptionArgs = new object[] { Attack_Config.AtkOpenerBowCritChanceValue },
+                RequiredPoints = Attack_Config.AtkOpenerBowRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
-                Position = new Vector2(-45, 205),
+                Position = new Vector2(-30, 205),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_base" },
-                NextNodes = new List<string> { "atk_twohand_drain" },
-                ApplyEffect = (lv) => { }
+                Prerequisites = new List<string> { "atk_opener" },
+                NextNodes = new List<string> { "atk_pursuit" },
+                ApplyEffect = (lv) => {
+                    var player = Player.m_localPlayer;
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_bow_effect"),
+                            new Color(0.2f, 0.9f, 0.4f), SkillEffect.SkillEffectTextType.Standard);
+                }
             });
 
             manager.AddSkill(new SkillNode {
-                Id = "atk_crossbow_bonus",
-                NameKey = "atk_crossbow_bonus_name",
-                DescriptionKey = "atk_crossbow_bonus_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackCrossbowBonusChanceValue },
-                RequiredPoints = Attack_Config.AttackStep2CrossbowRequiredPointsValue,
+                Id = "atk_opener_crossbow",
+                NameKey = "atk_opener_crossbow_name",
+                DescriptionKey = "atk_opener_crossbow_desc",
+                DescriptionArgs = new object[] { Attack_Config.AtkOpenerCrossbowFirstShotBonusValue },
+                RequiredPoints = Attack_Config.AtkOpenerCrossbowRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
-                Position = new Vector2(45, 205),
+                Position = new Vector2(30, 205),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_base" },
-                NextNodes = new List<string> { "atk_twohand_drain" },
-                ApplyEffect = (lv) => { }
+                Prerequisites = new List<string> { "atk_opener" },
+                NextNodes = new List<string> { "atk_pursuit" },
+                ApplyEffect = (lv) => {
+                    var player = Player.m_localPlayer;
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_crossbow_effect"),
+                            new Color(0.2f, 0.6f, 1f), SkillEffect.SkillEffectTextType.Standard);
+                }
             });
 
             manager.AddSkill(new SkillNode {
-                Id = "atk_staff_bonus",
-                NameKey = "atk_staff_bonus_name",
-                DescriptionKey = "atk_staff_bonus_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackStaffBonusChanceValue, SkillTreeConfig.AttackStaffBonusDamageValue },
-                RequiredPoints = Attack_Config.AttackStep2StaffRequiredPointsValue,
+                Id = "atk_opener_magic",
+                NameKey = "atk_opener_magic_name",
+                DescriptionKey = "atk_opener_magic_desc",
+                DescriptionArgs = new object[] { },
+                RequiredPoints = Attack_Config.AtkOpenerMagicRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(90, 205),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_base" },
-                NextNodes = new List<string> { "atk_twohand_drain" },
-                ApplyEffect = (lv) => { }
+                Prerequisites = new List<string> { "atk_opener" },
+                NextNodes = new List<string> { "atk_pursuit" },
+                ApplyEffect = (lv) => {
+                    var player = Player.m_localPlayer;
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_opener_magic_effect"),
+                            new Color(0.8f, 0.2f, 0.9f), SkillEffect.SkillEffectTextType.Standard);
+                }
             });
 
-            // 3단계: 공격 증가
+            // ========================================================
+            // Tier 3: 추격전
+            // ========================================================
             manager.AddSkill(new SkillNode {
-                Id = "atk_twohand_drain",
-                NameKey = "atk_twohand_drain_name",
-                DescriptionKey = "atk_twohand_drain_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackTwoHandDrainPhysicalDamageValue, SkillTreeConfig.AttackTwoHandDrainElementalDamageValue },
-                RequiredPoints = Attack_Config.AttackStep3RequiredPointsValue,
+                Id = "atk_pursuit",
+                NameKey = "atk_pursuit_name",
+                DescriptionKey = "atk_pursuit_desc",
+                DescriptionArgs = new object[] {
+                    Attack_Config.AtkPursuitDamageBonusValue,
+                    Attack_Config.AtkPursuitChainDamageBonusValue,
+                    Attack_Config.AtkPursuitChainWindowValue
+                },
+                RequiredPoints = Attack_Config.AtkPursuitRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
                 Position = new Vector2(0, 275),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_melee_bonus", "atk_bow_bonus", "atk_crossbow_bonus", "atk_staff_bonus" },
-                NextNodes = new List<string> { "atk_melee_crit", "atk_crit_chance", "atk_ranged_enhance" },
+                Prerequisites = new List<string> { "atk_opener_melee", "atk_opener_bow", "atk_opener_crossbow", "atk_opener_magic" },
+                NextNodes = new List<string> { "atk_pursuit_speed", "atk_frenzy_trigger" },
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
-                    if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_twohand_drain_effect"),
-                            new Color(0.9f, 0.7f, 0.3f), SkillEffect.SkillEffectTextType.Standard);
-                        Plugin.Log.LogInfo("[공격 증가] 효과 적용 완료 - 물리/속성 공격력 증가");
-                    }
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_pursuit_effect"),
+                            new Color(0.3f, 0.8f, 1f), SkillEffect.SkillEffectTextType.Standard);
                 }
             });
 
-            // 4단계: 세부 강화
+            // ========================================================
+            // Tier 4: 전환 분기
+            // ========================================================
             manager.AddSkill(new SkillNode {
-                Id = "atk_melee_crit",
-                NameKey = "atk_melee_crit_name",
-                DescriptionKey = "atk_melee_crit_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackMeleeEnhancementValue },
-                RequiredPoints = Attack_Config.AttackStep4MeleeRequiredPointsValue,
+                Id = "atk_pursuit_speed",
+                NameKey = "atk_pursuit_speed_name",
+                DescriptionKey = "atk_pursuit_speed_desc",
+                DescriptionArgs = new object[] { Attack_Config.AtkPursuitSpeedBonusValue },
+                RequiredPoints = Attack_Config.AtkPursuitSpeedRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
-                Position = new Vector2(-60, 325),
+                Position = new Vector2(-45, 335),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_twohand_drain" },
-                NextNodes = new List<string> { "atk_special" },
-                ApplyEffect = (lv) => { }
-            });
-
-            manager.AddSkill(new SkillNode {
-                Id = "atk_crit_chance",
-                NameKey = "atk_crit_chance_name",
-                DescriptionKey = "atk_crit_chance_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackCritChanceValue },
-                RequiredPoints = Attack_Config.AttackStep4CritRequiredPointsValue,
-                MaxLevel = 1,
-                Tier = 4,
-                Position = new Vector2(0, 325),
-                Category = "공격",
-                IconName = "all_skill_unlock",
-                IconNameLocked = "all_skill_lock",
-                IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_twohand_drain" },
-                NextNodes = new List<string> { "atk_special" },
-                ApplyEffect = (lv) => { }
-            });
-
-            manager.AddSkill(new SkillNode {
-                Id = "atk_ranged_enhance",
-                NameKey = "atk_ranged_enhance_name",
-                DescriptionKey = "atk_ranged_enhance_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackRangedEnhancementValue },
-                RequiredPoints = Attack_Config.AttackStep4RangedRequiredPointsValue,
-                MaxLevel = 1,
-                Tier = 4,
-                Position = new Vector2(60, 325),
-                Category = "공격",
-                IconName = "all_skill_unlock",
-                IconNameLocked = "all_skill_lock",
-                IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_twohand_drain" },
-                NextNodes = new List<string> { "atk_special" },
+                Prerequisites = new List<string> { "atk_pursuit" },
+                NextNodes = new List<string> { "atk_frenzy" },
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
-                    if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_ranged_enhance_effect"),
-                            new Color(0.2f, 0.8f, 0.8f), SkillEffect.SkillEffectTextType.Standard);
-                        Plugin.Log.LogInfo($"[원거리 강화] 효과 적용 완료 - 원거리 무기 공격력 +{SkillTreeConfig.AttackRangedEnhancementValue}%");
-                    }
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_pursuit_speed_effect"),
+                            new Color(0.4f, 1f, 0.6f), SkillEffect.SkillEffectTextType.Standard);
                 }
             });
 
-            // 5단계: 특수화 스탯
             manager.AddSkill(new SkillNode {
-                Id = "atk_special",
-                NameKey = "atk_special_name",
-                DescriptionKey = "atk_special_desc",
-                DescriptionArgs = new object[] { Attack_Config.AttackSpecialChanceValue, Attack_Config.AttackSpecialStatValue },
-                RequiredPoints = Attack_Config.AttackStep5RequiredPointsValue,
+                Id = "atk_frenzy_trigger",
+                NameKey = "atk_frenzy_trigger_name",
+                DescriptionKey = "atk_frenzy_trigger_desc",
+                DescriptionArgs = new object[] { Attack_Config.AtkFrenzyTriggerStaminaReductionValue },
+                RequiredPoints = Attack_Config.AtkFrenzyTriggerRequiredPointsValue,
+                MaxLevel = 1,
+                Tier = 4,
+                Position = new Vector2(45, 335),
+                Category = "공격",
+                IconNameLocked = "all_skill_lock",
+                IconNameUnlocked = "all_skill_unlock",
+                Prerequisites = new List<string> { "atk_pursuit" },
+                NextNodes = new List<string> { "atk_frenzy" },
+                ApplyEffect = (lv) => {
+                    var player = Player.m_localPlayer;
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_frenzy_trigger_effect"),
+                            new Color(1f, 0.4f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
+                }
+            });
+
+            // ========================================================
+            // Tier 5: 난전
+            // ========================================================
+            manager.AddSkill(new SkillNode {
+                Id = "atk_frenzy",
+                NameKey = "atk_frenzy_name",
+                DescriptionKey = "atk_frenzy_desc",
+                DescriptionArgs = new object[] {
+                    Attack_Config.AtkFrenzyHitsPerStackValue,
+                    Attack_Config.AtkFrenzyStackBonusBaseValue,
+                    Attack_Config.AtkFrenzyMaxStacksValue,
+                    Attack_Config.AtkFrenzyStackBonusChainValue,
+                    Attack_Config.AtkFrenzyTier6AmplifierValue
+                },
+                RequiredPoints = Attack_Config.AtkFrenzyRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
-                Position = new Vector2(0, 375),
+                Position = new Vector2(0, 395),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_melee_crit", "atk_crit_chance", "atk_ranged_enhance" },
+                Prerequisites = new List<string> { "atk_pursuit_speed", "atk_frenzy_trigger" },
                 NextNodes = new List<string> { "atk_crit_dmg", "atk_finisher_melee", "atk_twohand_crush", "atk_staff_mage" },
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
-                    if (player != null) {
-                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_special_effect", Attack_Config.AttackSpecialChanceValue, Attack_Config.AttackSpecialStatValue),
-                            new Color(1f, 0.9f, 0.3f), SkillEffect.SkillEffectTextType.Standard);
-                        Plugin.Log.LogInfo($"[충전] 습득 - 공격 시 {Attack_Config.AttackSpecialChanceValue}% 확률로 스태미나 {Attack_Config.AttackSpecialStatValue}% 회복");
-                    }
+                    if (player != null)
+                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_frenzy_effect"),
+                            new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Critical);
                 }
             });
 
-            // 6단계: 최종 특화
+            // ========================================================
+            // Tier 6: 마무리 최종 (기존 유지, Prerequisites만 변경)
+            // ========================================================
             manager.AddSkill(new SkillNode {
                 Id = "atk_crit_dmg",
                 NameKey = "atk_crit_dmg_name",
                 DescriptionKey = "atk_crit_dmg_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackCritDamageBonusValue },
+                DescriptionArgs = new object[] { Attack_Config.AttackCritDamageBonusValue },
                 RequiredPoints = Attack_Config.AttackStep6CritDmgRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
-                Position = new Vector2(-90, 415),
+                Position = new Vector2(-90, 445),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_special" },
+                Prerequisites = new List<string> { "atk_frenzy" },
                 NextNodes = new List<string>(),
                 ApplyEffect = (lv) => { }
             });
@@ -277,16 +289,15 @@ namespace CaptainSkillTree.SkillTree
                 Id = "atk_finisher_melee",
                 NameKey = "atk_finisher_melee_name",
                 DescriptionKey = "atk_finisher_melee_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackFinisherMeleeBonusValue },
+                DescriptionArgs = new object[] { Attack_Config.AttackFinisherMeleeBonusValue },
                 RequiredPoints = Attack_Config.AttackStep6FinisherRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
-                Position = new Vector2(-45, 415),
+                Position = new Vector2(-30, 445),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_special" },
+                Prerequisites = new List<string> { "atk_frenzy" },
                 NextNodes = new List<string>(),
                 ApplyEffect = (lv) => { }
             });
@@ -295,16 +306,15 @@ namespace CaptainSkillTree.SkillTree
                 Id = "atk_twohand_crush",
                 NameKey = "atk_twohand_crush_name",
                 DescriptionKey = "atk_twohand_crush_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackTwoHandedBonusValue },
+                DescriptionArgs = new object[] { Attack_Config.AttackTwoHandedBonusValue },
                 RequiredPoints = Attack_Config.AttackStep6TwoHandRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
-                Position = new Vector2(45, 415),
+                Position = new Vector2(30, 445),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_special" },
+                Prerequisites = new List<string> { "atk_frenzy" },
                 NextNodes = new List<string>(),
                 ApplyEffect = (lv) => { }
             });
@@ -313,24 +323,21 @@ namespace CaptainSkillTree.SkillTree
                 Id = "atk_staff_mage",
                 NameKey = "atk_staff_mage_name",
                 DescriptionKey = "atk_staff_mage_desc",
-                DescriptionArgs = new object[] { SkillTreeConfig.AttackStaffElementalValue },
+                DescriptionArgs = new object[] { Attack_Config.AttackStaffElementalValue },
                 RequiredPoints = Attack_Config.AttackStep6StaffRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
-                Position = new Vector2(90, 415),
+                Position = new Vector2(90, 445),
                 Category = "공격",
-                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                Prerequisites = new List<string> { "atk_special" },
+                Prerequisites = new List<string> { "atk_frenzy" },
                 NextNodes = new List<string>(),
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
-                    if (player != null) {
+                    if (player != null)
                         SkillEffect.ShowSkillEffectText(player, L.Get("atk_staff_mage_effect"),
                             new Color(0.8f, 0.2f, 0.8f), SkillEffect.SkillEffectTextType.Standard);
-                        Plugin.Log.LogInfo($"[속성 공격] 효과 적용 완료 - 속성 공격 +{SkillTreeConfig.AttackStaffElementalValue}% (활, 지팡이)");
-                    }
                 }
             });
         }

@@ -137,6 +137,108 @@ namespace CaptainSkillTree.Localization
                 "Erhöht den Schaden des letzten Treffers in einer 3-Treffer-Kombo.\n" +
                 "Empfehlung: 12-20%",
 
+                // ======================================== [Neues Angriffssystem: 4-Phasen]
+                ["Tier1_Opener_DamageBonus"] =
+                "【Erster-Schlag-Schadensbonus (%)】\n" +
+                "Erhöht den Schaden in den ersten Sekunden nach Kampfbeginn.\n" +
+                "Empfehlung: 15-25%",
+
+                ["Tier1_Opener_StaminaReduction"] =
+                "【Ausdauerverbrauchsreduktion (%)】\n" +
+                "Reduziert den Ausdauerverbrauch während der Erster-Schlag-Phase.\n" +
+                "Empfehlung: 20-30%",
+
+                ["Tier1_Opener_Duration"] =
+                "【Erster-Schlag-Dauer (Sek.)】\n" +
+                "Dauer des Erster-Schlag-Effekts nach Kampfbeginn.\n" +
+                "Empfehlung: 4-6 Sek.",
+
+                ["Tier1_Opener_Cooldown"] =
+                "【Abklingzeit (Sek.)】\n" +
+                "Wartezeit bis zur nächsten Aktivierung des Erster-Schlag-Effekts.\n" +
+                "Empfehlung: 25-35 Sek.",
+
+                ["Tier2_OpenerMelee_FinisherBonus"] =
+                "【Nahkampf-Finisher-Bonus (%)】\n" +
+                "Erhöht den Finisher-Multiplikator nach dem ersten Treffer im Kampf.\n" +
+                "Empfehlung: 15-25%",
+
+                ["Tier2_OpenerBow_CritChance"] =
+                "【Bogen-Kritische-Trefferchance (%)】\n" +
+                "Erhöht die kritische Trefferchance beim ersten Bogenschuss nach Kampfbeginn.\n" +
+                "Empfehlung: 10-20%",
+
+                ["Tier2_OpenerCrossbow_FirstShotBonus"] =
+                "【Armbrust-Erster-Schuss-Bonus (%)】\n" +
+                "Erhöht den Schaden des ersten Armbrustbolzens nach Kampfbeginn.\n" +
+                "Empfehlung: 40-60%",
+
+                ["Tier2_OpenerMagic_StaggerProc"] =
+                "【Magie-Taumel-Auslöser (0/1)】\n" +
+                "Erster Magieangriff nach Kampfbeginn verursacht sicheres Taumeln.\n" +
+                "0 = Deaktiviert, 1 = Aktiviert",
+
+                ["Tier3_Pursuit_DamageBonus"] =
+                "【Verfolgungsschadensbonus (%)】\n" +
+                "Erhöht den Schaden gegen fliehende oder sich bewegende Feinde.\n" +
+                "Empfehlung: 12-18%",
+
+                ["Tier3_Pursuit_ChainDamageBonus"] =
+                "【Verfolgungskettenbonus (%)】\n" +
+                "Erhöhter Bonus, wenn Verfolgung nach Erster-Schlag-Kette aktiviert.\n" +
+                "Empfehlung: 20-30%",
+
+                ["Tier3_Pursuit_ChainWindow"] =
+                "【Kettenfenster (Sek.)】\n" +
+                "Zeitfenster nach Erster-Schlag für die Verfolgungskette.\n" +
+                "Empfehlung: 4-6 Sek.",
+
+                ["Tier4_PursuitSpeed_SpeedBonus"] =
+                "【Bewegungsgeschwindigkeitsbonus (%)】\n" +
+                "Erhöht die Bewegungsgeschwindigkeit während des Kampfes.\n" +
+                "Empfehlung: 10-15%",
+
+                ["Tier4_FrenzyTrigger_StaminaReduction"] =
+                "【Ausdauerreduktion im Nahkampf (%)】\n" +
+                "Reduziert den Ausdauerverbrauch, wenn mehrere Feinde in der Nähe sind.\n" +
+                "Empfehlung: 15-25%",
+
+                ["Tier5_Frenzy_StackBonusBase"] =
+                "【Kampfgetümmel-Stack-Grundbonus (%)】\n" +
+                "Schadensbonus pro Stack ohne Verfolgungskette.\n" +
+                "Empfehlung: 4-6%",
+
+                ["Tier5_Frenzy_StackBonusChain"] =
+                "【Kampfgetümmel-Kettenstackbonus (%)】\n" +
+                "Erhöhter Schadensbonus pro Stack mit aktiver Verfolgungskette.\n" +
+                "Empfehlung: 7-10%",
+
+                ["Tier5_Frenzy_MaxStacks"] =
+                "【Maximale Stack-Anzahl】\n" +
+                "Maximale Anzahl an Kampfgetümmel-Stacks.\n" +
+                "Empfehlung: 4-6",
+
+                ["Tier5_Frenzy_HitsPerStack"] =
+                "【Treffer pro Stack】\n" +
+                "Benötigte Trefferanzahl zum Aufbauen eines Stacks.\n" +
+                "Empfehlung: 2-4",
+
+                ["Tier5_Frenzy_Tier6Amplifier"] =
+                "【Tier6-Verstärker bei Max-Stacks (×)】\n" +
+                "Multiplikator für alle Tier6-Effekte bei maximaler Stack-Anzahl.\n" +
+                "Empfehlung: 1,2-1,4",
+
+                // === Neue RequiredPoints: 4-Phasen-System ===
+                ["Tier1_Opener_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+                ["Tier2_OpenerMelee_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+                ["Tier2_OpenerBow_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+                ["Tier2_OpenerCrossbow_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+                ["Tier2_OpenerMagic_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+                ["Tier3_Pursuit_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+                ["Tier4_PursuitSpeed_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+                ["Tier5_Frenzy_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
                 // ========================================
                 // Verteidigungs-Skilltree (Defense Tree)
                 // ========================================

@@ -192,7 +192,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_Radius"), order: 10);
 
             BowExplosiveArrowCooldown = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_ExplosiveArrow_Cooldown", 20f,
+                "Bow Tree", "Tier5_ExplosiveArrow_Cooldown", 40f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_Cooldown"), order: 10);
 
             BowExplosiveArrowStaminaCost = SkillTreeConfig.BindServerSync(config,
