@@ -100,8 +100,9 @@ namespace CaptainSkillTree
                     CriticalDamage.ApplyCriticalDamage(player, ref hit, critMultiplier, weaponType);
                     SkillEffect.ShowSkillEffectText(player, L.Get("bow_headshot_text") + "!",
                         new Color(1f, 0.3f, 0.1f), SkillEffect.SkillEffectTextType.Combat);
-                    // 헤드샷 VFX: 피격 지점에 confetti 효과
+                    // 헤드샷 VFX: 피격 지점에 confetti 효과 + 크리티컬 이펙트
                     SimpleVFX.Play("confetti_directional_multicolor", hit.m_point, 2f);
+                    CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_crit", "", hit.m_point);
                     showDamageText = false;
                     Log.LogInfo("[헤드샷] 머리 적중 → 100% 크리티컬 발동!");
                 }
