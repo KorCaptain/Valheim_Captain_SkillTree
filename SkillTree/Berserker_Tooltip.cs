@@ -85,7 +85,7 @@ namespace CaptainSkillTree.SkillTree
 
         private static string GetPassiveStr(int level)
         {
-            float hpBonus   = Berserker_Config.BerserkerPassiveHealthBonusValue;
+            float hpBonus   = Berserker_Config.GetEffectiveHealthBonus(level);
             float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue;
             float invDur    = Berserker_Config.GetEffectiveInvincibilityDuration(level);
             float passCd    = Berserker_Config.GetEffectivePassiveCooldown(level);

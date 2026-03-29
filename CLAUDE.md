@@ -41,6 +41,7 @@ model 사용에 대한 규칙을 명시하고 다음 규칙을 따른다.
 2. 액티브 및 패시브 스킬을 만들거나 수정했을 경우 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\md 
  의 알맞는 md 파일을 확인해서 문제 없는 지 확인하고 수정 보완한다.
 3. 최종 빌드 해보고 에러가 생기면 에러가 안생기게 수정하고 빌드한다. 
+4. 필요 검색이 필요한 경우 C:\home\ssunyme\.npm-global\bin\valheim_dll_api  폴더를 분석한다. (발헤임 ilspy 한 자료)
  
 ## 빠른 참조 맵 & 시스템 상세
 

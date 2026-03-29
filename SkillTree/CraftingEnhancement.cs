@@ -126,23 +126,23 @@ namespace CaptainSkillTree.SkillTree
                 
                 if (lv2 > 0)
                 {
-                    totalEnhanceChance += 0.25f; // 제작 Lv2: 25%
-                    totalDurabilityBonus += 0.25f; // 내구도 25%
-                    Plugin.Log.LogInfo("[제작 보너스] Lv2 보너스 적용: 강화 25%, 내구도 25%");
+                    totalEnhanceChance += Production_Config.CraftingLv2UpgradeChanceValue / 100f;
+                    totalDurabilityBonus += Production_Config.CraftingLv2DurabilityBonusValue / 100f;
+                    Plugin.Log.LogInfo($"[제작 보너스] Lv2 보너스 적용: 강화 {Production_Config.CraftingLv2UpgradeChanceValue}%, 내구도 {Production_Config.CraftingLv2DurabilityBonusValue}%");
                 }
-                
+
                 if (lv3 > 0)
                 {
-                    totalEnhanceChance += 0.25f; // 제작 Lv3: +25% (누적 50%)
-                    totalDurabilityBonus += 0.25f; // 내구도 +25%
-                    Plugin.Log.LogInfo("[제작 보너스] Lv3 보너스 적용: 강화 +25%, 내구도 +25%");
+                    totalEnhanceChance += Production_Config.CraftingLv3UpgradeChanceValue / 100f;
+                    totalDurabilityBonus += Production_Config.CraftingLv3DurabilityBonusValue / 100f;
+                    Plugin.Log.LogInfo($"[제작 보너스] Lv3 보너스 적용: 강화 +{Production_Config.CraftingLv3UpgradeChanceValue}%, 내구도 +{Production_Config.CraftingLv3DurabilityBonusValue}%");
                 }
-                
+
                 if (lv4 > 0)
                 {
-                    totalEnhanceChance += 0.25f; // 제작 Lv4: +25% (누적 75%)
-                    totalDurabilityBonus += 0.25f; // 내구도 +25%
-                    Plugin.Log.LogInfo("[제작 보너스] Lv4 보너스 적용: 강화 +25%, 내구도 +25%");
+                    totalEnhanceChance += Production_Config.CraftingLv4UpgradeChanceValue / 100f;
+                    totalDurabilityBonus += Production_Config.CraftingLv4DurabilityBonusValue / 100f;
+                    Plugin.Log.LogInfo($"[제작 보너스] Lv4 보너스 적용: 강화 +{Production_Config.CraftingLv4UpgradeChanceValue}%, 내구도 +{Production_Config.CraftingLv4DurabilityBonusValue}%");
                 }
 
                 if (lv5 > 0)
@@ -300,6 +300,24 @@ namespace CaptainSkillTree.SkillTree
         }
         
         /// <summary>
+        /// 제작 효과 적용 대상 아이템 타입 판별 (무기/방어구/유틸리티/망토)
+        /// 음식, 물약, 기타는 false 반환
+        /// </summary>
+        internal static bool IsApplicableCraftItem(ItemDrop.ItemData item)
+        {
+            if (item?.m_shared == null) return false;
+            var t = item.m_shared.m_itemType;
+            return t == ItemDrop.ItemData.ItemType.OneHandedWeapon
+                || t == ItemDrop.ItemData.ItemType.TwoHandedWeapon
+                || t == ItemDrop.ItemData.ItemType.Bow
+                || t == ItemDrop.ItemData.ItemType.Helmet
+                || t == ItemDrop.ItemData.ItemType.Chest
+                || t == ItemDrop.ItemData.ItemType.Legs
+                || t == ItemDrop.ItemData.ItemType.Shoulder
+                || t == ItemDrop.ItemData.ItemType.Utility;
+        }
+
+        /// <summary>
         /// 화살과 볼트 아이템 판별
         /// </summary>
         internal static bool IsArrowOrBolt(ItemDrop.ItemData item)
@@ -443,7 +461,7 @@ namespace CaptainSkillTree.SkillTree
             var inv = player.GetInventory();
             if (inv == null) return;
             foreach (var item in inv.GetAllItems())
-                if (!CraftingEnhancement.IsArrowOrBolt(item))
+                if (CraftingEnhancement.IsApplicableCraftItem(item))
                     _preSnapshot.Add($"{item.m_gridPos.x},{item.m_gridPos.y}");
         }
 
@@ -458,7 +476,7 @@ namespace CaptainSkillTree.SkillTree
             ItemDrop.ItemData crafted = null;
             foreach (var item in inv.GetAllItems())
             {
-                if (CraftingEnhancement.IsArrowOrBolt(item)) continue;
+                if (!CraftingEnhancement.IsApplicableCraftItem(item)) continue;
                 if (!_preSnapshot.Contains($"{item.m_gridPos.x},{item.m_gridPos.y}"))
                 { crafted = item; break; }
             }
@@ -485,9 +503,8 @@ namespace CaptainSkillTree.SkillTree
 
             Plugin.Log.LogDebug($"[제작 보너스] {crafted.m_shared?.m_name}: 강화={enhanceSuccess}, 내구도+{bonus.DurabilityBonus * 100:F0}%");
 
-            // VFX/SFX - 제작 효과(강화/내구도/production_root) 발동 시 재생
-            bool hasProductionRoot = SkillTreeManager.Instance?.GetSkillLevel("production_root") > 0;
-            if (enhanceSuccess || durApplied || hasProductionRoot)
+            // VFX/SFX - 강화 또는 내구도 효과 발동 시에만 재생
+            if (enhanceSuccess || durApplied)
             {
                 try
                 {

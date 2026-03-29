@@ -1,15 +1,40 @@
 # Changelog / 변경 로그
 ## Update
-# [1.2.07 - 2026-03-28
+# [1.2.11] - 2026-03-29
+- ✅fix1 : Mace - Shield Charge: Fixed enemies not being hit when dashing through them (Added OverlapSphere overlap detection + hitbox layer to SphereCast)
+- ✅fix2 : Mace - Shield Charge: Dash now follows terrain slopes properly; trees and rocks now correctly block the dash
+- ✅fix3 : Modification of Tropic and Specific Skle Learning Conditions in relation to job-related lv2 level-up
+- ✅improve4 : Berserker - "Death Defiance" HP bonus changed to flat value per level (Lv1:+40, Lv2:+60, Lv3:+80, Lv4:+100, Lv5:+120); previously was % of food HP
+- ✅improve5 : Berserker - tooltip now shows correct flat HP value per level
+-
+- ✅fix1 : 둔기 - 방패돌진: 몬스터를 지나쳐도 적중이 안 되던 버그 수정 (OverlapSphere 겹침 감지 추가 + hitbox 레이어 포함)
+- ✅fix2 : 둔기 - 방패돌진: 오르막/내리막에서 지형을 따라 정상 이동하도록 수정; 나무/바위가 돌진을 올바르게 차단
+- ✅fix3 : 직업관련 lv2 레벨업 관련하여 트로피피 및 특정 스클학습 조건 수정
+- ✅improve4 : 버서커 - "죽음의 무시" 체력 보너스가 레벨별 고정값으로 변경 (Lv1:+40, Lv2:+60, Lv3:+80, Lv4:+100, Lv5:+120); 기존에는 식량HP 비율(%) 방식
+- ✅improve5 : 버서커 - 툴팁에 레벨별 정확한 체력 수치 표시
+
+# [1.2.08] - 2026-03-28
 - ✅fix1 : Performance - Fixed inventory freeze/stutter
 - ✅fix2 : Performance - Correction of stopping when opening the box (storage)
 - ✅fix3 : Correct Paladin Hill Malfunction and Change Effect
+- ✅fix4 : Mage (Y-key) Fire Rain - No longer consumes cooldown or Eitr when no target is in range; Lv2 extra charge is also preserved on miss.
+- ✅fix5 : Sword - Counter Stance: Defense bonus after parry was not being applied; fixed missing function calls and damage patch
+- ✅fix6 : Spear - Throwing Spear Expert: Damage bonus was applying to all spear attacks; now correctly applies to secondary (throw) attack only
+- ✅fix7 : Polearm - Spinning Slash: Damage bonus was intermittently applying; secondary attack detection changed from button-state check to StartAttack parameter for reliability
+- ✅fix8 : Polearm - Polearm Boost: Floating text was spamming on every hit; removed (permanent passive needs no per-hit message)
 - ✅improve1 : Revise the entire attack specialist
+- ✅improve2 : System - Config auto-reset on mod version change; all users receive new default values on update
 -
 - ✅fix1 : 성능 - 인벤토리 멈춤 현상 수정
 - ✅fix2 : 상자(보관함) 열때 멈춤 현상 수정
-- ✅fix3 : 성기사 힐 오작동 수정 및 효과 변경 
+- ✅fix3 : 성기사 힐 오작동 수정 및 효과 변경
+- ✅fix4 : 메이지(Y키) 불의 비 - 사거리 내 타겟 없을 때 쿨타임·Eitr가 소모되던 버그 수정; Lv2 연속 충전도 실패 시 유지됨.
+- ✅fix5 : 검 - 반격 자세: 패링 성공 후 방어력 증가가 실제로 적용되지 않던 버그 수정 (함수 호출 누락 2곳 + 데미지 패치 미반영)
+- ✅fix6 : 창 - 투창 전문가: 데미지 보너스가 모든 창 공격에 적용되던 버그 수정; 이제 2차 공격(투창)에만 적용
+- ✅fix7 : 폴암 - 회전베기: 데미지 보너스가 간헐적으로 적용되던 버그 수정; 2차 공격 감지를 버튼 상태 체크 → StartAttack 파라미터로 변경
+- ✅fix8 : 폴암 - 폴암강화: 타격마다 플로팅 텍스트가 출력되던 문제 수정 (영구 패시브는 타격 시 메시지 불필요)
 - ✅improve1 : 공격 전문가 전체 새롭게 수정
+- ✅improve2 : 시스템 - 모드 버전 변경 시 Config 자동 초기화; 업데이트 시 모든 사용자에게 새 기본값 적용
 
 # [1.2.03] - 2026-03-26
 - ✅new1 : Mage (Y-key) - Complete skill redesign: "Fire Rain" replaces old AOE explosion. Targets nearest enemy in camera direction (12m range), spawns 30 fireballs from upper-left sky falling in 8m radius, each with 3m AOE impact. Damage: weapon dmg × 22/24/26/28/30% per level. Cooldown 45s (all levels). Player rotates to camera direction and plays cheer emote on cast; debuff_03 VFX spawns at feet.

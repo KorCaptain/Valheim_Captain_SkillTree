@@ -26,7 +26,7 @@ namespace CaptainSkillTree.SkillTree
             Vector3 dirToTarget = (target.transform.position - attacker.transform.position).normalized;
             Vector3 targetForward = target.transform.forward;
             float dot = Vector3.Dot(dirToTarget, targetForward);
-            return dot > 0.5f; // 뒤에서 공격
+            return dot < -0.5f; // 뒤에서 공격 (대상이 공격자 반대 방향을 바라봄)
         }
 
         /// <summary>
@@ -139,8 +139,6 @@ namespace CaptainSkillTree.SkillTree
             hit.m_damage.m_slash *= (1f + damageBonus);
             hit.m_damage.m_pierce *= (1f + damageBonus);
 
-            // 패시브 스킬: 텍스트만 표시
-            DrawFloatingText(player, L.Get("knife_combat_mastery", Knife_Config.KnifeCombatDamageBonusValue.ToString()));
             Plugin.Log.LogDebug($"[전투 숙련] 공격력 +{Knife_Config.KnifeCombatDamageBonusValue}% 적용");
         }
 

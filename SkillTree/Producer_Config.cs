@@ -34,48 +34,13 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ProducerMaterialReduction_Lv4;
         public static ConfigEntry<float> ProducerMaterialReduction_Lv5;
 
-        // === Passive Lv3+: Enchant Chance (%) ===
+        // === Enchant Chance (%) — 레벨별 마법부여 확률만 컨피그로 관리 ===
+        // 수치(min/max)는 Producer_Enchant.json (EmbeddedResource)에서 관리
+        public static ConfigEntry<float> ProducerEnchantChance_Lv1;
+        public static ConfigEntry<float> ProducerEnchantChance_Lv2;
         public static ConfigEntry<float> ProducerEnchantChance_Lv3;
         public static ConfigEntry<float> ProducerEnchantChance_Lv4;
         public static ConfigEntry<float> ProducerEnchantChance_Lv5;
-
-        // === Enchant Value Ranges ===
-        public static ConfigEntry<float> ProducerEnchantWeaponDmgMin_Lv3;
-        public static ConfigEntry<float> ProducerEnchantWeaponDmgMax_Lv3;
-        public static ConfigEntry<float> ProducerEnchantWeaponDmgMin_Lv4;
-        public static ConfigEntry<float> ProducerEnchantWeaponDmgMax_Lv4;
-        public static ConfigEntry<float> ProducerEnchantWeaponDmgMin_Lv5;
-        public static ConfigEntry<float> ProducerEnchantWeaponDmgMax_Lv5;
-
-        public static ConfigEntry<float> ProducerEnchantArmorMin_Lv3;
-        public static ConfigEntry<float> ProducerEnchantArmorMax_Lv3;
-        public static ConfigEntry<float> ProducerEnchantArmorMin_Lv4;
-        public static ConfigEntry<float> ProducerEnchantArmorMax_Lv4;
-        public static ConfigEntry<float> ProducerEnchantArmorMin_Lv5;
-        public static ConfigEntry<float> ProducerEnchantArmorMax_Lv5;
-
-        public static ConfigEntry<float> ProducerEnchantHpMin_Lv3;
-        public static ConfigEntry<float> ProducerEnchantHpMax_Lv3;
-        public static ConfigEntry<float> ProducerEnchantHpMin_Lv4;
-        public static ConfigEntry<float> ProducerEnchantHpMax_Lv4;
-        public static ConfigEntry<float> ProducerEnchantHpMin_Lv5;
-        public static ConfigEntry<float> ProducerEnchantHpMax_Lv5;
-
-        // === Enchant Value Ranges: Weapon Speed ===
-        public static ConfigEntry<float> ProducerEnchantWeaponSpdMin_Lv3;
-        public static ConfigEntry<float> ProducerEnchantWeaponSpdMax_Lv3;
-        public static ConfigEntry<float> ProducerEnchantWeaponSpdMin_Lv4;
-        public static ConfigEntry<float> ProducerEnchantWeaponSpdMax_Lv4;
-        public static ConfigEntry<float> ProducerEnchantWeaponSpdMin_Lv5;
-        public static ConfigEntry<float> ProducerEnchantWeaponSpdMax_Lv5;
-
-        // === Enchant Value Ranges: Max Stamina ===
-        public static ConfigEntry<float> ProducerEnchantStaminaMin_Lv3;
-        public static ConfigEntry<float> ProducerEnchantStaminaMax_Lv3;
-        public static ConfigEntry<float> ProducerEnchantStaminaMin_Lv4;
-        public static ConfigEntry<float> ProducerEnchantStaminaMax_Lv4;
-        public static ConfigEntry<float> ProducerEnchantStaminaMin_Lv5;
-        public static ConfigEntry<float> ProducerEnchantStaminaMax_Lv5;
 
         // === 동적 값 접근자 ===
         public static float ProducerBuff_CooldownValue    => SkillTreeConfig.GetEffectiveValue("Producer_Buff_Cooldown", ProducerBuff_Cooldown.Value);
@@ -101,6 +66,8 @@ namespace CaptainSkillTree.SkillTree
         public static float ProducerMaterialReduction_Lv4Value => SkillTreeConfig.GetEffectiveValue("Producer_MaterialReduction_Lv4", ProducerMaterialReduction_Lv4.Value);
         public static float ProducerMaterialReduction_Lv5Value => SkillTreeConfig.GetEffectiveValue("Producer_MaterialReduction_Lv5", ProducerMaterialReduction_Lv5.Value);
 
+        public static float ProducerEnchantChance_Lv1Value => SkillTreeConfig.GetEffectiveValue("Producer_EnchantChance_Lv1", ProducerEnchantChance_Lv1.Value);
+        public static float ProducerEnchantChance_Lv2Value => SkillTreeConfig.GetEffectiveValue("Producer_EnchantChance_Lv2", ProducerEnchantChance_Lv2.Value);
         public static float ProducerEnchantChance_Lv3Value => SkillTreeConfig.GetEffectiveValue("Producer_EnchantChance_Lv3", ProducerEnchantChance_Lv3.Value);
         public static float ProducerEnchantChance_Lv4Value => SkillTreeConfig.GetEffectiveValue("Producer_EnchantChance_Lv4", ProducerEnchantChance_Lv4.Value);
         public static float ProducerEnchantChance_Lv5Value => SkillTreeConfig.GetEffectiveValue("Producer_EnchantChance_Lv5", ProducerEnchantChance_Lv5.Value);
@@ -131,6 +98,8 @@ namespace CaptainSkillTree.SkillTree
         public static float GetEnchantChance(int level)
         {
             return level switch {
+                1 => ProducerEnchantChance_Lv1Value,
+                2 => ProducerEnchantChance_Lv2Value,
                 3 => ProducerEnchantChance_Lv3Value,
                 4 => ProducerEnchantChance_Lv4Value,
                 _ => level >= 5 ? ProducerEnchantChance_Lv5Value : 0f
@@ -193,6 +162,10 @@ namespace CaptainSkillTree.SkillTree
                     "Producer Job Skills", "Producer_FarmGrid_Lv1", 2,
                     SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv1"));
 
+                ProducerEnchantChance_Lv1 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_EnchantChance_Lv1", 0f,
+                    SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv1"));
+
                 // === Lv2 패시브 ===
                 ProducerFarmGrid_Lv2 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_FarmGrid_Lv2", 2,
@@ -205,6 +178,10 @@ namespace CaptainSkillTree.SkillTree
                 ProducerMaterialReduction_Lv2 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_MaterialReduction_Lv2", 10f,
                     SkillTreeConfig.GetConfigDescription("Producer_MaterialReduction_Lv2"));
+
+                ProducerEnchantChance_Lv2 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_EnchantChance_Lv2", 0f,
+                    SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv2"));
 
                 // === Lv3 패시브 ===
                 ProducerFarmGrid_Lv3 = SkillTreeConfig.BindServerSync(config,
@@ -223,41 +200,6 @@ namespace CaptainSkillTree.SkillTree
                     "Producer Job Skills", "Producer_EnchantChance_Lv3", 25f,
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv3"));
 
-                ProducerEnchantWeaponDmgMin_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponDmgMin_Lv3", 5f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponDmgMin_Lv3"));
-                ProducerEnchantWeaponDmgMax_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponDmgMax_Lv3", 5f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponDmgMax_Lv3"));
-
-                ProducerEnchantArmorMin_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantArmorMin_Lv3", 5f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantArmorMin_Lv3"));
-                ProducerEnchantArmorMax_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantArmorMax_Lv3", 5f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantArmorMax_Lv3"));
-
-                ProducerEnchantHpMin_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantHpMin_Lv3", 2f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantHpMin_Lv3"));
-                ProducerEnchantHpMax_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantHpMax_Lv3", 2f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantHpMax_Lv3"));
-
-                ProducerEnchantWeaponSpdMin_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponSpdMin_Lv3", 3f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponSpdMin_Lv3"));
-                ProducerEnchantWeaponSpdMax_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponSpdMax_Lv3", 5f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponSpdMax_Lv3"));
-
-                ProducerEnchantStaminaMin_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantStaminaMin_Lv3", 5f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantStaminaMin_Lv3"));
-                ProducerEnchantStaminaMax_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantStaminaMax_Lv3", 8f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantStaminaMax_Lv3"));
-
                 // === Lv4 패시브 ===
                 ProducerFarmGrid_Lv4 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_FarmGrid_Lv4", 6,
@@ -275,41 +217,6 @@ namespace CaptainSkillTree.SkillTree
                     "Producer Job Skills", "Producer_EnchantChance_Lv4", 30f,
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv4"));
 
-                ProducerEnchantWeaponDmgMin_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponDmgMin_Lv4", 7f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponDmgMin_Lv4"));
-                ProducerEnchantWeaponDmgMax_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponDmgMax_Lv4", 9f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponDmgMax_Lv4"));
-
-                ProducerEnchantArmorMin_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantArmorMin_Lv4", 7f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantArmorMin_Lv4"));
-                ProducerEnchantArmorMax_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantArmorMax_Lv4", 9f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantArmorMax_Lv4"));
-
-                ProducerEnchantHpMin_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantHpMin_Lv4", 4f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantHpMin_Lv4"));
-                ProducerEnchantHpMax_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantHpMax_Lv4", 5f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantHpMax_Lv4"));
-
-                ProducerEnchantWeaponSpdMin_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponSpdMin_Lv4", 5f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponSpdMin_Lv4"));
-                ProducerEnchantWeaponSpdMax_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponSpdMax_Lv4", 8f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponSpdMax_Lv4"));
-
-                ProducerEnchantStaminaMin_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantStaminaMin_Lv4", 8f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantStaminaMin_Lv4"));
-                ProducerEnchantStaminaMax_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantStaminaMax_Lv4", 12f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantStaminaMax_Lv4"));
-
                 // === Lv5 패시브 ===
                 ProducerFarmGrid_Lv5 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_FarmGrid_Lv5", 8,
@@ -326,41 +233,6 @@ namespace CaptainSkillTree.SkillTree
                 ProducerEnchantChance_Lv5 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_EnchantChance_Lv5", 35f,
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv5"));
-
-                ProducerEnchantWeaponDmgMin_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponDmgMin_Lv5", 10f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponDmgMin_Lv5"));
-                ProducerEnchantWeaponDmgMax_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponDmgMax_Lv5", 12f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponDmgMax_Lv5"));
-
-                ProducerEnchantArmorMin_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantArmorMin_Lv5", 10f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantArmorMin_Lv5"));
-                ProducerEnchantArmorMax_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantArmorMax_Lv5", 12f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantArmorMax_Lv5"));
-
-                ProducerEnchantHpMin_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantHpMin_Lv5", 6f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantHpMin_Lv5"));
-                ProducerEnchantHpMax_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantHpMax_Lv5", 8f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantHpMax_Lv5"));
-
-                ProducerEnchantWeaponSpdMin_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponSpdMin_Lv5", 8f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponSpdMin_Lv5"));
-                ProducerEnchantWeaponSpdMax_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantWeaponSpdMax_Lv5", 12f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantWeaponSpdMax_Lv5"));
-
-                ProducerEnchantStaminaMin_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantStaminaMin_Lv5", 12f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantStaminaMin_Lv5"));
-                ProducerEnchantStaminaMax_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantStaminaMax_Lv5", 15f,
-                    SkillTreeConfig.GetConfigDescription("Producer_EnchantStaminaMax_Lv5"));
 
                 Plugin.Log.LogDebug("[제작 전문가 컨피그] 초기화 완료");
                 RegisterProducerEventHandlers();
@@ -394,6 +266,8 @@ namespace CaptainSkillTree.SkillTree
                 ProducerMaterialReduction_Lv3.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerMaterialReduction_Lv4.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerMaterialReduction_Lv5.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerEnchantChance_Lv1.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerEnchantChance_Lv2.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerEnchantChance_Lv3.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerEnchantChance_Lv4.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerEnchantChance_Lv5.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();

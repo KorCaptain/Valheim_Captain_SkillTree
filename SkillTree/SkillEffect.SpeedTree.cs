@@ -384,6 +384,20 @@ namespace CaptainSkillTree.SkillTree
                     bonus += csptSpdBonus;
                 }
 
+                // 제작 전문가 CrossbowReload 마법부여 석궁 재장전 속도 보너스
+                // ms 단위 → % 변환: 100ms = +10% 속도 (10f 나눔)
+                if (skillType == Skills.SkillType.Crossbows &&
+                    weapon?.m_customData != null &&
+                    weapon.m_customData.TryGetValue("cspt_enchant_type", out string csptCbType) &&
+                    csptCbType == "7" &&
+                    weapon.m_customData.TryGetValue("cspt_enchant_value", out string csptCbVal) &&
+                    float.TryParse(csptCbVal, System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out float csptCbBonus) &&
+                    csptCbBonus > 0f)
+                {
+                    bonus += csptCbBonus / 10f;
+                }
+
                 return bonus;
             }
             catch (System.Exception ex)

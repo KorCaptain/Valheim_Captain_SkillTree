@@ -162,11 +162,28 @@ namespace CaptainSkillTree.SkillTree
                     vfxTimer = 0f;
                 }
 
-                // 지면 높이 보정
+                // 지면 높이 보정 (블록 체크 전 먼저 실행 - 경사면 이동방향을 정확히 계산하기 위해)
                 if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
-                    LayerMask.GetMask("terrain", "Default")))
+                    LayerMask.GetMask("terrain", "static_solid")))
                 {
                     newPos.y = groundHit.point.y + 0.3f;
+                }
+
+                // 전방 장애물 충돌 체크 (벽/바위/나무/건축물) - 지형 보정 후 실제 이동방향으로 체크
+                // Default 레이어 추가: Valheim 나무/덤불이 Default 레이어에 존재
+                LayerMask blockMask = LayerMask.GetMask("piece", "static_solid", "Default");
+                Vector3 moveDir = newPos - player.transform.position;
+                float moveDist = moveDir.magnitude;
+                if (moveDist > 0.05f && Physics.SphereCast(
+                    player.GetCenterPoint(), 0.5f, moveDir.normalized,
+                    out RaycastHit blockHit, moveDist, blockMask))
+                {
+                    // Character 컴포넌트가 있으면 몬스터/플레이어 → 적중 감지에서 처리, 블록 안 함
+                    if (blockHit.collider.GetComponentInParent<Character>() == null)
+                    {
+                        Plugin.Log.LogDebug($"[방패돌진] 장애물 충돌({blockHit.collider.name}) - 돌진 중단");
+                        break;
+                    }
                 }
 
                 // Rigidbody 이동 (physics-safe)
@@ -180,26 +197,39 @@ namespace CaptainSkillTree.SkillTree
                     player.transform.position = newPos;
                 }
 
-                // SphereCast로 전방 적 감지 (0.8m 반경)
+                // 적 감지: OverlapSphere(겹침) + SphereCast(전방) 병행
+                // SphereCast는 origin에 겹친 콜라이더를 감지 못하므로 OverlapSphere 선행
+                LayerMask charMask = LayerMask.GetMask("character", "hitbox");
                 Vector3 castOrigin = player.GetCenterPoint();
-                if (Physics.SphereCast(castOrigin, 0.8f, dashDir2, out RaycastHit sphereHit, 2.0f,
-                    LayerMask.GetMask("character")))
+
+                // 1단계: OverlapSphere - 플레이어와 겹친 적 감지 (0.8m → 1.2m로 근접 보완)
+                if (!hitEnemy)
+                {
+                    var overlaps = Physics.OverlapSphere(castOrigin, 1.2f, charMask);
+                    foreach (var col in overlaps)
+                    {
+                        var enemy = col.GetComponentInParent<Character>();
+                        if (enemy != null && enemy != player && !enemy.IsDead() &&
+                            enemy.GetFaction() != Character.Faction.Players)
+                        {
+                            hitEnemy = true;
+                            try { ApplyShieldChargeHit(player, enemy, dashDir2, enemy.GetCenterPoint()); }
+                            catch (Exception ex) { Plugin.Log.LogError($"[방패돌진] 충돌 처리 오류: {ex.Message}"); }
+                            break;
+                        }
+                    }
+                }
+
+                // 2단계: SphereCast - 전방 2m 적 감지
+                if (!hitEnemy && Physics.SphereCast(castOrigin, 0.8f, dashDir2, out RaycastHit sphereHit, 2.0f, charMask))
                 {
                     var enemy = sphereHit.collider.GetComponentInParent<Character>();
                     if (enemy != null && enemy != player && !enemy.IsDead() &&
                         enemy.GetFaction() != Character.Faction.Players)
                     {
                         hitEnemy = true;
-                        Vector3 hitPoint = enemy.GetCenterPoint();
-
-                        try
-                        {
-                            ApplyShieldChargeHit(player, enemy, dashDir2, hitPoint);
-                        }
-                        catch (Exception ex)
-                        {
-                            Plugin.Log.LogError($"[방패돌진] 충돌 처리 오류: {ex.Message}");
-                        }
+                        try { ApplyShieldChargeHit(player, enemy, dashDir2, enemy.GetCenterPoint()); }
+                        catch (Exception ex) { Plugin.Log.LogError($"[방패돌진] 충돌 처리 오류: {ex.Message}"); }
                     }
                 }
 

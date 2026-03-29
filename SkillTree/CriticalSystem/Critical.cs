@@ -179,6 +179,11 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                 Plugin.Log.LogDebug($"[치명타] Tier 5 사냥 본능 (패시브): +{tierBonus}%");
             }
 
+            // 제작 전문가 BowCrit 마법부여 (활 장착 시)
+            var bow = player?.GetCurrentWeapon();
+            if (bow != null && ProducerCrafting.GetEnchantType(bow) == ProducerCrafting.EnchantType.BowCrit)
+                bonus += ProducerCrafting.GetEnchantValue(bow);
+
             if (bonus > 0f)
             {
                 Plugin.Log.LogDebug($"[활 치명타] 총 확률: {bonus}%");

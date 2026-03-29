@@ -862,59 +862,31 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv1 ---
                 ["Producer_FarmGrid_Lv1"] = "【농사 그리드 크기 Lv1】\nLv1에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 2",
+                ["Producer_EnchantChance_Lv1"] = "【마법부여 확률 Lv1 (%)】\nLv1에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 0%",
 
                 // --- Lv2 ---
                 ["Producer_FarmGrid_Lv2"] = "【농사 그리드 크기 Lv2】\nLv2에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 2",
                 ["Producer_Durability_Lv2"] = "【제작 아이템 내구도 보너스 Lv2 (%)】\nLv2에서 제작 아이템의 내구도 증가율입니다.\n기본값: 10%",
                 ["Producer_MaterialReduction_Lv2"] = "【제작 재료 감소 Lv2 (%)】\nLv2에서 제작 시 절약되는 재료 비율입니다.\n기본값: 10%",
+                ["Producer_EnchantChance_Lv2"] = "【마법부여 확률 Lv2 (%)】\nLv2에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 0%",
 
                 // --- Lv3 ---
                 ["Producer_FarmGrid_Lv3"] = "【농사 그리드 크기 Lv3】\nLv3에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 4",
                 ["Producer_Durability_Lv3"] = "【제작 아이템 내구도 보너스 Lv3 (%)】\nLv3에서 제작 아이템의 내구도 증가율입니다.\n기본값: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【제작 재료 감소 Lv3 (%)】\nLv3에서 제작 시 절약되는 재료 비율입니다.\n기본값: 15%",
                 ["Producer_EnchantChance_Lv3"] = "【마법부여 확률 Lv3 (%)】\nLv3에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 25%",
-                ["Producer_EnchantWeaponDmgMin_Lv3"] = "【무기 데미지 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 무기의 데미지 보너스 최솟값입니다.\n기본값: 5%",
-                ["Producer_EnchantWeaponDmgMax_Lv3"] = "【무기 데미지 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 무기의 데미지 보너스 최댓값입니다.\n기본값: 5%",
-                ["Producer_EnchantArmorMin_Lv3"] = "【방어구 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 방어구의 방어력 보너스 최솟값입니다.\n기본값: 5%",
-                ["Producer_EnchantArmorMax_Lv3"] = "【방어구 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 방어구의 방어력 보너스 최댓값입니다.\n기본값: 5%",
-                ["Producer_EnchantHpMin_Lv3"] = "【HP 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 2%",
-                ["Producer_EnchantHpMax_Lv3"] = "【HP 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 2%",
-                ["Producer_EnchantWeaponSpdMin_Lv3"] = "【무기 공속 마법부여 최솟값 Lv3 (%)】\nLv3 마법부여 무기의 공격속도 보너스 최솟값입니다.\n기본값: 3%",
-                ["Producer_EnchantWeaponSpdMax_Lv3"] = "【무기 공속 마법부여 최댓값 Lv3 (%)】\nLv3 마법부여 무기의 공격속도 보너스 최댓값입니다.\n기본값: 5%",
-                ["Producer_EnchantStaminaMin_Lv3"] = "【스태미나 마법부여 최솟값 Lv3】\nLv3 마법부여 아이템의 최대 스태미나 보너스 최솟값입니다.\n기본값: 5",
-                ["Producer_EnchantStaminaMax_Lv3"] = "【스태미나 마법부여 최댓값 Lv3】\nLv3 마법부여 아이템의 최대 스태미나 보너스 최댓값입니다.\n기본값: 8",
 
                 // --- Lv4 ---
                 ["Producer_FarmGrid_Lv4"] = "【농사 그리드 크기 Lv4】\nLv4에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 6",
                 ["Producer_Durability_Lv4"] = "【제작 아이템 내구도 보너스 Lv4 (%)】\nLv4에서 제작 아이템의 내구도 증가율입니다.\n기본값: 20%",
                 ["Producer_MaterialReduction_Lv4"] = "【제작 재료 감소 Lv4 (%)】\nLv4에서 제작 시 절약되는 재료 비율입니다.\n기본값: 20%",
                 ["Producer_EnchantChance_Lv4"] = "【마법부여 확률 Lv4 (%)】\nLv4에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 30%",
-                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【무기 데미지 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 무기의 데미지 보너스 최솟값입니다.\n기본값: 7%",
-                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【무기 데미지 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 무기의 데미지 보너스 최댓값입니다.\n기본값: 9%",
-                ["Producer_EnchantArmorMin_Lv4"] = "【방어구 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 방어구의 방어력 보너스 최솟값입니다.\n기본값: 7%",
-                ["Producer_EnchantArmorMax_Lv4"] = "【방어구 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 방어구의 방어력 보너스 최댓값입니다.\n기본값: 9%",
-                ["Producer_EnchantHpMin_Lv4"] = "【HP 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 4%",
-                ["Producer_EnchantHpMax_Lv4"] = "【HP 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 5%",
-                ["Producer_EnchantWeaponSpdMin_Lv4"] = "【무기 공속 마법부여 최솟값 Lv4 (%)】\nLv4 마법부여 무기의 공격속도 보너스 최솟값입니다.\n기본값: 5%",
-                ["Producer_EnchantWeaponSpdMax_Lv4"] = "【무기 공속 마법부여 최댓값 Lv4 (%)】\nLv4 마법부여 무기의 공격속도 보너스 최댓값입니다.\n기본값: 8%",
-                ["Producer_EnchantStaminaMin_Lv4"] = "【스태미나 마법부여 최솟값 Lv4】\nLv4 마법부여 아이템의 최대 스태미나 보너스 최솟값입니다.\n기본값: 8",
-                ["Producer_EnchantStaminaMax_Lv4"] = "【스태미나 마법부여 최댓값 Lv4】\nLv4 마법부여 아이템의 최대 스태미나 보너스 최댓값입니다.\n기본값: 12",
 
                 // --- Lv5 ---
                 ["Producer_FarmGrid_Lv5"] = "【농사 그리드 크기 Lv5】\nLv5에서 농사 그리드에 추가되는 칸 수입니다.\n기본값: 8",
                 ["Producer_Durability_Lv5"] = "【제작 아이템 내구도 보너스 Lv5 (%)】\nLv5에서 제작 아이템의 내구도 증가율입니다.\n기본값: 30%",
                 ["Producer_MaterialReduction_Lv5"] = "【제작 재료 감소 Lv5 (%)】\nLv5에서 제작 시 절약되는 재료 비율입니다.\n기본값: 30%",
                 ["Producer_EnchantChance_Lv5"] = "【마법부여 확률 Lv5 (%)】\nLv5에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 35%",
-                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【무기 데미지 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 무기의 데미지 보너스 최솟값입니다.\n기본값: 10%",
-                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【무기 데미지 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 무기의 데미지 보너스 최댓값입니다.\n기본값: 12%",
-                ["Producer_EnchantArmorMin_Lv5"] = "【방어구 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 방어구의 방어력 보너스 최솟값입니다.\n기본값: 10%",
-                ["Producer_EnchantArmorMax_Lv5"] = "【방어구 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 방어구의 방어력 보너스 최댓값입니다.\n기본값: 12%",
-                ["Producer_EnchantHpMin_Lv5"] = "【HP 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 아이템의 최대 HP 보너스 최솟값입니다.\n기본값: 6%",
-                ["Producer_EnchantHpMax_Lv5"] = "【HP 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 아이템의 최대 HP 보너스 최댓값입니다.\n기본값: 8%",
-                ["Producer_EnchantWeaponSpdMin_Lv5"] = "【무기 공속 마법부여 최솟값 Lv5 (%)】\nLv5 마법부여 무기의 공격속도 보너스 최솟값입니다.\n기본값: 8%",
-                ["Producer_EnchantWeaponSpdMax_Lv5"] = "【무기 공속 마법부여 최댓값 Lv5 (%)】\nLv5 마법부여 무기의 공격속도 보너스 최댓값입니다.\n기본값: 12%",
-                ["Producer_EnchantStaminaMin_Lv5"] = "【스태미나 마법부여 최솟값 Lv5】\nLv5 마법부여 아이템의 최대 스태미나 보너스 최솟값입니다.\n기본값: 12",
-                ["Producer_EnchantStaminaMax_Lv5"] = "【스태미나 마법부여 최댓값 Lv5】\nLv5 마법부여 아이템의 최대 스태미나 보너스 최댓값입니다.\n기본값: 15",
             };
         }
 
@@ -1793,59 +1765,31 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv1 ---
                 ["Producer_FarmGrid_Lv1"] = "【Farm Grid Size Lv1】\nAdditional farm grid slots at Lv1.\nDefault: 2",
+                ["Producer_EnchantChance_Lv1"] = "【Enchant Chance Lv1 (%)】\nChance for crafted items to receive an enchantment at Lv1.\nDefault: 0%",
 
                 // --- Lv2 ---
                 ["Producer_FarmGrid_Lv2"] = "【Farm Grid Size Lv2】\nAdditional farm grid slots at Lv2.\nDefault: 2",
                 ["Producer_Durability_Lv2"] = "【Crafted Item Durability Bonus Lv2 (%)】\nDurability bonus of crafted items at Lv2.\nDefault: 10%",
                 ["Producer_MaterialReduction_Lv2"] = "【Material Reduction Lv2 (%)】\nMaterials saved per craft at Lv2.\nDefault: 10%",
+                ["Producer_EnchantChance_Lv2"] = "【Enchant Chance Lv2 (%)】\nChance for crafted items to receive an enchantment at Lv2.\nDefault: 0%",
 
                 // --- Lv3 ---
                 ["Producer_FarmGrid_Lv3"] = "【Farm Grid Size Lv3】\nAdditional farm grid slots at Lv3.\nDefault: 4",
                 ["Producer_Durability_Lv3"] = "【Crafted Item Durability Bonus Lv3 (%)】\nDurability bonus of crafted items at Lv3.\nDefault: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【Material Reduction Lv3 (%)】\nMaterials saved per craft at Lv3.\nDefault: 15%",
                 ["Producer_EnchantChance_Lv3"] = "【Enchant Chance Lv3 (%)】\nChance for crafted items to receive an enchantment at Lv3.\nDefault: 25%",
-                ["Producer_EnchantWeaponDmgMin_Lv3"] = "【Weapon Damage Enchant Min Lv3 (%)】\nMin weapon damage bonus from enchantment at Lv3.\nDefault: 5%",
-                ["Producer_EnchantWeaponDmgMax_Lv3"] = "【Weapon Damage Enchant Max Lv3 (%)】\nMax weapon damage bonus from enchantment at Lv3.\nDefault: 5%",
-                ["Producer_EnchantArmorMin_Lv3"] = "【Armor Enchant Min Lv3 (%)】\nMin armor bonus from enchantment at Lv3.\nDefault: 5%",
-                ["Producer_EnchantArmorMax_Lv3"] = "【Armor Enchant Max Lv3 (%)】\nMax armor bonus from enchantment at Lv3.\nDefault: 5%",
-                ["Producer_EnchantHpMin_Lv3"] = "【HP Enchant Min Lv3 (%)】\nMin max HP bonus from enchantment at Lv3.\nDefault: 2%",
-                ["Producer_EnchantHpMax_Lv3"] = "【HP Enchant Max Lv3 (%)】\nMax max HP bonus from enchantment at Lv3.\nDefault: 2%",
-                ["Producer_EnchantWeaponSpdMin_Lv3"] = "【Weapon Speed Enchant Min Lv3 (%)】\nMin attack speed bonus from enchantment at Lv3.\nDefault: 3%",
-                ["Producer_EnchantWeaponSpdMax_Lv3"] = "【Weapon Speed Enchant Max Lv3 (%)】\nMax attack speed bonus from enchantment at Lv3.\nDefault: 5%",
-                ["Producer_EnchantStaminaMin_Lv3"] = "【Stamina Enchant Min Lv3】\nMin max stamina bonus from enchantment at Lv3.\nDefault: 5",
-                ["Producer_EnchantStaminaMax_Lv3"] = "【Stamina Enchant Max Lv3】\nMax max stamina bonus from enchantment at Lv3.\nDefault: 8",
 
                 // --- Lv4 ---
                 ["Producer_FarmGrid_Lv4"] = "【Farm Grid Size Lv4】\nAdditional farm grid slots at Lv4.\nDefault: 6",
                 ["Producer_Durability_Lv4"] = "【Crafted Item Durability Bonus Lv4 (%)】\nDurability bonus of crafted items at Lv4.\nDefault: 20%",
                 ["Producer_MaterialReduction_Lv4"] = "【Material Reduction Lv4 (%)】\nMaterials saved per craft at Lv4.\nDefault: 20%",
                 ["Producer_EnchantChance_Lv4"] = "【Enchant Chance Lv4 (%)】\nChance for crafted items to receive an enchantment at Lv4.\nDefault: 30%",
-                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【Weapon Damage Enchant Min Lv4 (%)】\nMin weapon damage bonus from enchantment at Lv4.\nDefault: 7%",
-                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【Weapon Damage Enchant Max Lv4 (%)】\nMax weapon damage bonus from enchantment at Lv4.\nDefault: 9%",
-                ["Producer_EnchantArmorMin_Lv4"] = "【Armor Enchant Min Lv4 (%)】\nMin armor bonus from enchantment at Lv4.\nDefault: 7%",
-                ["Producer_EnchantArmorMax_Lv4"] = "【Armor Enchant Max Lv4 (%)】\nMax armor bonus from enchantment at Lv4.\nDefault: 9%",
-                ["Producer_EnchantHpMin_Lv4"] = "【HP Enchant Min Lv4 (%)】\nMin max HP bonus from enchantment at Lv4.\nDefault: 4%",
-                ["Producer_EnchantHpMax_Lv4"] = "【HP Enchant Max Lv4 (%)】\nMax max HP bonus from enchantment at Lv4.\nDefault: 5%",
-                ["Producer_EnchantWeaponSpdMin_Lv4"] = "【Weapon Speed Enchant Min Lv4 (%)】\nMin attack speed bonus from enchantment at Lv4.\nDefault: 5%",
-                ["Producer_EnchantWeaponSpdMax_Lv4"] = "【Weapon Speed Enchant Max Lv4 (%)】\nMax attack speed bonus from enchantment at Lv4.\nDefault: 8%",
-                ["Producer_EnchantStaminaMin_Lv4"] = "【Stamina Enchant Min Lv4】\nMin max stamina bonus from enchantment at Lv4.\nDefault: 8",
-                ["Producer_EnchantStaminaMax_Lv4"] = "【Stamina Enchant Max Lv4】\nMax max stamina bonus from enchantment at Lv4.\nDefault: 12",
 
                 // --- Lv5 ---
                 ["Producer_FarmGrid_Lv5"] = "【Farm Grid Size Lv5】\nAdditional farm grid slots at Lv5.\nDefault: 8",
                 ["Producer_Durability_Lv5"] = "【Crafted Item Durability Bonus Lv5 (%)】\nDurability bonus of crafted items at Lv5.\nDefault: 30%",
                 ["Producer_MaterialReduction_Lv5"] = "【Material Reduction Lv5 (%)】\nMaterials saved per craft at Lv5.\nDefault: 30%",
                 ["Producer_EnchantChance_Lv5"] = "【Enchant Chance Lv5 (%)】\nChance for crafted items to receive an enchantment at Lv5.\nDefault: 35%",
-                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【Weapon Damage Enchant Min Lv5 (%)】\nMin weapon damage bonus from enchantment at Lv5.\nDefault: 10%",
-                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【Weapon Damage Enchant Max Lv5 (%)】\nMax weapon damage bonus from enchantment at Lv5.\nDefault: 12%",
-                ["Producer_EnchantArmorMin_Lv5"] = "【Armor Enchant Min Lv5 (%)】\nMin armor bonus from enchantment at Lv5.\nDefault: 10%",
-                ["Producer_EnchantArmorMax_Lv5"] = "【Armor Enchant Max Lv5 (%)】\nMax armor bonus from enchantment at Lv5.\nDefault: 12%",
-                ["Producer_EnchantHpMin_Lv5"] = "【HP Enchant Min Lv5 (%)】\nMin max HP bonus from enchantment at Lv5.\nDefault: 6%",
-                ["Producer_EnchantHpMax_Lv5"] = "【HP Enchant Max Lv5 (%)】\nMax max HP bonus from enchantment at Lv5.\nDefault: 8%",
-                ["Producer_EnchantWeaponSpdMin_Lv5"] = "【Weapon Speed Enchant Min Lv5 (%)】\nMin attack speed bonus from enchantment at Lv5.\nDefault: 8%",
-                ["Producer_EnchantWeaponSpdMax_Lv5"] = "【Weapon Speed Enchant Max Lv5 (%)】\nMax attack speed bonus from enchantment at Lv5.\nDefault: 12%",
-                ["Producer_EnchantStaminaMin_Lv5"] = "【Stamina Enchant Min Lv5】\nMin max stamina bonus from enchantment at Lv5.\nDefault: 12",
-                ["Producer_EnchantStaminaMax_Lv5"] = "【Stamina Enchant Max Lv5】\nMax max stamina bonus from enchantment at Lv5.\nDefault: 15",
 
                 // ============================================
                 // Job Level Coin Cost (직업 레벨업 코인 비용)

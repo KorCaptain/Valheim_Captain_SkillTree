@@ -11,6 +11,30 @@ namespace CaptainSkillTree.SkillTree
     // === 근접 스킬 Harmony 패치들 ===
 
     /// <summary>
+    /// 단검 전문가 백스탭 보너스 - Prefix로 실제 피해에 반영
+    /// </summary>
+    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+    public static class MeleeSkills_Dagger_Backstab_Prefix_Patch
+    {
+        [HarmonyPriority(Priority.Normal)]
+        public static void Prefix(Character __instance, HitData hit)
+        {
+            try
+            {
+                var attacker = hit.GetAttacker();
+                if (attacker == null || !attacker.IsPlayer() || __instance.IsPlayer()) return;
+                var player = attacker as Player;
+                if (player == null || !SkillEffect.IsUsingDagger(player)) return;
+                SkillEffect.CheckKnifeExpertBackstab(player, __instance, hit);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[단검 전문가] 백스탭 Prefix 패치 오류: {ex.Message}");
+            }
+        }
+    }
+
+    /// <summary>
     /// 단검 공격 시 연속 공격 및 백스탭 효과
     /// </summary>
     [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
@@ -35,12 +59,6 @@ namespace CaptainSkillTree.SkillTree
 
                 // 연속 공격 카운트 업데이트
                 SkillEffect.UpdateConsecutiveHits(player);
-
-                // 백스탭 확인
-                bool isBackstab = SkillEffect.IsBackstab(player, __instance);
-
-                // 단검 전문가 - 백스탭 공격 시 데미지 보너스
-                SkillEffect.CheckKnifeExpertBackstab(player, __instance, hit);
 
                 // 전투 숙련 - 전투 중 공격력 증가
                 SkillEffect.CheckKnifeCombatDamage(player, hit);
@@ -200,10 +218,6 @@ namespace CaptainSkillTree.SkillTree
             // 실제 데미지 수정은 GetDamage 패치(ApplySpearPassiveBonus)에서 처리
         }
 
-        // 효과 텍스트 표시 쿨다운 (폴암강화)
-        private static Dictionary<Player, float> polearmBoostLastTextTime = new Dictionary<Player, float>();
-        private const float TEXT_COOLDOWN = 1f;
-
         private static void ProcessPolearmAttack(Player player, HitData hit)
         {
             // 광역 강타 2연속 공격 체크
@@ -226,19 +240,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillEffect.nextAttackBoosted[player] = false;
                 }
             }
-
-            // 폴암강화 - 이미 GetDamage(Postfix)에서 적용됨, 텍스트 표시만 (3초 쿨다운)
-            if (SkillEffect.HasSkill("polearm_step4_charge"))
-            {
-                float now = Time.time;
-                if (!polearmBoostLastTextTime.TryGetValue(player, out float last) || now - last >= TEXT_COOLDOWN)
-                {
-                    float bonusValue = SkillTreeConfig.PolearmStep4ChargeDamageBonusValue;
-                    SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("polearm_boost_active", bonusValue));
-                    polearmBoostLastTextTime[player] = now;
-                }
-            }
-
+            // 폴암강화(polearm_step4_charge)는 영구 패시브 - 데미지는 GetDamage에서 적용, 텍스트 표시 없음
         }
     }
 
@@ -449,8 +451,8 @@ namespace CaptainSkillTree.SkillTree
                 totalSpearBonus += SkillTreeConfig.SpearStep2CritDamageBonusValue;
             }
 
-            // 투창 전문가 - 패시브 공격력 +120%
-            if (SkillEffect.HasSkill("spear_Step1_throw"))
+            // 투창 전문가 - 2차 공격(투창)에만 공격력 +120%
+            if (SkillEffect.HasSkill("spear_Step1_throw") && SkillEffect.IsRecentSpearSecondaryAttack(player))
             {
                 totalSpearBonus += Spear_Config.SpearStep2ThrowDamageValue;
             }

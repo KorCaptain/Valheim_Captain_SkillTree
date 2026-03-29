@@ -21,7 +21,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.2.069")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.2.102")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -60,6 +60,24 @@ namespace CaptainSkillTree
         {
             Log = Logger;
             _instance = this;
+
+            // ===== Config 버전 변경 시 설정 파일 초기화 =====
+            // 모드 업데이트로 기본값이 변경된 경우 사용자 config를 새 값으로 갱신
+            {
+                string configPath = Config.ConfigFilePath;
+                string versionFile = Path.ChangeExtension(configPath, ".version");
+                string storedVer = File.Exists(versionFile) ? File.ReadAllText(versionFile).Trim() : "0.0.0";
+                string currentVer = Info.Metadata.Version.ToString();
+                if (storedVer != currentVer)
+                {
+                    if (File.Exists(configPath))
+                    {
+                        File.Delete(configPath);
+                        Log.LogInfo($"[Config] 버전 변경 ({storedVer} → {currentVer}) - 설정 파일 초기화");
+                    }
+                    File.WriteAllText(versionFile, currentVer);
+                }
+            }
 
             // ===== Captain Level System Config (최상단) =====
             CaptainLevelConfig.Bind(Config);

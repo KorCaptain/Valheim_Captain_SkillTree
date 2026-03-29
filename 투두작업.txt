@@ -80,10 +80,119 @@ Producer 도 같은 방식으로 변경
 수리 망치 클릭 해서 수리할대 멈춤현상
 
 이거 자꾸 반복 수정하는데 원인 분석하고 인벤토리 관련 수정할땐 반듯이 체크하게 해줘
---
+--**
 성기사 lv2 분노의 망치 또는 돌진베기  툴팁 확인
+--
+왼쪽에만 표시되는데 내가 원한건
+왼쪽에는 원래 있는 발동중인 효과 밑에 "스킬트리 효과"를 만들고
+스킬트리 효과 클릭하면 오른쪽 현재 발동중인 효과 라는  부분에
+ 스킬트리 효과
+
+직업 효과
+액티브 스 킬
+패시브 효과
+
+당연히 배운거만 나오게 하면되
+---
+Info   :Captain SkillTree Mod] [CSTPanel] InventoryGui.Show → 탐색 시작
+[Info   :EpicMMOSystem] Restoring UI Positions
+[Info   : Unity Log] 03/28/2026 18:33:07: Setting selected recipe 0
+
+[Info   :Captain SkillTree Mod] [CSTPanel] InventoryGui.Show → 탐색 시작
+[Info   :Captain SkillTree Mod] [CSTPanel] TMP 발견: '메시지 로그' @ name
+[Info   :Captain SkillTree Mod] [CSTPanel] 5프레임 후 EpicMMO 패널 발견: ListRoot
+[Info   :Captain SkillTree Mod] [CSTPanel] InjectAll: ListRoot (자식: 2)
+[Info   :Captain SkillTree Mod] [CSTPanel] 65프레임 후 EpicMMO 패널 발견: ListRoot
+[Info   :Captain SkillTree Mod] [CSTPanel] InjectAll: ListRoot (자식: 3)
+[Info   :Captain SkillTree Mod] [CSTPanel] 공통부모: TextList, 왼쪽SR: SkillList
+[Info   :Captain SkillTree Mod] [CSTPanel] 오른쪽 패널 루트 (ScrollRect 없음): SkillListScroll
+[Info   :Captain SkillTree Mod] [CSTPanel] 공통부모: TextList, 왼쪽SR: SkillList
+[Info   :Captain SkillTree Mod] [CSTPanel] 오른쪽 패널 루트 (ScrollRect 없음): SkillListScroll
+[Info   :Captain SkillTree Mod] [CSTPanel] 공통부모: TextList, 왼쪽SR: SkillList[Image #7] 시작할때 엄척 랙이 걸려
+
+-->
+ 두 가지 핵심 문제가 확인됩니다:
+
+  1. 버튼 텍스트 겹침: EpicMMO 버튼이 TMP_Text를 사용 → SetButtonText()가 UI.Text를 못 찾아 새 Text 추가 → "발동중인
+  효과 + 스킬트리 효과" 동시 표시
+  2. 랙 + 이중 주입: InventoryGui.Show가 두 번 발화 → 두 개의 InjectDelayed 코루틴이 150프레임씩
+  Resources.FindObjectsOfTypeAll<GameObject>() 호출
+  3. 우측 패널: SkillListScroll을 찾았지만 그 자식 구조를 몰라 주입이 제대로 안 됨
+--
+정리 내용:
+
+  ┌───────────────────────────────┬───────────────────────────────────┐
+  │             작업              │               결과                │
+  ├───────────────────────────────┼───────────────────────────────────┤
+  │ md/까마귀패널.md 저장         │ ✅ 구조/문제점/해결방안 전부 기록 │
+  ├───────────────────────────────┼───────────────────────────────────┤
+  │ EpicMMOPanelExtension.cs 복원 │ ✅ 빈 껍데기 (랙/버그 없음)       │
+  └───────────────────────────────┴───────────────────────────────────┘
+
+  다음에 개발 재개할 때 md/까마귀패널.md 열면 확인된 Unity 구조(TextList → SkillList → ListRoot, SkillListScroll),
+  해결해야 할 3가지 문제(TMP 텍스트, 이중 주입 랙, 오른쪽 패널 주입), 코드 스니펫까지 전부 있습니다.
+
+---**
+둔기 전문가의
+밀어내기	밀어내기 적용이 안됨
+탱커	체력 +25가 아닌 +25%로 적용됨  Lv 별 확인필요 수치증가(%증가 아님)
+
+방패돌진	스킬 시전시 구조물 뚤고 지나감 -> 구조물 못지나가야됨
+분노의 망치	스킬 시전시 구조물 뚤고 지나감 -> 구조물 못지나가야됨, 언덕이나 바위는 그 위에 착지해야함
+---
+---**
+생산 전문가 트리의 제작lv1~4 제작시 효과와효과음은 무기,방어구,유틸리티,망토   이 부류에서만 적용되어야해 (음식, , 물약 및 기타 는 해당없어)
+
+--**
+제직 전문가 - 플랜가드와 충돌? 
+그리드 표시 및 효과(쇠스랑 사용시) 문제 및 개선
+작물이 안심어지고(왼쪽 클릭이 안됨) 씨앗을 바꾸면 심어짐, (다른 팜그리드 관련 모드가 있으면 오작동하는거 같아 다른 모드 있으면 우리 모드는 정지시켜줘)
+4개 심는데 10개 소비되는 버그 있음
+심은 씨앗이나 식물이 있으면 자동으로 그리드(격자)를 그 부근에 줄맞춤으로 조정해줘
+--**
+제작 전문가 Y 스킬
+자기 자신은 효과 및 쿨타임 도는데
+주변 캐릭터에게는 적용이 하나도 안됨
+--
+방패 돌진
+적중을 거리를 10m 로 변경하고 적에게 적중이 잘안되 돌진시 3m 이내는 적중한걸로 해줘 
+--**
+분노의 망치
+바위나 오브젝트 위에서 사용시 아에 앞에 막힌게 아닌데도.. 막힌거처럼 제자리서 스킬사용되 점프 자체를 안하고 말야 
+적중된 몬스터에게 vfx매니저로 fx_crit 효과적용
+--
+공격 전문가 트리의
+연속 공격의 대가 관련 한손무기 공격+5%가 아이템에 효과 및 표시 적용안됨
+C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\md Aattack_Tolltip_Display.md
+-- 
+버서커 무적 패시브가 체력 많은데도 발동될때가 있어 
+버서커 체력 패시브를 수정하자
+lv1 체력 +40(플랫, %아님)
+lv2 체력 +60
+lv3 체력 +80
+lv4 체력 +100
+lv5 체력 +120
+다국어 7개 번역
+--
+탱커 패시브 체력 수치 수정
+lv1 체력 +25%(플랫아님, %임)
+lv2 체력 +30%
+lv3 체력 +35%
+lv4 체력 +40%
+lv5 체력 +50%
+다국어 7개 번역
+--
+관통 돌격 이  본메스를 그냥 통과하고 적중이 안되 
+효과 및 툴팁을 변경하자
+돌격시 이동경로를 뚫고 지나가고 이동 경로 3미터 적이 있을경우 적중한걸로 해줘 오르막길이나 내리막 길은 길따라서 이동하면서 공격하게 하고
+오브젝트(바위,나무,건물)등 있으면 멈추게해줘 
+--
 
 
+
+
+
+                                              
 
 
 

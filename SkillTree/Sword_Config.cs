@@ -483,7 +483,7 @@ namespace CaptainSkillTree.SkillTree
             ParryRushBlockPowerRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_BlockPowerRatio",
-                10f,
+                50f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_BlockPowerRatio")
             );
 

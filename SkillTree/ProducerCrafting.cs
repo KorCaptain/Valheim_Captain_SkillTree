@@ -20,7 +20,24 @@ namespace CaptainSkillTree.SkillTree
         private const string ENCHANT_VALUE_KEY = "cspt_enchant_value";
         private const string DUR_BONUS_KEY     = "cspt_dur_bonus_mult";
 
-        public enum EnchantType { None = 0, WeaponDmg = 1, Armor = 2, MaxHP = 3, WeaponSpd = 4, MaxStamina = 5 }
+        public enum EnchantType
+        {
+            None          = 0,
+            WeaponDmg     = 1,   // 무기: 공격력 +%
+            Armor         = 2,   // 흉갑: 방어력 +%
+            MaxHP         = 3,   // 투구/흉갑: 체력 +%
+            WeaponSpd     = 4,   // 일반무기: 공격속도 +%
+            MaxStamina    = 5,   // 망토: 스태미나 +%
+            BowCrit       = 6,   // 활: 치명타 +%
+            CrossbowReload= 7,   // 석궁: 재장전 속도 단축 (ms)
+            CooldownReduce= 8,   // 투구: 쿨타임 감소 +%
+            DodgeRoll     = 9,   // 각반: 회피 거리 +%
+            MoveSpeed     = 10,  // 각반: 이동속도 +%
+            Eitr          = 11,  // 망토: 에이트르 +수치(flat)
+            InvWeight     = 12,  // 악세사리: 인벤 최대 무게 +수치
+            EitrRegen     = 13,  // 악세사리: 에이트르 회복속도 +%
+            JumpForce     = 14,  // 악세사리: 점프력 +%
+        }
 
         public static EnchantType GetEnchantType(ItemDrop.ItemData item)
         {
@@ -42,7 +59,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 장착 방어구 중 targetType 마법부여 합산
+        /// 장착 방어구 중 targetType 마법부여 합산 (기존 호환 유지)
         /// </summary>
         public static float GetEquippedArmorEnchantTotal(Player player, EnchantType targetType)
         {
@@ -51,13 +68,50 @@ namespace CaptainSkillTree.SkillTree
             float total = 0f;
             foreach (var item in inv.GetAllItems())
             {
-                if (!item.m_equipped) continue;   // 착용 중인 아이템만
+                if (!item.m_equipped) continue;
                 var t = item.m_shared.m_itemType;
                 if (t != ItemDrop.ItemData.ItemType.Helmet   &&
                     t != ItemDrop.ItemData.ItemType.Chest     &&
                     t != ItemDrop.ItemData.ItemType.Legs      &&
-                    t != ItemDrop.ItemData.ItemType.Hands     &&
                     t != ItemDrop.ItemData.ItemType.Shoulder) continue;
+                if (GetEnchantType(item) == targetType)
+                    total += GetEnchantValue(item);
+            }
+            return total;
+        }
+
+        /// <summary>
+        /// 착용 중인 악세사리(Utility/Ring/Necklace) 마법부여 합산
+        /// </summary>
+        public static float GetEquippedAccessoryEnchantTotal(Player player, EnchantType targetType)
+        {
+            var inv = player.GetInventory();
+            if (inv == null) return 0f;
+            float total = 0f;
+            foreach (var item in inv.GetAllItems())
+            {
+                if (!item.m_equipped) continue;
+                if (item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Utility) continue;
+                if (GetEnchantType(item) == targetType)
+                    total += GetEnchantValue(item);
+            }
+            return total;
+        }
+
+        /// <summary>
+        /// 특정 ItemType 슬롯(들)에서 targetType 마법부여 합산
+        /// </summary>
+        public static float GetEquippedSlotEnchantTotal(Player player, EnchantType targetType,
+            params ItemDrop.ItemData.ItemType[] allowedSlots)
+        {
+            var inv = player.GetInventory();
+            if (inv == null) return 0f;
+            float total = 0f;
+            var slotSet = new HashSet<ItemDrop.ItemData.ItemType>(allowedSlots);
+            foreach (var item in inv.GetAllItems())
+            {
+                if (!item.m_equipped) continue;
+                if (!slotSet.Contains(item.m_shared.m_itemType)) continue;
                 if (GetEnchantType(item) == targetType)
                     total += GetEnchantValue(item);
             }
@@ -178,68 +232,33 @@ namespace CaptainSkillTree.SkillTree
                     || t == ItemDrop.ItemData.ItemType.Helmet
                     || t == ItemDrop.ItemData.ItemType.Chest
                     || t == ItemDrop.ItemData.ItemType.Legs
-                    || t == ItemDrop.ItemData.ItemType.Hands
-                    || t == ItemDrop.ItemData.ItemType.Shoulder;
+                    || t == ItemDrop.ItemData.ItemType.Shoulder
+                    || t == ItemDrop.ItemData.ItemType.Utility;
             }
 
             private static void ApplyEnchantment(Player player, ItemDrop.ItemData item, int level)
             {
-                bool isWeapon = (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.OneHandedWeapon ||
-                                 item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon ||
-                                 item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Bow);
+                string slotKey = GetSlotKey(item);
+                if (string.IsNullOrEmpty(slotKey)) return;
 
-                EnchantType type;
-                float value;
+                int enchantId = ProducerEnchantData.PickRandom(slotKey);
+                if (enchantId == 0) return;
 
-                if (isWeapon)
-                {
-                    // 무기: 공격력 / 공격속도 1:1
-                    bool useDmg = UnityEngine.Random.Range(0, 2) == 0;
-                    if (useDmg)
-                    {
-                        type  = EnchantType.WeaponDmg;
-                        value = GetWeaponDmgRange(level);
-                    }
-                    else
-                    {
-                        type  = EnchantType.WeaponSpd;
-                        value = GetWeaponSpdRange(level);
-                    }
-                }
-                else
-                {
-                    // 방어구: 방어력 / 체력 / 스태미나 1:1:1
-                    int roll = UnityEngine.Random.Range(0, 3);
-                    if (roll == 0)
-                    {
-                        type  = EnchantType.Armor;
-                        value = GetArmorRange(level);
-                    }
-                    else if (roll == 1)
-                    {
-                        type  = EnchantType.MaxHP;
-                        value = GetHpRange(level);
-                    }
-                    else
-                    {
-                        type  = EnchantType.MaxStamina;
-                        value = GetStaminaRange(level);
-                    }
-                }
+                var range = ProducerEnchantData.GetRange(enchantId, level);
+                float value = UnityEngine.Random.Range(range.Min, range.Max);
+                value = (float)Math.Round(value, 1, MidpointRounding.AwayFromZero);
 
                 if (item.m_customData == null)
                     item.m_customData = new Dictionary<string, string>();
 
-                item.m_customData[ENCHANT_TYPE_KEY]  = ((int)type).ToString();
-                value = (float)Math.Round(value, 1, MidpointRounding.AwayFromZero); // 소수점 둘째 자리에서 반올림
-                item.m_customData[ENCHANT_VALUE_KEY] = value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                item.m_customData[ENCHANT_TYPE_KEY]  = enchantId.ToString();
+                item.m_customData[ENCHANT_VALUE_KEY] = value.ToString(
+                    System.Globalization.CultureInfo.InvariantCulture);
 
-                // 플레이어에게 알림
-                string enchantMsg = GetEnchantMessage(type, value);
+                string enchantMsg = GetEnchantMessage((EnchantType)enchantId, value);
                 player.Message(MessageHud.MessageType.Center, enchantMsg);
-                Plugin.Log.LogDebug($"[제작 전문가] 마법부여: {item.m_shared.m_name} - {enchantMsg}");
+                Plugin.Log.LogDebug($"[제작 전문가] 마법부여: {item.m_shared.m_name} [{slotKey}] id={enchantId} val={value}");
 
-                // VFX (커스텀) + SFX (발헤임 기본)
                 try
                 {
                     SimpleVFX.Play("statusailment_01", player.transform.position);
@@ -249,67 +268,42 @@ namespace CaptainSkillTree.SkillTree
                 catch (Exception) { }
             }
 
-            private static float GetWeaponDmgRange(int level)
+            /// <summary>
+            /// 아이템 타입에 따른 슬롯 키 반환 (ProducerEnchantData.GetPool 호출용)
+            /// </summary>
+            private static string GetSlotKey(ItemDrop.ItemData item)
             {
-                switch (level)
-                {
-                    case 3:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantWeaponDmgMin_Lv3.Value, Producer_Config.ProducerEnchantWeaponDmgMax_Lv3.Value);
-                    case 4:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantWeaponDmgMin_Lv4.Value, Producer_Config.ProducerEnchantWeaponDmgMax_Lv4.Value);
-                    default: return UnityEngine.Random.Range(Producer_Config.ProducerEnchantWeaponDmgMin_Lv5.Value, Producer_Config.ProducerEnchantWeaponDmgMax_Lv5.Value);
-                }
-            }
-
-            private static float GetWeaponSpdRange(int level)
-            {
-                switch (level)
-                {
-                    case 3:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantWeaponSpdMin_Lv3.Value, Producer_Config.ProducerEnchantWeaponSpdMax_Lv3.Value);
-                    case 4:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantWeaponSpdMin_Lv4.Value, Producer_Config.ProducerEnchantWeaponSpdMax_Lv4.Value);
-                    default: return UnityEngine.Random.Range(Producer_Config.ProducerEnchantWeaponSpdMin_Lv5.Value, Producer_Config.ProducerEnchantWeaponSpdMax_Lv5.Value);
-                }
-            }
-
-            private static float GetArmorRange(int level)
-            {
-                switch (level)
-                {
-                    case 3:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantArmorMin_Lv3.Value, Producer_Config.ProducerEnchantArmorMax_Lv3.Value);
-                    case 4:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantArmorMin_Lv4.Value, Producer_Config.ProducerEnchantArmorMax_Lv4.Value);
-                    default: return UnityEngine.Random.Range(Producer_Config.ProducerEnchantArmorMin_Lv5.Value, Producer_Config.ProducerEnchantArmorMax_Lv5.Value);
-                }
-            }
-
-            private static float GetHpRange(int level)
-            {
-                switch (level)
-                {
-                    case 3:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantHpMin_Lv3.Value, Producer_Config.ProducerEnchantHpMax_Lv3.Value);
-                    case 4:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantHpMin_Lv4.Value, Producer_Config.ProducerEnchantHpMax_Lv4.Value);
-                    default: return UnityEngine.Random.Range(Producer_Config.ProducerEnchantHpMin_Lv5.Value, Producer_Config.ProducerEnchantHpMax_Lv5.Value);
-                }
-            }
-
-            private static float GetStaminaRange(int level)
-            {
-                switch (level)
-                {
-                    case 3:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantStaminaMin_Lv3.Value, Producer_Config.ProducerEnchantStaminaMax_Lv3.Value);
-                    case 4:  return UnityEngine.Random.Range(Producer_Config.ProducerEnchantStaminaMin_Lv4.Value, Producer_Config.ProducerEnchantStaminaMax_Lv4.Value);
-                    default: return UnityEngine.Random.Range(Producer_Config.ProducerEnchantStaminaMin_Lv5.Value, Producer_Config.ProducerEnchantStaminaMax_Lv5.Value);
-                }
+                var t = item.m_shared.m_itemType;
+                // 석궁: skillType으로 구분
+                if (item.m_shared.m_skillType == Skills.SkillType.Crossbows)
+                    return "Crossbow";
+                // 활
+                if (t == ItemDrop.ItemData.ItemType.Bow)
+                    return "Bow";
+                // 일반 무기
+                if (t == ItemDrop.ItemData.ItemType.OneHandedWeapon ||
+                    t == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
+                    return "Weapon";
+                // 방어구 슬롯
+                if (t == ItemDrop.ItemData.ItemType.Helmet)   return "Helmet";
+                if (t == ItemDrop.ItemData.ItemType.Chest)    return "Chest";
+                if (t == ItemDrop.ItemData.ItemType.Legs)     return "Legs";
+                if (t == ItemDrop.ItemData.ItemType.Shoulder) return "Shoulder";
+                // 악세사리
+                if (t == ItemDrop.ItemData.ItemType.Utility) return "Accessory";
+                return "";
             }
 
             private static string GetEnchantMessage(EnchantType type, float value)
             {
-                switch (type)
-                {
-                    case EnchantType.WeaponDmg:   return L.Get("producer_enchant_weapon_dmg", $"{value:F1}");
-                    case EnchantType.WeaponSpd:   return L.Get("producer_enchant_weapon_spd", $"{value:F1}");
-                    case EnchantType.Armor:        return L.Get("producer_enchant_armor",      $"{value:F1}");
-                    case EnchantType.MaxHP:        return L.Get("producer_enchant_hp",         $"{value:F1}");
-                    case EnchantType.MaxStamina:   return L.Get("producer_enchant_stamina",    $"{value:F1}");
-                    default:                       return L.Get("producer_enchant_notify");
-                }
+                string displayKey = ProducerEnchantData.GetDisplayKey((int)type);
+                string unit       = ProducerEnchantData.GetUnit((int)type);
+                string valStr     = unit == "ms"
+                    ? $"{value:F0}"   // 재장전은 정수 표시
+                    : $"{value:F1}";
+                // unit이 % 또는 ms면 접미사 포함, 빈 문자열이면 수치만
+                string suffix = unit == "%" ? "%" : (unit == "ms" ? "ms" : "");
+                return L.Get(displayKey, valStr + suffix);
             }
         }
 
@@ -490,8 +484,11 @@ namespace CaptainSkillTree.SkillTree
                     var player = __instance as Player;
                     if (player == null) return;
 
-                    float bonus = GetEquippedArmorEnchantTotal(player, EnchantType.MaxHP);
-                    if (bonus > 0f) __result += bonus;
+                    // MaxHP는 % 방식으로 변경 (투구/흉갑 슬롯)
+                    float bonus = GetEquippedSlotEnchantTotal(player, EnchantType.MaxHP,
+                        ItemDrop.ItemData.ItemType.Helmet,
+                        ItemDrop.ItemData.ItemType.Chest);
+                    if (bonus > 0f) __result += __result * (bonus / 100f);
                 }
                 catch (Exception) { }
             }

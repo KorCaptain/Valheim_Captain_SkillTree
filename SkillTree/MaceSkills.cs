@@ -164,10 +164,11 @@ namespace CaptainSkillTree.SkillTree
                 float knockbackChance = Mace_Config.MaceStep4KnockbackChanceValue;
                 if (UnityEngine.Random.Range(0f, 100f) > knockbackChance) return;
 
-                // 공격자를 5m 밀어냄 (pushForce 80f ≈ 5m)
+                // 공격자를 밀어냄 (m_damage > 0 필수 - Valheim은 damage=0이면 pushForce 무시)
                 Vector3 pushDir = (attacker.transform.position - player.transform.position).normalized;
                 var pushHit = new HitData();
-                pushHit.m_pushForce = 80f;
+                pushHit.m_damage.m_blunt = 0.1f;  // pushForce 활성화용 최소 damage
+                pushHit.m_pushForce = 50f;
                 pushHit.m_dir = pushDir;
                 pushHit.m_point = attacker.GetCenterPoint();
                 pushHit.m_blockable = false;
@@ -201,10 +202,9 @@ namespace CaptainSkillTree.SkillTree
                 {
                     float healthBonus = Mace_Config.MaceStep5TankHealthBonusValue;
                     float baseHealth = __result;
-                    float bonusHealth = baseHealth * (healthBonus / 100f);
-                    __result += bonusHealth;
+                    __result += healthBonus;  // 고정값 덧셈 (+25), % 아님
 
-                    Plugin.Log.LogDebug($"[둔기 탱커] 체력 +{healthBonus}%: {baseHealth:F0} → {__result:F0} (+{bonusHealth:F0})");
+                    Plugin.Log.LogDebug($"[둔기 탱커] 체력 +{healthBonus}: {baseHealth:F0} → {__result:F0}");
                 }
             }
             catch (Exception ex)

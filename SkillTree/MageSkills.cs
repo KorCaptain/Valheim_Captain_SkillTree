@@ -119,8 +119,9 @@ namespace CaptainSkillTree.SkillTree
                         player.Message(MessageHud.MessageType.Center, L.Get("eitr_insufficient", eitrCost2.ToString()));
                         return false;
                     }
+                    bool fired2 = ExecuteFireRainSkill(player, mageLevel);
+                    if (!fired2) return false; // 사거리 실패 → 충전 유지, 쿨타임/Eitr 소모 없음
                     extraChargeExpiry.Remove(playerKey);
-                    ExecuteFireRainSkill(player, mageLevel);
                     lastActivationTime[playerKey] = currentTime;
                     player.AddEitr(-eitrCost2);
                     ActiveSkillCooldownRegistry.SetCooldown("Y", Mage_Config.GetCooldown(mageLevel));
@@ -155,7 +156,8 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 스킬 실행
-                ExecuteFireRainSkill(player, mageLevel);
+                bool fired = ExecuteFireRainSkill(player, mageLevel);
+                if (!fired) return false; // 사거리 실패 → 쿨타임/Eitr 소모 없음
 
                 // Lv2+이면 30초 추가 충전 부여
                 if (mageLevel >= 2)
@@ -232,7 +234,7 @@ namespace CaptainSkillTree.SkillTree
         /// 불의 비(Fire Rain) 스킬 실행
         /// 타겟 발밑 VFX + SFX + 상공에서 파이어볼 30개 낙하
         /// </summary>
-        private static void ExecuteFireRainSkill(Player player, int mageLevel)
+        private static bool ExecuteFireRainSkill(Player player, int mageLevel)
         {
             try
             {
@@ -243,7 +245,7 @@ namespace CaptainSkillTree.SkillTree
                 if (target == null)
                 {
                     player.Message(MessageHud.MessageType.Center, L.Get("no_targets_in_range"));
-                    return;
+                    return false;
                 }
 
                 Vector3 targetPos = target.transform.position;
@@ -281,10 +283,12 @@ namespace CaptainSkillTree.SkillTree
                     L.Get("mage_firerain_cast", target.GetHoverName()));
 
                 Plugin.Log.LogInfo($"[불의 비] {player.GetPlayerName()} → {target.GetHoverName()} 시전 (Lv{mageLevel})");
+                return true;
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[불의 비] 스킬 실행 실패: {ex.Message}");
+                return false;
             }
         }
 

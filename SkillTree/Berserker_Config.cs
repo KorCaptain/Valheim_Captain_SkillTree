@@ -114,6 +114,16 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 레벨별 유효 HP 플랫 보너스 반환 (Lv1:40, Lv2:60, Lv3:80, Lv4:100, Lv5:120)
+        /// Config 기본값 120 기준 → 단계당 +20 (step = maxBonus / 6)
+        /// </summary>
+        public static float GetEffectiveHealthBonus(int level)
+        {
+            float step = BerserkerPassiveHealthBonusValue / 6f; // default: 20
+            return (level + 1) * step;
+        }
+
+        /// <summary>
         /// 레벨별 유효 무적 지속시간 반환 (Lv5: +2초)
         /// </summary>
         public static float GetEffectiveInvincibilityDuration(int level)
@@ -158,7 +168,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // ─── Lv1 패시브: 죽음의 무시 ────────────────────────────────────────
                 BerserkerPassiveHealthBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Passive_HealthBonus", 100f,
+                    "Berserker Job Skills", "Berserker_Passive_HealthBonus", 120f,
                     SkillTreeConfig.GetConfigDescription("berserker_passive_health_bonus"));
 
                 BerserkerPassiveHealthThreshold = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,

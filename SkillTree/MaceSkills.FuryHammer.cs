@@ -178,6 +178,14 @@ namespace CaptainSkillTree.SkillTree
 
             Vector3 startPos = player.transform.position;
             Vector3 endPos   = startPos + dashDir * dashDist;
+
+            // 착지 위치 지형/바위 높이 보정 (언덕, 바위 위에 착지)
+            if (Physics.Raycast(endPos + Vector3.up * 15f, Vector3.down, out RaycastHit landHit, 25f,
+                LayerMask.GetMask("terrain", "Default", "static_solid")))
+            {
+                endPos.y = landHit.point.y;
+            }
+
             float elapsed    = 0f;
             bool attackMotionTriggered = false;
             float originalPushForce = 0f;
@@ -213,6 +221,24 @@ namespace CaptainSkillTree.SkillTree
                 float t = Mathf.Clamp01(elapsed / dashTime);
                 Vector3 pos = Vector3.Lerp(startPos, endPos, t);
                 pos.y = startPos.y + peakHeight * 4f * t * (1f - t);
+
+                // 전방 구조물 충돌 체크 (수평 이동 방향만)
+                // 시작점을 1.5m 높여 올라타 있는 바위/오브젝트 오탐 방지
+                // normal.y < 0.7: 수평면(바닥·바위 위)은 차단 제외, 수직면(벽)만 차단
+                // distance > 0.2: 이미 올라타 있는 표면 무시
+                LayerMask blockMask = LayerMask.GetMask("piece", "static_solid");
+                Vector3 flatDir = new Vector3(dashDir.x, 0f, dashDir.z);
+                if (flatDir.magnitude > 0.05f && Physics.SphereCast(
+                    player.transform.position + Vector3.up * 1.5f, 0.4f, flatDir.normalized,
+                    out RaycastHit blockHit, 1.5f, blockMask)
+                    && blockHit.normal.y < 0.7f
+                    && blockHit.distance > 0.2f)
+                {
+                    Plugin.Log.LogDebug($"[분노의 망치] 구조물 충돌 - 도약 중단");
+                    endPos = player.transform.position;
+                    break;
+                }
+
                 player.transform.position = pos;
                 yield return null;
             }
@@ -283,6 +309,7 @@ namespace CaptainSkillTree.SkillTree
                         hit.SetAttacker(player);
 
                         mob.Damage(hit);
+                        VFXManager.PlayVFXMultiplayer("fx_crit", "", mob.GetCenterPoint(), Quaternion.identity, 1f);
                         // ✅ 1타는 Stagger도 제거 (중력효과 유지)
                         // mob.Stagger(hit.m_dir);
                         hitCount++;
@@ -370,6 +397,7 @@ namespace CaptainSkillTree.SkillTree
                         hit.SetAttacker(player);
 
                         mob.Damage(hit);
+                        VFXManager.PlayVFXMultiplayer("fx_crit", "", mob.GetCenterPoint(), Quaternion.identity, 1f);
                         // ✅ 스태거 제거 (중력효과 유지)
                         // mob.Stagger(hit.m_dir);
                         hitCount++;

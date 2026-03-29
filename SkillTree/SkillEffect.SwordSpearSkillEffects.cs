@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using HarmonyLib;
 using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
@@ -22,6 +23,27 @@ namespace CaptainSkillTree.SkillTree
 
         // 재진입 방지 플래그 (번개 충격 데미지가 다시 콤보를 트리거하지 않도록)
         private static bool isProcessingSpearLightningDamage = false;
+
+        // 투창 전문가 2차 공격 감지용 타임스탬프
+        private static Dictionary<Player, float> spearLastSecondaryTime = new Dictionary<Player, float>();
+
+        /// <summary>
+        /// 1.5초 이내에 창 2차 공격(투창)이 있었는지 확인
+        /// </summary>
+        public static bool IsRecentSpearSecondaryAttack(Player player)
+        {
+            if (player == null) return false;
+            return spearLastSecondaryTime.TryGetValue(player, out float t) && Time.time - t < 1.5f;
+        }
+
+        /// <summary>
+        /// 창 2차 공격 시간 기록 (Humanoid_StartAttack_SpearThrow_Patch 에서 호출)
+        /// </summary>
+        public static void RecordSpearSecondaryAttack(Player player)
+        {
+            if (player != null)
+                spearLastSecondaryTime[player] = Time.time;
+        }
 
         /// <summary>
         /// 번개 충격 처리 중 여부 확인 (외부에서 재진입 방지용)
@@ -506,5 +528,25 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+    }
+
+    /// <summary>
+    /// 투창 전문가(spear_Step1_throw) 2차 공격 감지
+    /// Humanoid.StartAttack(secondaryAttack=true) 시 타임스탬프 기록
+    /// </summary>
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.StartAttack))]
+    public static class Humanoid_StartAttack_SpearThrow_Patch
+    {
+        [HarmonyPriority(Priority.Normal)]
+        static void Prefix(Humanoid __instance, bool secondaryAttack)
+        {
+            if (!secondaryAttack) return;
+            var player = __instance as Player;
+            if (player == null || player != Player.m_localPlayer) return;
+            if (!SkillEffect.HasSkill("spear_Step1_throw")) return;
+            if (player.GetCurrentWeapon()?.m_shared?.m_skillType != Skills.SkillType.Spears) return;
+            SkillEffect.RecordSpearSecondaryAttack(player);
+            Plugin.Log.LogDebug("[투창 전문가] 창 2차 공격 감지");
+        }
     }
 }

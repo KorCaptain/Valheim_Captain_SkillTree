@@ -115,6 +115,11 @@ namespace CaptainSkillTree
                     {
                         float critMultiplier = CriticalDamage.CalculateCritDamageMultiplier(player, weaponType);
                         CriticalDamage.ApplyCriticalDamage(player, ref hit, critMultiplier, weaponType);
+                        // 단검/맨주먹 치명타 VFX
+                        if (weaponType == Skills.SkillType.Knives || weaponType == Skills.SkillType.Unarmed)
+                        {
+                            CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_crit", "", hit.m_point);
+                        }
                         showDamageText = false;
                     }
                 }

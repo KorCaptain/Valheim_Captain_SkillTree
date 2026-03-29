@@ -592,59 +592,31 @@ namespace CaptainSkillTree.Localization
 
                 // === Producer Lv1 ===
                 ["Producer_FarmGrid_Lv1"] = "【農耕グリッドサイズ Lv1】\nLv1時の農耕グリッド追加マス数。\nデフォルト：2",
+                ["Producer_EnchantChance_Lv1"] = "【エンチャント確率 Lv1 (%)】\nLv1時に製作アイテムをエンチャントする確率。\nデフォルト：0%",
 
                 // === Producer Lv2 ===
                 ["Producer_FarmGrid_Lv2"] = "【農耕グリッドサイズ Lv2】\nLv2時の農耕グリッド追加マス数。\nデフォルト：2",
                 ["Producer_Durability_Lv2"] = "【製作品耐久度ボーナス Lv2 (%)】\nLv2時の製作アイテム耐久度ボーナス。\nデフォルト：10%",
                 ["Producer_MaterialReduction_Lv2"] = "【素材消費減少 Lv2 (%)】\nLv2時の製作ごとに節約される素材。\nデフォルト：10%",
+                ["Producer_EnchantChance_Lv2"] = "【エンチャント確率 Lv2 (%)】\nLv2時に製作アイテムをエンチャントする確率。\nデフォルト：0%",
 
                 // === Producer Lv3 ===
                 ["Producer_FarmGrid_Lv3"] = "【農耕グリッドサイズ Lv3】\nLv3時の農耕グリッド追加マス数。\nデフォルト：4",
                 ["Producer_Durability_Lv3"] = "【製作品耐久度ボーナス Lv3 (%)】\nLv3時の製作アイテム耐久度ボーナス。\nデフォルト：15%",
                 ["Producer_MaterialReduction_Lv3"] = "【素材消費減少 Lv3 (%)】\nLv3時の製作ごとに節約される素材。\nデフォルト：15%",
                 ["Producer_EnchantChance_Lv3"] = "【エンチャント確率 Lv3 (%)】\nLv3時に製作アイテムをエンチャントする確率。\nデフォルト：25%",
-                ["Producer_EnchantWeaponDmgMin_Lv3"] = "【武器ダメージエンチャント最小値 Lv3 (%)】\nLv3エンチャント武器ダメージ最小ボーナス。\nデフォルト：5%",
-                ["Producer_EnchantWeaponDmgMax_Lv3"] = "【武器ダメージエンチャント最大値 Lv3 (%)】\nLv3エンチャント武器ダメージ最大ボーナス。\nデフォルト：5%",
-                ["Producer_EnchantArmorMin_Lv3"] = "【防御力エンチャント最小値 Lv3 (%)】\nLv3エンチャント防御力最小ボーナス。\nデフォルト：5%",
-                ["Producer_EnchantArmorMax_Lv3"] = "【防御力エンチャント最大値 Lv3 (%)】\nLv3エンチャント防御力最大ボーナス。\nデフォルト：5%",
-                ["Producer_EnchantHpMin_Lv3"] = "【HPエンチャント最小値 Lv3 (%)】\nLv3エンチャント最大HP最小ボーナス。\nデフォルト：2%",
-                ["Producer_EnchantHpMax_Lv3"] = "【HPエンチャント最大値 Lv3 (%)】\nLv3エンチャント最大HP最大ボーナス。\nデフォルト：2%",
-                ["Producer_EnchantWeaponSpdMin_Lv3"] = "【攻撃速度エンチャント最小値 Lv3 (%)】\nLv3エンチャント攻撃速度最小ボーナス。\nデフォルト：3%",
-                ["Producer_EnchantWeaponSpdMax_Lv3"] = "【攻撃速度エンチャント最大値 Lv3 (%)】\nLv3エンチャント攻撃速度最大ボーナス。\nデフォルト：5%",
-                ["Producer_EnchantStaminaMin_Lv3"] = "【スタミナエンチャント最小値 Lv3 (%)】\nLv3エンチャント最大スタミナ最小ボーナス。\nデフォルト：3%",
-                ["Producer_EnchantStaminaMax_Lv3"] = "【スタミナエンチャント最大値 Lv3 (%)】\nLv3エンチャント最大スタミナ最大ボーナス。\nデフォルト：5%",
 
                 // === Producer Lv4 ===
                 ["Producer_FarmGrid_Lv4"] = "【農耕グリッドサイズ Lv4】\nLv4時の農耕グリッド追加マス数。\nデフォルト：6",
                 ["Producer_Durability_Lv4"] = "【製作品耐久度ボーナス Lv4 (%)】\nLv4時の製作アイテム耐久度ボーナス。\nデフォルト：20%",
                 ["Producer_MaterialReduction_Lv4"] = "【素材消費減少 Lv4 (%)】\nLv4時の製作ごとに節約される素材。\nデフォルト：20%",
                 ["Producer_EnchantChance_Lv4"] = "【エンチャント確率 Lv4 (%)】\nLv4時に製作アイテムをエンチャントする確率。\nデフォルト：30%",
-                ["Producer_EnchantWeaponDmgMin_Lv4"] = "【武器ダメージエンチャント最小値 Lv4 (%)】\nLv4エンチャント武器ダメージ最小ボーナス。\nデフォルト：7%",
-                ["Producer_EnchantWeaponDmgMax_Lv4"] = "【武器ダメージエンチャント最大値 Lv4 (%)】\nLv4エンチャント武器ダメージ最大ボーナス。\nデフォルト：9%",
-                ["Producer_EnchantArmorMin_Lv4"] = "【防御力エンチャント最小値 Lv4 (%)】\nLv4エンチャント防御力最小ボーナス。\nデフォルト：7%",
-                ["Producer_EnchantArmorMax_Lv4"] = "【防御力エンチャント最大値 Lv4 (%)】\nLv4エンチャント防御力最大ボーナス。\nデフォルト：9%",
-                ["Producer_EnchantHpMin_Lv4"] = "【HPエンチャント最小値 Lv4 (%)】\nLv4エンチャント最大HP最小ボーナス。\nデフォルト：4%",
-                ["Producer_EnchantHpMax_Lv4"] = "【HPエンチャント最大値 Lv4 (%)】\nLv4エンチャント最大HP最大ボーナス。\nデフォルト：5%",
-                ["Producer_EnchantWeaponSpdMin_Lv4"] = "【攻撃速度エンチャント最小値 Lv4 (%)】\nLv4エンチャント攻撃速度最小ボーナス。\nデフォルト：5%",
-                ["Producer_EnchantWeaponSpdMax_Lv4"] = "【攻撃速度エンチャント最大値 Lv4 (%)】\nLv4エンチャント攻撃速度最大ボーナス。\nデフォルト：8%",
-                ["Producer_EnchantStaminaMin_Lv4"] = "【スタミナエンチャント最小値 Lv4 (%)】\nLv4エンチャント最大スタミナ最小ボーナス。\nデフォルト：5%",
-                ["Producer_EnchantStaminaMax_Lv4"] = "【スタミナエンチャント最大値 Lv4 (%)】\nLv4エンチャント最大スタミナ最大ボーナス。\nデフォルト：8%",
 
                 // === Producer Lv5 ===
                 ["Producer_FarmGrid_Lv5"] = "【農耕グリッドサイズ Lv5】\nLv5時の農耕グリッド追加マス数。\nデフォルト：8",
                 ["Producer_Durability_Lv5"] = "【製作品耐久度ボーナス Lv5 (%)】\nLv5時の製作アイテム耐久度ボーナス。\nデフォルト：30%",
                 ["Producer_MaterialReduction_Lv5"] = "【素材消費減少 Lv5 (%)】\nLv5時の製作ごとに節約される素材。\nデフォルト：30%",
                 ["Producer_EnchantChance_Lv5"] = "【エンチャント確率 Lv5 (%)】\nLv5時に製作アイテムをエンチャントする確率。\nデフォルト：35%",
-                ["Producer_EnchantWeaponDmgMin_Lv5"] = "【武器ダメージエンチャント最小値 Lv5 (%)】\nLv5エンチャント武器ダメージ最小ボーナス。\nデフォルト：10%",
-                ["Producer_EnchantWeaponDmgMax_Lv5"] = "【武器ダメージエンチャント最大値 Lv5 (%)】\nLv5エンチャント武器ダメージ最大ボーナス。\nデフォルト：12%",
-                ["Producer_EnchantArmorMin_Lv5"] = "【防御力エンチャント最小値 Lv5 (%)】\nLv5エンチャント防御力最小ボーナス。\nデフォルト：10%",
-                ["Producer_EnchantArmorMax_Lv5"] = "【防御力エンチャント最大値 Lv5 (%)】\nLv5エンチャント防御力最大ボーナス。\nデフォルト：12%",
-                ["Producer_EnchantHpMin_Lv5"] = "【HPエンチャント最小値 Lv5 (%)】\nLv5エンチャント最大HP最小ボーナス。\nデフォルト：6%",
-                ["Producer_EnchantHpMax_Lv5"] = "【HPエンチャント最大値 Lv5 (%)】\nLv5エンチャント最大HP最大ボーナス。\nデフォルト：8%",
-                ["Producer_EnchantWeaponSpdMin_Lv5"] = "【攻撃速度エンチャント最小値 Lv5 (%)】\nLv5エンチャント攻撃速度最小ボーナス。\nデフォルト：8%",
-                ["Producer_EnchantWeaponSpdMax_Lv5"] = "【攻撃速度エンチャント最大値 Lv5 (%)】\nLv5エンチャント攻撃速度最大ボーナス。\nデフォルト：12%",
-                ["Producer_EnchantStaminaMin_Lv5"] = "【スタミナエンチャント最小値 Lv5 (%)】\nLv5エンチャント最大スタミナ最小ボーナス。\nデフォルト：8%",
-                ["Producer_EnchantStaminaMax_Lv5"] = "【スタミナエンチャント最大値 Lv5 (%)】\nLv5エンチャント最大スタミナ最大ボーナス。\nデフォルト：12%",
 
                 ["Job_Lv1_Cost"] = "【職業Lv1コインコスト】\nすべての職業をLv1にアップグレードする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：1000",
                 ["Job_Lv2_Cost"] = "【職業Lv2コインコスト】\nすべての職業をLv2にアップグレードする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：2000",

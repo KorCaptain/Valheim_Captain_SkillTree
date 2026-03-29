@@ -658,8 +658,8 @@ namespace CaptainSkillTree.SkillTree
                 // 캐릭터 발밑 위치 계산
                 var footPosition = player.transform.position + Vector3.down * 0.1f;
 
-                // Valheim 내장 VFX 사용 (ZNetView 충돌 방지)
-                SimpleVFX.Play("vfx_Potion_health_medium", footPosition, 2f);
+                // Valheim 내장 VFX + 효과음 재생
+                VFXManager.PlayVFXMultiplayer("vfx_Potion_health_medium", "sfx_Potion_health_large", footPosition, destroyAfter: 2f);
             }
             catch (System.Exception ex)
             {

@@ -851,7 +851,15 @@ namespace CaptainSkillTree.SkillTree
                 // defense_root: 방어 +2 (고정값)
                 int defenseRootLv = SkillTreeManager.Instance.GetSkillLevel("defense_root");
                 if (defenseRootLv > 0) physicArmorBonus += 2f * defenseRootLv;
-                
+
+                // 반격 자세(sword_step1_counter): 패링 성공 후 N초간 방어력 +X%
+                if (__instance is Player counterPlayer
+                    && swordCounterDefenseEndTime.TryGetValue(counterPlayer, out float counterEndTime)
+                    && Time.time < counterEndTime)
+                {
+                    physicArmorBonus += SkillTreeConfig.SwordStep1CounterDefenseBonusValue;
+                }
+
                 // Old defense skill effects removed - 새로운 Step-based defense system으로 대체 예정
                 
                 if (physicArmorBonus > 0)

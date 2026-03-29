@@ -128,7 +128,7 @@ namespace CaptainSkillTree.SkillTree
 
             // Tier 4-2: 반달 베기
             PolearmStep4MoonRangeBonus = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier4-2_MoonSlash_AttackRangeBonus", 15f,
+                "Polearm Tree", "Tier4-2_MoonSlash_AttackRangeBonus", 10f,
                 SkillTreeConfig.GetConfigDescription("Tier4-2_MoonSlash_AttackRangeBonus"));
             PolearmStep4MoonStaminaReduction = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier4-2_MoonSlash_StaminaReduction", 15f,

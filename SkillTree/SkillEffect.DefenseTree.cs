@@ -135,6 +135,7 @@ namespace CaptainSkillTree.SkillTree
                             if (__instance is Player player && SkillEffect.IsUsingSword(player))
                             {
                                 SkillEffect.ApplySwordBladeCounter(player);
+                                SkillEffect.ApplySwordCounterDefense(player);
                                 Sword_Skill.OnParryRushTrigger(player, attacker);
                             }
                         }
@@ -147,6 +148,7 @@ namespace CaptainSkillTree.SkillTree
                         if (currentTimer > 0 && __instance is Player pPlayer && SkillEffect.IsUsingSword(pPlayer))
                         {
                             SkillEffect.ApplySwordBladeCounter(pPlayer);
+                            SkillEffect.ApplySwordCounterDefense(pPlayer);
                             Sword_Skill.OnParryRushTrigger(pPlayer, attacker);
                         }
                     }

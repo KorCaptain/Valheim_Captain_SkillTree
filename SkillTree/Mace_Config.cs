@@ -228,7 +228,7 @@ namespace CaptainSkillTree.SkillTree
         public static float MaceStep3SpinDamageBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step3_SpinStrike_DamageBonus", MaceStep3SpinDamageBonus?.Value ?? 20f);
         public static float MaceStep3SpinRangeValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_Step3_SpinStrike_Range", MaceStep3SpinRange?.Value ?? 7f);
+            SkillTreeConfig.GetEffectiveValue("Mace_Step3_SpinStrike_Range", MaceStep3SpinRange?.Value ?? 12f);
 
         // === Tier 3: 무거운 타격 ===
         public static int MaceStep3HeavyRequiredPointsValue =>

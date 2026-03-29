@@ -856,37 +856,34 @@ namespace CaptainSkillTree.SkillTree
 
     /// <summary>
     /// 폴암 휠 마우스(특수 공격) 데미지 보너스 패치
-    /// Attack.Start에서 특수 공격 감지 후 보너스 준비
+    /// Humanoid.StartAttack(secondaryAttack=true) 파라미터로 확실하게 감지
     /// 회전베기 (polearm_step1_spin) +60%
     /// 폭풍베기 (polearm_step3_ground) → 별도 PolearmStormSlash 패치에서 처리
     /// </summary>
-    [HarmonyPatch(typeof(Attack), nameof(Attack.Start))]
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.StartAttack))]
     public static class Attack_Start_PolearmWheelDetect_Patch
     {
         // 마지막 특수 공격 시간 추적
         private static Dictionary<Player, float> lastSecondaryAttackTime = new Dictionary<Player, float>();
 
         [HarmonyPriority(HarmonyLib.Priority.High)]
-        static void Postfix(Attack __instance)
+        static void Prefix(Humanoid __instance, bool secondaryAttack)
         {
             try
             {
-                var player = Player.m_localPlayer;
-                if (player == null || !SkillEffect.IsUsingPolearm(player)) return;
+                var player = __instance as Player;
+                if (player == null || player != Player.m_localPlayer) return;
+                if (!SkillEffect.IsUsingPolearm(player)) return;
 
                 // 회전베기 또는 폭풍베기 스킬이 있을 때만 처리
                 bool hasWheelSkill = SkillEffect.GetPolearmWheelDamageBonus() > 0f
                                    || SkillEffect.HasSkill("polearm_step3_ground");
                 if (!hasWheelSkill) return;
 
-                // secondaryAttack 먼저 기록 (wheelBonus와 독립적으로)
-                bool isSecondaryAttack = ZInput.GetButton("SecondaryAttack") || Input.GetMouseButton(2);
-
-                if (isSecondaryAttack)
+                if (secondaryAttack)
                 {
                     // 특수 공격 시간 기록 (Character.Damage에서 확인용)
                     lastSecondaryAttackTime[player] = Time.time;
-
                     Plugin.Log.LogDebug($"[폴암] 특수 공격 감지");
                 }
                 else if (SkillEffect.HasSkill("polearm_step3_ground"))
@@ -903,12 +900,12 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 최근 특수 공격 여부 확인 (0.5초 이내)
+        /// 최근 특수 공격 여부 확인 (1.5초 이내 - 느린 폴암 애니메이션 대응)
         /// </summary>
         public static bool IsRecentSecondaryAttack(Player player)
         {
             if (player == null) return false;
-            return lastSecondaryAttackTime.TryGetValue(player, out float ppSecAtk) && Time.time - ppSecAtk < 0.5f;
+            return lastSecondaryAttackTime.TryGetValue(player, out float ppSecAtk) && Time.time - ppSecAtk < 1.5f;
         }
 
         /// <summary>

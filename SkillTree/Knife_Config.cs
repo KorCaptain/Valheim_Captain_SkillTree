@@ -229,7 +229,7 @@ namespace CaptainSkillTree.SkillTree
                 KnifeAssassinationStaggerChance = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier7_Assassination_StaggerChance",
-                    38f,
+                    26f,
                     SkillTreeConfig.GetConfigDescription("Tier7_Assassination_StaggerChance"));
 
                 KnifeAssassinationRequiredHits = SkillTreeConfig.BindServerSync(config,

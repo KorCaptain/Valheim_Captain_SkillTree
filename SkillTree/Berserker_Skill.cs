@@ -594,8 +594,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (!HasBerserkerSkill(__instance)) return;
 
-                    float bonusPercent = Berserker_Config.BerserkerPassiveHealthBonusValue / 100f;
-                    float bonusHealth = hp * bonusPercent;
+                    int bLv = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 1;
+                    float bonusHealth = Berserker_Config.GetEffectiveHealthBonus(bLv);
                     hp += bonusHealth;
                 }
                 catch (Exception ex)
