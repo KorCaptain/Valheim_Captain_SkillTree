@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using HarmonyLib;
-
 namespace CaptainSkillTree
 {
     /// <summary>
@@ -28,6 +27,17 @@ namespace CaptainSkillTree
         /// 초기화 완료 여부
         /// </summary>
         private static bool _initialized = false;
+
+        /// <summary>
+        /// RPC 수신 중 재방송 방지 플래그 (무한 루프 차단)
+        /// </summary>
+        private static bool _isReceivingRPC = false;
+
+        /// <summary>
+        /// 커스텀 VFX 네트워크 RPC 이름
+        /// </summary>
+        internal const string RPC_PLAY_CUSTOM_VFX  = "CaptainVFX_PlayCustom";
+        internal const string RPC_PLAY_ON_PLAYER   = "CaptainVFX_PlayOnPlayer";
 
         /// <summary>
         /// 커스텀 VFX 목록 (AssetBundle에서 로드, Destroy 필요)
@@ -355,6 +365,17 @@ namespace CaptainSkillTree
         {
             if (string.IsNullOrEmpty(vfxName)) return null;
 
+            // 커스텀 VFX이고 RPC 수신 중이 아닌 경우 → 다른 클라이언트에 브로드캐스트
+            if (!_isReceivingRPC && IsCustomVFX(vfxName) && ZRoutedRpc.instance != null)
+            {
+                try
+                {
+                    ZRoutedRpc.instance.InvokeRoutedRPC(
+                        ZRoutedRpc.Everybody, RPC_PLAY_CUSTOM_VFX, vfxName, position, duration);
+                }
+                catch { }
+            }
+
             try
             {
                 GameObject prefab = null;
@@ -517,6 +538,17 @@ namespace CaptainSkillTree
         {
             if (player == null || string.IsNullOrEmpty(vfxName)) return null;
 
+            // 커스텀 VFX + RPC 수신 중 아닌 경우 → 플레이어 ID와 함께 브로드캐스트
+            if (!_isReceivingRPC && IsCustomVFX(vfxName) && ZRoutedRpc.instance != null)
+            {
+                try
+                {
+                    ZRoutedRpc.instance.InvokeRoutedRPC(
+                        ZRoutedRpc.Everybody, RPC_PLAY_ON_PLAYER, vfxName, player.GetPlayerID(), duration);
+                }
+                catch { }
+            }
+
             try
             {
                 GameObject prefab = null;
@@ -658,6 +690,42 @@ namespace CaptainSkillTree
         }
 
         #endregion
+
+        #region 네트워크 RPC 핸들러
+
+        /// <summary>
+        /// [RPC 수신] 다른 클라이언트가 Play()를 호출 → 로컬에서 재생
+        /// _isReceivingRPC = true로 재방송 차단
+        /// </summary>
+        internal static void OnReceiveCustomVFX(long sender, string vfxName, Vector3 pos, float duration)
+        {
+            _isReceivingRPC = true;
+            try   { Play(vfxName, pos, duration); }
+            finally { _isReceivingRPC = false; }
+        }
+
+        /// <summary>
+        /// [RPC 수신] 다른 클라이언트가 PlayOnPlayer()를 호출 → 플레이어 ID로 찾아 로컬 재생
+        /// </summary>
+        internal static void OnReceivePlayOnPlayer(long sender, string vfxName, long playerID, float duration)
+        {
+            _isReceivingRPC = true;
+            try
+            {
+                foreach (var p in Player.GetAllPlayers())
+                {
+                    if (p == null) continue;
+                    if (p.GetPlayerID() == playerID)
+                    {
+                        PlayOnPlayer(p, vfxName, duration); // offset은 기본값 사용
+                        break;
+                    }
+                }
+            }
+            finally { _isReceivingRPC = false; }
+        }
+
+        #endregion
     }
 
     #region Harmony Patch
@@ -676,6 +744,24 @@ namespace CaptainSkillTree
                 SimpleVFX.Initialize();
                 // ZNetScene에 커스텀 VFX 프리팹 등록 (spawn 명령어 사용 가능)
                 CaptainSkillTree.Prefab.PrefabRegistry.RegisterToZNetScene();
+
+                // 커스텀 VFX 멀티플레이어 브로드캐스트 RPC 등록
+                if (ZRoutedRpc.instance != null)
+                {
+                    try
+                    {
+                        ZRoutedRpc.instance.Register(SimpleVFX.RPC_PLAY_CUSTOM_VFX,
+                            new Action<long, string, Vector3, float>(SimpleVFX.OnReceiveCustomVFX));
+                    }
+                    catch { /* 이미 등록된 경우 무시 */ }
+
+                    try
+                    {
+                        ZRoutedRpc.instance.Register(SimpleVFX.RPC_PLAY_ON_PLAYER,
+                            new Action<long, string, long, float>(SimpleVFX.OnReceivePlayOnPlayer));
+                    }
+                    catch { /* 이미 등록된 경우 무시 */ }
+                }
             }
             catch (Exception ex)
             {

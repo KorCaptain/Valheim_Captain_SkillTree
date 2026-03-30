@@ -52,6 +52,7 @@ namespace CaptainSkillTree.SkillTree
         public static float GetTankerHpBonusForLevel(int level)
         {
             return level switch {
+                1 => Tanker_Config.TankerHpBonusLv1Value,
                 2 => Tanker_Config.TankerHpBonusLv2Value,
                 3 => Tanker_Config.TankerHpBonusLv3Value,
                 4 => Tanker_Config.TankerHpBonusLv4Value,

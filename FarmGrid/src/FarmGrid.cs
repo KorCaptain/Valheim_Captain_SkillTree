@@ -13,6 +13,40 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static class FarmGrid
     {
+        #region Mod Conflict Detection
+
+        private static readonly HashSet<string> _conflictingModGuids = new HashSet<string>
+        {
+            "Advize.PlantEverything",
+            "Advize.PlantEasily",
+            "FixItFelix.PlantingPlus",
+            "Smoothbrain.PlantingPlus",
+            "Azumatt.PlantingPlusMod",
+            "Digitalroot.Valheim.PlantingPlus",
+            "RagnarsRogues.Planting_Plus",
+            "Advize.PlantEverything.PlantingPlus"
+        };
+
+        private static bool? _farmGridDisabled = null;
+
+        private static bool IsFarmGridDisabled()
+        {
+            if (_farmGridDisabled.HasValue) return _farmGridDisabled.Value;
+            foreach (var guid in _conflictingModGuids)
+            {
+                if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey(guid))
+                {
+                    Plugin.Log.LogWarning($"[팜그리드] 충돌 모드 감지: {guid} → FarmGrid 기능 비활성화");
+                    _farmGridDisabled = true;
+                    return true;
+                }
+            }
+            _farmGridDisabled = false;
+            return false;
+        }
+
+        #endregion
+
         #region Plant Cache (식물 grow radius 캐시)
 
         private static Dictionary<string, float> plantsConfiguration = new Dictionary<string, float>();
@@ -229,7 +263,11 @@ namespace CaptainSkillTree.SkillTree
 
             float spacing = GetSpacingFromObject(ghost) * _spacingMultiplier;
             var rot = Quaternion.Euler(0f, _gridRotation, 0f);
-            var positions = GetGridPositions2D(ghost.transform.position, rot * Vector3.right, rot * Vector3.forward, rows, cols, spacing);
+
+            // 주변 식물 기준 격자 정렬
+            Vector3 origin = AlignToNearbyPlants(ghost.transform.position, spacing);
+
+            var positions = GetGridPositions2D(origin, rot * Vector3.right, rot * Vector3.forward, rows, cols, spacing);
             DrawGridLines(positions, spacing);
         }
 
@@ -238,6 +276,44 @@ namespace CaptainSkillTree.SkillTree
         #region Batch Planting
 
         private static bool _isAutoPlanting = false;
+        // 동일 Plant 인스턴스 중복 배치 방지 (Awake 다중 호출 대응)
+        private static readonly HashSet<int> _processedPlantIds = new HashSet<int>();
+
+        #endregion
+
+        #region Grid Alignment
+
+        /// <summary>
+        /// 주변 심어진 식물 위치 기준으로 격자 origin을 spacing 단위로 스냅
+        /// </summary>
+        private static Vector3 AlignToNearbyPlants(Vector3 ghostPos, float spacing)
+        {
+            float searchRadius = spacing * 2.5f;
+            Plant nearest = null;
+            float nearestDist = float.MaxValue;
+
+            var cols = Physics.OverlapSphere(ghostPos, searchRadius);
+            foreach (var col in cols)
+            {
+                if (col == null) continue;
+                var plant = col.GetComponentInParent<Plant>();
+                if (plant == null) continue;
+                float d = Vector3.Distance(plant.transform.position, ghostPos);
+                if (d > 0.1f && d < nearestDist)
+                {
+                    nearestDist = d;
+                    nearest = plant;
+                }
+            }
+
+            if (nearest == null) return ghostPos;
+
+            // 가장 가까운 식물 위치에서 spacing 단위로 반올림 스냅
+            Vector3 delta = ghostPos - nearest.transform.position;
+            float snappedX = Mathf.Round(delta.x / spacing) * spacing;
+            float snappedZ = Mathf.Round(delta.z / spacing) * spacing;
+            return nearest.transform.position + new Vector3(snappedX, 0f, snappedZ);
+        }
 
         #endregion
 
@@ -258,6 +334,7 @@ namespace CaptainSkillTree.SkillTree
             static void Postfix(Player __instance)
             {
                 if (__instance != Player.m_localPlayer) return;
+                if (IsFarmGridDisabled()) { HideGridLines(); return; }
                 if (!ProducerSkills.IsProducer(__instance)) { HideGridLines(); return; }
                 if (!IsUsingCultivator(__instance)) { HideGridLines(); return; }
 
@@ -299,6 +376,12 @@ namespace CaptainSkillTree.SkillTree
                 try
                 {
                     if (_isAutoPlanting) return;
+                    if (IsFarmGridDisabled()) return;
+
+                    // 동일 Plant 인스턴스 중복 처리 방지 (ZNet 재초기화 등 Awake 다중 호출 대응)
+                    int instanceId = __instance.GetInstanceID();
+                    if (_processedPlantIds.Contains(instanceId)) return;
+                    _processedPlantIds.Add(instanceId);
 
                     var player = Player.m_localPlayer;
                     if (player == null) return;
@@ -383,7 +466,11 @@ namespace CaptainSkillTree.SkillTree
         [HarmonyPatch(typeof(ZNetScene), "Awake")]
         public static class Patch_ZNetScene_Awake
         {
-            static void Postfix() => SetupPlantCache();
+            static void Postfix()
+            {
+                SetupPlantCache();
+                _processedPlantIds.Clear();
+            }
         }
 
         #endregion

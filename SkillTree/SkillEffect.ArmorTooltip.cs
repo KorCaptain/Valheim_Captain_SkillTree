@@ -97,22 +97,40 @@ namespace CaptainSkillTree.SkillTree
                                 __result = string.Join("\n", swordLines);
                             }
                             return;
+                        case ItemDrop.ItemData.ItemType.Shoulder:
+                            // 어깨: 스킬 기반 flatBonus 없음 → 마법부여만 처리
+                            break;
+                        case ItemDrop.ItemData.ItemType.Utility:
+                            // 악세사리: 스킬 기반 flatBonus 없음 → 마법부여만 처리
+                            break;
                         default:
                             return;
                     }
 
                     // Producer 마법부여 타입별 값 읽기
-                    float enchantPct        = 0f;
-                    float enchantHp         = 0f;
-                    float enchantStaminaPct = 0f;
+                    float enchantPct         = 0f;
+                    float enchantHp          = 0f;
+                    float enchantStaminaPct  = 0f;
+                    float enchantCooldown    = 0f;
+                    float enchantDodgeRoll   = 0f;
+                    float enchantMoveSpdEnch = 0f;
+                    float enchantEitr        = 0f;
+                    float enchantInvWeight   = 0f;
+                    float enchantEitrRegen   = 0f;
+                    float enchantJumpForce   = 0f;
+                    float enchantVal2 = ProducerCrafting.GetEnchantValue(item);
                     switch (ProducerCrafting.GetEnchantType(item))
                     {
-                        case ProducerCrafting.EnchantType.Armor:
-                            enchantPct        = ProducerCrafting.GetEnchantValue(item); break;
-                        case ProducerCrafting.EnchantType.MaxHP:
-                            enchantHp         = ProducerCrafting.GetEnchantValue(item); break;
-                        case ProducerCrafting.EnchantType.MaxStamina:
-                            enchantStaminaPct = ProducerCrafting.GetEnchantValue(item); break;
+                        case ProducerCrafting.EnchantType.Armor:          enchantPct         = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.MaxHP:           enchantHp          = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.MaxStamina:      enchantStaminaPct  = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.CooldownReduce:  enchantCooldown    = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.DodgeRoll:       enchantDodgeRoll   = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.MoveSpeed:       enchantMoveSpdEnch = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.Eitr:            enchantEitr        = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.InvWeight:       enchantInvWeight   = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.EitrRegen:       enchantEitrRegen   = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.JumpForce:       enchantJumpForce   = enchantVal2; break;
                     }
 
                     // 추가 스킬 체크
@@ -160,7 +178,11 @@ namespace CaptainSkillTree.SkillTree
                         bool hasBonus = flatBonus != 0f || rockSkinActive || resistActive
                                         || boostActive || berserkerActive || dodgeTotal > 0f
                                         || moveSpeedTotal > 0f || producerBuffActive
-                                        || enchantPct > 0f || enchantHp > 0f || enchantStaminaPct > 0f;
+                                        || enchantPct > 0f || enchantHp > 0f || enchantStaminaPct > 0f
+                                        || enchantCooldown > 0f || enchantDodgeRoll > 0f
+                                        || enchantMoveSpdEnch > 0f || enchantEitr > 0f
+                                        || enchantInvWeight > 0f || enchantEitrRegen > 0f
+                                        || enchantJumpForce > 0f;
                         if (!hasBonus) return;
                     }
 
@@ -268,6 +290,8 @@ namespace CaptainSkillTree.SkillTree
                                 bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_hp", $"{enchantHp:F1}")}</color>";
                             if (enchantStaminaPct > 0f)
                                 bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_stamina", $"{enchantStaminaPct:F1}")}</color>";
+                            if (enchantCooldown > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_cooldown_reduce", $"{enchantCooldown:F1}")}</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Chest:
                             if (flatBonus > 0f)
@@ -332,6 +356,10 @@ namespace CaptainSkillTree.SkillTree
                                 bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_hp", $"{enchantHp:F1}")}</color>";
                             if (enchantStaminaPct > 0f)
                                 bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_stamina", $"{enchantStaminaPct:F1}")}</color>";
+                            if (enchantDodgeRoll > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_dodge_roll", $"{enchantDodgeRoll:F1}")}</color>";
+                            if (enchantMoveSpdEnch > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_move_speed", $"{enchantMoveSpdEnch:F1}")}</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Shield:
                             if (manager.GetSkillLevel("defense_Step3_shield") > 0)
@@ -350,6 +378,20 @@ namespace CaptainSkillTree.SkillTree
                             }
                             if (producerBuffActive)
                                 bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
+                            break;
+                        case ItemDrop.ItemData.ItemType.Shoulder:
+                            if (enchantStaminaPct > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_stamina_pct", $"{enchantStaminaPct:F1}")}</color>";
+                            if (enchantEitr > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_eitr", $"{enchantEitr:F1}")}</color>";
+                            break;
+                        case ItemDrop.ItemData.ItemType.Utility:
+                            if (enchantInvWeight > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_inv_weight", $"{enchantInvWeight:F0}")}</color>";
+                            if (enchantEitrRegen > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_eitr_regen", $"{enchantEitrRegen:F1}")}</color>";
+                            if (enchantJumpForce > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_jump_force", $"{enchantJumpForce:F1}")}</color>";
                             break;
                     }
 

@@ -119,9 +119,10 @@ namespace CaptainSkillTree.SkillTree
                 // 스태미나 소모
                 player.UseStamina(staminaCost);
 
-                // 분노 상태 적용
-                float duration = Berserker_Config.BerserkerRageDurationValue;
-                float cooldown = Berserker_Config.BerserkerRageCooldownValue;
+                // 분노 상태 적용 (레벨별 쿨타임/지속시간)
+                int bsLevel = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 1;
+                float duration = Berserker_Config.GetEffectiveRageDuration(bsLevel);
+                float cooldown = Berserker_Config.GetEffectiveRageCooldown(bsLevel);
 
                 state.EndTime = Time.time + duration;
                 state.CooldownEndTime = Time.time + cooldown;
@@ -167,9 +168,10 @@ namespace CaptainSkillTree.SkillTree
                 float currentHealthPercent = player.GetHealthPercentage();
                 float lostHealthPercent = (1f - currentHealthPercent) * 100f;
 
-                // Config 값 사용
-                float damagePerPercent = Berserker_Config.BerserkerRageDamagePerHealthPercentValue;
-                float maxBonus = Berserker_Config.BerserkerRageMaxDamageBonusValue;
+                // 레벨별 값 사용 (Lv1:1.5%, Lv2:1.6%, Lv3:1.7%, Lv4:1.8%, Lv5:2.0%)
+                int bsLvDmg = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 1;
+                float damagePerPercent = Berserker_Config.GetEffectiveDamagePerHealthPercent(bsLvDmg);
+                float maxBonus = Berserker_Config.GetEffectiveMaxDamageBonus(bsLvDmg);
 
                 float damageBonus = lostHealthPercent * damagePerPercent;
                 damageBonus = Mathf.Min(damageBonus, maxBonus);
@@ -194,8 +196,10 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 if (!rageStates.TryGetValue(player, out var state)) return;
+                int bsLvDisp = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 1;
+                float bsMaxBonus = Berserker_Config.GetEffectiveMaxDamageBonus(bsLvDisp);
                 int currentTier = Mathf.FloorToInt(currentDamageBonus / 20f);
-                currentTier = Mathf.Min(currentTier, 10);  // 최대 200%
+                currentTier = Mathf.Min(currentTier, Mathf.FloorToInt(bsMaxBonus / 20f)); // Lv1~3:10, Lv4~5:12
 
                 if (currentTier > state.LastDamageTier && currentTier > 0)
                 {
@@ -625,31 +629,7 @@ namespace CaptainSkillTree.SkillTree
                             return;
                         }
 
-                        // 2. 무적 발동 조건 체크 (쿨다운 중이면 스킵)
-                        if (!IsPassiveInvincibilityOnCooldown(player))
-                        {
-                            float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
-                            float rawDamage = hit.GetTotalDamage();
-                            float armor = player.GetBodyArmor();
-                            float estimatedDamage = Mathf.Max(rawDamage * 0.1f, rawDamage - armor);
-                            float hpAfterHit = player.GetHealth() - estimatedDamage;
-                            float maxHP = player.GetMaxHealth();
-                            bool wouldDropToLow = rawDamage > 0f && maxHP > 0f && (hpAfterHit / maxHP) <= threshold;
-
-                            if (wouldDropToLow)
-                            {
-                                if (!passiveStates.TryGetValue(player, out var bsPassiveHit))
-                                {
-                                    bsPassiveHit = new PassiveState();
-                                    passiveStates[player] = bsPassiveHit;
-                                }
-                                ApplyPassiveInvincibility(player, bsPassiveHit);
-                                hit.m_damage = new HitData.DamageTypes();
-                                return;
-                            }
-                        }
-
-                        // 3. Lv3: 분노 중 받는 피해 감소
+                        // 2. Lv3: 분노 중 받는 피해 감소
                         if (IsPlayerInRage(player))
                         {
                             int bLv = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0;
@@ -696,6 +676,29 @@ namespace CaptainSkillTree.SkillTree
                 catch (Exception ex)
                 {
                     Plugin.Log.LogError($"[버서커 패치] Damage 패치 실패: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 피격 후 실제 체력 기준으로 죽음의 무시 발동 체크
+        /// 예측 방식 대신 실제 HP 기반으로 정확한 발동 (오발동 방지)
+        /// </summary>
+        [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+        public static class Berserker_Character_DamageCheck_Patch
+        {
+            public static void Postfix(Character __instance)
+            {
+                try
+                {
+                    if (__instance is Player player && HasBerserkerSkill(player))
+                    {
+                        CheckBerserkerPassiveSkill(player);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[버서커 패시브] 피격 후 체크 실패: {ex.Message}");
                 }
             }
         }

@@ -232,6 +232,11 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[{GetWeaponName(weaponType)} Tooltip] SkillTreeManager not initialized");
                     return;
                 }
+                if (manager.SkillNodes.Count == 0)
+                {
+                    Plugin.Log.LogDebug($"[{GetWeaponName(weaponType)} Tooltip] 스킬 노드 미등록 - 초기화 완료 후 재호출 예정");
+                    return;
+                }
 
                 foreach (var mapping in tooltipMappings)
                 {

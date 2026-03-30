@@ -924,6 +924,7 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Passive_DamageReduction"] = "패시브: 피해 감소 (%)",
                 // --- Lv1 ---
                 ["Tanker_ReflectDuration_Lv1"] = "Lv1 패시브: 반사 지속시간 (초)",
+                ["Tanker_Hp_Bonus_Lv1"] = "Lv1 패시브: 추가 체력",
                 // --- Lv2 ---
                 ["Tanker_Hp_Bonus_Lv2"] = "Lv2 패시브: 추가 체력",
                 ["Tanker_Lv2_BlockPower"] = "Lv2 패시브: 방패 막기 방어력",

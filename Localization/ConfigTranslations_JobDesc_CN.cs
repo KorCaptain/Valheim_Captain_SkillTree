@@ -304,6 +304,11 @@ namespace CaptainSkillTree.Localization
                 "【坦克反射持续时间Lv1 (秒)】\n" +
                 "默认：10秒",
 
+                ["Tanker_Hp_Bonus_Lv1"] =
+                "【坦克 Lv1 HP加成 (%)】\n" +
+                "达到坦克Lv1时最大HP按百分比增加。\n" +
+                "默认：25",
+
                 // === Lv2 ===
                 ["Tanker_Hp_Bonus_Lv2"] =
                 "【坦克 Lv2 HP加成】\n" +

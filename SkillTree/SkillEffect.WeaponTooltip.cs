@@ -51,6 +51,10 @@ namespace CaptainSkillTree.SkillTree
                             __result += $"\n<color=#FFD700>{L.Get("producer_enchant_weapon_dmg", $"{enchantVal:F1}")}</color>";
                         else if (enchantType == ProducerCrafting.EnchantType.WeaponSpd)
                             __result += $"\n<color=#FFD700>{L.Get("producer_enchant_weapon_spd", $"{enchantVal:F1}")}</color>";
+                        else if (enchantType == ProducerCrafting.EnchantType.BowCrit)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_bow_crit", $"{enchantVal:F1}")}</color>";
+                        else if (enchantType == ProducerCrafting.EnchantType.CrossbowReload)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_crossbow_reload", $"{enchantVal:F0}")}</color>";
                     }
                 }
                 catch (Exception ex)

@@ -679,6 +679,12 @@ namespace CaptainSkillTree.SkillTree
 
         public static void Initialize(ConfigFile config)
         {
+            // === STEP 0: 컨피그 스키마 버전 체크 (강제 초기화 여부 판단) ===
+            string storedVersion = ConfigMigration.ReadStoredVersion(config);
+            bool needsMigration = storedVersion != ConfigMigration.SCHEMA_VERSION;
+            if (needsMigration)
+                Plugin.Log.LogWarning($"[ConfigMigration] 버전 변경 감지: [{storedVersion}] → [{ConfigMigration.SCHEMA_VERSION}]. 초기화 진행 예정.");
+
             // === STEP 1: 언어 감지 (Config Manager 로컬라이제이션용) ===
             // Language.Bind() 전에 INI 파일을 직접 읽어 저장된 언어 값 우선 적용
             string rawLang = TryReadRawLanguage(config);
@@ -721,6 +727,18 @@ namespace CaptainSkillTree.SkillTree
                 // UI 언어는 즉시 변경 (스킬트리 UI)
                 Localization.LocalizationManager.ReloadLanguage();
             };
+
+            // === Config 스키마 버전 엔트리 (F1 메뉴 숨김) ===
+            config.Bind(
+                "Skill_Tree_Base",
+                "Config_Schema_Version",
+                ConfigMigration.SCHEMA_VERSION,
+                new ConfigDescription(
+                    "컨피그 스키마 버전 (자동 관리). 이 값이 DLL 버전과 다르면 모든 설정이 기본값으로 초기화됩니다.",
+                    null,
+                    new ConfigurationManagerAttributes { Browsable = false }
+                )
+            );
 
             MoveSpeedMaxBonus = config.Bind(
                 "Skill_Tree_Base",
@@ -885,6 +903,11 @@ namespace CaptainSkillTree.SkillTree
             }
 
             InitializeJotunnSyncEvents();
+
+            // === STEP FINAL: 버전 불일치 시 모든 컨피그 기본값으로 강제 초기화 ===
+            // 모든 Bind() 완료 후 실행해야 BoxedValue 리셋이 정상 동작
+            if (needsMigration)
+                ConfigMigration.ResetAllToDefaults(config);
         }
 
         /// <summary>

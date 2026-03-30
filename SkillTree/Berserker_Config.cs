@@ -104,6 +104,21 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 레벨별 체력 1%당 공격력 증가 비율 반환 (Lv1:1.5 ~ Lv5:2.0)
+        /// </summary>
+        public static float GetEffectiveDamagePerHealthPercent(int level)
+        {
+            switch (level)
+            {
+                case 1: return 1.5f;
+                case 2: return 1.6f;
+                case 3: return 1.7f;
+                case 4: return 1.8f;
+                default: return BerserkerRageDamagePerHealthPercentValue; // 2.0f
+            }
+        }
+
+        /// <summary>
         /// 레벨별 유효 패시브 쿨타임 반환 (Lv5: -120초)
         /// </summary>
         public static float GetEffectivePassiveCooldown(int level)

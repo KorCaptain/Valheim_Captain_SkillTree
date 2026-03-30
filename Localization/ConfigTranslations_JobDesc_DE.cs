@@ -304,6 +304,11 @@ namespace CaptainSkillTree.Localization
                 "【Tanker Reflektionsdauer Lv1 (Sek)】\n" +
                 "Standard: 10 Sek",
 
+                ["Tanker_Hp_Bonus_Lv1"] =
+                "【Tanker Lv1 LP-Bonus (%)】\n" +
+                "Maximale LP erhöht sich prozentual beim Erreichen von Tanker Lv1.\n" +
+                "Standard: 25",
+
                 // === Lv2 ===
                 ["Tanker_Hp_Bonus_Lv2"] =
                 "【Tanker Lv2 LP-Bonus】\n" +

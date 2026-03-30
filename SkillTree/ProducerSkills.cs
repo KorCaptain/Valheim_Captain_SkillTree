@@ -109,25 +109,20 @@ namespace CaptainSkillTree.SkillTree
         private static void ApplyBuffToNearbyPlayers(Player caster, float duration)
         {
             float range = Producer_Config.ProducerBuff_RangeValue;
-            float buffAtk   = Producer_Config.ProducerBuff_AttackBonusValue;
-            float buffHp    = Producer_Config.ProducerBuff_MaxHealthBonusValue;
 
-            // 로컬 플레이어 버프 등록 (자신 포함)
+            // 자신에게 로컬 버프 등록
             SetPlayerBuff(caster, duration);
             SimpleVFX.Play("buff_01", caster.transform.position);
             StartProducerStatusVFX(caster, duration);
 
-            // 근처 파티원 버프 (Player 목록에서 범위 내 검색)
+            // 근처 파티원: ZNet RPC로 각 클라이언트에 전송
             foreach (var p in Player.GetAllPlayers())
             {
                 if (p == caster) continue;
-                if (Vector3.Distance(p.transform.position, caster.transform.position) <= range)
-                {
-                    SetPlayerBuff(p, duration);
-                    SimpleVFX.Play("buff_01", p.transform.position);
-                    StartProducerStatusVFX(p, duration);
-                    p.Message(MessageHud.MessageType.Center, L.Get("producer_buff_applied"));
-                }
+                if (Vector3.Distance(p.transform.position, caster.transform.position) > range) continue;
+                var znv = p.GetComponent<ZNetView>();
+                if (znv != null && znv.IsValid())
+                    znv.InvokeRPC("ProducerBuff_ApplyRPC", duration);
             }
         }
 
@@ -234,6 +229,33 @@ namespace CaptainSkillTree.SkillTree
         #endregion
 
         #region Harmony Patches
+
+        // === RPC 수신 핸들러 ===
+        private static void OnReceiveProducerBuff(long sender, float duration)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            SetPlayerBuff(player, duration);
+            SimpleVFX.Play("buff_01", player.transform.position);
+            StartProducerStatusVFX(player, duration);
+            player.Message(MessageHud.MessageType.Center, L.Get("producer_buff_applied"));
+        }
+
+        // === Player.Awake: RPC "ProducerBuff_ApplyRPC" 등록 ===
+        [HarmonyPatch(typeof(Player), "Awake")]
+        public static class Player_Awake_RegisterProducerBuffRPC
+        {
+            static void Postfix(Player __instance)
+            {
+                try
+                {
+                    var znv = __instance.GetComponent<ZNetView>();
+                    if (znv == null || !znv.IsValid()) return;
+                    znv.Register<float>("ProducerBuff_ApplyRPC", OnReceiveProducerBuff);
+                }
+                catch (Exception) { }
+            }
+        }
 
         // === 버프 중 최대 체력 +15% ===
         [HarmonyPatch(typeof(Player), "GetTotalFoodValue")]

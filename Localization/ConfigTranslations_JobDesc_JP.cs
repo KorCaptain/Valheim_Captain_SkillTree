@@ -304,6 +304,11 @@ namespace CaptainSkillTree.Localization
                 "【タンカー反射持続時間Lv1 (秒)】\n" +
                 "デフォルト：10秒",
 
+                ["Tanker_Hp_Bonus_Lv1"] =
+                "【タンカー Lv1 HPボーナス (%)】\n" +
+                "タンカーLv1達成時、最大HPがパーセント増加します。\n" +
+                "デフォルト：25",
+
                 // === Lv2 ===
                 ["Tanker_Hp_Bonus_Lv2"] =
                 "【タンカー Lv2 HPボーナス】\n" +

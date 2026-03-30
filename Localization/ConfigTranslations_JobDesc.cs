@@ -413,11 +413,16 @@ namespace CaptainSkillTree.Localization
                 "도발 발동 시 Lv1에서 반사 효과가 지속되는 시간입니다.\n" +
                 "기본값: 10초",
 
+                ["Tanker_Hp_Bonus_Lv1"] =
+                "【탱커 Lv1 체력 보너스 (%)】\n" +
+                "탱커 Lv1 달성 시 최대 체력이 % 비율로 증가합니다.\n" +
+                "기본값: 25",
+
                 // --- Lv2 ---
                 ["Tanker_Hp_Bonus_Lv2"] =
-                "【탱커 Lv2 체력 보너스】\n" +
-                "탱커 Lv2 달성 시 최대 체력이 증가합니다.\n" +
-                "기본값: 35",
+                "【탱커 Lv2 체력 보너스 (%)】\n" +
+                "탱커 Lv2 달성 시 최대 체력이 % 비율로 증가합니다.\n" +
+                "기본값: 30",
 
                 ["Tanker_Lv2_BlockPower"] =
                 "【탱커 Lv2 방패 막기 방어력】\n" +
@@ -431,9 +436,9 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv3 ---
                 ["Tanker_Hp_Bonus_Lv3"] =
-                "【탱커 Lv3 체력 보너스】\n" +
-                "탱커 Lv3 달성 시 최대 체력이 증가합니다.\n" +
-                "기본값: 55",
+                "【탱커 Lv3 체력 보너스 (%)】\n" +
+                "탱커 Lv3 달성 시 최대 체력이 % 비율로 증가합니다.\n" +
+                "기본값: 35",
 
                 ["Tanker_Lv3_BlockPower"] =
                 "【탱커 Lv3 방패 막기 방어력】\n" +
@@ -447,9 +452,9 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv4 ---
                 ["Tanker_Hp_Bonus_Lv4"] =
-                "【탱커 Lv4 체력 보너스】\n" +
-                "탱커 Lv4 달성 시 최대 체력이 증가합니다.\n" +
-                "기본값: 75",
+                "【탱커 Lv4 체력 보너스 (%)】\n" +
+                "탱커 Lv4 달성 시 최대 체력이 % 비율로 증가합니다.\n" +
+                "기본값: 40",
 
                 ["Tanker_Lv4_BlockPower"] =
                 "【탱커 Lv4 방패 막기 방어력】\n" +
@@ -463,9 +468,9 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv5 ---
                 ["Tanker_Hp_Bonus_Lv5"] =
-                "【탱커 Lv5 체력 보너스】\n" +
-                "탱커 Lv5 달성 시 최대 체력이 증가합니다.\n" +
-                "기본값: 100",
+                "【탱커 Lv5 체력 보너스 (%)】\n" +
+                "탱커 Lv5 달성 시 최대 체력이 % 비율로 증가합니다.\n" +
+                "기본값: 50",
 
                 ["Tanker_Lv5_BlockPower"] =
                 "【탱커 Lv5 방패 막기 방어력】\n" +
@@ -1315,6 +1320,11 @@ namespace CaptainSkillTree.Localization
                 "【Tanker Reflect Duration Lv1 (sec)】\n" +
                 "Duration of reflect effect when taunting at Lv1.\n" +
                 "Default: 10 sec",
+
+                ["Tanker_Hp_Bonus_Lv1"] =
+                "【Tanker Lv1 HP Bonus (%)】\n" +
+                "Max HP increases by this percentage when reaching Tanker Lv1.\n" +
+                "Default: 25",
 
                 // --- Lv2 ---
                 ["Tanker_Hp_Bonus_Lv2"] =

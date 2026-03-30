@@ -644,17 +644,15 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
                 
-                // === 체력 보너스 ===
-                float hpBonus = 0f;
-
+                // === 탱커 체력 보너스 (% 비율) ===
                 var manager = SkillTreeManager.Instance;
                 if (manager != null)
                 {
                     int tankerLv = manager.GetSkillLevel("Tanker");
-                    hpBonus += TankerSkills.GetTankerHpBonusForLevel(tankerLv);
+                    float tankerHpPercent = TankerSkills.GetTankerHpBonusForLevel(tankerLv);
+                    if (tankerHpPercent > 0f)
+                        __result *= (1f + tankerHpPercent / 100f);
                 }
-
-                __result += hpBonus;
                 
                 // 로그 제거: 불필요한 반복 출력
             }

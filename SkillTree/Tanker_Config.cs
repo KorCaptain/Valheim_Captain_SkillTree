@@ -27,10 +27,11 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> TankerPassiveDamageReduction; // 탱커 패시브 피해 감소 (%)
 
         // === 레벨업 패시브 효과 설정 ===
-        public static ConfigEntry<float> TankerHpBonusLv2;      // Lv2 체력 보너스
-        public static ConfigEntry<float> TankerHpBonusLv3;      // Lv3 체력 보너스
-        public static ConfigEntry<float> TankerHpBonusLv4;      // Lv4 체력 보너스
-        public static ConfigEntry<float> TankerHpBonusLv5;      // Lv5 체력 보너스
+        public static ConfigEntry<float> TankerHpBonusLv1;      // Lv1 체력 보너스 (%)
+        public static ConfigEntry<float> TankerHpBonusLv2;      // Lv2 체력 보너스 (%)
+        public static ConfigEntry<float> TankerHpBonusLv3;      // Lv3 체력 보너스 (%)
+        public static ConfigEntry<float> TankerHpBonusLv4;      // Lv4 체력 보너스 (%)
+        public static ConfigEntry<float> TankerHpBonusLv5;      // Lv5 체력 보너스 (%)
         public static ConfigEntry<float> TankerLv2BlockPower;   // Lv2 방패 막기 방어력
         public static ConfigEntry<float> TankerLv3BlockPower;   // Lv3 방패 막기 방어력
         public static ConfigEntry<float> TankerLv4BlockPower;   // Lv4 방패 막기 방어력
@@ -55,10 +56,11 @@ namespace CaptainSkillTree.SkillTree
         public static float TankerTauntEffectScaleValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_EffectScale", TankerTauntEffectScale?.Value ?? 0.8f);
         public static float TankerTauntReflectPercentValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_ReflectPercent", TankerTauntReflectPercent?.Value ?? 10f);
         public static float TankerPassiveDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Tanker_Passive_DamageReduction", TankerPassiveDamageReduction?.Value ?? 15f);
-        public static float TankerHpBonusLv2Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv2", TankerHpBonusLv2?.Value ?? 35f);
-        public static float TankerHpBonusLv3Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv3", TankerHpBonusLv3?.Value ?? 55f);
-        public static float TankerHpBonusLv4Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv4", TankerHpBonusLv4?.Value ?? 75f);
-        public static float TankerHpBonusLv5Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv5", TankerHpBonusLv5?.Value ?? 100f);
+        public static float TankerHpBonusLv1Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv1", TankerHpBonusLv1?.Value ?? 25f);
+        public static float TankerHpBonusLv2Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv2", TankerHpBonusLv2?.Value ?? 30f);
+        public static float TankerHpBonusLv3Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv3", TankerHpBonusLv3?.Value ?? 35f);
+        public static float TankerHpBonusLv4Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv4", TankerHpBonusLv4?.Value ?? 40f);
+        public static float TankerHpBonusLv5Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv5", TankerHpBonusLv5?.Value ?? 50f);
         public static float TankerLv2BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv2_BlockPower", TankerLv2BlockPower?.Value ?? 5f);
         public static float TankerLv3BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv3_BlockPower", TankerLv3BlockPower?.Value ?? 10f);
         public static float TankerLv4BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv4_BlockPower", TankerLv4BlockPower?.Value ?? 15f);
@@ -181,11 +183,20 @@ namespace CaptainSkillTree.SkillTree
                     order: -2
                 );
 
+                // === Lv1 체력 보너스 ===
+                TankerHpBonusLv1 = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Hp_Bonus_Lv1",
+                    25f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus_Lv1"),
+                    order: -2
+                );
+
                 // === Lv2 패시브 ===
                 TankerHpBonusLv2 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_Hp_Bonus_Lv2",
-                    35f,
+                    30f,
                     SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus_Lv2"),
                     order: -3
                 );
@@ -210,7 +221,7 @@ namespace CaptainSkillTree.SkillTree
                 TankerHpBonusLv3 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_Hp_Bonus_Lv3",
-                    55f,
+                    35f,
                     SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus_Lv3"),
                     order: -6
                 );
@@ -235,7 +246,7 @@ namespace CaptainSkillTree.SkillTree
                 TankerHpBonusLv4 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_Hp_Bonus_Lv4",
-                    75f,
+                    40f,
                     SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus_Lv4"),
                     order: -9
                 );
@@ -260,7 +271,7 @@ namespace CaptainSkillTree.SkillTree
                 TankerHpBonusLv5 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_Hp_Bonus_Lv5",
-                    100f,
+                    50f,
                     SkillTreeConfig.GetConfigDescription("Tanker_Hp_Bonus_Lv5"),
                     order: -12
                 );
@@ -312,6 +323,7 @@ namespace CaptainSkillTree.SkillTree
                 TankerTauntEffectScale.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerTauntReflectPercent.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerPassiveDamageReduction.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerHpBonusLv1.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerHpBonusLv2.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerHpBonusLv3.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerHpBonusLv4.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();

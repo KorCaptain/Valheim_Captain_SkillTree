@@ -304,6 +304,11 @@ namespace CaptainSkillTree.Localization
                 "【Duração do Reflexo do Tanque Lv1 (seg)】\n" +
                 "Padrão: 10 seg",
 
+                ["Tanker_Hp_Bonus_Lv1"] =
+                "【Bônus de HP do Tanque Lv1 (%)】\n" +
+                "O HP máximo aumenta percentualmente ao atingir o Tanque Lv1.\n" +
+                "Padrão: 25",
+
                 // === Lv2 ===
                 ["Tanker_Hp_Bonus_Lv2"] =
                 "【Bônus de HP do Tanque Lv2】\n" +

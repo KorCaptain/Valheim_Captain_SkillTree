@@ -22,12 +22,13 @@ namespace CaptainSkillTree.SkillTree
             float duration   = Berserker_Config.GetEffectiveRageDuration(mainLevel);
             float maxDmg     = Berserker_Config.GetEffectiveMaxDamageBonus(mainLevel);
             float stamina    = Berserker_Config.BerserkerRageStaminaCostValue;
+            float dmgPerHp   = Berserker_Config.GetEffectiveDamagePerHealthPercent(mainLevel);
 
             var tooltip = $"<color=#FFD700><size=22>{L.Get("job_berserker")}</size></color>\n";
 
             // 메인 블록: 현재 레벨 액티브 스탯
             tooltip += $"<color=#E0E0E0><size=16>Lv{mainLevel}: ";
-            tooltip += L.Get("berserker_active_desc", (int)cooldown, (int)duration, (int)maxDmg);
+            tooltip += L.Get("berserker_active_desc", (int)cooldown, (int)duration, (int)maxDmg, dmgPerHp.ToString("F1"));
             tooltip += $"</size></color>\n";
 
             // 패시브 라인
@@ -71,11 +72,12 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
                 for (int lv = mainLevel + 1; lv <= 5; lv++)
                 {
-                    float lvCd  = Berserker_Config.GetEffectiveRageCooldown(lv);
-                    float lvDur = Berserker_Config.GetEffectiveRageDuration(lv);
-                    float lvDmg = Berserker_Config.GetEffectiveMaxDamageBonus(lv);
+                    float lvCd      = Berserker_Config.GetEffectiveRageCooldown(lv);
+                    float lvDur     = Berserker_Config.GetEffectiveRageDuration(lv);
+                    float lvDmg     = Berserker_Config.GetEffectiveMaxDamageBonus(lv);
+                    float lvDmgPerHp = Berserker_Config.GetEffectiveDamagePerHealthPercent(lv);
                     tooltip += $"<color=#808080><size=14>Lv{lv}: ";
-                    tooltip += L.Get("berserker_active_desc", (int)lvCd, (int)lvDur, (int)lvDmg);
+                    tooltip += L.Get("berserker_active_desc", (int)lvCd, (int)lvDur, (int)lvDmg, lvDmgPerHp.ToString("F1"));
                     tooltip += $"\n  {L.Get("tooltip_passive")}: {GetPassiveStr(lv)}</size></color>\n";
                 }
             }

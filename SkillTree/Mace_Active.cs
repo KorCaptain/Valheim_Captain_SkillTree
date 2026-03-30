@@ -103,7 +103,7 @@ namespace CaptainSkillTree.SkillTree
                 dashDir.y = 0f;
                 dashDir.Normalize();
 
-                float dashDist = 8f;
+                float dashDist = 10f;
                 Vector3 startPos = player.transform.position;
                 Vector3 endPos = startPos + dashDir * dashDist;
 
@@ -119,7 +119,7 @@ namespace CaptainSkillTree.SkillTree
                 // 5. Rigidbody 가져오기 (physics-safe 이동)
                 var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
 
-                Plugin.Log.LogInfo("[방패돌진] 돌진 시작 (8m, 0.1초)");
+                Plugin.Log.LogInfo("[방패돌진] 돌진 시작 (10m, 0.5초)");
             }
             catch (Exception ex)
             {
@@ -136,7 +136,7 @@ namespace CaptainSkillTree.SkillTree
             dashDir2.y = 0f;
             dashDir2.Normalize();
             Vector3 startPos2 = player.transform.position;
-            Vector3 endPos2 = startPos2 + dashDir2 * 8f;
+            Vector3 endPos2 = startPos2 + dashDir2 * 10f;
             var body2 = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
 
             while (elapsed < 0.5f && !hitEnemy)
@@ -230,6 +230,28 @@ namespace CaptainSkillTree.SkillTree
                         hitEnemy = true;
                         try { ApplyShieldChargeHit(player, enemy, dashDir2, enemy.GetCenterPoint()); }
                         catch (Exception ex) { Plugin.Log.LogError($"[방패돌진] 충돌 처리 오류: {ex.Message}"); }
+                    }
+                }
+
+                // 3단계: 보정 적중 - 3m 이내 가장 가까운 적 감지 (경로 옆 미스 보완)
+                if (!hitEnemy)
+                {
+                    var nearOverlaps = Physics.OverlapSphere(castOrigin, 3f, charMask);
+                    Character nearest = null;
+                    float nearestDist = float.MaxValue;
+                    foreach (var col in nearOverlaps)
+                    {
+                        var nearEnemy = col.GetComponentInParent<Character>();
+                        if (nearEnemy == null || nearEnemy == player || nearEnemy.IsDead()) continue;
+                        if (nearEnemy.GetFaction() == Character.Faction.Players) continue;
+                        float dist = Vector3.Distance(castOrigin, nearEnemy.GetCenterPoint());
+                        if (dist < nearestDist) { nearestDist = dist; nearest = nearEnemy; }
+                    }
+                    if (nearest != null)
+                    {
+                        hitEnemy = true;
+                        try { ApplyShieldChargeHit(player, nearest, dashDir2, nearest.GetCenterPoint()); }
+                        catch (Exception ex) { Plugin.Log.LogError($"[방패돌진] 보정 적중 오류: {ex.Message}"); }
                     }
                 }
 

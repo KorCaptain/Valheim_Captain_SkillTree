@@ -369,7 +369,7 @@ void Postfix(...) {
 7. **성능 3종 체크 원칙** - 신규/수정 스킬마다 ①패치 발동빈도 ②코루틴 탈출조건 ③메모리 정리 반드시 확인 (규칙 §15 참조)
 
 ## 금지 사항
-- `Plugin.cs`, `SkillTreeInputListener.cs` 수정 금지
+- `SkillTreeInputListener.cs` 수정 금지
 - 패시브 스킬에 VFX/SFX 적용 금지
 - 프레임 기반 패치 금지 (이벤트 기반만)
 - MMO 시스템 우회하는 직접 패치 남용 금지

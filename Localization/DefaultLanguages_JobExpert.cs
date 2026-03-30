@@ -255,9 +255,9 @@ namespace CaptainSkillTree.Localization
                 ["tanker_lv2_skill_required"] = "분노의 망치 / 돌진베기 / 패링돌격 / 방패돌진 중 1개 이상 필요",
                 ["tanker_level_req_items"] = "Lv{0} 필요 아이템",
                 ["tanker_taunt_effect"] = "도발 {0}m, {1}초",
-                ["tanker_passive_lv1"] = "피해감소 {0}%, 피격시 {1}초간 반사",
-                ["tanker_passive_lv2"] = "생명력 +{0}, 피해감소 {1}%, 방패 막기 방어력 +{2}, 피격시 {3}초간 반사",
-                ["tanker_passive_lv3"] = "생명력 +{0}, 피해감소 {1}%, 방패 막기 방어력 +{2}, 피격시 {3}초간 반사",
+                ["tanker_passive_lv1"] = "생명력 +{0}%, 피해감소 {1}%, 피격시 {2}초간 반사",
+                ["tanker_passive_lv2"] = "추가 체력 +{0}%, 피해감소 {1}%, 방패 막기 방어력 +{2}, 피격시 {3}초간 반사",
+                ["tanker_passive_lv3"] = "생명력 +{0}%, 피해감소 {1}%, 방패 막기 방어력 +{2}, 피격시 {3}초간 반사",
                 ["tanker_reflect_activated"] = "🛡️ 도발 반사 활성화!",
                 ["tanker_reflect_damage"] = "🛡️ 도발 반사: {0}",
                 ["tanker_reflect_info"] = "피격 시 {0}% 반사",
@@ -332,7 +332,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Berserker Lv1~5 레벨업 시스템 ===
                 ["berserker_upgrade_msg"] = "버서커 Lv{0} 달성!",
-                ["berserker_active_desc"] = "분노: 쿨{0}초, 지속{1}초, 최대+{2}%",
+                ["berserker_active_desc"] = "분노: 쿨{0}초, 지속{1}초, 최대+{2}%, HP 1%당 {3}%증가",
                 ["berserker_passive_lv1"] = "죽음의 무시: 체력+{0}, 스태미나 리젠+20%, {1}% 이하 {2}초 무적({3}분 쿨)",
                 ["berserker_passive_lv2"] = "체력+{0}, Lv1 + 분노의 망치/돌진베기/관통 돌격 30초 추가 사용 가능",
                 ["berserker_passive_lv3"] = "체력+{0}, Lv2 + 분노 중 받는 피해 -{4}%",
@@ -564,7 +564,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Berserker Lv1~5 Level-Up System ===
                 ["berserker_upgrade_msg"] = "Berserker Lv{0} Reached!",
-                ["berserker_active_desc"] = "Rage: {0}s CD, {1}s duration, max+{2}%",
+                ["berserker_active_desc"] = "Rage: {0}s CD, {1}s duration, max+{2}%, {3}% per 1% HP lost",
                 ["berserker_passive_lv1"] = "Death Defiance: HP+{0}, Stamina regen+20%, Invincible {2}s when below {1}% HP ({3}min CD)",
                 ["berserker_passive_lv2"] = "HP+{0}, Lv1 + Fury Hammer/Rush Slash/Pierce Charge: 1 extra use in 30s",
                 ["berserker_passive_lv3"] = "HP+{0}, Lv2 + Damage received during rage -{4}%",
@@ -859,9 +859,9 @@ namespace CaptainSkillTree.Localization
                 ["tanker_lv2_skill_required"] = "Requires 1 of: Fury Hammer, Rush Slash, Parry Charge, or Shield Charge",
                 ["tanker_level_req_items"] = "Lv{0} Required Items",
                 ["tanker_taunt_effect"] = "Taunt {0}m, {1}s",
-                ["tanker_passive_lv1"] = "Dmg taken -{0}%, Reflect for {1}s on hit",
-                ["tanker_passive_lv2"] = "HP +{0}, Dmg taken -{1}%, Shield Block +{2}, Reflect for {3}s on hit",
-                ["tanker_passive_lv3"] = "HP +{0}, Dmg taken -{1}%, Shield Block +{2}, Reflect for {3}s on hit",
+                ["tanker_passive_lv1"] = "HP +{0}%, Dmg taken -{1}%, Reflect for {2}s on hit",
+                ["tanker_passive_lv2"] = "HP +{0}%, Dmg taken -{1}%, Shield Block +{2}, Reflect for {3}s on hit",
+                ["tanker_passive_lv3"] = "HP +{0}%, Dmg taken -{1}%, Shield Block +{2}, Reflect for {3}s on hit",
 
                 // === Sword Active Skill Messages ===
                 ["sword_or_shield_required"] = "You must equip a sword or shield",

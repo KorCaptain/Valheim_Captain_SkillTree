@@ -921,6 +921,7 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_ReflectPercent"] = "War Cry: Reflect Damage (%)",
                 ["Tanker_Passive_DamageReduction"] = "Passive: Damage Reduction (%)",
                 ["Tanker_ReflectDuration_Lv1"] = "Lv1 Passive: Reflect Duration (sec)",
+                ["Tanker_Hp_Bonus_Lv1"] = "Lv1 Passive: HP Bonus",
                 ["Tanker_Hp_Bonus_Lv2"] = "Lv2 Passive: HP Bonus",
                 ["Tanker_Lv2_BlockPower"] = "Lv2 Passive: Block Power",
                 ["Tanker_ReflectDuration_Lv2"] = "Lv2 Passive: Reflect Duration (sec)",
