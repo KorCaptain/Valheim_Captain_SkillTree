@@ -1,14 +1,18 @@
 # Changelog / 변경 로그
 ## Update
-# [1.2.11] - 2026-03-31
+# [1.2.12] - 2026-03-31
 - ✅fix1 : Berserker - Rage skill now correctly scales with level: duration, cooldown, damage-per-HP%, and max damage cap all use per-level values (was using fixed values regardless of skill level)
 - ✅fix2 : Tanker - Config Manager: Missing Lv1 passive HP bonus translation added to all 7 languages
 - ✅fix3 : Tanker - Lv2 passive tooltip text corrected: "HP +" → "Bonus HP +"
+- ✅fix4 : Polearm - Pierce Charge: Bosses now correctly detected and take damage (fixed `IsMonsterFaction()` missing Boss faction — added `IsBoss()` check to all 6 enemy detection points)
+- ✅fix5 : Producer - Crafting Blessing enchant source line now displays on item tooltip for all 10 previously missing types: Bow Crit, Crossbow Reload, Helmet Cooldown Reduce, Legs Dodge Stamina, Legs Move Speed, Cape Stamina%, Cape Eitr, Accessory Carry Weight, Accessory Eitr Regen, Accessory Jump Force
 
 -
 - ✅fix1 : 버서커 - 분노(Rage) 실제 효과가 레벨에 맞게 적용되도록 수정: 지속시간·쿨타임·체력당 데미지%·최대 보너스 상한이 모두 레벨별 수치 사용 (기존: 레벨 무관하게 고정값 적용)
 - ✅fix2 : 탱커 - 컨피그 매니저: Lv1 패시브 추가 체력 번역 누락 항목 7개 언어 전체 추가
 - ✅fix3 : 탱커 - Lv2 패시브 툴팁 텍스트 수정: "생명력 +" → "추가 체력 +"
+- ✅fix4 : 폴암 - 관통 돌격: 보스 몬스터에게 정상 적중 및 데미지 적용 수정 (`IsMonsterFaction()`이 Boss 팩션을 포함하지 않는 문제 — 적 감지 6개 지점에 `IsBoss()` 조건 추가)
+- ✅fix5 : 제작 전문가 - 제작 축복 마법부여 출처 라인 10종 아이템 툴팁 누락 수정: 활 치명타, 석궁 재장전 단축, 투구 쿨타임 감소, 각반 회피 스태미나, 각반 이동속도, 망토 스태미나%, 망토 에이트르, 악세사리 인벤 무게, 악세사리 에이트르 회복, 악세사리 점프력
 
 # [1.2.11] - 2026-03-30
 - ✅fix1 : Mace - Shield Charge: Dash distance increased from 8m to 10m

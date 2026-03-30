@@ -207,22 +207,131 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 | Lv4 | 30% |
 | Lv5 | 35% |
 
-**마법부여 종류 - 무기** (공격력/공격속도 1:1 확률):
+**마법부여 종류 - 일반 무기** (공격력/공격속도 1:1):
 
 | 종류 | Lv3 | Lv4 | Lv5 |
 |------|-----|-----|-----|
-| 공격력 (WeaponDmg) | 5% | 7~9% | 10~12% |
-| 공격속도 (WeaponSpd) | 3~5% | 5~8% | 8~12% |
+| 공격력 (WeaponDmg) | 3~5% | 6~8% | 9~12% |
+| 공격속도 (WeaponSpd) | 3~5% | 6~8% | 9~12% |
 
-**마법부여 종류 - 방어구** (방어력/체력/스태미나 1:1:1 확률):
+**마법부여 종류 - 활** (공격력/치명타 1:1):
 
 | 종류 | Lv3 | Lv4 | Lv5 |
 |------|-----|-----|-----|
-| 방어력 (Armor) | 5% | 7~9% | 10~12% |
-| 최대체력 (MaxHP) | +2% | +4~5% | +6~8% |
-| 최대스태미나 (MaxStamina) | +5~8% | +8~12% | +12~15% |
+| 공격력 (WeaponDmg) | 3~5% | 6~8% | 9~12% |
+| 치명타 확률 (BowCrit) | +3~5% | +6~8% | +9~12% |
 
-> 적용 가능 아이템: 한손/양손무기, 활, 투구, 상의, 하의, 망토
+**마법부여 종류 - 석궁** (공격력/재장전 1:1):
+
+| 종류 | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| 공격력 (WeaponDmg) | 3~5% | 6~8% | 9~12% |
+| 재장전 단축 (CrossbowReload) | 20~40ms | 45~70ms | 75~100ms |
+
+**마법부여 종류 - 투구** (최대체력/쿨타임감소 1:1):
+
+| 종류 | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| 최대체력 (MaxHP) | +3~5% | +6~8% | +9~12% |
+| 쿨타임 감소 (CooldownReduce) | 3~5% | 6~8% | 9~12% |
+
+**마법부여 종류 - 상의** (최대체력/방어력 1:1):
+
+| 종류 | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| 최대체력 (MaxHP) | +3~5% | +6~8% | +9~12% |
+| 방어력 (Armor) | +3~5% | +6~8% | +9~12% |
+
+**마법부여 종류 - 하의** (회피스태미나/이동속도 1:1):
+
+| 종류 | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| 회피 스태미나 감소 (DodgeRoll) | 3~5% | 6~8% | 9~12% |
+| 이동속도 (MoveSpeed) | +3~5% | +6~8% | +9~12% |
+
+**마법부여 종류 - 망토** (스태미나/에이트르 1:1):
+
+| 종류 | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| 최대스태미나 (MaxStamina) | +5~8% | +9~12% | +13~15% |
+| 에이트르 (Eitr) | +5~8 | +9~12 | +13~15 |
+
+**마법부여 종류 - 악세사리** (인벤무게/에이트르회복/점프력 중 랜덤):
+
+| 종류 | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| 인벤 최대 무게 (InvWeight) | +80~100 | +100~125 | +130~150 |
+| 에이트르 회복속도 (EitrRegen) | +5~8% | +9~12% | +13~15% |
+| 점프력 (JumpForce) | +5~8% | +9~12% | +13~15% |
+
+> 적용 가능 아이템: 한손/양손무기, 활, 석궁, 투구, 상의, 하의, 망토, 악세사리
+
+<details>
+<summary>🔧 마법부여 수치 커스텀 (Producer_Enchant.json)</summary>
+
+마법부여 수치와 슬롯 풀은 모드 내부의 `Producer_Enchant.json`으로 관리됩니다.
+소스코드에서 이 파일을 수정 후 빌드하면 모든 수치를 자유롭게 조정할 수 있습니다.
+
+#### JSON 구조
+
+```json
+{
+  "enchant_types": [
+    {
+      "id": 6,
+      "name": "BowCrit",
+      "display_key": "producer_enchant_bow_crit",
+      "unit": "%",
+      "lv3": { "min": 3.0, "max": 5.0 },
+      "lv4": { "min": 6.0, "max": 8.0 },
+      "lv5": { "min": 9.0, "max": 12.0 }
+    }
+  ],
+  "slot_pools": {
+    "Bow": [{"id": 1, "weight": 1}, {"id": 6, "weight": 1}]
+  }
+}
+```
+
+| 필드 | 설명 |
+|------|------|
+| `id` | 마법부여 고유 번호 (1~14, 변경 금지) |
+| `unit` | 표시 단위 (`%`, `ms`, 또는 빈 문자열) |
+| `lv3/lv4/lv5` | 제작 전문가 Lv3/4/5 적용 시 랜덤 수치 범위 |
+| `slot_pools` | 슬롯별 마법부여 후보 목록 |
+| `weight` | 가중치 — 높을수록 더 자주 등장 (기본: 모두 1) |
+
+#### 슬롯 키 목록
+
+| 슬롯 키 | 대응 아이템 |
+|---------|------------|
+| `Weapon` | 한손/양손 무기 |
+| `Bow` | 활 |
+| `Crossbow` | 석궁 |
+| `Helmet` | 투구 |
+| `Chest` | 상의 |
+| `Legs` | 하의 |
+| `Shoulder` | 망토 |
+| `Accessory` | 악세사리 |
+
+#### 커스텀 예시
+
+활의 치명타 확률 상한을 높이고, 공격력보다 2배 자주 등장시키려면:
+```json
+"slot_pools": {
+  "Bow": [{"id": 1, "weight": 1}, {"id": 6, "weight": 2}]
+},
+"enchant_types": [
+  { "id": 6, "name": "BowCrit", "unit": "%",
+    "lv3": {"min": 5.0, "max": 8.0},
+    "lv4": {"min": 8.0, "max": 12.0},
+    "lv5": {"min": 12.0, "max": 18.0} }
+]
+```
+
+> 마법부여 **확률**(Lv별 등장 %)은 F1 ConfigManager → Producer Job Skills에서 조정 가능합니다.
+
+</details>
 
 </details>
 
@@ -471,18 +580,127 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 
 | Type | Lv3 | Lv4 | Lv5 |
 |------|-----|-----|-----|
-| Weapon Damage | 5% | 7~9% | 10~12% |
-| Attack Speed | 3~5% | 5~8% | 8~12% |
+| Weapon Damage | +3~5% | +6~8% | +9~12% |
+| Attack Speed | +3~5% | +6~8% | +9~12% |
 
-**Armor Enchants** (1:1:1 chance each):
+**Bow Enchants** (50/50 chance each):
 
 | Type | Lv3 | Lv4 | Lv5 |
 |------|-----|-----|-----|
-| Armor | 5% | 7~9% | 10~12% |
-| Max HP | +2% | +4~5% | +6~8% |
-| Max Stamina | +5~8% | +8~12% | +12~15% |
+| Weapon Damage | +3~5% | +6~8% | +9~12% |
+| Bow Crit Chance | +3~5% | +6~8% | +9~12% |
 
-> Applicable items: One-handed weapons, two-handed weapons, bows, helmets, chest, legs, Capes
+**Crossbow Enchants** (50/50 chance each):
+
+| Type | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| Weapon Damage | +3~5% | +6~8% | +9~12% |
+| Reload Speed | -20~40ms | -45~70ms | -75~100ms |
+
+**Helmet Enchants** (50/50 chance each):
+
+| Type | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| Max HP | +3~5% | +6~8% | +9~12% |
+| Cooldown Reduce | 3~5% | 6~8% | 9~12% |
+
+**Chest Enchants** (50/50 chance each):
+
+| Type | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| Max HP | +3~5% | +6~8% | +9~12% |
+| Armor | +3~5% | +6~8% | +9~12% |
+
+**Legs Enchants** (50/50 chance each):
+
+| Type | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| Dodge Stamina Cost | -3~5% | -6~8% | -9~12% |
+| Move Speed | +3~5% | +6~8% | +9~12% |
+
+**Cape Enchants** (50/50 chance each):
+
+| Type | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| Max Stamina | +5~8% | +9~12% | +13~15% |
+| Eitr | +5~8 | +9~12 | +13~15 |
+
+**Accessory Enchants** (random from 3 types):
+
+| Type | Lv3 | Lv4 | Lv5 |
+|------|-----|-----|-----|
+| Carry Weight | +80~100 | +100~125 | +130~150 |
+| Eitr Regen | +5~8% | +9~12% | +13~15% |
+| Jump Force | +5~8% | +9~12% | +13~15% |
+
+> Applicable items: One/Two-handed weapons, Bows, Crossbows, Helmets, Chest, Legs, Capes, Accessories
+
+<details>
+<summary>🔧 Customizing Enchant Values (Producer_Enchant.json)</summary>
+
+All enchant value ranges and slot pools are managed by `Producer_Enchant.json` embedded in the mod.
+Modify this file in the source and rebuild to freely adjust any values.
+
+#### JSON Structure
+
+```json
+{
+  "enchant_types": [
+    {
+      "id": 6,
+      "name": "BowCrit",
+      "display_key": "producer_enchant_bow_crit",
+      "unit": "%",
+      "lv3": { "min": 3.0, "max": 5.0 },
+      "lv4": { "min": 6.0, "max": 8.0 },
+      "lv5": { "min": 9.0, "max": 12.0 }
+    }
+  ],
+  "slot_pools": {
+    "Bow": [{"id": 1, "weight": 1}, {"id": 6, "weight": 1}]
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `id` | Unique enchant ID (1~14, do not change) |
+| `unit` | Display unit (`%`, `ms`, or empty string for flat values) |
+| `lv3/lv4/lv5` | Random value range when Producer is Lv3/4/5 |
+| `slot_pools` | Candidate enchant list per item slot |
+| `weight` | Weight for random selection — higher = more frequent (default: all 1) |
+
+#### Slot Key Reference
+
+| Slot Key | Item Type |
+|----------|-----------|
+| `Weapon` | One/Two-handed weapons |
+| `Bow` | Bows |
+| `Crossbow` | Crossbows |
+| `Helmet` | Helmets |
+| `Chest` | Chest armor |
+| `Legs` | Leg armor |
+| `Shoulder` | Capes |
+| `Accessory` | Accessories |
+
+#### Customization Example
+
+To increase Bow Crit max values and make it appear twice as often as Weapon Damage:
+```json
+"slot_pools": {
+  "Bow": [{"id": 1, "weight": 1}, {"id": 6, "weight": 2}]
+},
+"enchant_types": [
+  { "id": 6, "name": "BowCrit", "unit": "%",
+    "lv3": {"min": 5.0, "max": 8.0},
+    "lv4": {"min": 8.0, "max": 12.0},
+    "lv5": {"min": 12.0, "max": 18.0} }
+]
+```
+
+> Enchant **chance** (% per level) can be adjusted in-game via F1 ConfigManager → Producer Job Skills.
+
+</details>
 
 </details>
 
