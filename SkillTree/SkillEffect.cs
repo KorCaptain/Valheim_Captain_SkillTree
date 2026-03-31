@@ -644,16 +644,9 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
                 
-                // === 탱커 체력 보너스 (% 비율) ===
-                var manager = SkillTreeManager.Instance;
-                if (manager != null)
-                {
-                    int tankerLv = manager.GetSkillLevel("Tanker");
-                    float tankerHpPercent = TankerSkills.GetTankerHpBonusForLevel(tankerLv);
-                    if (tankerHpPercent > 0f)
-                        __result *= (1f + tankerHpPercent / 100f);
-                }
-                
+                // 탱커 체력 보너스는 GetTotalFoodValue 패치(TankerSkills.cs)로 이동
+                // → m_maxHealth에 직접 반영되어 힐 한계 = 표시 최대치 일치
+
                 // 로그 제거: 불필요한 반복 출력
             }
             catch (System.Exception ex)

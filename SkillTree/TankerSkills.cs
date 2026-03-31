@@ -62,6 +62,32 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 탱커 직업 패시브: 체력 최대치 % 증가
+        /// GetTotalFoodValue 패치 - m_maxHealth에 직접 반영 (방어전문가 방식과 동일)
+        /// Priority.VeryLow: 방어전문가 flat 보너스(Priority.Low) 이후 적용
+        /// </summary>
+        [HarmonyPatch(typeof(Player), "GetTotalFoodValue")]
+        public static class Tanker_Player_GetTotalFoodValue_HealthBonus_Patch
+        {
+            [HarmonyPriority(Priority.VeryLow)]
+            public static void Postfix(Player __instance, ref float hp)
+            {
+                try
+                {
+                    if (!Player.m_localPlayer || __instance != Player.m_localPlayer) return;
+                    int tankerLv = SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0;
+                    float tankerPercent = TankerSkills.GetTankerHpBonusForLevel(tankerLv);
+                    if (tankerPercent > 0f)
+                        hp += hp * (tankerPercent / 100f);
+                }
+                catch (System.Exception ex)
+                {
+                    Plugin.Log.LogError($"[탱커 체력] GetTotalFoodValue 패치 오류: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
         /// 레벨별 방패 막기 방어력 보너스 반환 (Lv2부터 적용)
         /// </summary>
         public static float GetTankerBlockPowerForLevel(int level)
