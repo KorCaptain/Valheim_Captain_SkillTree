@@ -123,6 +123,27 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Duplo Lançamento.",
 
+                // === Tier 5-1 Adicional: Configurações de Lançamento em Leque ===
+                ["Tier5_FanCast_SummonRadius"] =
+                "【Raio do Arco (m)】\n" +
+                "Raio do arco semicircular onde 7 bolas de fogo são posicionadas.\n" +
+                "Recomendado: 1.0~2.0m",
+
+                ["Tier5_FanCast_SummonHeight"] =
+                "【Altura de Invocação (m)】\n" +
+                "Altura acima dos pés do jogador onde as bolas de fogo são invocadas.\n" +
+                "Recomendado: 2.0~3.0m",
+
+                ["Tier5_FanCast_HoverTime"] =
+                "【Tempo de Flutuação (seg)】\n" +
+                "Tempo máximo de flutuação das bolas de fogo antes do cancelamento automático.\n" +
+                "Recomendado: 5~10 seg",
+
+                ["Tier5_FanCast_LaunchGap"] =
+                "【Intervalo de Lançamento (seg)】\n" +
+                "Atraso entre o lançamento de cada bola de fogo no segundo pressionamento de R.\n" +
+                "Recomendado: 0.05~0.15 seg",
+
                 // === Tier 5-2: Cura em Área Instantânea (Ativa H) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] =
                 "【Recarga (seg)】\n" +

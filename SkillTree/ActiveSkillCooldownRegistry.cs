@@ -6,7 +6,7 @@ namespace CaptainSkillTree.SkillTree
     /// <summary>
     /// 액티브 스킬 쿨다운 중앙 레지스트리
     /// HUD가 읽고, 각 스킬 발동 지점에서 SetCooldown을 호출합니다.
-    /// slot 상수: "Y", "R", "G", "H"
+    /// slot 상수: "Y", "R", "G", "H", "M2"(휠윈드)
     /// </summary>
     public static class ActiveSkillCooldownRegistry
     {

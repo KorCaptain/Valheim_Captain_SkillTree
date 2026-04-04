@@ -271,6 +271,58 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        /// <summary>
+        /// 휠윈드 툴팁 생성 (Mouse2 홀드 액티브 스킬)
+        /// </summary>
+        public static string GetPolearmStep6WhirlwindTooltip()
+        {
+            try
+            {
+                Plugin.Log.LogDebug("[폴암 툴팁] GetPolearmStep6WhirlwindTooltip() 호출됨 (휠윈드)");
+
+                float damagePercent = Polearm_Config.PolearmWhirlwindDamagePercentValue;
+                float staminaPerCycle = Polearm_Config.PolearmWhirlwindStaminaPerSecValue;
+                float cooldown = Polearm_Config.PolearmWhirlwindCooldownValue;
+
+                var tooltip = "";
+
+                // 1. 스킬명 (#FFD700, size=22)
+                tooltip += $"<color=#FFD700><size=22>{L.Get("polearm_skill_whirlwind")}</size></color>\n\n";
+
+                // 2. 설명 (#FFD700 / #E0E0E0)
+                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("polearm_desc_whirlwind", damagePercent)}</size></color>\n";
+
+                // 3. 데미지 (#FF6B6B / #FFB6C1)
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("polearm_desc_whirlwind_damage", damagePercent)}</size></color>\n";
+
+                // 4. 소모 (#FFB347 / #FFDAB9)
+                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaPerCycle:F0}/{L.Get("unit_cycle")}</size></color>\n";
+
+                // 5. 스킬유형 (Mouse2 강조: #FF4500 / #00FF00)
+                tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FF00><size=16>{L.Get("skill_type_active_key", "Mouse2")}</size></color>\n";
+
+                // 6. 쿨타임 (#FFA500 / #FFDB58)
+                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
+
+                // 7. 필요조건 (#98FB98 / #00FF00)
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_polearm_equip")}</size></color>\n";
+
+                // 8. 확인사항 (#F0E68C / #FFE4B5)
+                tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
+
+                // 9. 필요포인트 (#87CEEB / #FF6B6B)
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Polearm_Config.PolearmWhirlwindRequiredPointsValue}</size></color>";
+
+                Plugin.Log.LogDebug($"[휠윈드 툴팁] 최종 툴팁 생성 완료 - 길이: {tooltip?.Length ?? 0}");
+                return tooltip.TrimEnd('\n');
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[폴암 툴팁] 휠윈드 생성 실패: {ex.Message}");
+                return $"<color=#FFD700><size=22>{L.Get("polearm_skill_whirlwind")}</size></color>\n\n<color=#E0E0E0><size=16>{L.Get("skill_type_active_key", "Mouse2")}\n{L.Get("tooltip_generation_error")}</size></color>";
+            }
+        }
+
         #region 스킬 매핑
 
         /// <summary>
@@ -286,7 +338,8 @@ namespace CaptainSkillTree.SkillTree
             { "polearm_step3_ground", GetPolearmStep3GroundTooltip },
             { "polearm_step4_moon", GetPolearmStep4MoonTooltip },
             { "polearm_step4_charge", GetPolearmStep4ChargeTooltip },
-            { "polearm_step5_king", GetPolearmStep5KingTooltip }
+            { "polearm_step5_king", GetPolearmStep5KingTooltip },
+            { "polearm_step6_whirlwind", GetPolearmStep6WhirlwindTooltip }
         };
 
         #endregion

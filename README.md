@@ -132,6 +132,70 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 BepInEx/config/CaptainSkillTree.cfg
 ```
 
+---
+
+## 제작 축복 고급 설정 (Production Expert Enchant)
+
+### 파일 위치
+```
+BepInEx/config/CaptainSkillTree/Translation/Producer_Enchant.json
+```
+
+### 자동 생성
+모드 최초 실행 시 내장 기본값으로 위 파일이 **자동 생성**됩니다.
+이후 게임 재시작마다 해당 파일을 읽어 인챈트 수치·슬롯 풀을 적용합니다.
+
+### 수정 가능 항목
+
+**① 인챈트 수치 범위 (`enchant_types`)**
+
+| 필드 | 설명 |
+|------|------|
+| `lv3.min` / `lv3.max` | 제작 전문가 Lv3 부여 수치 범위 |
+| `lv4.min` / `lv4.max` | 제작 전문가 Lv4 부여 수치 범위 |
+| `lv5.min` / `lv5.max` | 제작 전문가 Lv5 부여 수치 범위 |
+
+**② 슬롯 풀 가중치 (`slot_pools`)**
+각 슬롯에 등록된 인챈트 `id`와 `weight`(확률 가중치)를 자유롭게 수정할 수 있습니다.
+weight가 높을수록 해당 인챈트가 더 자주 부여됩니다.
+
+**지원 슬롯**: `Weapon`, `Bow`, `Crossbow`, `Helmet`, `Chest`, `Legs`, `Shoulder`, `Accessory`, `Shield`
+
+### 수정 예시
+```json
+{
+  "enchant_types": [
+    {
+      "id": 1,
+      "name": "WeaponDmg",
+      "display_key": "producer_enchant_weapon_dmg",
+      "unit": "%",
+      "lv3": { "min": 5.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 12.0 },
+      "lv5": { "min": 13.0, "max": 16.0 }
+    }
+  ],
+  "slot_pools": {
+    "Weapon": [
+      { "id": 1, "weight": 3 },
+      { "id": 4, "weight": 1 }
+    ]
+  }
+}
+```
+
+### 적용 방법
+
+| 방법 | 설명 |
+|------|------|
+| **게임 재시작** | 가장 확실한 방법. 파일 저장 후 게임을 재실행하면 자동 적용 |
+| **서버 리로드** | 서버 전용 - 서버 재시작으로 모든 클라이언트에 새 수치 배포 |
+
+> **주의**: 파일이 삭제되면 다음 실행 시 내장 기본값으로 재생성됩니다.
+> JSON 문법 오류가 있으면 기본값으로 자동 폴백되며 로그에 오류가 표시됩니다.
+
+---
+
 ### Config 카테고리
 
 | 카테고리 | 설명 | 예시 설정 |
@@ -293,6 +357,70 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 ```
 BepInEx/config/CaptainSkillTree.cfg
 ```
+
+---
+
+## Production Expert Enchant — Advanced Configuration
+
+### File Location
+```
+BepInEx/config/CaptainSkillTree/Translation/Producer_Enchant.json
+```
+
+### Auto-Generated on First Run
+The file is **automatically created** with default values on the first launch.
+On subsequent runs, the mod reads this file to apply enchant values and slot pools.
+
+### Editable Fields
+
+**① Enchant value ranges (`enchant_types`)**
+
+| Field | Description |
+|-------|-------------|
+| `lv3.min` / `lv3.max` | Roll range for Production Expert Lv3 |
+| `lv4.min` / `lv4.max` | Roll range for Production Expert Lv4 |
+| `lv5.min` / `lv5.max` | Roll range for Production Expert Lv5 |
+
+**② Slot pool weights (`slot_pools`)**
+Edit the `id` (enchant type) and `weight` (relative probability) for each equipment slot.
+Higher weight = more frequent roll.
+
+**Supported slots**: `Weapon`, `Bow`, `Crossbow`, `Helmet`, `Chest`, `Legs`, `Shoulder`, `Accessory`, `Shield`
+
+### Example
+```json
+{
+  "enchant_types": [
+    {
+      "id": 1,
+      "name": "WeaponDmg",
+      "display_key": "producer_enchant_weapon_dmg",
+      "unit": "%",
+      "lv3": { "min": 5.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 12.0 },
+      "lv5": { "min": 13.0, "max": 16.0 }
+    }
+  ],
+  "slot_pools": {
+    "Weapon": [
+      { "id": 1, "weight": 3 },
+      { "id": 4, "weight": 1 }
+    ]
+  }
+}
+```
+
+### How to Apply Changes
+
+| Method | Notes |
+|--------|-------|
+| **Restart game** | Most reliable. Save the file, then relaunch the game |
+| **Restart server** | Server-side deployment — reconnecting clients receive the updated values |
+
+> **Note**: If the file is deleted, it will be regenerated from built-in defaults on next launch.
+> JSON syntax errors cause automatic fallback to defaults; check the BepInEx log for details.
+
+---
 
 ### Config Categories
 

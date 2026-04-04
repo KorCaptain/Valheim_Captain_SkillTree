@@ -904,10 +904,11 @@ namespace CaptainSkillTree.SkillTree
 
             InitializeJotunnSyncEvents();
 
-            // === STEP FINAL: 버전 불일치 시 모든 컨피그 기본값으로 강제 초기화 ===
-            // 모든 Bind() 완료 후 실행해야 BoxedValue 리셋이 정상 동작
+            // === STEP FINAL: 버전 불일치 시 선택적 마이그레이션 ===
+            // 사용자 값 유지, _balanceChangedKeys 항목만 기본값으로 업데이트
+            // 모든 Bind() 완료 후 실행해야 BoxedValue 접근이 정상 동작
             if (needsMigration)
-                ConfigMigration.ResetAllToDefaults(config);
+                ConfigMigration.ApplyMigration(config);
         }
 
         /// <summary>

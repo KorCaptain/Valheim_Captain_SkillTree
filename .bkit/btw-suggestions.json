@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "suggestions": [
+    {
+      "id": "btw-001",
+      "timestamp": "2026-04-02T00:00:00Z",
+      "suggestion": "User_CaptainSkillTree.SkillTreeMod.cfg 는 어디서 나온거야?",
+      "context": {
+        "file": "DifficultyManager.cs",
+        "pdcaPhase": "do",
+        "feature": "SkillTree"
+      },
+      "category": "general",
+      "status": "pending",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      }
+    }
+  ],
+  "stats": {
+    "total": 1,
+    "promoted": 0,
+    "dismissed": 0,
+    "lastAnalyzed": null
+  }
+}

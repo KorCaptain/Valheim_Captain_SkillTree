@@ -109,7 +109,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Mage_Fire_Rain_Radius"));
 
                 MageFireRainImpactRadius = SkillTreeConfig.BindServerSync(config,
-                    "Mage Job Skills", "Mage_Fire_Rain_Impact_Radius", 3.0f,
+                    "Mage Job Skills", "Mage_Fire_Rain_Impact_Radius", 4.0f,
                     SkillTreeConfig.GetConfigDescription("Mage_Fire_Rain_Impact_Radius"));
 
                 MageFireRainProjectileCount = SkillTreeConfig.BindServerSync(config,

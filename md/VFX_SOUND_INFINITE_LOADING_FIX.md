@@ -311,6 +311,85 @@ private static void CreateSmokeEffect(Player player)
 
 ---
 
+### 9. **🚨 ZNet 발사체 프리팹을 로컬 전용 VFX로 사용하는 방법 (비활성 프리팹 트릭)**
+
+#### 문제 상황
+`staff_fireball_projectile`처럼 **ZNetView가 내장된 발사체 프리팹**을 7개, 0.3초 간격으로 연속 소환하면:
+1. `Instantiate(prefab)` → `ZNetView.Awake()` 즉시 실행 → ZDO가 ZDOMan에 등록
+2. `DestroyImmediate(znv)` → ZNetView 컴포넌트 제거되지만 **ZDO는 ZDOMan에 고아로 잔존**
+3. 사망/리스폰 시 → ZDOMan이 고아 ZDO 동기화 대기 → **무한 로딩**
+
+#### 근본 원인
+`DestroyImmediate(znv)`로 ZNetView를 제거해도 이미 `Awake()`에서 등록된 ZDO는 ZDOMan에 남아 있음.  
+`Destroy(obj)` 시 `ZNetView.OnDestroy()`가 호출되지 않으므로 ZDO가 영구 고아 상태가 됨.
+
+#### 해결 방법: 비활성 프리팹 인스턴스화 트릭
+**Unity 규칙**: 비활성 상태(SetActive(false))로 Instantiate된 오브젝트는 **Awake()가 호출되지 않음**  
+→ 프리팹을 비활성화한 채로 Instantiate → ZNetView/ZSyncTransform/Projectile 전부 DestroyImmediate → SetActive(true)  
+→ ZNetView.Awake()가 실행된 적 없으므로 ZDO 미등록 → 안전하게 Destroy 가능
+
+```csharp
+// ✅ ZNet 발사체 프리팹을 로컬 전용 VFX로 소환
+var prefab = ZNetScene.instance?.GetPrefab("staff_fireball_projectile");
+if (prefab != null)
+{
+    // ① 프리팹 비활성화 → Awake() 차단 (ZNetView.Awake 실행 안 됨 → ZDO 미등록)
+    bool wasActive = prefab.activeSelf;
+    prefab.SetActive(false);
+    var obj = UnityEngine.Object.Instantiate(prefab, worldPos, Quaternion.identity);
+    prefab.SetActive(wasActive); // ② 프리팹 즉시 원상복구
+
+    // ZNet/게임 로직 컴포넌트 전부 제거 (Awake 미실행 상태이므로 안전)
+    // ※ enabled=false는 Awake를 막지 못함 → 반드시 DestroyImmediate 사용
+    var znv = obj.GetComponent<ZNetView>();
+    if (znv != null) UnityEngine.Object.DestroyImmediate(znv);
+    var zsync = obj.GetComponent<ZSyncTransform>();
+    if (zsync != null) UnityEngine.Object.DestroyImmediate(zsync);
+    var proj = obj.GetComponent<Projectile>();
+    if (proj != null) UnityEngine.Object.DestroyImmediate(proj);
+
+    // 콜라이더 비활성화 (AutoPickup NullReferenceException 방지)
+    foreach (var col in obj.GetComponentsInChildren<Collider>())
+        col.enabled = false;
+
+    var rb = obj.GetComponent<Rigidbody>();
+    if (rb != null) rb.isKinematic = true;
+
+    // ③ 활성화 → 비주얼(MeshRenderer, ParticleSystem)만 남은 순수 로컬 VFX
+    obj.SetActive(true);
+}
+```
+
+#### Destroy 시 주의사항
+오브젝트 제거 시 반드시 `SetActive(false)` 후 `Destroy` 호출.  
+`Destroy`는 다음 프레임에 실제 제거되므로, 그 사이 `AutoPickup` 등이 컴포넌트를 접근하면 NullRef 발생.
+
+```csharp
+// ✅ 올바른 제거 패턴
+if (obj != null)
+{
+    obj.SetActive(false);            // 즉시 Physics/AutoPickup 대상에서 제외
+    UnityEngine.Object.Destroy(obj); // 다음 프레임에 메모리 해제
+}
+
+// ❌ 잘못된 제거 패턴 (AutoPickup NullRef 유발)
+if (obj != null) UnityEngine.Object.Destroy(obj);
+```
+
+#### 적용 대상
+- **발사체 프리팹** (`*_projectile`)을 호버/대기 상태 비주얼로 사용할 때
+- ZNetView가 있는 프리팹을 **로컬 전용 시각 효과**로만 쓸 때
+- 동일 프리팹을 **짧은 간격으로 다수 소환**해야 할 때 (ZDO 부하 없이 안전)
+
+#### 해결 성공 사례
+**지팡이 팬캐스트 스킬** (SkillEffect.StaffDualCast.cs):
+- **문제**: `staff_fireball_projectile` 7개를 소환 후 사망 → 리스폰 무한 로딩
+- **원인**: `DestroyImmediate(znv)`로 ZNetView만 제거, ZDO는 ZDOMan에 고아로 잔존
+- **해결**: 비활성 프리팹 트릭으로 ZNetView.Awake() 차단 → ZDO 미등록
+- **결과**: 무한 로딩 완전 해결 ✅
+
+---
+
 ### 7. **액티브 스킬 VFX/사운드 체크리스트**
 
 액티브 스킬 개발 시 반드시 확인:
@@ -318,6 +397,8 @@ private static void CreateSmokeEffect(Player player)
 - [ ] 중복 사운드 호출 없음
 - [ ] **발헤임 기본 VFX 연속 호출 없음** (각 타격마다 다른 VFX 사용)
 - [ ] **발헤임 기본 VFX 로컬 전용은 순수 Instantiate 사용** (VFXManager 금지)
+- [ ] **ZNet 발사체 프리팹을 VFX로 사용 시 비활성 프리팹 트릭 적용** (§9 참조)
+- [ ] **오브젝트 제거 시 `SetActive(false)` 후 `Destroy` 호출** (AutoPickup NullRef 방지)
 - [ ] 커스텀 VFX 이름이 targetVFXList에 등록되어 있음
 - [ ] 대소문자 매핑이 vfxMapping에 정의되어 있음
 - [ ] 로그로 VFX/사운드 재생 확인
@@ -392,6 +473,8 @@ VFXManager.PlayVFXMultiplayer("statusailment_01", "", hitPosition, Quaternion.id
 4. ❌ **발헤임 기본 VFX를 VFXManager로 호출** → 순수 Instantiate 사용
 5. ❌ **커스텀 VFX를 직접 Instantiate** → VFXManager.PlayVFXMultiplayer 사용
 6. ❌ **패시브 스킬 VFX** → 텍스트 표시만 허용
+7. ❌ **ZNet 프리팹을 바로 Instantiate 후 DestroyImmediate(znv)** → 비활성 프리팹 트릭 사용 (§9)
+8. ❌ **오브젝트 제거 시 Destroy만 호출** → `SetActive(false)` 후 `Destroy` 호출
 
 ---
 
@@ -418,6 +501,8 @@ VFXManager.PlayVFXMultiplayer("statusailment_01", "", hitPosition, Quaternion.id
 |------|----------|
 | **메서드** | PlayVFXMultiplayer만 사용 (커스텀 VFX) |
 | **발헤임 기본 VFX** | 순수 Instantiate 사용 (VFXManager 금지) |
+| **ZNet 발사체를 VFX로** | 비활성 프리팹 트릭 사용 (§9 참조) |
+| **오브젝트 제거** | `SetActive(false)` 후 `Destroy` 호출 |
 | **중복 방지** | 동일 VFX/사운드 한 번만 호출 |
 | **대소문자** | 양쪽 이름 등록 + 폴백 검색 |
 | **검색 순서** | VFXPrefabRegistry → ZNetScene |

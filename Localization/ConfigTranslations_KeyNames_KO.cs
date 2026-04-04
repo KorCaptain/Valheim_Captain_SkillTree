@@ -354,9 +354,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_MiningLv4_BonusChance"] = "Tier 4: 채광 Lv4 - 광석 +1 보너스 확률 (%)",
                 ["Tier4_CraftingLv4_UpgradeChance"] = "Tier 4: 제작 Lv4 - 업그레이드 +1 보너스 확률 (%)",
                 ["Tier4_CraftingLv4_DurabilityBonus"] = "Tier 4: 제작 Lv4 - 내구도 최대치 증가 (%)",
-                ["Tier5_CraftingLv5_DurabilityBonus"] = "Tier 5: 제작 Lv5 - 내구도 보너스 (%)",
-                ["Tier5_CraftingLv5_MaterialReduction"] = "Tier 5: 제작 Lv5 - 재료 절감 (%)",
-                ["Tier5_CraftingLv5_EnchantChance"] = "Tier 5: 제작 Lv5 - 마법부여 확률 (%)",
 
                 // === Production Tree: RequiredPoints (14개) ===
                 ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [생산 전문가] 필요 포인트",
@@ -720,7 +717,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: 패링 돌격 - G키 액티브 (6개) ===
                 ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [패링 돌격] 필요 포인트",
                 ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [패링 돌격] 버프 지속시간 (초)",
-                ["Tier5_ParryRush_DamageBonus"] = "Tier 5: [패링 돌격] 공격력 보너스 (%)",
+                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [패링 돌격] 막기 방어력",
                 ["Tier5_ParryRush_PushDistance"] = "Tier 5: [패링 돌격] 밀어내기 거리 (m)",
                 ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [패링 돌격] 스태미나 소모",
                 ["Tier5_ParryRush_Cooldown"] = "Tier 5: [패링 돌격] 쿨타임 (초)",
@@ -846,6 +843,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [관통 돌격] 스태미나 소모",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [관통 돌격] 쿨타임 (초)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [관통 돌격] 필요 포인트",
+
+                // === Polearm Tree: 휠윈드 (7개) ===
+                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [휠윈드] 공격력 비율 (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [휠윈드] 스태미나 소모/회",
+                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [휠윈드] 이동 속도 (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [휠윈드] 공격 간격 (초)",
+                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [휠윈드] VFX 간격 (초)",
+                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [휠윈드] 쿨타임 (초)",
+                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [휠윈드] 필요 포인트",
 
                 // ============================================
                 // Archer Job Skills (아처 직업 스킬) - 8개

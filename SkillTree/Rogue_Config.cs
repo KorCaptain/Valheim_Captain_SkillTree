@@ -189,7 +189,7 @@ namespace CaptainSkillTree.SkillTree
                 // === 그림자 일격 Lv1 기본 ===
                 RogueShadowStrikeCooldown = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_ShadowStrike_Cooldown", 35f, SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_Cooldown"));
                 RogueShadowStrikeStaminaCost = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_ShadowStrike_StaminaCost", 25f, SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_StaminaCost"));
-                RogueShadowStrikeAttackBonus = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_ShadowStrike_AttackBonus", 35f, SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_AttackBonus"));
+                RogueShadowStrikeAttackBonus = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_ShadowStrike_AttackBonus", 30f, SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_AttackBonus"));
                 RogueShadowStrikeBuffDuration = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_ShadowStrike_BuffDuration", 8f, SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_BuffDuration"));
 
                 // === 그림자 일격 Lv2~5 쿨다운 ===

@@ -37,6 +37,7 @@ namespace CaptainSkillTree.SkillTree
             InvWeight     = 12,  // 악세사리: 인벤 최대 무게 +수치
             EitrRegen     = 13,  // 악세사리: 에이트르 회복속도 +%
             JumpForce     = 14,  // 악세사리: 점프력 +%
+            BlockPower    = 15,  // 방패: 가드 방어력 +%
         }
 
         public static EnchantType GetEnchantType(ItemDrop.ItemData item)
@@ -225,15 +226,7 @@ namespace CaptainSkillTree.SkillTree
 
             private static bool IsApplicableItemType(ItemDrop.ItemData item)
             {
-                var t = item.m_shared.m_itemType;
-                return t == ItemDrop.ItemData.ItemType.OneHandedWeapon
-                    || t == ItemDrop.ItemData.ItemType.TwoHandedWeapon
-                    || t == ItemDrop.ItemData.ItemType.Bow
-                    || t == ItemDrop.ItemData.ItemType.Helmet
-                    || t == ItemDrop.ItemData.ItemType.Chest
-                    || t == ItemDrop.ItemData.ItemType.Legs
-                    || t == ItemDrop.ItemData.ItemType.Shoulder
-                    || t == ItemDrop.ItemData.ItemType.Utility;
+                return !string.IsNullOrEmpty(GetSlotKey(item));
             }
 
             private static void ApplyEnchantment(Player player, ItemDrop.ItemData item, int level)
@@ -289,6 +282,8 @@ namespace CaptainSkillTree.SkillTree
                 if (t == ItemDrop.ItemData.ItemType.Chest)    return "Chest";
                 if (t == ItemDrop.ItemData.ItemType.Legs)     return "Legs";
                 if (t == ItemDrop.ItemData.ItemType.Shoulder) return "Shoulder";
+                // 방패
+                if (t == ItemDrop.ItemData.ItemType.Shield) return "Shield";
                 // 악세사리
                 if (t == ItemDrop.ItemData.ItemType.Utility) return "Accessory";
                 return "";

@@ -84,14 +84,17 @@ $inventory_spirit   → 정신
 치명타 피해: <color=#4FC3F7>+XX%</color>
 ```
 
-### 3-4. 제작 전문가 버프 출처 라인
+### 3-4. 제작 축복 인챈트 출처 라인
 
 **표시 위치**: 모든 스탯 라인 맨 아래
-**색상**: 아이콘 주황, 레이블 파랑(`#4FC3F7`), 수치 주황
+**색상**: 금색(`#FFD700`)
 
 ```
-⚒️[파랑]장인의 축복[/파랑] : 공격력 [주황]+15%[/주황]
+✨ 제작 축복: 공격력 +X.X%
 ```
+
+> ⚒️장인의 축복 라인은 이중 마법부여 표시 문제로 **제거됨** (v1.2.16~).
+> 버프 수치는 데미지 라인에 반영되나 별도 출처 라인은 표시하지 않음.
 
 ---
 
@@ -122,15 +125,15 @@ private const string COL_ATK_ELEM = "#87CEEB";  // 속성 공격력 라벨: 하�
 ```
 타격: 140 (122 × +15%)
 불:   138 (120 × +15%)
-⚒️장인의 축복 : 공격력 +15%
 ```
+
+> 장인의 축복 라인 제거됨 — 버프 수치는 데미지 라인에 반영
 
 ### 스킬 + 버프 동시 (지팡이)
 
 ```
 불:   149 ((120 + 3) × +20%)    ← 속성 스킬 +5% + 버프 +15%
 번개: 115 ((100 + 2) × +20%)
-⚒️장인의 축복 : 공격력 +15%
 🔥 속성 공격력: +5%              ← 스킬트리 전용 수치만 표시
 ```
 
@@ -201,7 +204,9 @@ float displayElemPct = b.PctElemental - producerDisplayPct - b.ProducerEnchantPc
 
 ### 6-2. SkillEffect.WeaponTooltip.cs
 
-**역할**: 제작 전문가 버프 활성 시 버프 출처 라인 1줄 추가 (데미지 라인 교체는 하지 않음)
+**역할**: Producer 인챈트 출처 라인 1줄 추가 (데미지 라인 교체는 하지 않음)
+
+> ⚒️장인의 축복 버프 출처 라인은 **제거됨** (이중 마법부여 표시 방지)
 
 ```csharp
 [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip), ...)]
@@ -209,11 +214,16 @@ float displayElemPct = b.PctElemental - producerDisplayPct - b.ProducerEnchantPc
 private static void Postfix(...)
 {
     if (!isWeapon) return;
-    if (!ProducerSkills.IsProducerBuffActive(player)) return;
 
-    float atkBonus = Producer_Config.ProducerBuff_AttackBonusValue;
-    // 버프 출처 1줄만 추가. 데미지 수치는 Attack_Tooltip_Display가 처리.
-    __result += $"\n<color=#FF8C00>⚒️</color><color=#4FC3F7>{L.Get("weapon_effect_producer_buff")}</color> : {L.Get("weapon_stat_atk_power")} <color=orange>+{atkBonus:F0}%</color>";
+    // 제작 축복 인챈트 출처 라인만 추가
+    var enchantType = ProducerCrafting.GetEnchantType(item);
+    float enchantVal = ProducerCrafting.GetEnchantValue(item);
+    if (enchantVal > 0f)
+    {
+        if (enchantType == ProducerCrafting.EnchantType.WeaponDmg)
+            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_weapon_dmg", ...)}</color>";
+        // ... 기타 인챈트 타입
+    }
 }
 ```
 
@@ -322,7 +332,7 @@ if (qualityLevel > 1) raw += item.m_shared.m_damagesPerLevel * (qualityLevel - 1
 | 출처 | 데미지 라인 반영 | 스탯 라인 ("⚔️ 물리/🔥 속성") | 별도 라인 |
 |------|----------------|-------------------------------|----------|
 | 스킬트리 % 보너스 | ✅ (PctPhysical/PctElemental) | ✅ 표시 | - |
-| 제작 전문가 버프 (15%) | ✅ (physPct/elemPct에 포함) | ❌ 제외 (`- producerDisplayPct`) | `WeaponTooltip.cs`에서 ⚒️장인의 축복 라인 |
+| 제작 전문가 버프 (15%) | ✅ (physPct/elemPct에 포함) | ❌ 제외 (`- producerDisplayPct`) | 없음 (라인 제거됨) |
 | Producer 인챈트 % (`cspt_enchant_type=WeaponDmg`) | ✅ (physPct/elemPct에 포함) | ❌ 제외 (`- b.ProducerEnchantPct`) | `WeaponTooltip.cs`에서 ✨제작 축복 라인 |
 | crafting_lv2 flat (`csct_weapon_dmg`) | ✅ (FlatAllPhysical) | - | - |
 
@@ -355,14 +365,14 @@ b.PctPhysical = physPct;
     - [ ] 모든 물리 데미지 라인에 × +15% 표시
     - [ ] 모든 속성 데미지 라인에 × +15% 표시
     - [ ] ⚔️/🔥 스탯 라인 미표시 (스킬 없음)
-    - [ ] ⚒️장인의 축복 : 공격력 +15% 표시 (파란색 레이블)
+    - [ ] 장인의 축복 라인 미표시 (제거됨)
 
   스킬_AND_버프_동시:
     - [ ] 물리 라인: × +(스킬% + 15%)
     - [ ] 속성 라인: × +(스킬% + 15%)
     - [ ] ⚔️ 물리 공격력: +스킬%  (버프 제외)
     - [ ] 🔥 속성 공격력: +스킬%  (버프 제외)
-    - [ ] ⚒️장인의 축복 : 공격력 +15%
+    - [ ] 장인의 축복 라인 미표시 (제거됨)
 
   Producer_인챈트_WeaponDmg:
     - [ ] 물리 무기: 타격/베기/관통 라인에 × +인챈트% 표시

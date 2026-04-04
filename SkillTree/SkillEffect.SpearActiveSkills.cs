@@ -143,7 +143,7 @@ namespace CaptainSkillTree.SkillTree
                 spearComboThrowUsesRemaining[player] = maxUses;
 
                 // 버프 VFX 생성 - statusailment_01_aura (머리 위, 버프 동안 유지)
-                CreateSpearBuffVFX(player);
+                CreateSpearBuffVFX(player, buffDuration);
 
                 // 버프 UI 표시
                 SkillBuffDisplay.Instance?.ShowBuff(
@@ -165,7 +165,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 연공창 버프 VFX 생성 (머리 위)
         /// </summary>
-        private static void CreateSpearBuffVFX(Player player)
+        private static void CreateSpearBuffVFX(Player player, float duration)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace CaptainSkillTree.SkillTree
                 RemoveSpearBuffVFX(player);
 
                 // 새 VFX 생성 - statusailment_01_aura (머리 높이, 수동 관리)
-                var vfx = SimpleVFX.PlayOnPlayer(player, "statusailment_01_aura", 9999f, new Vector3(0f, 1.2f, 0f));
+                var vfx = SimpleVFX.PlayOnPlayer(player, "statusailment_01_aura", duration, new Vector3(0f, 1.2f, 0f));
                 if (vfx != null)
                 {
                     spearBuffVFXInstances[player] = vfx;
@@ -296,7 +296,10 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (IsSpearComboThrowBuffActive(player))
                     {
-                        CreateSpearBuffVFX(player);
+                        float remaining = spearEnhancedThrowBuffEndTime.TryGetValue(player, out float endTime)
+                            ? Mathf.Max(0f, endTime - Time.time)
+                            : Spear_Config.SpearStep6ComboBuffDurationValue;
+                        CreateSpearBuffVFX(player, remaining);
                     }
                     player.StartCoroutine(DelayedEquipSpear(player, spearName));
                     DrawFloatingText(player, L.Get("combo_spear_retrieved_equipped"), new Color(0.5f, 1f, 0.5f, 1f));

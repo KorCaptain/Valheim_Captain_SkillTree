@@ -6,14 +6,15 @@ using UnityEngine;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 제작 전문가 마법부여 신규 효과 패치 (타입 7~14)
+    /// 제작 전문가 마법부여 신규 효과 패치 (타입 7~15)
     /// - CooldownReduce  (8): 투구 → 액티브 스킬 쿨타임 -% [ActiveSkillCooldownRegistry Prefix]
     /// - DodgeRoll       (9): 각반 → 회피 스태미나 소모 -% [GetEquipmentDodgeStaminaModifier Postfix]
-    /// - MoveSpeed      (10): 각반 → 이동속도 +%           [GetJog/RunSpeedFactor Postfix]
+    /// - MoveSpeed      (10): 각반/방패 → 이동속도 +%      [GetJog/RunSpeedFactor Postfix]
     /// - Eitr           (11): 망토 → 에이트르 최대치 +flat  [GetTotalFoodValue Postfix]
     /// - InvWeight      (12): 악세사리 → 최대 무게 +flat    [GetMaxCarryWeight Postfix]
     /// - EitrRegen      (13): 악세사리 → 에이트르 회복속도 +% [GetEquipmentEitrRegenModifier Postfix]
     /// - JumpForce      (14): 악세사리 → 점프력 +%          [Character.Jump Prefix+Postfix]
+    /// - BlockPower     (15): 방패 → 가드 방어력 +%          [ItemDrop.ItemData.GetBlockPower Postfix]
     ///
     /// BowCrit      (6): Critical.cs GetBowCritChance 에 직접 추가
     /// CrossbowReload(7): SkillEffect.SpeedTree.cs CalculateAttackSpeedBonusInternal 에 직접 추가
@@ -76,7 +77,7 @@ namespace CaptainSkillTree.SkillTree
 
         // ============================================================
         // 3a. MoveSpeed: Player.GetJogSpeedFactor Postfix
-        //     각반(Legs) 마법부여 → 걷기/조깅 속도 +%
+        //     각반(Legs) / 방패(Shield) 마법부여 → 걷기/조깅 속도 +%
         // ============================================================
         [HarmonyPatch(typeof(Player), "GetJogSpeedFactor")]
         public static class Producer_Enchant_MoveSpeed_Jog_Patch
@@ -88,7 +89,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     float bonus = ProducerCrafting.GetEquippedSlotEnchantTotal(
                         __instance, ProducerCrafting.EnchantType.MoveSpeed,
-                        ItemDrop.ItemData.ItemType.Legs);
+                        ItemDrop.ItemData.ItemType.Legs,
+                        ItemDrop.ItemData.ItemType.Shield);
                     if (bonus > 0f)
                         __result *= (1f + bonus / 100f);
                 }
@@ -98,7 +100,7 @@ namespace CaptainSkillTree.SkillTree
 
         // ============================================================
         // 3b. MoveSpeed: Player.GetRunSpeedFactor Postfix
-        //     각반(Legs) 마법부여 → 달리기 속도 +%
+        //     각반(Legs) / 방패(Shield) 마법부여 → 달리기 속도 +%
         // ============================================================
         [HarmonyPatch(typeof(Player), "GetRunSpeedFactor")]
         public static class Producer_Enchant_MoveSpeed_Run_Patch
@@ -110,9 +112,37 @@ namespace CaptainSkillTree.SkillTree
                 {
                     float bonus = ProducerCrafting.GetEquippedSlotEnchantTotal(
                         __instance, ProducerCrafting.EnchantType.MoveSpeed,
-                        ItemDrop.ItemData.ItemType.Legs);
+                        ItemDrop.ItemData.ItemType.Legs,
+                        ItemDrop.ItemData.ItemType.Shield);
                     if (bonus > 0f)
                         __result *= (1f + bonus / 100f);
+                }
+                catch (Exception) { }
+            }
+        }
+
+        // ============================================================
+        // 8. BlockPower: ItemDrop.ItemData.GetBlockPower Postfix
+        //    방패(Shield) 마법부여 → 가드 방어력 +%
+        //    DefenseTree 패치와 동일 방식 (m_leftItem Traverse 체크)
+        // ============================================================
+        [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetBlockPower), new Type[] { typeof(float) })]
+        public static class Producer_Enchant_BlockPower_Patch
+        {
+            [HarmonyPriority(Priority.VeryLow)]
+            public static void Postfix(ItemDrop.ItemData __instance, ref float __result)
+            {
+                try
+                {
+                    if (__instance.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Shield) return;
+                    var player = Player.m_localPlayer;
+                    if (player == null) return;
+                    var leftItem = HarmonyLib.Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+                    if (__instance != leftItem) return;
+                    float enchantVal = ProducerCrafting.GetEnchantValue(__instance);
+                    if (ProducerCrafting.GetEnchantType(__instance) != ProducerCrafting.EnchantType.BlockPower) return;
+                    if (enchantVal > 0f)
+                        __result *= (1f + enchantVal / 100f);
                 }
                 catch (Exception) { }
             }

@@ -45,6 +45,12 @@ namespace CaptainSkillTree.SkillTree
         private static ConfigEntry<float> StaffDoubleCastCooldown;
         private static ConfigEntry<int> StaffDoubleCastRequiredPoints;
 
+        // === Step 6-1 보조: 팬캐스트 소환 설정 ===
+        private static ConfigEntry<float> StaffFanCastRadius;
+        private static ConfigEntry<float> StaffFanCastHeight;
+        private static ConfigEntry<float> StaffFanCastHoverTime;
+        private static ConfigEntry<float> StaffFanCastLaunchGap;
+
         // === Step 6-2: 즉시 범위 힐 (H키 액티브) 설정 ===
         private static ConfigEntry<float> StaffHealCooldown;
         private static ConfigEntry<float> StaffHealEitrCost;
@@ -138,11 +144,11 @@ namespace CaptainSkillTree.SkillTree
 
                 // === Tier 5-1: 이중시전 (R키 액티브) ===
                 StaffDoubleCastProjectileCount = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_DoubleCast_AdditionalProjectileCount", 5,
+                    "Staff Tree", "Tier5_DoubleCast_AdditionalProjectileCount", 7,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_AdditionalProjectileCount"));
 
                 StaffDoubleCastDamagePercent = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 30f,
+                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 60f,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_ProjectileDamagePercent"));
 
                 StaffDoubleCastAngleOffset = SkillTreeConfig.BindServerSync(config,
@@ -160,6 +166,23 @@ namespace CaptainSkillTree.SkillTree
                 StaffDoubleCastRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_DoubleCast_RequiredPoints", 3,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_RequiredPoints"));
+
+                // === Tier 5-1 보조: 팬캐스트 소환 세부 설정 ===
+                StaffFanCastRadius = SkillTreeConfig.BindServerSync(config,
+                    "Staff Tree", "Tier5_FanCast_SummonRadius", 1.5f,
+                    SkillTreeConfig.GetConfigDescription("Tier5_FanCast_SummonRadius"));
+
+                StaffFanCastHeight = SkillTreeConfig.BindServerSync(config,
+                    "Staff Tree", "Tier5_FanCast_SummonHeight", 2.5f,
+                    SkillTreeConfig.GetConfigDescription("Tier5_FanCast_SummonHeight"));
+
+                StaffFanCastHoverTime = SkillTreeConfig.BindServerSync(config,
+                    "Staff Tree", "Tier5_FanCast_HoverTime", 6f,
+                    SkillTreeConfig.GetConfigDescription("Tier5_FanCast_HoverTime"));
+
+                StaffFanCastLaunchGap = SkillTreeConfig.BindServerSync(config,
+                    "Staff Tree", "Tier5_FanCast_LaunchGap", 0.08f,
+                    SkillTreeConfig.GetConfigDescription("Tier5_FanCast_LaunchGap"));
 
                 // === Tier 5-2: 즉시 범위 힐 (H키 액티브) ===
                 StaffHealCooldown = SkillTreeConfig.BindServerSync(config,
@@ -283,6 +306,12 @@ namespace CaptainSkillTree.SkillTree
         public static float StaffDoubleCastEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_eitr", StaffDoubleCastEitrCost?.Value ?? 20f);
         public static float StaffDoubleCastCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_cd", StaffDoubleCastCooldown?.Value ?? 30f);
         public static int StaffDoubleCastRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_rp", StaffDoubleCastRequiredPoints?.Value ?? 3);
+
+        // Step 6-1 보조: 팬캐스트
+        public static float StaffFanCastRadiusValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_fancast_radius", StaffFanCastRadius?.Value ?? 1.5f);
+        public static float StaffFanCastHeightValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_fancast_height", StaffFanCastHeight?.Value ?? 2.5f);
+        public static float StaffFanCastHoverTimeValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_fancast_hover", StaffFanCastHoverTime?.Value ?? 6f);
+        public static float StaffFanCastLaunchGapValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_fancast_gap", StaffFanCastLaunchGap?.Value ?? 0.08f);
 
         // Step 6-2: 즉시 범위 힐
         public static float StaffHealCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_cd", StaffHealCooldown?.Value ?? 30f);

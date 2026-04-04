@@ -123,6 +123,27 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【所需点数】\n解锁双重施法所需的点数。",
 
+                // === Tier 5-1 附加: 扇形施法召唤设置 ===
+                ["Tier5_FanCast_SummonRadius"] =
+                "【弧形半径（米）】\n" +
+                "7个火球排列所在的半圆弧半径。\n" +
+                "推荐：1.0~2.0米",
+
+                ["Tier5_FanCast_SummonHeight"] =
+                "【召唤高度（米）】\n" +
+                "以玩家脚部为基准，火球被召唤的高度。\n" +
+                "推荐：2.0~3.0米",
+
+                ["Tier5_FanCast_HoverTime"] =
+                "【悬浮时间（秒）】\n" +
+                "火球自动取消前的最大悬浮时间。\n" +
+                "推荐：5~10秒",
+
+                ["Tier5_FanCast_LaunchGap"] =
+                "【发射间隔（秒）】\n" +
+                "第二次按R键时，每个火球发射之间的延迟。\n" +
+                "推荐：0.05~0.15秒",
+
                 // === Tier 5-2: 即时范围治疗（主动 H）===
                 ["Tier5_InstantAreaHeal_Cooldown"] =
                 "【冷却时间（秒）】\n" +

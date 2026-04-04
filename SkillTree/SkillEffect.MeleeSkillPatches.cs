@@ -25,6 +25,8 @@ namespace CaptainSkillTree.SkillTree
                 if (attacker == null || !attacker.IsPlayer() || __instance.IsPlayer()) return;
                 var player = attacker as Player;
                 if (player == null || !SkillEffect.IsUsingDagger(player)) return;
+                // 직접 단검 공격(Knives 스킬)만 적용 — 로그 AOE 등 스킬 생성 데미지 제외
+                if (hit.m_skill != Skills.SkillType.Knives) return;
                 SkillEffect.CheckKnifeExpertBackstab(player, __instance, hit);
             }
             catch (Exception ex)

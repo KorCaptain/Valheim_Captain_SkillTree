@@ -455,7 +455,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_TrueDuel_AttackSpeedBonus"] = "Ур.4-2: [Истинная дуэль] Бонус скорости атаки (%)",
                 ["Tier5_ParryRush_RequiredPoints"] = "Ур.5: [Парир. рывок] Необходимые очки",
                 ["Tier5_ParryRush_BuffDuration"] = "Ур.5: [Парир. рывок] Длительность эффекта (сек)",
-                ["Tier5_ParryRush_DamageBonus"] = "Ур.5: [Парир. рывок] Бонус урона (%)",
+                ["Tier5_ParryRush_BlockPowerRatio"] = "Ур.5: [Парир. рывок] Сила блока",
                 ["Tier5_ParryRush_PushDistance"] = "Ур.5: [Парир. рывок] Дистанция отталкивания (м)",
                 ["Tier5_ParryRush_StaminaCost"] = "Ур.5: [Парир. рывок] Расход выносливости",
                 ["Tier5_ParryRush_Cooldown"] = "Ур.5: [Парир. рывок] Перезарядка (сек)",
@@ -536,6 +536,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Ур.5: [Пронзающий рывок] Расход выносливости",
                 ["Tier5_PierceCharge_Cooldown"] = "Ур.5: [Пронзающий рывок] Перезарядка (сек)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Ур.5: [Пронзающий рывок] Необходимые очки",
+
+                // === Polearm Tree: Whirlwind (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Whirlwind] Damage Ratio (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [Whirlwind] Stamina Cost/Cycle",
+                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [Whirlwind] Move Speed (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [Whirlwind] Attack Interval (sec)",
+                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Whirlwind] VFX Interval (sec)",
+                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
+                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
 
                 // ============================================
                 // Archer Job Skills - 8 ключей

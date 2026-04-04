@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 제작 전문가 마법부여 데이터 관리
-    /// asset/Producer_Enchant.json에서 로드 → 수치/슬롯 풀 데이터 제공
+    /// 우선순위: BepInEx/config/CaptainSkillTree/Translation/Producer_Enchant.json
+    ///           → (없으면) 내장 EmbeddedResource + 자동 내보내기
+    ///           → (실패) 하드코딩 기본값
     /// </summary>
     public static class ProducerEnchantData
     {
@@ -48,19 +51,36 @@ namespace CaptainSkillTree.SkillTree
 
         private static bool _loaded = false;
 
+        private static string ConfigFilePath =>
+            Path.Combine(BepInEx.Paths.ConfigPath, "CaptainSkillTree", "Translation", "Producer_Enchant.json");
+
         // ----------------------------------------------------------------
         // 공개 API
         // ----------------------------------------------------------------
 
         /// <summary>
-        /// Plugin 초기화 시 1회 호출. EmbeddedResource에서 JSON 파싱.
+        /// Plugin 초기화 시 1회 호출.
+        /// 설정 파일 우선 → 없으면 내장 리소스 로드 후 자동 내보내기
         /// </summary>
         public static void Load()
         {
             if (_loaded) return;
             try
             {
-                string json = ReadEmbeddedJson();
+                string configPath = ConfigFilePath;
+                string json;
+
+                if (File.Exists(configPath))
+                {
+                    json = File.ReadAllText(configPath, Encoding.UTF8);
+                    Plugin.Log.LogInfo($"[ProducerEnchantData] 설정 파일 로드: {configPath}");
+                }
+                else
+                {
+                    json = ReadEmbeddedJson();
+                    ExportToConfig(configPath, json);
+                }
+
                 ParseJson(json);
                 _loaded = true;
                 Plugin.Log.LogInfo("[ProducerEnchantData] JSON 로드 완료");
@@ -71,6 +91,17 @@ namespace CaptainSkillTree.SkillTree
                 LoadDefaults();
                 _loaded = true;
             }
+        }
+
+        /// <summary>
+        /// 강제 리로드 (게임 중 파일 수정 후 적용 시 사용)
+        /// </summary>
+        public static void Reload()
+        {
+            _loaded = false;
+            _types.Clear();
+            _pools.Clear();
+            Load();
         }
 
         /// <summary>
@@ -156,6 +187,20 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        private static void ExportToConfig(string path, string json)
+        {
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                File.WriteAllText(path, json, Encoding.UTF8);
+                Plugin.Log.LogInfo($"[ProducerEnchantData] 설정 파일 내보내기 완료: {path}");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[ProducerEnchantData] 설정 파일 내보내기 실패: {ex.Message}");
+            }
+        }
+
         /// <summary>
         /// 최소 JSON 파서 (외부 라이브러리 없이 SimpleJSON 방식)
         /// </summary>
@@ -223,7 +268,7 @@ namespace CaptainSkillTree.SkillTree
         {
             // 각 슬롯 키와 배열 파싱
             string[] slotKeys = { "Weapon", "Bow", "Crossbow", "Helmet", "Chest",
-                                  "Legs", "Shoulder", "Accessory" };
+                                  "Legs", "Shoulder", "Accessory", "Shield" };
             foreach (string slot in slotKeys)
             {
                 int keyIdx = obj.IndexOf($"\"{slot}\"");
@@ -345,7 +390,7 @@ namespace CaptainSkillTree.SkillTree
             Add(4, "WeaponSpd",      "producer_enchant_weapon_spd",       "%",  3,5,  6,8,  9,12);
             Add(5, "MaxStamina",     "producer_enchant_stamina_pct",      "%",  5,8,  9,12, 13,15);
             Add(6, "BowCrit",        "producer_enchant_bow_crit",         "%",  3,5,  6,8,  9,12);
-            Add(7, "CrossbowReload", "producer_enchant_crossbow_reload",  "ms", 20,40, 45,70, 75,100);
+            Add(7, "CrossbowReload", "producer_enchant_crossbow_reload",  "%",  20,40, 45,70, 75,100);
             Add(8, "CooldownReduce", "producer_enchant_cooldown_reduce",  "%",  3,5,  6,8,  9,12);
             Add(9, "DodgeRoll",      "producer_enchant_dodge_roll",       "%",  3,5,  6,8,  9,12);
             Add(10,"MoveSpeed",      "producer_enchant_move_speed",       "%",  3,5,  6,8,  9,12);
@@ -353,6 +398,7 @@ namespace CaptainSkillTree.SkillTree
             Add(12,"InvWeight",      "producer_enchant_inv_weight",       "",   80,100, 100,125, 130,150);
             Add(13,"EitrRegen",      "producer_enchant_eitr_regen",       "%",  5,8,  9,12, 13,15);
             Add(14,"JumpForce",      "producer_enchant_jump_force",       "%",  5,8,  9,12, 13,15);
+            Add(15,"BlockPower",     "producer_enchant_block_power",      "%",  3,5,  6,8,  9,12);
 
             _pools["Weapon"]    = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=4,Weight=1} };
             _pools["Bow"]       = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=6,Weight=1} };
@@ -362,6 +408,7 @@ namespace CaptainSkillTree.SkillTree
             _pools["Legs"]      = new List<WeightedEnchant> { new WeightedEnchant{Id=9,Weight=1}, new WeightedEnchant{Id=10,Weight=1} };
             _pools["Shoulder"]  = new List<WeightedEnchant> { new WeightedEnchant{Id=5,Weight=1}, new WeightedEnchant{Id=11,Weight=1} };
             _pools["Accessory"] = new List<WeightedEnchant> { new WeightedEnchant{Id=12,Weight=1}, new WeightedEnchant{Id=13,Weight=1}, new WeightedEnchant{Id=14,Weight=1} };
+            _pools["Shield"]    = new List<WeightedEnchant> { new WeightedEnchant{Id=15,Weight=1}, new WeightedEnchant{Id=10,Weight=1} };
         }
     }
 }

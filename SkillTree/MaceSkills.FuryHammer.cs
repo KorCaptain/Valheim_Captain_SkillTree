@@ -269,10 +269,6 @@ namespace CaptainSkillTree.SkillTree
 
             // 데미지 5회 자동 적용 (1타만 플레이어 공격 모션, 나머지는 VFX만)
 
-            // ✅ 스킬 위치: 돌진 완료 후 플레이어 위치 기준
-            Vector3 fixedVfxOffset = player.GetLookDir() * 2f;
-            Vector3 fixedVfxPosition = player.transform.position + fixedVfxOffset;
-
             for (int i = 0; i < attackCount; i++)
             {
                 // 플레이어 사망 체크 (매 데미지마다)
@@ -289,9 +285,10 @@ namespace CaptainSkillTree.SkillTree
                 // === 1타: 모션은 도약 중 0.35초에 이미 실행됨 → 착지 즉시 데미지 적용 ===
                 if (i == 0)
                 {
-                    Vector3 hitPosition = fixedVfxPosition;
+                    // ✅ 매 타격마다 현재 플레이어 위치 기준으로 동적 계산
+                    Vector3 hitPosition = player.transform.position + player.GetLookDir() * 2f;
                     var mobs = Character.GetAllCharacters().Where(c =>
-                        c.IsMonsterFaction(0f) &&
+                        (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss) &&
                         Vector3.Distance(c.transform.position, hitPosition) < aoeRadius
                     );
 
@@ -321,7 +318,7 @@ namespace CaptainSkillTree.SkillTree
                     if (hitCount > 0)
                     {
                         // VFX + SFX 재생
-                        SimpleVFX.PlayWithSound("flash_round_ellow", "sfx_sledge_iron_hit", fixedVfxPosition, 2f);
+                        SimpleVFX.PlayWithSound("flash_round_ellow", "sfx_sledge_iron_hit", hitPosition, 2f);
                     }
                 }
                 // === 2~5타: VFX 먼저 → 데미지 ===
@@ -361,7 +358,10 @@ namespace CaptainSkillTree.SkillTree
                             break;
                     }
 
-                    SimpleVFX.PlayWithSound(vfxName, sfxName, fixedVfxPosition, duration);
+                    // ✅ 매 타격마다 현재 플레이어 위치 기준으로 동적 계산
+                    Vector3 hitPosition = player.transform.position + player.GetLookDir() * 2f;
+
+                    SimpleVFX.PlayWithSound(vfxName, sfxName, hitPosition, duration);
 
                     // 마지막 공격만 0.5초 대기 후 데미지
                     if (isLastAttack)
@@ -374,12 +374,13 @@ namespace CaptainSkillTree.SkillTree
                         {
                             yield break;
                         }
+                        // 대기 후 위치 재계산
+                        hitPosition = player.transform.position + player.GetLookDir() * 2f;
                     }
 
                     // 데미지 적용
-                    Vector3 hitPosition = fixedVfxPosition;
                     var mobs = Character.GetAllCharacters().Where(c =>
-                        c.IsMonsterFaction(0f) &&
+                        (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss) &&
                         Vector3.Distance(c.transform.position, hitPosition) < aoeRadius
                     );
 

@@ -318,6 +318,14 @@ namespace CaptainSkillTree.SkillTree
                 return false;
             }
 
+            // 날아다니는 적 체크 (지면으로부터 5m 이상)
+            if (IsEnemyFlying(targetMonster))
+            {
+                DrawFloatingText(player, L.Get("assassin_heart_flying_enemy"), Color.yellow);
+                Plugin.Log.LogDebug("[암살자의 심장] 취소 - 날아다니는 적");
+                return false;
+            }
+
             // 스태미나 체크
             float staminaCost = player.GetMaxStamina() * (Knife_Config.KnifeAssassinHeartStaminaCostValue / 100f);
             if (player.GetStamina() < staminaCost)
@@ -341,9 +349,6 @@ namespace CaptainSkillTree.SkillTree
 
             // 스태미나 소모
             player.UseStamina(staminaCost);
-
-            // 대상에게 스턴 적용
-            ApplyStunToTargetMonster(player, targetMonster);
 
             // 연속 공격 코루틴 실행 (원래 위치 전달)
             player.StartCoroutine(ExecuteAssassinHeartAttacksCoroutine(player, targetMonster, originalPosition));
@@ -461,6 +466,24 @@ namespace CaptainSkillTree.SkillTree
             {
                 stealthMovementBonus[player] = false;
             }
+        }
+
+        /// <summary>
+        /// 대상 몬스터가 지면으로부터 5m 이상 떠 있는지 확인 (날아다니는 적)
+        /// </summary>
+        private static bool IsEnemyFlying(Character target)
+        {
+            try
+            {
+                Vector3 pos = target.transform.position;
+                if (ZoneSystem.instance != null &&
+                    ZoneSystem.instance.GetSolidHeight(pos, out float groundHeight, 500))
+                {
+                    return pos.y - groundHeight > 5f;
+                }
+                return false;
+            }
+            catch { return false; }
         }
 
         /// <summary>

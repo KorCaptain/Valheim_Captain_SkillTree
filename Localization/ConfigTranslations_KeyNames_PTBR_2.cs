@@ -253,7 +253,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: Investida de Aparar - Ativo Tecla G (6) ===
                 ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [Investida de Aparar] Pontos Necessários",
                 ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [Investida de Aparar] Duração do Buff (seg)",
-                ["Tier5_ParryRush_DamageBonus"] = "Tier 5: [Investida de Aparar] Bônus de Dano (%)",
+                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [Investida de Aparar] Poder de Bloqueio",
                 ["Tier5_ParryRush_PushDistance"] = "Tier 5: [Investida de Aparar] Distância de Empurrão (m)",
                 ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [Investida de Aparar] Custo de Stamina",
                 ["Tier5_ParryRush_Cooldown"] = "Tier 5: [Investida de Aparar] Recarga (seg)",
@@ -376,6 +376,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [Carga Perfurante] Custo de Stamina",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [Carga Perfurante] Recarga (seg)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [Carga Perfurante] Pontos Necessários",
+
+                // === Polearm Tree: Redemoinho (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Redemoinho] Taxa de Dano (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [Redemoinho] Custo de Stamina/Ciclo",
+                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [Redemoinho] Velocidade de Movimento (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [Redemoinho] Intervalo de Ataque (seg)",
+                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Redemoinho] Intervalo VFX (seg)",
+                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Redemoinho] Recarga (seg)",
+                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Redemoinho] Pontos Necessários",
 
                 // ============================================
                 // Habilidades de Classe - Arqueiro

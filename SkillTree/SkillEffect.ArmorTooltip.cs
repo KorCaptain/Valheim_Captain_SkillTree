@@ -118,6 +118,7 @@ namespace CaptainSkillTree.SkillTree
                     float enchantInvWeight   = 0f;
                     float enchantEitrRegen   = 0f;
                     float enchantJumpForce   = 0f;
+                    float enchantBlockPower  = 0f;
                     float enchantVal2 = ProducerCrafting.GetEnchantValue(item);
                     switch (ProducerCrafting.GetEnchantType(item))
                     {
@@ -131,6 +132,7 @@ namespace CaptainSkillTree.SkillTree
                         case ProducerCrafting.EnchantType.InvWeight:       enchantInvWeight   = enchantVal2; break;
                         case ProducerCrafting.EnchantType.EitrRegen:       enchantEitrRegen   = enchantVal2; break;
                         case ProducerCrafting.EnchantType.JumpForce:       enchantJumpForce   = enchantVal2; break;
+                        case ProducerCrafting.EnchantType.BlockPower:      enchantBlockPower  = enchantVal2; break;
                     }
 
                     // 추가 스킬 체크
@@ -206,8 +208,11 @@ namespace CaptainSkillTree.SkillTree
                             float rawBase = item.m_shared.m_blockPower +
                                             item.m_shared.m_blockPowerPerLevel * (qualityLevel - 1);
 
+                            float totalBlockPct  = (rockSkinActive ? rockSkinPct : 0f) + enchantBlockPower;
+                            bool  hasBlockPct    = totalBlockPct > 0f;
+                            float totalBlockMult = 1f + totalBlockPct / 100f;
                             lines[i] = BuildLine(label, rawBase, flatBlockBonus,
-                                                  rockSkinActive, rockSkinPct, rockSkinMult);
+                                                  hasBlockPct, totalBlockPct, totalBlockMult);
                             break;
                         }
                         else
@@ -233,8 +238,9 @@ namespace CaptainSkillTree.SkillTree
                         }
                     }
 
-                    // 각반 이동속도 스킬 보너스 → 바닐라 Total 수정
-                    if (!isShield && (itemType == ItemDrop.ItemData.ItemType.Legs || itemType == ItemDrop.ItemData.ItemType.Chest) && moveSpeedTotal > 0f)
+                    // 이동속도 보너스 (스킬 + 인챈트) → 바닐라 Total 수정
+                    float totalMoveSpdBonus = moveSpeedTotal + enchantMoveSpdEnch;
+                    if (!isShield && (itemType == ItemDrop.ItemData.ItemType.Legs || itemType == ItemDrop.ItemData.ItemType.Chest) && totalMoveSpdBonus > 0f)
                     {
                         for (int i = 0; i < lines.Length; i++)
                         {
@@ -249,8 +255,8 @@ namespace CaptainSkillTree.SkillTree
                             if (float.TryParse(pctStr, System.Globalization.NumberStyles.Any,
                                 System.Globalization.CultureInfo.InvariantCulture, out float currentTotal))
                             {
-                                float newTotal = currentTotal + moveSpeedTotal;
-                                lines[i] = lines[i].Substring(0, pctStart) + $"{newTotal:F0}" + lines[i].Substring(pctEnd);
+                                float newTotal = currentTotal + totalMoveSpdBonus;
+                                lines[i] = lines[i].Substring(0, pctStart) + $"{newTotal:F1}" + lines[i].Substring(pctEnd);
                             }
                             break;
                         }
@@ -378,6 +384,10 @@ namespace CaptainSkillTree.SkillTree
                             }
                             if (producerBuffActive)
                                 bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
+                            if (enchantBlockPower > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_block_power", $"{enchantBlockPower:F1}")}</color>";
+                            if (enchantMoveSpdEnch > 0f)
+                                bonusText += $"\n<color=#FFD700>{L.Get("producer_enchant_move_speed", $"{enchantMoveSpdEnch:F1}")}</color>";
                             break;
                         case ItemDrop.ItemData.ItemType.Shoulder:
                             if (enchantStaminaPct > 0f)

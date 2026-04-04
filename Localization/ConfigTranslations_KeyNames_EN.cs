@@ -354,9 +354,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_MiningLv4_BonusChance"] = "Tier 4: Mining Lv4 - Ore +1 Bonus Chance (%)",
                 ["Tier4_CraftingLv4_UpgradeChance"] = "Tier 4: Crafting Lv4 - Upgrade +1 Bonus Chance (%)",
                 ["Tier4_CraftingLv4_DurabilityBonus"] = "Tier 4: Crafting Lv4 - Max Durability Increase (%)",
-                ["Tier5_CraftingLv5_DurabilityBonus"] = "Tier 5: Crafting Lv5 - Durability Bonus (%)",
-                ["Tier5_CraftingLv5_MaterialReduction"] = "Tier 5: Crafting Lv5 - Material Reduction (%)",
-                ["Tier5_CraftingLv5_EnchantChance"] = "Tier 5: Crafting Lv5 - Enchant Chance (%)",
 
                 // === Production Tree: RequiredPoints (14) ===
                 ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [Production Expert] Required Points",
@@ -718,7 +715,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: Parry Rush - G-Key Active (6) ===
                 ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [Parry Rush] Required Points",
                 ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [Parry Rush] Buff Duration (sec)",
-                ["Tier5_ParryRush_DamageBonus"] = "Tier 5: [Parry Rush] Damage Bonus (%)",
+                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [Parry Rush] Block Power",
                 ["Tier5_ParryRush_PushDistance"] = "Tier 5: [Parry Rush] Push Distance (m)",
                 ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [Parry Rush] Stamina Cost",
                 ["Tier5_ParryRush_Cooldown"] = "Tier 5: [Parry Rush] Cooldown (sec)",
@@ -844,6 +841,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [Pierce Charge] Stamina Cost",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [Pierce Charge] Cooldown (sec)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [Pierce Charge] Required Points",
+
+                // === Polearm Tree: Whirlwind (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Whirlwind] Damage Ratio (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [Whirlwind] Stamina Cost/Cycle",
+                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [Whirlwind] Move Speed (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [Whirlwind] Attack Interval (sec)",
+                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Whirlwind] VFX Interval (sec)",
+                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
+                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
 
                 // ============================================
                 // Archer Job Skills - 8 Keys

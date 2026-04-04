@@ -610,6 +610,42 @@ namespace CaptainSkillTree.Localization
                 "관통 돌격 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
                 "권장값: 3",
 
+                // === Polearm Tree: 휠윈드 (7개) ===
+                ["Tier6_Whirlwind_DamagePercent"] =
+                "【휠윈드 공격력 비율 (%)】\n" +
+                "마우스 휠 버튼 홀드 시 사이클당 무기 공격력 배율.\n" +
+                "권장값: 15-35%",
+
+                ["Tier6_Whirlwind_StaminaPerSec"] =
+                "【휠윈드 스태미나 소모/회】\n" +
+                "점프-공격 1사이클당 소모되는 스태미나.\n" +
+                "권장값: 3-6",
+
+                ["Tier6_Whirlwind_MoveSpeed"] =
+                "【휠윈드 이동 속도 (m/s)】\n" +
+                "사이클당 이동 거리 기준 속도.\n" +
+                "권장값: 3-6",
+
+                ["Tier6_Whirlwind_AttackInterval"] =
+                "【휠윈드 공격 간격 (초)】\n" +
+                "공격 모션 간 대기 시간.\n" +
+                "권장값: 0.2-0.5",
+
+                ["Tier6_Whirlwind_VfxInterval"] =
+                "【휠윈드 VFX 간격 (초)】\n" +
+                "시각 효과 재생 간격.\n" +
+                "권장값: 1-3",
+
+                ["Tier6_Whirlwind_Cooldown"] =
+                "【휠윈드 쿨타임 (초)】\n" +
+                "스킬 종료 후 재사용까지의 대기 시간.\n" +
+                "권장값: 10-30",
+
+                ["Tier6_Whirlwind_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "휠윈드 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
+                "권장값: 3",
+
             };
         }
 
@@ -1216,6 +1252,42 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_RequiredPoints"] =
                 "【Required Points】\n" +
                 "Skill points required to unlock the Pierce Charge node.\n" +
+                "Recommended: 3",
+
+                // === Polearm Tree: Whirlwind (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"] =
+                "【Whirlwind Damage Ratio (%)】\n" +
+                "Weapon damage multiplier per jump-attack cycle.\n" +
+                "Recommended: 15-35%",
+
+                ["Tier6_Whirlwind_StaminaPerSec"] =
+                "【Whirlwind Stamina Cost/Cycle】\n" +
+                "Stamina consumed per jump-attack cycle.\n" +
+                "Recommended: 3-6",
+
+                ["Tier6_Whirlwind_MoveSpeed"] =
+                "【Whirlwind Move Speed (m/s)】\n" +
+                "Movement distance basis per cycle.\n" +
+                "Recommended: 3-6",
+
+                ["Tier6_Whirlwind_AttackInterval"] =
+                "【Whirlwind Attack Interval (sec)】\n" +
+                "Wait time between attack motions.\n" +
+                "Recommended: 0.2-0.5",
+
+                ["Tier6_Whirlwind_VfxInterval"] =
+                "【Whirlwind VFX Interval (sec)】\n" +
+                "Visual effect playback interval.\n" +
+                "Recommended: 1-3",
+
+                ["Tier6_Whirlwind_Cooldown"] =
+                "【Whirlwind Cooldown (sec)】\n" +
+                "Wait time before reuse after skill ends.\n" +
+                "Recommended: 10-30",
+
+                ["Tier6_Whirlwind_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Whirlwind node.\n" +
                 "Recommended: 3",
 
             };

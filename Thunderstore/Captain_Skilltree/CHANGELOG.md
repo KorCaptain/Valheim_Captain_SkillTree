@@ -1,6 +1,35 @@
 # Changelog / 변경 로그
 ## Update
-# [1.2.12] - 2026-03-31
+# [1.2.23] - 2026-04-03
+- ✅new1 : System - Difficulty selection screen added on first install or version update: choose Normal (Vanilla+) or Very Hard (CLLC Very Hard + Monster HP x2) at the main menu
+- ✅new2 : System - User settings are automatically backed up on game exit; "User Setting" option appears on the next update's selection screen if a backup exists
+- ✅new3 : System - Difficulty presets are embedded in the DLL and extracted to BepInEx/config/CaptainSkillTree/ on first launch; Very Hard preset values reset to hardcoded defaults for accurate balance
+- ✅improve1: Double Casting - Remake and Increase attack power and maintain target on the go
+- ✅Improve2: Mage - 20 shots, 2 times -> 3 times increase in basic damage
+- ✅improve3: Rogue - Ballance Down Patch
+-
+- ✅new1 : 시스템 - 모드 최초 설치 또는 버전 업데이트 시 메인 메뉴에서 난이도 선택 창 표시: Normal(바닐라+) 또는 Very Hard(CLLC 베리하드 + 몬스터 HP x2) 중 선택
+- ✅new2 : 시스템 - 게임 종료 시 현재 컨피그를 자동 백업; 다음 업데이트 후 선택 창에 "User Setting" 옵션 표시 (백업 파일 존재 시)
+- ✅new3 : 시스템 - 난이도 프리셋 파일이 DLL에 내장되어 최초 실행 시 BepInEx/config/CaptainSkillTree/에 자동 추출; Very Hard 프리셋 수치가 하드코딩 기본값으로 정확하게 초기화됨
+- ✅improve1 : 이중시전 - 7개 파이어 볼로 변경 그리고 공격력 상향 및 이동시에도 타깃 유지 
+- ✅improve2 : Mage - 20발 총 2회 -> 3회 기본데미지 증가
+- ✅improve3 : Rogue - 벨런스 하향 패치
+
+# [1.2.212] - 2026-04-01
+- ✅new1 : Producer - Shield enchant added: Crafting Blessing now applies to Shields (Guard Power +3~12% / Move Speed +3~12% by level)
+- ✅new2 : Producer - Producer_Enchant.json exported to BepInEx/config/CaptainSkillTree/Translation/ on first launch; server admins can edit enchant values and slot pools directly
+  - ✅fix1 : Mace - Fury Hammer: Hits 2~5 now correctly deal damage to bosses — fixed Boss faction exclusion in
+  IsMonsterFaction() and dynamic hit position recalculation per strike
+- ✅fix2 : Producer - Accessory/Shield Crafting Blessing detection fixed: IsApplicableItemType() now delegates to GetSlotKey() — all slot types covered automatically
+-
+- ✅new1 : 제작 전문가 - 방패 인챈트 추가: 제작 축복이 방패에도 적용됨 (가드 방어력 +3~12% / 이동속도 +3~12%, 레벨 비례)
+- ✅new2 : 제작 전문가 - 최초 실행 시 Producer_Enchant.json을 BepInEx/config/CaptainSkillTree/Translation/ 에 자동 내보내기; 운영자가 인챈트 수치·슬롯 풀을 직접 수정 가능
+- ✅fix1 : 둔기 - 분노의 망치: 2~5타가 보스에게 정상 적중하도록 수정 — IsMonsterFaction()에 Boss 팩션 누락 수정 및
+  타격별 위치 동적 재계산 적용
+- ✅fix2 : 제작 전문가 - 장신구·방패 제작 축복 감지 버그 수정: IsApplicableItemType()을 GetSlotKey() 위임 방식으로 리팩터링하여 모든 슬롯 타입 자동 커버
+
+
+# [1.2.211] - 2026-03-31
 - ✅fix1 : Berserker - Rage skill now correctly scales with level: duration, cooldown, damage-per-HP%, and max damage cap all use per-level values (was using fixed values regardless of skill level)
 - ✅fix2 : Tanker - Config Manager: Missing Lv1 passive HP bonus translation added to all 7 languages
 - ✅fix3 : Tanker - Lv2 passive tooltip text corrected: "HP +" → "Bonus HP +"
@@ -8,10 +37,10 @@
 - ✅fix5 : Producer - Crafting Blessing enchant source line now displays on item tooltip for all 10 previously missing types: Bow Crit, Crossbow Reload, Helmet Cooldown Reduce, Legs Dodge Stamina, Legs Move Speed, Cape Stamina%, Cape Eitr, Accessory Carry Weight, Accessory Eitr Regen, Accessory Jump Force
 
 -
-- ✅fix1 : 버서커 - 분노(Rage) 실제 효과가 레벨에 맞게 적용되도록 수정: 지속시간·쿨타임·체력당 데미지%·최대 보너스 상한이 모두 레벨별 수치 사용 (기존: 레벨 무관하게 고정값 적용)
+- ✅fix1 : 버서커 - 공격력 및 체력 벨런스 패치
 - ✅fix2 : 탱커 - 컨피그 매니저: Lv1 패시브 추가 체력 번역 누락 항목 7개 언어 전체 추가
 - ✅fix3 : 탱커 - Lv2 패시브 툴팁 텍스트 수정: "생명력 +" → "추가 체력 +"
-- ✅fix4 : 폴암 - 관통 돌격: 보스 몬스터에게 정상 적중 및 데미지 적용 수정 (`IsMonsterFaction()`이 Boss 팩션을 포함하지 않는 문제 — 적 감지 6개 지점에 `IsBoss()` 조건 추가)
+- ✅fix4 : 폴암 - 관통 돌격: 보스 몬스터에게 정상 적중 및 데미지 적용 수정 
 - ✅fix5 : 제작 전문가 - 제작 축복 마법부여 출처 라인 10종 아이템 툴팁 누락 수정: 활 치명타, 석궁 재장전 단축, 투구 쿨타임 감소, 각반 회피 스태미나, 각반 이동속도, 망토 스태미나%, 망토 에이트르, 악세사리 인벤 무게, 악세사리 에이트르 회복, 악세사리 점프력
 
 # [1.2.11] - 2026-03-30

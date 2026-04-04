@@ -313,7 +313,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 return targetLevel switch {
-                    2 => $"{L.Get("item_trophy_troll")} x1 + {L.Get("item_trophy_theelder")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(2)}\n+ {L.Get("paladin_lv2_skill_required")}",
+                    2 => $"{L.Get("item_trophy_troll")} x1 + {L.Get("item_trophy_elder")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(2)}\n+ {L.Get("paladin_lv2_skill_required")}",
                     3 => $"{L.Get("item_trophy_abomination")} x1 + {L.Get("item_trophy_bonemass")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(3)}",
                     4 => $"{L.Get("item_trophy_bonemass")} x1 + {L.Get("item_trophy_dragonqueen")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(4)}",
                     5 => $"{L.Get("item_trophy_goblinking")} x1 + {L.Get("item_trophy_seekerqueen")} x1 + {L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(5)}",

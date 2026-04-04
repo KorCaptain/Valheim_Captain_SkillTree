@@ -21,7 +21,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.2.114")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.2.198")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -61,22 +61,13 @@ namespace CaptainSkillTree
             Log = Logger;
             _instance = this;
 
-            // ===== Config 버전 변경 시 설정 파일 초기화 =====
-            // 모드 업데이트로 기본값이 변경된 경우 사용자 config를 새 값으로 갱신
+            // ===== .version 파일 갱신 (DifficultyManager 버전 비교용) =====
+            // cfg 삭제 제거 — 난이도 선택 UI(DifficultyManager)가 버전 변경 시 전체 적용을 담당
             {
                 string configPath = Config.ConfigFilePath;
                 string versionFile = Path.ChangeExtension(configPath, ".version");
-                string storedVer = File.Exists(versionFile) ? File.ReadAllText(versionFile).Trim() : "0.0.0";
                 string currentVer = Info.Metadata.Version.ToString();
-                if (storedVer != currentVer)
-                {
-                    if (File.Exists(configPath))
-                    {
-                        File.Delete(configPath);
-                        Log.LogInfo($"[Config] 버전 변경 ({storedVer} → {currentVer}) - 설정 파일 초기화");
-                    }
-                    File.WriteAllText(versionFile, currentVer);
-                }
+                File.WriteAllText(versionFile, currentVer);
             }
 
             // ===== Captain Level System Config (최상단) =====
@@ -158,20 +149,17 @@ namespace CaptainSkillTree
                 {
                     setColor.Invoke(null, new object[] { ConsoleColor.Cyan });
                     stdOut.WriteLine("================================ Captain SkillTree Mod Load Success ================================");
-                    stdOut.WriteLine("        ====================================");
-                    stdOut.WriteLine("       =    =                          =    =");
-                    stdOut.WriteLine("      =       =                      =       =");
-                    stdOut.WriteLine("     =            =              =            =");
-                    stdOut.WriteLine("    =                 =      =                 =");
-                    stdOut.WriteLine("    =                   =  =                   =");
-                    stdOut.WriteLine("    =                 =      =                 =");
-                    stdOut.WriteLine("     =            =              =            =");
-                    stdOut.WriteLine("      =       =                      =       =");
-                    stdOut.WriteLine("       =    =                          =    =");
-                    stdOut.WriteLine("        =                                  =");
-                    stdOut.WriteLine("         ========                  ========");
-                    stdOut.WriteLine("                 ========  ========");
-                    stdOut.WriteLine("                         ==");
+                    stdOut.WriteLine("     ===   ==   ===   ====   ==   ====  =  =");
+                    stdOut.WriteLine("    =     =  =  =  =   ==   =  =   ==   == =");
+                    stdOut.WriteLine("    =     ====  ===    ==   ====   ==   = ==");
+                    stdOut.WriteLine("    =     =  =  =      ==   =  =   ==   =  =");
+                    stdOut.WriteLine("     ===   =  =  =      ==   =  =  ====  =  =");
+                    stdOut.WriteLine("");
+                    stdOut.WriteLine("     ===  =  =  ====  =     =     ====  ===   ====  ====");
+                    stdOut.WriteLine("    =     = =   ==   =     =      ==  =  =  =     =   ");
+                    stdOut.WriteLine("    ===   ==    ==   =     =      ==  ===   ===   === ");
+                    stdOut.WriteLine("       =  = =   ==   =     =      ==  = =   =     =   ");
+                    stdOut.WriteLine("    ===   =  =  ====  ====  ====   ==  =  =  ====  ====");
                     stdOut.WriteLine("================================ Captain SkillTree Mod Load Success ================================");
                     setColor.Invoke(null, new object[] { ConsoleColor.Gray });
                 }

@@ -155,6 +155,18 @@ namespace CaptainSkillTree.SkillTree
         {
             if (player == null || player.IsDead()) return;
 
+            // 0-1. 석궁: 발칸 아이스 (원거리 H키 - 최우선)
+            if (HasSkill("crossbow_ice_breath"))
+            {
+                if (!WeaponHelper.IsUsingCrossbow(player))
+                {
+                    DrawFloatingText(player, L.Get("crossbow_equip_required"), Color.red);
+                    return;
+                }
+                ActivateCrossbowIceBreath(player);
+                return;
+            }
+
             // 0. 활: 화살비 (원거리 H키 - 근접보다 먼저 체크)
             if (HasSkill("bow_Step6_arrow_rain"))
             {

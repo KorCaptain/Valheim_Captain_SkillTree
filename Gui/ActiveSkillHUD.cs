@@ -13,7 +13,7 @@ namespace CaptainSkillTree.Gui
         private static ActiveSkillHUD _instance;
         public static ActiveSkillHUD Instance => _instance;
 
-        // 슬롯 인덱스: 0=Y, 1=R, 2=G, 3=H
+        // 슬롯 인덱스: 0=Y, 1=R, 2=G, 3=H, 4=M2(휠윈드)
         private SlotUI[] _slots;
         private Canvas _canvas;
         private RectTransform _containerRt;
@@ -32,18 +32,23 @@ namespace CaptainSkillTree.Gui
             "spear_unlock", "polearm_unlock", "defense_unlock"
         };
         private static readonly string[] HSkillIds = {
+            "crossbow_ice_breath",
             "sword_step5_defswitch", "spear_Step5_combo",
             "mace_Step7_fury_hammer", "staff_Step6_heal",
             "bow_Step6_arrow_rain"
         };
         private static readonly string[] HIconNames = {
+            "ranged_unlock",
             "defense_unlock", "attack_unlock",
             "mace_unlock", "ranged_unlock",
             "ranged_unlock"
         };
+        // M2 슬롯: 휠윈드 전용
+        private static readonly string[] M2SkillIds  = { "polearm_step6_whirlwind" };
+        private static readonly string[] M2IconNames = { "attack_unlock" };
 
         // HUD 슬롯 정보
-        private static readonly string[] SlotKeys   = { "Y", "R", "G", "H" };
+        private static readonly string[] SlotKeys   = { "Y", "R", "G", "H", "M2" };
 
         // Y슬롯 디버그 로그 (1회만)
         private bool _ySlotDebugLogged = false;
@@ -92,8 +97,8 @@ namespace CaptainSkillTree.Gui
             fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            _slots = new SlotUI[4];
-            for (int i = 0; i < 4; i++)
+            _slots = new SlotUI[5];
+            for (int i = 0; i < 5; i++)
             {
                 _slots[i] = CreateSlot(containerGO.transform, SlotKeys[i]);
                 _slots[i].Root?.SetActive(false); // 초기 숨김 (메인메뉴/캐릭선택 화면에서 빈 박스 방지)
@@ -448,6 +453,7 @@ namespace CaptainSkillTree.Gui
             UpdateSlot(1, "R", mgr);
             UpdateSlot(2, "G", mgr);
             UpdateSlot(3, "H", mgr);
+            UpdateSlot(4, "M2", mgr);
 
             // 갱신 후 다음 폴링 간격 재계산
             float minRemaining = SkillTree.ActiveSkillCooldownRegistry.GetMinRemaining();
@@ -559,6 +565,16 @@ namespace CaptainSkillTree.Gui
                         if (mgr.GetSkillLevel(HSkillIds[i]) > 0)
                         {
                             iconName = HIconNames[i];
+                            break;
+                        }
+                    }
+                    break;
+                case "M2":
+                    for (int i = 0; i < M2SkillIds.Length; i++)
+                    {
+                        if (mgr.GetSkillLevel(M2SkillIds[i]) > 0)
+                        {
+                            iconName = M2IconNames[i];
                             break;
                         }
                     }
@@ -681,6 +697,7 @@ namespace CaptainSkillTree.Gui
                 case "R": return SkillTreeConfig.HotKeyR?.Value ?? "R";
                 case "G": return SkillTreeConfig.HotKeyG?.Value ?? "G";
                 case "H": return SkillTreeConfig.HotKeyH?.Value ?? "H";
+                case "M2": return "M2";
                 default:  return defaultKey;
             }
         }

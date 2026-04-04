@@ -248,7 +248,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_TrueDuel_AttackSpeedBonus"] = "Tier 4-2: [真の決闘] 攻撃速度ボーナス (%)",
                 ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [パリィラッシュ] 必要ポイント",
                 ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [パリィラッシュ] バフ持続時間 (秒)",
-                ["Tier5_ParryRush_DamageBonus"] = "Tier 5: [パリィラッシュ] ダメージボーナス (%)",
+                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [パリィラッシュ] ブロック力",
                 ["Tier5_ParryRush_PushDistance"] = "Tier 5: [パリィラッシュ] 押しつけ距離 (m)",
                 ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [パリィラッシュ] スタミナコスト",
                 ["Tier5_ParryRush_Cooldown"] = "Tier 5: [パリィラッシュ] クールダウン (秒)",
@@ -332,6 +332,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [貫通突撃] スタミナコスト",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [貫通突撃] クールダウン (秒)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [貫通突撃] 必要ポイント",
+
+                // === Polearm Tree: 旋風 (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [旋風] ダメージ比率 (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [旋風] スタミナコスト/サイクル",
+                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [旋風] 移動速度 (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [旋風] 攻撃間隔 (秒)",
+                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [旋風] VFX間隔 (秒)",
+                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [旋風] クールダウン (秒)",
+                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [旋風] 必要ポイント",
 
                 // ============================================
                 // アーチャー職業スキル

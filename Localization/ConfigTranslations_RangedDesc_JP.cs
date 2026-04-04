@@ -123,6 +123,27 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【必要ポイント】\n二重詠唱を解放するための必要ポイントです。",
 
+                // === Tier 5-1 補助: 扇形詠唱召喚設定 ===
+                ["Tier5_FanCast_SummonRadius"] =
+                "【弧の半径 (m)】\n" +
+                "7つのファイアボールが配置される半円弧の半径です。\n" +
+                "推奨: 1.0~2.0m",
+
+                ["Tier5_FanCast_SummonHeight"] =
+                "【召喚高さ (m)】\n" +
+                "プレイヤーの足元を基準にファイアボールが召喚される高さです。\n" +
+                "推奨: 2.0~3.0m",
+
+                ["Tier5_FanCast_HoverTime"] =
+                "【浮遊時間（秒）】\n" +
+                "ファイアボールが自動キャンセルされるまでの最大浮遊時間です。\n" +
+                "推奨: 5~10秒",
+
+                ["Tier5_FanCast_LaunchGap"] =
+                "【発射間隔（秒）】\n" +
+                "2回目のRキー入力時、各ファイアボール発射の間隔です。\n" +
+                "推奨: 0.05~0.15秒",
+
                 // === Tier 5-2: 即時範囲回復（アクティブ H）===
                 ["Tier5_InstantAreaHeal_Cooldown"] =
                 "【クールダウン（秒）】\n" +

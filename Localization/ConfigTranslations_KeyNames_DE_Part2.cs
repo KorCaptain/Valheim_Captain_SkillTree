@@ -253,7 +253,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: Parierstoß - Aktiv G-Taste (6) ===
                 ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [Parierstoß] Benötigte Punkte",
                 ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [Parierstoß] Buff-Dauer (Sek)",
-                ["Tier5_ParryRush_DamageBonus"] = "Tier 5: [Parierstoß] Schadensbonus (%)",
+                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [Parierstoß] Blockkraft",
                 ["Tier5_ParryRush_PushDistance"] = "Tier 5: [Parierstoß] Stoßdistanz (m)",
                 ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [Parierstoß] Ausdauerkosten",
                 ["Tier5_ParryRush_Cooldown"] = "Tier 5: [Parierstoß] Abklingzeit (Sek)",
@@ -376,6 +376,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [Durchbohrende Ladung] Ausdauerkosten",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [Durchbohrende Ladung] Abklingzeit (Sek)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [Durchbohrende Ladung] Benötigte Punkte",
+
+                // === Polearm Tree: Wirbelwind (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Wirbelwind] Schadensrate (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [Wirbelwind] Ausdauer/Zyklus",
+                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [Wirbelwind] Bewegungsgeschwindigkeit (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [Wirbelwind] Angriffsintervall (Sek)",
+                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Wirbelwind] VFX-Intervall (Sek)",
+                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Wirbelwind] Abklingzeit (Sek)",
+                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Wirbelwind] Benötigte Punkte",
 
                 // ============================================
                 // Klassenfähigkeiten - Bogenschütze

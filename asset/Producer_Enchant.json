@@ -60,7 +60,7 @@
       "id": 7,
       "name": "CrossbowReload",
       "display_key": "producer_enchant_crossbow_reload",
-      "unit": "ms",
+      "unit": "%",
       "lv3": { "min": 20.0, "max": 40.0 },
       "lv4": { "min": 45.0, "max": 70.0 },
       "lv5": { "min": 75.0, "max": 100.0 }
@@ -127,6 +127,15 @@
       "lv3": { "min": 5.0, "max": 8.0 },
       "lv4": { "min": 9.0, "max": 12.0 },
       "lv5": { "min": 13.0, "max": 15.0 }
+    },
+    {
+      "id": 15,
+      "name": "BlockPower",
+      "display_key": "producer_enchant_block_power",
+      "unit": "%",
+      "lv3": { "min": 3.0, "max": 5.0 },
+      "lv4": { "min": 6.0, "max": 8.0 },
+      "lv5": { "min": 9.0, "max": 12.0 }
     }
   ],
   "slot_pools": {
@@ -137,6 +146,7 @@
     "Chest":     [{"id": 3, "weight": 1}, {"id": 2, "weight": 1}],
     "Legs":      [{"id": 9, "weight": 1}, {"id": 10, "weight": 1}],
     "Shoulder":  [{"id": 5, "weight": 1}, {"id": 11, "weight": 1}],
-    "Accessory": [{"id": 12, "weight": 1}, {"id": 13, "weight": 1}, {"id": 14, "weight": 1}]
+    "Accessory": [{"id": 12, "weight": 1}, {"id": 13, "weight": 1}, {"id": 14, "weight": 1}],
+    "Shield":    [{"id": 15, "weight": 1}, {"id": 10, "weight": 1}]
   }
 }

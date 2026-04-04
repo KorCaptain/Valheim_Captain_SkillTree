@@ -123,7 +123,7 @@ namespace CaptainSkillTree.Localization
                 // 신규 마법부여 키 (v1.2.095)
                 ["producer_enchant_stamina_pct"]     = "✨ 제작 축복: 스태미나 +{0}%",
                 ["producer_enchant_bow_crit"]         = "✨ 제작 축복: 활 치명타 +{0}%",
-                ["producer_enchant_crossbow_reload"]  = "✨ 제작 축복: 석궁 재장전 단축 {0}ms",
+                ["producer_enchant_crossbow_reload"]  = "✨ 제작 축복: 재장전 속도 +{0}%",
                 ["producer_enchant_cooldown_reduce"]  = "✨ 제작 축복: 스킬 쿨타임 -{0}%",
                 ["producer_enchant_dodge_roll"]       = "✨ 제작 축복: 회피 스태미나 -{0}%",
                 ["producer_enchant_move_speed"]       = "✨ 제작 축복: 이동속도 +{0}%",
@@ -131,6 +131,7 @@ namespace CaptainSkillTree.Localization
                 ["producer_enchant_inv_weight"]       = "✨ 제작 축복: 인벤 무게 +{0}",
                 ["producer_enchant_eitr_regen"]       = "✨ 제작 축복: 에이트르 회복 +{0}%",
                 ["producer_enchant_jump_force"]       = "✨ 제작 축복: 점프력 +{0}%",
+                ["producer_enchant_block_power"]      = "✨ 제작 축복: 가드 방어력 +{0}%",
 
                 // === Prerequisite Text ===
                 ["prerequisite_label"] = "🔗 필요",
@@ -212,7 +213,7 @@ namespace CaptainSkillTree.Localization
                 // === Fire Rain (불의 비) ===
                 ["mage_firerain_cast"] = "🔥 불의 비 시전! 타겟: {0}",
                 ["mage_desc_firerain"] = "전방 타겟팅 불의 비(Fire Rain)로 공격한다.",
-                ["mage_firerain_damage"] = "파이어볼 {0}개 × 2버스트 (무기 공격력 {1}%)",
+                ["mage_firerain_damage"] = "파이어볼 {0}개 × 3버스트 (무기 공격력 {1}%)",
                 ["mage_firerain_range"] = "낙하 반경 {0}m, 적중 범위 {1}m",
                 // === Mage Level System ===
                 ["mage_passive_lv1"] = "AOE 데미지 {0}%, 쿨타임 {2}초, 속성 저항 {1}%",
@@ -343,6 +344,9 @@ namespace CaptainSkillTree.Localization
                 ["berserker_level_item_required"] = "버서커 Lv{0} 업그레이드 재료가 부족합니다",
                 ["berserker_lv2_skill_prereq_required"] = "Lv2 조건 미충족: 분노의 망치 / 돌진 연속 베기 / 관통 돌격 중 1개 이상 필요",
                 ["berserker_missing_items"] = "부족한 재료: {0}",
+                ["berserker_rage_damage_display"] = "🔥 추가 데미지 +{0}% 🔥",
+                ["berserker_passive_cd_ms"] = "🛡️ 패시브 무적 쿨타임: {0}분 {1:00}초",
+                ["berserker_passive_cd_s"] = "🛡️ 패시브 무적 쿨타임: {0}초",
                 ["berserker_upgrade_title"] = "🪓 버서커 레벨업",
                 ["berserker_upgrade_confirm"] = "버서커 Lv{0}으로 업그레이드합니까?\n트로피가 소모됩니다.",
 
@@ -526,7 +530,7 @@ namespace CaptainSkillTree.Localization
                 ["item_trophy_greydwarfbrute"] = "Greydwarf Brute Trophy",
                 ["item_trophy_greydwarfshaman"] = "Greydwarf Shaman Trophy",
                 ["item_trophy_troll"] = "Troll Trophy",
-                ["item_trophy_theelder"] = "The Elder Trophy",
+                ["item_trophy_elder"] = "The Elder Trophy",
                 ["item_trophy_abomination"] = "Abomination Trophy",
                 ["item_trophy_bonemass"] = "Bonemass Trophy",
                 ["item_trophy_hatchling"] = "Drake Trophy",
@@ -575,6 +579,9 @@ namespace CaptainSkillTree.Localization
                 ["berserker_level_item_required"] = "Not enough materials for Berserker Lv{0} upgrade",
                 ["berserker_lv2_skill_prereq_required"] = "Lv2 condition not met: Need at least 1 of Fury Hammer / Rush Slash / Pierce Charge",
                 ["berserker_missing_items"] = "Missing items: {0}",
+                ["berserker_rage_damage_display"] = "🔥 Bonus Dmg +{0}% 🔥",
+                ["berserker_passive_cd_ms"] = "🛡️ Death Defiance CD: {0}m {1:00}s",
+                ["berserker_passive_cd_s"] = "🛡️ Death Defiance CD: {0}s",
                 ["berserker_upgrade_title"] = "🪓 Berserker Level Up",
                 ["berserker_upgrade_confirm"] = "Upgrade Berserker to Lv{0}?\nTrophies will be consumed.",
 
@@ -609,7 +616,7 @@ namespace CaptainSkillTree.Localization
                 // === Fire Rain ===
                 ["mage_firerain_cast"] = "🔥 Fire Rain cast! Target: {0}",
                 ["mage_desc_firerain"] = "Target enemy ahead and unleash Fire Rain.",
-                ["mage_firerain_damage"] = "{0} Fireballs × 2 Bursts (Weapon dmg {1}%)",
+                ["mage_firerain_damage"] = "{0} Fireballs × 3 Bursts (Weapon dmg {1}%)",
                 ["mage_firerain_range"] = "Drop radius {0}m, Impact radius {1}m",
                 // === Mage Level System ===
                 ["mage_passive_lv1"] = "AOE dmg {0}%, Cooldown {2}s, Elemental Resist {1}%",
@@ -749,7 +756,7 @@ namespace CaptainSkillTree.Localization
                 // New enchant keys (v1.2.095)
                 ["producer_enchant_stamina_pct"]     = "✨ Crafting Blessing: Stamina +{0}%",
                 ["producer_enchant_bow_crit"]         = "✨ Crafting Blessing: Bow Crit +{0}%",
-                ["producer_enchant_crossbow_reload"]  = "✨ Crafting Blessing: Crossbow Reload -{0}ms",
+                ["producer_enchant_crossbow_reload"]  = "✨ Crafting Blessing: Reload Speed +{0}%",
                 ["producer_enchant_cooldown_reduce"]  = "✨ Crafting Blessing: Skill CD -{0}%",
                 ["producer_enchant_dodge_roll"]       = "✨ Crafting Blessing: Dodge Stamina -{0}%",
                 ["producer_enchant_move_speed"]       = "✨ Crafting Blessing: Move Speed +{0}%",
@@ -757,6 +764,7 @@ namespace CaptainSkillTree.Localization
                 ["producer_enchant_inv_weight"]       = "✨ Crafting Blessing: Carry Weight +{0}",
                 ["producer_enchant_eitr_regen"]       = "✨ Crafting Blessing: Eitr Regen +{0}%",
                 ["producer_enchant_jump_force"]       = "✨ Crafting Blessing: Jump Force +{0}%",
+                ["producer_enchant_block_power"]      = "✨ Crafting Blessing: Guard Power +{0}%",
 
                 // === Prerequisite Text ===
                 ["prerequisite_label"] = "🔗 Required",

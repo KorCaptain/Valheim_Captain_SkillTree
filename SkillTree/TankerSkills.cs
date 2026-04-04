@@ -622,38 +622,48 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        // Humanoid.m_leftItem Reflection 캐시
+        private static System.Reflection.FieldInfo _leftItemField;
+        private static System.Reflection.FieldInfo GetLeftItemField() =>
+            _leftItemField ??= typeof(Humanoid).GetField("m_leftItem",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
         /// <summary>
-        /// 방패 착용 여부 확인 - Valheim 내부 시스템 활용한 정확한 감지
+        /// 방패 착용 여부 확인 - m_leftItem 직접 확인 (인벤토리 m_equipped 오동작 대응)
         /// </summary>
         private static bool IsWearingShield(Player player)
         {
             try
             {
-                Plugin.Log.LogDebug("[Tanker 방패 체크] 시작");
-                
-                // 1. 현재 활성 무기가 방패인지 확인 (주무기 또는 보조무기)
-                var currentWeapon = player.GetCurrentWeapon();
-                if (currentWeapon != null && currentWeapon.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+                // 1. Humanoid.m_leftItem 직접 확인 (가장 정확)
+                var leftItemField = GetLeftItemField();
+                if (leftItemField != null)
                 {
-                    Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 현재 활성 방패: {currentWeapon.m_shared.m_name}");
-                    return true;
+                    var leftItem = leftItemField.GetValue(player) as ItemDrop.ItemData;
+                    if (leftItem != null && leftItem.m_shared != null &&
+                        leftItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+                    {
+                        Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 왼손 방패: {leftItem.m_shared.m_name}");
+                        return true;
+                    }
                 }
-                
-                // 2. 인벤토리 전체에서 장착된 방패 검색
+
+                // 2. 인벤토리 fallback (m_equipped 플래그 기반)
                 var inventory = player.GetInventory();
                 if (inventory != null)
                 {
                     foreach (var item in inventory.GetAllItems())
                     {
-                        if (item == null) continue;
+                        if (item == null || item.m_shared == null) continue;
                         if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield && item.m_equipped)
+                        {
+                            Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 인벤토리 방패: {item.m_shared.m_name}");
                             return true;
+                        }
                     }
                 }
-                
+
                 Plugin.Log.LogWarning("[Tanker 방패 체크] ❌ 방패를 찾을 수 없음");
-                Plugin.Log.LogDebug($"[Tanker 방패 체크] 현재 무기: {currentWeapon?.m_shared.m_name ?? "없음"}");
-                
                 return false;
             }
             catch (System.Exception ex)

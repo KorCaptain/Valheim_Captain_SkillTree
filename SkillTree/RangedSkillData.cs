@@ -197,6 +197,30 @@ namespace CaptainSkillTree.SkillTree
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "crossbow_Step4_rapid_fire_lv2", "crossbow_Step5_final" },
+                NextNodes = new List<string> { "crossbow_ice_breath" },
+                ApplyEffect = (lv) => { }
+            });
+
+            // Step 7: 발칸 아이스 (H키 액티브 스킬)
+            manager.AddSkill(new SkillNode {
+                Id = "crossbow_ice_breath",
+                NameKey = "crossbow_ice_breath_name",
+                DescriptionKey = "crossbow_ice_breath_desc",
+                DescriptionArgs = new object[] {
+                    Crossbow_Config.CrossbowIceBreathFirstHitPctValue,
+                    Crossbow_Config.CrossbowIceBreathDotPctValue,
+                    Crossbow_Config.CrossbowIceBreathDotCountValue,
+                    Crossbow_Config.CrossbowIceBreathStaminaCostValue,
+                    Crossbow_Config.CrossbowIceBreathCooldownValue
+                },
+                RequiredPoints = Crossbow_Config.CrossbowIceBreathRequiredPointsValue,
+                MaxLevel = 1,
+                Tier = 7,
+                Position = new Vector2(-625, 395),
+                Category = "원거리",
+                IconNameLocked = "attack_lock",
+                IconNameUnlocked = "attack_unlock",
+                Prerequisites = new List<string> { "crossbow_Step6_expert" },
                 NextNodes = new List<string>(),
                 ApplyEffect = (lv) => { }
             });

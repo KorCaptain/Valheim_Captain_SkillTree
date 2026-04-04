@@ -248,7 +248,7 @@ namespace CaptainSkillTree.SkillTree
                 KnifeAssassinHeartCritDamage = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_CritDamageMultiplier",
-                    1.3f,
+                    1f,
                     SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_CritDamageMultiplier"));
 
                 KnifeAssassinHeartDuration = SkillTreeConfig.BindServerSync(config,

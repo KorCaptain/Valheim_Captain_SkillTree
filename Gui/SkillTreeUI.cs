@@ -2278,7 +2278,7 @@ namespace CaptainSkillTree.Gui
                         var missing = manager.GetMissingPaladinItems(targetLevel);
                         var msg = L10n.Get("paladin_level_item_required", targetLevel);
                         if (missing.Count > 0)
-                            msg += "\n" + string.Join("\n", missing);
+                            msg += "\n" + L10n.Get("paladin_missing_items", string.Join(", ", missing));
                         return new InvestResult(false, msg);
                     }
                 }
@@ -2639,7 +2639,7 @@ namespace CaptainSkillTree.Gui
                         var missing = manager.GetMissingTankerItems(targetLevel);
                         var msg = L10n.Get("tanker_level_item_required", targetLevel);
                         if (missing.Count > 0)
-                            msg += "\n" + string.Join("\n", missing);
+                            msg += "\n" + L10n.Get("tanker_missing_items", string.Join(", ", missing));
                         tooltipUI.ShowWarning(msg);
                         return;
                     }
@@ -2670,7 +2670,7 @@ namespace CaptainSkillTree.Gui
                         var missing = manager.GetMissingPaladinItems(targetLevel);
                         var msg = L10n.Get("paladin_level_item_required", targetLevel);
                         if (missing.Count > 0)
-                            msg += "\n" + string.Join("\n", missing);
+                            msg += "\n" + L10n.Get("paladin_missing_items", string.Join(", ", missing));
                         tooltipUI.ShowWarning(msg);
                         return;
                     }

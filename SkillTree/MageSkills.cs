@@ -304,7 +304,7 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>타겟 좌측에서 버스트당 N개 × 2회 낙하 (0.05초 간격, 버스트 사이 1초 대기)</summary>
+        /// <summary>타겟 좌측에서 버스트당 N개 × 3회 낙하 (0.05초 간격, 버스트 사이 1초 대기)</summary>
         private static IEnumerator FireRainProjectileCoroutine(Player player, Character target, int mageLevel)
         {
             if (player == null || target == null) yield break;
@@ -342,6 +342,19 @@ namespace CaptainSkillTree.SkillTree
             yield return new WaitForSeconds(1f);
 
             // 2차 버스트
+            for (int i = 0; i < countPerBurst; i++)
+            {
+                if (player == null || player.IsDead()) yield break;
+                Vector2 rnd = UnityEngine.Random.insideUnitCircle * radius;
+                Vector3 spawnPos = spawnOrigin + scatterRight * rnd.x + scatterUp * rnd.y;
+                SpawnFireRainProjectile(player, spawnPos, mainDir, mageLevel);
+                yield return new WaitForSeconds(0.05f);
+            }
+
+            // 1초 대기
+            yield return new WaitForSeconds(1f);
+
+            // 3차 버스트
             for (int i = 0; i < countPerBurst; i++)
             {
                 if (player == null || player.IsDead()) yield break;

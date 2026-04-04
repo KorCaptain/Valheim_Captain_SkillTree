@@ -40,6 +40,15 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PolearmPierceChargeStaminaCost;
         public static ConfigEntry<float> PolearmPierceChargeCooldown;
 
+        // === 휠윈드 (Whirlwind) 액티브 스킬 설정 ===
+        public static ConfigEntry<int> PolearmWhirlwindRequiredPoints;
+        public static ConfigEntry<float> PolearmWhirlwindDamagePercent;
+        public static ConfigEntry<float> PolearmWhirlwindStaminaPerSec;
+        public static ConfigEntry<float> PolearmWhirlwindMoveSpeed;
+        public static ConfigEntry<float> PolearmWhirlwindAttackInterval;
+        public static ConfigEntry<float> PolearmWhirlwindVfxInterval;
+        public static ConfigEntry<float> PolearmWhirlwindCooldown;
+
         // === 필요 포인트 접근 프로퍼티 ===
         public static int PolearmExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_expert_required_points", PolearmExpertRequiredPoints?.Value ?? 2);
         public static int PolearmSpinWheelRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step1_required_points", PolearmSpinWheelRequiredPoints?.Value ?? 2);
@@ -50,6 +59,7 @@ namespace CaptainSkillTree.SkillTree
         public static int PolearmMoonSlashRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_step4b_required_points", PolearmMoonSlashRequiredPoints?.Value ?? 2);
         public static int PolearmSuppressRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_suppress_required_points", PolearmSuppressRequiredPoints?.Value ?? 3);
         public static int PolearmKingRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_king_required_points", PolearmKingRequiredPoints?.Value ?? 3);
+        public static int PolearmWhirlwindRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_required_points", PolearmWhirlwindRequiredPoints?.Value ?? 3);
 
         // === 폴암 전문가 접근 프로퍼티들 ===
         public static float PolearmExpertRangeBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_expert_range_bonus", PolearmExpertRangeBonus.Value);
@@ -72,6 +82,14 @@ namespace CaptainSkillTree.SkillTree
         public static float PolearmPierceChargeKnockbackDistanceValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_knockback_distance", PolearmPierceChargeKnockbackDistance.Value);
         public static float PolearmPierceChargeStaminaCostValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_stamina_cost", PolearmPierceChargeStaminaCost.Value);
         public static float PolearmPierceChargeCooldownValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_cooldown", PolearmPierceChargeCooldown.Value);
+
+        // === 휠윈드 접근 프로퍼티들 ===
+        public static float PolearmWhirlwindDamagePercentValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_damage_percent", PolearmWhirlwindDamagePercent.Value);
+        public static float PolearmWhirlwindStaminaPerSecValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_stamina_per_sec", PolearmWhirlwindStaminaPerSec.Value);
+        public static float PolearmWhirlwindMoveSpeedValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_move_speed", PolearmWhirlwindMoveSpeed.Value);
+        public static float PolearmWhirlwindAttackIntervalValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_attack_interval", PolearmWhirlwindAttackInterval.Value);
+        public static float PolearmWhirlwindVfxIntervalValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_vfx_interval", PolearmWhirlwindVfxInterval.Value);
+        public static float PolearmWhirlwindCooldownValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_cooldown", PolearmWhirlwindCooldown.Value);
 
         public static void Initialize(ConfigFile config)
         {
@@ -173,6 +191,29 @@ namespace CaptainSkillTree.SkillTree
             PolearmKingRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier5_PierceCharge_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_RequiredPoints"));
+
+            // Tier 6: 휠윈드 (Whirlwind) - 마우스 휠 홀드 액티브 스킬
+            PolearmWhirlwindDamagePercent = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_Whirlwind_DamagePercent", 35f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_DamagePercent"));
+            PolearmWhirlwindStaminaPerSec = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_Whirlwind_StaminaPerSec", 0.5f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_StaminaPerSec"));
+            PolearmWhirlwindMoveSpeed = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_Whirlwind_MoveSpeed", 4.0f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_MoveSpeed"));
+            PolearmWhirlwindAttackInterval = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_Whirlwind_AttackInterval", 0.35f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_AttackInterval"));
+            PolearmWhirlwindVfxInterval = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_Whirlwind_VfxInterval", 2.0f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_VfxInterval"));
+            PolearmWhirlwindCooldown = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_Whirlwind_Cooldown", 20f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_Cooldown"));
+            PolearmWhirlwindRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_Whirlwind_RequiredPoints", 3,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_RequiredPoints"));
 
             Plugin.Log.LogDebug("[Polearm_Config] Polearm Expert tree config initialized");
         }

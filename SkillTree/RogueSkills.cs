@@ -298,7 +298,7 @@ namespace CaptainSkillTree.SkillTree
                     rogueAttackBuffCoroutine[player] = coroutine;
                 }
 
-                CreateRogueBuffVFX(player);
+                CreateRogueBuffVFX(player, buffDuration);
             }
             catch (System.Exception) { }
         }
@@ -431,12 +431,12 @@ namespace CaptainSkillTree.SkillTree
 
         #region === 버프 VFX 시스템 ===
 
-        private static void CreateRogueBuffVFX(Player player)
+        private static void CreateRogueBuffVFX(Player player, float duration)
         {
             try
             {
                 RemoveRogueBuffVFX(player);
-                var vfx = SimpleVFX.PlayOnPlayer(player, "statusailment_01_aura", 9999f, new Vector3(0f, 1.2f, 0f));
+                var vfx = SimpleVFX.PlayOnPlayer(player, "statusailment_01_aura", duration, new Vector3(0f, 1.2f, 0f));
                 if (vfx != null)
                     rogueBuffVFXInstances[player] = vfx;
             }

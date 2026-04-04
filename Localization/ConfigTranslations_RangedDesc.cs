@@ -106,6 +106,27 @@ namespace CaptainSkillTree.Localization
                 "스킬 재사용 대기 시간입니다.\n" +
                 "권장값: 25-40초",
 
+                // === Tier 5-1 보조: 팬캐스트 소환 세부 설정 ===
+                ["Tier5_FanCast_SummonRadius"] =
+                "【반원 호 반경 (m)】\n" +
+                "파이어볼 7개가 배치되는 반원 호의 반경입니다.\n" +
+                "권장값: 1.0~2.0m",
+
+                ["Tier5_FanCast_SummonHeight"] =
+                "【소환 기준 높이 (m)】\n" +
+                "플레이어 발 기준 파이어볼이 소환되는 중심 높이입니다.\n" +
+                "권장값: 2.0~3.0m",
+
+                ["Tier5_FanCast_HoverTime"] =
+                "【공중 정지 시간 (초)】\n" +
+                "파이어볼이 공중에 정지해 있는 최대 시간입니다.\n" +
+                "권장값: 5~10초",
+
+                ["Tier5_FanCast_LaunchGap"] =
+                "【발사 간격 (초)】\n" +
+                "2차 R키 입력 시 각 파이어볼 발사 사이 간격입니다.\n" +
+                "권장값: 0.05~0.15초",
+
                 // === Tier 5-2: 즉시 범위 힐 (Instant Area Heal - H키 액티브) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] =
                 "【쿨타임 (초)】\n" +
@@ -655,6 +676,27 @@ namespace CaptainSkillTree.Localization
                 "【Cooldown (seconds)】\n" +
                 "Skill reuse wait time.\n" +
                 "Recommended: 25-40s",
+
+                // === Tier 5-1 Sub: Fan Cast Summon Settings ===
+                ["Tier5_FanCast_SummonRadius"] =
+                "【Arc Radius (m)】\n" +
+                "Radius of the semicircular arc where 7 fireballs are positioned.\n" +
+                "Recommended: 1.0~2.0m",
+
+                ["Tier5_FanCast_SummonHeight"] =
+                "【Summon Height (m)】\n" +
+                "Height above the player's feet where fireballs are summoned.\n" +
+                "Recommended: 2.0~3.0m",
+
+                ["Tier5_FanCast_HoverTime"] =
+                "【Hover Time (seconds)】\n" +
+                "Maximum time fireballs remain suspended before auto-canceling.\n" +
+                "Recommended: 5~10s",
+
+                ["Tier5_FanCast_LaunchGap"] =
+                "【Launch Interval (seconds)】\n" +
+                "Delay between each fireball launch on second R key press.\n" +
+                "Recommended: 0.05~0.15s",
 
                 // === Tier 5-2: Instant Area Heal (H-key Active) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] =

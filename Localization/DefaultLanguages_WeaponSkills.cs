@@ -120,6 +120,7 @@ namespace CaptainSkillTree.Localization
                 // === Polearm Skill Names ===
                 ["polearm_skill_expert"] = "폴암 전문가",
                 ["polearm_skill_king"] = "관통 돌격",
+                ["polearm_skill_whirlwind"] = "휠윈드",
                 ["polearm_skill_spin"] = "회전베기",
                 ["polearm_skill_suppress"] = "제압 공격",
                 ["polearm_skill_hero"] = "영웅 타격",
@@ -141,6 +142,9 @@ namespace CaptainSkillTree.Localization
                 ["polearm_desc_king_first"] = "공격력 +{0}%",
                 ["polearm_desc_king_aoe"] = "공격력 +{0}% (뒤쪽 {1}°, {2}m)",
                 ["polearm_desc_king_knockback"] = "{0}m",
+                ["polearm_desc_whirlwind"] = "마우스 휠 버튼을 누르고 있는 동안 커서 방향으로 이동하며 회오리 공격. 공격력 무기의 {0}%",
+                ["polearm_desc_whirlwind_damage"] = "무기 공격력 {0}% (광역 6m 포함)",
+                ["unit_cycle"] = "회",
                 ["tooltip_first_hit"] = "첫 타격",
                 ["tooltip_aoe_knockback"] = "AOE 넉백",
                 ["tooltip_knockback_distance"] = "넉백 거리",
@@ -179,7 +183,6 @@ namespace CaptainSkillTree.Localization
 
                 // === Staff Skill Descriptions ===
                 ["staff_desc_dual_cast"] = "{0}발 추가 마법 발사체를 0.25초 간격으로 연속 발사",
-                ["staff_desc_dual_cast_angle"] = "발사 각도: 0도 (동일 방향)",
                 ["staff_desc_dual_cast_damage"] = "지팡이/완드 공격력의 {0}%",
                 ["staff_desc_dual_cast_angle_unit"] = "±{0}°",
                 ["staff_desc_dual_cast_note"] = "30초간 버프 유지, 다음 마법 공격 시 자동 발동",
@@ -194,6 +197,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Crossbow Skill Names ===
                 ["crossbow_skill_oneshot"] = "단 한 발",
+                ["crossbow_ice_breath_tooltip_desc"] = "석궁 장착 후 H키 — 전방 10m·±35° 범위에 아이스 브레스 발사",
 
                 // === Job Skill Names ===
                 ["job_skill_archer"] = "아처",
@@ -301,7 +305,7 @@ namespace CaptainSkillTree.Localization
                 ["item_trophy_greydwarfbrute"] = "그레이드워프 브루트 트로피",
                 ["item_trophy_greydwarfshaman"] = "그레이드워프 샤먼 트로피",
                 ["item_trophy_troll"] = "트롤 트로피",
-                ["item_trophy_theelder"] = "엘더 트로피",
+                ["item_trophy_elder"] = "엘더 트로피",
                 ["item_trophy_abomination"] = "어보미네이션 트로피",
                 ["item_trophy_bonemass"] = "본메스 트로피",
                 ["item_trophy_hatchling"] = "드레이크 트로피",
@@ -600,6 +604,7 @@ namespace CaptainSkillTree.Localization
                 // === Polearm Skill Names ===
                 ["polearm_skill_expert"] = "Polearm Expert",
                 ["polearm_skill_king"] = "Pierce Charge",
+                ["polearm_skill_whirlwind"] = "Whirlwind",
                 ["polearm_skill_spin"] = "Spin Slash",
                 ["polearm_skill_suppress"] = "Suppress Attack",
                 ["polearm_skill_hero"] = "Hero Strike",
@@ -621,6 +626,9 @@ namespace CaptainSkillTree.Localization
                 ["polearm_desc_king_first"] = "Damage +{0}%",
                 ["polearm_desc_king_aoe"] = "Damage +{0}% (Rear {1}°, {2}m)",
                 ["polearm_desc_king_knockback"] = "{0}m",
+                ["polearm_desc_whirlwind"] = "Hold mouse wheel button to move toward cursor with whirlwind attacks. Damage {0}% of weapon",
+                ["polearm_desc_whirlwind_damage"] = "Weapon damage {0}% (includes 6m AoE)",
+                ["unit_cycle"] = "cycle",
                 ["tooltip_first_hit"] = "First Hit",
                 ["tooltip_aoe_knockback"] = "AOE Knockback",
                 ["tooltip_knockback_distance"] = "Knockback Distance",
@@ -659,7 +667,6 @@ namespace CaptainSkillTree.Localization
 
                 // === Staff Skill Descriptions ===
                 ["staff_desc_dual_cast"] = "Fire {0} additional magic projectiles in rapid succession (0.25s interval)",
-                ["staff_desc_dual_cast_angle"] = "Fire angle: 0° (same direction)",
                 ["staff_desc_dual_cast_damage"] = "{0}% of Staff/Wand damage",
                 ["staff_desc_dual_cast_angle_unit"] = "±{0}°",
                 ["staff_desc_dual_cast_note"] = "Buff lasts 30s, triggers on next magic attack",
@@ -671,6 +678,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Crossbow Skill Names ===
                 ["crossbow_skill_oneshot"] = "One Shot",
+                ["crossbow_ice_breath_tooltip_desc"] = "Equip Crossbow + H Key — fire ice breath in 10m·±35° cone",
 
                 // === Job Skill Names ===
                 ["job_skill_archer"] = "Archer",

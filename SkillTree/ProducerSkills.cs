@@ -261,14 +261,15 @@ namespace CaptainSkillTree.SkillTree
         [HarmonyPatch(typeof(Player), "GetTotalFoodValue")]
         public static class Producer_Player_GetTotalFoodValue_HealthBonus_Patch
         {
-            [HarmonyPriority(Priority.Last)]
+            [HarmonyPriority(Priority.Low)]
             public static void Postfix(Player __instance, ref float hp)
             {
                 try
                 {
                     if (!IsProducerBuffActive(__instance)) return;
-                    float bonus = Producer_Config.ProducerBuff_MaxHealthBonusValue / 100f;
-                    hp += hp * bonus;
+                    float bonusPercent = Producer_Config.ProducerBuff_MaxHealthBonusValue / 100f;
+                    float bonusHealth = hp * bonusPercent;
+                    hp += bonusHealth;
                 }
                 catch (Exception) { }
             }

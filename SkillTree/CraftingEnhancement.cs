@@ -120,9 +120,8 @@ namespace CaptainSkillTree.SkillTree
                 int lv2 = manager.GetSkillLevel("crafting_lv2");
                 int lv3 = manager.GetSkillLevel("crafting_lv3");
                 int lv4 = manager.GetSkillLevel("crafting_lv4");
-                int lv5 = manager.GetSkillLevel("crafting_lv5");
 
-                Plugin.Log.LogInfo($"[제작 보너스] 스킬 레벨 - Lv2:{lv2}, Lv3:{lv3}, Lv4:{lv4}, Lv5:{lv5}");
+                Plugin.Log.LogInfo($"[제작 보너스] 스킬 레벨 - Lv2:{lv2}, Lv3:{lv3}, Lv4:{lv4}");
                 
                 if (lv2 > 0)
                 {
@@ -145,13 +144,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogInfo($"[제작 보너스] Lv4 보너스 적용: 강화 +{Production_Config.CraftingLv4UpgradeChanceValue}%, 내구도 +{Production_Config.CraftingLv4DurabilityBonusValue}%");
                 }
 
-                if (lv5 > 0)
-                {
-                    float lv5Durability = Production_Config.CraftingLv5DurabilityBonusValue / 100f;
-                    totalDurabilityBonus += lv5Durability; // 내구도 +30%
-                    Plugin.Log.LogInfo($"[제작 보너스] Lv5 보너스 적용: 내구도 +{lv5Durability * 100:F0}%");
-                }
-                
+
                 Plugin.Log.LogInfo($"[제작 보너스] 총 보너스 - 강화확률: {totalEnhanceChance * 100:F0}%, 내구도보너스: {totalDurabilityBonus * 100:F0}%");
                 
                 if (totalEnhanceChance > 0)

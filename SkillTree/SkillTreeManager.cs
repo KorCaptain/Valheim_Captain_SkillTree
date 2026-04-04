@@ -509,13 +509,14 @@ namespace CaptainSkillTree.SkillTree
                 "mace_Step7_guardian_heart"   // 둔기: 수호자의 진심
             };
 
-            // H키: 보조 액티브 (같은 무기 트리만 허용 - G키와 연동)
+            // H키: 보조 액티브 (키당 1개만 허용)
             var hKeySkills = new[] {
                 "sword_step5_defswitch",      // 검: 패링 돌격
                 "spear_Step5_combo",          // 창: 연공창
                 "mace_Step7_fury_hammer",     // 둔기: 분노의 망치
                 "staff_Step6_heal",           // 지팡이: 범위 힐
-                "bow_Step6_arrow_rain"        // 활: 화살비
+                "bow_Step6_arrow_rain",       // 활: 화살비
+                "crossbow_ice_breath"         // 석궁: 발칸 아이스
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
@@ -540,77 +541,32 @@ namespace CaptainSkillTree.SkillTree
                 return true;
             }
 
-            // ========== 무기별 G키/H키 스킬 그룹 정의 ==========
-            var swordGSkills = new[] { "sword_step5_finalcut" };
-            var swordHSkills = new[] { "sword_step5_defswitch" };
-            var knifeGSkills = new[] { "knife_step9_assassin_heart" };
-            var spearGSkills = new[] { "spear_Step5_penetrate" };
-            var spearHSkills = new[] { "spear_Step5_combo" };
-            var polearmGSkills = new[] { "polearm_step5_king" };
-            var maceGSkills = new[] { "mace_Step7_guardian_heart" };
-            var maceHSkills = new[] { "mace_Step7_fury_hammer" };
-            var staffHSkills = new[] { "staff_Step6_heal" };
-            var bowHSkills   = new[] { "bow_Step6_arrow_rain" };
-
-            // 무기 타입 판별 함수
-            string GetWeaponType(string id)
-            {
-                if (swordGSkills.Contains(id) || swordHSkills.Contains(id)) return "검";
-                if (knifeGSkills.Contains(id)) return "단검";
-                if (spearGSkills.Contains(id) || spearHSkills.Contains(id)) return "창";
-                if (polearmGSkills.Contains(id)) return "폴암";
-                if (maceGSkills.Contains(id) || maceHSkills.Contains(id)) return "둔기";
-                if (staffHSkills.Contains(id)) return "지팡이";
-                if (bowHSkills.Contains(id)) return "활";
-                return "";
-            }
-
-            // ========== G키 근접 메인 액티브 제한 (같은 무기 트리만) ==========
+            // ========== G키 액티브 제한 (키당 1개만) ==========
             if (gKeyMeleeSkills.Contains(skillId))
             {
-                string currentWeaponType = GetWeaponType(skillId);
-
-                // 다른 무기의 G키 스킬 체크
                 var otherGSkills = gKeyMeleeSkills
-                    .Where(s => s != skillId && GetSkillLevel(s) > 0 && GetWeaponType(s) != currentWeaponType)
+                    .Where(s => s != skillId && GetSkillLevel(s) > 0)
                     .ToList();
 
-                // 다른 무기의 H키 스킬 체크 (G키와 H키는 같은 무기 타입 공유)
-                var otherHSkills = hKeySkills
-                    .Where(s => GetSkillLevel(s) > 0 && GetWeaponType(s) != currentWeaponType)
-                    .ToList();
-
-                var conflictSkills = otherGSkills.Concat(otherHSkills).ToList();
-
-                if (conflictSkills.Count > 0)
+                if (otherGSkills.Count > 0)
                 {
-                    restrictionMessage = $"Melee active skill from another weapon already learned (current: {string.Join(", ", conflictSkills)})";
+                    restrictionMessage = $"G key already occupied (current: {string.Join(", ", otherGSkills)})";
                     return false;
                 }
 
                 return true;
             }
 
-            // ========== H키 보조 액티브 제한 (같은 무기 트리만 - G키와 연동) ==========
+            // ========== H키 액티브 제한 (키당 1개만) ==========
             if (hKeySkills.Contains(skillId))
             {
-                string currentWeaponType = GetWeaponType(skillId);
-
-                // 다른 무기의 H키 스킬 체크
                 var otherHSkills = hKeySkills
-                    .Where(s => s != skillId && GetSkillLevel(s) > 0 && GetWeaponType(s) != currentWeaponType)
+                    .Where(s => s != skillId && GetSkillLevel(s) > 0)
                     .ToList();
 
-                // 다른 무기의 G키 스킬 체크 (H키와 G키는 같은 무기 타입 공유)
-                var otherGSkills = gKeyMeleeSkills
-                    .Where(s => GetSkillLevel(s) > 0 && GetWeaponType(s) != currentWeaponType)
-                    .ToList();
-
-                var conflictSkills = otherHSkills.Concat(otherGSkills).ToList();
-
-                if (conflictSkills.Count > 0)
+                if (otherHSkills.Count > 0)
                 {
-                    restrictionMessage = $"Sub active skill from another weapon already learned (current: {string.Join(", ", conflictSkills)})";
+                    restrictionMessage = $"H key already occupied (current: {string.Join(", ", otherHSkills)})";
                     return false;
                 }
 
@@ -658,13 +614,14 @@ namespace CaptainSkillTree.SkillTree
                 "mace_Step7_guardian_heart"   // 둔기: 수호자의 진심
             };
 
-            // H키: 보조 액티브 (같은 무기 트리만 허용 - G키와 연동)
+            // H키: 보조 액티브 (키당 1개만 허용)
             var hKeySkills = new[] {
                 "sword_step5_defswitch",      // 검: 패링 돌격
                 "spear_Step5_combo",          // 창: 연공창
                 "mace_Step7_fury_hammer",     // 둔기: 분노의 망치
                 "staff_Step6_heal",           // 지팡이: 범위 힐
-                "bow_Step6_arrow_rain"        // 활: 화살비
+                "bow_Step6_arrow_rain",       // 활: 화살비
+                "crossbow_ice_breath"         // 석궁: 발칸 아이스
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
@@ -689,49 +646,14 @@ namespace CaptainSkillTree.SkillTree
                 return true;
             }
 
-            // ========== 무기별 G키/H키 스킬 그룹 정의 ==========
-            var swordGSkills = new[] { "sword_step5_finalcut" };
-            var swordHSkills = new[] { "sword_step5_defswitch" };
-            var knifeGSkills = new[] { "knife_step9_assassin_heart" };
-            var spearGSkills = new[] { "spear_Step5_penetrate" };
-            var spearHSkills = new[] { "spear_Step5_combo" };
-            var polearmGSkills = new[] { "polearm_step5_king" };
-            var maceGSkills = new[] { "mace_Step7_guardian_heart" };
-            var maceHSkills = new[] { "mace_Step7_fury_hammer" };
-            var staffHSkills = new[] { "staff_Step6_heal" };
-            var bowHSkills   = new[] { "bow_Step6_arrow_rain" };
-
-            // 무기 타입 판별 함수
-            string GetWeaponType(string id)
-            {
-                if (swordGSkills.Contains(id) || swordHSkills.Contains(id)) return "검";
-                if (knifeGSkills.Contains(id)) return "단검";
-                if (spearGSkills.Contains(id) || spearHSkills.Contains(id)) return "창";
-                if (polearmGSkills.Contains(id)) return "폴암";
-                if (maceGSkills.Contains(id) || maceHSkills.Contains(id)) return "둔기";
-                if (staffHSkills.Contains(id)) return "지팡이";
-                if (bowHSkills.Contains(id)) return "활";
-                return "";
-            }
-
-            // ========== G키 근접 메인 액티브 제한 (같은 무기 트리만) ==========
+            // ========== G키 액티브 제한 (키당 1개만) ==========
             if (gKeyMeleeSkills.Contains(skillId))
             {
-                string currentWeaponType = GetWeaponType(skillId);
-
-                // 다른 무기의 G키 스킬 체크
                 var otherGSkills = gKeyMeleeSkills
-                    .Where(s => s != skillId && HasSkillOrPending(s) && GetWeaponType(s) != currentWeaponType)
+                    .Where(s => s != skillId && HasSkillOrPending(s))
                     .ToList();
 
-                // 다른 무기의 H키 스킬 체크 (G키와 H키는 같은 무기 타입 공유)
-                var otherHSkills = hKeySkills
-                    .Where(s => HasSkillOrPending(s) && GetWeaponType(s) != currentWeaponType)
-                    .ToList();
-
-                var conflictSkills = otherGSkills.Concat(otherHSkills).ToList();
-
-                if (conflictSkills.Count > 0)
+                if (otherGSkills.Count > 0)
                 {
                     restrictionMessage = L.Get("active_skill_weapon_conflict");
                     return false;
@@ -740,24 +662,14 @@ namespace CaptainSkillTree.SkillTree
                 return true;
             }
 
-            // ========== H키 보조 액티브 제한 (같은 무기 트리만 - G키와 연동) ==========
+            // ========== H키 액티브 제한 (키당 1개만) ==========
             if (hKeySkills.Contains(skillId))
             {
-                string currentWeaponType = GetWeaponType(skillId);
-
-                // 다른 무기의 H키 스킬 체크
                 var otherHSkills = hKeySkills
-                    .Where(s => s != skillId && HasSkillOrPending(s) && GetWeaponType(s) != currentWeaponType)
+                    .Where(s => s != skillId && HasSkillOrPending(s))
                     .ToList();
 
-                // 다른 무기의 G키 스킬 체크 (H키와 G키는 같은 무기 타입 공유)
-                var otherGSkills = gKeyMeleeSkills
-                    .Where(s => HasSkillOrPending(s) && GetWeaponType(s) != currentWeaponType)
-                    .ToList();
-
-                var conflictSkills = otherHSkills.Concat(otherGSkills).ToList();
-
-                if (conflictSkills.Count > 0)
+                if (otherHSkills.Count > 0)
                 {
                     restrictionMessage = L.Get("active_skill_weapon_conflict");
                     return false;
@@ -1120,7 +1032,7 @@ namespace CaptainSkillTree.SkillTree
                         var missing = GetMissingBerserkerItems(targetLevel);
                         string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "<size=20>⚠️ " + L.Get("berserker_level_req_items", targetLevel) +
+                            "<size=20>⚠️ " + L.Get("berserker_level_item_required", targetLevel) +
                             (missingText.Length > 0 ? $"\n({missingText})" : "") + "</size>", Color.red);
                     }
                     return;
@@ -1180,7 +1092,7 @@ namespace CaptainSkillTree.SkillTree
                     if ((System.Object)Player.m_localPlayer != null)
                     {
                         var missing = GetMissingTankerItems(targetLevel);
-                        string missingText = missing.Count > 0 ? string.Join("\n", missing) : "";
+                        string missingText = missing.Count > 0 ? L.Get("tanker_missing_items", string.Join(", ", missing)) : "";
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
                             "<size=20>⚠️ " + L.Get("tanker_level_item_required", targetLevel) +
                             (missingText.Length > 0 ? $"\n{missingText}" : "") + "</size>", Color.red);
@@ -1196,7 +1108,7 @@ namespace CaptainSkillTree.SkillTree
                     if ((System.Object)Player.m_localPlayer != null)
                     {
                         var missing = GetMissingPaladinItems(targetLevel);
-                        string missingText = missing.Count > 0 ? string.Join("\n", missing) : "";
+                        string missingText = missing.Count > 0 ? L.Get("paladin_missing_items", string.Join(", ", missing)) : "";
                         SkillEffect.DrawFloatingText(Player.m_localPlayer,
                             "<size=20>⚠️ " + L.Get("paladin_level_item_required", targetLevel) +
                             (missingText.Length > 0 ? $"\n{missingText}" : "") + "</size>", Color.red);

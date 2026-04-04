@@ -88,6 +88,7 @@ namespace CaptainSkillTree.Localization
                 ["one_hand_mace_shield_required"] = "한손 둔기와 방패를 착용해야 합니다!",
                 ["two_hand_mace_required"] = "양손 둔기를 착용해야 합니다!",
                 ["staff_equip_required"] = "지팡이를 착용해야 합니다!",
+                ["shield_equip_required"] = "방패를 착용해야 합니다!",
                 ["r_key_skill_condition_not_met"] = "Z키 스킬 조건이 충족되지 않았습니다",
                 ["g_key_skill_required"] = "G키 스킬이 필요합니다",
                 ["h_key_skill_required"] = "H키 스킬이 필요합니다",
@@ -147,6 +148,7 @@ namespace CaptainSkillTree.Localization
                 ["assassin_heart_cooldown"] = "암살자의 심장 쿨다운: {0}초",
                 ["assassin_heart_crit"] = "🎯 암살 치명타! +{0}% 데미지!",
                 ["assassin_heart_teleport"] = "🌀 적 뒤로 순간이동!",
+                ["assassin_heart_flying_enemy"] = "날아다니는 적에게는 사용할 수 없습니다!",
                 ["assassin_hit_count"] = "암살 연속 타격: {0}/{1}",
                 ["teleport_failed"] = "순간이동 실패!",
                 ["enemy"] = "적",
@@ -158,8 +160,11 @@ namespace CaptainSkillTree.Localization
 
                 // === Crossbow Skills ===
                 ["crossbow_oneshot_cooldown"] = "단 한 발 쿨다운 중! 남은 시간: {0}초",
+                ["crossbow_ice_breath_cooldown"] = "발칸 아이스 쿨다운 중! 남은 시간: {0}초",
+                ["crossbow_ice_breath_ready"] = "❄ 발칸 아이스 발사!",
                 ["crossbow_required"] = "석궁을 착용해야 합니다",
                 ["crossbow_equip_required"] = "석궁을 착용해야 합니다!",
+                ["crossbow_no_ammo"] = "석궁에 볼트가 없습니다!",
                 ["crossbow_oneshot_success"] = "단 한 발! {0} 데미지!",
                 ["crossbow_oneshot_ready"] = "🎯 단 한 발 준비 완료!",
                 ["crossbow_oneshot_remaining"] = "단 한 발 남은 시간: {0}초",
@@ -332,6 +337,19 @@ namespace CaptainSkillTree.Localization
 
                 // === Respawn Message ===
                 ["respawn_message"] = "성장해서 다시 도전하세요~!",
+
+                // === Difficulty Selection UI ===
+                ["difficulty_title"]          = "-------- Setting CaptainSkillTree Difficulty --------",
+                ["difficulty_normal_title"]   = "1. Normal  :  Vanilla +a",
+                ["difficulty_normal_desc"]    = "    일반 수치 — 기본 밸런스 기반으로 플레이",
+                ["difficulty_veryhard_title"] = "2. Very Hard  :  CreatureLevelAndLootControl → Very Hard + Monster HP x2",
+                ["difficulty_veryhard_desc"]  = "    강화 수치 — CLLC 고난이도 + 몬스터 HP 2배 기반으로 플레이",
+                ["difficulty_user_title"]     = "3. User Setting  :  기존 유저 프리셋 (이전 세션 설정)",
+                ["difficulty_user_desc"]      = "    마지막 게임 종료 시 자동 저장된 나만의 설정",
+                ["difficulty_hint"]           = "※ 업데이트마다 다시 표시됩니다.  프리셋 파일이 없으면 현재 설정을 유지합니다.",
+                ["difficulty_btn_normal"]     = "1. Normal",
+                ["difficulty_btn_veryhard"]   = "2. Very Hard",
+                ["difficulty_btn_user"]       = "3. User Setting",
             };
         }
 
@@ -421,6 +439,7 @@ namespace CaptainSkillTree.Localization
                 ["one_hand_mace_shield_required"] = "You must equip a one-hand mace and shield!",
                 ["two_hand_mace_required"] = "You must equip a two-hand mace!",
                 ["staff_equip_required"] = "You must equip a staff!",
+                ["shield_equip_required"] = "You must equip a shield!",
                 ["r_key_skill_condition_not_met"] = "R key skill condition not met",
                 ["g_key_skill_required"] = "G key skill required",
                 ["h_key_skill_required"] = "H key skill required",
@@ -475,6 +494,7 @@ namespace CaptainSkillTree.Localization
                 ["assassin_heart_cooldown"] = "Assassin's Heart cooldown: {0}s",
                 ["assassin_heart_crit"] = "🎯 Assassination Crit! +{0}% damage!",
                 ["assassin_heart_teleport"] = "🌀 Teleport behind enemy!",
+                ["assassin_heart_flying_enemy"] = "Cannot use on flying enemies!",
                 ["assassin_hit_count"] = "Assassination combo: {0}/{1}",
                 ["teleport_failed"] = "Teleport failed!",
                 ["enemy"] = "enemy",
@@ -486,8 +506,11 @@ namespace CaptainSkillTree.Localization
 
                 // === Crossbow Skills ===
                 ["crossbow_oneshot_cooldown"] = "One Shot on cooldown! Remaining: {0}s",
+                ["crossbow_ice_breath_cooldown"] = "Vulkan Ice on cooldown! Remaining: {0}s",
+                ["crossbow_ice_breath_ready"] = "❄ Vulkan Ice!",
                 ["crossbow_required"] = "Crossbow required",
                 ["crossbow_equip_required"] = "You must equip a crossbow!",
+                ["crossbow_no_ammo"] = "No crossbow bolts loaded!",
                 ["crossbow_oneshot_success"] = "One Shot! {0} damage!",
                 ["crossbow_oneshot_ready"] = "🎯 One Shot Ready!",
                 ["crossbow_oneshot_remaining"] = "One Shot remaining: {0}s",
@@ -653,6 +676,19 @@ namespace CaptainSkillTree.Localization
 
                 // === Respawn Message ===
                 ["respawn_message"] = "Grow stronger and challenge again~!",
+
+                // === Difficulty Selection UI ===
+                ["difficulty_title"]          = "-------- Setting CaptainSkillTree Difficulty --------",
+                ["difficulty_normal_title"]   = "1. Normal  :  Vanilla +a",
+                ["difficulty_normal_desc"]    = "    Standard values — Play with basic balance",
+                ["difficulty_veryhard_title"] = "2. Very Hard  :  CreatureLevelAndLootControl → Very Hard + Monster HP x2",
+                ["difficulty_veryhard_desc"]  = "    Enhanced values — CLLC high difficulty + Monster HP x2",
+                ["difficulty_user_title"]     = "3. User Setting  :  Previous user preset (last session)",
+                ["difficulty_user_desc"]      = "    Your custom settings auto-saved on last game exit",
+                ["difficulty_hint"]           = "※ Shown again after each update.  If preset file is missing, current settings are kept.",
+                ["difficulty_btn_normal"]     = "1. Normal",
+                ["difficulty_btn_veryhard"]   = "2. Very Hard",
+                ["difficulty_btn_user"]       = "3. User Setting",
             };
         }
     }

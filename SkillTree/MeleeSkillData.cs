@@ -702,6 +702,24 @@ namespace CaptainSkillTree.SkillTree
                 Position = new Vector2(625, 20),
                 Category = "근접",
                 Prerequisites = new List<string> { "polearm_step3_ground", "polearm_step4_moon", "polearm_step1_suppress" },
+                NextNodes = new List<string> { "polearm_step6_whirlwind" },
+                IconNameLocked = "all_skill_lock",
+                IconNameUnlocked = "all_skill_unlock",
+                ApplyEffect = (lv) => { }
+            });
+
+            // 7단계: 휠윈드 (관통 돌격 x+55, y 동일 / 관통 돌격에서만 연결)
+            manager.AddSkill(new SkillNode {
+                Id = "polearm_step6_whirlwind",
+                NameKey = "polearm_skill_whirlwind",
+                DescriptionKey = "polearm_desc_whirlwind",
+                DescriptionArgs = new object[] { Polearm_Config.PolearmWhirlwindDamagePercentValue },
+                RequiredPoints = Polearm_Config.PolearmWhirlwindRequiredPointsValue,
+                MaxLevel = 1,
+                Tier = 7,
+                Position = new Vector2(680, 20),
+                Category = "근접",
+                Prerequisites = new List<string> { "polearm_step5_king" },
                 NextNodes = new List<string>(),
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",

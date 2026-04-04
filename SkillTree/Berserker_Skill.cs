@@ -130,7 +130,7 @@ namespace CaptainSkillTree.SkillTree
                 ActiveSkillCooldownRegistry.SetCooldown("Y", cooldown);
 
                 // VFX 효과 생성 (자동 정리, 사운드 포함)
-                CreateRageEffect(player);
+                CreateRageEffect(player, duration);
 
                 // 화면 텍스트
                 SkillEffect.ShowSkillEffectText(player, "🔥 " + L.Get("berserker_rage"),
@@ -205,7 +205,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     int displayPercentage = currentTier * 20;
                     SkillEffect.ShowSkillEffectText(player,
-                        $"🔥 추가 데미지 +{displayPercentage}% 🔥",
+                        L.Get("berserker_rage_damage_display", displayPercentage),
                         Color.red,
                         SkillEffect.SkillEffectTextType.XLarge);
 
@@ -221,7 +221,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 분노 VFX 효과 생성 (WackyEpicMMO 방식 - 플레이어를 따라다니는 이펙트)
         /// </summary>
-        private static void CreateRageEffect(Player player)
+        private static void CreateRageEffect(Player player, float duration)
         {
             try
             {
@@ -232,7 +232,7 @@ namespace CaptainSkillTree.SkillTree
                 CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_dragon_scream", "", player.transform.position);
 
                 // 머리 위 상태 표시 VFX 생성 (연공창 방식)
-                CreateRageBuffVFX(player);
+                CreateRageBuffVFX(player, duration);
             }
             catch (Exception ex)
             {
@@ -243,7 +243,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 버서커 분노 버프 VFX 생성 (머리 위 - 연공창 방식)
         /// </summary>
-        private static void CreateRageBuffVFX(Player player)
+        private static void CreateRageBuffVFX(Player player, float duration)
         {
             try
             {
@@ -251,7 +251,7 @@ namespace CaptainSkillTree.SkillTree
                 RemoveRageBuffVFX(player);
 
                 // 새 VFX 생성 - statusailment_01_aura (머리 높이, 수동 관리)
-                var vfx = SimpleVFX.PlayOnPlayer(player, "statusailment_01_aura", 9999f, new Vector3(0f, 1.2f, 0f));
+                var vfx = SimpleVFX.PlayOnPlayer(player, "statusailment_01_aura", duration, new Vector3(0f, 1.2f, 0f));
                 if (vfx != null)
                 {
                     rageBuffVFXInstances[player] = vfx;
@@ -482,8 +482,8 @@ namespace CaptainSkillTree.SkillTree
                     int seconds = Mathf.FloorToInt(remainingTime % 60f);
 
                     string message = minutes > 0
-                        ? $"🛡️ 패시브 무적 쿨타임: {minutes}분 {seconds:00}초"
-                        : $"🛡️ 패시브 무적 쿨타임: {seconds}초";
+                        ? L.Get("berserker_passive_cd_ms", minutes, seconds)
+                        : L.Get("berserker_passive_cd_s", seconds);
 
                     SkillEffect.ShowSkillEffectText(player, message,
                         new Color(0.8f, 0.8f, 1f), SkillEffect.SkillEffectTextType.Standard);

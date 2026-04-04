@@ -146,6 +146,10 @@ namespace CaptainSkillTree.SkillTree
 
                 if (secondaryAttack)
                 {
+                    // 휠윈드 내부 공격이면 WheelDamage 보너스 적용 스킵
+                    if (SkillEffect.whirlwindInternalAttack.TryGetValue(player, out bool wwInternal) && wwInternal)
+                        return;
+
                     // 특수 공격 시간 기록 (Character.Damage에서 확인용)
                     lastSecondaryAttackTime[player] = Time.time;
                     Plugin.Log.LogDebug($"[폴암] 특수 공격 감지");
@@ -256,6 +260,9 @@ namespace CaptainSkillTree.SkillTree
                     polearmPierceChargeCoroutines.Remove(player);
                 }
 
+                // 휠윈드 상태 정리
+                CleanupWhirlwindOnDeath(player);
+
                 Attack_Start_PolearmWheelDetect_Patch.Cleanup(player);
                 CleanupStormSlashOnDeath(player);
 
@@ -264,6 +271,34 @@ namespace CaptainSkillTree.SkillTree
             catch (System.Exception ex)
             {
                 Plugin.Log.LogWarning($"[폴암 스킬] 정리 실패: {ex.Message}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Player.Update Postfix — Mouse2(휠 클릭) 감지하여 휠윈드 스킬 시작
+    /// SkillTreeInputListener.cs 수정 없이 독립 감지
+    /// </summary>
+    [HarmonyPatch(typeof(Player), "Update")]
+    public static class Player_Update_Whirlwind_Patch
+    {
+        static void Postfix(Player __instance)
+        {
+            try
+            {
+                if (__instance != Player.m_localPlayer) return;
+                if (!SkillEffect.HasSkill("polearm_step6_whirlwind")) return;
+                if (!SkillEffect.IsUsingPolearm(__instance)) return;
+
+                // Mouse2 최초 눌림 → 휠윈드 시작
+                if (Input.GetKeyDown(KeyCode.Mouse2))
+                {
+                    SkillEffect.UseWhirlwindSkill(__instance);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[Player_Update_Whirlwind_Patch] 오류: {ex.Message}");
             }
         }
     }

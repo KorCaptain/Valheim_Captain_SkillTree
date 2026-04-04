@@ -334,9 +334,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_MiningLv4_BonusChance"] = "Tier 4: 採掘Lv4 - 鉱石+1ボーナス確率 (%)",
                 ["Tier4_CraftingLv4_UpgradeChance"] = "Tier 4: 製作Lv4 - アップグレード+1ボーナス確率 (%)",
                 ["Tier4_CraftingLv4_DurabilityBonus"] = "Tier 4: 製作Lv4 - 最大耐久度増加 (%)",
-                ["Tier5_CraftingLv5_DurabilityBonus"] = "Tier 5: 製作Lv5 - 耐久度ボーナス (%)",
-                ["Tier5_CraftingLv5_MaterialReduction"] = "Tier 5: 製作Lv5 - 素材軽減 (%)",
-                ["Tier5_CraftingLv5_EnchantChance"] = "Tier 5: 製作Lv5 - エンチャント確率 (%)",
 
                 // === 生産ツリー: 必要ポイント (14) ===
                 ["Tier0_ProductionExpert_RequiredPoints"] = "Tier 0: [生産エキスパート] 必要ポイント",

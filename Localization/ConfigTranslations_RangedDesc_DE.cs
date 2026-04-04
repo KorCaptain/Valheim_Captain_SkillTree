@@ -123,6 +123,27 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Doppelwurfs.",
 
+                // === Tier 5-1 Zusatz: Fächerwurf-Einstellungen ===
+                ["Tier5_FanCast_SummonRadius"] =
+                "【Bogenradius (m)】\n" +
+                "Radius des Halbkreisbogens, auf dem 7 Feuerbälle platziert werden.\n" +
+                "Empfehlung: 1.0~2.0m",
+
+                ["Tier5_FanCast_SummonHeight"] =
+                "【Beschworungshöhe (m)】\n" +
+                "Höhe über den Füßen des Spielers, auf der Feuerbälle beschworen werden.\n" +
+                "Empfehlung: 2.0~3.0m",
+
+                ["Tier5_FanCast_HoverTime"] =
+                "【Schwebedauer (Sek.)】\n" +
+                "Maximale Schwebedauer der Feuerbälle vor dem automatischen Abbruch.\n" +
+                "Empfehlung: 5~10 Sek.",
+
+                ["Tier5_FanCast_LaunchGap"] =
+                "【Abschussintervall (Sek.)】\n" +
+                "Verzögerung zwischen dem Abschuss jedes Feuerballs beim zweiten R-Druck.\n" +
+                "Empfehlung: 0.05~0.15 Sek.",
+
                 // === Tier 5-2: Sofortige Flächenheilung (Aktiv H) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] =
                 "【Abklingzeit (Sek.)】\n" +

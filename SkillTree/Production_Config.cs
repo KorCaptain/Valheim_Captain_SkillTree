@@ -30,10 +30,6 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> MiningLv4BonusChance;
         public static ConfigEntry<int> CraftingLv4UpgradeChance;
         public static ConfigEntry<int> CraftingLv4DurabilityBonus;
-        // Tier 5: 제작 최종 스킬
-        public static ConfigEntry<int> CraftingLv5DurabilityBonus;
-        public static ConfigEntry<int> CraftingLv5MaterialReduction;
-        public static ConfigEntry<int> CraftingLv5EnchantChance;
 
         // === 효과 접근 프로퍼티 ===
         // Tier 0
@@ -75,13 +71,6 @@ namespace CaptainSkillTree.SkillTree
             (int)SkillTreeConfig.GetEffectiveValue("crafting_lv4_upgrade_chance", CraftingLv4UpgradeChance?.Value ?? 15);
         public static int CraftingLv4DurabilityBonusValue =>
             (int)SkillTreeConfig.GetEffectiveValue("crafting_lv4_durability", CraftingLv4DurabilityBonus?.Value ?? 15);
-        // Tier 5
-        public static int CraftingLv5DurabilityBonusValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("crafting_lv5_durability", CraftingLv5DurabilityBonus?.Value ?? 30);
-        public static int CraftingLv5MaterialReductionValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("crafting_lv5_material_reduction", CraftingLv5MaterialReduction?.Value ?? 30);
-        public static int CraftingLv5EnchantChanceValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("crafting_lv5_enchant_chance", CraftingLv5EnchantChance?.Value ?? 35);
 
         public static void Initialize(ConfigFile config)
         {
@@ -167,18 +156,6 @@ namespace CaptainSkillTree.SkillTree
                 "Production Tree", "Tier4_CraftingLv4_DurabilityBonus", 15,
                 SkillTreeConfig.GetConfigDescription("Tier4_CraftingLv4_DurabilityBonus"), order: 11);
 
-            // === Tier 5: 제작 Lv5 ===
-            CraftingLv5DurabilityBonus = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier5_CraftingLv5_DurabilityBonus", 30,
-                SkillTreeConfig.GetConfigDescription("Tier5_CraftingLv5_DurabilityBonus"), order: 9);
-
-            CraftingLv5MaterialReduction = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier5_CraftingLv5_MaterialReduction", 30,
-                SkillTreeConfig.GetConfigDescription("Tier5_CraftingLv5_MaterialReduction"), order: 8);
-
-            CraftingLv5EnchantChance = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier5_CraftingLv5_EnchantChance", 35,
-                SkillTreeConfig.GetConfigDescription("Tier5_CraftingLv5_EnchantChance"), order: 7);
 
             Plugin.Log.LogDebug("[Production_Config] Production Expert tree config initialized");
         }

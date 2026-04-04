@@ -428,7 +428,7 @@ namespace CaptainSkillTree.SkillTree
 
         private static IEnumerator DelayedDualCastExecution(Player player, ItemDrop.ItemData weapon, Vector3 attackDir, Vector3 aimSpot)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0f);
 
             if (player == null || player.IsDead()) yield break;
 

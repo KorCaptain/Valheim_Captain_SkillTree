@@ -255,7 +255,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: 招架冲锋 - G键主动 (6) ===
                 ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [招架冲锋] 所需点数",
                 ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [招架冲锋] 效果持续时间 (秒)",
-                ["Tier5_ParryRush_DamageBonus"] = "Tier 5: [招架冲锋] 伤害加成 (%)",
+                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [招架冲锋] 格挡力",
                 ["Tier5_ParryRush_PushDistance"] = "Tier 5: [招架冲锋] 推击距离 (米)",
                 ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [招架冲锋] 体力消耗",
                 ["Tier5_ParryRush_Cooldown"] = "Tier 5: [招架冲锋] 冷却时间 (秒)",
@@ -379,6 +379,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [穿透冲锋] 体力消耗",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [穿透冲锋] 冷却时间 (秒)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [穿透冲锋] 所需点数",
+
+                // === Polearm Tree: 旋风 (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [旋风] 伤害比例 (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [旋风] 每次体力消耗",
+                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [旋风] 移动速度 (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [旋风] 攻击间隔 (秒)",
+                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [旋风] VFX间隔 (秒)",
+                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [旋风] 冷却时间 (秒)",
+                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [旋风] 所需点数",
 
                 // ============================================
                 // 弓手职业技能 - 25个键

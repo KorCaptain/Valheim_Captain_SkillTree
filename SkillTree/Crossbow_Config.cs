@@ -67,6 +67,14 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> CrossbowOneShotKnockback;
         public static ConfigEntry<float> CrossbowOneShotCooldown;
 
+        // Tier 6: 발칸 아이스 (H키 액티브)
+        public static ConfigEntry<float> CrossbowIceBreathCooldown;
+        public static ConfigEntry<float> CrossbowIceBreathStaminaCost;
+        public static ConfigEntry<float> CrossbowIceBreathFirstHitPct;
+        public static ConfigEntry<float> CrossbowIceBreathDotPct;
+        public static ConfigEntry<int>   CrossbowIceBreathDotCount;
+        public static ConfigEntry<int>   CrossbowIceBreathRequiredPoints;
+
         #endregion
 
         #region Dynamic Value Properties (MMO 연동)
@@ -198,6 +206,31 @@ namespace CaptainSkillTree.SkillTree
         public static float CrossbowOneShotCooldownValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_cooldown",
             CrossbowOneShotCooldown?.Value ?? 60f);
+
+        // === 발칸 아이스 동적 값 ===
+        public static float CrossbowIceBreathCooldownValue =>
+            SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_cooldown",
+            CrossbowIceBreathCooldown?.Value ?? 35f);
+
+        public static float CrossbowIceBreathStaminaCostValue =>
+            SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_stamina",
+            CrossbowIceBreathStaminaCost?.Value ?? 20f);
+
+        public static float CrossbowIceBreathFirstHitPctValue =>
+            SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_first_hit_pct",
+            CrossbowIceBreathFirstHitPct?.Value ?? 80f);
+
+        public static float CrossbowIceBreathDotPctValue =>
+            SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_dot_pct",
+            CrossbowIceBreathDotPct?.Value ?? 35f);
+
+        public static int CrossbowIceBreathDotCountValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_dot_count",
+            CrossbowIceBreathDotCount?.Value ?? 5);
+
+        public static int CrossbowIceBreathRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_required_points",
+            CrossbowIceBreathRequiredPoints?.Value ?? 4);
 
         #endregion
 
@@ -345,6 +378,31 @@ namespace CaptainSkillTree.SkillTree
                     "Crossbow Tree", "Tier5_OneShot_RequiredPoints", 4,
                     SkillTreeConfig.GetConfigDescription("Tier5_OneShot_RequiredPoints"), order: 19);
 
+                // === Tier 6: 발칸 아이스 (H키 액티브) ===
+                CrossbowIceBreathCooldown = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier6_IceBreath_Cooldown", 35f,
+                    SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_Cooldown"), order: 10);
+
+                CrossbowIceBreathStaminaCost = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier6_IceBreath_StaminaCost", 20f,
+                    SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_StaminaCost"), order: 10);
+
+                CrossbowIceBreathFirstHitPct = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier6_IceBreath_FirstHitPercent", 80f,
+                    SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_FirstHitPercent"), order: 10);
+
+                CrossbowIceBreathDotPct = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier6_IceBreath_DotPercent", 35f,
+                    SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_DotPercent"), order: 10);
+
+                CrossbowIceBreathDotCount = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier6_IceBreath_DotCount", 5,
+                    SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_DotCount"), order: 10);
+
+                CrossbowIceBreathRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier6_IceBreath_RequiredPoints", 4,
+                    SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_RequiredPoints"), order: 9);
+
                 // === 이벤트 핸들러 등록 (툴팁 실시간 업데이트) ===
                 RegisterCrossbowEventHandlers();
 
@@ -387,6 +445,11 @@ namespace CaptainSkillTree.SkillTree
             CrossbowOneShotDamageBonus.SettingChanged += (sender, args) => UpdateCrossbowTooltips();
             CrossbowOneShotKnockback.SettingChanged += (sender, args) => UpdateCrossbowTooltips();
             CrossbowOneShotCooldown.SettingChanged += (sender, args) => UpdateCrossbowTooltips();
+            CrossbowIceBreathCooldown.SettingChanged    += (sender, args) => UpdateCrossbowTooltips();
+            CrossbowIceBreathStaminaCost.SettingChanged += (sender, args) => UpdateCrossbowTooltips();
+            CrossbowIceBreathFirstHitPct.SettingChanged += (sender, args) => UpdateCrossbowTooltips();
+            CrossbowIceBreathDotPct.SettingChanged      += (sender, args) => UpdateCrossbowTooltips();
+            CrossbowIceBreathDotCount.SettingChanged    += (sender, args) => UpdateCrossbowTooltips();
 
             Plugin.Log.LogDebug("[석궁 컨피그] 툴팁 실시간 업데이트 이벤트 핸들러 등록 완료");
         }
@@ -446,6 +509,14 @@ namespace CaptainSkillTree.SkillTree
                 // Tier 6: One Shot (Active Skill)
                 UpdateSkillTooltip("crossbow_Step6_expert",
                     $"R Key: Crossbow shot within {CrossbowOneShotDurationValue}s grants +{CrossbowOneShotDamageBonusValue}% damage, knockback {CrossbowOneShotKnockbackValue}m (Cooldown: {CrossbowOneShotCooldownValue}s)\n<color=#DDA0DD><size=16>※ Active when Crossbow equipped</size></color>");
+
+                // Tier 7: 발칸 아이스 (H키 액티브)
+                UpdateSkillTooltip("crossbow_ice_breath",
+                    $"H Key: Fire ice breath forward (Crossbow required)\n" +
+                    $"First hit: {CrossbowIceBreathFirstHitPctValue}% weapon damage • DoT: {CrossbowIceBreathDotPctValue}%×{CrossbowIceBreathDotCountValue} ticks (1s interval)\n" +
+                    $"Range: 10m·±35° | Stamina {CrossbowIceBreathStaminaCostValue} | Cooldown {CrossbowIceBreathCooldownValue}s\n" +
+                    $"<color=#7EC8E3><size=16>❄ Ice damage type</size></color>\n" +
+                    $"<color=#DDA0DD><size=16>※ Active when Crossbow equipped</size></color>");
 
                 Plugin.Log.LogInfo("[석궁 툴팁] 모든 석궁 스킬 툴팁 업데이트 완료");
             }

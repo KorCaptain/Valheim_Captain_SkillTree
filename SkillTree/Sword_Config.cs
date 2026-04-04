@@ -470,42 +470,48 @@ namespace CaptainSkillTree.SkillTree
                 "Sword Tree",
                 "Tier5_ParryRush_RequiredPoints",
                 3,
-                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_RequiredPoints")
+                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_RequiredPoints"),
+                order: -50
             );
 
             ParryRushDuration = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_BuffDuration",
                 30f,
-                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_BuffDuration")
+                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_BuffDuration"),
+                order: -51
             );
 
             ParryRushBlockPowerRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_BlockPowerRatio",
                 50f,
-                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_BlockPowerRatio")
+                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_BlockPowerRatio"),
+                order: -52
             );
 
             ParryRushPushDistance = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_PushDistance",
                 4f,
-                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_PushDistance")
+                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_PushDistance"),
+                order: -53
             );
 
             ParryRushStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_StaminaCost",
                 10f,
-                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_StaminaCost")
+                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_StaminaCost"),
+                order: -54
             );
 
             ParryRushCooldown = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_Cooldown",
                 60f,
-                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_Cooldown")
+                SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_Cooldown"),
+                order: -55
             );
 
             // Tier 6: 돌진 연속 베기 (Rush Slash) 액티브 스킬

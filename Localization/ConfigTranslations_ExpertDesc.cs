@@ -1516,10 +1516,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_MiningLv4_RequiredPoints"] = "【Required Points - Mining Lv4】\nRecommended: 2",
                 ["Tier4_CraftingLv4_RequiredPoints"] = "【Required Points - Crafting Lv4】\nRecommended: 2",
 
-                // === Production Tree: Tier 5 ===
-                ["Tier5_CraftingLv5_DurabilityBonus"] = "【Durability Bonus - Crafting Lv5】\nMax durability increase % when crafting.\nDefault: 30",
-                ["Tier5_CraftingLv5_MaterialReduction"] = "【Material Reduction - Crafting Lv5】\nPercentage of materials refunded after crafting.\nDefault: 30",
-                ["Tier5_CraftingLv5_EnchantChance"] = "【Enchant Chance - Crafting Lv5】\nChance (%) to apply random enchantment to crafted item.\nDefault: 35",
 
             };
         }

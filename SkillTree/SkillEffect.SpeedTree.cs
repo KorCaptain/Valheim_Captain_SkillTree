@@ -354,6 +354,9 @@ namespace CaptainSkillTree.SkillTree
                 // 분노의 망치 1타 공격속도 버프 (+200%)
                 bonus += FuryHammerSkill.GetFuryHammer1stHitSpeedBonus(player);
 
+                // 휠윈드 공격 모션 공격속도 버프 (+100%)
+                bonus += SkillEffect.GetWhirlwindAttackSpeedBonus(player);
+
                 // crafting_lv2 무기 마법부여 공격속도 보너스
                 if (weapon?.m_customData != null &&
                     weapon.m_customData.TryGetValue("csct_weapon_spd", out string spdVal) &&
@@ -384,8 +387,7 @@ namespace CaptainSkillTree.SkillTree
                     bonus += csptSpdBonus;
                 }
 
-                // 제작 전문가 CrossbowReload 마법부여 석궁 재장전 속도 보너스
-                // ms 단위 → % 변환: 100ms = +10% 속도 (10f 나눔)
+                // 제작 전문가 CrossbowReload 마법부여 석궁 재장전 속도 보너스 (% 단위 직접 적용)
                 if (skillType == Skills.SkillType.Crossbows &&
                     weapon?.m_customData != null &&
                     weapon.m_customData.TryGetValue("cspt_enchant_type", out string csptCbType) &&
@@ -395,7 +397,7 @@ namespace CaptainSkillTree.SkillTree
                         System.Globalization.CultureInfo.InvariantCulture, out float csptCbBonus) &&
                     csptCbBonus > 0f)
                 {
-                    bonus += csptCbBonus / 10f;
+                    bonus += csptCbBonus;
                 }
 
                 return bonus;
