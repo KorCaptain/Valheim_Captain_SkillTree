@@ -258,7 +258,6 @@ namespace CaptainSkillTree.SkillTree
 
             // 하드코딩 상수 사용 (수정 불가)
             int attackCount = ATTACK_COUNT;               // 5타 고정
-            float attackInterval = ATTACK_INTERVAL;       // 0.5초 고정
 
             // Config에서 값 가져오기 (데미지 배율, AOE 범위만)
             float normalHitMultiplier = Mace_Config.FuryHammerNormalHitMultiplierValue / 100f;

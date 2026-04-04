@@ -512,6 +512,43 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_PierceCharge_RequiredPoints"] =
                 "【Необходимые очки】\nОчки навыков для разблокировки Пронзающего Рывка.",
+
+                // === Polearm Tree: Whirlwind (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"] =
+                "【Whirlwind Damage Ratio (%)】\n" +
+                "Weapon damage multiplier per jump-attack cycle.\n" +
+                "Recommended: 15-35%",
+
+                ["Tier6_Whirlwind_StaminaPerSec"] =
+                "【Whirlwind Stamina Cost/Cycle】\n" +
+                "Stamina consumed per jump-attack cycle.\n" +
+                "Recommended: 3-6",
+
+                ["Tier6_Whirlwind_MoveSpeed"] =
+                "【Whirlwind Move Speed (m/s)】\n" +
+                "Movement distance basis per cycle.\n" +
+                "Recommended: 3-6",
+
+                ["Tier6_Whirlwind_AttackInterval"] =
+                "【Whirlwind Attack Interval (sec)】\n" +
+                "Wait time between attack motions.\n" +
+                "Recommended: 0.2-0.5",
+
+                ["Tier6_Whirlwind_VfxInterval"] =
+                "【Whirlwind VFX Interval (sec)】\n" +
+                "Visual effect playback interval.\n" +
+                "Recommended: 1-3",
+
+                ["Tier6_Whirlwind_Cooldown"] =
+                "【Whirlwind Cooldown (sec)】\n" +
+                "Wait time before reuse after skill ends.\n" +
+                "Recommended: 10-30",
+
+                ["Tier6_Whirlwind_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Whirlwind node.\n" +
+                "Recommended: 3",
+
             };
         }
     }

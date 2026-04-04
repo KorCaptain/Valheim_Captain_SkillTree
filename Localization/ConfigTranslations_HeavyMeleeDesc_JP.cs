@@ -511,6 +511,43 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_PierceCharge_RequiredPoints"] =
                 "【必要ポイント】\nピアースチャージを解放するために必要なポイント数。",
+
+                // === Polearm Tree: 旋風 (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"] =
+                "【旋風ダメージ比率 (%)】\n" +
+                "ジャンプ攻撃サイクルごとの武器ダメージ倍率。\n" +
+                "推奨値: 15-35%",
+
+                ["Tier6_Whirlwind_StaminaPerSec"] =
+                "【旋風スタミナコスト/サイクル】\n" +
+                "ジャンプ攻撃サイクルごとに消費するスタミナ。\n" +
+                "推奨値: 3-6",
+
+                ["Tier6_Whirlwind_MoveSpeed"] =
+                "【旋風移動速度 (m/s)】\n" +
+                "サイクルごとの移動距離の基準。\n" +
+                "推奨値: 3-6",
+
+                ["Tier6_Whirlwind_AttackInterval"] =
+                "【旋風攻撃間隔 (秒)】\n" +
+                "攻撃モーション間の待機時間。\n" +
+                "推奨値: 0.2-0.5",
+
+                ["Tier6_Whirlwind_VfxInterval"] =
+                "【旋風VFX間隔 (秒)】\n" +
+                "視覚効果の再生間隔。\n" +
+                "推奨値: 1-3",
+
+                ["Tier6_Whirlwind_Cooldown"] =
+                "【旋風クールダウン (秒)】\n" +
+                "スキル終了後の再使用待機時間。\n" +
+                "推奨値: 10-30",
+
+                ["Tier6_Whirlwind_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "旋風ノードを解放するために必要なスキルポイント数。\n" +
+                "推奨値: 3",
+
             };
         }
     }

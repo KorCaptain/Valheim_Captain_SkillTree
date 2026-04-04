@@ -511,6 +511,43 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_PierceCharge_RequiredPoints"] =
                 "【所需点数】\n解锁穿刺冲锋所需的点数。",
+
+                // === Polearm Tree: 旋风 (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"] =
+                "【旋风伤害比例 (%)】\n" +
+                "每个跳跃攻击循环的武器伤害倍率。\n" +
+                "推荐值: 15-35%",
+
+                ["Tier6_Whirlwind_StaminaPerSec"] =
+                "【旋风体力消耗/循环】\n" +
+                "每个跳跃攻击循环消耗的体力。\n" +
+                "推荐值: 3-6",
+
+                ["Tier6_Whirlwind_MoveSpeed"] =
+                "【旋风移动速度 (m/s)】\n" +
+                "每个循环的移动距离基准。\n" +
+                "推荐值: 3-6",
+
+                ["Tier6_Whirlwind_AttackInterval"] =
+                "【旋风攻击间隔 (秒)】\n" +
+                "攻击动作之间的等待时间。\n" +
+                "推荐值: 0.2-0.5",
+
+                ["Tier6_Whirlwind_VfxInterval"] =
+                "【旋风VFX间隔 (秒)】\n" +
+                "视觉效果播放间隔。\n" +
+                "推荐值: 1-3",
+
+                ["Tier6_Whirlwind_Cooldown"] =
+                "【旋风冷却时间 (秒)】\n" +
+                "技能结束后重新使用的等待时间。\n" +
+                "推荐值: 10-30",
+
+                ["Tier6_Whirlwind_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁旋风节点所需的技能点数。\n" +
+                "推荐值: 3",
+
             };
         }
     }

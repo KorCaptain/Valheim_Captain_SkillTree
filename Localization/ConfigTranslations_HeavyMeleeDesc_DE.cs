@@ -511,6 +511,43 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_PierceCharge_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Durchbohr-Ansturms.",
+
+                // === Polearm Tree: Wirbelwind (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"] =
+                "【Wirbelwind Schadensrate (%)】\n" +
+                "Waffenschaden-Multiplikator pro Sprung-Angriff-Zyklus.\n" +
+                "Empfohlen: 15-35%",
+
+                ["Tier6_Whirlwind_StaminaPerSec"] =
+                "【Wirbelwind Ausdauer/Zyklus】\n" +
+                "Ausdauer pro Sprung-Angriff-Zyklus.\n" +
+                "Empfohlen: 3-6",
+
+                ["Tier6_Whirlwind_MoveSpeed"] =
+                "【Wirbelwind Bewegungsgeschwindigkeit (m/s)】\n" +
+                "Bewegungsdistanz pro Zyklus.\n" +
+                "Empfohlen: 3-6",
+
+                ["Tier6_Whirlwind_AttackInterval"] =
+                "【Wirbelwind Angriffsintervall (Sek)】\n" +
+                "Wartezeit zwischen Angriffsbewegungen.\n" +
+                "Empfohlen: 0.2-0.5",
+
+                ["Tier6_Whirlwind_VfxInterval"] =
+                "【Wirbelwind VFX-Intervall (Sek)】\n" +
+                "Wiedergabeintervall des visuellen Effekts.\n" +
+                "Empfohlen: 1-3",
+
+                ["Tier6_Whirlwind_Cooldown"] =
+                "【Wirbelwind Abklingzeit (Sek)】\n" +
+                "Wartezeit bis zur Wiederverwendung nach dem Skill.\n" +
+                "Empfohlen: 10-30",
+
+                ["Tier6_Whirlwind_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Punkte zum Freischalten des Wirbelwind-Knotens.\n" +
+                "Empfohlen: 3",
+
             };
         }
     }

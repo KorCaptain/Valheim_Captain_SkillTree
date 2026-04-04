@@ -511,6 +511,43 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_PierceCharge_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Investida Perfurante.",
+
+                // === Polearm Tree: Redemoinho (7 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"] =
+                "【Taxa de Dano do Redemoinho (%)】\n" +
+                "Multiplicador de dano por ciclo de salto-ataque.\n" +
+                "Recomendado: 15-35%",
+
+                ["Tier6_Whirlwind_StaminaPerSec"] =
+                "【Custo de Stamina/Ciclo do Redemoinho】\n" +
+                "Stamina consumida por ciclo de salto-ataque.\n" +
+                "Recomendado: 3-6",
+
+                ["Tier6_Whirlwind_MoveSpeed"] =
+                "【Velocidade do Redemoinho (m/s)】\n" +
+                "Base de distância de movimento por ciclo.\n" +
+                "Recomendado: 3-6",
+
+                ["Tier6_Whirlwind_AttackInterval"] =
+                "【Intervalo de Ataque do Redemoinho (seg)】\n" +
+                "Tempo de espera entre movimentos de ataque.\n" +
+                "Recomendado: 0.2-0.5",
+
+                ["Tier6_Whirlwind_VfxInterval"] =
+                "【Intervalo VFX do Redemoinho (seg)】\n" +
+                "Intervalo de reprodução do efeito visual.\n" +
+                "Recomendado: 1-3",
+
+                ["Tier6_Whirlwind_Cooldown"] =
+                "【Recarga do Redemoinho (seg)】\n" +
+                "Tempo de espera antes de reutilizar após o skill.\n" +
+                "Recomendado: 10-30",
+
+                ["Tier6_Whirlwind_RequiredPoints"] =
+                "【Pontos Necessários】\n" +
+                "Pontos de habilidade para desbloquear o Redemoinho.\n" +
+                "Recomendado: 3",
+
             };
         }
     }

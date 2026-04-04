@@ -86,10 +86,7 @@ namespace CaptainSkillTree.SkillTree
 
             whirlwindActive[player] = true;
             whirlwindDealingDamage[player] = true;
-
-            // 쿨타임은 시작 시점에 등록
-            whirlwindLastUseTime[player] = now;
-            ActiveSkillCooldownRegistry.SetCooldown("M2", Polearm_Config.PolearmWhirlwindCooldownValue);
+            // 쿨타임은 스킬 종료 시점에 등록 (finally 블록에서 처리)
 
             whirlwindCoroutines[player] = player.StartCoroutine(ExecuteWhirlwindLoop(player));
 
@@ -211,6 +208,13 @@ namespace CaptainSkillTree.SkillTree
             {
                 // 충돌 복원
                 Physics.IgnoreLayerCollision(playerLayer, characterLayer, false);
+
+                // 쿨타임: 스킬 종료 시점에 등록
+                if (player != null)
+                {
+                    whirlwindLastUseTime[player] = Time.time;
+                    ActiveSkillCooldownRegistry.SetCooldown("M2", Polearm_Config.PolearmWhirlwindCooldownValue);
+                }
 
                 // 종료 처리
                 if (player != null)
