@@ -58,7 +58,7 @@ namespace CaptainSkillTree.SkillTree
                     skillType = L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z"),
                     requirement = L.Get("requirement_staff_wand"),
                     confirmation = "",
-                    specialNote = $"[1차 R키] 7개 파이어볼 반원 호 소환·정지\n[2차 R키] 왼→오 0.08초 간격 연속 발사\n\n<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
+                    specialNote = ""
                 };
 
                 string finalTooltip = GenerateDualCastTooltip(data);

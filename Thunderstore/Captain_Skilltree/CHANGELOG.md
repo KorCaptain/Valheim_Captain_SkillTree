@@ -1,5 +1,16 @@
 # Changelog / 변경 로그
 ## Update
+# [1.2.24] - 2026-04-06
+- ✅new1 : Config - Added GameDifficulty setting to Skill_Tree_Base section (Vanilla / HardMode / UserSettings); changing it immediately applies the corresponding preset
+- ✅new2 : Config - GameDifficulty syncs with difficulty selection UI: first-launch popup updates the config value, and vice versa
+- ✅new3 : Crossbow - Ice Explosion Bolt added (H key active): fires a frost bolt in a 10m ±35° cone when a bolt is loaded — 1st hit 80% weapon dmg + DoT 35%×5 with knockback and slow
+- ✅new4 : Polearm - Whirlwind added (Mouse2 hold active): leap toward cursor direction repeatedly — 35% weapon dmg per strike, stamina 0.5/s, no knockback/stagger, blocks normal attack and jump while active
+-
+- ✅new1 : 컨피그 - Skill_Tree_Base 섹션에 GameDifficulty 설정 추가 (Vanilla / HardMode / UserSettings); 변경 시 해당 프리셋 즉시 적용
+- ✅new2 : 컨피그 - 난이도 선택 UI와 GameDifficulty 컨피그 양방향 동기화: 첫 접속 팝업 선택 → 컨피그 반영, 컨피그 변경 → 프리셋 적용
+- ✅new3 : 석궁 - 빙결 폭발탄 추가 (H키 액티브): 볼트 장전 완료 시 전방 10m ±35° 범위에 냉기탄 발사 — 첫 타격 80% + 도트 35%×5회, 넉백 및 슬로우 적용
+- ✅new4 : 폴암 - 휠윈드 추가 (M2 홀드 액티브): 커서 방향으로 반복 도약+공격 — 타격당 무기 공격력 35%, 스태미나 0.5/s 소모, 넉백·스태거 없음, 활성 중 일반 공격·점프 차단
+
 # [1.2.23] - 2026-04-03
 - ✅new1 : System - Difficulty selection screen added on first install or version update: choose Normal (Vanilla+) or Very Hard (CLLC Very Hard + Monster HP x2) at the main menu
 - ✅new2 : System - User settings are automatically backed up on game exit; "User Setting" option appears on the next update's selection screen if a backup exists

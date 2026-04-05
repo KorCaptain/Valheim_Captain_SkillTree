@@ -18,6 +18,7 @@ namespace CaptainSkillTree.Localization
                 ["HUD_PosX"] = "HUD X座標",
                 ["HUD_PosY"] = "HUD Y座標",
                 ["PassiveMessageDisplay"] = "パッシブメッセージ表示",
+                ["GameDifficulty"] = "ゲーム難易度",
 
                 // ============================================
                 // 攻撃ツリー - 33キー

@@ -75,13 +75,16 @@ namespace CaptainSkillTree.VFX
         #region 기존 API 호환 메서드
 
         /// <summary>
-        /// VFX + 사운드 동시 재생 → SimpleVFX.PlayWithSound
+        /// VFX + 사운드 동시 재생 → rotation이 지정된 경우 SimpleVFX.PlayWithRotation, 아니면 PlayWithSound
         /// </summary>
         public static void PlayVFXMultiplayer(string vfxName, string soundName, Vector3 position,
             Quaternion rotation = default, float destroyAfter = 5f, float scale = 1f)
         {
             if (!VFX_ENABLED) return;
-            SimpleVFX.PlayWithSound(vfxName, soundName, position, destroyAfter);
+            if (rotation != default && rotation != Quaternion.identity)
+                SimpleVFX.PlayWithRotation(vfxName, soundName, position, rotation, destroyAfter);
+            else
+                SimpleVFX.PlayWithSound(vfxName, soundName, position, destroyAfter);
         }
 
         /// <summary>

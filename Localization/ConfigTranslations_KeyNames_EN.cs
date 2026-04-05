@@ -18,6 +18,7 @@ namespace CaptainSkillTree.Localization
                 ["HUD_PosX"] = "HUD X Position",
                 ["HUD_PosY"] = "HUD Y Position",
                 ["PassiveMessageDisplay"] = "Passive Message Display",
+                ["GameDifficulty"] = "Game Difficulty",
 
                 // ============================================
                 // Attack Tree - 33 Keys
@@ -560,13 +561,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [Lucky Mana] Free Cast Trigger Chance (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [Lucky Mana] Required Points",
 
-                // === Tier 5-1: Double Casting - R-Key Active (6) ===
+                // === Tier 5-1: Double Casting - R-Key Active (9) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Double Casting] Extra Projectile Count",
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Double Casting] Projectile Damage Percent (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Double Casting] Angle Offset (Unused)",
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Double Casting] Eitr Cost",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Double Casting] Cooldown (sec)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Double Casting] Required Points",
+                ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [Double Casting] Arc Radius (m)",
+                ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [Double Casting] Summon Height (m)",
+                ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [Double Casting] Hover Time (sec)",
+                ["Tier5_FanCast_LaunchGap"] = "Tier 5-1: [Double Casting] Launch Interval (sec)",
 
                 // === Tier 5-2: Instant Area Heal - H-Key Active (6) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [Heal] Cooldown (sec)",
@@ -622,6 +626,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [One Shot] Knockback Distance (m)",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [One Shot] Cooldown (sec)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [One Shot] Required Points",
+
+                // === Tier 6: Vulkan Ice (H-key Active) ===
+                ["Tier6_IceBreath_Cooldown"] = "Tier 6: [Vulkan Ice] Cooldown (sec)",
+                ["Tier6_IceBreath_StaminaCost"] = "Tier 6: [Vulkan Ice] Stamina Cost",
+                ["Tier6_IceBreath_FirstHitPercent"] = "Tier 6: [Vulkan Ice] First Hit Damage (%)",
+                ["Tier6_IceBreath_DotPercent"] = "Tier 6: [Vulkan Ice] DoT Damage (%)",
+                ["Tier6_IceBreath_DotCount"] = "Tier 6: [Vulkan Ice] DoT Count",
+                ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [Vulkan Ice] Required Points",
 
                 // ============================================
                 // Knife Tree - 32 Keys

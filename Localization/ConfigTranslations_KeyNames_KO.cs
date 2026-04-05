@@ -18,6 +18,7 @@ namespace CaptainSkillTree.Localization
                 ["HUD_PosX"] = "HUD X 위치",
                 ["HUD_PosY"] = "HUD Y 위치",
                 ["PassiveMessageDisplay"] = "패시브 메시지 표시",
+                ["GameDifficulty"] = "게임 난이도",
 
                 // ============================================
                 // Attack Tree (공격 트리) - 33개
@@ -562,13 +563,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [행운 마력] Eitr 무소모 발동 확률 (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [행운 마력] 필요 포인트",
 
-                // === Tier 5-1: 이중시전 - R키 액티브 (6개) ===
+                // === Tier 5-1: 이중시전 - R키 액티브 (9개) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [이중시전] 추가 발사체 개수",
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [이중시전] 발사체 데미지 비율 (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [이중시전] 각도 오프셋 (미사용)",
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [이중시전] Eitr 소모량",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [이중시전] 쿨타임 (초)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [이중시전] 필요 포인트",
+                ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [이중시전] 반원 호 반경 (m)",
+                ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [이중시전] 소환 기준 높이 (m)",
+                ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [이중시전] 공중 정지 시간 (초)",
+                ["Tier5_FanCast_LaunchGap"] = "Tier 5-1: [이중시전] 발사 간격 (초)",
 
                 // === Tier 5-2: 즉시 범위 힐 - H키 액티브 (6개) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [힐] 쿨타임 (초)",
@@ -624,6 +628,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [단 한 발] 넉백 거리 (미터)",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [단 한 발] 쿨타임 (초)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [단 한 발] 필요 포인트",
+
+                // === Tier 6: 빙결 폭발탄 (H키 액티브) ===
+                ["Tier6_IceBreath_Cooldown"] = "Tier 6: [빙결 폭발탄] 쿨타임 (초)",
+                ["Tier6_IceBreath_StaminaCost"] = "Tier 6: [빙결 폭발탄] 스태미나 소모",
+                ["Tier6_IceBreath_FirstHitPercent"] = "Tier 6: [빙결 폭발탄] 첫 타격 데미지 (%)",
+                ["Tier6_IceBreath_DotPercent"] = "Tier 6: [빙결 폭발탄] 도트 데미지 (%)",
+                ["Tier6_IceBreath_DotCount"] = "Tier 6: [빙결 폭발탄] 도트 횟수",
+                ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [빙결 폭발탄] 필요 포인트",
 
                 // ============================================
                 // Knife Tree (단검 트리) - 32개

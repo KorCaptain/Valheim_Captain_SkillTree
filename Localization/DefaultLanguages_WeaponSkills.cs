@@ -418,6 +418,7 @@ namespace CaptainSkillTree.Localization
                 ["requirement_knife_equip"] = "Knife equipped",
                 ["requirement_bow_equip"] = "Bow equipped",
                 ["requirement_crossbow_equip"] = "Crossbow equipped",
+                ["requirement_crossbow_bolt"] = "Crossbow + Bolt in inventory",
                 ["requirement_staff_equip"] = "Staff equipped",
                 ["requirement_weapon_equip"] = "Weapon equipped",
                 ["requirement_shield_equip"] = "Shield equipped",

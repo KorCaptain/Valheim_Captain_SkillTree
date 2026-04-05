@@ -291,6 +291,9 @@ namespace CaptainSkillTree.SkillTree
 
         // 패시브 메시지 표시 방식
         public static ConfigEntry<string> PassiveMessageDisplay;
+
+        // 게임 난이도 모드
+        public static ConfigEntry<string> GameDifficulty;
         public static int PassiveMessageDisplayValue {
             get {
                 switch (PassiveMessageDisplay?.Value) {
@@ -840,6 +843,28 @@ namespace CaptainSkillTree.SkillTree
                     new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("PassiveMessageDisplay"), Order = -16 }
                 )
             );
+
+            GameDifficulty = config.Bind(
+                "Skill_Tree_Base",
+                "GameDifficulty",
+                "Vanilla",
+                new ConfigDescription(
+                    GetConfigDescription("GameDifficulty"),
+                    new AcceptableValueList<string>("Vanilla", "HardMode", "UserSettings"),
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("GameDifficulty"), Order = -17 }
+                )
+            );
+
+            GameDifficulty.SettingChanged += (sender, args) =>
+            {
+                if (DifficultyManager.IsApplyingPreset) return;
+                switch (GameDifficulty.Value)
+                {
+                    case "Vanilla":      DifficultyManager.ApplyNormal();   break;
+                    case "HardMode":     DifficultyManager.ApplyVeryHard(); break;
+                    case "UserSettings": DifficultyManager.ApplyUser();     break;
+                }
+            };
 
             // === 직업 레벨업 코인 비용 (서버 관리자 전용, 클라이언트 자동 동기화) ===
             JobLv1Cost = BindServerSync(config, "Skill_Tree_Base", "Job_Lv1_Cost", 1000,

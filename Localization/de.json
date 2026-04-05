@@ -127,6 +127,7 @@
   "crossbow_required": "Armbrust erforderlich",
   "crossbow_equip_required": "Du musst eine Armbrust ausrüsten!",
   "crossbow_no_ammo": "Keine Armbrust-Bolzen geladen!",
+  "crossbow_not_loaded": "Armbrust ist nicht geladen!",
   "crossbow_oneshot_success": "One Shot! {0} Schaden!",
   "crossbow_oneshot_ready": "🎯 One Shot bereit!",
   "crossbow_oneshot_remaining": "One Shot verbleibend: {0}s",

@@ -26,6 +26,7 @@ namespace CaptainSkillTree.Localization
                 ["HUD_PosX"] = "HUD X位置",
                 ["HUD_PosY"] = "HUD Y位置",
                 ["PassiveMessageDisplay"] = "被动消息显示",
+                ["GameDifficulty"] = "游戏难度",
 
                 // ============================================
                 // 攻击树 - 33个键

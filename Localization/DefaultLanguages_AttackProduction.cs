@@ -164,7 +164,7 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_rapid_fire_lv2_name"] = "연속 발사 Lv2",
                 ["crossbow_final_strike_name"] = "결전의 일격",
                 ["crossbow_oneshot_name"] = "단 한 발",
-                ["crossbow_ice_breath_name"] = "발칸 아이스",
+                ["crossbow_ice_breath_name"] = "빙결 폭발탄",
 
                 // === Bow Skills ===
                 ["bow_skill_expert"] = "활 전문가",
@@ -204,7 +204,7 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_auto_reload_desc"] = "명중 시 {0}% 확률로 다음 1회 장전 속도 200%",
                 ["crossbow_final_desc"] = "크리티컬 데미지 +{0}%",
                 ["crossbow_oneshot_desc"] = "석궁 데미지 +{0}%, 다음 사격까지 {1}초 장전 지연",
-                ["crossbow_ice_breath_desc"] = "H키: 석궁 장전 시 전방 10m 발칸 아이스 발사\n첫 타격 {0}% • 도트 {1}%×{2}회 • 넉백 10m • 스태미나 {3} • 쿨타임 {4}초",
+                ["crossbow_ice_breath_desc"] = "H키: 볼트 장전 완료 시 전방 10m·±35° 빙결 폭발탄 발사\n첫 타격 {0}% • 도트 {1}%×{2}회 • 넉백 10m • 스태미나 {3} • 쿨타임 {4}초",
                 ["bow_expert_desc"] = "활 공격력 +{0}%",
                 ["bow_focus_desc"] = "몬스터 머리 적중 시 크리티컬 100% 발동",
                 ["bow_multishot_lv1_desc"] = "{0}% 확률로 추가 화살 1발 발사 (+3도 각도)",
@@ -580,7 +580,7 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_auto_reload_desc"] = "On hit, {0}% chance for next reload 200% faster",
                 ["crossbow_final_desc"] = "Critical damage +{0}%",
                 ["crossbow_oneshot_desc"] = "Crossbow damage +{0}%, {1}s reload delay until next shot",
-                ["crossbow_ice_breath_desc"] = "H Key: Fire Vulkan Ice in 10m radius (Crossbow loaded)\nFirst hit {0}% • DoT {1}%×{2} ticks • Knockback 10m • Stamina {3} • Cooldown {4}s",
+                ["crossbow_ice_breath_desc"] = "H Key: Fire Vulkan Ice in 10m·±35° cone (Bolt equipped)\nFirst hit {0}% • DoT {1}%×{2} ticks • Knockback 10m • Stamina {3} • Cooldown {4}s",
                 ["bow_expert_desc"] = "Bow damage +{0}%",
                 ["bow_focus_desc"] = "Arrows hitting a monster's head guarantee a 100% critical hit",
                 ["bow_multishot_lv1_desc"] = "{0}% chance to fire 1 extra arrow (+3° angle)",

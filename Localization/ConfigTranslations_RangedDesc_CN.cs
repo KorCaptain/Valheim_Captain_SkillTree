@@ -331,6 +331,25 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_RequiredPoints"] =
                 "【所需点数】\n解锁一击必杀所需的点数。",
 
+                // === Tier 6: 火山之冰 (H键 主动技能) ===
+                ["Tier6_IceBreath_Cooldown"] =
+                "【冷却时间（秒）】\n再次使用前需要等待的时间。\n推荐：30-45秒",
+
+                ["Tier6_IceBreath_StaminaCost"] =
+                "【体力消耗】\n激活时消耗的体力值。\n推荐：15-25",
+
+                ["Tier6_IceBreath_FirstHitPercent"] =
+                "【首次打击伤害（%）】\n激活时立即造成的武器伤害比例。\n推荐：60-100%",
+
+                ["Tier6_IceBreath_DotPercent"] =
+                "【持续伤害（%）】\n每秒造成的武器伤害比例。\n推荐：25-50%",
+
+                ["Tier6_IceBreath_DotCount"] =
+                "【持续伤害次数】\n持续伤害触发的总次数。\n推荐：3-6",
+
+                ["Tier6_IceBreath_RequiredPoints"] =
+                "【所需点数】\n解锁火山之冰所需的点数。",
+
                 // ========================================
                 // 弓树 (Bow Tree)
                 // ========================================

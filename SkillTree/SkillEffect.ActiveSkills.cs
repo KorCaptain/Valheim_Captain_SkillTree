@@ -22,7 +22,7 @@ namespace CaptainSkillTree.SkillTree
         public static void HandleActiveSkillInputs(Player player)
         {
             if (player == null || player.IsDead()) return;
-            HandleRKeySkills(player);
+            JobSkills.ExecuteJobSkill(player);
         }
 
         /// <summary>
@@ -31,6 +31,12 @@ namespace CaptainSkillTree.SkillTree
         public static void HandleRKeySkills(Player player)
         {
             if (player == null || player.IsDead()) return;
+
+            // 원거리 스킬이 없으면 조용히 리턴
+            if (!HasSkill("crossbow_Step6_expert") &&
+                !HasSkill("bow_Step6_critboost") &&
+                !HasSkill("staff_Step6_dual_cast"))
+                return;
 
             // 1. 석궁 단 한 발
             if (HasSkill("crossbow_Step6_expert") && WeaponHelper.IsUsingCrossbow(player))

@@ -331,6 +331,25 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Um Tiro.",
 
+                // === Tier 6: Gelo Vulcânico (Tecla H Ativo) ===
+                ["Tier6_IceBreath_Cooldown"] =
+                "【Recarga (seg)】\nTempo de espera para reutilizar a habilidade.\nValor recomendado: 30-45 seg",
+
+                ["Tier6_IceBreath_StaminaCost"] =
+                "【Custo de Stamina】\nStamina consumida ao ativar.\nValor recomendado: 15-25",
+
+                ["Tier6_IceBreath_FirstHitPercent"] =
+                "【Dano do Primeiro Golpe (%)】\nPorcentagem do dano da arma aplicada instantaneamente.\nValor recomendado: 60-100%",
+
+                ["Tier6_IceBreath_DotPercent"] =
+                "【Dano DoT (%)】\nPorcentagem do dano da arma aplicada por segundo.\nValor recomendado: 25-50%",
+
+                ["Tier6_IceBreath_DotCount"] =
+                "【Contagem DoT】\nNúmero total de pulsos de dano DoT.\nValor recomendado: 3-6",
+
+                ["Tier6_IceBreath_RequiredPoints"] =
+                "【Pontos Necessários】\nPontos para desbloquear Gelo Vulcânico.",
+
                 // ========================================
                 // Bow Tree (Árvore de Arco)
                 // ========================================

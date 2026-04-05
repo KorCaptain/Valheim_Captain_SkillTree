@@ -27,6 +27,14 @@ namespace CaptainSkillTree.Localization
                 "  Off = Desativado\n" +
                 "※ Mensagens de aprendizado e produção sempre no centro.",
 
+                ["GameDifficulty"] =
+                "【Dificuldade do Jogo】\n" +
+                "Seleciona o preset de balanço geral do mod de árvore de habilidades.\n" +
+                "  Vanilla      = Valores suaves próximos ao Valheim original (padrão)\n" +
+                "  HardMode     = CLLC Muito Difícil + HP de monstros ×2 (valores fortes)\n" +
+                "  UserSettings = Restaura as configurações salvas anteriormente\n" +
+                "⚠️ Ao alterar, o preset selecionado é aplicado imediatamente (todos os valores de habilidade são substituídos).",
+
                 // ========================================
                 // Attack Tree (Árvore de Ataque)
                 // ========================================

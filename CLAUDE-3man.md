@@ -47,14 +47,14 @@ model 사용에 대한 규칙을 명시하고 다음 규칙을 따른다.
 5. 사용자가 이미 설명한 내용을 다시 말하지 않기
 
 * 밑의 내용은 아키텍트 에이전트에게 넘길것
+4. 필요 검색이 필요한 경우 C:\home\ssunyme\.npm-global\bin\valheim_dll_api  폴더를 분석한다. (발헤임 ilspy 한 자료)
 
 ## 코드 진행 후 검증 시스템
 1. C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\md 
    api의 경우 valheim_all_api.md 맞는지 확인하고 수정보완한다.
-2. 액티브 및 패시브 스킬을 만들거나 수정했을 경우 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\md 
- 의 알맞는 md 파일을 확인해서 문제 없는 지 확인하고 수정 보완한다.
+
 3. 최종 빌드 해보고 에러가 생기면 에러가 안생기게 수정하고 빌드한다. 
-4. 필요 검색이 필요한 경우 C:\home\ssunyme\.npm-global\bin\valheim_dll_api  폴더를 분석한다. (발헤임 ilspy 한 자료)
+
  
 ## 빠른 참조 맵 & 시스템 상세
 
@@ -212,23 +212,10 @@ CaptainSkillTree/
 > G키/H키 연동 상세표 → `md/ACTIVE_SKILL_SYSTEM.md`
 
 ### 7. UI 렌더링 순서 (SetSiblingIndex)
-```
-0: 스킬트리 배경 (bgObj)
-1: 노드 연결선 (line)
-2: 일반 노드 아이콘
-3: 직업 아이콘 (Berserker, Tanker, Rogue, Archer, Mage, Paladin)
-최상위: 툴팁 (SetAsLastSibling)
-```
-적용 파일: `SkillTreeUI.cs`, `SkillTreeNodeUI.cs`, `SkillTreeTooltip.cs`
+→ `rules/UI_RENDERING_RULES.md` 참조
 
 ### 8. Config 초기화 순서 (SkillTreeConfig.cs)
-```
-전문가: (구분선) Attack → Speed → Defense → Production
-원거리:  (구분선) Bow → Staff → Crossbow
-근접:   (구분선) Knife → Sword → Mace → Spear → Polearm
-직업:   (구분선) Archer → Mage → Tanker → Rogue → Paladin → Berserker -> Producer
-```
-> 상세 규칙 (구분선 형식, 파일 구조 등) → `md/CONFIG_GUIDE.md`
+→ `rules/CONFIG_INIT_RULES.md` 참조 (상세: `md/CONFIG_GUIDE.md`)
 
 ### 9. 스킬 효과 누적 규칙
 - 동일 효과는 서로 다른 트리에서도 반드시 **누적 합산** 적용
@@ -251,124 +238,11 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 | `SkillBonusCalculator` | `SkillTree/SkillBonusCalculator.cs` | 스킬 보너스 합산 |
 | `SkillNodeBuilder` | `SkillTree/SkillNodeBuilder.cs` | 스킬 노드 생성 빌더 패턴 |
 
-### 11. 로컬라이제이션 키 누락 방지
-- 코드 작성 전 DefaultLanguages.cs에 KO + EN 키 **먼저** 등록
-- `ru.json` 동기화 필수 (번역 없으면 EN 원문 사용)
-- 빌드 전 검증 스크립트 필수 실행:
-  ```bash
-  cd CaptainSkillTree/scripts
-  powershell -ExecutionPolicy Bypass -File validate_loc_keys.ps1
-  ```
-> 상세 규칙 및 체크리스트 → `md/MULTILANGUAGE_GUIDE.md`
+### 11-14. 로컬라이제이션 (L.Get(), Config번역, 7개언어 동기화)
+→ `rules/LOCALIZATION_RULES.md` 참조 (상세: `md/MULTILANGUAGE_GUIDE.md`, `md/CONFIG_GUIDE.md`)
 
-### 12. Config 다국어 번역
-- `BindServerSync` Description에 **하드코딩된 영어 문자열 절대 금지**
-- 반드시 `SkillTreeConfig.GetConfigDescription("키이름")` 사용
-- 번역은 `Localization/ConfigTranslations.cs`에 【】형식으로 추가
-> 상세 규칙 및 체크리스트 → `md/CONFIG_GUIDE.md`, `md/MULTILANGUAGE_GUIDE.md`
-
-### 13. 새 Config 키 추가 시 3종 세트 필수
-반드시 ①DispName ②Description ③GetConfigDescription() 동시 등록.
-> ❌ 하나라도 빠지면 F1 Config Manager에서 번역이 깨짐
-> 상세 형식 및 예시 → `md/MULTILANGUAGE_GUIDE.md`
-
-### 14. 다국어 7개 언어 모두 자동 동기화 (필수)
-## C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\Localizationd 의 *.json 화일 모두 밑의 동기화 예실르 진행한다.
-## 동기화 예시
-- **DefaultLanguages*.cs에 키를 추가/수정/삭제할 때마다 `Localization/ru.json`도 반드시 동시 수정**
-- 추가: 동일 키를 ru.json, de.json, ja.json, zh-cn.json, pt_BR.json, *ja.json 에 추가 (번역문 없으면 각 언어로 모두 번역사용)
-- 삭제: ru.json, *.json에서도 해당 키 제거
-> `md/MULTILANGUAGE_GUIDE.md` 참조
-
-### 15. ⚠️ 성능 안전 규칙 — 메모리·서버 과부하·멈춤 방지 (신규/수정 스킬 모두 적용)
-
-> 스킬을 **신규 생성하거나 수정할 때마다** 아래 항목을 반드시 확인할 것.
-> 인벤토리 관련 패치는 추가로 `md/INVENTORY_PATCH_CHECKLIST.md` 확인.
-
-#### 🔴 패치 발동 빈도 — 프레임 단위 패치 금지
-
-| 금지 패턴 | 이유 | 대안 |
-|---------|------|------|
-| `Player.Update()` / `Character.Update()` Postfix 내 무거운 연산 | 초당 60회 실행 → CPU 과부하 | 이벤트 기반 패치로 대체 |
-| `InventoryGrid.UpdateGui()` Postfix 내 `GetAllItems()` 무제한 호출 | 드래그 중 매 프레임 실행 | throttle (0.25s 이상) 필수 |
-| `Hud.Update()` Postfix 내 스킬 계산 | 초당 60회 → 스태터 발생 | `SkillBonusCalculator` 프레임 캐시 사용 |
-| `GetAllItems()` 반복 호출 (throttle 없음) | 인벤토리 크기에 비례해 느려짐 | static Dictionary 캐시 + 0.25s throttle |
-
-#### 🔴 코루틴 무한 루프 — 반드시 탈출 조건 확인
-
-```csharp
-// ✅ 안전: 탈출 조건 명확
-while (elapsed < duration && player != null && !player.IsDead())
-{
-    yield return new WaitForSeconds(0.1f); // 반드시 yield 포함
-    elapsed += 0.1f;
-}
-
-// ❌ 위험: 탈출 조건 없음 → 무한 루프 → 서버 과부하
-while (isActive)
-{
-    DoHeavyWork();
-    yield return null; // yield 없으면 게임 완전 멈춤
-}
-```
-
-- 모든 코루틴에 **최대 지속시간 또는 명확한 종료 플래그** 필수
-- 코루틴 실행 중 플레이어 사망/로그아웃 시 자동 종료 조건 포함
-- 동일 코루틴 중복 실행 방지: `if (coroutine != null) StopCoroutine()` 패턴 사용
-
-#### 🔴 Harmony 패치 — 수리/상자/드래그 경로 오발동 방지
-
-| 패치 메서드 | 실제 발동 상황 | 필수 early return |
-|------------|--------------|-----------------|
-| `InventoryGui.DoCrafting` | 제작 + **수리** 모두 호출 | `IsRepairAction()` 체크 후 수리 시 return |
-| `InventoryGui.Show()` | 인벤토리 열기 + **상자 열기** 모두 호출 | 컨테이너 여부 확인 필요 시 체크 |
-| `InventoryGrid.UpdateGui()` | **드래그 중 매 프레임** + 아이템 이동 | 0.25s throttle 필수 |
-| `Player.ConsumeResources()` | 제작뿐 아니라 **일부 스킬 발동 시**도 호출 | craftButtonClicked 플래그 확인 |
-
-#### 🟡 메모리 누수 방지
-
-- `Dictionary<Player, Coroutine>` 등 플레이어 키 Dictionary: 플레이어 로그아웃 시 반드시 `Remove(player)` 처리
-- `HashSet<string>` 강화 기록 (`enhancedItems`): 인벤토리 닫기 또는 일정 주기로 `Clear()` 필수
-- static Texture2D / Sprite: `HideFlags.HideAndDontSave` 설정 후 씬 전환 시 재생성 여부 점검
-- 이벤트 리스너 (`onClick.AddListener`): 중복 등록 방지 — `RemoveAllListeners()` 후 재등록
-
-#### 🟡 Reflection 성능
-
-```csharp
-// ✅ 안전: 1회 캐싱
-private static FieldInfo _myField;
-private static FieldInfo GetMyField() =>
-    _myField ??= typeof(TargetClass).GetField("m_field", BindingFlags.NonPublic | BindingFlags.Instance);
-
-// ❌ 위험: 패치 메서드 호출마다 실행 → GC + 느림
-void Postfix(...) {
-    var field = typeof(TargetClass).GetField("m_field", ...); // 매번 실행!
-}
-```
-
-#### 🟡 ZNet RPC / 멀티플레이어 부하
-
-- `ZNetScene.instance.SpawnObject()` 또는 RPC 호출: 루프 내 반복 금지, 단발성만 허용
-- `VFXManager.PlayVFXMultiplayer()`: 패시브 스킬에서 호출 금지 (피격마다 실행 → 서버 패킷 폭증)
-- `ZDO.Set()` — **이벤트 발생 시 1회 호출이 원칙**:
-  - ✅ 올바름: 스킬 발동, 버프 시작/종료, 상태 변경 **시점**에만 호출
-  - ❌ 잘못됨: 코루틴 내 주기적 반복 호출 (`while` 루프 안에서 매 틱마다 `ZDO.Set()`)
-  - ⚠️ 불가피한 경우만 예외: 버프 잔여시간처럼 값이 지속 변하는 경우에 한해 주기적 호출 허용 — 이때도 최소 0.5s 간격 유지. 단, 이 구조 자체가 설계 냄새이므로 이벤트 기반으로 리팩터링 검토 필요
-
-#### 신규/수정 스킬 완성 후 자가 점검 체크리스트
-
-```
-[ ] 이 스킬의 Harmony 패치가 초당 몇 번 발동되는가?
-    → 이벤트성(제작/피격/사용)이면 OK, Update급이면 캐시/throttle 추가
-[ ] 코루틴에 최대 지속시간 또는 종료 플래그가 있는가?
-[ ] DoCrafting 패치라면 IsRepairAction() early return이 있는가?
-[ ] GetAllItems() 호출에 throttle이 있는가?
-[ ] Reflection이 static 캐시를 사용하는가?
-[ ] 플레이어 키 Dictionary가 있다면 퇴장 시 정리되는가?
-[ ] ZNet RPC / VFX가 루프 내에서 반복 호출되지 않는가?
-```
-
-> 인벤토리 관련 추가 체크 → `md/INVENTORY_PATCH_CHECKLIST.md`
+### 15. ⚠️ 성능 안전 규칙 — 신규/수정 스킬 완성 후 반드시 점검
+→ `rules/PERFORMANCE_RULES.md` 참조 (인벤토리 추가 체크: `md/INVENTORY_PATCH_CHECKLIST.md`)
 
 ---
 

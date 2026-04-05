@@ -1083,6 +1083,7 @@
   "counter_stance_buff": "Postura de Contra-ataque +{0}%",
   "crossbow_equip_required": "Você deve equipar uma besta!",
   "crossbow_no_ammo": "Sem virotes na besta!",
+  "crossbow_not_loaded": "A besta não está carregada!",
   "crossbow_oneshot_activated": "💥 Tiro Único Ativado!",
   "crossbow_oneshot_cooldown": "Tiro Único em recarga! Restante: {0}s",
   "crossbow_oneshot_expired": "Tiro Único expirado",

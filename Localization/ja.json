@@ -127,6 +127,7 @@
   "crossbow_required": "クロスボウが必要です",
   "crossbow_equip_required": "クロスボウを装備してください！",
   "crossbow_no_ammo": "石弓にボルトがありません！",
+  "crossbow_not_loaded": "クロスボウにボルトが装填されていません！",
   "crossbow_oneshot_success": "一撃必殺！{0}ダメージ！",
   "crossbow_oneshot_ready": "🎯 一撃必殺準備完了！",
   "crossbow_oneshot_remaining": "一撃必殺残り：{0}秒",

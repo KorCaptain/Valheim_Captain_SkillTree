@@ -230,6 +230,11 @@ namespace CaptainSkillTree.Gui
                 // 단 한 발 스킬 전용 동적 툴팁 처리
                 tooltipText = RangedSkillData.GetOneShotTooltip();
             }
+            else if (node.Id == "crossbow_ice_breath")
+            {
+                // 발칸 아이스 스킬 전용 동적 툴팁 처리
+                tooltipText = RangedSkillData.GetIceBreathTooltip();
+            }
             else
             {
                 string desc = node.Description ?? "";

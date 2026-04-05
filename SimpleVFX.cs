@@ -689,6 +689,54 @@ namespace CaptainSkillTree
                 Play(sfxName, position, duration);
         }
 
+        /// <summary>
+        /// VFX + 사운드 동시 재생 (회전 지정, 고정 위치)
+        /// Valheim 기본 VFX에 방향성이 필요할 때 사용
+        /// </summary>
+        public static GameObject PlayWithRotation(string vfxName, string sfxName, Vector3 position, Quaternion rotation, float duration = 3f)
+        {
+            GameObject result = null;
+
+            if (!string.IsNullOrEmpty(vfxName))
+            {
+                try
+                {
+                    GameObject prefab = null;
+                    bool isCustom = IsCustomVFX(vfxName);
+
+                    // 캐시에서 찾기
+                    if (!_cachedPrefabs.TryGetValue(vfxName, out prefab) || prefab == null)
+                    {
+                        if (!isCustom && ZNetScene.instance != null)
+                            prefab = ZNetScene.instance.GetPrefab(vfxName);
+                        if (prefab == null)
+                            prefab = FindPrefabInResources(vfxName);
+                        if (prefab != null)
+                            _cachedPrefabs[vfxName] = prefab;
+                    }
+
+                    if (prefab != null)
+                    {
+                        // 지정된 rotation으로 생성 (Quaternion.identity 아님)
+                        result = UnityEngine.Object.Instantiate(prefab, position, rotation);
+                        // 발헤임 기본 VFX는 Destroy 호출 안 함
+                        if (isCustom && result != null)
+                            UnityEngine.Object.Destroy(result, duration);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log?.LogWarning($"[SimpleVFX] PlayWithRotation({vfxName}) 실패: {ex.Message}");
+                }
+            }
+
+            // 사운드 재생
+            if (!string.IsNullOrEmpty(sfxName))
+                Play(sfxName, position, duration);
+
+            return result;
+        }
+
         #endregion
 
         #region 네트워크 RPC 핸들러

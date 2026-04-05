@@ -331,6 +331,25 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_RequiredPoints"] =
                 "【必要ポイント】\nワンショットを解放するための必要ポイントです。",
 
+                // === Tier 6: ヴァルカンアイス (Hキー アクティブ) ===
+                ["Tier6_IceBreath_Cooldown"] =
+                "【クールダウン（秒）】\n再使用までの待機時間です。\n推奨: 30-45秒",
+
+                ["Tier6_IceBreath_StaminaCost"] =
+                "【スタミナコスト】\n発動時に消費するスタミナです。\n推奨: 15-25",
+
+                ["Tier6_IceBreath_FirstHitPercent"] =
+                "【初撃ダメージ（%）】\n発動時に即座に与える武器ダメージ倍率です。\n推奨: 60-100%",
+
+                ["Tier6_IceBreath_DotPercent"] =
+                "【DoTダメージ（%）】\n毎秒与える武器ダメージ倍率です。\n推奨: 25-50%",
+
+                ["Tier6_IceBreath_DotCount"] =
+                "【DoT回数】\nDoTダメージが適用される総回数です。\n推奨: 3-6",
+
+                ["Tier6_IceBreath_RequiredPoints"] =
+                "【必要ポイント】\nヴァルカンアイスを解放するための必要ポイントです。",
+
                 // ========================================
                 // 弓ツリー (Bow Tree)
                 // ========================================

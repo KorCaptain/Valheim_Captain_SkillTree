@@ -19,6 +19,14 @@ namespace CaptainSkillTree.Localization
                 "  Off = Deaktiviert\n" +
                 "※ Lern- und Produktionsmeldungen erscheinen immer in der Mitte.",
 
+                ["GameDifficulty"] =
+                "【Spielschwierigkeit】\n" +
+                "Wählt das Gesamt-Balance-Preset für das Skillbaum-Mod.\n" +
+                "  Vanilla      = Milde Werte nahe am Vanilla-Valheim (Standard)\n" +
+                "  HardMode     = CLLC Sehr Schwer + Monster-HP ×2 (starke Werte)\n" +
+                "  UserSettings = Stellt die zuvor gespeicherten Benutzereinstellungen wieder her\n" +
+                "⚠️ Bei Änderung wird das gewählte Preset sofort angewendet (alle Skillwerte werden ersetzt).",
+
                 // ========================================
                 // Angriffs-Skilltree (Attack Tree)
                 // ========================================

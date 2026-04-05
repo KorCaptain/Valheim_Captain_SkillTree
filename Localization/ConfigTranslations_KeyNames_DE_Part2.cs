@@ -99,13 +99,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [Glücksmagie] Chance auf kostenlose Beschwörung (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [Glücksmagie] Benötigte Punkte",
 
-                // === Tier 5-1: Doppelzauber - Aktiv R-Taste (6) ===
+                // === Tier 5-1: Doppelzauber - Aktiv R-Taste (9) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Doppelzauber] Zusätzliche Projektile",
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Doppelzauber] Projektilschaden (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Doppelzauber] Winkelversatz (Nicht verwendet)",
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Doppelzauber] Eitr-Kosten",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Doppelzauber] Abklingzeit (Sek)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Doppelzauber] Benötigte Punkte",
+                ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [Doppelzauber] Bogenradius (m)",
+                ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [Doppelzauber] Beschwörungshöhe (m)",
+                ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [Doppelzauber] Schwebedauer (Sek)",
+                ["Tier5_FanCast_LaunchGap"] = "Tier 5-1: [Doppelzauber] Abschussintervall (Sek)",
 
                 // === Tier 5-2: Sofortflächenheilung - Aktiv H-Taste (5) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [Heilung] Abklingzeit (Sek)",
@@ -160,6 +163,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [Einschuss] Rückstoßdistanz (m)",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [Einschuss] Abklingzeit (Sek)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [Einschuss] Benötigte Punkte",
+
+                // === Tier 6: Vulkan-Eis (H-Taste Aktiv) ===
+                ["Tier6_IceBreath_Cooldown"] = "Tier 6: [Vulkan-Eis] Abklingzeit (Sek)",
+                ["Tier6_IceBreath_StaminaCost"] = "Tier 6: [Vulkan-Eis] Ausdauerkosten",
+                ["Tier6_IceBreath_FirstHitPercent"] = "Tier 6: [Vulkan-Eis] Erster-Treffer-Schaden (%)",
+                ["Tier6_IceBreath_DotPercent"] = "Tier 6: [Vulkan-Eis] DoT-Schaden (%)",
+                ["Tier6_IceBreath_DotCount"] = "Tier 6: [Vulkan-Eis] DoT-Anzahl",
+                ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [Vulkan-Eis] Benötigte Punkte",
 
                 // ============================================
                 // Messer-Skilltree - 32 Schlüssel

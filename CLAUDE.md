@@ -8,6 +8,47 @@ Available agents: Arch (Architect), Bob (Builder), Richard (Reviewer)
 - 한국어로 대화
 - 코드 800줄 초과 시 경고 후 분할
 
+## qmd 검색 우선 원칙
+
+> ⚠️ 파일 직접 Read / Glob / Grep 전에 반드시 qmd MCP로 먼저 검색할 것
+> Collection: `C:\home\ssunyme\.npm-global\bin\CaptainSkillTree`
+
+### 용도별 쿼리 타입
+
+| 상황 | 타입 | 예시 |
+|------|------|------|
+| 파일명·클래스명·메서드명 정확히 알 때 | `lex` | `"SkillBonusCalculator" CalculateTotal` |
+| 어떤 파일에 있는지 모를 때 | `vec` | `"공격속도 보너스 누적 계산하는 파일"` |
+| 규칙·가이드 문서 찾을 때 | `lex` + `vec` | `lex: VFX rules`, `vec: "패시브 스킬 VFX 금지 규칙"` |
+| 주제는 알지만 용어 불확실 | 단일 질문 (expand 자동) | `"스태거 발동 조건"` |
+
+### 검색 흐름
+
+```
+1. qmd query (MCP) → 관련 md 파일·규칙 확인
+2. 필요 시 qmd get으로 전체 문서 가져오기
+3. 그래도 부족할 때만 Read/Grep 사용
+```
+
+### MCP query 예시
+
+```json
+// 규칙 문서 검색
+{ "searches": [
+    { "type": "lex", "query": "SetSiblingIndex UI 렌더링" },
+    { "type": "vec", "query": "UI 렌더링 순서 규칙" }
+  ],
+  "collections": ["C:\\home\\ssunyme\\.npm-global\\bin\\CaptainSkillTree"]
+}
+
+// 구현 파일 검색
+{ "searches": [
+    { "type": "lex", "query": "IsRepairAction DoCrafting" }
+  ],
+  "collections": ["C:\\home\\ssunyme\\.npm-global\\bin\\CaptainSkillTree"]
+}
+```
+
 ## 모델 사용 기준
 | 모델 | 용도 |
 |------|------|
@@ -55,6 +96,18 @@ CaptainSkillTree/
     ├── VFX/               # VFXManager
     └── asset/             # EmbeddedResource 에셋
 ```
+
+## 필수 규칙 파일 (관련 작업 전 반드시 읽기)
+
+> ⚠️ 아래 파일은 관련 작업 시작 전 반드시 읽고 진행할 것
+
+| 주제 | 파일 | 트리거 조건 |
+|------|------|-----------|
+| 다국어/로컬라이제이션 | `rules/LOCALIZATION_RULES.md` | L.Get(), 언어 키, json 동기화, Config 번역 |
+| UI 렌더링 순서 | `rules/UI_RENDERING_RULES.md` | SetSiblingIndex, UI, panel, tooltip |
+| Config 초기화 순서 | `rules/CONFIG_INIT_RULES.md` | SkillTreeConfig, Initialize, BindServerSync |
+| 성능·안전 규칙 | `rules/PERFORMANCE_RULES.md` | 신규/수정 스킬 완성 후 필수, Update패치, 코루틴 |
+| 전체 CRITICAL RULES | `CLAUDE-3man.md` | 새 스킬 설계, MMO 연동, VFX, 스킬 ID |
 
 ## Skills (`.claude/skills/`)
 | Skill | Purpose |

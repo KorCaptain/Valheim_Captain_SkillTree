@@ -160,8 +160,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Crossbow Skills ===
                 ["crossbow_oneshot_cooldown"] = "단 한 발 쿨다운 중! 남은 시간: {0}초",
-                ["crossbow_ice_breath_cooldown"] = "발칸 아이스 쿨다운 중! 남은 시간: {0}초",
-                ["crossbow_ice_breath_ready"] = "❄ 발칸 아이스 발사!",
+                ["crossbow_ice_breath_cooldown"] = "빙결 폭발탄 쿨다운 중! 남은 시간: {0}초",
+                ["crossbow_ice_breath_ready"] = "❄ 빙결 폭발탄 발사!",
+                ["crossbow_not_loaded"] = "볼트가 장전되지 않았습니다!",
                 ["crossbow_required"] = "석궁을 착용해야 합니다",
                 ["crossbow_equip_required"] = "석궁을 착용해야 합니다!",
                 ["crossbow_no_ammo"] = "석궁에 볼트가 없습니다!",
@@ -246,6 +247,7 @@ namespace CaptainSkillTree.Localization
                 ["requirement_knife_equip"] = "단검 착용",
                 ["requirement_bow_equip"] = "활 착용",
                 ["requirement_crossbow_equip"] = "석궁 착용",
+                ["requirement_crossbow_bolt"] = "석궁 + 볼트 보유",
                 ["requirement_staff_equip"] = "지팡이 착용",
                 ["requirement_weapon_equip"] = "무기 착용",
                 ["requirement_shield_equip"] = "방패 착용",
@@ -315,7 +317,7 @@ namespace CaptainSkillTree.Localization
                 // === Common Tooltip Text ===
                 ["tooltip_job_limit"] = "직업은 1개만 선택가능",
                 ["tooltip_level_required"] = "레벨 {0} 이상",
-                ["tooltip_same_weapon_only"] = "같은 무기 전문가 내에서만 다중 습득 가능",
+                ["tooltip_same_weapon_only"] = "액티브 스킬 키가 같은 스킬은 1개만 배울 수 있습니다.",
                 ["tooltip_not_invincible"] = "스킬 사용 중 무적 아님",
                 ["tooltip_eikthyr_trophy"] = "에이크쉬르 트로피",
                 ["trophy_eikthyr_required"] = "에이크쉬르 트로피가 필요합니다",
@@ -506,8 +508,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Crossbow Skills ===
                 ["crossbow_oneshot_cooldown"] = "One Shot on cooldown! Remaining: {0}s",
-                ["crossbow_ice_breath_cooldown"] = "Vulkan Ice on cooldown! Remaining: {0}s",
-                ["crossbow_ice_breath_ready"] = "❄ Vulkan Ice!",
+                ["crossbow_ice_breath_cooldown"] = "Frozen Bomb on cooldown! Remaining: {0}s",
+                ["crossbow_ice_breath_ready"] = "❄ Frozen Bomb!",
+                ["crossbow_not_loaded"] = "Crossbow is not loaded!",
                 ["crossbow_required"] = "Crossbow required",
                 ["crossbow_equip_required"] = "You must equip a crossbow!",
                 ["crossbow_no_ammo"] = "No crossbow bolts loaded!",

@@ -187,36 +187,12 @@ namespace CaptainSkillTree.SkillTree
             }
 
             float elapsed    = 0f;
-            bool attackMotionTriggered = false;
             float originalPushForce = 0f;
 
             while (elapsed < dashTime)
             {
                 if (player == null || player.IsDead()) break;
                 elapsed += Time.deltaTime;
-
-                // 0.35초에 공격 모션 트리거 (1회만, 공중 스윙)
-                if (!attackMotionTriggered && elapsed >= 0.25f)
-                {
-                    attackMotionTriggered = true;
-                    furyHammer1stHitBuff[player] = true;
-                    if (weapon.m_shared != null)
-                    {
-                        originalPushForce = weapon.m_shared.m_attackForce;
-                        weapon.m_shared.m_attackForce = 0f;
-                    }
-                    // 철슬랫지 2차 공격 모션 강제 적용
-                    Attack originalAttack = null;
-                    var sledgeAttack = GetCachedSledgeIronSecondaryAttack();
-                    if (sledgeAttack != null && weapon.m_shared != null)
-                    {
-                        originalAttack = weapon.m_shared.m_attack;
-                        weapon.m_shared.m_attack = sledgeAttack;
-                    }
-                    player.StartAttack(null, false);
-                    if (originalAttack != null && weapon.m_shared != null)
-                        weapon.m_shared.m_attack = originalAttack;
-                }
 
                 float t = Mathf.Clamp01(elapsed / dashTime);
                 Vector3 pos = Vector3.Lerp(startPos, endPos, t);
@@ -243,13 +219,34 @@ namespace CaptainSkillTree.SkillTree
                 yield return null;
             }
 
-            // 착지: 목적지 확정 + 낙하 데미지 방지 + 모션 버프 정리
+            // 착지: 목적지 확정 + 낙하 데미지 방지
             if (player != null && !player.IsDead())
             {
                 player.transform.position = endPos;
                 var altField = typeof(Character).GetField("m_maxAirAltitude",
                     System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 altField?.SetValue(player, endPos.y);
+
+                // 착지 후 슬레지해머 2차 공격 모션 트리거 (착지 상태에서 StartAttack 호출)
+                if (weapon.m_shared != null)
+                {
+                    originalPushForce = weapon.m_shared.m_attackForce;
+                    weapon.m_shared.m_attackForce = 0f;
+                }
+                furyHammer1stHitBuff[player] = true;
+                var sledgeAttack = GetCachedSledgeIronSecondaryAttack();
+                Attack originalAttack = null;
+                if (sledgeAttack != null && weapon.m_shared != null)
+                {
+                    originalAttack = weapon.m_shared.m_attack;
+                    weapon.m_shared.m_attack = sledgeAttack;
+                }
+                player.StartAttack(null, false);
+                if (originalAttack != null && weapon.m_shared != null)
+                    weapon.m_shared.m_attack = originalAttack;
+
+                yield return null; // 한 프레임 대기 (애니메이터 상태 처리)
+
                 if (weapon.m_shared != null)
                     weapon.m_shared.m_attackForce = originalPushForce;
                 furyHammer1stHitBuff[player] = false;

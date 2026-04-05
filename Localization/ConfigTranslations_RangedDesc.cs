@@ -387,6 +387,37 @@ namespace CaptainSkillTree.Localization
                 "단 한 발 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 4",
 
+                // === Tier 6: 빙결 폭발탄 (H키 액티브) ===
+                ["Tier6_IceBreath_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 30-45초",
+
+                ["Tier6_IceBreath_StaminaCost"] =
+                "【스태미나 소모】\n" +
+                "발동 시 소모되는 스태미나입니다.\n" +
+                "권장값: 15-25",
+
+                ["Tier6_IceBreath_FirstHitPercent"] =
+                "【첫 타격 데미지 (%)】\n" +
+                "발동 즉시 적에게 가하는 무기 공격력 비율입니다.\n" +
+                "권장값: 60-100%",
+
+                ["Tier6_IceBreath_DotPercent"] =
+                "【도트 데미지 (%)】\n" +
+                "매 초마다 가하는 무기 공격력 비율입니다.\n" +
+                "권장값: 25-50%",
+
+                ["Tier6_IceBreath_DotCount"] =
+                "【도트 횟수】\n" +
+                "도트 데미지가 적용되는 총 횟수입니다.\n" +
+                "권장값: 3-6",
+
+                ["Tier6_IceBreath_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "빙결 폭발탄 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 4",
+
                 // === Bow Tree ===
                 // === Tier 0: 활 전문가 (Bow Expert) ===
 
@@ -956,6 +987,37 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_RequiredPoints"] =
                 "【Required Points】\n" +
                 "Skill points required to unlock the One Shot node.\n" +
+                "Recommended: 4",
+
+                // === Tier 6: Vulkan Ice (H-key Active) ===
+                ["Tier6_IceBreath_Cooldown"] =
+                "【Cooldown (seconds)】\n" +
+                "Skill reuse wait time.\n" +
+                "Recommended: 30-45s",
+
+                ["Tier6_IceBreath_StaminaCost"] =
+                "【Stamina Cost】\n" +
+                "Stamina consumed on activation.\n" +
+                "Recommended: 15-25",
+
+                ["Tier6_IceBreath_FirstHitPercent"] =
+                "【First Hit Damage (%)】\n" +
+                "Weapon damage ratio applied instantly on cast.\n" +
+                "Recommended: 60-100%",
+
+                ["Tier6_IceBreath_DotPercent"] =
+                "【DoT Damage (%)】\n" +
+                "Weapon damage ratio applied each second.\n" +
+                "Recommended: 25-50%",
+
+                ["Tier6_IceBreath_DotCount"] =
+                "【DoT Count】\n" +
+                "Total number of DoT damage ticks.\n" +
+                "Recommended: 3-6",
+
+                ["Tier6_IceBreath_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Vulkan Ice node.\n" +
                 "Recommended: 4",
 
                 // === Bow Tree ===

@@ -159,9 +159,14 @@ namespace CaptainSkillTree.SkillTree
                     // ──────────────────────────────
                     float elapsed = 0f;
 
-                    // Rigidbody 간섭 차단 (transform.position 직접 제어 중)
+                    // 물리 간섭 차단 (isKinematic 대신 constraints 사용 — Valheim Character 코드가 velocity 설정 가능하도록)
                     var rb = player.GetComponent<Rigidbody>();
-                    if (rb != null) { rb.velocity = Vector3.zero; rb.isKinematic = true; }
+                    RigidbodyConstraints savedConstraints = RigidbodyConstraints.None;
+                    if (rb != null)
+                    {
+                        savedConstraints = rb.constraints;
+                        rb.constraints = RigidbodyConstraints.FreezeAll;
+                    }
 
                     while (elapsed < WW_DashTime)
                     {
@@ -173,6 +178,7 @@ namespace CaptainSkillTree.SkillTree
                         // startPos.y → endPos.y 선형 보간 + 포물선 피크
                         pos.y = Mathf.Lerp(startPos.y, endPos.y, t) + WW_PeakHeight * 4f * t * (1f - t);
                         player.transform.position = pos;
+                        if (rb != null) rb.position = pos;  // physics position 동기화 (스냅 방지)
                         yield return null;
                     }
                     if (aborted) break;
@@ -181,12 +187,21 @@ namespace CaptainSkillTree.SkillTree
                     if (player != null && !player.IsDead())
                     {
                         player.transform.position = endPos;
+                        if (rb != null) rb.position = endPos;  // physics position 확정
                         altField?.SetValue(player, endPos.y);
                         whirlwindAttackSpeedActive[player] = false;  // 공격 모션 종료 → 속도 복원
+
+                        // ZNetView 동기화 (위치 스냅 방지)
+                        var nview = HarmonyLib.Traverse.Create(player).Field("m_nview").GetValue<ZNetView>();
+                        if (nview != null && nview.IsOwner())
+                        {
+                            var zdo = nview.GetZDO();
+                            if (zdo != null) zdo.SetPosition(endPos);
+                        }
                     }
 
-                    // Rigidbody 복원 + velocity 초기화
-                    if (rb != null) { rb.isKinematic = false; rb.velocity = Vector3.zero; }
+                    // constraints 복원
+                    if (rb != null) rb.constraints = savedConstraints;
 
                     // ──────────────────────────────
                     // Phase 3: 1.5초 대기 (자유 이동)

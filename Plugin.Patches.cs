@@ -726,4 +726,5 @@ namespace CaptainSkillTree
                 _attackSpeedWarningShown.Remove(player);
         }
     }
+
 }

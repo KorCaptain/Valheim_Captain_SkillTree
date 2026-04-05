@@ -759,6 +759,40 @@ namespace CaptainSkillTree.SkillTree
         /// 단 한 발 동적 툴팁 생성 (R키 액티브 스킬)
         /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형 → 쿨타임 → 필요조건 → 필요포인트
         /// </summary>
+        public static string GetIceBreathTooltip()
+        {
+            var tooltip = "";
+
+            // 1. 스킬명
+            tooltip += $"<color=#FFD700><size=22>{L.Get("crossbow_ice_breath_name")}</size></color>\n\n";
+
+            // 2. 설명
+            tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("crossbow_ice_breath_tooltip_desc")}</size></color>\n";
+
+            // 3. 데미지
+            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("attack_power_bonus_format", Crossbow_Config.CrossbowIceBreathFirstHitPctValue)}  +  DoT {Crossbow_Config.CrossbowIceBreathDotPctValue}%×{Crossbow_Config.CrossbowIceBreathDotCountValue}</size></color>\n";
+
+            // 4. 범위
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>10m</size></color>\n";
+
+            // 5. 소모
+            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_format", Crossbow_Config.CrossbowIceBreathStaminaCostValue)}</size></color>\n";
+
+            // 6. 스킬유형 (H키 강조)
+            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyH?.Value ?? "H")}</size></color>\n";
+
+            // 7. 쿨타임
+            tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Crossbow_Config.CrossbowIceBreathCooldownValue)}</size></color>\n";
+
+            // 8. 필요조건
+            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_crossbow_bolt")}</size></color>\n";
+
+            // 9. 필요포인트
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Crossbow_Config.CrossbowIceBreathRequiredPointsValue}</size></color>";
+
+            return tooltip.TrimEnd('\n');
+        }
+
         public static string GetOneShotTooltip()
         {
             var tooltip = "";

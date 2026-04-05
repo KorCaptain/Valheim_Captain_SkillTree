@@ -168,6 +168,7 @@ Nothing goes to production without steps 1 and 2.
 
 ### 3. 스킬 변경 시 필수 동시 수정 (7종 세트)
 Config / 효과 / 툴팁 / UI다국어 / Config다국어 / 7개 언어 json 동기화
+→ 로컬라이제이션 상세 규칙: `rules/LOCALIZATION_RULES.md`
 
 ### 4. 스킬 ID 명명 규칙
 - 전문가: `{type}_expert_{attr}` (예: `sword_expert_damage`)
@@ -194,8 +195,7 @@ if (HasSkill("speed_base")) return Config.SpeedBaseAttackSpeed;
 ```
 
 ### 7. 다국어 7개 언어 동기화
-DefaultLanguages*.cs 키 추가/수정/삭제 시 `Localization/` 내 모든 json 파일 동시 수정
-(ru.json, de.json, ja.json, zh-cn.json, pt_BR.json 등)
+→ `rules/LOCALIZATION_RULES.md` 참조
 
 ### 8. ⚠️ 성능 안전 규칙 (신규/수정 스킬 완성 후 자가 점검)
 ```

@@ -198,7 +198,7 @@ namespace CaptainSkillTree.SkillTree
             data.requirement = L.Get("requirement_knife_claw");
             data.requiredPoints = requiredPoints.ToString();
             data.skillType = L.Get("skill_type_active_key", "G");
-            data.confirmation = $"{L.Get("tooltip_same_weapon_only")}\n{L.Get("knife_desc_assassin_note2", teleportRange)}";
+            data.confirmation = L.Get("tooltip_same_weapon_only");
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }

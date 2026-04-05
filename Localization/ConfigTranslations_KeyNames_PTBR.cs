@@ -26,6 +26,7 @@ namespace CaptainSkillTree.Localization
                 ["HUD_PosX"] = "Posição X do HUD",
                 ["HUD_PosY"] = "Posição Y do HUD",
                 ["PassiveMessageDisplay"] = "Exibição de Mensagem Passiva",
+                ["GameDifficulty"] = "Dificuldade do Jogo",
 
                 // ============================================
                 // Árvore de Ataque - 33 Chaves

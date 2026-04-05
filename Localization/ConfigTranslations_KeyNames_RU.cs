@@ -12,6 +12,7 @@ namespace CaptainSkillTree.Localization
                 // Skill_Tree_Base
                 // ============================================
                 ["PassiveMessageDisplay"] = "Отображение пассивных сообщений",
+                ["GameDifficulty"] = "Сложность игры",
 
                 // ============================================
                 // Attack Tree - 33 ключа
@@ -352,10 +353,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_RequiredPoints"] = "Ур.4: [Удача маны] Необходимые очки",
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Ур.5-1: [Двойное колдовство] Доп. снаряды",
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Ур.5-1: [Двойное колдовство] Урон снарядов (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Ур.5-1: [Двойное колдовство] Угол разброса (не исп.)",
                 ["Tier5_DoubleCast_EitrCost"] = "Ур.5-1: [Двойное колдовство] Расход Эйтра",
                 ["Tier5_DoubleCast_Cooldown"] = "Ур.5-1: [Двойное колдовство] Перезарядка (сек)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Ур.5-1: [Двойное колдовство] Необходимые очки",
+                ["Tier5_FanCast_SummonRadius"] = "Ур.5-1: [Двойное колдовство] Радиус дуги (м)",
+                ["Tier5_FanCast_SummonHeight"] = "Ур.5-1: [Двойное колдовство] Высота призыва (м)",
+                ["Tier5_FanCast_HoverTime"] = "Ур.5-1: [Двойное колдовство] Время зависания (сек)",
+                ["Tier5_FanCast_LaunchGap"] = "Ур.5-1: [Двойное колдовство] Интервал запуска (сек)",
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Ур.5-2: [Исцеление] Перезарядка (сек)",
                 ["Tier5_InstantAreaHeal_EitrCost"] = "Ур.5-2: [Исцеление] Расход Эйтра",
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Ур.5-2: [Исцеление] Количество исцеления (% макс. ХП)",
@@ -396,6 +400,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_KnockbackDistance"] = "Ур.5: [Один выстрел] Дальность откидывания (м)",
                 ["Tier5_OneShot_Cooldown"] = "Ур.5: [Один выстрел] Перезарядка (сек)",
                 ["Tier5_OneShot_RequiredPoints"] = "Ур.5: [Один выстрел] Необходимые очки",
+
+                // === Tier 6: Вулканический Лёд (клавиша H) ===
+                ["Tier6_IceBreath_Cooldown"] = "Ур.6: [Вулк. Лёд] Перезарядка (сек)",
+                ["Tier6_IceBreath_StaminaCost"] = "Ур.6: [Вулк. Лёд] Расход выносливости",
+                ["Tier6_IceBreath_FirstHitPercent"] = "Ур.6: [Вулк. Лёд] Урон первого удара (%)",
+                ["Tier6_IceBreath_DotPercent"] = "Ур.6: [Вулк. Лёд] Урон DoT (%)",
+                ["Tier6_IceBreath_DotCount"] = "Ур.6: [Вулк. Лёд] Количество DoT",
+                ["Tier6_IceBreath_RequiredPoints"] = "Ур.6: [Вулк. Лёд] Необходимые очки",
 
                 // ============================================
                 // Knife Tree - 32 ключа

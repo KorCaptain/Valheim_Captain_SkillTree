@@ -19,6 +19,14 @@ namespace CaptainSkillTree.Localization
                 "  Off = 표시 OFF\n" +
                 "※ 스킬 배울 때, 생산 전문가 메시지는 항상 중앙에 표시됩니다.",
 
+                ["GameDifficulty"] =
+                "【게임 난이도】\n" +
+                "스킬트리 모드의 전체 밸런스 프리셋을 선택합니다.\n" +
+                "  Vanilla      = 바닐라에 가까운 약한 수치 (기본값)\n" +
+                "  HardMode     = CLLC Very Hard + 몬스터 HP x2 강화 수치\n" +
+                "  UserSettings = 이전에 저장된 사용자 설정 복원\n" +
+                "⚠️ 변경 시 해당 프리셋이 즉시 적용됩니다 (모든 스킬 수치 교체).",
+
                 // ========================================
                 // Attack Tree (공격 트리) — 4국면 연쇄 시스템
                 // ========================================
@@ -777,6 +785,14 @@ namespace CaptainSkillTree.Localization
                 "  TopLeft = Top-Left small text\n" +
                 "  Off = Off\n" +
                 "※ Skill learn and production expert messages always show at center.",
+
+                ["GameDifficulty"] =
+                "【Game Difficulty】\n" +
+                "Selects the overall balance preset for the skill tree mod.\n" +
+                "  Vanilla      = Mild values close to vanilla Valheim (default)\n" +
+                "  HardMode     = CLLC Very Hard + Monster HP x2 (strong values)\n" +
+                "  UserSettings = Restores your previously saved settings\n" +
+                "⚠️ Changing this setting immediately applies the selected preset (replaces all skill values).",
 
                 // ========================================
                 // Attack Tree — 4-Phase Chain System

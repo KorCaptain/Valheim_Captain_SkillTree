@@ -99,13 +99,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [Mana Sortuda] Chance de Conjuração Gratuita (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [Mana Sortuda] Pontos Necessários",
 
-                // === Tier 5-1: Conjuração Dupla - Ativo Tecla R (6) ===
+                // === Tier 5-1: Conjuração Dupla - Ativo Tecla R (9) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [Conjuração Dupla] Qtd. Extra de Projéteis",
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [Conjuração Dupla] Dano do Projétil (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [Conjuração Dupla] Deslocamento de Ângulo (Não Usado)",
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Conjuração Dupla] Custo de Eitr",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Conjuração Dupla] Recarga (seg)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Conjuração Dupla] Pontos Necessários",
+                ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [Conjuração Dupla] Raio do Arco (m)",
+                ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [Conjuração Dupla] Altura de Invocação (m)",
+                ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [Conjuração Dupla] Tempo de Flutuação (seg)",
+                ["Tier5_FanCast_LaunchGap"] = "Tier 5-1: [Conjuração Dupla] Intervalo de Lançamento (seg)",
 
                 // === Tier 5-2: Cura em Área Instantânea - Ativo Tecla H (5) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [Cura] Recarga (seg)",
@@ -160,6 +163,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [Um Tiro] Distância de Knockback (m)",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [Um Tiro] Recarga (seg)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [Um Tiro] Pontos Necessários",
+
+                // === Tier 6: Gelo Vulcânico (Tecla H Ativo) ===
+                ["Tier6_IceBreath_Cooldown"] = "Tier 6: [Gelo Vulcânico] Recarga (seg)",
+                ["Tier6_IceBreath_StaminaCost"] = "Tier 6: [Gelo Vulcânico] Custo de Stamina",
+                ["Tier6_IceBreath_FirstHitPercent"] = "Tier 6: [Gelo Vulcânico] Dano do 1º Golpe (%)",
+                ["Tier6_IceBreath_DotPercent"] = "Tier 6: [Gelo Vulcânico] Dano DoT (%)",
+                ["Tier6_IceBreath_DotCount"] = "Tier 6: [Gelo Vulcânico] Contagem DoT",
+                ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [Gelo Vulcânico] Pontos Necessários",
 
                 // ============================================
                 // Árvore de Faca - 32 Chaves

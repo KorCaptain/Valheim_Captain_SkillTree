@@ -33,6 +33,9 @@ namespace CaptainSkillTree
         /// <summary>true 이면 FejdStartup 패치에서 선택 창을 표시</summary>
         public static bool NeedsSelection { get; private set; }
 
+        /// <summary>프리셋 적용 중일 때 true — GameDifficulty SettingChanged 재진입 방지용</summary>
+        public static bool IsApplyingPreset { get; private set; }
+
         // ──────────────────────────── 초기화 ────────────────────────────
         /// <summary>
         /// FejdStartup.Awake Postfix에서 1회 호출.
@@ -86,6 +89,7 @@ namespace CaptainSkillTree
         // ──────────────────────────── 내부 적용 로직 ────────────────────────────
         private static void ApplyPreset(string presetFileName)
         {
+            IsApplyingPreset = true;
             string presetPath = Path.Combine(GetPresetDirectory(), presetFileName);
 
             if (File.Exists(presetPath))
@@ -119,9 +123,17 @@ namespace CaptainSkillTree
 
                     int applied = ApplyPresetValuesToConfig(presetPath);  // 직접 설정 + 미포함 항목→기본값
 
+                    // GameDifficulty config 동기화 (프리셋 파일에 없는 신규 키이므로 직접 설정)
+                    string diffMode = (presetFileName == PRESET_NORMAL) ? "Vanilla"
+                                    : (presetFileName == PRESET_VERYHARD) ? "HardMode"
+                                    : "UserSettings";
+                    var diffEntry = SkillTree.SkillTreeConfig.GameDifficulty;
+                    if (diffEntry != null)
+                        diffEntry.Value = diffMode;
+
                     cfg.Save();                           // 1회 최종 저장
                     cfg.SaveOnConfigSet = prev;
-                    Plugin.Log?.LogInfo($"[Difficulty] ✅ 프리셋 적용 완료: {presetFileName} ({applied}개)");
+                    Plugin.Log?.LogInfo($"[Difficulty] ✅ 프리셋 적용 완료: {presetFileName} ({applied}개), 난이도={diffMode}");
                 }
             }
             else
@@ -133,6 +145,7 @@ namespace CaptainSkillTree
 
             SaveDifficultyVersion();
             NeedsSelection = false;
+            IsApplyingPreset = false;
         }
 
         // ──────────────────────────── 직접 값 적용 ────────────────────────────

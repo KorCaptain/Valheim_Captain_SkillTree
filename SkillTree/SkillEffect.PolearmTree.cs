@@ -351,7 +351,7 @@ namespace CaptainSkillTree.SkillTree
             // === 최종 위치 고정 (되돌아오기 방지) ===
             if (rigidbody != null)
             {
-                rigidbody.velocity = Vector3.zero;
+                if (!rigidbody.isKinematic) rigidbody.velocity = Vector3.zero;
                 rigidbody.MovePosition(finalPos);
             }
             player.transform.position = finalPos;

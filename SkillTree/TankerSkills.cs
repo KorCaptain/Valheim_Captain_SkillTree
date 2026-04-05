@@ -629,33 +629,39 @@ namespace CaptainSkillTree.SkillTree
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
         /// <summary>
-        /// 방패 착용 여부 확인 - m_leftItem 직접 확인 (인벤토리 m_equipped 오동작 대응)
+        /// 방패 착용 여부 확인 - 다중 방법으로 감지 (모드 방패 대응)
         /// </summary>
         private static bool IsWearingShield(Player player)
         {
             try
             {
-                // 1. Humanoid.m_leftItem 직접 확인 (가장 정확)
+                // 1. Humanoid.m_leftItem 직접 확인 (Reflection)
                 var leftItemField = GetLeftItemField();
                 if (leftItemField != null)
                 {
                     var leftItem = leftItemField.GetValue(player) as ItemDrop.ItemData;
-                    if (leftItem != null && leftItem.m_shared != null &&
-                        leftItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+                    if (leftItem?.m_shared != null)
                     {
-                        Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 왼손 방패: {leftItem.m_shared.m_name}");
-                        return true;
+                        // Shield 타입 또는 블록 파워가 있는 아이템 (모드 방패 대응)
+                        if (leftItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield ||
+                            leftItem.m_shared.m_blockPower > 0)
+                        {
+                            Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 왼손 방패: {leftItem.m_shared.m_name}");
+                            return true;
+                        }
                     }
                 }
 
-                // 2. 인벤토리 fallback (m_equipped 플래그 기반)
+                // 2. 인벤토리 장착 아이템 체크 (m_equipped 플래그 기반)
                 var inventory = player.GetInventory();
                 if (inventory != null)
                 {
                     foreach (var item in inventory.GetAllItems())
                     {
-                        if (item == null || item.m_shared == null) continue;
-                        if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield && item.m_equipped)
+                        if (item == null || !item.m_equipped || item.m_shared == null) continue;
+                        // Shield 타입 또는 블록 파워가 있는 착용 아이템 (모드 방패 대응)
+                        if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield ||
+                            item.m_shared.m_blockPower > 0)
                         {
                             Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 인벤토리 방패: {item.m_shared.m_name}");
                             return true;

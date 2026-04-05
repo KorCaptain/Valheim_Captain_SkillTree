@@ -40,7 +40,6 @@ namespace CaptainSkillTree.SkillTree
         // === Step 6-1: 이중시전 (R키 액티브) 설정 ===
         private static ConfigEntry<int> StaffDoubleCastProjectileCount;
         private static ConfigEntry<float> StaffDoubleCastDamagePercent;
-        private static ConfigEntry<float> StaffDoubleCastAngleOffset;
         private static ConfigEntry<float> StaffDoubleCastEitrCost;
         private static ConfigEntry<float> StaffDoubleCastCooldown;
         private static ConfigEntry<int> StaffDoubleCastRequiredPoints;
@@ -151,10 +150,6 @@ namespace CaptainSkillTree.SkillTree
                     "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 60f,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_ProjectileDamagePercent"));
 
-                StaffDoubleCastAngleOffset = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_DoubleCast_AngleOffset", 5f,
-                    SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_AngleOffset"));
-
                 StaffDoubleCastEitrCost = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_DoubleCast_EitrCost", 20f,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_EitrCost"));
@@ -226,7 +221,6 @@ namespace CaptainSkillTree.SkillTree
                 // Step 6-1: 이중시전 이벤트
                 StaffDoubleCastProjectileCount.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffDoubleCastDamagePercent.SettingChanged += (sender, args) => OnStaffConfigChanged();
-                StaffDoubleCastAngleOffset.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffDoubleCastEitrCost.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffDoubleCastCooldown.SettingChanged += (sender, args) => OnStaffConfigChanged();
 
@@ -302,7 +296,6 @@ namespace CaptainSkillTree.SkillTree
         // Step 6-1: 이중시전
         public static int StaffDoubleCastProjectileCountValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_count", StaffDoubleCastProjectileCount?.Value ?? 5);
         public static float StaffDoubleCastDamagePercentValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_damage", StaffDoubleCastDamagePercent?.Value ?? 30f);
-        public static float StaffDoubleCastAngleOffsetValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_angle", StaffDoubleCastAngleOffset?.Value ?? 5f);
         public static float StaffDoubleCastEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_eitr", StaffDoubleCastEitrCost?.Value ?? 20f);
         public static float StaffDoubleCastCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_cd", StaffDoubleCastCooldown?.Value ?? 30f);
         public static int StaffDoubleCastRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_rp", StaffDoubleCastRequiredPoints?.Value ?? 3);

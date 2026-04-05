@@ -121,13 +121,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [ラッキーマナ] 無消費詠唱発動確率 (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [ラッキーマナ] 必要ポイント",
 
-                // === Tier 5-1: 二重詠唱 (6) ===
+                // === Tier 5-1: 二重詠唱 (9) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [二重詠唱] 追加射体数",
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [二重詠唱] 射体ダメージ率 (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [二重詠唱] 角度オフセット (未使用)",
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [二重詠唱] Eitrコスト",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [二重詠唱] クールダウン (秒)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [二重詠唱] 必要ポイント",
+                ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [二重詠唱] 弧の半径 (m)",
+                ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [二重詠唱] 召喚高さ (m)",
+                ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [二重詠唱] 浮遊時間 (秒)",
+                ["Tier5_FanCast_LaunchGap"] = "Tier 5-1: [二重詠唱] 発射間隔 (秒)",
 
                 // === Tier 5-2: 回復 (5) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [回復] クールダウン (秒)",
@@ -182,6 +185,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [一撃] ノックバック距離 (m)",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [一撃] クールダウン (秒)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [一撃] 必要ポイント",
+
+                // === Tier 6: ヴァルカンアイス (Hキー アクティブ) ===
+                ["Tier6_IceBreath_Cooldown"] = "Tier 6: [ヴァルカンアイス] クールダウン (秒)",
+                ["Tier6_IceBreath_StaminaCost"] = "Tier 6: [ヴァルカンアイス] スタミナコスト",
+                ["Tier6_IceBreath_FirstHitPercent"] = "Tier 6: [ヴァルカンアイス] 初撃ダメージ (%)",
+                ["Tier6_IceBreath_DotPercent"] = "Tier 6: [ヴァルカンアイス] DoTダメージ (%)",
+                ["Tier6_IceBreath_DotCount"] = "Tier 6: [ヴァルカンアイス] DoT回数",
+                ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [ヴァルカンアイス] 必要ポイント",
 
                 // ============================================
                 // ナイフツリー - 32キー

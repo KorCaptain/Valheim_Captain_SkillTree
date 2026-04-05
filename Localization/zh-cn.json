@@ -127,6 +127,7 @@
   "crossbow_required": "需要弩",
   "crossbow_equip_required": "必须装备弩！",
   "crossbow_no_ammo": "弩没有装填弩箭！",
+  "crossbow_not_loaded": "弩尚未装填！",
   "crossbow_oneshot_success": "一击必杀！{0}伤害！",
   "crossbow_oneshot_ready": "🎯 一击必杀准备就绪！",
   "crossbow_oneshot_remaining": "一击必杀剩余：{0}秒",

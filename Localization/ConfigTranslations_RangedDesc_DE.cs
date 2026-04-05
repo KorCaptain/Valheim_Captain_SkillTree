@@ -331,6 +331,25 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten von 'Ein Schuss'.",
 
+                // === Tier 6: Vulkan-Eis (H-Taste Aktiv) ===
+                ["Tier6_IceBreath_Cooldown"] =
+                "【Abklingzeit (Sek.)】\nWartezeit bis zur erneuten Verwendung.\nEmpfehlung: 30-45 Sek.",
+
+                ["Tier6_IceBreath_StaminaCost"] =
+                "【Ausdauerkosten】\nAusdauer, die bei der Aktivierung verbraucht wird.\nEmpfehlung: 15-25",
+
+                ["Tier6_IceBreath_FirstHitPercent"] =
+                "【Erster-Treffer-Schaden (%)】\nWaffenschadensrate beim Aktivieren.\nEmpfehlung: 60-100%",
+
+                ["Tier6_IceBreath_DotPercent"] =
+                "【DoT-Schaden (%)】\nWaffenschadensrate pro Sekunde.\nEmpfehlung: 25-50%",
+
+                ["Tier6_IceBreath_DotCount"] =
+                "【DoT-Anzahl】\nGesamtanzahl der DoT-Schadenspulse.\nEmpfehlung: 3-6",
+
+                ["Tier6_IceBreath_RequiredPoints"] =
+                "【Benötigte Punkte】\nPunkte zum Freischalten von 'Vulkan-Eis'.",
+
                 // ========================================
                 // Bogen-Skilltree (Bow Tree)
                 // ========================================

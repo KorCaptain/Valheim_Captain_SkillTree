@@ -101,13 +101,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [幸运法力] 免费施法触发概率 (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [幸运法力] 所需点数",
 
-                // === Tier 5-1: 双重施法 - R键主动 (6) ===
+                // === Tier 5-1: 双重施法 - R键主动 (9) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [双重施法] 额外弹射物数量",
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [双重施法] 弹射物伤害百分比 (%)",
-                ["Tier5_DoubleCast_AngleOffset"] = "Tier 5-1: [双重施法] 角度偏移 (未使用)",
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [双重施法] 以特尔消耗",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [双重施法] 冷却时间 (秒)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [双重施法] 所需点数",
+                ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [双重施法] 弧形半径 (m)",
+                ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [双重施法] 召唤高度 (m)",
+                ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [双重施法] 悬浮时间 (秒)",
+                ["Tier5_FanCast_LaunchGap"] = "Tier 5-1: [双重施法] 发射间隔 (秒)",
 
                 // === Tier 5-2: 即时范围治疗 - H键主动 (5) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [治疗] 冷却时间 (秒)",
@@ -162,6 +165,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [一击必杀] 击退距离 (米)",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [一击必杀] 冷却时间 (秒)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [一击必杀] 所需点数",
+
+                // === Tier 6: 火山之冰 (H键 主动技能) ===
+                ["Tier6_IceBreath_Cooldown"] = "Tier 6: [火山之冰] 冷却时间 (秒)",
+                ["Tier6_IceBreath_StaminaCost"] = "Tier 6: [火山之冰] 体力消耗",
+                ["Tier6_IceBreath_FirstHitPercent"] = "Tier 6: [火山之冰] 首次打击伤害 (%)",
+                ["Tier6_IceBreath_DotPercent"] = "Tier 6: [火山之冰] 持续伤害 (%)",
+                ["Tier6_IceBreath_DotCount"] = "Tier 6: [火山之冰] 持续伤害次数",
+                ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [火山之冰] 所需点数",
 
                 // ============================================
                 // 匕首树 - 32个键

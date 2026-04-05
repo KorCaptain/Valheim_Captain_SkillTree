@@ -26,6 +26,7 @@ namespace CaptainSkillTree.Localization
                 ["HUD_PosX"] = "HUD X-Position",
                 ["HUD_PosY"] = "HUD Y-Position",
                 ["PassiveMessageDisplay"] = "Passive Meldungsanzeige",
+                ["GameDifficulty"] = "Spielschwierigkeit",
 
                 // ============================================
                 // Angriffs-Skilltree - 33 Schlüssel
