@@ -34,6 +34,10 @@
 ### ⚡ Fire Rain (Mage / Y)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Mage_Firerain.gif)
 
+### ⚡ Double battle (Staff or Wand / Z)
+![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/new_Fireball.gif)
+
+
 ### 🌧️ Arrow Rain (Bow / H)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Arrow_Rain2.gif)
 

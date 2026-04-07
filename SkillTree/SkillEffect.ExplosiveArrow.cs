@@ -590,4 +590,36 @@ namespace CaptainSkillTree.SkillTree
             }
         }
     }
+
+    /// <summary>
+    /// 폭발 화살 환경 히트 패치 - 지면/벽에 맞을 때도 VFX 제거
+    /// </summary>
+    [HarmonyPatch(typeof(Projectile), "OnHit",
+        new Type[] { typeof(Collider), typeof(Vector3), typeof(bool), typeof(Vector3) })]
+    [HarmonyPriority(Priority.Low)]
+    public class ExplosiveArrow_ProjectileHit_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(Projectile __instance,
+            Collider collider, Vector3 hitPoint, bool water, Vector3 normal)
+        {
+            try
+            {
+                if (water) return;
+                // 화살비 낙하 화살은 스킵 (ArrowRain 패치에서 처리)
+                if (__instance.GetComponent<ArrowRainProjectileTag>() != null) return;
+                if (__instance.m_skill != Skills.SkillType.Bows) return;
+
+                var player = Player.m_localPlayer;
+                if (player == null) return;
+
+                // ConsumeExplosiveArrow 내부에서 ready=false면 무시 → 중복 호출 안전
+                SkillEffect.ConsumeExplosiveArrow(player);
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[폭발화살] OnHit 패치 오류: {ex.Message}");
+            }
+        }
+    }
 }

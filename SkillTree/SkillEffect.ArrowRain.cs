@@ -395,12 +395,11 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                if (water) return;
-
-                // Case A: 화살비 낙하 화살 착지
+                // Case A: 화살비 낙하 화살 착지 (물이면 스킵)
                 var tag = __instance.GetComponent<ArrowRainProjectileTag>();
                 if (tag != null)
                 {
+                    if (water) return;
                     if (tag.Processed) return;
                     tag.Processed = true;
 
@@ -411,7 +410,7 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // Case B: 일반 활 발사체 적중 → 화살비 트리거
+                // Case B: 일반 활 발사체 적중 → 화살비 트리거 (water 여부 무관)
                 if (__instance.m_skill != Skills.SkillType.Bows) return;
 
                 var player = Player.m_localPlayer;
