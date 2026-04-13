@@ -1241,10 +1241,40 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 직업 스킬인지 확인
         /// </summary>
-        private bool IsJobSkill(string skillId)
+        public bool IsJobSkill(string skillId)
         {
             return skillId == "Paladin" || skillId == "Tanker" || skillId == "Berserker" ||
                    skillId == "Rogue" || skillId == "Mage" || skillId == "Archer" || skillId == "Producer";
+        }
+
+        /// <summary>
+        /// 지정 스킬을 Prerequisites로 가진 스킬 목록 반환 (역방향 의존 조회)
+        /// </summary>
+        public List<string> GetDependentSkills(string skillId)
+        {
+            var result = new List<string>();
+            foreach (var node in SkillNodes.Values)
+            {
+                if (node.Prerequisites != null && node.Prerequisites.Contains(skillId))
+                    result.Add(node.Id);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 지정 스킬 ID 목록만 레벨 0으로 초기화 (선택적 초기화용)
+        /// </summary>
+        public void ResetSpecificSkillLevels(IEnumerable<string> skillIds)
+        {
+            if (Player.m_localPlayer == null) return;
+            foreach (var skillId in skillIds)
+            {
+                string key = $"CaptainSkillTree_{skillId}";
+                Player.m_localPlayer.m_customData[key] = "0";
+            }
+            pendingInvestments.Clear();
+            SkillEffect.UpdateDefenseDodgeRate(Player.m_localPlayer);
+            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
         }
         
         /// <summary>

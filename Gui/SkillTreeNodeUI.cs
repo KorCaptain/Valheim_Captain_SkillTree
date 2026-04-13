@@ -523,5 +523,81 @@ namespace CaptainSkillTree.Gui
                 }
             }
         }
+
+        // === 선택적 초기화 모드 오버레이 ===
+
+        /// <summary>
+        /// 선택적 초기화 모드용: 선택된 노드에 빨간 반투명 오버레이 표시/제거
+        /// </summary>
+        public void SetResetPreviewOverlay(string nodeId, bool isSelected)
+        {
+            if (!nodeObjects.TryGetValue(nodeId, out var nodeObj) || nodeObj == null) return;
+
+            // 기존 선택 오버레이 제거
+            var existingOverlay = nodeObj.transform.Find("ResetOverlay");
+            if (existingOverlay != null)
+                UnityEngine.Object.Destroy(existingOverlay.gameObject);
+
+            if (!isSelected) return;
+
+            var overlay = new GameObject("ResetOverlay", typeof(RectTransform), typeof(Image));
+            overlay.transform.SetParent(nodeObj.transform, false);
+
+            var img = overlay.GetComponent<Image>();
+            img.color = new Color(1f, 0.15f, 0.15f, 0.55f);
+            img.raycastTarget = false;
+
+            var rect = overlay.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            overlay.transform.SetAsLastSibling();
+        }
+
+        /// <summary>
+        /// 선택적 초기화 모드용: 선택 불가 노드에 회색 딤 오버레이 표시/제거
+        /// </summary>
+        public void SetResetUnavailableDim(string nodeId, bool isDimmed)
+        {
+            if (!nodeObjects.TryGetValue(nodeId, out var nodeObj) || nodeObj == null) return;
+
+            var existingDim = nodeObj.transform.Find("ResetDim");
+            if (existingDim != null)
+                UnityEngine.Object.Destroy(existingDim.gameObject);
+
+            if (!isDimmed) return;
+
+            var dim = new GameObject("ResetDim", typeof(RectTransform), typeof(Image));
+            dim.transform.SetParent(nodeObj.transform, false);
+
+            var img = dim.GetComponent<Image>();
+            img.color = new Color(0.3f, 0.3f, 0.3f, 0.4f);
+            img.raycastTarget = false;
+
+            var rect = dim.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            dim.transform.SetAsLastSibling();
+        }
+
+        /// <summary>
+        /// 선택적 초기화 모드 종료 시: 모든 오버레이 제거
+        /// </summary>
+        public void ClearAllResetPreviewOverlays()
+        {
+            foreach (var nodeObj in nodeObjects.Values)
+            {
+                if (nodeObj == null) continue;
+                var overlay = nodeObj.transform.Find("ResetOverlay");
+                if (overlay != null) UnityEngine.Object.Destroy(overlay.gameObject);
+                var dim = nodeObj.transform.Find("ResetDim");
+                if (dim != null) UnityEngine.Object.Destroy(dim.gameObject);
+            }
+        }
     }
 } 

@@ -52,6 +52,26 @@ namespace CaptainSkillTree.Gui
         // GUIManager.BlockInput 상태 추적 (Jotunn)
         private bool _lastPanelActiveState = false;
 
+        // === 선택적 초기화 시스템 ===
+        private bool _isSelectiveResetMode = false;
+        private HashSet<string> _selectiveResetTargets = new HashSet<string>();
+        private GameObject? _selectiveResetBar = null;
+        private UnityEngine.UI.Text? _resetCostText = null;
+
+        private static readonly HashSet<string> _activeSkillIds = new HashSet<string>
+        {
+            // R키 액티브
+            "crossbow_Step6_expert", "bow_Step6_critboost", "staff_Step6_dual_cast",
+            // G키 액티브
+            "sword_step5_finalcut", "knife_step9_assassin_heart", "spear_Step5_penetrate",
+            "polearm_step5_king", "mace_Step7_guardian_heart",
+            // H키 액티브
+            "sword_step5_defswitch", "spear_Step5_combo", "mace_Step7_fury_hammer",
+            "staff_Step6_heal", "bow_Step6_arrow_rain", "crossbow_ice_breath",
+            // Y키 액티브
+            "speed_step5_dash"
+        };
+
         /// <summary>
         /// MonoBehaviour OnEnable - 언어 변경 이벤트 구독
         /// </summary>
@@ -334,6 +354,13 @@ namespace CaptainSkillTree.Gui
             // 노드 및 연결선 생성
             nodeUI.GenerateSkillTreeNodesAndLines(panel,
                 (node, rect) => {
+                    // 선택적 초기화 모드에서는 초기화 선택 처리
+                    if (_isSelectiveResetMode)
+                    {
+                        HandleSelectiveResetNodeClick(node);
+                        return;
+                    }
+
                     // 노드 클릭 처리
 
                     // CanInvestWithMessage 사용으로 통일하여 정확한 조건 체크와 메시지 제공
@@ -829,6 +856,13 @@ namespace CaptainSkillTree.Gui
             {
                 if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
                 {
+                    // 선택적 초기화 모드 중이면 모드만 종료
+                    if (_isSelectiveResetMode)
+                    {
+                        ExitSelectiveResetMode();
+                        return;
+                    }
+
                     // 툴팁이 열려있으면 툴팁만 닫기
                     bool tooltipActive = (dynamicTooltipObj != null && dynamicTooltipObj.activeInHierarchy) ||
                                          (tooltipUI != null && tooltipUI.IsTooltipVisible());
@@ -890,11 +924,11 @@ namespace CaptainSkillTree.Gui
             }
         }
 
-        // 임시: 포인트 초기화 함수
+        // 선택적 스킬 초기화 진입
         private void ResetSkillPoints()
         {
-            // 확인 다이얼로그 표시
-            ShowResetConfirmDialog("ui_reset_confirm_title", "ui_reset_confirm_message", ExecuteResetSkillPoints);
+            // 안내 다이얼로그 → 확인 시 선택 모드 진입
+            ShowResetConfirmDialog("ui_selective_reset_prompt_title", "ui_selective_reset_prompt_message", EnterSelectiveResetMode);
         }
         
         /// <summary>
@@ -1086,6 +1120,227 @@ namespace CaptainSkillTree.Gui
                 // 스킬 초기화 확인 다이얼로그 숨김
             }
         }
+
+        // =====================================================================
+        // 선택적 스킬 초기화 시스템
+        // =====================================================================
+
+        /// <summary>스킬 초기화 비용 반환 (직업:1000, 액티브:500, 패시브:100)</summary>
+        private int GetResetCost(CaptainSkillTree.SkillTree.SkillNode node)
+        {
+            var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
+            if (manager.IsJobSkill(node.Id)) return 1000;
+            if (_activeSkillIds.Contains(node.Id)) return 500;
+            return 100;
+        }
+
+        /// <summary>역순 티어 유효성 검사: 의존 스킬이 미선택 학습 상태면 선택 불가</summary>
+        private bool IsSelectableForReset(CaptainSkillTree.SkillTree.SkillNode node)
+        {
+            var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
+            if (manager.IsJobSkill(node.Id)) return true; // 직업 스킬: 순서 제약 없음
+            if (manager.GetSkillLevel(node.Id) == 0) return false; // 이미 미학습
+
+            var dependents = manager.GetDependentSkills(node.Id);
+            foreach (var depId in dependents)
+            {
+                if (manager.GetSkillLevel(depId) > 0 && !_selectiveResetTargets.Contains(depId))
+                    return false; // 의존 스킬이 학습됐고 아직 선택 안 됨
+            }
+            return true;
+        }
+
+        /// <summary>선택 모드 진입: 상단 바 표시, ConfirmationContainer 숨김</summary>
+        private void EnterSelectiveResetMode()
+        {
+            _isSelectiveResetMode = true;
+            _selectiveResetTargets.Clear();
+
+            var container = panel?.transform.Find("ConfirmationContainer");
+            if (container != null) container.gameObject.SetActive(false);
+
+            CreateSelectiveResetBar();
+            RefreshSelectiveResetPreview();
+        }
+
+        /// <summary>선택 모드 종료: 오버레이 제거, ConfirmationContainer 복원</summary>
+        private void ExitSelectiveResetMode()
+        {
+            _isSelectiveResetMode = false;
+            _selectiveResetTargets.Clear();
+
+            nodeUI?.ClearAllResetPreviewOverlays();
+            DestroySelectiveResetBar();
+
+            var container = panel?.transform.Find("ConfirmationContainer");
+            if (container != null) container.gameObject.SetActive(true);
+
+            PlayCancelSound();
+        }
+
+        /// <summary>상단 초기화 바 UI 생성</summary>
+        private void CreateSelectiveResetBar()
+        {
+            if (_selectiveResetBar != null) DestroyImmediate(_selectiveResetBar);
+
+            _selectiveResetBar = new GameObject("SelectiveResetBar", typeof(RectTransform), typeof(Image));
+            _selectiveResetBar.transform.SetParent(panel.transform, false);
+
+            var barImg = _selectiveResetBar.GetComponent<Image>();
+            barImg.color = new Color(0.05f, 0.05f, 0.15f, 0.92f);
+
+            var barRect = _selectiveResetBar.GetComponent<RectTransform>();
+            barRect.anchorMin = new Vector2(0.5f, 1f);
+            barRect.anchorMax = new Vector2(0.5f, 1f);
+            barRect.pivot = new Vector2(0.5f, 1f);
+            barRect.sizeDelta = new Vector2(500, 44);
+            barRect.anchoredPosition = new Vector2(0, -82f);
+
+            // 비용 텍스트
+            var costObj = new GameObject("CostText", typeof(RectTransform));
+            costObj.transform.SetParent(_selectiveResetBar.transform, false);
+            _resetCostText = costObj.AddComponent<UnityEngine.UI.Text>();
+            _resetCostText.text = string.Format(L10n.Get("ui_selective_reset_cost_display"), 0);
+            _resetCostText.fontSize = 14;
+            _resetCostText.color = new Color(1f, 0.85f, 0f, 1f);
+            _resetCostText.alignment = TextAnchor.MiddleLeft;
+            _resetCostText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            var costRect = costObj.GetComponent<RectTransform>();
+            costRect.anchorMin = new Vector2(0f, 0f);
+            costRect.anchorMax = new Vector2(0f, 1f);
+            costRect.pivot = new Vector2(0f, 0.5f);
+            costRect.sizeDelta = new Vector2(200, 0);
+            costRect.anchoredPosition = new Vector2(8f, 0f);
+
+            // [초기화 확인] 버튼
+            CreateLuxuryButton("SelectiveConfirmBtn",
+                L10n.Get("ui_selective_reset_confirm"),
+                new Vector2(130f, 0f),
+                new Color(0.60f, 0.10f, 0.10f, 1f),
+                _selectiveResetBar.transform,
+                () => { PlayConfirmSound(); ConfirmSelectiveReset(); });
+
+            // [선택 취소] 버튼
+            CreateLuxuryButton("SelectiveCancelBtn",
+                L10n.Get("ui_selective_reset_cancel"),
+                new Vector2(230f, 0f),
+                new Color(0.22f, 0.22f, 0.30f, 1f),
+                _selectiveResetBar.transform,
+                () => ExitSelectiveResetMode());
+
+            _selectiveResetBar.transform.SetAsLastSibling();
+        }
+
+        private void DestroySelectiveResetBar()
+        {
+            if (_selectiveResetBar != null)
+            {
+                DestroyImmediate(_selectiveResetBar);
+                _selectiveResetBar = null;
+                _resetCostText = null;
+            }
+        }
+
+        /// <summary>선택 모드에서 노드 클릭 처리</summary>
+        private void HandleSelectiveResetNodeClick(CaptainSkillTree.SkillTree.SkillNode node)
+        {
+            var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
+            if (manager.GetSkillLevel(node.Id) == 0) return; // 미학습 스킬 무시
+
+            if (_selectiveResetTargets.Contains(node.Id))
+            {
+                // 토글 OFF: 이 스킬을 prerequisite로 하는 선택된 스킬이 있으면 해제 불가
+                var dependents = manager.GetDependentSkills(node.Id);
+                bool hasDependentSelected = dependents.Any(d => _selectiveResetTargets.Contains(d));
+                if (hasDependentSelected)
+                {
+                    tooltipUI.ShowWarning(L10n.Get("ui_selective_reset_prerequisite_required"));
+                    return;
+                }
+                _selectiveResetTargets.Remove(node.Id);
+            }
+            else
+            {
+                // 토글 ON: 역순 유효성 검사
+                if (!IsSelectableForReset(node))
+                {
+                    tooltipUI.ShowWarning(L10n.Get("ui_selective_reset_prerequisite_required"));
+                    return;
+                }
+                _selectiveResetTargets.Add(node.Id);
+            }
+
+            RefreshSelectiveResetPreview();
+        }
+
+        /// <summary>오버레이 및 비용 텍스트 전체 갱신</summary>
+        private void RefreshSelectiveResetPreview()
+        {
+            var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
+            if (manager == null || nodeUI == null) return;
+
+            int totalCost = 0;
+            foreach (var id in _selectiveResetTargets)
+            {
+                if (manager.SkillNodes.ContainsKey(id))
+                    totalCost += GetResetCost(manager.SkillNodes[id]);
+            }
+
+            if (_resetCostText != null)
+                _resetCostText.text = string.Format(L10n.Get("ui_selective_reset_cost_display"), totalCost);
+
+            foreach (var node in manager.SkillNodes.Values)
+            {
+                if (manager.GetSkillLevel(node.Id) == 0) continue;
+                bool isSelected = _selectiveResetTargets.Contains(node.Id);
+                bool canSelect = !isSelected && IsSelectableForReset(node);
+                nodeUI.SetResetPreviewOverlay(node.Id, isSelected);
+                nodeUI.SetResetUnavailableDim(node.Id, !isSelected && !canSelect);
+            }
+        }
+
+        /// <summary>코인 검사 후 초기화 실행</summary>
+        private void ConfirmSelectiveReset()
+        {
+            if (_selectiveResetTargets.Count == 0)
+            {
+                tooltipUI.ShowWarning(L10n.Get("ui_selective_reset_no_selection"));
+                return;
+            }
+
+            var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
+            int totalCost = _selectiveResetTargets
+                .Where(id => manager.SkillNodes.ContainsKey(id))
+                .Sum(id => GetResetCost(manager.SkillNodes[id]));
+
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            int currentCoins = inventory.CountItems("$item_coins");
+            if (currentCoins < totalCost)
+            {
+                tooltipUI.ShowWarning(string.Format(
+                    L10n.Get("ui_selective_reset_insufficient_coins"), totalCost, currentCoins));
+                return;
+            }
+
+            // 코인 차감 및 스킬 초기화
+            inventory.RemoveItem("$item_coins", totalCost);
+            var targets = new List<string>(_selectiveResetTargets);
+            manager.ResetSpecificSkillLevels(targets);
+
+            tooltipUI.ShowWarning(string.Format(L10n.Get("ui_selective_reset_success"), totalCost));
+            Debug.Log($"[SkillTreeUI] 선택적 초기화 완료: {string.Join(", ", targets)} (-{totalCost} 코인)");
+
+            ExitSelectiveResetMode();
+            RefreshUI();
+        }
+
+        // =====================================================================
+        // 아처 Lv2+ 업그레이드 확인 다이얼로그 (럭셔리 스타일)
+        // =====================================================================
 
         /// <summary>
         /// 아처 Lv2+ 업그레이드 확인 다이얼로그 (럭셔리 스타일)
