@@ -14,6 +14,7 @@ namespace CaptainSkillTree.SkillTree
         // === 반사 상태 관리 (플래그 기반) ===
         private static HashSet<long> tankerReflectActive = new HashSet<long>();
         private static Dictionary<long, float> tankerReflectEndTime = new Dictionary<long, float>();
+        private static Dictionary<long, float> tankerReflectTotalDuration = new Dictionary<long, float>();
         private static Dictionary<Player, HitData.DamageTypes> tankerReflectOriginalDamage =
             new Dictionary<Player, HitData.DamageTypes>();
 
@@ -27,8 +28,34 @@ namespace CaptainSkillTree.SkillTree
             long playerId = player.GetPlayerID();
             tankerReflectActive.Add(playerId);
             tankerReflectEndTime[playerId] = Time.time + duration;
+            tankerReflectTotalDuration[playerId] = duration;
 
             Plugin.Log.LogDebug($"[탱커 반사] {player.GetPlayerName()} 반사 활성화 - {duration}초간");
+        }
+
+        /// <summary>
+        /// HUD 서브 아이콘용: 반사 버프 남은 시간 반환 (0f = 비활성)
+        /// </summary>
+        public static float GetTankerReflectRemaining(Player player)
+        {
+            if (player == null) return 0f;
+            long playerId = player.GetPlayerID();
+            if (!tankerReflectActive.Contains(playerId)) return 0f;
+            if (tankerReflectEndTime.TryGetValue(playerId, out float endTime))
+                return Mathf.Max(0f, endTime - Time.time);
+            return 0f;
+        }
+
+        /// <summary>
+        /// HUD 서브 아이콘용: 반사 버프 총 지속시간 반환
+        /// </summary>
+        public static float GetTankerReflectTotalDuration(Player player)
+        {
+            if (player == null) return 0f;
+            long playerId = player.GetPlayerID();
+            if (tankerReflectTotalDuration.TryGetValue(playerId, out float dur))
+                return dur;
+            return 0f;
         }
 
         /// <summary>
@@ -67,6 +94,7 @@ namespace CaptainSkillTree.SkillTree
             long playerId = player.GetPlayerID();
             tankerReflectActive.Remove(playerId);
             tankerReflectEndTime.Remove(playerId);
+            tankerReflectTotalDuration.Remove(playerId);
             tankerReflectOriginalDamage.Remove(player);
         }
 

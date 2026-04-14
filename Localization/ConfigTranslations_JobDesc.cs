@@ -1328,9 +1328,9 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv2 ---
                 ["Tanker_Hp_Bonus_Lv2"] =
-                "【Tanker Lv2 HP Bonus】\n" +
-                "Max HP increase granted at Tanker Lv2.\n" +
-                "Default: 35",
+                "【Tanker Lv2 HP Bonus (%)】\n" +
+                "Max HP increases by this percentage when reaching Tanker Lv2.\n" +
+                "Default: 30",
 
                 ["Tanker_Lv2_BlockPower"] =
                 "【Tanker Lv2 Block Power】\n" +
@@ -1344,9 +1344,9 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv3 ---
                 ["Tanker_Hp_Bonus_Lv3"] =
-                "【Tanker Lv3 HP Bonus】\n" +
-                "Max HP increase granted at Tanker Lv3.\n" +
-                "Default: 55",
+                "【Tanker Lv3 HP Bonus (%)】\n" +
+                "Max HP increases by this percentage when reaching Tanker Lv3.\n" +
+                "Default: 35",
 
                 ["Tanker_Lv3_BlockPower"] =
                 "【Tanker Lv3 Block Power】\n" +
@@ -1360,9 +1360,9 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv4 ---
                 ["Tanker_Hp_Bonus_Lv4"] =
-                "【Tanker Lv4 HP Bonus】\n" +
-                "Max HP increase granted at Tanker Lv4.\n" +
-                "Default: 75",
+                "【Tanker Lv4 HP Bonus (%)】\n" +
+                "Max HP increases by this percentage when reaching Tanker Lv4.\n" +
+                "Default: 40",
 
                 ["Tanker_Lv4_BlockPower"] =
                 "【Tanker Lv4 Block Power】\n" +
@@ -1376,9 +1376,9 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv5 ---
                 ["Tanker_Hp_Bonus_Lv5"] =
-                "【Tanker Lv5 HP Bonus】\n" +
-                "Max HP increase granted at Tanker Lv5.\n" +
-                "Default: 100",
+                "【Tanker Lv5 HP Bonus (%)】\n" +
+                "Max HP increases by this percentage when reaching Tanker Lv5.\n" +
+                "Default: 50",
 
                 ["Tanker_Lv5_BlockPower"] =
                 "【Tanker Lv5 Block Power】\n" +
@@ -1809,6 +1809,13 @@ namespace CaptainSkillTree.Localization
                 ["Job_Lv3_Cost"] = "【직업 Lv3 코인 비용】\n모든 직업을 Lv3로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 3000",
                 ["Job_Lv4_Cost"] = "【직업 Lv4 코인 비용】\n모든 직업을 Lv4로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 4000",
                 ["Job_Lv5_Cost"] = "【직업 Lv5 코인 비용】\n모든 직업을 Lv5로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 5000",
+
+                // ============================================
+                // Skill Reset Cost (스킬 포인트 초기화 비용)
+                // ============================================
+                ["Job_Reset_Cost"]    = "【직업스킬 포인트 초기화 비용】\n직업 스킬 포인트를 초기화할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 1000",
+                ["Active_Reset_Cost"] = "【액티브스킬 포인트 초기화 비용】\n액티브 스킬 포인트를 초기화할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 500",
+                ["Passive_Reset_Cost"]= "【패시브스킬 포인트 초기화 비용】\n패시브 스킬 포인트를 초기화할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 100",
             };
         }
     }

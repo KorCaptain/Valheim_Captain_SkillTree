@@ -174,7 +174,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "knife_step5_crit_rate", "knife_step6_combat_damage", "knife_step7_execution" },
-                NextNodes = new List<string> { "knife_step9_assassin_heart" },
+                NextNodes = new List<string> { "knife_step9_assassin_heart", "knife_step10_stack_explosion" },
                 ApplyEffect = (lv) => { }
             });
             manager.AddSkill(new SkillNode
@@ -189,6 +189,24 @@ namespace CaptainSkillTree.SkillTree
                 Position = new Vector2(395, 480),
                 Category = "근접",
                 IconName = "knife_assassin",
+                IconNameLocked = "all_skill_lock",
+                IconNameUnlocked = "all_skill_unlock",
+                Prerequisites = new List<string> { "knife_step8_assassination" },
+                NextNodes = new List<string>(),
+                ApplyEffect = (lv) => { }
+            });
+            manager.AddSkill(new SkillNode
+            {
+                Id = "knife_step10_stack_explosion",
+                NameKey = "knife_skill_stack_explosion",
+                DescriptionKey = "knife_desc_stack_explosion",
+                DescriptionArgs = new object[] { Knife_Config.KnifeStackExplosionMaxStacksValue, Knife_Config.KnifeStackExplosionStackDurationValue, Knife_Config.KnifeStackExplosionDamagePercentValue },
+                RequiredPoints = Knife_Config.KnifeStackExplosionRequiredPointsValue,
+                MaxLevel = 1,
+                Tier = 7,
+                Position = new Vector2(335, 520),
+                Category = "근접",
+                IconName = "all_skill_unlock",
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "knife_step8_assassination" },

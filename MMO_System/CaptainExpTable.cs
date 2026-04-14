@@ -64,9 +64,9 @@ namespace CaptainSkillTree.MMO_System
                 else
                 {
                     // Config 값 사용
-                    levelExp = CaptainLevelConfig.LevelExp.Value;
-                    multiply = CaptainLevelConfig.MultiNextLevel.Value;
-                    maxLevel = CaptainLevelConfig.MaxLevel.Value;
+                    levelExp = CaptainLevelConfig.LevelExpValue;
+                    multiply = CaptainLevelConfig.MultiNextLevelValue;
+                    maxLevel = CaptainLevelConfig.MaxLevelValue;
                     useAccumulative = CaptainLevelConfig.LevelExpForEachLevel.Value;
                 }
 
@@ -125,7 +125,7 @@ namespace CaptainSkillTree.MMO_System
             }
 
             // 테이블에 없는 레벨인 경우 (최대 레벨 초과)
-            if (level > CaptainLevelConfig.MaxLevel.Value)
+            if (level > CaptainLevelConfig.MaxLevelValue)
             {
                 return long.MaxValue; // 더 이상 레벨업 불가
             }
@@ -138,7 +138,7 @@ namespace CaptainSkillTree.MMO_System
 
             // 예외적인 경우 기본값 계산
             Plugin.Log.LogWarning($"[CaptainExpTable] 경험치 테이블에 없는 레벨: {level}");
-            return (long)(CaptainLevelConfig.LevelExp.Value * Math.Pow(CaptainLevelConfig.MultiNextLevel.Value, level - 1));
+            return (long)(CaptainLevelConfig.LevelExpValue * Math.Pow(CaptainLevelConfig.MultiNextLevelValue, level - 1));
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace CaptainSkillTree.MMO_System
             int level = 1;
             long accumulatedExp = 0;
 
-            for (int i = 2; i <= CaptainLevelConfig.MaxLevel.Value + 1; i++)
+            for (int i = 2; i <= CaptainLevelConfig.MaxLevelValue + 1; i++)
             {
                 long expNeeded = GetExpForLevel(i);
                 if (accumulatedExp + expNeeded > totalExp)
@@ -186,7 +186,7 @@ namespace CaptainSkillTree.MMO_System
                 level = i - 1;
             }
 
-            return Math.Min(level, CaptainLevelConfig.MaxLevel.Value);
+            return Math.Min(level, CaptainLevelConfig.MaxLevelValue);
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace CaptainSkillTree.MMO_System
         private static void LogFirstLevels(int count)
         {
             Plugin.Log.LogDebug("=== Exp Table (first levels) ===");
-            for (int i = 2; i <= Math.Min(count + 1, CaptainLevelConfig.MaxLevel.Value); i++)
+            for (int i = 2; i <= Math.Min(count + 1, CaptainLevelConfig.MaxLevelValue); i++)
             {
                 Plugin.Log.LogDebug($"Level {i}: {GetExpForLevel(i):N0} exp");
             }

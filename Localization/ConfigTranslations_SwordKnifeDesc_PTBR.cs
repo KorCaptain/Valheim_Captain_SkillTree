@@ -462,6 +462,12 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier8_AssassinHeart_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Coração do Assassino.",
+
+                ["Tier9_StackExplosion_AoePercent"] =
+                "【Proporção de Dano em Área (%)】\n" +
+                "Proporção do dano principal como dano em área a inimigos em 7m na explosão H.\n" +
+                "Dano total × (valor / 100) = dano em área\n" +
+                "Valor recomendado: 30-50%",
             };
         }
     }

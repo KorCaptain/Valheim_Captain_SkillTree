@@ -25,7 +25,7 @@ namespace CaptainSkillTree.SkillTree
     /// 스킬트리 Config 오케스트레이터
     /// 각 무기/트리별 Config는 개별 파일로 분리됨
     /// </summary>
-    public static class SkillTreeConfig
+    public static partial class SkillTreeConfig
     {
         // 서버/클라이언트 동기화용 데이터
         private static Dictionary<string, float> _serverConfigValues = new Dictionary<string, float>();
@@ -289,11 +289,23 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> HudPosX;
         public static ConfigEntry<int> HudPosY;
 
+        // 초기화 버튼 표시 여부
+        public static ConfigEntry<bool> ShowResetButtons;
+
+        // 스킬 포인트 초기화 비용 (서버 관리자 전용)
+        public static ConfigEntry<int> JobResetCost;
+        public static ConfigEntry<int> ActiveResetCost;
+        public static ConfigEntry<int> PassiveResetCost;
+
         // 패시브 메시지 표시 방식
         public static ConfigEntry<string> PassiveMessageDisplay;
 
         // 게임 난이도 모드
         public static ConfigEntry<string> GameDifficulty;
+
+        // VFX 투명도 (0=완전 투명, 100=원본 밝기)
+        public static ConfigEntry<int> VFXOpacity;
+        public static float VFXOpacityValue => Mathf.Clamp((VFXOpacity?.Value ?? 70) / 100f, 0f, 1f);
         public static int PassiveMessageDisplayValue {
             get {
                 switch (PassiveMessageDisplay?.Value) {
@@ -311,6 +323,14 @@ namespace CaptainSkillTree.SkillTree
         public static int JobLv3CostValue => (int)GetEffectiveValue("Job_Lv3_Cost", (float)(JobLv3Cost?.Value ?? 3000));
         public static int JobLv4CostValue => (int)GetEffectiveValue("Job_Lv4_Cost", (float)(JobLv4Cost?.Value ?? 4000));
         public static int JobLv5CostValue => (int)GetEffectiveValue("Job_Lv5_Cost", (float)(JobLv5Cost?.Value ?? 5000));
+
+        // 초기화 버튼 표시 여부 접근자 (서버 동기화)
+        public static bool ShowResetButtonsValue => GetEffectiveValue("ShowResetButtons", ShowResetButtons?.Value == true ? 1f : 0f) >= 0.5f;
+
+        // 초기화 비용 접근자
+        public static int JobResetCostValue     => (int)GetEffectiveValue("Job_Reset_Cost",    (float)(JobResetCost?.Value    ?? 1000));
+        public static int ActiveResetCostValue  => (int)GetEffectiveValue("Active_Reset_Cost", (float)(ActiveResetCost?.Value ?? 500));
+        public static int PassiveResetCostValue => (int)GetEffectiveValue("Passive_Reset_Cost",(float)(PassiveResetCost?.Value ?? 100));
 
         /// <summary>레벨별 직업 코인 비용 반환 (모든 직업 공통)</summary>
         public static int GetJobLevelCost(int level)
@@ -866,6 +886,9 @@ namespace CaptainSkillTree.SkillTree
                 }
             };
 
+            ShowResetButtons = BindServerSync(config, "Skill_Tree_Base", "ShowResetButtons", true,
+                GetConfigDescription("ShowResetButtons"), order: -18);
+
             // === 직업 레벨업 코인 비용 (서버 관리자 전용, 클라이언트 자동 동기화) ===
             JobLv1Cost = BindServerSync(config, "Skill_Tree_Base", "Job_Lv1_Cost", 1000,
                 GetConfigDescription("Job_Lv1_Cost"), order: -20);
@@ -877,6 +900,22 @@ namespace CaptainSkillTree.SkillTree
                 GetConfigDescription("Job_Lv4_Cost"), order: -23);
             JobLv5Cost = BindServerSync(config, "Skill_Tree_Base", "Job_Lv5_Cost", 5000,
                 GetConfigDescription("Job_Lv5_Cost"), order: -24);
+
+            // === 스킬 포인트 초기화 비용 (서버 관리자 전용) ===
+            JobResetCost     = BindServerSync(config, "Skill_Tree_Base", "Job_Reset_Cost",    1000, GetConfigDescription("Job_Reset_Cost"),    order: -25);
+            ActiveResetCost  = BindServerSync(config, "Skill_Tree_Base", "Active_Reset_Cost", 500,  GetConfigDescription("Active_Reset_Cost"), order: -26);
+            PassiveResetCost = BindServerSync(config, "Skill_Tree_Base", "Passive_Reset_Cost",100,  GetConfigDescription("Passive_Reset_Cost"),order: -27);
+
+            // === VFX 투명도 (클라이언트 전용) ===
+            VFXOpacity = config.Bind(
+                "Skill_Tree_Base",
+                "My VFX 투명도",
+                70,
+                new ConfigDescription(
+                    "VFX 밝기·투명도 조절 (0=완전 투명, 100=원본 밝기)\n" +
+                    "기본값: 70 (70% 밝기 - 눈부심 감소)\n" +
+                    "변경 후 게임 재시작 필요",
+                    new AcceptableValueRange<int>(0, 100)));
 
             // en.json 항상 자동 생성 (커뮤니티 번역 템플릿)
             CaptainSkillTree.Localization.LocalizationExporter.ExportEnJson();
@@ -1054,61 +1093,6 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        public static void BroadcastConfigToClients()
-        {
-            if (!_isServer) return;
-
-            try
-            {
-                var configData = new Dictionary<string, float>
-                {
-                    // Attack Tree
-                    ["Attack_Expert_Damage"] = Attack_Config.AttackRootDamageBonus.Value,
-                    ["Tier1_Opener_DamageBonus"] = Attack_Config.AtkOpenerDamageBonus?.Value ?? 20f,
-                    ["Tier5_Frenzy_StackBonusBase"] = Attack_Config.AtkFrenzyStackBonusBase?.Value ?? 5f,
-
-                    // Speed Tree
-                    ["Speed_Expert_MoveSpeed"] = Speed_Config.SpeedRootMoveSpeed.Value,
-                    ["Speed_Step8_MeleeAttackSpeed"] = Speed_Config.SpeedMeleeAttackSpeed.Value,
-                    ["Speed_Step8_BowDrawSpeed"] = Speed_Config.SpeedBowDrawSpeed.Value,
-
-                    // Bow Tree
-                    ["Bow_MultiShot_Lv1_Chance"] = Bow_Config.BowMultishotLv1Chance.Value,
-                    ["Bow_MultiShot_Lv2_Chance"] = Bow_Config.BowMultishotLv2Chance.Value,
-
-                    // Spear Tree
-                    ["spear_Step1_attack_speed"] = Spear_Config.SpearStep1AttackSpeed.Value,
-                    ["spear_Step1_damage_bonus"] = Spear_Config.SpearStep1DamageBonus.Value,
-                    ["spear_expert_proc_chance"] = Spear_Config.SpearExpertProcChance.Value,
-                    ["spear_expert_speed_boost"] = Spear_Config.SpearExpertSpeedBoostPercent.Value,
-
-                    // Polearm Tree
-                    ["polearm_step4_charge_damage"] = Polearm_Config.PolearmStep4ChargeDamageBonus.Value,
-
-                    // Defense Tree
-                    ["Defense_Stomp_Radius"] = Defense_Config.StompRadius.Value,
-                    ["Defense_Stomp_Cooldown"] = Defense_Config.StompCooldown.Value,
-
-                    // Sword Tree
-                    ["sword_expert_damage"] = Sword_Config.SwordExpertDamageBonus.Value,
-                };
-
-                var configString = SerializeConfigData(configData);
-                if (ZNet.instance != null && ZRoutedRpc.instance != null)
-                {
-                    ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, "CaptainSkillTree.SkillTreeMod_ConfigSync", configString);
-                    Plugin.Log.LogInfo("[SkillTreeConfig] 서버 설정을 모든 클라이언트에게 전송");
-                }
-                else
-                {
-                    Plugin.Log.LogDebug("[SkillTreeConfig] ZNet 또는 ZRoutedRpc가 아직 초기화되지 않아 Config 전송을 건너뜁니다.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[SkillTreeConfig] BroadcastConfigToClients 실패: {ex.Message}\n{ex.StackTrace}");
-            }
-        }
 
         private static string SerializeConfigData(Dictionary<string, float> configData)
         {

@@ -27,6 +27,12 @@ namespace CaptainSkillTree.Localization
                 "  UserSettings = Stellt die zuvor gespeicherten Benutzereinstellungen wieder her\n" +
                 "⚠️ Bei Änderung wird das gewählte Preset sofort angewendet (alle Skillwerte werden ersetzt).",
 
+                ["ShowResetButtons"] =
+                "【Reset-Schaltflächen anzeigen】\n" +
+                "Steuert, ob die Punkte-/Job-/Produktions-Reset-Schaltflächen in der Skillbaum-UI angezeigt werden.\n" +
+                "  true  = Reset-Schaltflächen anzeigen (Standard)\n" +
+                "  false = Reset-Schaltflächen ausblenden (für Server, um Skill-Reset zu verhindern)",
+
                 // ========================================
                 // Angriffs-Skilltree (Attack Tree)
                 // ========================================

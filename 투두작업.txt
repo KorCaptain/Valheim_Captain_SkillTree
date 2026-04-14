@@ -5,7 +5,7 @@
 vfx_shieldgenerator_refuel
 sfx_dverger_heal_finish - 힐소리
 shaman_heal_aoe - 기존 성기사 힐 vfx 힐 포함됨 
- buff_03a_aura 3개 추가 │ 왼쪽 어깨(-0.3, 1.5) / 머리(0, 1.8) / 오른쪽 어깨(0.3, 1.5)  종료코드 (물방울 심플vfx)
+buff_03a_aura 3개 추가 │ 왼쪽 어깨(-0.3, 1.5) / 머리(0, 1.8) / 오른쪽 어깨(0.3, 1.5)  종료코드 (물방울 심플vfx)
 ===========================================
 지팡이 전문가의 힐 스킬 수정건
 힐 스킬 사용시 화면중앙에 "힐모드 시작" 메시지 뛰어주고 3분간 속성 공격력 -50% 디버프 효과 적용(디버프 효과 사라질시 "힐모드 종료" 메시지)
@@ -54,61 +54,9 @@ lv5 주변 아군 3.0%/초 * 10초 치유
 
 
 --**
-공격 전문가의 아이템 효과 관련 해서 (인벤 아이템 오버시 표현) 관련해서 
-C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\md Aattack_Tolltip_Display.md  
-공격 전문가 와 최종 티어 트리만 남기고 
-나머지는  아이템오버시 표시에 제거해줘 
-효과만 발동되면 되 
 
---**
-탱커 컨피그 2차 항목 컨피그 기준에 맞게 수정해줘  같은 lv 묶음, 다국어 7개 번역도 해야됨
-Lv1: 반사 데미지
-Lv2: 추가 체력 
-Lv2: 반사 데미지 
-Lv3: 추가 체력
-Lv3: 반사 데미지
-..
-..
-이런식으로 변경해줘  
-
-Producer 도 같은 방식으로 변경
-
---**
-인벤토리 열고 클릭으로 아이템 들었다 놓으면 멈춤현상
-컨트롤키로 클릭 이동시키면 정상 작동
-상자 열때 멈춤
-수리 망치 클릭 해서 수리할대 멈춤현상
-
-이거 자꾸 반복 수정하는데 원인 분석하고 인벤토리 관련 수정할땐 반듯이 체크하게 해줘
---**
-성기사 lv2 분노의 망치 또는 돌진베기  툴팁 확인
 --
-왼쪽에만 표시되는데 내가 원한건
-왼쪽에는 원래 있는 발동중인 효과 밑에 "스킬트리 효과"를 만들고
-스킬트리 효과 클릭하면 오른쪽 현재 발동중인 효과 라는  부분에
- 스킬트리 효과
-
-직업 효과
-액티브 스 킬
-패시브 효과
-
-당연히 배운거만 나오게 하면되
 ---
-Info   :Captain SkillTree Mod] [CSTPanel] InventoryGui.Show → 탐색 시작
-[Info   :EpicMMOSystem] Restoring UI Positions
-[Info   : Unity Log] 03/28/2026 18:33:07: Setting selected recipe 0
-
-[Info   :Captain SkillTree Mod] [CSTPanel] InventoryGui.Show → 탐색 시작
-[Info   :Captain SkillTree Mod] [CSTPanel] TMP 발견: '메시지 로그' @ name
-[Info   :Captain SkillTree Mod] [CSTPanel] 5프레임 후 EpicMMO 패널 발견: ListRoot
-[Info   :Captain SkillTree Mod] [CSTPanel] InjectAll: ListRoot (자식: 2)
-[Info   :Captain SkillTree Mod] [CSTPanel] 65프레임 후 EpicMMO 패널 발견: ListRoot
-[Info   :Captain SkillTree Mod] [CSTPanel] InjectAll: ListRoot (자식: 3)
-[Info   :Captain SkillTree Mod] [CSTPanel] 공통부모: TextList, 왼쪽SR: SkillList
-[Info   :Captain SkillTree Mod] [CSTPanel] 오른쪽 패널 루트 (ScrollRect 없음): SkillListScroll
-[Info   :Captain SkillTree Mod] [CSTPanel] 공통부모: TextList, 왼쪽SR: SkillList
-[Info   :Captain SkillTree Mod] [CSTPanel] 오른쪽 패널 루트 (ScrollRect 없음): SkillListScroll
-[Info   :Captain SkillTree Mod] [CSTPanel] 공통부모: TextList, 왼쪽SR: SkillList[Image #7] 시작할때 엄척 랙이 걸려
 
 -->
  두 가지 핵심 문제가 확인됩니다:
@@ -133,17 +81,7 @@ Info   :Captain SkillTree Mod] [CSTPanel] InventoryGui.Show → 탐색 시작
   해결해야 할 3가지 문제(TMP 텍스트, 이중 주입 랙, 오른쪽 패널 주입), 코드 스니펫까지 전부 있습니다.
 
 ---**
-둔기 전문가의
-밀어내기	밀어내기 적용이 안됨
-탱커	체력 +25가 아닌 +25%로 적용됨  Lv 별 확인필요 수치증가(%증가 아님)
 
-방패돌진	스킬 시전시 구조물 뚤고 지나감 -> 구조물 못지나가야됨
-분노의 망치	스킬 시전시 구조물 뚤고 지나감 -> 구조물 못지나가야됨, 언덕이나 바위는 그 위에 착지해야함
----
----**
-생산 전문가 트리의 제작lv1~4 제작시 효과와효과음은 무기,방어구,유틸리티,망토   이 부류에서만 적용되어야해 (음식, , 물약 및 기타 는 해당없어)
-
---**
 제직 전문가 - 플랜가드와 충돌? 
 그리드 표시 및 효과(쇠스랑 사용시) 문제 및 개선
 작물이 안심어지고(왼쪽 클릭이 안됨) 씨앗을 바꾸면 심어짐, (다른 팜그리드 관련 모드가 있으면 오작동하는거 같아 다른 모드 있으면 우리 모드는 정지시켜줘)
@@ -153,9 +91,6 @@ Info   :Captain SkillTree Mod] [CSTPanel] InventoryGui.Show → 탐색 시작
 제작 전문가 Y 스킬
 자기 자신은 효과 및 쿨타임 도는데
 주변 캐릭터에게는 적용이 하나도 안됨
---**
-방패 돌진
-적중을 거리를 10m 로 변경하고 적에게 적중이 잘안되 돌진시 3m 이내는 적중한걸로 해줘 
 --**
 분노의 망치
 바위나 오브젝트 위에서 사용시 아에 앞에 막힌게 아닌데도.. 막힌거처럼 제자리서 스킬사용되 점프 자체를 안하고 말야 
@@ -180,19 +115,8 @@ lv5 최대 +250%  -> 체력 줄어든 1% 당 공격력 2% 증가
 --**
 장신구는 제작 축복이 적용이 안되
 --**
-분노의 망치 1타만 본메스 데미지 들어가고 2~5타는 데미지 적용안됨(모든 보스 확인해줘)
+
 --**
-방패 착용해도 뜸
-[Warning:Captain SkillTree Mod] [Tanker 방패 체크] ❌ 방패를 찾을 수 없음
---
-첫 모드 설치 및 로딩 시(업데이트 포함)  
-게임 난이도 설정을 하는 창을 새로 뛰우고  1,2번 중 난이도 설정을 선택해서  
--------- Setting CaptainSkillTree Difficulty -------- 
-1. nomal : Vanilra +a
-2. very hard : CreatureLevelAndLootControl -> Very Hard + monster Hp x2
-3. user setting( 기존 프리셋 ) 
-                                         
-다국어 7개국어 지원도 해줘      
 --------------------------------------------------------
 1번은 컨피그 설정값 대로 (전체적으로 약한 수치로) 컨피그 수치로 적용 : Vanilra_Config_CaptainSkillTree.SkillTreeMod.cfg
 2번은 컨피그 설정값 대로 (전체적으로 강하게 수치조정) 건피그 수치로 적용 : Veryhard_CaptainSkillTree.SkillTreeMod.cfg
@@ -201,27 +125,133 @@ BepInEx\config\CaptainSkillTree 위치에
 Vanilra_Config_CaptainSkillTree.SkillTreeMod.cfg
 Veryhard_CaptainSkillTree.SkillTreeMod.cfg
 ==========**
-단검 전문가 관련하여 
-암살자의 심장 의 스턴 효과 제거, 지상으로 부터 5m 이상의 몬스터 즉 날라다니는 적들은 공격 할수 없습니다. 메시지와 함께 스킬 작동이 안되어야함
-로그 스킬 관련하여
-Rogue_ShadowStrike_AttackBonus = 35   35가 어떤 기준의 수치인지 파악하고 -> 무기 공격력의 30% 데미지로 변경
-=======*
-메이지 스킬
-추가 발사체 20발 *2회 를 3회로 변경(총 60발)
-적 또는 오브젝트 적중 범위 4m로 변경
 
-이중 시전 
-시전 시 적에게 심플 vfx area_magic_multicolor 적용하고 (몬스터 따라다니게 해야함 자동 종료됨으로 종료코드 필요없음)
-추가 발사체를 시전자 머리 위에서 발사 하게 조정 하고 적의 가슴 쪽을 적중하게해야한다.
-한발당 데미지를 40% 로 수정 하고 발사체가 적이 이동해도 따라가서 적중해야함(즉, 자동 추적 및 적중하게 추가 코드필요 )
+----
+생존기
+fx_fenring_icenova
+--
+브레스 ?
+fx_fenring_flames
+아이스
+fx_fenring_frost
+--
+긴 아이스
+vfx_dragon_coldbreath
+sfx_dragon_coldbreath_trailon
+---
+회오리 및 소리
+fx_fallenfalkyrie_spin
+--
+staff_iceshard_projectile - 아이스 일직선 내림
+vfx_lightningstaff_fire - 
+
+sfx_asksvin_alert
+--
+단검 전문가의 신규 스킬
+스킬명 : 약점폭발(영어로는 Stack Explosion)
+연결된 스킬ui는 암살술 
+스킬ui 에서 위치는 관통 암살술  의  x+20, y+40  하게 아이콘 관련 언락 및 락은 암살술 과 같은 거로 방식까지 참고해주고 
+쿨타임 : 45초
+스킬 포인트는 3소모 
+소모 : 스테미나 15
+
+툴팁은 암살자의 심장과 같은 형식으로 만들어줘 
+설명 : 공격 적중 마다 1 스택을 샇으며, H키로 폭발시켜 데미지를 준다.
+1스택당 무기공격력의 35%의 화염 공격속성 공격(스택은 최대 7까지 쌓을수 있으며, 스택은 4초간 유지된다.)
+스택은 몬스터 적중시 몬스터의 머리위에 발사체 vfx로 staff_lightning_projectile (vfx매니저로) 구현하고 H키로 폭발 시킬때 효과음 sfx_imp_fireball_explode(vfx 매니저로 구현_
+몬스터 머리위에 구현하는 방법은 지팡이 전문가의 이중시전 을 참고해서 만들어줘
+스택은 몬스터를 따라다녀야 하는거야~ H키로 스택을 폭발시키면 최종적으로 vfx_GodExplosion (vfx매니저) 몬스터에게 효과 적용해줘 
+
+신규 스킬의 쿨타임 관련 아이콘은 게임 상에서 표시되는 아이콘은 ActiveSkillHUD.cs 이용해서 아이콘 이미지는 공격
+  전문가 이미지로
+
+----
+생산 전문가의 채광 Lv에 따른 추가 오어 획득이 안되는거 같아 확인해줘
+
+--**
+활 전문가의 폭발 화살이나 화살 비 스킬 사용하고 
+버프형 vfx가 머리위에서 사라지지 않는 버그가 있어 확인해줘 
+
+--
+
+--
+캡틴스킬트리 관련하여
+버서커 스킬에서 
+약점폭발  사용하고 쿨타임 안되었는데 누르면
+[Warning:Captain SkillTree Mod] [Localization] ✗ Key not found in any language: 'skill_on_cooldown'
+라고 로그 뜸
+
+컨피그에서 Lv4 저체력 임계값 관련은 컨피그 및 효과 및 제거해줘
+---
+캡틴스킬트리 관련
+  스킬트리 ui에서 포인트 초기화 버튼 클릭하고 확인 버튼 누른후 스킬 역순으로 초기화할거 클릭시 빨간 연결선 색 나오는
+  연결색은 기존 스킬연결되어져 있던것만 발간색으로 해줘야지~
+--
+성기사 힐 vfx 눈부심
+쉴드차지 도 vfx 눈 불편
+--
+포인트 초기화 실제 비용과 컨피그의 스킬트리베이스 에 있는 항목의 비용과 일치하지 않아 실제 비용을 기준으로 컨피그
+  수정해줘
+그리고 스킬트리ui에서 포인트초기화 버튼 누르면 하위? 스킬트 ui(배운 스킬 중) 그림자 네모박스 같은게 생기는데 이건 제거해줘 그냥 언락, 락 형태와 빨간선 만 표시하면되 
+--
+     스킬트리 UI에서 초기화 버튼 → 확인 후 역순으로 스킬 클릭 시,
+     연결선 빨간색이 미연결(회색) 선까지 빨간색으로 변하는 버그.
+     이미 투자되어 흰색이었던 연결선만 빨간색으로 표시해야 함.
 
 ---
+메이지 Y키 → debuff_03 밝기 변화 확인 와 하늘에서 떨어지는 발사체 있어 이것도 적용해야되
+ - 로그 액티브 → flash_blue_purple 이거와  몬스터 적중시 발동되는 vfx도 확인 및 적용 statusailment_01_aura(이건 제외)
+ - 탱커 도발 → 전체 제외
+ - 버서커 광폭화 → statusailment_01_aura(버프성으로 제외), flash_round_ellow
+ - 나이프 약점폭발 → hit_01, debuff, 스택 발사체
+ - 석궁 단한발 → buff_01, statusailment_01_aura(제외)
+ - 이중시전 회귀 → 소환/발사/폭발 dim 정상 유지
 
-활 전문가의 헤스샷 스킬의 vfx를 fx_crit 만 남기고 제거해줘 
+- 활 전문가의 폭발 화살 - 몬스터 적중시 vfx 적용
+- 활 전문가의 화살비 - 하늘에서 떨어지는 발사체와 와 적중시 vfx
+- 석궁 전문가의 빙결 폭발탄 - vfx 적용
+- 단검전문가의 암살자의 심장 - 적 적중시 vfx
+- 검전문가의 돌진 연속 베기 - 적 적중시 vfx
+- 둔기전문가의 방패돌진 - 돌진시 vfx와 적중시 vfx
+- 둔기전문가의 분노의 망치 - 5단vfx
+- 창 전문가의 꿰툻는 창 - 적중시 vfx
+- 창 전문가의 연공창 - 적중시 vfx
+- 폴암 전문가의 관통 돌격 - 적중시 vfx
+- 폴암 전문가의 휠윈드 - 휠마우스 스킬시전시 vfx
 
+- 광전사 - 시전시 vfx와 적중시 vfx
+---------
+[Info   :Captain SkillTree Mod] [VFXDimmer] Apply START: fx_fireball_staff_explosion(Clone), factor=0.9
+[Info   :Captain SkillTree Mod] [VFXDimmer] PS count=7
+[Info   :Captain SkillTree Mod] [VFXDimmer] Apply DONE: fx_fireball_staff_explosion(Clone)
+[Info   :Captain SkillTree Mod] [VFXDimmer] Apply START: fx_fireball_staff_explosion(Clone), factor=0.9
+[Info   :Captain SkillTree Mod] [VFXDimmer] PS count=7
 
+관련 로그 제거 
 
+--
+buff_03a_aura(심플VFX) (어깨/머리 x3) -> 안보임,  buff_03a(심플vfx) -> 좀더 발밑으로 이동 vfx_Potion_health_medium(VFX매니저) 캐릭터
+  따라오게 해줘
+   완료: fx_greydwarf_shaman_heal(VFX 매니저)  -> 제거 
+  주변 캐릭터 힐될때도 같은 효과 넣줘어
 
+---
+  탈툴 버튼 누르면 3시간에 1회 작동하게 하고 시작지점으로 텔레포스 시켜줘 발헤임에 텔레포트 가 있어(포탈이동 처럼)
+  첫 게임 접속시 시작지점이야~
+---
+마법사 직업 │ Mage Lv1~5 데미지/쿨타임 대폭 조정             │
+  ├─────────────┼────────────────────────────────────────────────┤
+  │ 로그 직업   │ 독 피해, 쿨타임 조정                           │
+  ├─────────────┼────────────────────────────────────────────────┤
+  │ 탱커 직업   │ 도발 지속시간 9초 유지                        │
+  ├─────────────┼────────────────────────────────────────────────┤
+  │ 창 트리     │ VitalStrike 데미지 20→5, 번개 피해 260→125     │
+  ├─────────────┼────────────────────────────────────────────────┤
+  │ 검 트리     │ ParryRush BlockPowerRatio 50→60                │
+  ├─────────────┼────────────────────────────────────────────────┤
+  │ 둔기 트리   │ FuryHammer 수치, 스턴/가드 RequiredPoints  3│
+  ├─────────────┼────────────────────────────────────────────────┤
+  │ 팔라딘 직업 │ 힐량 소폭 하향                         
 
 
 

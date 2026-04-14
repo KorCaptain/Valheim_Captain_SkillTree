@@ -33,9 +33,9 @@ namespace CaptainSkillTree.Gui
         public GameObject? panel;
         private UnityEngine.UI.Text? skillPointText;
         private Button? resetPointButton;
-        private Button? resetJobButton;
         private Button? resetProductionButton;
         private Button? musicToggleButton;
+        private Button? escapeButton;
         private Dictionary<string, GameObject> nodeObjects = new Dictionary<string, GameObject>();
         private Dictionary<(string from, string to), Image> connectionLines = new Dictionary<(string, string), Image>();
         private GameObject? dynamicTooltipObj = null;
@@ -112,15 +112,7 @@ namespace CaptainSkillTree.Gui
                     }
                 }
 
-                // 3. 직업 초기화 버튼 텍스트 갱신
-                if (resetJobButton != null)
-                {
-                    var btnText = resetJobButton.GetComponentInChildren<UnityEngine.UI.Text>();
-                    if (btnText != null)
-                        btnText.text = L10n.Get("ui_reset_job");
-                }
-
-                // 4. 생산 초기화 버튼 텍스트 갱신
+                // 3. 생산 초기화 버튼 텍스트 갱신
                 if (resetProductionButton != null)
                 {
                     var btnText = resetProductionButton.GetComponentInChildren<UnityEngine.UI.Text>();
@@ -136,6 +128,22 @@ namespace CaptainSkillTree.Gui
                     {
                         bool isBGMEnabled = SkillTreeBGMManager.Instance != null && SkillTreeBGMManager.Instance.IsBGMEnabled;
                         musicText.text = L10n.Get(isBGMEnabled ? "ui_music_on" : "ui_music_off");
+                    }
+                }
+
+                // Exit 버튼 쿨다운 텍스트 갱신
+                if (escapeButton != null)
+                {
+                    var et = escapeButton.GetComponentInChildren<UnityEngine.UI.Text>();
+                    if (et != null)
+                    {
+                        if (SkillTree.EscapeSkill.CanEscape())
+                            et.text = L10n.Get("ui_escape");
+                        else
+                        {
+                            int mins = Mathf.CeilToInt(SkillTree.EscapeSkill.GetRemainingMinutes());
+                            et.text = $"{mins}m";
+                        }
                     }
                 }
 
@@ -323,23 +331,23 @@ namespace CaptainSkillTree.Gui
             // 행 1 버튼 공통 크기: 130x38, 폰트 13, 간격 12px
             // x 중심 위치: 120 / 262 / 404
 
-            // [포인트 초기화] 버튼 생성 (행 1 왼쪽) - 스틸블루
-            resetPointButton = CreateFancyButton("ResetPointButton", L10n.Get("ui_reset_points"),
-                new Vector2(590, -40), new Color(0.22f, 0.45f, 0.70f, 1f), panel.transform,
-                () => ResetSkillPoints());
+            // [포인트/직업/생산 초기화] 버튼 (Config ShowResetButtons가 false이면 숨김)
+            if (CaptainSkillTree.SkillTree.SkillTreeConfig.ShowResetButtonsValue)
+            {
+                resetPointButton = CreateFancyButton("ResetPointButton", L10n.Get("ui_reset_points"),
+                    new Vector2(590, -40), new Color(0.22f, 0.45f, 0.70f, 1f), panel.transform,
+                    () => ResetSkillPoints());
 
-            // [직업 초기화] 버튼 생성 (행 1 중간) - 보라
-            resetJobButton = CreateFancyButton("ResetJobButton", L10n.Get("ui_reset_job"),
-                new Vector2(710, -40), new Color(0.50f, 0.20f, 0.60f, 1f), panel.transform,
-                () => ResetJobSkillPoints());
-
-            // [생산 초기화] 버튼 생성 (행 1 오른쪽) - 에메랄드
-            resetProductionButton = CreateFancyButton("ResetProductionButton", L10n.Get("ui_reset_production"),
-                new Vector2(830, -40), new Color(0.15f, 0.55f, 0.25f, 1f), panel.transform,
-                () => ResetProductionSkillPoints());
+                resetProductionButton = CreateFancyButton("ResetProductionButton", L10n.Get("ui_reset_production"),
+                    new Vector2(710, -40), new Color(0.15f, 0.55f, 0.25f, 1f), panel.transform,
+                    () => ResetProductionSkillPoints());
+            }
 
             // Music On/Off 토글 버튼 생성 (행 2)
             CreateMusicToggleButton(panel);
+
+            // Exit(탈출) 버튼 생성 (행 3)
+            CreateEscapeButton(panel);
 
             // 하단 중앙 UI: 사용 가능 포인트, 확인/취소 버튼 (기존 텍스트 바로 아래로 이동)
             CreateConfirmationControls(panel);
@@ -945,22 +953,6 @@ namespace CaptainSkillTree.Gui
             Debug.Log($"[SkillTreeUI] 스킬포인트가 초기화되었습니다.");
         }
         
-        private void ResetJobSkillPoints()
-        {
-            ShowResetConfirmDialog(
-                "ui_reset_job_confirm_title",
-                "ui_reset_job_confirm_message",
-                ExecuteResetJobSkillPoints);
-        }
-
-        private void ExecuteResetJobSkillPoints()
-        {
-            var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
-            manager.ResetJobSkillLevels();
-            RefreshUI();
-            Debug.Log("[SkillTreeUI] 직업 스킬이 초기화되었습니다.");
-        }
-
         private void ResetProductionSkillPoints()
         {
             ShowResetConfirmDialog(
@@ -1125,13 +1117,13 @@ namespace CaptainSkillTree.Gui
         // 선택적 스킬 초기화 시스템
         // =====================================================================
 
-        /// <summary>스킬 초기화 비용 반환 (직업:1000, 액티브:500, 패시브:100)</summary>
+        /// <summary>스킬 초기화 비용 반환 (Config 값 사용, 기본: 직업 1000, 액티브 500, 패시브 100)</summary>
         private int GetResetCost(CaptainSkillTree.SkillTree.SkillNode node)
         {
             var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
-            if (manager.IsJobSkill(node.Id)) return 1000;
-            if (_activeSkillIds.Contains(node.Id)) return 500;
-            return 100;
+            if (manager.IsJobSkill(node.Id)) return CaptainSkillTree.SkillTree.SkillTreeConfig.JobResetCostValue;
+            if (_activeSkillIds.Contains(node.Id)) return CaptainSkillTree.SkillTree.SkillTreeConfig.ActiveResetCostValue;
+            return CaptainSkillTree.SkillTree.SkillTreeConfig.PassiveResetCostValue;
         }
 
         /// <summary>역순 티어 유효성 검사: 의존 스킬이 미선택 학습 상태면 선택 불가</summary>
@@ -1170,6 +1162,9 @@ namespace CaptainSkillTree.Gui
             _selectiveResetTargets.Clear();
 
             nodeUI?.ClearAllResetPreviewOverlays();
+            // 락 시각/빨간 연결선 복원
+            nodeUI?.RefreshNodeStates();
+            nodeUI?.UpdateConnectionLines();
             DestroySelectiveResetBar();
 
             var container = panel?.transform.Find("ConfirmationContainer");
@@ -1212,10 +1207,10 @@ namespace CaptainSkillTree.Gui
             costRect.sizeDelta = new Vector2(200, 0);
             costRect.anchoredPosition = new Vector2(8f, 0f);
 
-            // [초기화 확인] 버튼
+            // [초기화 확인] 버튼 (바 우측 영역, 텍스트와 겹치지 않도록 조정)
             CreateLuxuryButton("SelectiveConfirmBtn",
                 L10n.Get("ui_selective_reset_confirm"),
-                new Vector2(130f, 0f),
+                new Vector2(67f, 0f),
                 new Color(0.60f, 0.10f, 0.10f, 1f),
                 _selectiveResetBar.transform,
                 () => { PlayConfirmSound(); ConfirmSelectiveReset(); });
@@ -1223,7 +1218,7 @@ namespace CaptainSkillTree.Gui
             // [선택 취소] 버튼
             CreateLuxuryButton("SelectiveCancelBtn",
                 L10n.Get("ui_selective_reset_cancel"),
-                new Vector2(230f, 0f),
+                new Vector2(185f, 0f),
                 new Color(0.22f, 0.22f, 0.30f, 1f),
                 _selectiveResetBar.transform,
                 () => ExitSelectiveResetMode());
@@ -1289,14 +1284,11 @@ namespace CaptainSkillTree.Gui
             if (_resetCostText != null)
                 _resetCostText.text = string.Format(L10n.Get("ui_selective_reset_cost_display"), totalCost);
 
-            foreach (var node in manager.SkillNodes.Values)
-            {
-                if (manager.GetSkillLevel(node.Id) == 0) continue;
-                bool isSelected = _selectiveResetTargets.Contains(node.Id);
-                bool canSelect = !isSelected && IsSelectableForReset(node);
-                nodeUI.SetResetPreviewOverlay(node.Id, isSelected);
-                nodeUI.SetResetUnavailableDim(node.Id, !isSelected && !canSelect);
-            }
+            // 선택된 노드 → 락(흐린) 시각 + 연결선 빨간색
+            nodeUI.SetResetSelectedIds(_selectiveResetTargets);
+            nodeUI.RefreshNodeStates();
+            nodeUI.UpdateConnectionLines();
+
         }
 
         /// <summary>코인 검사 후 초기화 실행</summary>
@@ -4286,6 +4278,49 @@ namespace CaptainSkillTree.Gui
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[BGM UI] Music 버튼 생성 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Exit(탈출) 버튼 생성 (Music 버튼 아래, x=710, y=-100)
+        /// </summary>
+        private void CreateEscapeButton(GameObject parent)
+        {
+            try
+            {
+                bool canEscape = SkillTree.EscapeSkill.CanEscape();
+                Color color = canEscape
+                    ? new Color(0.70f, 0.15f, 0.10f, 1f)   // 활성: 짙은 빨강
+                    : new Color(0.35f, 0.35f, 0.40f, 1f);   // 쿨다운: 회색
+                string text = canEscape
+                    ? L10n.Get("ui_escape")
+                    : $"{Mathf.CeilToInt(SkillTree.EscapeSkill.GetRemainingMinutes())}m";
+
+                // Y: 지구력 노드(center-anchor y=-400) → top-anchor 변환: -(576+400+25)=-1001
+                escapeButton = CreateFancyButton("EscapeButton", text,
+                    new Vector2(710, -1001), color, parent.transform, () =>
+                    {
+                        try
+                        {
+                            var player = Player.m_localPlayer;
+                            if ((System.Object)player != null)
+                                SkillTree.EscapeSkill.TryEscape(player);
+                            else
+                                Plugin.Log.LogWarning("[Escape] Player.m_localPlayer가 null");
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Plugin.Log.LogError($"[Escape] 클릭 핸들러 오류: {ex.Message}");
+                        }
+                    });
+
+                // 스킬 노드보다 위에 렌더링되도록 최상위 sibling으로 설정
+                if (escapeButton != null)
+                    escapeButton.transform.SetAsLastSibling();
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[Escape UI] Exit 버튼 생성 실패: {ex.Message}");
             }
         }
 

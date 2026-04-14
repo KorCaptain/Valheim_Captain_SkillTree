@@ -159,11 +159,14 @@ namespace CaptainSkillTree.SkillTree
 
                     // ③ 활성화 (ZNetView 없으므로 ZDO 등록 없이 비주얼만 활성화)
                     obj.SetActive(true);
+
+                    // 소환 발사체 밝기/투명도 감소 (컨피그 연동)
+                    SimpleVFX.ApplyVFXDim(obj, SkillTreeConfig.VFXOpacityValue);
                 }
                 suspended.Add((obj, localOffset));
 
-                // 0.3초 간격 순차 소환
-                yield return new WaitForSeconds(0.3f);
+                // 0.4초 간격 순차 소환
+                yield return new WaitForSeconds(0.4f);
             }
 
             // 전체 소환 완료 메시지
@@ -341,6 +344,14 @@ namespace CaptainSkillTree.SkillTree
                 float vel = weaponAttack.m_projectileVel > 0 ? weaponAttack.m_projectileVel : 60f;
                 projectile.Setup(player, actualDir * vel, weaponAttack.m_projectileAccuracy, hitData, null, weapon);
 
+                // 날아가는 발사체 밝기/투명도 감소 (컨피그 연동)
+                float vfxDim = SkillTreeConfig.VFXOpacityValue;
+                SimpleVFX.ApplyVFXDim(projectileObj, vfxDim);
+
+                // 폭발 VFX 밝기 감소: 충돌 직후 히트 위치 주변 파티클 dim
+                var explosionDimmer = projectileObj.AddComponent<StaffProjectileExplosionDimmer>();
+                explosionDimmer.DimFactor = vfxDim;
+
                 if (target != null)
                 {
                     var homing = projectileObj.AddComponent<StaffDualCastHomingProjectile>();
@@ -429,7 +440,6 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 PlayStaffDualCastBuffEffect(player);
-                PlayStaffDualCastStatusEffect(player);
                 PlayStaffDualCastActivationSound(player);
             }
             catch (Exception ex)
@@ -459,7 +469,7 @@ namespace CaptainSkillTree.SkillTree
                 instance.transform.SetParent(player.transform, false);
                 instance.transform.localPosition = Vector3.down * 0.1f;
                 instance.transform.localScale = Vector3.one * 0.4f;
-                SetStaffDualCastBuffTransparency(instance, 0.2f);
+                SimpleVFX.ApplyVFXDim(instance, SkillTreeConfig.VFXOpacityValue);
                 staffDualCastBuffEffects[player] = instance;
             }
             catch (Exception ex)
@@ -482,7 +492,9 @@ namespace CaptainSkillTree.SkillTree
                 var vfx = SimpleVFX.PlayFollowing("statusailment_01_aura", player.transform,
                     new Vector3(0f, 2.0f, 0f), duration);
                 if (vfx != null)
+                {
                     staffDualCastStatusEffects[player] = vfx;
+                }
             }
             catch (Exception ex)
             {
@@ -501,30 +513,6 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[팬캐스트] 사운드 재생 오류: {ex.Message}");
-            }
-        }
-
-        private static void SetStaffDualCastBuffTransparency(GameObject effect, float alpha)
-        {
-            if (effect == null) return;
-            foreach (var r in effect.GetComponentsInChildren<Renderer>(true))
-            {
-                if (r?.material != null && r.material.HasProperty("_Color"))
-                {
-                    Color c = r.material.color;
-                    c.a = alpha;
-                    r.material.color = c;
-                }
-            }
-            foreach (var ps in effect.GetComponentsInChildren<ParticleSystem>(true))
-            {
-                if (ps != null)
-                {
-                    var main = ps.main;
-                    Color sc = main.startColor.color;
-                    sc.a = alpha;
-                    main.startColor = sc;
-                }
             }
         }
 
@@ -655,6 +643,40 @@ namespace CaptainSkillTree.SkillTree
             Vector3 newDir = Vector3.Lerp(_rb.velocity.normalized, toTarget, Time.deltaTime * homingStrength).normalized;
             _rb.velocity = newDir * _rb.velocity.magnitude;
             transform.rotation = Quaternion.LookRotation(_rb.velocity);
+        }
+    }
+
+    /// <summary>
+    /// 이중시전 발사체 폭발 VFX dim 처리기.
+    /// 발사체가 파괴될 때 히트 위치 주변에 생성된 폭발 파티클 시스템을 1프레임 후 dim.
+    /// </summary>
+    public class StaffProjectileExplosionDimmer : MonoBehaviour
+    {
+        public float DimFactor = 0.7f;
+        private Vector3 _lastPos;
+
+        private void LateUpdate() { _lastPos = transform.position; }
+
+        private void OnDestroy()
+        {
+            if (SkillTreeInputListener.Instance != null)
+                SkillTreeInputListener.Instance.StartCoroutine(DimExplosion(_lastPos, DimFactor));
+        }
+
+        private static System.Collections.IEnumerator DimExplosion(Vector3 hitPos, float factor)
+        {
+            yield return null; // 폭발 VFX 생성 대기 (1프레임)
+
+            var allPS = UnityEngine.Object.FindObjectsOfType<ParticleSystem>();
+            foreach (var ps in allPS)
+            {
+                if (ps == null) continue;
+                var root = ps.transform.root.gameObject;
+                // 이미 dim 적용됐거나 거리 5m 초과이면 스킵
+                if (root.GetComponent<VFXDimmerBehaviour>() != null) continue;
+                if (Vector3.Distance(root.transform.position, hitPos) > 5f) continue;
+                SimpleVFX.ApplyVFXDim(root, factor);
+            }
         }
     }
 }

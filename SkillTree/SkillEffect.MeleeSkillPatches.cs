@@ -77,6 +77,9 @@ namespace CaptainSkillTree.SkillTree
 
                 // 암살술 - 3연속 공격 시 스태거 발동
                 Knife_Skill.ApplyKnifeAssassinationBonus(player, __instance);
+
+                // 약점폭발 - 공격 적중 시 스택 누적
+                KnifeStackExplosion.AddStack(player, __instance);
             }
             catch (Exception ex)
             {

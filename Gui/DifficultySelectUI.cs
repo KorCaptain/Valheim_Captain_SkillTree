@@ -104,9 +104,17 @@ namespace CaptainSkillTree.Gui
         }
 
         // ────── 선택 핸들러 ──────
-        private void OnNormal()   { DifficultyManager.ApplyNormal();   Destroy(gameObject); }
-        private void OnVeryHard() { DifficultyManager.ApplyVeryHard(); Destroy(gameObject); }
-        private void OnUser()     { DifficultyManager.ApplyUser();     Destroy(gameObject); }
+        private bool _selected = false;
+
+        private void OnNormal()   { _selected = true; DifficultyManager.ApplyNormal();   Destroy(gameObject); }
+        private void OnVeryHard() { _selected = true; DifficultyManager.ApplyVeryHard(); Destroy(gameObject); }
+        private void OnUser()     { _selected = true; DifficultyManager.ApplyUser();     Destroy(gameObject); }
+
+        private void OnDestroy()
+        {
+            if (!_selected)
+                DifficultyManager.ApplyVeryHard(); // 선택 없이 창이 닫힌 경우 기본 베리하드 적용
+        }
 
         // ────── 레이아웃 헬퍼 ──────
 

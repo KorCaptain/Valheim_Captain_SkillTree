@@ -154,12 +154,12 @@ namespace CaptainSkillTree.MMO_System
             int monsterLevel = CaptainMonsterExp.GetLevel(monsterName);
             int starLevel = monster.GetLevel() - 1;
 
-            float lvlBonus = CaptainLevelConfig.ExpForLvlMonster.Value;
+            float lvlBonus = CaptainLevelConfig.ExpForLvlMonsterValue;
             int resultExp = baseExp + (int)(maxExp * lvlBonus * starLevel);
 
             int playerLevel = CaptainLevelSystem.Instance.Level;
-            int maxRange = playerLevel + CaptainLevelConfig.MaxLevelExp.Value;
-            int minRange = playerLevel - CaptainLevelConfig.MinLevelExp.Value;
+            int maxRange = playerLevel + CaptainLevelConfig.MaxLevelExpValue;
+            int minRange = playerLevel - CaptainLevelConfig.MinLevelExpValue;
 
             if (monsterLevel > maxRange || monsterLevel < minRange)
             {

@@ -76,7 +76,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 PlayStompVFX(playerPos, vfxDuration);
-                player.StartCoroutine(PlayStompSFX(playerPos));
+                VFXManager.PlayVFXMultiplayer("sfx_metal_blocked", "", playerPos);
 
                 if (hitEnemies.Count > 0)
                 {
@@ -135,8 +135,7 @@ namespace CaptainSkillTree.SkillTree
                     hitEnemies.Add(enemy);
                 }
 
-                VFXManager.PlayVFXMultiplayer("fx_Fader_CorpseExplosion", "", playerPos);
-                player.StartCoroutine(PlayStompSFX(playerPos));
+                VFXManager.PlayVFXMultiplayer("fx_fenring_icenova", "", playerPos);
 
                 if (hitEnemies.Count > 0)
                     player.Message(MessageHud.MessageType.Center,
@@ -160,27 +159,6 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        private static IEnumerator PlayStompSFX(Vector3 position)
-        {
-            var sfxPrefab = ZNetScene.instance?.GetPrefab("sfx_metal_blocked");
-            if (sfxPrefab != null)
-            {
-                var sfxObj1 = UnityEngine.Object.Instantiate(sfxPrefab, position, Quaternion.identity);
-                var znetView1 = sfxObj1?.GetComponent<ZNetView>();
-                if (znetView1 != null) UnityEngine.Object.DestroyImmediate(znetView1);
-                if (sfxObj1 != null) UnityEngine.Object.Destroy(sfxObj1, 3f);
-            }
-
-            yield return new WaitForSeconds(0.1f);
-
-            if (sfxPrefab != null)
-            {
-                var sfxObj2 = UnityEngine.Object.Instantiate(sfxPrefab, position, Quaternion.identity);
-                var znetView2 = sfxObj2?.GetComponent<ZNetView>();
-                if (znetView2 != null) UnityEngine.Object.DestroyImmediate(znetView2);
-                if (sfxObj2 != null) UnityEngine.Object.Destroy(sfxObj2, 3f);
-            }
-        }
 
         private static IEnumerator ReleaseTauntAfterDelay(BaseAI ai, float delay)
         {

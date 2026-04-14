@@ -473,27 +473,6 @@ namespace CaptainSkillTree.SkillTree
             // 시전자 본인에게도 힐링 오라 효과 추가 (도트 힐 지속시간과 동일)
             CreatePaladinAuraEffect(player, Paladin_Config.HealDurationValue);
 
-            // 시전자 VFX: healing 1초 순간 이펙트 + buff_03a_aura 3개 (도트힐 지속)
-            try
-            {
-                // healing: 1초 후 자동 소멸
-                SimpleVFX.PlayOnPlayer(player, "healing", 1f, new Vector3(0f, 0f, 0f));
-
-                // buff_03a_aura: 왼쪽 어깨 / 머리 위 / 오른쪽 어깨 - 도트힐 종료 시 명시적 Destroy
-                if (s_auraVFXLeft != null) { UnityEngine.Object.Destroy(s_auraVFXLeft); s_auraVFXLeft = null; }
-                if (s_auraVFXHead != null) { UnityEngine.Object.Destroy(s_auraVFXHead); s_auraVFXHead = null; }
-                if (s_auraVFXRight != null) { UnityEngine.Object.Destroy(s_auraVFXRight); s_auraVFXRight = null; }
-                float healDur = Paladin_Config.HealDurationValue;
-                s_auraVFXLeft  = SimpleVFX.PlayOnPlayer(player, "buff_03a_aura", healDur + 1f, new Vector3(-0.3f, 1.5f, 0f));
-                s_auraVFXHead  = SimpleVFX.PlayOnPlayer(player, "buff_03a_aura", healDur + 1f, new Vector3(0f, 1.8f, 0f));
-                s_auraVFXRight = SimpleVFX.PlayOnPlayer(player, "buff_03a_aura", healDur + 1f, new Vector3(0.3f, 1.5f, 0f));
-                player.StartCoroutine(StopCasterAuraVFXAfterDelay(healDur));
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[성기사] 시전자 VFX 실패: {ex.Message}");
-            }
-            
             if (Paladin_Config.ShowHealNumbersValue)
             {
                 ShowMessage(player, L.Get("job_self_heal", $"{selfHealAmount:F0}"));
@@ -529,9 +508,6 @@ namespace CaptainSkillTree.SkillTree
             ActiveSkillCooldownRegistry.SetCooldown("Y", cooldown);
 
             ShowMessage(player, L.Get("job_paladin_heal_success", healedCount));
-            
-            // 기존 샤먼 이팩트 유지
-            PlayJobEffect(player, "fx_greydwarf_shaman_heal", player.transform.position);
         }
 
 
@@ -555,15 +531,14 @@ namespace CaptainSkillTree.SkillTree
             bool showProgress = Paladin_Config.ShowHealProgressValue;
             
             // 성기사 전용 힐링 오라 효과 추가 (도트 힐 동안 지속)
-            GameObject personalAuraEffect = null;
             GameObject allyAuraLeft = null;
             GameObject allyAuraHead = null;
             GameObject allyAuraRight = null;
             try
             {
-                personalAuraEffect = CreatePaladinAuraEffect(target, healDuration);
+                CreatePaladinAuraEffect(target, healDuration);
 
-                // buff_03a_aura: 아군 왼쪽 어깨 / 머리 위 / 오른쪽 어깨 (도트힐 종료 시 명시적 Destroy)
+                // buff_03a_aura: 아군 왼쪽 어깨 / 머리 위 / 오른쪽 어깨
                 allyAuraLeft  = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(-0.3f, 1.5f, 0f));
                 allyAuraHead  = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(0f, 1.8f, 0f));
                 allyAuraRight = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(0.3f, 1.5f, 0f));
@@ -632,7 +607,6 @@ namespace CaptainSkillTree.SkillTree
             if (target != null && !target.IsDead() && showNumbers)
             {
                 ShowMessage(target, L.Get("job_continuous_heal_complete"));
-                PlayJobEffect(target, "fx_greydwarf_shaman_heal", target.transform.position); // 치유 효과로 변경
             }
 
             // 완료된 코루틴 제거
@@ -655,11 +629,9 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 캐릭터 발밑 위치 계산
-                var footPosition = player.transform.position + Vector3.down * 0.1f;
-
-                // Valheim 내장 VFX + 효과음 재생
-                VFXManager.PlayVFXMultiplayer("vfx_Potion_health_medium", "sfx_Potion_health_large", footPosition, destroyAfter: 2f);
+                // vfx_Potion_health_medium: 캐릭터를 따라다니며 2초 표시
+                SimpleVFX.PlayOnPlayer(player, "vfx_Potion_health_medium", 2f);
+                SimpleVFX.Play("sfx_Potion_health_large", player.transform.position, 2f);
             }
             catch (System.Exception ex)
             {
@@ -675,14 +647,11 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 캐릭터 발밑 위치 계산
-                var footPosition = target.transform.position + Vector3.down * 0.1f;
+                // vfx_Potion_health_medium: 캐릭터를 따라다니며 지속 표시
+                SimpleVFX.PlayOnPlayer(target, "vfx_Potion_health_medium", duration);
 
-                // Valheim 내장 VFX 사용 (ZNetView 충돌 방지)
-                SimpleVFX.Play("vfx_Potion_health_medium", footPosition, duration);
-
-                // 커스텀 buff_03a VFX를 캐릭터 발밑에 추가 (도트 힐 지속시간 동안)
-                SimpleVFX.PlayOnPlayer(target, "buff_03a", duration, new Vector3(0f, 0f, 0f));
+                // buff_03a: 캐릭터 발밑 (더 아래로)
+                SimpleVFX.PlayOnPlayer(target, "buff_03a", duration, new Vector3(0f, -0.3f, 0f));
 
                 return null;
             }

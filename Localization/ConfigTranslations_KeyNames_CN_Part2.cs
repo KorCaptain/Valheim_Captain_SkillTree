@@ -399,6 +399,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [旋风] VFX间隔 (秒)",
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [旋风] 冷却时间 (秒)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [旋风] 所需点数",
+                ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [旋风] 最大持续时间 (秒)",
 
                 // ============================================
                 // 弓手职业技能 - 25个键
@@ -580,6 +581,18 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantChance_Lv3"] = "制作专家: 附魔概率 Lv3 (%)",
                 ["Producer_EnchantChance_Lv4"] = "制作专家: 附魔概率 Lv4 (%)",
                 ["Producer_EnchantChance_Lv5"] = "制作专家: 附魔概率 Lv5 (%)",
+
+                // ============================================
+                // Knife Tree - 弱点爆炸 (Tier 9)
+                // ============================================
+                ["Tier9_StackExplosion_DamagePercent"]  = "Tier 9: [弱点爆炸] 每层伤害 (%)",
+                ["Tier9_StackExplosion_MaxStacks"]       = "Tier 9: [弱点爆炸] 最大层数",
+                ["Tier9_StackExplosion_StackDuration"]   = "Tier 9: [弱点爆炸] 层数持续时间 (秒)",
+                ["Tier9_StackExplosion_StaminaCost"]     = "Tier 9: [弱点爆炸] 耐力消耗",
+                ["Tier9_StackExplosion_Cooldown"]        = "Tier 9: [弱点爆炸] 冷却时间 (秒)",
+                ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [弱点爆炸] 所需点数",
+                ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [弱点爆炸] 增益持续时间 (秒)",
+                ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [弱点爆炸] 范围伤害比例 (%)",
             };
         }
     }

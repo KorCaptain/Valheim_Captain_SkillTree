@@ -287,12 +287,20 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 if (__instance != Player.m_localPlayer) return;
-                if (!SkillEffect.HasSkill("polearm_step6_whirlwind")) return;
-                if (!SkillEffect.IsUsingPolearm(__instance)) return;
 
-                // Mouse2 최초 눌림 → 휠윈드 시작
+                // Mouse2 최초 눌림
                 if (Input.GetKeyDown(KeyCode.Mouse2))
                 {
+                    // 단검 약점폭발 버프 활성 → M2로 폭발 (무기·스킬 조건 무관)
+                    if (KnifeStackExplosion.IsBuffActive(__instance))
+                    {
+                        KnifeStackExplosion.TriggerExplosionByM2(__instance);
+                        return;
+                    }
+
+                    // 폴암 휠윈드
+                    if (!SkillEffect.HasSkill("polearm_step6_whirlwind")) return;
+                    if (!SkillEffect.IsUsingPolearm(__instance)) return;
                     SkillEffect.UseWhirlwindSkill(__instance);
                 }
             }

@@ -49,6 +49,16 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> KnifeAssassinHeartAttackCount;
         public static ConfigEntry<float> KnifeAssassinHeartAttackInterval;
 
+        // === 약점폭발 (H키 액티브 스킬) 설정 ===
+        public static ConfigEntry<int>   KnifeStackExplosionRequiredPoints;
+        public static ConfigEntry<float> KnifeStackExplosionStaminaCost;
+        public static ConfigEntry<float> KnifeStackExplosionCooldown;
+        public static ConfigEntry<float> KnifeStackExplosionDamagePercent;
+        public static ConfigEntry<int>   KnifeStackExplosionMaxStacks;
+        public static ConfigEntry<float> KnifeStackExplosionStackDuration;
+        public static ConfigEntry<float> KnifeStackExplosionBuffDuration;
+        public static ConfigEntry<float> KnifeStackExplosionAoePercent;
+
         #endregion
 
         #region Dynamic Value Properties (MMO 연동)
@@ -90,6 +100,16 @@ namespace CaptainSkillTree.SkillTree
         public static float KnifeAssassinHeartStunDurationValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_stun_duration", KnifeAssassinHeartStunDuration?.Value ?? 1f);
         public static int KnifeAssassinHeartAttackCountValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_count", (float)(KnifeAssassinHeartAttackCount?.Value ?? 3));
         public static float KnifeAssassinHeartAttackIntervalValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_interval", KnifeAssassinHeartAttackInterval?.Value ?? 0.3f);
+
+        // === 약점폭발 동적 값 ===
+        public static int   KnifeStackExplosionRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step10_required_points", (float)(KnifeStackExplosionRequiredPoints?.Value ?? 3));
+        public static float KnifeStackExplosionStaminaCostValue    => SkillTreeConfig.GetEffectiveValue("knife_step10_stamina_cost", KnifeStackExplosionStaminaCost?.Value ?? 15f);
+        public static float KnifeStackExplosionCooldownValue       => SkillTreeConfig.GetEffectiveValue("knife_step10_cooldown", KnifeStackExplosionCooldown?.Value ?? 45f);
+        public static float KnifeStackExplosionDamagePercentValue  => SkillTreeConfig.GetEffectiveValue("knife_step10_damage_percent", KnifeStackExplosionDamagePercent?.Value ?? 60f);
+        public static int   KnifeStackExplosionMaxStacksValue      => (int)SkillTreeConfig.GetEffectiveValue("knife_step10_max_stacks", (float)(KnifeStackExplosionMaxStacks?.Value ?? 7));
+        public static float KnifeStackExplosionStackDurationValue  => SkillTreeConfig.GetEffectiveValue("knife_step10_stack_duration", KnifeStackExplosionStackDuration?.Value ?? 4f);
+        public static float KnifeStackExplosionBuffDurationValue   => SkillTreeConfig.GetEffectiveValue("knife_step10_buff_duration", KnifeStackExplosionBuffDuration?.Value ?? 12f);
+        public static float KnifeStackExplosionAoePercentValue     => SkillTreeConfig.GetEffectiveValue("knife_step10_aoe_percent", KnifeStackExplosionAoePercent?.Value ?? 45f);
 
         #endregion
 
@@ -305,6 +325,55 @@ namespace CaptainSkillTree.SkillTree
                     3,
                     SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_RequiredPoints"));
 
+                // === Tier 9: 약점폭발 (H키 액티브) ===
+                KnifeStackExplosionDamagePercent = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_DamagePercent",
+                    60f,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_DamagePercent"));
+
+                KnifeStackExplosionMaxStacks = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_MaxStacks",
+                    7,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_MaxStacks"));
+
+                KnifeStackExplosionStackDuration = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_StackDuration",
+                    4f,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_StackDuration"));
+
+                KnifeStackExplosionStaminaCost = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_StaminaCost",
+                    15f,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_StaminaCost"));
+
+                KnifeStackExplosionCooldown = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_Cooldown",
+                    45f,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_Cooldown"));
+
+                KnifeStackExplosionRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_RequiredPoints",
+                    3,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_RequiredPoints"));
+
+                KnifeStackExplosionBuffDuration = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_BuffDuration",
+                    12f,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_BuffDuration"));
+
+                KnifeStackExplosionAoePercent = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_AoePercent",
+                    45f,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_AoePercent"));
+
                 Plugin.Log.LogDebug("[단검 컨피그] 모든 설정 로드 완료");
 
                 // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
@@ -366,6 +435,16 @@ namespace CaptainSkillTree.SkillTree
                 KnifeAssassinHeartStunDuration.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
                 KnifeAssassinHeartAttackCount.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
                 KnifeAssassinHeartAttackInterval.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+
+                // 약점폭발 이벤트 핸들러
+                KnifeStackExplosionRequiredPoints.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeStackExplosionStaminaCost.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeStackExplosionCooldown.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeStackExplosionDamagePercent.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeStackExplosionMaxStacks.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeStackExplosionStackDuration.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeStackExplosionBuffDuration.SettingChanged  += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeStackExplosionAoePercent.SettingChanged   += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
 
                 Plugin.Log.LogDebug("[단검 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화");
             }

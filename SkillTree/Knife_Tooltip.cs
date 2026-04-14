@@ -203,6 +203,36 @@ namespace CaptainSkillTree.SkillTree
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
         }
 
+        /// <summary>
+        /// 약점폭발 툴팁 생성 (H키 액티브 스킬)
+        /// </summary>
+        public static string GetKnifeStackExplosionTooltip()
+        {
+            var staminaCost    = Knife_Config.KnifeStackExplosionStaminaCostValue;
+            var cooldown       = Knife_Config.KnifeStackExplosionCooldownValue;
+            var requiredPoints = Knife_Config.KnifeStackExplosionRequiredPointsValue;
+            var maxStacks      = Knife_Config.KnifeStackExplosionMaxStacksValue;
+            var stackDuration  = Knife_Config.KnifeStackExplosionStackDurationValue;
+            var buffDuration   = Knife_Config.KnifeStackExplosionBuffDurationValue;
+            var damagePercent  = Knife_Config.KnifeStackExplosionDamagePercentValue;
+            var aoePercent     = Knife_Config.KnifeStackExplosionAoePercentValue;
+
+            var data = MeleeTooltipUtils.CreateActiveSkillData(
+                $"<color=#FF6600><size=22>{L.Get("knife_skill_stack_explosion")}</size></color>",
+                L.Get("knife_desc_stack_explosion_detail", maxStacks, stackDuration, buffDuration, damagePercent, aoePercent),
+                $"{staminaCost}",
+                $"{cooldown}{L.Get("unit_seconds")}",
+                MeleeTooltipUtils.WeaponType.Knife,
+                L.Get("knife_desc_stack_explosion_note")
+            );
+            data.requirement    = L.Get("requirement_knife_claw");
+            data.requiredPoints = requiredPoints.ToString();
+            data.skillType      = L.Get("skill_type_active_key", "H");
+            data.confirmation   = L.Get("tooltip_same_weapon_only");
+
+            return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
+        }
+
         #endregion
 
         #region 통합 툴팁 생성
@@ -232,7 +262,8 @@ namespace CaptainSkillTree.SkillTree
             { "knife_step6_combat_damage", GetKnifeCombatDamageTooltip },
             { "knife_step7_execution", GetKnifeExecutionTooltip },
             { "knife_step8_assassination", GetKnifeAssassinationTooltip },
-            { "knife_step9_assassin_heart", GetKnifeAssassinHeartTooltip }
+            { "knife_step9_assassin_heart", GetKnifeAssassinHeartTooltip },
+            { "knife_step10_stack_explosion", GetKnifeStackExplosionTooltip }
         };
 
         #endregion

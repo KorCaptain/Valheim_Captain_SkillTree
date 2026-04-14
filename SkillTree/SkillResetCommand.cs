@@ -15,7 +15,7 @@ namespace CaptainSkillTree.SkillTree
     {
         public override string Name => "skillreset";
 
-        public override string Help => "스킬 초기화 (관리자 전용): skillreset <플레이어이름>";
+        public override string Help => "스킬 초기화 (관리자 전용): skillreset <플레이어이름>  ※생산 전문가 스킬 제외";
 
         public override bool IsCheat => true; // 관리자 전용 (devcommands 필요)
 
@@ -320,10 +320,11 @@ namespace CaptainSkillTree.SkillTree
                     // 백업 생성 (복구용)
                     CreateSkillBackup(targetPlayer);
 
-                    // SkillTreeManager.ResetAllSkillLevels() 메서드 호출
-                    skillTreeManager.ResetAllSkillLevels();
+                    // 일반 스킬 포인트 초기화 (생산 전문가 제외) + 직업 스킬 초기화
+                    skillTreeManager.ResetAllSkillLevelsExceptProduction();
+                    skillTreeManager.ResetJobSkillLevels();
 
-                    Plugin.Log.LogInfo($"[스킬 초기화] SkillTreeManager.ResetAllSkillLevels() 호출 완료");
+                    Plugin.Log.LogInfo($"[스킬 초기화] 스킬 포인트 + 직업 초기화 완료 (생산 전문가 제외)");
                 }
                 else
                 {

@@ -3,10 +3,10 @@
   "suggestions": [
     {
       "id": "btw-001",
-      "timestamp": "2026-04-02T00:00:00Z",
-      "suggestion": "User_CaptainSkillTree.SkillTreeMod.cfg 는 어디서 나온거야?",
+      "timestamp": "2026-04-15T00:00:00Z",
+      "suggestion": "이 스킬들 효과는 나맘 보이는거야 다른 사람은 안보이고?",
       "context": {
-        "file": "DifficultyManager.cs",
+        "file": "SkillEffect.PolearmWhirlwind.cs, SkillEffect.ArrowRain.cs, MaceSkills.FuryHammer.cs, Mace_Active.cs, SkillEffect.ExplosiveArrow.cs",
         "pdcaPhase": "do",
         "feature": "SkillTree"
       },

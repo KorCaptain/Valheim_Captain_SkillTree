@@ -102,8 +102,8 @@ namespace CaptainSkillTree.MMO_System
 
                 // 플레이어 레벨 가져오기
                 int playerLevel = CaptainLevelSystem.Instance?.Level ?? 1;
-                int maxLevelExp = playerLevel + CaptainLevelConfig.MaxLevelExp.Value;
-                int minLevelExp = playerLevel - CaptainLevelConfig.MinLevelExp.Value;
+                int maxLevelExp = playerLevel + CaptainLevelConfig.MaxLevelExpValue;
+                int minLevelExp = playerLevel - CaptainLevelConfig.MinLevelExpValue;
 
                 // Name 오브젝트 찾기
                 GameObject nameComponent = hudGui.transform.Find("Name")?.gameObject;
@@ -216,8 +216,8 @@ namespace CaptainSkillTree.MMO_System
 
                     // 플레이어 레벨 비교
                     int playerLevel = CaptainLevelSystem.Instance?.Level ?? 1;
-                    int maxLevelExp = playerLevel + CaptainLevelConfig.MaxLevelExp.Value;
-                    int minLevelExp = playerLevel - CaptainLevelConfig.MinLevelExp.Value;
+                    int maxLevelExp = playerLevel + CaptainLevelConfig.MaxLevelExpValue;
+                    int minLevelExp = playerLevel - CaptainLevelConfig.MinLevelExpValue;
 
                     // WackyMMO 방식: 레벨 0이면 ??? 표시
                     string levelString;

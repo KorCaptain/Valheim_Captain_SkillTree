@@ -864,6 +864,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [휠윈드] VFX 간격 (초)",
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [휠윈드] 쿨타임 (초)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [휠윈드] 필요 포인트",
+                ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [휠윈드] 최대 지속 시간 (초)",
 
                 // ============================================
                 // Archer Job Skills (아처 직업 스킬) - 8개
@@ -1114,6 +1115,21 @@ namespace CaptainSkillTree.Localization
                 ["Job_Lv3_Cost"] = "직업 Lv3 코인 비용",
                 ["Job_Lv4_Cost"] = "직업 Lv4 코인 비용",
                 ["Job_Lv5_Cost"] = "직업 Lv5 코인 비용",
+                ["Job_Reset_Cost"]    = "직업스킬 포인트 초기화 비용",
+                ["Active_Reset_Cost"] = "액티브스킬 포인트 초기화 비용",
+                ["Passive_Reset_Cost"]= "패시브스킬 포인트 초기화 비용",
+
+                // ============================================
+                // Knife Tree - 약점폭발 (Tier 9)
+                // ============================================
+                ["Tier9_StackExplosion_DamagePercent"]  = "Tier 9: [약점폭발] 스택당 피해 (%)",
+                ["Tier9_StackExplosion_MaxStacks"]       = "Tier 9: [약점폭발] 최대 스택 수",
+                ["Tier9_StackExplosion_StackDuration"]   = "Tier 9: [약점폭발] 스택 유지시간 (초)",
+                ["Tier9_StackExplosion_StaminaCost"]     = "Tier 9: [약점폭발] 스테미나 소모",
+                ["Tier9_StackExplosion_Cooldown"]        = "Tier 9: [약점폭발] 쿨타임 (초)",
+                ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [약점폭발] 필요 포인트",
+                ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [약점폭발] 버프 지속시간 (초)",
+                ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [약점폭발] 광역 피해 비율 (%)",
 
             };
         }

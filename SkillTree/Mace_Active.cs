@@ -113,7 +113,14 @@ namespace CaptainSkillTree.SkillTree
                     zanim.SetBool("blocking", true);
 
                 // 3. 시전 VFX + 사운드
-                VFXManager.PlayVFXMultiplayer("fx_shieldgenerator_domehit", "", player.GetCenterPoint(), Quaternion.identity, 2f);
+                {
+                    var _shieldPrefab = ZNetScene.instance?.GetPrefab("fx_shieldgenerator_domehit");
+                    if (_shieldPrefab != null)
+                    {
+                        var _shieldGo = UnityEngine.Object.Instantiate(_shieldPrefab, player.GetCenterPoint(), Quaternion.identity);
+                        SimpleVFX.ApplyVFXDim(_shieldGo, SkillTreeConfig.VFXOpacityValue);
+                    }
+                }
                 VFXManager.PlayVFXMultiplayer("sfx_fader_taunt", "", player.GetCenterPoint(), Quaternion.identity, 2f);
 
                 // 5. Rigidbody 가져오기 (physics-safe 이동)
@@ -158,7 +165,12 @@ namespace CaptainSkillTree.SkillTree
                 // 돌진 중 VFX 0.05초마다 반복 재생 (연속 돔 이펙트)
                 if (vfxTimer >= 0.05f)
                 {
-                    VFXManager.PlayVFXMultiplayer("fx_shieldgenerator_domehit", "", player.GetCenterPoint(), Quaternion.identity, 2f);
+                    var _shieldPrefab2 = ZNetScene.instance?.GetPrefab("fx_shieldgenerator_domehit");
+                    if (_shieldPrefab2 != null)
+                    {
+                        var _shieldGo2 = UnityEngine.Object.Instantiate(_shieldPrefab2, player.GetCenterPoint(), Quaternion.identity);
+                        SimpleVFX.ApplyVFXDim(_shieldGo2, SkillTreeConfig.VFXOpacityValue);
+                    }
                     vfxTimer = 0f;
                 }
 

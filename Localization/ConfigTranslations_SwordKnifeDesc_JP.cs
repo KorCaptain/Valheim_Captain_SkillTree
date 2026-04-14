@@ -462,6 +462,12 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier8_AssassinHeart_RequiredPoints"] =
                 "【必要ポイント】\nアサシンハートを解放するための必要ポイントです。",
+
+                ["Tier9_StackExplosion_AoePercent"] =
+                "【範囲ダメージ率（%）】\n" +
+                "Hキー爆発時に7m以内の敵への範囲ダメージ割合です。\n" +
+                "合計ダメージ × (値 / 100) = 範囲ダメージ\n" +
+                "推奨: 30-50%",
             };
         }
     }

@@ -24,6 +24,21 @@ namespace CaptainSkillTree.SkillTree
         private const float TREE_COOLDOWN = 1f; // 1초 쿨다운
 
         /// <summary>
+        /// processedTrees에서 만료된 항목 제거 (메모리 누수 방지)
+        /// 항목 추가 시마다 호출 (lazy cleanup)
+        /// </summary>
+        private static void CleanupExpiredEntries(float currentTime)
+        {
+            if (processedTrees.Count < 20) return; // 항목 적으면 건너뜀
+            var expired = new System.Collections.Generic.List<int>();
+            foreach (var kvp in processedTrees)
+                if (currentTime - kvp.Value > TREE_COOLDOWN * 2)
+                    expired.Add(kvp.Key);
+            foreach (var key in expired)
+                processedTrees.Remove(key);
+        }
+
+        /// <summary>
         /// 벌목 시 추가 나무 획득 처리 (TreeLog 파괴 시 - 드롭 시점)
         /// EpicLoot 방식 참고: 실제 아이템 드롭 시점에 보너스 적용
         /// </summary>
@@ -49,6 +64,7 @@ namespace CaptainSkillTree.SkillTree
                     if (processedTrees.ContainsKey(treeId) &&
                         currentTime - processedTrees[treeId] < TREE_COOLDOWN) return;
 
+                    CleanupExpiredEntries(currentTime);
                     processedTrees[treeId] = currentTime;
 
                     // 실제 드롭 위치에서 보너스 아이템 생성 (EpicLoot 방식)
@@ -93,6 +109,7 @@ namespace CaptainSkillTree.SkillTree
                     if (processedTrees.ContainsKey(treeId) &&
                         currentTime - processedTrees[treeId] < TREE_COOLDOWN) return;
 
+                    CleanupExpiredEntries(currentTime);
                     processedTrees[treeId] = currentTime;
 
                     TryDropExtraWood(hit.GetAttacker(), __instance.m_dropWhenDestroyed, __instance.transform.position);
@@ -106,28 +123,25 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 채집 시 추가 자원 획득 처리 (Pickable 아이템 채집 시)
-        /// Publicized Assembly를 통해 RPC_Pick 접근 가능
+        /// RPC_Pick은 ZDO 소유자(서버)에서만 실행되므로 클라이언트 사이드인 Interact 패치 사용
         /// </summary>
-        [HarmonyPatch(typeof(Pickable), "RPC_Pick")]
-        public static class Pickable_Pick_Patch
+        [HarmonyPatch(typeof(Pickable), nameof(Pickable.Interact))]
+        public static class Pickable_Interact_Patch
         {
-            // 수확 가능 상태였던 Pickable ID 추적 (빈 덤불 E키 오발동 방지)
-            private static readonly HashSet<int> pendingPickIds = new HashSet<int>();
-
             [HarmonyPriority(Priority.Low)]
-            public static void Prefix(Pickable __instance)
+            public static void Prefix(Pickable __instance, Humanoid character, out bool __state)
             {
-                // 수확 전: ZDO 기반 수확 상태 확인 (GetPicked() = false일 때만 등록)
-                // GetPicked() = true → 이미 수확된 빈 덤불 → 등록 안 함 (E키 오발동 방지)
-                if (!__instance.GetPicked() && __instance.m_itemPrefab != null)
-                    pendingPickIds.Add(__instance.GetInstanceID());
+                // 채집 전 상태 저장: 로컬 플레이어가 채집 가능한 아이템인지 확인
+                // GetPicked() = true → 이미 수확된 빈 덤불 → false 저장 (오발동 방지)
+                __state = (character == Player.m_localPlayer)
+                       && !__instance.GetPicked()
+                       && __instance.m_itemPrefab != null;
             }
 
             [HarmonyPriority(Priority.Low)]
-            public static void Postfix(Pickable __instance)
+            public static void Postfix(Pickable __instance, Humanoid character, bool __state)
             {
-                int id = __instance.GetInstanceID();
-                if (!pendingPickIds.Remove(id)) return; // 아이템 없었으면 조기 리턴
+                if (!__state) return; // 로컬 플레이어 채집이 아니었거나 빈 덤불
 
                 try
                 {
@@ -179,6 +193,7 @@ namespace CaptainSkillTree.SkillTree
                     if (processedTrees.ContainsKey(rockId) &&
                         currentTime - processedTrees[rockId] < TREE_COOLDOWN) return;
 
+                    CleanupExpiredEntries(currentTime);
                     processedTrees[rockId] = currentTime;
 
                     // 채광 보너스 적용 (광석 종류에 따라 다름)
@@ -219,6 +234,7 @@ namespace CaptainSkillTree.SkillTree
                     if (processedTrees.ContainsKey(rockId) &&
                         currentTime - processedTrees[rockId] < TREE_COOLDOWN) return;
 
+                    CleanupExpiredEntries(currentTime);
                     processedTrees[rockId] = currentTime;
 
                     // 채광 보너스 적용
@@ -259,6 +275,7 @@ namespace CaptainSkillTree.SkillTree
                     if (processedTrees.ContainsKey(objId) &&
                         currentTime - processedTrees[objId] < TREE_COOLDOWN) return;
 
+                    CleanupExpiredEntries(currentTime);
                     processedTrees[objId] = currentTime;
 
                     // 파괴 가능한 광석인지 확인 후 보너스 적용
@@ -422,7 +439,9 @@ namespace CaptainSkillTree.SkillTree
             if (totalChance <= 0f) return;
 
             // 확률 체크 및 드롭
-            if (UnityEngine.Random.Range(0f, 1f) < totalChance)
+            bool hit = UnityEngine.Random.Range(0f, 1f) < totalChance;
+            Plugin.Log.LogInfo($"[생산 효과] 채집 판정 - {effectSource}: {totalChance*100:F0}%={hit} ({resourceName})");
+            if (hit)
             {
                 DropResourceItem(resourceName, dropPosition, effectSource);
             }

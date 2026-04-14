@@ -2587,6 +2587,7 @@ namespace CaptainSkillTree.SkillTree
         // 누락된 함수들 추가 (빈 구현)
         public void HandleActiveSkillKeyInput()
         {
+            if (SkillTreeInputListener_KeyPatch.IsChatOrConsoleOpen()) return;
             // Y키 직업 액티브 스킬 처리 - JobSkills로 위임
             var player = Player.m_localPlayer;
             if (player != null && !player.IsDead())

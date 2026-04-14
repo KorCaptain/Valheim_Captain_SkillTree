@@ -342,8 +342,8 @@ namespace CaptainSkillTree.SkillTree
                             sfxName = "sfx_sledge_iron_hit";
                             duration = 2f;
                             break;
-                        case 4: // 5타: 최종 폭발 + 철제 둔기 타격음
-                            vfxName = "fx_siegebomb_explosion";
+                        case 4: // 5타: 최종 폭발 + 철제 둔기 타격음 (VFX는 별도 처리)
+                            vfxName = "";
                             sfxName = "sfx_sledge_iron_hit";
                             duration = 3f;
                             break;
@@ -358,6 +358,18 @@ namespace CaptainSkillTree.SkillTree
                     Vector3 hitPosition = player.transform.position + player.GetLookDir() * 2f;
 
                     SimpleVFX.PlayWithSound(vfxName, sfxName, hitPosition, duration);
+
+                    // 5타(i==4): fx_siegebomb_explosion dim 적용
+                    if (i == 4)
+                    {
+                        var _siegePrefab = ZNetScene.instance?.GetPrefab("fx_siegebomb_explosion");
+                        if (_siegePrefab != null)
+                        {
+                            var _siegeGo = UnityEngine.Object.Instantiate(_siegePrefab, hitPosition, Quaternion.identity);
+                            SimpleVFX.ApplyVFXDim(_siegeGo, SkillTreeConfig.VFXOpacityValue);
+                            // ⚠️ Destroy 생략 — 발헤임 기본 VFX 자동 정리
+                        }
+                    }
 
                     // 마지막 공격만 0.5초 대기 후 데미지
                     if (isLastAttack)

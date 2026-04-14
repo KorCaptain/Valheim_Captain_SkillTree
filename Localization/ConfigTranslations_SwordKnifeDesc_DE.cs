@@ -462,6 +462,12 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier8_AssassinHeart_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Assassinenherzens.",
+
+                ["Tier9_StackExplosion_AoePercent"] =
+                "【Flächenschaden-Verhältnis (%)】\n" +
+                "Anteil des Hauptschadens als Flächenschaden an Feinden in 7m bei H-Explosion.\n" +
+                "Gesamtschaden × (Wert / 100) = Flächenschaden\n" +
+                "Empfehlung: 30-50%",
             };
         }
     }

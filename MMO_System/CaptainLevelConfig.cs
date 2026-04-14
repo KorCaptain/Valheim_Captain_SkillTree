@@ -1,6 +1,7 @@
 using System.IO;
 using BepInEx;
 using BepInEx.Configuration;
+using CaptainSkillTree.SkillTree;
 
 namespace CaptainSkillTree.MMO_System
 {
@@ -169,6 +170,20 @@ namespace CaptainSkillTree.MMO_System
         /// JSON 기본 파일 생성 여부
         /// </summary>
         public static ConfigEntry<bool> GenerateJsonFiles;
+
+        #endregion
+
+        #region === 서버싱크 Value 래퍼 ===
+
+        public static int   MaxLevelValue             => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_MaxLevel",             MaxLevel?.Value             ?? 100);
+        public static int   LevelExpValue             => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_LevelExp",             LevelExp?.Value             ?? 300);
+        public static float MultiNextLevelValue       =>      SkillTreeConfig.GetEffectiveValue("CaptainLevel_MultiNextLevel",       MultiNextLevel?.Value       ?? 1.05f);
+        public static float RateExpValue              =>      SkillTreeConfig.GetEffectiveValue("CaptainLevel_RateExp",              RateExp?.Value              ?? 1.0f);
+        public static int   MaxLevelExpValue          => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_MaxLevelExp",          MaxLevelExp?.Value          ?? 10);
+        public static int   MinLevelExpValue          => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_MinLevelExp",          MinLevelExp?.Value          ?? 10);
+        public static float ExpForLvlMonsterValue     =>      SkillTreeConfig.GetEffectiveValue("CaptainLevel_ExpForLvlMonster",     ExpForLvlMonster?.Value     ?? 1.5f);
+        public static int   SkillPointsPerLevelValue  => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_SkillPointsPerLevel",  SkillPointsPerLevel?.Value  ?? 2);
+        public static int   PointsRequiredPerLevelValue => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_PointsRequired",    PointsRequiredPerLevel?.Value ?? 2);
 
         #endregion
 

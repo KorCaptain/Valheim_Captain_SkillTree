@@ -31,6 +31,7 @@ namespace CaptainSkillTree.SkillTree
         public static void HandleRKeySkills(Player player)
         {
             if (player == null || player.IsDead()) return;
+            if (SkillTreeInputListener_KeyPatch.IsChatOrConsoleOpen()) return;
 
             // 원거리 스킬이 없으면 조용히 리턴
             if (!HasSkill("crossbow_Step6_expert") &&
@@ -73,6 +74,7 @@ namespace CaptainSkillTree.SkillTree
         public static void HandleGKeySkills(Player player)
         {
             if (player == null || player.IsDead()) return;
+            if (SkillTreeInputListener_KeyPatch.IsChatOrConsoleOpen()) return;
 
             // === 보유 스킬 우선 라우팅 (스킬을 배웠으면 무기 확인 후 실행) ===
 
@@ -160,6 +162,7 @@ namespace CaptainSkillTree.SkillTree
         public static void HandleHKeySkills(Player player)
         {
             if (player == null || player.IsDead()) return;
+            if (SkillTreeInputListener_KeyPatch.IsChatOrConsoleOpen()) return;
 
             // 0-1. 석궁: 발칸 아이스 (원거리 H키 - 최우선)
             if (HasSkill("crossbow_ice_breath"))
@@ -225,6 +228,18 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
                 ActivateStaffAreaHeal(player);
+                return;
+            }
+
+            // 5. 단검: 약점폭발
+            if (HasSkill("knife_step10_stack_explosion"))
+            {
+                if (!WeaponHelper.IsUsingDagger(player))
+                {
+                    DrawFloatingText(player, L.Get("dagger_equip_required"), Color.red);
+                    return;
+                }
+                KnifeStackExplosion.ActivateStackExplosion(player);
                 return;
             }
 

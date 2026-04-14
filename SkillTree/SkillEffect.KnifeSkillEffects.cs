@@ -26,7 +26,7 @@ namespace CaptainSkillTree.SkillTree
             Vector3 dirToTarget = (target.transform.position - attacker.transform.position).normalized;
             Vector3 targetForward = target.transform.forward;
             float dot = Vector3.Dot(dirToTarget, targetForward);
-            return dot < -0.5f; // 뒤에서 공격 (대상이 공격자 반대 방향을 바라봄)
+            return dot > 0.5f; // 뒤에서 공격 (대상이 공격자 반대 방향을 바라봄)
         }
 
         /// <summary>

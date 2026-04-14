@@ -462,6 +462,12 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier8_AssassinHeart_RequiredPoints"] =
                 "【所需点数】\n解锁刺客之心所需的点数。",
+
+                ["Tier9_StackExplosion_AoePercent"] =
+                "【范围伤害比例（%）】\n" +
+                "H键爆炸时对7m内敌人造成的范围伤害比例。\n" +
+                "总伤害 × (值 / 100) = 范围伤害\n" +
+                "推荐：30-50%",
             };
         }
     }

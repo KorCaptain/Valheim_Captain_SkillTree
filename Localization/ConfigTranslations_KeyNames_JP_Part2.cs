@@ -352,6 +352,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [旋風] VFX間隔 (秒)",
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [旋風] クールダウン (秒)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [旋風] 必要ポイント",
+                ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [旋風] 最大持続時間 (秒)",
 
                 // ============================================
                 // アーチャー職業スキル
@@ -579,6 +580,18 @@ namespace CaptainSkillTree.Localization
                 ["Mage_Lv3_AOE_Max_Targets"] = "アクティブ: 最大ターゲット数 Lv3",
                 ["Mage_Lv4_AOE_Max_Targets"] = "アクティブ: 最大ターゲット数 Lv4",
                 ["Mage_Lv5_AOE_Max_Targets"] = "アクティブ: 最大ターゲット数 Lv5",
+
+                // ============================================
+                // Knife Tree - 弱点爆発 (Tier 9)
+                // ============================================
+                ["Tier9_StackExplosion_DamagePercent"]  = "Tier 9: [弱点爆発] スタック毎ダメージ (%)",
+                ["Tier9_StackExplosion_MaxStacks"]       = "Tier 9: [弱点爆発] 最大スタック数",
+                ["Tier9_StackExplosion_StackDuration"]   = "Tier 9: [弱点爆発] スタック持続時間 (秒)",
+                ["Tier9_StackExplosion_StaminaCost"]     = "Tier 9: [弱点爆発] スタミナ消費",
+                ["Tier9_StackExplosion_Cooldown"]        = "Tier 9: [弱点爆発] クールタイム (秒)",
+                ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [弱点爆発] 必要ポイント",
+                ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [弱点爆発] バフ持続時間 (秒)",
+                ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [弱点爆発] 範囲ダメージ率 (%)",
             };
         }
     }

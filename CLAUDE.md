@@ -10,8 +10,9 @@ Available agents: Arch (Architect), Bob (Builder), Richard (Reviewer)
 
 ## qmd 검색 우선 원칙
 
-> ⚠️ 파일 직접 Read / Glob / Grep 전에 반드시 qmd MCP로 먼저 검색할 것
-> Collection: `C:\home\ssunyme\.npm-global\bin\CaptainSkillTree`
+> ⚠️ 파일 직접 Read / Glob / Grep 전에 반드시 qmd MCP로 먼저 검색할 것  
+> Collection: `C:\home\ssunyme\.npm-global\bin\CaptainSkillTree`  
+> 전체 파일 목록·주제별 치트시트: **`md/qmd_direct.md`** (69개 파일 카탈로그)
 
 ### 용도별 쿼리 타입
 

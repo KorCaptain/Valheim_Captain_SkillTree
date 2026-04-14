@@ -32,12 +32,14 @@ namespace CaptainSkillTree.Gui
             "spear_unlock", "polearm_unlock", "defense_unlock"
         };
         private static readonly string[] HSkillIds = {
+            "knife_step10_stack_explosion",
             "crossbow_ice_breath",
             "sword_step5_defswitch", "spear_Step5_combo",
             "mace_Step7_fury_hammer", "staff_Step6_heal",
             "bow_Step6_arrow_rain"
         };
         private static readonly string[] HIconNames = {
+            "attack_unlock",
             "ranged_unlock",
             "defense_unlock", "attack_unlock",
             "mace_unlock", "ranged_unlock",
@@ -358,6 +360,125 @@ namespace CaptainSkillTree.Gui
                 slot.ProducerBuffSubOverlay = buffOverlay;
                 slot.ProducerBuffSubCountdown = buffCount;
                 slot.ProducerBuffSubIconImage = buffIconImg;
+
+                // Y슬롯: 탱커 반사 버프 지속시간 서브 아이콘 (아이콘 우상단, +20, 30)
+                var reflectSubRoot = new GameObject("TankerReflectSubIcon");
+                reflectSubRoot.transform.SetParent(go.transform, false);
+                var reflectSubRt = reflectSubRoot.AddComponent<RectTransform>();
+                reflectSubRt.anchorMin = new Vector2(0.5f, 0.5f);
+                reflectSubRt.anchorMax = new Vector2(0.5f, 0.5f);
+                reflectSubRt.pivot = new Vector2(0.5f, 0.5f);
+                reflectSubRt.anchoredPosition = new Vector2(20f, 30f);  // 우상단 (PassiveSubIcon은 -20f, 30f 좌상단)
+                reflectSubRt.sizeDelta = new Vector2(22f, 22f);
+
+                var reflectBgGO = new GameObject("SubIconBg");
+                reflectBgGO.transform.SetParent(reflectSubRoot.transform, false);
+                var reflectBgImg = reflectBgGO.AddComponent<Image>();
+                reflectBgImg.color = new Color(0.2f, 0.1f, 0f, 0.85f);
+                reflectBgImg.raycastTarget = false;
+                var reflectBgRt = reflectBgGO.GetComponent<RectTransform>();
+                reflectBgRt.anchorMin = Vector2.zero;
+                reflectBgRt.anchorMax = Vector2.one;
+                reflectBgRt.offsetMin = Vector2.zero;
+                reflectBgRt.offsetMax = Vector2.zero;
+
+                var reflectOverlayGO = new GameObject("ReflectOverlay");
+                reflectOverlayGO.transform.SetParent(reflectSubRoot.transform, false);
+                var reflectOverlay = reflectOverlayGO.AddComponent<Image>();
+                reflectOverlay.raycastTarget = false;
+                reflectOverlay.color = new Color(1f, 0.4f, 0f, 0.75f);  // 주황색: 반사 버프
+                reflectOverlay.type = Image.Type.Filled;
+                reflectOverlay.fillMethod = Image.FillMethod.Vertical;
+                reflectOverlay.fillOrigin = (int)Image.OriginVertical.Top;
+                reflectOverlay.fillAmount = 1f;
+                var reflectOverlayRt = reflectOverlayGO.GetComponent<RectTransform>();
+                reflectOverlayRt.anchorMin = Vector2.zero;
+                reflectOverlayRt.anchorMax = Vector2.one;
+                reflectOverlayRt.offsetMin = Vector2.zero;
+                reflectOverlayRt.offsetMax = Vector2.zero;
+
+                var reflectCountGO = new GameObject("ReflectCountdown");
+                reflectCountGO.transform.SetParent(reflectSubRoot.transform, false);
+                var reflectCount = reflectCountGO.AddComponent<Text>();
+                reflectCount.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                reflectCount.fontSize = 12;
+                reflectCount.fontStyle = FontStyle.Bold;
+                reflectCount.color = Color.white;
+                reflectCount.alignment = TextAnchor.MiddleCenter;
+                reflectCount.raycastTarget = false;
+                reflectCount.text = "";
+                var reflectCountRt = reflectCountGO.GetComponent<RectTransform>();
+                reflectCountRt.anchorMin = Vector2.zero;
+                reflectCountRt.anchorMax = Vector2.one;
+                reflectCountRt.offsetMin = Vector2.zero;
+                reflectCountRt.offsetMax = Vector2.zero;
+
+                reflectSubRoot.SetActive(false);
+
+                slot.TankerReflectSubRoot = reflectSubRoot;
+                slot.TankerReflectSubOverlay = reflectOverlay;
+                slot.TankerReflectSubCountdown = reflectCount;
+            }
+
+            // M2슬롯: 휠윈드 지속시간 서브 아이콘 (아이콘 왼쪽 위)
+            if (key == "M2")
+            {
+                var durRoot = new GameObject("DurationSubIcon");
+                durRoot.transform.SetParent(go.transform, false);
+                var durRt = durRoot.AddComponent<RectTransform>();
+                durRt.anchorMin = new Vector2(0.5f, 0.5f);
+                durRt.anchorMax = new Vector2(0.5f, 0.5f);
+                durRt.pivot = new Vector2(0.5f, 0.5f);
+                durRt.anchoredPosition = new Vector2(-20f, 30f);
+                durRt.sizeDelta = new Vector2(22f, 22f);
+
+                var durBgGO = new GameObject("DurationBg");
+                durBgGO.transform.SetParent(durRoot.transform, false);
+                var durBgImg = durBgGO.AddComponent<Image>();
+                durBgImg.color = new Color(0.2f, 0.2f, 0.2f, 0.85f);
+                durBgImg.raycastTarget = false;
+                var durBgRt = durBgGO.GetComponent<RectTransform>();
+                durBgRt.anchorMin = Vector2.zero;
+                durBgRt.anchorMax = Vector2.one;
+                durBgRt.offsetMin = Vector2.zero;
+                durBgRt.offsetMax = Vector2.zero;
+
+                var durOverlayGO = new GameObject("DurationOverlay");
+                durOverlayGO.transform.SetParent(durRoot.transform, false);
+                var durOverlay = durOverlayGO.AddComponent<Image>();
+                durOverlay.raycastTarget = false;
+                durOverlay.color = new Color(0f, 0.6f, 1f, 0.75f);
+                durOverlay.type = Image.Type.Filled;
+                durOverlay.fillMethod = Image.FillMethod.Vertical;
+                durOverlay.fillOrigin = (int)Image.OriginVertical.Top;
+                durOverlay.fillAmount = 1f;
+                var durOverlayRt = durOverlayGO.GetComponent<RectTransform>();
+                durOverlayRt.anchorMin = Vector2.zero;
+                durOverlayRt.anchorMax = Vector2.one;
+                durOverlayRt.offsetMin = Vector2.zero;
+                durOverlayRt.offsetMax = Vector2.zero;
+
+                var durCountGO = new GameObject("DurationCountdown");
+                durCountGO.transform.SetParent(durRoot.transform, false);
+                var durCount = durCountGO.AddComponent<Text>();
+                durCount.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                durCount.fontSize = 12;
+                durCount.fontStyle = FontStyle.Bold;
+                durCount.color = Color.white;
+                durCount.alignment = TextAnchor.MiddleCenter;
+                durCount.raycastTarget = false;
+                durCount.text = "";
+                var durCountRt = durCountGO.GetComponent<RectTransform>();
+                durCountRt.anchorMin = Vector2.zero;
+                durCountRt.anchorMax = Vector2.one;
+                durCountRt.offsetMin = Vector2.zero;
+                durCountRt.offsetMax = Vector2.zero;
+
+                durRoot.SetActive(false);
+
+                slot.DurationSubRoot = durRoot;
+                slot.DurationSubOverlay = durOverlay;
+                slot.DurationSubCountdown = durCount;
             }
 
             return slot;
@@ -474,6 +595,58 @@ namespace CaptainSkillTree.Gui
                 if (slot == null) continue;
                 UpdateScaleAnim(slot);
             }
+
+            // M2슬롯 휠윈드 지속시간 서브 아이콘 (매 프레임 갱신)
+            UpdateWhirlwindDurationSub();
+
+            // Y슬롯 탱커 반사 버프 지속시간 서브 아이콘 (매 프레임 갱신)
+            UpdateTankerReflectSub();
+        }
+
+        private void UpdateTankerReflectSub()
+        {
+            var ySlot = _slots.Length > 0 ? _slots[0] : null;
+            if (ySlot?.TankerReflectSubRoot == null) return;
+            if (Player.m_localPlayer == null) return;
+
+            float rem = TankerReflect.GetTankerReflectRemaining(Player.m_localPlayer);
+            float total = TankerReflect.GetTankerReflectTotalDuration(Player.m_localPlayer);
+
+            if (rem <= 0f || total <= 0f)
+            {
+                ySlot.TankerReflectSubRoot.SetActive(false);
+                return;
+            }
+
+            ySlot.TankerReflectSubRoot.SetActive(true);
+            ySlot.TankerReflectSubOverlay.fillAmount = rem / total;
+            ySlot.TankerReflectSubCountdown.text = Mathf.CeilToInt(rem).ToString();
+        }
+
+        private void UpdateWhirlwindDurationSub()
+        {
+            var m2Slot = _slots.Length > 4 ? _slots[4] : null;
+            if (m2Slot?.DurationSubRoot == null) return;
+
+            float start = SkillEffect.whirlwindDurationStart;
+            float max = SkillEffect.whirlwindDurationMax;
+
+            if (start < 0f || max <= 0f)
+            {
+                m2Slot.DurationSubRoot.SetActive(false);
+                return;
+            }
+
+            float remaining = max - (Time.time - start);
+            if (remaining <= 0f)
+            {
+                m2Slot.DurationSubRoot.SetActive(false);
+                return;
+            }
+
+            m2Slot.DurationSubRoot.SetActive(true);
+            m2Slot.DurationSubOverlay.fillAmount = remaining / max;
+            m2Slot.DurationSubCountdown.text = Mathf.CeilToInt(remaining).ToString();
         }
 
         private void UpdateScaleAnim(SlotUI slot)
@@ -780,11 +953,21 @@ namespace CaptainSkillTree.Gui
             public Image PassiveSubOverlay;
             public Text PassiveSubCountdown;
 
+            // 휠윈드 지속시간 서브 아이콘 (M2슬롯 전용, 아이콘 왼쪽 위)
+            public GameObject DurationSubRoot;
+            public Image DurationSubOverlay;
+            public Text DurationSubCountdown;
+
             // 제작 전문가 버프 수신자 서브 아이콘 (Y슬롯 전용)
             public GameObject ProducerBuffSubRoot;
             public Image ProducerBuffSubOverlay;
             public Text ProducerBuffSubCountdown;
             public Image ProducerBuffSubIconImage;
+
+            // 탱커 반사 버프 지속시간 서브 아이콘 (Y슬롯 전용, 아이콘 우상단)
+            public GameObject TankerReflectSubRoot;
+            public Image TankerReflectSubOverlay;
+            public Text TankerReflectSubCountdown;
         }
     }
 }

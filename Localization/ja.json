@@ -335,7 +335,7 @@
   "bow_explosive_tooltip_desc": "爆発矢を放ち、命中時に周囲の敵に爆発ダメージを与える",
   "bow_explosive_damage_format": "爆発ダメージ{0}%の攻撃力",
   "bow_explosive_range_format": "爆発半径{0}m",
-  "bow_arrow_rain_tooltip_desc": "バフを発動し、弓で対象に向けて放つ — 200m上空から矢が降り注ぐ",
+  "bow_arrow_rain_tooltip_desc": "バフを発動し、弓で対象に向けて放つ — 200m上空から矢が降り注ぐ（ボス50%減）",
   "bow_arrow_rain_damage_format": "{0}本の矢 × (弓+矢) {1}% ダメージ",
   "bow_arrow_rain_range_format": "落下半径 {0}m • 範囲 3m",
   "crossbow_oneshot_tooltip_desc": "{0}秒のバフを発動し、次のクロスボウ矢が強力な一撃を与える",
@@ -549,6 +549,8 @@
   "ui_selective_reset_success": "スキルリセット完了! -{0} コイン",
   "ui_music_on": "BGMオン",
   "ui_music_off": "BGMオフ",
+  "ui_escape": "脱出",
+  "ui_escape_cooldown": "{0}分後に使用可",
   "skill_insufficient_points_detail": "スキルポイントが不足しています。（必要：{0}、使用可能：{1}）",
   "skill_invest_success": "✅ スキルポイントを投入しました！",
   "items_insufficient": "必要アイテムが不足しています",
@@ -983,7 +985,7 @@
   "bow_penetration_desc": "ダメージ+{0}",
   "bow_explosive_name": "爆発矢",
   "bow_arrow_rain_name": "矢の雨",
-  "bow_arrow_rain_desc": "バフ発動 → 弓で対象に命中！\n命中地点200m上から{0}本の矢が降り注ぐ\n半径{2}m • 矢1本：(弓+矢)×{1}%\nスタミナ{3}% • CD{4}秒",
+  "bow_arrow_rain_desc": "バフ発動 → 弓で対象に命中！\n命中地点200m上から{0}本の矢が降り注ぐ\n半径{2}m • 矢1本：(弓+矢)×{1}%\nボス対象ダメージ50%減少\nスタミナ{3}% • CD{4}秒",
   "bow_arrow_rain_ready": "🏹 矢の雨が発動した！",
   "bow_arrow_rain_complete": "🏹 矢の雨が完了した",
   "staff_skill_expert_name": "杖専家",
@@ -1345,5 +1347,8 @@
   "difficulty_hint": "※ 更新のたびに表示されます。",
   "difficulty_btn_normal": "1. ノーマル",
   "difficulty_btn_veryhard": "2. ベリーハード",
-  "difficulty_btn_user": "3. ユーザー設定"
+  "difficulty_btn_user": "3. ユーザー設定",
+  "player_level_required": "プレイヤーレベル{0}以上が必要（現在: {1}）",
+  "player_level_required_short": "Lv.{0}以上必要",
+  "knife_desc_stack_explosion_detail": "ヒットごとにスタック; {0}スタックで自動爆発またはマウスボタン2で手動爆発\nスタックは{1}s持続、最大{2}s後に自動爆発、スタックあたり武器ダメージ{3}% + 範囲ダメージ(スタックダメージの{4}%)"
 }

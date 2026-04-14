@@ -283,6 +283,7 @@ namespace CaptainSkillTree.SkillTree
                 float damagePercent = Polearm_Config.PolearmWhirlwindDamagePercentValue;
                 float staminaPerCycle = Polearm_Config.PolearmWhirlwindStaminaPerSecValue;
                 float cooldown = Polearm_Config.PolearmWhirlwindCooldownValue;
+                float maxDuration = Polearm_Config.PolearmWhirlwindMaxDurationValue;
 
                 var tooltip = "";
 
@@ -301,16 +302,19 @@ namespace CaptainSkillTree.SkillTree
                 // 5. 스킬유형 (Mouse2 강조: #FF4500 / #00FF00)
                 tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FF00><size=16>{L.Get("skill_type_active_key", "Mouse2")}</size></color>\n";
 
-                // 6. 쿨타임 (#FFA500 / #FFDB58)
+                // 6. 최대 지속 시간 (#FFA500 / #FFDB58)
+                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_max_duration")}: </size></color><color=#FFDB58><size=16>{maxDuration:F0}{L.Get("unit_seconds")}</size></color>\n";
+
+                // 7. 쿨타임 (#FFA500 / #FFDB58)
                 tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
 
-                // 7. 필요조건 (#98FB98 / #00FF00)
+                // 8. 필요조건 (#98FB98 / #00FF00)
                 tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_polearm_equip")}</size></color>\n";
 
-                // 8. 확인사항 (#F0E68C / #FFE4B5)
+                // 9. 확인사항 (#F0E68C / #FFE4B5)
                 tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
 
-                // 9. 필요포인트 (#87CEEB / #FF6B6B)
+                // 10. 필요포인트 (#87CEEB / #FF6B6B)
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Polearm_Config.PolearmWhirlwindRequiredPointsValue}</size></color>";
 
                 Plugin.Log.LogDebug($"[휠윈드 툴팁] 최종 툴팁 생성 완료 - 길이: {tooltip?.Length ?? 0}");

@@ -396,6 +396,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Redemoinho] Intervalo VFX (seg)",
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Redemoinho] Recarga (seg)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Redemoinho] Pontos Necessários",
+                ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Redemoinho] Duração Máxima (seg)",
 
                 // ============================================
                 // Habilidades de Classe - Arqueiro
@@ -577,6 +578,18 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantChance_Lv3"] = "Mestre Artesão: Chance de Encantamento Lv3 (%)",
                 ["Producer_EnchantChance_Lv4"] = "Mestre Artesão: Chance de Encantamento Lv4 (%)",
                 ["Producer_EnchantChance_Lv5"] = "Mestre Artesão: Chance de Encantamento Lv5 (%)",
+
+                // ============================================
+                // Knife Tree - Explosão de Ponto Fraco (Tier 9)
+                // ============================================
+                ["Tier9_StackExplosion_DamagePercent"]  = "Tier 9: [Explosão de Ponto Fraco] Dano por Stack (%)",
+                ["Tier9_StackExplosion_MaxStacks"]       = "Tier 9: [Explosão de Ponto Fraco] Stacks Máximos",
+                ["Tier9_StackExplosion_StackDuration"]   = "Tier 9: [Explosão de Ponto Fraco] Duração do Stack (seg)",
+                ["Tier9_StackExplosion_StaminaCost"]     = "Tier 9: [Explosão de Ponto Fraco] Custo de Stamina",
+                ["Tier9_StackExplosion_Cooldown"]        = "Tier 9: [Explosão de Ponto Fraco] Recarga (seg)",
+                ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Explosão de Ponto Fraco] Pontos Necessários",
+                ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Explosão de Ponto Fraco] Duração do Buff (seg)",
+                ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Explosão de Ponto Fraco] Proporção de Dano em Área (%)",
             };
         }
     }

@@ -551,6 +551,50 @@ namespace CaptainSkillTree.Localization
                 "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3-5",
 
+                // === Tier 9: 약점폭발 (H키 액티브) ===
+                ["Tier9_StackExplosion_DamagePercent"] =
+                "【스택당 화염 피해 (%)】\n" +
+                "H키 폭발 시 스택 1개당 무기 공격력에 곱하는 비율입니다.\n" +
+                "총 데미지 = 스택 수 × 무기공격력 × (이 값 / 100)\n" +
+                "권장값: 30-45%",
+
+                ["Tier9_StackExplosion_MaxStacks"] =
+                "【최대 스택 수】\n" +
+                "쌓을 수 있는 최대 스택 수입니다.\n" +
+                "권장값: 5-10",
+
+                ["Tier9_StackExplosion_StackDuration"] =
+                "【스택 유지시간 (초)】\n" +
+                "마지막 적중 후 스택이 유지되는 시간입니다.\n" +
+                "이 시간 내에 재공격하지 않으면 스택 초기화.\n" +
+                "권장값: 3-6초",
+
+                ["Tier9_StackExplosion_StaminaCost"] =
+                "【스테미나 소모】\n" +
+                "H키 폭발 시 소모되는 스테미나입니다.\n" +
+                "권장값: 10-20",
+
+                ["Tier9_StackExplosion_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 40-55초",
+
+                ["Tier9_StackExplosion_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 3",
+
+                ["Tier9_StackExplosion_BuffDuration"] =
+                "【버프 지속시간 (초)】\n" +
+                "H키로 버프 활성화 후 스택을 쌓을 수 있는 시간입니다.\n" +
+                "시간 내 최대 스택 달성 시 자동 폭발, 만료 시 잔여 스택으로 폭발.\n" +
+                "권장값: 10-15초",
+
+                ["Tier9_StackExplosion_AoePercent"] =
+                "【광역 피해 비율 (%)】\n" +
+                "H키 폭발 시 주변 7m 내 적에게 주는 광역 피해 비율입니다.\n" +
+                "총 데미지 × (이 값 / 100) = 광역 피해\n" +
+                "권장값: 30-50%",
 
             };
         }
@@ -1103,6 +1147,50 @@ namespace CaptainSkillTree.Localization
                 "Skill points needed to unlock this node.\n" +
                 "Recommended: 3-5",
 
+                // === Tier 9: Stack Explosion (H key active) ===
+                ["Tier9_StackExplosion_DamagePercent"] =
+                "【Fire Damage per Stack (%)】\n" +
+                "Fire damage ratio per stack on H key explosion.\n" +
+                "Total = stacks × weapon damage × (this / 100)\n" +
+                "Recommended: 30-45%",
+
+                ["Tier9_StackExplosion_MaxStacks"] =
+                "【Max Stacks】\n" +
+                "Maximum number of stacks that can be accumulated.\n" +
+                "Recommended: 5-10",
+
+                ["Tier9_StackExplosion_StackDuration"] =
+                "【Stack Duration (sec)】\n" +
+                "How long stacks persist after the last hit.\n" +
+                "Stacks reset if no hit within this time.\n" +
+                "Recommended: 3-6 sec",
+
+                ["Tier9_StackExplosion_StaminaCost"] =
+                "【Stamina Cost】\n" +
+                "Stamina consumed when triggering H key explosion.\n" +
+                "Recommended: 10-20",
+
+                ["Tier9_StackExplosion_Cooldown"] =
+                "【Cooldown (sec)】\n" +
+                "Skill reuse cooldown time.\n" +
+                "Recommended: 40-55 sec",
+
+                ["Tier9_StackExplosion_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points needed to unlock this node.\n" +
+                "Recommended: 3",
+
+                ["Tier9_StackExplosion_BuffDuration"] =
+                "【Buff Duration (sec)】\n" +
+                "Time window after H key to accumulate stacks.\n" +
+                "Max stacks = auto-explode, expiry = explode with remaining stacks.\n" +
+                "Recommended: 10-15 sec",
+
+                ["Tier9_StackExplosion_AoePercent"] =
+                "【AOE Damage Ratio (%)】\n" +
+                "Ratio of main damage dealt as AOE to enemies within 7m on H key explosion.\n" +
+                "Total damage × (this value / 100) = AOE damage\n" +
+                "Recommended: 30-50%",
 
             };
         }

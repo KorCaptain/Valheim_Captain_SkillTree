@@ -105,11 +105,11 @@ namespace CaptainSkillTree.MMO_System
                 if (MessageHud.instance == null) yield break;
 
                 int totalSP = MMODifficultyManager.GetTotalSP();
-                float divider = MMODifficultyConfig.StarChanceDivider.Value > 0
-                    ? MMODifficultyConfig.StarChanceDivider.Value : 3f;
+                float divider = MMODifficultyConfig.StarChanceDividerValue > 0
+                    ? MMODifficultyConfig.StarChanceDividerValue : 3f;
                 float chance = System.Math.Min(
-                    MMODifficultyConfig.BaseStarChance.Value + totalSP / divider,
-                    MMODifficultyConfig.MaxStarChance.Value);
+                    MMODifficultyConfig.BaseStarChanceValue + totalSP / divider,
+                    MMODifficultyConfig.MaxStarChanceValue);
 
                 string title  = L.Get("mmo_diff_notification_title");
                 string detail = string.Format(L.Get("mmo_diff_notification_detail"), totalSP, (int)chance);

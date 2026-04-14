@@ -34,6 +34,10 @@ namespace CaptainSkillTree.SkillTree
         // 휠윈드 공격속도 버프 활성 플래그 (공격 모션 중 +100%)
         public static Dictionary<Player, bool> whirlwindAttackSpeedActive = new Dictionary<Player, bool>();
 
+        // HUD 지속시간 표시용 (M2 슬롯 서브 아이콘)
+        public static float whirlwindDurationStart = -1f;
+        public static float whirlwindDurationMax = 0f;
+
         /// <summary>
         /// 휠윈드 공격 모션 중 공격속도 보너스 반환 (SpeedTree에서 호출)
         /// </summary>
@@ -57,7 +61,13 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static bool UseWhirlwindSkill(Player player)
         {
-            if (player == null || !HasSkill("polearm_step6_whirlwind")) return false;
+            if (player == null) return false;
+
+            // 단검 약점폭발 버프 활성 시 M2 → 스택 폭발 (휠윈드보다 우선)
+            if (KnifeStackExplosion.IsBuffActive(player) && Knife_Skill.IsUsingDagger(player))
+                return KnifeStackExplosion.TriggerExplosionByM2(player);
+
+            if (!HasSkill("polearm_step6_whirlwind")) return false;
             if (!IsUsingPolearm(player))
             {
                 DrawFloatingText(player, "❌ " + L.Get("polearm_required"));
@@ -108,8 +118,16 @@ namespace CaptainSkillTree.SkillTree
             int characterLayer = LayerMask.NameToLayer("character");
 
             // 시전 즉시 VFX
-            VFXManager.PlayVFXMultiplayer("fx_fallenfalkyrie_spin", "",
-                player.transform.position + Vector3.up * ChestHeightOffset, Quaternion.identity, 3f);
+            {
+                var _whirlVfxPos = player.transform.position + Vector3.up * ChestHeightOffset;
+                var _whirlPrefab = ZNetScene.instance?.GetPrefab("fx_fallenfalkyrie_spin");
+                if (_whirlPrefab != null)
+                {
+                    var _whirlGo = UnityEngine.Object.Instantiate(_whirlPrefab, _whirlVfxPos, Quaternion.identity);
+                    SimpleVFX.ApplyVFXDim(_whirlGo, SkillTreeConfig.VFXOpacityValue);
+                    // ⚠️ Destroy 생략 — 발헤임 기본 VFX 자동 정리 (호출 시 무한 로딩 위험)
+                }
+            }
 
             // 광역 지속 데미지 코루틴 병행 시작
             player.StartCoroutine(ExecuteWhirlwindAoE(player));
@@ -122,10 +140,17 @@ namespace CaptainSkillTree.SkillTree
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
             bool aborted = false;
+            float skillStartTime = Time.time;
+            float maxDuration = Polearm_Config.PolearmWhirlwindMaxDurationValue;
+
+            // HUD 지속시간 타이머 시작
+            whirlwindDurationStart = skillStartTime;
+            whirlwindDurationMax = maxDuration;
 
             try
             {
-                while (!aborted && Input.GetKey(KeyCode.Mouse2) && player != null && !player.IsDead())
+                while (!aborted && Input.GetKey(KeyCode.Mouse2) && player != null && !player.IsDead()
+                       && (Time.time - skillStartTime) < maxDuration)
                 {
                     // ── 스태미나 소모: 회당 4 고정 ──
                     player.UseStamina(4f);
@@ -238,6 +263,8 @@ namespace CaptainSkillTree.SkillTree
                     whirlwindDealingDamage[player] = false;
                     whirlwindAttackSpeedActive[player] = false;
                 }
+                // HUD 지속시간 타이머 리셋
+                whirlwindDurationStart = -1f;
                 Plugin.Log.LogDebug("[휠윈드] 스킬 종료");
             }
         }
@@ -264,7 +291,15 @@ namespace CaptainSkillTree.SkillTree
 
                 // VFX + 공격 모션 동시 시전 (시간차 없음)
                 Vector3 chestPos = player.transform.position + Vector3.up * ChestHeightOffset;
-                VFXManager.PlayVFXMultiplayer("fx_fallenfalkyrie_spin", "", chestPos, Quaternion.identity, 2f);
+                {
+                    var _whirlPrefab2 = ZNetScene.instance?.GetPrefab("fx_fallenfalkyrie_spin");
+                    if (_whirlPrefab2 != null)
+                    {
+                        var _whirlGo2 = UnityEngine.Object.Instantiate(_whirlPrefab2, chestPos, Quaternion.identity);
+                        SimpleVFX.ApplyVFXDim(_whirlGo2, SkillTreeConfig.VFXOpacityValue);
+                        // ⚠️ Destroy 생략
+                    }
+                }
 
                 player.StartAttack(null, true);
 

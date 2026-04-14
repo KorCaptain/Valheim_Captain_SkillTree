@@ -269,6 +269,7 @@ namespace CaptainSkillTree.SkillTree
                     var vfxGo = UnityEngine.Object.Instantiate(
                         debuff03, player.transform.position, Quaternion.identity);
                     vfxGo.transform.localScale = Vector3.one * 2f;
+                    SimpleVFX.ApplyVFXDim(vfxGo, SkillTreeConfig.VFXOpacityValue);
                     UnityEngine.Object.Destroy(vfxGo, 2f);
                 }
 
@@ -378,6 +379,9 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 var go = UnityEngine.Object.Instantiate(prefab, spawnPos, Quaternion.LookRotation(dir));
+                SimpleVFX.ApplyVFXDim(go, SkillTreeConfig.VFXOpacityValue);
+                var rainDimmer = go.AddComponent<StaffProjectileExplosionDimmer>();
+                rainDimmer.DimFactor = SkillTreeConfig.VFXOpacityValue;
 
                 // 데미지 처리는 OnHit 패치에서 담당
                 var tag = go.AddComponent<FireRainProjectileTag>();

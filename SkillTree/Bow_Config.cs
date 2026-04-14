@@ -205,7 +205,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 6: 화살비 (H키 액티브) ===
             ArrowRainDamagePercent = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_ArrowRain_DamagePercent", 8f,
+                "Bow Tree", "Tier6_ArrowRain_DamagePercent", 16f,
                 SkillTreeConfig.GetConfigDescription("Tier6_ArrowRain_DamagePercent"), order: 8);
 
             ArrowRainArrowCount = SkillTreeConfig.BindServerSync(config,

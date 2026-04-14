@@ -128,14 +128,14 @@ namespace CaptainSkillTree.MMO_System
             if (exp <= 0) return;
 
             // 최대 레벨 체크
-            if (Level >= CaptainLevelConfig.MaxLevel.Value)
+            if (Level >= CaptainLevelConfig.MaxLevelValue)
             {
                 Plugin.Log.LogDebug("[CaptainLevelSystem] 최대 레벨 도달 - 경험치 획득 무시");
                 return;
             }
 
             // 경험치 배율 적용
-            float rate = CaptainLevelConfig.RateExp.Value;
+            float rate = CaptainLevelConfig.RateExpValue;
             long giveExp = (long)(exp * rate);
 
             CurrentExp += giveExp;
@@ -145,7 +145,7 @@ namespace CaptainSkillTree.MMO_System
             int addLvl = 0;
             long need = CaptainExpTable.GetExpForLevel(Level + 1);
 
-            while (CurrentExp >= need && Level + addLvl < CaptainLevelConfig.MaxLevel.Value)
+            while (CurrentExp >= need && Level + addLvl < CaptainLevelConfig.MaxLevelValue)
             {
                 CurrentExp -= need;
                 addLvl++;
@@ -176,7 +176,7 @@ namespace CaptainSkillTree.MMO_System
         /// </summary>
         public void SetLevel(int level)
         {
-            level = Mathf.Clamp(level, 1, CaptainLevelConfig.MaxLevel.Value);
+            level = Mathf.Clamp(level, 1, CaptainLevelConfig.MaxLevelValue);
             int oldLevel = Level;
             Level = level;
             CurrentExp = 0;
@@ -229,7 +229,7 @@ namespace CaptainSkillTree.MMO_System
         /// </summary>
         public int GetSkillPointsFromLevel()
         {
-            return Level * CaptainLevelConfig.SkillPointsPerLevel.Value;
+            return Level * CaptainLevelConfig.SkillPointsPerLevelValue;
         }
 
         #endregion
@@ -256,7 +256,7 @@ namespace CaptainSkillTree.MMO_System
             int calculatedLevel = usedPoints / pointsPerLevel;
 
             // 최소 레벨 1, 최대 레벨 MaxLevel
-            int finalLevel = Mathf.Clamp(calculatedLevel, 1, CaptainLevelConfig.MaxLevel.Value);
+            int finalLevel = Mathf.Clamp(calculatedLevel, 1, CaptainLevelConfig.MaxLevelValue);
 
             Plugin.Log.LogDebug($"[CaptainLevelSystem] GetLevelFromSkillPoints - 사용포인트: {usedPoints}, 레벨당: {pointsPerLevel}, 계산결과: {calculatedLevel}, 최종: {finalLevel}");
 
@@ -361,7 +361,7 @@ namespace CaptainSkillTree.MMO_System
                 if (player.m_customData.TryGetValue(KEY_LEVEL, out var lvlStr) &&
                     int.TryParse(lvlStr, out int lvl))
                 {
-                    Level = Mathf.Clamp(lvl, 1, CaptainLevelConfig.MaxLevel.Value);
+                    Level = Mathf.Clamp(lvl, 1, CaptainLevelConfig.MaxLevelValue);
                 }
                 else
                 {

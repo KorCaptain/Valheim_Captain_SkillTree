@@ -62,23 +62,28 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 탱커 직업 패시브: 체력 최대치 % 증가
-        /// GetTotalFoodValue 패치 - m_maxHealth에 직접 반영 (방어전문가 방식과 동일)
-        /// Priority.VeryLow: 방어전문가 flat 보너스(Priority.Low) 이후 적용
+        /// 탱커 직업 패시브: 체력 최대치 % 증가 (퍼센트 보너스)
+        /// GetTotalFoodValue 패치 - m_baseHP에 포함 (힐링 정상 작동)
+        /// Priority.VeryLow: 방어전문가 flat 보너스(Priority.Low) 이후에 % 적용
+        /// ※ 파라미터는 방어전문가 패턴 동일: ref float hp만 사용 (m_localPlayer 가드 제거)
         /// </summary>
         [HarmonyPatch(typeof(Player), "GetTotalFoodValue")]
         public static class Tanker_Player_GetTotalFoodValue_HealthBonus_Patch
         {
             [HarmonyPriority(Priority.VeryLow)]
-            public static void Postfix(Player __instance, ref float hp)
+            public static void Postfix(ref float hp)
             {
                 try
                 {
-                    if (!Player.m_localPlayer || __instance != Player.m_localPlayer) return;
                     int tankerLv = SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0;
                     float tankerPercent = TankerSkills.GetTankerHpBonusForLevel(tankerLv);
                     if (tankerPercent > 0f)
-                        hp += hp * (tankerPercent / 100f);
+                    {
+                        float baseHp = hp;
+                        float tankerHpBonus = baseHp * (tankerPercent / 100f);
+                        hp += tankerHpBonus;
+                        Plugin.Log.LogDebug($"[탱커 체력] +{tankerPercent}%: {baseHp:F0} × {tankerPercent/100f:F2} = +{tankerHpBonus:F0}");
+                    }
                 }
                 catch (System.Exception ex)
                 {
@@ -659,9 +664,8 @@ namespace CaptainSkillTree.SkillTree
                     foreach (var item in inventory.GetAllItems())
                     {
                         if (item == null || !item.m_equipped || item.m_shared == null) continue;
-                        // Shield 타입 또는 블록 파워가 있는 착용 아이템 (모드 방패 대응)
-                        if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield ||
-                            item.m_shared.m_blockPower > 0)
+                        // Shield 타입만 허용 - m_blockPower > 0은 검/도끼 등 일반 무기도 해당되므로 제외
+                        if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
                         {
                             Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 인벤토리 방패: {item.m_shared.m_name}");
                             return true;

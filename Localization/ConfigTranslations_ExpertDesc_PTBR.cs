@@ -35,6 +35,12 @@ namespace CaptainSkillTree.Localization
                 "  UserSettings = Restaura as configurações salvas anteriormente\n" +
                 "⚠️ Ao alterar, o preset selecionado é aplicado imediatamente (todos os valores de habilidade são substituídos).",
 
+                ["ShowResetButtons"] =
+                "【Exibir Botões de Reset】\n" +
+                "Controla se os botões de reset de Pontos/Job/Produção são exibidos na UI da árvore de habilidades.\n" +
+                "  true  = Exibir botões de reset (padrão)\n" +
+                "  false = Ocultar botões de reset (usar em servidores para impedir reset de pontos)",
+
                 // ========================================
                 // Attack Tree (Árvore de Ataque)
                 // ========================================

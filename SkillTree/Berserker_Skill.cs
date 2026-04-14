@@ -334,7 +334,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 버서커 패시브 스킬 체크
         /// </summary>
-        public static void CheckBerserkerPassiveSkill(Player player)
+        public static void CheckBerserkerPassiveSkill(Player player, bool skipThresholdCheck = false)
         {
             try
             {
@@ -353,11 +353,11 @@ namespace CaptainSkillTree.SkillTree
                 // 쿨다운 중이면 패스
                 if (state.OnCooldown) return;
 
-                // 체력 임계값 확인
+                // 체력 임계값 확인 (skipThresholdCheck=true 이면 우회 - 즉사 감지 경로)
                 float currentHealthPercent = player.GetHealthPercentage();
                 float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
 
-                if (currentHealthPercent > threshold) return;
+                if (!skipThresholdCheck && currentHealthPercent > threshold) return;
 
                 // 패시브 무적 발동
                 ApplyPassiveInvincibility(player, state);
@@ -629,6 +629,39 @@ namespace CaptainSkillTree.SkillTree
                             return;
                         }
 
+                        // 2. 쿨다운 아님 + 즉사 위험 감지 → 선제 무적 발동 (Postfix에서 발동하면 이미 사망 후라 무의미)
+                        if (!IsPassiveInvincibilityOnCooldown(player))
+                        {
+                            float currentHp = player.GetHealth();
+                            float maxHp = player.GetMaxHealth();
+                            float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
+
+                            // raw 데미지 합산 (방어 계산 전 수치)
+                            var dmg = hit.m_damage;
+                            float rawDmg = dmg.m_blunt + dmg.m_slash + dmg.m_pierce
+                                         + dmg.m_fire + dmg.m_frost + dmg.m_lightning
+                                         + dmg.m_poison + dmg.m_spirit;
+
+                            // 방어력 보정 적용 (Valheim 근사식: 실제 = raw - armor/2, 최소 raw의 10%)
+                            float bodyArmor = player.GetBodyArmor();
+                            float estimatedDmg = Mathf.Max(rawDmg - bodyArmor * 0.5f, rawDmg * 0.1f);
+
+                            bool hpBelowThreshold = maxHp > 0f && (currentHp / maxHp) <= threshold;
+                            bool willDieFromHit   = currentHp <= estimatedDmg;
+
+                            if (hpBelowThreshold || willDieFromHit)
+                            {
+                                // 즉사 감지(willDieFromHit)이고 HP 임계값 이상인 경우: threshold 체크 우회
+                                bool skipCheck = willDieFromHit && !hpBelowThreshold;
+                                CheckBerserkerPassiveSkill(player, skipThresholdCheck: skipCheck);
+                                if (IsPassiveInvincibilityActive(player))
+                                {
+                                    hit.m_damage = new HitData.DamageTypes();
+                                    return;
+                                }
+                            }
+                        }
+
                         // 2. Lv3: 분노 중 받는 피해 감소
                         if (IsPlayerInRage(player))
                         {
@@ -693,6 +726,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (__instance is Player player && HasBerserkerSkill(player))
                     {
+                        // 이미 사망했으면 체크 스킵 (다음 공격 대비 HP 임계값 준비 용도)
+                        if (player.IsDead() || player.GetHealth() <= 0f) return;
                         CheckBerserkerPassiveSkill(player);
                     }
                 }

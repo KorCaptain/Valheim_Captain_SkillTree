@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using HarmonyLib;
+using CaptainSkillTree.SkillTree;
 namespace CaptainSkillTree
 {
     /// <summary>
@@ -32,6 +33,21 @@ namespace CaptainSkillTree
         /// RPC 수신 중 재방송 방지 플래그 (무한 루프 차단)
         /// </summary>
         private static bool _isReceivingRPC = false;
+
+        /// <summary>
+        /// 로컬 직접 생성 기록: RPC 중복 생성 방지용 (vfxName+playerID → 생성 Time.time)
+        /// </summary>
+        private static readonly Dictionary<string, float> _recentLocalCreations
+            = new Dictionary<string, float>();
+
+        /// <summary>
+        /// VFX 이름 → dim factor 매핑 (Initialize에서 등록, 모든 생성 경로에서 자동 적용)
+        /// </summary>
+        private static readonly Dictionary<string, float> _vfxDimMapping
+            = new Dictionary<string, float>();
+
+        public static void RegisterVFXDim(string vfxName, float factor)
+            => _vfxDimMapping[vfxName] = factor;
 
         /// <summary>
         /// 커스텀 VFX 네트워크 RPC 이름
@@ -119,6 +135,15 @@ namespace CaptainSkillTree
 
                 // 3. Valheim 내장 VFX 캐시 (몬스터용)
                 CacheValheimPrefabs();
+
+                // VFX 밝기 감소 - _customVFXNames 전체 일괄 (버프성 오라·탱커 taunt 제외)
+                float vfxDim = SkillTreeConfig.VFXOpacityValue;
+                var dimExcluded = new HashSet<string> { "statusailment_01_aura", "taunt" };
+                foreach (var vfxName in _customVFXNames)
+                {
+                    if (!dimExcluded.Contains(vfxName))
+                        RegisterVFXDim(vfxName, vfxDim);
+                }
 
                 _initialized = true;
             }
@@ -300,6 +325,9 @@ namespace CaptainSkillTree
                     // 원래 크기 유지 (스케일 조정 안 함)
                     Plugin.Log?.LogInfo($"[SimpleVFX] VFX 생성됨 (캐릭터 부착) - 스케일: {vfxObj.transform.localScale}");
                     UnityEngine.Object.Destroy(vfxObj, duration);
+                    // dim 적용 ("debuff" = PlayerVFX)
+                    if (_vfxDimMapping.TryGetValue("debuff", out float dimFactor))
+                        ApplyVFXDim(vfxObj, dimFactor);
                 }
 
                 return vfxObj;
@@ -462,6 +490,10 @@ namespace CaptainSkillTree
                 {
                     vfxObj.transform.localPosition = localOffset;
                     UnityEngine.Object.Destroy(vfxObj, duration);
+
+                    // 글로벌 dim 매핑 자동 적용
+                    if (_vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
+                        ApplyVFXDim(vfxObj, dimFactor);
                 }
 
                 return vfxObj;
@@ -471,6 +503,18 @@ namespace CaptainSkillTree
                 Plugin.Log?.LogError($"[SimpleVFX] PlayFollowing({vfxName}) 실패: {ex.Message}");
                 return null;
             }
+        }
+
+        /// <summary>
+        /// VFX 발광·투명도 감소.
+        /// VFXDimmerBehaviour 컴포넌트를 부착 → 다음 LateUpdate에서 적용
+        /// (파티클 초기화 완료 후 프레임에 처리하여 확실한 적용 보장)
+        /// </summary>
+        public static void ApplyVFXDim(GameObject vfx, float factor)
+        {
+            if (vfx == null) return;
+            var dimmer = vfx.AddComponent<VFXDimmerBehaviour>();
+            dimmer.factor = factor;
         }
 
         /// <summary>
@@ -525,6 +569,11 @@ namespace CaptainSkillTree
                     UnityEngine.Object.Destroy(vfxObj, duration);
                 }
                 // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
+
+                // 글로벌 dim 매핑 자동 적용
+                if (!string.IsNullOrEmpty(vfxName) &&
+                    _vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
+                    ApplyVFXDim(vfxObj, dimFactor);
             }
             return vfxObj;
         }
@@ -587,6 +636,17 @@ namespace CaptainSkillTree
                         UnityEngine.Object.Destroy(vfxObj, duration);
                     }
                     // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
+
+                    // 로컬 직접 생성 기록 → RPC 중복 생성 방지
+                    if (!_isReceivingRPC && isCustom)
+                    {
+                        string dedupKey = $"{vfxName}_{player.GetPlayerID()}";
+                        _recentLocalCreations[dedupKey] = Time.time;
+                    }
+
+                    // 글로벌 dim 매핑 자동 적용
+                    if (_vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
+                        ApplyVFXDim(vfxObj, dimFactor);
 
                     return vfxObj;
                 }
@@ -663,6 +723,10 @@ namespace CaptainSkillTree
                     }
                     // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
 
+                    // dim 매핑 자동 적용
+                    if (_vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
+                        ApplyVFXDim(vfxObj, dimFactor);
+
                     return vfxObj;
                 }
 
@@ -719,9 +783,16 @@ namespace CaptainSkillTree
                     {
                         // 지정된 rotation으로 생성 (Quaternion.identity 아님)
                         result = UnityEngine.Object.Instantiate(prefab, position, rotation);
-                        // 발헤임 기본 VFX는 Destroy 호출 안 함
-                        if (isCustom && result != null)
-                            UnityEngine.Object.Destroy(result, duration);
+                        if (result != null)
+                        {
+                            // 발헤임 기본 VFX는 Destroy 호출 안 함
+                            if (isCustom)
+                                UnityEngine.Object.Destroy(result, duration);
+                            // dim 매핑 자동 적용
+                            if (!string.IsNullOrEmpty(vfxName) &&
+                                _vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
+                                ApplyVFXDim(result, dimFactor);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -757,6 +828,14 @@ namespace CaptainSkillTree
         /// </summary>
         internal static void OnReceivePlayOnPlayer(long sender, string vfxName, long playerID, float duration)
         {
+            // 로컬에서 직접 생성한 지 1초 이내 → RPC 중복 생성 차단
+            string dedupKey = $"{vfxName}_{playerID}";
+            if (_recentLocalCreations.TryGetValue(dedupKey, out float t) && Time.time - t < 1f)
+            {
+                _recentLocalCreations.Remove(dedupKey);
+                return; // 이미 로컬에서 생성 완료, 스킵
+            }
+
             _isReceivingRPC = true;
             try
             {
@@ -765,7 +844,7 @@ namespace CaptainSkillTree
                     if (p == null) continue;
                     if (p.GetPlayerID() == playerID)
                     {
-                        PlayOnPlayer(p, vfxName, duration); // offset은 기본값 사용
+                        PlayOnPlayer(p, vfxName, duration);
                         break;
                     }
                 }
@@ -819,4 +898,116 @@ namespace CaptainSkillTree
     }
 
     #endregion
-}
+
+    /// <summary>
+    /// VFX 밝기·투명도 감소 컴포넌트.
+    /// 파티클 초기화 완료 이후 LateUpdate에서 한 번 적용 후 자동 제거.
+    /// - Material: _TintColor / _Color / _BaseColor (RGB + alpha 모두 × factor)
+    /// - Additive shader: alpha 무시 → RGB 감소가 핵심
+    /// - ParticleSystem: Stop/Clear → startColor + emission 감소 → Play
+    /// - Light: intensity 감소
+    /// </summary>
+    public class VFXDimmerBehaviour : MonoBehaviour
+    {
+    public float factor = 0.5f;
+
+    private void LateUpdate()
+    {
+        try { Apply(); }
+        catch (Exception ex)
+        {
+            Plugin.Log?.LogWarning($"[VFXDimmer] 적용 실패: {ex.Message}");
+        }
+        Destroy(this); // 1회 적용 후 컴포넌트 제거
+    }
+
+    private void Apply()
+    {
+        Plugin.Log?.LogInfo($"[VFXDimmer] Apply START: {name}, factor={factor}");
+
+        // 1. Material (multi-material 포함, 전체 슬롯)
+        var colorProps = new[] { "_TintColor", "_Color", "_BaseColor" };
+        var matList = new List<Material>();
+        foreach (var r in GetComponentsInChildren<Renderer>(true))
+        {
+            if (r == null) continue;
+            r.GetMaterials(matList);
+            foreach (var mat in matList)
+            {
+                if (mat == null) continue;
+                foreach (var prop in colorProps)
+                {
+                    if (mat.HasProperty(prop))
+                    {
+                        Color c = mat.GetColor(prop);
+                        c.r *= factor; c.g *= factor; c.b *= factor; c.a *= factor;
+                        mat.SetColor(prop, c);
+                        break;
+                    }
+                }
+                if (mat.HasProperty("_EmissionColor"))
+                    mat.SetColor("_EmissionColor", mat.GetColor("_EmissionColor") * factor);
+            }
+        }
+
+        // 2. Light
+        foreach (var lt in GetComponentsInChildren<Light>(true))
+            if (lt != null) lt.intensity *= factor;
+
+        // 3. ParticleSystem
+        var allPS = GetComponentsInChildren<ParticleSystem>(true);
+        Plugin.Log?.LogInfo($"[VFXDimmer] PS count={allPS.Length}");
+        if (allPS.Length == 0) return;
+
+        // 3a. 개별 Stop
+        foreach (var ps in allPS)
+            if (ps != null) ps.Stop(false, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        foreach (var ps in allPS)
+        {
+            if (ps == null) continue;
+            var main = ps.main;
+
+            // startColor RGB·alpha 감소
+            Color sc = main.startColor.color;
+            sc.r *= factor; sc.g *= factor; sc.b *= factor; sc.a *= factor;
+            main.startColor = new ParticleSystem.MinMaxGradient(sc);
+
+            // 파티클 크기 축소 (확실한 시각 변화)
+            main.startSizeMultiplier *= factor;
+
+            // colorOverLifetime — gradient key colors 감소 (startColor를 덮어쓰는 모듈 대응)
+            var col = ps.colorOverLifetime;
+            if (col.enabled)
+            {
+                var grad = col.color;
+                if (grad.mode == ParticleSystemGradientMode.Gradient ||
+                    grad.mode == ParticleSystemGradientMode.TwoGradients)
+                {
+                    var g = grad.gradient;
+                    var keys = g.colorKeys;
+                    for (int i = 0; i < keys.Length; i++)
+                    {
+                        var k = keys[i];
+                        k.color = new Color(k.color.r * factor, k.color.g * factor,
+                                            k.color.b * factor, k.color.a);
+                        keys[i] = k;
+                    }
+                    g.colorKeys = keys;
+                    col.color = new ParticleSystem.MinMaxGradient(g);
+                }
+            }
+
+            // ※ Emission rate 수정 제거:
+            // rateOverTime.mode가 Curve/TwoConstants일 때 .constant=0 을 읽어
+            // 파티클 전체 소멸 버그 발생 → 색상·크기 감소만으로 밝기 조절 충분
+        }
+
+        // 3b. 개별 Play
+        foreach (var ps in allPS)
+            if (ps != null) ps.Play(false);
+
+        Plugin.Log?.LogInfo($"[VFXDimmer] Apply DONE: {name}");
+    }
+    } // class VFXDimmerBehaviour
+} // namespace CaptainSkillTree

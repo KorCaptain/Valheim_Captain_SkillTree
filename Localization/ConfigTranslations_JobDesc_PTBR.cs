@@ -311,9 +311,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv2 ===
                 ["Tanker_Hp_Bonus_Lv2"] =
-                "【Bônus de HP do Tanque Lv2】\n" +
-                "Bônus de HP passivo do Tanque no Lv2.\n" +
-                "Padrão: 35",
+                "【Bônus de HP do Tanque Lv2 (%)】\n" +
+                "O HP máximo aumenta percentualmente ao atingir o Tanque Lv2.\n" +
+                "Padrão: 30",
 
                 ["Tanker_Lv2_BlockPower"] =
                 "【Poder de Bloqueio do Tanque Lv2】\n" +
@@ -326,14 +326,14 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv3 ===
                 ["Tanker_Hp_Bonus_Lv3"] =
-                "【Bônus de HP do Tanque Lv3】\n" +
-                "Bônus de HP passivo do Tanque no Lv3.\n" +
-                "Padrão: 50",
+                "【Bônus de HP do Tanque Lv3 (%)】\n" +
+                "O HP máximo aumenta percentualmente ao atingir o Tanque Lv3.\n" +
+                "Padrão: 35",
 
                 ["Tanker_Lv3_BlockPower"] =
                 "【Poder de Bloqueio do Tanque Lv3】\n" +
                 "Poder de bloqueio passivo do Tanque no Lv3.\n" +
-                "Padrão: 8",
+                "Padrão: 10",
 
                 ["Tanker_ReflectDuration_Lv3"] =
                 "【Duração do Reflexo do Tanque Lv3 (seg)】\n" +
@@ -341,14 +341,14 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv4 ===
                 ["Tanker_Hp_Bonus_Lv4"] =
-                "【Bônus de HP do Tanque Lv4】\n" +
-                "Bônus de HP passivo do Tanque no Lv4.\n" +
-                "Padrão: 70",
+                "【Bônus de HP do Tanque Lv4 (%)】\n" +
+                "O HP máximo aumenta percentualmente ao atingir o Tanque Lv4.\n" +
+                "Padrão: 40",
 
                 ["Tanker_Lv4_BlockPower"] =
                 "【Poder de Bloqueio do Tanque Lv4】\n" +
                 "Poder de bloqueio passivo do Tanque no Lv4.\n" +
-                "Padrão: 12",
+                "Padrão: 15",
 
                 ["Tanker_ReflectDuration_Lv4"] =
                 "【Duração do Reflexo do Tanque Lv4 (seg)】\n" +
@@ -356,14 +356,14 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv5 ===
                 ["Tanker_Hp_Bonus_Lv5"] =
-                "【Bônus de HP do Tanque Lv5】\n" +
-                "Bônus de HP passivo do Tanque no Lv5.\n" +
-                "Padrão: 100",
+                "【Bônus de HP do Tanque Lv5 (%)】\n" +
+                "O HP máximo aumenta percentualmente ao atingir o Tanque Lv5.\n" +
+                "Padrão: 50",
 
                 ["Tanker_Lv5_BlockPower"] =
                 "【Poder de Bloqueio do Tanque Lv5】\n" +
                 "Poder de bloqueio passivo do Tanque no Lv5.\n" +
-                "Padrão: 15",
+                "Padrão: 20",
 
                 ["Tanker_ReflectDuration_Lv5"] =
                 "【Duração do Reflexo do Tanque Lv5 (seg)】\n" +
@@ -627,6 +627,10 @@ namespace CaptainSkillTree.Localization
                 ["Job_Lv3_Cost"] = "【Custo de Moedas Lv3 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv3.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 3000",
                 ["Job_Lv4_Cost"] = "【Custo de Moedas Lv4 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv4.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 4000",
                 ["Job_Lv5_Cost"] = "【Custo de Moedas Lv5 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv5.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 5000",
+
+                ["Job_Reset_Cost"]    = "【Custo de Reset de Profissão】\nMoedas consumidas ao resetar pontos de habilidade de profissão.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 1000",
+                ["Active_Reset_Cost"] = "【Custo de Reset Ativo】\nMoedas consumidas ao resetar pontos de habilidade ativa.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 500",
+                ["Passive_Reset_Cost"]= "【Custo de Reset Passivo】\nMoedas consumidas ao resetar pontos de habilidade passiva.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 100",
             };
         }
     }

@@ -862,6 +862,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Whirlwind] VFX Interval (sec)",
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
+                ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Whirlwind] Max Duration (sec)",
 
                 // ============================================
                 // Archer Job Skills - 8 Keys
@@ -1107,6 +1108,21 @@ namespace CaptainSkillTree.Localization
                 ["Job_Lv3_Cost"] = "Job Lv3 Coin Cost",
                 ["Job_Lv4_Cost"] = "Job Lv4 Coin Cost",
                 ["Job_Lv5_Cost"] = "Job Lv5 Coin Cost",
+                ["Job_Reset_Cost"]    = "Job Skill Reset Cost",
+                ["Active_Reset_Cost"] = "Active Skill Reset Cost",
+                ["Passive_Reset_Cost"]= "Passive Skill Reset Cost",
+
+                // ============================================
+                // Knife Tree - Stack Explosion (Tier 9)
+                // ============================================
+                ["Tier9_StackExplosion_DamagePercent"]  = "Tier 9: [Stack Explosion] Damage per Stack (%)",
+                ["Tier9_StackExplosion_MaxStacks"]       = "Tier 9: [Stack Explosion] Max Stacks",
+                ["Tier9_StackExplosion_StackDuration"]   = "Tier 9: [Stack Explosion] Stack Duration (sec)",
+                ["Tier9_StackExplosion_StaminaCost"]     = "Tier 9: [Stack Explosion] Stamina Cost",
+                ["Tier9_StackExplosion_Cooldown"]        = "Tier 9: [Stack Explosion] Cooldown (sec)",
+                ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Stack Explosion] Required Points",
+                ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Stack Explosion] Buff Duration (sec)",
+                ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Stack Explosion] AOE Damage Ratio (%)",
             };
         }
     }

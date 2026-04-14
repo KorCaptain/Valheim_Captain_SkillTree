@@ -60,7 +60,8 @@ namespace CaptainSkillTree
 
                 if (canvas == null)
                 {
-                    Log.LogWarning("[Difficulty] Canvas를 찾을 수 없어 난이도 선택 창을 열 수 없습니다.");
+                    Log.LogWarning("[Difficulty] Canvas를 찾을 수 없어 난이도 선택 창을 열 수 없습니다. 기본값 VeryHard 적용.");
+                    DifficultyManager.ApplyVeryHard();
                     return;
                 }
 

@@ -244,7 +244,7 @@ namespace CaptainSkillTree.Localization
                 ["bow_multishot_lv2_effect"] = "🏹🏹 멀티샷 Lv2 습득!",
                 ["bow_proficiency_effect"] = "🏹 활 숙련 습득! 활 숙련도 +{0}",
                 ["bow_explosive_desc"] = "폭발 화살 발사\n데미지: 활 공격력의 {0}%\n스태미나 {1}% 소모\n쿨타임: {2}초",
-                ["bow_arrow_rain_desc"] = "버프 활성화 후 활로 대상에 적중!\n적중 지점 위 200m에서 화살 {0}발 낙하\n반경 {2}m • 화살당 (활+화살) × {1}%\n스태미나 {3}% 소모 • 쿨타임 {4}초",
+                ["bow_arrow_rain_desc"] = "버프 활성화 후 활로 대상에 적중!\n적중 지점 위 200m에서 화살 {0}발 낙하\n반경 {2}m • 화살당 (활+화살) × {1}%\n보스 대상 피해 50% 감소\n스태미나 {3}% 소모 • 쿨타임 {4}초",
                 ["bow_arrow_rain_ready"] = "화살비 발동!",
                 ["bow_arrow_rain_complete"] = "화살비 완료",
 
@@ -620,7 +620,7 @@ namespace CaptainSkillTree.Localization
                 ["bow_multishot_lv2_effect"] = "Multi-Shot Lv2 acquired!",
                 ["bow_proficiency_effect"] = "Bow Proficiency acquired! Bow skill +{0}",
                 ["bow_explosive_desc"] = "Fire explosive arrow\nDamage: {0}% of bow damage\nStamina cost: {1}%\nCooldown: {2}s",
-                ["bow_arrow_rain_desc"] = "Buff active → fire bow at any target!\n{0} arrows rain from 200m above hit point\nRadius {2}m • Per arrow: (Bow+Arrow) × {1}%\nStamina {3}% • Cooldown {4}s",
+                ["bow_arrow_rain_desc"] = "Buff active → fire bow at any target!\n{0} arrows rain from 200m above hit point\nRadius {2}m • Per arrow: (Bow+Arrow) × {1}%\n50% reduced damage vs Bosses\nStamina {3}% • Cooldown {4}s",
                 ["bow_arrow_rain_ready"] = "Arrow Rain activated!",
                 ["bow_arrow_rain_complete"] = "Arrow Rain complete",
 

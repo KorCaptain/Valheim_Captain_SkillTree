@@ -1,5 +1,40 @@
 # Changelog / 변경 로그
 ## Update
+# [1.2.29] - 2026-04-13
+- ✅fix1: Berserker - Modifying Invincible Passive
+- ✅new1: New skill of dagger expert: stack explosion
+- ✅improve1: ArrowRain - Raised attack on regular monsters to 16% (previously 8%) per arrow and applied only 8% to boss monsters (50% of attack)
+-
+- ✅fix1 : Berserker - 무적패시브 수정
+- ✅new1 : 단검 전문가의 신규스킬 : 약점폭발  
+- ✅improve1: ArrowRain - 일반 몬스터에 대한 공격력 화살 1발당 16%(기존 8%)로 상향 하고 보스 몬스터에게는 8%만 적용(공격력의 50%)
+
+# [1.2.28] - 2026-04-11
+- ✅fix1: Tanker - Correcting abnormal symptoms of HP increase
+-
+- ✅fix1 : 탱커 - 체력증가 이상증상 수정
+
+# [1.2.27] - 2026-04-11
+- ✅fix1 : Dagger - Fixed backstab condition reversed (now correctly triggers from behind/side, not from the front)
+- ✅fix2 : Related to production experts - Collecting, modifying to occur additionally related to mining
+- ✅fix3 : Regarding Burserker - Correcting Invincible Judgment
+-
+- ✅fix1 : 단검 - 백스탭 조건 반전 버그 수정 (앞에서 발동되던 문제를 수정, 이제 뒤/측면에서 정상 발동)
+- ✅fix2 : 생산 전문가 관련 - 채집, 광산 관련 추가 발생 되도록 수정
+- ✅fix3 : 버서커 관련 - 무적 판정 수정
+
+# [1.2.26] - 2026-04-10
+- ✅new1: Occupation mark in front of character name
+- ✅new2: Wheelwind - Display the Cool Time icon and 10 seconds of use while pressing the wheel mouse (M2) key
+-
+- ✅new1 : 캐릭터 이름 앞에 직업표시
+- ✅new2 : 휠윈드 - 휠마우스(M2)  키 누르고 있는 동안 총 10초 사용가능 및 쿨타임 아이콘표시
+
+# [1.2.25] - 2026-04-09
+- ✅fix : Do not use skills when the chat window is opened
+-
+- ✅fix : 채팅창이 열렸을때 스킬 사용 금지 패치
+
 # [1.2.24] - 2026-04-06
 - ✅new1 : Config - Added GameDifficulty setting to Skill_Tree_Base section (Vanilla / HardMode / UserSettings); changing it immediately applies the corresponding preset
 - ✅new2 : Config - GameDifficulty syncs with difficulty selection UI: first-launch popup updates the config value, and vice versa

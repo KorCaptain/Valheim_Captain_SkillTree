@@ -142,7 +142,7 @@ namespace CaptainSkillTree.Localization
                 ["polearm_desc_king_first"] = "공격력 +{0}%",
                 ["polearm_desc_king_aoe"] = "공격력 +{0}% (뒤쪽 {1}°, {2}m)",
                 ["polearm_desc_king_knockback"] = "{0}m",
-                ["polearm_desc_whirlwind"] = "마우스 휠 버튼을 누르고 있는 동안 커서 방향으로 이동하며 회오리 공격. 공격력 무기의 {0}%",
+                ["polearm_desc_whirlwind"] = "마우스 휠 버튼을 누르고 있는 동안 카메라 방향 앞으로 이동하며 회오리 공격. 공격력 무기의 {0}%",
                 ["polearm_desc_whirlwind_damage"] = "무기 공격력 {0}% (광역 6m 포함)",
                 ["unit_cycle"] = "회",
                 ["tooltip_first_hit"] = "첫 타격",
@@ -159,6 +159,7 @@ namespace CaptainSkillTree.Localization
                 ["knife_skill_combat_damage"] = "치명적 피해",
                 ["knife_skill_execution"] = "암살자",
                 ["knife_skill_assassination"] = "암살술",
+                ["knife_skill_stack_explosion"] = "약점폭발",
 
                 // === Knife Skill Descriptions ===
                 ["knife_desc_expert"] = "적의 뒤에서 공격 시 피해 +{0}%",
@@ -174,6 +175,14 @@ namespace CaptainSkillTree.Localization
                 ["knife_desc_assassin_main"] = "{0}m 이내 적의 뒤로 순간이동\n대상 {2}초 스턴 + {3}회 연속 공격\n공격 완료 후 원래 위치로 복귀",
                 ["knife_desc_assassin_note"] = "암살자의 모든 능력을 극한까지 끌어올리는 궁극기",
                 ["knife_desc_assassin_note2"] = "{0}m 이내 적이 없으면 스킬 취소",
+                ["knife_desc_stack_explosion"] = "공격 적중마다 1스택 (최대 {0}), {1}초 유지\nH키: 스택 폭발, 스택×무기공격력 {2}% 화염 피해",
+                ["knife_desc_stack_explosion_detail"] = "공격 적중마다 1스택을 쌓으며 최대 스택이 {0}이 되면 자동 폭발 또는 휠마우스(M2) 버튼으로 수동 폭발\n스택당 {1}초 유지되며, 최대 {2}초 후 자동 폭발, 스택당 무기공격력의 {3}% 피해 + 광역피해(스택공격의 {4}%)",
+                ["knife_desc_stack_explosion_note"] = "스택은 마지막 적중 후 {0}초가 지나면 초기화됩니다",
+                ["stack_explosion_no_stack"] = "약점폭발: 스택이 없습니다",
+                ["stack_explosion_no_target"] = "약점폭발: 유효한 타겟이 없습니다",
+                ["stack_explosion_buff_start"] = "약점폭발 준비! 공격하여 스택을 쌓으세요",
+                ["stack_explosion_buff_expire"] = "약점폭발 버프 만료 — 폭발!",
+                ["stack_explosion_max_stack"] = "약점폭발 최대 스택 — 폭발!",
                 ["requirement_knife_claw"] = "단검 또는 클로 착용",
 
                 // === Staff Skill Names ===
@@ -191,7 +200,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Bow Skill Names ===
                 ["bow_skill_explosive"] = "폭발 화살",
-                ["bow_arrow_rain_tooltip_desc"] = "버프 활성화 후 활로 대상에 조준 — 200m 위에서 화살이 쏟아진다",
+                ["bow_arrow_rain_tooltip_desc"] = "버프 활성화 후 활로 대상에 조준 — 200m 위에서 화살이 쏟아진다 (보스 50% 감소)",
                 ["bow_arrow_rain_damage_format"] = "화살 {0}발 × (활+화살) {1}% 데미지",
                 ["bow_arrow_rain_range_format"] = "낙하 반경 {0}m • 범위 3m",
 
@@ -253,9 +262,6 @@ namespace CaptainSkillTree.Localization
                 ["ui_reset_production"] = "생산 초기화",
                 ["ui_reset_production_confirm_title"] = "생산 전문가 초기화 확인",
                 ["ui_reset_production_confirm_message"] = "생산 전문가 스킬을 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.",
-                ["ui_reset_job"] = "직업 초기화",
-                ["ui_reset_job_confirm_title"] = "직업 초기화 확인",
-                ["ui_reset_job_confirm_message"] = "직업 스킬을 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.",
                 ["ui_selective_reset_prompt_title"] = "스킬 선택 초기화",
                 ["ui_selective_reset_prompt_message"] = "초기화할 스킬을 클릭하여 선택하세요.\n선택된 스킬만큼 코인이 소모됩니다.\n진행하겠습니까?",
                 ["ui_selective_reset_confirm"] = "초기화 확인",
@@ -267,6 +273,8 @@ namespace CaptainSkillTree.Localization
                 ["ui_selective_reset_success"] = "스킬 초기화 완료! -{0} 코인",
                 ["ui_music_on"] = "Music On",
                 ["ui_music_off"] = "Music Off",
+                ["ui_escape"] = "탈출",
+                ["ui_escape_cooldown"] = "{0}분 후 사용가능",
 
                 // === Skill Investment Messages ===
                 ["skill_insufficient_points_detail"] = "스킬 포인트가 부족합니다. (필요: {0}, 보유: {1})",
@@ -405,6 +413,7 @@ namespace CaptainSkillTree.Localization
                 ["tooltip_cost"] = "Cost",
                 ["tooltip_skill_type"] = "Skill Type",
                 ["tooltip_cooldown"] = "Cooldown",
+                ["tooltip_max_duration"] = "Max Duration",
                 ["tooltip_requirements"] = "Requirements",
                 ["tooltip_notice"] = "Notice",
                 ["tooltip_required_points"] = "Required Points",
@@ -489,7 +498,7 @@ namespace CaptainSkillTree.Localization
                 ["bow_explosive_tooltip_desc"] = "Fire explosive arrow, deals explosion damage to nearby enemies on hit",
                 ["bow_explosive_damage_format"] = "Explosion damage {0}% of attack power",
                 ["bow_explosive_range_format"] = "Explosion radius {0}m",
-                ["bow_arrow_rain_tooltip_desc"] = "Activate buff, then fire bow at target — arrows rain from 200m above",
+                ["bow_arrow_rain_tooltip_desc"] = "Activate buff, then fire bow at target — arrows rain from 200m above (50% vs Bosses)",
                 ["bow_arrow_rain_damage_format"] = "{0} arrows × (Bow+Arrow) {1}% damage",
                 ["bow_arrow_rain_range_format"] = "Fall radius {0}m • AOE 3m",
                 ["crossbow_oneshot_tooltip_desc"] = "Buff active for {0}s, next crossbow shot deals powerful strike",
@@ -636,7 +645,7 @@ namespace CaptainSkillTree.Localization
                 ["polearm_desc_king_first"] = "Damage +{0}%",
                 ["polearm_desc_king_aoe"] = "Damage +{0}% (Rear {1}°, {2}m)",
                 ["polearm_desc_king_knockback"] = "{0}m",
-                ["polearm_desc_whirlwind"] = "Hold mouse wheel button to move toward cursor with whirlwind attacks. Damage {0}% of weapon",
+                ["polearm_desc_whirlwind"] = "Hold mouse wheel button to move forward in camera direction with whirlwind attacks. Damage {0}% of weapon",
                 ["polearm_desc_whirlwind_damage"] = "Weapon damage {0}% (includes 6m AoE)",
                 ["unit_cycle"] = "cycle",
                 ["tooltip_first_hit"] = "First Hit",
@@ -653,6 +662,7 @@ namespace CaptainSkillTree.Localization
                 ["knife_skill_combat_damage"] = "Lethal Damage",
                 ["knife_skill_execution"] = "Assassin",
                 ["knife_skill_assassination"] = "Assassination",
+                ["knife_skill_stack_explosion"] = "Stack Explosion",
 
                 // === Knife Skill Descriptions ===
                 ["knife_desc_expert"] = "Backstab damage +{0}%",
@@ -668,6 +678,14 @@ namespace CaptainSkillTree.Localization
                 ["knife_desc_assassin_main"] = "Teleport behind enemy within {0}m\nStun target for {2}s + {3} consecutive attacks\nReturn to original position after attacks",
                 ["knife_desc_assassin_note"] = "Ultimate skill that pushes all assassin abilities to the limit",
                 ["knife_desc_assassin_note2"] = "Skill cancelled if no enemy within {0}m",
+                ["knife_desc_stack_explosion"] = "Stack on each hit (max {0}), lasts {1}s\nH key: Explode stacks, {2}% fire damage per stack",
+                ["knife_desc_stack_explosion_detail"] = "Stack on each hit; auto-explode at {0} stacks or manually with Mouse Button 2\nStacks last {1}s, auto-explode after {2}s max, {3}% weapon damage per stack + AOE ({4}% of stack damage)",
+                ["knife_desc_stack_explosion_note"] = "Stacks reset if no hit within {0}s",
+                ["stack_explosion_no_stack"] = "Stack Explosion: No stacks",
+                ["stack_explosion_no_target"] = "Stack Explosion: No valid target",
+                ["stack_explosion_buff_start"] = "Stack Explosion ready! Attack to build stacks",
+                ["stack_explosion_buff_expire"] = "Stack Explosion buff expired — Explode!",
+                ["stack_explosion_max_stack"] = "Stack Explosion max stacks — Explode!",
                 ["requirement_knife_claw"] = "Knife or Claw equipped",
 
                 // === Staff Skill Names ===
@@ -744,9 +762,6 @@ namespace CaptainSkillTree.Localization
                 ["ui_reset_production"] = "Reset Pd",
                 ["ui_reset_production_confirm_title"] = "Reset Production Expert Confirm",
                 ["ui_reset_production_confirm_message"] = "Are you sure you want to reset Production Expert skills?\nThis action cannot be undone.",
-                ["ui_reset_job"] = "Reset Job",
-                ["ui_reset_job_confirm_title"] = "Reset Job Confirm",
-                ["ui_reset_job_confirm_message"] = "Are you sure you want to reset job skills?\nThis action cannot be undone.",
                 ["ui_selective_reset_prompt_title"] = "Selective Skill Reset",
                 ["ui_selective_reset_prompt_message"] = "Click skills to select them for reset.\nCoins will be consumed per selected skill.\nProceed?",
                 ["ui_selective_reset_confirm"] = "Confirm Reset",
@@ -758,6 +773,8 @@ namespace CaptainSkillTree.Localization
                 ["ui_selective_reset_success"] = "Skills reset! -{0} Coins",
                 ["ui_music_on"] = "Music On",
                 ["ui_music_off"] = "Music Off",
+                ["ui_escape"] = "Exit",
+                ["ui_escape_cooldown"] = "Available in {0}m",
 
                 // === Skill Investment Messages ===
                 ["skill_insufficient_points_detail"] = "Not enough skill points. (Required: {0}, Available: {1})",

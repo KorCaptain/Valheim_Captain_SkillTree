@@ -430,12 +430,12 @@ namespace CaptainSkillTree.MMO_System
         public static int GetSkillPointsFromLevel()
         {
             int level = GetLevel();
-            return level * CaptainLevelConfig.SkillPointsPerLevel.Value;
+            return level * CaptainLevelConfig.SkillPointsPerLevelValue;
         }
 
         public static int GetMaxLevel()
         {
-            return CaptainLevelConfig.MaxLevel.Value;
+            return CaptainLevelConfig.MaxLevelValue;
         }
 
         #endregion

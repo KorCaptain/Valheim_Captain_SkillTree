@@ -59,16 +59,16 @@ namespace CaptainSkillTree.MMO_System
         public static int GetSpLevelBonus(int totalSP)
         {
             int bonus;
-            if      (totalSP <= 10)  bonus = MMODifficultyConfig.SpBonus_0_10.Value;
-            else if (totalSP <= 20)  bonus = MMODifficultyConfig.SpBonus_11_20.Value;
-            else if (totalSP <= 30)  bonus = MMODifficultyConfig.SpBonus_21_30.Value;
-            else if (totalSP <= 40)  bonus = MMODifficultyConfig.SpBonus_31_40.Value;
-            else if (totalSP <= 70)  bonus = MMODifficultyConfig.SpBonus_41_70.Value;
-            else if (totalSP <= 80)  bonus = MMODifficultyConfig.SpBonus_71_80.Value;
-            else if (totalSP <= 100) bonus = MMODifficultyConfig.SpBonus_81_100.Value;
-            else                     bonus = MMODifficultyConfig.SpBonus_101Plus.Value;
+            if      (totalSP <= 10)  bonus = MMODifficultyConfig.SpBonus_0_10Value;
+            else if (totalSP <= 20)  bonus = MMODifficultyConfig.SpBonus_11_20Value;
+            else if (totalSP <= 30)  bonus = MMODifficultyConfig.SpBonus_21_30Value;
+            else if (totalSP <= 40)  bonus = MMODifficultyConfig.SpBonus_31_40Value;
+            else if (totalSP <= 70)  bonus = MMODifficultyConfig.SpBonus_41_70Value;
+            else if (totalSP <= 80)  bonus = MMODifficultyConfig.SpBonus_71_80Value;
+            else if (totalSP <= 100) bonus = MMODifficultyConfig.SpBonus_81_100Value;
+            else                     bonus = MMODifficultyConfig.SpBonus_101PlusValue;
 
-            return Math.Min(bonus, MMODifficultyConfig.MaxLevelBonus.Value);
+            return Math.Min(bonus, MMODifficultyConfig.MaxLevelBonusValue);
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace CaptainSkillTree.MMO_System
         /// </summary>
         public static bool RollStarChance(int totalSP)
         {
-            float divider = MMODifficultyConfig.StarChanceDivider.Value;
+            float divider = MMODifficultyConfig.StarChanceDividerValue;
             float spContribution = divider > 0f ? totalSP / divider : 0f;
-            float chance = MMODifficultyConfig.BaseStarChance.Value + spContribution;
-            chance = Math.Min(chance, MMODifficultyConfig.MaxStarChance.Value);
+            float chance = MMODifficultyConfig.BaseStarChanceValue + spContribution;
+            chance = Math.Min(chance, MMODifficultyConfig.MaxStarChanceValue);
             return UnityEngine.Random.value * 100f < chance;
         }
 

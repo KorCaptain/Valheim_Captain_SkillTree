@@ -27,6 +27,12 @@ namespace CaptainSkillTree.Localization
                 "  UserSettings = 이전에 저장된 사용자 설정 복원\n" +
                 "⚠️ 변경 시 해당 프리셋이 즉시 적용됩니다 (모든 스킬 수치 교체).",
 
+                ["ShowResetButtons"] =
+                "【초기화 버튼 표시】\n" +
+                "스킬트리 UI에서 포인트/직업/생산 초기화 버튼 3개의 표시 여부를 설정합니다.\n" +
+                "  true  = 초기화 버튼 표시 (기본값)\n" +
+                "  false = 초기화 버튼 숨김 (서버에서 포인트 초기화 방지 시 사용)",
+
                 // ========================================
                 // Attack Tree (공격 트리) — 4국면 연쇄 시스템
                 // ========================================
@@ -793,6 +799,12 @@ namespace CaptainSkillTree.Localization
                 "  HardMode     = CLLC Very Hard + Monster HP x2 (strong values)\n" +
                 "  UserSettings = Restores your previously saved settings\n" +
                 "⚠️ Changing this setting immediately applies the selected preset (replaces all skill values).",
+
+                ["ShowResetButtons"] =
+                "【Show Reset Buttons】\n" +
+                "Controls whether the Point / Job / Production reset buttons are shown in the skill tree UI.\n" +
+                "  true  = Show reset buttons (default)\n" +
+                "  false = Hide reset buttons (use on servers to prevent skill point resets)",
 
                 // ========================================
                 // Attack Tree — 4-Phase Chain System

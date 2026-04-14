@@ -311,9 +311,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv2 ===
                 ["Tanker_Hp_Bonus_Lv2"] =
-                "【Tanker Lv2 LP-Bonus】\n" +
-                "Passiver LP-Bonus des Tankers auf Lv2.\n" +
-                "Standard: 35",
+                "【Tanker Lv2 LP-Bonus (%)】\n" +
+                "Maximale LP erhöht sich prozentual beim Erreichen von Tanker Lv2.\n" +
+                "Standard: 30",
 
                 ["Tanker_Lv2_BlockPower"] =
                 "【Tanker Lv2 Blockstärke】\n" +
@@ -326,14 +326,14 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv3 ===
                 ["Tanker_Hp_Bonus_Lv3"] =
-                "【Tanker Lv3 LP-Bonus】\n" +
-                "Passiver LP-Bonus des Tankers auf Lv3.\n" +
-                "Standard: 50",
+                "【Tanker Lv3 LP-Bonus (%)】\n" +
+                "Maximale LP erhöht sich prozentual beim Erreichen von Tanker Lv3.\n" +
+                "Standard: 35",
 
                 ["Tanker_Lv3_BlockPower"] =
                 "【Tanker Lv3 Blockstärke】\n" +
                 "Passive Blockstärke des Tankers auf Lv3.\n" +
-                "Standard: 8",
+                "Standard: 10",
 
                 ["Tanker_ReflectDuration_Lv3"] =
                 "【Tanker Reflektionsdauer Lv3 (Sek)】\n" +
@@ -341,14 +341,14 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv4 ===
                 ["Tanker_Hp_Bonus_Lv4"] =
-                "【Tanker Lv4 LP-Bonus】\n" +
-                "Passiver LP-Bonus des Tankers auf Lv4.\n" +
-                "Standard: 70",
+                "【Tanker Lv4 LP-Bonus (%)】\n" +
+                "Maximale LP erhöht sich prozentual beim Erreichen von Tanker Lv4.\n" +
+                "Standard: 40",
 
                 ["Tanker_Lv4_BlockPower"] =
                 "【Tanker Lv4 Blockstärke】\n" +
                 "Passive Blockstärke des Tankers auf Lv4.\n" +
-                "Standard: 12",
+                "Standard: 15",
 
                 ["Tanker_ReflectDuration_Lv4"] =
                 "【Tanker Reflektionsdauer Lv4 (Sek)】\n" +
@@ -356,14 +356,14 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv5 ===
                 ["Tanker_Hp_Bonus_Lv5"] =
-                "【Tanker Lv5 LP-Bonus】\n" +
-                "Passiver LP-Bonus des Tankers auf Lv5.\n" +
-                "Standard: 100",
+                "【Tanker Lv5 LP-Bonus (%)】\n" +
+                "Maximale LP erhöht sich prozentual beim Erreichen von Tanker Lv5.\n" +
+                "Standard: 50",
 
                 ["Tanker_Lv5_BlockPower"] =
                 "【Tanker Lv5 Blockstärke】\n" +
                 "Passive Blockstärke des Tankers auf Lv5.\n" +
-                "Standard: 15",
+                "Standard: 20",
 
                 ["Tanker_ReflectDuration_Lv5"] =
                 "【Tanker Reflektionsdauer Lv5 (Sek)】\n" +
@@ -627,6 +627,10 @@ namespace CaptainSkillTree.Localization
                 ["Job_Lv3_Cost"] = "【Job Lv3 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv3.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 3000",
                 ["Job_Lv4_Cost"] = "【Job Lv4 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv4.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 4000",
                 ["Job_Lv5_Cost"] = "【Job Lv5 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv5.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 5000",
+
+                ["Job_Reset_Cost"]    = "【Job-Skill Reset-Kosten】\nMünzen beim Zurücksetzen der Job-Skillpunkte.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 1000",
+                ["Active_Reset_Cost"] = "【Aktiv-Skill Reset-Kosten】\nMünzen beim Zurücksetzen der Aktiv-Skillpunkte.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 500",
+                ["Passive_Reset_Cost"]= "【Passiv-Skill Reset-Kosten】\nMünzen beim Zurücksetzen der Passiv-Skillpunkte.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 100",
             };
         }
     }

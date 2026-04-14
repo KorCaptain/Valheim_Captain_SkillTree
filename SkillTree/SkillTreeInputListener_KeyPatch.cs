@@ -99,39 +99,78 @@ namespace CaptainSkillTree.SkillTree
             return false; // 원본 Update 실행 건너뜀
         }
 
-        private static bool IsChatOrConsoleOpen()
+        // === Reflection 메타 캐시 (타입/메서드 조회 1회) ===
+        private static bool _reflCacheReady;
+        private static System.Reflection.FieldInfo? _chatMInputField;   // Chat.m_input
+        private static System.Reflection.PropertyInfo? _tmpIsFocusedProp; // TMP_InputField.isFocused
+        private static System.Type? _tmpType;                            // TMP_InputField 타입
+        private static System.Reflection.MethodInfo? _consoleIsVisible;
+
+        /// <summary>
+        /// Type/FieldInfo/MethodInfo를 1회만 조회하여 캐시.
+        /// 이후 매 프레임은 GetValue + bool 읽기만 수행.
+        /// </summary>
+        internal static void EnsureReflCache()
         {
-            try
+            if (_reflCacheReady) return;
+            _reflCacheReady = true;
+
+            // Chat.m_input 필드 (legacy InputField 또는 TMP_InputField)
+            _chatMInputField = typeof(Chat).GetField("m_input",
+                System.Reflection.BindingFlags.Public |
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Instance);
+
+            // TMP_InputField 타입 조회 (없으면 null → TMP 경로 건너뜀)
+            _tmpType = System.Type.GetType("TMPro.TMP_InputField, Unity.TextMeshPro")
+                    ?? System.Type.GetType("TMPro.TMP_InputField, TMPro");
+            _tmpIsFocusedProp = _tmpType?.GetProperty("isFocused");
+
+            // Console.IsVisible 메서드
+            var consoleType = System.Type.GetType("Console, assembly_valheim");
+            _consoleIsVisible = consoleType?.GetMethod("IsVisible",
+                System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+        }
+
+        internal static bool IsChatOrConsoleOpen()
+        {
+            EnsureReflCache();
+
+            if (Chat.instance != null)
             {
-                var eventSystem = UnityEngine.EventSystems.EventSystem.current;
-                if (eventSystem?.currentSelectedGameObject != null)
-                {
-                    var input = eventSystem.currentSelectedGameObject.GetComponent<UnityEngine.UI.InputField>();
-                    if (input != null && input.isFocused) return true;
-                }
+                // [1] Chat.m_input 직접 접근 (매 프레임 GetValue 1회 ≈ 수 나노초)
+                //     컴포넌트 레퍼런스가 아닌 필드값을 매 프레임 읽어 stale 문제 방지
+                var mInput = _chatMInputField?.GetValue(Chat.instance);
 
-                if (Chat.instance != null && Chat.instance.gameObject.activeInHierarchy)
-                {
-                    try
-                    {
-                        var input = Chat.instance.GetComponentInChildren<UnityEngine.UI.InputField>(true);
-                        if (input != null && input.isFocused) return true;
-                    }
-                    catch { }
-                }
+                if (mInput is UnityEngine.UI.InputField legacyInput && legacyInput.isFocused)
+                    return true;
 
-                var consoleType = System.Type.GetType("Console, assembly_valheim");
-                if (consoleType != null)
+                // TMP_InputField인 경우 (TMPro 미사용 환경에선 _tmpIsFocusedProp == null → 건너뜀)
+                if (mInput is UnityEngine.MonoBehaviour mb && _tmpIsFocusedProp != null
+                    && _tmpType!.IsInstanceOfType(mb)
+                    && (bool)(_tmpIsFocusedProp.GetValue(mb) ?? false))
+                    return true;
+            }
+
+            // [2] EventSystem 폴백 - Chat.m_input이 null이거나 다른 UI가 포커스된 경우
+            var selected = UnityEngine.EventSystems.EventSystem.current?.currentSelectedGameObject;
+            if (selected != null)
+            {
+                if (selected.GetComponent<UnityEngine.UI.InputField>()?.isFocused == true)
+                    return true;
+
+                if (_tmpType != null && _tmpIsFocusedProp != null)
                 {
-                    var method = consoleType.GetMethod("IsVisible",
-                        System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-                    if (method != null && (bool)method.Invoke(null, null)) return true;
+                    var tmpComp = selected.GetComponent(_tmpType) as UnityEngine.MonoBehaviour;
+                    if (tmpComp != null && (bool)(_tmpIsFocusedProp.GetValue(tmpComp) ?? false))
+                        return true;
                 }
             }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogWarning($"[KeyPatch] 채팅/콘솔 감지 오류: {ex.Message}");
-            }
+
+            // [3] Console.IsVisible
+            if (_consoleIsVisible != null && (bool)_consoleIsVisible.Invoke(null, null))
+                return true;
+
             return false;
         }
     }

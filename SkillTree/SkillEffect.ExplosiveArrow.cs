@@ -172,6 +172,7 @@ namespace CaptainSkillTree.SkillTree
                     buff01Effect.transform.SetParent(player.transform, false);
                     buff01Effect.transform.localPosition = Vector3.up * 0.5f;
                     buff01Effect.transform.localScale = Vector3.one * 0.8f;
+                    SimpleVFX.ApplyVFXDim(buff01Effect, SkillTreeConfig.VFXOpacityValue);
 
                     // 2초 후 제거
                     UnityEngine.Object.Destroy(buff01Effect, 2f);
@@ -467,11 +468,25 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogInfo($"[폭발 화살] 폭발 이팩트 생성 시작 - 위치: {position}");
 
-                // 1. 주 폭발 효과 (라바 블롭 폭발) - VFXManager 사용
-                VFXManager.PlayVFXAtPosition("fx_blobLava_explosion", position, 5f, 1f);
+                // 1. 주 폭발 효과 (라바 블롭 폭발)
+                {
+                    var _blobPrefab = ZNetScene.instance?.GetPrefab("fx_blobLava_explosion");
+                    if (_blobPrefab != null)
+                    {
+                        var _blobGo = UnityEngine.Object.Instantiate(_blobPrefab, position, Quaternion.identity);
+                        SimpleVFX.ApplyVFXDim(_blobGo, SkillTreeConfig.VFXOpacityValue);
+                    }
+                }
 
-                // 2. 추가 폭발 효과 (공성 폭탄 폭발) - VFXManager 사용
-                VFXManager.PlayVFXAtPosition("fx_siegebomb_explosion", position + Vector3.up * 0.5f, 5f, 1f);
+                // 2. 추가 폭발 효과 (공성 폭탄 폭발)
+                {
+                    var _siegePrefab = ZNetScene.instance?.GetPrefab("fx_siegebomb_explosion");
+                    if (_siegePrefab != null)
+                    {
+                        var _siegeGo = UnityEngine.Object.Instantiate(_siegePrefab, position + Vector3.up * 0.5f, Quaternion.identity);
+                        SimpleVFX.ApplyVFXDim(_siegeGo, SkillTreeConfig.VFXOpacityValue);
+                    }
+                }
 
                 // 3. 폭발 사운드 효과 (VFXManager 사운드 메서드 사용)
                 VFXManager.PlaySound("sfx_blobLava_explosion", position, 5f);

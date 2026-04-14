@@ -557,6 +557,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Whirlwind] VFX Interval (sec)",
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
+                ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Whirlwind] Макс. длительность (сек)",
 
                 // ============================================
                 // Archer Job Skills - 8 ключей
@@ -732,6 +733,18 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantChance_Lv3"] = "Мастер ремесла: Шанс зачарования Lv3 (%)",
                 ["Producer_EnchantChance_Lv4"] = "Мастер ремесла: Шанс зачарования Lv4 (%)",
                 ["Producer_EnchantChance_Lv5"] = "Мастер ремесла: Шанс зачарования Lv5 (%)",
+
+                // ============================================
+                // Knife Tree - Взрыв слабого места (Tier 9)
+                // ============================================
+                ["Tier9_StackExplosion_DamagePercent"]  = "Tier 9: [Взрыв слабого места] Урон за стак (%)",
+                ["Tier9_StackExplosion_MaxStacks"]       = "Tier 9: [Взрыв слабого места] Макс. стаки",
+                ["Tier9_StackExplosion_StackDuration"]   = "Tier 9: [Взрыв слабого места] Длительность стака (сек)",
+                ["Tier9_StackExplosion_StaminaCost"]     = "Tier 9: [Взрыв слабого места] Расход выносливости",
+                ["Tier9_StackExplosion_Cooldown"]        = "Tier 9: [Взрыв слабого места] Перезарядка (сек)",
+                ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Взрыв слабого места] Необходимые очки",
+                ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Взрыв слабого места] Длительность баффа (сек)",
+                ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Взрыв слабого места] Коэффициент урона по области (%)",
             };
         }
     }

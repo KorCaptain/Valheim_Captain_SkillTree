@@ -74,6 +74,23 @@ namespace CaptainSkillTree.MMO_System
 
         #endregion
 
+        #region === 서버싱크 Value 래퍼 ===
+
+        public static int   SpBonus_0_10Value    => (int)SkillTreeConfig.GetEffectiveValue("MMODiff_SpBonus_0_10",    SpBonus_0_10?.Value  ?? 2);
+        public static int   SpBonus_11_20Value   => (int)SkillTreeConfig.GetEffectiveValue("MMODiff_SpBonus_11_20",  SpBonus_11_20?.Value ?? 3);
+        public static int   SpBonus_21_30Value   => (int)SkillTreeConfig.GetEffectiveValue("MMODiff_SpBonus_21_30",  SpBonus_21_30?.Value ?? 4);
+        public static int   SpBonus_31_40Value   => (int)SkillTreeConfig.GetEffectiveValue("MMODiff_SpBonus_31_40",  SpBonus_31_40?.Value ?? 5);
+        public static int   SpBonus_41_70Value   => (int)SkillTreeConfig.GetEffectiveValue("MMODiff_SpBonus_41_70",  SpBonus_41_70?.Value ?? 5);
+        public static int   SpBonus_71_80Value   => (int)SkillTreeConfig.GetEffectiveValue("MMODiff_SpBonus_71_80",  SpBonus_71_80?.Value ?? 6);
+        public static int   SpBonus_81_100Value  => (int)SkillTreeConfig.GetEffectiveValue("MMODiff_SpBonus_81_100", SpBonus_81_100?.Value ?? 7);
+        public static int   SpBonus_101PlusValue => (int)SkillTreeConfig.GetEffectiveValue("MMODiff_SpBonus_101Plus", SpBonus_101Plus?.Value ?? 8);
+        public static int   MaxLevelBonusValue   => (int)SkillTreeConfig.GetEffectiveValue("MMODiff_MaxLevelBonus",  MaxLevelBonus?.Value  ?? 10);
+        public static float BaseStarChanceValue  =>      SkillTreeConfig.GetEffectiveValue("MMODiff_BaseStarChance", BaseStarChance?.Value ?? 25f);
+        public static float StarChanceDividerValue =>    SkillTreeConfig.GetEffectiveValue("MMODiff_StarChanceDivider", StarChanceDivider?.Value ?? 3f);
+        public static float MaxStarChanceValue   =>      SkillTreeConfig.GetEffectiveValue("MMODiff_MaxStarChance",  MaxStarChance?.Value  ?? 100f);
+
+        #endregion
+
         /// <summary>
         /// Config 바인딩
         /// CaptainLevelConfig.Bind() 마지막에 호출됨

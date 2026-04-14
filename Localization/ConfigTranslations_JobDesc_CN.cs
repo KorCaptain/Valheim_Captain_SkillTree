@@ -311,9 +311,9 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv2 ===
                 ["Tanker_Hp_Bonus_Lv2"] =
-                "【坦克 Lv2 HP加成】\n" +
-                "坦克Lv2被动HP加成。\n" +
-                "默认：35",
+                "【坦克 Lv2 HP加成 (%)】\n" +
+                "达到坦克Lv2时最大HP按百分比增加。\n" +
+                "默认：30",
 
                 ["Tanker_Lv2_BlockPower"] =
                 "【坦克 Lv2 格挡防御力】\n" +
@@ -326,14 +326,14 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv3 ===
                 ["Tanker_Hp_Bonus_Lv3"] =
-                "【坦克 Lv3 HP加成】\n" +
-                "坦克Lv3被动HP加成。\n" +
-                "默认：50",
+                "【坦克 Lv3 HP加成 (%)】\n" +
+                "达到坦克Lv3时最大HP按百分比增加。\n" +
+                "默认：35",
 
                 ["Tanker_Lv3_BlockPower"] =
                 "【坦克 Lv3 格挡防御力】\n" +
                 "坦克Lv3被动格挡防御力。\n" +
-                "默认：8",
+                "默认：10",
 
                 ["Tanker_ReflectDuration_Lv3"] =
                 "【坦克反射持续时间Lv3 (秒)】\n" +
@@ -341,14 +341,14 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv4 ===
                 ["Tanker_Hp_Bonus_Lv4"] =
-                "【坦克 Lv4 HP加成】\n" +
-                "坦克Lv4被动HP加成。\n" +
-                "默认：70",
+                "【坦克 Lv4 HP加成 (%)】\n" +
+                "达到坦克Lv4时最大HP按百分比增加。\n" +
+                "默认：40",
 
                 ["Tanker_Lv4_BlockPower"] =
                 "【坦克 Lv4 格挡防御力】\n" +
                 "坦克Lv4被动格挡防御力。\n" +
-                "默认：12",
+                "默认：15",
 
                 ["Tanker_ReflectDuration_Lv4"] =
                 "【坦克反射持续时间Lv4 (秒)】\n" +
@@ -356,14 +356,14 @@ namespace CaptainSkillTree.Localization
 
                 // === Lv5 ===
                 ["Tanker_Hp_Bonus_Lv5"] =
-                "【坦克 Lv5 HP加成】\n" +
-                "坦克Lv5被动HP加成。\n" +
-                "默认：100",
+                "【坦克 Lv5 HP加成 (%)】\n" +
+                "达到坦克Lv5时最大HP按百分比增加。\n" +
+                "默认：50",
 
                 ["Tanker_Lv5_BlockPower"] =
                 "【坦克 Lv5 格挡防御力】\n" +
                 "坦克Lv5被动格挡防御力。\n" +
-                "默认：15",
+                "默认：20",
 
                 ["Tanker_ReflectDuration_Lv5"] =
                 "【坦克反射持续时间Lv5 (秒)】\n" +
@@ -627,6 +627,10 @@ namespace CaptainSkillTree.Localization
                 ["Job_Lv3_Cost"] = "【职业Lv3金币消耗】\n所有职业升级到Lv3时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：3000",
                 ["Job_Lv4_Cost"] = "【职业Lv4金币消耗】\n所有职业升级到Lv4时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：4000",
                 ["Job_Lv5_Cost"] = "【职业Lv5金币消耗】\n所有职业升级到Lv5时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：5000",
+
+                ["Job_Reset_Cost"]    = "【职业技能重置费用】\n重置职业技能点时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：1000",
+                ["Active_Reset_Cost"] = "【主动技能重置费用】\n重置主动技能点时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：500",
+                ["Passive_Reset_Cost"]= "【被动技能重置费用】\n重置被动技能点时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：100",
             };
         }
     }

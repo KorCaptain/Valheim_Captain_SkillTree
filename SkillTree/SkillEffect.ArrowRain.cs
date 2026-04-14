@@ -200,6 +200,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 var go = UnityEngine.Object.Instantiate(prefab, spawnPos, Quaternion.LookRotation(dir));
+                SimpleVFX.ApplyVFXDim(go, SkillTreeConfig.VFXOpacityValue);
 
                 // 착지 VFX 트리거용 태그 추가
                 var tag = go.AddComponent<ArrowRainProjectileTag>();
@@ -338,7 +339,19 @@ namespace CaptainSkillTree.SkillTree
                     if (ch == null || ch.IsDead() || ch.IsPlayer()) continue;
 
                     var hit = new HitData();
-                    hit.m_damage   = dmg;
+
+                    // 보스 판별: 이름 패턴 기반 (TankerSkills 패턴과 동일)
+                    var targetDmg = dmg;                      // struct 값 복사 (원본 보존)
+                    string chName = ch.name?.ToLower() ?? "";
+                    bool isBoss = chName.Contains("eikthyr") || chName.Contains("elder") ||
+                                  chName.Contains("bonemass") || chName.Contains("moder") ||
+                                  chName.Contains("yagluth") || chName.Contains("queen") ||
+                                  chName.Contains("boss") || chName.Contains("dragon") ||
+                                  chName.Contains("giantslime");
+                    if (isBoss)
+                        targetDmg.Modify(0.5f);
+                    hit.m_damage   = targetDmg;
+
                     hit.m_point    = point;
                     hit.m_dir      = (ch.transform.position - point).normalized;
                     hit.m_skill    = Skills.SkillType.Bows;
@@ -403,7 +416,15 @@ namespace CaptainSkillTree.SkillTree
                     if (tag.Processed) return;
                     tag.Processed = true;
 
-                    VFXManager.PlayVFXAtPosition("fx_DvergerMage_Ice_hit", hitPoint, 1.5f);
+                    {
+                        var _icePrefab = ZNetScene.instance?.GetPrefab("fx_DvergerMage_Ice_hit");
+                        if (_icePrefab != null)
+                        {
+                            var _iceGo = UnityEngine.Object.Instantiate(_icePrefab, hitPoint, Quaternion.identity);
+                            SimpleVFX.ApplyVFXDim(_iceGo, SkillTreeConfig.VFXOpacityValue);
+                            // ⚠️ Destroy 생략 — 발헤임 기본 VFX 자동 정리
+                        }
+                    }
                     VFXManager.PlaySound("sfx_arrow_hit", hitPoint, 5f);
                     SkillEffect.ApplyArrowRainFrostSlow(hitPoint);
                     SkillEffect.ApplyArrowRainAOEDamage(tag.Owner, hitPoint);

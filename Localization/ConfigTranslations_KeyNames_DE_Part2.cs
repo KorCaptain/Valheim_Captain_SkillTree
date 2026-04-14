@@ -396,6 +396,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Wirbelwind] VFX-Intervall (Sek)",
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Wirbelwind] Abklingzeit (Sek)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Wirbelwind] Benötigte Punkte",
+                ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Wirbelwind] Maximale Dauer (Sek)",
 
                 // ============================================
                 // Klassenfähigkeiten - Bogenschütze
@@ -577,6 +578,18 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantChance_Lv3"] = "Handwerksmeister: Verzauberungschance Lv3 (%)",
                 ["Producer_EnchantChance_Lv4"] = "Handwerksmeister: Verzauberungschance Lv4 (%)",
                 ["Producer_EnchantChance_Lv5"] = "Handwerksmeister: Verzauberungschance Lv5 (%)",
+
+                // ============================================
+                // Knife Tree - Schwachpunkt-Explosion (Tier 9)
+                // ============================================
+                ["Tier9_StackExplosion_DamagePercent"]  = "Tier 9: [Schwachpunkt-Explosion] Schaden pro Stack (%)",
+                ["Tier9_StackExplosion_MaxStacks"]       = "Tier 9: [Schwachpunkt-Explosion] Max. Stacks",
+                ["Tier9_StackExplosion_StackDuration"]   = "Tier 9: [Schwachpunkt-Explosion] Stack-Dauer (Sek.)",
+                ["Tier9_StackExplosion_StaminaCost"]     = "Tier 9: [Schwachpunkt-Explosion] Ausdauerkosten",
+                ["Tier9_StackExplosion_Cooldown"]        = "Tier 9: [Schwachpunkt-Explosion] Abklingzeit (Sek.)",
+                ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Schwachpunkt-Explosion] Benötigte Punkte",
+                ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Schwachpunkt-Explosion] Buff-Dauer (Sek.)",
+                ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Schwachpunkt-Explosion] Flächenschaden-Verhältnis (%)",
             };
         }
     }

@@ -225,6 +225,7 @@ namespace CaptainSkillTree.Localization
                 ["tooltip_cost"] = "소모",
                 ["tooltip_skill_type"] = "스킬유형",
                 ["tooltip_cooldown"] = "쿨타임",
+                ["tooltip_max_duration"] = "최대 지속",
                 ["tooltip_requirements"] = "필요조건",
                 ["tooltip_notice"] = "확인사항",
                 ["tooltip_required_points"] = "필요 포인트",
@@ -352,6 +353,8 @@ namespace CaptainSkillTree.Localization
                 ["difficulty_btn_normal"]     = "1. Normal",
                 ["difficulty_btn_veryhard"]   = "2. Very Hard",
                 ["difficulty_btn_user"]       = "3. User Setting",
+                ["player_level_required"]     = "플레이어 레벨 {0} 이상 필요 (현재: Lv.{1})",
+                ["player_level_required_short"] = "Lv.{0} 필요",
             };
         }
 
@@ -692,6 +695,8 @@ namespace CaptainSkillTree.Localization
                 ["difficulty_btn_normal"]     = "1. Normal",
                 ["difficulty_btn_veryhard"]   = "2. Very Hard",
                 ["difficulty_btn_user"]       = "3. User Setting",
+                ["player_level_required"]     = "Player Level {0}+ required (Current: Lv.{1})",
+                ["player_level_required_short"] = "Lv.{0}+ required",
             };
         }
     }

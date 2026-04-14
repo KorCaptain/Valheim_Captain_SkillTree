@@ -330,7 +330,7 @@
   "bow_explosive_tooltip_desc": "Feuert einen explosiven Pfeil, der beim Treffer Explosionsschaden an nahe Gegner verursacht",
   "bow_explosive_damage_format": "Explosionsschaden {0}% der Angriffskraft",
   "bow_explosive_range_format": "Explosionsradius {0}m",
-  "bow_arrow_rain_tooltip_desc": "Aktiviere Buff, schieße mit dem Bogen auf Ziel — Pfeile regnen aus 200m Höhe herab",
+  "bow_arrow_rain_tooltip_desc": "Aktiviere Buff, schieße mit dem Bogen auf Ziel — Pfeile regnen aus 200m Höhe herab (50% gg. Bosse)",
   "bow_arrow_rain_damage_format": "{0} Pfeile × (Bogen+Pfeil) {1}% Schaden",
   "bow_arrow_rain_range_format": "Fallradius {0}m • AoE 3m",
   "crossbow_oneshot_tooltip_desc": "Buff aktiv für {0}s, der nächste Armbrustschuss verursacht einen mächtigen Treffer",
@@ -544,6 +544,8 @@
   "ui_selective_reset_success": "Fähigkeiten zurückgesetzt! -{0} Münzen",
   "ui_music_on": "Musik an",
   "ui_music_off": "Musik aus",
+  "ui_escape": "Ausgang",
+  "ui_escape_cooldown": "{0}m verfügbar",
   "skill_insufficient_points_detail": "Nicht genug Fertigkeitspunkte. (Benötigt: {0}, Verfügbar: {1})",
   "skill_invest_success": "✅ Fertigkeitspunkte investiert!",
   "items_insufficient": "Benötigte Gegenstände nicht vorhanden",
@@ -976,7 +978,7 @@
   "bow_penetration_desc": "Schaden +{0}",
   "bow_explosive_name": "Explosiver Pfeil",
   "bow_arrow_rain_name": "Pfeilregen",
-  "bow_arrow_rain_desc": "Buff aktiv → mit Bogen schießen!\n{0} Pfeile aus 200m über dem Treffpunkt\nRadius {2}m • Pro Pfeil: (Bogen+Pfeil)×{1}%\nAusdauer {3}% • Abklingz.{4}s",
+  "bow_arrow_rain_desc": "Buff aktiv → mit Bogen schießen!\n{0} Pfeile aus 200m über dem Treffpunkt\nRadius {2}m • Pro Pfeil: (Bogen+Pfeil)×{1}%\n50% Schaden gg. Bosse\nAusdauer {3}% • Abklingz.{4}s",
   "bow_arrow_rain_ready": "🏹 Pfeilregen aktiviert!",
   "bow_arrow_rain_complete": "🏹 Pfeilregen abgeschlossen",
   "staff_skill_expert_name": "Stabexperte",
@@ -1344,5 +1346,8 @@
   "difficulty_hint": "※ Wird nach jedem Update angezeigt.",
   "difficulty_btn_normal": "1. Normal",
   "difficulty_btn_veryhard": "2. Sehr Schwer",
-  "difficulty_btn_user": "3. Benutzer"
+  "difficulty_btn_user": "3. Benutzer",
+  "player_level_required": "Spielerlevel {0}+ benötigt (Aktuell: {1})",
+  "player_level_required_short": "Lv.{0}+ benötigt",
+  "knife_desc_stack_explosion_detail": "Stapel bei jedem Treffer; auto-Explosion bei {0} Stapeln oder manuell mit Maustaste 2\nStapel halten {1}s, auto-Explosion nach max. {2}s, {3}% Waffenschaden pro Stapel + Flächenschaden ({4}% des Stapelschadens)"
 }

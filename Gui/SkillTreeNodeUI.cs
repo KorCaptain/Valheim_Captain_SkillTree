@@ -15,6 +15,15 @@ namespace CaptainSkillTree.Gui
         // 애니메이션 중 배지 표시 억제 노드 ID 집합
         private readonly HashSet<string> _suppressBadge = new HashSet<string>();
 
+        // 선택적 초기화 모드: 현재 선택된 노드 ID (락 시각 적용)
+        private HashSet<string> _resetSelectedIds = new HashSet<string>();
+
+        /// <summary>선택적 초기화 모드에서 선택된 노드 ID 세트를 전달 (RefreshNodeStates에서 락 시각 적용)</summary>
+        public void SetResetSelectedIds(HashSet<string> ids)
+        {
+            _resetSelectedIds = ids != null ? new HashSet<string>(ids) : new HashSet<string>();
+        }
+
         // job_icon 번들 우선, skill_node 번들 보조로 아이콘 로딩
         private Sprite TryLoadSprite(string iconName)
         {
@@ -264,6 +273,8 @@ namespace CaptainSkillTree.Gui
                     int level = manager.GetSkillLevel(node.Id);
                     int pendingLevel = manager.pendingInvestments.ContainsKey(node.Id) ? manager.pendingInvestments[node.Id] : 0;
                     bool isUnlocked = level > 0 || pendingLevel > 0;
+                    // 선택적 초기화 선택 시: 언락 상태라도 락 시각으로 표시
+                    if (_resetSelectedIds.Contains(node.Id)) isUnlocked = false;
                     bool isWeapon = weaponNodeIds.Any(w => node.Id.Contains(w)) || node.Id.Contains("knife");
                     bool isRoot = rootNodeIds.Contains(node.Id);
                     bool isCommon = img.sprite != null && img.sprite.name == "all_skill_unlock";
@@ -497,7 +508,7 @@ namespace CaptainSkillTree.Gui
             nodeRect.localScale = orig;
         }
 
-        // 연결선 색상 갱신 (투자 전 50% 흐림, 투자된 노드끼리만 흰색)
+        // 연결선 색상 갱신 (투자 전 50% 흐림, 투자된 노드끼리만 흰색, 초기화 선택 시 빨간색)
         public void UpdateConnectionLines()
         {
             var manager = CaptainSkillTree.SkillTree.SkillTreeManager.Instance;
@@ -506,7 +517,7 @@ namespace CaptainSkillTree.Gui
             {
                 line.color = new Color(0.7f, 0.7f, 0.7f, 0.5f);
             }
-            // 투자된 노드들의 연결선만 색상 변경
+            // 투자 상태 및 초기화 선택 여부를 한 번에 처리
             foreach (var kvp in connectionLines)
             {
                 var (fromNodeId, toNodeId) = kvp.Key;
@@ -519,8 +530,15 @@ namespace CaptainSkillTree.Gui
                 bool toInvested = toLevel > 0 || toPendingLevel > 0;
                 if (fromInvested && toInvested)
                 {
-                    line.color = Color.white; // 투자된 노드끼리 연결선만 흰색
+                    // 이미 연결된(흰색) 선 중 초기화 선택 노드 포함 → 빨간색
+                    // 초기화 선택 없으면 → 흰색
+                    bool isResetSelected = _resetSelectedIds.Count > 0 &&
+                        (_resetSelectedIds.Contains(fromNodeId) || _resetSelectedIds.Contains(toNodeId));
+                    line.color = isResetSelected
+                        ? new Color(1f, 0.2f, 0.2f, 0.9f)
+                        : Color.white;
                 }
+                // 미투자 선(회색)은 초기화 선택 여부와 무관하게 회색 유지
             }
         }
 
@@ -590,6 +608,7 @@ namespace CaptainSkillTree.Gui
         /// </summary>
         public void ClearAllResetPreviewOverlays()
         {
+            _resetSelectedIds.Clear();
             foreach (var nodeObj in nodeObjects.Values)
             {
                 if (nodeObj == null) continue;
