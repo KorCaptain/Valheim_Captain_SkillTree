@@ -1,0 +1,1551 @@
+using System.Collections.Generic;
+
+namespace CaptainSkillTree.Localization
+{
+    public static partial class ConfigTranslations
+    {
+        private static Dictionary<string, string> GetExpertDescriptions_KO()
+        {
+            return new Dictionary<string, string>
+            {
+                // ========================================
+                // Skill_Tree_Base
+                // ========================================
+                ["PassiveMessageDisplay"] =
+                "【패시브 메시지 표시 방식】\n" +
+                "패시브 스킬 효과 발동 시 화면에 표시되는 메시지 방식을 설정합니다.\n" +
+                "  Center = 화면 중앙 (기본값)\n" +
+                "  TopLeft = 왼쪽 위 소형 텍스트\n" +
+                "  Off = 표시 OFF\n" +
+                "※ 스킬 배울 때, 생산 전문가 메시지는 항상 중앙에 표시됩니다.",
+
+                ["GameDifficulty"] =
+                "【게임 난이도】\n" +
+                "스킬트리 모드의 전체 밸런스 프리셋을 선택합니다.\n" +
+                "  Vanilla      = 바닐라에 가까운 약한 수치 (기본값)\n" +
+                "  HardMode     = CLLC Very Hard + 몬스터 HP x2 강화 수치\n" +
+                "  UserSettings = 이전에 저장된 사용자 설정 복원\n" +
+                "⚠️ 변경 시 해당 프리셋이 즉시 적용됩니다 (모든 스킬 수치 교체).",
+
+                ["ShowResetButtons"] =
+                "【초기화 버튼 표시】\n" +
+                "스킬트리 UI에서 포인트/직업/생산 초기화 버튼 3개의 표시 여부를 설정합니다.\n" +
+                "  true  = 초기화 버튼 표시 (기본값)\n" +
+                "  false = 초기화 버튼 숨김 (서버에서 포인트 초기화 방지 시 사용)",
+
+                // ========================================
+                // Attack Tree (공격 트리) — 4국면 연쇄 시스템
+                // ========================================
+
+                // === Tier 1: 선빵 ===
+                ["Tier1_Opener_DamageBonus"] =
+                "【선빵 데미지 보너스 (%)】\n전투 시작 후 첫 N초간 전체 데미지가 증가합니다.\n권장값: 15-25%",
+
+                ["Tier1_Opener_StaminaReduction"] =
+                "【선빵 스태미나 소비 감소 (%)】\n선빵 발동 중 스태미나 소비가 감소합니다.\n권장값: 20-30%",
+
+                ["Tier1_Opener_Duration"] =
+                "【선빵 지속 시간 (초)】\n선빵 데미지 보너스가 유지되는 시간입니다.\n권장값: 4-6초",
+
+                ["Tier1_Opener_Cooldown"] =
+                "【선빵 쿨다운 (초)】\n선빵을 다시 발동할 수 있을 때까지의 대기 시간입니다.\n권장값: 25-35초",
+
+                // === Tier 2: 무기별 선빵 특화 ===
+                ["Tier2_OpenerMelee_FinisherBonus"] =
+                "【근접 마무리 예열 보너스 (%)】\n선빵 윈도우 내 첫 근접 타격의 마무리 배율 증가량입니다.\n권장값: 15-25%",
+
+                ["Tier2_OpenerBow_CritChance"] =
+                "【활 사냥의 눈 크리 확률 (%)】\n선빵 윈도우 내 크리티컬 확률 추가 증가량입니다.\n권장값: 10-20%",
+
+                ["Tier2_OpenerCrossbow_FirstShotBonus"] =
+                "【석궁 결전의 일격 보너스 (%)】\n선빵 윈도우 내 첫 볼트 데미지 증가량입니다.\n권장값: 40-60%",
+
+                ["Tier2_OpenerMagic_StaggerProc"] =
+                "【마법 혼돈의 시작 스태거 (1=활성)】\n1이면 선빵 윈도우 내 첫 마법 공격 시 스태거 확정 발동.\n권장값: 1",
+
+                // === Tier 3: 추격전 ===
+                ["Tier3_Pursuit_DamageBonus"] =
+                "【추격전 기본 데미지 보너스 (%)】\n이동/도주 중인 적에게 주는 데미지 증가량입니다.\n권장값: 12-18%",
+
+                ["Tier3_Pursuit_ChainDamageBonus"] =
+                "【추격전 연쇄 데미지 보너스 (%)】\n선빵 발동 후 연쇄 윈도우 내 적에게 주는 데미지 증가량입니다.\n권장값: 20-30%",
+
+                ["Tier3_Pursuit_ChainWindow"] =
+                "【선빵→추격 연쇄 윈도우 (초)】\n선빵 발동 후 이 시간 내 추격전이 연쇄 보너스를 받습니다.\n권장값: 4-6초",
+
+                // === Tier 4: 전환 분기 ===
+                ["Tier4_PursuitSpeed_SpeedBonus"] =
+                "【질풍 추격 이동속도 보너스 (%)】\n전투 중 이동속도 증가량입니다.\n권장값: 10-15%",
+
+                ["Tier4_FrenzyTrigger_StaminaReduction"] =
+                "【혼전 돌입 스태미나 소비 감소 (%)】\n주변 3m 내 적 2명 이상일 때 스태미나 소비 감소량입니다.\n권장값: 15-25%",
+
+                // === Tier 5: 난전 ===
+                ["Tier5_Frenzy_StackBonusBase"] =
+                "【난전 기본 스택 보너스 (%)】\n스택당 증가하는 데미지 보너스 기본값입니다.\n권장값: 4-6%",
+
+                ["Tier5_Frenzy_StackBonusChain"] =
+                "【난전 연쇄 스택 보너스 (%)】\n추격전 연쇄 시 스택당 증가하는 데미지 보너스입니다.\n권장값: 6-10%",
+
+                ["Tier5_Frenzy_MaxStacks"] =
+                "【난전 최대 스택 수】\n쌓을 수 있는 최대 스택 수입니다.\n권장값: 4-6",
+
+                ["Tier5_Frenzy_HitsPerStack"] =
+                "【난전 스택당 필요 히트 수】\n스택 1개를 쌓기 위해 필요한 연속 타격 수입니다.\n권장값: 2-4",
+
+                ["Tier5_Frenzy_Tier6Amplifier"] =
+                "【난전 Max 달성 시 Tier6 증폭 배율】\n최대 스택 달성 시 Tier6 최종 노드 효과에 곱해지는 배율입니다.\n권장값: 1.2-1.5",
+
+
+
+
+
+
+
+
+
+                // === Tier 0: 공격 전문가 (Attack Expert) ===
+                ["Tier0_AttackExpert_AllDamageBonus"] =
+                "【모든 공격력 보너스 (%)】\n" +
+                "물리 및 속성 데미지를 모두 증가시킵니다.\n" +
+                "모든 무기에 적용되는 기본 공격력 강화입니다.\n" +
+                "권장값: 8-12%",
+
+                // === Tier 2: 무기 전문화 (Weapon Specialization) ===
+                ["Tier2_MeleeSpec_BonusTriggerChance"] =
+                "【근접 무기 상시 데미지 보너스 (%)】\n" +
+                "근접 무기 공격 시 항상 추가 데미지를 줍니다.\n" +
+                "공격할 때마다 고정적으로 적용됩니다.\n" +
+                "권장값: 15-25%",
+
+                ["Tier2_MeleeSpec_MeleeDamage"] =
+                "【근접 무기 추가 데미지 (고정값)】\n" +
+                "보너스가 발동했을 때 추가되는 고정 데미지입니다.\n" +
+                "권장값: 8-15",
+
+                ["Tier2_BowSpec_BonusTriggerChance"] =
+                "【활 상시 데미지 보너스 (%)】\n" +
+                "활 공격 시 항상 추가 데미지를 줍니다.\n" +
+                "공격할 때마다 고정적으로 적용됩니다.\n" +
+                "권장값: 15-25%",
+
+                ["Tier2_BowSpec_BowDamage"] =
+                "【활 추가 데미지 (고정값)】\n" +
+                "보너스가 발동했을 때 추가되는 고정 데미지입니다.\n" +
+                "권장값: 6-12",
+
+                ["Tier2_CrossbowSpec_EnhanceTriggerChance"] =
+                "【석궁 상시 데미지 보너스 (%)】\n" +
+                "석궁 공격 시 항상 추가 데미지를 줍니다.\n" +
+                "공격할 때마다 고정적으로 적용됩니다.\n" +
+                "권장값: 12-20%",
+
+                ["Tier2_CrossbowSpec_CrossbowDamage"] =
+                "【석궁 추가 데미지 (고정값)】\n" +
+                "보너스가 발동했을 때 추가되는 고정 데미지입니다.\n" +
+                "권장값: 7-13",
+
+                ["Tier2_StaffSpec_ElementalTriggerChance"] =
+                "【지팡이 상시 데미지 보너스 (%)】\n" +
+                "지팡이/완드 공격 시 항상 추가 데미지를 줍니다.\n" +
+                "공격할 때마다 고정적으로 적용됩니다.\n" +
+                "권장값: 15-25%",
+
+                ["Tier2_StaffSpec_StaffDamage"] =
+                "【지팡이 추가 데미지 (고정값)】\n" +
+                "보너스가 발동했을 때 추가되는 고정 데미지입니다.\n" +
+                "권장값: 6-12",
+
+                // === Tier 1: 기본 공격 강화 (Base Attack) ===
+                ["Tier1_BaseAttack_PhysicalDamageBonus"] =
+                "【물리 데미지 보너스 (고정값)】\n" +
+                "모든 무기의 물리 데미지를 고정값으로 증가시킵니다.\n" +
+                "권장값: 1-3",
+
+                ["Tier1_BaseAttack_ElementalDamageBonus"] =
+                "【속성 데미지 보너스 (고정값)】\n" +
+                "모든 무기의 속성 데미지(불, 얼음, 번개 등)를 고정값으로 증가시킵니다.\n" +
+                "권장값: 1-3",
+
+                ["Tier3_AttackBoost_PhysicalDamageBonus"] =
+                "【양손 무기 물리 데미지 보너스 (%)】\n" +
+                "양손 무기 사용 시 물리 데미지가 증가합니다.\n" +
+                "양손 무기의 강력함을 극대화합니다.\n" +
+                "권장값: 8-15%",
+
+                ["Tier3_AttackBoost_ElementalDamageBonus"] =
+                "【양손 무기 속성 데미지 보너스 (%)】\n" +
+                "양손 무기 사용 시 속성 데미지가 증가합니다.\n" +
+                "권장값: 8-15%",
+
+                // === Tier 4: 전투 강화 (Combat Enhancement) ===
+                ["Tier4_PrecisionAttack_CritChance"] =
+                "【치명타 확률 보너스 (%)】\n" +
+                "모든 공격의 크리티컬 히트 확률을 증가시킵니다.\n" +
+                "치명타는 일반 공격보다 높은 데미지를 줍니다.\n" +
+                "권장값: 3-8%",
+
+                ["Tier4_MeleeEnhance_2HitComboBonus"] =
+                "【2연타 콤보 데미지 보너스 (%)】\n" +
+                "근접 무기로 2회 연속 타격 시 데미지가 증가합니다.\n" +
+                "콤보 공격으로 더 강력한 타격을 가할 수 있습니다.\n" +
+                "권장값: 8-15%",
+
+                ["Tier4_RangedEnhance_RangedDamageBonus"] =
+                "【원거리 무기 데미지 보너스 (고정값)】\n" +
+                "활, 석궁 등 원거리 무기의 데미지를 고정값으로 증가시킵니다.\n" +
+                "권장값: 3-8",
+
+                // === Tier 5: 충전 (Charge) ===
+                ["Tier5_SpecialStat_SpecBonus"] =
+                "【스태미나 회복량】\n" +
+                "공격 시 회복할 스태미나 비율입니다 (최대 스태미나 기준).\n" +
+                "권장값: 3-10",
+                ["Tier5_Charge_TriggerChance"] =
+                "【발동 확률】\n" +
+                "공격 시 스태미나 회복 효과가 발동될 확률입니다.\n" +
+                "권장값: 20-50",
+
+                // === Tier 6: 최종 강화 (Final Enhancement) ===
+                ["Tier6_WeakPointAttack_CritDamageBonus"] =
+                "【크리티컬 데미지 보너스 (%)】\n" +
+                "치명타 발생 시 추가 데미지가 증가합니다.\n" +
+                "크리티컬 히트의 위력을 극대화합니다.\n" +
+                "권장값: 10-20%",
+
+                ["Tier6_TwoHandCrush_TwoHandDamageBonus"] =
+                "【양손 무기 데미지 보너스 (%)】\n" +
+                "양손 무기 사용 시 전체 데미지가 증가합니다.\n" +
+                "양손 무기의 압도적인 공격력을 강화합니다.\n" +
+                "권장값: 8-15%",
+
+                ["Tier6_ElementalAttack_ElementalBonus"] =
+                "【지팡이 속성 데미지 보너스 (%)】\n" +
+                "지팡이의 속성 데미지(불, 얼음, 번개)가 증가합니다.\n" +
+                "마법 공격의 파괴력을 높입니다.\n" +
+                "권장값: 8-15%",
+
+                ["Tier6_ComboFinisher_3HitComboBonus"] =
+                "【한손 무기 상시 데미지 보너스 (%)】\n" +
+                "한손 무기(검/단검/둔기/도끼) 공격 시 항상 적용됩니다.\n" +
+                "공격할 때마다 고정적으로 추가 데미지를 줍니다.\n" +
+                "권장값: 12-20%",
+
+                // ========================================
+                // Defense Tree (방어 트리)
+                // ========================================
+
+
+
+
+
+
+
+
+                // === Tier 0: 방어 전문가 (Defense Expert) ===
+                ["Tier0_DefenseExpert_HPBonus"] =
+                "【체력 보너스 (고정값)】\n" +
+                "최대 체력을 고정값으로 증가시킵니다.\n" +
+                "생존력의 기본이 되는 핵심 스탯입니다.\n" +
+                "권장값: 3-8",
+
+                ["Tier0_DefenseExpert_ArmorBonus"] =
+                "【방어력 보너스 (고정값)】\n" +
+                "방어력을 고정값으로 증가시킵니다.\n" +
+                "받는 데미지를 감소시킵니다.\n" +
+                "권장값: 1-4",
+
+                // === Tier 1: 피부경화 (Skin Hardening) ===
+                ["Tier1_SkinHardening_HPBonus"] =
+                "【체력 보너스 (고정값)】\n" +
+                "최대 체력을 추가로 증가시킵니다.\n" +
+                "권장값: 3-8",
+
+                ["Tier1_SkinHardening_ArmorBonus"] =
+                "【방어력 보너스 (고정값)】\n" +
+                "방어력을 추가로 증가시킵니다.\n" +
+                "권장값: 3-8",
+
+                // === Tier 2: 심신단련 & 체력단련 ===
+                ["Tier2_MindBodyTraining_StaminaBonus"] =
+                "【최대 스태미나 보너스 (고정값)】\n" +
+                "최대 스태미나를 증가시킵니다.\n" +
+                "더 많은 행동을 취할 수 있습니다.\n" +
+                "권장값: 20-30",
+
+                ["Tier2_MindBodyTraining_EitrBonus"] =
+                "【최대 Eitr 보너스 (고정값)】\n" +
+                "최대 Eitr를 증가시킵니다.\n" +
+                "더 많은 마법을 사용할 수 있습니다.\n" +
+                "권장값: 20-30",
+
+                ["Tier2_HealthTraining_HPBonus"] =
+                "【체력 보너스 (고정값)】\n" +
+                "최대 체력을 대폭 증가시킵니다.\n" +
+                "권장값: 15-25",
+
+                ["Tier2_HealthTraining_ArmorBonus"] =
+                "【방어력 보너스 (고정값)】\n" +
+                "방어력을 추가로 증가시킵니다.\n" +
+                "권장값: 3-8",
+
+                // === Tier 3: 다양한 방어 기술 ===
+                ["Tier3_CoreBreathing_EitrBonus"] =
+                "【Eitr 보너스 (고정값)】\n" +
+                "단전호흡으로 Eitr를 증가시킵니다.\n" +
+                "권장값: 8-15",
+
+                ["Tier3_EvasionTraining_DodgeBonus"] =
+                "【회피율 보너스 (%)】\n" +
+                "적의 공격을 회피할 확률을 증가시킵니다.\n" +
+                "권장값: 3-8%",
+
+                ["Tier3_EvasionTraining_InvincibilityBonus"] =
+                "【구르기 무적시간 증가 (%)】\n" +
+                "구르기 중 무적 시간을 연장합니다.\n" +
+                "더 안전하게 회피할 수 있습니다.\n" +
+                "권장값: 15-25%",
+
+                ["Tier3_HealthBoost_HPBonus"] =
+                "【체력 보너스 (고정값)】\n" +
+                "체력을 추가로 증가시킵니다.\n" +
+                "권장값: 12-20",
+
+                ["Tier3_ShieldTraining_BlockPowerBonus"] =
+                "【방패 방어력 보너스 (고정값)】\n" +
+                "방패의 방어력을 증가시킵니다.\n" +
+                "더 강한 공격도 막아낼 수 있습니다.\n" +
+                "권장값: 80-120",
+
+                // === Tier 4: 충격파 발산 (Ground Stomp) ===
+                ["Tier4_GroundStomp_Radius"] =
+                "【효과 반경 (미터)】\n" +
+                "충격파가 미치는 범위입니다.\n" +
+                "권장값: 2.5-4m",
+
+                ["Tier4_GroundStomp_KnockbackForce"] =
+                "【넉백 강도】\n" +
+                "적을 밀어내는 힘입니다.\n" +
+                "권장값: 15-25",
+
+                ["Tier4_GroundStomp_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 100-150초",
+
+                ["Tier4_GroundStomp_HPThreshold"] =
+                "【자동 발동 체력 임계값 (비율)】\n" +
+                "이 체력 이하가 되면 자동으로 발동됩니다.\n" +
+                "0.35 = 35% 체력 이하\n" +
+                "권장값: 0.30-0.40",
+
+                ["Tier4_GroundStomp_VFXDuration"] =
+                "【VFX 지속시간 (초)】\n" +
+                "시각 효과가 표시되는 시간입니다.\n" +
+                "권장값: 0.8-1.5초",
+
+                // === Tier 4: 바위피부 (Rock Skin) ===
+                ["Tier4_RockSkin_ArmorBonus"] =
+                "【방어력 증폭 (%)】\n" +
+                "투구, 흉갑, 각반, 방패 방어력에 각각 퍼센트 보너스를 적용합니다.\n" +
+                "아이템 마우스 오버 시 ((기본방어력 + 스킬 추가방어력) * X%) 형식으로 표시됩니다.\n" +
+                "권장값: 10-15%",
+
+                // === Tier 5: 인내 & 민첩 & 회복 & 방어 숙련 ===
+                ["Tier5_Endurance_RunStaminaReduction"] =
+                "【달리기 스태미나 감소 (%)】\n" +
+                "달리기 시 스태미나 소모를 줄입니다.\n" +
+                "권장값: 8-15%",
+
+                ["Tier5_Endurance_JumpStaminaReduction"] =
+                "【점프 스태미나 감소 (%)】\n" +
+                "점프 시 스태미나 소모를 줄입니다.\n" +
+                "권장값: 8-15%",
+
+                ["Tier5_Agility_DodgeBonus"] =
+                "【회피율 보너스 (%)】\n" +
+                "적의 공격을 회피할 확률을 추가로 증가시킵니다.\n" +
+                "권장값: 3-8%",
+
+                ["Tier5_Agility_RollStaminaReduction"] =
+                "【구르기 스태미나 감소 (%)】\n" +
+                "구르기 시 스태미나 소모를 줄입니다.\n" +
+                "권장값: 10-18%",
+
+                ["Tier5_TrollRegen_HPRegenBonus"] =
+                "【체력 재생 보너스 (초당)】\n" +
+                "트롤처럼 체력이 자동으로 회복됩니다.\n" +
+                "권장값: 3-8",
+
+                ["Tier5_TrollRegen_RegenInterval"] =
+                "【재생 간격 (초)】\n" +
+                "체력이 회복되는 주기입니다.\n" +
+                "권장값: 1.5-3초",
+
+                ["Tier5_BlockMaster_ShieldBlockPowerBonus"] =
+                "【방패 방어력 보너스 (고정값)】\n" +
+                "방패의 방어력을 대폭 증가시킵니다.\n" +
+                "권장값: 80-120",
+
+                ["Tier5_BlockMaster_ParryDurationBonus"] =
+                "【패링 지속시간 보너스 (초)】\n" +
+                "패링 성공 후 효과 지속 시간을 연장합니다.\n" +
+                "권장값: 0.8-1.5초",
+
+                // === Tier 6: 최종 방어 기술 ===
+                ["Tier6_NerveEnhancement_DodgeBonus"] =
+                "【회피율 조건부 보너스 (30초 미발동, %)】\n" +
+                "30초 동안 피격 회피가 발동되지 않으면 활성화됩니다.\n" +
+                "권장값: 30-50%",
+
+                ["Tier6_JotunnVitality_HPBonus"] =
+                "【체력 보너스 (%)】\n" +
+                "요툰의 생명력으로 최대 체력이 비율로 증가합니다.\n" +
+                "권장값: 25-40%",
+
+                ["Tier6_JotunnVitality_ArmorBonus"] =
+                "【물리/속성 저항 (%)】\n" +
+                "요툰의 생명력으로 모든 물리/속성 데미지가 감소합니다.\n" +
+                "권장값: 8-15%",
+
+                ["Tier6_JotunnShield_BlockStaminaReduction"] =
+                "【방어 스태미나 감소 (%)】\n" +
+                "방패로 막을 때 스태미나 소모를 줄입니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] =
+                "【일반 방패 이동속도 보너스 (%)】\n" +
+                "일반 방패 들고 있을 때 이동 속도가 증가합니다.\n" +
+                "권장값: 3-8%",
+
+                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] =
+                "【타워 실드 이동속도 보너스 (%)】\n" +
+                "타워 실드 들고 있을 때 이동 속도가 증가합니다.\n" +
+                "권장값: 8-15%",
+
+                // === RequiredPoints Descriptions ===
+                ["Tier0_DefenseExpert_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier1_SkinHardening_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier2_MindTraining_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier2_HealthTraining_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_CoreBreathing_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_EvasionTraining_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_HealthBoost_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier3_ShieldTraining_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier4_Shockwave_Radius"] =
+                "【충격파방출 범위】\n" +
+                "충격파방출 스킬의 효과 반경(미터)입니다.\n" +
+                "권장값: 3",
+
+                ["Tier4_Shockwave_StunDuration"] =
+                "【충격파방출 기절시간】\n" +
+                "기절 효과 지속시간(초)입니다.\n" +
+                "권장값: 1",
+
+                ["Tier4_Shockwave_Cooldown"] =
+                "【충격파방출 쿨타임】\n" +
+                "스킬 재사용 대기시간(초)입니다.\n" +
+                "권장값: 120",
+
+                ["Tier4_Shockwave_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier4_GroundStomp_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier4_RockSkin_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier5_Endurance_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier5_Agility_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier5_TrollRegen_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier5_BlockMaster_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_MindShield_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_NerveEnhancement_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_DoubleJump_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_JotunnVitality_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                ["Tier6_JotunnShield_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 2",
+
+                // ========================================
+                // Production Tree (생산 트리)
+                // ========================================
+
+
+
+
+
+
+                // === Tier 0: 생산 전문가 (Production Expert) ===
+                ["Tier0_ProductionExpert_WoodBonusChance"] =
+                "【나무 +1 보너스 확률 (%)】\n" +
+                "나무를 벨 때 추가로 1개를 더 얻을 확률입니다.\n" +
+                "생산의 기본이 되는 핵심 스킬입니다.\n" +
+                "권장값: 40-60%",
+
+                // === Tier 1: 초보 일꾼 (Novice Worker) ===
+                ["Tier1_NoviceWorker_WoodBonusChance"] =
+                "【나무 +1 보너스 확률 (%)】\n" +
+                "나무를 벨 때 추가로 1개를 더 얻을 확률이 증가합니다.\n" +
+                "권장값: 20-30%",
+
+                // === Tier 2: 전문 분야 (Specialization) ===
+                ["Tier2_WoodcuttingLv2_BonusChance"] =
+                "【나무 +1 보너스 확률 (%)】\n" +
+                "벌목 Lv2 - 나무를 벨 때 추가 보너스 확률입니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier2_GatheringLv2_BonusChance"] =
+                "【아이템 +1 보너스 확률 (%)】\n" +
+                "채집 Lv2 - 베리, 버섯 등 채집 시 추가 보너스 확률입니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier2_MiningLv2_BonusChance"] =
+                "【광석 +1 보너스 확률 (%)】\n" +
+                "채광 Lv2 - 광석 채집 시 추가 보너스 확률입니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier2_CraftingLv2_UpgradeChance"] =
+                "【업그레이드 +1 보너스 확률 (%)】\n" +
+                "제작 Lv2 - 아이템 제작/업그레이드 시 추가 업그레이드 레벨을 얻을 확률입니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier2_CraftingLv2_DurabilityBonus"] =
+                "【내구도 최대치 증가 (%)】\n" +
+                "제작 Lv2 - 제작한 아이템의 최대 내구도가 증가합니다.\n" +
+                "권장값: 20-30%",
+
+                // === Tier 3: 중급 스킬 (Intermediate Skills) ===
+                ["Tier3_WoodcuttingLv3_BonusChance"] =
+                "【나무 +2 보너스 확률 (%)】\n" +
+                "벌목 Lv3 - 나무를 벨 때 2개를 더 얻을 확률입니다.\n" +
+                "권장값: 30-40%",
+
+                ["Tier3_GatheringLv3_BonusChance"] =
+                "【아이템 +1 보너스 확률 (%)】\n" +
+                "채집 Lv3 - 채집 시 추가 보너스 확률이 증가합니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier3_MiningLv3_BonusChance"] =
+                "【광석 +1 보너스 확률 (%)】\n" +
+                "채광 Lv3 - 광석 채집 시 추가 보너스 확률이 증가합니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier3_CraftingLv3_UpgradeChance"] =
+                "【업그레이드 +1 보너스 확률 (%)】\n" +
+                "제작 Lv3 - 아이템 제작/업그레이드 시 추가 업그레이드 확률이 증가합니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier3_CraftingLv3_DurabilityBonus"] =
+                "【내구도 최대치 증가 (%)】\n" +
+                "제작 Lv3 - 제작한 아이템의 최대 내구도가 추가로 증가합니다.\n" +
+                "권장값: 20-30%",
+
+                // === Tier 4: 고급 스킬 (Advanced Skills) ===
+                ["Tier4_WoodcuttingLv4_BonusChance"] =
+                "【나무 +2 보너스 확률 (%)】\n" +
+                "벌목 Lv4 - 나무를 벨 때 2개를 더 얻을 확률이 대폭 증가합니다.\n" +
+                "권장값: 40-50%",
+
+                ["Tier4_GatheringLv4_BonusChance"] =
+                "【아이템 +1 보너스 확률 (%)】\n" +
+                "채집 Lv4 - 채집 시 추가 보너스 확률이 최대로 증가합니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier4_MiningLv4_BonusChance"] =
+                "【광석 +1 보너스 확률 (%)】\n" +
+                "채광 Lv4 - 광석 채집 시 추가 보너스 확률이 최대로 증가합니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier4_CraftingLv4_UpgradeChance"] =
+                "【업그레이드 +1 보너스 확률 (%)】\n" +
+                "제작 Lv4 - 아이템 제작/업그레이드 시 추가 업그레이드 확률이 최대로 증가합니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier4_CraftingLv4_DurabilityBonus"] =
+                "【내구도 최대치 증가 (%)】\n" +
+                "제작 Lv4 - 제작한 아이템의 최대 내구도가 최대로 증가합니다.\n" +
+                "권장값: 20-30%",
+
+
+                // === Tier 0: 속도 전문가 (1개) ===
+                ["Tier0_SpeedExpert_MoveSpeedBonus"] = "【이동속도 보너스 (%)】\n영구적인 이동 속도 증가입니다.\n권장값: 5-10%",
+
+                // === Tier 1: 민첩함의 기초 (4개) ===
+                ["Tier1_AgilityBase_DodgeMoveSpeedBonus"] = "【구르기 후 이동속도 보너스 (%)】\n구르기(회피) 직후 짧은 시간 동안 이동 속도가 증가합니다.\n재빠른 회피 후 재배치에 유용합니다.\n권장값: 10-20%",
+                ["Tier1_AgilityBase_BuffDuration"] = "【버프 지속시간 (초)】\n구르기 후 속도 버프의 지속 시간입니다.\n권장값: 2-3초",
+                ["Tier1_AgilityBase_AttackSpeedBonus"] = "【공격속도 보너스 (%)】\n모든 무기의 전반적인 공격 속도가 증가합니다.\n권장값: 3-8%",
+                ["Tier1_AgilityBase_DodgeSpeedBonus"] = "【구르기 속도 보너스 (%)】\n구르기 애니메이션의 속도가 증가합니다.\n권장값: 5-15%",
+
+                // === Tier 2: 근접 무기 (4개) ===
+                ["Tier2_MeleeFlow_AttackSpeedBonus"] = "【2연타 시 공격속도 보너스 (%)】\n근접 무기로 2회 연속 타격 후 공격 속도가 증가합니다.\n권장값: 8-15%",
+                ["Tier2_MeleeFlow_StaminaReduction"] = "【스태미나 소모 감소 (%)】\n흐름 버프 중 스태미나 소모가 감소합니다.\n권장값: 10-20%",
+                ["Tier2_MeleeFlow_Duration"] = "【버프 지속시간 (초)】\n근접 흐름 버프의 지속 시간입니다.\n권장값: 3-5초",
+                ["Tier2_MeleeFlow_ComboSpeedBonus"] = "【콤보 속도 보너스 (%)】\n콤보 연계 시 추가 공격 속도 보너스입니다.\n권장값: 5-10%",
+
+                // === Tier 2: 석궁 숙련자 (3개) ===
+                ["Tier2_CrossbowExpert_MoveSpeedBonus"] = "【적 명중 시 이동속도 보너스 (%)】\n석궁 화살이 적에게 명중할 때 이동 속도가 증가합니다.\n권장값: 10-15%",
+                ["Tier2_CrossbowExpert_BuffDuration"] = "【버프 지속시간 (초)】\n명중 성공 후 속도 버프의 지속 시간입니다.\n권장값: 3-5초",
+                ["Tier2_CrossbowExpert_ReloadSpeedBonus"] = "【버프 중 재장전 속도 보너스 (%)】\n명중 버프가 활성화된 동안 재장전 속도가 증가합니다.\n권장값: 10-15%",
+
+                // === Tier 2: 활 숙련자 (3개) ===
+                ["Tier2_BowExpert_StaminaReduction"] = "【2연타 콤보 시 스태미나 감소 (%)】\n활로 2회 연속 명중 후 스태미나 소모가 감소합니다.\n권장값: 10-15%",
+                ["Tier2_BowExpert_NextDrawSpeedBonus"] = "【다음 화살 시위 당김 속도 보너스 (%)】\n콤보 성공 후 다음 화살의 시위 당김 속도가 증가합니다.\n권장값: 10-20%",
+                ["Tier2_BowExpert_BuffDuration"] = "【버프 지속시간 (초)】\n콤보 버프의 지속 시간입니다.\n권장값: 4-6초",
+
+                // === Tier 2: 이동 시전 (3개) ===
+                ["Tier2_MobileCast_MoveSpeedBonus"] = "【시전 중 이동속도 보너스 (%)】\n지팡이 주문 시전 중 이동 속도 보너스입니다.\n권장값: 8-12%",
+                ["Tier2_MobileCast_EitrReduction"] = "【Eitr 소모 감소 (%)】\n지팡이 주문의 Eitr 소모가 감소합니다.\n권장값: 8-15%",
+                ["Tier2_MobileCast_CastMoveSpeed"] = "【지팡이 시전 중 이동속도 (%)】\n지팡이 공격을 채널링하는 동안의 기본 이동 속도입니다.\n권장값: 3-6%",
+
+                // === Tier 3: 수련자 (4개) ===
+                ["Tier3_Practitioner1_MeleeSkillBonus"] = "【근접 무기 스킬 보너스】\n모든 근접 무기 스킬 레벨을 증가시킵니다.\n권장값: 5-10",
+                ["Tier3_Practitioner1_CrossbowSkillBonus"] = "【석궁 스킬 보너스】\n석궁 스킬 레벨을 증가시킵니다.\n권장값: 5-10",
+                ["Tier3_Practitioner2_StaffSkillBonus"] = "【지팡이 스킬 보너스】\n지팡이 스킬 레벨(Elementalmagi)을 증가시킵니다.\n권장값: 5-10",
+                ["Tier3_Practitioner2_BowSkillBonus"] = "【활 스킬 보너스】\n활 스킬 레벨을 증가시킵니다.\n권장값: 5-10",
+
+                // === Tier 4: 마스터 (2개) ===
+                ["Tier4_Energizer_FoodConsumptionReduction"] = "【음식 소모율 감소 (%)】\n음식 소모 속도를 늦춰 버프가 더 오래 지속됩니다.\n권장값: 10-20%",
+                ["Tier4_Captain_ShipSpeedBonus"] = "【배 속도 보너스 (%)】\n항해 속도를 증가시킵니다.\n권장값: 10-20%",
+
+                // === Tier 5: 점프 숙련자 (2개) ===
+                ["Tier5_JumpMaster_JumpSkillBonus"] = "【점프 스킬 보너스】\n점프 스킬 레벨을 증가시킵니다.\n권장값: 5-15",
+                ["Tier5_JumpMaster_JumpStaminaReduction"] = "【점프 스태미나 감소 (%)】\n점프 시 스태미나 소모를 감소시킵니다.\n권장값: 10-20%",
+
+                // === Tier 6: 스탯 (4개) ===
+                ["Tier6_Dexterity_MeleeAttackSpeedBonus"] = "【근접 공격속도 보너스 (%)】\n근접 무기의 공격 속도를 증가시킵니다.\n권장값: 5-8%",
+                ["Tier6_Dexterity_MoveSpeedBonus"] = "【이동속도 보너스 (%)】\n전반적인 이동 속도를 증가시킵니다.\n권장값: 3-8%",
+                ["Tier6_Endurance_StaminaMaxBonus"] = "【최대 스태미나 보너스】\n최대 스태미나 풀을 증가시킵니다.\n권장값: 20-40",
+                ["Tier6_Intellect_EitrMaxBonus"] = "【최대 Eitr 보너스】\n마법을 위한 최대 Eitr 풀을 증가시킵니다.\n권장값: 30-50",
+
+                // === Tier 7: 마스터 (2개) ===
+                ["Tier7_Master_RunSkillBonus"] = "【달리기 스킬 보너스】\n달리기 스킬 레벨을 증가시킵니다.\n권장값: 5-15",
+                ["Tier7_Master_JumpSkillBonus"] = "【점프 스킬 보너스】\n점프 스킬 레벨을 증가시킵니다.\n권장값: 5-15",
+
+                // === Tier 8: 근접 가속 (2개) ===
+                ["Tier8_MeleeAccel_AttackSpeedBonus"] = "【근접 공격속도 보너스 (%)】\n근접 공격 속도의 최종 부스트입니다.\n권장값: 5-10%",
+                ["Tier8_MeleeAccel_TripleComboBonus"] = "【3연타 시 다음 공격 속도 보너스 (%)】\n3연타 콤보 후 다음 공격의 속도가 대폭 증가합니다.\n권장값: 20-30%",
+
+                // === Tier 8: 석궁 가속 (2개) ===
+                ["Tier8_CrossbowAccel_ReloadSpeed"] = "【재장전 속도 보너스 (%)】\n석궁 재장전 속도의 최종 부스트입니다.\n권장값: 25-35%",
+                ["Tier8_CrossbowAccel_ReloadMoveSpeed"] = "【재장전 중 이동속도 (%)】\n석궁 재장전 중 이동 속도입니다.\n권장값: 20-30%",
+
+                // === Tier 8: 활 가속 (2개) ===
+                ["Tier8_BowAccel_DrawSpeed"] = "【시위 당김 속도 보너스 (%)】\n활 시위 당김 속도의 최종 부스트입니다.\n권장값: 15-20%",
+                ["Tier8_BowAccel_DrawMoveSpeed"] = "【시위 당기는 중 이동속도 (%)】\n활 시위를 당기는 동안의 이동 속도입니다.\n권장값: 10-20%",
+
+                // === Tier 8: 시전 가속 (2개) ===
+                ["Tier8_CastAccel_MagicAttackSpeed"] = "【마법 공격속도 보너스 (%)】\n마법 공격 속도의 최종 부스트입니다.\n권장값: 5-10%",
+                ["Tier8_CastAccel_TripleEitrRecovery"] = "【3연타 시 Eitr 최대 회복률 (%)】\n3회 주문 콤보 후 Eitr 재생 속도가 증가합니다.\n권장값: 10-15%",
+
+                // === Speed Tree: 필요 포인트 설명 ===
+                ["Tier0_SpeedExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier1_AgilityBase_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_MeleeFlow_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_CrossbowExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_BowExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_MobileCast_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier3_Practitioner1_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier3_Practitioner2_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_Energizer_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_Captain_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier5_JumpMaster_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_Dexterity_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_Endurance_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_Intellect_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier7_Master_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier8_MeleeAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier8_CrossbowAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier8_BowAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier8_CastAccel_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+
+                // === Attack Tree: 필요 포인트 설명 ===
+                ["Tier0_AttackExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier1_BaseAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_MeleeSpec_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_BowSpec_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_CrossbowSpec_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_StaffSpec_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier3_AttackBoost_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_MeleeEnhance_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_PrecisionAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_RangedEnhance_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier5_SpecialStat_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                // === 4국면 시스템 신규 RequiredPoints ===
+                ["Tier1_Opener_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_OpenerMelee_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_OpenerBow_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_OpenerCrossbow_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier2_OpenerMagic_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier3_Pursuit_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_PursuitSpeed_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier5_Frenzy_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_WeakPointAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_ComboFinisher_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_TwoHandCrush_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_ElementalAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+
+                // === Production Tree: 필요 포인트 설명 ===
+                ["Tier0_ProductionExpert_RequiredPoints"] = "【필요 포인트 - 생산 전문가】\n생산 전문가 해금에 필요한 스킬 포인트 수입니다.\n권장값: 2",
+                ["Tier1_NoviceWorker_RequiredPoints"] = "【필요 포인트 - 초보 일꾼】\n초보 일꾼 해금에 필요한 스킬 포인트 수입니다.\n권장값: 2",
+                ["Tier2_WoodcuttingLv2_RequiredPoints"] = "【필요 포인트 - 벌목 Lv2】\n권장값: 2",
+                ["Tier2_GatheringLv2_RequiredPoints"] = "【필요 포인트 - 채집 Lv2】\n권장값: 2",
+                ["Tier2_MiningLv2_RequiredPoints"] = "【필요 포인트 - 채광 Lv2】\n권장값: 2",
+                ["Tier2_CraftingLv2_RequiredPoints"] = "【필요 포인트 - 제작 Lv2】\n권장값: 2",
+                ["Tier3_WoodcuttingLv3_RequiredPoints"] = "【필요 포인트 - 벌목 Lv3】\n권장값: 2",
+                ["Tier3_GatheringLv3_RequiredPoints"] = "【필요 포인트 - 채집 Lv3】\n권장값: 2",
+                ["Tier3_MiningLv3_RequiredPoints"] = "【필요 포인트 - 채광 Lv3】\n권장값: 2",
+                ["Tier3_CraftingLv3_RequiredPoints"] = "【필요 포인트 - 제작 Lv3】\n권장값: 2",
+                ["Tier4_WoodcuttingLv4_RequiredPoints"] = "【필요 포인트 - 벌목 Lv4】\n권장값: 2",
+                ["Tier4_GatheringLv4_RequiredPoints"] = "【필요 포인트 - 채집 Lv4】\n권장값: 2",
+                ["Tier4_MiningLv4_RequiredPoints"] = "【필요 포인트 - 채광 Lv4】\n권장값: 2",
+                ["Tier4_CraftingLv4_RequiredPoints"] = "【필요 포인트 - 제작 Lv4】\n권장값: 2",
+
+            };
+        }
+
+        private static Dictionary<string, string> GetExpertDescriptions_EN()
+        {
+            return new Dictionary<string, string>
+            {
+                // ========================================
+                // Skill_Tree_Base
+                // ========================================
+                ["PassiveMessageDisplay"] =
+                "【Passive Message Display】\n" +
+                "Controls how passive skill effect messages appear on screen.\n" +
+                "  Center = Screen Center (default)\n" +
+                "  TopLeft = Top-Left small text\n" +
+                "  Off = Off\n" +
+                "※ Skill learn and production expert messages always show at center.",
+
+                ["GameDifficulty"] =
+                "【Game Difficulty】\n" +
+                "Selects the overall balance preset for the skill tree mod.\n" +
+                "  Vanilla      = Mild values close to vanilla Valheim (default)\n" +
+                "  HardMode     = CLLC Very Hard + Monster HP x2 (strong values)\n" +
+                "  UserSettings = Restores your previously saved settings\n" +
+                "⚠️ Changing this setting immediately applies the selected preset (replaces all skill values).",
+
+                ["ShowResetButtons"] =
+                "【Show Reset Buttons】\n" +
+                "Controls whether the Point / Job / Production reset buttons are shown in the skill tree UI.\n" +
+                "  true  = Show reset buttons (default)\n" +
+                "  false = Hide reset buttons (use on servers to prevent skill point resets)",
+
+                // ========================================
+                // Attack Tree — 4-Phase Chain System
+                // ========================================
+
+                // === Tier 1: First Strike ===
+                ["Tier1_Opener_DamageBonus"] =
+                "【First Strike Damage Bonus (%)】\nIncreases all damage for the first N seconds of combat.\nRecommended: 15-25%",
+
+                ["Tier1_Opener_StaminaReduction"] =
+                "【First Strike Stamina Cost Reduction (%)】\nReduces stamina cost while First Strike is active.\nRecommended: 20-30%",
+
+                ["Tier1_Opener_Duration"] =
+                "【First Strike Duration (sec)】\nHow long the First Strike damage bonus lasts.\nRecommended: 4-6 sec",
+
+                ["Tier1_Opener_Cooldown"] =
+                "【First Strike Cooldown (sec)】\nTime before First Strike can trigger again.\nRecommended: 25-35 sec",
+
+                // === Tier 2: Weapon-Specific Specialization ===
+                ["Tier2_OpenerMelee_FinisherBonus"] =
+                "【Melee Finisher Warmup Bonus (%)】\nIncreases finisher multiplier on first melee hit within the First Strike window.\nRecommended: 15-25%",
+
+                ["Tier2_OpenerBow_CritChance"] =
+                "【Bow Hunter's Eye Crit Chance (%)】\nAdditional critical chance within the First Strike window.\nRecommended: 10-20%",
+
+                ["Tier2_OpenerCrossbow_FirstShotBonus"] =
+                "【Crossbow Decisive Strike Bonus (%)】\nIncreases damage of the first bolt within the First Strike window.\nRecommended: 40-60%",
+
+                ["Tier2_OpenerMagic_StaggerProc"] =
+                "【Magic Chaos Start Stagger (1=Active)】\n1 = guaranteed stagger on first magic hit within the First Strike window.\nRecommended: 1",
+
+                // === Tier 3: Pursuit ===
+                ["Tier3_Pursuit_DamageBonus"] =
+                "【Pursuit Base Damage Bonus (%)】\nIncreases damage against moving or fleeing enemies.\nRecommended: 12-18%",
+
+                ["Tier3_Pursuit_ChainDamageBonus"] =
+                "【Pursuit Chain Damage Bonus (%)】\nBonus damage within the chain window after First Strike activates.\nRecommended: 20-30%",
+
+                ["Tier3_Pursuit_ChainWindow"] =
+                "【First Strike → Pursuit Chain Window (sec)】\nTime after First Strike during which Pursuit gains chain bonus.\nRecommended: 4-6 sec",
+
+                // === Tier 4: Branch Split ===
+                ["Tier4_PursuitSpeed_SpeedBonus"] =
+                "【Swift Chase Move Speed Bonus (%)】\nIncreases movement speed during combat.\nRecommended: 10-15%",
+
+                ["Tier4_FrenzyTrigger_StaminaReduction"] =
+                "【Frenzy Rush Stamina Cost Reduction (%)】\nReduces stamina cost when 2+ enemies are within 3m.\nRecommended: 15-25%",
+
+                // === Tier 5: Frenzy ===
+                ["Tier5_Frenzy_StackBonusBase"] =
+                "【Frenzy Base Stack Bonus (%)】\nBase damage bonus added per stack.\nRecommended: 4-6%",
+
+                ["Tier5_Frenzy_StackBonusChain"] =
+                "【Frenzy Chain Stack Bonus (%)】\nDamage bonus per stack when chaining from Pursuit.\nRecommended: 6-10%",
+
+                ["Tier5_Frenzy_MaxStacks"] =
+                "【Frenzy Max Stacks】\nMaximum number of stacks that can be accumulated.\nRecommended: 4-6",
+
+                ["Tier5_Frenzy_HitsPerStack"] =
+                "【Frenzy Hits Per Stack】\nNumber of consecutive hits required to build one stack.\nRecommended: 2-4",
+
+                ["Tier5_Frenzy_Tier6Amplifier"] =
+                "【Frenzy Max Stack Tier6 Amplifier】\nMultiplier applied to Tier6 finisher effects when max stacks are reached.\nRecommended: 1.2-1.5",
+
+
+
+
+
+
+                // === Tier 0: Attack Expert ===
+                ["Tier0_AttackExpert_AllDamageBonus"] =
+                "【All Damage Bonus (%)】\n" +
+                "Increases both physical and elemental damage.\n" +
+                "Fundamental attack power enhancement for all weapons.\n" +
+                "Recommended: 8-12%",
+
+                // === Tier 2: Weapon Specialization ===
+                ["Tier2_MeleeSpec_BonusTriggerChance"] =
+                "【Melee Always Damage Bonus (%)】\n" +
+                "Always applies additional damage on melee attacks.\n" +
+                "Applied consistently on every hit.\n" +
+                "Recommended: 15-25%",
+
+                ["Tier2_MeleeSpec_MeleeDamage"] =
+                "【Melee Additional Damage (Flat)】\n" +
+                "Flat damage added when bonus triggers.\n" +
+                "Recommended: 8-15",
+
+                ["Tier2_BowSpec_BonusTriggerChance"] =
+                "【Bow Always Damage Bonus (%)】\n" +
+                "Always applies additional damage on bow attacks.\n" +
+                "Applied consistently on every hit.\n" +
+                "Recommended: 15-25%",
+
+                ["Tier2_BowSpec_BowDamage"] =
+                "【Bow Additional Damage (Flat)】\n" +
+                "Flat damage added when bonus triggers.\n" +
+                "Recommended: 6-12",
+
+                ["Tier2_CrossbowSpec_EnhanceTriggerChance"] =
+                "【Crossbow Always Damage Bonus (%)】\n" +
+                "Always applies additional damage on crossbow attacks.\n" +
+                "Applied consistently on every hit.\n" +
+                "Recommended: 12-20%",
+
+                ["Tier2_CrossbowSpec_CrossbowDamage"] =
+                "【Crossbow Additional Damage (Flat)】\n" +
+                "Flat damage added when bonus triggers.\n" +
+                "Recommended: 7-13",
+
+                ["Tier2_StaffSpec_ElementalTriggerChance"] =
+                "【Staff Always Damage Bonus (%)】\n" +
+                "Always applies additional damage on staff/wand attacks.\n" +
+                "Applied consistently on every hit.\n" +
+                "Recommended: 15-25%",
+
+                ["Tier2_StaffSpec_StaffDamage"] =
+                "【Staff Additional Damage (Flat)】\n" +
+                "Flat damage added when bonus triggers.\n" +
+                "Recommended: 6-12",
+
+                // === Tier 1: Base Attack Enhancement ===
+                ["Tier1_BaseAttack_PhysicalDamageBonus"] =
+                "【Physical Damage Bonus (Flat)】\n" +
+                "Increases physical damage of all weapons by a flat amount.\n" +
+                "Recommended: 1-3",
+
+                ["Tier1_BaseAttack_ElementalDamageBonus"] =
+                "【Elemental Damage Bonus (Flat)】\n" +
+                "Increases elemental damage (fire, frost, lightning) of all weapons by a flat amount.\n" +
+                "Recommended: 1-3",
+
+                ["Tier3_AttackBoost_PhysicalDamageBonus"] =
+                "【Two-Hand Physical Damage Bonus (%)】\n" +
+                "Increases physical damage when using two-handed weapons.\n" +
+                "Maximizes the power of two-handed weapons.\n" +
+                "Recommended: 8-15%",
+
+                ["Tier3_AttackBoost_ElementalDamageBonus"] =
+                "【Two-Hand Elemental Damage Bonus (%)】\n" +
+                "Increases elemental damage when using two-handed weapons.\n" +
+                "Recommended: 8-15%",
+
+                // === Tier 4: Combat Enhancement ===
+                ["Tier4_PrecisionAttack_CritChance"] =
+                "【Critical Hit Chance Bonus (%)】\n" +
+                "Increases critical hit chance for all attacks.\n" +
+                "Critical hits deal higher damage than normal attacks.\n" +
+                "Recommended: 3-8%",
+
+                ["Tier4_MeleeEnhance_2HitComboBonus"] =
+                "【2-Hit Combo Damage Bonus (%)】\n" +
+                "Increases damage when landing 2 consecutive melee hits.\n" +
+                "Deal stronger blows with combo attacks.\n" +
+                "Recommended: 8-15%",
+
+                ["Tier4_RangedEnhance_RangedDamageBonus"] =
+                "【Ranged Damage Bonus (Flat)】\n" +
+                "Increases damage of ranged weapons (bow, crossbow) by a flat amount.\n" +
+                "Recommended: 3-8",
+
+                // === Tier 5: Charge ===
+                ["Tier5_SpecialStat_SpecBonus"] =
+                "【Stamina Recovery】\n" +
+                "Percentage of max stamina recovered on attack trigger.\n" +
+                "Recommended: 3-10",
+                ["Tier5_Charge_TriggerChance"] =
+                "【Trigger Chance】\n" +
+                "Chance to trigger stamina recovery on attack.\n" +
+                "Recommended: 20-50",
+
+                // === Tier 6: Final Enhancement ===
+                ["Tier6_WeakPointAttack_CritDamageBonus"] =
+                "【Critical Damage Bonus (%)】\n" +
+                "Increases additional damage on critical hits.\n" +
+                "Maximizes the power of critical strikes.\n" +
+                "Recommended: 10-20%",
+
+                ["Tier6_TwoHandCrush_TwoHandDamageBonus"] =
+                "【Two-Hand Damage Bonus (%)】\n" +
+                "Increases total damage when using two-handed weapons.\n" +
+                "Enhances the overwhelming attack power of two-handed weapons.\n" +
+                "Recommended: 8-15%",
+
+                ["Tier6_ElementalAttack_ElementalBonus"] =
+                "【Staff Elemental Damage Bonus (%)】\n" +
+                "Increases elemental damage (fire, frost, lightning) of staves.\n" +
+                "Enhances the destructive power of magical attacks.\n" +
+                "Recommended: 8-15%",
+
+                ["Tier6_ComboFinisher_3HitComboBonus"] =
+                "【One-Hand Always Damage Bonus (%)】\n" +
+                "Always applies on one-handed weapon attacks (sword/dagger/mace/axe).\n" +
+                "Applied consistently on every hit.\n" +
+                "Recommended: 12-20%",
+
+                // ========================================
+                // Defense Tree
+                // ========================================
+
+
+
+
+
+
+
+
+                // === Tier 0: Defense Expert ===
+                ["Tier0_DefenseExpert_HPBonus"] =
+                "【Health Bonus (Flat)】\n" +
+                "Increases maximum health by a flat amount.\n" +
+                "Foundation of survivability.\n" +
+                "Recommended: 3-8",
+
+                ["Tier0_DefenseExpert_ArmorBonus"] =
+                "【Armor Bonus (Flat)】\n" +
+                "Increases armor by a flat amount.\n" +
+                "Reduces incoming damage.\n" +
+                "Recommended: 1-4",
+
+                // === Tier 1: Skin Hardening ===
+                ["Tier1_SkinHardening_HPBonus"] =
+                "【Health Bonus (Flat)】\n" +
+                "Further increases maximum health.\n" +
+                "Recommended: 3-8",
+
+                ["Tier1_SkinHardening_ArmorBonus"] =
+                "【Armor Bonus (Flat)】\n" +
+                "Further increases armor.\n" +
+                "Recommended: 3-8",
+
+                // === Tier 2: Mind-Body Training & Health Training ===
+                ["Tier2_MindBodyTraining_StaminaBonus"] =
+                "【Max Stamina Bonus (Flat)】\n" +
+                "Increases maximum stamina.\n" +
+                "Allows more actions.\n" +
+                "Recommended: 20-30",
+
+                ["Tier2_MindBodyTraining_EitrBonus"] =
+                "【Max Eitr Bonus (Flat)】\n" +
+                "Increases maximum Eitr.\n" +
+                "Allows more magic usage.\n" +
+                "Recommended: 20-30",
+
+                ["Tier2_HealthTraining_HPBonus"] =
+                "【Health Bonus (Flat)】\n" +
+                "Significantly increases maximum health.\n" +
+                "Recommended: 15-25",
+
+                ["Tier2_HealthTraining_ArmorBonus"] =
+                "【Armor Bonus (Flat)】\n" +
+                "Further increases armor.\n" +
+                "Recommended: 3-8",
+
+                // === Tier 3: Various Defense Skills ===
+                ["Tier3_CoreBreathing_EitrBonus"] =
+                "【Eitr Bonus (Flat)】\n" +
+                "Core breathing increases Eitr.\n" +
+                "Recommended: 8-15",
+
+                ["Tier3_EvasionTraining_DodgeBonus"] =
+                "【Dodge Rate Bonus (%)】\n" +
+                "Increases chance to dodge enemy attacks.\n" +
+                "Recommended: 3-8%",
+
+                ["Tier3_EvasionTraining_InvincibilityBonus"] =
+                "【Roll Invincibility Increase (%)】\n" +
+                "Extends invincibility duration during rolls.\n" +
+                "Safer evasion.\n" +
+                "Recommended: 15-25%",
+
+                ["Tier3_HealthBoost_HPBonus"] =
+                "【Health Bonus (Flat)】\n" +
+                "Further increases health.\n" +
+                "Recommended: 12-20",
+
+                ["Tier3_ShieldTraining_BlockPowerBonus"] =
+                "【Shield Block Power Bonus (Flat)】\n" +
+                "Increases shield's blocking power.\n" +
+                "Can block stronger attacks.\n" +
+                "Recommended: 80-120",
+
+                // === Tier 4: Ground Stomp ===
+                ["Tier4_GroundStomp_Radius"] =
+                "【Effect Radius (meters)】\n" +
+                "Range of the shockwave.\n" +
+                "Recommended: 2.5-4m",
+
+                ["Tier4_GroundStomp_KnockbackForce"] =
+                "【Knockback Force】\n" +
+                "Force that pushes enemies away.\n" +
+                "Recommended: 15-25",
+
+                ["Tier4_GroundStomp_Cooldown"] =
+                "【Cooldown (seconds)】\n" +
+                "Skill reuse wait time.\n" +
+                "Recommended: 100-150s",
+
+                ["Tier4_GroundStomp_HPThreshold"] =
+                "【Auto-trigger HP Threshold (ratio)】\n" +
+                "Automatically triggers below this health.\n" +
+                "0.35 = below 35% health\n" +
+                "Recommended: 0.30-0.40",
+
+                ["Tier4_GroundStomp_VFXDuration"] =
+                "【VFX Duration (seconds)】\n" +
+                "Duration of visual effects.\n" +
+                "Recommended: 0.8-1.5s",
+
+                // === Tier 4: Rock Skin ===
+                ["Tier4_RockSkin_ArmorBonus"] =
+                "【Armor Amplification (%)】\n" +
+                "Applies a percentage bonus to helmet, chest, legs, and shield armor individually.\n" +
+                "Item tooltip shows: ((base armor + skill bonus) * X%) format.\n" +
+                "Recommended: 10-15%",
+
+                // === Tier 5: Endurance & Agility & Regen & Block Master ===
+                ["Tier5_Endurance_RunStaminaReduction"] =
+                "【Run Stamina Reduction (%)】\n" +
+                "Reduces stamina cost when running.\n" +
+                "Recommended: 8-15%",
+
+                ["Tier5_Endurance_JumpStaminaReduction"] =
+                "【Jump Stamina Reduction (%)】\n" +
+                "Reduces stamina cost when jumping.\n" +
+                "Recommended: 8-15%",
+
+                ["Tier5_Agility_DodgeBonus"] =
+                "【Dodge Rate Bonus (%)】\n" +
+                "Further increases dodge chance.\n" +
+                "Recommended: 3-8%",
+
+                ["Tier5_Agility_RollStaminaReduction"] =
+                "【Roll Stamina Reduction (%)】\n" +
+                "Reduces stamina cost when rolling.\n" +
+                "Recommended: 10-18%",
+
+                ["Tier5_TrollRegen_HPRegenBonus"] =
+                "【HP Regen Bonus (per second)】\n" +
+                "Health regenerates like a troll.\n" +
+                "Recommended: 3-8",
+
+                ["Tier5_TrollRegen_RegenInterval"] =
+                "【Regen Interval (seconds)】\n" +
+                "Frequency of health recovery.\n" +
+                "Recommended: 1.5-3s",
+
+                ["Tier5_BlockMaster_ShieldBlockPowerBonus"] =
+                "【Shield Block Power Bonus (Flat)】\n" +
+                "Significantly increases shield's blocking power.\n" +
+                "Recommended: 80-120",
+
+                ["Tier5_BlockMaster_ParryDurationBonus"] =
+                "【Parry Duration Bonus (seconds)】\n" +
+                "Extends duration after successful parry.\n" +
+                "Recommended: 0.8-1.5s",
+
+                // === Tier 6: Final Defense Skills ===
+                ["Tier6_NerveEnhancement_DodgeBonus"] =
+                "【Conditional Dodge Bonus (30s no-evasion, %)】\n" +
+                "Activates if no evasion triggered for 30 seconds.\n" +
+                "Recommended: 30-50%",
+
+                ["Tier6_JotunnVitality_HPBonus"] =
+                "【Health Bonus (%)】\n" +
+                "Jotunn's vitality increases max health percentage.\n" +
+                "Recommended: 25-40%",
+
+                ["Tier6_JotunnVitality_ArmorBonus"] =
+                "【Physical/Elemental Resistance (%)】\n" +
+                "Reduces all physical and elemental damage received.\n" +
+                "Recommended: 8-15%",
+
+                ["Tier6_JotunnShield_BlockStaminaReduction"] =
+                "【Block Stamina Reduction (%)】\n" +
+                "Reduces stamina cost when blocking with shield.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] =
+                "【Normal Shield Move Speed Bonus (%)】\n" +
+                "Increases movement speed while holding normal shield.\n" +
+                "Recommended: 3-8%",
+
+                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] =
+                "【Tower Shield Move Speed Bonus (%)】\n" +
+                "Increases movement speed while holding tower shield.\n" +
+                "Recommended: 8-15%",
+
+                // === RequiredPoints Descriptions ===
+                ["Tier0_DefenseExpert_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier1_SkinHardening_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier2_MindTraining_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier2_HealthTraining_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_CoreBreathing_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_EvasionTraining_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_HealthBoost_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier3_ShieldTraining_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier4_Shockwave_Radius"] =
+                "【Shockwave Radius】\n" +
+                "Effect radius of the Shockwave skill in meters.\n" +
+                "Recommended: 3",
+
+                ["Tier4_Shockwave_StunDuration"] =
+                "【Shockwave Stun Duration】\n" +
+                "Stun effect duration in seconds.\n" +
+                "Recommended: 1",
+
+                ["Tier4_Shockwave_Cooldown"] =
+                "【Shockwave Cooldown】\n" +
+                "Skill reuse cooldown in seconds.\n" +
+                "Recommended: 120",
+
+                ["Tier4_Shockwave_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier4_GroundStomp_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier4_RockSkin_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier5_Endurance_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier5_Agility_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier5_TrollRegen_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier5_BlockMaster_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_MindShield_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_NerveEnhancement_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_DoubleJump_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_JotunnVitality_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                ["Tier6_JotunnShield_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Number of skill points required to unlock this node.\n" +
+                "Recommended: 2",
+
+                // ========================================
+                // Production Tree
+                // ========================================
+
+
+
+
+
+
+                // === Tier 0: Production Expert ===
+                ["Tier0_ProductionExpert_WoodBonusChance"] =
+                "【Wood +1 Bonus Chance (%)】\n" +
+                "Chance to gain one extra wood when chopping trees.\n" +
+                "Foundation of production skills.\n" +
+                "Recommended: 40-60%",
+
+                // === Tier 1: Novice Worker ===
+                ["Tier1_NoviceWorker_WoodBonusChance"] =
+                "【Wood +1 Bonus Chance (%)】\n" +
+                "Increases chance to gain extra wood when chopping.\n" +
+                "Recommended: 20-30%",
+
+                // === Tier 2: Specialization ===
+                ["Tier2_WoodcuttingLv2_BonusChance"] =
+                "【Wood +1 Bonus Chance (%)】\n" +
+                "Woodcutting Lv2 - Extra wood bonus chance.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier2_GatheringLv2_BonusChance"] =
+                "【Item +1 Bonus Chance (%)】\n" +
+                "Gathering Lv2 - Extra item bonus when gathering berries, mushrooms, etc.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier2_MiningLv2_BonusChance"] =
+                "【Ore +1 Bonus Chance (%)】\n" +
+                "Mining Lv2 - Extra ore bonus when mining.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier2_CraftingLv2_UpgradeChance"] =
+                "【Upgrade +1 Bonus Chance (%)】\n" +
+                "Crafting Lv2 - Chance to gain extra upgrade level when crafting/upgrading.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier2_CraftingLv2_DurabilityBonus"] =
+                "【Max Durability Increase (%)】\n" +
+                "Crafting Lv2 - Increases maximum durability of crafted items.\n" +
+                "Recommended: 20-30%",
+
+                // === Tier 3: Intermediate Skills ===
+                ["Tier3_WoodcuttingLv3_BonusChance"] =
+                "【Wood +2 Bonus Chance (%)】\n" +
+                "Woodcutting Lv3 - Chance to gain 2 extra wood.\n" +
+                "Recommended: 30-40%",
+
+                ["Tier3_GatheringLv3_BonusChance"] =
+                "【Item +1 Bonus Chance (%)】\n" +
+                "Gathering Lv3 - Increased extra item bonus chance.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier3_MiningLv3_BonusChance"] =
+                "【Ore +1 Bonus Chance (%)】\n" +
+                "Mining Lv3 - Increased extra ore bonus chance.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier3_CraftingLv3_UpgradeChance"] =
+                "【Upgrade +1 Bonus Chance (%)】\n" +
+                "Crafting Lv3 - Increased extra upgrade chance.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier3_CraftingLv3_DurabilityBonus"] =
+                "【Max Durability Increase (%)】\n" +
+                "Crafting Lv3 - Further increases maximum durability.\n" +
+                "Recommended: 20-30%",
+
+                // === Tier 4: Advanced Skills ===
+                ["Tier4_WoodcuttingLv4_BonusChance"] =
+                "【Wood +2 Bonus Chance (%)】\n" +
+                "Woodcutting Lv4 - Significantly increased chance for 2 extra wood.\n" +
+                "Recommended: 40-50%",
+
+                ["Tier4_GatheringLv4_BonusChance"] =
+                "【Item +1 Bonus Chance (%)】\n" +
+                "Gathering Lv4 - Maximized extra item bonus chance.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier4_MiningLv4_BonusChance"] =
+                "【Ore +1 Bonus Chance (%)】\n" +
+                "Mining Lv4 - Maximized extra ore bonus chance.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier4_CraftingLv4_UpgradeChance"] =
+                "【Upgrade +1 Bonus Chance (%)】\n" +
+                "Crafting Lv4 - Maximized extra upgrade chance.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier4_CraftingLv4_DurabilityBonus"] =
+                "【Max Durability Increase (%)】\n" +
+                "Crafting Lv4 - Maximized durability increase.\n" +
+                "Recommended: 20-30%",
+
+
+                // === Speed Tree: Tier 0 Speed Expert (1개) ===
+                ["Tier0_SpeedExpert_MoveSpeedBonus"] = "【Move Speed Bonus (%)】\nPermanent movement speed increase.\nRecommended: 5-10%",
+
+                // === Speed Tree: Tier 1 Agility Base (4개) ===
+                ["Tier1_AgilityBase_DodgeMoveSpeedBonus"] = "【Post-Dodge Move Speed Bonus (%)】\nMovement speed increases briefly after dodging.\nUseful for quick repositioning after evasion.\nRecommended: 10-20%",
+                ["Tier1_AgilityBase_BuffDuration"] = "【Buff Duration (sec)】\nDuration of the post-dodge speed buff.\nRecommended: 2-3 sec",
+                ["Tier1_AgilityBase_AttackSpeedBonus"] = "【Attack Speed Bonus (%)】\nOverall attack speed increase for all weapons.\nRecommended: 3-8%",
+                ["Tier1_AgilityBase_DodgeSpeedBonus"] = "【Dodge Speed Bonus (%)】\nIncreases the speed of dodge roll animation.\nRecommended: 5-15%",
+
+                // === Speed Tree: Tier 2 Melee Flow (4개) ===
+                ["Tier2_MeleeFlow_AttackSpeedBonus"] = "【Attack Speed Bonus on 2-Hit (%)】\nAttack speed increases after landing 2 consecutive melee hits.\nRecommended: 8-15%",
+                ["Tier2_MeleeFlow_StaminaReduction"] = "【Stamina Reduction (%)】\nStamina cost reduction during the flow buff.\nRecommended: 10-20%",
+                ["Tier2_MeleeFlow_Duration"] = "【Buff Duration (sec)】\nDuration of the melee flow buff.\nRecommended: 3-5 sec",
+                ["Tier2_MeleeFlow_ComboSpeedBonus"] = "【Combo Speed Bonus (%)】\nAdditional attack speed bonus for combo chains.\nRecommended: 5-10%",
+
+                // === Speed Tree: Tier 2 Crossbow Expert (3개) ===
+                ["Tier2_CrossbowExpert_MoveSpeedBonus"] = "【Move Speed Bonus on Hit (%)】\nMovement speed increases when crossbow bolt hits enemy.\nRecommended: 10-15%",
+                ["Tier2_CrossbowExpert_BuffDuration"] = "【Buff Duration (sec)】\nDuration of the speed buff after successful hit.\nRecommended: 3-5 sec",
+                ["Tier2_CrossbowExpert_ReloadSpeedBonus"] = "【Reload Speed Bonus During Buff (%)】\nReload speed increases while the hit buff is active.\nRecommended: 10-15%",
+
+                // === Speed Tree: Tier 2 Bow Expert (3개) ===
+                ["Tier2_BowExpert_StaminaReduction"] = "【Stamina Reduction on 2-Hit Combo (%)】\nStamina cost reduction after landing 2 consecutive bow shots.\nRecommended: 10-15%",
+                ["Tier2_BowExpert_NextDrawSpeedBonus"] = "【Next Arrow Draw Speed Bonus (%)】\nDraw speed increases for the next arrow after a successful combo.\nRecommended: 10-20%",
+                ["Tier2_BowExpert_BuffDuration"] = "【Buff Duration (sec)】\nDuration of the combo buff.\nRecommended: 4-6 sec",
+
+                // === Speed Tree: Tier 2 Mobile Cast (3개) ===
+                ["Tier2_MobileCast_MoveSpeedBonus"] = "【Move Speed Bonus While Casting (%)】\nMovement speed bonus while casting staff spells.\nRecommended: 8-12%",
+                ["Tier2_MobileCast_EitrReduction"] = "【Eitr Cost Reduction (%)】\nEitr consumption reduction for staff spells.\nRecommended: 8-15%",
+                ["Tier2_MobileCast_CastMoveSpeed"] = "【Move Speed While Staff Casting (%)】\nBase movement speed while channeling staff attacks.\nRecommended: 3-6%",
+
+                // === Speed Tree: Tier 3 Practitioner (4개) ===
+                ["Tier3_Practitioner1_MeleeSkillBonus"] = "【Melee Weapon Skill Bonus】\nIncreases all melee weapon skill levels.\nRecommended: 5-10",
+                ["Tier3_Practitioner1_CrossbowSkillBonus"] = "【Crossbow Skill Bonus】\nIncreases crossbow skill level.\nRecommended: 5-10",
+                ["Tier3_Practitioner2_StaffSkillBonus"] = "【Staff Skill Bonus】\nIncreases staff skill level (Elementalmagi).\nRecommended: 5-10",
+                ["Tier3_Practitioner2_BowSkillBonus"] = "【Bow Skill Bonus】\nIncreases bow skill level.\nRecommended: 5-10",
+
+                // === Speed Tree: Tier 4 Master (2개) ===
+                ["Tier4_Energizer_FoodConsumptionReduction"] = "【Food Consumption Rate Reduction (%)】\nSlows down food consumption rate, making buffs last longer.\nRecommended: 10-20%",
+                ["Tier4_Captain_ShipSpeedBonus"] = "【Ship Speed Bonus (%)】\nIncreases sailing speed.\nRecommended: 10-20%",
+
+                // === Speed Tree: Tier 5 Jump Master (2개) ===
+                ["Tier5_JumpMaster_JumpSkillBonus"] = "【Jump Skill Bonus】\nIncreases jump skill level.\nRecommended: 5-15",
+                ["Tier5_JumpMaster_JumpStaminaReduction"] = "【Jump Stamina Reduction (%)】\nReduces stamina cost for jumping.\nRecommended: 10-20%",
+
+                // === Speed Tree: Tier 6 Stats (4개) ===
+                ["Tier6_Dexterity_MeleeAttackSpeedBonus"] = "【Melee Attack Speed Bonus (%)】\nIncreases melee attack speed.\nRecommended: 5-8%",
+                ["Tier6_Dexterity_MoveSpeedBonus"] = "【Move Speed Bonus (%)】\nIncreases overall movement speed.\nRecommended: 3-8%",
+                ["Tier6_Endurance_StaminaMaxBonus"] = "【Max Stamina Bonus】\nIncreases maximum stamina pool.\nRecommended: 20-40",
+                ["Tier6_Intellect_EitrMaxBonus"] = "【Max Eitr Bonus】\nIncreases maximum Eitr pool for magic.\nRecommended: 30-50",
+
+                // === Speed Tree: Tier 7 Master (2개) ===
+                ["Tier7_Master_RunSkillBonus"] = "【Run Skill Bonus】\nIncreases running skill level.\nRecommended: 5-15",
+                ["Tier7_Master_JumpSkillBonus"] = "【Jump Skill Bonus】\nIncreases jump skill level.\nRecommended: 5-15",
+
+                // === Speed Tree: Tier 8 Melee Acceleration (2개) ===
+                ["Tier8_MeleeAccel_AttackSpeedBonus"] = "【Melee Attack Speed Bonus (%)】\nFinal boost to melee attack speed.\nRecommended: 5-10%",
+                ["Tier8_MeleeAccel_TripleComboBonus"] = "【Next Attack Speed Bonus on 3-Hit Combo (%)】\nMassive attack speed boost for the next attack after a 3-hit combo.\nRecommended: 20-30%",
+
+                // === Speed Tree: Tier 8 Crossbow Acceleration (2개) ===
+                ["Tier8_CrossbowAccel_ReloadSpeed"] = "【Reload Speed Bonus (%)】\nFinal boost to crossbow reload speed.\nRecommended: 25-35%",
+                ["Tier8_CrossbowAccel_ReloadMoveSpeed"] = "【Move Speed During Reload (%)】\nMovement speed while reloading crossbow.\nRecommended: 20-30%",
+
+                // === Speed Tree: Tier 8 Bow Acceleration (2개) ===
+                ["Tier8_BowAccel_DrawSpeed"] = "【Draw Speed Bonus (%)】\nFinal boost to bow draw speed.\nRecommended: 15-20%",
+                ["Tier8_BowAccel_DrawMoveSpeed"] = "【Move Speed While Drawing (%)】\nMovement speed while drawing bow string.\nRecommended: 10-20%",
+
+                // === Speed Tree: Tier 8 Cast Acceleration (2개) ===
+                ["Tier8_CastAccel_MagicAttackSpeed"] = "【Magic Attack Speed Bonus (%)】\nFinal boost to magic attack speed.\nRecommended: 5-10%",
+                ["Tier8_CastAccel_TripleEitrRecovery"] = "【Eitr Max Recovery Rate on 3-Hit Combo (%)】\nBoosts Eitr regeneration rate after a 3-spell combo.\nRecommended: 10-15%",
+
+                // === Speed Tree: Required Points ===
+                ["Tier0_SpeedExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier1_AgilityBase_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_MeleeFlow_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_CrossbowExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_BowExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_MobileCast_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier3_Practitioner1_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier3_Practitioner2_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_Energizer_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_Captain_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier5_JumpMaster_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_Dexterity_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_Endurance_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_Intellect_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier7_Master_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier8_MeleeAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier8_CrossbowAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier8_BowAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier8_CastAccel_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+
+                // === Attack Tree: Required Points ===
+                ["Tier0_AttackExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier1_BaseAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_MeleeSpec_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_BowSpec_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_CrossbowSpec_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_StaffSpec_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier3_AttackBoost_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_MeleeEnhance_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_PrecisionAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_RangedEnhance_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier5_SpecialStat_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                // === 4-Phase System New RequiredPoints ===
+                ["Tier1_Opener_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_OpenerMelee_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_OpenerBow_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_OpenerCrossbow_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier2_OpenerMagic_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier3_Pursuit_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_PursuitSpeed_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier5_Frenzy_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_WeakPointAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_ComboFinisher_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_TwoHandCrush_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_ElementalAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+
+                // === Production Tree: Required Points ===
+                ["Tier0_ProductionExpert_RequiredPoints"] = "【Required Points - Production Expert】\nSkill points needed to unlock Production Expert.\nRecommended: 2",
+                ["Tier1_NoviceWorker_RequiredPoints"] = "【Required Points - Novice Worker】\nSkill points needed to unlock Novice Worker.\nRecommended: 2",
+                ["Tier2_WoodcuttingLv2_RequiredPoints"] = "【Required Points - Woodcutting Lv2】\nRecommended: 2",
+                ["Tier2_GatheringLv2_RequiredPoints"] = "【Required Points - Gathering Lv2】\nRecommended: 2",
+                ["Tier2_MiningLv2_RequiredPoints"] = "【Required Points - Mining Lv2】\nRecommended: 2",
+                ["Tier2_CraftingLv2_RequiredPoints"] = "【Required Points - Crafting Lv2】\nRecommended: 2",
+                ["Tier3_WoodcuttingLv3_RequiredPoints"] = "【Required Points - Woodcutting Lv3】\nRecommended: 2",
+                ["Tier3_GatheringLv3_RequiredPoints"] = "【Required Points - Gathering Lv3】\nRecommended: 2",
+                ["Tier3_MiningLv3_RequiredPoints"] = "【Required Points - Mining Lv3】\nRecommended: 2",
+                ["Tier3_CraftingLv3_RequiredPoints"] = "【Required Points - Crafting Lv3】\nRecommended: 2",
+                ["Tier4_WoodcuttingLv4_RequiredPoints"] = "【Required Points - Woodcutting Lv4】\nRecommended: 2",
+                ["Tier4_GatheringLv4_RequiredPoints"] = "【Required Points - Gathering Lv4】\nRecommended: 2",
+                ["Tier4_MiningLv4_RequiredPoints"] = "【Required Points - Mining Lv4】\nRecommended: 2",
+                ["Tier4_CraftingLv4_RequiredPoints"] = "【Required Points - Crafting Lv4】\nRecommended: 2",
+
+
+            };
+        }
+    }
+}

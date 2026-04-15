@@ -1,0 +1,808 @@
+using HarmonyLib;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System;
+using CaptainSkillTree.Localization;
+
+namespace CaptainSkillTree.SkillTree
+{
+    /// <summary>
+    /// 단검 전문가 스킬 로직 모음
+    /// SkillEffect.MeleeSkills.cs에서 단검 관련 로직을 분리
+    /// </summary>
+    public static class Knife_Skill
+    {
+        // 암살자의 심장 Lv2: 30초 추가 사용 창 관리 (playerID → 창 만료 Time.time)
+        private static Dictionary<long, float> _assassinHeartPendingWindow = new Dictionary<long, float>();
+        private const float AssassinHeartExtraWindow = 30f;
+
+        #region 단검 무기 감지
+
+        /// <summary>
+        /// 플레이어가 단검 또는 맨주먹을 사용 중인지 확인
+        /// </summary>
+        public static bool IsUsingDagger(Player player)
+        {
+            var weapon = player?.GetCurrentWeapon();
+            if (weapon?.m_shared?.m_skillType == Skills.SkillType.Knives)
+            {
+                return true; // 단검
+            }
+            
+            // 맨주먹 확인 (무기가 없는 경우)
+            if (weapon?.m_shared?.m_skillType == Skills.SkillType.Unarmed)
+            {
+                return true; // 장갑(맨주먹)
+            }
+            
+            // 프리팹 이름에 단검 관련 키워드가 포함되어 있는지 확인
+            if (weapon != null)
+            {
+                string weaponName = weapon.m_shared.m_name?.ToLower() ?? "";
+                string prefabName = weapon.m_dropPrefab?.name?.ToLower() ?? "";
+                bool isDaggerByName = ContainsDaggerKeyword(weaponName) || ContainsDaggerKeyword(prefabName);
+                
+                if (isDaggerByName)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        /// <summary>
+        /// 프리팹 이름에 단검 관련 키워드가 포함되어 있는지 확인
+        /// Claw/claw, Dagger/dagger, Fist/fist 포함
+        /// </summary>
+        private static bool ContainsDaggerKeyword(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return false;
+
+            string[] daggerKeywords = { "knives", "knife", "dagger", "claw", "fist" };
+            string lowerName = name.ToLower();
+
+            foreach (string keyword in daggerKeywords)
+            {
+                if (lowerName.Contains(keyword))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 플레이어가 전투 상태인지 확인 (대체 구현)
+        /// </summary>
+        private static bool IsPlayerInCombat(Player player)
+        {
+            if (player == null) return false;
+            
+            try
+            {
+                // StatusEffect 'InCombat'을 통한 확인 (가장 안정적)
+                var seman = player.GetSEMan();
+                if (seman != null)
+                {
+                    var combatStatus = seman.GetStatusEffect("InCombat".GetStableHashCode());
+                    if (combatStatus != null) return true;
+                }
+                
+                // 대체 방법: 최근 피해를 받았거나 입혔는지 확인
+                // 단순화된 전투 상태 판별: 단검/맨주먹을 들고 있고 최근에 활동했다면 전투 상태로 간주
+                var weapon = player.GetCurrentWeapon();
+                if (weapon?.m_shared?.m_skillType == Skills.SkillType.Knives || 
+                    weapon?.m_shared?.m_skillType == Skills.SkillType.Unarmed)
+                {
+                    // 단검/맨주먹을 들고 있으면 일단 전투 상태로 간주 (단순화)
+                    return true;
+                }
+                
+                return false;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogWarning($"[전투 상태 확인] 오류 발생: {ex.Message}");
+                return false; // 오류 시 false 반환
+            }
+        }
+
+        #endregion
+
+        #region 패시브 스킬 효과
+
+        /// <summary>
+        /// 단검 전문가 - 백스탭 데미지 보너스
+        /// </summary>
+        public static void ApplyKnifeExpertBackstab(Player player, ref HitData hit, Character targetCharacter)
+        {
+            if (!SkillEffect.HasSkill("knife_expert_backstab") || !IsUsingDagger(player)) return;
+
+            try
+            {
+                bool isBackstab = SkillEffect.IsBackstab(player, targetCharacter);
+                if (isBackstab)
+                {
+                    float bonus = Knife_Config.KnifeExpertBackstabBonusValue / 100f;
+                    hit.m_damage.m_slash *= (1f + bonus);
+
+                    SkillEffect.ShowSkillEffectText(player,
+                        $"🗡️ 단검 전문가 - 백스탭! (+{Knife_Config.KnifeExpertBackstabBonusValue}%)",
+                        Color.red, SkillEffect.SkillEffectTextType.Combat);
+
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[단검 전문가] 백스탭 보너스 적용 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 회피 숙련 - 회피 확률 패시브 보너스
+        /// 실제 효과는 Plugin.cs의 Character_Damage_DefenseSkills_Patch에서 적용됨
+        /// </summary>
+        public static float GetKnifeEvasionBonus(Player player)
+        {
+            if (!SkillEffect.HasSkill("knife_step2_evasion") || !IsUsingDagger(player)) return 0f;
+
+            try
+            {
+                float evasionBonus = Knife_Config.KnifeEvasionBonusValue;
+                Plugin.Log.LogDebug($"[회피 숙련] 회피 확률 +{evasionBonus}%");
+                return evasionBonus;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[회피 숙련] 보너스 계산 실패: {ex.Message}");
+                return 0f;
+            }
+        }
+
+        /// <summary>
+        /// 빠른 움직임 - 이동속도 패시브 보너스
+        /// 실제 효과는 Player.UpdateModifiers 패치에서 적용됨
+        /// </summary>
+        public static float GetKnifeMoveSpeedBonus(Player player)
+        {
+            if (!SkillEffect.HasSkill("knife_step3_move_speed") || !IsUsingDagger(player)) return 0f;
+
+            try
+            {
+                float speedBonus = Knife_Config.KnifeMoveSpeedBonusValue;
+                Plugin.Log.LogDebug($"[빠른 움직임] 이동속도 +{speedBonus}%");
+                return speedBonus;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[빠른 움직임] 보너스 계산 실패: {ex.Message}");
+                return 0f;
+            }
+        }
+
+        /// <summary>
+        /// 빠른 공격 - 공격력 패시브 보너스
+        /// 실제 효과는 ItemData.GetDamage 패치에서 적용됨
+        /// </summary>
+        public static float GetKnifeAttackDamageBonus(Player player)
+        {
+            if (!SkillEffect.HasSkill("knife_step4_attack_damage") || !IsUsingDagger(player)) return 0f;
+
+            try
+            {
+                float damageBonus = Knife_Config.KnifeAttackDamageBonusValue;
+                Plugin.Log.LogDebug($"[빠른 공격] 공격력 +{damageBonus}");
+                return damageBonus;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[빠른 공격] 보너스 계산 실패: {ex.Message}");
+                return 0f;
+            }
+        }
+
+        /// <summary>
+        /// 치명타 숙련 - 치명타 확률 패시브 보너스
+        /// ⚠️ 이 함수는 더 이상 사용되지 않습니다.
+        /// 치명타 시스템이 CriticalSystem으로 중앙화되어 자동 처리됩니다.
+        /// - 치명타 확률: Critical.GetKnifeCritChance()에서 처리 (Line 103-113)
+        /// </summary>
+        [Obsolete("치명타 시스템이 CriticalSystem으로 통합되었습니다. Critical.GetKnifeCritChance()에서 자동 처리됩니다.")]
+        public static void ApplyKnifeCritRateBoost(Player player)
+        {
+            // 더 이상 사용되지 않음 - Critical 시스템에서 자동 처리
+            // 하위 호환을 위해 함수는 유지하지만 빈 구현
+            return;
+        }
+
+        /// <summary>
+        /// 치명적 피해 - 공격력 패시브 보너스
+        /// 실제 효과는 ItemData.GetDamage 패치에서 적용됨
+        /// </summary>
+        public static float GetKnifeCombatDamageBonus(Player player)
+        {
+            if (!SkillEffect.HasSkill("knife_step6_combat_damage") || !IsUsingDagger(player)) return 0f;
+
+            try
+            {
+                float damageBonus = Knife_Config.KnifeCombatDamageBonusValue;
+                Plugin.Log.LogDebug($"[치명적 피해] 공격력 +{damageBonus}%");
+                return damageBonus;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[치명적 피해] 보너스 계산 실패: {ex.Message}");
+                return 0f;
+            }
+        }
+
+        /// <summary>
+        /// 암살자 - 패시브 치명타 확률 및 치명타 피해 증가
+        ///
+        /// ⚠️ 이 함수는 더 이상 사용되지 않습니다 (하위 호환용으로만 유지)
+        /// 치명타 시스템이 CriticalSystem으로 중앙화되어 자동 처리됩니다.
+        ///
+        /// - 치명타 확률: Critical.GetKnifeCritChance()에서 처리
+        /// - 치명타 피해: CriticalDamage.GetKnifeCritDamage()에서 처리
+        /// </summary>
+        [Obsolete("치명타 시스템이 CriticalSystem으로 통합되었습니다. 이 함수는 자동으로 처리되므로 호출 불필요합니다.")]
+        public static void ApplyKnifeExecutionPassive(Player player, ref HitData hit, bool isCritical)
+        {
+            // 더 이상 사용되지 않음 - Critical 시스템에서 자동 처리
+            // 하위 호환을 위해 함수는 유지하지만 빈 구현
+            return;
+        }
+
+        /// <summary>
+        /// 암살술 - 3연속 공격 시 스태거 발동
+        /// </summary>
+        public static void ApplyKnifeAssassinationBonus(Player player, Character target)
+        {
+            if (!SkillEffect.HasSkill("knife_step8_assassination") || !IsUsingDagger(player)) return;
+            if (target == null || target.IsDead()) return;
+
+            try
+            {
+                int hitCount = SkillEffect.GetConsecutiveHits(player);
+                int required = Knife_Config.KnifeAssassinationRequiredHitsValue;
+
+                if (hitCount >= required)
+                {
+                    SkillEffect.ResetConsecutiveHits(player);
+                    float chance = Knife_Config.KnifeAssassinationStaggerChanceValue / 100f;
+                    if (UnityEngine.Random.value < chance)
+                    {
+                        Vector3 dir = (target.transform.position - player.transform.position).normalized;
+                        target.Stagger(dir);
+                        SkillEffect.ShowSkillEffectText(player,
+                            CaptainSkillTree.Localization.L.Get("knife_text_assassination_stagger"),
+                            Color.cyan, SkillEffect.SkillEffectTextType.Combat);
+                        Plugin.Log.LogDebug($"[암살술] {required}연속 공격 - 스태거 발동 ({Knife_Config.KnifeAssassinationStaggerChanceValue}% 확률)");
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살술] 스태거 적용 실패: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region 액티브 스킬 (G키)
+
+        /// <summary>
+        /// 암살자의 심장 - G키 액티브 스킬 사용 가능 여부 확인
+        /// </summary>
+        public static bool CanUseAssassinHeart(Player player)
+        {
+            if (!SkillEffect.HasSkill("knife_step9_assassin_heart") || !IsUsingDagger(player)) return false;
+
+            try
+            {
+                // 쿨타임 확인 (JobSkillsUtility 사용) - Rogue Lv2 창이 열려 있으면 건너뜀
+                string skillName = "암살자의 심장";
+                long pid = player.GetPlayerID();
+                bool inPendingWindow = _assassinHeartPendingWindow.TryGetValue(pid, out float windowEnd)
+                    && Time.time <= windowEnd;
+
+                if (!inPendingWindow && JobSkillsUtility.IsOnCooldown(player, skillName))
+                {
+                    float remaining = JobSkillsUtility.GetRemainingCooldown(player, skillName);
+                    SkillEffect.ShowSkillEffectText(player,
+                        $"쿨타임 {remaining:F1}초 남음",
+                        Color.red, SkillEffect.SkillEffectTextType.Passive);
+                    return false;
+                }
+
+                // 스태미나 확인
+                float staminaCost = Knife_Config.KnifeAssassinHeartStaminaCostValue;
+                if (player.GetStamina() < staminaCost)
+                {
+                    SkillEffect.ShowSkillEffectText(player,
+                        "스태미나 부족!",
+                        Color.red, SkillEffect.SkillEffectTextType.Passive);
+                    return false;
+                }
+
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살자의 심장] 사용 가능 여부 확인 실패: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 - G키 액티브 스킬 사용
+        /// 순간이동 + 스턴 + 버프 효과
+        /// </summary>
+        public static bool UseAssassinHeart(Player player)
+        {
+            if (!CanUseAssassinHeart(player)) return false;
+
+            try
+            {
+                // 정면의 가장 가까운 적 탐색
+                float searchRange = Knife_Config.KnifeAssassinHeartTeleportRangeValue;
+                Character targetEnemy = FindNearestFrontEnemy(player, searchRange);
+
+                if (targetEnemy == null)
+                {
+                    SkillEffect.ShowSkillEffectText(player,
+                        "대상 없음!",
+                        Color.gray, SkillEffect.SkillEffectTextType.Passive);
+                    return false;
+                }
+
+                // 스태미나 소모
+                float staminaCost = Knife_Config.KnifeAssassinHeartStaminaCostValue;
+                player.UseStamina(staminaCost);
+
+                // 쿨타임 설정 (JobSkillsUtility 사용) - Rogue Lv2: 30초 추가 사용 창 시스템
+                string skillName = "암살자의 심장";
+                float cooldown = Knife_Config.KnifeAssassinHeartCooldownValue;
+                long pid = player.GetPlayerID();
+                bool hasRogueLv2 = SkillTreeManager.Instance != null && SkillTreeManager.Instance.GetSkillLevel("Rogue") >= 2;
+
+                if (hasRogueLv2)
+                {
+                    if (_assassinHeartPendingWindow.TryGetValue(pid, out float we) && Time.time <= we)
+                    {
+                        // 2번째 사용: 창 종료 → 쿨타임 시작
+                        _assassinHeartPendingWindow.Remove(pid);
+                        JobSkillsUtility.SetCooldown(player, skillName, cooldown);
+                        Plugin.Log.LogDebug("[암살자의 심장] Lv2 2번째 사용 → 쿨타임 시작");
+                    }
+                    else
+                    {
+                        // 1번째 사용: 쿨타임 보류, 30초 창 시작
+                        _assassinHeartPendingWindow[pid] = Time.time + AssassinHeartExtraWindow;
+                        player.StartCoroutine(ExpireAssassinHeartWindow(pid, skillName, cooldown));
+                        Plugin.Log.LogDebug("[암살자의 심장] Lv2 1번째 사용 → 30초 창 시작");
+                    }
+                }
+                else
+                {
+                    JobSkillsUtility.SetCooldown(player, skillName, cooldown);
+                }
+
+                // 원래 위치 저장 (복귀용)
+                Vector3 originalPosition = player.transform.position;
+
+                // 대상 스턴 적용
+                ApplyStunToTarget(targetEnemy, player);
+
+                // 버프 효과 적용
+                ApplyAssassinHeartBuff(player);
+
+                SkillEffect.ShowSkillEffectText(player,
+                    "💀 " + L.Get("knife_assassin_heart_activated"),
+                    new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
+
+                // 대시 이동 + 연속 공격 + 복귀 코루틴 실행
+                player.StartCoroutine(ExecuteAssassinHeartAttacks(player, targetEnemy, originalPosition));
+
+                Plugin.Log.LogDebug($"[암살자의 심장] 대시 + 스턴 + 연속공격 시작 - 대상: {targetEnemy.m_name}");
+
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살자의 심장] 스킬 사용 실패: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Rogue Lv2 암살자의 심장 30초 창 만료 처리 코루틴
+        /// </summary>
+        private static IEnumerator ExpireAssassinHeartWindow(long pid, string skillName, float cooldown)
+        {
+            yield return new WaitForSeconds(AssassinHeartExtraWindow);
+            if (_assassinHeartPendingWindow.ContainsKey(pid))
+            {
+                // 30초 내 2번째 사용 없음 → 쿨타임 시작
+                _assassinHeartPendingWindow.Remove(pid);
+                var player = Player.m_localPlayer;
+                if (player != null && player.GetPlayerID() == pid)
+                    JobSkillsUtility.SetCooldown(player, skillName, cooldown);
+                Plugin.Log.LogDebug("[암살자의 심장] Lv2 창 만료 → 쿨타임 시작");
+            }
+        }
+
+        /// <summary>
+        /// 범위 내 가장 가까운 몬스터 탐색 (더 관대한 조건 - Tamed/Player가 아니면 대상)
+        /// </summary>
+        private static Character FindNearestFrontEnemy(Player player, float range)
+        {
+            if (player == null) return null;
+
+            Character nearest = null;
+            float minDist = range;
+            int checkedCount = 0;
+            int validCount = 0;
+
+            foreach (var c in Character.GetAllCharacters())
+            {
+                if (c == null || c == player) continue;
+                if (c.IsDead()) continue;
+
+                checkedCount++;
+
+                // 더 관대한 조건: Tamed가 아니고 Player가 아니면 공격 대상
+                if (c.IsTamed() || c.IsPlayer()) continue;
+
+                validCount++;
+                float dist = Vector3.Distance(c.transform.position, player.transform.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    nearest = c;
+                }
+            }
+
+            Plugin.Log.LogDebug($"[암살자의 심장] 적 탐색 완료: 전체 {checkedCount}개 확인, 유효 {validCount}개, " +
+                               $"선택={nearest?.m_name ?? "없음"}, 거리={minDist:F1}m");
+            return nearest;
+        }
+
+        /// <summary>
+        /// 카메라 전방 방향 가져오기 (Sword_Skill 방식)
+        /// </summary>
+        private static Vector3 GetCameraForward(Player player)
+        {
+            if (Camera.main != null)
+            {
+                Vector3 forward = Camera.main.transform.forward;
+                forward.y = 0;
+                return forward.normalized;
+            }
+            return player.transform.forward;
+        }
+
+        /// <summary>
+        /// 적 뒤 안전 위치 계산 (벽 감지 포함, 높이 보정 포함)
+        /// </summary>
+        private static Vector3 CalculateBehindPosition(Player player, Character target)
+        {
+            float behindDistance = Knife_Config.KnifeAssassinHeartTeleportBehindValue;
+            Vector3 targetPos = target.transform.position;
+            Vector3 playerToEnemy = targetPos - player.transform.position;
+            playerToEnemy.y = 0;
+            Vector3 backDir = playerToEnemy.sqrMagnitude > 0.001f
+                ? playerToEnemy.normalized
+                : GetCameraForward(player);
+
+            int wallMask = ~LayerMask.GetMask("character", "character_net", "character_trigger", "Water", "Ignore Raycast");
+            Vector3 result = targetPos + backDir * 0.3f;
+            for (float dist = behindDistance; dist >= 0.5f; dist -= 0.5f)
+            {
+                Vector3 candidate = targetPos + backDir * dist;
+                if (!Physics.Linecast(targetPos + Vector3.up * 0.5f, candidate + Vector3.up * 0.5f, wallMask))
+                {
+                    result = candidate;
+                    break;
+                }
+            }
+            return GetGroundPosition(result);
+        }
+
+        /// <summary>
+        /// 지면 높이 보정 - 던전 내외 모두 안전 (Sword_Skill 방식)
+        /// 던전(Y>4000): Physics.Raycast로 실제 바닥 감지
+        /// 외부: terrain 레이어 Raycast
+        /// </summary>
+        private static Vector3 GetGroundPosition(Vector3 pos)
+        {
+            if (pos.y > 4000f)
+            {
+                if (Physics.Raycast(pos + Vector3.up * 3f, Vector3.down, out RaycastHit dungeonHit, 8f))
+                    return new Vector3(pos.x, dungeonHit.point.y + 0.1f, pos.z);
+                return pos;
+            }
+            if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("terrain", "Default")))
+                return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
+            return pos;
+        }
+
+        /// <summary>
+        /// 적 뒤로 빠른 대시 이동 코루틴 (던전 호환)
+        /// </summary>
+        private static IEnumerator DashBehindEnemy(Player player, Character target)
+        {
+            Vector3 dest = CalculateBehindPosition(player, target);
+            SimpleVFX.Play("debuff", player.transform.position, 2f);
+            yield return MoveToTarget(player, dest, 0.2f);
+
+            // 적을 바라봄
+            Vector3 lookDir = target.transform.position - player.transform.position;
+            lookDir.y = 0;
+            if (lookDir.sqrMagnitude > 0.001f)
+                player.transform.rotation = Quaternion.LookRotation(lookDir);
+
+            SimpleVFX.Play("hit_01", player.transform.position, 1f);
+        }
+
+        /// <summary>
+        /// EaseOut Lerp 이동 헬퍼
+        /// </summary>
+        private static IEnumerator MoveToTarget(Player player, Vector3 dest, float duration)
+        {
+            float elapsed = 0f;
+            Vector3 start = player.transform.position;
+            while (elapsed < duration)
+            {
+                if (player == null || player.IsDead()) yield break;
+                elapsed += Time.deltaTime;
+                float smoothT = 1f - Mathf.Pow(1f - Mathf.Clamp01(elapsed / duration), 2f);
+                player.transform.position = GetGroundPosition(Vector3.Lerp(start, dest, smoothT));
+                yield return null;
+            }
+            player.transform.position = GetGroundPosition(dest);
+        }
+
+        /// <summary>
+        /// 대상에게 스턴 적용 (HitData 방식 + Traverse 백업)
+        /// </summary>
+        private static void ApplyStunToTarget(Character target, Player player)
+        {
+            try
+            {
+                float stunDuration = Knife_Config.KnifeAssassinHeartStunDurationValue;
+
+                // 1. 스태거용 HitData 생성 (높은 스태거 배율로 강제 스태거)
+                HitData staggerHit = new HitData();
+                staggerHit.m_damage.m_blunt = 0.1f;  // 최소 데미지
+                staggerHit.m_staggerMultiplier = 100f;  // 높은 스태거 배율
+                staggerHit.m_pushForce = 0f;
+                staggerHit.m_point = target.transform.position;
+                staggerHit.m_dir = -target.transform.forward;
+                staggerHit.SetAttacker(player);
+
+                // 2. 피해 적용 (스태거 유발)
+                target.Damage(staggerHit);
+                Plugin.Log.LogDebug($"[암살자의 심장] HitData 스태거 적용 완료");
+
+                // 3. Traverse로 m_staggerTimer 직접 설정 (백업 - 지속시간 보장)
+                var traverse = Traverse.Create(target);
+                var staggerTimerField = traverse.Field("m_staggerTimer");
+
+                if (staggerTimerField.FieldExists())
+                {
+                    staggerTimerField.SetValue(stunDuration);
+                    Plugin.Log.LogDebug($"[암살자의 심장] m_staggerTimer 설정 성공: {stunDuration}초");
+                }
+
+                // 4. Stagger 직접 호출 (애니메이션 백업)
+                target.Stagger(-target.transform.forward);
+
+                // 5. 스턴 VFX (기절 효과)
+                SimpleVFX.Play("debuff", target.transform.position + Vector3.up, 2f);
+
+                Plugin.Log.LogDebug($"[암살자의 심장] 스턴 적용 완료 - 대상: {target.m_name}, 지속시간: {stunDuration}초");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살자의 심장] 스턴 적용 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 버프 효과 적용
+        /// </summary>
+        private static void ApplyAssassinHeartBuff(Player player)
+        {
+            try
+            {
+                float duration = Knife_Config.KnifeAssassinHeartDurationValue;
+
+                // 기존 버프 제거
+                var hash = "KnifeAssassinHeartBuff".GetStableHashCode();
+                player.GetSEMan()?.RemoveStatusEffect(hash);
+
+                // 새로운 버프 적용 (치명타 피해 배수만 유지)
+                var assassinHeartSE = ScriptableObject.CreateInstance<SE_Stats>();
+                assassinHeartSE.m_name = "암살자의 심장";
+                assassinHeartSE.m_tooltip = $"치명타 데미지 {Knife_Config.KnifeAssassinHeartCritDamageValue}배";
+                assassinHeartSE.m_ttl = duration;
+
+                player.GetSEMan()?.AddStatusEffect(assassinHeartSE);
+
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살자의 심장] 버프 적용 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 연속 공격 코루틴
+        /// 순간이동 후 설정된 횟수만큼 연속 공격 실행
+        /// </summary>
+        private static IEnumerator ExecuteAssassinHeartAttacks(Player player, Character target, Vector3 originalPosition)
+        {
+            var weapon = player?.GetCurrentWeapon();
+            if (weapon == null)
+            {
+                Plugin.Log.LogWarning("[암살자의 심장] 무기가 없어 연속 공격 취소");
+                yield break;
+            }
+
+            int attackCount = Knife_Config.KnifeAssassinHeartAttackCountValue;
+            float attackInterval = Knife_Config.KnifeAssassinHeartAttackIntervalValue;
+
+            // 1. VFX + 적 뒤로 대시 이동 (던전 내외 모두 안전)
+            SkillEffect.PlaySkillEffect(player, "knife_step9_assassin_heart", player.transform.position);
+            yield return DashBehindEnemy(player, target);
+
+            Plugin.Log.LogDebug($"[암살자의 심장] 연속 공격 시작 - {attackCount}회, {attackInterval}초 간격");
+
+            // 2. 연속 공격 (yield break 대신 break로 복귀 보장)
+            for (int i = 0; i < attackCount; i++)
+            {
+                if (player == null || player.IsDead()) break;
+                if (target == null || target.IsDead()) break;
+
+                try { player.StartAttack(null, false); } catch { }
+                ExecuteAssassinStrike(player, target, weapon, i + 1);
+                yield return new WaitForSeconds(attackInterval);
+            }
+
+            Plugin.Log.LogDebug($"[암살자의 심장] 연속 공격 완료 - {attackCount}회");
+
+            // 3. 항상 복귀 (break 이후에도 실행됨)
+            if (player != null && !player.IsDead())
+            {
+                yield return MoveToTarget(player, originalPosition, 0.3f);
+                Plugin.Log.LogDebug("[암살자의 심장] 원래 위치로 복귀 완료");
+            }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 개별 타격 실행
+        /// </summary>
+        private static void ExecuteAssassinStrike(Player player, Character target, ItemDrop.ItemData weapon, int strikeNumber)
+        {
+            try
+            {
+                var weaponDamage = weapon.GetDamage();
+
+                HitData hit = new HitData();
+                hit.m_damage.m_slash = weaponDamage.m_slash;
+                hit.m_damage.m_pierce = weaponDamage.m_pierce;
+                hit.m_point = target.GetCenterPoint();
+                hit.m_dir = (target.transform.position - player.transform.position).normalized;
+                hit.m_attacker = player.GetZDOID();
+                hit.SetAttacker(player);
+                hit.m_skill = Skills.SkillType.Knives;
+
+                target.Damage(hit);
+
+                // 타격 VFX
+                SimpleVFX.Play("hit_01", target.GetCenterPoint(), 1f);
+
+                // 3번째 타격에 추가 텍스트 표시
+                if (strikeNumber == Knife_Config.KnifeAssassinHeartAttackCountValue)
+                {
+                    SkillEffect.ShowSkillEffectText(player,
+                        $"💀 연속 공격 완료! ({strikeNumber}회)",
+                        new Color(1f, 0.3f, 0.3f), SkillEffect.SkillEffectTextType.Combat);
+                }
+
+                Plugin.Log.LogDebug($"[암살자의 심장] {strikeNumber}번째 타격 - " +
+                                   $"slash:{hit.m_damage.m_slash:F1}, pierce:{hit.m_damage.m_pierce:F1}");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살자의 심장] {strikeNumber}번째 타격 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 암살자의 심장 활성 상태에서 추가 효과 적용
+        /// </summary>
+        public static void ApplyAssassinHeartEffects(Player player, ref HitData hit, bool isCritical)
+        {
+            if (!SkillEffect.HasSkill("knife_step9_assassin_heart") || !IsUsingDagger(player)) return;
+
+            try
+            {
+                // 암살자의 심장 버프 활성 상태 확인
+                var hash = "KnifeAssassinHeartBuff".GetStableHashCode();
+                if (player.GetSEMan()?.HaveStatusEffect(hash) == true)
+                {
+                    if (isCritical)
+                    {
+                        // 치명타 데미지 배수 적용 (slash만)
+                        float critDamageMultiplier = Knife_Config.KnifeAssassinHeartCritDamageValue;
+                        hit.m_damage.m_slash *= critDamageMultiplier;
+
+                        SkillEffect.ShowSkillEffectText(player,
+                            $"💀 암살자의 심장! (치명타 {critDamageMultiplier}배)",
+                            new Color(1f, 0.2f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
+
+                        // 추가 VFX/SFX
+                        SkillEffect.PlaySkillEffect(player, "knife_step9_assassin_heart", hit.m_point);
+
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[암살자의 심장] 활성 효과 적용 실패: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region 유틸리티
+
+        /// <summary>
+        /// 단검 스킬 전체 초기화
+        /// </summary>
+        public static void InitializeKnifeSkills()
+        {
+            try
+            {
+                // 단검 스킬 시스템 초기화
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[단검 스킬] 초기화 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 단검 스킬 상태 정리
+        /// </summary>
+        public static void CleanupKnifeSkills(Player player)
+        {
+            try
+            {
+                if (player == null) return;
+                
+                // 단검 관련 버프 모두 제거
+                var seMan = player.GetSEMan();
+                if (seMan != null)
+                {
+                    seMan.RemoveStatusEffect("KnifeMoveSpeedBoost".GetStableHashCode());
+                    seMan.RemoveStatusEffect("KnifeAttackSpeedBoost".GetStableHashCode());
+                    seMan.RemoveStatusEffect("KnifeCritRateBoost".GetStableHashCode());
+                    seMan.RemoveStatusEffect("KnifeAssassinHeartBuff".GetStableHashCode());
+                }
+                
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[단검 스킬] 상태 정리 실패: {ex.Message}");
+            }
+        }
+
+        #endregion
+    }
+}

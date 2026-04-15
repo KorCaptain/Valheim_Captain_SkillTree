@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "suggestions": [
+    {
+      "id": "btw-001",
+      "timestamp": "2026-04-15T00:00:00Z",
+      "suggestion": "이 스킬들 효과는 나맘 보이는거야 다른 사람은 안보이고?",
+      "context": {
+        "file": "SkillEffect.PolearmWhirlwind.cs, SkillEffect.ArrowRain.cs, MaceSkills.FuryHammer.cs, Mace_Active.cs, SkillEffect.ExplosiveArrow.cs",
+        "pdcaPhase": "do",
+        "feature": "SkillTree"
+      },
+      "category": "general",
+      "status": "pending",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      }
+    }
+  ],
+  "stats": {
+    "total": 1,
+    "promoted": 0,
+    "dismissed": 0,
+    "lastAnalyzed": null
+  }
+}

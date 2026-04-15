@@ -1,0 +1,248 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>CaptainSkillTree</AssemblyName>
+    <RootNamespace>CaptainSkillTree</RootNamespace>
+    <OutputType>Library</OutputType>
+    <Platforms>x64</Platforms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>disable</Nullable>
+    <NoWarn>CS8618;CS8625;CS8603;CS8600;CS8602;CS0618;CS8632;MSB3539</NoWarn>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <IntermediateOutputPath>obj\</IntermediateOutputPath>
+    <OutputPath>bin\</OutputPath>
+    <UseSharedCompilation>false</UseSharedCompilation>
+    <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
+    <!-- 🔧 버전 관리 시스템 -->
+    <Version>1.2.229</Version>
+    <AutoIncrementVersion>true</AutoIncrementVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- BepInEx 참조 -->
+    <Reference Include="assembly_utils">
+      <HintPath>Lib\assembly_utils_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="assembly_valheim">
+      <HintPath>Lib\assembly_valheim_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>Lib\BepInEx.dll</HintPath>
+    </Reference>
+    <!-- Harmony 참조 (하나만 유지) -->
+    <Reference Include="0Harmony">
+      <HintPath>Lib\0Harmony.dll</HintPath>
+    </Reference>
+    <!-- EpicMMOSystem.dll 참조 제거 - 리플렉션으로 선택적 연동 -->
+    <!--
+    <Reference Include="EpicMMOSystem">
+      <HintPath>Lib\EpicMMOSystem.dll</HintPath>
+    </Reference>
+    -->
+    <!-- AnimationSpeedManager.dll 참조 (배포 시 포함) -->
+    <Reference Include="AnimationSpeedManager">
+      <HintPath>Lib\AnimationSpeedManager.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <!-- Jotunn 참조 -->
+    <Reference Include="Jotunn">
+      <HintPath>Lib\Jotunn.dll</HintPath>
+    </Reference>
+    <!-- UnityEngine 메인 엔진 DLL 참조 -->
+    <Reference Include="UnityEngine">
+      <HintPath>Lib\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>Lib\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>Lib\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <!-- UnityEngine.UIModule (CanvasRenderer 등 UI 핵심) -->
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>Lib\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>Lib\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Lib\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>Lib\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>Lib\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>Lib\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>Lib\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>Lib\UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>Lib\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>Lib\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>Lib\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>Lib\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <!-- UnityWebRequest for BGM audio loading -->
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>Lib\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>Lib\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <!-- ParticleSystem 모듈 추가 - VFX 효과 구현에 필수 -->
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>Lib\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="**\*.md" />
+    <!-- resx 자동 포함 억제 (파일 없음) -->
+    <EmbeddedResource Remove="**\*.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- 레거시 파일들 빌드에서 제외 -->
+    <Compile Remove="SkillTree\SpearComboActiveSkill.cs" />
+    <Compile Remove="SkillTree\SpearThrowActiveSkill.cs" />
+    <!-- Skill_data 폴더에서 구 버전 API 파일들 제외 -->
+    <Compile Remove="SkillTree\Skill_data\**\*.cs" />
+    <!-- FarmGrid: CaptainSkillTree에 통합 -->
+  </ItemGroup>
+  <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <!-- Newtonsoft.Json 제거 - BepInEx 환경에서 의존성 문제 발생 -->
+  <!--
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  -->
+  <ItemGroup>
+    <!-- EpicMMO HUD 에셋 번들 (EpicHudPanelCanvas 프리팹 포함) -->
+    <EmbeddedResource Include="asset/epicasset">
+      <LogicalName>CaptainSkillTree.asset.Resources.epicasset</LogicalName>
+    </EmbeddedResource>
+    <!-- 아이콘 및 UI 에셋 (Resources 폴더 유지) -->
+    <EmbeddedResource Include="asset/Resources/captainskilltreeui" />
+    <EmbeddedResource Include="asset/Resources/skill_start" />
+    <EmbeddedResource Include="asset/Resources/skill_node" />
+    <EmbeddedResource Include="asset/Resources/job_icon" />
+    <!-- BGM 음원 파일 (Resources 폴더 유지) -->
+    <EmbeddedResource Include="asset/Resources/Skill_Tree_BGM.ogg" />
+    <!-- 제작 마법부여 데이터 JSON -->
+    <EmbeddedResource Include="asset/Producer_Enchant.json" />
+    <!-- 난이도 프리셋 cfg (첫 실행 시 config\CaptainSkillTree\ 에 자동 추출) -->
+    <EmbeddedResource Include="asset/Vanilra_Config_CaptainSkillTree.SkillTreeMod.cfg">
+      <LogicalName>CaptainSkillTree.asset.Vanilra_Config_CaptainSkillTree.SkillTreeMod.cfg</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="asset/Veryhard_CaptainSkillTree.SkillTreeMod.cfg">
+      <LogicalName>CaptainSkillTree.asset.Veryhard_CaptainSkillTree.SkillTreeMod.cfg</LogicalName>
+    </EmbeddedResource>
+    <!-- 독일어 번역 JSON -->
+    <EmbeddedResource Include="Localization/de.json" />
+    <!-- 러시아어 번역 JSON -->
+    <EmbeddedResource Include="Localization/ru.json" />
+    <!-- 포르투갈어(브라질) 번역 JSON -->
+    <EmbeddedResource Include="Localization/pt_BR.json" />
+    <!-- 중국어(간체) 번역 JSON -->
+    <EmbeddedResource Include="Localization/zh-cn.json" />
+    <!-- 일본어 번역 JSON -->
+    <EmbeddedResource Include="Localization/ja.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- VFX 효과 에셋들 (VFX 폴더의 모든 프리팹을 EmbeddedResource로 포함) -->
+    <!-- 영역 효과 -->
+    <EmbeddedResource Include="asset/VFX/area_circles_blue" />
+    <EmbeddedResource Include="asset/VFX/area_fire_red" />
+    <EmbeddedResource Include="asset/VFX/area_heal_green" />
+    <EmbeddedResource Include="asset/VFX/area_magic_multicolor" />
+    <EmbeddedResource Include="asset/VFX/area_star_ellow" />
+    <!-- 버프/디버프 효과 -->
+    <EmbeddedResource Include="asset/VFX/buff_01" />
+    <EmbeddedResource Include="asset/VFX/buff_02a" />
+    <EmbeddedResource Include="asset/VFX/buff_03a" />
+    <EmbeddedResource Include="asset/VFX/buff_03a_aura" />
+    <EmbeddedResource Include="asset/VFX/debuff" />
+    <EmbeddedResource Include="asset/VFX/debuff_03" />
+    <EmbeddedResource Include="asset/VFX/debuff_03_aura" />
+    <EmbeddedResource Include="asset/VFX/statusailment_01" />
+    <EmbeddedResource Include="asset/VFX/statusailment_01_aura" />
+    <!-- 색종이 효과 -->
+    <EmbeddedResource Include="asset/VFX/confetti_blast_multicolor" />
+    <EmbeddedResource Include="asset/VFX/confetti_directional_multicolor" />
+    <!-- 먼지/연기 효과 -->
+    <EmbeddedResource Include="asset/VFX/dust_permanently_blue" />
+    <!-- 플래시 효과 -->
+    <EmbeddedResource Include="asset/VFX/flash_blue_purple" />
+    <EmbeddedResource Include="asset/VFX/flash_ellow" />
+    <EmbeddedResource Include="asset/VFX/flash_ellow_pink" />
+    <EmbeddedResource Include="asset/VFX/flash_magic_blue_pink" />
+    <EmbeddedResource Include="asset/VFX/flash_magic_ellow_blue" />
+    <EmbeddedResource Include="asset/VFX/flash_round_ellow" />
+    <EmbeddedResource Include="asset/VFX/flash_star_ellow_green" />
+    <EmbeddedResource Include="asset/VFX/flash_star_ellow_purple" />
+    <!-- 방어/치료 효과 -->
+    <EmbeddedResource Include="asset/VFX/guard_01" />
+    <EmbeddedResource Include="asset/VFX/healing" />
+    <!-- 타격 효과 -->
+    <EmbeddedResource Include="asset/VFX/hit_01" />
+    <EmbeddedResource Include="asset/VFX/hit_02" />
+    <EmbeddedResource Include="asset/VFX/hit_03" />
+    <EmbeddedResource Include="asset/VFX/hit_04" />
+    <EmbeddedResource Include="asset/VFX/plexus" />
+    <!-- 샤인 효과 -->
+    <EmbeddedResource Include="asset/VFX/shine_blue" />
+    <EmbeddedResource Include="asset/VFX/shine_ellow" />
+    <EmbeddedResource Include="asset/VFX/shine_pink" />
+    <!-- 스파클 효과 -->
+    <EmbeddedResource Include="asset/VFX/sparkle_ellow" />
+    <!-- 특수 효과 -->
+    <EmbeddedResource Include="asset/VFX/taunt" />
+    <!-- 워터 블라스트 효과 -->
+    <EmbeddedResource Include="asset/VFX/water_blast_blue" />
+    <EmbeddedResource Include="asset/VFX/water_blast_green" />
+  </ItemGroup>
+  <!--
+    * 각 참조별로 지정된 경로만 사용
+    * EpicMMOSystem.dll, Jotunn.dll 등은 최신 버전으로 직접 복사 필요
+  -->
+  <!-- 🔧 자동 버전 증가 타겟 -->
+  <Target Name="IncrementVersion" AfterTargets="Build" Condition="'$(AutoIncrementVersion)' == 'true'">
+    <Message Text="🔧 버전 자동 증가 시스템 실행..." Importance="high" />
+    <Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)build/IncrementVersion.ps1&quot; -ProjectFile &quot;$(MSBuildProjectFullPath)&quot; -ProjectDir &quot;$(ProjectDir)&quot;" ConsoleToMSBuild="true" IgnoreStandardErrorWarningFormat="true" />
+  </Target>
+  <!-- 🚀 빌드 후 자동 배포 (r2modmanPlus 플러그인 폴더로 복사, Windows 환경에서만 실행) -->
+  <Target Name="DeployToR2ModMan" AfterTargets="Build" Condition="'$(APPDATA)' != '' And Exists('$(APPDATA)\r2modmanPlus-local')">
+    <PropertyGroup>
+      <R2ModManPluginsPath>$(APPDATA)\r2modmanPlus-local\Valheim\profiles\Cusor_1\BepInEx\plugins\Captain_Skilltree\</R2ModManPluginsPath>
+    </PropertyGroup>
+    <Message Text="🚀 DLL 배포 중: $(OutputPath)$(AssemblyName).dll → $(R2ModManPluginsPath)" Importance="high" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(R2ModManPluginsPath)" SkipUnchangedFiles="false" />
+    <Message Text="✅ 배포 완료!" Importance="high" />
+  </Target>
+</Project>
