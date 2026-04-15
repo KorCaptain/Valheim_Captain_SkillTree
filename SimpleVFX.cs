@@ -212,7 +212,7 @@ namespace CaptainSkillTree
 
                 if (resourceName == null)
                 {
-                    Plugin.Log?.LogWarning("[SimpleVFX] 'debuff' ??잙갭큔?딆뼇???????ㅼ굡??);
+                    Plugin.Log?.LogWarning("[SimpleVFX] 'debuff' ??잙갭큔?딆뼇???????ㅼ굡??");
                     return;
                 }
 
@@ -428,8 +428,6 @@ namespace CaptainSkillTree
             {
                 Plugin.Log?.LogError($"[SimpleVFX] Play({vfxName}) failed: {ex.Message}");
                 return null;
-            }
-        }
             }
         }
 
@@ -945,7 +943,6 @@ namespace CaptainSkillTree
 
     private void Apply()
     {
-        Plugin.Log?.LogInfo($"[VFXDimmer] Apply START: {name}, factor={factor}");
 
         // 1. Material (multi-material ???? ????썹땟??????
         var colorProps = new[] { "_TintColor", "_Color", "_BaseColor" };
@@ -978,7 +975,6 @@ namespace CaptainSkillTree
 
         // 3. ParticleSystem
         var allPS = GetComponentsInChildren<ParticleSystem>(true);
-        Plugin.Log?.LogInfo($"[VFXDimmer] PS count={allPS.Length}");
         if (allPS.Length == 0) return;
 
         // 3a. ??醫딆┻???Stop
@@ -995,9 +991,6 @@ namespace CaptainSkillTree
             sc.r *= factor; sc.g *= factor; sc.b *= factor; sc.a *= factor;
             main.startColor = new ParticleSystem.MinMaxGradient(sc);
 
-            // ????ㅻ쿋??????????ㅻ쿋繹??(?癲ル슢캉??먯젂??????????⑤슢堉???
-            main.startSizeMultiplier *= factor;
-
             // colorOverLifetime ??gradient key colors ??醫딆┫???(startColor?????????살퓢???꿔꺂??袁ㅻ븶???????
             var col = ps.colorOverLifetime;
             if (col.enabled)
@@ -1012,7 +1005,7 @@ namespace CaptainSkillTree
                     {
                         var k = keys[i];
                         k.color = new Color(k.color.r * factor, k.color.g * factor,
-                                            k.color.b * factor, k.color.a);
+                                            k.color.b * factor, k.color.a); // 의도적: 파티클 페이드아웃 alpha 보존
                         keys[i] = k;
                     }
                     g.colorKeys = keys;
@@ -1028,8 +1021,6 @@ namespace CaptainSkillTree
         // 3b. ??醫딆┻???Play
         foreach (var ps in allPS)
             if (ps != null) ps.Play(false);
-
-        Plugin.Log?.LogInfo($"[VFXDimmer] Apply DONE: {name}");
     }
     } // class VFXDimmerBehaviour
 } // namespace CaptainSkillTree

@@ -1,5 +1,14 @@
 # Changelog / 변경 로그
 ## Update
+# [1.2.3] - 2026-04-15
+- ✅fix1 : VFX dim effect no longer shrinks particle size — only color/alpha is adjusted now (removed startSizeMultiplier scaling)
+- ✅fix2 : Removed debug log spam in VFXDimmerBehaviour that caused performance drops during combat
+- ✅fix3 : Fixed compile errors in SimpleVFX.cs (orphaned braces + unclosed string literal)
+-
+- ✅fix1 : VFX 투명도 적용 시 파티클 크기가 같이 줄어들던 버그 수정 — 이제 색상/알파만 조절됨
+- ✅fix2 : 전투 중 VFXDimmerBehaviour 디버그 로그 스팸으로 인한 성능 저하 제거
+- ✅fix3 : SimpleVFX.cs 컴파일 오류 수정 (잉여 중괄호 + 문자열 리터럴 누락)
+
 # [1.2.29] - 2026-04-13
 - ✅fix1: Berserker - Modifying Invincible Passive
 - ✅new1: New skill of dagger expert: stack explosion
