@@ -489,6 +489,9 @@ namespace CaptainSkillTree.SkillTree
 
                 healedCount++;
 
+                // 힐 받는 대상에게도 VFX 효과 적용
+                PlayPaladinActivationEffect(targetPlayer);
+
                 // 기존 힐링 코루틴이 있으면 정지
                 if (activeHealCoroutines.ContainsKey(targetPlayer))
                 {
@@ -543,8 +546,8 @@ namespace CaptainSkillTree.SkillTree
                 allyAuraHead  = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(0f, 1.8f, 0f));
                 allyAuraRight = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(0.3f, 1.5f, 0f));
 
-                // ZRoutedRpc를 통한 멀티플레이어 사운드
-                SimpleVFX.Play("sfx_dverger_heal_finish", target.transform.position, 2f);
+                // 멀티플레이어 사운드 (발헤임 기본 SFX → VFXManager)
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_dverger_heal_finish", "", target.transform.position, Quaternion.identity, 2f);
 
                 Plugin.Log.LogInfo($"[성기사] {target.GetPlayerName()}에게 힐링 오라 및 사운드 생성 완료");
             }
@@ -576,10 +579,10 @@ namespace CaptainSkillTree.SkillTree
                         ShowMessage(target, message);
                     }
                     
-                    // ZRoutedRpc를 통한 힐링 사운드
+                    // 힐링 사운드 (발헤임 기본 SFX → VFXManager)
                     try
                     {
-                        SimpleVFX.Play("sfx_dverger_heal_finish", target.transform.position, 1f);
+                        CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_dverger_heal_finish", "", target.transform.position, Quaternion.identity, 1f);
                     }
                     catch (Exception soundEx)
                     {
@@ -622,43 +625,40 @@ namespace CaptainSkillTree.SkillTree
 
 
         /// <summary>
-        /// 성기사 스킬 활성화 시 힐링 효과 1회 표시 (캐릭터 발밑)
-        /// Valheim 내장 VFX 사용 (buff_03a 대체)
+        /// 성기사 스킬 활성화 시 힐링 효과 1회 표시 (시전자 위치 고정 재생)
+        /// 발헤임 기본 VFX → VFXManager.PlayVFXMultiplayer 사용 (PlaryOnPlayer 부착 금지 - ZNetView 충돌)
         /// </summary>
         private static void PlayPaladinActivationEffect(Player player)
         {
             try
             {
-                // vfx_Potion_health_medium: 캐릭터를 따라다니며 2초 표시
-                SimpleVFX.PlayOnPlayer(player, "vfx_Potion_health_medium", 2f);
-                SimpleVFX.Play("sfx_Potion_health_large", player.transform.position, 2f);
+                // vfx_Potion_health_medium: duration=0 → 파티클 자체 완료 시 자동 소멸
+                SimpleVFX.PlayOnPlayer(player, "vfx_Potion_health_medium", 0f, new Vector3(0f, 0.5f, 0f));
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer(
+                    "", "sfx_Potion_health_large", player.transform.position, Quaternion.identity, 2f);
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[성기사] 힐링 활성화 효과 생성 실패: {ex.Message}");
             }
         }
-        
+
         /// <summary>
-        /// 성기사 도트 힐 받는 캐릭터에게 힐링 오라 효과 생성 (도트 힐 동안 지속)
-        /// 커스텀 VFX buff_03a 사용 (캐릭터 발밑)
+        /// 힐 받는 캐릭터에게 buff_03a_aura 3개 적용 (왼쪽 어깨 / 머리 / 오른쪽 어깨)
+        /// 시전자: duration 만료 시 자동 Destroy
+        /// 아군: ContinuousHealCoroutine 종료 시 명시적 Destroy (별도 관리)
         /// </summary>
-        private static GameObject CreatePaladinAuraEffect(Player target, float duration)
+        private static void CreatePaladinAuraEffect(Player target, float duration)
         {
             try
             {
-                // vfx_Potion_health_medium: 캐릭터를 따라다니며 지속 표시
-                SimpleVFX.PlayOnPlayer(target, "vfx_Potion_health_medium", duration);
-
-                // buff_03a: 캐릭터 발밑 (더 아래로)
-                SimpleVFX.PlayOnPlayer(target, "buff_03a", duration, new Vector3(0f, -0.3f, 0f));
-
-                return null;
+                SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", duration, new Vector3(-0.3f, 1.5f, 0f));
+                SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", duration, new Vector3(0f,    1.8f, 0f));
+                SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", duration, new Vector3(0.3f,  1.5f, 0f));
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[성기사] 힐링 오라 효과 생성 실패: {ex.Message}");
-                return null;
             }
         }
         

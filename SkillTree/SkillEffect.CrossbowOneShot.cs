@@ -171,7 +171,6 @@ namespace CaptainSkillTree.SkillTree
                     buff01Effect.transform.SetParent(player.transform, false);
                     buff01Effect.transform.localPosition = Vector3.up * 0.5f;
                     buff01Effect.transform.localScale = Vector3.one * 0.8f;
-                    SimpleVFX.ApplyVFXDim(buff01Effect, SkillTreeConfig.VFXOpacityValue);
                     player.StartCoroutine(DestroyEffectAfterDelay(buff01Effect, 2f, "buff_01"));
                 }
 
@@ -330,7 +329,7 @@ namespace CaptainSkillTree.SkillTree
                     // VFX 재생
                     try
                     {
-                        SimpleVFX.Play("fx_siegebomb_explosion", target.transform.position, 3f);
+                        CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_siegebomb_explosion", "", target.transform.position, Quaternion.identity, 3f);
                     }
                     catch { }
 

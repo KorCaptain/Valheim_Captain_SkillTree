@@ -382,7 +382,7 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                SimpleVFX.Play("sfx_oozebomb_explode", player.transform.position, 0.5f);
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_oozebomb_explode", "", player.transform.position, Quaternion.identity, 0.5f);
             }
             catch (System.Exception)
             {

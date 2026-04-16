@@ -23,7 +23,6 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>메이지 스킬 등록</summary>
         public static void RegisterMageSkills()
         {
-            Plugin.Log.LogInfo("[메이지 스킬] 패시브 및 액티브 스킬 등록 완료");
         }
 
         // 메이지 상태 캐시 (직업 변경 후 갱신 필요)
@@ -46,7 +45,6 @@ namespace CaptainSkillTree.SkillTree
                     bool isMageResult = manager != null && manager.GetSkillLevel("Mage") > 0;
                     mageStatusCache[playerId] = isMageResult;
                     lastCacheUpdate = currentTime;
-                    Plugin.Log.LogDebug($"[메이지 스킬] 메이지 상태 캐시 갱신: {player.GetPlayerName()} = {isMageResult}");
                 }
                 return mageStatusCache[playerId];
             }
@@ -67,7 +65,6 @@ namespace CaptainSkillTree.SkillTree
                 else
                     mageStatusCache.Clear();
                 lastCacheUpdate = 0f;
-                Plugin.Log.LogInfo("[메이지 스킬] 메이지 상태 캐시 강제 갱신 완료");
             }
             catch (System.Exception ex)
             {
@@ -125,7 +122,6 @@ namespace CaptainSkillTree.SkillTree
                     lastActivationTime[playerKey] = currentTime;
                     player.AddEitr(-eitrCost2);
                     ActiveSkillCooldownRegistry.SetCooldown("Y", Mage_Config.GetCooldown(mageLevel));
-                    Plugin.Log.LogInfo($"[불의 비] {player.GetPlayerName()} 연속 발사 충전 사용");
                     return true;
                 }
 
@@ -167,7 +163,6 @@ namespace CaptainSkillTree.SkillTree
                 ActiveSkillCooldownRegistry.SetCooldown("Y", Mage_Config.GetCooldown(mageLevel));
                 player.AddEitr(-eitrCost);
 
-                Plugin.Log.LogInfo($"[불의 비] {player.GetPlayerName()} 스킬 사용 (Lv{mageLevel})");
                 return true;
             }
             catch (System.Exception ex)
@@ -263,14 +258,13 @@ namespace CaptainSkillTree.SkillTree
                 player.StartEmote("cheer", false);
 
                 // 발밑 debuff_03 VFX (2배 크기, 2초)
-                var debuff03 = VFXManager.GetVFXPrefab("debuff_03");
-                if (debuff03 != null)
                 {
-                    var vfxGo = UnityEngine.Object.Instantiate(
-                        debuff03, player.transform.position, Quaternion.identity);
-                    vfxGo.transform.localScale = Vector3.one * 2f;
-                    SimpleVFX.ApplyVFXDim(vfxGo, SkillTreeConfig.VFXOpacityValue);
-                    UnityEngine.Object.Destroy(vfxGo, 2f);
+                    var vfxGo = SimpleVFX.Play("debuff_03", player.transform.position, 2f);
+                    if (vfxGo != null)
+                    {
+                        vfxGo.transform.localScale = Vector3.one * 2f;
+                        SimpleVFX.ApplyVFXDim(vfxGo, SkillTreeConfig.VFXOpacityValue);
+                    }
                 }
 
                 // 타겟 VFX + SFX 코루틴
@@ -467,7 +461,6 @@ namespace CaptainSkillTree.SkillTree
             pendingExplosions.Clear();
             extraChargeExpiry.Clear();
             mageStatusCache.Clear();
-            Plugin.Log.LogInfo("[메이지 스킬] 모든 상태 정리 완료 (캐시 포함)");
         }
     }
 
@@ -539,7 +532,6 @@ namespace CaptainSkillTree.SkillTree
 
                     if (damageReduced > 0.1f)
                     {
-                        Plugin.Log.LogInfo($"[메이지 속성 저항] {player.GetPlayerName()} 속성 데미지 감소 - 원래: {originalElementalDamage:F1} → 감소후: {reducedElementalDamage:F1} (감소량: {damageReduced:F1})");
                         player.Message(MessageHud.MessageType.TopLeft, L.Get("mage_elemental_resist", damageReduced.ToString("F0")));
                     }
                 }

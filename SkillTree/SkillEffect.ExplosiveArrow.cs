@@ -172,7 +172,6 @@ namespace CaptainSkillTree.SkillTree
                     buff01Effect.transform.SetParent(player.transform, false);
                     buff01Effect.transform.localPosition = Vector3.up * 0.5f;
                     buff01Effect.transform.localScale = Vector3.one * 0.8f;
-                    SimpleVFX.ApplyVFXDim(buff01Effect, SkillTreeConfig.VFXOpacityValue);
 
                     // 2초 후 제거
                     UnityEngine.Object.Destroy(buff01Effect, 2f);
@@ -474,7 +473,6 @@ namespace CaptainSkillTree.SkillTree
                     if (_blobPrefab != null)
                     {
                         var _blobGo = UnityEngine.Object.Instantiate(_blobPrefab, position, Quaternion.identity);
-                        SimpleVFX.ApplyVFXDim(_blobGo, SkillTreeConfig.VFXOpacityValue);
                     }
                 }
 
@@ -484,7 +482,6 @@ namespace CaptainSkillTree.SkillTree
                     if (_siegePrefab != null)
                     {
                         var _siegeGo = UnityEngine.Object.Instantiate(_siegePrefab, position + Vector3.up * 0.5f, Quaternion.identity);
-                        SimpleVFX.ApplyVFXDim(_siegeGo, SkillTreeConfig.VFXOpacityValue);
                     }
                 }
 

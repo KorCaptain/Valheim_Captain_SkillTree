@@ -106,6 +106,44 @@ namespace CaptainSkillTree.VFX
         }
 
         /// <summary>
+        /// 발헤임 기본 VFX를 플레이어에 부착하여 따라다니게 재생
+        /// ZNetView(자식 포함) 전체 제거 → 무한 로딩 방지
+        /// </summary>
+        public static GameObject PlayVFXFollowPlayer(Player player, string vfxName,
+            string soundName, float duration, Vector3 offset = default)
+        {
+            if (!VFX_ENABLED || player == null) return null;
+
+            try
+            {
+                var prefab = ZNetScene.instance?.GetPrefab(vfxName);
+                if (prefab == null) return null;
+
+                var vfxObj = UnityEngine.Object.Instantiate(prefab, player.transform);
+                if (vfxObj != null)
+                {
+                    vfxObj.transform.localPosition = offset == default ? new Vector3(0f, 0.5f, 0f) : offset;
+
+                    // ZNetView 전체 제거 (자식 포함) → 무한 로딩 방지
+                    foreach (var nv in vfxObj.GetComponentsInChildren<ZNetView>())
+                        UnityEngine.Object.DestroyImmediate(nv);
+
+                    UnityEngine.Object.Destroy(vfxObj, duration);
+                }
+
+                if (!string.IsNullOrEmpty(soundName))
+                    SimpleVFX.Play(soundName, player.transform.position, duration);
+
+                return vfxObj;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log?.LogError($"[VFXManager] PlayVFXFollowPlayer({vfxName}) 실패: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
         /// VFX 단순 재생
         /// </summary>
         public static void PlayVFX(string prefabName, Vector3 position,

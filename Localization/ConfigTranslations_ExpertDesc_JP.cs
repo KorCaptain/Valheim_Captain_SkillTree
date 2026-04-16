@@ -23,7 +23,7 @@ namespace CaptainSkillTree.Localization
                 "【ゲーム難易度】\n" +
                 "スキルツリーMOD全体のバランスプリセットを選択します。\n" +
                 "  Vanilla      = バニラに近い穏やかな数値（デフォルト）\n" +
-                "  HardMode     = CLLC超難 + モンスターHP×2（強化数値）\n" +
+                "  VeryHard     = CLLC超難 + モンスターHP×2（強化数値）\n" +
                 "  UserSettings = 以前保存したユーザー設定を復元\n" +
                 "⚠️ 変更するとすぐに選択したプリセットが適用されます（全スキル数値が置き換えられます）。",
 

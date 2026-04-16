@@ -551,6 +551,7 @@
   "ui_music_off": "BGMオフ",
   "ui_escape": "脱出",
   "ui_escape_cooldown": "{0}分後に使用可",
+  "ui_escape_confirm": "緊急キャラクター脱出ボタンです。\n開始地点に移動します。\n3時間に1回使用できます。",
   "skill_insufficient_points_detail": "スキルポイントが不足しています。（必要：{0}、使用可能：{1}）",
   "skill_invest_success": "✅ スキルポイントを投入しました！",
   "items_insufficient": "必要アイテムが不足しています",

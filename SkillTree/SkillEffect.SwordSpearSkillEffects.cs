@@ -408,8 +408,8 @@ namespace CaptainSkillTree.SkillTree
             spearPenetrateCooldownEndTime[player] = Time.time + cooldown;
             ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
 
-            // VFX 재생 (플레이어 위치)
-            SimpleVFX.Play("vfx_offering_activate", player.transform.position, 1f);
+            // VFX 재생 (발헤임 기본 → VFXManager)
+            CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_offering_activate", "", player.transform.position, Quaternion.identity, 1f);
 
             Plugin.Log.LogInfo($"[꿰뚫는 창] G키 액티브 스킬 발동 - 쿨타임: {cooldown}초, 스태미나: {staminaCost:F0}");
         }

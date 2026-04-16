@@ -141,7 +141,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float GetFuryHammer1stHitSpeedBonus(Player player)
         {
-            return IsFuryHammer1stHitBuffActive(player) ? 200f : 0f;
+            return IsFuryHammer1stHitBuffActive(player) ? 100f : 0f;
         }
 
         /// <summary>
@@ -171,6 +171,31 @@ namespace CaptainSkillTree.SkillTree
             Vector3 dashDir = player.GetLookDir();
             dashDir.y = 0f;
             dashDir.Normalize();
+
+            // === 시전 즉시: 카메라 방향 전환 + 공격 모션 트리거 ===
+            Quaternion lookRot = Quaternion.LookRotation(dashDir, Vector3.up);
+            player.transform.rotation = lookRot;
+
+            var sledgeAttack = GetCachedSledgeIronAttack();
+            var zanim = player.GetComponentInChildren<ZSyncAnimation>();
+            var animator = player.GetComponentInChildren<Animator>();
+
+            // Root Motion 비활성화 (공격 애니메이션이 플레이어를 원위치로 당기는 문제 방지)
+            bool origRootMotion = animator != null && animator.applyRootMotion;
+            if (animator != null) animator.applyRootMotion = false;
+
+            string animTrigger = null;
+            if (sledgeAttack != null && zanim != null && !string.IsNullOrEmpty(sledgeAttack.m_attackAnimation))
+            {
+                animTrigger = (sledgeAttack.m_attackChainLevels > 1 || sledgeAttack.m_attackRandomAnimations >= 2)
+                    ? sledgeAttack.m_attackAnimation + "0"
+                    : sledgeAttack.m_attackAnimation;
+                furyHammer1stHitBuff[player] = true;
+                bool attackStarted = player.StartAttack(null, false);
+                Plugin.Log.LogInfo($"[분노의 망치] StartAttack: {attackStarted}, trigger: '{animTrigger}'");
+                if (!attackStarted)
+                    zanim.SetTrigger(animTrigger); // 폴백: StartAttack 실패 시
+            }
 
             float dashTime   = 0.5f;   // 전체 도약 시간 (초)
             float dashDist   = 10f;    // 수평 이동 거리 (m)
@@ -216,6 +241,29 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 player.transform.position = pos;
+                player.transform.rotation = lookRot; // 매 프레임 방향 유지
+
+                // 하강 구간(t > 0.5): 지면 접촉 또는 적 근접 → 조기 착지
+                if (t > 0.5f)
+                {
+                    LayerMask groundMask = LayerMask.GetMask("terrain", "Default", "static_solid");
+                    if (Physics.Raycast(pos + Vector3.up * 0.5f, Vector3.down, 1.0f, groundMask))
+                    {
+                        endPos = pos;
+                        Plugin.Log.LogDebug("[분노의 망치] 지면 접촉 - 조기 착지");
+                        break;
+                    }
+                    if (Character.GetAllCharacters().Any(c =>
+                        c != (Character)player &&
+                        (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss) &&
+                        Vector3.Distance(c.transform.position, pos) < 3f))
+                    {
+                        endPos = pos;
+                        Plugin.Log.LogDebug("[분노의 망치] 적 근접 감지 - 조기 착지");
+                        break;
+                    }
+                }
+
                 yield return null;
             }
 
@@ -226,35 +274,19 @@ namespace CaptainSkillTree.SkillTree
                 var altField = typeof(Character).GetField("m_maxAirAltitude",
                     System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 altField?.SetValue(player, endPos.y);
-
-                // 착지 후 슬레지해머 2차 공격 모션 트리거 (착지 상태에서 StartAttack 호출)
-                if (weapon.m_shared != null)
-                {
-                    originalPushForce = weapon.m_shared.m_attackForce;
-                    weapon.m_shared.m_attackForce = 0f;
-                }
-                furyHammer1stHitBuff[player] = true;
-                var sledgeAttack = GetCachedSledgeIronSecondaryAttack();
-                Attack originalAttack = null;
-                if (sledgeAttack != null && weapon.m_shared != null)
-                {
-                    originalAttack = weapon.m_shared.m_attack;
-                    weapon.m_shared.m_attack = sledgeAttack;
-                }
-                player.StartAttack(null, false);
-                if (originalAttack != null && weapon.m_shared != null)
-                    weapon.m_shared.m_attack = originalAttack;
-
-                yield return null; // 한 프레임 대기 (애니메이터 상태 처리)
-
                 if (weapon.m_shared != null)
                     weapon.m_shared.m_attackForce = originalPushForce;
-                furyHammer1stHitBuff[player] = false;
                 CaptainSkillTree.AttackSpeedHandler_Game_Awake_Patch.ClearAttackSpeedWarningState(player);
+
+                // Root Motion 복원 + vfx_sledge_hit 착지 시 재생
+                if (animator != null) animator.applyRootMotion = origRootMotion;
+                VFXManager.PlayVFXMultiplayer("vfx_sledge_hit", "", endPos, Quaternion.identity, 1f);
+                SkillTreeInputListener.Instance?.StartCoroutine(ResetFuryHammerSpeed(player, animator, 0.5f));
             }
 
             // 하드코딩 상수 사용 (수정 불가)
             int attackCount = ATTACK_COUNT;               // 5타 고정
+            float attackInterval = ATTACK_INTERVAL;       // 0.5초 고정
 
             // Config에서 값 가져오기 (데미지 배율, AOE 범위만)
             float normalHitMultiplier = Mace_Config.FuryHammerNormalHitMultiplierValue / 100f;
@@ -278,9 +310,13 @@ namespace CaptainSkillTree.SkillTree
                 float damageMultiplier = isLastAttack ? finalHitMultiplier : normalHitMultiplier;
                 float totalDamage = baseWeaponDamage * damageMultiplier;
 
-                // === 1타: 모션은 도약 중 0.35초에 이미 실행됨 → 착지 즉시 데미지 적용 ===
+                // === 1타: 착지 후 애니메이션 임팩트 프레임 대기 → 데미지 적용 ===
                 if (i == 0)
                 {
+                    // 1.5x 속도 기준 스윙→임팩트 구간 대기
+                    yield return new WaitForSeconds(0.2f);
+                    if (player == null || player.IsDead()) yield break;
+
                     // ✅ 매 타격마다 현재 플레이어 위치 기준으로 동적 계산
                     Vector3 hitPosition = player.transform.position + player.GetLookDir() * 2f;
                     var mobs = Character.GetAllCharacters().Where(c =>
@@ -303,6 +339,7 @@ namespace CaptainSkillTree.SkillTree
 
                         mob.Damage(hit);
                         VFXManager.PlayVFXMultiplayer("fx_crit", "", mob.GetCenterPoint(), Quaternion.identity, 1f);
+                        VFXManager.PlayVFXMultiplayer("vfx_sledge_hit", "", mob.GetCenterPoint(), Quaternion.identity, 1f); // 몬스터 적중 VFX
                         // ✅ 1타는 Stagger도 제거 (중력효과 유지)
                         // mob.Stagger(hit.m_dir);
                         hitCount++;
@@ -342,8 +379,8 @@ namespace CaptainSkillTree.SkillTree
                             sfxName = "sfx_sledge_iron_hit";
                             duration = 2f;
                             break;
-                        case 4: // 5타: 최종 폭발 + 철제 둔기 타격음 (VFX는 별도 처리)
-                            vfxName = "";
+                        case 4: // 5타: 최종 폭발 + 철제 둔기 타격음
+                            vfxName = "fx_siegebomb_explosion";
                             sfxName = "sfx_sledge_iron_hit";
                             duration = 3f;
                             break;
@@ -358,18 +395,6 @@ namespace CaptainSkillTree.SkillTree
                     Vector3 hitPosition = player.transform.position + player.GetLookDir() * 2f;
 
                     SimpleVFX.PlayWithSound(vfxName, sfxName, hitPosition, duration);
-
-                    // 5타(i==4): fx_siegebomb_explosion dim 적용
-                    if (i == 4)
-                    {
-                        var _siegePrefab = ZNetScene.instance?.GetPrefab("fx_siegebomb_explosion");
-                        if (_siegePrefab != null)
-                        {
-                            var _siegeGo = UnityEngine.Object.Instantiate(_siegePrefab, hitPosition, Quaternion.identity);
-                            SimpleVFX.ApplyVFXDim(_siegeGo, SkillTreeConfig.VFXOpacityValue);
-                            // ⚠️ Destroy 생략 — 발헤임 기본 VFX 자동 정리
-                        }
-                    }
 
                     // 마지막 공격만 0.5초 대기 후 데미지
                     if (isLastAttack)
@@ -456,6 +481,16 @@ namespace CaptainSkillTree.SkillTree
         }
 
         // [제거됨] ApplyGravityEffectSmoothly - 중력 효과 제거
+
+        /// <summary>
+        /// 공격속도 복구 코루틴 (데미지 루프와 병렬 실행)
+        /// </summary>
+        private static IEnumerator ResetFuryHammerSpeed(Player player, Animator animator, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (player != null) furyHammer1stHitBuff[player] = false;
+            if (animator != null) animator.speed = 1f;
+        }
 
         /// <summary>
         /// Paladin Lv2 추가 사용 창 만료 처리

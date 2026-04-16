@@ -546,6 +546,7 @@
   "ui_music_off": "Musik aus",
   "ui_escape": "Ausgang",
   "ui_escape_cooldown": "{0}m verfügbar",
+  "ui_escape_confirm": "Notfall-Charakter-Flucht.\nSie werden zum Startpunkt teleportiert.\nEinmal alle 3 Stunden nutzbar.",
   "skill_insufficient_points_detail": "Nicht genug Fertigkeitspunkte. (Benötigt: {0}, Verfügbar: {1})",
   "skill_invest_success": "✅ Fertigkeitspunkte investiert!",
   "items_insufficient": "Benötigte Gegenstände nicht vorhanden",

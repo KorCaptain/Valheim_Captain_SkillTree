@@ -136,15 +136,6 @@ namespace CaptainSkillTree
                 // 3. Valheim 내장 VFX 캐시 (몬스터용)
                 CacheValheimPrefabs();
 
-                // VFX 밝기 감소 - _customVFXNames 전체 일괄 (버프성 오라·탱커 taunt 제외)
-                float vfxDim = SkillTreeConfig.VFXOpacityValue;
-                var dimExcluded = new HashSet<string> { "statusailment_01_aura", "taunt" };
-                foreach (var vfxName in _customVFXNames)
-                {
-                    if (!dimExcluded.Contains(vfxName))
-                        RegisterVFXDim(vfxName, vfxDim);
-                }
-
                 _initialized = true;
             }
             catch (Exception ex)
@@ -299,6 +290,51 @@ namespace CaptainSkillTree
             }
         }
 
+        /// <summary>
+        /// Valheim 기본 VFX를 커스텀 VFX로 등록
+        /// ZNetScene에서 클론 → ZNetView 전체 제거 → _customVFXNames + _cachedPrefabs 등록
+        /// 이후 SimpleVFX.PlayOnPlayer에서 커스텀 경로로 처리 → Destroy 안전
+        /// ※ ZNetScene.Awake 이후(Postfix)에서 호출할 것
+        /// </summary>
+        public static void RegisterValheimVFXAsCustom(string vfxName)
+        {
+            if (_customVFXNames.Contains(vfxName)) return;
+            if (ZNetScene.instance == null) return;
+
+            var original = ZNetScene.instance.GetPrefab(vfxName);
+            if (original == null)
+            {
+                Plugin.Log?.LogWarning($"[SimpleVFX] RegisterValheimVFXAsCustom: {vfxName} 프리팹 없음");
+                return;
+            }
+
+            // ★ 핵심: Instantiate 전에 원본을 비활성화
+            //   → clone의 ZNetView.Awake()가 실행되지 않아 ZNetScene에 등록 안 됨
+            //   → 이후 DestroyImmediate해도 ZNetScene 내부 리스트에 null 참조 안 남음
+            bool wasActive = original.activeSelf;
+            original.SetActive(false);
+            var clone = UnityEngine.Object.Instantiate(original);
+            original.SetActive(wasActive); // 즉시 원본 복원
+
+            clone.name = vfxName;
+            UnityEngine.Object.DontDestroyOnLoad(clone);
+
+            // 네트워크 컴포넌트 전체 제거 (자식 포함) — Awake 미실행 상태라 ZNetScene 오염 없음
+            // ZNetView 제거 후 ZSyncTransform 등 의존 컴포넌트도 반드시 제거해야 SetActive(true) 시 NullRef 방지
+            foreach (var nv in clone.GetComponentsInChildren<ZNetView>(true))
+                UnityEngine.Object.DestroyImmediate(nv);
+            foreach (var st in clone.GetComponentsInChildren<ZSyncTransform>(true))
+                UnityEngine.Object.DestroyImmediate(st);
+            foreach (var sa in clone.GetComponentsInChildren<ZSyncAnimation>(true))
+                UnityEngine.Object.DestroyImmediate(sa);
+
+            clone.SetActive(false); // 프리팹 템플릿으로 유지 (비활성)
+
+            _customVFXNames.Add(vfxName);
+            _cachedPrefabs[vfxName] = clone;
+            Plugin.Log?.LogInfo($"[SimpleVFX] {vfxName} 커스텀 VFX로 등록 완료");
+        }
+
         #endregion
 
         #region VFX 재생 (WackyEpicMMO PlayerFVX 방식)
@@ -325,9 +361,6 @@ namespace CaptainSkillTree
                     // 원래 크기 유지 (스케일 조정 안 함)
                     Plugin.Log?.LogInfo($"[SimpleVFX] VFX 생성됨 (캐릭터 부착) - 스케일: {vfxObj.transform.localScale}");
                     UnityEngine.Object.Destroy(vfxObj, duration);
-                    // dim 적용 ("debuff" = PlayerVFX)
-                    if (_vfxDimMapping.TryGetValue("debuff", out float dimFactor))
-                        ApplyVFXDim(vfxObj, dimFactor);
                 }
 
                 return vfxObj;
@@ -490,10 +523,6 @@ namespace CaptainSkillTree
                 {
                     vfxObj.transform.localPosition = localOffset;
                     UnityEngine.Object.Destroy(vfxObj, duration);
-
-                    // 글로벌 dim 매핑 자동 적용
-                    if (_vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
-                        ApplyVFXDim(vfxObj, dimFactor);
                 }
 
                 return vfxObj;
@@ -569,11 +598,6 @@ namespace CaptainSkillTree
                     UnityEngine.Object.Destroy(vfxObj, duration);
                 }
                 // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
-
-                // 글로벌 dim 매핑 자동 적용
-                if (!string.IsNullOrEmpty(vfxName) &&
-                    _vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
-                    ApplyVFXDim(vfxObj, dimFactor);
             }
             return vfxObj;
         }
@@ -624,18 +648,39 @@ namespace CaptainSkillTree
 
                 if (prefab == null) return null;
 
-                // 플레이어 Transform에 부착
-                var vfxObj = UnityEngine.Object.Instantiate(prefab, player.transform);
+                GameObject vfxObj;
+                Vector3 offsetVal = localOffset ?? new Vector3(0f, 1f, 0f);
+
+                if (isCustom)
+                {
+                    // 커스텀 VFX: 플레이어 자식으로 부착 (ZNetView 없으므로 안전)
+                    vfxObj = UnityEngine.Object.Instantiate(prefab, player.transform);
+                    if (vfxObj == null) return null;
+                    vfxObj.SetActive(true); // 비활성 템플릿(RegisterValheimVFXAsCustom)에서 복제된 경우 활성화
+                    vfxObj.transform.localPosition = offsetVal;
+                    if (duration > 0f)
+                        UnityEngine.Object.Destroy(vfxObj, duration);
+                    else
+                        SetParticleAutoDestroy(vfxObj);
+                }
+                else
+                {
+                    // 발헤임 기본 VFX: 자식 부착 금지 (ZNetView 등 네트워크 컴포넌트 충돌 → 무한 로딩)
+                    // → 고정 위치에 생성 후 VFXFollowBehaviour로 플레이어 위치 추적
+                    var worldPos = player.transform.position + offsetVal;
+                    vfxObj = UnityEngine.Object.Instantiate(prefab, worldPos, Quaternion.identity);
+                    if (vfxObj == null) return null;
+                    var follow = vfxObj.AddComponent<VFXFollowBehaviour>();
+                    follow.Target = player.transform;
+                    follow.Offset = offsetVal;
+                    if (duration > 0f)
+                        UnityEngine.Object.Destroy(vfxObj, duration);
+                    else
+                        SetParticleAutoDestroy(vfxObj);
+                }
+
                 if (vfxObj != null)
                 {
-                    vfxObj.transform.localPosition = localOffset ?? new Vector3(0f, 1f, 0f);
-
-                    // 커스텀 VFX만 Destroy 호출
-                    if (isCustom)
-                    {
-                        UnityEngine.Object.Destroy(vfxObj, duration);
-                    }
-                    // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
 
                     // 로컬 직접 생성 기록 → RPC 중복 생성 방지
                     if (!_isReceivingRPC && isCustom)
@@ -643,10 +688,6 @@ namespace CaptainSkillTree
                         string dedupKey = $"{vfxName}_{player.GetPlayerID()}";
                         _recentLocalCreations[dedupKey] = Time.time;
                     }
-
-                    // 글로벌 dim 매핑 자동 적용
-                    if (_vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
-                        ApplyVFXDim(vfxObj, dimFactor);
 
                     return vfxObj;
                 }
@@ -661,16 +702,32 @@ namespace CaptainSkillTree
         }
 
         /// <summary>
+        /// duration <= 0 일 때 파티클 시스템 stopAction = Destroy 설정 → 자동 소멸
+        /// </summary>
+        private static void SetParticleAutoDestroy(GameObject vfxObj)
+        {
+            foreach (var ps in vfxObj.GetComponentsInChildren<ParticleSystem>(true))
+            {
+                var main = ps.main;
+                main.stopAction = ParticleSystemStopAction.Destroy;
+            }
+        }
+
+        /// <summary>
         /// 캐시 또는 Resources에서 프리팹 찾기
         /// </summary>
         private static GameObject GetOrFindPrefab(string vfxName)
         {
-            // null 캐시 포함하여 확인 (반복 탐색 방지)
             if (_cachedPrefabs.TryGetValue(vfxName, out var prefab))
-                return prefab; // null이면 null 반환 (재탐색 안 함)
+            {
+                if (prefab != null) return prefab;
+                // null 캐시 제거 후 재탐색 (번들 로드 타이밍 문제 대비)
+                _cachedPrefabs.Remove(vfxName);
+            }
 
             prefab = FindPrefabInResources(vfxName);
-            _cachedPrefabs[vfxName] = prefab; // null이어도 저장
+            if (prefab != null)
+                _cachedPrefabs[vfxName] = prefab; // 성공한 경우만 저장
 
             return prefab;
         }
@@ -722,10 +779,6 @@ namespace CaptainSkillTree
                         UnityEngine.Object.Destroy(vfxObj, duration);
                     }
                     // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
-
-                    // dim 매핑 자동 적용
-                    if (_vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
-                        ApplyVFXDim(vfxObj, dimFactor);
 
                     return vfxObj;
                 }
@@ -788,10 +841,6 @@ namespace CaptainSkillTree
                             // 발헤임 기본 VFX는 Destroy 호출 안 함
                             if (isCustom)
                                 UnityEngine.Object.Destroy(result, duration);
-                            // dim 매핑 자동 적용
-                            if (!string.IsNullOrEmpty(vfxName) &&
-                                _vfxDimMapping.TryGetValue(vfxName, out float dimFactor))
-                                ApplyVFXDim(result, dimFactor);
                         }
                     }
                 }
@@ -869,6 +918,8 @@ namespace CaptainSkillTree
             {
                 // SimpleVFX 전체 초기화 (debuff 번들 로드 + Valheim VFX 캐싱)
                 SimpleVFX.Initialize();
+                // Valheim 기본 VFX 중 커스텀화할 VFX 등록 (ZNetView 제거 → Destroy 안전)
+                SimpleVFX.RegisterValheimVFXAsCustom("vfx_Potion_health_medium");
                 // ZNetScene에 커스텀 VFX 프리팹 등록 (spawn 명령어 사용 가능)
                 CaptainSkillTree.Prefab.PrefabRegistry.RegisterToZNetScene();
 
@@ -898,6 +949,22 @@ namespace CaptainSkillTree
     }
 
     #endregion
+
+    /// <summary>
+    /// 발헤임 기본 VFX가 대상 Transform을 따라다니도록 하는 컴포넌트.
+    /// 플레이어 자식으로 부착하지 않고 매 프레임 위치를 갱신하여 무한 로딩 방지.
+    /// </summary>
+    public class VFXFollowBehaviour : MonoBehaviour
+    {
+        public Transform Target;
+        public Vector3 Offset;
+
+        void Update()
+        {
+            if (Target == null) { UnityEngine.Object.Destroy(gameObject); return; }
+            transform.position = Target.position + Offset;
+        }
+    }
 
     /// <summary>
     /// VFX 밝기·투명도 감소 컴포넌트.

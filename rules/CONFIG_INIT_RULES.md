@@ -88,3 +88,27 @@ float damage = Sword_Config.RushSlash1stDamageRatio.Value;
 | ③ GetConfigDescription() 호출 | `*_Config.cs` → `BindServerSync()` description 파라미터 |
 
 ❌ 하나라도 빠지면 F1 Config Manager에서 번역이 깨짐
+
+---
+
+## R5. Veryhard cfg 동기화 (신규 스킬 / 수치 수정 시 필수)
+
+**대상 파일:** `asset/Veryhard_CaptainSkillTree.SkillTreeMod.cfg`
+
+**트리거 조건:**
+- 신규 스킬 추가 시 → 새 Config 키/값을 Veryhard cfg 해당 섹션에 추가
+- 기존 Config 기본값 변경 시 → Veryhard cfg의 동일 키 값도 동기화
+
+**동기화 방향:** 코드 기본값(BindServerSync 기본값) = Veryhard cfg 값
+
+```
+❌ 금지: *_Config.cs 기본값만 수정하고 Veryhard cfg는 그대로 둠
+✅ 올바름: 기본값 변경 → Veryhard cfg 동일 키 값도 함께 변경
+```
+
+**섹션 위치 참고:**
+- `[Bow Tree]` → 활 관련 (Tier6_ArrowRain_DamagePercent 등)
+- `[Staff Tree]` → 지팡이 관련
+- `[Mage Job Skills]` → 메이지 직업 스킬
+- `[Rogue Job Skills]` → 로그 직업 스킬
+- `[skill_tree_base]` → 전역 설정 (My VFX 투명도 등)

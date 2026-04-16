@@ -381,6 +381,7 @@
   "ui_music_off": "Música Desligada",
   "ui_escape": "Saída",
   "ui_escape_cooldown": "Disponível em {0}m",
+  "ui_escape_confirm": "Botão de Fuga de Emergência.\nVocê será movido ao ponto inicial.\nPode ser usado uma vez a cada 3 horas.",
   "skill_insufficient_points_detail": "Pontos de habilidade insuficientes. (Necessário: {0}, Disponível: {1})",
   "skill_invest_success": "✅ Pontos de habilidade investidos!",
   "items_insufficient": "Itens necessários insuficientes",

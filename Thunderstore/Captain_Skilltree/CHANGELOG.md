@@ -1,5 +1,18 @@
 # Changelog / 변경 로그
 ## Update
+# [1.2.30] - 2026-04-16
+- ✅fix1 : Mage , Dual magic - 90% Transparency Adjustment
+- ✅fix2 : Defense expert - Two modifications of active skills (Infinite loading and dungeon entry, exit problem)
+- ✅fix3 : Paladin - Change of VFX related to heals
+- ✅new1 : Consumption of point initialization coin and introduction of partial initialization system
+- ✅new2 : Emergency escape button - Skilltreeui lower right foot [escape] button (teleport as starting point, once available for 3 hours)
+-
+- ✅fix1 : Mage ,  Dual magic - 투명도 90% 조정  
+- ✅fix2 : 방어전문가 - 액티브 스킬 두 가지 수정(무한로딩 및 던전 입장, 퇴장 문제)
+- ✅fix3 : 성기사 - 힐 관련 VFX 변경
+- ✅new1 : 포인트 초기화 Coin 소모와 부분 초기화 시스템 도입
+- ✅new2 : 긴급 탈출 버튼 - 스킬트리 ui 오른족 하단 [탈출] 버튼(시작 지점으로 텔레포트, 3시간 1회사용 가능) 
+
 # [1.2.29] - 2026-04-13
 - ✅fix1: Berserker - Modifying Invincible Passive
 - ✅new1: New skill of dagger expert: stack explosion

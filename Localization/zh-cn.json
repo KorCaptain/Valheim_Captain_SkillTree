@@ -551,6 +551,7 @@
   "ui_music_off": "音乐关",
   "ui_escape": "逃脱",
   "ui_escape_cooldown": "{0}分钟后可用",
+  "ui_escape_confirm": "紧急角色逃脱按钮。\n您将被传送至起始点。\n每3小时可使用一次。",
   "skill_insufficient_points_detail": "技能点不足。（需要：{0}，可用：{1}）",
   "skill_invest_success": "✅ 技能点已投入！",
   "items_insufficient": "所需物品不足",

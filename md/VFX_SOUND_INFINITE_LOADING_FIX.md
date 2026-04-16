@@ -390,6 +390,75 @@ if (obj != null) UnityEngine.Object.Destroy(obj);
 
 ---
 
+### 10. **🌀 발헤임 기본 VFX를 커스텀화하여 플레이어 따라다니게 만들기 (RegisterValheimVFXAsCustom)**
+
+#### 문제 상황
+발헤임 기본 VFX(`vfx_Potion_health_medium` 등)를 플레이어 자식으로 부착하면:
+1. `ZNetView.Awake()`가 ZNetScene에 등록 → `Destroy()` 후 null 참조 잔존 → **무한 로딩**
+2. `SetActive(true)` 시 `ZSyncTransform.Awake()`가 `ZNetView` 없음을 접근 → **NullReferenceException**
+
+#### 해결 방법: `SimpleVFX.RegisterValheimVFXAsCustom()`
+
+ZNetScene에서 클론 생성 → 네트워크 컴포넌트 전부 제거 → `_customVFXNames`에 등록  
+→ 이후 `SimpleVFX.PlayOnPlayer()`의 커스텀 경로(안전한 `Destroy`)로 재생됨
+
+**등록 방법** (`SimpleVFX_ZNetScene_Awake_Patch.Postfix` 안에서만 호출):
+```csharp
+SimpleVFX.RegisterValheimVFXAsCustom("vfx_Potion_health_medium");
+```
+
+**내부 동작 원리** (`SimpleVFX.RegisterValheimVFXAsCustom`):
+```csharp
+// ① 원본을 비활성화한 채 Instantiate → clone의 Awake() 전혀 실행 안 됨 → ZNetScene 등록 안 됨
+bool wasActive = original.activeSelf;
+original.SetActive(false);
+var clone = UnityEngine.Object.Instantiate(original);
+original.SetActive(wasActive); // 즉시 원상복구
+
+// ② 네트워크 컴포넌트 일괄 제거 (자식 포함)
+// ZNetView만 제거하면 ZSyncTransform.Awake()가 SetActive(true) 시 NullRef 유발 → 함께 제거 필수
+foreach (var nv in clone.GetComponentsInChildren<ZNetView>(true))
+    UnityEngine.Object.DestroyImmediate(nv);
+foreach (var st in clone.GetComponentsInChildren<ZSyncTransform>(true))
+    UnityEngine.Object.DestroyImmediate(st);
+foreach (var sa in clone.GetComponentsInChildren<ZSyncAnimation>(true))
+    UnityEngine.Object.DestroyImmediate(sa);
+
+// ③ 비활성 템플릿으로 보관 → _customVFXNames 등록
+clone.SetActive(false);
+_customVFXNames.Add(vfxName);
+_cachedPrefabs[vfxName] = clone;
+```
+
+**재생 방법**:
+```csharp
+// ✅ 플레이어를 N초간 따라다니는 발헤임 기본 VFX
+SimpleVFX.PlayOnPlayer(player, "vfx_Potion_health_medium", 5f, new Vector3(0f, 0.5f, 0f));
+```
+
+> ⚠️ `PlayOnPlayer` 내부에서 비활성 템플릿을 `Instantiate` 후 `SetActive(true)` 호출  
+> → 비활성으로 인스턴스화 → 명시적 활성화 → 파티클 시작 → `Destroy(duration)` 안전
+
+#### 제거해야 할 컴포넌트 (ZNetView 의존 체인)
+| 컴포넌트 | 제거 이유 |
+|----------|---------|
+| `ZNetView` | ZNetScene 등록 주체 — 제거 안 하면 Destroy 시 null 잔존 |
+| `ZSyncTransform` | ZNetView에 의존, SetActive(true) 시 Awake에서 NullRef |
+| `ZSyncAnimation` | ZNetView에 의존, 애니메이터 동기화 컴포넌트 |
+
+#### 적용 대상
+- 발헤임 기본 VFX를 **플레이어/캐릭터에 부착해 따라다니게** 해야 할 때
+- 파티클 효과가 **N초 후 안전하게 Destroy** 되어야 할 때
+- §9의 비활성 트릭과 유사하지만 **재사용 가능한 템플릿 캐싱**이 필요할 때
+
+#### 해결 성공 사례
+**성기사 Y키 힐 스킬** (`JobSkills.PlayPaladinActivationEffect`):
+- **문제**: `vfx_Potion_health_medium`을 커스텀 없이 `PlayOnPlayer` 호출 → 무한 로딩
+- **해결**: `RegisterValheimVFXAsCustom` 등록 후 커스텀 경로 재생
+- **결과**: 5초간 시전자 따라다니다 안전 소멸 ✅
+
+---
+
 ### 7. **액티브 스킬 VFX/사운드 체크리스트**
 
 액티브 스킬 개발 시 반드시 확인:
@@ -398,6 +467,7 @@ if (obj != null) UnityEngine.Object.Destroy(obj);
 - [ ] **발헤임 기본 VFX 연속 호출 없음** (각 타격마다 다른 VFX 사용)
 - [ ] **발헤임 기본 VFX 로컬 전용은 순수 Instantiate 사용** (VFXManager 금지)
 - [ ] **ZNet 발사체 프리팹을 VFX로 사용 시 비활성 프리팹 트릭 적용** (§9 참조)
+- [ ] **발헤임 기본 VFX를 플레이어 부착이 필요하면 `RegisterValheimVFXAsCustom` 사용** (§10 참조)
 - [ ] **오브젝트 제거 시 `SetActive(false)` 후 `Destroy` 호출** (AutoPickup NullRef 방지)
 - [ ] 커스텀 VFX 이름이 targetVFXList에 등록되어 있음
 - [ ] 대소문자 매핑이 vfxMapping에 정의되어 있음
@@ -475,6 +545,7 @@ VFXManager.PlayVFXMultiplayer("statusailment_01", "", hitPosition, Quaternion.id
 6. ❌ **패시브 스킬 VFX** → 텍스트 표시만 허용
 7. ❌ **ZNet 프리팹을 바로 Instantiate 후 DestroyImmediate(znv)** → 비활성 프리팹 트릭 사용 (§9)
 8. ❌ **오브젝트 제거 시 Destroy만 호출** → `SetActive(false)` 후 `Destroy` 호출
+9. ❌ **발헤임 기본 VFX를 플레이어 자식으로 직접 부착** → `RegisterValheimVFXAsCustom`으로 커스텀화 후 `SimpleVFX.PlayOnPlayer` 사용 (§10)
 
 ---
 
@@ -502,6 +573,7 @@ VFXManager.PlayVFXMultiplayer("statusailment_01", "", hitPosition, Quaternion.id
 | **메서드** | PlayVFXMultiplayer만 사용 (커스텀 VFX) |
 | **발헤임 기본 VFX** | 순수 Instantiate 사용 (VFXManager 금지) |
 | **ZNet 발사체를 VFX로** | 비활성 프리팹 트릭 사용 (§9 참조) |
+| **발헤임 기본 VFX 플레이어 부착** | `RegisterValheimVFXAsCustom` 등록 → `SimpleVFX.PlayOnPlayer` (§10) |
 | **오브젝트 제거** | `SetActive(false)` 후 `Destroy` 호출 |
 | **중복 방지** | 동일 VFX/사운드 한 번만 호출 |
 | **대소문자** | 양쪽 이름 등록 + 폴백 검색 |

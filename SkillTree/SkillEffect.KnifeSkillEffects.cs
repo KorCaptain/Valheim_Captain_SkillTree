@@ -222,8 +222,8 @@ namespace CaptainSkillTree.SkillTree
                 // 지형 높이 조정 (던전/외부 모두 안전)
                 behindPosition = GetGroundPositionSafe(behindPosition);
 
-                // 시작점 VFX
-                SimpleVFX.Play("vfx_spawn_small", originalPosition, 1.5f);
+                // 시작점 VFX (발헤임 기본 → VFXManager)
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_spawn_small", "", originalPosition, Quaternion.identity, 1.5f);
 
                 // Rigidbody로 빠른 돌격 실행
                 var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
@@ -262,8 +262,8 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 도착점 VFX
-                SimpleVFX.Play("fx_backstab", behindPosition, 2f);
+                // 도착점 VFX (발헤임 기본 → VFXManager)
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_backstab", "", behindPosition, Quaternion.identity, 2f);
 
                 Plugin.Log.LogDebug($"[암살자의 심장] 돌격 성공 - {target.GetHoverName() ?? target.name} 뒤로 이동");
                 return true;
@@ -605,7 +605,7 @@ namespace CaptainSkillTree.SkillTree
             // 최종 VFX
             if (target != null && !target.IsDead())
             {
-                SimpleVFX.Play("fx_backstab", target.GetCenterPoint(), 2f);
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_backstab", "", target.GetCenterPoint(), Quaternion.identity, 2f);
             }
 
             // 공격 모드 종료 + 버프 해제
@@ -621,7 +621,7 @@ namespace CaptainSkillTree.SkillTree
             if (player != null && !player.IsDead())
             {
                 TeleportToPosition(player, originalPosition);
-                SimpleVFX.Play("vfx_spawn_small", originalPosition, 1.5f);
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_spawn_small", "", originalPosition, Quaternion.identity, 1.5f);
                 DrawFloatingText(player, L.Get("assassin_complete_return"), Color.red);
                 Plugin.Log.LogInfo($"[암살자의 심장] 원래 위치로 복귀 - 총 {finalHits}회 적중");
             }
@@ -687,8 +687,8 @@ namespace CaptainSkillTree.SkillTree
                 // 지형 높이 조정 (던전/외부 모두 안전)
                 position = GetGroundPositionSafe(position);
 
-                // VFX (출발점)
-                SimpleVFX.Play("vfx_spawn_small", player.transform.position, 1.5f);
+                // VFX (출발점, 발헤임 기본 → VFXManager)
+                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_spawn_small", "", player.transform.position, Quaternion.identity, 1.5f);
 
                 // Rigidbody 이동
                 var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();

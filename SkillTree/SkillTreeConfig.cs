@@ -870,7 +870,7 @@ namespace CaptainSkillTree.SkillTree
                 "Vanilla",
                 new ConfigDescription(
                     GetConfigDescription("GameDifficulty"),
-                    new AcceptableValueList<string>("Vanilla", "HardMode", "UserSettings"),
+                    new AcceptableValueList<string>("Vanilla", "VeryHard", "UserSettings"),
                     new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("GameDifficulty"), Order = -17 }
                 )
             );
@@ -881,7 +881,7 @@ namespace CaptainSkillTree.SkillTree
                 switch (GameDifficulty.Value)
                 {
                     case "Vanilla":      DifficultyManager.ApplyNormal();   break;
-                    case "HardMode":     DifficultyManager.ApplyVeryHard(); break;
+                    case "VeryHard":     DifficultyManager.ApplyVeryHard(); break;
                     case "UserSettings": DifficultyManager.ApplyUser();     break;
                 }
             };
@@ -906,14 +906,14 @@ namespace CaptainSkillTree.SkillTree
             ActiveResetCost  = BindServerSync(config, "Skill_Tree_Base", "Active_Reset_Cost", 500,  GetConfigDescription("Active_Reset_Cost"), order: -26);
             PassiveResetCost = BindServerSync(config, "Skill_Tree_Base", "Passive_Reset_Cost",100,  GetConfigDescription("Passive_Reset_Cost"),order: -27);
 
-            // === VFX 투명도 (클라이언트 전용) ===
+            // === 메이지 스킬 VFX 투명도 (클라이언트 전용) ===
             VFXOpacity = config.Bind(
                 "Skill_Tree_Base",
                 "My VFX 투명도",
-                70,
+                90,
                 new ConfigDescription(
-                    "VFX 밝기·투명도 조절 (0=완전 투명, 100=원본 밝기)\n" +
-                    "기본값: 70 (70% 밝기 - 눈부심 감소)\n" +
+                    "메이지 스킬 VFX 전용 투명도 조절 (0=완전 투명, 100=원본 밝기)\n" +
+                    "기본값: 90 (90% 밝기)\n" +
                     "변경 후 게임 재시작 필요",
                     new AcceptableValueRange<int>(0, 100)));
 

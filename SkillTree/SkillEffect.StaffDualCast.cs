@@ -173,7 +173,6 @@ namespace CaptainSkillTree.SkillTree
             if (_fanCastSuspended.ContainsKey(player))
             {
                 DrawFloatingText(player, L.Get("staff_fan_cast_summoned"), new Color(0.8f, 0.3f, 1f));
-                Plugin.Log.LogDebug($"[팬캐스트] Phase 1 완료 - {suspended.Count}개 소환");
             }
 
             // 호버 타임아웃 대기
@@ -248,7 +247,6 @@ namespace CaptainSkillTree.SkillTree
                 _fanCastLaunchCoroutines[player] = launchCo;
 
                 DrawFloatingText(player, L.Get("staff_fan_cast_launched"), new Color(1f, 0.4f, 0.1f));
-                Plugin.Log.LogDebug($"[팬캐스트] Phase 2 발사 - {suspended.Count}발");
             }
             catch (Exception ex)
             {
@@ -652,7 +650,7 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public class StaffProjectileExplosionDimmer : MonoBehaviour
     {
-        public float DimFactor = 0.7f;
+        public float DimFactor = 0.9f;
         private Vector3 _lastPos;
 
         private void LateUpdate() { _lastPos = transform.position; }
@@ -675,6 +673,10 @@ namespace CaptainSkillTree.SkillTree
                 // 이미 dim 적용됐거나 거리 5m 초과이면 스킵
                 if (root.GetComponent<VFXDimmerBehaviour>() != null) continue;
                 if (Vector3.Distance(root.transform.position, hitPos) > 5f) continue;
+                // 몬스터/플레이어·건물·아이템은 스킵 (투명화 버그 방지)
+                if (root.GetComponent<Character>() != null) continue;
+                if (root.GetComponent<Piece>() != null) continue;
+                if (root.GetComponent<ItemDrop>() != null) continue;
                 SimpleVFX.ApplyVFXDim(root, factor);
             }
         }

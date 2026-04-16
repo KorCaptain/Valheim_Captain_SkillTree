@@ -312,7 +312,6 @@ namespace CaptainSkillTree.SkillTree
 
                 // ③ 활성화
                 obj.SetActive(true);
-                SimpleVFX.ApplyVFXDim(obj, SkillTreeConfig.VFXOpacityValue);
                 return obj;
             }
             catch (System.Exception ex)

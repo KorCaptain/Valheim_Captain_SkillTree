@@ -4303,10 +4303,25 @@ namespace CaptainSkillTree.Gui
                         try
                         {
                             var player = Player.m_localPlayer;
-                            if ((System.Object)player != null)
-                                SkillTree.EscapeSkill.TryEscape(player);
-                            else
+                            if ((System.Object)player == null)
+                            {
                                 Plugin.Log.LogWarning("[Escape] Player.m_localPlayer가 null");
+                                return;
+                            }
+                            // 쿨타임 중 → 안내 메시지만 표시, 작동 안 됨
+                            if (!SkillTree.EscapeSkill.CanEscape())
+                            {
+                                int mins = Mathf.CeilToInt(SkillTree.EscapeSkill.GetRemainingMinutes());
+                                player.Message(MessageHud.MessageType.TopLeft,
+                                    Localization.L.Get("ui_escape_cooldown", mins.ToString()), 0, null);
+                                return;
+                            }
+                            // 사용 가능 → 확인 다이얼로그 표시
+                            CreateConfirmDialog(
+                                Localization.L.Get("ui_escape_confirm"),
+                                () => { SkillTree.EscapeSkill.TryEscape(player); },
+                                () => { /* 취소 */ }
+                            );
                         }
                         catch (System.Exception ex)
                         {

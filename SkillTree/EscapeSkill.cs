@@ -12,29 +12,47 @@ namespace CaptainSkillTree.SkillTree
         private const string PREFS_KEY = "CST_EscapeLastUsed";
         private const float COOLDOWN_SECONDS = 10800f; // 3시간
 
-        /// <summary>사용 가능 여부 (세션 간 유지)</summary>
-        public static bool CanEscape()
+        // 1초 캐싱: 매 프레임 PlayerPrefs I/O 방지
+        private static float _nextCheckTime = -1f;
+        private static bool _cachedCanEscape = true;
+        private static float _cachedRemainingSeconds = 0f;
+
+        /// <summary>쿨타임 캐시 즉시 무효화 (사용 직후 호출)</summary>
+        public static void InvalidateCache() => _nextCheckTime = -1f;
+
+        // 1초 throttle로 PlayerPrefs 접근 최소화
+        private static void RefreshCacheIfNeeded()
         {
+            if (Time.time < _nextCheckTime) return;
+            _nextCheckTime = Time.time + 1f;
             try
             {
                 string s = PlayerPrefs.GetString(PREFS_KEY, "");
-                if (string.IsNullOrEmpty(s) || !long.TryParse(s, out long ticks)) return true;
-                return (DateTime.UtcNow - new DateTime(ticks, DateTimeKind.Utc)).TotalSeconds >= COOLDOWN_SECONDS;
+                if (string.IsNullOrEmpty(s) || !long.TryParse(s, out long ticks))
+                {
+                    _cachedCanEscape = true;
+                    _cachedRemainingSeconds = 0f;
+                    return;
+                }
+                float elapsed = (float)(DateTime.UtcNow - new DateTime(ticks, DateTimeKind.Utc)).TotalSeconds;
+                _cachedCanEscape = elapsed >= COOLDOWN_SECONDS;
+                _cachedRemainingSeconds = Mathf.Max(0f, COOLDOWN_SECONDS - elapsed);
             }
-            catch { return true; }
+            catch { _cachedCanEscape = true; _cachedRemainingSeconds = 0f; }
         }
 
-        /// <summary>남은 쿨타임(분) 반환</summary>
+        /// <summary>사용 가능 여부 (세션 간 유지, 1초 캐싱)</summary>
+        public static bool CanEscape()
+        {
+            RefreshCacheIfNeeded();
+            return _cachedCanEscape;
+        }
+
+        /// <summary>남은 쿨타임(분) 반환 (1초 캐싱)</summary>
         public static float GetRemainingMinutes()
         {
-            try
-            {
-                string s = PlayerPrefs.GetString(PREFS_KEY, "");
-                if (string.IsNullOrEmpty(s) || !long.TryParse(s, out long ticks)) return 0f;
-                float remaining = COOLDOWN_SECONDS - (float)(DateTime.UtcNow - new DateTime(ticks, DateTimeKind.Utc)).TotalSeconds;
-                return Mathf.Max(0f, remaining / 60f);
-            }
-            catch { return 0f; }
+            RefreshCacheIfNeeded();
+            return _cachedRemainingSeconds / 60f;
         }
 
         /// <summary>탈출 시도 - 시작 지점으로 Valheim TeleportTo 사용</summary>
@@ -57,6 +75,7 @@ namespace CaptainSkillTree.SkillTree
 
                 PlayerPrefs.SetString(PREFS_KEY, DateTime.UtcNow.Ticks.ToString());
                 PlayerPrefs.Save();
+                InvalidateCache(); // 캐시 즉시 무효화 → 다음 CanEscape() 호출 시 즉시 반영
             }
             catch (Exception ex)
             {

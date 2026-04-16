@@ -200,7 +200,6 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 var go = UnityEngine.Object.Instantiate(prefab, spawnPos, Quaternion.LookRotation(dir));
-                SimpleVFX.ApplyVFXDim(go, SkillTreeConfig.VFXOpacityValue);
 
                 // 착지 VFX 트리거용 태그 추가
                 var tag = go.AddComponent<ArrowRainProjectileTag>();
@@ -421,7 +420,6 @@ namespace CaptainSkillTree.SkillTree
                         if (_icePrefab != null)
                         {
                             var _iceGo = UnityEngine.Object.Instantiate(_icePrefab, hitPoint, Quaternion.identity);
-                            SimpleVFX.ApplyVFXDim(_iceGo, SkillTreeConfig.VFXOpacityValue);
                             // ⚠️ Destroy 생략 — 발헤임 기본 VFX 자동 정리
                         }
                     }

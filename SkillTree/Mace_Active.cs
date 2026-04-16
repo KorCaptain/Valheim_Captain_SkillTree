@@ -118,7 +118,6 @@ namespace CaptainSkillTree.SkillTree
                     if (_shieldPrefab != null)
                     {
                         var _shieldGo = UnityEngine.Object.Instantiate(_shieldPrefab, player.GetCenterPoint(), Quaternion.identity);
-                        SimpleVFX.ApplyVFXDim(_shieldGo, SkillTreeConfig.VFXOpacityValue);
                     }
                 }
                 VFXManager.PlayVFXMultiplayer("sfx_fader_taunt", "", player.GetCenterPoint(), Quaternion.identity, 2f);
@@ -169,7 +168,6 @@ namespace CaptainSkillTree.SkillTree
                     if (_shieldPrefab2 != null)
                     {
                         var _shieldGo2 = UnityEngine.Object.Instantiate(_shieldPrefab2, player.GetCenterPoint(), Quaternion.identity);
-                        SimpleVFX.ApplyVFXDim(_shieldGo2, SkillTreeConfig.VFXOpacityValue);
                     }
                     vfxTimer = 0f;
                 }

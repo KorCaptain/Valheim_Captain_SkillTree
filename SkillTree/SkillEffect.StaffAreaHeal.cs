@@ -72,8 +72,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     // buff_03a_aura: 시전자 캐릭터에 부착 → 따라다니며 3초 후 자동 종료
                     SimpleVFX.PlayOnPlayer(caster, "buff_03a_aura", 3f);
-                    // 사운드는 고정 위치 재생
-                    SimpleVFX.Play("sfx_dverger_heal_finish", casterPos, 2f);
+                    // 사운드 (발헤임 기본 SFX → VFXManager)
+                    CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_dverger_heal_finish", "", casterPos, Quaternion.identity, 2f);
                     // 방패 발전기 충전 VFX (발헤임 기본 VFX → VFXManager 사용)
                     CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_shieldgenerator_refuel", "", casterPos, Quaternion.identity, 3f);
                 }
@@ -102,11 +102,12 @@ namespace CaptainSkillTree.SkillTree
 
                         targetPlayer.Heal(healAmount, true);
 
-                        // 개별 힐 이펙트 (하드코딩)
+                        // 개별 힐 이펙트: buff_03a_aura 왼쪽 어깨 / 머리 / 오른쪽 어깨
                         try
                         {
-                            // buff_03a: 힐 대상 발 밑에 부착 → 따라다니며 2초 후 자동 종료
-                            SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a", 2f, new Vector3(0f, 0f, 0f));
+                            SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a_aura", 2.5f, new Vector3(-0.3f, 1.5f, 0f));
+                            SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a_aura", 2.5f, new Vector3(0f, 1.8f, 0f));
+                            SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a_aura", 2.5f, new Vector3(0.3f, 1.5f, 0f));
                         }
                         catch { }
 

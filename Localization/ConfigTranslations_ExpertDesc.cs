@@ -23,7 +23,7 @@ namespace CaptainSkillTree.Localization
                 "【게임 난이도】\n" +
                 "스킬트리 모드의 전체 밸런스 프리셋을 선택합니다.\n" +
                 "  Vanilla      = 바닐라에 가까운 약한 수치 (기본값)\n" +
-                "  HardMode     = CLLC Very Hard + 몬스터 HP x2 강화 수치\n" +
+                "  VeryHard     = CLLC Very Hard + 몬스터 HP x2 강화 수치\n" +
                 "  UserSettings = 이전에 저장된 사용자 설정 복원\n" +
                 "⚠️ 변경 시 해당 프리셋이 즉시 적용됩니다 (모든 스킬 수치 교체).",
 
@@ -796,7 +796,7 @@ namespace CaptainSkillTree.Localization
                 "【Game Difficulty】\n" +
                 "Selects the overall balance preset for the skill tree mod.\n" +
                 "  Vanilla      = Mild values close to vanilla Valheim (default)\n" +
-                "  HardMode     = CLLC Very Hard + Monster HP x2 (strong values)\n" +
+                "  VeryHard     = CLLC Very Hard + Monster HP x2 (strong values)\n" +
                 "  UserSettings = Restores your previously saved settings\n" +
                 "⚠️ Changing this setting immediately applies the selected preset (replaces all skill values).",
 

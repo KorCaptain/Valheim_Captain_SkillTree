@@ -124,7 +124,6 @@ namespace CaptainSkillTree.SkillTree
                 if (_whirlPrefab != null)
                 {
                     var _whirlGo = UnityEngine.Object.Instantiate(_whirlPrefab, _whirlVfxPos, Quaternion.identity);
-                    SimpleVFX.ApplyVFXDim(_whirlGo, SkillTreeConfig.VFXOpacityValue);
                     // ⚠️ Destroy 생략 — 발헤임 기본 VFX 자동 정리 (호출 시 무한 로딩 위험)
                 }
             }
@@ -296,7 +295,6 @@ namespace CaptainSkillTree.SkillTree
                     if (_whirlPrefab2 != null)
                     {
                         var _whirlGo2 = UnityEngine.Object.Instantiate(_whirlPrefab2, chestPos, Quaternion.identity);
-                        SimpleVFX.ApplyVFXDim(_whirlGo2, SkillTreeConfig.VFXOpacityValue);
                         // ⚠️ Destroy 생략
                     }
                 }

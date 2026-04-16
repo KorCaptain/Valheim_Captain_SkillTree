@@ -125,7 +125,7 @@ namespace CaptainSkillTree
 
                     // GameDifficulty config 동기화 (프리셋 파일에 없는 신규 키이므로 직접 설정)
                     string diffMode = (presetFileName == PRESET_NORMAL) ? "Vanilla"
-                                    : (presetFileName == PRESET_VERYHARD) ? "HardMode"
+                                    : (presetFileName == PRESET_VERYHARD) ? "VeryHard"
                                     : "UserSettings";
                     var diffEntry = SkillTree.SkillTreeConfig.GameDifficulty;
                     if (diffEntry != null)

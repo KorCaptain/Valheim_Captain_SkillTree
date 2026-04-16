@@ -275,6 +275,7 @@ namespace CaptainSkillTree.Localization
                 ["ui_music_off"] = "Music Off",
                 ["ui_escape"] = "탈출",
                 ["ui_escape_cooldown"] = "{0}분 후 사용가능",
+                ["ui_escape_confirm"] = "긴급 캐릭터 탈출 버튼입니다.\n시작 지점으로 이동합니다.\n3시간에 1회 사용 가능합니다.",
 
                 // === Skill Investment Messages ===
                 ["skill_insufficient_points_detail"] = "스킬 포인트가 부족합니다. (필요: {0}, 보유: {1})",
@@ -775,6 +776,7 @@ namespace CaptainSkillTree.Localization
                 ["ui_music_off"] = "Music Off",
                 ["ui_escape"] = "Exit",
                 ["ui_escape_cooldown"] = "Available in {0}m",
+                ["ui_escape_confirm"] = "Emergency Character Escape.\nYou will be moved to the starting point.\nCan be used once every 3 hours.",
 
                 // === Skill Investment Messages ===
                 ["skill_insufficient_points_detail"] = "Not enough skill points. (Required: {0}, Available: {1})",
