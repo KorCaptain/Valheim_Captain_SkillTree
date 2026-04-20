@@ -1,5 +1,14 @@
 # Changelog / 변경 로그
 ## Update
+# [1.2.24] - 2026-04-20
+- ✅fix1 : Berserker - Fixed missing m_damage (untyped) in one-shot kill detection, preventing death when HP was above threshold
+- ✅fix2 : Berserker - Added OnDeath fallback patch to catch lethal hits that bypass Prefix estimation and restore HP to 1
+- ✅fix3 : Berserker - Raised Harmony Prefix priority to High to prevent conflict with other mods' damage patches
+-
+- ✅fix1 : 버서커 - 즉사 감지 계산에서 m_damage(무타입 데미지) 누락 수정 — 체력 여유 있는 상태에서 한방에 죽는 버그 해결
+- ✅fix2 : 버서커 - OnDeath 폴백 패치 추가 — Prefix 추정 실패로 놓친 즉사를 최종 차단하고 HP 1로 복원
+- ✅fix3 : 버서커 - Harmony Prefix 우선순위 High 설정으로 타 모드 데미지 패치와의 충돌 예방
+
 # [1.2.3] - 2026-04-15
 - ✅fix1 : VFX dim effect no longer shrinks particle size — only color/alpha is adjusted now (removed startSizeMultiplier scaling)
 - ✅fix2 : Removed debug log spam in VFXDimmerBehaviour that caused performance drops during combat
