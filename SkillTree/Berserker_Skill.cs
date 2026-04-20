@@ -615,6 +615,7 @@ namespace CaptainSkillTree.SkillTree
         [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
         public static class Berserker_Character_Damage_Patch
         {
+            [HarmonyPriority(Priority.High)]
             public static void Prefix(Character __instance, ref HitData hit)
             {
                 try
@@ -636,9 +637,10 @@ namespace CaptainSkillTree.SkillTree
                             float maxHp = player.GetMaxHealth();
                             float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue / 100f;
 
-                            // raw 데미지 합산 (방어 계산 전 수치)
+                            // raw 데미지 합산 (방어 계산 전 수치) - m_damage 무타입 포함
                             var dmg = hit.m_damage;
-                            float rawDmg = dmg.m_blunt + dmg.m_slash + dmg.m_pierce
+                            float rawDmg = dmg.m_damage
+                                         + dmg.m_blunt + dmg.m_slash + dmg.m_pierce
                                          + dmg.m_fire + dmg.m_frost + dmg.m_lightning
                                          + dmg.m_poison + dmg.m_spirit;
 
@@ -726,8 +728,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (__instance is Player player && HasBerserkerSkill(player))
                     {
-                        // 이미 사망했으면 체크 스킵 (다음 공격 대비 HP 임계값 준비 용도)
-                        if (player.IsDead() || player.GetHealth() <= 0f) return;
+                        // HP 0 이하 즉사는 OnDeath 폴백이 처리하므로 스킵
+                        if (player.GetHealth() <= 0f) return;
                         CheckBerserkerPassiveSkill(player);
                     }
                 }
@@ -740,6 +742,43 @@ namespace CaptainSkillTree.SkillTree
 
         // Player Update 패치 제거 - 무한 로딩 원인
         // 분노 종료는 Coroutine으로 처리하거나 시간 제한 없이 영구 적용
+
+        /// <summary>
+        /// 사망 이벤트 폴백: Prefix 추정 실패로 놓친 즉사를 OnDeath에서 최종 차단
+        /// 쿨다운 없고 버서커 스킬 보유 시 → 패시브 강제 발동 + HP 1 복원 + 사망 취소
+        /// </summary>
+        [HarmonyPatch(typeof(Player), "OnDeath")]
+        public static class Berserker_Player_OnDeath_Invincibility_Patch
+        {
+            public static bool Prefix(Player __instance)
+            {
+                try
+                {
+                    if (!HasBerserkerSkill(__instance)) return true;
+
+                    if (!passiveStates.TryGetValue(__instance, out var state))
+                    {
+                        state = new PassiveState();
+                        passiveStates[__instance] = state;
+                    }
+
+                    // 이미 무적 중이거나 쿨다운이면 정상 사망 처리
+                    if (state.IsActive || state.OnCooldown) return true;
+
+                    // 패시브 강제 발동 + HP 1 복원 + 사망 취소
+                    ApplyPassiveInvincibility(__instance, state);
+                    __instance.SetHealth(1f);
+
+                    Plugin.Log.LogInfo("[버서커 OnDeath 폴백] 즉사 감지 - 무적 발동 및 HP 복원");
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[버서커 OnDeath 폴백] 실패: {ex.Message}");
+                    return true;
+                }
+            }
+        }
 
         #endregion
 
