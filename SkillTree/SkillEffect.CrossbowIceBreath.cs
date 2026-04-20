@@ -119,7 +119,8 @@ namespace CaptainSkillTree.SkillTree
             var weaponItem = player.GetCurrentWeapon();
             if (weaponItem == null) yield break;
 
-            var dmgTypes = weaponItem.GetDamage();
+            float crossbowSkillFactor = player.GetSkillFactor(Skills.SkillType.Crossbows);
+            var dmgTypes = weaponItem.GetDamage(0, crossbowSkillFactor);
             float baseDmg = dmgTypes.m_pierce > 0f ? dmgTypes.m_pierce
                           : dmgTypes.m_blunt  > 0f ? dmgTypes.m_blunt
                           : dmgTypes.m_slash  > 0f ? dmgTypes.m_slash
@@ -152,6 +153,7 @@ namespace CaptainSkillTree.SkillTree
                     hit.m_dir             = hitDir;
                     hit.m_pushForce       = 500f;
                     hit.m_attacker        = player.GetZDOID();
+                    hit.SetAttacker(player);
                     target.Damage(hit);
 
                     // 넉백: Stagger + Rigidbody 물리력 (10m 넉백)
@@ -190,6 +192,7 @@ namespace CaptainSkillTree.SkillTree
                         hit.m_dir             = (target.transform.position - player.transform.position).normalized;
                         hit.m_pushForce       = 0f;
                         hit.m_attacker        = player.GetZDOID();
+                        hit.SetAttacker(player);
                         target.Damage(hit);
                     }
                     catch (Exception ex)

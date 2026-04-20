@@ -166,7 +166,8 @@ namespace CaptainSkillTree.SkillTree
                 _furyHammerImmune.Remove(player);
                 yield break;
             }
-            float baseWeaponDamage = weapon.GetDamage().GetTotalDamage();
+            float skillFactor = player.GetSkillFactor(Skills.SkillType.Clubs);
+            float baseWeaponDamage = weapon.GetDamage(0, skillFactor).GetTotalDamage();
 
             Vector3 dashDir = player.GetLookDir();
             dashDir.y = 0f;
@@ -286,7 +287,6 @@ namespace CaptainSkillTree.SkillTree
 
             // 하드코딩 상수 사용 (수정 불가)
             int attackCount = ATTACK_COUNT;               // 5타 고정
-            float attackInterval = ATTACK_INTERVAL;       // 0.5초 고정
 
             // Config에서 값 가져오기 (데미지 배율, AOE 범위만)
             float normalHitMultiplier = Mace_Config.FuryHammerNormalHitMultiplierValue / 100f;
@@ -336,6 +336,7 @@ namespace CaptainSkillTree.SkillTree
                         hit.m_point = mob.GetCenterPoint();
                         hit.m_attacker = player.GetZDOID();
                         hit.SetAttacker(player);
+                        hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
 
                         mob.Damage(hit);
                         VFXManager.PlayVFXMultiplayer("fx_crit", "", mob.GetCenterPoint(), Quaternion.identity, 1f);
@@ -429,6 +430,7 @@ namespace CaptainSkillTree.SkillTree
                         hit.m_point = mob.GetCenterPoint();
                         hit.m_attacker = player.GetZDOID();
                         hit.SetAttacker(player);
+                        hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
 
                         mob.Damage(hit);
                         VFXManager.PlayVFXMultiplayer("fx_crit", "", mob.GetCenterPoint(), Quaternion.identity, 1f);

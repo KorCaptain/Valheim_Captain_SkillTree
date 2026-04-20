@@ -194,6 +194,7 @@ namespace CaptainSkillTree.SkillTree
                     var hit = new HitData();
                     hit.m_damage.m_slash = instantDmg;
                     hit.m_attacker = player.GetZDOID();
+                    hit.SetAttacker(player);
                     hit.m_point = enemy.transform.position;
                     hit.m_dir = (enemy.transform.position - pos).normalized;
                     enemy.Damage(hit);
@@ -231,7 +232,9 @@ namespace CaptainSkillTree.SkillTree
                     var hit = new HitData();
                     hit.m_damage.m_slash = dotDmg;  // m_poison은 SE_Poison 갱신이라 틱 데미지 1/5로 줄어듦 → m_slash로 즉시 처리
                     hit.m_attacker = player?.GetZDOID() ?? ZDOID.None;
+                    if (player != null) hit.SetAttacker(player);
                     hit.m_point = enemy.transform.position;
+                    hit.m_dir = (enemy.transform.position - (player?.transform.position ?? enemy.transform.position)).normalized;
                     enemy.Damage(hit);
                     VFXManager.PlayVFXMultiplayer("fx_crit", "", enemy.GetCenterPoint(), Quaternion.identity, 1.5f);
                 }

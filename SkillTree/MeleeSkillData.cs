@@ -193,6 +193,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "knife_step8_assassination" },
                 NextNodes = new List<string>(),
+                MutuallyExclusive = new List<string> { "defense_Step6_mind" },
                 ApplyEffect = (lv) => { }
             });
             manager.AddSkill(new SkillNode
@@ -374,6 +375,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "sword_step4_duel" },
                 NextNodes = new List<string>(),
+                MutuallyExclusive = new List<string> { "defense_Step6_mind" },
                 ApplyEffect = (lv) => { }
             });
 
@@ -540,6 +542,7 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string>(),
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
+                MutuallyExclusive = new List<string> { "defense_Step6_mind" },
                 ApplyEffect = (lv) => { }
             });
 
@@ -723,6 +726,7 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "polearm_step6_whirlwind" },
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
+                MutuallyExclusive = new List<string> { "defense_Step6_mind" },
                 ApplyEffect = (lv) => { }
             });
 
@@ -924,6 +928,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "mace_Step6_grandmaster" }, // 둔기 마스터에서 직접 연결
                 NextNodes = new List<string>(),
+                MutuallyExclusive = new List<string> { "defense_Step6_mind" },
                 ApplyEffect = (lv) => { }
             });
         }

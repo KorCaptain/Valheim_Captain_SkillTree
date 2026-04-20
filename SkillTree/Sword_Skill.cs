@@ -1107,38 +1107,4 @@ namespace CaptainSkillTree.SkillTree
 
     }
 
-    /// <summary>
-    /// 검 공격력 증가 패치 (전문가, 단계별 스킬)
-    /// </summary>
-    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
-    public static class SwordDamageBonus_Patch
-    {
-        /// <summary>
-        /// Sword Slash 액티브 스킬 데미지 배율만 처리
-        /// 일반 공격력 보너스는 GetDamage 패치로 이동 (Rule 13)
-        /// </summary>
-        public static void Prefix(Character __instance, ref HitData hit)
-        {
-            try
-            {
-                if (hit.GetAttacker() is Player player && Sword_Skill.IsUsingSword(player))
-                {
-                    // Rush Slash 액티브 데미지 배율 적용
-                    if (Sword_Skill.IsSwordSlashActive(player))
-                    {
-                        float damageRatio = Sword_Config.RushSlash1stDamageRatioValue / 100f;
-                        hit.m_damage.m_slash *= damageRatio;
-
-                        Plugin.Log.LogDebug($"[Rush Slash] 액티브 배율 {damageRatio:F2}x (slash)");
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[검 데미지 패치] 오류: {ex.Message}");
-            }
-        }
-
-        // GetSwordDefenseSwitchDamageReduction 제거됨 - 패링 돌격 액티브 스킬로 전환
-    }
 }

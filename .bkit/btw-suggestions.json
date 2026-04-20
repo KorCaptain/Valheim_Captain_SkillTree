@@ -20,10 +20,30 @@
         "role": "user",
         "pattern": null
       }
+    },
+    {
+      "id": "btw-002",
+      "timestamp": "2026-04-20T00:00:00Z",
+      "suggestion": "버서커의 무적패시브 스킬이 PVP에도 적용되는거지?",
+      "context": {
+        "file": "SkillTree/Berserker_Skill.cs",
+        "pdcaPhase": "do",
+        "feature": "SkillTree"
+      },
+      "category": "bug-pattern",
+      "status": "pending",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      }
     }
   ],
   "stats": {
-    "total": 1,
+    "total": 2,
     "promoted": 0,
     "dismissed": 0,
     "lastAnalyzed": null

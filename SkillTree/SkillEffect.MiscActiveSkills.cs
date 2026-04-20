@@ -137,6 +137,9 @@ namespace CaptainSkillTree.SkillTree
 
                 VFXManager.PlayVFXMultiplayer("fx_fenring_icenova", "", playerPos);
 
+                // 3회 반복 넉백 (1초 간격)
+                Plugin.Instance.StartCoroutine(ShockwaveRepeatingKnockbackCoroutine(player));
+
                 if (hitEnemies.Count > 0)
                     player.Message(MessageHud.MessageType.Center,
                         L.Get("shockwave_effect", hitEnemies.Count.ToString()));
@@ -144,6 +147,54 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[충격파방출] 실행 오류: {ex.Message}");
+            }
+        }
+
+        private static IEnumerator ShockwaveRepeatingKnockbackCoroutine(Player player)
+        {
+            float radius = Defense_Config.ShockwaveRadiusValue;
+            float knockbackForce = Defense_Config.ShockwaveKnockbackForceValue;
+
+            for (int i = 0; i < 3; i++)
+            {
+                yield return new WaitForSeconds(1.5f);
+
+                if (player == null || player.IsDead()) yield break;
+
+                Vector3 playerPos = player.transform.position;
+                Collider[] cols = Physics.OverlapSphere(playerPos, radius);
+                List<Character> processed = new List<Character>();
+
+                foreach (var col in cols)
+                {
+                    if (col == null) continue;
+                    Character enemy = col.GetComponentInParent<Character>();
+                    if (enemy == null || enemy == player || enemy.IsDead()) continue;
+                    if (!BaseAI.IsEnemy(player, enemy)) continue;
+                    if (processed.Contains(enemy)) continue;
+
+                    Vector3 dir = (enemy.transform.position - playerPos).normalized;
+                    dir.y = 0.3f;
+                    dir.Normalize();
+
+                    HitData pushHit = new HitData();
+                    pushHit.m_point = enemy.transform.position;
+                    pushHit.m_dir = dir;
+                    pushHit.m_damage.m_damage = 0.01f;
+                    pushHit.SetAttacker(player);
+                    enemy.Damage(pushHit);
+
+                    // character.m_pushForce 직접 설정 (HitData 경로는 ApplyPushback → mass 나눔, Y=0 강제로 거리 부정확)
+                    var traverseEnemy = Traverse.Create(enemy);
+                    if (traverseEnemy.Field("m_pushForce").FieldExists())
+                    {
+                        Vector3 cur = (Vector3)traverseEnemy.Field("m_pushForce").GetValue();
+                        if (cur.magnitude < knockbackForce)
+                            traverseEnemy.Field("m_pushForce").SetValue(dir * knockbackForce);
+                    }
+
+                    processed.Add(enemy);
+                }
             }
         }
 

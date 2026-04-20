@@ -678,7 +678,7 @@ namespace CaptainSkillTree.SkillTree
 
                     // === 공격 측: 공격자가 버서커 플레이어 (Lv4 저체력 공격력 보너스) ===
                     var localPlayer = Player.m_localPlayer;
-                    if (localPlayer != null && !(__instance is Player) && HasBerserkerSkill(localPlayer))
+                    if (localPlayer != null && __instance != localPlayer && HasBerserkerSkill(localPlayer))
                     {
                         var attacker = hit.GetAttacker();
                         if (attacker == localPlayer)

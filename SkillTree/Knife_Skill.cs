@@ -690,7 +690,8 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                var weaponDamage = weapon.GetDamage();
+                float knifeSkillFactor = player.GetSkillFactor(Skills.SkillType.Knives);
+                var weaponDamage = weapon.GetDamage(0, knifeSkillFactor);
 
                 HitData hit = new HitData();
                 hit.m_damage.m_slash = weaponDamage.m_slash;
@@ -699,6 +700,7 @@ namespace CaptainSkillTree.SkillTree
                 hit.m_dir = (target.transform.position - player.transform.position).normalized;
                 hit.m_attacker = player.GetZDOID();
                 hit.SetAttacker(player);
+                hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
                 hit.m_skill = Skills.SkillType.Knives;
 
                 target.Damage(hit);

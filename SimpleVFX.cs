@@ -614,6 +614,8 @@ namespace CaptainSkillTree
             // 커스텀 VFX + RPC 수신 중 아닌 경우 → 플레이어 ID와 함께 브로드캐스트
             if (!_isReceivingRPC && IsCustomVFX(vfxName) && ZRoutedRpc.instance != null)
             {
+                // RPC 전송 전에 중복 방지 키 등록 (자기 수신 방지)
+                _recentLocalCreations[$"{vfxName}_{player.GetPlayerID()}"] = Time.time;
                 try
                 {
                     ZRoutedRpc.instance.InvokeRoutedRPC(
@@ -920,6 +922,8 @@ namespace CaptainSkillTree
                 SimpleVFX.Initialize();
                 // Valheim 기본 VFX 중 커스텀화할 VFX 등록 (ZNetView 제거 → Destroy 안전)
                 SimpleVFX.RegisterValheimVFXAsCustom("vfx_Potion_health_medium");
+                SimpleVFX.RegisterValheimVFXAsCustom("vfx_GoblinShield");
+                SimpleVFX.RegisterValheimVFXAsCustom("fx_shield_start");
                 // ZNetScene에 커스텀 VFX 프리팹 등록 (spawn 명령어 사용 가능)
                 CaptainSkillTree.Prefab.PrefabRegistry.RegisterToZNetScene();
 

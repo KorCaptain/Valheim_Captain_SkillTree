@@ -438,7 +438,8 @@ namespace CaptainSkillTree.SkillTree
                 var weapon = attacker.GetCurrentWeapon();
                 if (weapon == null) return;
                 
-                var baseDamage = weapon.GetDamage();
+                float bowSkillFactor = attacker.GetSkillFactor(Skills.SkillType.Bows);
+                var baseDamage = weapon.GetDamage(0, bowSkillFactor);
                 float totalBaseDamage = baseDamage.GetTotalDamage();
                 float explosiveDamage = totalBaseDamage * (SkillTreeConfig.BowExplosiveArrowDamageValue / 100f);
                 

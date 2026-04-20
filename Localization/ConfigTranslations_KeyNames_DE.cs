@@ -292,8 +292,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5-4: [Blockmeister] Parierzeit-Bonus (Sek.)",
                 ["Tier5_BlockMaster_RequiredPoints"] = "Tier 5-4: [Blockmeister] Benötigte Punkte",
 
-                // === Tier 6-1: Geistesschild (1) ===
+                // === Tier 6-1: Geistesschild (4) ===
                 ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [Geistesschild] Benötigte Punkte",
+                ["Tier6_MindShield_Cooldown"] = "Tier 6-1: [Geistesschild] Abklingzeit (Sek.)",
+                ["Tier6_MindShield_EitrCost"] = "Tier 6-1: [Geistesschild] Eitr-Kosten",
+                ["Tier6_MindShield_Duration"] = "Tier 6-1: [Geistesschild] Schilddauer (Sek.)",
 
                 // === Tier 6-2: Nervenverbesserung (2) ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [Nervenverb.] Bedingter Ausweichbonus (30 Sek., %)",

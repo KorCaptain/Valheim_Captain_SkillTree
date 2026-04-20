@@ -311,8 +311,8 @@ namespace CaptainSkillTree.SkillTree
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step6_mind",
                 NameKey = "defense_mind_name",
-                DescriptionKey = "defense_mind_desc",
-                DescriptionArgs = new object[] { 60 },
+                DescriptionKey = "defense_mind_full_desc",
+                DescriptionArgs = new object[] { (int)Defense_Config.MindShieldDurationValue, (int)Defense_Config.MindShieldEitrCostValue, Defense_Config.MindShieldCooldownValue },
                 RequiredPoints = Defense_Config.DefenseStep6MindRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
@@ -322,7 +322,18 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "defense_Step5_focus" },
                 NextNodes = new List<string>(),
-                ApplyEffect = (lv) => { }
+                MutuallyExclusive = new List<string> {
+                    "sword_step5_finalcut",
+                    "knife_step9_assassin_heart",
+                    "spear_Step5_penetrate",
+                    "polearm_step5_king",
+                    "mace_Step7_guardian_heart"
+                },
+                ApplyEffect = (lv) => {
+                    var player = Player.m_localPlayer;
+                    if (player != null)
+                        SkillEffect.DrawFloatingText(player, L.Get("defense_mind_effect"));
+                }
             });
 
             // Tier 6: 신경강화

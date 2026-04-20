@@ -292,8 +292,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5-4: [格挡大师] 招架持续时间加成 (秒)",
                 ["Tier5_BlockMaster_RequiredPoints"] = "Tier 5-4: [格挡大师] 所需点数",
 
-                // === Tier 6-1: 心灵盾 (1) ===
+                // === Tier 6-1: 心灵盾 (4) ===
                 ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [心灵盾] 所需点数",
+                ["Tier6_MindShield_Cooldown"] = "Tier 6-1: [心灵盾] 冷却时间 (秒)",
+                ["Tier6_MindShield_EitrCost"] = "Tier 6-1: [心灵盾] 以太消耗",
+                ["Tier6_MindShield_Duration"] = "Tier 6-1: [心灵盾] 护盾持续时间 (秒)",
 
                 // === Tier 6-2: 神经强化 (2) ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [神经强化] 条件性闪避加成 (30秒无闪避, %)",

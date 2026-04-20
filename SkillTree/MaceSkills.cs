@@ -186,25 +186,24 @@ namespace CaptainSkillTree.SkillTree
 
     /// <summary>
     /// 둔기 체력 증가 패치
-    /// Tier 5 Tank: 체력 +25%
+    /// Tier 5 Tank: 체력 +25 (고정값)
+    /// GetTotalFoodValue 패치로 m_baseHP에 포함 → 힐링 깜빡임 방지
     /// </summary>
-    [HarmonyPatch(typeof(Character), nameof(Character.GetMaxHealth))]
+    [HarmonyPatch(typeof(Player), "GetTotalFoodValue")]
     public static class MaceSkills_HealthPatch
     {
-        static void Postfix(Character __instance, ref float __result)
+        static void Postfix(Player __instance, ref float hp)
         {
             try
             {
-                if (__instance is not Player player) return;
-                if (!WeaponHelper.IsUsingMace(player)) return;
+                if (!WeaponHelper.IsUsingMace(__instance)) return;
 
                 if (SkillBonusCalculator.IsSkillActive("mace_Step5_tank"))
                 {
                     float healthBonus = Mace_Config.MaceStep5TankHealthBonusValue;
-                    float baseHealth = __result;
-                    __result += healthBonus;  // 고정값 덧셈 (+25), % 아님
+                    hp += healthBonus;
 
-                    Plugin.Log.LogDebug($"[둔기 탱커] 체력 +{healthBonus}: {baseHealth:F0} → {__result:F0}");
+                    Plugin.Log.LogDebug($"[둔기 탱커] 체력 +{healthBonus} (m_baseHP 포함)");
                 }
             }
             catch (Exception ex)

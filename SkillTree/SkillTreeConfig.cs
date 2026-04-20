@@ -957,6 +957,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Config 변경 이벤트 등록 ===
             RegisterConfigChangeEvents();
+            SubscribeAdminConfigChanges(config);
 
             if (_isServer)
             {

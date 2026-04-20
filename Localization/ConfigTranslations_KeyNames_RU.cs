@@ -178,8 +178,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_BlockMaster_ParryDurationBonus"] = "Ур.5: Бонус длительности парирования (сек)",
                 ["Tier5_BlockMaster_RequiredPoints"] = "Ур.5-4: [Мастер блока] Необходимые очки",
 
-                // === Ур. 6-1: Ментальный Щит (1) ===
+                // === Ур. 6-1: Ментальный Щит (4) ===
                 ["Tier6_MindShield_RequiredPoints"] = "Ур.6-1: [Ментал. щит] Необходимые очки",
+                ["Tier6_MindShield_Cooldown"] = "Ур.6-1: [Ментал. щит] Перезарядка (сек.)",
+                ["Tier6_MindShield_EitrCost"] = "Ур.6-1: [Ментал. щит] Стоимость Эйтра",
+                ["Tier6_MindShield_Duration"] = "Ур.6-1: [Ментал. щит] Длительность щита (сек.)",
 
                 // === Ур. 6-2: Усиление Нервов (2) ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] = "Ур.6: Условный бонус уклонения (30с, %)",

@@ -551,7 +551,8 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogInfo($"[암살자의 심장] 연속 공격 시작 - 목표: {requiredHits}회 적중");
 
             // 데미지 계산 준비
-            var weaponDamage = weapon.GetDamage();
+            float assassinSkillFactor = player.GetSkillFactor(Skills.SkillType.Knives);
+            var weaponDamage = weapon.GetDamage(0, assassinSkillFactor);
 
             for (int i = 0; i < requiredHits; i++)
             {
@@ -580,6 +581,7 @@ namespace CaptainSkillTree.SkillTree
                     hit.m_dir = (target.transform.position - player.transform.position).normalized;
                     hit.m_attacker = player.GetZDOID();
                     hit.SetAttacker(player);
+                    hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
                     hit.m_skill = Skills.SkillType.Knives;
 
                     target.Damage(hit);

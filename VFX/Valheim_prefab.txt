@@ -3380,7 +3380,7 @@ vfx_blob_attack
 vfx_blob_death
 vfx_blob_hit
 vfx_blobelite_attack
-vfx_blobtar_death
+vfx_blobgre_death
 vfx_blobtar_hit
 vfx_blocked
 vfx_BloodDeath

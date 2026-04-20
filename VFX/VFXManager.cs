@@ -205,6 +205,40 @@ namespace CaptainSkillTree.VFX
 
         #endregion
 
+        #region ZNetScene 동기화 VFX (Orbs.cs 패턴 — 모든 클라이언트에 자동 표시)
+
+        // ZNetScene에 등록된 CaptainVFXHost 프리팹을 통해 VFX를 네트워크 동기화 재생
+        // SimpleVFX(RPC) 방식과 달리 Valheim 내장 ZDO 동기화를 활용하여 안정적으로 다른 플레이어에게 보임
+        public static GameObject PlayVFXNetworkSync(string vfxName, Vector3 position, float duration = 5f)
+        {
+            if (!VFX_ENABLED) return null;
+            if (ZNetScene.instance == null) return null;
+
+            var hostPrefab = Patch_ZNetScene_RegisterVFXHost.HostPrefab;
+            if (hostPrefab == null)
+                return SimpleVFX.Play(vfxName, position, duration); // fallback
+
+            // 비활성 상태로 Instantiate → Awake 지연
+            var host = UnityEngine.Object.Instantiate(hostPrefab, position, Quaternion.identity);
+
+            // SetActive(true) → ZNetView.Awake() → ZDO 생성
+            host.SetActive(true);
+
+            // ZDO에 VFX 정보 기록 (다른 클라이언트가 Start()에서 읽음)
+            host.GetComponent<VFXNetworkController>()?.InitAsOwner(vfxName, duration);
+
+            return host;
+        }
+
+        // 플레이어 위치에 ZNetScene 동기화 VFX 재생 (고정 위치, 버프 발동 시점용)
+        public static GameObject PlayVFXNetworkSyncOnPlayer(Player player, string vfxName, float duration = 5f)
+        {
+            if (!VFX_ENABLED || player == null) return null;
+            return PlayVFXNetworkSync(vfxName, player.transform.position + Vector3.up, duration);
+        }
+
+        #endregion
+
         #region 초기화 및 유틸리티 (빈 메서드 - SimpleVFX가 처리)
 
         public static void Initialize() { }

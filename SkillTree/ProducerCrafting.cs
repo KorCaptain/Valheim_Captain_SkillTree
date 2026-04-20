@@ -465,25 +465,27 @@ namespace CaptainSkillTree.SkillTree
         }
 
         // ============================================================
-        // 마법부여 효과: MaxHP - Character.GetMaxHealth Postfix
+        // 마법부여 효과: MaxHP - Player.GetTotalFoodValue Postfix
+        // GetTotalFoodValue 패치로 m_baseHP에 포함 → 힐링 깜빡임 방지
         // ============================================================
-        [HarmonyPatch(typeof(Character), nameof(Character.GetMaxHealth))]
+        [HarmonyPatch(typeof(Player), "GetTotalFoodValue")]
         public static class Producer_Enchant_GetMaxHealth_Patch
         {
             [HarmonyPriority(Priority.Low)]
-            public static void Postfix(Character __instance, ref float __result)
+            public static void Postfix(Player __instance, ref float hp)
             {
                 try
                 {
-                    if (!__instance.IsPlayer()) return;
-                    var player = __instance as Player;
-                    if (player == null) return;
-
-                    // MaxHP는 % 방식으로 변경 (투구/흉갑 슬롯)
-                    float bonus = GetEquippedSlotEnchantTotal(player, EnchantType.MaxHP,
+                    // 비율 보너스를 고정값으로 변환하여 m_baseHP에 포함 (Rule 2 패턴)
+                    float bonus = GetEquippedSlotEnchantTotal(__instance, EnchantType.MaxHP,
                         ItemDrop.ItemData.ItemType.Helmet,
                         ItemDrop.ItemData.ItemType.Chest);
-                    if (bonus > 0f) __result += __result * (bonus / 100f);
+                    if (bonus > 0f)
+                    {
+                        float bonusHp = hp * (bonus / 100f);
+                        hp += bonusHp;
+                        Plugin.Log.LogDebug($"[제작 마법부여 MaxHP] +{bonus}%: +{bonusHp:F0} (m_baseHP 포함)");
+                    }
                 }
                 catch (Exception) { }
             }

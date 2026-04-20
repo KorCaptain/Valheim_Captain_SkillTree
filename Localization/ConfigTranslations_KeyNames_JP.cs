@@ -284,8 +284,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5-4: [ブロックマスター] パリィ持続時間ボーナス (秒)",
                 ["Tier5_BlockMaster_RequiredPoints"] = "Tier 5-4: [ブロックマスター] 必要ポイント",
 
-                // === Tier 6-1: マインドシールド (1) ===
+                // === Tier 6-1: マインドシールド (4) ===
                 ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [マインドシールド] 必要ポイント",
+                ["Tier6_MindShield_Cooldown"] = "Tier 6-1: [マインドシールド] クールタイム (秒)",
+                ["Tier6_MindShield_EitrCost"] = "Tier 6-1: [マインドシールド] エイトル消費",
+                ["Tier6_MindShield_Duration"] = "Tier 6-1: [マインドシールド] シールド持続時間 (秒)",
 
                 // === Tier 6-2: 神経強化 (2) ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [神経強化] 条件付き回避ボーナス (30秒無回避, %)",

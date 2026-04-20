@@ -147,3 +147,30 @@ CaptainSkillTree/
 
 *No recent activity*
 </claude-mem-context>
+
+## valheimCLI — 인게임 테스트
+
+**CLI 위치**: `C:\home\ssunyme\.npm-global\bin\valheimCLI\`
+
+```bash
+cd /c/home/ssunyme/.npm-global/bin/valheimCLI
+
+# 스킬 테스트 환경 세팅
+./valheim.sh god                        # 갓모드 (죽지 않고 관찰)
+./valheim.sh tod 0.5                    # 낮 고정 (VFX 잘 보이게)
+./valheim.sh raiseskill Swords 100      # 검 스킬 최대 (T/G/H키 스킬 테스트)
+./valheim.sh raiseskill Bows 100        # 활 스킬 최대 (T키)
+./valheim.sh raiseskill ElementalMagic 100  # 마법 스킬 최대
+./valheim.sh raiseskill Knives 100      # 단검 스킬 최대 (G키 암살)
+./valheim.sh raiseskill Clubs 100       # 둔기 스킬 최대 (G키 망치, H키 반사)
+./valheim.sh raiseskill Spears 100      # 창 스킬 최대 (G키 연공, H키 강화투척)
+
+# 직업별 적 소환
+./valheim.sh spawn Goblin 5             # 고블린 — 검/창/로그 스킬 테스트
+./valheim.sh spawn BlobElite 3          # 엘리트 슬라임 — 둔기/탱커 테스트
+./valheim.sh spawn Dragon 1             # 드래곤 — 마법사/궁수 테스트
+./valheim.sh spawn Troll 2              # 트롤 — 광전사/성기사 테스트
+./valheim.sh killall                    # 전체 정리 후 재소환
+```
+
+**워크플로**: `dotnet build` → 자동 배포 → `./valheim.sh spawn XXX` → 확인

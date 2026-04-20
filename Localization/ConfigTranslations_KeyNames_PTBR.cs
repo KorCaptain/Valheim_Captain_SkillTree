@@ -292,8 +292,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5-4: [Mestre de Bloqueio] Bônus de Duração de Aparar (seg)",
                 ["Tier5_BlockMaster_RequiredPoints"] = "Tier 5-4: [Mestre de Bloqueio] Pontos Necessários",
 
-                // === Tier 6-1: Escudo Mental (1) ===
+                // === Tier 6-1: Escudo Mental (4) ===
                 ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [Escudo Mental] Pontos Necessários",
+                ["Tier6_MindShield_Cooldown"] = "Tier 6-1: [Escudo Mental] Recarga (seg.)",
+                ["Tier6_MindShield_EitrCost"] = "Tier 6-1: [Escudo Mental] Custo de Eitr",
+                ["Tier6_MindShield_Duration"] = "Tier 6-1: [Escudo Mental] Duração do Escudo (seg.)",
 
                 // === Tier 6-2: Aprimoramento Nervoso (2) ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [Aprim. Nervoso] Bônus de Esquiva Condicional (30s, %)",

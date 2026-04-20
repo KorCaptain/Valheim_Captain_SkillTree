@@ -519,6 +519,21 @@ namespace CaptainSkillTree.Localization
                 "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 2",
 
+                ["Tier6_MindShield_Cooldown"] =
+                "【마인드쉴드 쿨타임】\n" +
+                "H키 마인드쉴드 스킬의 재사용 대기시간입니다 (초).\n" +
+                "기본값: 210 (3분 30초)",
+
+                ["Tier6_MindShield_EitrCost"] =
+                "【마인드쉴드 에이트르 소모】\n" +
+                "마인드쉴드 시전 시 소모하는 에이트르 양입니다.\n" +
+                "기본값: 30",
+
+                ["Tier6_MindShield_Duration"] =
+                "【마인드쉴드 지속 시간】\n" +
+                "보호막이 유지되는 시간입니다 (초). 이 시간 동안 에이트르 최대치만큼의 HP 피해를 흡수합니다.\n" +
+                "기본값: 180 (3분)",
+
                 ["Tier6_NerveEnhancement_RequiredPoints"] =
                 "【필요 포인트】\n" +
                 "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
@@ -1288,6 +1303,21 @@ namespace CaptainSkillTree.Localization
                 "【Required Points】\n" +
                 "Number of skill points required to unlock this node.\n" +
                 "Recommended: 2",
+
+                ["Tier6_MindShield_Cooldown"] =
+                "【Mind Shield Cooldown】\n" +
+                "Cooldown time for the H-key Mind Shield skill (seconds).\n" +
+                "Default: 210 (3 min 30 sec)",
+
+                ["Tier6_MindShield_EitrCost"] =
+                "【Mind Shield Eitr Cost】\n" +
+                "Amount of Eitr consumed when activating Mind Shield.\n" +
+                "Default: 30",
+
+                ["Tier6_MindShield_Duration"] =
+                "【Mind Shield Duration】\n" +
+                "Duration of the shield (seconds). Absorbs damage up to max Eitr HP during this time.\n" +
+                "Default: 180 (3 min)",
 
                 ["Tier6_NerveEnhancement_RequiredPoints"] =
                 "【Required Points】\n" +

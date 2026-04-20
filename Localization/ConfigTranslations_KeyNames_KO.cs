@@ -303,8 +303,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5-4: [막기달인] 패링 지속시간 보너스 (초)",
                 ["Tier5_BlockMaster_RequiredPoints"] = "Tier 5-4: [막기달인] 필요 포인트",
 
-                // === Tier 6-1: 마인드쉴드 (1개) ===
+                // === Tier 6-1: 마인드쉴드 (4개) ===
                 ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [마인드쉴드] 필요 포인트",
+                ["Tier6_MindShield_Cooldown"] = "Tier 6-1: [마인드쉴드] 쿨타임 (초)",
+                ["Tier6_MindShield_EitrCost"] = "Tier 6-1: [마인드쉴드] 에이트르 소모",
+                ["Tier6_MindShield_Duration"] = "Tier 6-1: [마인드쉴드] 보호막 지속 시간 (초)",
 
                 // === Tier 6-2: 신경강화 (2개) ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [신경강화] 회피율 조건부 보너스 (30초 미발동, %)",

@@ -303,8 +303,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_BlockMaster_ParryDurationBonus"] = "Tier 5-4: [Block Master] Parry Duration Bonus (sec)",
                 ["Tier5_BlockMaster_RequiredPoints"] = "Tier 5-4: [Block Master] Required Points",
 
-                // === Tier 6-1: Mind Shield (1) ===
+                // === Tier 6-1: Mind Shield (4) ===
                 ["Tier6_MindShield_RequiredPoints"] = "Tier 6-1: [Mind Shield] Required Points",
+                ["Tier6_MindShield_Cooldown"] = "Tier 6-1: [Mind Shield] Cooldown (seconds)",
+                ["Tier6_MindShield_EitrCost"] = "Tier 6-1: [Mind Shield] Eitr Cost",
+                ["Tier6_MindShield_Duration"] = "Tier 6-1: [Mind Shield] Shield Duration (seconds)",
 
                 // === Tier 6-2: Nerve Enhancement (2) ===
                 ["Tier6_NerveEnhancement_DodgeBonus"] = "Tier 6-2: [Nerve Enhancement] Conditional Dodge Bonus (30s no-evasion, %)",

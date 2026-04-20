@@ -24,31 +24,31 @@ try {
     $currentVersion = $versionNode.Version
     Write-Host "[VERSION] Current: $currentVersion" -ForegroundColor Yellow
 
-    # 2. Parse Semantic Versioning (major.minor.patch) - patch is zero-padded 3 digits
+    # 2. Parse Semantic Versioning (major.minor.patch) - patch is zero-padded 2 digits (00-99)
     if ($currentVersion -match '^(\d+)\.(\d+)\.(\d+)$') {
         $major = [int]$matches[1]
         $minor = [int]$matches[2]
         $patch = [int]$matches[3] + 1
 
-        # PATCH rollover: x.y.999 -> x.(y+1).001
-        if ($patch -ge 1000) {
-            $minor = $minor + 1
-            $patch = 1
+        # PATCH rollover: x.y.99 -> x.MINOR_NEXT.00
+        # MINOR rule: single-digit (e.g. 2) -> append "1" (2 -> 21), then +1 per rollover (21->22->...->29->30->...)
+        if ($patch -ge 100) {
+            if ($minor -lt 10) {
+                $minor = [int]("$minor" + "1")
+            } else {
+                $minor = $minor + 1
+            }
+            $patch = 0
         }
 
-        $patchStr = $patch.ToString("D3")
+        $patchStr = $patch.ToString("D2")
         $newVersion = "$major.$minor.$patchStr"
         $newAssemblyVersion = "$major.$minor.$patch.0"
-
-        # Changelog version: every 10 builds = 1 changelog group (001-010 -> 01, 011-020 -> 02, ...)
-        $changelogPatchNum = [int][Math]::Ceiling($patch / 10)
-        $changelogPatchStr = $changelogPatchNum.ToString("D2")
-        $changelogVersion = "$major.$minor.$changelogPatchStr"
     } else {
-        throw "Version format error: $currentVersion (expected: 1.2.001)"
+        throw "Version format error: $currentVersion (expected: 1.2.31)"
     }
 
-    Write-Host "[VERSION] New: $newVersion (changelog: $changelogVersion)" -ForegroundColor Green
+    Write-Host "[VERSION] New: $newVersion" -ForegroundColor Green
 
     # 3. Update Plugin.cs
     $pluginPath = Join-Path $ProjectDir "Plugin.cs"
@@ -57,7 +57,7 @@ try {
     $pluginPattern = '(\[BepInPlugin\("CaptainSkillTree\.SkillTreeMod", "Captain SkillTree Mod", ")(\d+\.\d+\.\d+)("\)\])'
     $pluginContent = $pluginContent -replace $pluginPattern, "`${1}$newVersion`$3"
     [System.IO.File]::WriteAllText($pluginPath, $pluginContent, [System.Text.Encoding]::UTF8)
-    Write-Host "[OK] Plugin.cs updated (Line 283)" -ForegroundColor Green
+    Write-Host "[OK] Plugin.cs updated" -ForegroundColor Green
 
     # 4. Update AssemblyInfo.cs
     $assemblyInfoPath = Join-Path $ProjectDir "Properties\AssemblyInfo.cs"
@@ -66,7 +66,7 @@ try {
     $assemblyPattern = '\[assembly: Assembly(File)?Version\("(\d+\.\d+\.\d+\.\d+)"\)\]'
     $assemblyContent = $assemblyContent -replace $assemblyPattern, "[assembly: Assembly`$1Version(`"$newAssemblyVersion`")]"
     [System.IO.File]::WriteAllText($assemblyInfoPath, $assemblyContent, [System.Text.Encoding]::UTF8)
-    Write-Host "[OK] AssemblyInfo.cs updated (Lines 15-16)" -ForegroundColor Green
+    Write-Host "[OK] AssemblyInfo.cs updated" -ForegroundColor Green
 
     # 5. Update README.md
     $readmePath = Join-Path $ProjectDir "README.md"
@@ -86,11 +86,10 @@ try {
         New-Item -ItemType Directory -Path $thunderstorePath | Out-Null
     }
 
-    # Generate JSON directly
     $manifest = @"
 {
   "name": "CaptainSkillTree",
-  "version_number": "$changelogVersion",
+  "version_number": "$newVersion",
   "website_url": "https://discord.gg/W26PTxYhug",
   "description": "Valheim Skill Tree Expansion - EpicMMOSystem Expert System",
   "dependencies": [
@@ -109,7 +108,7 @@ try {
     $csproj.Save($ProjectFile)
     Write-Host "[OK] .csproj version saved" -ForegroundColor Green
 
-    Write-Host "[SUCCESS] Version updated: $currentVersion -> $newVersion (manifest: $changelogVersion)" -ForegroundColor Magenta
+    Write-Host "[SUCCESS] Version updated: $currentVersion -> $newVersion" -ForegroundColor Magenta
     exit 0
 
 } catch {

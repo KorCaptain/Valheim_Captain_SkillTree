@@ -27,6 +27,9 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> DefenseStep5HealRequiredPoints;       // Tier 5-3: 트롤의 재생력
         public static ConfigEntry<int> DefenseStep5ParryRequiredPoints;      // Tier 5-4: 막기달인
         public static ConfigEntry<int> DefenseStep6MindRequiredPoints;       // Tier 6-1: 마인드쉴드
+        public static ConfigEntry<float> MindShieldCooldown;                // 마인드쉴드 쿨타임
+        public static ConfigEntry<float> MindShieldEitrCost;                // 마인드쉴드 에이트르 소모
+        public static ConfigEntry<float> MindShieldDuration;                // 마인드쉴드 지속 시간
         public static ConfigEntry<int> DefenseStep6AttackRequiredPoints;     // Tier 6-2: 신경강화
         public static ConfigEntry<int> DefenseStep6DoubleJumpRequiredPoints; // Tier 6-3: 이단점프
         public static ConfigEntry<int> DefenseStep6BodyRequiredPoints;       // Tier 6-4: 요툰의 생명력
@@ -141,6 +144,9 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>충격파방출 - 쿨타임 (초)</summary>
         public static ConfigEntry<float> ShockwaveCooldown;
+
+        /// <summary>충격파방출 - 반복 넉백 힘</summary>
+        public static ConfigEntry<float> ShockwaveKnockbackForce;
 
         // =====================================================
         // Tier 4: 발구르기 (defense_Step4_instant)
@@ -310,6 +316,12 @@ namespace CaptainSkillTree.SkillTree
         public static int DefenseStep5HealRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step5_heal_required_points", DefenseStep5HealRequiredPoints?.Value ?? 3);
         public static int DefenseStep5ParryRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step5_parry_required_points", DefenseStep5ParryRequiredPoints?.Value ?? 3);
         public static int DefenseStep6MindRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step6_mind_required_points", DefenseStep6MindRequiredPoints?.Value ?? 4);
+        public static float MindShieldCooldownValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_MindShield_Cooldown", MindShieldCooldown?.Value ?? 210f);
+        public static float MindShieldEitrCostValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_MindShield_EitrCost", MindShieldEitrCost?.Value ?? 30f);
+        public static float MindShieldDurationValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_MindShield_Duration", MindShieldDuration?.Value ?? 180f);
         public static int DefenseStep6AttackRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step6_attack_required_points", DefenseStep6AttackRequiredPoints?.Value ?? 4);
         public static int DefenseStep6DoubleJumpRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step6_doublejump_required_points", DefenseStep6DoubleJumpRequiredPoints?.Value ?? 4);
         public static int DefenseStep6BodyRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step6_body_required_points", DefenseStep6BodyRequiredPoints?.Value ?? 4);
@@ -371,6 +383,9 @@ namespace CaptainSkillTree.SkillTree
 
         public static float ShockwaveCooldownValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_Shockwave_Cooldown", ShockwaveCooldown?.Value ?? 120f);
+
+        public static float ShockwaveKnockbackForceValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_Shockwave_KnockbackForce", ShockwaveKnockbackForce?.Value ?? 20f);
 
         // === Tier 4: 바위피부 ===
         public static float TankerArmorBonusValue =>
@@ -583,9 +598,13 @@ namespace CaptainSkillTree.SkillTree
                 "Defense Tree", "Tier4_Shockwave_Cooldown", 120f,
                 SkillTreeConfig.GetConfigDescription("Tier4_Shockwave_Cooldown"), order: 49);
 
+            ShockwaveKnockbackForce = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier4_Shockwave_KnockbackForce", 20f,
+                SkillTreeConfig.GetConfigDescription("Tier4_Shockwave_KnockbackForce"), order: 48);
+
             DefenseStep4MentalRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier4_Shockwave_RequiredPoints", 3,
-                SkillTreeConfig.GetConfigDescription("Tier4_Shockwave_RequiredPoints"), order: 48);
+                SkillTreeConfig.GetConfigDescription("Tier4_Shockwave_RequiredPoints"), order: 47);
 
             // ===========================================
             // Tier 4: Ground Stomp (발구르기)
@@ -699,17 +718,29 @@ namespace CaptainSkillTree.SkillTree
                 "Defense Tree", "Tier6_MindShield_RequiredPoints", 4,
                 SkillTreeConfig.GetConfigDescription("Tier6_MindShield_RequiredPoints"), order: 20);
 
+            MindShieldCooldown = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_MindShield_Cooldown", 210f,
+                SkillTreeConfig.GetConfigDescription("Tier6_MindShield_Cooldown"), order: 19);
+
+            MindShieldEitrCost = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_MindShield_EitrCost", 30f,
+                SkillTreeConfig.GetConfigDescription("Tier6_MindShield_EitrCost"), order: 18);
+
+            MindShieldDuration = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_MindShield_Duration", 180f,
+                SkillTreeConfig.GetConfigDescription("Tier6_MindShield_Duration"), order: 17);
+
             // ===========================================
             // Tier 6: Nerve Enhancement (신경강화)
             // ===========================================
 
             AttackDodgeBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier6_NerveEnhancement_DodgeBonus", 35f,
-                SkillTreeConfig.GetConfigDescription("Tier6_NerveEnhancement_DodgeBonus"), order: 18);
+                SkillTreeConfig.GetConfigDescription("Tier6_NerveEnhancement_DodgeBonus"), order: 16);
 
             DefenseStep6AttackRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier6_NerveEnhancement_RequiredPoints", 4,
-                SkillTreeConfig.GetConfigDescription("Tier6_NerveEnhancement_RequiredPoints"), order: 17);
+                SkillTreeConfig.GetConfigDescription("Tier6_NerveEnhancement_RequiredPoints"), order: 15);
 
             // ===========================================
             // Tier 6: Double Jump (이단점프)
@@ -717,7 +748,7 @@ namespace CaptainSkillTree.SkillTree
 
             DefenseStep6DoubleJumpRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier6_DoubleJump_RequiredPoints", 4,
-                SkillTreeConfig.GetConfigDescription("Tier6_DoubleJump_RequiredPoints"), order: 15);
+                SkillTreeConfig.GetConfigDescription("Tier6_DoubleJump_RequiredPoints"), order: 14);
 
             // ===========================================
             // Tier 6: Jotunn's Vitality (요툰의 생명력)

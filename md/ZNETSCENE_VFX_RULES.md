@@ -1,328 +1,202 @@
-# ZNetScene VFX/SFX 통합 관리 규칙
+# VFX/SFX 통합 규칙
 
-## 🎯 핵심 원칙
-
-### 1. ZNetScene 필수 등록 규칙
-- **외부 VFX/SFX 효과는 ZNetScene에 등록 후 사용**
-
-- **Plugin.cs의 UnifiedVfxPrefabRegisterPatch에서 자동 등록**
-- **사용 전 반드시 ZNetScene.instance.GetPrefab()로 존재 확인**
-
-## ⚠️ 중요: 이 문서는 VFX 프리팹 목록 참고용입니다
-내부 VFX 프리팹은 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\VFX 의 Valheim_prefab.txt 참고
-외부(커스텀) VFX 폴더 위치 -  C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\asset\VFX
-
-
-** VFX 재생 방법은 VFX_SOUND_INFINITE_LOADING_FIX.md 를 따르세요.**
-
-**VFX 타입별 사용 메서드:**
-- **커스텀 VFX** (hit_01, debuff 등): `SimpleVFX` 사용
-- **발헤임 기본 VFX** (fx_greenroots_projectile_hit, vfx_blocked 등): `VFXManager.PlayVFXMultiplayer()` 사용
-
-**커스텀 VFX 리스트는 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\asset\VFX 의 모든 프리팹
-**발헤임 기본 VFX  리스트는 C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\VFX 의 Valheim_prefab.txt 
-
-## 발헤임 기본 이팩트로 프리팹 기본 등록 되어 있음
-smokebomb_explosion - 발헤임 기본 스모크 효과 - 로그 이팩트
-vfx_GodExplosion - 발헤임 기본 녹색 폭파 완전 큼
-fx_Fader_CorpseExplosion - 발헤임 기본 푸른 큰 안개 
-fx_siegebomb_explosion - 발헤임 기본 - 히트 폭파
-charred_fireball_projectile - 화려한 회오리 중심 독, 힐 이팩트
-fx_greenroots_projectile_hit - 힐, 독 히트 이팩트
-fx_lightningstaffprojectile_hit - 번개 히트 이팩트
-fx_shaman_fireball_expl - 둥근 핑크 히트 이팩트
-fx_shaman_protect - 푸른 회오리 이팩트
-fx_shield_start - 쉴드 및 버프 시작 이팩트
-fx_shieldgenerator_domehit - 그린 방어 이팩트
-staff_greenroots_projectile - 그린 볼 뿌리 소환
-fx_Fader_Spin - 광역 푸른 둥근 보기좋은 굿
-dvergerstaffheal_aoe 좁은 범위 힐(자신 빼고?)
-
-## 📦 등록된 커스텀 VFX 프리팹 목록(탱커 사용중)
-
-### 버프/디버프 효과
-- `buff_02a` - 아처 멀티샷 활성화 버프
-- `buff_03a` - 캐릭터 힐 효과 이팩트
-- `buff_03a_aura` - 잔잔한 캐릭터 머리위로 녹생 방울 힐링 도트효과 
-- `debuff` - 디버프 화살표 위에서 아래로 붉은색 - 버서커 사용 - 반복됨 종료 코드 필요
-- `debuff_03` - ㅣ ㅣ ㅣ ㅣ 하얀색 버프? 비슷 - 종료코드 필요
-- `debuff_03_aura` - 오라 타입 디버프
-- `statusailment_01` - 상태 이상 효과 1
-- `statusailment_01_aura` - 스킬 시전 캐릭터 머리 표시(종료 필요) - 캐릭터 버프형 VFX 사용중
-- 'buff_01' - 공격력 증가 버프
-
-
-### 타격/전투 효과
-- `hit_01` - 기본 타격 효과 1
-- `hit_02` - 기본 타격 효과 2
-- `hit_03` - 기본 타격 효과 3
-- `hit_04` - 기본 타격 효과 4
-
-
-### 특수 효과
-- `healing` - 힐링 효과, 녹색 안개와 십차 모양 힐 - 반복됨 종료 코드 필요(종료 코드는 버서커 이팩티 종료 참고)
-- `taunt` - 도발 효과 - 몬스터 머리위에 표시 필요
-
-### 오라/지속 효과
-- `plexus` - 플렉서스 효과 - 번개 파란색 라운드  - 반복됨 종료 코드 필요(종료 코드는 버서커 이팩티 종료 참고)
-
-### MMO 호환 효과
-- `LevelUpVFX2` - MMO 레벨업 효과
-
-## 기타 미사용된 효과 - 사용가능하게 모두 등록은 되어야함 추후 사용예정
-area_circles_blue - 원기둥형 동글동글 푸른 빛
-area_fire_red - 원기둥형 붉은 빛 줄기 위로 올라감
-area_heal_green - 원기둥형 빛 십자모양 위로 올라감 힐?
-area_magic_multicolor - 원기둥형 빛 원 모양 위로 올라감
-area_star_ellow - 원기둥형 빛 노란 줄 올라감
-shine_blue - 빛 흰,블루 광역 - 종료 코드 필요
-shine_pink - 
-shine_ellow
-sparkle_ellow - 흐린 뿌연 노란 빛 - 로그 사용
-confetti_blast_multicolor - 히트 효과 - 여러 모양 히트 주로 노란색?
-confetti_directional_multicolor - 히트효과? 중앙에서 왼쪽 오른쪽 각 각 히트여러모양 퍼져나감
-flash_blue_purple - 히트 블루 퍼플
-flash_ellow - 히트 노랑 
-flash_ellow_pink - 히트 노랑 핑크
-flash_magic_blue_pink - 히트 매직 붐 블루 핑크
-flash_magic_ellow_blue
-flash_round_ellow - 히트 노랑 크게 히트 - 쓸만함
-flash_star_ellow_purple - 히트 폭발 스타 ... - 중하
-water_blast_blue - 푸른 물폭파
-water_blast_green - 그린 물폭파
-guard_01 - 막기 효과 파란색 원 물파장
-dust_permanently_blue - 둥근 여러 모양 푸른색으로 뭉개 뭉개 광역
-
-
-## 🔧 사용 방법
-
-### 1. 표준 VFX 재생 패턴
-```csharp
-public static void PlayVfxEffect(string effectName, Vector3 position, Quaternion rotation = default)
-{
-    try
-    {
-        var znet = ZNetScene.instance;
-        if (znet == null)
-        {
-            Plugin.Log.LogWarning($"[VFX] ZNetScene이 null입니다");
-            return;
-        }
-        
-        var effectPrefab = znet.GetPrefab(effectName);
-        if (effectPrefab != null)
-        {
-            UnityEngine.Object.Instantiate(effectPrefab, position, rotation);
-            Plugin.Log.LogDebug($"[VFX] {effectName} 효과 재생 완료");
-        }
-        else
-        {
-            Plugin.Log.LogWarning($"[VFX] ZNetScene에서 {effectName} 프리팹을 찾을 수 없음");
-        }
-    }
-    catch (Exception ex)
-    {
-        Plugin.Log.LogError($"[VFX] {effectName} 재생 오류: {ex.Message}");
-    }
-}
-```
-
-### 2. 캐시된 VFX 재생 패턴 (성능 최적화)
-```csharp
-private static readonly Dictionary<string, GameObject> vfxCache = new Dictionary<string, GameObject>();
-
-public static void PlayCachedVfxEffect(string effectName, Vector3 position, Quaternion rotation = default)
-{
-    try
-    {
-        // 캐시에서 먼저 확인
-        if (!vfxCache.ContainsKey(effectName))
-        {
-            var znet = ZNetScene.instance;
-            if (znet != null)
-            {
-                var prefab = znet.GetPrefab(effectName);
-                if (prefab != null)
-                {
-                    vfxCache[effectName] = prefab;
-                    Plugin.Log.LogDebug($"[VFX 캐시] {effectName} 프리팹 캐시됨");
-                }
-                else
-                {
-                    Plugin.Log.LogWarning($"[VFX 캐시] {effectName} 프리팹을 ZNetScene에서 찾을 수 없음");
-                    return;
-                }
-            }
-            else
-            {
-                Plugin.Log.LogWarning($"[VFX 캐시] ZNetScene이 null입니다");
-                return;
-            }
-        }
-        
-        // 캐시된 프리팹으로 효과 재생
-        var cachedPrefab = vfxCache[effectName];
-        if (cachedPrefab != null)
-        {
-            UnityEngine.Object.Instantiate(cachedPrefab, position, rotation);
-            Plugin.Log.LogDebug($"[VFX 캐시] {effectName} 캐시된 효과 재생 완료");
-        }
-    }
-    catch (Exception ex)
-    {
-        Plugin.Log.LogError($"[VFX 캐시] {effectName} 재생 오류: {ex.Message}");
-    }
-}
-```
-
-### 3. 플레이어 위치 기반 효과 재생
-```csharp
-public static void PlayPlayerVfxEffect(string effectName, Player player)
-{
-    if (player == null) return;
-    PlayVfxEffect(effectName, player.transform.position, player.transform.rotation);
-}
-```
-
-### 4. 지속 효과 관리 (버프/디버프)
-```csharp
-// 플레이어별 활성 효과 추적
-private static readonly Dictionary<Player, Dictionary<string, GameObject>> activePlayerEffects = 
-    new Dictionary<Player, Dictionary<string, GameObject>>();
-
-public static void ApplyPersistentEffect(string effectName, Player player, float duration = 0f)
-{
-    try
-    {
-        // 기존 효과 제거
-        RemovePersistentEffect(effectName, player);
-        
-        // 새 효과 생성
-        var effectObj = CreateVfxEffect(effectName, player.transform.position);
-        if (effectObj != null)
-        {
-            // 플레이어를 따라다니도록 설정
-            effectObj.transform.SetParent(player.transform);
-            
-            // 추적 목록에 추가
-            if (!activePlayerEffects.ContainsKey(player))
-                activePlayerEffects[player] = new Dictionary<string, GameObject>();
-            
-            activePlayerEffects[player][effectName] = effectObj;
-            
-            // 지속 시간이 있으면 자동 제거 예약
-            if (duration > 0f)
-            {
-                player.StartCoroutine(RemoveEffectAfterDelay(effectName, player, duration));
-            }
-        }
-    }
-    catch (Exception ex)
-    {
-        Plugin.Log.LogError($"[지속 효과] {effectName} 적용 오류: {ex.Message}");
-    }
-}
-
-public static void RemovePersistentEffect(string effectName, Player player)
-{
-    try
-    {
-        if (activePlayerEffects.ContainsKey(player) && 
-            activePlayerEffects[player].ContainsKey(effectName))
-        {
-            var effectObj = activePlayerEffects[player][effectName];
-            if (effectObj != null)
-            {
-                UnityEngine.Object.Destroy(effectObj);
-            }
-            activePlayerEffects[player].Remove(effectName);
-        }
-    }
-    catch (Exception ex)
-    {
-        Plugin.Log.LogError($"[지속 효과] {effectName} 제거 오류: {ex.Message}");
-    }
-}
-```
-
-## 🚨 필수 준수 사항
-
-### 1. 효과 사용 전 검증
-```csharp
-// ✅ 올바른 방식 - 항상 ZNetScene에서 확인
-var effectPrefab = ZNetScene.instance?.GetPrefab("buff_02a");
-if (effectPrefab != null)
-{
-    UnityEngine.Object.Instantiate(effectPrefab, position, rotation);
-}
-else
-{
-    Plugin.Log.LogWarning("buff_02a 프리팹을 ZNetScene에서 찾을 수 없음");
-}
-
-// ❌ 잘못된 방식 - 검증 없이 바로 사용
-UnityEngine.Object.Instantiate(Resources.Load("buff_02a"), position, rotation);
-```
-
-### 2. 프리팹 등록 추가 방법
-새로운 VFX 리소스 추가 시:
-
-1. **Captain_SkillTree.csproj에 EmbeddedResource 추가**
-```xml
-<EmbeddedResource Include="asset/VFX/새효과명" />
-```
-
-2. **Plugin.cs의 resourceBundles에 등록**
-```csharp
-["새효과명"] = new[] { "새효과명" },
-```
-
-### 3. 오류 처리 패턴
-```csharp
-// 모든 VFX 관련 코드는 try-catch로 보호
-try
-{
-    // VFX 코드
-}
-catch (Exception ex)
-{
-    Plugin.Log.LogError($"[VFX] 오류: {ex.Message}");
-}
-```
-
-## 📊 성능 최적화 가이드
-
-### 1. 캐싱 시스템 활용
-- 자주 사용되는 효과는 캐시해서 성능 향상
-- Dictionary<string, GameObject>로 프리팹 캐시 관리
-
-### 2. 메모리 관리
-- 지속 효과는 반드시 추적하여 적절한 시점에 제거
-- activePlayerEffects로 플레이어별 효과 관리
-
-### 3. 로그 레벨 관리
-- 정상 작동: LogDebug 사용
-- 경고 상황: LogWarning 사용  
-- 오류 상황: LogError 사용
-
-## ✅ 체크리스트
-
-효과 구현 시 반드시 확인:
-
-- [ ] Captain_SkillTree.csproj에 EmbeddedResource로 등록됨
-- [ ] Plugin.cs의 resourceBundles에 등록됨  
-- [ ] ZNetScene.instance.GetPrefab()로 존재 확인
-- [ ] try-catch 블록으로 오류 처리 구현
-- [ ] 적절한 로그 레벨 사용
-- [ ] 지속 효과는 추적 및 정리 시스템 구현
-
-이 규칙을 준수하여 안정적이고 효율적인 VFX 시스템을 구축하세요.
+> 참조: 내부 VFX 프리팹 목록 → `VFX/Valheim_prefab.txt` / 커스텀 VFX → `asset/VFX/`
 
 ---
 
-## 📚 **관련 문서**
-- **🏠 메인 규칙**: [../CLAUDE.md](../CLAUDE.md) - 전체 개발 규칙 구조
-- **🔐 보호 규칙**: [CORE_PROTECTION_README.md](CORE_PROTECTION_README.md) - AssetBundle 로딩 시스템
-- **🎹 액티브 스킬**: [ACTIVE_SKILL_SYSTEM.md](ACTIVE_SKILL_SYSTEM.md) - 액티브 스킬 VFX 적용
-- **🚨 빌드 오류**: [BUILD_ERRORS_GUIDE.md](BUILD_ERRORS_GUIDE.md) - VFX 관련 오류 해결
-- **⚡ 빠른 참조**: [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - VFX 사용 패턴 요약
+## 🎯 VFX 타입 3분류 — 사용 메서드 결정표
+
+| 타입 | 예시 | 메서드 | 이유 |
+|------|------|--------|------|
+| **커스텀 VFX** (asset/VFX/) | hit_01, debuff, buff_02a | `VFXManager.PlayVFXMultiplayer()` | RPC 멀티플레이어 동기화 |
+| **발헤임 기본 VFX — 고정 위치** | fx_greenroots_projectile_hit, fx_siegebomb_explosion | `VFXManager.PlayVFXMultiplayer()` | RPC 멀티플레이어 동기화 |
+| **발헤임 기본 VFX — 플레이어 추적 + 멀티플레이어** | vfx_GoblinShield, fx_shield_start, vfx_Potion_health_medium | `RegisterValheimVFXAsCustom` 등록 후 `SimpleVFX.PlayOnPlayer()` | ZNetView 제거 + RPC 브로드캐스트 |
+
+---
+
+## ✅ 사용 패턴
+
+### 1. 커스텀 VFX / 발헤임 기본 VFX (고정 위치)
+
+```csharp
+// VFX + 사운드 동시 재생
+VFXManager.PlayVFXMultiplayer("debuff", "sfx_morgen_alert", position, Quaternion.identity, 3f);
+
+// VFX만 (사운드 없음)
+VFXManager.PlayVFXMultiplayer("flash_round_ellow", "", position, Quaternion.identity, 2f);
+```
+
+### 2. 발헤임 기본 VFX — 플레이어 추적 + 멀티플레이어 동기화
+
+**등록** (`SimpleVFX_ZNetScene_Awake_Patch.Postfix` 안에서만 호출):
+```csharp
+SimpleVFX.RegisterValheimVFXAsCustom("vfx_GoblinShield");
+SimpleVFX.RegisterValheimVFXAsCustom("fx_shield_start");
+```
+
+**재생**:
+```csharp
+// 플레이어를 N초간 따라다님 + 모든 클라이언트에 RPC 브로드캐스트
+SimpleVFX.PlayOnPlayer(player, "vfx_GoblinShield", duration, new Vector3(0f, 1.2f, 0f));
+```
+
+**내부 동작**: `RegisterValheimVFXAsCustom`이 ZNetScene 원본을 비활성 클론으로 복제 → ZNetView/ZSyncTransform/ZSyncAnimation 제거 → `_customVFXNames` 등록 → 이후 `PlayOnPlayer` 호출 시 안전한 `Destroy` + `ZRoutedRpc.Everybody` RPC 자동 브로드캐스트
+
+### 3. 순차 VFX (코루틴 딜레이)
+
+시전 이펙트 → 딜레이 → 유지 이펙트 패턴:
+```csharp
+// 시전 이펙트 즉시
+SimpleVFX.PlayOnPlayer(player, "fx_shield_start", 3f);
+
+// N초 후 유지 이펙트
+SkillTreeInputListener.Instance?.StartCoroutine(DelayedVFX(player));
+
+private static IEnumerator DelayedVFX(Player player)
+{
+    yield return new WaitForSeconds(2f);
+    if (!IsActive(player)) yield break;
+    float duration = TotalDuration - 2f;
+    if (duration <= 0f) yield break;
+    SimpleVFX.PlayOnPlayer(player, "vfx_GoblinShield", duration, new Vector3(0f, 1.2f, 0f));
+}
+```
+
+### 4. 로컬 전용 발헤임 기본 VFX (멀티플레이어 동기화 불필요)
+
+```csharp
+// 단순 Instantiate — 발헤임이 알아서 정리
+var prefab = ZNetScene.instance?.GetPrefab("smokebomb_explosion");
+if (prefab != null)
+    UnityEngine.Object.Instantiate(prefab, playerPos, Quaternion.identity);
+```
+
+### 5. ZNet 발사체 프리팹을 로컬 VFX로 사용 (비활성 트릭)
+
+ZNetView가 내장된 발사체를 VFX로 소환 시 → ZNetView.Awake 차단 필수:
+```csharp
+bool wasActive = prefab.activeSelf;
+prefab.SetActive(false);                                          // Awake() 차단
+var obj = UnityEngine.Object.Instantiate(prefab, pos, rot);
+prefab.SetActive(wasActive);                                      // 원본 복구
+UnityEngine.Object.DestroyImmediate(obj.GetComponent<ZNetView>());
+UnityEngine.Object.DestroyImmediate(obj.GetComponent<ZSyncTransform>());
+foreach (var col in obj.GetComponentsInChildren<Collider>()) col.enabled = false;
+obj.SetActive(true);                                              // 비주얼만 활성화
+// 제거 시
+obj.SetActive(false);
+UnityEngine.Object.Destroy(obj);
+```
+
+---
+
+## 🚨 무한 로딩 방지 규칙
+
+### 금지 사항
+
+| 금지 | 대체 |
+|------|------|
+| `VFXManager.PlayVFXHybrid()` | `PlayVFXMultiplayer()` |
+| `Instantiate()` + `AudioSource.PlayClipAtPoint()` 직접 조합 | `PlayVFXMultiplayer()` |
+| 발헤임 기본 VFX를 1초 이내 연속 호출 | 각 타격마다 다른 VFX 사용 |
+| 발헤임 기본 VFX를 `player.transform` 자식으로 직접 부착 | `RegisterValheimVFXAsCustom` 후 `PlayOnPlayer` |
+| ZNet 발사체 즉시 Instantiate → DestroyImmediate(znv) | 비활성 트릭 (§5) |
+| 오브젝트 Destroy만 호출 | `SetActive(false)` 후 `Destroy` |
+| 패시브 스킬에 VFX 사용 | 텍스트 표시만 허용 |
+
+### 발헤임 기본 VFX 연속 호출 금지
+
+ZRoutedRpc 패킷 충돌 → 무한 로딩:
+```csharp
+// ❌ 같은 발헤임 VFX 연속 호출
+for (int i = 0; i < 5; i++)
+    VFXManager.PlayVFXMultiplayer("vfx_sledge_iron_hit", "", position, rotation, 1.5f);
+
+// ✅ 타격마다 다른 VFX
+string[] vfxList = { "hit_01", "hit_02", "hit_03", "hit_04", "fx_siegebomb_explosion" };
+for (int i = 0; i < 5; i++)
+    VFXManager.PlayVFXMultiplayer(vfxList[i], "", position, rotation, 1.5f);
+```
+
+---
+
+## 🌐 RPC 멀티플레이어 동기화 규칙
+
+`SimpleVFX.PlayOnPlayer`는 커스텀 VFX(`_customVFXNames` 포함)에 한해 `ZRoutedRpc.Everybody`로 자동 브로드캐스트.
+
+**중복 방지**: `_recentLocalCreations` 키는 RPC 전송 **전**에 등록해야 로컬서버 환경의 즉시 루프백 중복을 방지할 수 있음 (SimpleVFX.cs 내부 처리됨).
+
+---
+
+## 📦 VFX 프리팹 목록
+
+### 커스텀 VFX (asset/VFX/ — SimpleVFX 등록됨)
+
+**버프/디버프**
+- `buff_01` — 공격력 증가 버프
+- `buff_02a` — 아처 멀티샷 활성화
+- `buff_03a` — 캐릭터 힐 이펙트
+- `buff_03a_aura` — 녹색 방울 힐링 도트
+- `debuff` — 붉은 화살표 디버프 (반복, 종료코드 필요)
+- `debuff_03` — 하얀 바닥 마법진
+- `debuff_03_aura` — 하얀 버프형 (종료코드 필요)
+- `statusailment_01` — 상태이상 효과
+- `statusailment_01_aura` — 캐릭터 머리 버프 표시 (종료 필요)
+
+**타격/전투**
+- `hit_01` ~ `hit_04` — 기본 타격 효과
+
+**특수**
+- `healing` — 녹색 안개 힐링 (반복, 종료코드 필요)
+- `taunt` — 도발 효과
+- `plexus` — 번개 파란 라운드 (반복, 종료코드 필요)
+- `LevelUpVFX2` — MMO 레벨업
+
+**미사용 (등록 예정)**
+- `area_circles_blue`, `area_fire_red`, `area_heal_green`, `area_magic_multicolor`, `area_star_ellow`
+- `shine_blue`, `shine_pink`, `shine_ellow`
+- `sparkle_ellow`, `confetti_blast_multicolor`, `confetti_directional_multicolor`
+- `flash_blue_purple`, `flash_ellow`, `flash_ellow_pink`, `flash_magic_blue_pink`, `flash_magic_ellow_blue`
+- `flash_round_ellow`, `flash_star_ellow_purple`, `water_blast_blue`, `water_blast_green`
+- `guard_01`, `dust_permanently_blue`
+
+### 발헤임 기본 VFX (주요 사용 목록)
+
+- `smokebomb_explosion` — 스모크 연막
+- `vfx_GodExplosion` — 녹색 폭파
+- `fx_Fader_CorpseExplosion` — 푸른 큰 안개
+- `fx_siegebomb_explosion` — 히트 폭파
+- `charred_fireball_projectile` — 독/힐 이펙트
+- `fx_greenroots_projectile_hit` — 힐/독 히트
+- `fx_lightningstaffprojectile_hit` — 번개 히트
+- `fx_shaman_fireball_expl` — 핑크 히트
+- `fx_shaman_protect` — 푸른 회오리
+- `fx_shield_start` — 쉴드/버프 시작 (**RegisterValheimVFXAsCustom 등록됨**)
+- `fx_shieldgenerator_domehit` — 그린 방어
+- `staff_greenroots_projectile` — 그린 볼 뿌리
+- `fx_Fader_Spin` — 광역 푸른 원
+- `dvergerstaffheal_aoe` — 좁은 범위 힐
+- `vfx_GoblinShield` — 고블린 방어 돔 (**RegisterValheimVFXAsCustom 등록됨**)
+
+---
+
+## ✅ 구현 체크리스트
+
+액티브 스킬 VFX 구현 시:
+
+- [ ] 고정 위치 VFX → `PlayVFXMultiplayer()` 사용 (PlayVFXHybrid 금지)
+- [ ] 중복 사운드 호출 없음 (한 번의 PlayVFXMultiplayer에 통합)
+- [ ] 발헤임 기본 VFX 연속 호출 없음 (각 타격마다 다른 VFX)
+- [ ] 발헤임 기본 VFX 로컬 전용 → 순수 `Instantiate` 사용
+- [ ] ZNet 발사체를 VFX로 사용 시 → 비활성 프리팹 트릭 적용
+- [ ] 발헤임 기본 VFX를 플레이어 추적 + 멀티플레이어 → `RegisterValheimVFXAsCustom` 등록 후 `SimpleVFX.PlayOnPlayer`
+- [ ] 오브젝트 제거 시 `SetActive(false)` 후 `Destroy`
+- [ ] 패시브 스킬 VFX 없음 (텍스트만)
+
+---
+
+## 📚 관련 문서
+
+- `버프형_VFX.md` — 지속 버프 VFX Dictionary 관리 패턴
+- `VFX/Valheim_prefab.txt` — 발헤임 전체 VFX 프리팹 목록
+- `ACTIVE_SKILL_SYSTEM.md` — 액티브 스킬 VFX 적용

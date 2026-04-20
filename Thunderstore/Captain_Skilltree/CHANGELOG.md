@@ -1,5 +1,18 @@
 # Changelog / 변경 로그
 ## Update
+# [1.2.51] - 2026-04-21
+- ✅fix1 : Berserker - 무적패시브 수정
+- ✅fix2 : 근접 액티브스킬의 보스데미지 수정(약한 데미지 -> 정상적 데미지로 수정)
+- ✅new1 : 방어전문가의 마인드쉴드 구현(Eir 최대치만큼 보호막 생성)
+- ✅new2 : 관리자접속으로 컨피그 수정하여 서버설정 변경 가능
+
+# [1.2.51] - 2026-04-19
+- ✅new1 : Admin Config Sync - Admin can modify server config via F1 Config Manager; changes auto-sync to server and all clients
+- ✅fix1 : Remove unused variable warning in MaceSkills.FuryHammer.cs
+-
+- ✅new1 : 어드민 Config 서버 동기화 - 어드민이 F1 Config Manager에서 수정 시 서버 cfg 파일 자동 반영 및 전체 클라이언트 동기화
+- ✅fix1 : MaceSkills.FuryHammer.cs 미사용 변수 경고 제거
+
 # [1.2.30] - 2026-04-16
 - ✅fix1 : Mage , Dual magic - 90% Transparency Adjustment
 - ✅fix2 : Defense expert - Two modifications of active skills (Infinite loading and dungeon entry, exit problem)

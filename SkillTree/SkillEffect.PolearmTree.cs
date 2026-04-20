@@ -304,7 +304,8 @@ namespace CaptainSkillTree.SkillTree
 
                     // === 첫 몬스터에 직접 데미지 (1회만) ===
                     float damageMultiplier = 1f + (Polearm_Config.PolearmPierceChargePrimaryDamageValue / 100f);
-                    var weaponDamage = weapon.GetDamage();
+                    float pierceSkillFactor = player.GetSkillFactor(Skills.SkillType.Polearms);
+                    var weaponDamage = weapon.GetDamage(0, pierceSkillFactor);
 
                     var hit = new HitData();
                     hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
@@ -413,7 +414,8 @@ namespace CaptainSkillTree.SkillTree
             float aoeAngle = Polearm_Config.PolearmPierceChargeAoeAngleValue; // Config에서 AOE 각도 가져오기 (280도)
             float includeHalfAngle = aoeAngle / 2f; // 포함할 전방 반각 (140도) - 앞쪽 280도 범위
             float aoeDamageMultiplier = 1f + (Polearm_Config.PolearmPierceChargeAoeDamageValue / 100f);
-            var weaponDamage = weapon.GetDamage();
+            float aoeSkillFactor = player.GetSkillFactor(Skills.SkillType.Polearms);
+            var weaponDamage = weapon.GetDamage(0, aoeSkillFactor);
 
             // 플레이어 전방 방향
             Vector3 playerForward = player.transform.forward;

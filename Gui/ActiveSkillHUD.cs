@@ -25,11 +25,13 @@ namespace CaptainSkillTree.Gui
         private static readonly string[] RIconNames = { "crossbow_unlock", "bow_unlock", "staff_unlock" };
         private static readonly string[] GSkillIds = {
             "sword_step5_finalcut", "knife_step9_assassin_heart",
-            "spear_Step5_penetrate", "polearm_step5_king", "mace_Step7_guardian_heart"
+            "spear_Step5_penetrate", "polearm_step5_king",
+            "defense_Step6_mind", "mace_Step7_guardian_heart"
         };
         private static readonly string[] GIconNames = {
             "sword_unlock", "dagger_unlock",
-            "spear_unlock", "polearm_unlock", "defense_unlock"
+            "spear_unlock", "polearm_unlock",
+            "defense_unlock", "defense_unlock"
         };
         private static readonly string[] HSkillIds = {
             "knife_step10_stack_explosion",

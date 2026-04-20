@@ -6,6 +6,8 @@ vfx_shieldgenerator_refuel
 sfx_dverger_heal_finish - 힐소리
 shaman_heal_aoe - 기존 성기사 힐 vfx 힐 포함됨 
 buff_03a_aura 3개 추가 │ 왼쪽 어깨(-0.3, 1.5) / 머리(0, 1.8) / 오른쪽 어깨(0.3, 1.5)  종료코드 (물방울 심플vfx)
+vfx_Potion_health_medium (vfx매니저)
+
 ===========================================
 지팡이 전문가의 힐 스킬 수정건
 힐 스킬 사용시 화면중앙에 "힐모드 시작" 메시지 뛰어주고 3분간 속성 공격력 -50% 디버프 효과 적용(디버프 효과 사라질시 "힐모드 종료" 메시지)
@@ -199,59 +201,33 @@ sfx_asksvin_alert
      이미 투자되어 흰색이었던 연결선만 빨간색으로 표시해야 함.
 
 ---
-메이지 Y키 → debuff_03 밝기 변화 확인 와 하늘에서 떨어지는 발사체 있어 이것도 적용해야되
- - 로그 액티브 → flash_blue_purple 이거와  몬스터 적중시 발동되는 vfx도 확인 및 적용 statusailment_01_aura(이건 제외)
- - 탱커 도발 → 전체 제외
- - 버서커 광폭화 → statusailment_01_aura(버프성으로 제외), flash_round_ellow
- - 나이프 약점폭발 → hit_01, debuff, 스택 발사체
- - 석궁 단한발 → buff_01, statusailment_01_aura(제외)
- - 이중시전 회귀 → 소환/발사/폭발 dim 정상 유지
 
-- 활 전문가의 폭발 화살 - 몬스터 적중시 vfx 적용
-- 활 전문가의 화살비 - 하늘에서 떨어지는 발사체와 와 적중시 vfx
-- 석궁 전문가의 빙결 폭발탄 - vfx 적용
-- 단검전문가의 암살자의 심장 - 적 적중시 vfx
-- 검전문가의 돌진 연속 베기 - 적 적중시 vfx
-- 둔기전문가의 방패돌진 - 돌진시 vfx와 적중시 vfx
-- 둔기전문가의 분노의 망치 - 5단vfx
-- 창 전문가의 꿰툻는 창 - 적중시 vfx
-- 창 전문가의 연공창 - 적중시 vfx
-- 폴암 전문가의 관통 돌격 - 적중시 vfx
-- 폴암 전문가의 휠윈드 - 휠마우스 스킬시전시 vfx
 
-- 광전사 - 시전시 vfx와 적중시 vfx
----------
-[Info   :Captain SkillTree Mod] [VFXDimmer] Apply START: fx_fireball_staff_explosion(Clone), factor=0.9
-[Info   :Captain SkillTree Mod] [VFXDimmer] PS count=7
-[Info   :Captain SkillTree Mod] [VFXDimmer] Apply DONE: fx_fireball_staff_explosion(Clone)
-[Info   :Captain SkillTree Mod] [VFXDimmer] Apply START: fx_fireball_staff_explosion(Clone), factor=0.9
-[Info   :Captain SkillTree Mod] [VFXDimmer] PS count=7
+-----------
+방어 전문가의 마인드쉴드 전체 수정계획
+  1. 시전자의 에이트르 최대치 만큼 보호막효과
+액티브 스킬 쿨타임 3분30초
+소모 :  Eitr 30
+  2. 보호막은 3분간 유지되며, 적에게 적중시 HP대신 에이트르의 최대치 만큼의 HP대신 소모되게 한다.
+  3. vfx 모두 vfx매니저로 구현
+시전시 모션  - StaffShield
+스킬 시전시 fx_shield_start 
+보호막 - vfx_GoblinShield : 캐릭터 따라다니게 해야됨
+보호막 타격시(적이 시전자의 공격시) - fx_StaffShield_Hit : HP대신 에이트르의 최대치 를 먼저 소모하게 하고 모두 소모되면 방어막 깨진고 HP소모되게 
+방어막 깨질때 - fx_GoblinShieldBreak : 이후  vfx_GoblinShield  제거 
 
-관련 로그 제거 
+발헤임 vfx를 가저와서 따라다니게 구현 방법은 md폴더의 fury.md 참고
 
+발헤임에 보호의 지팡이로 보호막 사용시 보호의 지팡이 보호막이 소모되고 나면 그때 마인드 쉴드의 보호막이 소모되게 설계
+적이 에 적중시 HP대신 보호의 지팡이 보호막 소모 -> 마인드 쉴드 보호막 소모 -> HP 소모   이 순서대로 설계
 --
-buff_03a_aura(심플VFX) (어깨/머리 x3) -> 안보임,  buff_03a(심플vfx) -> 좀더 발밑으로 이동 vfx_Potion_health_medium(VFX매니저) 캐릭터
-  따라오게 해줘
-   완료: fx_greydwarf_shaman_heal(VFX 매니저)  -> 제거 
-  주변 캐릭터 힐될때도 같은 효과 넣줘어
+제작 전문가(프로듀서) 의 스킬
+  버프 스킬 사용시 vfx매니저로 vfx_shieldgenerator_startup 를 추가로 구현해줘
+===========
+[Error  :Captain SkillTree Mod] [암살술] 스태거 적용 실패: Object reference not set to an instance of an object
+[Error  :Captain SkillTree Mod] [충격파방출] 실행 오류: Object reference not set to an instance of an object
 
----
-  탈툴 버튼 누르면 3시간에 1회 작동하게 하고 시작지점으로 텔레포스 시켜줘 발헤임에 텔레포트 가 있어(포탈이동 처럼)
-  첫 게임 접속시 시작지점이야~
----
-마법사 직업 │ Mage Lv1~5 데미지/쿨타임 대폭 조정             │
-  ├─────────────┼────────────────────────────────────────────────┤
-  │ 로그 직업   │ 독 피해, 쿨타임 조정                           │
-  ├─────────────┼────────────────────────────────────────────────┤
-  │ 탱커 직업   │ 도발 지속시간 9초 유지                        │
-  ├─────────────┼────────────────────────────────────────────────┤
-  │ 창 트리     │ VitalStrike 데미지 20→5, 번개 피해 260→125     │
-  ├─────────────┼────────────────────────────────────────────────┤
-  │ 검 트리     │ ParryRush BlockPowerRatio 50→60                │
-  ├─────────────┼────────────────────────────────────────────────┤
-  │ 둔기 트리   │ FuryHammer 수치, 스턴/가드 RequiredPoints  3│
-  ├─────────────┼────────────────────────────────────────────────┤
-  │ 팔라딘 직업 │ 힐량 소폭 하향                         
+
 
 
 

@@ -341,6 +341,7 @@ namespace CaptainSkillTree
                 {
                     // RPC 안전 등록 (이미 등록된 경우 예외 처리)
                     ZRoutedRpc.instance.Register<string>("CaptainSkillTree.SkillTreeMod_ConfigSync", RPC_ReceiveConfigSync);
+                    ZRoutedRpc.instance.Register<string>("CaptainSkillTree.AdminConfigUpdate", SkillTreeConfig.RPC_AdminConfigUpdate);
 
                     // ❌ VFX RPC 초기화 비활성화 (EpicMMOSystem 방식 - 무한 로딩 방지)
                     // VFX.VFXManager.InitializeVFXRPC();

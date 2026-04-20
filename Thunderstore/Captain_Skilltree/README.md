@@ -86,6 +86,17 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 ### 패시브 & 액티브 스킬
 - **패시브 스킬**: 자동 효과 보너스 (VFX/SFX 없음)
 - **액티브 스킬**: 키 바인딩으로 발동하는 강력한 스킬 + 화려한 VFX
+  - 활전문가 **화살비** (H): 하늘에서 다수의 화살을 내리꽂는 범위 공격
+  - 석궁전문가 **빙결폭발** (H): 빙결 효과를 발동시키는 폭발형 석궁 스킬
+  - 폴암전문가 **휠윈드** (H): 폴암을 회전시켜 주변 전체를 타격하는 광역 스킬
+  - 단검전문가 **스택폭발** (H): 스택을 쌓아 한꺼번에 폭발시키는 단검 스킬
+
+### 스킬트리 UI 편의 기능
+- **탈출 버튼**: 스킬트리 UI에서 클릭 한 번으로 즉시 닫기 가능
+
+### 게임 난이도 선택
+- 첫 설치 시 팝업 창으로 난이도 선택 (Easy / Normal / Hard / Veryhard)
+- 언제든지 Config 파일에서 변경 가능
 
 ### 서버 싱크
 - 모든 Config가 서버에서 클라이언트로 동기화
@@ -113,6 +124,7 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 2. 레벨 시스템 버튼 옆의 **스킬트리 아이콘** (검 아이콘) 클릭
 3. EpicMMO 모드 없을때는 캐릭터 머리위 **스킬트리 아이콘** (검 아이콘) 클릭
 4. 전용 BGM과 함께 스킬트리 UI 열림
+5. UI 우측 하단의 **탈출 버튼**으로 창 닫기
 
 </details>
 
@@ -126,7 +138,7 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 |----|------|------|
 | **Z** | 원거리 액티브 | 석궁/활/지팡이 중 택1 |
 | **G** | 근접 메인 액티브 | 
-| **H** | 보조 액티브 | 화살비(활), 패링돌격(검), 방패돌진(둔기) 등 |
+| **H** | 보조 액티브 | 화살비(활), 빙결폭발(석궁), 패링돌격(검), 방패돌진(둔기), 휠윈드(폴암), 스택폭발(단검) 등 |
 | **Y** | 직업 액티브 | 7개 직업 중 택1 |
 
 </details>
@@ -151,16 +163,16 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 |------|------|-----------|
 | Bow | 활 전문가 | 폭발화살 (Z키), 화살비 (H키) |
 | Staff | 지팡이 전문가 | 연속시전, 힐 (Z/H키) |
-| Crossbow | 석궁 전문가 | 단한발 (Z키) |
+| Crossbow | 석궁 전문가 | 단한발 (Z키), 빙결폭발 (H키) |
 
 **근접**
 | 트리 | 설명 | 액티브 스킬 |
 |------|------|-----------|
-| Knife | 단검 전문가 | 암살자 (G키) |
+| Knife | 단검 전문가 | 암살자 (G키), 스택폭발 (H키) |
 | Sword | 검 전문가 | 돌진베기 (G키), 패링돌격 (H키) |
 | Mace | 둔기 전문가 | 분노의망치 (G키), 방패돌진 (H키) |
 | Spear | 창 전문가 | 꿰뚫기, 연공창 (G/H키) |
-| Polearm | 폴암 전문가 | 장창제왕 (G키) |
+| Polearm | 폴암 전문가 | 장창제왕 (G키), 휠윈드 (H키) |
 
 ### 직업 트리 (Job Classes)
 | 직업 | 설명 | 액티브 (Y키) | 패시브 |
@@ -392,11 +404,11 @@ BepInEx/config/CaptainSkillTree.cfg
 | **Production Tree** | 생산 전문가 설정 | 채집 효율 % |
 | **Bow Tree** | 활 스킬 설정 | 멀티샷 확률, 화살 수, 화살비 데미지/범위 |
 | **Staff Tree** | 지팡이 스킬 설정 | 이중시전 확률, 힐량 |
-| **Crossbow Tree** | 석궁 스킬 설정 | 단한발 데미지 |
+| **Crossbow Tree** | 석궁 스킬 설정 | 단한발 데미지, 빙결폭발 데미지/범위/쿨타임 |
 | **Sword Tree** | 검 스킬 설정 | 돌진베기 데미지, 패링돌격 쿨타임 |
-| **Knife Tree** | 단검 스킬 설정 | 암살자 데미지 배율 |
+| **Knife Tree** | 단검 스킬 설정 | 암살자 데미지 배율, 스택폭발 스택 수/데미지 |
 | **Spear Tree** | 창 스킬 설정 | 꿰뚫기 데미지, 콤보 횟수 |
-| **Polearm Tree** | 폴암 스킬 설정 | 장창제왕 범위, 넉백 |
+| **Polearm Tree** | 폴암 스킬 설정 | 장창제왕 범위/넉백, 휠윈드 범위/데미지/쿨타임 |
 | **Mace Tree** | 둔기 스킬 설정 | 방패돌진 반경, 분노의망치 데미지 |
 | **Archer Job Skills** | 궁수 직업 설정 | 멀티샷 화살 수, 쿨타임 |
 | **Mage Job Skills** | 마법사 직업 설정 | 마나폭발 데미지, Eitr 소모 |
@@ -421,6 +433,35 @@ BepInEx/config/CaptainSkillTree.cfg
 
 1. **권장**: r2modman/Thunderstore에서 자동 설치
 2. **수동**: `BepInEx/plugins/CaptainSkillTree/` 폴더에 DLL 복사
+
+</details>
+
+---
+
+<details>
+<summary>🎮 게임 난이도 선택</summary>
+
+### 난이도 선택 방법
+
+**첫 설치 시**
+- 게임 시작 후 자동으로 난이도 선택 팝업이 표시됩니다
+- 원하는 난이도를 선택하면 해당 밸런스 값이 Config에 자동 적용됩니다
+
+**이후 변경 시**
+- Config 파일 또는 F1 ConfigurationManager에서 언제든지 변경 가능
+- 경로: `BepInEx/config/CaptainSkillTree.cfg` → `[Game Difficulty]` 항목
+
+### 난이도 종류
+
+| 난이도 | 설명 |
+|--------|------|
+| **Easy** | 스킬 효과 강화 — 편하게 즐기는 모드 |
+| **Normal** | 기본 밸런스 — 권장 설정 |
+| **Hard** | 스킬 효과 약화 — 도전적인 플레이 |
+| **Veryhard** | 최고 난이도 — 별도 `Veryhard_CaptainSkillTree.cfg` 프리셋 적용 |
+
+> **Veryhard** 프리셋 파일은 모드 설치 폴더 내 `asset/` 에 포함되어 있습니다.  
+> 서버 관리자는 해당 cfg를 BepInEx/config에 복사하여 전체 서버에 적용할 수 있습니다.
 
 </details>
 
@@ -460,6 +501,17 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 ### Passive & Active Skills
 - **Passive Skills**: Automatic stat bonuses (no VFX/SFX)
 - **Active Skills**: Powerful abilities with keybindings and stunning VFX
+  - Bow Expert **Arrow Rain** (H): AOE skill raining arrows from the sky
+  - Crossbow Expert **Freeze Burst** (H): Explosive crossbow bolt that applies a freeze effect
+  - Polearm Expert **Whirlwind** (H): Spin attack hitting all surrounding enemies in an area
+  - Knife Expert **Stack Burst** (H): Build stacks then detonate them for burst damage
+
+### Skill Tree UI
+- **Exit Button**: Close the skill tree UI instantly with the button at the **bottom-right corner**
+
+### Game Difficulty Selection
+- Choose difficulty on first install via popup (Easy / Normal / Hard / Veryhard)
+- Can be changed anytime through Config file or F1 ConfigurationManager
 
 ### Server Sync
 - All configs sync from server to clients
@@ -487,6 +539,7 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 2. Click the **Skill Tree Icon** (sword icon) near the level system button
 3. Without EpicMMO: click the **Skill Tree Icon** above your character's head
 4. Skill Tree UI opens with custom BGM
+5. Use the **Exit Button** at the bottom-right of the UI to close
 
 </details>
 
@@ -499,7 +552,7 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 |-----|----------|-------------|
 | **Z** | Ranged Active | Crossbow/Bow/Staff skill (choose 1) |
 | **G** | Melee Main Active | Same weapon tree only |
-| **H** | Sub Active | Arrow Rain (Bow), Parry Rush (Sword), Rush Shield (Mace), etc. |
+| **H** | Sub Active | Arrow Rain (Bow), Freeze Burst (Crossbow), Parry Rush (Sword), Rush Shield (Mace), Whirlwind (Polearm), Stack Burst (Knife), etc. |
 | **Y** | Job Active | 1 of 7 jobs |
 
 </details>
@@ -524,15 +577,15 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 |------|-------------|--------------|
 | Bow | Bow Expert | Explosive Arrow (Z), Arrow Rain (H) |
 | Staff | Staff Expert | Double Cast, Heal (Z/H) |
-| Crossbow | Crossbow Expert | Single Shot (Z) |
+| Crossbow | Crossbow Expert | Single Shot (Z), Freeze Burst (H) |
 
 **Melee**
 | Tree | Description | Active Skill |
 |------|-------------|--------------|
 | Sword | Sword Expert | Rush Slash (G), Parry Rush (H) |
-| Knife | Knife Expert | Assassin (G) |
+| Knife | Knife Expert | Assassin (G), Stack Burst (H) |
 | Spear | Spear Expert | Penetrate, Combo Spear (G/H) |
-| Polearm | Polearm Expert | Polearm King (G) |
+| Polearm | Polearm Expert | Polearm King (G), Whirlwind (H) |
 | Mace | Mace Expert | Fury Hammer (G), Rush Shield (H) |
 
 ### Job Classes
@@ -760,11 +813,11 @@ BepInEx/config/CaptainSkillTree.cfg
 | **Production Tree** | Production Expert settings | Gathering efficiency % |
 | **Bow Tree** | Bow skill settings | Multi-shot chance, Arrow count, Arrow Rain damage/radius |
 | **Staff Tree** | Staff skill settings | Double cast chance, Heal amount |
-| **Crossbow Tree** | Crossbow skill settings | Single shot damage |
+| **Crossbow Tree** | Crossbow skill settings | Single shot damage, Freeze Burst damage/radius/cooldown |
 | **Sword Tree** | Sword skill settings | Rush slash damage, Parry Rush cooldown |
-| **Knife Tree** | Knife skill settings | Assassin damage multiplier |
+| **Knife Tree** | Knife skill settings | Assassin damage multiplier, Stack Burst stack count/damage |
 | **Spear Tree** | Spear skill settings | Penetrate damage, Combo count |
-| **Polearm Tree** | Polearm skill settings | King skill range, Knockback |
+| **Polearm Tree** | Polearm skill settings | King skill range/knockback, Whirlwind radius/damage/cooldown |
 | **Mace Tree** | Mace skill settings | Rush Shield radius, Fury Hammer damage |
 | **Archer Job Skills** | Archer job settings | Multi-shot arrows, Cooldown |
 | **Mage Job Skills** | Mage job settings | Mana burst damage, Eitr cost |
@@ -789,6 +842,35 @@ BepInEx/config/CaptainSkillTree.cfg
 
 1. **Recommended**: Install via r2modman/Thunderstore
 2. **Manual**: Extract to `BepInEx/plugins/CaptainSkillTree/`
+
+</details>
+
+---
+
+<details>
+<summary>🎮 Game Difficulty Selection</summary>
+
+### How to Select Difficulty
+
+**On First Install**
+- A difficulty selection popup appears automatically when you first launch the game
+- Selecting a difficulty automatically applies the corresponding balance values to your Config
+
+**Changing Later**
+- Change anytime via Config file or F1 ConfigurationManager
+- Path: `BepInEx/config/CaptainSkillTree.cfg` → `[Game Difficulty]` section
+
+### Difficulty Levels
+
+| Difficulty | Description |
+|------------|-------------|
+| **Easy** | Stronger skill effects — relaxed gameplay |
+| **Normal** | Default balance — recommended setting |
+| **Hard** | Weaker skill effects — challenging gameplay |
+| **Veryhard** | Maximum difficulty — applies `Veryhard_CaptainSkillTree.cfg` preset |
+
+> The **Veryhard** preset file is included in the `asset/` folder inside the mod.  
+> Server admins can copy this cfg to `BepInEx/config/` to apply it across the entire server.
 
 </details>
 

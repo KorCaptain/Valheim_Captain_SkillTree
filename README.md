@@ -1,4 +1,4 @@
-# CaptainSkillTree - Valheim Skill Tree Mod
+﻿# CaptainSkillTree - Valheim Skill Tree Mod
 
 [![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/korcaptain)
 
