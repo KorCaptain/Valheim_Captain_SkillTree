@@ -721,22 +721,6 @@ namespace CaptainSkillTree.SkillTree
                     ["crafting_lv4_durability"]                      = Production_Config.CraftingLv4DurabilityBonus?.Value ?? 15f,
 
                     // ══════════════════════════════════════════════
-                    // MMO Difficulty Config
-                    // ══════════════════════════════════════════════
-                    ["MMODiff_SpBonus_0_10"]                         = MMODifficultyConfig.SpBonus_0_10?.Value ?? 2f,
-                    ["MMODiff_SpBonus_11_20"]                        = MMODifficultyConfig.SpBonus_11_20?.Value ?? 3f,
-                    ["MMODiff_SpBonus_21_30"]                        = MMODifficultyConfig.SpBonus_21_30?.Value ?? 4f,
-                    ["MMODiff_SpBonus_31_40"]                        = MMODifficultyConfig.SpBonus_31_40?.Value ?? 5f,
-                    ["MMODiff_SpBonus_41_70"]                        = MMODifficultyConfig.SpBonus_41_70?.Value ?? 5f,
-                    ["MMODiff_SpBonus_71_80"]                        = MMODifficultyConfig.SpBonus_71_80?.Value ?? 6f,
-                    ["MMODiff_SpBonus_81_100"]                       = MMODifficultyConfig.SpBonus_81_100?.Value ?? 7f,
-                    ["MMODiff_SpBonus_101Plus"]                      = MMODifficultyConfig.SpBonus_101Plus?.Value ?? 8f,
-                    ["MMODiff_MaxLevelBonus"]                        = MMODifficultyConfig.MaxLevelBonus?.Value ?? 10f,
-                    ["MMODiff_BaseStarChance"]                       = MMODifficultyConfig.BaseStarChance?.Value ?? 25f,
-                    ["MMODiff_StarChanceDivider"]                    = MMODifficultyConfig.StarChanceDivider?.Value ?? 3f,
-                    ["MMODiff_MaxStarChance"]                        = MMODifficultyConfig.MaxStarChance?.Value ?? 100f,
-
-                    // ══════════════════════════════════════════════
                     // Captain Level Config
                     // ══════════════════════════════════════════════
                     ["CaptainLevel_MaxLevel"]                        = CaptainLevelConfig.MaxLevel?.Value ?? 100f,

@@ -340,16 +340,7 @@ namespace CaptainSkillTree.MMO_System
             string combined = L.Get("epicmmo_connected_detail") + "\n" + string.Format(L.Get("mmo_level_sync_message"), level, maxPoints);
             ShowNotification(combined, 5f);
             Plugin.Log.LogInfo($"[LevelSyncManager] EpicMMO 연동 확인 완료 - Lv.{level}, 최대 SP: {maxPoints}");
-            // 연동 메시지 완료 후 1초 뒤 난이도 알림 트리거
-            if (Plugin.Instance != null)
-                Plugin.Instance.StartCoroutine(TriggerDifficultyAfterDelay(1f));
             return true;
-        }
-
-        private static IEnumerator TriggerDifficultyAfterDelay(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            MMODifficultyPatches.TriggerDifficultyNotification();
         }
 
         /// <summary>
