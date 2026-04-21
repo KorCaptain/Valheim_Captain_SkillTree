@@ -173,6 +173,15 @@ namespace CaptainSkillTree.MMO_System
 
         #endregion
 
+        #region === 관리자 설정 ===
+
+        /// <summary>
+        /// 관리자 모드 (스킬/직업 조건 무시)
+        /// </summary>
+        public static ConfigEntry<bool> AdminMode;
+
+        #endregion
+
         #region === 서버싱크 Value 래퍼 ===
 
         public static int   MaxLevelValue             => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_MaxLevel",             MaxLevel?.Value             ?? 100);
@@ -401,6 +410,16 @@ namespace CaptainSkillTree.MMO_System
                 "(이미 파일이 있으면 덮어쓰지 않음)\n" +
                 "[기본: true]");
 
+            // === 관리자 설정 ===
+            AdminMode = config.Bind(
+                SECTION,
+                "Admin Mode",
+                false,
+                "관리자 모드 (기본: false)\n" +
+                "On: 스킬/직업 배우기 및 초기화 시 모든 조건(코인/트로피/포인트/전제조건) 무시\n" +
+                "⚠️ 관리자 권한(서버 호스트 또는 AdminList)이 있는 플레이어만 적용됩니다.\n" +
+                "[기본: false]");
+
             Plugin.Log.LogDebug("[CaptainLevelConfig] Config 바인딩 완료 (기본 Config 사용)");
         }
 
@@ -456,6 +475,39 @@ namespace CaptainSkillTree.MMO_System
             Plugin.Log.LogDebug($"PointsRequiredPerLevel: {PointsRequiredPerLevel.Value}");
             Plugin.Log.LogDebug($"AutoSyncToEpicMMO: {AutoSyncToEpicMMO.Value}");
             Plugin.Log.LogDebug("=====================================");
+        }
+
+        /// <summary>
+        /// 관리자 모드 활성화 여부 확인
+        /// Config가 On이고, 현재 플레이어가 관리자 권한을 보유한 경우에만 true
+        /// </summary>
+        public static bool IsAdminModeActive()
+        {
+            if (!(AdminMode?.Value ?? false)) return false;
+
+            var player = Player.m_localPlayer;
+            if (player == null) return true;            // 콘솔 환경
+            if (ZNet.instance == null) return true;     // 싱글플레이어
+
+            if (ZNet.instance.IsServer()) return true;  // 서버 호스트
+
+            var adminList = ZNet.instance.GetAdminList();
+            if (adminList != null)
+            {
+                string playerId = player.GetPlayerID().ToString();
+                string playerName = player.GetPlayerName();
+                if (adminList.Contains(playerId) || adminList.Contains(playerName))
+                    return true;
+            }
+
+            try
+            {
+                if (Jotunn.Managers.SynchronizationManager.Instance?.PlayerIsAdmin == true)
+                    return true;
+            }
+            catch { }
+
+            return false;
         }
     }
 }

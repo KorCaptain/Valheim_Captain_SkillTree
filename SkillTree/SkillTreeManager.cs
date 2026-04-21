@@ -370,12 +370,15 @@ namespace CaptainSkillTree.SkillTree
             if (!SkillNodes.ContainsKey(skillId)) return false;
             var node = SkillNodes[skillId];
             
-            // 1. 최대 레벨 체크
+            // 1. 최대 레벨 체크 (Admin Mode도 최대 레벨은 초과 불가)
             int currentLevel = GetSkillLevel(skillId);
             if (currentLevel >= node.MaxLevel) return false;
-            
+
+            // Admin Mode: 관리자 권한 보유 시 나머지 조건 전부 무시
+            if (MMO_System.CaptainLevelConfig.IsAdminModeActive()) return true;
+
             // 2. 기존 ItemRequirement 시스템으로 처리됨 (아래에서 일괄 처리)
-            
+
             // 3. 생산 스킬은 아이템 요구사항, 일반 스킬은 포인트 체크
             if (SkillItemRequirements.IsProductionSkill(skillId))
             {
@@ -1167,56 +1170,61 @@ namespace CaptainSkillTree.SkillTree
             if (Player.m_localPlayer == null) return;
             
             // 직업 스킬 아이템 소모 처리 (확정 시에만)
+            // Admin Mode 활성화 시 아이템 소모 없이 바로 레벨 적용
+            bool adminSkip = MMO_System.CaptainLevelConfig.IsAdminModeActive();
             foreach (var pending in pendingInvestments)
             {
                 int currentLevel = GetSkillLevel(pending.Key);
-                
-                // 아처 직업: 레벨별 아이템 소모
-                if (pending.Key == "Archer")
+
+                if (!adminSkip)
                 {
-                    int targetLevel = currentLevel + 1;
-                    ConsumeArcherLevelItems(targetLevel);
-                }
-                // 제작 전문가: 레벨별 트로피 소모
-                else if (pending.Key == "Producer")
-                {
-                    int targetLevel = currentLevel + 1;
-                    ConsumeProducerLevelItems(targetLevel);
-                }
-                // 버서커: 레벨별 트로피 소모
-                else if (pending.Key == "Berserker")
-                {
-                    int targetLevel = currentLevel + 1;
-                    ConsumeBerserkerLevelItems(targetLevel);
-                }
-                // 로그 직업: 레벨별 트로피 소모
-                else if (pending.Key == "Rogue")
-                {
-                    int targetLevel = currentLevel + 1;
-                    ConsumeRogueLevelItems(targetLevel);
-                }
-                // 메이지 직업: 레벨별 트로피 소모
-                else if (pending.Key == "Mage")
-                {
-                    int targetLevel = currentLevel + 1;
-                    ConsumeMageLevelItems(targetLevel);
-                }
-                // 탱커 직업: 레벨별 트로피 소모
-                else if (pending.Key == "Tanker")
-                {
-                    int targetLevel = currentLevel + 1;
-                    ConsumeTankerLevelItems(targetLevel);
-                }
-                // 성기사 직업: 레벨별 트로피+코인 소모
-                else if (pending.Key == "Paladin")
-                {
-                    int targetLevel = currentLevel + 1;
-                    ConsumePaladinLevelItems(targetLevel);
-                }
-                // 다른 직업 스킬: 레벨 0에서 1로 올라가는 경우(처음 전직)에만 아이템 소모
-                else if (IsJobSkill(pending.Key) && currentLevel == 0)
-                {
-                    ConsumeJobSkillRequirements(pending.Key);
+                    // 아처 직업: 레벨별 아이템 소모
+                    if (pending.Key == "Archer")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeArcherLevelItems(targetLevel);
+                    }
+                    // 제작 전문가: 레벨별 트로피 소모
+                    else if (pending.Key == "Producer")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeProducerLevelItems(targetLevel);
+                    }
+                    // 버서커: 레벨별 트로피 소모
+                    else if (pending.Key == "Berserker")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeBerserkerLevelItems(targetLevel);
+                    }
+                    // 로그 직업: 레벨별 트로피 소모
+                    else if (pending.Key == "Rogue")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeRogueLevelItems(targetLevel);
+                    }
+                    // 메이지 직업: 레벨별 트로피 소모
+                    else if (pending.Key == "Mage")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeMageLevelItems(targetLevel);
+                    }
+                    // 탱커 직업: 레벨별 트로피 소모
+                    else if (pending.Key == "Tanker")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeTankerLevelItems(targetLevel);
+                    }
+                    // 성기사 직업: 레벨별 트로피+코인 소모
+                    else if (pending.Key == "Paladin")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumePaladinLevelItems(targetLevel);
+                    }
+                    // 다른 직업 스킬: 레벨 0에서 1로 올라가는 경우(처음 전직)에만 아이템 소모
+                    else if (IsJobSkill(pending.Key) && currentLevel == 0)
+                    {
+                        ConsumeJobSkillRequirements(pending.Key);
+                    }
                 }
                 
                 int newLevel = currentLevel + pending.Value;

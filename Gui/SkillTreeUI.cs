@@ -1310,6 +1310,18 @@ namespace CaptainSkillTree.Gui
             var inventory = player.GetInventory();
             if (inventory == null) return;
 
+            // Admin Mode: 관리자 권한 보유 시 코인 조건 및 차감 무시
+            if (CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive())
+            {
+                var adminTargets = new List<string>(_selectiveResetTargets);
+                manager.ResetSpecificSkillLevels(adminTargets);
+                tooltipUI.ShowWarning(string.Format(L10n.Get("ui_selective_reset_success"), 0));
+                Debug.Log($"[SkillTreeUI] Admin Mode: 코인 없이 초기화 완료: {string.Join(", ", adminTargets)}");
+                ExitSelectiveResetMode();
+                RefreshUI();
+                return;
+            }
+
             int currentCoins = inventory.CountItems("$item_coins");
             if (currentCoins < totalCost)
             {
