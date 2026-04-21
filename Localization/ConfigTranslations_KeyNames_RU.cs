@@ -9,8 +9,14 @@ namespace CaptainSkillTree.Localization
             return new Dictionary<string, string>
             {
                 // ============================================
-                // Skill_Tree_Base
+                // Skill_Tree_Base - Key Bindings
                 // ============================================
+                ["HotKey_Y"]  = "Job Skill Key",
+                ["HotKey_R"]  = "Ranged Skill Key",
+                ["HotKey_G"]  = "Melee Main Skill Key",
+                ["HotKey_H"]  = "Secondary Skill Key",
+                ["HUD_PosX"]  = "HUD X Position",
+                ["HUD_PosY"]  = "HUD Y Position",
                 ["PassiveMessageDisplay"] = "Отображение пассивных сообщений",
                 ["GameDifficulty"] = "Сложность игры",
 
@@ -72,6 +78,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_RangedEnhance_RangedDamageBonus"] = "Ур.4-3: [Дальний бой] Бонус урона (%)",
                 ["Tier4_RangedEnhance_RequiredPoints"] = "Ур.4-3: [Дальний бой] Необходимые очки",
                 ["Tier5_SpecialStat_SpecBonus"] = "Ур.5: [Спец. стат] Бонус специализации оружия",
+                ["Tier5_Charge_TriggerChance"] = "Tier 5: [Charge] Trigger Chance (%)",
                 ["Tier5_SpecialStat_RequiredPoints"] = "Ур.5: [Спец. стат] Необходимые очки",
                 ["Tier6_WeakPointAttack_CritDamageBonus"] = "Ур.6-1: [Слабое место] Бонус урона крит. (%)",
                 ["Tier6_WeakPointAttack_RequiredPoints"] = "Ур.6-1: [Слабое место] Необходимые очки",
@@ -147,7 +154,53 @@ namespace CaptainSkillTree.Localization
 
                 // ============================================
                 // Defense Tree - 56 ключей
-                // =====================================                ["Tier4_GroundStomp_Radius"] = "Ур.4: Радиус эффекта (м)",
+                // ============================================
+
+                // === Tier 0: Defense Expert (3) ===
+                ["Tier0_DefenseExpert_HPBonus"]        = "Tier 0: [Defense Expert] HP Bonus",
+                ["Tier0_DefenseExpert_ArmorBonus"]     = "Tier 0: [Defense Expert] Armor Bonus",
+                ["Tier0_DefenseExpert_RequiredPoints"] = "Tier 0: [Defense Expert] Required Points",
+
+                // === Tier 1: Skin Hardening (3) ===
+                ["Tier1_SkinHardening_HPBonus"]        = "Tier 1: [Skin Hardening] HP Bonus",
+                ["Tier1_SkinHardening_ArmorBonus"]     = "Tier 1: [Skin Hardening] Armor Bonus",
+                ["Tier1_SkinHardening_RequiredPoints"] = "Tier 1: [Skin Hardening] Required Points",
+
+                // === Tier 2-1: Mind-Body Training (3) ===
+                ["Tier2_MindBodyTraining_StaminaBonus"] = "Tier 2-1: [Mind-Body Training] Max Stamina Bonus",
+                ["Tier2_MindBodyTraining_EitrBonus"]    = "Tier 2-1: [Mind-Body Training] Max Eitr Bonus",
+                ["Tier2_MindTraining_RequiredPoints"]   = "Tier 2-1: [Mind-Body Training] Required Points",
+
+                // === Tier 2-2: Health Training (3) ===
+                ["Tier2_HealthTraining_HPBonus"]        = "Tier 2-2: [Health Training] HP Bonus",
+                ["Tier2_HealthTraining_ArmorBonus"]     = "Tier 2-2: [Health Training] Armor Bonus",
+                ["Tier2_HealthTraining_RequiredPoints"] = "Tier 2-2: [Health Training] Required Points",
+
+                // === Tier 3-1: Core Breathing (2) ===
+                ["Tier3_CoreBreathing_EitrBonus"]      = "Tier 3-1: [Core Breathing] Eitr Bonus",
+                ["Tier3_CoreBreathing_RequiredPoints"] = "Tier 3-1: [Core Breathing] Required Points",
+
+                // === Tier 3-2: Evasion Training (3) ===
+                ["Tier3_EvasionTraining_DodgeBonus"]         = "Tier 3-2: [Evasion Training] Dodge Bonus (%)",
+                ["Tier3_EvasionTraining_InvincibilityBonus"] = "Tier 3-2: [Evasion Training] Roll Invincibility Increase (%)",
+                ["Tier3_EvasionTraining_RequiredPoints"]     = "Tier 3-2: [Evasion Training] Required Points",
+
+                // === Tier 3-3: Health Boost (2) ===
+                ["Tier3_HealthBoost_HPBonus"]        = "Tier 3-3: [Health Boost] HP Bonus",
+                ["Tier3_HealthBoost_RequiredPoints"] = "Tier 3-3: [Health Boost] Required Points",
+
+                // === Tier 3-4: Shield Training (2) ===
+                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [Shield Training] Shield Block Power Bonus",
+                ["Tier3_ShieldTraining_RequiredPoints"]  = "Tier 3-4: [Shield Training] Required Points",
+
+                // === Tier 4-1: Shockwave (4) ===
+                ["Tier4_Shockwave_Radius"]         = "Tier 4-1: [Shockwave] Radius",
+                ["Tier4_Shockwave_StunDuration"]   = "Tier 4-1: [Shockwave] Stun Duration",
+                ["Tier4_Shockwave_Cooldown"]       = "Tier 4-1: [Shockwave] Cooldown",
+                ["Tier4_Shockwave_RequiredPoints"] = "Tier 4-1: [Shockwave] Required Points",
+
+                // === Tier 4-2: Ground Stomp ===
+                ["Tier4_GroundStomp_Radius"] = "Ур.4: Радиус эффекта (м)",
                 ["Tier4_GroundStomp_KnockbackForce"] = "Ур.4: Сила откидывания",
                 ["Tier4_GroundStomp_Cooldown"] = "Ур.4: Перезарядка (сек)",
                 ["Tier4_GroundStomp_HPThreshold"] = "Ур.4: Порог ХП для авто-срабатывания",
@@ -484,6 +537,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_RushSlash_Cooldown"] = "Ур.6: [Рывок-удар] Перезарядка (сек)",
                 ["Tier6_RushSlash_MoveSpeed"] = "Ур.6: [Рывок-удар] Скорость передвижения (м/с)",
                 ["Tier6_RushSlash_AttackSpeedBonus"] = "Ур.6: [Рывок-удар] Бонус скорости атаки (%)",
+                ["Tier6_RushSlash_PathWidth"] = "Tier 6: [Rush Slash] Path Hit Width (m)",
 
                 // ============================================
                 // Mace Tree - 34 ключа
@@ -536,6 +590,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_AreaCombo_DoubleHitBonus"] = "Ур.3: [Широкий удар] Бонус двойного удара (%)",
                 ["Tier3_AreaCombo_DoubleHitDuration"] = "Ур.3: [Широкий удар] Длительность эффекта (сек)",
                 ["Tier3_AreaCombo_RequiredPoints"] = "Ур.3: [Широкий удар] Необходимые очки",
+                ["Tier4-1_StormSlash_ExplosionBonus"] = "Tier 4-1: [Storm Slash] Lightning Damage Bonus",
                 ["Tier4-1_GroundWheel_RequiredPoints"] = "Ур.4-1: [Удар о землю] Необходимые очки",
                 ["Tier4-2_MoonSlash_AttackRangeBonus"] = "Ур.4-2: [Лунный удар] Бонус дальности атаки (%)",
                 ["Tier4-2_MoonSlash_StaminaReduction"] = "Ур.4-2: [Лунный удар] Снижение выносливости (%)",
@@ -622,6 +677,7 @@ namespace CaptainSkillTree.Localization
                 ["Mage_Lv3_AOE_Max_Targets"] = "Активный: Макс. целей Lv3",
                 ["Mage_Lv4_AOE_Max_Targets"] = "Активный: Макс. целей Lv4",
                 ["Mage_Lv5_AOE_Max_Targets"] = "Активный: Макс. целей Lv5",
+                ["Mage_AOE_Max_Targets"] = "Active: Max Target Count",
 
                 // ============================================
                 // Tanker Job Skills - 10 ключей
@@ -637,6 +693,20 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_EffectScale"] = "Боевой клич: Масштаб эффекта",
                 ["Tanker_Taunt_ReflectPercent"] = "Боевой клич: Процент отражения урона (%)",
                 ["Tanker_Passive_DamageReduction"] = "Пассивный: Снижение урона (%)",
+                ["Tanker_Hp_Bonus_Lv1"] = "Lv1 Passive: HP Bonus",
+                ["Tanker_Hp_Bonus_Lv2"] = "Lv2 Passive: HP Bonus",
+                ["Tanker_Hp_Bonus_Lv3"] = "Lv3 Passive: HP Bonus",
+                ["Tanker_Hp_Bonus_Lv4"] = "Lv4 Passive: HP Bonus",
+                ["Tanker_Hp_Bonus_Lv5"] = "Lv5 Passive: HP Bonus",
+                ["Tanker_ReflectDuration_Lv1"] = "Lv1 Passive: Reflect Duration (sec)",
+                ["Tanker_ReflectDuration_Lv2"] = "Lv2 Passive: Reflect Duration (sec)",
+                ["Tanker_ReflectDuration_Lv3"] = "Lv3 Passive: Reflect Duration (sec)",
+                ["Tanker_ReflectDuration_Lv4"] = "Lv4 Passive: Reflect Duration (sec)",
+                ["Tanker_ReflectDuration_Lv5"] = "Lv5 Passive: Reflect Duration (sec)",
+                ["Tanker_Lv2_BlockPower"] = "Lv2 Passive: Block Power",
+                ["Tanker_Lv3_BlockPower"] = "Lv3 Passive: Block Power",
+                ["Tanker_Lv4_BlockPower"] = "Lv4 Passive: Block Power",
+                ["Tanker_Lv5_BlockPower"] = "Lv5 Passive: Block Power",
 
                 // ============================================
                 // Rogue Job Skills - 10 ключей
@@ -655,6 +725,51 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv3_DodgeChance"] = "Lv3 Пассивный: Шанс уклонения (%)",
                 ["Rogue_Lv4_DodgeChance"] = "Lv4 Пассивный: Шанс уклонения (%)",
                 ["Rogue_Lv5_DodgeChance"] = "Lv5 Пассивный: Шанс уклонения (%)",
+                ["Rogue_Poison_DotDamage"]     = "Poison Blast: DoT Damage/sec",
+                ["Rogue_Poison_DotDuration"]   = "Poison Blast: DoT Duration (sec)",
+                ["Rogue_Poison_InstantDamage"] = "Poison Blast: Instant Damage",
+                ["Rogue_Poison_Range"]         = "Poison Blast: Range (m)",
+                ["Rogue_Poison_VFXCount"]      = "Poison Blast: VFX Count",
+                ["Rogue_Poison_VFXInterval"]   = "Poison Blast: Interval (sec)",
+                ["Rogue_ShadowStrike_Charges"] = "Shadow Strike: Base Charges",
+                ["Rogue_Lv1_MoveSpeed"]        = "Lv1 Passive: Move Speed (%)",
+                ["Rogue_Lv2_AttackBonus"]      = "Lv2: Attack Buff (%)",
+                ["Rogue_Lv2_AttackSpeed"]      = "Lv2 Passive: Attack Speed (%)",
+                ["Rogue_Lv2_BuffDuration"]     = "Lv2: Buff Duration (sec)",
+                ["Rogue_Lv2_Cooldown"]         = "Lv2: Cooldown (sec)",
+                ["Rogue_Lv2_MoveSpeed"]        = "Lv2 Passive: Move Speed (%)",
+                ["Rogue_Lv2_PoisonBlasts"]     = "Lv2: Poison Blast Count",
+                ["Rogue_Lv2_PoisonDot"]        = "Lv2: Poison DoT/sec",
+                ["Rogue_Lv2_PoisonInstant"]    = "Lv2: Instant Poison Damage",
+                ["Rogue_Lv2_StaminaReduction"] = "Lv2 Passive: Stamina Reduction (%)",
+                ["Rogue_Lv3_AttackBonus"]      = "Lv3: Attack Buff (%)",
+                ["Rogue_Lv3_AttackSpeed"]      = "Lv3 Passive: Attack Speed (%)",
+                ["Rogue_Lv3_BuffDuration"]     = "Lv3: Buff Duration (sec)",
+                ["Rogue_Lv3_Cooldown"]         = "Lv3: Cooldown (sec)",
+                ["Rogue_Lv3_MoveSpeed"]        = "Lv3 Passive: Move Speed (%)",
+                ["Rogue_Lv3_PoisonBlasts"]     = "Lv3: Poison Blast Count",
+                ["Rogue_Lv3_PoisonDot"]        = "Lv3: Poison DoT/sec",
+                ["Rogue_Lv3_PoisonInstant"]    = "Lv3: Instant Poison Damage",
+                ["Rogue_Lv3_StaminaReduction"] = "Lv3 Passive: Stamina Reduction (%)",
+                ["Rogue_Lv4_AttackBonus"]      = "Lv4: Attack Buff (%)",
+                ["Rogue_Lv4_AttackSpeed"]      = "Lv4 Passive: Attack Speed (%)",
+                ["Rogue_Lv4_BuffDuration"]     = "Lv4: Buff Duration (sec)",
+                ["Rogue_Lv4_Cooldown"]         = "Lv4: Cooldown (sec)",
+                ["Rogue_Lv4_MoveSpeed"]        = "Lv4 Passive: Move Speed (%)",
+                ["Rogue_Lv4_PoisonBlasts"]     = "Lv4: Poison Blast Count",
+                ["Rogue_Lv4_PoisonDot"]        = "Lv4: Poison DoT/sec",
+                ["Rogue_Lv4_PoisonInstant"]    = "Lv4: Instant Poison Damage",
+                ["Rogue_Lv4_StaminaReduction"] = "Lv4 Passive: Stamina Reduction (%)",
+                ["Rogue_Lv5_AttackBonus"]      = "Lv5: Attack Buff (%)",
+                ["Rogue_Lv5_AttackSpeed"]      = "Lv5 Passive: Attack Speed (%)",
+                ["Rogue_Lv5_BuffDuration"]     = "Lv5: Buff Duration (sec)",
+                ["Rogue_Lv5_Cooldown"]         = "Lv5: Cooldown (sec)",
+                ["Rogue_Lv5_MoveSpeed"]        = "Lv5 Passive: Move Speed (%)",
+                ["Rogue_Lv5_PoisonBlasts"]     = "Lv5: Poison Blast Count",
+                ["Rogue_Lv5_PoisonDot"]        = "Lv5: Poison DoT/sec",
+                ["Rogue_Lv5_PoisonInstant"]    = "Lv5: Instant Poison Damage",
+                ["Rogue_Lv5_StaminaReduction"] = "Lv5 Passive: Stamina Reduction (%)",
+                ["Rogue_Lv5_BonusCharges"]     = "Lv5: Bonus Charges",
 
                 // ============================================
                 // Paladin Job Skills - 9 ключей
@@ -736,6 +851,18 @@ namespace CaptainSkillTree.Localization
                 ["Producer_EnchantChance_Lv3"] = "Мастер ремесла: Шанс зачарования Lv3 (%)",
                 ["Producer_EnchantChance_Lv4"] = "Мастер ремесла: Шанс зачарования Lv4 (%)",
                 ["Producer_EnchantChance_Lv5"] = "Мастер ремесла: Шанс зачарования Lv5 (%)",
+
+                // ============================================
+                // Job Level Coin Cost
+                // ============================================
+                ["Job_Lv1_Cost"]       = "Job Lv1 Coin Cost",
+                ["Job_Lv2_Cost"]       = "Job Lv2 Coin Cost",
+                ["Job_Lv3_Cost"]       = "Job Lv3 Coin Cost",
+                ["Job_Lv4_Cost"]       = "Job Lv4 Coin Cost",
+                ["Job_Lv5_Cost"]       = "Job Lv5 Coin Cost",
+                ["Job_Reset_Cost"]     = "Job Skill Reset Cost",
+                ["Active_Reset_Cost"]  = "Active Skill Reset Cost",
+                ["Passive_Reset_Cost"] = "Passive Skill Reset Cost",
 
                 // ============================================
                 // Knife Tree - Взрыв слабого места (Tier 9)
