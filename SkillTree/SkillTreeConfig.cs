@@ -864,6 +864,10 @@ namespace CaptainSkillTree.SkillTree
                 )
             );
 
+            // IsAdminOnly=false 의도적 설계: GameDifficulty는 DifficultyManager 프리셋의 로컬 트리거.
+            // IsAdminOnly=true로 바꾸면 Jotunn이 클라이언트에 전파 → DifficultyManager.ApplyPreset()이
+            // 클라이언트 config 파일을 덮어쓰므로 의도치 않은 로컬 설정 손실이 발생.
+            // 실제 밸런스 수치는 IsAdminOnly=true인 개별 항목들이 Jotunn을 통해 자동 동기화됨.
             GameDifficulty = config.Bind(
                 "Skill_Tree_Base",
                 "GameDifficulty",
@@ -1030,9 +1034,13 @@ namespace CaptainSkillTree.SkillTree
                     {
                         Plugin.Log.LogDebug("[SkillTreeConfig] Jotunn 서버 설정 초기 동기화 완료");
                         _hasReceivedServerConfig = true;
-                        try { RefreshAllSkillEffects(); }
-                        catch (Exception ex) { Plugin.Log.LogWarning($"[SkillTreeConfig] 스킬 효과 재계산 중 오류: {ex.Message}"); }
                     }
+                    else
+                    {
+                        Plugin.Log.LogDebug("[SkillTreeConfig] Jotunn 서버 설정 런타임 동기화 완료");
+                    }
+                    try { RefreshAllSkillEffects(); }
+                    catch (Exception ex) { Plugin.Log.LogWarning($"[SkillTreeConfig] 스킬 효과 재계산 중 오류: {ex.Message}"); }
                 };
 
                 SynchronizationManager.OnAdminStatusChanged += () =>
@@ -1045,7 +1053,10 @@ namespace CaptainSkillTree.SkillTree
 
         private static void RefreshAllSkillEffects()
         {
-            if (Player.m_localPlayer == null) return;
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            try { SkillEffect.UpdateDefenseDodgeRate(player); }
+            catch (Exception ex) { Plugin.Log.LogWarning($"[SkillTreeConfig] RefreshAllSkillEffects 오류: {ex.Message}"); }
         }
 
         public static void DetectServerClientMode()
@@ -1126,8 +1137,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     _serverConfigValues = serverConfig;
                     _hasReceivedServerConfig = true;
-                    var player = Player.m_localPlayer;
-                    if (player != null) SkillEffect.UpdateDefenseDodgeRate(player);
+                    RefreshAllSkillEffects();
                 }
             }
             catch (Exception ex) { Plugin.Log.LogError($"[SkillTreeConfig] 서버 설정 수신 실패: {ex.Message}"); }
@@ -1185,6 +1195,9 @@ namespace CaptainSkillTree.SkillTree
 
         private static void OnConfigFileChanged(object sender, FileSystemEventArgs e)
         {
+            // Jotunn이 IsAdminOnly=true 항목을 자동 동기화(ConfigEntry.Value)하는 것과 별개로,
+            // BroadcastConfigToClients는 _serverConfigValues 캐시를 갱신하기 위해 필요.
+            // GetEffectiveValue()가 _serverConfigValues를 우선 참조하므로 두 경로가 상호 보완함.
             try { if (_isServer) BroadcastConfigToClients(); }
             catch (Exception ex) { Plugin.Log.LogError($"[SkillTreeConfig] Config 파일 변경 처리 실패: {ex.Message}"); }
         }
