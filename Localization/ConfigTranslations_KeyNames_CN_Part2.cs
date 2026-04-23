@@ -163,6 +163,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_Duration"] = "Tier 5: [一击必杀] 效果持续时间 (秒)",
                 ["Tier5_OneShot_DamageBonus"] = "Tier 5: [一击必杀] 伤害加成 (%)",
                 ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [一击必杀] 击退距离 (米)",
+                ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [一击必杀] 慢装填倍率",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [一击必杀] 冷却时间 (秒)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [一击必杀] 所需点数",
 

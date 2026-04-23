@@ -377,6 +377,12 @@ namespace CaptainSkillTree.Localization
                 "강력한 충격으로 적을 밀어냅니다.\n" +
                 "권장값: 5-10m",
 
+                ["Tier5_OneShot_SlowReloadMultiplier"] =
+                "【장전 속도 패널티 배율】\n" +
+                "스킬 발동 직후 1회 장전 시 시간이 이 배율만큼 늘어납니다.\n" +
+                "2.0 = -100% 속도 (2배 느림), 6.0 = -500% 속도 (6배 느림)\n" +
+                "권장값: 2.0 - 6.0",
+
                 ["Tier5_OneShot_Cooldown"] =
                 "【쿨타임 (초)】\n" +
                 "스킬 재사용 대기 시간입니다.\n" +
@@ -978,6 +984,12 @@ namespace CaptainSkillTree.Localization
                 "Distance enemies are knocked back on hit.\n" +
                 "Powerful impact pushes enemies away.\n" +
                 "Recommended: 5-10m",
+
+                ["Tier5_OneShot_SlowReloadMultiplier"] =
+                "【Slow Reload Multiplier】\n" +
+                "Reload time is multiplied by this value on the first reload after activation.\n" +
+                "2.0 = -100% speed (2x slower), 6.0 = -500% speed (6x slower)\n" +
+                "Recommended: 2.0 - 6.0",
 
                 ["Tier5_OneShot_Cooldown"] =
                 "【Cooldown (seconds)】\n" +

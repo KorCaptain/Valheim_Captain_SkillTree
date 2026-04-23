@@ -143,6 +143,13 @@ namespace CaptainSkillTree.SkillTree
                         SkillEffect.SkillEffectTextType.Combat);
                 }
             }
+
+            // 단 한 발 슬로우 리로드 패널티: 활성화 직후 1회 Config 배율만큼 시간 증가
+            if (SkillEffect.HasOneShotSlowReloadPending(player))
+            {
+                SkillEffect.ConsumeOneShotSlowReloadPending(player);
+                __result *= Crossbow_Config.CrossbowOneShotSlowReloadMultiplierValue;
+            }
         }
     }
 }

@@ -161,6 +161,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_Duration"] = "Tier 5: [Einschuss] Buff-Dauer (Sek)",
                 ["Tier5_OneShot_DamageBonus"] = "Tier 5: [Einschuss] Schadensbonus (%)",
                 ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [Einschuss] Rückstoßdistanz (m)",
+                ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [Einschuss] Langsamer Nachlademultiplikator",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [Einschuss] Abklingzeit (Sek)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [Einschuss] Benötigte Punkte",
 

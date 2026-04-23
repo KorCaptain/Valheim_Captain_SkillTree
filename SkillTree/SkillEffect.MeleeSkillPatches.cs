@@ -618,4 +618,25 @@ namespace CaptainSkillTree.SkillTree
             }
         }
     }
+
+    /// <summary>
+    /// 꿰뚫는 창 허공 스윙 감지 - StartAttack 시 창 사용 중이면 카운트
+    /// </summary>
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.StartAttack))]
+    public static class SpearPenetrate_AirSwing_Patch
+    {
+        public static void Postfix(Humanoid __instance)
+        {
+            try
+            {
+                if (__instance is not Player player) return;
+                if (!SkillEffect.IsUsingSpear(player)) return;
+                SkillEffect.OnSpearSwingStart(player);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[꿰뚫는 창] 허공 스윙 패치 오류: {ex.Message}");
+            }
+        }
+    }
 }

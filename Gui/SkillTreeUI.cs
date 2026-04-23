@@ -2504,20 +2504,24 @@ namespace CaptainSkillTree.Gui
                 }
 
                 // 이미 전직한 경우는 트로피 체크 없이 통과
+                bool isAdminJob = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
                 if (currentLevel <= 0)
                 {
-                    // 처음 전직하는 경우 Eikthyr 트로피 확인
-                    bool hasEikthyrTrophy = inventory.HaveItem("$item_trophy_eikthyr");
-                    if (!hasEikthyrTrophy)
+                    // 처음 전직하는 경우 Eikthyr 트로피 확인 (어드민은 면제)
+                    if (!isAdminJob)
                     {
-                        return new InvestResult(false, L10n.Get("trophy_eikthyr_required"));
+                        bool hasEikthyrTrophy = inventory.HaveItem("$item_trophy_eikthyr");
+                        if (!hasEikthyrTrophy)
+                        {
+                            return new InvestResult(false, L10n.Get("trophy_eikthyr_required"));
+                        }
                     }
                 }
                 else if (node.Id == "Archer")
                 {
-                    // Lv1+ 아처 업그레이드: 재료 체크
+                    // Lv1+ 아처 업그레이드: 재료 체크 (어드민은 면제)
                     int targetLevel = currentLevel + 1;
-                    if (!manager.HasArcherLevelItems(targetLevel))
+                    if (!isAdminJob && !manager.HasArcherLevelItems(targetLevel))
                     {
                         var missing = manager.GetMissingArcherItems(targetLevel);
                         var msg = L10n.Get("archer_level_item_required", targetLevel);
@@ -2528,11 +2532,11 @@ namespace CaptainSkillTree.Gui
                 }
                 else if (node.Id == "Paladin")
                 {
-                    // Lv1+ 성기사 업그레이드: 재료 체크
+                    // Lv1+ 성기사 업그레이드: 재료 체크 (어드민은 면제)
                     int targetLevel = currentLevel + 1;
                     if (targetLevel > 5)
                         return new InvestResult(false, L10n.Get("paladin_max_level"));
-                    if (!manager.HasPaladinLevelItems(targetLevel))
+                    if (!isAdminJob && !manager.HasPaladinLevelItems(targetLevel))
                     {
                         var missing = manager.GetMissingPaladinItems(targetLevel);
                         var msg = L10n.Get("paladin_level_item_required", targetLevel);
@@ -2544,11 +2548,12 @@ namespace CaptainSkillTree.Gui
             }
             else if (node.Id == "Producer" && manager.GetSkillLevel("Producer") >= 1)
             {
-                // Producer Lv1+ 업그레이드: 트로피 아이템 체크
+                // Producer Lv1+ 업그레이드: 트로피 아이템 체크 (어드민은 면제)
                 int targetLevel = manager.GetSkillLevel("Producer") + 1;
                 if (targetLevel > 5)
                     return new InvestResult(false, L10n.Get("producer_max_level"));
-                if (!manager.HasProducerLevelItems(targetLevel))
+                bool isAdminProducer = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                if (!isAdminProducer && !manager.HasProducerLevelItems(targetLevel))
                 {
                     var missing = manager.GetMissingProducerItems(targetLevel);
                     var msg = L10n.Get("producer_level_item_required", targetLevel);
@@ -2675,11 +2680,15 @@ namespace CaptainSkillTree.Gui
                 // 이미 전직한 경우는 트로피 체크 없이 통과
                 if (currentLevel <= 0)
                 {
-                    // 처음 전직하는 경우 Eikthyr 트로피 확인
-                    bool hasEikthyrTrophy = inventory.HaveItem("$item_trophy_eikthyr");
-                    if (!hasEikthyrTrophy)
+                    // 처음 전직하는 경우 Eikthyr 트로피 확인 (어드민은 면제)
+                    bool isAdmin = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (!isAdmin)
                     {
-                        return false;
+                        bool hasEikthyrTrophy = inventory.HaveItem("$item_trophy_eikthyr");
+                        if (!hasEikthyrTrophy)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
@@ -2785,7 +2794,18 @@ namespace CaptainSkillTree.Gui
                 if (node.Id == "Archer" && manager.GetSkillLevel("Archer") >= 1)
                 {
                     int targetLevel = manager.GetSkillLevel("Archer") + 1;
-                    if (manager.HasArcherLevelItems(targetLevel))
+                    if (targetLevel > 5)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("archer_max_level"));
+                        return;
+                    }
+                    bool isAdmin = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (targetLevel == 2 && manager.GetSkillLevel("bow_Step6_critboost") <= 0 && manager.GetSkillLevel("crossbow_Step6_expert") <= 0)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("archer_lv2_unlock_cond"));
+                        return;
+                    }
+                    if (isAdmin || manager.HasArcherLevelItems(targetLevel))
                     {
                         RectTransform nodeRect = null;
                         if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
@@ -2809,7 +2829,18 @@ namespace CaptainSkillTree.Gui
                 else if (node.Id == "Rogue" && manager.GetSkillLevel("Rogue") >= 1)
                 {
                     int targetLevel = manager.GetSkillLevel("Rogue") + 1;
-                    if (manager.HasRogueLevelItems(targetLevel))
+                    if (targetLevel > 5)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("rogue_max_level"));
+                        return;
+                    }
+                    bool isAdmin = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (targetLevel == 2 && manager.GetSkillLevel("knife_step9_assassin_heart") <= 0)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("rogue_lv2_unlock_cond"));
+                        return;
+                    }
+                    if (isAdmin || manager.HasRogueLevelItems(targetLevel))
                     {
                         RectTransform nodeRect = null;
                         if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
@@ -2845,7 +2876,8 @@ namespace CaptainSkillTree.Gui
                         tooltipUI.ShowWarning(L10n.Get("berserker_lv2_skill_prereq_required"));
                         return;
                     }
-                    if (manager.HasBerserkerLevelItems(targetLevel))
+                    bool isAdminBerserker = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (isAdminBerserker || manager.HasBerserkerLevelItems(targetLevel))
                     {
                         RectTransform nodeRect = null;
                         if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
@@ -2882,7 +2914,8 @@ namespace CaptainSkillTree.Gui
                         tooltipUI.ShowWarning(L10n.Get("tanker_lv2_skill_prereq_required"));
                         return;
                     }
-                    if (manager.HasTankerLevelItems(targetLevel))
+                    bool isAdminTanker = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (isAdminTanker || manager.HasTankerLevelItems(targetLevel))
                     {
                         RectTransform nodeRect = null;
                         if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
@@ -2913,7 +2946,13 @@ namespace CaptainSkillTree.Gui
                         tooltipUI.ShowWarning(L10n.Get("paladin_max_level"));
                         return;
                     }
-                    if (manager.HasPaladinLevelItems(targetLevel))
+                    bool isAdminPaladin = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (targetLevel == 2 && manager.GetSkillLevel("sword_step5_finalcut") <= 0 && manager.GetSkillLevel("mace_Step7_fury_hammer") <= 0)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("paladin_lv2_skill_required"));
+                        return;
+                    }
+                    if (isAdminPaladin || manager.HasPaladinLevelItems(targetLevel))
                     {
                         RectTransform nodeRect = null;
                         if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
@@ -2944,7 +2983,13 @@ namespace CaptainSkillTree.Gui
                         tooltipUI.ShowWarning(L10n.Get("mage_max_level"));
                         return;
                     }
-                    if (manager.HasMageLevelItems(targetLevel))
+                    bool isAdminMage = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (targetLevel == 2 && manager.GetSkillLevel("staff_Step6_dual_cast") <= 0)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("mage_lv2_unlock_cond"));
+                        return;
+                    }
+                    if (isAdminMage || manager.HasMageLevelItems(targetLevel))
                     {
                         RectTransform nodeRect = null;
                         if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
@@ -2975,7 +3020,8 @@ namespace CaptainSkillTree.Gui
                         tooltipUI.ShowWarning(L10n.Get("producer_max_level"));
                         return;
                     }
-                    if (manager.HasProducerLevelItems(targetLevel))
+                    bool isAdminProducer = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (isAdminProducer || manager.HasProducerLevelItems(targetLevel))
                     {
                         RectTransform nodeRect = null;
                         if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))

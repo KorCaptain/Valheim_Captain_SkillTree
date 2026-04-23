@@ -1,12 +1,33 @@
 # Changelog / 변경 로그
 ## Update
-# [1.2.51] - 2026-04-21
+# [1.2.54] - 2026-04-23
+- ✅fix1 : Fixing a bug that has not been repaired
+- ✅fix2 : Paladin Passive - Resistance Reduction reworked from per-hit multiplier to 15s debuff system; first hit applies debuff (all attackers deal bonus damage), subsequent hits refresh timer only
+-
+- ✅fix1 : 수리 안되던 버그 수정
+- ✅fix2 : 성기사 패시브 - 저항 감소가 매 타격 배수 방식에서 15초 디버프 방식으로 재구현; 첫 타격 시 디버프 부여(모든 공격자 딜 증가), 이후 타격은 타이머만 갱신
+
+# [1.2.47] - 2026-04-22
+- ✅new1 : Piercing Spear - Every 3-hit combo triggers a 3m dash toward the target; repeats throughout the 30s buff duration
+- ✅improve1 : Archer Lv2 - OneShot/ExplosiveArrow extra use changed from 30s time window to charge system (no time pressure, use anytime)
+- ✅improve2 : Tanker Lv2 - Added Spear Pierce/Combo as unlock prerequisite; H-key spear skill gets +1 use within 30s when Tanker Lv2 is active
+- ✅improve3 : Spear (H-key Combo / G-key Pierce) - With Tanker Lv2, no UI cooldown on 1st use; cooldown only starts on 2nd use within 30s window
+- ✅improve4 : Crossbow [One Shot] rework — activation triggers slow reload (×6 time), +400% damage on hit, knockback changed to 7m AOE with fx_Lightning VFX on each target
+-
+- ✅new1 : 꿰뚫는창 - 3타 콤보 달성 시 몬스터 방향 3m 돌진 발동, 버프 30초 동안 반복
+- ✅improve1 : 아처 Lv2 - 단 한발/폭발화살 추가 사용 방식을 30초 시간창에서 차지 방식으로 변경 (시간 제한 없이 언제든 1회 추가 사용 가능)
+- ✅improve2 : 탱커 Lv2 - 꿰뚫는창/연창공을 업그레이드 조건에 추가; 탱커 Lv2 보유 시 창 H키 30초 이내 1회 추가 사용 가능
+- ✅improve3 : 창 스킬 (H키 연공창 / G키 꿰뚫는창) - 탱커 Lv2 보유 시 1번째 사용은 UI 쿨타임 없음, 30초 내 2번째 사용 시 쿨타임 시작
+- ✅improve4 : 석궁 [단 한 발] 리메이크 — 활성화 시 극저속 장전(×6배), 데미지 +400%, 넉백이 7m AOE 범위로 변경 + 각 대상 fx_Lightning VFX 적용
+
+
+# [1.2.32] - 2026-04-21
 - ✅fix1 : Berserker - 무적패시브 수정
 - ✅fix2 : 근접 액티브스킬의 보스데미지 수정(약한 데미지 -> 정상적 데미지로 수정)
 - ✅new1 : 방어전문가의 마인드쉴드 구현(Eir 최대치만큼 보호막 생성)
 - ✅new2 : 관리자접속으로 컨피그 수정하여 서버설정 변경 가능
 
-# [1.2.51] - 2026-04-19
+# [1.2.31] - 2026-04-19
 - ✅new1 : Admin Config Sync - Admin can modify server config via F1 Config Manager; changes auto-sync to server and all clients
 - ✅fix1 : Remove unused variable warning in MaceSkills.FuryHammer.cs
 -

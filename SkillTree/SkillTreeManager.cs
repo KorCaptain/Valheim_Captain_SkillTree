@@ -808,6 +808,13 @@ namespace CaptainSkillTree.SkillTree
                 var player = Player.m_localPlayer;
                 if (player == null) return false;
 
+                // Admin Mode: 아이템·전제조건 무시, 최대 레벨만 체크
+                if (MMO_System.CaptainLevelConfig.IsAdminModeActive())
+                {
+                    if (!SkillNodes.ContainsKey(skillId)) return false;
+                    return GetSkillLevel(skillId) < SkillNodes[skillId].MaxLevel;
+                }
+
                 // 1. ItemRequirement 시스템을 통한 요구사항 확인
                 if (SkillItemRequirements.IsProductionSkill(skillId))
                 {
@@ -984,6 +991,41 @@ namespace CaptainSkillTree.SkillTree
             var node = SkillNodes[skillId];
             int currentLevel = GetSkillLevel(skillId) + (pendingInvestments.ContainsKey(skillId) ? pendingInvestments[skillId] : 0);
             if (currentLevel >= node.MaxLevel) return;
+
+            // Admin Mode: 트로피/코인/포인트 무시, Lv2 스킬 전제조건만 유지
+            if (MMO_System.CaptainLevelConfig.IsAdminModeActive())
+            {
+                int tgtLevel = currentLevel + 1;
+                if (tgtLevel == 2)
+                {
+                    bool lv2SkillOk = true;
+                    string lv2Error = null;
+                    if (skillId == "Archer" && GetSkillLevel("bow_Step6_critboost") <= 0 && GetSkillLevel("crossbow_Step6_expert") <= 0)
+                    { lv2SkillOk = false; lv2Error = L.Get("archer_lv2_unlock_cond"); }
+                    else if (skillId == "Rogue" && GetSkillLevel("knife_step9_assassin_heart") <= 0)
+                    { lv2SkillOk = false; lv2Error = L.Get("rogue_lv2_unlock_cond"); }
+                    else if (skillId == "Mage" && GetSkillLevel("staff_Step6_dual_cast") <= 0)
+                    { lv2SkillOk = false; lv2Error = L.Get("mage_lv2_unlock_cond"); }
+                    else if (skillId == "Berserker" && !HasBerserkerLv2SkillPrereq())
+                    { lv2SkillOk = false; lv2Error = L.Get("berserker_lv2_skill_prereq_required"); }
+                    else if (skillId == "Tanker" && !HasTankerLv2SkillPrereq())
+                    { lv2SkillOk = false; lv2Error = L.Get("tanker_lv2_skill_prereq_required"); }
+                    else if (skillId == "Paladin" && GetSkillLevel("sword_step5_finalcut") <= 0 && GetSkillLevel("mace_Step7_fury_hammer") <= 0)
+                    { lv2SkillOk = false; lv2Error = L.Get("paladin_lv2_skill_required"); }
+
+                    if (!lv2SkillOk)
+                    {
+                        if ((System.Object)Player.m_localPlayer != null)
+                            SkillEffect.DrawFloatingText(Player.m_localPlayer, "<size=20>⚠️ " + lv2Error + "</size>", Color.red);
+                        return;
+                    }
+                }
+                if (pendingInvestments.ContainsKey(skillId))
+                    pendingInvestments[skillId]++;
+                else
+                    pendingInvestments[skillId] = 1;
+                return;
+            }
 
             if (skillId == "Archer")
             {
@@ -1890,14 +1932,16 @@ namespace CaptainSkillTree.SkillTree
         // === 탱커 레벨 아이템 체크/소모 메서드 ===
 
         /// <summary>
-        /// 탱커 Lv2 스킬 선행 조건: 분노의 망치 / 돌진베기 중 1개 이상 습득
+        /// 탱커 Lv2 스킬 선행 조건: 분노의 망치 / 돌진베기 / 패링돌격 / 방패돌진 / 꿰뚫는창 / 연창공 중 1개 이상 습득
         /// </summary>
         public bool HasTankerLv2SkillPrereq()
         {
             return SkillEffect.HasSkill("mace_Step7_fury_hammer")
                 || SkillEffect.HasSkill("sword_step5_finalcut")
                 || SkillEffect.HasSkill("sword_step5_defswitch")
-                || SkillEffect.HasSkill("mace_Step7_guardian_heart");
+                || SkillEffect.HasSkill("mace_Step7_guardian_heart")
+                || SkillEffect.HasSkill("spear_Step5_penetrate")
+                || SkillEffect.HasSkill("spear_Step5_combo");
         }
 
         public bool HasTankerLevelItems(int targetLevel)
@@ -1917,7 +1961,9 @@ namespace CaptainSkillTree.SkillTree
                                (GetSkillLevel("mace_Step7_fury_hammer") > 0 ||
                                 GetSkillLevel("sword_step5_finalcut") > 0 ||
                                 GetSkillLevel("sword_step5_defswitch") > 0 ||
-                                GetSkillLevel("mace_Step7_guardian_heart") > 0) &&
+                                GetSkillLevel("mace_Step7_guardian_heart") > 0 ||
+                                GetSkillLevel("spear_Step5_penetrate") > 0 ||
+                                GetSkillLevel("spear_Step5_combo") > 0) &&
                                inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 3: return inventory.HaveItem("$item_trophy_abomination") &&
                                inventory.HaveItem("$item_trophy_bonemass") &&
@@ -1953,7 +1999,9 @@ namespace CaptainSkillTree.SkillTree
                     bool hasTankerSkill = GetSkillLevel("mace_Step7_fury_hammer") > 0 ||
                                           GetSkillLevel("sword_step5_finalcut") > 0 ||
                                           GetSkillLevel("sword_step5_defswitch") > 0 ||
-                                          GetSkillLevel("mace_Step7_guardian_heart") > 0;
+                                          GetSkillLevel("mace_Step7_guardian_heart") > 0 ||
+                                          GetSkillLevel("spear_Step5_penetrate") > 0 ||
+                                          GetSkillLevel("spear_Step5_combo") > 0;
                     if (!hasTankerSkill) missing.Add(L.Get("tanker_lv2_skill_prereq_required"));
                     if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add(string.Format(L.Get("coin_deficit_fmt"), SkillTreeConfig.GetJobLevelCost(targetLevel)));
                     break;

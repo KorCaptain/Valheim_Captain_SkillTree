@@ -203,7 +203,7 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_mark_desc"] = "치명타 확률 0% 고정, 대신 석궁 공격력 +{0}%",
                 ["crossbow_auto_reload_desc"] = "명중 시 {0}% 확률로 다음 1회 장전 속도 200%",
                 ["crossbow_final_desc"] = "크리티컬 데미지 +{0}%",
-                ["crossbow_oneshot_desc"] = "석궁 데미지 +{0}%, 다음 사격까지 {1}초 장전 지연",
+                ["crossbow_oneshot_desc"] = "R키: 발동 시 극저속 재장전, 적중 시 +{0}% 데미지 + 7m AOE 넉백",
                 ["crossbow_ice_breath_desc"] = "H키: 볼트 장전 완료 시 전방 10m·±35° 빙결 폭발탄 발사\n첫 타격 {0}% • 도트 {1}%×{2}회 • 넉백 10m • 스태미나 {3} • 쿨타임 {4}초",
                 ["bow_expert_desc"] = "활 공격력 +{0}%",
                 ["bow_focus_desc"] = "몬스터 머리 적중 시 크리티컬 100% 발동",
@@ -259,6 +259,7 @@ namespace CaptainSkillTree.Localization
                 ["archer_job_required"] = "아처 직업이 필요합니다!",
                 ["spear_penetrate_cooldown"] = "꿰뚫는 창 쿨타임 ({0}초)",
                 ["spear_penetrate_activated"] = "꿰뚫는 창 발동! ({0}초)",
+                ["spear_penetrate_no_target"] = "주변에 적이 없습니다",
                 ["staff_dual_cast_activated"] = "이중시전 발동! {0}발 추가 발사",
                 ["knife_assassin_heart_activated"] = "암살자의 심장 발동!",
 
@@ -579,7 +580,7 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_mark_desc"] = "Critical chance fixed at 0%, but crossbow damage +{0}%",
                 ["crossbow_auto_reload_desc"] = "On hit, {0}% chance for next reload 200% faster",
                 ["crossbow_final_desc"] = "Critical damage +{0}%",
-                ["crossbow_oneshot_desc"] = "Crossbow damage +{0}%, {1}s reload delay until next shot",
+                ["crossbow_oneshot_desc"] = "R Key: Slow reload on activation, +{0}% damage on hit + 7m AOE knockback",
                 ["crossbow_ice_breath_desc"] = "H Key: Fire Vulkan Ice in 10m·±35° cone (Bolt equipped)\nFirst hit {0}% • DoT {1}%×{2} ticks • Knockback 10m • Stamina {3} • Cooldown {4}s",
                 ["bow_expert_desc"] = "Bow damage +{0}%",
                 ["bow_focus_desc"] = "Arrows hitting a monster's head guarantee a 100% critical hit",
@@ -635,6 +636,7 @@ namespace CaptainSkillTree.Localization
                 ["archer_job_required"] = "Archer job required!",
                 ["spear_penetrate_cooldown"] = "Piercing Spear cooldown ({0}s)",
                 ["spear_penetrate_activated"] = "Piercing Spear activated! ({0}s)",
+                ["spear_penetrate_no_target"] = "No enemies nearby",
                 ["staff_dual_cast_activated"] = "Double Casting! Firing {0} additional projectiles",
                 ["knife_assassin_heart_activated"] = "Assassin's Heart activated!",
 

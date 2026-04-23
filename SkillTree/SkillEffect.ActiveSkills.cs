@@ -33,39 +33,46 @@ namespace CaptainSkillTree.SkillTree
             if (player == null || player.IsDead()) return;
             if (SkillTreeInputListener_KeyPatch.IsChatOrConsoleOpen()) return;
 
-            // 원거리 스킬이 없으면 조용히 리턴
-            if (!HasSkill("crossbow_Step6_expert") &&
-                !HasSkill("bow_Step6_critboost") &&
-                !HasSkill("staff_Step6_dual_cast"))
-                return;
+            bool hasCrossbowSkill = HasSkill("crossbow_Step6_expert");
+            bool hasBowSkill = HasSkill("bow_Step6_critboost");
+            bool hasStaffSkill = HasSkill("staff_Step6_dual_cast");
 
-            // 1. 석궁 단 한 발
-            if (HasSkill("crossbow_Step6_expert") && WeaponHelper.IsUsingCrossbow(player))
+            // Phase 1: 스킬 + 무기 모두 일치 시 발동
+            if (hasCrossbowSkill && WeaponHelper.IsUsingCrossbow(player))
             {
                 ActivateCrossbowOneShot(player);
                 return;
             }
-
-            // 2. 폭발 화살
-            if (HasSkill("bow_Step6_critboost") && WeaponHelper.IsUsingBow(player))
+            if (hasBowSkill && WeaponHelper.IsUsingBow(player))
             {
                 ExecuteExplosiveArrow(player);
                 return;
             }
-
-            // 3. 지팡이 이중시전
-            if (HasSkill("staff_Step6_dual_cast"))
+            if (hasStaffSkill && WeaponHelper.IsUsingStaffOrWand(player))
             {
-                if (WeaponHelper.IsUsingStaffOrWand(player))
-                {
-                    ActivateStaffDualCast(player);
-                    return;
-                }
+                ActivateStaffDualCast(player);
+                return;
+            }
+
+            // Phase 2: 배운 스킬에 맞는 무기 착용 안내 (우선순위: 석궁 > 활 > 지팡이)
+            if (hasCrossbowSkill)
+            {
+                DrawFloatingText(player, L.Get("crossbow_equip_required"), Color.red);
+                return;
+            }
+            if (hasBowSkill)
+            {
+                DrawFloatingText(player, L.Get("bow_equip_required"), Color.red);
+                return;
+            }
+            if (hasStaffSkill)
+            {
                 DrawFloatingText(player, L.Get("staff_equip_required"), Color.red);
                 return;
             }
 
-            DrawFloatingText(player, L.Get("r_key_skill_condition_not_met"));
+            // Phase 3: 아무 원거리 스킬도 미학습
+            DrawFloatingText(player, L.Get("r_key_skill_condition_not_met"), Color.red);
         }
 
         /// <summary>

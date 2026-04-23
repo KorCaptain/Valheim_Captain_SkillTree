@@ -103,6 +103,15 @@ try {
     [System.IO.File]::WriteAllText($manifestPath, $manifest, [System.Text.Encoding]::UTF8)
     Write-Host "[OK] manifest.json updated" -ForegroundColor Green
 
+    # 6-2. Update Captain_Skilltree/manifest.json
+    $captainManifestPath = Join-Path $thunderstorePath "Captain_Skilltree\manifest.json"
+    if (Test-Path $captainManifestPath) {
+        $captainManifestContent = Get-Content $captainManifestPath -Raw -Encoding UTF8
+        $captainManifestContent = $captainManifestContent -replace '"version_number":\s*"\d+\.\d+\.\d+"', "`"version_number`": `"$newVersion`""
+        [System.IO.File]::WriteAllText($captainManifestPath, $captainManifestContent, [System.Text.Encoding]::UTF8)
+        Write-Host "[OK] Captain_Skilltree/manifest.json updated" -ForegroundColor Green
+    }
+
     # 7. Save new version to .csproj
     $versionNode.Version = $newVersion
     $csproj.Save($ProjectFile)

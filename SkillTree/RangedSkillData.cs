@@ -806,8 +806,11 @@ namespace CaptainSkillTree.SkillTree
             // 3. 데미지
             tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("attack_power_bonus_format", Crossbow_Config.CrossbowOneShotDamageBonusValue)}</size></color>\n";
 
-            // 4. 범위 (넉백)
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("knockback_format", Crossbow_Config.CrossbowOneShotKnockbackValue)}</size></color>\n";
+            // 4. 범위 (AOE 넉백)
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>AOE {Crossbow_Config.CrossbowOneShotAoeRadiusValue}m</size></color>\n";
+
+            // 4-1. 슬로우 리로드
+            tooltip += $"<color=#FFD700><size=16>⚠ 재장전 속도: </size></color><color=#FFD700><size=16>-500% (6× 느림)</size></color>\n";
 
             // 5. 소모
             tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_format", 20)}</size></color>\n";

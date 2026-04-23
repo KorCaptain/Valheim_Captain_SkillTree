@@ -694,13 +694,16 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 string monsterName = monster.name ?? "Unknown";
-                float dynamicHeight = CalculateMonsterHeight(monster);
-                Vector3 headPosition = monster.transform.position + Vector3.up * dynamicHeight;
+                var col = monster.GetComponent<Collider>();
+                float localHeadY = (col != null && col.bounds.size.y > 0.1f)
+                    ? col.bounds.max.y - monster.transform.position.y + 0.5f
+                    : CalculateMonsterHeight(monster);
+                Vector3 headPosition = monster.transform.position + Vector3.up * localHeadY;
 
-                Plugin.Log.LogDebug($"[Tanker 도발] {monsterName} 머리 위 도발 효과 생성 - 높이: {dynamicHeight}m");
+                Plugin.Log.LogDebug($"[Tanker 도발] {monsterName} 머리 위 도발 효과 생성 - 높이: {localHeadY}m");
 
                 // 커스텀 VFX "taunt" - 몬스터 Transform에 부착하여 이동 시 따라다님
-                var instance = SimpleVFX.PlayFollowing("taunt", monster.transform, Vector3.up * dynamicHeight, duration);
+                var instance = SimpleVFX.PlayFollowing("taunt", monster.transform, Vector3.up * localHeadY, duration);
                 if (instance != null)
                     Plugin.Log.LogDebug($"[taunt 이펙트] {monsterName} 커스텀 VFX 추적 표시 완료 ({duration}초)");
                 else

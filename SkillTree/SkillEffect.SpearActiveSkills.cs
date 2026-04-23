@@ -99,22 +99,26 @@ namespace CaptainSkillTree.SkillTree
                 // 버프 활성화 (즉시 공격 X)
                 ActivateSpearComboThrowBuff(player);
 
-                // Paladin Lv2 분기: 첫 사용 시 쿨타임 보류 + 30초 창, 창 내 재사용 시 실제 쿨타임
+                // Paladin Lv2 또는 Tanker Lv2(창 스킬 보유): 첫 사용 시 쿨타임 보류 + 30초 창, 창 내 재사용 시 실제 쿨타임
                 bool hasPaladinLv2 = (SkillTreeManager.Instance?.GetSkillLevel("Paladin") ?? 0) >= 2;
-                bool inSpearComboWindow = hasPaladinLv2
+                bool hasTankerLv2Spear = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2
+                    && (HasSkill("spear_Step5_penetrate") || HasSkill("spear_Step5_combo"));
+                bool hasWindowBonus = hasPaladinLv2 || hasTankerLv2Spear;
+
+                bool inSpearComboWindow = hasWindowBonus
                     && _spearComboPendingWindow.TryGetValue(player, out float spearWinExpiry)
                     && now <= spearWinExpiry;
 
-                if (hasPaladinLv2 && !inSpearComboWindow)
+                if (hasWindowBonus && !inSpearComboWindow)
                 {
-                    // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
+                    // 1번째 사용: 쿨타임 없음 + 30초 창 오픈 (힌트만 표시)
                     _spearComboPendingWindow[player] = now + SpearComboExtraWindow;
                     player.StartCoroutine(ExpireSpearComboWindow(player));
-                    ActiveSkillCooldownRegistry.SetCooldown("H", SpearComboExtraWindow);
+                    DrawFloatingText(player, L.Get("combo_spear_extra_use_ready"), new Color(0.5f, 1f, 1f, 1f));
                 }
                 else
                 {
-                    // 2번째 사용(창 내) or 비팔라딘: 실제 쿨타임 시작
+                    // 2번째 사용(창 내) or 일반: 실제 쿨타임 시작
                     _spearComboPendingWindow.Remove(player);
                     spearEnhancedThrowCooldowns[player] = now + Spear_Config.SpearStep6ComboCooldownValue;
                     ActiveSkillCooldownRegistry.SetCooldown("H", Spear_Config.SpearStep6ComboCooldownValue);

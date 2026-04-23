@@ -75,6 +75,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Spear Skills ===
                 ["spear_penetrate_cooldown"] = "꿰뚫기 쿨다운 중! 남은 시간: {0}초",
+                ["spear_penetrate_extra_use_ready"] = "⚡ 30초 내 G키 추가 사용 가능!",
                 ["spear_required"] = "창을 착용해야 합니다",
                 ["spear_penetrate_success"] = "꿰뚫기! {0} 데미지!",
                 ["spear_combo_cooldown"] = "연공창 쿨다운 중! 남은 시간: {0}초",
@@ -89,7 +90,7 @@ namespace CaptainSkillTree.Localization
                 ["two_hand_mace_required"] = "양손 둔기를 착용해야 합니다!",
                 ["staff_equip_required"] = "지팡이를 착용해야 합니다!",
                 ["shield_equip_required"] = "방패를 착용해야 합니다!",
-                ["r_key_skill_condition_not_met"] = "Z키 스킬 조건이 충족되지 않았습니다",
+                ["r_key_skill_condition_not_met"] = "Z키 원거리 스킬을 먼저 배워야 합니다!",
                 ["g_key_skill_required"] = "G키 스킬이 필요합니다",
                 ["h_key_skill_required"] = "H키 스킬이 필요합니다",
                 ["h_key_skill_exclusive"] = "액티브 H 키 스킬은 1가지만 배울 수 있습니다.",
@@ -120,6 +121,7 @@ namespace CaptainSkillTree.Localization
                 ["combo_spear_buff_activated"] = "⚡ 연공창 발동! {0}회 사용 가능 (+{1}% 데미지)",
                 ["combo_spear_buff_ended"] = "연공창 효과 종료",
                 ["combo_spear_uses_remaining"] = "🎯 연공창 남은 횟수: {0}",
+                ["combo_spear_extra_use_ready"] = "⚡ 30초 내 H키 추가 사용 가능!",
                 ["combo_spear_retrieve_failed"] = "창 회수 실패",
                 ["combo_spear_retrieved_equipped"] = "✅ 창 회수 및 장착 완료!",
                 ["combo_spear_inventory_full"] = "인벤토리가 가득 차서 창이 앞에 떨어졌습니다",
@@ -313,7 +315,7 @@ namespace CaptainSkillTree.Localization
                 ["bow_arrow_rain_tooltip_desc"] = "버프 활성화 후 활로 대상에 적중, 상공 200m에서 화살 낙하",
                 ["bow_arrow_rain_damage_format"] = "{0}발 × (활+화살) {1}% 데미지",
                 ["bow_arrow_rain_range_format"] = "낙하 반경 {0}m • AOE 3m",
-                ["crossbow_oneshot_tooltip_desc"] = "{0}초간 버프 활성화, 다음 석궁 발사 시 강력한 일격",
+                ["crossbow_oneshot_tooltip_desc"] = "발동 즉시 극저속 재장전(-500%), {0}초 내 발사 시 강력한 일격 + 7m 범위 번개 넉백",
 
                 // === Common Tooltip Text ===
                 ["tooltip_job_limit"] = "직업은 1개만 선택가능",
@@ -431,6 +433,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Spear Skills ===
                 ["spear_penetrate_cooldown"] = "Penetrate on cooldown! Remaining: {0}s",
+                ["spear_penetrate_extra_use_ready"] = "⚡ G-key usable again within 30s!",
                 ["spear_required"] = "Spear required",
                 ["spear_penetrate_success"] = "Penetrate! {0} damage!",
                 ["spear_combo_cooldown"] = "Combo Spear on cooldown! Remaining: {0}s",
@@ -445,7 +448,7 @@ namespace CaptainSkillTree.Localization
                 ["two_hand_mace_required"] = "You must equip a two-hand mace!",
                 ["staff_equip_required"] = "You must equip a staff!",
                 ["shield_equip_required"] = "You must equip a shield!",
-                ["r_key_skill_condition_not_met"] = "R key skill condition not met",
+                ["r_key_skill_condition_not_met"] = "You need to learn a Z key ranged skill first!",
                 ["g_key_skill_required"] = "G key skill required",
                 ["h_key_skill_required"] = "H key skill required",
                 ["h_key_skill_exclusive"] = "Only one H-Key active skill can be learned.",
@@ -476,6 +479,7 @@ namespace CaptainSkillTree.Localization
                 ["combo_spear_buff_activated"] = "⚡ Combo Spear activated! {0} uses (+{1}% damage)",
                 ["combo_spear_buff_ended"] = "Combo Spear effect ended",
                 ["combo_spear_uses_remaining"] = "🎯 Combo Spear remaining: {0}",
+                ["combo_spear_extra_use_ready"] = "⚡ H-key usable again within 30s!",
                 ["combo_spear_retrieve_failed"] = "Failed to retrieve spear",
                 ["combo_spear_retrieved_equipped"] = "✅ Spear retrieved and equipped!",
                 ["combo_spear_inventory_full"] = "Inventory full - spear dropped in front of you",

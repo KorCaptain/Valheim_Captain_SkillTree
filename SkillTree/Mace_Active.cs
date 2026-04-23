@@ -370,8 +370,11 @@ namespace CaptainSkillTree.SkillTree
                 {
                     TankerTauntAIPatch.AddTauntedMonster(tauntTarget, player, 5f);
 
-                    // 머리 위 도발 VFX (탱커 패턴 동일)
-                    float headHeight = 2.0f;
+                    // 머리 위 도발 VFX (collider 상단 기준)
+                    var tauntCol = tauntTarget.GetComponent<Collider>();
+                    float headHeight = (tauntCol != null && tauntCol.bounds.size.y > 0.1f)
+                        ? tauntCol.bounds.max.y - tauntTarget.transform.position.y + 0.5f
+                        : 2.5f;
                     SimpleVFX.PlayFollowing("taunt", tauntTarget.transform, Vector3.up * headHeight, 5f);
                 }
                 catch (Exception ex)

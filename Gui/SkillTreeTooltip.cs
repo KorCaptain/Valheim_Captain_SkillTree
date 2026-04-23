@@ -210,6 +210,11 @@ namespace CaptainSkillTree.Gui
                 // 이중 시전 스킬 전용 동적 툴팁 처리
                 tooltipText = Staff_Tooltip.GetDualCastTooltip();
             }
+            else if (node.Id == "defense_Step6_mind")
+            {
+                // 마인드쉴드 액티브 스킬 전용 동적 툴팁 처리
+                tooltipText = MindShield_Tooltip.GetMindShieldTooltip();
+            }
             else if (node.Id == "spear_Step5_combo")
             {
                 // 연공창 스킬 전용 동적 툴팁 처리 (SpearSkillMappings에 없으므로 특별 처리)
@@ -510,6 +515,9 @@ namespace CaptainSkillTree.Gui
                     break;
                 case "staff_Step6_dual_cast": // 이중 시전 (액티브 스킬)
                     result = Staff_Tooltip.GetDualCastTooltip();
+                    break;
+                case "defense_Step6_mind": // 마인드쉴드 (액티브 스킬)
+                    result = MindShield_Tooltip.GetMindShieldTooltip();
                     break;
 
                 // 1단계 노드들

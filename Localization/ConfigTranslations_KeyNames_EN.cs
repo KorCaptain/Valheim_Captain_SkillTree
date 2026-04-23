@@ -626,7 +626,9 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: One Shot - R-Key Active (5) ===
                 ["Tier5_OneShot_Duration"] = "Tier 5: [One Shot] Buff Duration (sec)",
                 ["Tier5_OneShot_DamageBonus"] = "Tier 5: [One Shot] Damage Bonus (%)",
-                ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [One Shot] Knockback Distance (m)",
+                ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [One Shot] Knockback Force (45=~7m)",
+                ["Tier5_OneShot_AoeRadius"] = "Tier 5: [One Shot] AOE Radius (m)",
+                ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [One Shot] Slow Reload Multiplier",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [One Shot] Cooldown (sec)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [One Shot] Required Points",
 

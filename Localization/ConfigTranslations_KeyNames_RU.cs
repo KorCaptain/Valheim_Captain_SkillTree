@@ -454,6 +454,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_Duration"] = "Ур.5: [Один выстрел] Длительность эффекта (сек)",
                 ["Tier5_OneShot_DamageBonus"] = "Ур.5: [Один выстрел] Бонус урона (%)",
                 ["Tier5_OneShot_KnockbackDistance"] = "Ур.5: [Один выстрел] Дальность откидывания (м)",
+                ["Tier5_OneShot_SlowReloadMultiplier"] = "Ур.5: [Один выстрел] Множитель медленной перезарядки",
                 ["Tier5_OneShot_Cooldown"] = "Ур.5: [Один выстрел] Перезарядка (сек)",
                 ["Tier5_OneShot_RequiredPoints"] = "Ур.5: [Один выстрел] Необходимые очки",
 

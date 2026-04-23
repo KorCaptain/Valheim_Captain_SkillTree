@@ -21,6 +21,14 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, float> spearPenetrateLastHitTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> spearPenetrateCooldownEndTime = new Dictionary<Player, float>();
 
+        // Tanker Lv2 꿰뚫는창 추가 사용 창 (30초)
+        private static Dictionary<Player, float> _spearPenetratePendingWindow = new Dictionary<Player, float>();
+        private const float SpearPenetrateExtraWindow = 30f;
+
+        // 허공 공격 카운터 (3회 스윙 미스 → 가장 가까운 몬스터로 돌진)
+        private static Dictionary<Player, int> spearPenetrateAirSwingCount = new Dictionary<Player, int>();
+        private static Dictionary<Player, float> spearPenetrateAirSwingLastTime = new Dictionary<Player, float>();
+
         // 재진입 방지 플래그 (번개 충격 데미지가 다시 콤보를 트리거하지 않도록)
         private static bool isProcessingSpearLightningDamage = false;
 
@@ -404,9 +412,29 @@ namespace CaptainSkillTree.SkillTree
             // 버프 활성화
             ActivateSpearPenetrateBuff(player);
 
-            // 쿨타임 시작
-            spearPenetrateCooldownEndTime[player] = Time.time + cooldown;
-            ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+            // Tanker Lv2 + 꿰뚫는창 보유: 첫 사용 시 쿨타임 보류 + 30초 창, 창 내 재사용 시 실제 쿨타임
+            float now = Time.time;
+            bool hasTankerLv2Spear = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2
+                && HasSkill("spear_Step5_penetrate");
+
+            bool inPenetrateWindow = hasTankerLv2Spear
+                && _spearPenetratePendingWindow.TryGetValue(player, out float winExpiry)
+                && now <= winExpiry;
+
+            if (hasTankerLv2Spear && !inPenetrateWindow)
+            {
+                // 1번째 사용: 쿨타임 없음 + 30초 창 오픈
+                _spearPenetratePendingWindow[player] = now + SpearPenetrateExtraWindow;
+                player.StartCoroutine(ExpireSpearPenetrateWindow(player));
+                DrawFloatingText(player, L.Get("spear_penetrate_extra_use_ready"), new Color(0.5f, 1f, 1f, 1f));
+            }
+            else
+            {
+                // 2번째 사용(창 내) or 일반: 실제 쿨타임 시작
+                _spearPenetratePendingWindow.Remove(player);
+                spearPenetrateCooldownEndTime[player] = now + cooldown;
+                ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+            }
 
             // VFX 재생 (발헤임 기본 → VFXManager)
             CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_offering_activate", "", player.transform.position, Quaternion.identity, 1f);
@@ -469,6 +497,9 @@ namespace CaptainSkillTree.SkillTree
 
             Plugin.Log.LogDebug($"[꿰뚫는 창] 콤보 카운트: {spearPenetrateComboCount[player]}/{requiredCombo}");
 
+            // 몬스터 적중 시 허공 카운터 리셋
+            spearPenetrateAirSwingCount[player] = 0;
+
             // 연속 적중 횟수 달성 시 번개 충격 발동
             if (spearPenetrateComboCount[player] >= requiredCombo)
             {
@@ -478,20 +509,74 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 꿰뚫는 창 번개 충격 발동
-        /// 몬스터를 2m 띄우고 번개 데미지 적용
+        /// 허공 스윙 감지 (StartAttack 시 호출) - 3회 미스 시 가장 가까운 몬스터로 돌진
+        /// </summary>
+        public static void OnSpearSwingStart(Player player)
+        {
+            if (!HasSkill("spear_Step5_penetrate")) return;
+            if (!IsSpearPenetrateBuffActive(player)) return;
+
+            float now = Time.time;
+            if (!spearPenetrateAirSwingCount.ContainsKey(player))
+                spearPenetrateAirSwingCount[player] = 0;
+
+            // 5초 이내 연속 스윙만 인정
+            if (spearPenetrateAirSwingLastTime.TryGetValue(player, out float lastSwing) && now - lastSwing < 5f)
+                spearPenetrateAirSwingCount[player]++;
+            else
+                spearPenetrateAirSwingCount[player] = 1;
+
+            spearPenetrateAirSwingLastTime[player] = now;
+
+            Plugin.Log.LogDebug($"[꿰뚫는 창] 허공 스윙 감지");
+
+            if (spearPenetrateAirSwingCount[player] >= 1)
+            {
+                spearPenetrateAirSwingCount[player] = 0;
+                CheckSpearPenetrateAirCombo(player);
+            }
+        }
+
+        /// <summary>
+        /// 허공 3회 스윙 달성 - 가장 가까운 몬스터를 찾아 돌진
+        /// </summary>
+        private static void CheckSpearPenetrateAirCombo(Player player)
+        {
+            Character nearest = null;
+            float nearestDist = float.MaxValue;
+            LayerMask charMask = LayerMask.GetMask("character", "hitbox");
+            var cols = Physics.OverlapSphere(player.transform.position, 15f, charMask);
+            foreach (var col in cols)
+            {
+                var ch = col.GetComponentInParent<Character>();
+                if (ch == null || ch == player || ch.IsDead() || ch.IsPlayer()) continue;
+                if (!ch.IsMonsterFaction(Time.time)) continue;
+                float d = Vector3.Distance(player.transform.position, ch.transform.position);
+                if (d < nearestDist) { nearestDist = d; nearest = ch; }
+            }
+
+            if (nearest == null)
+            {
+                DrawFloatingText(player, L.Get("spear_penetrate_no_target"), Color.gray);
+                return;
+            }
+
+            player.StartCoroutine(SpearPenetrateDashCoroutine(player, nearest));
+        }
+
+        /// <summary>
+        /// 꿰뚫는 창 번개 충격 + 돌진 발동
+        /// 3연속 적중 시 번개 데미지 적용 + 몬스터 방향 3m 돌진
         /// </summary>
         private static void TriggerSpearPenetrateLightning(Player player, Character target, HitData hit)
         {
             if (target == null || target.IsDead()) return;
             if (player == null) return;
 
-            // 이미 번개 충격 처리 중이면 스킵 (재진입 방지)
             if (isProcessingSpearLightningDamage) return;
 
             try
             {
-                // 번개 충격 처리 시작 플래그 설정
                 isProcessingSpearLightningDamage = true;
 
                 float damageMultiplier = Spear_Config.SpearStep6PenetrateLightningDamageValue / 100f;
@@ -514,8 +599,11 @@ namespace CaptainSkillTree.SkillTree
                     target.Damage(lightningHit);
                 }
 
+                // 4. 돌진: 몬스터 방향으로 3m
+                DashTowardTarget(player, target);
+
                 DrawFloatingText(player, "⚡ " + L.Get("spear_lightning_shock", $"{lightningDamage:F0}"), Color.cyan);
-                Plugin.Log.LogInfo($"[꿰뚫는 창] 번개 충격 발동 - 데미지: {lightningDamage:F0}");
+                Plugin.Log.LogInfo($"[꿰뚫는 창] 번개 충격 + 돌진 발동 - 데미지: {lightningDamage:F0}");
             }
             catch (System.Exception ex)
             {
@@ -523,9 +611,103 @@ namespace CaptainSkillTree.SkillTree
             }
             finally
             {
-                // 번개 충격 처리 완료 플래그 해제
                 isProcessingSpearLightningDamage = false;
             }
+        }
+
+        /// <summary>
+        /// 몬스터 방향으로 3m 돌진 (꿰뚫는창 3타 콤보 발동 시) - 패링 돌격 패턴
+        /// </summary>
+        private static void DashTowardTarget(Player player, Character target)
+        {
+            player.StartCoroutine(SpearPenetrateDashCoroutine(player, target));
+        }
+
+        private static System.Collections.IEnumerator SpearPenetrateDashCoroutine(Player player, Character target)
+        {
+            if (player == null || target == null) yield break;
+
+            Vector3 dirFlat = target.transform.position - player.transform.position;
+            dirFlat.y = 0f;
+            if (dirFlat.sqrMagnitude < 0.25f) yield break;
+            Vector3 dashDir = dirFlat.normalized;
+
+            // 몬스터 방향 회전 (패링 돌격 동일)
+            player.transform.rotation = Quaternion.LookRotation(dashDir);
+
+            // 최대 3m 이동, 속도 20m/s (패링 돌격 동일)
+            float dist = dirFlat.magnitude;
+            float dashDist = Mathf.Min(3f, dist);
+            float moveDuration = Mathf.Max(dashDist / 20f, 0.05f);
+
+            Vector3 startPos = player.transform.position;
+            Vector3 targetPos = target.transform.position;
+            var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
+
+            SimpleVFX.Play("hit_03", startPos + player.transform.forward * 0.5f + Vector3.up * 0.8f, 1.2f);
+
+            float elapsed = 0f;
+            while (elapsed < moveDuration)
+            {
+                if (player == null || player.IsDead()) yield break;
+
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / moveDuration);
+                float smoothT = 1f - Mathf.Pow(1f - t, 2f);
+
+                // 매 프레임 타겟 위치 갱신 (몬스터가 이동했을 경우 추적)
+                if (target != null && !target.IsDead())
+                    targetPos = target.transform.position;
+
+                Vector3 newPos = Vector3.Lerp(startPos, targetPos, smoothT);
+
+                if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
+                    LayerMask.GetMask("terrain", "Default")))
+                    newPos.y = groundHit.point.y + 0.1f;
+
+                if (body != null) { body.velocity = Vector3.zero; body.MovePosition(newPos); }
+                else player.transform.position = newPos;
+
+                yield return new WaitForFixedUpdate();
+            }
+        }
+
+        private static Vector3 GetSpearDashGroundPos(Vector3 pos)
+        {
+            if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f,
+                LayerMask.GetMask("terrain", "Default")))
+                return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
+            return pos;
+        }
+
+        /// <summary>
+        /// Tanker Lv2 꿰뚫는창 추가 사용 창 만료 코루틴 - 30초 후 쿨타임 시작
+        /// </summary>
+        private static IEnumerator ExpireSpearPenetrateWindow(Player player)
+        {
+            yield return new UnityEngine.WaitForSeconds(SpearPenetrateExtraWindow);
+            if (_spearPenetratePendingWindow.ContainsKey(player))
+            {
+                _spearPenetratePendingWindow.Remove(player);
+                float cd = Spear_Config.SpearStep6PenetrateCooldownValue;
+                spearPenetrateCooldownEndTime[player] = Time.time + cd;
+                ActiveSkillCooldownRegistry.SetCooldown("G", cd);
+                Plugin.Log.LogDebug("[꿰뚫는 창] Tanker 추가 사용 창 만료 - 쿨타임 시작");
+            }
+        }
+
+        /// <summary>
+        /// 꿰뚫는창 상태 정리 (플레이어 사망 시)
+        /// </summary>
+        public static void CleanupSpearPenetrateOnDeath(Player player)
+        {
+            spearPenetrateBuffEndTime.Remove(player);
+            spearPenetrateComboCount.Remove(player);
+            spearPenetrateLastHitTime.Remove(player);
+            spearPenetrateCooldownEndTime.Remove(player);
+            _spearPenetratePendingWindow.Remove(player);
+            spearPenetrateAirSwingCount.Remove(player);
+            spearPenetrateAirSwingLastTime.Remove(player);
         }
 
     }

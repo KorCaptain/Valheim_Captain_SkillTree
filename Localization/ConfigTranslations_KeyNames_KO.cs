@@ -628,7 +628,9 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: 단 한 발 - R키 액티브 (5개) ===
                 ["Tier5_OneShot_Duration"] = "Tier 5: [단 한 발] 버프 지속시간 (초)",
                 ["Tier5_OneShot_DamageBonus"] = "Tier 5: [단 한 발] 데미지 보너스 (%)",
-                ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [단 한 발] 넉백 거리 (미터)",
+                ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [단 한 발] 넉백 강도 (45=약 7m)",
+                ["Tier5_OneShot_AoeRadius"] = "Tier 5: [단 한 발] AOE 반경 (미터)",
+                ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [단 한 발] 장전 속도 패널티 배율",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [단 한 발] 쿨타임 (초)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [단 한 발] 필요 포인트",
 

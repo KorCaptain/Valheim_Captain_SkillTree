@@ -79,19 +79,6 @@ namespace CaptainSkillTree.Mods
         }
     }
 
-    // ──── 인벤토리 수리 잠금 ────────────────────────────────────────────────
-
-    [HarmonyPatch(typeof(InventoryGui), "RepairOneItem")]
-    [HarmonyAfter(BlacksmithingBridge.GUID)]
-    internal static class BSE_RepairGate
-    {
-        static bool Prefix()
-        {
-            // 설치 안 됐거나 제작 전문가면 통과, 아니면 차단
-            return BlacksmithingBridge.CanUse();
-        }
-    }
-
     // ──── 제련소 / 가마 속도 강화 ───────────────────────────────────────────
 
     [HarmonyPatch(typeof(Smelter), "UpdateSmelter")]

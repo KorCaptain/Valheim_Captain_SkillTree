@@ -18,16 +18,24 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, bool> crossbowOneShotReady = new Dictionary<Player, bool>();
         private static Dictionary<Player, float> crossbowOneShotExpiry = new Dictionary<Player, float>();
         private static Dictionary<Player, Coroutine> crossbowOneShotCoroutine = new Dictionary<Player, Coroutine>();
-        private static readonly float crossbowOneShotCooldownTime = 60f;
-        private static readonly float crossbowOneShotDuration = 30f;
+        // 장전 중 사운드 코루틴 추적
+        private static Dictionary<Player, Coroutine> _oneShotReloadSoundCoroutines = new Dictionary<Player, Coroutine>();
 
-        // Archer Lv2: 30초 추가 사용 창 관리
-        private static Dictionary<Player, float> _crossbowOneShotPendingWindow = new Dictionary<Player, float>();
-        private const float CrossbowOneShotExtraWindow = 30f;
+        // Archer Lv2: 추가 사용 차지 관리
+        private static Dictionary<Player, bool> _archerLv2OneShotChargeReady = new Dictionary<Player, bool>();
 
         // === 버프 이펙트 변수 ===
         private static Dictionary<Player, GameObject> followingBuffEffects = new Dictionary<Player, GameObject>();
         private static Dictionary<Player, Coroutine> followingBuffCoroutines = new Dictionary<Player, Coroutine>();
+
+        // === 단 한 발 슬로우 리로드 패널티 ===
+        private static Dictionary<Player, bool> _oneShotSlowReloadPending = new Dictionary<Player, bool>();
+
+        public static bool HasOneShotSlowReloadPending(Player p) =>
+            _oneShotSlowReloadPending.TryGetValue(p, out bool v) && v;
+
+        public static void ConsumeOneShotSlowReloadPending(Player p) =>
+            _oneShotSlowReloadPending[p] = false;
 
         /// <summary>
         /// 석궁 단 한 발 버프 활성화
@@ -37,15 +45,20 @@ namespace CaptainSkillTree.SkillTree
             if (!crossbowOneShotCooldown.ContainsKey(player))
                 crossbowOneShotCooldown[player] = 0f;
 
-            // Archer Lv2 추가 사용 창이 열려 있으면 쿨타임 체크 건너뜀
-            bool inPendingWindow = _crossbowOneShotPendingWindow.TryGetValue(player, out float windowEnd)
-                && Time.time <= windowEnd;
+            bool hasArcherLv2 = SkillTreeManager.Instance != null
+                && SkillTreeManager.Instance.GetSkillLevel("Archer") >= 2;
+            bool hasExtraCharge = hasArcherLv2
+                && _archerLv2OneShotChargeReady.TryGetValue(player, out bool chargeReady) && chargeReady;
 
-            if (!inPendingWindow)
+            float cooldownTime = Crossbow_Config.CrossbowOneShotCooldownValue;
+            float durationTime = Crossbow_Config.CrossbowOneShotDurationValue;
+
+            // Archer Lv2 추가 차지 있으면 쿨타임 체크 건너뜀
+            if (!hasExtraCharge)
             {
-                if (Time.time - crossbowOneShotCooldown[player] < crossbowOneShotCooldownTime)
+                if (Time.time - crossbowOneShotCooldown[player] < cooldownTime)
                 {
-                    float remainingCooldown = crossbowOneShotCooldownTime - (Time.time - crossbowOneShotCooldown[player]);
+                    float remainingCooldown = cooldownTime - (Time.time - crossbowOneShotCooldown[player]);
                     DrawFloatingText(player, L.Get("crossbow_oneshot_cooldown", $"{remainingCooldown:F1}"));
                     return;
                 }
@@ -57,33 +70,53 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            crossbowOneShotCooldown[player] = Time.time;
             crossbowOneShotReady[player] = true;
-            crossbowOneShotExpiry[player] = Time.time + crossbowOneShotDuration;
+            crossbowOneShotExpiry[player] = Time.time + durationTime;
+            _oneShotSlowReloadPending[player] = true;
 
-            bool hasArcherLv2 = SkillTreeManager.Instance != null
-                && SkillTreeManager.Instance.GetSkillLevel("Archer") >= 2;
-
-            if (hasArcherLv2)
+            // 장전 상태 강제 해제 → 다시 장전 모드로 전환
+            try
             {
-                if (_crossbowOneShotPendingWindow.TryGetValue(player, out float we) && Time.time <= we)
+                HarmonyLib.Traverse.Create(player).Field("m_weaponLoaded").SetValue(null);
+                var nview = HarmonyLib.Traverse.Create(player).Field("m_nview").GetValue<ZNetView>();
+                nview?.GetZDO()?.Set("WeaponLoaded".GetStableHashCode(), false);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogDebug($"[단 한 발] 장전 해제 실패: {ex.Message}");
+            }
+
+            // 패시브 장전 보너스 연동
+            // 고속 장전(crossbow_Step3_rapid): 항상 적용 (장전 패치에서 자동 처리)
+            // 자동 장전(crossbow_Step4_re): 확률 재굴림 → 버프 부여 시 장전 패치에서 소비
+            if (HasSkill("crossbow_Step4_re"))
+            {
+                float autoChance = Crossbow_Config.CrossbowAutoReloadChanceValue / 100f;
+                if (UnityEngine.Random.value < autoChance)
                 {
-                    // 2번째 사용: 창 종료 → 쿨타임 시작
-                    _crossbowOneShotPendingWindow.Remove(player);
-                    ActiveSkillCooldownRegistry.SetCooldown("R", crossbowOneShotCooldownTime);
-                    Plugin.Log.LogDebug("[단 한 발] Archer Lv2 2번째 사용 → 쿨타임 시작");
+                    SetAutoReloadBuff(player, true);
+                    DrawFloatingText(player, L.Get("crossbow_auto_reload_activated", $"{200}"));
                 }
-                else
-                {
-                    // 1번째 사용: 쿨타임 보류, 30초 창 시작
-                    _crossbowOneShotPendingWindow[player] = Time.time + CrossbowOneShotExtraWindow;
-                    Plugin.Instance.StartCoroutine(ExpireCrossbowOneShotWindow(player));
-                    Plugin.Log.LogDebug("[단 한 발] Archer Lv2 1번째 사용 → 30초 창 시작");
-                }
+            }
+
+            if (hasExtraCharge)
+            {
+                // 2번째 사용: 차지 소비 → 쿨타임 시작
+                _archerLv2OneShotChargeReady[player] = false;
+                crossbowOneShotCooldown[player] = Time.time;
+                ActiveSkillCooldownRegistry.SetCooldown("R", cooldownTime);
+                Plugin.Log.LogDebug("[단 한 발] Archer Lv2 2번째 사용 → 쿨타임 시작");
+            }
+            else if (hasArcherLv2)
+            {
+                // 1번째 사용: 차지 부여, 쿨타임 없음
+                _archerLv2OneShotChargeReady[player] = true;
+                Plugin.Log.LogDebug("[단 한 발] Archer Lv2 1번째 사용 → 추가 사용 준비");
             }
             else
             {
-                ActiveSkillCooldownRegistry.SetCooldown("R", crossbowOneShotCooldownTime);
+                crossbowOneShotCooldown[player] = Time.time;
+                ActiveSkillCooldownRegistry.SetCooldown("R", cooldownTime);
             }
 
             if (crossbowOneShotCoroutine.ContainsKey(player) && crossbowOneShotCoroutine[player] != null)
@@ -96,16 +129,10 @@ namespace CaptainSkillTree.SkillTree
             {
                 StartFollowingBuffEffect(player);
 
-                var buffSoundNames = new string[] { "sfx_creature_tamed", "sfx_build_hammer_metal" };
-                foreach (var soundName in buffSoundNames)
-                {
-                    var sound = ZNetScene.instance?.GetPrefab(soundName)?.GetComponent<AudioSource>()?.clip;
-                    if (sound != null)
-                    {
-                        AudioSource.PlayClipAtPoint(sound, player.transform.position);
-                        break;
-                    }
-                }
+                // 장전 중 소리 코루틴 시작
+                if (_oneShotReloadSoundCoroutines.ContainsKey(player) && _oneShotReloadSoundCoroutines[player] != null)
+                    player.StopCoroutine(_oneShotReloadSoundCoroutines[player]);
+                _oneShotReloadSoundCoroutines[player] = player.StartCoroutine(OneShotReloadSoundCoroutine(player));
             }
             catch (Exception buffEffectEx)
             {
@@ -163,18 +190,18 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
-                // buff_01 이펙트
-                var buff01Prefab = VFXManager.GetVFXPrefab("buff_01");
-                if (buff01Prefab != null)
+                // buff_02a 이펙트 (2초 짧게 재생)
+                var buff02aPrefab = VFXManager.GetVFXPrefab("buff_02a");
+                if (buff02aPrefab != null)
                 {
-                    buff01Effect = UnityEngine.Object.Instantiate(buff01Prefab, player.transform.position + Vector3.up * 0.5f, player.transform.rotation);
+                    buff01Effect = UnityEngine.Object.Instantiate(buff02aPrefab, player.transform.position + Vector3.up * 0.5f, player.transform.rotation);
                     buff01Effect.transform.SetParent(player.transform, false);
                     buff01Effect.transform.localPosition = Vector3.up * 0.5f;
                     buff01Effect.transform.localScale = Vector3.one * 0.8f;
-                    player.StartCoroutine(DestroyEffectAfterDelay(buff01Effect, 2f, "buff_01"));
+                    player.StartCoroutine(DestroyEffectAfterDelay(buff01Effect, 2f, "buff_02a"));
                 }
 
-                // statusailment_01_aura 이펙트
+                // statusailment_01_aura 이펙트 (버프 지속 동안 유지)
                 var starAuraPrefab = VFXManager.GetVFXPrefab("statusailment_01_aura");
                 if (starAuraPrefab != null)
                 {
@@ -202,6 +229,32 @@ namespace CaptainSkillTree.SkillTree
                 }
                 yield return new WaitForSeconds(1f);
             }
+        }
+
+        /// <summary>
+        /// 장전 중 1초 간격으로 소리 반복 재생, 장전 완료 시 자동 종료
+        /// </summary>
+        private static IEnumerator OneShotReloadSoundCoroutine(Player player)
+        {
+            // 장전 해제 직후이므로 첫 틱은 바로 소리 재생
+            while (player != null && !player.IsDead())
+            {
+                try
+                {
+                    CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer(
+                        "sfx_oozebomb_explode", "", player.transform.position, Quaternion.identity, 1f);
+                }
+                catch { }
+
+                yield return new WaitForSeconds(1f);
+
+                // 장전 완료 시 종료
+                if (player == null || player.IsWeaponLoaded())
+                    break;
+            }
+
+            if (_oneShotReloadSoundCoroutines.ContainsKey(player))
+                _oneShotReloadSoundCoroutines[player] = null;
         }
 
         private static IEnumerator DestroyEffectAfterDelay(GameObject effect, float delay, string effectName)
@@ -247,18 +300,6 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        private static IEnumerator ExpireCrossbowOneShotWindow(Player player)
-        {
-            yield return new WaitForSeconds(CrossbowOneShotExtraWindow);
-            if (_crossbowOneShotPendingWindow.ContainsKey(player))
-            {
-                // 30초 내 2번째 사용 없음 → 쿨타임 시작
-                _crossbowOneShotPendingWindow.Remove(player);
-                ActiveSkillCooldownRegistry.SetCooldown("R", crossbowOneShotCooldownTime);
-                Plugin.Log.LogDebug("[단 한 발] Archer Lv2 창 만료 → 쿨타임 시작");
-            }
-        }
-
         private static IEnumerator ShowCooldownDisplay(Player player, float cooldownTime, string skillName)
         {
             float elapsed = 0f;
@@ -297,24 +338,6 @@ namespace CaptainSkillTree.SkillTree
 
                 if (isValidTarget)
                 {
-                    // 넉백 효과 적용
-                    try
-                    {
-                        Vector3 knockbackDirection = (target.transform.position - player.transform.position).normalized;
-                        float knockbackDistance = Crossbow_Config.CrossbowOneShotKnockbackValue;
-                        target.Stagger(knockbackDirection);
-
-                        var rigidbody = target.GetComponent<Rigidbody>();
-                        if (rigidbody != null && !rigidbody.isKinematic)
-                        {
-                            rigidbody.AddForce(knockbackDirection * knockbackDistance * 2f, ForceMode.Impulse);
-                        }
-                    }
-                    catch (Exception knockbackEx)
-                    {
-                        Plugin.Log.LogWarning($"[석궁 단 한 발] 넉백 효과 적용 실패: {knockbackEx.Message}");
-                    }
-
                     // 효과 제거
                     crossbowOneShotReady[player] = false;
 
@@ -326,12 +349,56 @@ namespace CaptainSkillTree.SkillTree
 
                     StopFollowingBuffEffect(player);
 
-                    // VFX 재생
+                    // 직격 대상 VFX
                     try
                     {
-                        CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_siegebomb_explosion", "", target.transform.position, Quaternion.identity, 3f);
+                        CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("lightningAOE", "", target.transform.position, Quaternion.identity, 2f);
                     }
                     catch { }
+
+                    // 직격 대상 중심 AOE 넉백 (m_pushForce 직접 설정 방식 - knockback_implementation.md 참조)
+                    try
+                    {
+                        float aoeRadius = Crossbow_Config.CrossbowOneShotAoeRadiusValue;
+                        // 7m 거리 = magnitude ~45f (md: 45f → 0.45s × 20m/s ≈ 7m)
+                        float pushMagnitude = Crossbow_Config.CrossbowOneShotKnockbackValue;
+                        Vector3 aoeCenter = target.transform.position;
+                        var hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius);
+                        var processedEnemies = new System.Collections.Generic.HashSet<Character>();
+
+                        foreach (var col in hitColliders)
+                        {
+                            var enemy = col.GetComponentInParent<Character>();
+                            if (enemy == null || processedEnemies.Contains(enemy)) continue;
+                            if (enemy == player || enemy.IsDead()) continue;
+                            if (!BaseAI.IsEnemy(player, enemy)) continue;
+
+                            processedEnemies.Add(enemy);
+                            Vector3 dir = (enemy.transform.position - aoeCenter).normalized;
+                            dir.y = 0.3f;
+                            dir.Normalize();
+
+                            // character.m_pushForce 직접 설정 (HitData 경유 시 mass 나누기로 약해짐)
+                            var tEnemy = HarmonyLib.Traverse.Create(enemy);
+                            if (tEnemy.Field("m_pushForce").FieldExists())
+                            {
+                                var cur = (Vector3)tEnemy.Field("m_pushForce").GetValue();
+                                if (cur.magnitude < pushMagnitude)
+                                    tEnemy.Field("m_pushForce").SetValue(dir * pushMagnitude);
+                            }
+                            enemy.Stagger(dir);
+
+                            try
+                            {
+                                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_Lightning", "", enemy.transform.position, Quaternion.identity, 2f);
+                            }
+                            catch { }
+                        }
+                    }
+                    catch (Exception aoeEx)
+                    {
+                        Plugin.Log.LogWarning($"[석궁 단 한 발] AOE 넉백 오류: {aoeEx.Message}");
+                    }
 
                     DrawFloatingText(player, L.Get("crossbow_oneshot_activated"));
                     return true;
@@ -365,7 +432,16 @@ namespace CaptainSkillTree.SkillTree
                 crossbowOneShotReady.Remove(player);
                 crossbowOneShotCooldown.Remove(player);
                 crossbowOneShotExpiry.Remove(player);
-                _crossbowOneShotPendingWindow.Remove(player);
+                _archerLv2OneShotChargeReady.Remove(player);
+                _oneShotSlowReloadPending.Remove(player);
+
+                // 장전 소리 코루틴 정리
+                if (_oneShotReloadSoundCoroutines.ContainsKey(player))
+                {
+                    if (_oneShotReloadSoundCoroutines[player] != null)
+                        try { player.StopCoroutine(_oneShotReloadSoundCoroutines[player]); } catch { }
+                    _oneShotReloadSoundCoroutines.Remove(player);
+                }
 
                 // 버프 이펙트 정리
                 if (followingBuffCoroutines.ContainsKey(player))

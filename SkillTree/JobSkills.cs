@@ -1231,61 +1231,64 @@ namespace CaptainSkillTree.SkillTree
     [HarmonyPatch(typeof(Character), "Damage")]
     public static class PaladinResistanceReductionPatch
     {
-        /// <summary>
-        /// Character.Damage 실행 전 호출 - 성기사 저항 감소 적용
-        /// </summary>
+        // 적 InstanceID → (디버프 만료 시각, 저항 감소율)
+        private static readonly Dictionary<int, (float expiresAt, float reduction)> _debuffedEnemies
+            = new Dictionary<int, (float, float)>();
+
+        private const float DebuffDuration = 15f;
+
         static void Prefix(Character __instance, ref HitData hit)
         {
             try
             {
-                // 공격자가 플레이어가 아니면 무시
-                if (hit.GetAttacker() == null || !(hit.GetAttacker() is Player attacker))
-                    return;
-
-                // 성기사가 아니면 무시
-                var manager = SkillTreeManager.Instance;
-                int paladinLevel = manager?.GetSkillLevel("Paladin") ?? 0;
-                if (manager == null || paladinLevel <= 0)
-                    return;
-
                 // 피격자가 몬스터인지 확인 (플레이어는 제외)
                 if (__instance is Player)
                     return;
 
-                // 저항 감소 비율 가져오기 (레벨별)
-                float resistanceReduction = Paladin_Config.GetResistanceReduction(paladinLevel) / 100f;
-                if (resistanceReduction <= 0f)
-                    return;
+                int enemyId = __instance.GetInstanceID();
+                float now = Time.time;
 
-                // 원래 데미지 저장 (로그용)
-                var originalPhysicalDamage = GetPhysicalDamage(hit);
-                var originalElementalDamage = GetElementalDamage(hit);
-
-                if (originalPhysicalDamage > 0f || originalElementalDamage > 0f)
+                // 성기사가 공격자인 경우 → 디버프 부여 또는 갱신
+                if (hit.GetAttacker() is Player)
                 {
-                    // 저항 감소로 인한 데미지 증가 배수 계산
-                    float damageMultiplier = 1f + resistanceReduction;
-
-                    // 물리 데미지 증가 (관통, 블런트, 베기, 도끼질)
-                    hit.m_damage.m_pierce *= damageMultiplier;
-                    hit.m_damage.m_blunt *= damageMultiplier;
-                    hit.m_damage.m_slash *= damageMultiplier;
-                    hit.m_damage.m_chop *= damageMultiplier;
-
-                    // 속성 데미지 증가 (불, 냉기, 번개, 독, 영혼)
-                    hit.m_damage.m_fire *= damageMultiplier;
-                    hit.m_damage.m_frost *= damageMultiplier;
-                    hit.m_damage.m_lightning *= damageMultiplier;
-                    hit.m_damage.m_poison *= damageMultiplier;
-                    hit.m_damage.m_spirit *= damageMultiplier;
-
-                    var increasedPhysicalDamage = GetPhysicalDamage(hit);
-                    var increasedElementalDamage = GetElementalDamage(hit);
-                    float totalIncrease = (increasedPhysicalDamage + increasedElementalDamage) - (originalPhysicalDamage + originalElementalDamage);
-
-                    if (totalIncrease > 0.1f) // 의미있는 증가량일 때만 로그
+                    var manager = SkillTreeManager.Instance;
+                    int paladinLevel = manager?.GetSkillLevel("Paladin") ?? 0;
+                    if (manager != null && paladinLevel > 0)
                     {
-                        Plugin.Log.LogInfo($"[성기사 패시브] 저항 감소 적용 - 물리: {originalPhysicalDamage:F1}→{increasedPhysicalDamage:F1}, 속성: {originalElementalDamage:F1}→{increasedElementalDamage:F1} (증가량: +{totalIncrease:F1})");
+                        float reduction = Paladin_Config.GetResistanceReduction(paladinLevel) / 100f;
+                        if (reduction > 0f)
+                        {
+                            bool isNew = !_debuffedEnemies.ContainsKey(enemyId) ||
+                                         now >= _debuffedEnemies[enemyId].expiresAt;
+                            _debuffedEnemies[enemyId] = (now + DebuffDuration, reduction);
+
+                            if (isNew)
+                                Plugin.Log.LogInfo($"[성기사 패시브] 저항 감소 디버프 적용 - {__instance.m_name} ({reduction * 100f:F0}%, {DebuffDuration}초)");
+                            else
+                                Plugin.Log.LogInfo($"[성기사 패시브] 저항 감소 디버프 갱신 - {__instance.m_name} (만료까지 {DebuffDuration:F0}초)");
+                        }
+                    }
+                }
+
+                // 디버프가 활성화된 적에게는 모든 공격자의 딜 증가
+                if (_debuffedEnemies.TryGetValue(enemyId, out var debuff))
+                {
+                    if (now < debuff.expiresAt)
+                    {
+                        float multiplier = 1f + debuff.reduction;
+                        hit.m_damage.m_pierce    *= multiplier;
+                        hit.m_damage.m_blunt     *= multiplier;
+                        hit.m_damage.m_slash     *= multiplier;
+                        hit.m_damage.m_chop      *= multiplier;
+                        hit.m_damage.m_fire      *= multiplier;
+                        hit.m_damage.m_frost     *= multiplier;
+                        hit.m_damage.m_lightning *= multiplier;
+                        hit.m_damage.m_poison    *= multiplier;
+                        hit.m_damage.m_spirit    *= multiplier;
+                    }
+                    else
+                    {
+                        _debuffedEnemies.Remove(enemyId);
                     }
                 }
             }
@@ -1293,23 +1296,6 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[성기사 패시브] Damage 패치 오류: {ex.Message}");
             }
-        }
-
-        /// <summary>
-        /// 총 물리 데미지 계산 (관통, 블런트, 베기, 도끼질)
-        /// </summary>
-        private static float GetPhysicalDamage(HitData hit)
-        {
-            return hit.m_damage.m_pierce + hit.m_damage.m_blunt + hit.m_damage.m_slash + hit.m_damage.m_chop;
-        }
-
-        /// <summary>
-        /// 총 속성 데미지 계산 (불, 냉기, 번개, 독, 영혼)
-        /// </summary>
-        private static float GetElementalDamage(HitData hit)
-        {
-            return hit.m_damage.m_fire + hit.m_damage.m_frost + hit.m_damage.m_lightning +
-                   hit.m_damage.m_poison + hit.m_damage.m_spirit;
         }
     }
 }

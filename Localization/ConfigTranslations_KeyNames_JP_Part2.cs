@@ -183,6 +183,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_Duration"] = "Tier 5: [一撃] バフ持続時間 (秒)",
                 ["Tier5_OneShot_DamageBonus"] = "Tier 5: [一撃] ダメージボーナス (%)",
                 ["Tier5_OneShot_KnockbackDistance"] = "Tier 5: [一撃] ノックバック距離 (m)",
+                ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [一撃] 低速リロード倍率",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [一撃] クールダウン (秒)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [一撃] 必要ポイント",
 

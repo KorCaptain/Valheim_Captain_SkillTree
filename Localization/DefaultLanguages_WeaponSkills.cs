@@ -303,7 +303,7 @@ namespace CaptainSkillTree.Localization
                 ["archer_desc_arrow_damage_fallback"] = "화살 1발은 활+화살 공격력의 50%",
                 ["archer_passive_skills"] = "점프 높이 +{0}%, 낙하 데미지 -{1}%",
                 ["archer_passive_lv1"] = "점프 +{0}%, 낙하 데미지 -{1}%",
-                ["archer_passive_lv2"] = "점프 +{0}%, 독 저항 +{1}%, 단 한 발/폭발사격 30초 내 추가 사용 가능",
+                ["archer_passive_lv2"] = "점프 +{0}%, 독 저항 +{1}%, 단 한 발/폭발사격 1회 추가 사용 가능",
                 ["archer_passive_lv3"] = "점프 +{0}%, 낙하 데미지 -{1}%, 독/냉기 저항 +{2}%",
                 ["archer_passive_lv4"] = "점프 +{0}%, 낙하 데미지 -{1}%, 독/냉기/화염 저항 +{2}%",
                 ["archer_passive_lv5"] = "점프 +{0}%, 낙하 데미지 -{1}%, 독/냉기/화염/번개 저항 +{2}%",
@@ -502,7 +502,7 @@ namespace CaptainSkillTree.Localization
                 ["bow_arrow_rain_tooltip_desc"] = "Activate buff, then fire bow at target — arrows rain from 200m above (50% vs Bosses)",
                 ["bow_arrow_rain_damage_format"] = "{0} arrows × (Bow+Arrow) {1}% damage",
                 ["bow_arrow_rain_range_format"] = "Fall radius {0}m • AOE 3m",
-                ["crossbow_oneshot_tooltip_desc"] = "Buff active for {0}s, next crossbow shot deals powerful strike",
+                ["crossbow_oneshot_tooltip_desc"] = "Slow reload on activation (-500%), powerful strike within {0}s + 7m AOE lightning knockback",
 
                 // === Common Tooltip Text ===
                 ["tooltip_job_limit"] = "Only one job can be selected",
