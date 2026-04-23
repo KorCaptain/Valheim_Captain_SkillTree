@@ -592,11 +592,13 @@ namespace CaptainSkillTree
             var vfxObj = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
             if (vfxObj != null)
             {
+                // RegisterValheimVFXAsCustom 클론은 SetActive(false)로 저장 → 반드시 활성화
+                if (!vfxObj.activeSelf)
+                    vfxObj.SetActive(true);
+
                 // 커스텀 VFX만 Destroy 호출
                 if (!string.IsNullOrEmpty(vfxName) && IsCustomVFX(vfxName))
-                {
                     UnityEngine.Object.Destroy(vfxObj, duration);
-                }
                 // 발헤임 기본 VFX는 Destroy 호출 안 함 (발헤임이 자동 정리)
             }
             return vfxObj;
@@ -924,6 +926,7 @@ namespace CaptainSkillTree
                 SimpleVFX.RegisterValheimVFXAsCustom("vfx_Potion_health_medium");
                 SimpleVFX.RegisterValheimVFXAsCustom("vfx_GoblinShield");
                 SimpleVFX.RegisterValheimVFXAsCustom("fx_shield_start");
+                SimpleVFX.RegisterValheimVFXAsCustom("fx_Lightning");
                 // ZNetScene에 커스텀 VFX 프리팹 등록 (spawn 명령어 사용 가능)
                 CaptainSkillTree.Prefab.PrefabRegistry.RegisterToZNetScene();
 

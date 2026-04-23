@@ -210,8 +210,6 @@ namespace CaptainSkillTree.SkillTree
                 {
                     float oneShotBonus = Crossbow_Config.CrossbowOneShotDamageBonusValue / 100f;
                     totalDamageMultiplier *= 1f + oneShotBonus;
-                    SkillEffect.ShowSkillEffectText(player, "🎯 " + L.Get("one_shot", Crossbow_Config.CrossbowOneShotDamageBonusValue),
-                        new Color(1f, 0.8f, 0f), SkillEffect.SkillEffectTextType.Critical);
                 }
 
                 // 마법: 첫 마법 공격 스태거 확정

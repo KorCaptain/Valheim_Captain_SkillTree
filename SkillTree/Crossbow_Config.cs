@@ -406,11 +406,11 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_StaminaCost"), order: 10);
 
                 CrossbowIceBreathFirstHitPct = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier6_IceBreath_FirstHitPercent", 80f,
+                    "Crossbow Tree", "Tier6_IceBreath_FirstHitPercent", 150f,
                     SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_FirstHitPercent"), order: 10);
 
                 CrossbowIceBreathDotPct = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier6_IceBreath_DotPercent", 35f,
+                    "Crossbow Tree", "Tier6_IceBreath_DotPercent", 60f,
                     SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_DotPercent"), order: 10);
 
                 CrossbowIceBreathDotCount = SkillTreeConfig.BindServerSync(config,

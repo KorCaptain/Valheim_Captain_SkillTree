@@ -31,6 +31,9 @@ namespace CaptainSkillTree.SkillTree
         // === 단 한 발 슬로우 리로드 패널티 ===
         private static Dictionary<Player, bool> _oneShotSlowReloadPending = new Dictionary<Player, bool>();
 
+        public static bool IsCrossbowOneShotReady(Player p) =>
+            crossbowOneShotReady.TryGetValue(p, out bool v) && v;
+
         public static bool HasOneShotSlowReloadPending(Player p) =>
             _oneShotSlowReloadPending.TryGetValue(p, out bool v) && v;
 
@@ -209,6 +212,7 @@ namespace CaptainSkillTree.SkillTree
                     starAuraEffect.transform.SetParent(player.transform, false);
                     starAuraEffect.transform.localPosition = Vector3.up * 2.2f;
                     starAuraEffect.transform.localScale = Vector3.one * 0.6f;
+                    followingBuffEffects[player] = starAuraEffect;
 
                     float buffDuration = crossbowOneShotExpiry[player] - Time.time;
                     player.StartCoroutine(DestroyEffectAfterDelay(starAuraEffect, buffDuration, "statusailment_01_aura"));
@@ -236,9 +240,11 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static IEnumerator OneShotReloadSoundCoroutine(Player player)
         {
-            // 장전 해제 직후이므로 첫 틱은 바로 소리 재생
             while (player != null && !player.IsDead())
             {
+                // 버프 소비/만료 시 즉시 종료 (피격으로 장전 중단돼도 멈춤)
+                if (!IsCrossbowOneShotReady(player)) break;
+
                 try
                 {
                     CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer(
@@ -248,8 +254,8 @@ namespace CaptainSkillTree.SkillTree
 
                 yield return new WaitForSeconds(1f);
 
-                // 장전 완료 시 종료
-                if (player == null || player.IsWeaponLoaded())
+                // 장전 완료 또는 버프 종료 시 종료
+                if (player == null || player.IsWeaponLoaded() || !IsCrossbowOneShotReady(player))
                     break;
             }
 
@@ -400,7 +406,6 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogWarning($"[석궁 단 한 발] AOE 넉백 오류: {aoeEx.Message}");
                     }
 
-                    DrawFloatingText(player, L.Get("crossbow_oneshot_activated"));
                     return true;
                 }
 
@@ -410,6 +415,71 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[석궁 단 한 발] 스킬 소모 처리 오류: {ex.Message}");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 석궁 단 한 발 착탄 위치 기준 근접 발동 (땅·나무·벽 등에 맞을 때)
+        /// 착탄 위치에서 VFX + 2m 반경 AOE 넉백 적용
+        /// </summary>
+        public static void ConsumeCrossbowOneShotAtPosition(Player player, Vector3 hitPos)
+        {
+            try
+            {
+                if (!crossbowOneShotReady.ContainsKey(player) || !crossbowOneShotReady[player])
+                    return;
+
+                crossbowOneShotReady[player] = false;
+
+                if (crossbowOneShotCoroutine.ContainsKey(player) && crossbowOneShotCoroutine[player] != null)
+                {
+                    player.StopCoroutine(crossbowOneShotCoroutine[player]);
+                    crossbowOneShotCoroutine[player] = null;
+                }
+
+                StopFollowingBuffEffect(player);
+
+                // 착탄 위치 VFX
+                try { CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("lightningAOE", "", hitPos, Quaternion.identity, 2f); } catch { }
+
+                // 착탄 위치 기준 2m AOE 넉백
+                try
+                {
+                    float pushMagnitude = Crossbow_Config.CrossbowOneShotKnockbackValue;
+                    var processed = new System.Collections.Generic.HashSet<Character>();
+
+                    foreach (var col in Physics.OverlapSphere(hitPos, 2f))
+                    {
+                        var enemy = col.GetComponentInParent<Character>();
+                        if (enemy == null || processed.Contains(enemy)) continue;
+                        if (enemy == player || enemy.IsDead()) continue;
+                        if (!BaseAI.IsEnemy(player, enemy)) continue;
+
+                        processed.Add(enemy);
+                        Vector3 dir = (enemy.transform.position - hitPos).normalized;
+                        dir.y = 0.3f;
+                        dir.Normalize();
+
+                        var tEnemy = HarmonyLib.Traverse.Create(enemy);
+                        if (tEnemy.Field("m_pushForce").FieldExists())
+                        {
+                            var cur = (Vector3)tEnemy.Field("m_pushForce").GetValue();
+                            if (cur.magnitude < pushMagnitude)
+                                tEnemy.Field("m_pushForce").SetValue(dir * pushMagnitude);
+                        }
+                        enemy.Stagger(dir);
+
+                        try { CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_Lightning", "", enemy.transform.position, Quaternion.identity, 2f); } catch { }
+                    }
+                }
+                catch (Exception aoeEx)
+                {
+                    Plugin.Log.LogWarning($"[석궁 단 한 발] 착탄 AOE 오류: {aoeEx.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[석궁 단 한 발] 착탄 처리 오류: {ex.Message}");
             }
         }
 

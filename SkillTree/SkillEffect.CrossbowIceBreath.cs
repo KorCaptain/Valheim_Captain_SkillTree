@@ -120,7 +120,7 @@ namespace CaptainSkillTree.SkillTree
             if (weaponItem == null) yield break;
 
             float crossbowSkillFactor = player.GetSkillFactor(Skills.SkillType.Crossbows);
-            var dmgTypes = weaponItem.GetDamage(0, crossbowSkillFactor);
+            var dmgTypes = weaponItem.GetDamage(weaponItem.m_quality, crossbowSkillFactor);
             float baseDmg = dmgTypes.m_pierce > 0f ? dmgTypes.m_pierce
                           : dmgTypes.m_blunt  > 0f ? dmgTypes.m_blunt
                           : dmgTypes.m_slash  > 0f ? dmgTypes.m_slash

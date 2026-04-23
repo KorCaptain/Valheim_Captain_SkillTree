@@ -1,11 +1,24 @@
 # Changelog / 변경 로그
 ## Update
-# [1.2.54] - 2026-04-23
+# [1.2.80] - 2026-04-24
+- ✅fix1 : Crossbow [One Shot] - Remove floating "+120%" screen message on hit
+- ✅fix2 : Crossbow [Vulcan Ice / H-key] - Fix weapon quality ignored in damage calculation (GetDamage quality=0 → m_quality)
+- ✅improve1 : Crossbow [Vulcan Ice] - Increase default damage: first hit 80% → 150%, DoT 35% → 60%
+-
+- ✅fix1 : 석궁 [단 한 발] - 적중 시 "+120%" 화면 메시지 제거
+- ✅fix2 : 석궁 [발칸 아이스 / H키] - 무기 강화 수치가 데미지 계산에 반영되지 않던 버그 수정 (GetDamage quality=0 → m_quality)
+- ✅improve1 : 석궁 [발칸 아이스] - 기본 데미지 상향: 첫 타격 80% → 150%, DoT 35% → 60%
+
+# [1.2.79] - 2026-04-23
 - ✅fix1 : Fixing a bug that has not been repaired
 - ✅fix2 : Paladin Passive - Resistance Reduction reworked from per-hit multiplier to 15s debuff system; first hit applies debuff (all attackers deal bonus damage), subsequent hits refresh timer only
+- ✅fix3 : Piercing Spear - Change to rush attack form
+- ✅fix4 : Crossbow [One Shot] - Change the loading speed to -100%
 -
 - ✅fix1 : 수리 안되던 버그 수정
 - ✅fix2 : 성기사 패시브 - 저항 감소가 매 타격 배수 방식에서 15초 디버프 방식으로 재구현; 첫 타격 시 디버프 부여(모든 공격자 딜 증가), 이후 타격은 타이머만 갱신
+- ✅fix3 : Piercing Spear( 꿰뚫는 창) - 돌진  공격형태로 변경
+- ✅fix4 : Crossbow [One Shot] - 장전속도 -100%로 변경
 
 # [1.2.47] - 2026-04-22
 - ✅new1 : Piercing Spear - Every 3-hit combo triggers a 3m dash toward the target; repeats throughout the 30s buff duration

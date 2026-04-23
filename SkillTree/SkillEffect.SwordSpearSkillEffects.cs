@@ -25,9 +25,11 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, float> _spearPenetratePendingWindow = new Dictionary<Player, float>();
         private const float SpearPenetrateExtraWindow = 30f;
 
-        // 허공 공격 카운터 (3회 스윙 미스 → 가장 가까운 몬스터로 돌진)
+        // 공격 카운터 (3회 스윙 → 점프+돌진)
         private static Dictionary<Player, int> spearPenetrateAirSwingCount = new Dictionary<Player, int>();
         private static Dictionary<Player, float> spearPenetrateAirSwingLastTime = new Dictionary<Player, float>();
+        // 돌진 실행 중 플래그 (코루틴 중첩 방지)
+        private static HashSet<Player> spearPenetrateDashing = new HashSet<Player>();
 
         // 재진입 방지 플래그 (번개 충격 데미지가 다시 콤보를 트리거하지 않도록)
         private static bool isProcessingSpearLightningDamage = false;
@@ -450,6 +452,8 @@ namespace CaptainSkillTree.SkillTree
             float duration = Spear_Config.SpearStep6PenetrateBuffDurationValue;
             spearPenetrateBuffEndTime[player] = Time.time + duration;
             spearPenetrateComboCount[player] = 0;
+            spearPenetrateAirSwingCount[player] = 0;
+            spearPenetrateAirSwingLastTime.Remove(player);
 
             DrawFloatingText(player, "⚡ " + L.Get("spear_penetrate_activated", $"{duration}"), Color.yellow);
             Plugin.Log.LogInfo($"[꿰뚫는 창] 버프 활성화 - {duration}초간 지속");
@@ -497,9 +501,6 @@ namespace CaptainSkillTree.SkillTree
 
             Plugin.Log.LogDebug($"[꿰뚫는 창] 콤보 카운트: {spearPenetrateComboCount[player]}/{requiredCombo}");
 
-            // 몬스터 적중 시 허공 카운터 리셋
-            spearPenetrateAirSwingCount[player] = 0;
-
             // 연속 적중 횟수 달성 시 번개 충격 발동
             if (spearPenetrateComboCount[player] >= requiredCombo)
             {
@@ -515,6 +516,7 @@ namespace CaptainSkillTree.SkillTree
         {
             if (!HasSkill("spear_Step5_penetrate")) return;
             if (!IsSpearPenetrateBuffActive(player)) return;
+            if (spearPenetrateDashing.Contains(player)) return; // 돌진 중 카운트 금지
 
             float now = Time.time;
             if (!spearPenetrateAirSwingCount.ContainsKey(player))
@@ -530,43 +532,17 @@ namespace CaptainSkillTree.SkillTree
 
             Plugin.Log.LogDebug($"[꿰뚫는 창] 허공 스윙 감지");
 
-            if (spearPenetrateAirSwingCount[player] >= 1)
+            if (spearPenetrateAirSwingCount[player] >= 3)
             {
                 spearPenetrateAirSwingCount[player] = 0;
-                CheckSpearPenetrateAirCombo(player);
+                spearPenetrateDashing.Add(player); // 코루틴 시작 전 즉시 차단
+                player.StartCoroutine(SpearPenetrateDashForwardCoroutine(player));
             }
         }
 
         /// <summary>
-        /// 허공 3회 스윙 달성 - 가장 가까운 몬스터를 찾아 돌진
-        /// </summary>
-        private static void CheckSpearPenetrateAirCombo(Player player)
-        {
-            Character nearest = null;
-            float nearestDist = float.MaxValue;
-            LayerMask charMask = LayerMask.GetMask("character", "hitbox");
-            var cols = Physics.OverlapSphere(player.transform.position, 15f, charMask);
-            foreach (var col in cols)
-            {
-                var ch = col.GetComponentInParent<Character>();
-                if (ch == null || ch == player || ch.IsDead() || ch.IsPlayer()) continue;
-                if (!ch.IsMonsterFaction(Time.time)) continue;
-                float d = Vector3.Distance(player.transform.position, ch.transform.position);
-                if (d < nearestDist) { nearestDist = d; nearest = ch; }
-            }
-
-            if (nearest == null)
-            {
-                DrawFloatingText(player, L.Get("spear_penetrate_no_target"), Color.gray);
-                return;
-            }
-
-            player.StartCoroutine(SpearPenetrateDashCoroutine(player, nearest));
-        }
-
-        /// <summary>
-        /// 꿰뚫는 창 번개 충격 + 돌진 발동
-        /// 3연속 적중 시 번개 데미지 적용 + 몬스터 방향 3m 돌진
+        /// 꿰뚫는 창 번개 충격 발동
+        /// 3연속 적중 시 번개 데미지 적용
         /// </summary>
         private static void TriggerSpearPenetrateLightning(Player player, Character target, HitData hit)
         {
@@ -599,9 +575,6 @@ namespace CaptainSkillTree.SkillTree
                     target.Damage(lightningHit);
                 }
 
-                // 4. 돌진: 몬스터 방향으로 3m
-                DashTowardTarget(player, target);
-
                 DrawFloatingText(player, "⚡ " + L.Get("spear_lightning_shock", $"{lightningDamage:F0}"), Color.cyan);
                 Plugin.Log.LogInfo($"[꿰뚫는 창] 번개 충격 + 돌진 발동 - 데미지: {lightningDamage:F0}");
             }
@@ -615,61 +588,87 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>
-        /// 몬스터 방향으로 3m 돌진 (꿰뚫는창 3타 콤보 발동 시) - 패링 돌격 패턴
-        /// </summary>
-        private static void DashTowardTarget(Player player, Character target)
+        private static System.Collections.IEnumerator SpearPenetrateDashForwardCoroutine(Player player)
         {
-            player.StartCoroutine(SpearPenetrateDashCoroutine(player, target));
-        }
+            if (player == null) yield break;
 
-        private static System.Collections.IEnumerator SpearPenetrateDashCoroutine(Player player, Character target)
-        {
-            if (player == null || target == null) yield break;
+            // 카메라 전방 수평 방향
+            Vector3 camForward = Camera.main != null ? Camera.main.transform.forward : player.transform.forward;
+            Vector3 dashDir = new Vector3(camForward.x, 0f, camForward.z);
+            if (dashDir.sqrMagnitude < 0.01f) dashDir = player.transform.forward;
+            dashDir.Normalize();
 
-            Vector3 dirFlat = target.transform.position - player.transform.position;
-            dirFlat.y = 0f;
-            if (dirFlat.sqrMagnitude < 0.25f) yield break;
-            Vector3 dashDir = dirFlat.normalized;
-
-            // 몬스터 방향 회전 (패링 돌격 동일)
-            player.transform.rotation = Quaternion.LookRotation(dashDir);
-
-            // 최대 3m 이동, 속도 20m/s (패링 돌격 동일)
-            float dist = dirFlat.magnitude;
-            float dashDist = Mathf.Min(3f, dist);
-            float moveDuration = Mathf.Max(dashDist / 20f, 0.05f);
-
-            Vector3 startPos = player.transform.position;
-            Vector3 targetPos = target.transform.position;
             var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
+            Quaternion targetRot = Quaternion.LookRotation(dashDir);
+            LayerMask charMask = LayerMask.GetMask("character", "hitbox");
 
-            SimpleVFX.Play("hit_03", startPos + player.transform.forward * 0.5f + Vector3.up * 0.8f, 1.2f);
+            // === Phase 1: 점프 (0.2초 상승) ===
+            float jumpHeight = 0.6f;
+            float jumpDuration = 0.2f;
+            Vector3 jumpStartPos = player.transform.position;
+            Vector3 jumpPeakPos = jumpStartPos + Vector3.up * jumpHeight;
 
-            float elapsed = 0f;
-            while (elapsed < moveDuration)
+            float jumpElapsed = 0f;
+            while (jumpElapsed < jumpDuration)
             {
                 if (player == null || player.IsDead()) yield break;
+                jumpElapsed += Time.deltaTime;
+                float jt = Mathf.Clamp01(jumpElapsed / jumpDuration);
+                float jSmooth = 1f - Mathf.Pow(1f - jt, 2f);
+                Vector3 newPos = Vector3.Lerp(jumpStartPos, jumpPeakPos, jSmooth);
+                if (body != null) { body.velocity = Vector3.zero; body.MovePosition(newPos); }
+                else player.transform.position = newPos;
+                player.transform.rotation = targetRot;
+                yield return new WaitForFixedUpdate();
+            }
 
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / moveDuration);
+            // === Phase 2: 전방 돌진 (0.3초, 3m) ===
+            SimpleVFX.Play("hit_03", player.transform.position + dashDir * 0.5f + Vector3.up * 0.3f, 1.2f);
+
+            float dashDist = 3f;
+            float dashDuration = 0.3f;
+            Vector3 dashStartPos = player.transform.position;
+            Vector3 dashEndPos = dashStartPos + dashDir * dashDist;
+
+            if (Physics.Raycast(dashEndPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundCheck, 10f,
+                LayerMask.GetMask("terrain", "Default")))
+                dashEndPos.y = groundCheck.point.y + 0.1f;
+
+            float dashElapsed = 0f;
+            float prevSmooth = 0f;
+            while (dashElapsed < dashDuration)
+            {
+                if (player == null || player.IsDead()) yield break;
+                dashElapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(dashElapsed / dashDuration);
                 float smoothT = 1f - Mathf.Pow(1f - t, 2f);
+                float frameDelta = smoothT - prevSmooth;
+                prevSmooth = smoothT;
 
-                // 매 프레임 타겟 위치 갱신 (몬스터가 이동했을 경우 추적)
-                if (target != null && !target.IsDead())
-                    targetPos = target.transform.position;
-
-                Vector3 newPos = Vector3.Lerp(startPos, targetPos, smoothT);
-
-                if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
+                Vector3 newPos = Vector3.Lerp(dashStartPos, dashEndPos, smoothT);
+                if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit gHit, 10f,
                     LayerMask.GetMask("terrain", "Default")))
-                    newPos.y = groundHit.point.y + 0.1f;
+                    newPos.y = Mathf.Max(newPos.y, gHit.point.y + 0.1f);
+
+                // 반경 1.5m 내 몬스터 함께 밀기 (지나가지 않도록)
+                var cols = Physics.OverlapSphere(player.transform.position, 1.5f, charMask);
+                foreach (var col in cols)
+                {
+                    var ch = col.GetComponentInParent<Character>();
+                    if (ch == null || ch == player || ch.IsPlayer() || ch.IsDead()) continue;
+                    if (!ch.IsMonsterFaction(Time.time)) continue;
+                    var chBody = HarmonyLib.Traverse.Create(ch).Field("m_body").GetValue<Rigidbody>();
+                    if (chBody != null)
+                        chBody.MovePosition(chBody.position + dashDir * (frameDelta * dashDist));
+                }
 
                 if (body != null) { body.velocity = Vector3.zero; body.MovePosition(newPos); }
                 else player.transform.position = newPos;
-
+                player.transform.rotation = targetRot;
                 yield return new WaitForFixedUpdate();
             }
+
+            spearPenetrateDashing.Remove(player);
         }
 
         private static Vector3 GetSpearDashGroundPos(Vector3 pos)
@@ -708,6 +707,7 @@ namespace CaptainSkillTree.SkillTree
             _spearPenetratePendingWindow.Remove(player);
             spearPenetrateAirSwingCount.Remove(player);
             spearPenetrateAirSwingLastTime.Remove(player);
+            spearPenetrateDashing.Remove(player);
         }
 
     }
