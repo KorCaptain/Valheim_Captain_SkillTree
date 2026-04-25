@@ -3332,9 +3332,12 @@ namespace CaptainSkillTree.Gui
                     }
                 }
             }
-            
-            // 확정 효과음 재생
-            PlayConfirmSound();
+
+            // 확정 효과음 재생 (스킬 변화가 있을 때만)
+            if (totalInvestedSkills > 0)
+            {
+                PlayConfirmSound();
+            }
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 # Changelog / 변경 로그
 ## Update
-# [1.2.86] - 2026-04-25
+# [1.2.87] - 2026-04-25
 - ✅fix1 : Speed Expert (speed_root) - No longer modifies EpicMMO Agility stat; movement speed +5% applied directly via Valheim native patch only
 - ✅fix2 : Speed tree skills (speed_master, agility_peak, speed_ex1, speed_ex2, all_master) no longer modify EpicMMO Agility stat; all effects applied via Valheim native patches
 - ✅fix3 : Practitioner1/2 (speed_ex1, speed_ex2) weapon proficiency now uses correct config per weapon type (melee vs crossbow / staff vs bow separately)
@@ -8,6 +8,7 @@
 - ✅fix5 : Mace [Fury Hammer / H-key] - Now usable with one-handed maces (previously two-handed only)
 - ✅fix6 : AdminSync - Skip duplicate RPC when Shudnal ConfigurationManager is installed; add server-side SettingChanged → BroadcastConfigToClients hook to prevent disconnect on admin config change
 - ✅improve7 : Attack Expert [Two-handed Crush] - Effect now applies to crossbows
+- ✅fix8 : Mace [Shield Charge / G-key] - Fixed mid-path enemy detection during 8m charge: corrected castOrigin physics lag (MovePosition delay), added forward direction filter to Stage 3 (dot > 0.2), expanded SphereCast range 2m → 3m; charge distance corrected 10m → 8m
 -
 - ✅fix1 : 속도 전문가 (speed_root) - EpicMMO 민첩(Agility) 스탯을 더 이상 수정하지 않음; 이동속도 +5%는 Valheim 네이티브 패치로만 직접 적용
 - ✅fix2 : 속도 트리 스킬들(speed_master, agility_peak, speed_ex1, speed_ex2, all_master)이 EpicMMO 민첩(Agility) 스탯을 더 이상 수정하지 않음; 모든 효과는 Valheim 네이티브 패치로 적용
@@ -16,6 +17,7 @@
 - ✅fix5 : 둔기 [분노의 망치 / H키] - 한손 둔기로도 사용 가능하도록 변경 (기존 양손 둔기 전용)
 - ✅fix6 : 어드민 동기화 - Shudnal ConfigurationManager 설치 시 중복 RPC 방지; 서버 SettingChanged → 브로드캐스트 훅 추가로 어드민 컨피그 변경 시 접속 끊김 현상 수정
 - ✅improve7 : 공격 전문가 [양손 분쇄] - 석궁에도 효과 적용
+- ✅fix8 : 둔기 [방패돌진 / G키] - 8m 돌진 경로 중간 몬스터 적중 수정: castOrigin 물리 지연 수정(MovePosition 지연), Stage 3에 전방 방향 필터 추가(dot > 0.2), SphereCast 범위 2m → 3m 확장; 돌진 거리 10m → 8m 수정
 
 # [1.2.80] - 2026-04-24
 - ✅fix1 : Crossbow [One Shot] - Remove floating "+120%" screen message on hit
