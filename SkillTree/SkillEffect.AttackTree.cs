@@ -393,7 +393,8 @@ namespace CaptainSkillTree.SkillTree
                 return true;
             return weapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
                    weapon.m_shared.m_skillType == Skills.SkillType.Polearms ||
-                   weapon.m_shared.m_skillType == Skills.SkillType.Spears;
+                   weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
+                   weapon.m_shared.m_skillType == Skills.SkillType.Crossbows;
         }
     }
 
@@ -408,7 +409,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (__instance?.m_shared == null) return;
                 if (SkillEffect.HasSkill("atk_twohand_crush") &&
-                    __instance.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
+                    (__instance.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon ||
+                     __instance.m_shared.m_skillType == Skills.SkillType.Crossbows))
                 {
                     float m = 1f + Attack_Config.AttackTwoHandedBonusValue / 100f;
                     __result.m_damage *= m;
