@@ -1,5 +1,20 @@
 # Changelog / 변경 로그
 ## Update
+# [1.2.85] - 2026-04-25
+- ✅fix1 : Speed Expert (speed_root) - No longer modifies EpicMMO Agility stat; movement speed +5% applied directly via Valheim native patch only
+- ✅fix2 : Speed tree skills (speed_master, agility_peak, speed_ex1, speed_ex2, all_master) no longer modify EpicMMO Agility stat; all effects applied via Valheim native patches
+- ✅fix3 : Practitioner1/2 (speed_ex1, speed_ex2) weapon proficiency now uses correct config per weapon type (melee vs crossbow / staff vs bow separately)
+- ✅fix4 : Master (all_master) run +8 / jump +5 now correctly split; jump proficiency default changed 8 → 5
+- ✅fix5 : Mace [Fury Hammer / H-key] - Now usable with one-handed maces (previously two-handed only)
+- ✅fix6 : AdminSync - Skip duplicate RPC when Shudnal ConfigurationManager is installed; add server-side SettingChanged → BroadcastConfigToClients hook to prevent disconnect on admin config change
+-
+- ✅fix1 : 속도 전문가 (speed_root) - EpicMMO 민첩(Agility) 스탯을 더 이상 수정하지 않음; 이동속도 +5%는 Valheim 네이티브 패치로만 직접 적용
+- ✅fix2 : 속도 트리 스킬들(speed_master, agility_peak, speed_ex1, speed_ex2, all_master)이 EpicMMO 민첩(Agility) 스탯을 더 이상 수정하지 않음; 모든 효과는 Valheim 네이티브 패치로 적용
+- ✅fix3 : 수련자1/2(speed_ex1, speed_ex2) 무기 숙련도가 무기 종류별 올바른 Config 값으로 분리 적용 (근접/석궁 분리, 마법/활 분리)
+- ✅fix4 : 숙련자(all_master) 달리기 +8 / 점프 +5가 정확히 분리됨; 점프 숙련도 기본값 8 → 5 수정
+- ✅fix5 : 둔기 [분노의 망치 / H키] - 한손 둔기로도 사용 가능하도록 변경 (기존 양손 둔기 전용)
+- ✅fix6 : 어드민 동기화 - Shudnal ConfigurationManager 설치 시 중복 RPC 방지; 서버 SettingChanged → 브로드캐스트 훅 추가로 어드민 컨피그 변경 시 접속 끊김 현상 수정
+
 # [1.2.80] - 2026-04-24
 - ✅fix1 : Crossbow [One Shot] - Remove floating "+120%" screen message on hit
 - ✅fix2 : Crossbow [Vulcan Ice / H-key] - Fix weapon quality ignored in damage calculation (GetDamage quality=0 → m_quality)
