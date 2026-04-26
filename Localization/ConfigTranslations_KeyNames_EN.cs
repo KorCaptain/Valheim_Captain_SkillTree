@@ -15,8 +15,9 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "Ranged Skill Key",
                 ["HotKey_G"] = "Melee Main Skill Key",
                 ["HotKey_H"] = "Secondary Skill Key",
-                ["HUD_PosX"] = "HUD X Position",
-                ["HUD_PosY"] = "HUD Y Position",
+                ["HUD_IconSize"] = "Skill Icon Size",
+                ["HUD_PosX"] = "Skill Icon HUD X Position",
+                ["HUD_PosY"] = "Skill Icon HUD Y Position",
                 ["PassiveMessageDisplay"] = "Passive Message Display",
                 ["GameDifficulty"] = "Game Difficulty",
 
@@ -769,9 +770,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_StunBoost_StunDurationBonus"] = "Tier 2: [Stun Boost] Stun Duration Bonus (sec)",
                 ["Tier2_StunBoost_RequiredPoints"] = "Tier 2: [Stun Boost] Required Points",
 
-                // === Tier 3-1: Spin Strike (3) ===
+                // === Tier 3-1: Spin Strike (4) ===
                 ["Tier3_SpinStrike_DamageBonus"] = "Tier 3-1: [Spin Strike] Damage Bonus (%)",
                 ["Tier3_SpinStrike_Range"] = "Tier 3-1: [Spin Strike] AoE Range (m)",
+                ["Tier3_SpinStrike_KnockbackForce"] = "Tier 3-1: [Spin Strike] Knockback Distance (m)",
                 ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [Spin Strike] Required Points",
 
                 // === Tier 3-2: Heavy Strike (2) ===
@@ -1064,7 +1066,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_HealthThreshold"] = "Death Defiance: HP Threshold (%)",
                 ["Berserker_Passive_InvincibilityDuration"] = "Death Defiance: Invincibility Duration (sec)",
                 ["Berserker_Passive_Cooldown"] = "Death Defiance: Cooldown (sec)",
-                ["Berserker_Passive_HealthBonus"] = "Passive: Max HP Bonus (%)",
+                ["Berserker_Passive_HealthBonus"] = "Passive: Max HP Bonus (flat)",
                 ["Berserker_Lv2_CooldownReduction"] = "Lv2: Rage CD Reduction (sec)",
                 ["Berserker_Lv3_RageDamageReduction"] = "Lv3: Damage Reduction in Rage (%)",
                 ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: Low HP Attack Bonus (%)",

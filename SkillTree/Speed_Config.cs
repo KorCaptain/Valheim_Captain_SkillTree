@@ -366,7 +366,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier7_Master_RunSkillBonus"), 12);
 
             AllMasterJumpSkill = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier7_Master_JumpSkillBonus", 8f,
+                "Speed Tree", "Tier7_Master_JumpSkillBonus", 5f,
                 SkillTreeConfig.GetConfigDescription("Tier7_Master_JumpSkillBonus"), 12);
 
             // === 티어8-1: 근접 가속 ===

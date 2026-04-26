@@ -23,8 +23,9 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "Tecla de Habilidade à Distância",
                 ["HotKey_G"] = "Tecla de Habilidade Corpo a Corpo Principal",
                 ["HotKey_H"] = "Tecla de Habilidade Secundária",
-                ["HUD_PosX"] = "Posição X do HUD",
-                ["HUD_PosY"] = "Posição Y do HUD",
+                ["HUD_IconSize"] = "Tamanho do Ícone",
+                ["HUD_PosX"] = "Posição X do Ícone HUD",
+                ["HUD_PosY"] = "Posição Y do Ícone HUD",
                 ["PassiveMessageDisplay"] = "Exibição de Mensagem Passiva",
                 ["GameDifficulty"] = "Dificuldade do Jogo",
 

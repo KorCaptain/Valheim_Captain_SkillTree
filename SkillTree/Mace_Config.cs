@@ -75,6 +75,11 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> MaceStep3SpinRange;
 
+        /// <summary>
+        /// Tier 3 회전 타격 - 넉백 거리 (미터)
+        /// </summary>
+        public static ConfigEntry<float> MaceStep3SpinKnockback;
+
         // ===== Tier 3: 무거운 타격 =====
 
         /// <summary>
@@ -229,6 +234,8 @@ namespace CaptainSkillTree.SkillTree
             SkillTreeConfig.GetEffectiveValue("Mace_Step3_SpinStrike_DamageBonus", MaceStep3SpinDamageBonus?.Value ?? 20f);
         public static float MaceStep3SpinRangeValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step3_SpinStrike_Range", MaceStep3SpinRange?.Value ?? 12f);
+        public static float MaceStep3SpinKnockbackForceValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_Step3_SpinStrike_KnockbackForce", MaceStep3SpinKnockback?.Value ?? 3f);
 
         // === Tier 3: 무거운 타격 ===
         public static int MaceStep3HeavyRequiredPointsValue =>
@@ -409,6 +416,13 @@ namespace CaptainSkillTree.SkillTree
                 "Tier3_SpinStrike_Range",
                 7f,
                 SkillTreeConfig.GetConfigDescription("Tier3_SpinStrike_Range")
+            );
+
+            MaceStep3SpinKnockback = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier3_SpinStrike_KnockbackForce",
+                3f,
+                SkillTreeConfig.GetConfigDescription("Tier3_SpinStrike_KnockbackForce")
             );
 
             MaceStep3GuardRequiredPoints = SkillTreeConfig.BindServerSync(config,

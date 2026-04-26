@@ -139,19 +139,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 7. 양손 둔기: 분노의 망치 - H키로 이동됨
 
-            // 8. 방어전문가: 마인드쉴드 (지팡이/완드 착용 필요)
-            if (HasSkill("defense_Step6_mind"))
-            {
-                if (!WeaponHelper.IsUsingStaffOrWand(player))
-                {
-                    DrawFloatingText(player, L.Get("staff_equip_required"), Color.red);
-                    return;
-                }
-                MindShieldSkill.Activate(player);
-                return;
-            }
-
-            // 9. 방패돌진 (방패 착용만 필요)
+            // 8. 방패돌진 (방패 착용만 필요)
             if (HasSkill("mace_Step7_guardian_heart"))
             {
                 if (!WeaponHelper.HasShield(player))
@@ -160,6 +148,18 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
                 ActivateShieldCharge(player);
+                return;
+            }
+
+            // 9. 방어전문가: 마인드쉴드 (지팡이/완드 착용 필요)
+            if (HasSkill("defense_Step6_mind"))
+            {
+                if (!WeaponHelper.IsUsingStaffOrWand(player))
+                {
+                    DrawFloatingText(player, L.Get("staff_equip_required"), Color.red);
+                    return;
+                }
+                MindShieldSkill.Activate(player);
                 return;
             }
 
@@ -226,10 +226,10 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            // 3. 양손 둔기: 분노의 망치
+            // 3. 둔기: 분노의 망치 (한손/양손 모두 허용)
             if (HasSkill("mace_Step7_fury_hammer"))
             {
-                if (!WeaponHelper.IsUsingTwoHandedMace(player))
+                if (!WeaponHelper.IsUsingMace(player))
                 {
                     DrawFloatingText(player, L.Get("two_hand_mace_required"), Color.red);
                     return;

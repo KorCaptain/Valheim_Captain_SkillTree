@@ -31,15 +31,20 @@ namespace CaptainSkillTree.Localization
                 "보조 액티브 스킬(연공창, 수호자의 진심 등)을 발동하는 키입니다.\n" +
                 "기본값: H",
 
+                ["HUD_IconSize"] =
+                "【스킬 아이콘 크기】\n" +
+                "액티브 스킬 HUD에 표시되는 아이콘의 크기입니다.\n" +
+                "기본값: 62",
+
                 ["HUD_PosX"] =
-                "【HUD X 위치】\n" +
+                "【Skill Icon HUD X 위치】\n" +
                 "액티브 스킬 HUD의 좌우 위치입니다.\n" +
-                "기본값: 200 (화면 왼쪽 기준)",
+                "기본값: 306 (화면 왼쪽 기준)",
 
                 ["HUD_PosY"] =
-                "【HUD Y 위치】\n" +
+                "【Skill Icon HUD Y 위치】\n" +
                 "액티브 스킬 HUD의 상하 위치입니다.\n" +
-                "기본값: 80 (화면 아래 기준)",
+                "기본값: 139 (화면 아래 기준)",
 
                 // ========================================
                 // Archer Job (Y-Key Active, 8 keys)
@@ -922,15 +927,20 @@ namespace CaptainSkillTree.Localization
                 "Key to activate secondary active skills (Combo Spear, Guardian Heart, etc.).\n" +
                 "Default: H",
 
+                ["HUD_IconSize"] =
+                "【Skill Icon Size】\n" +
+                "Size of icons displayed in the active skill HUD.\n" +
+                "Default: 62",
+
                 ["HUD_PosX"] =
-                "【HUD X Position】\n" +
+                "【Skill Icon HUD X Position】\n" +
                 "Horizontal position of the active skill HUD.\n" +
-                "Default: 200 (from screen left)",
+                "Default: 306 (from screen left)",
 
                 ["HUD_PosY"] =
-                "【HUD Y Position】\n" +
+                "【Skill Icon HUD Y Position】\n" +
                 "Vertical position of the active skill HUD.\n" +
-                "Default: 80 (from screen bottom)",
+                "Default: 139 (from screen bottom)",
 
                 // ========================================
                 // Archer Job (Y-Key Active, 8 keys)

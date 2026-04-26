@@ -15,8 +15,9 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "원거리 스킬 키",
                 ["HotKey_G"] = "근접 메인 스킬 키",
                 ["HotKey_H"] = "보조 스킬 키",
-                ["HUD_PosX"] = "HUD X 위치",
-                ["HUD_PosY"] = "HUD Y 위치",
+                ["HUD_IconSize"] = "스킬 아이콘 크기",
+                ["HUD_PosX"] = "Skill Icon HUD X 위치",
+                ["HUD_PosY"] = "Skill Icon HUD Y 위치",
                 ["PassiveMessageDisplay"] = "패시브 메시지 표시",
                 ["GameDifficulty"] = "게임 난이도",
 
@@ -771,9 +772,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_StunBoost_StunDurationBonus"] = "Tier 2: [기절 강화] 기절 지속시간 보너스 (초)",
                 ["Tier2_StunBoost_RequiredPoints"] = "Tier 2: [기절 강화] 필요 포인트",
 
-                // === Tier 3-1: 회전 타격 (3개) ===
+                // === Tier 3-1: 회전 타격 (4개) ===
                 ["Tier3_SpinStrike_DamageBonus"] = "Tier 3-1: [회전 타격] 공격력 보너스 (%)",
                 ["Tier3_SpinStrike_Range"] = "Tier 3-1: [회전 타격] AOE 범위 (m)",
+                ["Tier3_SpinStrike_KnockbackForce"] = "Tier 3-1: [회전 타격] 넉백 거리 (m)",
                 ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [회전 타격] 필요 포인트",
 
                 // === Tier 3-2: 무거운 일격 (2개) ===
@@ -1071,7 +1073,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_HealthThreshold"] = "죽음의 도전: 발동 HP 임계값 (%)",
                 ["Berserker_Passive_InvincibilityDuration"] = "죽음의 도전: 무적 지속시간 (초)",
                 ["Berserker_Passive_Cooldown"] = "죽음의 도전: 쿨타임 (초)",
-                ["Berserker_Passive_HealthBonus"] = "패시브: 최대 체력 보너스 (%)",
+                ["Berserker_Passive_HealthBonus"] = "패시브: 최대 체력 보너스 (flat)",
                 ["Berserker_Lv2_CooldownReduction"] = "Lv2: 분노 쿨타임 감소 (초)",
                 ["Berserker_Lv3_RageDamageReduction"] = "Lv3: 분노 중 피해 감소 (%)",
                 ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: 저체력 공격 보너스 (%)",

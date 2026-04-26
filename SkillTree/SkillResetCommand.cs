@@ -321,8 +321,8 @@ namespace CaptainSkillTree.SkillTree
                     CreateSkillBackup(targetPlayer);
 
                     // 일반 스킬 포인트 초기화 (생산 전문가 제외) + 직업 스킬 초기화
-                    skillTreeManager.ResetAllSkillLevelsExceptProduction();
-                    skillTreeManager.ResetJobSkillLevels();
+                    skillTreeManager.ResetAllSkillLevelsExceptProduction(targetPlayer);
+                    skillTreeManager.ResetJobSkillLevels(targetPlayer);
 
                     Plugin.Log.LogInfo($"[스킬 초기화] 스킬 포인트 + 직업 초기화 완료 (생산 전문가 제외)");
                 }

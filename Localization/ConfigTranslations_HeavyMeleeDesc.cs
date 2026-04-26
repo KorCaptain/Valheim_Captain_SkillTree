@@ -301,6 +301,11 @@ namespace CaptainSkillTree.Localization
                 "세컨드 어택 시 주변 적에게 데미지를 주는 범위입니다.\n" +
                 "권장값: 5-10m",
 
+                ["Tier3_SpinStrike_KnockbackForce"] =
+                "【회전 타격 넉백 거리 (미터)】\n" +
+                "세컨드 어택 시 적을 밀어내는 거리입니다. 한손·양손 둔기 공통 적용.\n" +
+                "권장값: 2-5m",
+
                 ["Tier3_Guard_RequiredPoints"] =
                 "【필요 포인트】\n" +
                 "방어 강화 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
@@ -944,6 +949,11 @@ namespace CaptainSkillTree.Localization
                 "【AoE Range (meters)】\n" +
                 "Range within which nearby enemies take damage on secondary attack.\n" +
                 "Recommended: 5-10m",
+
+                ["Tier3_SpinStrike_KnockbackForce"] =
+                "【Spin Strike Knockback Distance (meters)】\n" +
+                "Distance enemies are pushed on secondary attack. Applies to both one-handed and two-handed maces.\n" +
+                "Recommended: 2-5m",
 
                 ["Tier3_Guard_RequiredPoints"] =
                 "【Required Points】\n" +

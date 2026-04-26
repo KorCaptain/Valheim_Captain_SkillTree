@@ -81,25 +81,26 @@ namespace CaptainSkillTree.SkillTree
 
         private static string GetPassiveStr(int level)
         {
-            int farmGrid = Producer_Config.GetFarmGridCount(level);
-            float dur   = Producer_Config.GetDurabilityBonus(level);
-            float mat   = Producer_Config.GetMaterialReduction(level);
-            float ench  = Producer_Config.GetEnchantChance(level);
+            int farmGrid    = Producer_Config.GetFarmGridCount(level);
+            float dur       = Producer_Config.GetDurabilityBonus(level);
+            float mat       = Producer_Config.GetMaterialReduction(level);
+            float ench      = Producer_Config.GetEnchantChance(level);
+            float success   = Producer_Config.GetCraftingSuccessRate(level);
 
             switch (level)
             {
                 case 1:
-                    return L.Get("producer_passive_lv1", farmGrid);
+                    return L.Get("producer_passive_lv1", farmGrid, (int)dur, (int)success);
                 case 2:
-                    return L.Get("producer_passive_lv2", farmGrid, (int)dur, (int)mat);
+                    return L.Get("producer_passive_lv2", farmGrid, (int)dur, (int)mat, (int)success);
                 case 3:
-                    return L.Get("producer_passive_lv3", farmGrid, (int)dur, (int)mat, (int)ench)
+                    return L.Get("producer_passive_lv3", farmGrid, (int)dur, (int)mat, (int)ench, (int)success)
                         + "\n" + L.Get("producer_enchant_detail_lv3");
                 case 4:
-                    return L.Get("producer_passive_lv4", farmGrid, (int)dur, (int)mat, (int)ench)
+                    return L.Get("producer_passive_lv4", farmGrid, (int)dur, (int)mat, (int)ench, (int)success)
                         + "\n" + L.Get("producer_enchant_detail_lv4");
                 default:
-                    return L.Get("producer_passive_lv5", farmGrid, (int)dur, (int)mat, (int)ench)
+                    return L.Get("producer_passive_lv5", farmGrid, (int)dur, (int)mat, (int)ench, (int)success)
                         + "\n" + L.Get("producer_enchant_detail_lv5");
             }
         }

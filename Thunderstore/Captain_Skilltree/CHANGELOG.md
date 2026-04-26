@@ -1,6 +1,24 @@
 # Changelog / 변경 로그
 ## Update
-# [1.2.87] - 2026-04-25
+# [1.2.99] - 2026-04-26
+- ✅fix1 : Skill reset (Reset Points button) now immediately clears attack speed cache; speed bonus no longer lingers up to 200ms after reset
+- ✅fix2 : Mace [Spin Strike] - Two-handed mace knockback now works (s_lastSpinTime set directly in TwoHandedSpinInput_Patch)
+- ✅fix3 : skillreset <player> console command now resets the target player's skill tree instead of the admin's (SkillTreeManager reset methods now accept Player parameter)
+- ✅improve1 : Mace [Spin Strike] - Explicit m_pushForce (default 3m) applied to both main hit and AoE hits; consistent knockback for one-handed and two-handed maces
+- ✅improve2 : Production crafting lv2/3/4 max durability bonus increased: 15% → 50% / 75% / 100%
+- ✅improve3 : Producer job Lv1-5 durability bonus greatly increased (Lv1 added: +50%, Lv2: 10→75%, Lv3: 15→100%, Lv4: 20→125%, Lv5: 30→200%)
+- ✅new1 : Producer job Lv1-5 now grants crafting success rate (Lv1: 25%, Lv2: 45%, Lv3: 65%, Lv4: 75%, Lv5: 100%); stacks with crafting skill tree nodes
+-
+- ✅fix1 : 스킬 초기화(포인트 초기화 버튼) 시 공격속도 캐시를 즉시 무효화; 초기화 후 최대 200ms 동안 공속 버프가 잔존하던 버그 수정
+- ✅fix2 : 둔기 [회전 타격] - 양손 둔기 넉백 미동작 버그 수정 (TwoHandedSpinInput_Patch에서 s_lastSpinTime 직접 설정)
+- ✅fix3 : skillreset <캐릭터명> 콘솔 명령어가 관리자 대신 지정된 캐릭터의 스킬트리를 올바르게 초기화하도록 수정 (SkillTreeManager Reset 메서드에 Player 파라미터 추가)
+- ✅improve1 : 둔기 [회전 타격] - 메인 타격 및 AOE 타격 모두에 m_pushForce(기본 3m) 명시 적용; 한손·양손 통합 넉백
+- ✅improve2 : 생산 트리 제작 lv2/3/4 내구도 최대치 보너스 대폭 상향: 15% → 50% / 75% / 100%
+- ✅improve3 : 직업 제작 전문가 Lv1-5 내구도 보너스 대폭 상향 (Lv1 신규 +50%, Lv2: 10→75%, Lv3: 15→100%, Lv4: 20→125%, Lv5: 30→200%)
+- ✅new1 : 직업 제작 전문가 Lv1-5 제작 성공확률 신규 추가 (Lv1: 25%, Lv2: 45%, Lv3: 65%, Lv4: 75%, Lv5: 100%); 스킬트리 제작 노드와 합산 적용
+
+
+# [1.2.88] - 2026-04-25
 - ✅fix1 : Speed Expert (speed_root) - No longer modifies EpicMMO Agility stat; movement speed +5% applied directly via Valheim native patch only
 - ✅fix2 : Speed tree skills (speed_master, agility_peak, speed_ex1, speed_ex2, all_master) no longer modify EpicMMO Agility stat; all effects applied via Valheim native patches
 - ✅fix3 : Practitioner1/2 (speed_ex1, speed_ex2) weapon proficiency now uses correct config per weapon type (melee vs crossbow / staff vs bow separately)
@@ -9,6 +27,7 @@
 - ✅fix6 : AdminSync - Skip duplicate RPC when Shudnal ConfigurationManager is installed; add server-side SettingChanged → BroadcastConfigToClients hook to prevent disconnect on admin config change
 - ✅improve7 : Attack Expert [Two-handed Crush] - Effect now applies to crossbows
 - ✅fix8 : Mace [Shield Charge / G-key] - Fixed mid-path enemy detection during 8m charge: corrected castOrigin physics lag (MovePosition delay), added forward direction filter to Stage 3 (dot > 0.2), expanded SphereCast range 2m → 3m; charge distance corrected 10m → 8m
+- ✅fix9 : Skill Tree UI - Confirm button VFX now only triggers when skills are actually invested (no VFX on empty confirm)
 -
 - ✅fix1 : 속도 전문가 (speed_root) - EpicMMO 민첩(Agility) 스탯을 더 이상 수정하지 않음; 이동속도 +5%는 Valheim 네이티브 패치로만 직접 적용
 - ✅fix2 : 속도 트리 스킬들(speed_master, agility_peak, speed_ex1, speed_ex2, all_master)이 EpicMMO 민첩(Agility) 스탯을 더 이상 수정하지 않음; 모든 효과는 Valheim 네이티브 패치로 적용
@@ -18,6 +37,7 @@
 - ✅fix6 : 어드민 동기화 - Shudnal ConfigurationManager 설치 시 중복 RPC 방지; 서버 SettingChanged → 브로드캐스트 훅 추가로 어드민 컨피그 변경 시 접속 끊김 현상 수정
 - ✅improve7 : 공격 전문가 [양손 분쇄] - 석궁에도 효과 적용
 - ✅fix8 : 둔기 [방패돌진 / G키] - 8m 돌진 경로 중간 몬스터 적중 수정: castOrigin 물리 지연 수정(MovePosition 지연), Stage 3에 전방 방향 필터 추가(dot > 0.2), SphereCast 범위 2m → 3m 확장; 돌진 거리 10m → 8m 수정
+- ✅fix9 : 스킬트리 UI - 확인 버튼 VFX가 실제 스킬 투자가 있을 때만 발동 (변화 없을 시 VFX 미발동)
 
 # [1.2.80] - 2026-04-24
 - ✅fix1 : Crossbow [One Shot] - Remove floating "+120%" screen message on hit

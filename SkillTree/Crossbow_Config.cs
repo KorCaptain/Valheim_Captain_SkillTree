@@ -530,7 +530,7 @@ namespace CaptainSkillTree.SkillTree
                 UpdateSkillTooltip("crossbow_Step6_expert",
                     $"R Key: Charged shot — reload {CrossbowOneShotDurationValue}s window, +{CrossbowOneShotDamageBonusValue}% damage\n" +
                     $"AOE knockback {CrossbowOneShotAoeRadiusValue}m radius | Cooldown: {CrossbowOneShotCooldownValue}s\n" +
-                    $"<color=#FFD700><size=16>※ Slow reload on activation (-{(CrossbowOneShotSlowReloadMultiplierValue - 1f) * 100f:F0}% speed)</size></color>\n" +
+                    $"<color=#FFD700><size=16>※ Slow reload on activation (-{(1f - 1f / CrossbowOneShotSlowReloadMultiplierValue) * 100f:F0}% speed)</size></color>\n" +
                     $"<color=#DDA0DD><size=16>※ Active when Crossbow equipped</size></color>");
 
                 // Tier 7: 발칸 아이스 (H키 액티브)

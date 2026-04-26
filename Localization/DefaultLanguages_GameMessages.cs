@@ -87,7 +87,7 @@ namespace CaptainSkillTree.Localization
                 ["spear_equip_required"] = "창을 착용해야 합니다!",
                 ["polearm_equip_required"] = "폴암을 착용해야 합니다!",
                 ["one_hand_mace_shield_required"] = "한손 둔기와 방패를 착용해야 합니다!",
-                ["two_hand_mace_required"] = "양손 둔기를 착용해야 합니다!",
+                ["two_hand_mace_required"] = "둔기를 착용해야 합니다!",
                 ["staff_equip_required"] = "지팡이를 착용해야 합니다!",
                 ["shield_equip_required"] = "방패를 착용해야 합니다!",
                 ["r_key_skill_condition_not_met"] = "Z키 원거리 스킬을 먼저 배워야 합니다!",
@@ -172,7 +172,6 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_oneshot_ready"] = "🎯 단 한 발 준비 완료!",
                 ["crossbow_oneshot_remaining"] = "단 한 발 남은 시간: {0}초",
                 ["crossbow_oneshot_expired"] = "단 한 발 효과 만료",
-                ["crossbow_oneshot_activated"] = "💥 단 한 발 발동!",
                 ["skill_cooldown_format"] = "{0} 쿨다운: {1}초",
 
                 // === Staff Skills ===
@@ -315,7 +314,7 @@ namespace CaptainSkillTree.Localization
                 ["bow_arrow_rain_tooltip_desc"] = "버프 활성화 후 활로 대상에 적중, 상공 200m에서 화살 낙하",
                 ["bow_arrow_rain_damage_format"] = "{0}발 × (활+화살) {1}% 데미지",
                 ["bow_arrow_rain_range_format"] = "낙하 반경 {0}m • AOE 3m",
-                ["crossbow_oneshot_tooltip_desc"] = "발동 즉시 극저속 재장전(-500%), {0}초 내 발사 시 강력한 일격 + 7m 범위 번개 넉백",
+                ["crossbow_oneshot_tooltip_desc"] = "발동 즉시 장전 속도 감소(-50%), {0}초 내 발사 시 강력한 일격 + 7m 범위 번개 넉백",
 
                 // === Common Tooltip Text ===
                 ["tooltip_job_limit"] = "직업은 1개만 선택가능",
@@ -445,7 +444,7 @@ namespace CaptainSkillTree.Localization
                 ["spear_equip_required"] = "You must equip a spear!",
                 ["polearm_equip_required"] = "You must equip a polearm!",
                 ["one_hand_mace_shield_required"] = "You must equip a one-hand mace and shield!",
-                ["two_hand_mace_required"] = "You must equip a two-hand mace!",
+                ["two_hand_mace_required"] = "You must equip a mace!",
                 ["staff_equip_required"] = "You must equip a staff!",
                 ["shield_equip_required"] = "You must equip a shield!",
                 ["r_key_skill_condition_not_met"] = "You need to learn a Z key ranged skill first!",
@@ -525,7 +524,6 @@ namespace CaptainSkillTree.Localization
                 ["crossbow_oneshot_ready"] = "🎯 One Shot Ready!",
                 ["crossbow_oneshot_remaining"] = "One Shot remaining: {0}s",
                 ["crossbow_oneshot_expired"] = "One Shot expired",
-                ["crossbow_oneshot_activated"] = "💥 One Shot Activated!",
                 ["skill_cooldown_format"] = "{0} cooldown: {1}s",
 
                 // === Staff Skills ===

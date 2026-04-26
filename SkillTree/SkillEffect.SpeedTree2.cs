@@ -379,10 +379,9 @@ namespace CaptainSkillTree.SkillTree
             {
                 // === 속도 전문가 트리 ===
 
-                // 수련자1 (speed_ex1): 근접무기 숙련 +3, 석궁 숙련 +3
+                // 수련자1 (speed_ex1): 근접무기 숙련 +8, 석궁 숙련 +8
                 if (HasSkill("speed_ex1"))
                 {
-                    float ex1Bonus = SkillTreeConfig.SpeedEx1MeleeSkillValue;
                     switch (skillType)
                     {
                         case Skills.SkillType.Swords:
@@ -390,37 +389,36 @@ namespace CaptainSkillTree.SkillTree
                         case Skills.SkillType.Knives:
                         case Skills.SkillType.Spears:
                         case Skills.SkillType.Polearms:
+                            bonus += SkillTreeConfig.SpeedEx1MeleeSkillValue;
+                            break;
                         case Skills.SkillType.Crossbows:
-                            bonus += ex1Bonus;
+                            bonus += SkillTreeConfig.SpeedEx1CrossbowSkillValue;
                             break;
                     }
                 }
 
-                // 수련자2 (speed_ex2): 지팡이 숙련 +3, 활 숙련 +3
+                // 수련자2 (speed_ex2): 마법 숙련 +8, 활 숙련 +8
                 if (HasSkill("speed_ex2"))
                 {
-                    float ex2Bonus = SkillTreeConfig.SpeedEx2StaffSkillValue;
                     switch (skillType)
                     {
                         case Skills.SkillType.ElementalMagic:
                         case Skills.SkillType.BloodMagic:
+                            bonus += SkillTreeConfig.SpeedEx2StaffSkillValue;
+                            break;
                         case Skills.SkillType.Bows:
-                            bonus += ex2Bonus;
+                            bonus += SkillTreeConfig.SpeedEx2BowSkillValue;
                             break;
                     }
                 }
 
-                // 숙련자 (all_master): 모든 스텟 +2 (이동, 점프)
+                // 숙련자 (all_master): 달리기 숙련 +8, 점프 숙련 +5
                 if (HasSkill("all_master"))
                 {
-                    float allMasterBonus = SkillTreeConfig.AllMasterRunSkillValue;
-                    switch (skillType)
-                    {
-                        case Skills.SkillType.Run:
-                        case Skills.SkillType.Jump:
-                            bonus += allMasterBonus;
-                            break;
-                    }
+                    if (skillType == Skills.SkillType.Run)
+                        bonus += SkillTreeConfig.AllMasterRunSkillValue;
+                    else if (skillType == Skills.SkillType.Jump)
+                        bonus += SkillTreeConfig.AllMasterJumpSkillValue;
                 }
 
                 // 점프 숙련자 (agility_peak): 점프 숙련 +10

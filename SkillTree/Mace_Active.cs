@@ -103,7 +103,7 @@ namespace CaptainSkillTree.SkillTree
                 dashDir.y = 0f;
                 dashDir.Normalize();
 
-                float dashDist = 10f;
+                float dashDist = 8f;
                 Vector3 startPos = player.transform.position;
                 Vector3 endPos = startPos + dashDir * dashDist;
 
@@ -125,7 +125,7 @@ namespace CaptainSkillTree.SkillTree
                 // 5. Rigidbody 가져오기 (physics-safe 이동)
                 var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
 
-                Plugin.Log.LogInfo("[방패돌진] 돌진 시작 (10m, 0.5초)");
+                Plugin.Log.LogInfo("[방패돌진] 돌진 시작 (8m, 0.5초)");
             }
             catch (Exception ex)
             {
@@ -142,7 +142,7 @@ namespace CaptainSkillTree.SkillTree
             dashDir2.y = 0f;
             dashDir2.Normalize();
             Vector3 startPos2 = player.transform.position;
-            Vector3 endPos2 = startPos2 + dashDir2 * 10f;
+            Vector3 endPos2 = startPos2 + dashDir2 * 8f;
             var body2 = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
 
             while (elapsed < 0.5f && !hitEnemy)
@@ -209,8 +209,10 @@ namespace CaptainSkillTree.SkillTree
 
                 // 적 감지: OverlapSphere(겹침) + SphereCast(전방) 병행
                 // SphereCast는 origin에 겹친 콜라이더를 감지 못하므로 OverlapSphere 선행
+                // castOrigin: MovePosition은 FixedUpdate에 반영되므로 목표 위치(newPos) 기준으로 계산
                 LayerMask charMask = LayerMask.GetMask("character", "hitbox");
-                Vector3 castOrigin = player.GetCenterPoint();
+                float centerHeight = player.GetCenterPoint().y - player.transform.position.y;
+                Vector3 castOrigin = newPos + Vector3.up * centerHeight;
 
                 // 1단계: OverlapSphere - 플레이어와 겹친 적 감지 (0.8m → 1.2m로 근접 보완)
                 if (!hitEnemy)
@@ -230,8 +232,8 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 2단계: SphereCast - 전방 2m 적 감지
-                if (!hitEnemy && Physics.SphereCast(castOrigin, 0.8f, dashDir2, out RaycastHit sphereHit, 2.0f, charMask))
+                // 2단계: SphereCast - 전방 3m 적 감지
+                if (!hitEnemy && Physics.SphereCast(castOrigin, 0.8f, dashDir2, out RaycastHit sphereHit, 3.0f, charMask))
                 {
                     var enemy = sphereHit.collider.GetComponentInParent<Character>();
                     if (enemy != null && enemy != player && !enemy.IsDead() &&
@@ -243,7 +245,7 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 3단계: 보정 적중 - 3m 이내 가장 가까운 적 감지 (경로 옆 미스 보완)
+                // 3단계: 보정 적중 - 3m 이내 전방 방향 적 감지 (dot > 0.2: ±78도 이내만 허용)
                 if (!hitEnemy)
                 {
                     var nearOverlaps = Physics.OverlapSphere(castOrigin, 3f, charMask);
@@ -254,6 +256,9 @@ namespace CaptainSkillTree.SkillTree
                         var nearEnemy = col.GetComponentInParent<Character>();
                         if (nearEnemy == null || nearEnemy == player || nearEnemy.IsDead()) continue;
                         if (nearEnemy.GetFaction() == Character.Faction.Players) continue;
+                        // 전방 방향 필터: 옆/뒤 몬스터로 인한 조기 종료 방지
+                        float dot = Vector3.Dot((nearEnemy.GetCenterPoint() - castOrigin).normalized, dashDir2);
+                        if (dot < 0.2f) continue;
                         float dist = Vector3.Distance(castOrigin, nearEnemy.GetCenterPoint());
                         if (dist < nearestDist) { nearestDist = dist; nearest = nearEnemy; }
                     }

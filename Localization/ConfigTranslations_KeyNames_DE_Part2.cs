@@ -304,6 +304,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 3-1: Drehschlag (3) ===
                 ["Tier3_SpinStrike_DamageBonus"] = "Tier 3-1: [Drehschlag] Schadensbonus (%)",
                 ["Tier3_SpinStrike_Range"] = "Tier 3-1: [Drehschlag] AOE-Reichweite (m)",
+                ["Tier3_SpinStrike_KnockbackForce"] = "Tier 3-1: [Drehschlag] Rückschlagdistanz (m)",
                 ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [Drehschlag] Benötigte Punkte",
 
                 // === Tier 3-2: Schwerer Hieb (2) ===
@@ -539,7 +540,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_HealthThreshold"] = "Todesherausforderung: LP-Schwellenwert (%)",
                 ["Berserker_Passive_InvincibilityDuration"] = "Todesherausforderung: Unverwundbarkeits-Dauer (Sek)",
                 ["Berserker_Passive_Cooldown"] = "Todesherausforderung: Abklingzeit (Sek)",
-                ["Berserker_Passive_HealthBonus"] = "Passiv: Max. LP-Bonus (%)",
+                ["Berserker_Passive_HealthBonus"] = "Passiv: Max. LP-Bonus (flat)",
                 ["Berserker_Lv2_CooldownReduction"] = "Lv2: Wut CD-Reduktion (sek)",
                 ["Berserker_Lv3_RageDamageReduction"] = "Lv3: Wutschadenreduktion (%)",
                 ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: Niedriger-HP-Angriff (%)",

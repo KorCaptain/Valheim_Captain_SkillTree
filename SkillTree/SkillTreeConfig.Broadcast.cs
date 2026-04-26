@@ -331,6 +331,7 @@ namespace CaptainSkillTree.SkillTree
                     ["Mace_Step3_Guard_RequiredPoints"]              = Mace_Config.MaceStep3GuardRequiredPoints?.Value ?? 2f,
                     ["Mace_Step3_SpinStrike_DamageBonus"]            = Mace_Config.MaceStep3SpinDamageBonus?.Value ?? 20f,
                     ["Mace_Step3_SpinStrike_Range"]                  = Mace_Config.MaceStep3SpinRange?.Value ?? 12f,
+                    ["Mace_Step3_SpinStrike_KnockbackForce"]         = Mace_Config.MaceStep3SpinKnockback?.Value ?? 3f,
                     ["Mace_Step3_Heavy_RequiredPoints"]              = Mace_Config.MaceStep3HeavyRequiredPoints?.Value ?? 3f,
                     ["Mace_Step3_Heavy_DamageBonus"]                 = Mace_Config.MaceStep3HeavyDamageBonus?.Value ?? 20f,
                     ["Mace_Step4_RequiredPoints"]                    = Mace_Config.MaceStep4RequiredPoints?.Value ?? 3f,

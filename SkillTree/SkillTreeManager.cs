@@ -2195,33 +2195,39 @@ namespace CaptainSkillTree.SkillTree
         }
 
         // 생산 전문가를 제외한 스킬 초기화 (직업 스킬도 제외, UI 포인트 초기화 버튼용)
-        public void ResetAllSkillLevelsExceptProduction()
+        public void ResetAllSkillLevelsExceptProduction(Player player = null)
         {
-            if (Player.m_localPlayer == null) return;
+            var target = player ?? Player.m_localPlayer;
+            if (target == null) return;
             foreach (var node in SkillNodes.Values)
             {
                 if (ProductionSkillIds.Contains(node.Id)) continue;
                 if (IsJobSkill(node.Id)) continue;
                 string key = $"CaptainSkillTree_{node.Id}";
-                Player.m_localPlayer.m_customData[key] = "0";
+                target.m_customData[key] = "0";
             }
             pendingInvestments.Clear();
-            SkillEffect.UpdateDefenseDodgeRate(Player.m_localPlayer);
-            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
+            SkillEffect.InvalidateAttackSpeedCache();
+            SkillEffect.UpdateDefenseDodgeRate(target);
+            if (target == Player.m_localPlayer)
+                CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
         }
 
         // 직업 스킬만 초기화 (UI 직업 초기화 버튼용)
-        public void ResetJobSkillLevels()
+        public void ResetJobSkillLevels(Player player = null)
         {
-            if (Player.m_localPlayer == null) return;
+            var target = player ?? Player.m_localPlayer;
+            if (target == null) return;
             var jobIds = new[] { "Paladin", "Tanker", "Berserker", "Rogue", "Mage", "Archer", "Producer" };
             foreach (var jobId in jobIds)
             {
                 string key = $"CaptainSkillTree_{jobId}";
-                Player.m_localPlayer.m_customData[key] = "0";
+                target.m_customData[key] = "0";
             }
             pendingInvestments.Clear();
-            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
+            SkillEffect.InvalidateAttackSpeedCache();
+            if (target == Player.m_localPlayer)
+                CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
         }
 
         // 생산 전문가 스킬만 초기화
@@ -2234,6 +2240,7 @@ namespace CaptainSkillTree.SkillTree
                 Player.m_localPlayer.m_customData[key] = "0";
             }
             pendingInvestments.Clear();
+            SkillEffect.InvalidateAttackSpeedCache();
             CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.RefreshSlots();
         }
 

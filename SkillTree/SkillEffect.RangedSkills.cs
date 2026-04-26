@@ -843,6 +843,10 @@ namespace CaptainSkillTree.SkillTree
                         SkillEffect.TryAutoReload(player);
                     }
                 }
+
+                // 단 한 발 착탄 근접 판정: 직접 적중 실패(땅·나무·벽 등) 시 착탄 위치 2m 반경 발동
+                if (target == null && SkillEffect.IsCrossbowOneShotReady(player))
+                    SkillEffect.ConsumeCrossbowOneShotAtPosition(player, __instance.transform.position);
             }
             catch (System.Exception ex)
             {

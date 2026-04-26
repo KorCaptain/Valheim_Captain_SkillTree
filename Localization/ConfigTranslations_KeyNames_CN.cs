@@ -23,8 +23,9 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "远程技能键",
                 ["HotKey_G"] = "近战主技能键",
                 ["HotKey_H"] = "副技能键",
-                ["HUD_PosX"] = "HUD X位置",
-                ["HUD_PosY"] = "HUD Y位置",
+                ["HUD_IconSize"] = "技能图标大小",
+                ["HUD_PosX"] = "技能图标 HUD X位置",
+                ["HUD_PosY"] = "技能图标 HUD Y位置",
                 ["PassiveMessageDisplay"] = "被动消息显示",
                 ["GameDifficulty"] = "游戏难度",
 

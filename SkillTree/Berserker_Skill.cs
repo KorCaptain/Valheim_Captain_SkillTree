@@ -584,8 +584,7 @@ namespace CaptainSkillTree.SkillTree
         #region Harmony Patches
 
         /// <summary>
-        /// 버서커 패시브: 최대 체력 +100% (모든 효과 합산 기준)
-        /// defense_Step6_body(요툰의 생명력)와 동일한 비율→고정값 변환 방식
+        /// 버서커 패시브: 최대 체력 플랫 보너스 (Lv1:+40 ~ Lv5:+120)
         /// Priority.Last: 음식, MMO, 다른 스킬트리 패치 이후 최종 적용
         /// </summary>
         [HarmonyPatch(typeof(Player), "GetTotalFoodValue")]

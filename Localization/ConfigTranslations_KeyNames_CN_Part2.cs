@@ -306,6 +306,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 3-1: 旋转打击 (3) ===
                 ["Tier3_SpinStrike_DamageBonus"] = "Tier 3-1: [旋转打击] 伤害加成 (%)",
                 ["Tier3_SpinStrike_Range"] = "Tier 3-1: [旋转打击] AOE范围 (米)",
+                ["Tier3_SpinStrike_KnockbackForce"] = "Tier 3-1: [旋转打击] 击退距离 (米)",
                 ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [旋转打击] 所需点数",
 
                 // === Tier 3-2: 重击 (2) ===
@@ -542,7 +543,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_HealthThreshold"] = "死亡蔑视: HP阈值 (%)",
                 ["Berserker_Passive_InvincibilityDuration"] = "死亡蔑视: 无敌持续时间 (秒)",
                 ["Berserker_Passive_Cooldown"] = "死亡蔑视: 冷却时间 (秒)",
-                ["Berserker_Passive_HealthBonus"] = "被动: 最大HP加成 (%)",
+                ["Berserker_Passive_HealthBonus"] = "被动: 最大HP加成 (flat)",
                 ["Berserker_Lv2_CooldownReduction"] = "Lv2: 狂怒冷却减少 (秒)",
                 ["Berserker_Lv3_RageDamageReduction"] = "Lv3: 狂怒中减伤 (%)",
                 ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: 低血量攻击加成 (%)",

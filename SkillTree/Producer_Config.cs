@@ -22,11 +22,19 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> ProducerFarmGrid_Lv4;
         public static ConfigEntry<int> ProducerFarmGrid_Lv5;
 
-        // === Passive Lv2+: Crafting Durability Bonus (%) ===
+        // === Passive Lv1+: Crafting Durability Bonus (%) ===
+        public static ConfigEntry<float> ProducerDurability_Lv1;
         public static ConfigEntry<float> ProducerDurability_Lv2;
         public static ConfigEntry<float> ProducerDurability_Lv3;
         public static ConfigEntry<float> ProducerDurability_Lv4;
         public static ConfigEntry<float> ProducerDurability_Lv5;
+
+        // === Passive Lv1+: Crafting Success Rate (%) ===
+        public static ConfigEntry<float> ProducerCraftingSuccessRate_Lv1;
+        public static ConfigEntry<float> ProducerCraftingSuccessRate_Lv2;
+        public static ConfigEntry<float> ProducerCraftingSuccessRate_Lv3;
+        public static ConfigEntry<float> ProducerCraftingSuccessRate_Lv4;
+        public static ConfigEntry<float> ProducerCraftingSuccessRate_Lv5;
 
         // === Passive Lv2+: Material Reduction (%) ===
         public static ConfigEntry<float> ProducerMaterialReduction_Lv2;
@@ -56,10 +64,17 @@ namespace CaptainSkillTree.SkillTree
         public static int ProducerFarmGrid_Lv4Value => (int)SkillTreeConfig.GetEffectiveValue("Producer_FarmGrid_Lv4", ProducerFarmGrid_Lv4.Value);
         public static int ProducerFarmGrid_Lv5Value => (int)SkillTreeConfig.GetEffectiveValue("Producer_FarmGrid_Lv5", ProducerFarmGrid_Lv5.Value);
 
+        public static float ProducerDurability_Lv1Value => SkillTreeConfig.GetEffectiveValue("Producer_Durability_Lv1", ProducerDurability_Lv1.Value);
         public static float ProducerDurability_Lv2Value => SkillTreeConfig.GetEffectiveValue("Producer_Durability_Lv2", ProducerDurability_Lv2.Value);
         public static float ProducerDurability_Lv3Value => SkillTreeConfig.GetEffectiveValue("Producer_Durability_Lv3", ProducerDurability_Lv3.Value);
         public static float ProducerDurability_Lv4Value => SkillTreeConfig.GetEffectiveValue("Producer_Durability_Lv4", ProducerDurability_Lv4.Value);
         public static float ProducerDurability_Lv5Value => SkillTreeConfig.GetEffectiveValue("Producer_Durability_Lv5", ProducerDurability_Lv5.Value);
+
+        public static float ProducerCraftingSuccessRate_Lv1Value => SkillTreeConfig.GetEffectiveValue("Producer_CraftingSuccessRate_Lv1", ProducerCraftingSuccessRate_Lv1.Value);
+        public static float ProducerCraftingSuccessRate_Lv2Value => SkillTreeConfig.GetEffectiveValue("Producer_CraftingSuccessRate_Lv2", ProducerCraftingSuccessRate_Lv2.Value);
+        public static float ProducerCraftingSuccessRate_Lv3Value => SkillTreeConfig.GetEffectiveValue("Producer_CraftingSuccessRate_Lv3", ProducerCraftingSuccessRate_Lv3.Value);
+        public static float ProducerCraftingSuccessRate_Lv4Value => SkillTreeConfig.GetEffectiveValue("Producer_CraftingSuccessRate_Lv4", ProducerCraftingSuccessRate_Lv4.Value);
+        public static float ProducerCraftingSuccessRate_Lv5Value => SkillTreeConfig.GetEffectiveValue("Producer_CraftingSuccessRate_Lv5", ProducerCraftingSuccessRate_Lv5.Value);
 
         public static float ProducerMaterialReduction_Lv2Value => SkillTreeConfig.GetEffectiveValue("Producer_MaterialReduction_Lv2", ProducerMaterialReduction_Lv2.Value);
         public static float ProducerMaterialReduction_Lv3Value => SkillTreeConfig.GetEffectiveValue("Producer_MaterialReduction_Lv3", ProducerMaterialReduction_Lv3.Value);
@@ -76,10 +91,23 @@ namespace CaptainSkillTree.SkillTree
         public static float GetDurabilityBonus(int level)
         {
             return level switch {
+                1 => ProducerDurability_Lv1Value,
                 2 => ProducerDurability_Lv2Value,
                 3 => ProducerDurability_Lv3Value,
                 4 => ProducerDurability_Lv4Value,
                 _ => level >= 5 ? ProducerDurability_Lv5Value : 0f
+            };
+        }
+
+        // === 레벨별 제작 성공확률 반환 헬퍼 ===
+        public static float GetCraftingSuccessRate(int level)
+        {
+            return level switch {
+                1 => ProducerCraftingSuccessRate_Lv1Value,
+                2 => ProducerCraftingSuccessRate_Lv2Value,
+                3 => ProducerCraftingSuccessRate_Lv3Value,
+                4 => ProducerCraftingSuccessRate_Lv4Value,
+                _ => level >= 5 ? ProducerCraftingSuccessRate_Lv5Value : 0f
             };
         }
 
@@ -162,6 +190,14 @@ namespace CaptainSkillTree.SkillTree
                     "Producer Job Skills", "Producer_FarmGrid_Lv1", 2,
                     SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv1"));
 
+                ProducerDurability_Lv1 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_Durability_Lv1", 50f,
+                    SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv1"));
+
+                ProducerCraftingSuccessRate_Lv1 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_CraftingSuccessRate_Lv1", 25f,
+                    SkillTreeConfig.GetConfigDescription("Producer_CraftingSuccessRate_Lv1"));
+
                 ProducerEnchantChance_Lv1 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_EnchantChance_Lv1", 0f,
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv1"));
@@ -172,8 +208,12 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv2"));
 
                 ProducerDurability_Lv2 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_Durability_Lv2", 10f,
+                    "Producer Job Skills", "Producer_Durability_Lv2", 75f,
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv2"));
+
+                ProducerCraftingSuccessRate_Lv2 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_CraftingSuccessRate_Lv2", 45f,
+                    SkillTreeConfig.GetConfigDescription("Producer_CraftingSuccessRate_Lv2"));
 
                 ProducerMaterialReduction_Lv2 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_MaterialReduction_Lv2", 10f,
@@ -189,8 +229,12 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv3"));
 
                 ProducerDurability_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_Durability_Lv3", 15f,
+                    "Producer Job Skills", "Producer_Durability_Lv3", 100f,
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv3"));
+
+                ProducerCraftingSuccessRate_Lv3 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_CraftingSuccessRate_Lv3", 65f,
+                    SkillTreeConfig.GetConfigDescription("Producer_CraftingSuccessRate_Lv3"));
 
                 ProducerMaterialReduction_Lv3 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_MaterialReduction_Lv3", 15f,
@@ -206,8 +250,12 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv4"));
 
                 ProducerDurability_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_Durability_Lv4", 20f,
+                    "Producer Job Skills", "Producer_Durability_Lv4", 125f,
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv4"));
+
+                ProducerCraftingSuccessRate_Lv4 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_CraftingSuccessRate_Lv4", 75f,
+                    SkillTreeConfig.GetConfigDescription("Producer_CraftingSuccessRate_Lv4"));
 
                 ProducerMaterialReduction_Lv4 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_MaterialReduction_Lv4", 20f,
@@ -223,8 +271,12 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv5"));
 
                 ProducerDurability_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_Durability_Lv5", 30f,
+                    "Producer Job Skills", "Producer_Durability_Lv5", 200f,
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv5"));
+
+                ProducerCraftingSuccessRate_Lv5 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_CraftingSuccessRate_Lv5", 100f,
+                    SkillTreeConfig.GetConfigDescription("Producer_CraftingSuccessRate_Lv5"));
 
                 ProducerMaterialReduction_Lv5 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_MaterialReduction_Lv5", 30f,
@@ -258,6 +310,7 @@ namespace CaptainSkillTree.SkillTree
                 ProducerFarmGrid_Lv3.SettingChanged       += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerFarmGrid_Lv4.SettingChanged       += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerFarmGrid_Lv5.SettingChanged       += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerDurability_Lv1.SettingChanged     += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerDurability_Lv2.SettingChanged     += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerDurability_Lv3.SettingChanged     += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerDurability_Lv4.SettingChanged     += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
@@ -266,6 +319,11 @@ namespace CaptainSkillTree.SkillTree
                 ProducerMaterialReduction_Lv3.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerMaterialReduction_Lv4.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerMaterialReduction_Lv5.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerCraftingSuccessRate_Lv1.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerCraftingSuccessRate_Lv2.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerCraftingSuccessRate_Lv3.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerCraftingSuccessRate_Lv4.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerCraftingSuccessRate_Lv5.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerEnchantChance_Lv1.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerEnchantChance_Lv2.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerEnchantChance_Lv3.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();

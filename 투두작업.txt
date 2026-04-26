@@ -208,6 +208,7 @@ sfx_asksvin_alert
   1. 시전자의 에이트르 최대치 만큼 보호막효과
 액티브 스킬 쿨타임 3분30초
 소모 :  Eitr 30
+액티브 스킬 : H키
   2. 보호막은 3분간 유지되며, 적에게 적중시 HP대신 에이트르의 최대치 만큼의 HP대신 소모되게 한다.
   3. vfx 모두 vfx매니저로 구현
 시전시 모션  - StaffShield
@@ -226,9 +227,54 @@ sfx_asksvin_alert
 ===========
 [Error  :Captain SkillTree Mod] [암살술] 스태거 적용 실패: Object reference not set to an instance of an object
 [Error  :Captain SkillTree Mod] [충격파방출] 실행 오류: Object reference not set to an instance of an object
+--
+     cd /c/home/ssunyme/.npm-global/bin/valheimCLI
+     ./valheim.sh god
+     ./valheim.sh tod 0.5
+     ./valheim.sh spawn Goblin 5
 
+----
+검 전문가의 돌진 연속 베기 스킬이 보스에게 데미지 적게 들어가는거 같아  데미지가 정상적으로 안박힘
+둔기 전문가의 분노의 망치 스킬과 폴암 전문가의 돌진창?
+공격력이 적용이 잘 안되는거 같아 확인해줘
 
+보스에게는 추가 30% 추가 데미지 적용
+---
+Archer : LV2에 석궁의 one shot or 폭발화살 먼저 배우게 하겠다.
+             폭발화살 또는 one shot   스킬 1회 추가 사용 가능하게 하겠다.
+-------------
+paladin :  LV2 조건에 Rush Slash or Fury Ham 이 있다.
+berserker : LV2 조건에 Rush Slash or Fury Ham or Pierce Charge  가 있다
+tanker : LV2 조건에 Rush Slash or Fury Ham or Pary Charge or Shield Charge 가 있다 .
+Rogue : LV2 조건에 Assassin'Heart 가 있다 .
 
+이미 각 직업 특성에 맞게 되어 있다고 생각하는데 
+구체적으러 어떤 아이디어인지 설명을 달라.
+--------**
+석궁 전문가의 단 한 발 스킬 리메이크
+스킬 사용시 다시 장전 모드로 전환하는데 장전 속도를 -500% 느리게 하고 
+기존 공격력을 적중시 400% 적중 몬스터 주변 반경의 몬스터를 7미터 넉백효과 ((공격력 계산은 석궁 공격력+볼트 공격력)*200%)
+적중당한 몬스터  vfx매니저로 fx_Lightning 효과 2초뒤 종료 코드 넣어주고 추가로 Fader_Jump_AOE 넣어줘  넉백 당한 몬스터들은 fx_Lightning 효과 넣어주고 2초 뒤 종료코드 로 마무리해줘
+--
+단검전문가의 암살자의 심장을 배운 상태에서 연공창이 안배워져 스킬의 사용키가 다르면 배울수 있어야되 
+반대로 사용키가 같으면 못배우게 막아야하고 액티브 스킬들 확인해줘 
+--**
+꿰 뚫는 창 스킬을 3연속 공격하면 몬스터 방향으로 3미터 돌진해줘 또 3연속 공격하면 돌진  (30초 동안 반복)
+---**
+성기사 1회 타격 15초 동안 저항 감소효과 적용
+--
+단 한 발 스킬의 장전 속도를 -100%로 수정하고 
+단한발 쿨타임이 컨피그에서 수정해도 적용이 안되 그리고 적중시 vfx로 lightningAOE 로 변경해줘 다른 주변 몬스터 적중시
+  번개 관련 vfx 있는데 2초뒤 종료 및 제거 코드 넣어줘
+그리고 단 한 발 시전시 찰칵 하는 장전 소리 넣어줘 로그 스킬  Y키 누르면 나오는 소리를 나오게 하는데 1초 나오고 또
+  1초 반복 계속 반복해서 장전이 완료되면 종료시켜줘 그리고 캐릭터에 vfx를 buff_02a(심플매니터) 로 변경해줘
+---
+https://github.com/jneb802/praetoris-bot
+------
+CaptainSkillTree           -> 생산 제작Lv2~4  100%로 수정  /  돌진 방패 400%로 수정
+Zen_ModLib 
+Server_devcommands 
+Marketplace_And_Server_NPCs_Revamped 
 
-
+Ore Support -> 제거 
 

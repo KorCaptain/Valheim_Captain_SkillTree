@@ -310,7 +310,7 @@ namespace CaptainSkillTree.SkillTree
                             if (boostActive)
                                 bonusText += $"\n<color=#7FFF00>❤️</color><color=white>{L.Get("armor_effect_health_boost")}</color> : <color=#4FC3F7>+{Defense_Config.BoostHealthBonusValue:F0}</color>";
                             if (berserkerActive)
-                                bonusText += $"\n<color=#FF4500>💢</color><color=white>{L.Get("armor_effect_berserker_hp")}</color> : <color=orange>+{Berserker_Config.BerserkerPassiveHealthBonusValue:F0}%</color>";
+                                bonusText += $"\n<color=#FF4500>💢</color><color=white>{L.Get("armor_effect_berserker_hp")}</color> : <color=orange>+{Berserker_Config.BerserkerPassiveHealthBonusValue:F0}</color>";
                             if (dodgeTotal > 0f)
                                 bonusText += $"\n<color=#40E0D0>💨</color><color=white>{L.Get("armor_effect_evasion")}</color> : <color=#00BFFF>+{dodgeTotal:F0}%</color>";
                             if (rockSkinActive)

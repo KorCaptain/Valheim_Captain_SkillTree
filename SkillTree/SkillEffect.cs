@@ -780,25 +780,8 @@ namespace CaptainSkillTree.SkillTree
                 }
                 else if (paramName == "Agility")
                 {
-                    // 공격 증가: 민첩 효과 제거 (힘/지능으로 변경)
-                    // int atkTwohandDrainLv = SkillTreeManager.Instance.GetSkillLevel("atk_twohand_drain");
-                    // if (atkTwohandDrainLv > 0) __result += 2 * atkTwohandDrainLv;
-
-                    // 속도 트리 6단계: 민첩 +3 (MMO 독립 구현으로 변경 - SkillEffect.StatTree.cs 참조)
-                    // int speed1Lv = SkillTreeManager.Instance.GetSkillLevel("speed_1");
-                    // if (speed1Lv > 0) __result += 3 * speed1Lv;
-                    
-                    // 속도 트리 7단계: 모든 스텟 +2
-                    int allMasterLv = SkillTreeManager.Instance.GetSkillLevel("all_master");
-                    if (allMasterLv > 0) __result += 2 * allMasterLv;
-                    
-                    // 속도 트리 3단계: 무기 숙련도 증가
-                    int speedEx1Lv = SkillTreeManager.Instance.GetSkillLevel("speed_ex1");
-                    int speedEx2Lv = SkillTreeManager.Instance.GetSkillLevel("speed_ex2");
-                    if (speedEx1Lv > 0) __result += 3 * speedEx1Lv; // 근접무기 숙련 +3
-                    if (speedEx2Lv > 0) __result += 3 * speedEx2Lv; // 지팡이 숙련 +3
-                    
-                    // 주의: 속도 전문가 이동속도는 Speed.cs의 Player.UpdateModifiers 패치에서 직접 처리됨
+                    // 속도 트리 숙련도/이동속도는 GetSkillLevel/GetJogSpeedFactor 네이티브 패치에서 직접 처리
+                    // EpicMMO Agility 스탯 미사용
                 }
                 else if (paramName == "Body")
                 {
@@ -1190,37 +1173,8 @@ namespace CaptainSkillTree.SkillTree
         [HarmonyPriority(Priority.High)]
         public static void Postfix(object parameter, ref int __result)
         {
-            try
-            {
-                var player = Player.m_localPlayer;
-                if (player == null) return;
-                
-                string paramType = parameter?.ToString();
-                int bonus = 0;
-                
-                if (paramType == "Agility")
-                {
-                    // 속도 전문가 루트 - 기본 이동속도 보너스 (MMO Agility 연동)
-                    if (SkillEffect.HasSkill("speed_root"))
-                        bonus += (int)(SkillTreeConfig.SpeedRootMoveSpeedValue * 2f); // 5% * 2 = +10 Agility
-
-                    // knife_step3_move_speed는 RogueSkills.cs GetJogSpeedFactor Postfix에서 직접 처리
-                    // Agility 경로로 추가 시 EpicMMO 재계산 시 누적 발생 → 제거
-
-                    if (SkillEffect.HasSkill("speed_master"))
-                        bonus += 5;
-
-                    if (SkillEffect.HasSkill("agility_peak"))
-                        bonus += 8;
-
-                    if (bonus > 0)
-                        __result += bonus;
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[속도 전문가] MMO 스탯 패치 오류: {ex.Message}");
-            }
+            // speed_master, agility_peak 효과는 UpdateFood/GetSkillLevel 네이티브 패치에서 처리
+            // EpicMMO Agility 스탯 미사용 — 이 Postfix는 의도적으로 비어 있음
         }
     }
 

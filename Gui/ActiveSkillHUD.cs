@@ -17,6 +17,7 @@ namespace CaptainSkillTree.Gui
         private SlotUI[] _slots;
         private Canvas _canvas;
         private RectTransform _containerRt;
+        private float _lastIconSize = -1f;
 
         // 슬롯별 스킬 ID → 아이콘명 매핑 (Y슬롯: 직업, R/G: 무기 스킬)
         private static readonly string[] YJobIds  = { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin", "Producer" };
@@ -158,7 +159,8 @@ namespace CaptainSkillTree.Gui
             iconRt.anchorMax = new Vector2(0.5f, 0.5f);
             iconRt.pivot = new Vector2(0.5f, 0.5f);
             iconRt.anchoredPosition = new Vector2(0f, 10f);
-            iconRt.sizeDelta = new Vector2(62f, 62f);
+            float iconSz = SkillTreeConfig.HudIconSize?.Value ?? 62;
+            iconRt.sizeDelta = new Vector2(iconSz, iconSz);
 
             // 쿨다운 오버레이 (검정 반투명 강화, fillOrigin=Top → 위→아래 순으로 빠짐)
             var overlayGO = new GameObject("CooldownOverlay");
@@ -175,7 +177,7 @@ namespace CaptainSkillTree.Gui
             overlayRt.anchorMax = new Vector2(0.5f, 0.5f);
             overlayRt.pivot = new Vector2(0.5f, 0.5f);
             overlayRt.anchoredPosition = new Vector2(0f, 10f);
-            overlayRt.sizeDelta = new Vector2(62f, 62f);
+            overlayRt.sizeDelta = new Vector2(iconSz, iconSz);
 
             // 5초 이하 카운트다운 텍스트 (아이콘 중앙, 애니메이션용)
             var countGO = new GameObject("CountdownText");
@@ -193,7 +195,7 @@ namespace CaptainSkillTree.Gui
             countRt.anchorMax = new Vector2(0.5f, 0.5f);
             countRt.pivot = new Vector2(0.5f, 0.5f);
             countRt.anchoredPosition = new Vector2(0f, 10f);
-            countRt.sizeDelta = new Vector2(62f, 62f);
+            countRt.sizeDelta = new Vector2(iconSz, iconSz);
             countGO.SetActive(false);
 
             // 키 레이블 (아이콘 아래)
@@ -565,8 +567,25 @@ namespace CaptainSkillTree.Gui
             if (!_isDragging && _containerRt != null)
             {
                 _containerRt.anchoredPosition = new Vector2(
-                    SkillTreeConfig.HudPosX?.Value ?? 315,
-                    SkillTreeConfig.HudPosY?.Value ?? 110);
+                    SkillTreeConfig.HudPosX?.Value ?? 306,
+                    SkillTreeConfig.HudPosY?.Value ?? 139);
+            }
+
+            // 아이콘 크기 실시간 반영
+            float iconSz = SkillTreeConfig.HudIconSize?.Value ?? 62;
+            if (iconSz != _lastIconSize)
+            {
+                _lastIconSize = iconSz;
+                var sz = new Vector2(iconSz, iconSz);
+                foreach (var slot in _slots)
+                {
+                    if (slot?.IconRt != null)
+                        slot.IconRt.sizeDelta = sz;
+                    if (slot?.CooldownOverlay != null)
+                        slot.CooldownOverlay.rectTransform.sizeDelta = sz;
+                    if (slot?.CountdownText != null)
+                        slot.CountdownText.rectTransform.sizeDelta = sz;
+                }
             }
 
             var mgr = SkillTreeManager.Instance;

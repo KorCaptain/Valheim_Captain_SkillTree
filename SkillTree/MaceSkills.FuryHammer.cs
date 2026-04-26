@@ -46,10 +46,10 @@ namespace CaptainSkillTree.SkillTree
             // 현재 시간
             float nowG = Time.time;
 
-            // 양손둔기 착용 체크
-            if (!SkillEffect.IsUsingTwoHandedMace(player))
+            // 둔기 착용 체크 (한손/양손 모두 허용)
+            if (!SkillEffect.IsUsingMace(player))
             {
-                SkillEffect.DrawFloatingText(player, L.Get("two_hand_mace_required"), Color.red);
+                SkillEffect.DrawFloatingText(player, L.Get("mace_required"), Color.red);
                 return;
             }
 

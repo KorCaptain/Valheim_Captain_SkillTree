@@ -285,7 +285,8 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> JobLv4Cost;
         public static ConfigEntry<int> JobLv5Cost;
 
-        // HUD 위치 Config
+        // HUD 위치 + 아이콘 크기 Config
+        public static ConfigEntry<int> HudIconSize;
         public static ConfigEntry<int> HudPosX;
         public static ConfigEntry<int> HudPosY;
 
@@ -831,25 +832,36 @@ namespace CaptainSkillTree.SkillTree
                 )
             );
 
+            HudIconSize = config.Bind(
+                "Skill_Tree_Base",
+                "HUD_IconSize",
+                62,
+                new ConfigDescription(
+                    GetConfigDescription("HUD_IconSize"),
+                    new AcceptableValueRange<int>(32, 128),
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HUD_IconSize"), Order = -14 }
+                )
+            );
+
             HudPosX = config.Bind(
                 "Skill_Tree_Base",
                 "HUD_PosX",
-                315,
+                306,
                 new ConfigDescription(
                     GetConfigDescription("HUD_PosX"),
                     new AcceptableValueRange<int>(0, 1920),
-                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HUD_PosX"), Order = -14 }
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HUD_PosX"), Order = -15 }
                 )
             );
 
             HudPosY = config.Bind(
                 "Skill_Tree_Base",
                 "HUD_PosY",
-                110,
+                139,
                 new ConfigDescription(
                     GetConfigDescription("HUD_PosY"),
                     new AcceptableValueRange<int>(0, 1080),
-                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HUD_PosY"), Order = -15 }
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HUD_PosY"), Order = -16 }
                 )
             );
 
@@ -860,7 +872,7 @@ namespace CaptainSkillTree.SkillTree
                 new ConfigDescription(
                     GetConfigDescription("PassiveMessageDisplay"),
                     new AcceptableValueList<string>("Center", "TopLeft", "Off"),
-                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("PassiveMessageDisplay"), Order = -16 }
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("PassiveMessageDisplay"), Order = -17 }
                 )
             );
 
@@ -871,7 +883,7 @@ namespace CaptainSkillTree.SkillTree
                 new ConfigDescription(
                     GetConfigDescription("GameDifficulty"),
                     new AcceptableValueList<string>("Vanilla", "VeryHard", "UserSettings"),
-                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("GameDifficulty"), Order = -17 }
+                    new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("GameDifficulty"), Order = -18 }
                 )
             );
 
@@ -887,7 +899,7 @@ namespace CaptainSkillTree.SkillTree
             };
 
             ShowResetButtons = BindServerSync(config, "Skill_Tree_Base", "ShowResetButtons", true,
-                GetConfigDescription("ShowResetButtons"), order: -18);
+                GetConfigDescription("ShowResetButtons"), order: -19);
 
             // === 직업 레벨업 코인 비용 (서버 관리자 전용, 클라이언트 자동 동기화) ===
             JobLv1Cost = BindServerSync(config, "Skill_Tree_Base", "Job_Lv1_Cost", 1000,

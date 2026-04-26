@@ -395,10 +395,21 @@ namespace CaptainSkillTree.SkillTree
                 // 폴암 세컨드를 찾지 못하면 시도하지 않음
                 if (MaceSkills_SpinAnimation_Patch.GetCachedPolearmSecondary() == null) return;
 
+                // 양손 둔기는 SpinDetect_Patch가 못 잡을 수 있으므로 직접 시간 기록
+                MaceSkills.s_lastSpinTime[__instance] = Time.time;
+
                 // StartAttack(null, true) 직접 호출
                 // → SpinAnimation_Patch.Prefix가 먼저 실행되어 폴암 세컨드 주입
                 __instance.StartAttack(null, true);
                 Plugin.Log.LogDebug("[양손 둔기 회전] StartAttack(true) 강제 호출");
+
+                // 한손 둔기는 Valheim이 m_startEffect를 자동 재생하지만,
+                // 양손 둔기는 애니메이터에 secondary 스테이트가 없어 SFX가 누락됨 → 명시 재생
+                var polearmSec = MaceSkills_SpinAnimation_Patch.GetCachedPolearmSecondary();
+                polearmSec?.m_startEffect?.Create(
+                    __instance.transform.position,
+                    __instance.transform.rotation,
+                    __instance.transform);
             }
             catch (Exception ex)
             {
@@ -439,6 +450,10 @@ namespace CaptainSkillTree.SkillTree
                 float multiplier = 1f + spinBonus / 100f;
                 hit.m_damage.m_blunt *= multiplier;
 
+                // 넉백 적용 (한손·양손 통합)
+                float spinKnockback = Mace_Config.MaceStep3SpinKnockbackForceValue;
+                hit.m_pushForce = spinKnockback;
+
                 // 7m AOE 적용 (재귀 방지 플래그 사용)
                 float spinRange = Mace_Config.MaceStep3SpinRangeValue;
                 s_applyingAoe = true;
@@ -465,6 +480,7 @@ namespace CaptainSkillTree.SkillTree
                         aoeHit.SetAttacker(attacker);
                         aoeHit.m_blockable = false;
                         aoeHit.m_dodgeable = false;
+                        aoeHit.m_pushForce = spinKnockback;
                         mob.Damage(aoeHit);
                     }
                 }

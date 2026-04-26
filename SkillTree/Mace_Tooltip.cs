@@ -77,7 +77,7 @@ namespace CaptainSkillTree.SkillTree
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("mace_skill_guard_boost")}</size></color>",
-                L.Get("mace_desc_guard_boost", Mace_Config.MaceStep3SpinDamageBonusValue, Mace_Config.MaceStep3SpinRangeValue),
+                L.Get("mace_desc_guard_boost", Mace_Config.MaceStep3SpinDamageBonusValue, Mace_Config.MaceStep3SpinRangeValue, Mace_Config.MaceStep3SpinKnockbackForceValue),
                 MeleeTooltipUtils.WeaponType.Mace
             );
             data.requiredPoints = Mace_Config.MaceStep3GuardRequiredPointsValue.ToString();

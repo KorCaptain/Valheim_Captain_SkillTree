@@ -304,6 +304,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 3-1: Golpe Giratório (3) ===
                 ["Tier3_SpinStrike_DamageBonus"] = "Tier 3-1: [Golpe Giratório] Bônus de Dano (%)",
                 ["Tier3_SpinStrike_Range"] = "Tier 3-1: [Golpe Giratório] Alcance AOE (m)",
+                ["Tier3_SpinStrike_KnockbackForce"] = "Tier 3-1: [Golpe Giratório] Distância de Knockback (m)",
                 ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [Golpe Giratório] Pontos Necessários",
 
                 // === Tier 3-2: Golpe Pesado (2) ===
@@ -539,7 +540,7 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Passive_HealthThreshold"] = "Desafio da Morte: Limite de HP (%)",
                 ["Berserker_Passive_InvincibilityDuration"] = "Desafio da Morte: Duração da Invencibilidade (seg)",
                 ["Berserker_Passive_Cooldown"] = "Desafio da Morte: Recarga (seg)",
-                ["Berserker_Passive_HealthBonus"] = "Passivo: Bônus de HP Máximo (%)",
+                ["Berserker_Passive_HealthBonus"] = "Passivo: Bônus de HP Máximo (flat)",
                 ["Berserker_Lv2_CooldownReduction"] = "Lv2: Redução CD Fúria (seg)",
                 ["Berserker_Lv3_RageDamageReduction"] = "Lv3: Redução de Dano na Fúria (%)",
                 ["Berserker_Lv4_LowHpAttackBonus"] = "Lv4: Bônus Ataque Pouco HP (%)",

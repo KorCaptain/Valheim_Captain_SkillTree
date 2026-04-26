@@ -70,7 +70,7 @@ namespace CaptainSkillTree.Localization
                 ["mace_desc_expert"] = "공격력 +{0}%, 기절 확률 +{1}%, 기절 지속시간 +{2}초",
                 ["mace_desc_damage_boost"] = "둔기 공격력 +{0}%",
                 ["mace_desc_stun_boost"] = "기절 확률 +{0}%, 기절 지속시간 +{1}초",
-                ["mace_desc_guard_boost"] = "세컨드 공격 시 공격력 +{0}%, 범위 {1}m",
+                ["mace_desc_guard_boost"] = "세컨드 공격 시 공격력 +{0}%, 범위 {1}m, 넉백 {2}m",
                 ["mace_desc_heavy_strike"] = "타격 +{0}",
                 ["mace_desc_knockback"] = "막기 미사용 상태에서 피격 시 {0}% 확률로 공격자를 밀어냄",
                 ["mace_desc_tanker"] = "체력 +{0}, 피해 감소 +{1}%",
@@ -502,7 +502,7 @@ namespace CaptainSkillTree.Localization
                 ["bow_arrow_rain_tooltip_desc"] = "Activate buff, then fire bow at target — arrows rain from 200m above (50% vs Bosses)",
                 ["bow_arrow_rain_damage_format"] = "{0} arrows × (Bow+Arrow) {1}% damage",
                 ["bow_arrow_rain_range_format"] = "Fall radius {0}m • AOE 3m",
-                ["crossbow_oneshot_tooltip_desc"] = "Slow reload on activation (-500%), powerful strike within {0}s + 7m AOE lightning knockback",
+                ["crossbow_oneshot_tooltip_desc"] = "Slow reload on activation (-50% speed), powerful strike within {0}s + 7m AOE lightning knockback",
 
                 // === Common Tooltip Text ===
                 ["tooltip_job_limit"] = "Only one job can be selected",
@@ -574,7 +574,7 @@ namespace CaptainSkillTree.Localization
                 ["mace_desc_expert"] = "Damage +{0}%, Stun chance +{1}%, Stun duration +{2}s",
                 ["mace_desc_damage_boost"] = "Mace damage +{0}%",
                 ["mace_desc_stun_boost"] = "Stun chance +{0}%, Stun duration +{1}s",
-                ["mace_desc_guard_boost"] = "Secondary attack damage +{0}%, AoE range {1}m",
+                ["mace_desc_guard_boost"] = "Secondary attack damage +{0}%, AoE range {1}m, knockback {2}m",
                 ["mace_desc_heavy_strike"] = "Blunt +{0}",
                 ["mace_desc_knockback"] = "When not blocking, {0}% chance to push attacker on hit",
                 ["mace_desc_tanker"] = "Health +{0}, Damage reduction +{1}%",

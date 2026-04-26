@@ -23,8 +23,9 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "Fernkampffähigkeitstaste",
                 ["HotKey_G"] = "Nahkampf-Hauptfähigkeitstaste",
                 ["HotKey_H"] = "Sekundäre Fähigkeitstaste",
-                ["HUD_PosX"] = "HUD X-Position",
-                ["HUD_PosY"] = "HUD Y-Position",
+                ["HUD_IconSize"] = "Skill-Icon-Größe",
+                ["HUD_PosX"] = "Skill Icon HUD X-Position",
+                ["HUD_PosY"] = "Skill Icon HUD Y-Position",
                 ["PassiveMessageDisplay"] = "Passive Meldungsanzeige",
                 ["GameDifficulty"] = "Spielschwierigkeit",
 

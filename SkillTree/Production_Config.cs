@@ -48,7 +48,7 @@ namespace CaptainSkillTree.SkillTree
         public static int CraftingLv2UpgradeChanceValue =>
             (int)SkillTreeConfig.GetEffectiveValue("crafting_lv2_upgrade_chance", CraftingLv2UpgradeChance?.Value ?? 15);
         public static int CraftingLv2DurabilityBonusValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("crafting_lv2_durability", CraftingLv2DurabilityBonus?.Value ?? 15);
+            (int)SkillTreeConfig.GetEffectiveValue("crafting_lv2_durability", CraftingLv2DurabilityBonus?.Value ?? 50);
         // Tier 3
         public static int WoodcuttingLv3BonusChanceValue =>
             (int)SkillTreeConfig.GetEffectiveValue("woodcutting_lv3_chance", WoodcuttingLv3BonusChance?.Value ?? 35);
@@ -59,7 +59,7 @@ namespace CaptainSkillTree.SkillTree
         public static int CraftingLv3UpgradeChanceValue =>
             (int)SkillTreeConfig.GetEffectiveValue("crafting_lv3_upgrade_chance", CraftingLv3UpgradeChance?.Value ?? 15);
         public static int CraftingLv3DurabilityBonusValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("crafting_lv3_durability", CraftingLv3DurabilityBonus?.Value ?? 15);
+            (int)SkillTreeConfig.GetEffectiveValue("crafting_lv3_durability", CraftingLv3DurabilityBonus?.Value ?? 75);
         // Tier 4
         public static int WoodcuttingLv4BonusChanceValue =>
             (int)SkillTreeConfig.GetEffectiveValue("woodcutting_lv4_chance", WoodcuttingLv4BonusChance?.Value ?? 45);
@@ -70,7 +70,7 @@ namespace CaptainSkillTree.SkillTree
         public static int CraftingLv4UpgradeChanceValue =>
             (int)SkillTreeConfig.GetEffectiveValue("crafting_lv4_upgrade_chance", CraftingLv4UpgradeChance?.Value ?? 15);
         public static int CraftingLv4DurabilityBonusValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("crafting_lv4_durability", CraftingLv4DurabilityBonus?.Value ?? 15);
+            (int)SkillTreeConfig.GetEffectiveValue("crafting_lv4_durability", CraftingLv4DurabilityBonus?.Value ?? 100);
 
         public static void Initialize(ConfigFile config)
         {
@@ -105,7 +105,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_CraftingLv2_UpgradeChance"), order: 42);
 
             CraftingLv2DurabilityBonus = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier2_CraftingLv2_DurabilityBonus", 15,
+                "Production Tree", "Tier2_CraftingLv2_DurabilityBonus", 50,
                 SkillTreeConfig.GetConfigDescription("Tier2_CraftingLv2_DurabilityBonus"), order: 41);
 
             // === Tier 3-1: 벌목 Lv3 ===
@@ -129,7 +129,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier3_CraftingLv3_UpgradeChance"), order: 26);
 
             CraftingLv3DurabilityBonus = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier3_CraftingLv3_DurabilityBonus", 15,
+                "Production Tree", "Tier3_CraftingLv3_DurabilityBonus", 75,
                 SkillTreeConfig.GetConfigDescription("Tier3_CraftingLv3_DurabilityBonus"), order: 25);
 
             // === Tier 4-1: 벌목 Lv4 ===
@@ -153,7 +153,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier4_CraftingLv4_UpgradeChance"), order: 12);
 
             CraftingLv4DurabilityBonus = SkillTreeConfig.BindServerSync(config,
-                "Production Tree", "Tier4_CraftingLv4_DurabilityBonus", 15,
+                "Production Tree", "Tier4_CraftingLv4_DurabilityBonus", 100,
                 SkillTreeConfig.GetConfigDescription("Tier4_CraftingLv4_DurabilityBonus"), order: 11);
 
 

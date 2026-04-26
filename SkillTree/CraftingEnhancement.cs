@@ -113,7 +113,7 @@ namespace CaptainSkillTree.SkillTree
                 
                 Plugin.Log.LogInfo("[제작 보너스] 제작 스킬 레벨 확인 시작");
                 
-                // 제작 스킬 누적 계산 (Lv2: 25%, Lv3: +25%, Lv4: +25% = 최대 75%)
+                // 제작 스킬 누적 계산
                 float totalEnhanceChance = 0f;
                 float totalDurabilityBonus = 0f;
                 
@@ -144,6 +144,13 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogInfo($"[제작 보너스] Lv4 보너스 적용: 강화 +{Production_Config.CraftingLv4UpgradeChanceValue}%, 내구도 +{Production_Config.CraftingLv4DurabilityBonusValue}%");
                 }
 
+                int producerLevel = manager.GetSkillLevel("Producer");
+                if (producerLevel > 0)
+                {
+                    totalEnhanceChance   += Producer_Config.GetCraftingSuccessRate(producerLevel) / 100f;
+                    totalDurabilityBonus += Producer_Config.GetDurabilityBonus(producerLevel) / 100f;
+                    Plugin.Log.LogInfo($"[제작 보너스] 직업 보너스 적용(Lv{producerLevel}): 성공확률 +{Producer_Config.GetCraftingSuccessRate(producerLevel)}%, 내구도 +{Producer_Config.GetDurabilityBonus(producerLevel)}%");
+                }
 
                 Plugin.Log.LogInfo($"[제작 보너스] 총 보너스 - 강화확률: {totalEnhanceChance * 100:F0}%, 내구도보너스: {totalDurabilityBonus * 100:F0}%");
                 
