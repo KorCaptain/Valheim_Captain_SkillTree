@@ -205,6 +205,71 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        /// <summary>
+        /// 추가 화살 착탄 시 2m 스플래시 + 3m 화염 폭발 적용
+        /// </summary>
+        internal static void ApplyMultiShotExplosion(Vector3 hitPoint, Player attacker)
+        {
+            try
+            {
+                // VFX — ExplosiveArrow와 동일한 로컬 ZNetScene 방식
+                var blobPrefab = ZNetScene.instance?.GetPrefab("fx_blobLava_explosion");
+                if (blobPrefab != null)
+                    UnityEngine.Object.Instantiate(blobPrefab, hitPoint + Vector3.up * 0.2f, Quaternion.identity);
+
+                VFXManager.PlaySound("sfx_blobLava_explosion", hitPoint, 3f);
+
+                var weapon = attacker.GetCurrentWeapon();
+                if (weapon == null) return;
+
+                float baseDmg = weapon.GetDamage().GetTotalDamage();
+
+                // 2m 스플래시 (물리 충격) — 직격 반경
+                var splash = Physics.OverlapSphere(hitPoint, 2f);
+                foreach (var col in splash)
+                {
+                    var chr = col.GetComponent<Character>();
+                    if (chr == null || chr == attacker || chr.IsDead()) continue;
+                    if (!BaseAI.IsEnemy(attacker, chr) && chr.GetComponent<MonsterAI>() == null) continue;
+
+                    float dmg = baseDmg * 0.3f;
+                    if (chr.m_boss) dmg *= 0.5f;
+
+                    var hit = new HitData();
+                    hit.m_damage.m_blunt = dmg;
+                    hit.m_point = chr.GetCenterPoint();
+                    hit.m_dir = (chr.transform.position - hitPoint).normalized;
+                    hit.SetAttacker(attacker);
+                    hit.m_skill = Skills.SkillType.Bows;
+                    chr.Damage(hit);
+                }
+
+                // 3m 화염 폭발 (속성 피해) — 외곽 범위
+                var fireZone = Physics.OverlapSphere(hitPoint, 3f);
+                foreach (var col in fireZone)
+                {
+                    var chr = col.GetComponent<Character>();
+                    if (chr == null || chr == attacker || chr.IsDead()) continue;
+                    if (!BaseAI.IsEnemy(attacker, chr) && chr.GetComponent<MonsterAI>() == null) continue;
+
+                    float dmg = baseDmg * 0.5f;
+                    if (chr.m_boss) dmg *= 0.5f;
+
+                    var hit = new HitData();
+                    hit.m_damage.m_fire = dmg;
+                    hit.m_point = chr.GetCenterPoint();
+                    hit.m_dir = (chr.transform.position - hitPoint).normalized;
+                    hit.SetAttacker(attacker);
+                    hit.m_skill = Skills.SkillType.Bows;
+                    chr.Damage(hit);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[멀티샷 폭발] 오류: {ex.Message}");
+            }
+        }
+
         // ValidateArrowProjectile 은 SkillEffect.ArcherMultiShot.cs 에 정의됨
     }
 
@@ -264,15 +329,17 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 if (water) return;
-
-                // 추가 화살(멀티샷이 발사한 것)이면 재귀 방지
-                if (__instance.GetComponent<MultiShotArrowTag>() != null) return;
-
-                // 활 발사체만 처리
                 if (__instance.m_skill != Skills.SkillType.Bows) return;
 
                 var player = Player.m_localPlayer;
                 if (player == null) return;
+
+                // 추가 화살 적중 → 폭발 처리 후 종료 (재귀 방지)
+                if (__instance.GetComponent<MultiShotArrowTag>() != null)
+                {
+                    SkillEffect.ApplyMultiShotExplosion(hitPoint, player);
+                    return;
+                }
 
                 // 적 캐릭터 적중 확인
                 var hitChar = collider?.GetComponentInParent<Character>();
