@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using CaptainSkillTree.Localization;
+using CaptainSkillTree.VFX;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -51,6 +52,9 @@ namespace CaptainSkillTree.SkillTree
                 bool hasLv2 = HasSkill("bow_Step4_multishot2");
                 string skillLevel = (hasLv1 && hasLv2) ? "Lv1+Lv2" : (hasLv2 ? "Lv2" : "Lv1");
                 var arrowCount = SkillTreeConfig.BowMultishotArrowCountValue;
+
+                // 추가 화살 소환 사운드 (시위 당기는 소리 — 3발 동시 소환 느낌)
+                VFXManager.PlaySound("sfx_bow_draw", spawnPoint, 1f);
 
                 // 부채꼴 각도 (-3°, 0°, +3°)
                 var angles = new float[] { -3f, 0f, 3f };
