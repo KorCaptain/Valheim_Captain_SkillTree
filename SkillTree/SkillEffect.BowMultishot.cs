@@ -236,7 +236,7 @@ namespace CaptainSkillTree.SkillTree
                     if (chr.m_boss) dmg *= 0.5f;
 
                     var hit = new HitData();
-                    hit.m_damage.m_blunt = dmg;
+                    hit.m_damage.m_pierce = dmg;
                     hit.m_point = chr.GetCenterPoint();
                     hit.m_dir = (chr.transform.position - hitPoint).normalized;
                     hit.SetAttacker(attacker);
