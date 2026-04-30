@@ -388,14 +388,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [Durchbohrende Ladung] Abklingzeit (Sek)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [Durchbohrende Ladung] Benötigte Punkte",
 
-                // === Polearm Tree: Wirbelwind (7 keys) ===
-                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Wirbelwind] Schadensrate (%)",
-                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [Wirbelwind] Ausdauer/Zyklus",
-                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [Wirbelwind] Bewegungsgeschwindigkeit (m/s)",
-                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [Wirbelwind] Angriffsintervall (Sek)",
-                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Wirbelwind] VFX-Intervall (Sek)",
-                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Wirbelwind] Abklingzeit (Sek)",
-                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Wirbelwind] Benötigte Punkte",
+                // === Polearm Tree: Wirbelwind (9 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]          = "Tier 6: [Wirbelwind] Schadensrate (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]          = "Tier 6: [Wirbelwind] Ausdauer/Zyklus",
+                ["Tier6_Whirlwind_MoveSpeed"]              = "Tier 6: [Wirbelwind] Bewegungsgeschwindigkeit (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]         = "Tier 6: [Wirbelwind] Angriffsintervall (Sek)",
+                ["Tier6_Whirlwind_VfxInterval"]            = "Tier 6: [Wirbelwind] VFX-Intervall (Sek)",
+                ["Tier6_Whirlwind_Cooldown"]               = "Tier 6: [Wirbelwind] Abklingzeit (Sek)",
+                ["Tier6_Whirlwind_DamageReductionPercent"] = "Tier 6: [Wirbelwind] Schadensreduzierung (%)",
+                ["Tier6_Whirlwind_DamageReductionDuration"]= "Tier 6: [Wirbelwind] Dauer der Schadensreduzierung (Sek)",
+                ["Tier6_Whirlwind_RequiredPoints"]         = "Tier 6: [Wirbelwind] Benötigte Punkte",
 
                 // ============================================
                 // Klassenfähigkeiten - Bogenschütze

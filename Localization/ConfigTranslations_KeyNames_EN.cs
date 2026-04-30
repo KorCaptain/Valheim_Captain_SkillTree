@@ -854,14 +854,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [Pierce Charge] Cooldown (sec)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [Pierce Charge] Required Points",
 
-                // === Polearm Tree: Whirlwind (7 keys) ===
-                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Whirlwind] Damage Ratio (%)",
-                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [Whirlwind] Stamina Cost/Cycle",
-                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [Whirlwind] Move Speed (m/s)",
-                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [Whirlwind] Attack Interval (sec)",
-                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Whirlwind] VFX Interval (sec)",
-                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
-                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
+                // === Polearm Tree: Whirlwind (9 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]          = "Tier 6: [Whirlwind] Damage Ratio (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]          = "Tier 6: [Whirlwind] Stamina Cost/Cycle",
+                ["Tier6_Whirlwind_MoveSpeed"]              = "Tier 6: [Whirlwind] Move Speed (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]         = "Tier 6: [Whirlwind] Attack Interval (sec)",
+                ["Tier6_Whirlwind_VfxInterval"]            = "Tier 6: [Whirlwind] VFX Interval (sec)",
+                ["Tier6_Whirlwind_Cooldown"]               = "Tier 6: [Whirlwind] Cooldown (sec)",
+                ["Tier6_Whirlwind_DamageReductionPercent"] = "Tier 6: [Whirlwind] Damage Reduction (%)",
+                ["Tier6_Whirlwind_DamageReductionDuration"]= "Tier 6: [Whirlwind] Damage Reduction Duration (sec)",
+                ["Tier6_Whirlwind_RequiredPoints"]         = "Tier 6: [Whirlwind] Required Points",
 
                 // ============================================
                 // Archer Job Skills - 8 Keys

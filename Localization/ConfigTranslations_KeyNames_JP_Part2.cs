@@ -344,14 +344,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [貫通突撃] クールダウン (秒)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [貫通突撃] 必要ポイント",
 
-                // === Polearm Tree: 旋風 (7 keys) ===
-                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [旋風] ダメージ比率 (%)",
-                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [旋風] スタミナコスト/サイクル",
-                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [旋風] 移動速度 (m/s)",
-                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [旋風] 攻撃間隔 (秒)",
-                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [旋風] VFX間隔 (秒)",
-                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [旋風] クールダウン (秒)",
-                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [旋風] 必要ポイント",
+                // === Polearm Tree: 旋風 (9 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]          = "Tier 6: [旋風] ダメージ比率 (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]          = "Tier 6: [旋風] スタミナコスト/サイクル",
+                ["Tier6_Whirlwind_MoveSpeed"]              = "Tier 6: [旋風] 移動速度 (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]         = "Tier 6: [旋風] 攻撃間隔 (秒)",
+                ["Tier6_Whirlwind_VfxInterval"]            = "Tier 6: [旋風] VFX間隔 (秒)",
+                ["Tier6_Whirlwind_Cooldown"]               = "Tier 6: [旋風] クールダウン (秒)",
+                ["Tier6_Whirlwind_DamageReductionPercent"] = "Tier 6: [旋風] ダメージ軽減 (%)",
+                ["Tier6_Whirlwind_DamageReductionDuration"]= "Tier 6: [旋風] ダメージ軽減持続時間 (秒)",
+                ["Tier6_Whirlwind_RequiredPoints"]         = "Tier 6: [旋風] 必要ポイント",
 
                 // ============================================
                 // アーチャー職業スキル

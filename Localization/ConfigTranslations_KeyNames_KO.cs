@@ -856,14 +856,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [관통 돌격] 쿨타임 (초)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [관통 돌격] 필요 포인트",
 
-                // === Polearm Tree: 휠윈드 (7개) ===
-                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [휠윈드] 공격력 비율 (%)",
-                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [휠윈드] 스태미나 소모/회",
-                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [휠윈드] 이동 속도 (m/s)",
-                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [휠윈드] 공격 간격 (초)",
-                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [휠윈드] VFX 간격 (초)",
-                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [휠윈드] 쿨타임 (초)",
-                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [휠윈드] 필요 포인트",
+                // === Polearm Tree: 휠윈드 (9개) ===
+                ["Tier6_Whirlwind_DamagePercent"]          = "Tier 6: [휠윈드] 공격력 비율 (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]          = "Tier 6: [휠윈드] 스태미나 소모/회",
+                ["Tier6_Whirlwind_MoveSpeed"]              = "Tier 6: [휠윈드] 이동 속도 (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]         = "Tier 6: [휠윈드] 공격 간격 (초)",
+                ["Tier6_Whirlwind_VfxInterval"]            = "Tier 6: [휠윈드] VFX 간격 (초)",
+                ["Tier6_Whirlwind_Cooldown"]               = "Tier 6: [휠윈드] 쿨타임 (초)",
+                ["Tier6_Whirlwind_DamageReductionPercent"] = "Tier 6: [휠윈드] 피해 감소 (%)",
+                ["Tier6_Whirlwind_DamageReductionDuration"]= "Tier 6: [휠윈드] 피해 감소 지속 시간 (초)",
+                ["Tier6_Whirlwind_RequiredPoints"]         = "Tier 6: [휠윈드] 필요 포인트",
 
                 // ============================================
                 // Archer Job Skills (아처 직업 스킬) - 8개

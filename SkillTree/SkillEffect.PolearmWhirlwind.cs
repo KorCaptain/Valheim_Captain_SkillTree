@@ -34,6 +34,9 @@ namespace CaptainSkillTree.SkillTree
         // 휠윈드 공격속도 버프 활성 플래그 (공격 모션 중 +100%)
         public static Dictionary<Player, bool> whirlwindAttackSpeedActive = new Dictionary<Player, bool>();
 
+        // 피해 감소 활성 종료 시각 (Time.time 기준)
+        public static Dictionary<Player, float> whirlwindDamageReductionEndTime = new Dictionary<Player, float>();
+
         /// <summary>
         /// 휠윈드 공격 모션 중 공격속도 보너스 반환 (SpeedTree에서 호출)
         /// </summary>
@@ -86,6 +89,7 @@ namespace CaptainSkillTree.SkillTree
 
             whirlwindActive[player] = true;
             whirlwindDealingDamage[player] = true;
+            whirlwindDamageReductionEndTime[player] = Time.time + Polearm_Config.PolearmWhirlwindDamageReductionDurationValue;
             // 쿨타임은 스킬 종료 시점에 등록 (finally 블록에서 처리)
 
             whirlwindCoroutines[player] = player.StartCoroutine(ExecuteWhirlwindLoop(player));
@@ -354,6 +358,16 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 휠윈드 피해 감소 버프 활성 여부 (시전 후 설정된 시간 동안)
+        /// </summary>
+        public static bool IsWhirlwindDamageReductionActive(Player player)
+        {
+            if (player == null) return false;
+            return whirlwindDamageReductionEndTime.TryGetValue(player, out float endTime)
+                && Time.time < endTime;
+        }
+
+        /// <summary>
         /// 사망/로그아웃 시 정리
         /// </summary>
         public static void CleanupWhirlwindOnDeath(Player player)
@@ -369,6 +383,7 @@ namespace CaptainSkillTree.SkillTree
                 whirlwindDealingDamage.Remove(player);
                 whirlwindInternalAttack.Remove(player);
                 whirlwindAttackSpeedActive.Remove(player);
+                whirlwindDamageReductionEndTime.Remove(player);
 
                 if (whirlwindCoroutines.TryGetValue(player, out var coroutine) && coroutine != null)
                 {
@@ -490,6 +505,47 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[Character_Jump_WhirlwindBlock_Patch] 오류: {ex.Message}");
             }
             return true;
+        }
+    }
+
+    // ============================================================
+    // 휠윈드 피해 감소 패치: 시전 후 설정 시간 동안 받는 피해 -35%
+    // ============================================================
+
+    [HarmonyPatch(typeof(Character), nameof(Character.ApplyDamage))]
+    public static class Character_ApplyDamage_WhirlwindDefense_Patch
+    {
+        [HarmonyPriority(HarmonyLib.Priority.Normal)]
+        static void Prefix(Character __instance, HitData hit)
+        {
+            try
+            {
+                if (__instance == null || hit == null) return;
+                if (!__instance.IsPlayer()) return;
+
+                var player = __instance as Player;
+                if (player == null) return;
+                if (!SkillEffect.IsWhirlwindDamageReductionActive(player)) return;
+
+                float reduction = 1f - (Polearm_Config.PolearmWhirlwindDamageReductionPercentValue / 100f);
+
+                hit.m_damage.m_blunt   *= reduction;
+                hit.m_damage.m_slash   *= reduction;
+                hit.m_damage.m_pierce  *= reduction;
+                hit.m_damage.m_chop    *= reduction;
+                hit.m_damage.m_pickaxe *= reduction;
+                hit.m_damage.m_fire      *= reduction;
+                hit.m_damage.m_frost     *= reduction;
+                hit.m_damage.m_lightning *= reduction;
+                hit.m_damage.m_poison    *= reduction;
+                hit.m_damage.m_spirit    *= reduction;
+
+                Plugin.Log.LogDebug($"[휠윈드 방어] 피해 {Polearm_Config.PolearmWhirlwindDamageReductionPercentValue:F0}% 감소 적용");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[Character_ApplyDamage_WhirlwindDefense_Patch] 오류: {ex.Message}");
+            }
         }
     }
 }

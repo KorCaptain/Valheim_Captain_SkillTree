@@ -391,14 +391,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [穿透冲锋] 冷却时间 (秒)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [穿透冲锋] 所需点数",
 
-                // === Polearm Tree: 旋风 (7 keys) ===
-                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [旋风] 伤害比例 (%)",
-                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [旋风] 每次体力消耗",
-                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [旋风] 移动速度 (m/s)",
-                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [旋风] 攻击间隔 (秒)",
-                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [旋风] VFX间隔 (秒)",
-                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [旋风] 冷却时间 (秒)",
-                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [旋风] 所需点数",
+                // === Polearm Tree: 旋风 (9 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]          = "Tier 6: [旋风] 伤害比例 (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]          = "Tier 6: [旋风] 每次体力消耗",
+                ["Tier6_Whirlwind_MoveSpeed"]              = "Tier 6: [旋风] 移动速度 (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]         = "Tier 6: [旋风] 攻击间隔 (秒)",
+                ["Tier6_Whirlwind_VfxInterval"]            = "Tier 6: [旋风] VFX间隔 (秒)",
+                ["Tier6_Whirlwind_Cooldown"]               = "Tier 6: [旋风] 冷却时间 (秒)",
+                ["Tier6_Whirlwind_DamageReductionPercent"] = "Tier 6: [旋风] 伤害减免 (%)",
+                ["Tier6_Whirlwind_DamageReductionDuration"]= "Tier 6: [旋风] 伤害减免持续时间 (秒)",
+                ["Tier6_Whirlwind_RequiredPoints"]         = "Tier 6: [旋风] 所需点数",
 
                 // ============================================
                 // 弓手职业技能 - 25个键

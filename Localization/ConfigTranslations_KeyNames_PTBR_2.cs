@@ -388,14 +388,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [Carga Perfurante] Recarga (seg)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [Carga Perfurante] Pontos Necessários",
 
-                // === Polearm Tree: Redemoinho (7 keys) ===
-                ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Redemoinho] Taxa de Dano (%)",
-                ["Tier6_Whirlwind_StaminaPerSec"]   = "Tier 6: [Redemoinho] Custo de Stamina/Ciclo",
-                ["Tier6_Whirlwind_MoveSpeed"]       = "Tier 6: [Redemoinho] Velocidade de Movimento (m/s)",
-                ["Tier6_Whirlwind_AttackInterval"]  = "Tier 6: [Redemoinho] Intervalo de Ataque (seg)",
-                ["Tier6_Whirlwind_VfxInterval"]     = "Tier 6: [Redemoinho] Intervalo VFX (seg)",
-                ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Redemoinho] Recarga (seg)",
-                ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Redemoinho] Pontos Necessários",
+                // === Polearm Tree: Redemoinho (9 keys) ===
+                ["Tier6_Whirlwind_DamagePercent"]          = "Tier 6: [Redemoinho] Taxa de Dano (%)",
+                ["Tier6_Whirlwind_StaminaPerSec"]          = "Tier 6: [Redemoinho] Custo de Stamina/Ciclo",
+                ["Tier6_Whirlwind_MoveSpeed"]              = "Tier 6: [Redemoinho] Velocidade de Movimento (m/s)",
+                ["Tier6_Whirlwind_AttackInterval"]         = "Tier 6: [Redemoinho] Intervalo de Ataque (seg)",
+                ["Tier6_Whirlwind_VfxInterval"]            = "Tier 6: [Redemoinho] Intervalo VFX (seg)",
+                ["Tier6_Whirlwind_Cooldown"]               = "Tier 6: [Redemoinho] Recarga (seg)",
+                ["Tier6_Whirlwind_DamageReductionPercent"] = "Tier 6: [Redemoinho] Redução de Dano (%)",
+                ["Tier6_Whirlwind_DamageReductionDuration"]= "Tier 6: [Redemoinho] Duração da Redução de Dano (seg)",
+                ["Tier6_Whirlwind_RequiredPoints"]         = "Tier 6: [Redemoinho] Pontos Necessários",
 
                 // ============================================
                 // Habilidades de Classe - Arqueiro
