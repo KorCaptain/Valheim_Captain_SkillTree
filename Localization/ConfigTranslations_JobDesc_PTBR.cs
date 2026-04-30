@@ -49,6 +49,26 @@ namespace CaptainSkillTree.Localization
                 "Gerenciar stamina é importante.\n" +
                 "Valor recomendado: 20-35",
 
+                ["Archer_MultiShot_SummonRadius"] =
+                "【Raio do Leque de Invocação (m)】\n" +
+                "Raio do arco onde os projéteis invocados flutuam acima do jogador.\n" +
+                "Valor recomendado: 1.0~2.0m",
+
+                ["Archer_MultiShot_SummonHeight"] =
+                "【Altura de Invocação (m)】\n" +
+                "Altura acima do jogador onde os projéteis flutuam.\n" +
+                "Valor recomendado: 2.0~3.0m",
+
+                ["Archer_MultiShot_HomingSpeed"] =
+                "【Velocidade de Rastreamento】\n" +
+                "Velocidade dos projéteis invocados em direção à cabeça do inimigo.\n" +
+                "Valor recomendado: 20~35",
+
+                ["Archer_MultiShot_HoverTime"] =
+                "【Duração de Flutuação (segundos)】\n" +
+                "Tempo máximo que os projéteis invocados ficam antes de desaparecerem.\n" +
+                "Valor recomendado: 25~40s",
+
                 // === Archer Job: Habilidades passivas (2 chaves) ===
                 ["Archer_JumpHeightBonus"] =
                 "【Bônus de Altura de Salto (%)】\n" +

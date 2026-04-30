@@ -49,6 +49,26 @@ namespace CaptainSkillTree.Localization
                 "Ausdauermanagement ist wichtig.\n" +
                 "Empfehlung: 20-35",
 
+                ["Archer_MultiShot_SummonRadius"] =
+                "【Beschwörungs-Radius (m)】\n" +
+                "Radius des Bogens, in dem Projektile über dem Spieler schweben.\n" +
+                "Empfehlung: 1.0~2.0m",
+
+                ["Archer_MultiShot_SummonHeight"] =
+                "【Beschwörungs-Höhe (m)】\n" +
+                "Höhe über dem Spieler, auf der Projektile schweben.\n" +
+                "Empfehlung: 2.0~3.0m",
+
+                ["Archer_MultiShot_HomingSpeed"] =
+                "【Verfolgungsgeschwindigkeit】\n" +
+                "Geschwindigkeit der Projektile zum Feindkopf.\n" +
+                "Empfehlung: 20~35",
+
+                ["Archer_MultiShot_HoverTime"] =
+                "【Schwebedauer (Sekunden)】\n" +
+                "Maximale Wartezeit der Projektile bevor sie verschwinden.\n" +
+                "Empfehlung: 25~40s",
+
                 // === Bogenschütze: Passive Fähigkeiten (2 Schlüssel) ===
                 ["Archer_JumpHeightBonus"] =
                 "【Sprunghöhe-Bonus (%)】\n" +

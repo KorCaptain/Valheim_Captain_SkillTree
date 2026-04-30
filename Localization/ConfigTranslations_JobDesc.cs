@@ -82,6 +82,27 @@ namespace CaptainSkillTree.Localization
                 "스태미나 관리가 중요합니다.\n" +
                 "권장값: 20-35",
 
+                ["Archer_MultiShot_SummonRadius"] =
+                "【소환 부채꼴 반경 (m)】\n" +
+                "플레이어 머리 위 소환 발사체들이 배치되는 부채꼴 호의 반경입니다.\n" +
+                "권장값: 1.0~2.0m",
+
+                ["Archer_MultiShot_SummonHeight"] =
+                "【소환 높이 (m)】\n" +
+                "플레이어 기준 소환 발사체가 떠오르는 높이입니다.\n" +
+                "권장값: 2.0~3.0m",
+
+                ["Archer_MultiShot_HomingSpeed"] =
+                "【호밍 속도】\n" +
+                "소환 발사체가 적의 머리를 향해 날아가는 속도입니다.\n" +
+                "권장값: 20~35",
+
+                ["Archer_MultiShot_HoverTime"] =
+                "【대기 시간 (초)】\n" +
+                "소환 발사체가 머리 위에서 대기하는 최대 시간입니다.\n" +
+                "이 시간 안에 적을 맞히지 못하면 발사체가 사라집니다.\n" +
+                "권장값: 25~40초",
+
                 // === Archer Job: 패시브 스킬 (2개) ===
                 ["Archer_JumpHeightBonus"] =
                 "【점프 높이 보너스 (%)】\n" +
@@ -972,6 +993,27 @@ namespace CaptainSkillTree.Localization
                 "Stamina consumed when using multishot.\n" +
                 "Stamina management is important.\n" +
                 "Recommended: 20-35",
+
+                ["Archer_MultiShot_SummonRadius"] =
+                "【Summon Fan Radius (m)】\n" +
+                "Radius of the arc where summoned projectiles hover above the player.\n" +
+                "Recommended: 1.0~2.0m",
+
+                ["Archer_MultiShot_SummonHeight"] =
+                "【Summon Height (m)】\n" +
+                "Height above the player where summoned projectiles float.\n" +
+                "Recommended: 2.0~3.0m",
+
+                ["Archer_MultiShot_HomingSpeed"] =
+                "【Homing Speed】\n" +
+                "Speed at which summoned projectiles home toward the enemy's head.\n" +
+                "Recommended: 20~35",
+
+                ["Archer_MultiShot_HoverTime"] =
+                "【Hover Duration (seconds)】\n" +
+                "Maximum time summoned projectiles hover before disappearing.\n" +
+                "If no enemy is hit within this time, projectiles vanish.\n" +
+                "Recommended: 25~40s",
 
                 // === Archer Job: Passive Skills (2 keys) ===
                 ["Archer_JumpHeightBonus"] =

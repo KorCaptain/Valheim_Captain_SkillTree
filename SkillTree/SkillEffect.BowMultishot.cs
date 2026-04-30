@@ -337,16 +337,11 @@ namespace CaptainSkillTree.SkillTree
                     return true; // 멀티샷이 추가로 발사한 화살은 다시 멀티샷 발동 안 함
                 }
                 
-                // 1. 아커 멀티샷 버프 활성화 상태 확인 (최우선순위)
+                // 1. 아처 멀티샷 소환 발사체 대기 중 → 원본 화살 정상 발사 허용
+                // (원본 화살이 적 적중 시 ArcherMultiShot_ProjectileHit_Patch에서 소환 발사체 자동 호밍)
                 if (SkillEffect.IsArcherMultiShotReady(player))
                 {
-                    // 공격 방향 계산
-                    Vector3 attackDir = player.GetLookDir();
-                    
-                    // 아처 멀티샷 실행 (원래 화살 대신)
-                    SkillEffect.PerformArcherMultiShotAttack(player, currentWeapon, attackDir);
-                    
-                    return false; // 기본 화살 차단
+                    return true; // 기본 화살 발사 허용
                 }
                 
                 // 2. 활 전문가 멀티샷 체크 (아처 멀티샷이 활성화되지 않은 경우만)

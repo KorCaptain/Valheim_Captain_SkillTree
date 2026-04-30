@@ -41,6 +41,12 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ArcherLv5DamagePercent;
         public static ConfigEntry<int>   ArcherLv5BonusCharges;
 
+        // === 소환 발사체 설정 ===
+        public static ConfigEntry<float> ArcherMultiShotSummonRadius;   // 소환 부채꼴 반경 (기본: 1.5m)
+        public static ConfigEntry<float> ArcherMultiShotSummonHeight;   // 소환 높이 (기본: 2.5m)
+        public static ConfigEntry<float> ArcherMultiShotHomingSpeed;    // 호밍 속도 (기본: 25)
+        public static ConfigEntry<float> ArcherMultiShotHoverTime;      // 대기 시간 초 (기본: 30초)
+
         // === 동적 값 접근자 (MMO 시스템 연동) ===
         public static int ArcherMultiShotArrowCountValue => (int)SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_ArrowCount", ArcherMultiShotArrowCount.Value);
         public static int ArcherMultiShotArrowConsumptionValue => (int)SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_ArrowConsumption", ArcherMultiShotArrowConsumption.Value);
@@ -73,6 +79,12 @@ namespace CaptainSkillTree.SkillTree
         public static int   ArcherLv5BonusArrowsValue   => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv5_BonusArrows",   ArcherLv5BonusArrows.Value);
         public static float ArcherLv5DamagePercentValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv5_DamagePercent", ArcherLv5DamagePercent.Value);
         public static int   ArcherLv5BonusChargesValue  => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv5_BonusCharges",  (float)ArcherLv5BonusCharges.Value);
+
+        // === 소환 발사체 동적 값 접근자 ===
+        public static float ArcherMultiShotSummonRadiusValue => SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_SummonRadius", ArcherMultiShotSummonRadius.Value);
+        public static float ArcherMultiShotSummonHeightValue => SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_SummonHeight", ArcherMultiShotSummonHeight.Value);
+        public static float ArcherMultiShotHomingSpeedValue  => SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_HomingSpeed",  ArcherMultiShotHomingSpeed.Value);
+        public static float ArcherMultiShotHoverTimeValue    => SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_HoverTime",    ArcherMultiShotHoverTime.Value);
 
         /// <summary>
         /// 아처 컨피그 초기화 (SkillTreeConfig에서 호출)
@@ -263,6 +275,35 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Archer_Lv5_BonusCharges")
                 );
 
+                // === 소환 발사체 설정 ===
+                ArcherMultiShotSummonRadius = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_MultiShot_SummonRadius",
+                    1.5f,
+                    SkillTreeConfig.GetConfigDescription("Archer_MultiShot_SummonRadius")
+                );
+
+                ArcherMultiShotSummonHeight = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_MultiShot_SummonHeight",
+                    2.5f,
+                    SkillTreeConfig.GetConfigDescription("Archer_MultiShot_SummonHeight")
+                );
+
+                ArcherMultiShotHomingSpeed = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_MultiShot_HomingSpeed",
+                    25.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_MultiShot_HomingSpeed")
+                );
+
+                ArcherMultiShotHoverTime = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_MultiShot_HoverTime",
+                    30.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_MultiShot_HoverTime")
+                );
+
                 Plugin.Log.LogDebug("[아처 컨피그] 설정 항목 생성 완료 (액티브 + 패시브)");
                 
                 // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
@@ -315,6 +356,12 @@ namespace CaptainSkillTree.SkillTree
                 ArcherLv5BonusArrows.SettingChanged    += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherLv5DamagePercent.SettingChanged  += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherLv5BonusCharges.SettingChanged   += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+
+                // 소환 발사체 설정 이벤트
+                ArcherMultiShotSummonRadius.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherMultiShotSummonHeight.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherMultiShotHomingSpeed.SettingChanged  += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherMultiShotHoverTime.SettingChanged    += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
 
                 Plugin.Log.LogDebug("[아처 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화 (액티브 + 패시브)");
             }
