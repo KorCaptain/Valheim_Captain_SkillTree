@@ -49,6 +49,26 @@ namespace CaptainSkillTree.Localization
                 "体力管理至关重要。\n" +
                 "推荐：20-35",
 
+                ["Archer_MultiShot_SummonRadius"] =
+                "【召唤扇形半径 (m)】\n" +
+                "召唤箭矢在玩家头顶排列的弧形半径。\n" +
+                "推荐：1.0~2.0m",
+
+                ["Archer_MultiShot_SummonHeight"] =
+                "【召唤高度 (m)】\n" +
+                "召唤箭矢悬浮在玩家头顶的高度。\n" +
+                "推荐：2.0~3.0m",
+
+                ["Archer_MultiShot_HomingSpeed"] =
+                "【追踪速度】\n" +
+                "召唤箭矢飞向敌人头部的速度。\n" +
+                "推荐：20~35",
+
+                ["Archer_MultiShot_HoverTime"] =
+                "【悬停时间 (秒)】\n" +
+                "召唤箭矢在消失前的最大等待时间。\n" +
+                "推荐：25~40秒",
+
                 // === 弓手：被动技能（2个键）===
                 ["Archer_JumpHeightBonus"] =
                 "【跳跃高度加成(%)】\n" +

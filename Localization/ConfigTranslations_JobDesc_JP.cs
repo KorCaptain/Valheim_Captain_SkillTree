@@ -49,6 +49,26 @@ namespace CaptainSkillTree.Localization
                 "スタミナ管理が重要。\n" +
                 "推奨：20-35",
 
+                ["Archer_MultiShot_SummonRadius"] =
+                "【召喚扇形の半径 (m)】\n" +
+                "プレイヤーの頭上に召喚される矢の扇形の半径です。\n" +
+                "推奨：1.0~2.0m",
+
+                ["Archer_MultiShot_SummonHeight"] =
+                "【召喚高度 (m)】\n" +
+                "召喚された矢がプレイヤーの頭上で浮遊する高さです。\n" +
+                "推奨：2.0~3.0m",
+
+                ["Archer_MultiShot_HomingSpeed"] =
+                "【ホーミング速度】\n" +
+                "召喚された矢が敵の頭部へ向かう速度です。\n" +
+                "推奨：20~35",
+
+                ["Archer_MultiShot_HoverTime"] =
+                "【ホバー時間 (秒)】\n" +
+                "召喚された矢が消えるまでの最大待機時間です。\n" +
+                "推奨：25~40秒",
+
                 // === アーチャー：パッシブスキル（2キー）===
                 ["Archer_JumpHeightBonus"] =
                 "【ジャンプ高度ボーナス(%)】\n" +
