@@ -17,6 +17,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         private static readonly Dictionary<string, CooldownEntry> _entries = new Dictionary<string, CooldownEntry>();
+        private static readonly Dictionary<string, CooldownEntry> _skillEntries = new Dictionary<string, CooldownEntry>();
 
         /// <summary>
         /// 슬롯의 쿨다운을 설정합니다. 스킬 발동 시 호출하세요.
@@ -30,6 +31,47 @@ namespace CaptainSkillTree.SkillTree
                 TotalTime = totalDuration
             };
             CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.OnCooldownStarted();
+        }
+
+        /// <summary>
+        /// 슬롯 + 스킬 ID 두 곳에 쿨다운을 함께 등록합니다.
+        /// R/G/H 다중무기 슬롯에서 무기별 개별 쿨타임 추적에 사용합니다.
+        /// </summary>
+        public static void SetCooldownForSkill(string slot, string skillId, float totalDuration)
+        {
+            if (totalDuration <= 0f) return;
+            var entry = new CooldownEntry { EndTime = Time.time + totalDuration, TotalTime = totalDuration };
+            _entries[slot] = entry;
+            if (!string.IsNullOrEmpty(skillId)) _skillEntries[skillId] = entry;
+            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.OnCooldownStarted();
+        }
+
+        /// <summary>
+        /// 여러 스킬 ID에 동일 쿨다운을 등록합니다 (검 finalcut/slash처럼 동일 액션을 공유하는 경우).
+        /// </summary>
+        public static void SetCooldownForSkills(string slot, string[] skillIds, float totalDuration)
+        {
+            if (totalDuration <= 0f) return;
+            var entry = new CooldownEntry { EndTime = Time.time + totalDuration, TotalTime = totalDuration };
+            _entries[slot] = entry;
+            foreach (var id in skillIds) if (!string.IsNullOrEmpty(id)) _skillEntries[id] = entry;
+            CaptainSkillTree.Gui.ActiveSkillHUD.Instance?.OnCooldownStarted();
+        }
+
+        /// <summary>스킬 ID 기준 쿨다운 비율 (0=사용가능, 1=최대)</summary>
+        public static float GetSkillCooldownRatio(string skillId)
+        {
+            if (!_skillEntries.TryGetValue(skillId, out var entry) || entry.TotalTime <= 0f) return 0f;
+            float remaining = entry.EndTime - Time.time;
+            if (remaining <= 0f) return 0f;
+            return Mathf.Clamp01(remaining / entry.TotalTime);
+        }
+
+        /// <summary>스킬 ID 기준 남은 쿨다운 초</summary>
+        public static float GetSkillCooldownRemaining(string skillId)
+        {
+            if (!_skillEntries.TryGetValue(skillId, out var entry)) return 0f;
+            return Mathf.Max(0f, entry.EndTime - Time.time);
         }
 
         /// <summary>

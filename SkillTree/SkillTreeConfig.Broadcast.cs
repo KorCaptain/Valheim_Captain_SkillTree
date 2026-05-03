@@ -683,11 +683,6 @@ namespace CaptainSkillTree.SkillTree
                     ["Producer_Buff_AttackBonus"]                    = Producer_Config.ProducerBuff_AttackBonus?.Value ?? 10f,
                     ["Producer_Buff_MaxHealthBonus"]                 = Producer_Config.ProducerBuff_MaxHealthBonus?.Value ?? 20f,
                     ["Producer_Buff_StaminaCost"]                    = Producer_Config.ProducerBuff_StaminaCost?.Value ?? 20f,
-                    ["Producer_FarmGrid_Lv1"]                        = Producer_Config.ProducerFarmGrid_Lv1?.Value ?? 3f,
-                    ["Producer_FarmGrid_Lv2"]                        = Producer_Config.ProducerFarmGrid_Lv2?.Value ?? 4f,
-                    ["Producer_FarmGrid_Lv3"]                        = Producer_Config.ProducerFarmGrid_Lv3?.Value ?? 5f,
-                    ["Producer_FarmGrid_Lv4"]                        = Producer_Config.ProducerFarmGrid_Lv4?.Value ?? 6f,
-                    ["Producer_FarmGrid_Lv5"]                        = Producer_Config.ProducerFarmGrid_Lv5?.Value ?? 7f,
                     ["Producer_Durability_Lv2"]                      = Producer_Config.ProducerDurability_Lv2?.Value ?? 10f,
                     ["Producer_Durability_Lv3"]                      = Producer_Config.ProducerDurability_Lv3?.Value ?? 20f,
                     ["Producer_Durability_Lv4"]                      = Producer_Config.ProducerDurability_Lv4?.Value ?? 30f,
@@ -735,6 +730,7 @@ namespace CaptainSkillTree.SkillTree
                     ["CaptainLevel_ExpForLvlMonster"]                = CaptainLevelConfig.ExpForLvlMonster?.Value ?? 1.5f,
                     ["CaptainLevel_SkillPointsPerLevel"]             = CaptainLevelConfig.SkillPointsPerLevel?.Value ?? 2f,
                     ["CaptainLevel_PointsRequired"]                  = CaptainLevelConfig.PointsRequiredPerLevel?.Value ?? 2f,
+                    ["exit_button_enabled"]                          = CaptainLevelConfig.ExitButtonEnabled?.Value == true ? 1f : 0f,
                 };
 
                 var configString = SerializeConfigData(configData);

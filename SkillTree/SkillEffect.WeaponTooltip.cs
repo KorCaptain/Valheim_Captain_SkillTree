@@ -48,6 +48,13 @@ namespace CaptainSkillTree.SkillTree
                         else if (enchantType == ProducerCrafting.EnchantType.CrossbowReload)
                             __result += $"\n<color=#FFD700>{L.Get("producer_enchant_crossbow_reload", $"{enchantVal:F1}")}</color>";
                     }
+
+                    // 버프 활성 시 공격력 출처 라인 (방어구의 체력 라인과 동일한 포맷)
+                    if (ProducerSkills.IsProducerBuffActive(player))
+                    {
+                        float buffPct = Producer_Config.ProducerBuff_AttackBonusValue;
+                        __result += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("weapon_stat_atk_power")} <color=orange>+{buffPct:F0}%</color>";
+                    }
                 }
                 catch (Exception ex)
                 {

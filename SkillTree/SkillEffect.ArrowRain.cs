@@ -63,7 +63,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 4. 쿨타임 등록 + 스태미나 소모
                 arrowRainCooldown[player] = Time.time;
-                ActiveSkillCooldownRegistry.SetCooldown("H", cooldown);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "bow_Step6_arrow_rain", cooldown);
                 player.UseStamina(reqStamina);
 
                 // 5. 버프 활성화

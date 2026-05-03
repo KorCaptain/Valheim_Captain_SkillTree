@@ -94,6 +94,8 @@ namespace CaptainSkillTree.Localization
                 ["g_key_skill_required"] = "G키 스킬이 필요합니다",
                 ["h_key_skill_required"] = "H키 스킬이 필요합니다",
                 ["h_key_skill_exclusive"] = "액티브 H 키 스킬은 1가지만 배울 수 있습니다.",
+                ["skill_weapon_mismatch"] = "스킬에 맞는 무기를 착용하세요",
+                ["active_skill_key_weapon_condition"] = "액티브 스킬은 키와 무기 조건에 맞게 사용해야 합니다.",
 
                 // === Mace Skills ===
                 ["mace_guardian_cooldown"] = "수호자의 진심 쿨다운 중! 남은 시간: {0}초",
@@ -113,6 +115,9 @@ namespace CaptainSkillTree.Localization
                 ["guardian_heart_remaining"] = "수호자의 진심 남은 시간: {0}초",
                 ["guardian_heart_skill_required"] = "수호자의 진심 스킬이 필요합니다",
                 ["mace_shield_required"] = "방패를 착용해야 합니다",
+                ["shield_charge_active"] = "돌진 중입니다",
+                ["shield_no_target"] = "전방에 적이 없습니다",
+                ["shield_path_blocked"] = "경로가 막혀 있습니다",
 
                 // === Spear Combo Skills ===
                 ["combo_spear_skill_required"] = "연공창 스킬이 필요합니다",
@@ -135,6 +140,25 @@ namespace CaptainSkillTree.Localization
                 ["storm_slash_triggered"] = "폭풍베기! 번개 +{0}",
                 ["polearm_boost_active"] = "⚔️ 폴암강화 +{0} 관통!",
                 ["suppress_active"] = "⚔️ 제압 공격 +{0}%!",
+
+                // === Sword Effect Messages ===
+                ["rush_slash_skill_required"] = "돌진 연속 베기 스킬이 필요합니다",
+                ["rush_slash_in_progress"] = "돌진 연속 베기 진행 중",
+                ["rush_slash_activate"] = "돌진 연속 베기!",
+                ["rush_slash_return"] = "원래 위치로 복귀!",
+                ["rush_slash_complete"] = "돌진 연속 베기 완료! ({0}회 적중)",
+                ["rush_slash_canceled"] = "돌진 연속 베기 취소",
+                ["rush_slash_1st_attack"] = "⚔️ 1차 베기! ({0}%)",
+                ["rush_slash_2nd_attack"] = "⚔️ 2차 베기! ({0}%)",
+                ["rush_slash_finisher"] = "💥 피니셔! ({0}%)",
+                ["rush_slash_default"] = "⚔️ 베기! ({0}%)",
+                ["parry_rush_skill_required"] = "패링 돌격 스킬이 필요합니다",
+                ["shield_required"] = "방패를 착용해야 합니다",
+                ["sword_or_shield_required"] = "검 또는 방패를 착용해야 합니다",
+                ["parry_rush_already_active"] = "패링 돌격이 이미 활성화되어 있습니다",
+                ["parry_rush_activate"] = "패링 돌격! ({0}초)",
+                ["parry_rush_buff_name"] = "패링 돌격",
+                ["parry_rush_damage"] = "패링 돌격! (+{0})",
 
                 // === Knife Skills ===
                 ["knife_assassin_cooldown"] = "암살자의 심장 쿨다운 중! 남은 시간: {0}초",
@@ -451,6 +475,8 @@ namespace CaptainSkillTree.Localization
                 ["g_key_skill_required"] = "G key skill required",
                 ["h_key_skill_required"] = "H key skill required",
                 ["h_key_skill_exclusive"] = "Only one H-Key active skill can be learned.",
+                ["skill_weapon_mismatch"] = "Equip a weapon that matches your skill",
+                ["active_skill_key_weapon_condition"] = "Active skills require matching key and weapon type.",
 
                 // === Mace Skills ===
                 ["mace_guardian_cooldown"] = "Guardian's Heart on cooldown! Remaining: {0}s",
@@ -470,6 +496,9 @@ namespace CaptainSkillTree.Localization
                 ["guardian_heart_remaining"] = "Guardian's Heart remaining: {0}s",
                 ["guardian_heart_skill_required"] = "Guardian's Heart skill required",
                 ["mace_shield_required"] = "Shield required",
+                ["shield_charge_active"] = "Already charging",
+                ["shield_no_target"] = "No enemy in front",
+                ["shield_path_blocked"] = "Path is blocked",
 
                 // === Spear Combo Skills ===
                 ["combo_spear_skill_required"] = "Combo Spear skill required",

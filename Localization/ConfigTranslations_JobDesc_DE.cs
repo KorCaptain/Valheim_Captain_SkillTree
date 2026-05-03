@@ -595,29 +595,24 @@ namespace CaptainSkillTree.Localization
                 "Standard: 20",
 
                 // === Producer Lv1 ===
-                ["Producer_FarmGrid_Lv1"] = "【Anbaufeld-Größe Lv1】\nZusätzliche Felder im Anbauraster bei Lv1.\nStandard: 2",
                 ["Producer_EnchantChance_Lv1"] = "【Verzauberungschance Lv1 (%)】\nChance auf Verzauberung bei Herstellung (Lv1).\nStandard: 0%",
 
                 // === Producer Lv2 ===
-                ["Producer_FarmGrid_Lv2"] = "【Anbaufeld-Größe Lv2】\nZusätzliche Felder im Anbauraster bei Lv2.\nStandard: 2",
                 ["Producer_Durability_Lv2"] = "【Haltbarkeitsbonus Lv2 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv2.\nStandard: 10%",
                 ["Producer_MaterialReduction_Lv2"] = "【Materialeinsparung Lv2 (%)】\nEingesparte Materialien pro Herstellung bei Lv2.\nStandard: 10%",
                 ["Producer_EnchantChance_Lv2"] = "【Verzauberungschance Lv2 (%)】\nChance auf Verzauberung bei Herstellung (Lv2).\nStandard: 0%",
 
                 // === Producer Lv3 ===
-                ["Producer_FarmGrid_Lv3"] = "【Anbaufeld-Größe Lv3】\nZusätzliche Felder im Anbauraster bei Lv3.\nStandard: 4",
                 ["Producer_Durability_Lv3"] = "【Haltbarkeitsbonus Lv3 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv3.\nStandard: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【Materialeinsparung Lv3 (%)】\nEingesparte Materialien pro Herstellung bei Lv3.\nStandard: 15%",
                 ["Producer_EnchantChance_Lv3"] = "【Verzauberungschance Lv3 (%)】\nChance auf Verzauberung bei Herstellung (Lv3).\nStandard: 25%",
 
                 // === Producer Lv4 ===
-                ["Producer_FarmGrid_Lv4"] = "【Anbaufeld-Größe Lv4】\nZusätzliche Felder im Anbauraster bei Lv4.\nStandard: 6",
                 ["Producer_Durability_Lv4"] = "【Haltbarkeitsbonus Lv4 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv4.\nStandard: 20%",
                 ["Producer_MaterialReduction_Lv4"] = "【Materialeinsparung Lv4 (%)】\nEingesparte Materialien pro Herstellung bei Lv4.\nStandard: 20%",
                 ["Producer_EnchantChance_Lv4"] = "【Verzauberungschance Lv4 (%)】\nChance auf Verzauberung bei Herstellung (Lv4).\nStandard: 30%",
 
                 // === Producer Lv5 ===
-                ["Producer_FarmGrid_Lv5"] = "【Anbaufeld-Größe Lv5】\nZusätzliche Felder im Anbauraster bei Lv5.\nStandard: 8",
                 ["Producer_Durability_Lv5"] = "【Haltbarkeitsbonus Lv5 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv5.\nStandard: 30%",
                 ["Producer_MaterialReduction_Lv5"] = "【Materialeinsparung Lv5 (%)】\nEingesparte Materialien pro Herstellung bei Lv5.\nStandard: 30%",
                 ["Producer_EnchantChance_Lv5"] = "【Verzauberungschance Lv5 (%)】\nChance auf Verzauberung bei Herstellung (Lv5).\nStandard: 35%",

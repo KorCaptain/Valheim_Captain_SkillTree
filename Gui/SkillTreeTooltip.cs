@@ -791,7 +791,17 @@ namespace CaptainSkillTree.Gui
             
             // 기본 스킬 유형 결정
             info.SkillType = DetermineSkillType(nodeId, descMain);
-            
+
+            // 액티브 스킬이면 키+무기 조건 안내 Notice 추가
+            if (!string.IsNullOrEmpty(info.SkillType) && info.SkillType.Contains("액티브 스킬"))
+            {
+                string condNotice = L.Get("active_skill_key_weapon_condition");
+                if (string.IsNullOrEmpty(info.Notice))
+                    info.Notice = condNotice;
+                else
+                    info.Notice = condNotice + " | " + info.Notice;
+            }
+
             // 설명에서 정보 추출
             if (!string.IsNullOrEmpty(descMain))
             {

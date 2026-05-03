@@ -25,12 +25,12 @@ namespace CaptainSkillTree.Gui
         private static readonly string[] RSkillIds = { "crossbow_Step6_expert", "bow_Step6_critboost", "staff_Step6_dual_cast" };
         private static readonly string[] RIconNames = { "crossbow_unlock", "bow_unlock", "staff_unlock" };
         private static readonly string[] GSkillIds = {
-            "sword_step5_finalcut", "knife_step9_assassin_heart",
+            "sword_step5_finalcut", "sword_slash", "knife_step9_assassin_heart",
             "spear_Step5_penetrate", "polearm_step5_king",
             "defense_Step6_mind", "mace_Step7_guardian_heart"
         };
         private static readonly string[] GIconNames = {
-            "sword_unlock", "dagger_unlock",
+            "sword_unlock", "sword_unlock", "dagger_unlock",
             "spear_unlock", "polearm_unlock",
             "defense_unlock", "defense_unlock"
         };
@@ -115,12 +115,14 @@ namespace CaptainSkillTree.Gui
             var go = new GameObject("Slot_" + key);
             go.transform.SetParent(parent, false);
 
+            float iconSz = SkillTreeConfig.HudIconSize?.Value ?? 62;
+
             var root = go.AddComponent<RectTransform>();
-            root.sizeDelta = new Vector2(62f, 96f);
+            root.sizeDelta = new Vector2(iconSz, iconSz + 34f);
 
             var layoutElem = go.AddComponent<LayoutElement>();
-            layoutElem.preferredWidth = 62f;
-            layoutElem.preferredHeight = 96f;
+            layoutElem.preferredWidth = iconSz;
+            layoutElem.preferredHeight = iconSz + 34f;
 
             // 슬롯 배경
             var bg = new GameObject("Bg");
@@ -133,7 +135,7 @@ namespace CaptainSkillTree.Gui
             bgRt.anchorMax = new Vector2(0.5f, 0.5f);
             bgRt.pivot = new Vector2(0.5f, 0.5f);
             bgRt.anchoredPosition = new Vector2(0f, 10f);
-            bgRt.sizeDelta = new Vector2(60f, 60f);
+            bgRt.sizeDelta = new Vector2(iconSz - 2f, iconSz - 2f);
 
             // 황금색 테두리 (아이콘보다 4px 큰 66×66 → 테두리 2px만 보임)
             var borderGO = new GameObject("Border");
@@ -146,7 +148,7 @@ namespace CaptainSkillTree.Gui
             borderRt.anchorMax = new Vector2(0.5f, 0.5f);
             borderRt.pivot = new Vector2(0.5f, 0.5f);
             borderRt.anchoredPosition = new Vector2(0f, 10f);
-            borderRt.sizeDelta = new Vector2(66f, 66f);
+            borderRt.sizeDelta = new Vector2(iconSz + 4f, iconSz + 4f);
 
             // 스킬 아이콘
             var iconGO = new GameObject("Icon");
@@ -159,7 +161,6 @@ namespace CaptainSkillTree.Gui
             iconRt.anchorMax = new Vector2(0.5f, 0.5f);
             iconRt.pivot = new Vector2(0.5f, 0.5f);
             iconRt.anchoredPosition = new Vector2(0f, 10f);
-            float iconSz = SkillTreeConfig.HudIconSize?.Value ?? 62;
             iconRt.sizeDelta = new Vector2(iconSz, iconSz);
 
             // 쿨다운 오버레이 (검정 반투명 강화, fillOrigin=Top → 위→아래 순으로 빠짐)
@@ -214,12 +215,16 @@ namespace CaptainSkillTree.Gui
             keyRt.anchorMax = new Vector2(0.5f, 0f);
             keyRt.pivot = new Vector2(0.5f, 0f);
             keyRt.anchoredPosition = new Vector2(0f, -12f);
-            keyRt.sizeDelta = new Vector2(62f, 32f);
+            keyRt.sizeDelta = new Vector2(iconSz, 32f);
             keyGO.transform.SetAsLastSibling();
 
             var slot = new SlotUI
             {
                 Root = go,
+                RootRt = root,
+                LayoutElem = layoutElem,
+                BgRt = bgRt,
+                BorderRt = borderRt,
                 IconRt = iconRt,
                 IconImage = iconImg,
                 BorderImage = borderImg,
@@ -577,6 +582,9 @@ namespace CaptainSkillTree.Gui
             {
                 _lastIconSize = iconSz;
                 var sz = new Vector2(iconSz, iconSz);
+                var bgSz = new Vector2(iconSz - 2f, iconSz - 2f);
+                var borderSz = new Vector2(iconSz + 4f, iconSz + 4f);
+                var rootSz = new Vector2(iconSz, iconSz + 34f);
                 foreach (var slot in _slots)
                 {
                     if (slot?.IconRt != null)
@@ -585,6 +593,17 @@ namespace CaptainSkillTree.Gui
                         slot.CooldownOverlay.rectTransform.sizeDelta = sz;
                     if (slot?.CountdownText != null)
                         slot.CountdownText.rectTransform.sizeDelta = sz;
+                    if (slot?.BgRt != null)
+                        slot.BgRt.sizeDelta = bgSz;
+                    if (slot?.BorderRt != null)
+                        slot.BorderRt.sizeDelta = borderSz;
+                    if (slot?.RootRt != null)
+                        slot.RootRt.sizeDelta = rootSz;
+                    if (slot?.LayoutElem != null)
+                    {
+                        slot.LayoutElem.preferredWidth = iconSz;
+                        slot.LayoutElem.preferredHeight = iconSz + 34f;
+                    }
                 }
             }
 
@@ -709,6 +728,7 @@ namespace CaptainSkillTree.Gui
             if (slot == null) return;
 
             string iconName = null;
+            string activeSkillId = null;  // 무기 기준 현재 활성 스킬 ID (쿨타임 조회용)
 
             switch (slotKey)
             {
@@ -734,35 +754,58 @@ namespace CaptainSkillTree.Gui
                     }
                     break;
                 case "R":
-                    for (int i = 0; i < RSkillIds.Length; i++)
+                {
+                    var p = Player.m_localPlayer;
+                    if (p != null)
                     {
-                        if (mgr.GetSkillLevel(RSkillIds[i]) > 0)
-                        {
-                            iconName = RIconNames[i];
-                            break;
-                        }
+                        if (WeaponHelper.IsUsingCrossbow(p) && mgr.GetSkillLevel("crossbow_Step6_expert") > 0) { iconName = "crossbow_unlock"; activeSkillId = "crossbow_Step6_expert"; }
+                        else if (WeaponHelper.IsUsingBow(p) && mgr.GetSkillLevel("bow_Step6_critboost") > 0) { iconName = "bow_unlock"; activeSkillId = "bow_Step6_critboost"; }
+                        else if (WeaponHelper.IsUsingStaffOrWand(p) && mgr.GetSkillLevel("staff_Step6_dual_cast") > 0) { iconName = "staff_unlock"; activeSkillId = "staff_Step6_dual_cast"; }
                     }
+                    if (iconName == null)
+                        for (int i = 0; i < RSkillIds.Length; i++)
+                            if (mgr.GetSkillLevel(RSkillIds[i]) > 0) { iconName = RIconNames[i]; activeSkillId = RSkillIds[i]; break; }
                     break;
+                }
                 case "G":
-                    for (int i = 0; i < GSkillIds.Length; i++)
+                {
+                    var p = Player.m_localPlayer;
+                    if (p != null)
                     {
-                        if (mgr.GetSkillLevel(GSkillIds[i]) > 0)
+                        if (WeaponHelper.IsUsingStaffOrWand(p) && mgr.GetSkillLevel("defense_Step6_mind") > 0) { iconName = "defense_unlock"; activeSkillId = "defense_Step6_mind"; }
+                        else if (SkillTree.Sword_Skill.IsUsingSword(p) && (mgr.GetSkillLevel("sword_step5_finalcut") > 0 || mgr.GetSkillLevel("sword_slash") > 0))
                         {
-                            iconName = GIconNames[i];
-                            break;
+                            iconName = "sword_unlock";
+                            activeSkillId = mgr.GetSkillLevel("sword_step5_finalcut") > 0 ? "sword_step5_finalcut" : "sword_slash";
                         }
+                        else if (WeaponHelper.IsUsingDagger(p) && mgr.GetSkillLevel("knife_step9_assassin_heart") > 0) { iconName = "dagger_unlock"; activeSkillId = "knife_step9_assassin_heart"; }
+                        else if (WeaponHelper.IsUsingSpear(p) && mgr.GetSkillLevel("spear_Step5_penetrate") > 0) { iconName = "spear_unlock"; activeSkillId = "spear_Step5_penetrate"; }
+                        else if (WeaponHelper.IsUsingPolearm(p) && mgr.GetSkillLevel("polearm_step5_king") > 0) { iconName = "polearm_unlock"; activeSkillId = "polearm_step5_king"; }
+                        else if (WeaponHelper.HasShield(p) && mgr.GetSkillLevel("mace_Step7_guardian_heart") > 0) { iconName = "defense_unlock"; activeSkillId = "mace_Step7_guardian_heart"; }
                     }
+                    if (iconName == null)
+                        for (int i = 0; i < GSkillIds.Length; i++)
+                            if (mgr.GetSkillLevel(GSkillIds[i]) > 0) { iconName = GIconNames[i]; activeSkillId = GSkillIds[i]; break; }
                     break;
+                }
                 case "H":
-                    for (int i = 0; i < HSkillIds.Length; i++)
+                {
+                    var p = Player.m_localPlayer;
+                    if (p != null)
                     {
-                        if (mgr.GetSkillLevel(HSkillIds[i]) > 0)
-                        {
-                            iconName = HIconNames[i];
-                            break;
-                        }
+                        if (WeaponHelper.IsUsingCrossbow(p) && mgr.GetSkillLevel("crossbow_ice_breath") > 0) { iconName = "ranged_unlock"; activeSkillId = "crossbow_ice_breath"; }
+                        else if (WeaponHelper.IsUsingBow(p) && mgr.GetSkillLevel("bow_Step6_arrow_rain") > 0) { iconName = "ranged_unlock"; activeSkillId = "bow_Step6_arrow_rain"; }
+                        else if (SkillTree.Sword_Skill.IsUsingSword(p) && mgr.GetSkillLevel("sword_step5_defswitch") > 0) { iconName = "defense_unlock"; activeSkillId = "sword_step5_defswitch"; }
+                        else if (WeaponHelper.IsUsingSpear(p) && mgr.GetSkillLevel("spear_Step5_combo") > 0) { iconName = "attack_unlock"; activeSkillId = "spear_Step5_combo"; }
+                        else if (WeaponHelper.IsUsingMace(p) && mgr.GetSkillLevel("mace_Step7_fury_hammer") > 0) { iconName = "mace_unlock"; activeSkillId = "mace_Step7_fury_hammer"; }
+                        else if (WeaponHelper.IsUsingStaffOrWand(p) && mgr.GetSkillLevel("staff_Step6_heal") > 0) { iconName = "ranged_unlock"; activeSkillId = "staff_Step6_heal"; }
+                        else if (WeaponHelper.IsUsingDagger(p) && mgr.GetSkillLevel("knife_step10_stack_explosion") > 0) { iconName = "attack_unlock"; activeSkillId = "knife_step10_stack_explosion"; }
                     }
+                    if (iconName == null)
+                        for (int i = 0; i < HSkillIds.Length; i++)
+                            if (mgr.GetSkillLevel(HSkillIds[i]) > 0) { iconName = HIconNames[i]; activeSkillId = HSkillIds[i]; break; }
                     break;
+                }
                 case "M2":
                     for (int i = 0; i < M2SkillIds.Length; i++)
                     {
@@ -793,9 +836,13 @@ namespace CaptainSkillTree.Gui
             // 키 레이블 업데이트 (설정 키 반영)
             slot.KeyLabelText.text = GetConfiguredKeyLabel(slotKey);
 
-            // 쿨다운 오버레이 업데이트
-            float remaining = ActiveSkillCooldownRegistry.GetCooldownRemaining(slotKey);
-            float ratio = ActiveSkillCooldownRegistry.GetCooldownRatio(slotKey);
+            // 쿨다운: 스킬 ID 있으면 스킬별 쿨타임, 없으면 슬롯 쿨타임 사용
+            float remaining = activeSkillId != null
+                ? ActiveSkillCooldownRegistry.GetSkillCooldownRemaining(activeSkillId)
+                : ActiveSkillCooldownRegistry.GetCooldownRemaining(slotKey);
+            float ratio = activeSkillId != null
+                ? ActiveSkillCooldownRegistry.GetSkillCooldownRatio(activeSkillId)
+                : ActiveSkillCooldownRegistry.GetCooldownRatio(slotKey);
 
             // 쿨타임 완료 감지 → 스케일 애니메이션 트리거
             if (slot.PrevRatio > 0f && ratio == 0f)
@@ -956,6 +1003,10 @@ namespace CaptainSkillTree.Gui
         private class SlotUI
         {
             public GameObject Root;
+            public RectTransform RootRt;
+            public LayoutElement LayoutElem;
+            public RectTransform BgRt;
+            public RectTransform BorderRt;
             public RectTransform IconRt;
             public Image IconImage;
             public Image BorderImage;

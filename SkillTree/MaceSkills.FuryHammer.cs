@@ -28,9 +28,15 @@ namespace CaptainSkillTree.SkillTree
         // === 경직 면역 (스킬 활성 중) ===
         private static HashSet<Player> _furyHammerImmune = new HashSet<Player>();
 
+        // === 공격속도 캡 우회 (5연타 전 구간) ===
+        private static HashSet<Player> _furyHammerCapBypass = new HashSet<Player>();
+
         // === 철슬랫지 공격 모션 캐시 ===
         private static Attack s_sledgeIronAttackCache = null;
         private static Attack s_sledgeIronSecondaryAttackCache = null; // 2차 공격 모션 캐시
+
+        // === 도약 모션 캐시 (단검 세컨드 고정) ===
+        private static Attack s_knifeSecondaryAttackCache = null;
 
         // === 하드코딩 상수 (수정 불가) ===
         private const int ATTACK_COUNT = 5;           // 연속공격 횟수 고정
@@ -95,7 +101,7 @@ namespace CaptainSkillTree.SkillTree
                     // 2번째 사용(창 내) or 비팔라딘: 쿨타임 즉시 시작
                     _furyHammerPendingWindow.Remove(player);
                     lastMaceSkillTime = nowG;
-                    ActiveSkillCooldownRegistry.SetCooldown("H", cooldown);
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "mace_Step7_fury_hammer", cooldown);
                 }
 
                 // 새 코루틴 시작
@@ -104,6 +110,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 스태미나 소모 (발동 확정 후)
                 player.UseStamina(requiredStamina);
+                SkillEffect.TankerPrereqLastUsedTime = Time.time;
             }
             else if (canFuryHammer)
             {
@@ -123,6 +130,16 @@ namespace CaptainSkillTree.SkillTree
         {
             // H키 누름 시 즉시 발동하므로 해제 처리 불필요
             return;
+        }
+
+        /// <summary>
+        /// 분노의 망치 공격속도 캡 우회 활성 상태 확인 (5연타 전 구간)
+        /// Plugin.Patches.cs AnimationSpeedManager에서 사용
+        /// </summary>
+        public static bool IsFuryHammerCapBypassActive(Player player)
+        {
+            if (player == null) return false;
+            return _furyHammerCapBypass.Contains(player);
         }
 
         /// <summary>
@@ -157,7 +174,9 @@ namespace CaptainSkillTree.SkillTree
             }
 
             // === 도약 돌진: transform.position 포물선 아크 ===
-            _furyHammerImmune.Add(player); // 경직 면역 시작
+            _furyHammerImmune.Add(player);       // 경직 면역 시작
+            _furyHammerCapBypass.Add(player);    // 공격속도 캡 우회 시작 (5연타 종료까지)
+            furyHammer1stHitBuff[player] = true; // 1타 +100% 속도 버프 (착지 후 0.5초)
 
             // 무기 사전 조회 (대시 중 공격 모션에 필요)
             var weapon = player.GetCurrentWeapon();
@@ -173,34 +192,32 @@ namespace CaptainSkillTree.SkillTree
             dashDir.y = 0f;
             dashDir.Normalize();
 
-            // === 시전 즉시: 카메라 방향 전환 + 공격 모션 트리거 ===
+            // === 시전 즉시: 카메라 방향 전환 ===
             Quaternion lookRot = Quaternion.LookRotation(dashDir, Vector3.up);
             player.transform.rotation = lookRot;
 
-            var sledgeAttack = GetCachedSledgeIronAttack();
+            var sledgeAttack = GetCachedSledgeIronAttack(); // 착지 시 슬랫지 primary 모션 (규칙: 착지 시에만)
             var zanim = player.GetComponentInChildren<ZSyncAnimation>();
             var animator = player.GetComponentInChildren<Animator>();
 
-            // Root Motion 비활성화 (공격 애니메이션이 플레이어를 원위치로 당기는 문제 방지)
+            // Root Motion 비활성화 (대시 중 위치 제어 충돌 방지)
             bool origRootMotion = animator != null && animator.applyRootMotion;
             if (animator != null) animator.applyRootMotion = false;
 
-            string animTrigger = null;
+            // 시전 즉시 슬랫지 primary 모션 트리거 (StartAttack 금지 — 현재 무기 모션 오염)
+            string landingAnimTrigger = null;
             if (sledgeAttack != null && zanim != null && !string.IsNullOrEmpty(sledgeAttack.m_attackAnimation))
             {
-                animTrigger = (sledgeAttack.m_attackChainLevels > 1 || sledgeAttack.m_attackRandomAnimations >= 2)
+                landingAnimTrigger = (sledgeAttack.m_attackChainLevels > 1 || sledgeAttack.m_attackRandomAnimations >= 2)
                     ? sledgeAttack.m_attackAnimation + "0"
                     : sledgeAttack.m_attackAnimation;
-                furyHammer1stHitBuff[player] = true;
-                bool attackStarted = player.StartAttack(null, false);
-                Plugin.Log.LogInfo($"[분노의 망치] StartAttack: {attackStarted}, trigger: '{animTrigger}'");
-                if (!attackStarted)
-                    zanim.SetTrigger(animTrigger); // 폴백: StartAttack 실패 시
+                zanim.SetTrigger(landingAnimTrigger);
+                Plugin.Log.LogInfo($"[분노의 망치] 시전 모션(슬랫지 primary): '{landingAnimTrigger}'");
             }
 
-            float dashTime   = 0.5f;   // 전체 도약 시간 (초)
-            float dashDist   = 10f;    // 수평 이동 거리 (m)
-            float peakHeight = 3.5f;   // 최고 점프 높이 (m, 5m의 70%)
+            float dashTime   = 0.3f;   // 전체 도약 시간 (초)
+            float dashDist   = 15f;    // 수평 이동 거리 (m) — 1.5배
+            float peakHeight = 1.0f;   // 최고 점프 높이 (m)
 
             Vector3 startPos = player.transform.position;
             Vector3 endPos   = startPos + dashDir * dashDist;
@@ -215,6 +232,9 @@ namespace CaptainSkillTree.SkillTree
             float elapsed    = 0f;
             float originalPushForce = 0f;
 
+            // Rigidbody 사전 조회 (루트 모션 스냅백 방지용 — PolearmWhirlwind 패턴 동일)
+            var rb = player.GetComponent<Rigidbody>();
+
             while (elapsed < dashTime)
             {
                 if (player == null || player.IsDead()) break;
@@ -224,27 +244,58 @@ namespace CaptainSkillTree.SkillTree
                 Vector3 pos = Vector3.Lerp(startPos, endPos, t);
                 pos.y = startPos.y + peakHeight * 4f * t * (1f - t);
 
-                // 전방 구조물 충돌 체크 (수평 이동 방향만)
-                // 시작점을 1.5m 높여 올라타 있는 바위/오브젝트 오탐 방지
-                // normal.y < 0.7: 수평면(바닥·바위 위)은 차단 제외, 수직면(벽)만 차단
+                // 전방 장애물 충돌 체크
+                // Default 포함: 바위·나무 등 자연 오브젝트는 Default 레이어에 있음
+                // normal.y < 0.7: 수평면(바닥·바위 위) 제외, 수직면(벽·바위 측면)만 차단
                 // distance > 0.2: 이미 올라타 있는 표면 무시
-                LayerMask blockMask = LayerMask.GetMask("piece", "static_solid");
+                LayerMask blockMask = LayerMask.GetMask("piece", "static_solid", "Default", "terrain");
                 Vector3 flatDir = new Vector3(dashDir.x, 0f, dashDir.z);
-                if (flatDir.magnitude > 0.05f && Physics.SphereCast(
-                    player.transform.position + Vector3.up * 1.5f, 0.4f, flatDir.normalized,
-                    out RaycastHit blockHit, 1.5f, blockMask)
-                    && blockHit.normal.y < 0.7f
-                    && blockHit.distance > 0.2f)
+                bool blocked = false;
+                if (flatDir.magnitude > 0.05f)
                 {
-                    Plugin.Log.LogDebug($"[분노의 망치] 구조물 충돌 - 도약 중단");
+                    // 상단 체크 (0.8m): 중간 키 이상 장애물 — 기존 1.5m에서 낮춰 낮은 바위도 감지
+                    if (Physics.SphereCast(
+                            player.transform.position + Vector3.up * 0.8f, 0.4f, flatDir.normalized,
+                            out RaycastHit blockHitHigh, 2.5f, blockMask)
+                        && blockHitHigh.normal.y < 0.7f
+                        && blockHitHigh.distance > 0.2f)
+                    {
+                        blocked = true;
+                        Plugin.Log.LogDebug($"[분노의 망치] 상단 장애물 충돌 ({blockHitHigh.collider.name})");
+                    }
+                    // 하단 체크 (0.3m): 낮은 바위·울타리 — 거의 수직 면만 차단
+                    else if (Physics.SphereCast(
+                            player.transform.position + Vector3.up * 0.3f, 0.3f, flatDir.normalized,
+                            out RaycastHit blockHitLow, 1.5f, blockMask)
+                        && blockHitLow.normal.y < 0.3f
+                        && blockHitLow.distance > 0.15f)
+                    {
+                        blocked = true;
+                        Plugin.Log.LogDebug($"[분노의 망치] 하단 장애물 충돌 ({blockHitLow.collider.name})");
+                    }
+                }
+                if (blocked)
+                {
                     endPos = player.transform.position;
                     break;
                 }
 
                 player.transform.position = pos;
+                if (rb != null) rb.position = pos;   // Valheim UpdateMotion() 루트 모션 덮어쓰기 방지
                 player.transform.rotation = lookRot; // 매 프레임 방향 유지
 
-                // 하강 구간(t > 0.5): 지면 접촉 또는 적 근접 → 조기 착지
+                // 대시 전 구간: 적 접촉 시 즉시 착지 (상승/하강 모두)
+                if (Character.GetAllCharacters().Any(c =>
+                    c != (Character)player &&
+                    (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss) &&
+                    Vector3.Distance(c.transform.position, pos) < 2.5f))
+                {
+                    endPos = pos;
+                    Plugin.Log.LogDebug("[분노의 망치] 대시 중 적 접촉 - 즉시 착지");
+                    break;
+                }
+
+                // 하강 구간(t > 0.5): 지면 접촉 → 조기 착지
                 if (t > 0.5f)
                 {
                     LayerMask groundMask = LayerMask.GetMask("terrain", "Default", "static_solid");
@@ -252,15 +303,6 @@ namespace CaptainSkillTree.SkillTree
                     {
                         endPos = pos;
                         Plugin.Log.LogDebug("[분노의 망치] 지면 접촉 - 조기 착지");
-                        break;
-                    }
-                    if (Character.GetAllCharacters().Any(c =>
-                        c != (Character)player &&
-                        (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss) &&
-                        Vector3.Distance(c.transform.position, pos) < 3f))
-                    {
-                        endPos = pos;
-                        Plugin.Log.LogDebug("[분노의 망치] 적 근접 감지 - 조기 착지");
                         break;
                     }
                 }
@@ -272,6 +314,24 @@ namespace CaptainSkillTree.SkillTree
             if (player != null && !player.IsDead())
             {
                 player.transform.position = endPos;
+                // Rigidbody 위치·속도 초기화 (루트 모션 스냅백 방지 — PolearmWhirlwind 패턴)
+                if (rb != null)
+                {
+                    rb.position = endPos;            // physics 위치 동기화
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+                // Valheim 내부 속도 초기화 (m_currentVel 스냅백 핵심 원인)
+                var velField = typeof(Character).GetField("m_currentVel",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                velField?.SetValue(player, Vector3.zero);
+                // ZDO 위치 동기화 (Valheim 네트워크 보정 스냅백 방지)
+                var nview = HarmonyLib.Traverse.Create(player).Field("m_nview").GetValue<ZNetView>();
+                if (nview != null && nview.IsOwner())
+                {
+                    var zdo = nview.GetZDO();
+                    if (zdo != null) zdo.SetPosition(endPos);
+                }
                 var altField = typeof(Character).GetField("m_maxAirAltitude",
                     System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 altField?.SetValue(player, endPos.y);
@@ -279,9 +339,7 @@ namespace CaptainSkillTree.SkillTree
                     weapon.m_shared.m_attackForce = originalPushForce;
                 CaptainSkillTree.AttackSpeedHandler_Game_Awake_Patch.ClearAttackSpeedWarningState(player);
 
-                // Root Motion 복원 + vfx_sledge_hit 착지 시 재생
-                if (animator != null) animator.applyRootMotion = origRootMotion;
-                VFXManager.PlayVFXMultiplayer("vfx_sledge_hit", "", endPos, Quaternion.identity, 1f);
+                VFXManager.PlayVFXMultiplayer("vfx_sledge_hit", "sfx_sledge_hit", endPos, Quaternion.identity, 1f);
                 SkillTreeInputListener.Instance?.StartCoroutine(ResetFuryHammerSpeed(player, animator, 0.5f));
             }
 
@@ -467,8 +525,12 @@ namespace CaptainSkillTree.SkillTree
                 }
             }
 
-            // 경직 면역 해제
+            // Root Motion 복원 (5연타 완료 후 — 착지 직후 복원 시 애니메이션이 원위치로 당기는 문제 방지)
+            if (animator != null) animator.applyRootMotion = origRootMotion;
+
+            // 경직 면역 + 공격속도 캡 우회 해제
             _furyHammerImmune.Remove(player);
+            _furyHammerCapBypass.Remove(player);
 
             // 최종 완료 메시지
             SkillEffect.DrawFloatingText(player, L.Get("fury_hammer_combo_complete", totalHits.ToString()), new Color(1f, 0.5f, 0f));
@@ -504,7 +566,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 _furyHammerPendingWindow.Remove(player);
                 lastMaceSkillTime = Time.time;
-                ActiveSkillCooldownRegistry.SetCooldown("H", Mace_Config.FuryHammerCooldownValue);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "mace_Step7_fury_hammer", Mace_Config.FuryHammerCooldownValue);
             }
         }
 
@@ -559,8 +621,9 @@ namespace CaptainSkillTree.SkillTree
                 // 4. Paladin Lv2 추가 사용 창 정리
                 _furyHammerPendingWindow.Remove(player);
 
-                // 5. 경직 면역 해제
+                // 5. 경직 면역 + 공격속도 캡 우회 해제
                 _furyHammerImmune.Remove(player);
+                _furyHammerCapBypass.Remove(player);
             }
             catch (Exception ex)
             {
@@ -590,6 +653,32 @@ namespace CaptainSkillTree.SkillTree
             }
 
             Plugin.Log.LogWarning("[분노의 망치] SledgeIron 프리팹을 찾지 못했습니다");
+            return null;
+        }
+
+        /// <summary>
+        /// 단검 2차 공격 모션 캐시 반환 (도약 모션 전용 — 고정값, 수정 금지)
+        /// 분노의 망치 도약 구간: 반드시 이 메서드 사용. StartAttack() 호출 금지.
+        /// </summary>
+        internal static Attack GetCachedKnifeSecondaryAttack()
+        {
+            if (s_knifeSecondaryAttackCache != null) return s_knifeSecondaryAttackCache;
+            if (ObjectDB.instance == null) return null;
+
+            string[] candidates = { "KnifeBlackMetal", "KnifeSilver", "KnifeChitin", "KnifeCopper", "KnifeFlint" };
+            foreach (var prefabName in candidates)
+            {
+                var prefab = ObjectDB.instance.GetItemPrefab(prefabName);
+                if (prefab == null) continue;
+                var item = prefab.GetComponent<ItemDrop>();
+                var attack = item?.m_itemData?.m_shared?.m_secondaryAttack;
+                if (attack == null || string.IsNullOrEmpty(attack.m_attackAnimation)) continue;
+                s_knifeSecondaryAttackCache = attack;
+                Plugin.Log.LogInfo($"[분노의 망치] 단검 도약 모션 캐시: {prefabName} ({attack.m_attackAnimation})");
+                return s_knifeSecondaryAttackCache;
+            }
+
+            Plugin.Log.LogWarning("[분노의 망치] 단검 세컨드 공격 모션을 찾지 못했습니다");
             return null;
         }
 
@@ -630,6 +719,7 @@ namespace CaptainSkillTree.SkillTree
                 furyHammer1stHitBuff.Remove(__instance);
                 _furyHammerPendingWindow.Remove(__instance);
                 _furyHammerImmune.Remove(__instance);
+                _furyHammerCapBypass.Remove(__instance);
             }
         }
     }

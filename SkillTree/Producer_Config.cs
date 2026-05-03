@@ -15,13 +15,6 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ProducerBuff_MaxHealthBonus;  // 최대 체력 보너스 (%)
         public static ConfigEntry<float> ProducerBuff_StaminaCost;     // 스태미나 소모
 
-        // === Passive Lv1-2: Farm Grid ===
-        public static ConfigEntry<int> ProducerFarmGrid_Lv1;
-        public static ConfigEntry<int> ProducerFarmGrid_Lv2;
-        public static ConfigEntry<int> ProducerFarmGrid_Lv3;
-        public static ConfigEntry<int> ProducerFarmGrid_Lv4;
-        public static ConfigEntry<int> ProducerFarmGrid_Lv5;
-
         // === Passive Lv1+: Crafting Durability Bonus (%) ===
         public static ConfigEntry<float> ProducerDurability_Lv1;
         public static ConfigEntry<float> ProducerDurability_Lv2;
@@ -57,12 +50,6 @@ namespace CaptainSkillTree.SkillTree
         public static float ProducerBuff_AttackBonusValue => SkillTreeConfig.GetEffectiveValue("Producer_Buff_AttackBonus", ProducerBuff_AttackBonus.Value);
         public static float ProducerBuff_MaxHealthBonusValue => SkillTreeConfig.GetEffectiveValue("Producer_Buff_MaxHealthBonus", ProducerBuff_MaxHealthBonus.Value);
         public static float ProducerBuff_StaminaCostValue => SkillTreeConfig.GetEffectiveValue("Producer_Buff_StaminaCost", ProducerBuff_StaminaCost.Value);
-
-        public static int ProducerFarmGrid_Lv1Value => (int)SkillTreeConfig.GetEffectiveValue("Producer_FarmGrid_Lv1", ProducerFarmGrid_Lv1.Value);
-        public static int ProducerFarmGrid_Lv2Value => (int)SkillTreeConfig.GetEffectiveValue("Producer_FarmGrid_Lv2", ProducerFarmGrid_Lv2.Value);
-        public static int ProducerFarmGrid_Lv3Value => (int)SkillTreeConfig.GetEffectiveValue("Producer_FarmGrid_Lv3", ProducerFarmGrid_Lv3.Value);
-        public static int ProducerFarmGrid_Lv4Value => (int)SkillTreeConfig.GetEffectiveValue("Producer_FarmGrid_Lv4", ProducerFarmGrid_Lv4.Value);
-        public static int ProducerFarmGrid_Lv5Value => (int)SkillTreeConfig.GetEffectiveValue("Producer_FarmGrid_Lv5", ProducerFarmGrid_Lv5.Value);
 
         public static float ProducerDurability_Lv1Value => SkillTreeConfig.GetEffectiveValue("Producer_Durability_Lv1", ProducerDurability_Lv1.Value);
         public static float ProducerDurability_Lv2Value => SkillTreeConfig.GetEffectiveValue("Producer_Durability_Lv2", ProducerDurability_Lv2.Value);
@@ -134,25 +121,6 @@ namespace CaptainSkillTree.SkillTree
             };
         }
 
-        // === 레벨별 농사 그리드 (rows, cols) 반환 ===
-        // lv1=1x2, lv2=2x2, lv3=2x3, lv4=3x3, lv5=3x4
-        public static (int rows, int cols) GetFarmGridDimensions(int level)
-        {
-            return level switch {
-                1 => (1, 2),
-                2 => (2, 2),
-                3 => (2, 3),
-                4 => (3, 3),
-                _ => level >= 5 ? (3, 4) : (0, 0)
-            };
-        }
-
-        public static int GetFarmGridCount(int level)
-        {
-            var (rows, cols) = GetFarmGridDimensions(level);
-            return rows * cols;
-        }
-
         /// <summary>
         /// 제작 전문가 컨피그 초기화
         /// </summary>
@@ -186,10 +154,6 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_Buff_StaminaCost"));
 
                 // === Lv1 패시브 ===
-                ProducerFarmGrid_Lv1 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_FarmGrid_Lv1", 2,
-                    SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv1"));
-
                 ProducerDurability_Lv1 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_Durability_Lv1", 50f,
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv1"));
@@ -203,10 +167,6 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv1"));
 
                 // === Lv2 패시브 ===
-                ProducerFarmGrid_Lv2 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_FarmGrid_Lv2", 2,
-                    SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv2"));
-
                 ProducerDurability_Lv2 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_Durability_Lv2", 75f,
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv2"));
@@ -224,10 +184,6 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv2"));
 
                 // === Lv3 패시브 ===
-                ProducerFarmGrid_Lv3 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_FarmGrid_Lv3", 4,
-                    SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv3"));
-
                 ProducerDurability_Lv3 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_Durability_Lv3", 100f,
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv3"));
@@ -245,10 +201,6 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv3"));
 
                 // === Lv4 패시브 ===
-                ProducerFarmGrid_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_FarmGrid_Lv4", 6,
-                    SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv4"));
-
                 ProducerDurability_Lv4 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_Durability_Lv4", 125f,
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv4"));
@@ -266,10 +218,6 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv4"));
 
                 // === Lv5 패시브 ===
-                ProducerFarmGrid_Lv5 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_FarmGrid_Lv5", 8,
-                    SkillTreeConfig.GetConfigDescription("Producer_FarmGrid_Lv5"));
-
                 ProducerDurability_Lv5 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_Durability_Lv5", 200f,
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv5"));
@@ -305,11 +253,6 @@ namespace CaptainSkillTree.SkillTree
                 ProducerBuff_AttackBonus.SettingChanged   += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerBuff_MaxHealthBonus.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerBuff_StaminaCost.SettingChanged   += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
-                ProducerFarmGrid_Lv1.SettingChanged       += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
-                ProducerFarmGrid_Lv2.SettingChanged       += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
-                ProducerFarmGrid_Lv3.SettingChanged       += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
-                ProducerFarmGrid_Lv4.SettingChanged       += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
-                ProducerFarmGrid_Lv5.SettingChanged       += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerDurability_Lv1.SettingChanged     += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerDurability_Lv2.SettingChanged     += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerDurability_Lv3.SettingChanged     += (s, a) => Producer_Tooltip.UpdateProducerTooltip();

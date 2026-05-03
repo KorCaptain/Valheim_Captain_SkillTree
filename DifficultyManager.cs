@@ -51,30 +51,106 @@ namespace CaptainSkillTree
             _configFilePath = Plugin.Instance?.Config?.ConfigFilePath
                               ?? Path.Combine(Paths.ConfigPath, "CaptainSkillTree.SkillTreeMod.cfg");
 
-            Plugin.Log?.LogInfo($"[Difficulty] Config path: {_configFilePath}");
-
             string versionFile       = Path.ChangeExtension(_configFilePath, ".version");
             string difficultyVerFile = Path.ChangeExtension(_configFilePath, DIFF_VER_EXT);
 
             string currentVer  = File.Exists(versionFile)       ? File.ReadAllText(versionFile).Trim()       : "";
             string selectedVer = File.Exists(difficultyVerFile)  ? File.ReadAllText(difficultyVerFile).Trim() : "";
 
-            NeedsSelection = (currentVer != selectedVer);
-
-            if (NeedsSelection)
-                Plugin.Log?.LogInfo(
-                    $"[Difficulty] 난이도 선택 필요 (모드 버전: {currentVer} / 마지막 선택: {selectedVer})");
-
             EnsurePresetDirectory();
-
-            // 종료 시 현재 cfg → User 백업 갱신 (다음 업데이트에서 실제 사용자 설정 제공)
             Application.quitting += SaveUserBackupOnQuit;
+
+            // ── 첫 설치: difficulty_ver 없음 → 선택 창 표시 ──
+            bool isFirstInstall = string.IsNullOrEmpty(selectedVer);
+            if (isFirstInstall)
+            {
+                NeedsSelection = true;
+                return;
+            }
+
+            // ── 업데이트: 버전 불일치 → 유저값 유지 + 신규 키 VH 적용 후 창 표시 ──
+            bool isUpdate = (currentVer != selectedVer);
+            if (isUpdate)
+            {
+                ApplyVeryhardWithUserOverlay();  // 기존 유저값 보존 + 신규 키 VeryHard 적용
+                SaveUserBackupNow();             // 병합 결과를 User 프리셋으로 저장 (창 3번 옵션)
+                NeedsSelection = true;           // 선택 창 표시 (확인/재선택 가능)
+                return;
+            }
+
+            // ── 동일 버전: 재선택 불필요 ──
+            NeedsSelection = false;
         }
 
         // ──────────────────────────── 유저 백업 확인 ────────────────────────────
         /// <summary>User 프리셋 파일이 존재하면 true (3번 옵션 표시 여부)</summary>
         public static bool HasUserPreset() =>
             File.Exists(Path.Combine(GetPresetDirectory(), PRESET_USER));
+
+        // ──────────────────────────── 업데이트 오버레이 ────────────────────────────
+        /// <summary>
+        /// 업데이트 시 자동 호출.
+        /// 1) 현재 유저 값 스냅샷 (메모리에 로드된 기존 키/값)
+        /// 2) VeryHard 전체 적용 (신규 키 포함 모든 항목이 VH 값으로 초기화)
+        /// 3) 스냅샷에 있던 기존 키만 유저 값으로 복원
+        ///    → 신규 추가 키는 VH 기본값 유지, 기존 커스텀 값은 보존
+        /// </summary>
+        private static void ApplyVeryhardWithUserOverlay()
+        {
+            var config = Plugin.Instance?.Config;
+            if (config == null)
+            {
+                Plugin.Log?.LogError("[Difficulty] ApplyVeryhardWithUserOverlay: Config가 null입니다.");
+                return;
+            }
+
+            // 1. 유저 기존 값 스냅샷 (VeryHard 적용 전)
+            var userSnapshot = new Dictionary<ConfigDefinition, string>();
+            foreach (var kvp in config)
+                userSnapshot[kvp.Key] = kvp.Value.GetSerializedValue();
+
+            // 2. VeryHard 전체 적용 (이 시점에서 메모리+디스크가 VH 값으로 덮어씌워짐)
+            ApplyVeryHard();
+
+            // 3. 유저 기존 값 복원 (스냅샷에 없는 신규 키는 VH 값 유지)
+            // Language, 스키마 버전, 난이도 플래그는 복원 대상에서 제외
+            var skipKeys = new HashSet<string>
+            {
+                "Language",
+                "Config_Schema_Version",
+                "GameDifficulty",
+                "EnableLiveConfigSync"
+            };
+
+            bool prev = config.SaveOnConfigSet;
+            config.SaveOnConfigSet = false;
+
+            int restored = 0;
+            int skipped  = 0;
+            foreach (var kvp in userSnapshot)
+            {
+                if (skipKeys.Contains(kvp.Key.Key)) { skipped++; continue; }
+
+                var entry = config[kvp.Key];
+                if (entry == null) continue;
+
+                try
+                {
+                    entry.SetSerializedValue(kvp.Value);
+                    restored++;
+                }
+                catch { /* 타입 불일치(신규 타입 변경) → 무시 후 VH값 유지 */ }
+            }
+
+            // 결과가 유저 커스텀 값이므로 GameDifficulty를 "UserSettings"로 표시
+            var gameDiffEntry = SkillTree.SkillTreeConfig.GameDifficulty;
+            if (gameDiffEntry != null)
+                gameDiffEntry.Value = "UserSettings";
+
+            config.Save();
+            config.SaveOnConfigSet = prev;
+
+        }
 
         // ──────────────────────────── 적용 (편의 래퍼) ────────────────────────────
         /// <summary>Normal 프리셋 적용</summary>
@@ -98,18 +174,11 @@ namespace CaptainSkillTree
                 try
                 {
                     File.Copy(presetPath, _configFilePath, overwrite: true);
-                    Plugin.Log?.LogInfo($"[Difficulty] 파일 복사 완료: {presetFileName}");
                 }
                 catch (Exception ex)
                 {
                     Plugin.Log?.LogError($"[Difficulty] 파일 복사 실패: {ex.Message}");
                 }
-
-                // 경로 일치 확인
-                string actualCfgPath = Plugin.Instance?.Config?.ConfigFilePath ?? "(null)";
-                Plugin.Log?.LogInfo($"[Difficulty] _configFilePath  = {_configFilePath}");
-                Plugin.Log?.LogInfo($"[Difficulty] Config.FilePath  = {actualCfgPath}");
-                Plugin.Log?.LogInfo($"[Difficulty] 경로 일치: {string.Equals(_configFilePath, actualCfgPath, StringComparison.OrdinalIgnoreCase)}");
 
                 // 2단계: SaveOnConfigSet 전체 차단 → Reload + 직접 설정 + 기본값 리셋 → 1회 Save
                 // (중간 auto-save가 유저값을 덮어쓰는 문제 방지)
@@ -133,7 +202,6 @@ namespace CaptainSkillTree
 
                     cfg.Save();                           // 1회 최종 저장
                     cfg.SaveOnConfigSet = prev;
-                    Plugin.Log?.LogInfo($"[Difficulty] ✅ 프리셋 적용 완료: {presetFileName} ({applied}개), 난이도={diffMode}");
                 }
             }
             else
@@ -169,7 +237,6 @@ namespace CaptainSkillTree
                     if (f.FieldType == targetType)
                     {
                         _entriesField = f;
-                        Plugin.Log?.LogInfo($"[Difficulty] entries field: {t.Name}.{f.Name}");
                         return f;
                     }
                 }
@@ -208,8 +275,6 @@ namespace CaptainSkillTree
                 Plugin.Log?.LogWarning("[Difficulty] entries 딕셔너리 접근 실패");
                 return -1;
             }
-            Plugin.Log?.LogInfo($"[Difficulty] 등록된 ConfigEntry 수: {entries.Count}");
-
             int count = 0;
             string currentSection = "";
             var appliedDefs = new HashSet<ConfigDefinition>();
@@ -239,8 +304,6 @@ namespace CaptainSkillTree
                         {
                             entry.SetSerializedValue(value);
                             appliedDefs.Add(def);
-                            if (count == 0)
-                                Plugin.Log?.LogInfo($"[Difficulty] 첫 항목: [{currentSection}] {key} = {entry.GetSerializedValue()}");
                             count++;
                         }
                         catch { /* 파싱 실패는 무시 */ }
@@ -266,9 +329,6 @@ namespace CaptainSkillTree
                     catch { /* 타입 불일치 무시 */ }
                 }
             }
-            if (resetCount > 0)
-                Plugin.Log?.LogInfo($"[Difficulty] 미포함 항목 기본값 리셋: {resetCount}개");
-
             return count + resetCount;
         }
 
@@ -308,7 +368,6 @@ namespace CaptainSkillTree
                     using (var fs = new FileStream(destPath, FileMode.Create, FileAccess.Write))
                         stream.CopyTo(fs);
                 }
-                Plugin.Log?.LogInfo($"[Difficulty] 프리셋 추출 완료: {fileName}");
             }
             catch (Exception ex)
             {
@@ -334,6 +393,20 @@ namespace CaptainSkillTree
             catch (Exception ex)
             {
                 Plugin.Log?.LogWarning($"[Difficulty] User 백업 저장 실패: {ex.Message}");
+            }
+        }
+
+        private static void SaveUserBackupNow()
+        {
+            if (string.IsNullOrEmpty(_configFilePath) || !File.Exists(_configFilePath)) return;
+            string backupPath = Path.Combine(GetPresetDirectory(), PRESET_USER);
+            try
+            {
+                File.Copy(_configFilePath, backupPath, overwrite: true);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log?.LogWarning($"[Difficulty] User 백업 갱신 실패: {ex.Message}");
             }
         }
 

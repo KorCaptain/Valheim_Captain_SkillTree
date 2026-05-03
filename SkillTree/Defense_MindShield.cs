@@ -10,7 +10,7 @@ using CaptainSkillTree.Localization;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 마인드쉴드 스킬 — 방어전문가 Tier 6 H키 액티브
+    /// 마인드쉴드 스킬 — 방어전문가 Tier 6 G키 액티브
     /// 에이트르 최대치만큼 보호막으로 HP 피해 흡수
     /// </summary>
     public static class MindShieldSkill
@@ -84,7 +84,7 @@ namespace CaptainSkillTree.SkillTree
             _lastActivateTime = Time.time;
 
             // HUD 쿨타임 등록
-            ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+            ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "defense_Step6_mind", cooldown);
 
             // VFX
             PlayActivateVFX(player);

@@ -167,6 +167,9 @@ namespace CaptainSkillTree.SkillTree
                 // 2. 설명 (#FFD700 / #E0E0E0)
                 tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("spear_desc_penetrate", Spear_Config.SpearStep6PenetrateBuffDurationValue, Spear_Config.SpearStep6PenetrateComboCountValue)}</size></color>\n";
 
+                // 2-1. 공격 방식 (#87CEEB / #E0E0E0)
+                tooltip += $"<color=#87CEEB><size=16>▶ </size></color><color=#E0E0E0><size=16>{L.Get("spear_desc_penetrate_mechanic")}</size></color>\n";
+
                 // 3. 데미지 (#FF6B6B / #FFB6C1)
                 tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("spear_desc_penetrate_damage", Spear_Config.SpearStep6PenetrateLightningDamageValue)}</size></color>\n";
 

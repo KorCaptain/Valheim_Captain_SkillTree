@@ -810,7 +810,8 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>AOE {Crossbow_Config.CrossbowOneShotAoeRadiusValue}m</size></color>\n";
 
             // 4-1. 슬로우 리로드
-            tooltip += $"<color=#FFD700><size=16>⚠ 재장전 속도: </size></color><color=#FFD700><size=16>-500% (6× 느림)</size></color>\n";
+            float slowPct = (Crossbow_Config.CrossbowOneShotSlowReloadMultiplierValue - 1f) * 100f;
+            tooltip += $"<color=#FFD700><size=16>⚠ 재장전 속도: </size></color><color=#FFD700><size=16>-{slowPct:F0}% ({Crossbow_Config.CrossbowOneShotSlowReloadMultiplierValue:F0}× 느림)</size></color>\n";
 
             // 5. 소모
             tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_format", 20)}</size></color>\n";

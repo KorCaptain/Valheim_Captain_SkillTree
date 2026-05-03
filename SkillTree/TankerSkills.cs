@@ -158,7 +158,7 @@ namespace CaptainSkillTree.SkillTree
                 TankerReflect.ActivateTankerReflect(player, Tanker_Config.GetTankerReflectDurationForLevel(tankerLevel));
 
                 // 시전 효과음 1회 재생
-                VFXManager.PlayVFX("sfx_dragon_scream", player.transform.position);
+                VFXManager.PlayVFXMultiplayer("", "sfx_dragon_scream", player.transform.position);
 
                 // 8회 반복 도발 코루틴 시작 (1초 간격)
                 if (Plugin.Instance != null)
@@ -183,7 +183,7 @@ namespace CaptainSkillTree.SkillTree
 
                 TauntNearbyEnemies(player);
                 PlayTankerEffects(player);
-                VFXManager.PlayVFX("sfx_metal_shield_blocked_overlay", player.transform.position);
+                VFXManager.PlayVFXMultiplayer("", "sfx_metal_shield_blocked_overlay", player.transform.position);
 
                 Plugin.Log.LogDebug($"[탱커 도발] {player.GetPlayerName()} {i + 1}/8회 펄스 발동");
 

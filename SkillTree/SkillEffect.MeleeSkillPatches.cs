@@ -456,11 +456,7 @@ namespace CaptainSkillTree.SkillTree
                 totalSpearBonus += SkillTreeConfig.SpearStep2CritDamageBonusValue;
             }
 
-            // 투창 전문가 - 2차 공격(투창)에만 공격력 +120%
-            if (SkillEffect.HasSkill("spear_Step1_throw") && SkillEffect.IsRecentSpearSecondaryAttack(player))
-            {
-                totalSpearBonus += Spear_Config.SpearStep2ThrowDamageValue;
-            }
+            // 투창 전문가는 Plugin.Patches.cs WeaponCriticalSystemPatch(ApplyDamage)에서 단일 처리
 
             // 연격창 - 관통 공격력 전용
             if (SkillEffect.HasSkill("spear_Step3_pierce"))
@@ -620,22 +616,23 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
-    /// 꿰뚫는 창 허공 스윙 감지 - StartAttack 시 창 사용 중이면 카운트
+    /// 꿰뚫는 창 공격 감지 - 좌클릭(1회 돌진 / 2회 제자리) 반복
     /// </summary>
     [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.StartAttack))]
-    public static class SpearPenetrate_AirSwing_Patch
+    public static class SpearPenetrate_AttackDash_Patch
     {
-        public static void Postfix(Humanoid __instance)
+        public static void Postfix(Humanoid __instance, bool secondaryAttack)
         {
             try
             {
+                if (secondaryAttack) return;
                 if (__instance is not Player player) return;
                 if (!SkillEffect.IsUsingSpear(player)) return;
-                SkillEffect.OnSpearSwingStart(player);
+                SkillEffect.OnSpearAttackStart(player);
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogWarning($"[꿰뚫는 창] 허공 스윙 패치 오류: {ex.Message}");
+                Plugin.Log.LogWarning($"[꿰뚫는 창] 공격 돌진 패치 오류: {ex.Message}");
             }
         }
     }

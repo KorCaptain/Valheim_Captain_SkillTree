@@ -3,10 +3,30 @@
   "suggestions": [
     {
       "id": "btw-001",
-      "timestamp": "2026-04-15T00:00:00Z",
-      "suggestion": "이 스킬들 효과는 나맘 보이는거야 다른 사람은 안보이고?",
+      "timestamp": "2026-04-30T00:00:00Z",
+      "suggestion": "팬텀 투창 전환 시 RestorePhantomSpear의 AddItem 호출 직전 인벤 꽉 참 또는 경쟁 상태(다른 아이템 동시 추가)면 창 복원 실패 → 창 영구 소실 가능. DelayedEquipSpear 2초 대기 중에도 동일 위험. 신규 팬텀 시스템 설계 시 인벤 공간 선점 또는 즉시 동기 복원 방식으로 방어 필요.",
       "context": {
-        "file": "SkillEffect.PolearmWhirlwind.cs, SkillEffect.ArrowRain.cs, MaceSkills.FuryHammer.cs, Mace_Active.cs, SkillEffect.ExplosiveArrow.cs",
+        "file": "SkillEffect.SpearActiveSkills.cs",
+        "pdcaPhase": "plan",
+        "feature": "SpearPhantomThrow"
+      },
+      "category": "bug-pattern",
+      "status": "pending",
+      "promotedTo": null,
+      "priority": "high",
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "plan",
+        "role": "user",
+        "pattern": null
+      }
+    },
+    {
+      "id": "btw-002",
+      "timestamp": "2026-05-01T00:00:00Z",
+      "suggestion": "멀티샷 l1,2 발동시 추가 발사체가 캐릭터 머리위에 소환되었다가 몬스터에게 발사되는게 맞아?",
+      "context": {
+        "file": "SkillTree/SkillEffect.BowMultishot.cs",
         "pdcaPhase": "do",
         "feature": "SkillTree"
       },
@@ -22,11 +42,31 @@
       }
     },
     {
-      "id": "btw-002",
-      "timestamp": "2026-04-20T00:00:00Z",
-      "suggestion": "버서커의 무적패시브 스킬이 PVP에도 적용되는거지?",
+      "id": "btw-003",
+      "timestamp": "2026-05-01T00:00:00Z",
+      "suggestion": "기존 사용자가 업데이트되면 사용자 세팅값이 유지되는거지? 신규 컨피그는 추가되는거고?",
       "context": {
-        "file": "SkillTree/Berserker_Skill.cs",
+        "file": "DifficultyManager.cs",
+        "pdcaPhase": "do",
+        "feature": "SkillTree"
+      },
+      "category": "general",
+      "status": "pending",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      }
+    },
+    {
+      "id": "btw-004",
+      "timestamp": "2026-05-03T00:00:00Z",
+      "suggestion": "저 에러 쌓이면 서버 과부하 걸리나?",
+      "context": {
+        "file": "SimpleVFX.cs",
         "pdcaPhase": "do",
         "feature": "SkillTree"
       },
@@ -40,30 +80,10 @@
         "role": "user",
         "pattern": null
       }
-    },
-    {
-      "id": "btw-003",
-      "timestamp": "2026-04-23T00:00:00Z",
-      "suggestion": "경고 로그를 표시만 안되게는 못해? (AOE_ROD OnTriggerStay 경고 억제)",
-      "context": {
-        "file": "SimpleVFX.cs",
-        "pdcaPhase": "do",
-        "feature": "SkillTree"
-      },
-      "category": "improvement",
-      "status": "pending",
-      "promotedTo": null,
-      "priority": null,
-      "teamContext": {
-        "isTeamSession": false,
-        "phase": "do",
-        "role": "user",
-        "pattern": null
-      }
     }
   ],
   "stats": {
-    "total": 3,
+    "total": 4,
     "promoted": 0,
     "dismissed": 0,
     "lastAnalyzed": null

@@ -51,10 +51,10 @@ namespace CaptainSkillTree.SkillTree
         private const float ChestHeightOffset = 1.4f;
 
         // 도약 파라미터
-        private const float WW_DashTime   = 0.65f;  // 전진 도약 시간 (느리게)
+        private const float WW_DashTime   = 0.50f;  // 전진 도약 시간 (0.65 → 0.50, 30% 빠르게)
         private const float WW_DashDist   = 5f;     // 전진 거리 (m)
         private const float WW_PeakHeight = 1.2f;   // 점프 높이
-        private const float WW_CycleDelay = 0.5f;   // 착지 후 다음 사이클까지 대기
+        private const float WW_CycleDelay = 0.38f;  // 착지 후 다음 사이클까지 대기 (0.5 → 0.38, 30% 빠르게)
 
         /// <summary>
         /// 휠윈드 스킬 사용 (Mouse2 눌림)
@@ -166,6 +166,9 @@ namespace CaptainSkillTree.SkillTree
                     // ── 전진/귀환 좌표 계산 ──
                     Vector3 startPos = player.transform.position;
                     Vector3 endPos   = startPos + jumpDir * WW_DashDist;
+
+                    // 오브젝트 충돌 체크 (바위, 나무 등 통과 방지)
+                    endPos = ClampWhirlwindEndToObstacle(startPos, endPos);
 
                     // 착지 지형 높이 보정
                     if (Physics.Raycast(endPos + Vector3.up * 15f, Vector3.down, out RaycastHit landHit, 25f,
@@ -356,6 +359,32 @@ namespace CaptainSkillTree.SkillTree
                     ch.Damage(hit);
                 }
             }
+        }
+
+        /// <summary>
+        /// 도약 경로에 오브젝트(바위, 나무 등)가 있으면 충돌 직전으로 endPos를 클램프
+        /// </summary>
+        private static Vector3 ClampWhirlwindEndToObstacle(Vector3 startPos, Vector3 endPos)
+        {
+            Vector3 dir = endPos - startPos;
+            float dist = dir.magnitude;
+            if (dist < 0.5f) return endPos;
+            dir.Normalize();
+
+            // 허리 높이에서 SphereCast (지형 콜리전 오인 방지)
+            Vector3 castOrigin = startPos + Vector3.up * 1f;
+            int blockMask = LayerMask.GetMask("piece", "Default", "static_solid");
+
+            if (Physics.SphereCast(castOrigin, 0.4f, dir, out RaycastHit hit, dist, blockMask))
+            {
+                if (hit.collider.GetComponentInParent<Character>() == null)
+                {
+                    Plugin.Log.LogDebug($"[휠윈드] 장애물 감지: {hit.collider.name}");
+                    float safeDistance = Mathf.Max(0f, hit.distance - 0.5f);
+                    return startPos + dir * safeDistance;
+                }
+            }
+            return endPos;
         }
 
         /// <summary>

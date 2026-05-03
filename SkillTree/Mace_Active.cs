@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using HarmonyLib;
 using CaptainSkillTree;
@@ -13,21 +12,21 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 둔기(Mace) 액티브 스킬 전용 클래스
-    /// - 방패돌진 (Shield Charge) G키 액티브 스킬
+    /// - 돌진방패 (Shield Charge) G키 액티브 스킬
+    ///   전방 12m 돌진 이동기. 장애물(바위·나무 등) 충돌 시 정지. 경로 상 모든 몬스터 타격 및 도발.
     /// </summary>
     public static partial class SkillEffect
     {
-        // ==================== 방패돌진 (Shield Charge) ====================
+        // ==================== 돌진방패 (Shield Charge) ====================
 
-        // 쿨타임 관리 (버프 없음 - 쿨타임만 추적)
         private static Dictionary<Player, float> shieldChargeCooldowns = new Dictionary<Player, float>();
-
-        // 돌진 중 중복 발동 방지
         private static HashSet<Player> shieldChargeActive = new HashSet<Player>();
+        private static Dictionary<Player, float> _shieldChargePendingWindow = new Dictionary<Player, float>();
+        private const float ShieldChargeExtraWindow = 30f;
 
         /// <summary>
-        /// 방패돌진 액티브 스킬 발동
-        /// G키로 활성화, 카메라 방향 8m 돌진 후 방패 막기력의 70% 데미지
+        /// 돌진방패 액티브 스킬 발동
+        /// 타겟 불필요 — 전방 8m 방향으로 즉시 돌진
         /// </summary>
         public static void ActivateShieldCharge(Player player)
         {
@@ -35,37 +34,37 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (player == null || player.IsDead()) return;
 
-                // 1. 스킬 보유 확인
                 if (!HasSkill("mace_Step7_guardian_heart"))
                 {
                     DrawFloatingText(player, L.Get("guardian_heart_skill_required"), Color.red);
                     return;
                 }
 
-                // 2. 방패 착용 확인 (한손둔기 불필요)
                 if (!HasShield(player))
                 {
                     DrawFloatingText(player, L.Get("shield_equip_required"), Color.red);
                     return;
                 }
 
-                // 3. 돌진 중 중복 발동 방지
                 if (shieldChargeActive.Contains(player))
                 {
-                    DrawFloatingText(player, L.Get("cooldown_active"), Color.yellow);
+                    DrawFloatingText(player, L.Get("shield_charge_active"), Color.yellow);
                     return;
                 }
 
-                // 4. 쿨타임 확인
                 float now = Time.time;
-                if (shieldChargeCooldowns.ContainsKey(player) && now < shieldChargeCooldowns[player])
+                bool hasTankerLv2_shield = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2;
+                bool inShieldChargeWindow = hasTankerLv2_shield
+                    && _shieldChargePendingWindow.TryGetValue(player, out float shieldWinExpiry)
+                    && now <= shieldWinExpiry;
+
+                if (!inShieldChargeWindow && shieldChargeCooldowns.ContainsKey(player) && now < shieldChargeCooldowns[player])
                 {
                     float remaining = shieldChargeCooldowns[player] - now;
                     DrawFloatingText(player, L.Get("cooldown_seconds", Mathf.CeilToInt(remaining).ToString()), Color.yellow);
                     return;
                 }
 
-                // 5. 스태미나 소모 확인
                 float requiredStamina = Mace_Config.GuardianHeartStaminaCostValue;
                 if (player.GetStamina() < requiredStamina)
                 {
@@ -73,207 +72,170 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 6. 스킬 발동
-                player.StartCoroutine(ShieldChargeCoroutine(player));
-
-                // 7. 쿨타임 및 스태미나 소모 적용
-                shieldChargeCooldowns[player] = now + Mace_Config.GuardianHeartCooldownValue;
-                ActiveSkillCooldownRegistry.SetCooldown("G", Mace_Config.GuardianHeartCooldownValue);
+                // Tanker Lv2 추가 사용 창 분기
+                if (hasTankerLv2_shield && !inShieldChargeWindow)
+                {
+                    // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
+                    _shieldChargePendingWindow[player] = now + ShieldChargeExtraWindow;
+                    player.StartCoroutine(ExpireShieldChargeWindow(player));
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "mace_Step7_guardian_heart", ShieldChargeExtraWindow);
+                }
+                else
+                {
+                    // 2번째 사용(창 내) or 비탱커: 쿨타임 즉시 시작
+                    _shieldChargePendingWindow.Remove(player);
+                    shieldChargeCooldowns[player] = now + Mace_Config.GuardianHeartCooldownValue;
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "mace_Step7_guardian_heart", Mace_Config.GuardianHeartCooldownValue);
+                }
                 player.UseStamina(requiredStamina);
+                TankerPrereqLastUsedTime = Time.time;
+
+                player.StartCoroutine(ShieldChargeCoroutine(player));
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[방패돌진] 발동 오류: {ex.Message}");
+                Plugin.Log.LogError($"[돌진방패] 발동 오류: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 방패돌진 핵심 코루틴
-        /// 카메라 방향 8m 돌진 → 첫 적 충돌 시 데미지+스태거+AoE+도발
+        /// 돌진방패 핵심 코루틴
+        /// 전방 12m 직선 이동 — 장애물(바위·나무 등) 충돌 시 정지, 경로 상 모든 몬스터 타격
         /// </summary>
         private static IEnumerator ShieldChargeCoroutine(Player player)
         {
             shieldChargeActive.Add(player);
             ZSyncAnimation zanim = null;
 
+            // 전방 수평 방향 계산
+            Vector3 lookDir = player.GetLookDir();
+            lookDir.y = 0f;
+            if (lookDir.sqrMagnitude < 0.01f) lookDir = player.transform.forward;
+            lookDir.Normalize();
+
+            Vector3 startPos = player.transform.position;
+            float chargeDistance = 12f;
+            var rb = player.GetComponent<Rigidbody>();
+
+            // 장애물(바위·나무 등) 충돌 체크 — static_solid/Default/piece 레이어 기준
+            int obstacleMask = LayerMask.GetMask("static_solid", "Default", "piece");
+            if (Physics.SphereCast(startPos + Vector3.up * 0.8f, 0.4f, lookDir, out RaycastHit obstacleHit, chargeDistance, obstacleMask))
+            {
+                chargeDistance = Mathf.Max(0f, obstacleHit.distance - 0.5f);
+                Plugin.Log.LogInfo($"[돌진방패] 장애물 감지 — 이동거리 {chargeDistance:F1}m로 단축");
+            }
+
+            Vector3 endPos = startPos + lookDir * chargeDistance;
+
+            // 착지 지점 지면 보정
+            if (Physics.Raycast(endPos + Vector3.up * 10f, Vector3.down, out RaycastHit landHit, 20f,
+                LayerMask.GetMask("terrain", "static_solid")))
+            {
+                endPos.y = landHit.point.y;
+            }
+
             try
             {
-                // 1. 돌진 방향 (카메라 방향, 수평)
-                Vector3 dashDir = player.GetLookDir();
-                dashDir.y = 0f;
-                dashDir.Normalize();
-
-                float dashDist = 8f;
-                Vector3 startPos = player.transform.position;
-                Vector3 endPos = startPos + dashDir * dashDist;
-
-                // 2. blocking 모션 시작
                 zanim = player.GetComponentInChildren<ZSyncAnimation>();
-                if (zanim != null)
-                    zanim.SetBool("blocking", true);
+                if (zanim != null) zanim.SetBool("blocking", true);
 
-                // 3. 시전 VFX + 사운드
-                {
-                    var _shieldPrefab = ZNetScene.instance?.GetPrefab("fx_shieldgenerator_domehit");
-                    if (_shieldPrefab != null)
-                    {
-                        var _shieldGo = UnityEngine.Object.Instantiate(_shieldPrefab, player.GetCenterPoint(), Quaternion.identity);
-                    }
-                }
+                var shieldPrefab = ZNetScene.instance?.GetPrefab("fx_shieldgenerator_domehit");
+                if (shieldPrefab != null)
+                    UnityEngine.Object.Instantiate(shieldPrefab, player.GetCenterPoint(), Quaternion.identity);
+
                 VFXManager.PlayVFXMultiplayer("sfx_fader_taunt", "", player.GetCenterPoint(), Quaternion.identity, 2f);
-
-                // 5. Rigidbody 가져오기 (physics-safe 이동)
-                var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
-
-                Plugin.Log.LogInfo("[방패돌진] 돌진 시작 (8m, 0.5초)");
+                Plugin.Log.LogInfo($"[돌진방패] 발동 — 전방 8m 돌진 시작");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[방패돌진] 초기화 오류: {ex.Message}");
+                Plugin.Log.LogError($"[돌진방패] 초기화 오류: {ex.Message}");
                 shieldChargeActive.Remove(player);
                 yield break;
             }
 
-            // 5. 돌진 루프
             float elapsed = 0f;
             float vfxTimer = 0f;
-            bool hitEnemy = false;
-            Vector3 dashDir2 = player.GetLookDir();
-            dashDir2.y = 0f;
-            dashDir2.Normalize();
-            Vector3 startPos2 = player.transform.position;
-            Vector3 endPos2 = startPos2 + dashDir2 * 8f;
-            var body2 = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
+            var alreadyHit = new HashSet<int>();
 
-            while (elapsed < 0.5f && !hitEnemy)
+            while (elapsed < 0.5f)
             {
                 if (player == null || player.IsDead()) break;
 
                 elapsed += Time.deltaTime;
                 vfxTimer += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / 0.5f);
-                Vector3 newPos = Vector3.Lerp(startPos2, endPos2, t);
 
-                // 캐릭터를 돌진 방향으로 매 프레임 강제 회전 (캐릭터 컨트롤러 덮어쓰기 방지)
-                if (dashDir2 != Vector3.zero)
-                {
-                    player.transform.rotation = Quaternion.LookRotation(dashDir2);
-                    HarmonyLib.Traverse.Create(player).Field("m_lookDir").SetValue(dashDir2);
-                }
+                Vector3 newPos = Vector3.Lerp(startPos, endPos, t);
 
-                // 돌진 중 VFX 0.05초마다 반복 재생 (연속 돔 이펙트)
-                if (vfxTimer >= 0.05f)
-                {
-                    var _shieldPrefab2 = ZNetScene.instance?.GetPrefab("fx_shieldgenerator_domehit");
-                    if (_shieldPrefab2 != null)
-                    {
-                        var _shieldGo2 = UnityEngine.Object.Instantiate(_shieldPrefab2, player.GetCenterPoint(), Quaternion.identity);
-                    }
-                    vfxTimer = 0f;
-                }
-
-                // 지면 높이 보정 (블록 체크 전 먼저 실행 - 경사면 이동방향을 정확히 계산하기 위해)
+                // 지면 아래로 꺼지지 않도록 클램프
                 if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
                     LayerMask.GetMask("terrain", "static_solid")))
                 {
-                    newPos.y = groundHit.point.y + 0.3f;
+                    float terrainY = groundHit.point.y + 0.3f;
+                    if (newPos.y < terrainY) newPos.y = terrainY;
                 }
 
-                // 전방 장애물 충돌 체크 (벽/바위/나무/건축물) - 지형 보정 후 실제 이동방향으로 체크
-                // Default 레이어 추가: Valheim 나무/덤불이 Default 레이어에 존재
-                LayerMask blockMask = LayerMask.GetMask("piece", "static_solid", "Default");
-                Vector3 moveDir = newPos - player.transform.position;
-                float moveDist = moveDir.magnitude;
-                if (moveDist > 0.05f && Physics.SphereCast(
-                    player.GetCenterPoint(), 0.5f, moveDir.normalized,
-                    out RaycastHit blockHit, moveDist, blockMask))
+                player.transform.position = newPos;
+                if (rb != null) rb.position = newPos;
+
+                // 경로 히트: 2.5m 이내 모든 몬스터 (중복 방지)
+                foreach (var c in Character.GetAllCharacters())
                 {
-                    // Character 컴포넌트가 있으면 몬스터/플레이어 → 적중 감지에서 처리, 블록 안 함
-                    if (blockHit.collider.GetComponentInParent<Character>() == null)
-                    {
-                        Plugin.Log.LogDebug($"[방패돌진] 장애물 충돌({blockHit.collider.name}) - 돌진 중단");
-                        break;
-                    }
+                    if (c == null || c.IsDead() || c == player) continue;
+                    if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                    int id = c.GetInstanceID();
+                    if (alreadyHit.Contains(id)) continue;
+                    if (Vector3.Distance(c.transform.position, player.transform.position) > 3f) continue;
+
+                    alreadyHit.Add(id);
+                    try { ApplyShieldChargeHit(player, c, lookDir); }
+                    catch (Exception ex) { Plugin.Log.LogError($"[돌진방패] 경로 히트 오류: {ex.Message}"); }
                 }
 
-                // Rigidbody 이동 (physics-safe)
-                if (body2 != null)
+                // 돌진 잔상 VFX
+                if (vfxTimer >= 0.08f)
                 {
-                    body2.velocity = Vector3.zero;
-                    body2.MovePosition(newPos);
-                }
-                else
-                {
-                    player.transform.position = newPos;
-                }
-
-                // 적 감지: OverlapSphere(겹침) + SphereCast(전방) 병행
-                // SphereCast는 origin에 겹친 콜라이더를 감지 못하므로 OverlapSphere 선행
-                // castOrigin: MovePosition은 FixedUpdate에 반영되므로 목표 위치(newPos) 기준으로 계산
-                LayerMask charMask = LayerMask.GetMask("character", "hitbox");
-                float centerHeight = player.GetCenterPoint().y - player.transform.position.y;
-                Vector3 castOrigin = newPos + Vector3.up * centerHeight;
-
-                // 1단계: OverlapSphere - 플레이어와 겹친 적 감지 (0.8m → 1.2m로 근접 보완)
-                if (!hitEnemy)
-                {
-                    var overlaps = Physics.OverlapSphere(castOrigin, 1.2f, charMask);
-                    foreach (var col in overlaps)
-                    {
-                        var enemy = col.GetComponentInParent<Character>();
-                        if (enemy != null && enemy != player && !enemy.IsDead() &&
-                            enemy.GetFaction() != Character.Faction.Players)
-                        {
-                            hitEnemy = true;
-                            try { ApplyShieldChargeHit(player, enemy, dashDir2, enemy.GetCenterPoint()); }
-                            catch (Exception ex) { Plugin.Log.LogError($"[방패돌진] 충돌 처리 오류: {ex.Message}"); }
-                            break;
-                        }
-                    }
-                }
-
-                // 2단계: SphereCast - 전방 3m 적 감지
-                if (!hitEnemy && Physics.SphereCast(castOrigin, 0.8f, dashDir2, out RaycastHit sphereHit, 3.0f, charMask))
-                {
-                    var enemy = sphereHit.collider.GetComponentInParent<Character>();
-                    if (enemy != null && enemy != player && !enemy.IsDead() &&
-                        enemy.GetFaction() != Character.Faction.Players)
-                    {
-                        hitEnemy = true;
-                        try { ApplyShieldChargeHit(player, enemy, dashDir2, enemy.GetCenterPoint()); }
-                        catch (Exception ex) { Plugin.Log.LogError($"[방패돌진] 충돌 처리 오류: {ex.Message}"); }
-                    }
-                }
-
-                // 3단계: 보정 적중 - 3m 이내 전방 방향 적 감지 (dot > 0.2: ±78도 이내만 허용)
-                if (!hitEnemy)
-                {
-                    var nearOverlaps = Physics.OverlapSphere(castOrigin, 3f, charMask);
-                    Character nearest = null;
-                    float nearestDist = float.MaxValue;
-                    foreach (var col in nearOverlaps)
-                    {
-                        var nearEnemy = col.GetComponentInParent<Character>();
-                        if (nearEnemy == null || nearEnemy == player || nearEnemy.IsDead()) continue;
-                        if (nearEnemy.GetFaction() == Character.Faction.Players) continue;
-                        // 전방 방향 필터: 옆/뒤 몬스터로 인한 조기 종료 방지
-                        float dot = Vector3.Dot((nearEnemy.GetCenterPoint() - castOrigin).normalized, dashDir2);
-                        if (dot < 0.2f) continue;
-                        float dist = Vector3.Distance(castOrigin, nearEnemy.GetCenterPoint());
-                        if (dist < nearestDist) { nearestDist = dist; nearest = nearEnemy; }
-                    }
-                    if (nearest != null)
-                    {
-                        hitEnemy = true;
-                        try { ApplyShieldChargeHit(player, nearest, dashDir2, nearest.GetCenterPoint()); }
-                        catch (Exception ex) { Plugin.Log.LogError($"[방패돌진] 보정 적중 오류: {ex.Message}"); }
-                    }
+                    var shieldPrefab2 = ZNetScene.instance?.GetPrefab("fx_shieldgenerator_domehit");
+                    if (shieldPrefab2 != null)
+                        UnityEngine.Object.Instantiate(shieldPrefab2, player.GetCenterPoint(), Quaternion.identity);
+                    vfxTimer = 0f;
                 }
 
                 yield return null;
             }
 
-            // 6. blocking 해제
+            // 최종 위치 확정 + 스냅백 완전 방지
+            if (player != null && !player.IsDead())
+            {
+                player.transform.position = endPos;
+                if (rb != null)
+                {
+                    rb.position = endPos;
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+                // Valheim 내부 속도 초기화 (m_currentVel 스냅백 핵심 원인)
+                var velField = typeof(Character).GetField("m_currentVel",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                velField?.SetValue(player, Vector3.zero);
+                // ZDO 위치 동기화 (네트워크 스냅백 방지 — FuryHammer 패턴)
+                var nview = HarmonyLib.Traverse.Create(player).Field("m_nview").GetValue<ZNetView>();
+                if (nview != null && nview.IsOwner())
+                {
+                    var zdo = nview.GetZDO();
+                    if (zdo != null) zdo.SetPosition(endPos);
+                }
+            }
+
+            // 낙하 데미지 방지
+            try
+            {
+                var altField = typeof(Character).GetField("m_maxAirAltitude",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                altField?.SetValue(player, endPos.y);
+            }
+            catch { }
+
             try
             {
                 if (zanim != null && player != null && !player.IsDead())
@@ -281,19 +243,22 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[방패돌진] blocking 해제 오류: {ex.Message}");
+                Plugin.Log.LogError($"[돌진방패] blocking 해제 오류: {ex.Message}");
             }
 
             shieldChargeActive.Remove(player);
-            Plugin.Log.LogInfo($"[방패돌진] 돌진 완료 (적중: {hitEnemy})");
+            Plugin.Log.LogInfo($"[돌진방패] 돌진 완료 — 타격 수: {alreadyHit.Count}");
+
+            // 도발 펄스 (타격한 적 대상)
+            if (alreadyHit.Count > 0 && Plugin.Instance != null)
+                Plugin.Instance.StartCoroutine(ShieldChargeTauntPulseCoroutine(player, player.transform.position));
         }
 
         /// <summary>
-        /// 방패돌진 충돌 처리: 데미지, 스태거, AoE, 도발
+        /// 경로 히트 단일 처리: 데미지 + 스태거 + 도발 + VFX
         /// </summary>
-        private static void ApplyShieldChargeHit(Player player, Character enemy, Vector3 dashDir, Vector3 hitPoint)
+        private static void ApplyShieldChargeHit(Player player, Character enemy, Vector3 dashDir)
         {
-            // 방패 막기력 계산
             float skillFactor = player.GetSkillFactor(Skills.SkillType.Blocking);
             var shieldItem = HarmonyLib.Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
 
@@ -305,7 +270,6 @@ namespace CaptainSkillTree.SkillTree
             float damage = blockPower * damageRatio;
             if (damage < 1f) damage = 1f;
 
-            // 주 타겟 데미지
             var chargeHit = new HitData();
             chargeHit.m_damage.m_blunt = damage;
             chargeHit.m_attacker = player.GetZDOID();
@@ -313,100 +277,43 @@ namespace CaptainSkillTree.SkillTree
             chargeHit.m_point = enemy.GetCenterPoint();
             chargeHit.m_dir = dashDir;
             chargeHit.m_skill = Skills.SkillType.Clubs;
-            chargeHit.m_pushForce = 5f;
+            chargeHit.m_pushForce = 3f;
             chargeHit.m_blockable = false;
             chargeHit.m_dodgeable = true;
             chargeHit.m_staggerMultiplier = 2f;
 
             enemy.Damage(chargeHit);
-            enemy.Stagger(dashDir);  // 1.5초 기절
+            enemy.Stagger(dashDir);
 
-            // 충돌 VFX (파링 효과음)
-            VFXManager.PlayVFXMultiplayer("vfx_blocked", "", hitPoint, Quaternion.identity, 2f);
+            // 도발
+            TankerTauntAIPatch.AddTauntedMonster(enemy, player, 5f);
 
+            // 머리 위 도발 아이콘
+            try
+            {
+                var tauntCol = enemy.GetComponent<Collider>();
+                float headHeight = (tauntCol != null && tauntCol.bounds.size.y > 0.1f)
+                    ? tauntCol.bounds.max.y - enemy.transform.position.y + 0.5f
+                    : 2.5f;
+                SimpleVFX.PlayFollowing("taunt", enemy.transform, Vector3.up * headHeight, 5f);
+            }
+            catch { }
+
+            VFXManager.PlayVFXMultiplayer("vfx_blocked", "", enemy.GetCenterPoint(), Quaternion.identity, 2f);
+            VFXManager.PlayVFXMultiplayer("sfx_rock_hit", "", enemy.GetCenterPoint(), Quaternion.identity, 2f);
             DrawFloatingText(player, "🛡️ " + L.Get("guardian_heart_activated") + $" {Mathf.RoundToInt(damage)}", new Color(0.2f, 0.8f, 1f, 1f));
-            Plugin.Log.LogInfo($"[방패돌진] 주 타겟 적중: {enemy.name}, 막기력 {blockPower:F0} x {Mace_Config.ShieldChargeDamagePercentValue}% = {damage:F0}");
-
-            // AoE 6m 범위 데미지 (주 타겟 제외, ToList 제거 - 직접 순회)
-            float aoeDamage = damage * 0.5f;
-            int aoeCount = 0;
-            foreach (var aoeTarget in Character.GetAllCharacters())
-            {
-                if (aoeTarget == null || aoeTarget.IsDead() || aoeTarget == player || aoeTarget == enemy) continue;
-                if (!JobSkillsUtility.IsMonsterFaction(aoeTarget.GetFaction())) continue;
-                if (Vector3.Distance(aoeTarget.transform.position, hitPoint) >= 6f) continue;
-                aoeCount++;
-                try
-                {
-                    var aoeHit = new HitData();
-                    aoeHit.m_damage.m_blunt = aoeDamage;
-                    aoeHit.m_attacker = player.GetZDOID();
-                    aoeHit.SetAttacker(player);
-                    aoeHit.m_point = aoeTarget.GetCenterPoint();
-                    aoeHit.m_dir = (aoeTarget.transform.position - hitPoint).normalized;
-                    aoeHit.m_skill = Skills.SkillType.Clubs;
-                    aoeHit.m_pushForce = 2f;
-                    aoeHit.m_blockable = false;
-                    aoeHit.m_dodgeable = true;
-                    aoeTarget.Damage(aoeHit);
-                }
-                catch (Exception ex)
-                {
-                    Plugin.Log.LogError($"[방패돌진 AoE] {aoeTarget?.name} 데미지 오류: {ex.Message}");
-                }
-            }
-
-            // AoE VFX/SFX
-            SimpleVFX.Play("flash_star_ellow_purple", hitPoint, 3f);
-            VFXManager.PlayVFXMultiplayer("sfx_metal_shield_blocked", "", hitPoint, Quaternion.identity, 2f);
-
-            if (aoeCount > 0)
-                Plugin.Log.LogInfo($"[방패돌진 AoE] 6m 범위 {aoeCount}마리 적중, AoE 데미지: {aoeDamage:F0}");
-
-            // 도발 - 6m 내 모든 몬스터 (주 타겟 포함, ToList 제거 - 직접 순회)
-            int tauntCount = 0;
-            foreach (var tauntTarget in Character.GetAllCharacters())
-            {
-                if (tauntTarget == null || tauntTarget.IsDead() || tauntTarget == player) continue;
-                if (!JobSkillsUtility.IsMonsterFaction(tauntTarget.GetFaction())) continue;
-                if (Vector3.Distance(tauntTarget.transform.position, hitPoint) >= 6f) continue;
-                tauntCount++;
-                try
-                {
-                    TankerTauntAIPatch.AddTauntedMonster(tauntTarget, player, 5f);
-
-                    // 머리 위 도발 VFX (collider 상단 기준)
-                    var tauntCol = tauntTarget.GetComponent<Collider>();
-                    float headHeight = (tauntCol != null && tauntCol.bounds.size.y > 0.1f)
-                        ? tauntCol.bounds.max.y - tauntTarget.transform.position.y + 0.5f
-                        : 2.5f;
-                    SimpleVFX.PlayFollowing("taunt", tauntTarget.transform, Vector3.up * headHeight, 5f);
-                }
-                catch (Exception ex)
-                {
-                    Plugin.Log.LogError($"[방패돌진 도발] {tauntTarget?.name} 도발 오류: {ex.Message}");
-                }
-            }
-
-            // 도발 펄스 코루틴 시작 (1초 간격 5회, 플레이어에게 fx_Fader_Spin)
-            if (Plugin.Instance != null)
-                Plugin.Instance.StartCoroutine(ShieldChargeTauntPulseCoroutine(player, hitPoint));
-
-            Plugin.Log.LogInfo($"[방패돌진 도발] 6m 범위 {tauntCount}마리 도발 시작");
+            Plugin.Log.LogInfo($"[돌진방패] 경로 타격: {enemy.name}, 데미지={damage:F0}");
         }
 
         /// <summary>
-        /// 방패돌진 도발 펄스 코루틴
-        /// 1초 간격 5회: 플레이어에게 fx_Fader_Spin VFX + 6m 내 몬스터 어그로 유지
-        /// 탱커 TauntPulseRoutine 패턴 동일
+        /// 도발 펄스 코루틴 — 도달 위치 기준 6m 이내 적 어그로 갱신 (1초 × 5회)
         /// </summary>
-        private static IEnumerator ShieldChargeTauntPulseCoroutine(Player player, Vector3 hitPoint)
+        private static IEnumerator ShieldChargeTauntPulseCoroutine(Player player, Vector3 center)
         {
             for (int i = 0; i < 5; i++)
             {
                 if (player == null || player.IsDead()) yield break;
 
-                // 플레이어에게 fx_Fader_Spin VFX + sfx_metal_shield_blocked_overlay (1초마다)
                 try
                 {
                     VFXManager.PlayVFXMultiplayer("fx_Fader_Spin", "", player.GetCenterPoint(), Quaternion.identity, 1.5f);
@@ -414,25 +321,24 @@ namespace CaptainSkillTree.SkillTree
                 }
                 catch (Exception ex)
                 {
-                    Plugin.Log.LogError($"[방패돌진 펄스] VFX 오류: {ex.Message}");
+                    Plugin.Log.LogError($"[돌진방패 펄스] VFX 오류: {ex.Message}");
                 }
 
-                // 6m 내 몬스터 재수집 → 어그로 유지
                 try
                 {
                     foreach (var enemy in Character.GetAllCharacters())
                     {
                         if (enemy == null || enemy.IsDead() || enemy == player) continue;
                         if (!JobSkillsUtility.IsMonsterFaction(enemy.GetFaction())) continue;
-                        if (Vector3.Distance(enemy.transform.position, hitPoint) >= 6f) continue;
+                        if (Vector3.Distance(enemy.transform.position, center) >= 6f) continue;
                         TankerTauntAIPatch.AddTauntedMonster(enemy, player, 1f);
                     }
 
-                    Plugin.Log.LogDebug($"[방패돌진 펄스] {i + 1}/5회 어그로 갱신");
+                    Plugin.Log.LogDebug($"[돌진방패 펄스] {i + 1}/5회 어그로 갱신");
                 }
                 catch (Exception ex)
                 {
-                    Plugin.Log.LogError($"[방패돌진 펄스] 어그로 갱신 오류: {ex.Message}");
+                    Plugin.Log.LogError($"[돌진방패 펄스] 어그로 갱신 오류: {ex.Message}");
                 }
 
                 if (i < 4)
@@ -449,10 +355,22 @@ namespace CaptainSkillTree.SkillTree
             {
                 shieldChargeCooldowns.Remove(player);
                 shieldChargeActive.Remove(player);
+                _shieldChargePendingWindow.Remove(player);
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[방패돌진] 정리 실패: {ex.Message}");
+                Plugin.Log.LogError($"[돌진방패] 정리 실패: {ex.Message}");
+            }
+        }
+
+        private static IEnumerator ExpireShieldChargeWindow(Player player)
+        {
+            yield return new WaitForSeconds(ShieldChargeExtraWindow);
+            if (_shieldChargePendingWindow.ContainsKey(player))
+            {
+                _shieldChargePendingWindow.Remove(player);
+                shieldChargeCooldowns[player] = Time.time + Mace_Config.GuardianHeartCooldownValue;
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "mace_Step7_guardian_heart", Mace_Config.GuardianHeartCooldownValue);
             }
         }
     }

@@ -107,7 +107,7 @@ namespace CaptainSkillTree.SkillTree
                 // 2번째 사용: 차지 소비 → 쿨타임 시작
                 _archerLv2OneShotChargeReady[player] = false;
                 crossbowOneShotCooldown[player] = Time.time;
-                ActiveSkillCooldownRegistry.SetCooldown("R", cooldownTime);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("R", "crossbow_Step6_expert", cooldownTime);
                 Plugin.Log.LogDebug("[단 한 발] Archer Lv2 2번째 사용 → 쿨타임 시작");
             }
             else if (hasArcherLv2)
@@ -119,7 +119,7 @@ namespace CaptainSkillTree.SkillTree
             else
             {
                 crossbowOneShotCooldown[player] = Time.time;
-                ActiveSkillCooldownRegistry.SetCooldown("R", cooldownTime);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("R", "crossbow_Step6_expert", cooldownTime);
             }
 
             if (crossbowOneShotCoroutine.ContainsKey(player) && crossbowOneShotCoroutine[player] != null)
@@ -338,7 +338,7 @@ namespace CaptainSkillTree.SkillTree
                     return false;
 
                 bool isValidTarget = target.IsMonsterFaction(Time.time) ||
-                                   (target.IsPlayer() && target != player) ||
+                                   target.GetFaction() == Character.Faction.Boss ||
                                    target.name.Contains("Deer") || target.name.Contains("Boar") ||
                                    target.name.Contains("Neck") || target.name.Contains("Greyling");
 
@@ -396,7 +396,7 @@ namespace CaptainSkillTree.SkillTree
 
                             try
                             {
-                                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_Lightning", "", enemy.transform.position, Quaternion.identity, 2f);
+                                CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_batteringram_fire", "", enemy.transform.position, Quaternion.identity, 2f);
                             }
                             catch { }
                         }
@@ -469,7 +469,7 @@ namespace CaptainSkillTree.SkillTree
                         }
                         enemy.Stagger(dir);
 
-                        try { CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_Lightning", "", enemy.transform.position, Quaternion.identity, 2f); } catch { }
+                        try { CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_batteringram_fire", "", enemy.transform.position, Quaternion.identity, 2f); } catch { }
                     }
                 }
                 catch (Exception aoeEx)

@@ -17,7 +17,7 @@ namespace CaptainSkillTree.SkillTree
         // 메이지 액티브 스킬 상태 관리
         private static readonly Dictionary<string, float> lastActivationTime = new Dictionary<string, float>();
         private static readonly HashSet<string> pendingExplosions = new HashSet<string>();
-        // Lv2+ 연속 발사 충전 (30초 이내 추가 시전 가능)
+        // Lv2+ 이중시전 충전 (30초 이내 추가 시전 가능)
         private static readonly Dictionary<string, float> extraChargeExpiry = new Dictionary<string, float>();
 
         /// <summary>메이지 스킬 등록</summary>
@@ -98,14 +98,14 @@ namespace CaptainSkillTree.SkillTree
                 float currentTime = Time.time;
                 int mageLevel = GetMageLevel(player);
 
-                // Lv2+ 연속 발사 충전 체크
+                // Lv2+ 이중시전 충전 체크
                 bool hasExtraCharge = mageLevel >= 2 &&
                     extraChargeExpiry.TryGetValue(playerKey, out float expiry) &&
                     currentTime < expiry;
 
                 if (hasExtraCharge)
                 {
-                    if (!IsWieldingStaff(player))
+                    if (!WeaponHelper.IsUsingStaffOrWand(player))
                     {
                         player.Message(MessageHud.MessageType.Center, L.Get("staff_required"));
                         return false;
@@ -145,7 +145,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 지팡이 착용 체크
-                if (!IsWieldingStaff(player))
+                if (!WeaponHelper.IsUsingStaffOrWand(player))
                 {
                     player.Message(MessageHud.MessageType.Center, L.Get("staff_required"));
                     return false;
@@ -168,28 +168,6 @@ namespace CaptainSkillTree.SkillTree
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[불의 비] 스킬 실행 실패: {ex.Message}");
-                return false;
-            }
-        }
-
-        /// <summary>지팡이 착용 여부 확인</summary>
-        private static bool IsWieldingStaff(Player player)
-        {
-            try
-            {
-                var rightItem = player.GetCurrentWeapon();
-                if (rightItem?.m_shared != null)
-                {
-                    string itemName = rightItem.m_shared.m_name?.ToLower() ?? "";
-                    if (itemName.Contains("staff") || itemName.Contains("wand") ||
-                        itemName.Contains("$item_staff"))
-                        return true;
-                }
-                return false;
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[메이지 스킬] 지팡이 확인 실패: {ex.Message}");
                 return false;
             }
         }

@@ -596,29 +596,24 @@ namespace CaptainSkillTree.Localization
                 "デフォルト：20",
 
                 // === Producer Lv1 ===
-                ["Producer_FarmGrid_Lv1"] = "【農耕グリッドサイズ Lv1】\nLv1時の農耕グリッド追加マス数。\nデフォルト：2",
                 ["Producer_EnchantChance_Lv1"] = "【エンチャント確率 Lv1 (%)】\nLv1時に製作アイテムをエンチャントする確率。\nデフォルト：0%",
 
                 // === Producer Lv2 ===
-                ["Producer_FarmGrid_Lv2"] = "【農耕グリッドサイズ Lv2】\nLv2時の農耕グリッド追加マス数。\nデフォルト：2",
                 ["Producer_Durability_Lv2"] = "【製作品耐久度ボーナス Lv2 (%)】\nLv2時の製作アイテム耐久度ボーナス。\nデフォルト：10%",
                 ["Producer_MaterialReduction_Lv2"] = "【素材消費減少 Lv2 (%)】\nLv2時の製作ごとに節約される素材。\nデフォルト：10%",
                 ["Producer_EnchantChance_Lv2"] = "【エンチャント確率 Lv2 (%)】\nLv2時に製作アイテムをエンチャントする確率。\nデフォルト：0%",
 
                 // === Producer Lv3 ===
-                ["Producer_FarmGrid_Lv3"] = "【農耕グリッドサイズ Lv3】\nLv3時の農耕グリッド追加マス数。\nデフォルト：4",
                 ["Producer_Durability_Lv3"] = "【製作品耐久度ボーナス Lv3 (%)】\nLv3時の製作アイテム耐久度ボーナス。\nデフォルト：15%",
                 ["Producer_MaterialReduction_Lv3"] = "【素材消費減少 Lv3 (%)】\nLv3時の製作ごとに節約される素材。\nデフォルト：15%",
                 ["Producer_EnchantChance_Lv3"] = "【エンチャント確率 Lv3 (%)】\nLv3時に製作アイテムをエンチャントする確率。\nデフォルト：25%",
 
                 // === Producer Lv4 ===
-                ["Producer_FarmGrid_Lv4"] = "【農耕グリッドサイズ Lv4】\nLv4時の農耕グリッド追加マス数。\nデフォルト：6",
                 ["Producer_Durability_Lv4"] = "【製作品耐久度ボーナス Lv4 (%)】\nLv4時の製作アイテム耐久度ボーナス。\nデフォルト：20%",
                 ["Producer_MaterialReduction_Lv4"] = "【素材消費減少 Lv4 (%)】\nLv4時の製作ごとに節約される素材。\nデフォルト：20%",
                 ["Producer_EnchantChance_Lv4"] = "【エンチャント確率 Lv4 (%)】\nLv4時に製作アイテムをエンチャントする確率。\nデフォルト：30%",
 
                 // === Producer Lv5 ===
-                ["Producer_FarmGrid_Lv5"] = "【農耕グリッドサイズ Lv5】\nLv5時の農耕グリッド追加マス数。\nデフォルト：8",
                 ["Producer_Durability_Lv5"] = "【製作品耐久度ボーナス Lv5 (%)】\nLv5時の製作アイテム耐久度ボーナス。\nデフォルト：30%",
                 ["Producer_MaterialReduction_Lv5"] = "【素材消費減少 Lv5 (%)】\nLv5時の製作ごとに節約される素材。\nデフォルト：30%",
                 ["Producer_EnchantChance_Lv5"] = "【エンチャント確率 Lv5 (%)】\nLv5時に製作アイテムをエンチャントする確率。\nデフォルト：35%",

@@ -97,7 +97,7 @@ namespace CaptainSkillTree.SkillTree
                     // 2번째 사용: 차지 소비 → 쿨타임 시작
                     _archerLv2ExplosiveArrowChargeReady[player] = false;
                     explosiveArrowCooldown[player] = Time.time;
-                    ActiveSkillCooldownRegistry.SetCooldown("R", SkillTreeConfig.BowExplosiveArrowCooldownValue);
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("R", "bow_Step6_critboost", SkillTreeConfig.BowExplosiveArrowCooldownValue);
                     Plugin.Log.LogDebug("[폭발화살] Archer Lv2 2번째 사용 → 쿨타임 시작");
                 }
                 else if (hasArcherLv2)
@@ -109,7 +109,7 @@ namespace CaptainSkillTree.SkillTree
                 else
                 {
                     explosiveArrowCooldown[player] = Time.time;
-                    ActiveSkillCooldownRegistry.SetCooldown("R", SkillTreeConfig.BowExplosiveArrowCooldownValue);
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("R", "bow_Step6_critboost", SkillTreeConfig.BowExplosiveArrowCooldownValue);
                 }
 
                 // 스태미나 소모

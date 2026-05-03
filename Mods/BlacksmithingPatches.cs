@@ -1,4 +1,5 @@
 using HarmonyLib;
+using UnityEngine;
 
 namespace CaptainSkillTree.Mods
 {
@@ -12,9 +13,13 @@ namespace CaptainSkillTree.Mods
     [HarmonyAfter(BlacksmithingBridge.GUID)]
     internal static class BSE_DamageGate
     {
-        static void Prefix(ItemDrop.ItemData __instance, out HitData.DamageTypes __state)
+        static void Prefix(ItemDrop.ItemData __instance, int quality, float worldLevel, out HitData.DamageTypes __state)
         {
             __state = __instance.m_shared.m_damages;
+            if (quality > 1)
+                __state.Add(__instance.m_shared.m_damagesPerLevel, quality - 1);
+            if (worldLevel > 0f && Game.instance != null)
+                __state.IncreaseEqually(worldLevel * (float)Game.instance.m_worldLevelGearBaseDamage, true);
         }
 
         static void Postfix(ref HitData.DamageTypes __result, HitData.DamageTypes __state)
@@ -30,9 +35,12 @@ namespace CaptainSkillTree.Mods
     [HarmonyAfter(BlacksmithingBridge.GUID)]
     internal static class BSE_ArmorGate
     {
-        static void Prefix(ItemDrop.ItemData __instance, out float __state)
+        static void Prefix(ItemDrop.ItemData __instance, int quality, float worldLevel, out float __state)
         {
-            __state = __instance.m_shared.m_armor;
+            float worldBonus = Game.instance != null ? worldLevel * Game.instance.m_worldLevelGearBaseAC : 0f;
+            __state = __instance.m_shared.m_armor
+                      + Mathf.Max(0, quality - 1) * __instance.m_shared.m_armorPerLevel
+                      + worldBonus;
         }
 
         static void Postfix(ref float __result, float __state)
@@ -48,9 +56,10 @@ namespace CaptainSkillTree.Mods
     [HarmonyAfter(BlacksmithingBridge.GUID)]
     internal static class BSE_DurabilityGate
     {
-        static void Prefix(ItemDrop.ItemData __instance, out float __state)
+        static void Prefix(ItemDrop.ItemData __instance, int quality, out float __state)
         {
-            __state = __instance.m_shared.m_maxDurability;
+            __state = __instance.m_shared.m_maxDurability
+                      + Mathf.Max(0, quality - 1) * __instance.m_shared.m_durabilityPerLevel;
         }
 
         static void Postfix(ref float __result, float __state)
@@ -63,13 +72,15 @@ namespace CaptainSkillTree.Mods
     // ──── 블록 파워 ─────────────────────────────────────────────────────────
 
     [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetBlockPower),
-        new System.Type[] { typeof(float) })]
+        new System.Type[] { typeof(int), typeof(float) })]
     [HarmonyAfter(BlacksmithingBridge.GUID)]
     internal static class BSE_BlockGate
     {
-        static void Prefix(ItemDrop.ItemData __instance, out float __state)
+        static void Prefix(ItemDrop.ItemData __instance, int quality, float skillFactor, out float __state)
         {
-            __state = __instance.m_shared.m_blockPower;
+            float baseBlock = __instance.m_shared.m_blockPower
+                              + Mathf.Max(0, quality - 1) * __instance.m_shared.m_blockPowerPerLevel;
+            __state = baseBlock + baseBlock * skillFactor * 0.5f;
         }
 
         static void Postfix(ref float __result, float __state)

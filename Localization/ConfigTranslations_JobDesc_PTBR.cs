@@ -595,29 +595,24 @@ namespace CaptainSkillTree.Localization
                 "Padrão: 20",
 
                 // === Producer Lv1 ===
-                ["Producer_FarmGrid_Lv1"] = "【Tamanho da Grade de Plantio Lv1】\nNúmero de células extras na grade de plantio em Lv1.\nPadrão: 2",
                 ["Producer_EnchantChance_Lv1"] = "【Chance de Encantamento Lv1 (%)】\nChance de encantar item fabricado em Lv1.\nPadrão: 0%",
 
                 // === Producer Lv2 ===
-                ["Producer_FarmGrid_Lv2"] = "【Tamanho da Grade de Plantio Lv2】\nNúmero de células extras na grade de plantio em Lv2.\nPadrão: 2",
                 ["Producer_Durability_Lv2"] = "【Bônus de Durabilidade Lv2 (%)】\nBônus de durabilidade em itens fabricados em Lv2.\nPadrão: 10%",
                 ["Producer_MaterialReduction_Lv2"] = "【Redução de Material Lv2 (%)】\nMateriais economizados por fabricação em Lv2.\nPadrão: 10%",
                 ["Producer_EnchantChance_Lv2"] = "【Chance de Encantamento Lv2 (%)】\nChance de encantar item fabricado em Lv2.\nPadrão: 0%",
 
                 // === Producer Lv3 ===
-                ["Producer_FarmGrid_Lv3"] = "【Tamanho da Grade de Plantio Lv3】\nNúmero de células extras na grade de plantio em Lv3.\nPadrão: 4",
                 ["Producer_Durability_Lv3"] = "【Bônus de Durabilidade Lv3 (%)】\nBônus de durabilidade em itens fabricados em Lv3.\nPadrão: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【Redução de Material Lv3 (%)】\nMateriais economizados por fabricação em Lv3.\nPadrão: 15%",
                 ["Producer_EnchantChance_Lv3"] = "【Chance de Encantamento Lv3 (%)】\nChance de encantar item fabricado em Lv3.\nPadrão: 25%",
 
                 // === Producer Lv4 ===
-                ["Producer_FarmGrid_Lv4"] = "【Tamanho da Grade de Plantio Lv4】\nNúmero de células extras na grade de plantio em Lv4.\nPadrão: 6",
                 ["Producer_Durability_Lv4"] = "【Bônus de Durabilidade Lv4 (%)】\nBônus de durabilidade em itens fabricados em Lv4.\nPadrão: 20%",
                 ["Producer_MaterialReduction_Lv4"] = "【Redução de Material Lv4 (%)】\nMateriais economizados por fabricação em Lv4.\nPadrão: 20%",
                 ["Producer_EnchantChance_Lv4"] = "【Chance de Encantamento Lv4 (%)】\nChance de encantar item fabricado em Lv4.\nPadrão: 30%",
 
                 // === Producer Lv5 ===
-                ["Producer_FarmGrid_Lv5"] = "【Tamanho da Grade de Plantio Lv5】\nNúmero de células extras na grade de plantio em Lv5.\nPadrão: 8",
                 ["Producer_Durability_Lv5"] = "【Bônus de Durabilidade Lv5 (%)】\nBônus de durabilidade em itens fabricados em Lv5.\nPadrão: 30%",
                 ["Producer_MaterialReduction_Lv5"] = "【Redução de Material Lv5 (%)】\nMateriais economizados por fabricação em Lv5.\nPadrão: 30%",
                 ["Producer_EnchantChance_Lv5"] = "【Chance de Encantamento Lv5 (%)】\nChance de encantar item fabricado em Lv5.\nPadrão: 35%",

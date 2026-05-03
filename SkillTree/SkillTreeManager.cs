@@ -489,6 +489,13 @@ namespace CaptainSkillTree.SkillTree
             return true;
         }
         
+        /// 스킬 ID에서 무기 그룹 prefix 추출 (bow_, crossbow_, staff_, sword_, knife_, spear_, polearm_, mace_)
+        private static string GetWeaponGroupPrefix(string skillId)
+        {
+            var prefixes = new[] { "bow_", "crossbow_", "staff_", "sword_", "knife_", "spear_", "polearm_", "mace_" };
+            return System.Array.Find(prefixes, p => skillId.StartsWith(p, System.StringComparison.OrdinalIgnoreCase)) ?? skillId;
+        }
+
         /// <summary>
         /// 액티브 스킬 언락 제한 체크 (백업 방식: 상호 배타적 제한만)
         /// </summary>
@@ -499,27 +506,29 @@ namespace CaptainSkillTree.SkillTree
         {
             restrictionMessage = "";
 
-            // R키: 원거리 액티브 (1개만 선택 가능)
+            // R키: 원거리 액티브 (무기별 1개 - 무기 다르면 중복 허용)
             var rKeySkills = new[] { "crossbow_Step6_expert", "bow_Step6_critboost", "staff_Step6_dual_cast" };
 
-            // G키: 근접 메인 액티브 (같은 무기 트리만 허용)
+            // G키: 근접/방어 메인 액티브 (무기별 1개 - 무기 다르면 중복 허용)
             var gKeyMeleeSkills = new[] {
                 "sword_step5_finalcut",       // 검: 돌진 연속 베기
-
+                "sword_slash",                // 검: 베기 (sword_ prefix)
                 "knife_step9_assassin_heart", // 단검: 암살자의 심장
                 "spear_Step5_penetrate",      // 창: 꿰뚫는 창
                 "polearm_step5_king",         // 폴암: 장창의 제왕
+                "defense_Step6_mind",         // 방어전문가: 마인드쉴드 (고유 prefix)
                 "mace_Step7_guardian_heart"   // 둔기: 수호자의 진심
             };
 
-            // H키: 보조 액티브 (키당 1개만 허용)
+            // H키: 보조 액티브 (무기별 1개 - 무기 다르면 중복 허용)
             var hKeySkills = new[] {
-                "sword_step5_defswitch",      // 검: 패링 돌격
-                "spear_Step5_combo",          // 창: 연공창
-                "mace_Step7_fury_hammer",     // 둔기: 분노의 망치
-                "staff_Step6_heal",           // 지팡이: 범위 힐
-                "bow_Step6_arrow_rain",       // 활: 화살비
-                "crossbow_ice_breath"         // 석궁: 발칸 아이스
+                "sword_step5_defswitch",        // 검: 패링 돌격
+                "knife_step10_stack_explosion", // 단검: 약점 폭발
+                "spear_Step5_combo",            // 창: 연공창
+                "mace_Step7_fury_hammer",       // 둔기: 분노의 망치
+                "staff_Step6_heal",             // 지팡이: 범위 힐
+                "bow_Step6_arrow_rain",         // 활: 화살비
+                "crossbow_ice_breath"           // 석궁: 발칸 아이스
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
@@ -532,47 +541,19 @@ namespace CaptainSkillTree.SkillTree
                 return true;
             }
 
-            // ========== R키 원거리 액티브 스킬 제한 (1개만 선택 가능) ==========
-            if (rKeySkills.Contains(skillId))
+            // ========== R/G/H키: 같은 무기 prefix인 경우에만 중복 차단 ==========
+            foreach (var keyGroup in new[] { rKeySkills, gKeyMeleeSkills, hKeySkills })
             {
-                var existingRKeySkills = rKeySkills.Where(skill => skill != skillId && GetSkillLevel(skill) > 0).ToList();
-                if (existingRKeySkills.Count > 0)
-                {
-                    restrictionMessage = $"Only 1 ranged active skill allowed (current: {string.Join(", ", existingRKeySkills)})";
-                    return false;
-                }
-                return true;
-            }
-
-            // ========== G키 액티브 제한 (키당 1개만) ==========
-            if (gKeyMeleeSkills.Contains(skillId))
-            {
-                var otherGSkills = gKeyMeleeSkills
-                    .Where(s => s != skillId && GetSkillLevel(s) > 0)
+                if (!keyGroup.Contains(skillId)) continue;
+                string myWeapon = GetWeaponGroupPrefix(skillId);
+                var conflicts = keyGroup
+                    .Where(s => s != skillId && GetSkillLevel(s) > 0 && GetWeaponGroupPrefix(s) == myWeapon)
                     .ToList();
-
-                if (otherGSkills.Count > 0)
+                if (conflicts.Count > 0)
                 {
-                    restrictionMessage = $"G key already occupied (current: {string.Join(", ", otherGSkills)})";
+                    restrictionMessage = L.Get("active_skill_weapon_conflict");
                     return false;
                 }
-
-                return true;
-            }
-
-            // ========== H키 액티브 제한 (키당 1개만) ==========
-            if (hKeySkills.Contains(skillId))
-            {
-                var otherHSkills = hKeySkills
-                    .Where(s => s != skillId && GetSkillLevel(s) > 0)
-                    .ToList();
-
-                if (otherHSkills.Count > 0)
-                {
-                    restrictionMessage = $"H key already occupied (current: {string.Join(", ", otherHSkills)})";
-                    return false;
-                }
-
                 return true;
             }
 
@@ -582,7 +563,7 @@ namespace CaptainSkillTree.SkillTree
                 var existingJobSkills = yKeySkills.Where(skill => skill != skillId && GetSkillLevel(skill) > 0).ToList();
                 if (existingJobSkills.Count > 0)
                 {
-                    restrictionMessage = $"Only 1 job skill allowed (current: {string.Join(", ", existingJobSkills)})";
+                    restrictionMessage = L.Get("active_skill_job_only_one");
                     return false;
                 }
             }
@@ -605,26 +586,29 @@ namespace CaptainSkillTree.SkillTree
                 return level > 0 || pending > 0;
             }
 
-            // R키: 원거리 액티브 (1개만 선택 가능)
+            // R키: 원거리 액티브 (무기별 1개 - 무기 다르면 중복 허용)
             var rKeySkills = new[] { "crossbow_Step6_expert", "bow_Step6_critboost", "staff_Step6_dual_cast" };
 
-            // G키: 근접 메인 액티브 (같은 무기 트리만 허용)
+            // G키: 근접/방어 메인 액티브 (무기별 1개 - 무기 다르면 중복 허용)
             var gKeyMeleeSkills = new[] {
                 "sword_step5_finalcut",       // 검: 돌진 연속 베기
+                "sword_slash",                // 검: 베기 (sword_ prefix)
                 "knife_step9_assassin_heart", // 단검: 암살자의 심장
                 "spear_Step5_penetrate",      // 창: 꿰뚫는 창
                 "polearm_step5_king",         // 폴암: 장창의 제왕
+                "defense_Step6_mind",         // 방어전문가: 마인드쉴드 (고유 prefix)
                 "mace_Step7_guardian_heart"   // 둔기: 수호자의 진심
             };
 
-            // H키: 보조 액티브 (키당 1개만 허용)
+            // H키: 보조 액티브 (무기별 1개 - 무기 다르면 중복 허용)
             var hKeySkills = new[] {
-                "sword_step5_defswitch",      // 검: 패링 돌격
-                "spear_Step5_combo",          // 창: 연공창
-                "mace_Step7_fury_hammer",     // 둔기: 분노의 망치
-                "staff_Step6_heal",           // 지팡이: 범위 힐
-                "bow_Step6_arrow_rain",       // 활: 화살비
-                "crossbow_ice_breath"         // 석궁: 발칸 아이스
+                "sword_step5_defswitch",        // 검: 패링 돌격
+                "knife_step10_stack_explosion", // 단검: 약점 폭발
+                "spear_Step5_combo",            // 창: 연공창
+                "mace_Step7_fury_hammer",       // 둔기: 분노의 망치
+                "staff_Step6_heal",             // 지팡이: 범위 힐
+                "bow_Step6_arrow_rain",         // 활: 화살비
+                "crossbow_ice_breath"           // 석궁: 발칸 아이스
             };
 
             // Y키: 직업 액티브 (1개만 선택 가능)
@@ -637,47 +621,19 @@ namespace CaptainSkillTree.SkillTree
                 return true;
             }
 
-            // ========== R키 원거리 액티브 스킬 제한 (1개만 선택 가능) ==========
-            if (rKeySkills.Contains(skillId))
+            // ========== R/G/H키: 같은 무기 prefix인 경우에만 중복 차단 ==========
+            foreach (var keyGroup in new[] { rKeySkills, gKeyMeleeSkills, hKeySkills })
             {
-                var existingRKeySkills = rKeySkills.Where(skill => skill != skillId && HasSkillOrPending(skill)).ToList();
-                if (existingRKeySkills.Count > 0)
-                {
-                    restrictionMessage = L.Get("active_skill_ranged_only_one");
-                    return false;
-                }
-                return true;
-            }
-
-            // ========== G키 액티브 제한 (키당 1개만) ==========
-            if (gKeyMeleeSkills.Contains(skillId))
-            {
-                var otherGSkills = gKeyMeleeSkills
-                    .Where(s => s != skillId && HasSkillOrPending(s))
+                if (!keyGroup.Contains(skillId)) continue;
+                string myWeapon = GetWeaponGroupPrefix(skillId);
+                var conflicts = keyGroup
+                    .Where(s => s != skillId && HasSkillOrPending(s) && GetWeaponGroupPrefix(s) == myWeapon)
                     .ToList();
-
-                if (otherGSkills.Count > 0)
+                if (conflicts.Count > 0)
                 {
                     restrictionMessage = L.Get("active_skill_weapon_conflict");
                     return false;
                 }
-
-                return true;
-            }
-
-            // ========== H키 액티브 제한 (키당 1개만) ==========
-            if (hKeySkills.Contains(skillId))
-            {
-                var otherHSkills = hKeySkills
-                    .Where(s => s != skillId && HasSkillOrPending(s))
-                    .ToList();
-
-                if (otherHSkills.Count > 0)
-                {
-                    restrictionMessage = L.Get("active_skill_weapon_conflict");
-                    return false;
-                }
-
                 return true;
             }
 
@@ -1008,8 +964,13 @@ namespace CaptainSkillTree.SkillTree
                     { lv2SkillOk = false; lv2Error = L.Get("mage_lv2_unlock_cond"); }
                     else if (skillId == "Berserker" && !HasBerserkerLv2SkillPrereq())
                     { lv2SkillOk = false; lv2Error = L.Get("berserker_lv2_skill_prereq_required"); }
-                    else if (skillId == "Tanker" && !HasTankerLv2SkillPrereq())
-                    { lv2SkillOk = false; lv2Error = L.Get("tanker_lv2_skill_prereq_required"); }
+                    else if (skillId == "Tanker")
+                    {
+                        if (!HasTankerLv2SkillPrereq())
+                        { lv2SkillOk = false; lv2Error = L.Get("tanker_lv2_skill_prereq_required"); }
+                        else if (!HasTankerLv2RecentSkillUse())
+                        { lv2SkillOk = false; lv2Error = L.Get("tanker_lv2_recent_use_required"); }
+                    }
                     else if (skillId == "Paladin" && GetSkillLevel("sword_step5_finalcut") <= 0 && GetSkillLevel("mace_Step7_fury_hammer") <= 0)
                     { lv2SkillOk = false; lv2Error = L.Get("paladin_lv2_skill_required"); }
 
@@ -1125,12 +1086,22 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
                 // Lv2 스킬 선행 조건 체크
-                if (targetLevel == 2 && !HasTankerLv2SkillPrereq())
+                if (targetLevel == 2)
                 {
-                    if ((System.Object)Player.m_localPlayer != null)
-                        SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                            "<size=20>⚠️ " + L.Get("tanker_lv2_skill_prereq_required") + "</size>", Color.red);
-                    return;
+                    if (!HasTankerLv2SkillPrereq())
+                    {
+                        if ((System.Object)Player.m_localPlayer != null)
+                            SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                                "<size=20>⚠️ " + L.Get("tanker_lv2_skill_prereq_required") + "</size>", Color.red);
+                        return;
+                    }
+                    if (!HasTankerLv2RecentSkillUse())
+                    {
+                        if ((System.Object)Player.m_localPlayer != null)
+                            SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                                "<size=20>⚠️ " + L.Get("tanker_lv2_recent_use_required") + "</size>", Color.red);
+                        return;
+                    }
                 }
                 if (!HasTankerLevelItems(targetLevel))
                 {
@@ -1932,7 +1903,7 @@ namespace CaptainSkillTree.SkillTree
         // === 탱커 레벨 아이템 체크/소모 메서드 ===
 
         /// <summary>
-        /// 탱커 Lv2 스킬 선행 조건: 분노의 망치 / 돌진베기 / 패링돌격 / 방패돌진 / 꿰뚫는창 / 연창공 중 1개 이상 습득
+        /// 탱커 Lv2 스킬 선행 조건: 분노의 망치 / 돌진베기 / 패링돌격 / 방패돌진 / 꿰뚫는창 / 연공창 / 관통돌격 중 1개 이상 습득
         /// </summary>
         public bool HasTankerLv2SkillPrereq()
         {
@@ -1941,7 +1912,16 @@ namespace CaptainSkillTree.SkillTree
                 || SkillEffect.HasSkill("sword_step5_defswitch")
                 || SkillEffect.HasSkill("mace_Step7_guardian_heart")
                 || SkillEffect.HasSkill("spear_Step5_penetrate")
-                || SkillEffect.HasSkill("spear_Step5_combo");
+                || SkillEffect.HasSkill("spear_Step5_combo")
+                || SkillEffect.HasSkill("polearm_step5_king");
+        }
+
+        /// <summary>
+        /// 탱커 Lv2 업그레이드 조건: 선행 스킬을 30초 이내 사용했는지 확인
+        /// </summary>
+        public bool HasTankerLv2RecentSkillUse()
+        {
+            return UnityEngine.Time.time - SkillEffect.TankerPrereqLastUsedTime <= 30f;
         }
 
         public bool HasTankerLevelItems(int targetLevel)
@@ -1963,7 +1943,8 @@ namespace CaptainSkillTree.SkillTree
                                 GetSkillLevel("sword_step5_defswitch") > 0 ||
                                 GetSkillLevel("mace_Step7_guardian_heart") > 0 ||
                                 GetSkillLevel("spear_Step5_penetrate") > 0 ||
-                                GetSkillLevel("spear_Step5_combo") > 0) &&
+                                GetSkillLevel("spear_Step5_combo") > 0 ||
+                                GetSkillLevel("polearm_step5_king") > 0) &&
                                inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 3: return inventory.HaveItem("$item_trophy_abomination") &&
                                inventory.HaveItem("$item_trophy_bonemass") &&
@@ -2001,8 +1982,10 @@ namespace CaptainSkillTree.SkillTree
                                           GetSkillLevel("sword_step5_defswitch") > 0 ||
                                           GetSkillLevel("mace_Step7_guardian_heart") > 0 ||
                                           GetSkillLevel("spear_Step5_penetrate") > 0 ||
-                                          GetSkillLevel("spear_Step5_combo") > 0;
+                                          GetSkillLevel("spear_Step5_combo") > 0 ||
+                                          GetSkillLevel("polearm_step5_king") > 0;
                     if (!hasTankerSkill) missing.Add(L.Get("tanker_lv2_skill_prereq_required"));
+                    else if (!HasTankerLv2RecentSkillUse()) missing.Add(L.Get("tanker_lv2_recent_use_required"));
                     if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add(string.Format(L.Get("coin_deficit_fmt"), SkillTreeConfig.GetJobLevelCost(targetLevel)));
                     break;
                 case 3:
@@ -2371,7 +2354,7 @@ namespace CaptainSkillTree.SkillTree
                     pendingPoints += pending.Value * node.RequiredPoints;
                 }
             }
-            return GetSkillPoints() - GetTotalUsedPoints() - pendingPoints;
+            return Math.Max(0, GetSkillPoints() - GetTotalUsedPoints() - pendingPoints);
         }
 
         // 스킬포인트 획득(예: 레벨업 시 3점 증가)
@@ -2671,89 +2654,50 @@ namespace CaptainSkillTree.SkillTree
         
         public ActiveSkillValidationResult ValidateActiveSkillLearning(string skillId)
         {
-            // 액티브 스킬 학습 제한 검증
-            
-            // 원거리 전문가 액티브 스킬 제한 (1개만 선택 가능)
-            var rangedActiveSkills = new List<string> { "bow_Step6_critboost", "crossbow_Step6_expert" };
-            if (rangedActiveSkills.Contains(skillId))
-            {
-                int learnedCount = 0;
-                foreach (var rangedSkill in rangedActiveSkills)
-                {
-                    if (GetSkillLevel(rangedSkill) > 0 || pendingInvestments.ContainsKey(rangedSkill))
-                    {
-                        learnedCount++;
-                    }
-                }
-                
-                if (learnedCount >= 1)
-                {
-                    return new ActiveSkillValidationResult(false, true, L.Get("active_skill_ranged_only_one"));
-                }
-            }
-            
-            // 근접 전문가 액티브 스킬 - 같은 무기 전문가 내에서만 여러 개 습득 가능
-            var swordSkills = new List<string> { "sword_step5_finalcut", "sword_step5_defswitch" };
-            var knifeSkills = new List<string> { "knife_step9_assassin_heart" };
-            var spearSkills = new List<string> { "spear_Step5_combo", "spear_Step5_penetrate" };
-            var polearmSkills = new List<string> { "polearm_step5_king" };
-            var maceSkills = new List<string> { "mace_Step7_fury_hammer", "mace_Step7_guardian_heart" };
-
-            var allMeleeActiveSkills = new List<string>();
-            allMeleeActiveSkills.AddRange(swordSkills);
-            allMeleeActiveSkills.AddRange(knifeSkills);
-            allMeleeActiveSkills.AddRange(spearSkills);
-            allMeleeActiveSkills.AddRange(polearmSkills);
-            allMeleeActiveSkills.AddRange(maceSkills);
-
-            if (allMeleeActiveSkills.Contains(skillId))
-            {
-                // 현재 스킬의 무기 타입 확인
-                List<string> currentWeaponSkills = null;
-
-                if (swordSkills.Contains(skillId)) currentWeaponSkills = swordSkills;
-                else if (knifeSkills.Contains(skillId)) currentWeaponSkills = knifeSkills;
-                else if (spearSkills.Contains(skillId)) currentWeaponSkills = spearSkills;
-                else if (polearmSkills.Contains(skillId)) currentWeaponSkills = polearmSkills;
-                else if (maceSkills.Contains(skillId)) currentWeaponSkills = maceSkills;
-
-                // 다른 무기 타입의 스킬이 습득되어 있는지 확인
-                foreach (var skill in allMeleeActiveSkills)
-                {
-                    if (currentWeaponSkills != null && !currentWeaponSkills.Contains(skill))
-                    {
-                        if (GetSkillLevel(skill) > 0 || pendingInvestments.ContainsKey(skill))
-                        {
-                            return new ActiveSkillValidationResult(false, true, L.Get("active_skill_weapon_conflict"));
-                        }
-                    }
-                }
-            }
-
-            // H키 액티브 스킬 상호 배제 (1개만 선택 가능)
-            var hKeyExclusiveSkills = new List<string> {
+            // R/G/H/Y 키별 스킬 목록 (CanUnlockActiveSkill과 동일하게 유지)
+            var rKeySkills = new[] { "crossbow_Step6_expert", "bow_Step6_critboost", "staff_Step6_dual_cast" };
+            var gKeySkills = new[] {
+                "sword_step5_finalcut", "sword_slash",
+                "knife_step9_assassin_heart",
+                "spear_Step5_penetrate",
+                "polearm_step5_king",
+                "defense_Step6_mind",
+                "mace_Step7_guardian_heart"
+            };
+            var hKeySkills = new[] {
                 "sword_step5_defswitch",
+                "knife_step10_stack_explosion",
                 "spear_Step5_combo",
                 "mace_Step7_fury_hammer",
                 "staff_Step6_heal",
-                "bow_Step6_arrow_rain"
+                "bow_Step6_arrow_rain",
+                "crossbow_ice_breath"
             };
-            if (hKeyExclusiveSkills.Contains(skillId))
+            var yKeySkills = new[] { "Berserker", "Tanker", "Archer", "Rogue", "Mage", "Paladin", "Producer" };
+
+            // R/G/H키: 같은 무기 prefix인 경우에만 중복 차단 (다른 무기면 모두 허용)
+            foreach (var keyGroup in new[] { rKeySkills, gKeySkills, hKeySkills })
             {
-                foreach (var hSkill in hKeyExclusiveSkills)
-                {
-                    if (hSkill != skillId && (GetSkillLevel(hSkill) > 0 || pendingInvestments.ContainsKey(hSkill)))
-                    {
-                        return new ActiveSkillValidationResult(false, true, L.Get("h_key_skill_exclusive"));
-                    }
-                }
+                if (!keyGroup.Contains(skillId)) continue;
+                string myWeapon = GetWeaponGroupPrefix(skillId);
+                var conflicts = keyGroup
+                    .Where(s => s != skillId &&
+                                GetWeaponGroupPrefix(s) == myWeapon &&
+                                (GetSkillLevel(s) > 0 || pendingInvestments.ContainsKey(s)))
+                    .ToList();
+                if (conflicts.Count > 0)
+                    return new ActiveSkillValidationResult(false, true, L.Get("active_skill_weapon_conflict"));
+                return new ActiveSkillValidationResult(true, false, "");
             }
 
-            // 지팡이 전문가는 2개 선택 가능 (예외 처리)
-            // staff_Step6_dual_cast + staff_Step6_heal 모두 가능
-            // mace_Step7_fury_hammer + defense_Step7_guardian_heart 모두 가능
+            // Y키: 1개만 선택 가능
+            if (yKeySkills.Contains(skillId))
+            {
+                var existing = yKeySkills.Where(s => s != skillId && (GetSkillLevel(s) > 0 || pendingInvestments.ContainsKey(s))).ToList();
+                if (existing.Count > 0)
+                    return new ActiveSkillValidationResult(false, true, L.Get("active_skill_job_only_one"));
+            }
 
-            // 액티브 스킬 학습 허용
             return new ActiveSkillValidationResult(true, false, "");
         }
         

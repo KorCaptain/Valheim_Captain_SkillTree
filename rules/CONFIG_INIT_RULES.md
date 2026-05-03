@@ -112,3 +112,35 @@ float damage = Sword_Config.RushSlash1stDamageRatio.Value;
 - `[Mage Job Skills]` → 메이지 직업 스킬
 - `[Rogue Job Skills]` → 로그 직업 스킬
 - `[skill_tree_base]` → 전역 설정 (My VFX 투명도 등)
+
+---
+
+## R6. 업데이트 시 유저 컨피그 보존 정책 (CRITICAL)
+
+이미 설치된 낮은 버전에서 업데이트 시, `DifficultyManager.InitializeIfNeeded()`가
+`ApplyVeryhardWithUserOverlay()`를 자동으로 실행해 기존 값을 보존한다.
+
+**동작 순서:**
+1. 기존 유저 값 전체 스냅샷 (메모리 기준)
+2. VeryHard 프리셋 전체 적용 → 신규 추가 키 포함 모든 항목이 VH 기본값으로 초기화
+3. 스냅샷에 있던 기존 키 → 유저 값으로 복원 (신규 키는 VH값 유지)
+4. `GameDifficulty = "UserSettings"` 자동 설정 (유저 커스텀 상태 반영)
+
+**결과:**
+```
+✅ 기존 키: 유저가 설정한 값 100% 보존
+✅ 신규 추가 키: VeryHard 기본값으로 초기화
+✅ GameDifficulty: "UserSettings" 표시
+✅ 이후 선택 창 표시 → 유저가 원하면 난이도 재선택 가능, 선택 안 하면 보존된 값 유지
+```
+
+**개발 시 금지 사항:**
+```
+❌ ConfigMigration.ResetAllToDefaults() 일반 업데이트에 사용 금지
+❌ ApplyVeryhardWithUserOverlay() 에서 GameDifficulty "UserSettings" 설정 제거 금지
+❌ skipKeys(Language, Config_Schema_Version, GameDifficulty) 항목 변경 금지
+```
+
+**신규 Config 키 추가 시 필수:**
+- R5에 따라 `Veryhard_CaptainSkillTree.SkillTreeMod.cfg` 동기화 → 업데이트 시 신규 키가 VH 기본값으로 초기화됨
+- `Vanilra_Config_CaptainSkillTree.SkillTreeMod.cfg` 에도 신규 키 추가 → "Vanilla" 선택 시 기본값 보장

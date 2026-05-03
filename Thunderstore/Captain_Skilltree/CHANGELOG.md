@@ -1,22 +1,102 @@
 # Changelog / 변경 로그
 ## Update
-# [1.2.99] - 2026-04-26
-- ✅fix1 : Skill reset (Reset Points button) now immediately clears attack speed cache; speed bonus no longer lingers up to 200ms after reset
-- ✅fix2 : Mace [Spin Strike] - Two-handed mace knockback now works (s_lastSpinTime set directly in TwoHandedSpinInput_Patch)
-- ✅fix3 : skillreset <player> console command now resets the target player's skill tree instead of the admin's (SkillTreeManager reset methods now accept Player parameter)
+# [1.22.15] - 2026-05-3
+- ✅fix1: Modify the configuration user setting to reflect it when updating
+-
+- ✅fix1 : 컨피그 유저세팅을 업데이트시에도 반영하게 수정
+
+# [1.22.14] - 2026-05-3
+- ✅fix1 : Modify the location of the collection Lv4 icon
+-
+- ✅fix1 : 채집 Lv4 아이콘 위치 수정
+
+# [1.22.13] - 2026-05-3
+- ✅fix1: Correcting the problem that is marked as negative or less than 0 points in the skill tree
+- ✅fix2: Production professional professional occupational skill attack buff display correct item
+- ✅Improve1: Multi-shot Lv1 to 2 Refactoring of Bow Expert
+-
+- ✅fix1 : 스킬트리의 포인트 0 이하 즉, 마이너스로 표기되는 문제 수정
+- ✅fix2 : 제작 전문가 직업스킬 공격력 버프의 올바른 아이템표시
+- ✅Improve1: 활 전문가의 멀티샷Lv1~2 리팩토링 완료
+
+# [1.21.99] - 2026-05-2
+- ✅Improve1: Multi-shot Lv1 to 2 Refactoring and Improving of Bow Professionals
+- ✅Improve2: Rush Slash - Correct the accuracy and apply +20% additional attack to the boss
+-
+- ✅Improve1: 활 전문가의 멀티샷Lv1~2 리팩토링 및 개선 작업중
+- ✅Improve2: 돌진 연속 베기( RushSlash ) - 적중도 수정 및 보스에게 추가공격력 +20% 적용
+
+# [1.21.87] - 2026-05-1
+- ✅fix1: Fury hammer return bug fixed
+- ✅fix2: Modifying the operation of Meiji Y
+- ✅fix3 : Resolving durability issues
+- ✅fix4 : Based on the user setting value of the configuration value, only the new configuration value is added
+- ✅Improve1: Multi-shot Lv1 to 2 Refactoring for Bow Professional Lectures
+-
+- ✅fix1 : 분노의 망치 자리복귀 버그 수정
+- ✅fix2 : 메이지 Y 작동 수정
+- ✅fix3 : 내구도 관련 문제 해결 
+- ✅fix4 : 컨피그 값의 유저세팅값을 기본으로 하여 신규 컨피그 값만 추가 적용 
+- ✅Improve1: 활전문강의 멀티샷Lv1~2 리팩토링 중
+
+# [1.21.81] - 2026-05-1
+- ✅fix1: Correcting the return bug of the rush shield seat
+- ✅fix2: Fury hammer return bug fixed
+- ✅fix3 : Corrects the reduction of experience and skill repetition in the event of death related to neglect of the death of the Burserker
+- ✅fix4 : Modified to increase maximum durability when producing production experts and producers
+- ✅Improve1: Wheelwind attack and movement speed increased by 30%
+- ✅Improve2 : 연공창 배우면 창을 항상 던지고 창이 인벤에서 사라지지 않음
+-
+- ✅fix1 : 돌진방패 자리복귀 버그 수정
+- ✅fix2 : 분노의 망치 자리복귀 버그 수정
+- ✅fix3 : 버서커 죽음의 무시 관련 독데미지 죽음시 경험치, 숙련도 반복 감소 수정 
+- ✅fix4 : 제작 전문가 및 Producer  제작 시 최대내구도 증가되게 수정 
+- ✅Improve1 : 휠윈드 공격 및 이동속도 30% 증가
+- ✅Improve2 : 연공창 배우면 창을 항상 던지고 창이 인벤에서 사라지지 않음
+
+
+# [1.21.66] - 2026-04-30
+- ✅fix1: 12 meters of rushing shield and change to monster attack on the moving path
+- ✅fix2: Resolving a problem that was not attacked by penetration speed
+-
+- ✅fix1 : 돌진방패 12미터 돌진 및 이동하고 이동경로의 몬스터 공격으로 변경
+- ✅fix2 : 관통창 공격 안되던 문제 해결
+
+
+# [1.21.48] - 2026-04-29
+- ✅fix1: Changing the problem and skill icon of rushing shield
+- ✅Improve1: Wheelwind - Change Attack Motion (Keep Jump)
+-
+- ✅fix1 : 돌진방패 문제 및 스킬 아이콘 변경
+- ✅improve1 : 휠윈드 - 공격 모션 변경(점프 유지)
+
+
+# [1.21.46] - 2026-04-28
+- ✅new1: Skill Icon sizing function (can be adjusted in Skill_Tree_Base in Config and re-applied to the character)
+
+- ✅fix1 : Adjustment to learn and use if the worn weapon is different even if the skill key (Z, G, H) keys are duplicated
+
 - ✅improve1 : Mace [Spin Strike] - Explicit m_pushForce (default 3m) applied to both main hit and AoE hits; consistent knockback for one-handed and two-handed maces
 - ✅improve2 : Production crafting lv2/3/4 max durability bonus increased: 15% → 50% / 75% / 100%
 - ✅improve3 : Producer job Lv1-5 durability bonus greatly increased (Lv1 added: +50%, Lv2: 10→75%, Lv3: 15→100%, Lv4: 20→125%, Lv5: 30→200%)
-- ✅new1 : Producer job Lv1-5 now grants crafting success rate (Lv1: 25%, Lv2: 45%, Lv3: 65%, Lv4: 75%, Lv5: 100%); stacks with crafting skill tree nodes
+- ✅improve4 : Producer job Lv1-5 now grants crafting success rate (Lv1: 25%, Lv2: 45%, Lv3: 65%, Lv4: 75%, Lv5: 100%); stacks with crafting skill tree nodes
+- ✅improve5 : Producer job Lv1-5 PlantEasily Mode installer Change to use only production professionals (delete existing Farm Grid)
+- ✅improve6 : Change the penetrating window skill to automatic target attack
+- ✅improve7 : Fury Harm - Change to Low Jumping Attack
+- ✅Improve8 : Wheelwind - Change Attack Motion (Remove Jump)
 -
-- ✅fix1 : 스킬 초기화(포인트 초기화 버튼) 시 공격속도 캐시를 즉시 무효화; 초기화 후 최대 200ms 동안 공속 버프가 잔존하던 버그 수정
-- ✅fix2 : 둔기 [회전 타격] - 양손 둔기 넉백 미동작 버그 수정 (TwoHandedSpinInput_Patch에서 s_lastSpinTime 직접 설정)
-- ✅fix3 : skillreset <캐릭터명> 콘솔 명령어가 관리자 대신 지정된 캐릭터의 스킬트리를 올바르게 초기화하도록 수정 (SkillTreeManager Reset 메서드에 Player 파라미터 추가)
-- ✅improve1 : 둔기 [회전 타격] - 메인 타격 및 AOE 타격 모두에 m_pushForce(기본 3m) 명시 적용; 한손·양손 통합 넉백
-- ✅improve2 : 생산 트리 제작 lv2/3/4 내구도 최대치 보너스 대폭 상향: 15% → 50% / 75% / 100%
-- ✅improve3 : 직업 제작 전문가 Lv1-5 내구도 보너스 대폭 상향 (Lv1 신규 +50%, Lv2: 10→75%, Lv3: 15→100%, Lv4: 20→125%, Lv5: 30→200%)
-- ✅new1 : 직업 제작 전문가 Lv1-5 제작 성공확률 신규 추가 (Lv1: 25%, Lv2: 45%, Lv3: 65%, Lv4: 75%, Lv5: 100%); 스킬트리 제작 노드와 합산 적용
+- ✅new1 : 스킬 Icon 크기조절 기능 (Config 에서 Skill_Tree_Base 에서 조정하고 캐릭터 다시 적용 가능)
 
+- ✅fix1 : 스킬 키(Z, G, H ) 키가 중복되어도 착용 무기가 다르면 배우고 사용할 수 있게 조정 
+
+- ✅improve1 : 둔기 [회전 타격] - 메인 타격 및 AOE 타격 모두에 기본 7m 적용; 한손·양손 통합 넉백
+- ✅improve2 : 생산 트리 제작 lv2/3/4 내구도 최대치 보너스 대폭 상향: 15% → 50% / 75% / 100%
+- ✅improve3 : 직업 제작 전문가(Producer) Lv1-5 내구도 보너스 대폭 상향 (Lv1 신규 +50%, Lv2: 10→75%, Lv3: 15→100%, Lv4: 20→125%, Lv5: 30→200%)
+- ✅improve4 : 직업 제작 전문가(Producer) Lv1-5 제작 성공확률 신규 추가 (Lv1: 25%, Lv2: 45%, Lv3: 65%, Lv4: 75%, Lv5: 100%); 스킬트리 제작 노드와 합산 적용
+- ✅improve5 : 직업 제작 전문가(Producer) Lv1-5 PlantEasily 모드 설치사 제작 전문가만 사용가능하게 변경(기존  Farm Grid 삭제)
+- ✅improve6 : 꿰뚫는 창 스킬 자동 타겟 공격으로 변경
+- ✅improve7 : Fury Harm - 낮은 점프 도약 공격으로 변경 
+- ✅improve8 : 휠윈드 - 공격 모션 변경(점프 제거)
 
 # [1.2.88] - 2026-04-25
 - ✅fix1 : Speed Expert (speed_root) - No longer modifies EpicMMO Agility stat; movement speed +5% applied directly via Valheim native patch only
@@ -68,7 +148,7 @@
 -
 - ✅new1 : 꿰뚫는창 - 3타 콤보 달성 시 몬스터 방향 3m 돌진 발동, 버프 30초 동안 반복
 - ✅improve1 : 아처 Lv2 - 단 한발/폭발화살 추가 사용 방식을 30초 시간창에서 차지 방식으로 변경 (시간 제한 없이 언제든 1회 추가 사용 가능)
-- ✅improve2 : 탱커 Lv2 - 꿰뚫는창/연창공을 업그레이드 조건에 추가; 탱커 Lv2 보유 시 창 H키 30초 이내 1회 추가 사용 가능
+- ✅improve2 : 탱커 Lv2 - 꿰뚫는창/연공창을 업그레이드 조건에 추가; 탱커 Lv2 보유 시 창 H키 30초 이내 1회 추가 사용 가능
 - ✅improve3 : 창 스킬 (H키 연공창 / G키 꿰뚫는창) - 탱커 Lv2 보유 시 1번째 사용은 UI 쿨타임 없음, 30초 내 2번째 사용 시 쿨타임 시작
 - ✅improve4 : 석궁 [단 한 발] 리메이크 — 활성화 시 극저속 장전(×6배), 데미지 +400%, 넉백이 7m AOE 범위로 변경 + 각 대상 fx_Lightning VFX 적용
 

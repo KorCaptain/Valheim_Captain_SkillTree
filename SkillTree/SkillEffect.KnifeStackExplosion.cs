@@ -66,7 +66,7 @@ namespace CaptainSkillTree.SkillTree
             }
 
             player.UseStamina(staminaCost);
-            ActiveSkillCooldownRegistry.SetCooldown("H", Knife_Config.KnifeStackExplosionCooldownValue);
+            ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "knife_step10_stack_explosion", Knife_Config.KnifeStackExplosionCooldownValue);
 
             if (_buffCoroutines.TryGetValue(player, out var prevCo) && prevCo != null)
                 SkillTreeInputListener.Instance.StopCoroutine(prevCo);

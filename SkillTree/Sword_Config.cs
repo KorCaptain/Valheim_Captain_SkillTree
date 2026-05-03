@@ -1,208 +1,208 @@
-using BepInEx.Configuration;
+﻿using BepInEx.Configuration;
 
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 검 스킬 트리 Config 설정
-    /// Mace_Config 패턴 기반 전면 재작성
+    /// 寃 ?ㅽ궗 ?몃━ Config ?ㅼ젙
+    /// Mace_Config ?⑦꽩 湲곕컲 ?꾨㈃ ?ъ옉??
     /// </summary>
     public static class Sword_Config
     {
-        // ===== Tier 0: 검 전문가 (Sword Expert) =====
+        // ===== Tier 0: 寃 ?꾨Ц媛 (Sword Expert) =====
 
         /// <summary>
-        /// 검 전문가 - 필요 포인트
+        /// 寃 ?꾨Ц媛 - ?꾩슂 ?ъ씤??
         /// </summary>
         public static ConfigEntry<int> SwordExpertRequiredPoints;
 
         /// <summary>
-        /// 검 전문가 - 피해 증가 (%)
+        /// 寃 ?꾨Ц媛 - ?쇳빐 利앷? (%)
         /// </summary>
         public static ConfigEntry<float> SwordExpertDamageBonus;
 
-        // ===== Tier 1: 빠른 베기 =====
+        // ===== Tier 1: 鍮좊Ⅸ 踰좉린 =====
 
         /// <summary>
-        /// Tier 1 빠른 베기 - 필요 포인트
+        /// Tier 1 鍮좊Ⅸ 踰좉린 - ?꾩슂 ?ъ씤??
         /// </summary>
         public static ConfigEntry<int> SwordStep1FastSlashRequiredPoints;
 
         /// <summary>
-        /// Tier 1 반격 자세 - 필요 포인트
+        /// Tier 1 諛섍꺽 ?먯꽭 - ?꾩슂 ?ъ씤??
         /// </summary>
         public static ConfigEntry<int> SwordStep1CounterRequiredPoints;
 
         /// <summary>
-        /// Tier 1 반격 자세 - 지속시간 (초)
+        /// Tier 1 諛섍꺽 ?먯꽭 - 吏?띿떆媛?(珥?
         /// </summary>
         public static ConfigEntry<float> SwordStep1CounterDuration;
 
         /// <summary>
-        /// Tier 1 반격 자세 - 방어력 보너스 (%)
+        /// Tier 1 諛섍꺽 ?먯꽭 - 諛⑹뼱??蹂대꼫??(%)
         /// </summary>
         public static ConfigEntry<float> SwordStep1CounterDefenseBonus;
 
         /// <summary>
-        /// Tier 1 빠른 베기 - 공격속도 보너스 (%)
+        /// Tier 1 鍮좊Ⅸ 踰좉린 - 怨듦꺽?띾룄 蹂대꼫??(%)
         /// </summary>
         public static ConfigEntry<float> SwordStep1FastSlashSpeed;
 
-        // ===== Tier 2: 연속 베기 =====
+        // ===== Tier 2: ?곗냽 踰좉린 =====
 
         /// <summary>
-        /// Tier 2 연속 베기 - 필요 포인트
+        /// Tier 2 ?곗냽 踰좉린 - ?꾩슂 ?ъ씤??
         /// </summary>
         public static ConfigEntry<int> SwordStep2ComboSlashRequiredPoints;
 
         /// <summary>
-        /// Tier 2 연속 베기 - 연속 공격 보너스 (%)
+        /// Tier 2 ?곗냽 踰좉린 - ?곗냽 怨듦꺽 蹂대꼫??(%)
         /// </summary>
         public static ConfigEntry<float> SwordStep2ComboSlashBonus;
 
         /// <summary>
-        /// Tier 2 연속 베기 - 버프 지속시간 (초)
+        /// Tier 2 ?곗냽 踰좉린 - 踰꾪봽 吏?띿떆媛?(珥?
         /// </summary>
         public static ConfigEntry<float> SwordStep2ComboSlashDuration;
 
-        // ===== Tier 3: 칼날 되치기 =====
+        // ===== Tier 3: 移쇰궇 ?섏튂湲?=====
 
         /// <summary>
-        /// Tier 3 칼날 되치기 - 필요 포인트
+        /// Tier 3 移쇰궇 ?섏튂湲?- ?꾩슂 ?ъ씤??
         /// </summary>
         public static ConfigEntry<int> SwordStep3RiposteRequiredPoints;
 
         /// <summary>
-        /// Tier 3 칼날 되치기 - 공격력 보너스 (고정값)
+        /// Tier 3 移쇰궇 ?섏튂湲?- 怨듦꺽??蹂대꼫??(怨좎젙媛?
         /// </summary>
         public static ConfigEntry<float> SwordStep3RiposteDamageBonus;
 
-        // ===== Tier 4: 진검승부 =====
+        // ===== Tier 4: 吏꾧??밸? =====
 
         /// <summary>
-        /// Tier 4 공방일체 - 필요 포인트
+        /// Tier 4 怨듬갑?쇱껜 - ?꾩슂 ?ъ씤??
         /// </summary>
         public static ConfigEntry<int> SwordStep3AllInOneRequiredPoints;
 
         /// <summary>
-        /// Tier 4 공방일체 - 공격력 보너스 (%)
+        /// Tier 4 怨듬갑?쇱껜 - 怨듦꺽??蹂대꼫??(%)
         /// </summary>
         public static ConfigEntry<float> SwordStep3AllInOneAttackBonus;
 
         /// <summary>
-        /// Tier 4 공방일체 - 막기 방어력 보너스 (고정값)
+        /// Tier 4 怨듬갑?쇱껜 - 留됯린 諛⑹뼱??蹂대꼫??(怨좎젙媛?
         /// </summary>
         public static ConfigEntry<float> SwordStep3AllInOneDefenseBonus;
 
         /// <summary>
-        /// Tier 4 진검승부 - 필요 포인트
+        /// Tier 4 吏꾧??밸? - ?꾩슂 ?ъ씤??
         /// </summary>
         public static ConfigEntry<int> SwordStep4TrueDuelRequiredPoints;
 
         /// <summary>
-        /// Tier 4 진검승부 - 공격속도 보너스 (%)
+        /// Tier 4 吏꾧??밸? - 怨듦꺽?띾룄 蹂대꼫??(%)
         /// </summary>
         public static ConfigEntry<float> SwordStep4TrueDuelSpeed;
 
-        // ===== Tier 5: 패링 돌격 (Parry Rush) - G키 액티브 스킬 =====
+        // ===== Tier 5: ?⑤쭅 ?뚭꺽 (Parry Rush) - G???≫떚釉??ㅽ궗 =====
 
         /// <summary>
-        /// Tier 5 패링 돌격 - 필요 포인트
+        /// Tier 5 ?⑤쭅 ?뚭꺽 - ?꾩슂 ?ъ씤??
         /// </summary>
         public static ConfigEntry<int> SwordStep5DefenseSwitchRequiredPoints;
 
         /// <summary>
-        /// 패링 돌격 - 버프 지속시간 (초)
+        /// ?⑤쭅 ?뚭꺽 - 踰꾪봽 吏?띿떆媛?(珥?
         /// </summary>
         public static ConfigEntry<float> ParryRushDuration;
 
         /// <summary>
-        /// 패링 돌격 - 막기 방어력 비율 (%)
+        /// ?⑤쭅 ?뚭꺽 - 留됯린 諛⑹뼱??鍮꾩쑉 (%)
         /// </summary>
         public static ConfigEntry<float> ParryRushBlockPowerRatio;
 
         /// <summary>
-        /// 패링 돌격 - 밀어내기 거리 (m)
+        /// ?⑤쭅 ?뚭꺽 - 諛?대궡湲?嫄곕━ (m)
         /// </summary>
         public static ConfigEntry<float> ParryRushPushDistance;
 
         /// <summary>
-        /// 패링 돌격 - 스태미나 소모
+        /// ?⑤쭅 ?뚭꺽 - ?ㅽ깭誘몃굹 ?뚮え
         /// </summary>
         public static ConfigEntry<float> ParryRushStaminaCost;
 
         /// <summary>
-        /// 패링 돌격 - 쿨타임 (초)
+        /// ?⑤쭅 ?뚭꺽 - 荑⑦???(珥?
         /// </summary>
         public static ConfigEntry<float> ParryRushCooldown;
 
-        // ===== Tier 6: 돌진 연속 베기 (Rush Slash) 액티브 스킬 =====
+        // ===== Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ?≫떚釉??ㅽ궗 =====
 
         /// <summary>
-        /// Tier 6 Rush Slash - 필요 포인트
+        /// Tier 6 Rush Slash - ?꾩슂 ?ъ씤??
         /// </summary>
         public static ConfigEntry<int> RushSlashRequiredPoints;
 
         /// <summary>
-        /// 돌진 연속 베기 - 1차 공격력 비율 (%)
+        /// ?뚯쭊 ?곗냽 踰좉린 - 1李?怨듦꺽??鍮꾩쑉 (%)
         /// </summary>
         public static ConfigEntry<float> RushSlash1stDamageRatio;
 
         /// <summary>
-        /// 돌진 연속 베기 - 2차 공격력 비율 (%)
+        /// ?뚯쭊 ?곗냽 踰좉린 - 2李?怨듦꺽??鍮꾩쑉 (%)
         /// </summary>
         public static ConfigEntry<float> RushSlash2ndDamageRatio;
 
         /// <summary>
-        /// 돌진 연속 베기 - 3차 공격력 비율 (%)
+        /// ?뚯쭊 ?곗냽 踰좉린 - 3李?怨듦꺽??鍮꾩쑉 (%)
         /// </summary>
         public static ConfigEntry<float> RushSlash3rdDamageRatio;
 
         /// <summary>
-        /// 돌진 연속 베기 - 초기 돌진 거리 (m)
+        /// ?뚯쭊 ?곗냽 踰좉린 - 珥덇린 ?뚯쭊 嫄곕━ (m)
         /// </summary>
         public static ConfigEntry<float> RushSlashInitialDistance;
 
         /// <summary>
-        /// 돌진 연속 베기 - 측면 이동 거리 (m)
+        /// ?뚯쭊 ?곗냽 踰좉린 - 痢〓㈃ ?대룞 嫄곕━ (m)
         /// </summary>
         public static ConfigEntry<float> RushSlashSideDistance;
 
         /// <summary>
-        /// 돌진 연속 베기 - 스태미나 소모량
+        /// ?뚯쭊 ?곗냽 踰좉린 - ?ㅽ깭誘몃굹 ?뚮え??
         /// </summary>
         public static ConfigEntry<float> RushSlashStaminaCost;
 
         /// <summary>
-        /// 돌진 연속 베기 - 쿨타임 (초)
+        /// ?뚯쭊 ?곗냽 踰좉린 - 荑⑦???(珥?
         /// </summary>
         public static ConfigEntry<float> RushSlashCooldown;
 
         /// <summary>
-        /// 돌진 연속 베기 - 이동 속도 (m/s)
+        /// ?뚯쭊 ?곗냽 踰좉린 - ?대룞 ?띾룄 (m/s)
         /// </summary>
         public static ConfigEntry<float> RushSlashMoveSpeed;
 
         /// <summary>
-        /// 돌진 연속 베기 - 공격 속도 보너스 (%, 기본 공격속도 대비)
-        /// 스킬 발동 중 다른 트리 공격속도 무시, 이 값만 적용
+        /// ?뚯쭊 ?곗냽 踰좉린 - 怨듦꺽 ?띾룄 蹂대꼫??(%, 湲곕낯 怨듦꺽?띾룄 ?鍮?
+        /// ?ㅽ궗 諛쒕룞 以??ㅻⅨ ?몃━ 怨듦꺽?띾룄 臾댁떆, ??媛믩쭔 ?곸슜
         /// </summary>
         public static ConfigEntry<float> RushSlashAttackSpeedBonus;
 
         /// <summary>
-        /// 돌진 연속 베기 - 경로 히트 너비 (m)
-        /// 이동 중 이 반경 내 몬스터를 모두 적중
+        /// ?뚯쭊 ?곗냽 踰좉린 - 寃쎈줈 ?덊듃 ?덈퉬 (m)
+        /// ?대룞 以???諛섍꼍 ??紐ъ뒪?곕? 紐⑤몢 ?곸쨷
         /// </summary>
         public static ConfigEntry<float> RushSlashPathWidth;
 
-        // ===== 동적 값 프로퍼티 (서버 동기화 지원) =====
+        // ===== ?숈쟻 媛??꾨줈?쇳떚 (?쒕쾭 ?숆린??吏?? =====
 
-        // === Tier 0: 검 전문가 ===
+        // === Tier 0: 寃 ?꾨Ц媛 ===
         public static int SwordExpertRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Expert_RequiredPoints", SwordExpertRequiredPoints?.Value ?? 2);
         public static float SwordExpertDamageValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Expert_DamageBonus", SwordExpertDamageBonus?.Value ?? 10f);
 
-        // === Tier 1: 빠른 베기 ===
+        // === Tier 1: 鍮좊Ⅸ 踰좉린 ===
         public static int SwordStep1FastSlashRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Step1_RequiredPoints", SwordStep1FastSlashRequiredPoints?.Value ?? 2);
         public static int SwordStep1CounterRequiredPointsValue =>
@@ -214,7 +214,7 @@ namespace CaptainSkillTree.SkillTree
         public static float SwordStep1FastSlashSpeedValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Step1_FastSlash_Speed", SwordStep1FastSlashSpeed?.Value ?? 10f);
 
-        // === Tier 2: 연속 베기 ===
+        // === Tier 2: ?곗냽 踰좉린 ===
         public static int SwordStep2ComboSlashRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Step2_RequiredPoints", SwordStep2ComboSlashRequiredPoints?.Value ?? 1);
         public static float SwordStep2ComboSlashBonusValue =>
@@ -222,13 +222,13 @@ namespace CaptainSkillTree.SkillTree
         public static float SwordStep2ComboSlashDurationValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Step2_ComboSlash_Duration", SwordStep2ComboSlashDuration?.Value ?? 5f);
 
-        // === Tier 3: 칼날 되치기 ===
+        // === Tier 3: 移쇰궇 ?섏튂湲?===
         public static int SwordStep3RiposteRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Step3_RequiredPoints", SwordStep3RiposteRequiredPoints?.Value ?? 1);
         public static float SwordRiposteDamageBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Step3_Riposte_DamageBonus", SwordStep3RiposteDamageBonus?.Value ?? 5f);
 
-        // === Tier 4: 공방일체 ===
+        // === Tier 4: 怨듬갑?쇱껜 ===
         public static int SwordStep3AllInOneRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Step3_AllInOne_RequiredPoints", SwordStep3AllInOneRequiredPoints?.Value ?? 2);
         public static float SwordStep3AllInOneAttackBonusValue =>
@@ -236,13 +236,13 @@ namespace CaptainSkillTree.SkillTree
         public static float SwordStep3AllInOneDefenseBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Step3_AllInOne_DefenseBonus", SwordStep3AllInOneDefenseBonus?.Value ?? 15f);
 
-        // === Tier 5: 진검승부 ===
+        // === Tier 5: 吏꾧??밸? ===
         public static int SwordStep4TrueDuelRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Step4_RequiredPoints", SwordStep4TrueDuelRequiredPoints?.Value ?? 3);
         public static float SwordStep4TrueDuelSpeedValue =>
             SkillTreeConfig.GetEffectiveValue("Sword_Step4_TrueDuel_Speed", SwordStep4TrueDuelSpeed?.Value ?? 15f);
 
-        // === Tier 5: 패링 돌격 (Parry Rush) ===
+        // === Tier 5: ?⑤쭅 ?뚭꺽 (Parry Rush) ===
         public static int SwordStep5DefenseSwitchRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Step5_RequiredPoints", SwordStep5DefenseSwitchRequiredPoints?.Value ?? 3);
         public static float ParryRushDurationValue =>
@@ -256,7 +256,7 @@ namespace CaptainSkillTree.SkillTree
         public static float ParryRushCooldownValue =>
             SkillTreeConfig.GetEffectiveValue("ParryRush_Cooldown", ParryRushCooldown?.Value ?? 60f);
 
-        // === Tier 6: 돌진 연속 베기 (Rush Slash) ===
+        // === Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ===
         public static int RushSlashRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Step6_RequiredPoints", RushSlashRequiredPoints?.Value ?? 3);
         public static float RushSlash1stDamageRatioValue =>
@@ -278,29 +278,29 @@ namespace CaptainSkillTree.SkillTree
         public static float RushSlashAttackSpeedBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Rush_Slash_AttackSpeedBonus", RushSlashAttackSpeedBonus?.Value ?? 220f);
         public static float RushSlashPathWidthValue =>
-            SkillTreeConfig.GetEffectiveValue("Rush_Slash_PathWidth", RushSlashPathWidth?.Value ?? 1.5f);
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_PathWidth", RushSlashPathWidth?.Value ?? 3.0f);
 
-        // ===== 호환성 래퍼 (기존 코드 지원) =====
+        // ===== ?명솚???섑띁 (湲곗〈 肄붾뱶 吏?? =====
 
         /// <summary>
-        /// 돌진 연속 베기 스킬 상세 정보 구조체
+        /// ?뚯쭊 ?곗냽 踰좉린 ?ㅽ궗 ?곸꽭 ?뺣낫 援ъ“泥?
         /// </summary>
         public struct RushSlashSkillData
         {
-            public float damage1stRatio;   // 1차 공격력 비율 (70%)
-            public float damage2ndRatio;   // 2차 공격력 비율 (80%)
-            public float damage3rdRatio;   // 3차 공격력 비율 (90%)
-            public float initialDistance;  // 초기 돌진 거리 (5m)
-            public float sideDistance;     // 측면 이동 거리 (3m)
-            public float moveSpeed;        // 이동 속도 (20m/s)
-            public float staminaCost;      // 스태미나 소모량 (30)
-            public float cooldown;         // 쿨타임 (25초)
-            public string skillKey;        // 키 바인딩
-            public string requirement;     // 사용 조건
+            public float damage1stRatio;   // 1李?怨듦꺽??鍮꾩쑉 (70%)
+            public float damage2ndRatio;   // 2李?怨듦꺽??鍮꾩쑉 (80%)
+            public float damage3rdRatio;   // 3李?怨듦꺽??鍮꾩쑉 (90%)
+            public float initialDistance;  // 珥덇린 ?뚯쭊 嫄곕━ (5m)
+            public float sideDistance;     // 痢〓㈃ ?대룞 嫄곕━ (3m)
+            public float moveSpeed;        // ?대룞 ?띾룄 (20m/s)
+            public float staminaCost;      // ?ㅽ깭誘몃굹 ?뚮え??(30)
+            public float cooldown;         // 荑⑦???(25珥?
+            public string skillKey;        // ??諛붿씤??
+            public string requirement;     // ?ъ슜 議곌굔
         }
 
         /// <summary>
-        /// 돌진 연속 베기 스킬 데이터 가져오기
+        /// ?뚯쭊 ?곗냽 踰좉린 ?ㅽ궗 ?곗씠??媛?몄삤湲?
         /// </summary>
         public static RushSlashSkillData GetRushSlashData()
         {
@@ -314,15 +314,15 @@ namespace CaptainSkillTree.SkillTree
                 moveSpeed = RushSlashMoveSpeedValue,
                 staminaCost = RushSlashStaminaCostValue,
                 cooldown = RushSlashCooldownValue,
-                skillKey = "G키",
-                requirement = "검 착용"
+                skillKey = "G??",
+                requirement = "寃 李⑹슜"
             };
         }
 
-        // ===== 기존 호환성 프로퍼티 (SkillTreeConfig 참조 -> 새 Config 참조) =====
+        // ===== 湲곗〈 ?명솚???꾨줈?쇳떚 (SkillTreeConfig 李몄“ -> ??Config 李몄“) =====
 
-        // 기존 코드에서 사용하던 프로퍼티들 (호환성 유지)
-        public static float SwordExpertCritValue => 15f; // 기본값 유지
+        // 湲곗〈 肄붾뱶?먯꽌 ?ъ슜?섎뜕 ?꾨줈?쇳떚??(?명솚???좎?)
+        public static float SwordExpertCritValue => 15f; // 湲곕낯媛??좎?
         public static float SwordStep1DamageValue => 10f;
         public static float SwordStep2CritValue => 8f;
         public static float SwordStep3ArmorValue => 12f;
@@ -331,15 +331,15 @@ namespace CaptainSkillTree.SkillTree
         public static float SwordStep2ComboSlashDurationValueLegacy => SwordStep2ComboSlashDurationValue;
         public static bool IsConfigLoaded => true;
 
-        // ===== 초기화 메서드 =====
+        // ===== 珥덇린??硫붿꽌??=====
 
         /// <summary>
-        /// Sword Config 초기화
+        /// Sword Config 珥덇린??
         /// </summary>
         /// <param name="config">BepInEx ConfigFile</param>
         public static void Initialize(ConfigFile config)
         {
-            // Tier 0: 검 전문가 (Sword Expert)
+            // Tier 0: 寃 ?꾨Ц媛 (Sword Expert)
             SwordExpertRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier0_SwordExpert_RequiredPoints",
@@ -354,7 +354,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier0_SwordExpert_DamageBonus")
             );
 
-            // Tier 1: 빠른 베기
+            // Tier 1: 鍮좊Ⅸ 踰좉린
             SwordStep1FastSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier1_FastSlash_RequiredPoints",
@@ -362,7 +362,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier1_FastSlash_RequiredPoints")
             );
 
-            // Tier 1: 반격 자세
+            // Tier 1: 諛섍꺽 ?먯꽭
             SwordStep1CounterRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier1_CounterStance_RequiredPoints",
@@ -391,7 +391,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier1_FastSlash_AttackSpeedBonus")
             );
 
-            // Tier 2: 연속 베기
+            // Tier 2: ?곗냽 踰좉린
             SwordStep2ComboSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier2_ComboSlash_RequiredPoints",
@@ -413,7 +413,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier2_ComboSlash_BuffDuration")
             );
 
-            // Tier 3: 칼날 되치기
+            // Tier 3: 移쇰궇 ?섏튂湲?
             SwordStep3RiposteRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier3_Riposte_RequiredPoints",
@@ -428,7 +428,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier3_Riposte_DamageBonus")
             );
 
-            // Tier 4: 공방일체
+            // Tier 4: 怨듬갑?쇱껜
             SwordStep3AllInOneRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier4_AllInOne_RequiredPoints",
@@ -450,7 +450,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier4_AllInOne_DefenseBonus")
             );
 
-            // Tier 4: 진검승부
+            // Tier 4: 吏꾧??밸?
             SwordStep4TrueDuelRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier4_TrueDuel_RequiredPoints",
@@ -465,7 +465,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier4_TrueDuel_AttackSpeedBonus")
             );
 
-            // Tier 5: 패링 돌격 (Parry Rush)
+            // Tier 5: ?⑤쭅 ?뚭꺽 (Parry Rush)
             SwordStep5DefenseSwitchRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_RequiredPoints",
@@ -514,7 +514,7 @@ namespace CaptainSkillTree.SkillTree
                 order: -55
             );
 
-            // Tier 6: 돌진 연속 베기 (Rush Slash) 액티브 스킬
+            // Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ?≫떚釉??ㅽ궗
             RushSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier6_RushSlash_RequiredPoints",
@@ -587,19 +587,18 @@ namespace CaptainSkillTree.SkillTree
 
             RushSlashPathWidth = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
-                "Tier6_RushSlash_PathWidth",
-                1.5f,
+                "Tier6_RushSlash_PathWidth", 3.0f,
                 SkillTreeConfig.GetConfigDescription("Tier6_RushSlash_PathWidth")
             );
 
-            Plugin.Log.LogDebug("[Sword Config] 검 스킬 Config 초기화 완료");
+            Plugin.Log.LogDebug("[Sword Config] 寃 ?ㅽ궗 Config 珥덇린???꾨즺");
         }
 
         /// <summary>
-        /// 돌진 연속 베기 데미지 계산 (공격 차수별)
+        /// ?뚯쭊 ?곗냽 踰좉린 ?곕?吏 怨꾩궛 (怨듦꺽 李⑥닔蹂?
         /// </summary>
-        /// <param name="baseDamage">기본 무기 데미지</param>
-        /// <param name="attackNumber">공격 차수 (1, 2, 3)</param>
+        /// <param name="baseDamage">湲곕낯 臾닿린 ?곕?吏</param>
+        /// <param name="attackNumber">怨듦꺽 李⑥닔 (1, 2, 3)</param>
         public static float CalculateRushSlashDamage(float baseDamage, int attackNumber)
         {
             float ratio = attackNumber switch
@@ -613,14 +612,15 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 총 스킬 지속시간 계산 (이동 기반)
+        /// 珥??ㅽ궗 吏?띿떆媛?怨꾩궛 (?대룞 湲곕컲)
         /// </summary>
         public static float CalculateTotalSkillDuration()
         {
-            // 초기 돌진 + 측면 이동 2회 + 후방 이동
+            // 珥덇린 ?뚯쭊 + 痢〓㈃ ?대룞 2??+ ?꾨갑 ?대룞
             float totalDistance = RushSlashInitialDistanceValue + (RushSlashSideDistanceValue * 3);
-            return totalDistance / RushSlashMoveSpeedValue + 0.6f; // 공격 모션 시간 추가
+            return totalDistance / RushSlashMoveSpeedValue + 0.6f; // 怨듦꺽 紐⑥뀡 ?쒓컙 異붽?
         }
 
     }
 }
+

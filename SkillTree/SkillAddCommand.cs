@@ -201,9 +201,12 @@ namespace CaptainSkillTree.SkillTree
                     if (adminList != null)
                     {
                         string playerID = player.GetPlayerID().ToString();
-                        bool isAdmin = adminList.Contains(playerID);
-                        Plugin.Log.LogInfo($"[SkillAddCommand] 관리자 목록 확인: {player.GetPlayerName()} ({playerID}) - {(isAdmin ? "관리자" : "일반 사용자")}");
-                        return isAdmin;
+                        if (adminList.Contains(playerID))
+                        {
+                            Plugin.Log.LogInfo($"[SkillAddCommand] 관리자 목록 확인: {player.GetPlayerName()} ({playerID}) - 관리자");
+                            return true;
+                        }
+                        Plugin.Log.LogInfo($"[SkillAddCommand] 관리자 목록 미등록: {player.GetPlayerName()} ({playerID}) → Jotunn 확인");
                     }
                 }
 

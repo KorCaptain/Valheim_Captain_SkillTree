@@ -14,9 +14,16 @@ namespace CaptainSkillTree.SkillTree
     /// - SkillEffect.CrossbowOneShot.cs - 석궁 단 한 발
     /// - SkillEffect.SpearActiveSkills.cs - 창 연공창/투창
     /// - SkillEffect.MiscActiveSkills.cs - 발구르기, 도발, 기타
+    ///
+    /// 디스패치 방식: 착용 무기 우선 → 해당 무기의 스킬 발동
+    /// 여러 키스킬을 배워도 착용 무기에 따라 자동 전환됨
     /// </summary>
     public static partial class SkillEffect
     {
+        // === 탱커 Lv2 업그레이드 선행 스킬 사용 추적 ===
+        /// <summary>선행 스킬(7종) 마지막 사용 시각 — 탱커 Lv2 업그레이드 시 30초 이내인지 체크</summary>
+        public static float TankerPrereqLastUsedTime = -999f;
+
         // === 액티브 스킬 키 입력 처리 시스템 ===
 
         public static void HandleActiveSkillInputs(Player player)
@@ -26,7 +33,8 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// R키: 원거리 액티브 스킬 (석궁, 활, 지팡이)
+        /// Z/R키: 원거리 액티브 스킬 (석궁, 활, 지팡이)
+        /// 착용 무기가 학습한 스킬과 일치하면 발동, 아니면 "스킬에 맞는 무기를 착용하세요"
         /// </summary>
         public static void HandleRKeySkills(Player player)
         {
@@ -37,7 +45,7 @@ namespace CaptainSkillTree.SkillTree
             bool hasBowSkill = HasSkill("bow_Step6_critboost");
             bool hasStaffSkill = HasSkill("staff_Step6_dual_cast");
 
-            // Phase 1: 스킬 + 무기 모두 일치 시 발동
+            // Phase 1: 착용 무기 + 스킬 동시 일치 시 발동
             if (hasCrossbowSkill && WeaponHelper.IsUsingCrossbow(player))
             {
                 ActivateCrossbowOneShot(player);
@@ -54,20 +62,11 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            // Phase 2: 배운 스킬에 맞는 무기 착용 안내 (우선순위: 석궁 > 활 > 지팡이)
-            if (hasCrossbowSkill)
+            // Phase 2: 학습한 Z키 스킬이 있지만 착용 무기가 맞지 않음
+            bool hasAnyRSkill = hasCrossbowSkill || hasBowSkill || hasStaffSkill;
+            if (hasAnyRSkill)
             {
-                DrawFloatingText(player, L.Get("crossbow_equip_required"), Color.red);
-                return;
-            }
-            if (hasBowSkill)
-            {
-                DrawFloatingText(player, L.Get("bow_equip_required"), Color.red);
-                return;
-            }
-            if (hasStaffSkill)
-            {
-                DrawFloatingText(player, L.Get("staff_equip_required"), Color.red);
+                DrawFloatingText(player, L.Get("skill_weapon_mismatch"), Color.red);
                 return;
             }
 
@@ -76,202 +75,222 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// G키: 보조형 액티브 스킬 (보유 스킬 우선 → 무기 확인)
+        /// G키: 무기-우선 디스패치 (착용 무기 → 해당 무기의 G키 스킬 발동)
         /// </summary>
         public static void HandleGKeySkills(Player player)
         {
             if (player == null || player.IsDead()) return;
             if (SkillTreeInputListener_KeyPatch.IsChatOrConsoleOpen()) return;
 
-            // === 보유 스킬 우선 라우팅 (스킬을 배웠으면 무기 확인 후 실행) ===
+            bool hasAnyGSkill = HasSkill("sword_step5_finalcut") || HasSkill("sword_slash") ||
+                                HasSkill("knife_step9_assassin_heart") ||
+                                HasSkill("spear_Step5_penetrate") ||
+                                HasSkill("polearm_step5_king") ||
+                                HasSkill("mace_Step7_guardian_heart") ||
+                                HasSkill("defense_Step6_mind");
 
-            // 1. 검: 돌진 연속 베기 (sword_step5_finalcut)
-            if (HasSkill("sword_step5_finalcut") || HasSkill("sword_slash"))
+            // 1. 지팡이/완드: 마인드쉴드 (방어전문가)
+            if (WeaponHelper.IsUsingStaffOrWand(player))
             {
-                if (!Sword_Skill.IsUsingSword(player))
+                if (HasSkill("defense_Step6_mind"))
                 {
-                    DrawFloatingText(player, L.Get("sword_equip_required"), Color.red);
+                    MindShieldSkill.Activate(player);
                     return;
                 }
-                Sword_Skill.ActivateSwordSlash(player);
+                DrawFloatingText(player, hasAnyGSkill ? L.Get("skill_weapon_mismatch") : L.Get("g_key_skill_required"), Color.red);
+                return;
+            }
+
+            // 2. 검: 돌진 연속 베기
+            if (Sword_Skill.IsUsingSword(player))
+            {
+                if (HasSkill("sword_step5_finalcut") || HasSkill("sword_slash"))
+                {
+                    Sword_Skill.ActivateSwordSlash(player);
+                    return;
+                }
+                // 검 G스킬 없음 → 방패돌진 폴백 (검+방패 조합)
+                if (HasSkill("mace_Step7_guardian_heart"))
+                {
+                    if (WeaponHelper.HasShield(player)) { ActivateShieldCharge(player); return; }
+                    DrawFloatingText(player, L.Get("shield_equip_required"), Color.red);
+                    return;
+                }
+                DrawFloatingText(player, hasAnyGSkill ? L.Get("skill_weapon_mismatch") : L.Get("g_key_skill_required"), Color.red);
                 return;
             }
 
             // 3. 단검: 암살자의 심장
-            if (HasSkill("knife_step9_assassin_heart"))
+            if (WeaponHelper.IsUsingDagger(player))
             {
-                if (!WeaponHelper.IsUsingDagger(player))
+                if (HasSkill("knife_step9_assassin_heart"))
                 {
-                    DrawFloatingText(player, L.Get("dagger_equip_required"), Color.red);
+                    ActivateKnifeAssassinHeart(player);
                     return;
                 }
-                ActivateKnifeAssassinHeart(player);
+                DrawFloatingText(player, hasAnyGSkill ? L.Get("skill_weapon_mismatch") : L.Get("g_key_skill_required"), Color.red);
                 return;
             }
 
-            // 4. 지팡이: 범위 힐 - H키로 이동됨
-
-            // 5-1. 창: 꿰뚫는 창 (번개 충격)
-            if (HasSkill("spear_Step5_penetrate"))
+            // 4. 창: 꿰뚫는 창
+            if (WeaponHelper.IsUsingSpear(player))
             {
-                if (!WeaponHelper.IsUsingSpear(player))
+                if (HasSkill("spear_Step5_penetrate"))
                 {
-                    DrawFloatingText(player, L.Get("spear_equip_required"), Color.red);
+                    ActivateSpearPenetrateLightning(player);
                     return;
                 }
-                ActivateSpearPenetrateLightning(player);
+                DrawFloatingText(player, hasAnyGSkill ? L.Get("skill_weapon_mismatch") : L.Get("g_key_skill_required"), Color.red);
                 return;
             }
 
-            // 5-2. 창: 연공창 - H키로 이동됨
-
-            // 6. 폴암: 관통 돌격
-            if (HasSkill("polearm_step5_king"))
+            // 5. 폴암: 관통 돌격
+            if (WeaponHelper.IsUsingPolearm(player))
             {
-                if (!WeaponHelper.IsUsingPolearm(player))
+                if (HasSkill("polearm_step5_king"))
                 {
-                    DrawFloatingText(player, L.Get("polearm_equip_required"), Color.red);
+                    UsePolearmPierceChargeSkill(player);
                     return;
                 }
-                UsePolearmPierceChargeSkill(player);
+                DrawFloatingText(player, hasAnyGSkill ? L.Get("skill_weapon_mismatch") : L.Get("g_key_skill_required"), Color.red);
                 return;
             }
 
-            // 7. 양손 둔기: 분노의 망치 - H키로 이동됨
-
-            // 8. 방패돌진 (방패 착용만 필요)
+            // 6. 방패돌진: 무기 종류 무관, 방패 착용 여부만 확인
             if (HasSkill("mace_Step7_guardian_heart"))
             {
-                if (!WeaponHelper.HasShield(player))
+                if (WeaponHelper.HasShield(player))
                 {
-                    DrawFloatingText(player, L.Get("shield_equip_required"), Color.red);
+                    ActivateShieldCharge(player);
                     return;
                 }
-                ActivateShieldCharge(player);
+                DrawFloatingText(player, L.Get("shield_equip_required"), Color.red);
                 return;
             }
 
-            // 9. 방어전문가: 마인드쉴드 (지팡이/완드 착용 필요)
-            if (HasSkill("defense_Step6_mind"))
-            {
-                if (!WeaponHelper.IsUsingStaffOrWand(player))
-                {
-                    DrawFloatingText(player, L.Get("staff_equip_required"), Color.red);
-                    return;
-                }
-                MindShieldSkill.Activate(player);
-                return;
-            }
-
-            DrawFloatingText(player, L.Get("g_key_skill_required"), Color.red);
+            // 7. 어떤 무기도 G키 스킬과 매칭 안 됨
+            DrawFloatingText(player, hasAnyGSkill ? L.Get("skill_weapon_mismatch") : L.Get("g_key_skill_required"), Color.red);
         }
 
         /// <summary>
-        /// G키 해제 처리 (수호자의 진심 등)
+        /// G키 해제 처리
         /// </summary>
         public static void HandleGKeyUpSkills(Player player)
         {
             if (player == null || player.IsDead()) return;
-            // 분노의 망치가 H키로 이동되어 G키 해제 처리 없음
         }
 
         /// <summary>
-        /// H키: 연공창, 분노의 망치 (보조형 액티브 스킬)
+        /// H키: 무기-우선 디스패치 (착용 무기 → 해당 무기의 H키 스킬 발동)
         /// </summary>
         public static void HandleHKeySkills(Player player)
         {
             if (player == null || player.IsDead()) return;
             if (SkillTreeInputListener_KeyPatch.IsChatOrConsoleOpen()) return;
 
-            // 0-1. 석궁: 발칸 아이스 (원거리 H키 - 최우선)
-            if (HasSkill("crossbow_ice_breath"))
+            bool hasAnyHSkill = HasSkill("crossbow_ice_breath") ||
+                                HasSkill("bow_Step6_arrow_rain") ||
+                                HasSkill("sword_step5_defswitch") ||
+                                HasSkill("spear_Step5_combo") ||
+                                HasSkill("mace_Step7_fury_hammer") ||
+                                HasSkill("staff_Step6_heal") ||
+                                HasSkill("knife_step10_stack_explosion");
+
+            // 1. 석궁: 발칸 아이스
+            if (WeaponHelper.IsUsingCrossbow(player))
             {
-                if (!WeaponHelper.IsUsingCrossbow(player))
+                if (HasSkill("crossbow_ice_breath"))
                 {
-                    DrawFloatingText(player, L.Get("crossbow_equip_required"), Color.red);
+                    ActivateCrossbowIceBreath(player);
                     return;
                 }
-                ActivateCrossbowIceBreath(player);
+                DrawFloatingText(player, hasAnyHSkill ? L.Get("skill_weapon_mismatch") : L.Get("h_key_skill_required"), Color.red);
                 return;
             }
 
-            // 0. 활: 화살비 (원거리 H키 - 근접보다 먼저 체크)
-            if (HasSkill("bow_Step6_arrow_rain"))
+            // 2. 활: 화살비
+            if (WeaponHelper.IsUsingBow(player))
             {
-                if (!WeaponHelper.IsUsingBow(player))
+                if (HasSkill("bow_Step6_arrow_rain"))
                 {
-                    DrawFloatingText(player, L.Get("bow_equip_required"), Color.red);
+                    ExecuteArrowRain(player);
                     return;
                 }
-                ExecuteArrowRain(player);
+                DrawFloatingText(player, hasAnyHSkill ? L.Get("skill_weapon_mismatch") : L.Get("h_key_skill_required"), Color.red);
                 return;
             }
 
-            // 1. 검/방패: 패링 돌격 (sword_step5_defswitch) - 내부에서 방패/검 체크
-            if (HasSkill("sword_step5_defswitch"))
+            // 3. 검: 패링 돌격 (내부에서 방패/검 체크)
+            if (Sword_Skill.IsUsingSword(player))
             {
-                Sword_Skill.ActivateParryRush(player);
-                return;
-            }
-
-            // 2. 창: 연공창
-            if (HasSkill("spear_Step5_combo"))
-            {
-                if (!WeaponHelper.IsUsingSpear(player))
+                if (HasSkill("sword_step5_defswitch"))
                 {
-                    DrawFloatingText(player, L.Get("spear_equip_required"), Color.red);
+                    Sword_Skill.ActivateParryRush(player);
                     return;
                 }
-                HandleSpearActiveSkill(player);
+                DrawFloatingText(player, hasAnyHSkill ? L.Get("skill_weapon_mismatch") : L.Get("h_key_skill_required"), Color.red);
                 return;
             }
 
-            // 3. 둔기: 분노의 망치 (한손/양손 모두 허용)
-            if (HasSkill("mace_Step7_fury_hammer"))
+            // 4. 창: 연공창
+            if (WeaponHelper.IsUsingSpear(player))
             {
-                if (!WeaponHelper.IsUsingMace(player))
+                if (HasSkill("spear_Step5_combo"))
                 {
-                    DrawFloatingText(player, L.Get("two_hand_mace_required"), Color.red);
+                    HandleSpearActiveSkill(player);
                     return;
                 }
-                FuryHammerSkill.HandleHKeyPress(player);
+                DrawFloatingText(player, hasAnyHSkill ? L.Get("skill_weapon_mismatch") : L.Get("h_key_skill_required"), Color.red);
                 return;
             }
 
-            // 4. 지팡이: 범위 힐
-            if (HasSkill("staff_Step6_heal"))
+            // 5. 둔기: 분노의 망치
+            if (WeaponHelper.IsUsingMace(player))
             {
-                if (!WeaponHelper.IsUsingStaffOrWand(player))
+                if (HasSkill("mace_Step7_fury_hammer"))
                 {
-                    DrawFloatingText(player, L.Get("staff_equip_required"), Color.red);
+                    FuryHammerSkill.HandleHKeyPress(player);
                     return;
                 }
-                ActivateStaffAreaHeal(player);
+                DrawFloatingText(player, hasAnyHSkill ? L.Get("skill_weapon_mismatch") : L.Get("h_key_skill_required"), Color.red);
                 return;
             }
 
-            // 5. 단검: 약점폭발
-            if (HasSkill("knife_step10_stack_explosion"))
+            // 6. 지팡이: 범위 힐
+            if (WeaponHelper.IsUsingStaffOrWand(player))
             {
-                if (!WeaponHelper.IsUsingDagger(player))
+                if (HasSkill("staff_Step6_heal"))
                 {
-                    DrawFloatingText(player, L.Get("dagger_equip_required"), Color.red);
+                    ActivateStaffAreaHeal(player);
                     return;
                 }
-                KnifeStackExplosion.ActivateStackExplosion(player);
+                DrawFloatingText(player, hasAnyHSkill ? L.Get("skill_weapon_mismatch") : L.Get("h_key_skill_required"), Color.red);
                 return;
             }
 
-            DrawFloatingText(player, L.Get("h_key_skill_required"), Color.red);
+            // 7. 단검: 약점폭발
+            if (WeaponHelper.IsUsingDagger(player))
+            {
+                if (HasSkill("knife_step10_stack_explosion"))
+                {
+                    KnifeStackExplosion.ActivateStackExplosion(player);
+                    return;
+                }
+                DrawFloatingText(player, hasAnyHSkill ? L.Get("skill_weapon_mismatch") : L.Get("h_key_skill_required"), Color.red);
+                return;
+            }
+
+            // 8. 어떤 무기도 H키 스킬과 매칭 안 됨
+            DrawFloatingText(player, hasAnyHSkill ? L.Get("skill_weapon_mismatch") : L.Get("h_key_skill_required"), Color.red);
         }
 
         /// <summary>
-        /// H키 해제 처리 (사용하지 않음 - 분노의 망치는 즉시 발동 방식)
+        /// H키 해제 처리 (분노의 망치는 즉시 발동 방식)
         /// </summary>
         public static void HandleHKeyUpSkills(Player player)
         {
             if (player == null || player.IsDead()) return;
-            FuryHammerSkill.HandleHKeyRelease(player); // 빈 메서드 (호환성 유지)
+            FuryHammerSkill.HandleHKeyRelease(player);
         }
 
         // === 무기 감지 헬퍼 함수들 - WeaponHelper.cs로 통합됨 ===

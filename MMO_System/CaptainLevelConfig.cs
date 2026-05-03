@@ -162,6 +162,11 @@ namespace CaptainSkillTree.MMO_System
         /// </summary>
         public static ConfigEntry<bool> AutoSyncToEpicMMO;
 
+        /// <summary>
+        /// 탈출 버튼 표시 여부 (관리자 전용, 서버 싱크)
+        /// </summary>
+        public static ConfigEntry<bool> ExitButtonEnabled;
+
         #endregion
 
         #region === JSON 설정 ===
@@ -193,6 +198,7 @@ namespace CaptainSkillTree.MMO_System
         public static float ExpForLvlMonsterValue     =>      SkillTreeConfig.GetEffectiveValue("CaptainLevel_ExpForLvlMonster",     ExpForLvlMonster?.Value     ?? 1.5f);
         public static int   SkillPointsPerLevelValue  => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_SkillPointsPerLevel",  SkillPointsPerLevel?.Value  ?? 2);
         public static int   PointsRequiredPerLevelValue => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_PointsRequired",    PointsRequiredPerLevel?.Value ?? 2);
+        public static bool  ExitButtonEnabledValue     => SkillTreeConfig.GetEffectiveValue("exit_button_enabled", ExitButtonEnabled?.Value == true ? 1f : 0f) >= 0.5f;
 
         #endregion
 
@@ -398,6 +404,13 @@ namespace CaptainSkillTree.MMO_System
                 "EpicMMO 자동 동기화\n" +
                 "EpicMMO 설치 시 스킬포인트 기반 레벨을 EpicMMO에 동기화합니다.\n" +
                 "[기본: true]");
+
+            ExitButtonEnabled = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Exit Button", false,
+                "탈출 버튼 표시 (기본: false)\n" +
+                "스킬트리 UI에 탈출 버튼을 표시합니다.\n" +
+                "⚠️ 관리자만 변경 가능. 서버 설정이 모든 클라이언트에 동기화됩니다.\n" +
+                "[기본: false]");
 
             // === JSON 설정 ===
             GenerateJsonFiles = config.Bind(

@@ -521,7 +521,7 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier6_MindShield_Cooldown"] =
                 "【마인드쉴드 쿨타임】\n" +
-                "H키 마인드쉴드 스킬의 재사용 대기시간입니다 (초).\n" +
+                "G키 마인드쉴드 스킬의 재사용 대기시간입니다 (초).\n" +
                 "기본값: 210 (3분 30초)",
 
                 ["Tier6_MindShield_EitrCost"] =

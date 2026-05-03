@@ -72,7 +72,7 @@ namespace CaptainSkillTree
                 // 최상위 레이어에 배치 (다른 UI 위에 표시)
                 go.transform.SetAsLastSibling();
 
-                Log.LogInfo("[Difficulty] 난이도 선택 창 표시");
+
             }
         }
     }

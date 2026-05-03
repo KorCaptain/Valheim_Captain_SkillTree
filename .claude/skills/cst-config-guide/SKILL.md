@@ -10,5 +10,6 @@ description: Use for comprehensive Config setup, ordering, tooltip integration, 
 - 초기화 순서: 전문가(Attack→Speed→Defense→Production) → 원거리(Bow→Staff→Crossbow) → 근접(Knife→Sword→Mace→Spear→Polearm) → 직업
 - 구분선: `new ConfigDefinition("--- 섹션명 ---", "구분선")`
 - 멀티플레이어 동기화: `ServerSync` 사용 - 서버 Config가 클라이언트에 자동 전파
+- **업데이트 시 유저 값 보존 (R6)**: `DifficultyManager.ApplyVeryhardWithUserOverlay()` 자동 실행 — 기존 키 유저값 유지, 신규 키 VH 기본값, GameDifficulty = "UserSettings" 자동 설정
 
-**전체 문서**: `C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\md\CONFIG_GUIDE.md`
+**전체 문서**: `rules/CONFIG_INIT_RULES.md` (R1~R6)

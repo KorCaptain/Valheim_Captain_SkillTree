@@ -25,34 +25,42 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, float> _spearPenetratePendingWindow = new Dictionary<Player, float>();
         private const float SpearPenetrateExtraWindow = 30f;
 
-        // 공격 카운터 (3회 스윙 → 점프+돌진)
-        private static Dictionary<Player, int> spearPenetrateAirSwingCount = new Dictionary<Player, int>();
-        private static Dictionary<Player, float> spearPenetrateAirSwingLastTime = new Dictionary<Player, float>();
         // 돌진 실행 중 플래그 (코루틴 중첩 방지)
         private static HashSet<Player> spearPenetrateDashing = new HashSet<Player>();
+        // 돌진 토글 (true=돌진, false=제자리)
+        private static Dictionary<Player, bool> spearPenetrateDashTurn = new Dictionary<Player, bool>();
 
         // 재진입 방지 플래그 (번개 충격 데미지가 다시 콤보를 트리거하지 않도록)
         private static bool isProcessingSpearLightningDamage = false;
 
-        // 투창 전문가 2차 공격 감지용 타임스탬프
-        private static Dictionary<Player, float> spearLastSecondaryTime = new Dictionary<Player, float>();
+        // 투창 전문가 2차 공격 감지용 플래그 (consume-once)
+        private static HashSet<Player> spearSecondaryPending = new HashSet<Player>();
 
         /// <summary>
-        /// 1.5초 이내에 창 2차 공격(투창)이 있었는지 확인
+        /// 창 2차 공격(투창) 대기 중인지 확인
         /// </summary>
         public static bool IsRecentSpearSecondaryAttack(Player player)
         {
             if (player == null) return false;
-            return spearLastSecondaryTime.TryGetValue(player, out float t) && Time.time - t < 1.5f;
+            return spearSecondaryPending.Contains(player);
         }
 
         /// <summary>
-        /// 창 2차 공격 시간 기록 (Humanoid_StartAttack_SpearThrow_Patch 에서 호출)
+        /// 창 2차 공격 플래그 설정 (Humanoid_StartAttack_SpearThrow_Patch 에서 호출)
         /// </summary>
         public static void RecordSpearSecondaryAttack(Player player)
         {
             if (player != null)
-                spearLastSecondaryTime[player] = Time.time;
+                spearSecondaryPending.Add(player);
+        }
+
+        /// <summary>
+        /// 투창 데미지 보너스 적용 후 플래그 소비 (일반 공격 중복 적용 방지)
+        /// </summary>
+        public static void ConsumeSpearSecondaryAttack(Player player)
+        {
+            if (player != null)
+                spearSecondaryPending.Remove(player);
         }
 
         /// <summary>
@@ -414,6 +422,8 @@ namespace CaptainSkillTree.SkillTree
             // 버프 활성화
             ActivateSpearPenetrateBuff(player);
 
+            TankerPrereqLastUsedTime = Time.time;
+
             // Tanker Lv2 + 꿰뚫는창 보유: 첫 사용 시 쿨타임 보류 + 30초 창, 창 내 재사용 시 실제 쿨타임
             float now = Time.time;
             bool hasTankerLv2Spear = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2
@@ -435,7 +445,7 @@ namespace CaptainSkillTree.SkillTree
                 // 2번째 사용(창 내) or 일반: 실제 쿨타임 시작
                 _spearPenetratePendingWindow.Remove(player);
                 spearPenetrateCooldownEndTime[player] = now + cooldown;
-                ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "spear_Step5_penetrate", cooldown);
             }
 
             // VFX 재생 (발헤임 기본 → VFXManager)
@@ -452,8 +462,7 @@ namespace CaptainSkillTree.SkillTree
             float duration = Spear_Config.SpearStep6PenetrateBuffDurationValue;
             spearPenetrateBuffEndTime[player] = Time.time + duration;
             spearPenetrateComboCount[player] = 0;
-            spearPenetrateAirSwingCount[player] = 0;
-            spearPenetrateAirSwingLastTime.Remove(player);
+            spearPenetrateDashTurn[player] = true; // 첫 공격은 항상 돌진
 
             DrawFloatingText(player, "⚡ " + L.Get("spear_penetrate_activated", $"{duration}"), Color.yellow);
             Plugin.Log.LogInfo($"[꿰뚫는 창] 버프 활성화 - {duration}초간 지속");
@@ -510,34 +519,45 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 허공 스윙 감지 (StartAttack 시 호출) - 3회 미스 시 가장 가까운 몬스터로 돌진
+        /// 공격 시작(좌클릭) 감지 - 홀수 공격: 전방 7m 내 몬스터 돌진 / 짝수 공격: 제자리
         /// </summary>
-        public static void OnSpearSwingStart(Player player)
+        public static void OnSpearAttackStart(Player player)
         {
             if (!HasSkill("spear_Step5_penetrate")) return;
             if (!IsSpearPenetrateBuffActive(player)) return;
-            if (spearPenetrateDashing.Contains(player)) return; // 돌진 중 카운트 금지
+            if (spearPenetrateDashing.Contains(player)) return;
 
-            float now = Time.time;
-            if (!spearPenetrateAirSwingCount.ContainsKey(player))
-                spearPenetrateAirSwingCount[player] = 0;
+            bool isDashTurn = spearPenetrateDashTurn.TryGetValue(player, out bool cur) ? cur : true;
+            spearPenetrateDashTurn[player] = !isDashTurn;
+            if (!isDashTurn) return;
 
-            // 5초 이내 연속 스윙만 인정
-            if (spearPenetrateAirSwingLastTime.TryGetValue(player, out float lastSwing) && now - lastSwing < 5f)
-                spearPenetrateAirSwingCount[player]++;
-            else
-                spearPenetrateAirSwingCount[player] = 1;
+            Character target = FindNearestMonsterInFront(player, 7f);
+            if (target == null) return;
 
-            spearPenetrateAirSwingLastTime[player] = now;
+            spearPenetrateDashing.Add(player);
+            player.StartCoroutine(SpearPenetrateDashToMonsterCoroutine(player, target));
+        }
 
-            Plugin.Log.LogDebug($"[꿰뚫는 창] 허공 스윙 감지");
+        private static Character FindNearestMonsterInFront(Player player, float maxDistance)
+        {
+            Vector3 camForward = Camera.main != null ? Camera.main.transform.forward : player.transform.forward;
+            Vector3 fwd = new Vector3(camForward.x, 0f, camForward.z).normalized;
+            LayerMask charMask = LayerMask.GetMask("character", "hitbox");
+            var cols = Physics.OverlapSphere(player.transform.position, maxDistance, charMask);
 
-            if (spearPenetrateAirSwingCount[player] >= 3)
+            Character nearest = null;
+            float nearestDist = float.MaxValue;
+            foreach (var col in cols)
             {
-                spearPenetrateAirSwingCount[player] = 0;
-                spearPenetrateDashing.Add(player); // 코루틴 시작 전 즉시 차단
-                player.StartCoroutine(SpearPenetrateDashForwardCoroutine(player));
+                var ch = col.GetComponentInParent<Character>();
+                if (ch == null || ch == player || ch.IsPlayer() || ch.IsDead()) continue;
+                if (!ch.IsMonsterFaction(Time.time)) continue;
+                Vector3 toTarget = ch.transform.position - player.transform.position;
+                if (Vector3.Dot(toTarget.normalized, fwd) < 0.3f) continue;
+                float dist = toTarget.magnitude;
+                if (dist < nearestDist) { nearestDist = dist; nearest = ch; }
             }
+            return nearest;
         }
 
         /// <summary>
@@ -588,80 +608,31 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        private static System.Collections.IEnumerator SpearPenetrateDashForwardCoroutine(Player player)
+        private static System.Collections.IEnumerator SpearPenetrateDashToMonsterCoroutine(Player player, Character target)
         {
-            if (player == null) yield break;
-
-            // 카메라 전방 수평 방향
-            Vector3 camForward = Camera.main != null ? Camera.main.transform.forward : player.transform.forward;
-            Vector3 dashDir = new Vector3(camForward.x, 0f, camForward.z);
-            if (dashDir.sqrMagnitude < 0.01f) dashDir = player.transform.forward;
-            dashDir.Normalize();
+            if (player == null || target == null) { spearPenetrateDashing.Remove(player); yield break; }
 
             var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
-            Quaternion targetRot = Quaternion.LookRotation(dashDir);
-            LayerMask charMask = LayerMask.GetMask("character", "hitbox");
+            Vector3 toTarget = target.transform.position - player.transform.position;
+            Vector3 dir = new Vector3(toTarget.x, 0f, toTarget.z).normalized;
+            Vector3 dashEnd = target.transform.position - dir * 1.5f;
 
-            // === Phase 1: 점프 (0.2초 상승) ===
-            float jumpHeight = 0.6f;
-            float jumpDuration = 0.2f;
-            Vector3 jumpStartPos = player.transform.position;
-            Vector3 jumpPeakPos = jumpStartPos + Vector3.up * jumpHeight;
-
-            float jumpElapsed = 0f;
-            while (jumpElapsed < jumpDuration)
-            {
-                if (player == null || player.IsDead()) yield break;
-                jumpElapsed += Time.deltaTime;
-                float jt = Mathf.Clamp01(jumpElapsed / jumpDuration);
-                float jSmooth = 1f - Mathf.Pow(1f - jt, 2f);
-                Vector3 newPos = Vector3.Lerp(jumpStartPos, jumpPeakPos, jSmooth);
-                if (body != null) { body.velocity = Vector3.zero; body.MovePosition(newPos); }
-                else player.transform.position = newPos;
-                player.transform.rotation = targetRot;
-                yield return new WaitForFixedUpdate();
-            }
-
-            // === Phase 2: 전방 돌진 (0.3초, 3m) ===
-            SimpleVFX.Play("hit_03", player.transform.position + dashDir * 0.5f + Vector3.up * 0.3f, 1.2f);
-
-            float dashDist = 3f;
-            float dashDuration = 0.3f;
-            Vector3 dashStartPos = player.transform.position;
-            Vector3 dashEndPos = dashStartPos + dashDir * dashDist;
-
-            if (Physics.Raycast(dashEndPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundCheck, 10f,
+            if (Physics.Raycast(dashEnd + Vector3.up * 5f, Vector3.down, out RaycastHit gHit, 10f,
                 LayerMask.GetMask("terrain", "Default")))
-                dashEndPos.y = groundCheck.point.y + 0.1f;
+                dashEnd.y = gHit.point.y + 0.1f;
 
-            float dashElapsed = 0f;
-            float prevSmooth = 0f;
-            while (dashElapsed < dashDuration)
+            Quaternion targetRot = Quaternion.LookRotation(dir);
+            Vector3 startPos = player.transform.position;
+            float dist = Vector3.Distance(startPos, dashEnd);
+            float dashDuration = Mathf.Clamp(dist * 0.05f, 0.12f, 0.28f);
+
+            float elapsed = 0f;
+            while (elapsed < dashDuration)
             {
-                if (player == null || player.IsDead()) yield break;
-                dashElapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(dashElapsed / dashDuration);
-                float smoothT = 1f - Mathf.Pow(1f - t, 2f);
-                float frameDelta = smoothT - prevSmooth;
-                prevSmooth = smoothT;
-
-                Vector3 newPos = Vector3.Lerp(dashStartPos, dashEndPos, smoothT);
-                if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit gHit, 10f,
-                    LayerMask.GetMask("terrain", "Default")))
-                    newPos.y = Mathf.Max(newPos.y, gHit.point.y + 0.1f);
-
-                // 반경 1.5m 내 몬스터 함께 밀기 (지나가지 않도록)
-                var cols = Physics.OverlapSphere(player.transform.position, 1.5f, charMask);
-                foreach (var col in cols)
-                {
-                    var ch = col.GetComponentInParent<Character>();
-                    if (ch == null || ch == player || ch.IsPlayer() || ch.IsDead()) continue;
-                    if (!ch.IsMonsterFaction(Time.time)) continue;
-                    var chBody = HarmonyLib.Traverse.Create(ch).Field("m_body").GetValue<Rigidbody>();
-                    if (chBody != null)
-                        chBody.MovePosition(chBody.position + dashDir * (frameDelta * dashDist));
-                }
-
+                if (player == null || player.IsDead()) { spearPenetrateDashing.Remove(player); yield break; }
+                elapsed += Time.deltaTime;
+                float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / dashDuration));
+                Vector3 newPos = Vector3.Lerp(startPos, dashEnd, t);
                 if (body != null) { body.velocity = Vector3.zero; body.MovePosition(newPos); }
                 else player.transform.position = newPos;
                 player.transform.rotation = targetRot;
@@ -690,7 +661,7 @@ namespace CaptainSkillTree.SkillTree
                 _spearPenetratePendingWindow.Remove(player);
                 float cd = Spear_Config.SpearStep6PenetrateCooldownValue;
                 spearPenetrateCooldownEndTime[player] = Time.time + cd;
-                ActiveSkillCooldownRegistry.SetCooldown("G", cd);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "spear_Step5_penetrate", cd);
                 Plugin.Log.LogDebug("[꿰뚫는 창] Tanker 추가 사용 창 만료 - 쿨타임 시작");
             }
         }
@@ -705,9 +676,8 @@ namespace CaptainSkillTree.SkillTree
             spearPenetrateLastHitTime.Remove(player);
             spearPenetrateCooldownEndTime.Remove(player);
             _spearPenetratePendingWindow.Remove(player);
-            spearPenetrateAirSwingCount.Remove(player);
-            spearPenetrateAirSwingLastTime.Remove(player);
             spearPenetrateDashing.Remove(player);
+            spearPenetrateDashTurn.Remove(player);
         }
 
     }

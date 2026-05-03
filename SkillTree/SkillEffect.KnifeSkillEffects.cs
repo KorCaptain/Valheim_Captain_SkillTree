@@ -362,7 +362,7 @@ namespace CaptainSkillTree.SkillTree
             if (!rogueExtraChargeActive)
             {
                 knifeAssassinHeartCooldownEndTime[player] = currentTime + cooldown;
-                ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "knife_step9_assassin_heart", cooldown);
             }
 
             // 로그 Lv2: 추가 사용 추적

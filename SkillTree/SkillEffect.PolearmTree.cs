@@ -111,7 +111,9 @@ namespace CaptainSkillTree.SkillTree
 
             float now = Time.time;
             bool hasBerserkerLv2_pierce = (SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0) >= 2;
-            bool inPierceWindow = hasBerserkerLv2_pierce
+            bool hasTankerLv2_pierce = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2;
+            bool hasExtraPierce = hasBerserkerLv2_pierce || hasTankerLv2_pierce;
+            bool inPierceWindow = hasExtraPierce
                 && _pierceChargePendingWindow.TryGetValue(player, out float pierceWinExpiry)
                 && now <= pierceWinExpiry;
 
@@ -144,6 +146,21 @@ namespace CaptainSkillTree.SkillTree
                 return false;
             }
 
+            // 타겟 탐색 (쿨타임·스태미나 소모 전)
+            Character pierceTarget = FindPierceChargeTarget(player);
+            if (pierceTarget == null)
+            {
+                DrawFloatingText(player, "⚠️ " + L.Get("shield_no_target"));
+                return false;
+            }
+
+            // 경로 장애물 확인 (쿨타임·스태미나 소모 전)
+            if (IsPierceChargePathBlocked(player, pierceTarget))
+            {
+                DrawFloatingText(player, "🚫 " + L.Get("shield_path_blocked"));
+                return false;
+            }
+
             // 이미 스킬 실행 중인지 확인
             if (polearmPierceChargeActive.TryGetValue(player, out bool ppActive) && ppActive)
             {
@@ -157,8 +174,10 @@ namespace CaptainSkillTree.SkillTree
             // 스킬 활성화
             polearmPierceChargeActive[player] = true;
 
-            // Berserker Lv2 추가 사용 창 분기
-            if (hasBerserkerLv2_pierce && !inPierceWindow)
+            TankerPrereqLastUsedTime = Time.time;
+
+            // Berserker/Tanker Lv2 추가 사용 창 분기
+            if (hasExtraPierce && !inPierceWindow)
             {
                 // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
                 _pierceChargePendingWindow[player] = now + PierceChargeExtraWindow;
@@ -169,7 +188,7 @@ namespace CaptainSkillTree.SkillTree
                 // 2번째 사용(창 내) or 비버서커: 쿨타임 즉시 시작
                 _pierceChargePendingWindow.Remove(player);
                 polearmPierceChargeLastUseTime[player] = now;
-                ActiveSkillCooldownRegistry.SetCooldown("G", Polearm_Config.PolearmPierceChargeCooldownValue);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "polearm_step5_king", Polearm_Config.PolearmPierceChargeCooldownValue);
             }
 
             // 코루틴 시작
@@ -178,7 +197,7 @@ namespace CaptainSkillTree.SkillTree
                 player.StopCoroutine(ppPrevCoroutine);
             }
 
-            var coroutine = ExecutePierceChargeSequence(player);
+            var coroutine = ExecutePierceChargeSequence(player, pierceTarget);
             polearmPierceChargeCoroutines[player] = player.StartCoroutine(coroutine);
 
             DrawFloatingText(player, "🔱 " + L.Get("pierce_charge"));
@@ -187,11 +206,7 @@ namespace CaptainSkillTree.SkillTree
             return true;
         }
 
-        /// <summary>
-        /// 관통 돌격 시퀀스 실행 코루틴
-        /// 돌진하면서 공격 → 무기 히트박스로 적중 (게임 기본 시스템)
-        /// </summary>
-        private static IEnumerator ExecutePierceChargeSequence(Player player)
+        private static IEnumerator ExecutePierceChargeSequence(Player player, Character target)
         {
             if (player == null || player.IsDead())
             {
@@ -199,7 +214,6 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            // 무기 확인
             var weapon = player.GetCurrentWeapon();
             if (weapon == null)
             {
@@ -208,101 +222,74 @@ namespace CaptainSkillTree.SkillTree
             }
 
             float dashDistance = Polearm_Config.PolearmPierceChargeDashDistanceValue;
-            float dashDuration = 0.35f; // 돌진 시간 (공격 모션과 맞추기 위해 약간 늘림)
+            float dashDuration = 0.35f;
 
-            // === Phase 0: 돌진 방향 설정 ===
+            // === Phase 0: 타겟 기준 3D 방향 설정 (공중 직선 이동) ===
             Vector3 startPos = player.transform.position;
-            Vector3 dashDir = GetCameraForward(player);
+            Vector3 dashDir3D = (target.GetCenterPoint() - player.GetCenterPoint()).normalized;
+            Vector3 dashDirH = new Vector3(dashDir3D.x, 0f, dashDir3D.z);
+            if (dashDirH.sqrMagnitude > 0.01f) dashDirH.Normalize();
+            else dashDirH = player.GetLookDir();
 
-            // 플레이어를 돌진 방향으로 회전
-            player.transform.rotation = Quaternion.LookRotation(dashDir);
+            Vector3 endPos = startPos + dashDir3D * dashDistance;
 
-            // 목표 위치 계산
-            Vector3 targetPos = startPos + dashDir * dashDistance;
+            Plugin.Log.LogDebug($"[관통 돌격] 공중 직선 돌진 시작 - 거리: {dashDistance}m, 타겟: {target.name}");
 
-            Plugin.Log.LogDebug($"[관통 돌격] 돌진+공격 시작 - 거리: {dashDistance}m");
-
-            // === 공격속도 부스트 적용 (800% = 8배 빠르게) ===
             SetPlayerAttackSpeedBoost(player, 8.0f);
 
-            // Rigidbody 참조 (위치 고정용)
             var rigidbody = player.GetComponent<Rigidbody>();
 
-            // === Phase 1: 돌진하면서 공격 (동시 진행) ===
+            // === Phase 1: 공중 직선 돌진 + 거리 판정 적중 ===
             float elapsed = 0f;
-            const float hitRadius = 1.5f;  // SphereCast 반경 (경로 좌우 3m 폭)
-            int charMask = LayerMask.GetMask("character");
-            int obstMask = LayerMask.GetMask("static_solid", "piece");
             Character hitMonster = null;
-            bool blockedByObstacle = false;
             float knockbackDistance = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
             Vector3 finalPos = startPos;
-            Vector3 prevPos = startPos;
 
-            // 돌진 시작 시 공격 모션 1회만 트리거
             TriggerMeleeAttack(player, weapon);
 
             while (elapsed < dashDuration && player != null && !player.IsDead())
             {
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / dashDuration);
-
-                // 이징 함수 (EaseOut)
                 float easedT = 1f - Mathf.Pow(1f - t, 2f);
 
-                // 보간 위치 + 지형 추종 Y 보정 (오르막/내리막 대응)
-                Vector3 lerpPos = Vector3.Lerp(startPos, targetPos, easedT);
-                Vector3 newPos = GetGroundPosition(lerpPos);
+                Vector3 newPos = Vector3.Lerp(startPos, endPos, easedT);
 
-                Vector3 moveDir = newPos - prevPos;
-                float moveDist = moveDir.magnitude;
-
-                if (moveDist > 0.01f)
+                // 지형 아래 꺼짐 방지 (공중 이동이지만 땅 밑으로는 안 꺼짐)
+                if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
+                    LayerMask.GetMask("terrain", "static_solid")))
                 {
-                    Vector3 castOrigin = prevPos + Vector3.up * 1f;
-                    Vector3 moveNorm = moveDir.normalized;
-
-                    // [장애물 감지] 바위/나무/건물 충돌 시 멈춤
-                    if (Physics.SphereCast(castOrigin, 0.5f, moveNorm,
-                        out RaycastHit _, moveDist + 0.1f, obstMask))
-                    {
-                        Plugin.Log.LogDebug("[관통 돌격] 장애물 감지 - 멈춤");
-                        finalPos = prevPos;
-                        blockedByObstacle = true;
-                        break;
-                    }
-
-                    // [경로 적 탐지] SphereCast로 이동 경로 3m 폭 내 적 감지
-                    RaycastHit[] pathHits = Physics.SphereCastAll(
-                        castOrigin, hitRadius, moveNorm, moveDist + 0.3f, charMask);
-                    foreach (var h in pathHits)
-                    {
-                        var c = h.collider.GetComponentInParent<Character>();
-                        if (c == null || c.IsDead() || c == player) continue;
-                        if (!c.IsMonsterFaction(Time.time) && !c.IsBoss()) continue;
-                        hitMonster = c;
-                        break;
-                    }
-                    // Fallback: SphereCast 미감지 시 점 감지 보완
-                    if (hitMonster == null)
-                        hitMonster = FindNearestMonsterInRadius(player, hitRadius);
+                    float terrainY = groundHit.point.y + 0.3f;
+                    if (newPos.y < terrainY) newPos.y = terrainY;
                 }
 
-                // Rigidbody를 통한 위치 설정 (더 안정적)
+                // 캐릭터 회전 동기화
+                if (dashDirH != Vector3.zero)
+                {
+                    player.transform.rotation = Quaternion.LookRotation(dashDirH);
+                    HarmonyLib.Traverse.Create(player).Field("m_lookDir").SetValue(dashDirH);
+                }
+
                 if (rigidbody != null)
                 {
                     rigidbody.MovePosition(newPos);
                 }
                 player.transform.position = newPos;
                 finalPos = newPos;
-                prevPos = newPos;
+
+                // 적중 판정: 타겟과 3m 이내
+                if (target != null && !target.IsDead())
+                {
+                    float distNow = Vector3.Distance(player.transform.position, target.transform.position);
+                    if (distNow <= 3f)
+                        hitMonster = target;
+                }
 
                 if (hitMonster != null)
                 {
                     Plugin.Log.LogDebug($"[관통 돌격] 첫 몬스터 적중! - 돌진 멈춤");
                     finalPos = player.transform.position;
 
-                    // === 첫 몬스터에 직접 데미지 (1회만) ===
                     float damageMultiplier = 1f + (Polearm_Config.PolearmPierceChargePrimaryDamageValue / 100f);
                     float pierceSkillFactor = player.GetSkillFactor(Skills.SkillType.Polearms);
                     var weaponDamage = weapon.GetDamage(0, pierceSkillFactor);
@@ -323,20 +310,16 @@ namespace CaptainSkillTree.SkillTree
 
                     hitMonster.Damage(hit);
                     hitMonster.Stagger(knockDir);
-
-                    // 첫 몬스터 넉백
                     hitMonster.transform.position += knockDir * knockbackDistance;
 
-                    // VFX - 첫 몬스터
                     VFXManager.PlayVFXMultiplayer("fx_crit", "", hitMonster.GetCenterPoint(), Quaternion.identity, 2f);
                     SimpleVFX.Play("confetti_blast_multicolor", hitMonster.GetCenterPoint(), 2f);
 
-                    // === 플레이어 위치 중심 5m 반경 내 모든 몬스터 넉백 ===
                     ApplyAreaKnockback(player, hitMonster, weapon, knockbackDistance);
 
                     DrawFloatingText(player, "💥 " + L.Get("pierce_charge_damage", Polearm_Config.PolearmPierceChargePrimaryDamageValue));
 
-                    break; // 적중 시 이동 멈춤
+                    break;
                 }
 
                 yield return null;
@@ -349,7 +332,6 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            // === 최종 위치 고정 (되돌아오기 방지) ===
             if (rigidbody != null)
             {
                 if (!rigidbody.isKinematic) rigidbody.velocity = Vector3.zero;
@@ -357,24 +339,20 @@ namespace CaptainSkillTree.SkillTree
             }
             player.transform.position = finalPos;
 
-            // 적중 없이 돌진 완료 (장애물 멈춤 제외)
-            if (hitMonster == null && !blockedByObstacle)
+            if (hitMonster == null)
             {
                 DrawFloatingText(player, "🔱 " + L.Get("charge_complete"));
             }
 
-            // 공격속도 복원
             yield return new WaitForSeconds(0.1f);
             SetPlayerAttackSpeedBoost(player, 1.0f);
 
-            // 최종 위치 한번 더 확정 (안전장치)
             if (player != null && rigidbody != null)
             {
                 rigidbody.MovePosition(finalPos);
                 player.transform.position = finalPos;
             }
 
-            // 상태 정리
             CleanupPierceCharge(player);
             yield return null;
         }
@@ -697,6 +675,63 @@ namespace CaptainSkillTree.SkillTree
             return enemies;
         }
 
+        private static Character FindPierceChargeTarget(Player player)
+        {
+            Vector3 lookDir = player.GetLookDir();
+            lookDir.y = 0f;
+            if (lookDir.sqrMagnitude < 0.01f) return null;
+            lookDir.Normalize();
+
+            Vector3 origin = player.GetCenterPoint();
+            float range = Polearm_Config.PolearmPierceChargeDashDistanceValue;
+            Character nearest = null;
+            float nearestDist = float.MaxValue;
+
+            foreach (var enemy in Character.GetAllCharacters())
+            {
+                if (enemy == null || enemy == player || enemy.IsDead()) continue;
+                if (enemy.GetFaction() == Character.Faction.Players) continue;
+
+                float dist = Vector3.Distance(origin, enemy.GetCenterPoint());
+                if (dist > range) continue;
+
+                Vector3 toEnemyFlat = enemy.GetCenterPoint() - origin;
+                toEnemyFlat.y = 0f;
+                if (toEnemyFlat.sqrMagnitude < 0.01f)
+                {
+                    if (dist < nearestDist) { nearestDist = dist; nearest = enemy; }
+                    continue;
+                }
+                toEnemyFlat.Normalize();
+                if (Vector3.Angle(lookDir, toEnemyFlat) > 75f) continue;
+
+                if (dist < nearestDist) { nearestDist = dist; nearest = enemy; }
+            }
+            return nearest;
+        }
+
+        // "piece" = 건축물, "Default" = 나무/던전 벽. radius 0.35f로 발 정도 걸린 건 통과 허용
+        private static bool IsPierceChargePathBlocked(Player player, Character target)
+        {
+            Vector3 from = player.GetCenterPoint();
+            Vector3 to   = target.GetCenterPoint();
+            float dist   = Vector3.Distance(from, to);
+            if (dist < 0.5f) return false;
+
+            Vector3 dir = (to - from).normalized;
+            LayerMask blockMask = LayerMask.GetMask("piece", "Default");
+
+            if (Physics.SphereCast(from, 0.35f, dir, out RaycastHit hit, dist - 0.5f, blockMask))
+            {
+                if (hit.collider.GetComponentInParent<Character>() == null)
+                {
+                    Plugin.Log.LogDebug($"[관통 돌격] 경로 차단: {hit.collider.name}");
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// 관통 돌격 상태 정리
         /// </summary>
@@ -719,7 +754,7 @@ namespace CaptainSkillTree.SkillTree
                 _pierceChargePendingWindow.Remove(player);
                 float cd = Polearm_Config.PolearmPierceChargeCooldownValue;
                 polearmPierceChargeLastUseTime[player] = Time.time;
-                ActiveSkillCooldownRegistry.SetCooldown("G", cd);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "polearm_step5_king", cd);
                 Plugin.Log.LogDebug("[관통 돌격] Berserker 추가 사용 창 만료 - 쿨타임 시작");
             }
         }

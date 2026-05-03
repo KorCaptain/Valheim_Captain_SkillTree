@@ -595,29 +595,24 @@ namespace CaptainSkillTree.Localization
                 "默认：20",
 
                 // === Producer Lv1 ===
-                ["Producer_FarmGrid_Lv1"] = "【农耕格大小 Lv1】\nLv1时农耕格中的额外格子数。\n默认：2",
                 ["Producer_EnchantChance_Lv1"] = "【附魔概率 Lv1 (%)】\nLv1时对制作物品附魔的概率。\n默认：0%",
 
                 // === Producer Lv2 ===
-                ["Producer_FarmGrid_Lv2"] = "【农耕格大小 Lv2】\nLv2时农耕格中的额外格子数。\n默认：2",
                 ["Producer_Durability_Lv2"] = "【制作品耐久度加成 Lv2 (%)】\nLv2时制作物品的耐久度加成。\n默认：10%",
                 ["Producer_MaterialReduction_Lv2"] = "【材料消耗减少 Lv2 (%)】\nLv2时每次制作节省的材料。\n默认：10%",
                 ["Producer_EnchantChance_Lv2"] = "【附魔概率 Lv2 (%)】\nLv2时对制作物品附魔的概率。\n默认：0%",
 
                 // === Producer Lv3 ===
-                ["Producer_FarmGrid_Lv3"] = "【农耕格大小 Lv3】\nLv3时农耕格中的额外格子数。\n默认：4",
                 ["Producer_Durability_Lv3"] = "【制作品耐久度加成 Lv3 (%)】\nLv3时制作物品的耐久度加成。\n默认：15%",
                 ["Producer_MaterialReduction_Lv3"] = "【材料消耗减少 Lv3 (%)】\nLv3时每次制作节省的材料。\n默认：15%",
                 ["Producer_EnchantChance_Lv3"] = "【附魔概率 Lv3 (%)】\nLv3时对制作物品附魔的概率。\n默认：25%",
 
                 // === Producer Lv4 ===
-                ["Producer_FarmGrid_Lv4"] = "【农耕格大小 Lv4】\nLv4时农耕格中的额外格子数。\n默认：6",
                 ["Producer_Durability_Lv4"] = "【制作品耐久度加成 Lv4 (%)】\nLv4时制作物品的耐久度加成。\n默认：20%",
                 ["Producer_MaterialReduction_Lv4"] = "【材料消耗减少 Lv4 (%)】\nLv4时每次制作节省的材料。\n默认：20%",
                 ["Producer_EnchantChance_Lv4"] = "【附魔概率 Lv4 (%)】\nLv4时对制作物品附魔的概率。\n默认：30%",
 
                 // === Producer Lv5 ===
-                ["Producer_FarmGrid_Lv5"] = "【农耕格大小 Lv5】\nLv5时农耕格中的额外格子数。\n默认：8",
                 ["Producer_Durability_Lv5"] = "【制作品耐久度加成 Lv5 (%)】\nLv5时制作物品的耐久度加成。\n默认：30%",
                 ["Producer_MaterialReduction_Lv5"] = "【材料消耗减少 Lv5 (%)】\nLv5时每次制作节省的材料。\n默认：30%",
                 ["Producer_EnchantChance_Lv5"] = "【附魔概率 Lv5 (%)】\nLv5时对制作物品附魔的概率。\n默认：35%",

@@ -72,7 +72,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 쿨타임 시작 + 스태미나 소모
             _iceBreathCooldown[player] = Time.time;
-            ActiveSkillCooldownRegistry.SetCooldown("H", cooldownTime);
+            ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "crossbow_ice_breath", cooldownTime);
             player.UseStamina(staminaCost);
 
             // 캐릭터를 카메라 수평 방향으로 회전 (Y=0 유지)
@@ -218,15 +218,18 @@ namespace CaptainSkillTree.SkillTree
                 try
                 {
                     if (c == null || c == player || c.IsDead()) continue;
-                    if (!c.IsMonsterFaction(Time.time) && !c.IsPlayer()) continue;
-                    if (c.IsPlayer() && c == player) continue;
+                    if (c.IsPlayer()) continue;
+                    if (!c.IsMonsterFaction(Time.time) && c.GetFaction() != Character.Faction.Boss) continue;
 
                     float dist = (c.GetCenterPoint() - origin).magnitude;
                     if (dist > IceBreathRange) continue;
 
-                    // 콘 체크: fireDir 기준 ±35°
-                    Vector3 toTarget = (c.GetCenterPoint() - origin).normalized;
-                    if (Vector3.Angle(fireDir, toTarget) > 35f) continue;
+                    // 콘 체크: 수평 방향만 사용 (거대몹 높이 차이 보정)
+                    Vector3 toCenter = c.GetCenterPoint() - origin;
+                    Vector3 flatDir  = new Vector3(toCenter.x, 0f, toCenter.z);
+                    Vector3 flatFire = new Vector3(fireDir.x,  0f, fireDir.z);
+                    if (flatDir.sqrMagnitude < 0.001f || flatFire.sqrMagnitude < 0.001f) continue;
+                    if (Vector3.Angle(flatFire.normalized, flatDir.normalized) > 35f) continue;
 
                     result.Add(c);
                 }

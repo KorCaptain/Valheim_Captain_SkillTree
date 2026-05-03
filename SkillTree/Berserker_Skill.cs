@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using HarmonyLib;
 using CaptainSkillTree.Localization;
@@ -44,15 +45,19 @@ namespace CaptainSkillTree.SkillTree
             public float EndTime;
             public float CooldownEndTime;
             public float LastNotificationTime;
+            public float LastActivationTime;
 
             public bool IsActive => Time.time < EndTime;
             public bool OnCooldown => Time.time < CooldownEndTime;
+            public bool IsDeathProtected(float seconds = 10f)
+                => LastActivationTime > 0f && Time.time < LastActivationTime + seconds;
 
             public void Clear()
             {
                 EndTime = 0f;
                 CooldownEndTime = 0f;
                 LastNotificationTime = 0f;
+                LastActivationTime = 0f;
             }
         }
 
@@ -410,6 +415,7 @@ namespace CaptainSkillTree.SkillTree
 
                 state.EndTime = Time.time + duration;
                 state.CooldownEndTime = Time.time + cooldown;
+                state.LastActivationTime = Time.time;
                 state.LastNotificationTime = 0f;
                 ActiveSkillCooldownRegistry.SetCooldown("passive_berserker", cooldown);
 
@@ -429,6 +435,8 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 패시브 VFX 효과 생성 (WackyEpicMMO 방식)
+        /// [예외] 버서커 패시브 무적 발동은 시각 피드백이 필수적이므로
+        /// 일반 패시브 VFX 금지 규칙의 예외로 허용. (cst-vfx-rules 예외)
         /// </summary>
         private static void CreatePassiveEffect(Player player)
         {
@@ -761,8 +769,10 @@ namespace CaptainSkillTree.SkillTree
                         passiveStates[__instance] = state;
                     }
 
-                    // 이미 무적 중이거나 쿨다운이면 정상 사망 처리
-                    if (state.IsActive || state.OnCooldown) return true;
+                    // 무적 중 재사망 → 원본 OnDeath 차단 (경험치 감소 방지)
+                    if (state.IsActive) return false;
+                    // 쿨다운 = 진짜 사망, 정상 처리
+                    if (state.OnCooldown) return true;
 
                     // 패시브 강제 발동 + HP 1 복원 + 사망 취소
                     ApplyPassiveInvincibility(__instance, state);
@@ -776,6 +786,79 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogError($"[버서커 OnDeath 폴백] 실패: {ex.Message}");
                     return true;
                 }
+            }
+        }
+
+        #endregion
+
+        #region Experience Protection Patches
+
+        /// <summary>
+        /// 발헤임 스킬 숙련도 감소 차단 — 죽음의 무시 발동 후 10초간 보호
+        /// </summary>
+        [HarmonyPatch(typeof(Skills), nameof(Skills.LowerAllSkills))]
+        public static class Berserker_Skills_LowerAllSkills_Patch
+        {
+            [HarmonyPriority(Priority.High)]
+            public static bool Prefix()
+            {
+                try
+                {
+                    var player = Player.m_localPlayer;
+                    if (player == null || !HasBerserkerSkill(player)) return true;
+                    if (!passiveStates.TryGetValue(player, out var state)) return true;
+                    if (state.IsActive || state.IsDeathProtected(10f))
+                    {
+                        Plugin.Log.LogInfo("[버서커] 죽음의 무시 - 스킬 숙련도 감소 차단");
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[버서커] LowerAllSkills 패치 오류: {ex.Message}");
+                }
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// EpicMMO 경험치 감소 차단 — 죽음의 무시 발동 후 10초간 보호
+        /// EpicMMO 없으면 TargetMethod가 null 반환 → 패치 스킵됨
+        /// </summary>
+        [HarmonyPatch]
+        public static class Berserker_EpicMMO_DeathPlayer_Patch
+        {
+            [HarmonyTargetMethod]
+            public static MethodBase TargetMethod()
+            {
+                try
+                {
+                    var t = Type.GetType("EpicMMOSystem.LevelSystem, EpicMMOSystem");
+                    return t?.GetMethod("DeathPlayer",
+                        BindingFlags.Public | BindingFlags.Instance);
+                }
+                catch { return null; }
+            }
+
+            [HarmonyPriority(Priority.High)]
+            public static bool Prefix()
+            {
+                try
+                {
+                    var player = Player.m_localPlayer;
+                    if (player == null || !HasBerserkerSkill(player)) return true;
+                    if (!passiveStates.TryGetValue(player, out var state)) return true;
+                    if (state.IsActive || state.IsDeathProtected(10f))
+                    {
+                        Plugin.Log.LogInfo("[버서커] 죽음의 무시 - EpicMMO 경험치 감소 차단");
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogError($"[버서커] EpicMMO DeathPlayer 패치 오류: {ex.Message}");
+                }
+                return true;
             }
         }
 

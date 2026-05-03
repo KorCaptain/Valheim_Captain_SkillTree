@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,33 +12,34 @@ using CaptainSkillTree.Localization;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 검 스킬 전용 로직 시스템
-    /// 돌진 연속 베기 (Rush Slash) 액티브 스킬 및 검 관련 모든 스킬 구현
+    /// 寃 ?ㅽ궗 ?꾩슜 濡쒖쭅 ?쒖뒪??
+    /// ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ?≫떚釉??ㅽ궗 諛?寃 愿??紐⑤뱺 ?ㅽ궗 援ы쁽
     /// </summary>
     public static partial class Sword_Skill
     {
-        // === 돌진 연속 베기 (Rush Slash) 액티브 스킬 관련 변수 ===
+        // === ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ?≫떚釉??ㅽ궗 愿??蹂??===
         private static Dictionary<Player, float> rushSlashCooldowns = new Dictionary<Player, float>();
         private static Dictionary<Player, bool> rushSlashActive = new Dictionary<Player, bool>();
         private static Dictionary<Player, float> rushSlashEndTime = new Dictionary<Player, float>();
         private static Dictionary<Player, Coroutine> rushSlashCoroutines = new Dictionary<Player, Coroutine>();
         private static Dictionary<Player, int> rushSlashAttackCount = new Dictionary<Player, int>();
+        private static Dictionary<Player, float> rushSlashInvincibleUntil = new Dictionary<Player, float>();
 
-        // === 기존 호환성용 별칭 ===
+        // === 湲곗〈 ?명솚?깆슜 蹂꾩묶 ===
         private static Dictionary<Player, float> swordSlashCooldowns => rushSlashCooldowns;
         private static Dictionary<Player, bool> swordSlashActive => rushSlashActive;
         private static Dictionary<Player, float> swordSlashEndTime => rushSlashEndTime;
         private static Dictionary<Player, Coroutine> swordSlashCoroutines => rushSlashCoroutines;
         private static Dictionary<Player, int> swordSlashAttackCount => rushSlashAttackCount;
 
-        // === Paladin Lv2 추가 사용 창 ===
+        // === Paladin Lv2 異붽? ?ъ슜 李?===
         private static Dictionary<Player, float> _swordSlashPendingWindow = new Dictionary<Player, float>();
         private static Dictionary<Player, float> _parryRushPendingWindow = new Dictionary<Player, float>();
         private const float SwordSlashExtraWindow = 30f;
         private const float ParryRushExtraWindow = 30f;
 
         /// <summary>
-        /// 플레이어가 방패를 착용 중인지 확인
+        /// ?뚮젅?댁뼱媛 諛⑺뙣瑜?李⑹슜 以묒씤吏 ?뺤씤
         /// </summary>
         public static bool HasShield(Player player)
         {
@@ -63,7 +64,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 장비 목록에서 검 무기 아이템 반환 (패링 중 GetCurrentWeapon 문제 회피)
+        /// ?λ퉬 紐⑸줉?먯꽌 寃 臾닿린 ?꾩씠??諛섑솚 (?⑤쭅 以?GetCurrentWeapon 臾몄젣 ?뚰뵾)
         /// </summary>
         public static ItemDrop.ItemData GetEquippedSword(Player player)
         {
@@ -84,23 +85,23 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 플레이어가 검을 사용 중인지 확인 (확장성 고려 - 다른 모드 지원)
-        /// 1순위: Valheim 기본 Swords 스킬 타입
-        /// 2순위: 프리팹 이름에 "Sword", "sword", "Blade", "blade" 포함
-        /// 3순위: 무기 이름에 "검", "sword", "blade" 포함
+        /// ?뚮젅?댁뼱媛 寃???ъ슜 以묒씤吏 ?뺤씤 (?뺤옣??怨좊젮 - ?ㅻⅨ 紐⑤뱶 吏??
+        /// 1?쒖쐞: Valheim 湲곕낯 Swords ?ㅽ궗 ???
+        /// 2?쒖쐞: ?꾨━???대쫫??"Sword", "sword", "Blade", "blade" ?ы븿
+        /// 3?쒖쐞: 臾닿린 ?대쫫??"寃", "sword", "blade" ?ы븿
         /// </summary>
         public static bool IsUsingSword(Player player)
         {
             if (player == null || player.GetCurrentWeapon() == null) return false;
             var weapon = player.GetCurrentWeapon();
             
-            // 1순위: Valheim 기본 Swords 스킬 타입 확인
+            // 1?쒖쐞: Valheim 湲곕낯 Swords ?ㅽ궗 ????뺤씤
             if (weapon.m_shared.m_skillType == Skills.SkillType.Swords)
             {
                 return true;
             }
             
-            // 2순위: 프리팹 이름 확인 (다른 모드 지원)
+            // 2?쒖쐞: ?꾨━???대쫫 ?뺤씤 (?ㅻⅨ 紐⑤뱶 吏??
             string prefabName = weapon.m_dropPrefab?.name ?? "";
             if (prefabName.Contains("Sword") || prefabName.Contains("sword") || 
                 prefabName.Contains("Blade") || prefabName.Contains("blade"))
@@ -108,9 +109,9 @@ namespace CaptainSkillTree.SkillTree
                 return true;
             }
             
-            // 3순위: 무기 이름 확인 (지역화 및 커스텀 이름 지원)
+            // 3?쒖쐞: 臾닿린 ?대쫫 ?뺤씤 (吏??솕 諛?而ㅼ뒪? ?대쫫 吏??
             string weaponName = weapon.m_shared.m_name?.ToLower() ?? "";
-            if (weaponName.Contains("검") || weaponName.Contains("sword") || weaponName.Contains("blade"))
+            if (weaponName.Contains("寃") || weaponName.Contains("sword") || weaponName.Contains("blade"))
             {
                 return true;
             }
@@ -119,15 +120,15 @@ namespace CaptainSkillTree.SkillTree
         }
         
         /// <summary>
-        /// 돌진 연속 베기 G키 액티브 스킬 활성화
-        /// - 전방 5m 돌진 후 몬스터 주변을 빠르게 이동하며 3회 연속 베기
-        /// - 1차: 70%, 2차: 80%, 3차: 90% 공격력
-        /// - 소모: 스태미나 30 | 쿨타임: 25초
+        /// ?뚯쭊 ?곗냽 踰좉린 G???≫떚釉??ㅽ궗 ?쒖꽦??
+        /// - ?꾨갑 5m ?뚯쭊 ??紐ъ뒪??二쇰???鍮좊Ⅴ寃??대룞?섎ŉ 3???곗냽 踰좉린
+        /// - 1李? 70%, 2李? 80%, 3李? 90% 怨듦꺽??
+        /// - ?뚮え: ?ㅽ깭誘몃굹 30 | 荑⑦??? 25珥?
         /// </summary>
         public static void ActivateSwordSlash(Player player) => ActivateRushSlash(player);
 
         /// <summary>
-        /// 돌진 연속 베기 (Rush Slash) 액티브 스킬 발동 (G키)
+        /// ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ?≫떚釉??ㅽ궗 諛쒕룞 (G??
         /// </summary>
         public static void ActivateRushSlash(Player player)
         {
@@ -138,7 +139,7 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 1. 스킬 보유 확인
+                // 1. ?ㅽ궗 蹂댁쑀 ?뺤씤
                 bool hasSkill = SkillEffect.HasSkill("sword_step5_finalcut") || SkillEffect.HasSkill("sword_slash");
                 if (!hasSkill)
                 {
@@ -146,14 +147,14 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 2. 검 착용 확인
+                // 2. 寃 李⑹슜 ?뺤씤
                 if (!IsUsingSword(player))
                 {
                     SkillEffect.DrawFloatingText(player, L.Get("sword_required"), Color.red);
                     return;
                 }
 
-                // 3. 쿨타임 확인
+                // 3. 荑⑦????뺤씤
                 float now = Time.time;
                 bool hasPaladinLv2_rush = (SkillTreeManager.Instance?.GetSkillLevel("Paladin") ?? 0) >= 2;
                 bool hasBerserkerLv2_rush = (SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0) >= 2;
@@ -170,7 +171,7 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 4. 스태미나 소모 확인
+                // 4. ?ㅽ깭誘몃굹 ?뚮え ?뺤씤
                 float requiredStamina = Sword_Config.RushSlashStaminaCostValue;
                 if (player.GetStamina() < requiredStamina)
                 {
@@ -178,14 +179,14 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 5. 이미 스킬 실행 중인지 확인
+                // 5. ?대? ?ㅽ궗 ?ㅽ뻾 以묒씤吏 ?뺤씤
                 if (rushSlashActive.TryGetValue(player, out bool alreadyActive) && alreadyActive)
                 {
                     SkillEffect.DrawFloatingText(player, L.Get("rush_slash_in_progress"), Color.yellow);
                     return;
                 }
 
-                // 6. 스킬 활성화
+                // 6. ?ㅽ궗 ?쒖꽦??
                 float duration = Sword_Config.CalculateTotalSkillDuration();
                 float cooldown = Sword_Config.RushSlashCooldownValue;
 
@@ -193,28 +194,29 @@ namespace CaptainSkillTree.SkillTree
                 rushSlashEndTime[player] = now + duration;
                 rushSlashAttackCount[player] = 0;
 
-                // Paladin Lv2 / Berserker Lv2 분기
+                // Paladin Lv2 / Berserker Lv2 遺꾧린
                 if (hasExtraUse_rush && !inRushSlashWindow)
                 {
-                    // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
+                    // 1踰덉㎏ ?ъ슜: 荑⑦???蹂대쪟 + 30珥?李??ㅽ뵂
                     _swordSlashPendingWindow[player] = now + SwordSlashExtraWindow;
                     player.StartCoroutine(ExpireSwordSlashWindow(player));
                 }
                 else
                 {
-                    // 2번째 사용(창 내) or 비팔라딘: 쿨타임 즉시 시작
+                    // 2踰덉㎏ ?ъ슜(李??? or 鍮꾪뙏?쇰뵖: 荑⑦???利됱떆 ?쒖옉
                     _swordSlashPendingWindow.Remove(player);
                     rushSlashCooldowns[player] = now + cooldown;
-                    ActiveSkillCooldownRegistry.SetCooldown("G", cooldown);
+                    ActiveSkillCooldownRegistry.SetCooldownForSkills("G", new[] { "sword_step5_finalcut", "sword_slash" }, cooldown);
                 }
 
-                // 7. 스태미나 소모
+                // 7. ?ㅽ깭誘몃굹 ?뚮え
                 player.UseStamina(requiredStamina);
+                SkillEffect.TankerPrereqLastUsedTime = Time.time;
 
-                // 8. 발동 메시지
-                SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("rush_slash_activate"), Color.red);
+                // 8. 諛쒕룞 硫붿떆吏
+                SkillEffect.DrawFloatingText(player, L.Get("rush_slash_activate"), Color.red);
 
-                // 9. 코루틴 시작
+                // 9. 肄붾（???쒖옉
                 if (rushSlashCoroutines.TryGetValue(player, out var existingCoroutine) && existingCoroutine != null)
                 {
                     player.StopCoroutine(existingCoroutine);
@@ -225,14 +227,14 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[Rush Slash] 스킬 활성화 오류: {ex.Message}");
+                Plugin.Log.LogError($"[Rush Slash] ?ㅽ궗 ?쒖꽦???ㅻ쪟: {ex.Message}");
             }
         }
         
         /// <summary>
-        /// 돌진 연속 베기 시퀀스 실행 코루틴
-        /// 전방 돌진 후 몬스터 주변을 빠르게 이동하며 3회 연속 베기
-        /// 스킬 종료 후 원래 위치로 복귀
+        /// ?뚯쭊 ?곗냽 踰좉린 ?쒗???ㅽ뻾 肄붾（??
+        /// ?꾨갑 ?뚯쭊 ??紐ъ뒪??二쇰???鍮좊Ⅴ寃??대룞?섎ŉ 3???곗냽 踰좉린
+        /// ?ㅽ궗 醫낅즺 ???먮옒 ?꾩튂濡?蹂듦?
         /// </summary>
         private static IEnumerator ExecuteRushSlashSequence(Player player)
         {
@@ -241,7 +243,7 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            // 원래 위치 저장 (스킬 종료 후 복귀용)
+            // ?먮옒 ?꾩튂 ???(?ㅽ궗 醫낅즺 ??蹂듦???
             Vector3 originalPosition = player.transform.position;
 
             var skillData = Sword_Config.GetRushSlashData();
@@ -249,7 +251,7 @@ namespace CaptainSkillTree.SkillTree
             float initialDist = skillData.initialDistance;
             float sideDist = skillData.sideDistance;
 
-            // 무기 확인
+            // 臾닿린 ?뺤씤
             var weapon = player.GetCurrentWeapon();
             if (weapon == null)
             {
@@ -258,17 +260,17 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            // 무기 기본 데미지
+            // 臾닿린 湲곕낯 ?곕?吏
             var weaponDamage = weapon.GetDamage();
             int totalHits = 0;
             var alreadyHitInPath = new HashSet<int>();
 
-            // === 타겟 몬스터 탐지 (10m 내 가장 가까운 몬스터) ===
+            // === ?寃?紐ъ뒪???먯? (10m ??媛??媛源뚯슫 紐ъ뒪?? ===
             Character target = FindNearestMonster(player, 10f);
             Vector3 targetPos = target?.transform.position ??
                                (player.transform.position + GetCameraForward(player) * initialDist);
 
-            // === 1차: 전방 돌진 + 베기 ===
+            // === 1李? ?꾨갑 ?뚯쭊 + 踰좉린 ===
             Vector3 dashTarget = player.transform.position + GetCameraForward(player) * initialDist;
             yield return MoveToPositionWithPathHit(player, dashTarget, initialDist, moveSpeed,
                 weapon, weaponDamage, skillData.damage1stRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
@@ -279,20 +281,20 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            // 1차 베기 실행
+            // 1李?踰좉린 ?ㅽ뻾
             int hits1 = ExecuteSlashAttack(player, weapon, weaponDamage, 1, skillData.damage1stRatio, target);
             totalHits += hits1;
             rushSlashAttackCount[player] = 1;
             yield return new WaitForSeconds(0.35f);
 
-            // === 2차: 몬스터 오른쪽 이동 + 베기 ===
+            // === 2李? 紐ъ뒪???ㅻⅨ履??대룞 + 踰좉린 ===
             if (player == null || player.IsDead() || !IsUsingSword(player))
             {
                 CleanupRushSlash(player);
                 yield break;
             }
 
-            // 타겟 위치 갱신 (몬스터가 이동했을 수 있음)
+            // ?寃??꾩튂 媛깆떊 (紐ъ뒪?곌? ?대룞?덉쓣 ???덉쓬)
             if (target != null && !target.IsDead())
             {
                 targetPos = target.transform.position;
@@ -308,20 +310,20 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            // 2차 베기 실행
+            // 2李?踰좉린 ?ㅽ뻾
             int hits2 = ExecuteSlashAttack(player, weapon, weaponDamage, 2, skillData.damage2ndRatio, target);
             totalHits += hits2;
             rushSlashAttackCount[player] = 2;
             yield return new WaitForSeconds(0.35f);
 
-            // === 3차: 몬스터 왼쪽 이동 + 베기 ===
+            // === 3李? 紐ъ뒪???쇱そ ?대룞 + 踰좉린 ===
             if (player == null || player.IsDead() || !IsUsingSword(player))
             {
                 CleanupRushSlash(player);
                 yield break;
             }
 
-            // 타겟 위치 갱신
+            // ?寃??꾩튂 媛깆떊
             if (target != null && !target.IsDead())
             {
                 targetPos = target.transform.position;
@@ -337,18 +339,18 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            // 3차 베기 실행 (마무리 피니셔)
+            // 3李?踰좉린 ?ㅽ뻾 (留덈Т由??쇰땲??
             int hits3 = ExecuteSlashAttack(player, weapon, weaponDamage, 3, skillData.damage3rdRatio, target);
             totalHits += hits3;
             rushSlashAttackCount[player] = 3;
             yield return new WaitForSeconds(0.35f);
 
-            // === 마무리: 원래 위치로 복귀 ===
+            // === 留덈Т由? ?먮옒 ?꾩튂濡?蹂듦? ===
             if (player != null && !player.IsDead())
             {
                 if (originalPosition.y > 4000f)
                 {
-                    // 던전 내부: 즉시 복귀 (이동 중 출구 트리거 접촉 방지)
+                    // ?섏쟾 ?대?: 利됱떆 蹂듦? (?대룞 以?異쒓뎄 ?몃━嫄??묒큺 諛⑹?)
                     player.transform.position = originalPosition;
                 }
                 else
@@ -357,18 +359,19 @@ namespace CaptainSkillTree.SkillTree
                     yield return MoveToPosition(player, originalPosition, returnDistance, moveSpeed);
                 }
 
-                SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("rush_slash_return"), Color.cyan);
+                SkillEffect.DrawFloatingText(player, L.Get("rush_slash_return"), Color.cyan);
             }
 
-            // 상태 정리
+            // ?곹깭 ?뺣━
+            rushSlashInvincibleUntil[player] = Time.time + 1f;
             CleanupRushSlash(player);
-            SkillEffect.DrawFloatingText(player, "⚔️ " + L.Get("rush_slash_complete", totalHits), Color.green);
+            SkillEffect.DrawFloatingText(player, L.Get("rush_slash_complete", totalHits), Color.green);
 
             yield return null;
         }
 
         /// <summary>
-        /// 기존 호환성용 코루틴 (deprecated)
+        /// 湲곗〈 ?명솚?깆슜 肄붾（??(deprecated)
         /// </summary>
         private static IEnumerator ExecuteSwordSlashCombo(Player player)
         {
@@ -376,7 +379,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 가장 가까운 몬스터 탐지
+        /// 媛??媛源뚯슫 紐ъ뒪???먯?
         /// </summary>
         private static Character FindNearestMonster(Player player, float range)
         {
@@ -387,7 +390,7 @@ namespace CaptainSkillTree.SkillTree
 
             foreach (var c in Character.GetAllCharacters())
             {
-                if (c == null || c.IsDead() || !c.IsMonsterFaction(Time.time)) continue;
+                if (c == null || c.IsDead() || (!c.IsMonsterFaction(Time.time) && !c.IsBoss())) continue;
 
                 float dist = Vector3.Distance(c.transform.position, player.transform.position);
                 if (dist < minDist)
@@ -401,7 +404,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 플레이어를 목표 위치로 빠르게 이동 (Lerp 보간)
+        /// ?뚮젅?댁뼱瑜?紐⑺몴 ?꾩튂濡?鍮좊Ⅴ寃??대룞 (Lerp 蹂닿컙)
         /// </summary>
         private static IEnumerator MoveToPosition(Player player, Vector3 targetPos, float distance, float speed)
         {
@@ -411,7 +414,7 @@ namespace CaptainSkillTree.SkillTree
             float elapsed = 0f;
             Vector3 startPos = player.transform.position;
 
-            // 지면 높이 보정 (Raycast)
+            // 吏硫??믪씠 蹂댁젙 (Raycast)
             targetPos = GetGroundPosition(targetPos);
 
             while (elapsed < duration)
@@ -424,36 +427,36 @@ namespace CaptainSkillTree.SkillTree
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / duration);
 
-                // 부드러운 이동 (EaseOut)
+                // 遺?쒕윭???대룞 (EaseOut)
                 float smoothT = 1f - Mathf.Pow(1f - t, 2f);
                 Vector3 newPos = Vector3.Lerp(startPos, targetPos, smoothT);
 
-                // 지면 높이 보정
+                // 吏硫??믪씠 蹂댁젙
                 newPos = GetGroundPosition(newPos);
                 player.transform.position = newPos;
 
                 yield return null;
             }
 
-            // 최종 위치 설정
+            // 理쒖쥌 ?꾩튂 ?ㅼ젙
             player.transform.position = GetGroundPosition(targetPos);
         }
 
         /// <summary>
-        /// 지면 높이 보정 (Raycast)
+        /// 吏硫??믪씠 蹂댁젙 (Raycast)
         /// </summary>
         private static Vector3 GetGroundPosition(Vector3 pos)
         {
             if (pos.y > 4000f)
             {
-                // 던전 내(Y>4000): 던전 바닥은 terrain 레이어가 아니므로 레이어 제한 없이 Raycast
+                // ?섏쟾 ??Y>4000): ?섏쟾 諛붾떏? terrain ?덉씠?닿? ?꾨땲誘濡??덉씠???쒗븳 ?놁씠 Raycast
                 if (Physics.Raycast(pos + Vector3.up * 3f, Vector3.down, out RaycastHit dungeonHit, 8f))
                 {
                     return new Vector3(pos.x, dungeonHit.point.y + 0.1f, pos.z);
                 }
                 return pos;
             }
-            // 일반 지형
+            // ?쇰컲 吏??
             if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("terrain", "Default")))
             {
                 return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
@@ -462,14 +465,14 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 베기 공격 실행 + VFX + 데미지
+        /// 踰좉린 怨듦꺽 ?ㅽ뻾 + VFX + ?곕?吏
         /// </summary>
         private static int ExecuteSlashAttack(Player player, ItemDrop.ItemData weapon, HitData.DamageTypes weaponDamage,
             int attackNumber, float damageRatio, Character target)
         {
             if (player == null) return 0;
 
-            // 1. 타겟 방향으로 회전 (공격 모션이 자연스럽게 보이도록)
+            // 1. ?寃?諛⑺뼢?쇰줈 ?뚯쟾 (怨듦꺽 紐⑥뀡???먯뿰?ㅻ읇寃?蹂댁씠?꾨줉)
             if (target != null && !target.IsDead())
             {
                 Vector3 lookDir = (target.transform.position - player.transform.position);
@@ -478,43 +481,43 @@ namespace CaptainSkillTree.SkillTree
                     player.transform.rotation = Quaternion.LookRotation(lookDir.normalized);
             }
 
-            // 2. 검 연속 공격 모션 트리거 (마우스 연속 클릭과 동일한 3연속 베기)
+            // 2. 寃 ?곗냽 怨듦꺽 紐⑥뀡 ?몃━嫄?(留덉슦???곗냽 ?대┃怨??숈씪??3?곗냽 踰좉린)
             try
             {
                 player.StartAttack(null, false);
             }
             catch { }
 
-            // 3. VFX 선택 (공격 차수별)
+            // 3. VFX ?좏깮 (怨듦꺽 李⑥닔蹂?
             string vfxName = attackNumber switch
             {
                 1 => "fx_lightningstaffprojectile_hit",
                 2 => "fx_lightningstaffprojectile_hit",
-                3 => "fx_crit", // 피니셔 효과
+                3 => "fx_crit", // ?쇰땲???④낵
                 _ => "fx_lightningstaffprojectile_hit"
             };
 
-            // 3. VFX 재생 위치 (플레이어 전방 or 타겟 위치)
+            // 3. VFX ?ъ깮 ?꾩튂 (?뚮젅?댁뼱 ?꾨갑 or ?寃??꾩튂)
             Vector3 vfxPos = target != null && !target.IsDead()
                 ? target.GetCenterPoint()
                 : player.transform.position + player.transform.forward * 2f + Vector3.up * 1f;
 
             SimpleVFX.Play(vfxName, vfxPos, 1.5f);
 
-            // 4. 직접 데미지 적용 (범위 4m 내 몬스터)
+            // 4. 吏곸젒 ?곕?吏 ?곸슜 (踰붿쐞 4m ??紐ъ뒪??
             float ratio = damageRatio / 100f;
             var monsters = Character.GetAllCharacters()
-                .Where(c => c != null && !c.IsDead() && c.IsMonsterFaction(Time.time) &&
-                           Vector3.Distance(c.transform.position, player.transform.position) < 4f)
+                .Where(c => c != null && !c.IsDead() && (c.IsMonsterFaction(Time.time) || c.IsBoss()) && Vector3.Distance(c.transform.position, player.transform.position) < 4f)
                 .Take(5);
 
             int hitCount = 0;
             foreach (var monster in monsters)
             {
+                float bossBonus = monster.IsBoss() ? 1.2f : 1f;
                 var hit = new HitData();
-                hit.m_damage.m_slash = weaponDamage.m_slash * ratio;
-                hit.m_damage.m_blunt = weaponDamage.m_blunt * ratio;
-                hit.m_damage.m_pierce = weaponDamage.m_pierce * ratio;
+                hit.m_damage.m_slash = weaponDamage.m_slash * ratio * bossBonus;
+                hit.m_damage.m_blunt = weaponDamage.m_blunt * ratio * bossBonus;
+                hit.m_damage.m_pierce = weaponDamage.m_pierce * ratio * bossBonus;
 
                 hit.m_point = monster.GetCenterPoint();
                 hit.m_dir = (monster.transform.position - player.transform.position).normalized;
@@ -525,11 +528,11 @@ namespace CaptainSkillTree.SkillTree
                 monster.Damage(hit);
                 hitCount++;
 
-                // 개별 타격 VFX
+                // 媛쒕퀎 ?寃?VFX
                 SimpleVFX.Play("flash_ellow_pink", monster.GetCenterPoint(), 1f);
             }
 
-            // 5. 플로팅 텍스트
+            // 5. ?뚮줈???띿뒪??
             string attackText = attackNumber switch
             {
                 1 => L.Get("rush_slash_1st_attack", (int)damageRatio),
@@ -543,7 +546,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 카메라 기준 전방 방향 (Y축 무시)
+        /// 移대찓??湲곗? ?꾨갑 諛⑺뼢 (Y異?臾댁떆)
         /// </summary>
         private static Vector3 GetCameraForward(Player player)
         {
@@ -557,7 +560,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 카메라 기준 측면 위치 계산 (오른쪽/왼쪽)
+        /// 移대찓??湲곗? 痢〓㈃ ?꾩튂 怨꾩궛 (?ㅻⅨ履??쇱そ)
         /// </summary>
         private static Vector3 CalculateSidePosition(Player player, Vector3 targetPos, float distance, bool right)
         {
@@ -577,14 +580,14 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 카메라 기준 뒤쪽 위치 계산 (몬스터 뒤)
+        /// 移대찓??湲곗? ?ㅼそ ?꾩튂 怨꾩궛 (紐ъ뒪????
         /// </summary>
         private static Vector3 CalculateBackPosition(Player player, Vector3 targetPos, float distance)
         {
             Vector3 backDir;
             if (Camera.main != null)
             {
-                backDir = Camera.main.transform.forward; // 카메라 전방 = 몬스터 뒤쪽
+                backDir = Camera.main.transform.forward; // 移대찓???꾨갑 = 紐ъ뒪???ㅼそ
                 backDir.y = 0;
                 backDir.Normalize();
             }
@@ -597,7 +600,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 돌진 연속 베기 상태 정리
+        /// ?뚯쭊 ?곗냽 踰좉린 ?곹깭 ?뺣━
         /// </summary>
         private static void CleanupRushSlash(Player player)
         {
@@ -608,16 +611,25 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 돌진 연속 베기 액티브 상태 확인
+        /// ?뚯쭊 ?곗냽 踰좉린 ?≫떚釉??곹깭 ?뺤씤
         /// </summary>
         public static bool IsSwordSlashActive(Player player)
         {
             return rushSlashActive.TryGetValue(player, out bool active) && active &&
                    rushSlashEndTime.TryGetValue(player, out float endTime) && Time.time < endTime;
         }
+        /// <summary>
+        /// 돌진 연속 베기 무적 여부 (시전 중 + 종료 후 1초)
+        /// </summary>
+        public static bool IsRushSlashInvincible(Player player)
+        {
+            if (player == null) return false;
+            if (rushSlashActive.TryGetValue(player, out bool active) && active) return true;
+            return rushSlashInvincibleUntil.TryGetValue(player, out float t) && Time.time < t;
+        }
 
         /// <summary>
-        /// 현재 공격 횟수 확인
+        /// ?꾩옱 怨듦꺽 ?잛닔 ?뺤씤
         /// </summary>
         public static int GetSwordSlashAttackCount(Player player)
         {
@@ -625,7 +637,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 돌진 연속 베기 스킬 강제 중단
+        /// ?뚯쭊 ?곗냽 踰좉린 ?ㅽ궗 媛뺤젣 以묐떒
         /// </summary>
         public static void StopSwordSlash(Player player)
         {
@@ -646,12 +658,12 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[Rush Slash] 스킬 중단 오류: {ex.Message}");
+                Plugin.Log.LogError($"[Rush Slash] ?ㅽ궗 以묐떒 ?ㅻ쪟: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 검 스킬 쿨타임 정보 조회
+        /// 寃 ?ㅽ궗 荑⑦????뺣낫 議고쉶
         /// </summary>
         public static float GetSwordSlashCooldownRemaining(Player player)
         {
@@ -663,7 +675,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 모든 검 스킬 상태 초기화 (플레이어 로그아웃 시 등)
+        /// 紐⑤뱺 寃 ?ㅽ궗 ?곹깭 珥덇린??(?뚮젅?댁뼱 濡쒓렇?꾩썐 ????
         /// </summary>
         public static void ClearSwordSkillStates(Player player)
         {
@@ -676,17 +688,18 @@ namespace CaptainSkillTree.SkillTree
                 rushSlashEndTime.Remove(player);
                 rushSlashCoroutines.Remove(player);
                 rushSlashAttackCount.Remove(player);
+                rushSlashInvincibleUntil.Remove(player);
 
-                Plugin.Log.LogDebug($"[Sword Skill] {player.GetPlayerName()} 모든 검 스킬 상태 초기화 완료");
+                Plugin.Log.LogDebug($"[Sword Skill] {player.GetPlayerName()} 紐⑤뱺 寃 ?ㅽ궗 ?곹깭 珥덇린???꾨즺");
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[Sword Skill] 상태 초기화 오류: {ex.Message}");
+                Plugin.Log.LogError($"[Sword Skill] ?곹깭 珥덇린???ㅻ쪟: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 슬래쉬 스킬 활성화 상태 확인 (호환성용)
+        /// ?щ옒???ㅽ궗 ?쒖꽦???곹깭 ?뺤씤 (?명솚?깆슜)
         /// </summary>
         public static bool IsSlashActive(Player player)
         {
@@ -695,9 +708,9 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 검 베기 액티브 스킬 사망 시 정리 시스템
+        /// 寃 踰좉린 ?≫떚釉??ㅽ궗 ?щ쭩 ???뺣━ ?쒖뒪??
         /// </summary>
-        /// <summary>Paladin Lv2 돌진베기 추가 사용 창 만료</summary>
+        /// <summary>Paladin Lv2 ?뚯쭊踰좉린 異붽? ?ъ슜 李?留뚮즺</summary>
         private static IEnumerator ExpireSwordSlashWindow(Player player)
         {
             yield return new WaitForSeconds(SwordSlashExtraWindow);
@@ -706,8 +719,8 @@ namespace CaptainSkillTree.SkillTree
                 _swordSlashPendingWindow.Remove(player);
                 float cd = Sword_Config.RushSlashCooldownValue;
                 rushSlashCooldowns[player] = Time.time + cd;
-                ActiveSkillCooldownRegistry.SetCooldown("G", cd);
-                Plugin.Log.LogDebug("[돌진베기] Paladin 추가 사용 창 만료 - 쿨타임 시작");
+                ActiveSkillCooldownRegistry.SetCooldownForSkills("G", new[] { "sword_step5_finalcut", "sword_slash" }, cd);
+                Plugin.Log.LogDebug("[?뚯쭊踰좉린] Paladin 異붽? ?ъ슜 李?留뚮즺 - 荑⑦????쒖옉");
             }
         }
 
@@ -731,16 +744,17 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 rushSlashAttackCount.Remove(player);
+                rushSlashInvincibleUntil.Remove(player);
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogWarning($"[Sword Skill] 정리 실패: {ex.Message}");
+                Plugin.Log.LogWarning($"[Sword Skill] ?뺣━ ?ㅽ뙣: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 검 전문가 - 공격력 보너스 (비율)
-        /// 실제 효과는 ItemData.GetDamage 패치에서 적용됨
+        /// 寃 ?꾨Ц媛 - 怨듦꺽??蹂대꼫??(鍮꾩쑉)
+        /// ?ㅼ젣 ?④낵??ItemData.GetDamage ?⑥튂?먯꽌 ?곸슜??
         /// </summary>
         public static float GetSwordExpertDamageBonus(Player player)
         {
@@ -750,19 +764,19 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 float damageBonus = Sword_Config.SwordExpertDamageValue;
-                Plugin.Log.LogDebug($"[검 전문가] 공격력 +{damageBonus}%");
+                Plugin.Log.LogDebug($"[寃 ?꾨Ц媛] 怨듦꺽??+{damageBonus}%");
                 return damageBonus;
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[검 전문가] 보너스 계산 실패: {ex.Message}");
+                Plugin.Log.LogError($"[寃 ?꾨Ц媛] 蹂대꼫??怨꾩궛 ?ㅽ뙣: {ex.Message}");
                 return 0f;
             }
         }
 
         /// <summary>
-        /// 칼날 되치기 - 공격력 고정 보너스
-        /// 실제 효과는 ItemData.GetDamage 패치에서 적용됨
+        /// 移쇰궇 ?섏튂湲?- 怨듦꺽??怨좎젙 蹂대꼫??
+        /// ?ㅼ젣 ?④낵??ItemData.GetDamage ?⑥튂?먯꽌 ?곸슜??
         /// </summary>
         public static float GetSwordRiposteDamageBonus(Player player)
         {
@@ -771,28 +785,28 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 float damageBonus = Sword_Config.SwordRiposteDamageBonusValue;
-                Plugin.Log.LogDebug($"[칼날 되치기] 공격력 +{damageBonus}");
+                Plugin.Log.LogDebug($"[移쇰궇 ?섏튂湲? 怨듦꺽??+{damageBonus}");
                 return damageBonus;
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[칼날 되치기] 보너스 계산 실패: {ex.Message}");
+                Plugin.Log.LogError($"[移쇰궇 ?섏튂湲? 蹂대꼫??怨꾩궛 ?ㅽ뙣: {ex.Message}");
                 return 0f;
             }
         }
 
-        // === 패링 돌격 (Parry Rush) 액티브 스킬 관련 변수 ===
+        // === ?⑤쭅 ?뚭꺽 (Parry Rush) ?≫떚釉??ㅽ궗 愿??蹂??===
         private static Dictionary<Player, float> parryRushCooldowns = new Dictionary<Player, float>();
         private static Dictionary<Player, bool> parryRushActive = new Dictionary<Player, bool>();
         private static Dictionary<Player, float> parryRushExpiry = new Dictionary<Player, float>();
-        private static HashSet<Player> parryRushCharging = new HashSet<Player>(); // 코루틴 중복 실행 방지
+        private static HashSet<Player> parryRushCharging = new HashSet<Player>(); // 肄붾（??以묐났 ?ㅽ뻾 諛⑹?
 
         /// <summary>
-        /// G키로 패링 돌격 30초 버프 활성화
-        /// - 스킬 보유 확인 (sword_step5_defswitch)
-        /// - 방패 착용 확인
-        /// - 쿨타임/스태미나 확인
-        /// - 버프 활성화 + VFX 재생
+        /// G?ㅻ줈 ?⑤쭅 ?뚭꺽 30珥?踰꾪봽 ?쒖꽦??
+        /// - ?ㅽ궗 蹂댁쑀 ?뺤씤 (sword_step5_defswitch)
+        /// - 諛⑺뙣 李⑹슜 ?뺤씤
+        /// - 荑⑦????ㅽ깭誘몃굹 ?뺤씤
+        /// - 踰꾪봽 ?쒖꽦??+ VFX ?ъ깮
         /// </summary>
         public static void ActivateParryRush(Player player)
         {
@@ -800,24 +814,25 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (player == null || player.IsDead()) return;
 
-                // 1. 스킬 보유 확인
+                // 1. ?ㅽ궗 蹂댁쑀 ?뺤씤
                 if (!SkillEffect.HasSkill("sword_step5_defswitch"))
                 {
                     SkillEffect.DrawFloatingText(player, L.Get("parry_rush_skill_required"), Color.red);
                     return;
                 }
 
-                // 2. 방패 또는 검 착용 확인
+                // 2. 諛⑺뙣 ?먮뒗 寃 李⑹슜 ?뺤씤
                 if (!HasShield(player) && !IsUsingSword(player))
                 {
                     SkillEffect.DrawFloatingText(player, L.Get("sword_or_shield_required"), Color.red);
                     return;
                 }
 
-                // 3. 쿨타임 확인
+                // 3. 荑⑦????뺤씤
                 float now = Time.time;
                 bool hasPaladinLv2_parry = (SkillTreeManager.Instance?.GetSkillLevel("Paladin") ?? 0) >= 2;
-                bool hasExtraUse_parry = hasPaladinLv2_parry;
+                bool hasTankerLv2_parry = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2;
+                bool hasExtraUse_parry = hasPaladinLv2_parry || hasTankerLv2_parry;
                 bool inParryRushWindow = hasExtraUse_parry
                     && _parryRushPendingWindow.TryGetValue(player, out float parryWinExpiry)
                     && now <= parryWinExpiry;
@@ -829,7 +844,7 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 4. 스태미나 확인
+                // 4. ?ㅽ깭誘몃굹 ?뺤씤
                 float staminaCost = Sword_Config.ParryRushStaminaCostValue;
                 if (player.GetStamina() < staminaCost)
                 {
@@ -837,40 +852,41 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 5. 이미 버프 활성 중인지 확인
+                // 5. ?대? 踰꾪봽 ?쒖꽦 以묒씤吏 ?뺤씤
                 if (IsParryRushActive(player))
                 {
                     SkillEffect.DrawFloatingText(player, L.Get("parry_rush_already_active"), Color.yellow);
                     return;
                 }
 
-                // 6. 버프 활성화
+                // 6. 踰꾪봽 ?쒖꽦??
                 float duration = Sword_Config.ParryRushDurationValue;
                 float cooldown = Sword_Config.ParryRushCooldownValue;
 
                 parryRushActive[player] = true;
                 parryRushExpiry[player] = now + duration;
 
-                // Paladin/Tanker Lv2 분기
+                // Paladin/Tanker Lv2 遺꾧린
                 if (hasExtraUse_parry && !inParryRushWindow)
                 {
-                    // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
+                    // 1踰덉㎏ ?ъ슜: 荑⑦???蹂대쪟 + 30珥?李??ㅽ뵂
                     _parryRushPendingWindow[player] = now + ParryRushExtraWindow;
                     player.StartCoroutine(ExpireParryRushWindow(player));
-                    ActiveSkillCooldownRegistry.SetCooldown("H", ParryRushExtraWindow); // HUD에 30초 창 표시
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "sword_step5_defswitch", ParryRushExtraWindow); // HUD??30珥?李??쒖떆
                 }
                 else
                 {
-                    // 2번째 사용(창 내) or 비팔라딘: 쿨타임 즉시 시작
+                    // 2踰덉㎏ ?ъ슜(李??? or 鍮꾪뙏?쇰뵖: 荑⑦???利됱떆 ?쒖옉
                     _parryRushPendingWindow.Remove(player);
                     parryRushCooldowns[player] = now + cooldown;
-                    ActiveSkillCooldownRegistry.SetCooldown("H", cooldown);
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "sword_step5_defswitch", cooldown);
                 }
 
-                // 7. 스태미나 소모
+                // 7. ?ㅽ깭誘몃굹 ?뚮え
                 player.UseStamina(staminaCost);
+                SkillEffect.TankerPrereqLastUsedTime = Time.time;
 
-                // 8. 버프 표시
+                // 8. 踰꾪봽 ?쒖떆
                 if (Gui.SkillBuffDisplay.Instance != null)
                 {
                     Gui.SkillBuffDisplay.Instance.ShowBuff(
@@ -881,20 +897,20 @@ namespace CaptainSkillTree.SkillTree
                     );
                 }
 
-                // 9. 발동 메시지 + VFX
-                SkillEffect.DrawFloatingText(player, "🛡️ " + L.Get("parry_rush_activate", duration), Color.cyan);
+                // 9. 諛쒕룞 硫붿떆吏 + VFX
+                SkillEffect.DrawFloatingText(player, "?썳截?" + L.Get("parry_rush_activate", duration), Color.cyan);
                 VFXManager.PlayVFXMultiplayer("vfx_blocked", "", player.transform.position, player.transform.rotation, duration);
 
-                Plugin.Log.LogInfo($"[패링 돌격] 버프 활성화 - {duration}초, 쿨타임 {cooldown}초");
+                Plugin.Log.LogInfo($"[?⑤쭅 ?뚭꺽] 踰꾪봽 ?쒖꽦??- {duration}珥? 荑⑦???{cooldown}珥?");
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[패링 돌격] 버프 활성화 오류: {ex.Message}");
+                Plugin.Log.LogError($"[?⑤쭅 ?뚭꺽] 踰꾪봽 ?쒖꽦???ㅻ쪟: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 패링 성공 시 돌격 실행 - 방패 들고 몬스터에게 돌진, 데미지 + 밀어내기
+        /// ?⑤쭅 ?깃났 ???뚭꺽 ?ㅽ뻾 - 諛⑺뙣 ?ㅺ퀬 紐ъ뒪?곗뿉寃??뚯쭊, ?곕?吏 + 諛?대궡湲?
         /// </summary>
         public static void OnParryRushTrigger(Player player, Character attacker)
         {
@@ -902,25 +918,25 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (player == null || player.IsDead() || attacker == null || attacker.IsDead()) return;
                 if (!IsParryRushActive(player)) return;
-                if (parryRushCharging.Contains(player)) return; // 이미 코루틴 실행 중
+                if (parryRushCharging.Contains(player)) return; // ?대? 肄붾（???ㅽ뻾 以?
 
-                // 무기 확인 (방패 패링 중 GetCurrentWeapon이 방패를 반환할 수 있으므로 장비 목록에서 검 확인)
-                // weapon == null 허용: 방패만 있는 경우 ExecuteParryRushCharge에서 방패 block power 사용
+                // 臾닿린 ?뺤씤 (諛⑺뙣 ?⑤쭅 以?GetCurrentWeapon??諛⑺뙣瑜?諛섑솚?????덉쑝誘濡??λ퉬 紐⑸줉?먯꽌 寃 ?뺤씤)
+                // weapon == null ?덉슜: 諛⑺뙣留??덈뒗 寃쎌슦 ExecuteParryRushCharge?먯꽌 諛⑺뙣 block power ?ъ슜
                 var weapon = GetEquippedSword(player);
 
-                // 돌격 코루틴 시작
+                // ?뚭꺽 肄붾（???쒖옉
                 parryRushCharging.Add(player);
                 var coroutine = ExecuteParryRushCharge(player, attacker, weapon);
                 player.StartCoroutine(coroutine);
             }
             catch (System.Exception ex)
             {
-                Plugin.Log.LogError($"[패링 돌격] 돌격 트리거 오류: {ex.Message}");
+                Plugin.Log.LogError($"[?⑤쭅 ?뚭꺽] ?뚭꺽 ?몃━嫄??ㅻ쪟: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 패링 돌격 차지 코루틴 - blocking 모션으로 몬스터까지 돌진 후 데미지 + 밀어내기
+        /// ?⑤쭅 ?뚭꺽 李⑥? 肄붾（??- blocking 紐⑥뀡?쇰줈 紐ъ뒪?곌퉴吏 ?뚯쭊 ???곕?吏 + 諛?대궡湲?
         /// </summary>
         private static IEnumerator ExecuteParryRushCharge(Player player, Character target, ItemDrop.ItemData weapon)
         {
@@ -929,16 +945,16 @@ namespace CaptainSkillTree.SkillTree
                 parryRushCharging.Remove(player);
                 yield break;
             }
-            // weapon이 null이면 방패의 block power 사용 (방패만 착용한 경우)
+            // weapon??null?대㈃ 諛⑺뙣??block power ?ъ슜 (諛⑺뙣留?李⑹슜??寃쎌슦)
 
-            // 1. blocking 모션 시작
+            // 1. blocking 紐⑥뀡 ?쒖옉
             var zanim = player.GetComponentInChildren<ZSyncAnimation>();
             if (zanim != null)
             {
                 zanim.SetBool("blocking", true);
             }
 
-            // 2. 몬스터 방향으로 회전
+            // 2. 紐ъ뒪??諛⑺뼢?쇰줈 ?뚯쟾
             Vector3 targetPos = target.transform.position;
             Vector3 direction = (targetPos - player.transform.position);
             direction.y = 0;
@@ -947,7 +963,7 @@ namespace CaptainSkillTree.SkillTree
                 player.transform.rotation = Quaternion.LookRotation(direction.normalized);
             }
 
-            // 3. 몬스터까지 빠르게 이동 (20m/s)
+            // 3. 紐ъ뒪?곌퉴吏 鍮좊Ⅴ寃??대룞 (20m/s)
             float distance = Vector3.Distance(player.transform.position, targetPos);
             float moveSpeed = 20f;
             float moveDuration = Mathf.Max(distance / moveSpeed, 0.05f);
@@ -966,21 +982,21 @@ namespace CaptainSkillTree.SkillTree
                 float t = Mathf.Clamp01(elapsed / moveDuration);
                 float smoothT = 1f - Mathf.Pow(1f - t, 2f);
 
-                // 타겟 위치 갱신 (이동했을 수 있음)
+                // ?寃??꾩튂 媛깆떊 (?대룞?덉쓣 ???덉쓬)
                 if (target != null && !target.IsDead())
                 {
                     targetPos = target.transform.position;
                 }
 
                 Vector3 newPos = Vector3.Lerp(startPos, targetPos, smoothT);
-                // 지면 높이 보정
+                // 吏硫??믪씠 蹂댁젙
                 if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
                     LayerMask.GetMask("terrain", "Default")))
                 {
                     newPos.y = groundHit.point.y + 0.1f;
                 }
-                // transform.position 직접 설정 시 Rigidbody가 다음 FixedUpdate에서 덮어씌워 제자리 복귀 발생
-                // Traverse로 protected m_body 접근 후 MovePosition으로 물리 엔진에 위치 변경 전달
+                // transform.position 吏곸젒 ?ㅼ젙 ??Rigidbody媛 ?ㅼ쓬 FixedUpdate?먯꽌 ??뼱?뚯썙 ?쒖옄由?蹂듦? 諛쒖깮
+                // Traverse濡?protected m_body ?묎렐 ??MovePosition?쇰줈 臾쇰━ ?붿쭊???꾩튂 蹂寃??꾨떖
                 var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
                 if (body != null)
                 {
@@ -995,10 +1011,10 @@ namespace CaptainSkillTree.SkillTree
                 yield return new WaitForFixedUpdate();
             }
 
-            // 4. 도착 - 데미지 적용
+            // 4. ?꾩갑 - ?곕?吏 ?곸슜
             if (target != null && !target.IsDead() && player != null && !player.IsDead())
             {
-                // 방패 또는 검의 막기 방어력 x 비율로 타격 데미지
+                // 諛⑺뙣 ?먮뒗 寃??留됯린 諛⑹뼱??x 鍮꾩쑉濡??寃??곕?吏
                 float skillFactor = 0f;
                 var shieldItem = HarmonyLib.Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
                 float blockPower;
@@ -1029,14 +1045,14 @@ namespace CaptainSkillTree.SkillTree
 
                 target.Damage(hit);
 
-                // VFX: 적중 효과
+                // VFX: ?곸쨷 ?④낵
                 VFXManager.PlayVFXMultiplayer("fx_shieldgenerator_domehit", "", target.GetCenterPoint(), Quaternion.identity, 2f);
 
-                SkillEffect.DrawFloatingText(player, "🛡️ " + L.Get("parry_rush_damage", Mathf.RoundToInt(bluntDamage)), Color.cyan);
-                Plugin.Log.LogInfo($"[패링 돌격] 돌격 성공! 막기력 {blockPower:F0} x {Sword_Config.ParryRushBlockPowerRatioValue}% = {bluntDamage:F0} 타격 데미지");
+                SkillEffect.DrawFloatingText(player, "?썳截?" + L.Get("parry_rush_damage", Mathf.RoundToInt(bluntDamage)), Color.cyan);
+                Plugin.Log.LogInfo($"[?⑤쭅 ?뚭꺽] ?뚭꺽 ?깃났! 留됯린??{blockPower:F0} x {Sword_Config.ParryRushBlockPowerRatioValue}% = {bluntDamage:F0} ?寃??곕?吏");
             }
 
-            // 5. blocking 해제
+            // 5. blocking ?댁젣
             yield return new WaitForSeconds(0.2f);
             if (zanim != null && player != null && !player.IsDead())
             {
@@ -1047,7 +1063,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 패링 돌격 버프 활성 상태 확인
+        /// ?⑤쭅 ?뚭꺽 踰꾪봽 ?쒖꽦 ?곹깭 ?뺤씤
         /// </summary>
         public static bool IsParryRushActive(Player player)
         {
@@ -1057,7 +1073,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 패링 돌격 상태 정리
+        /// ?⑤쭅 ?뚭꺽 ?곹깭 ?뺣━
         /// </summary>
         public static void CleanupParryRush(Player player)
         {
@@ -1072,7 +1088,7 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        /// <summary>Paladin Lv2 패링돌격 추가 사용 창 만료</summary>
+        /// <summary>Paladin Lv2 ?⑤쭅?뚭꺽 異붽? ?ъ슜 李?留뚮즺</summary>
         private static IEnumerator ExpireParryRushWindow(Player player)
         {
             yield return new WaitForSeconds(ParryRushExtraWindow);
@@ -1081,13 +1097,13 @@ namespace CaptainSkillTree.SkillTree
                 _parryRushPendingWindow.Remove(player);
                 float cd = Sword_Config.ParryRushCooldownValue;
                 parryRushCooldowns[player] = Time.time + cd;
-                ActiveSkillCooldownRegistry.SetCooldown("H", cd);
-                Plugin.Log.LogDebug("[패링돌격] Paladin 추가 사용 창 만료 - 쿨타임 시작");
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "sword_step5_defswitch", cd);
+                Plugin.Log.LogDebug("[?⑤쭅?뚭꺽] Paladin 異붽? ?ъ슜 李?留뚮즺 - 荑⑦????쒖옉");
             }
         }
 
         /// <summary>
-        /// 패링 돌격 사망 시 정리
+        /// ?⑤쭅 ?뚭꺽 ?щ쭩 ???뺣━
         /// </summary>
         public static void CleanupParryRushOnDeath(Player player)
         {
@@ -1101,10 +1117,16 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogWarning($"[패링 돌격] 사망 정리 실패: {ex.Message}");
+                Plugin.Log.LogWarning($"[?⑤쭅 ?뚭꺽] ?щ쭩 ?뺣━ ?ㅽ뙣: {ex.Message}");
             }
         }
 
     }
 
 }
+
+
+
+
+
+

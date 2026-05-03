@@ -275,6 +275,32 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        // === 버프 중 공격력 +15% ===
+        [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+        public static class Producer_Character_Damage_AttackBonus_Patch
+        {
+            [HarmonyPriority(Priority.Low)]
+            public static void Prefix(Character __instance, HitData hit)
+            {
+                try
+                {
+                    var attacker = hit.GetAttacker();
+                    if (attacker == null || !attacker.IsPlayer()) return;
+                    var player = attacker as Player;
+                    if (!IsProducerBuffActive(player)) return;
+
+                    float mult = Producer_Config.ProducerBuff_AttackBonusValue / 100f;
+                    if (mult <= 0f) return;
+
+                    if (hit.m_damage.m_blunt  > 0) hit.m_damage.m_blunt  *= (1f + mult);
+                    if (hit.m_damage.m_slash  > 0) hit.m_damage.m_slash  *= (1f + mult);
+                    if (hit.m_damage.m_pierce > 0) hit.m_damage.m_pierce *= (1f + mult);
+                    if (hit.m_damage.m_chop   > 0) hit.m_damage.m_chop   *= (1f + mult);
+                }
+                catch (Exception) { }
+            }
+        }
+
         #endregion
     }
 }

@@ -23,15 +23,13 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, float> spearEnhancedThrowBuffEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, int> spearComboThrowUsesRemaining = new Dictionary<Player, int>();
 
-        // 마지막으로 사용한 창 아이템 저장 (회수용)
-        public static Dictionary<Player, ItemDrop.ItemData> lastThrownSpear = new Dictionary<Player, ItemDrop.ItemData>();
-
         // 버프 VFX 인스턴스 저장 (상태 관리용)
         private static Dictionary<Player, GameObject> spearBuffVFXInstances = new Dictionary<Player, GameObject>();
 
         // === Paladin Lv2 연공창 추가 사용 창 ===
         private static Dictionary<Player, float> _spearComboPendingWindow = new Dictionary<Player, float>();
         private const float SpearComboExtraWindow = 30f;
+
 
         /// <summary>
         /// 투창 전문가 패시브 쿨타임 확인
@@ -99,6 +97,8 @@ namespace CaptainSkillTree.SkillTree
                 // 버프 활성화 (즉시 공격 X)
                 ActivateSpearComboThrowBuff(player);
 
+                TankerPrereqLastUsedTime = Time.time;
+
                 // Paladin Lv2 또는 Tanker Lv2(창 스킬 보유): 첫 사용 시 쿨타임 보류 + 30초 창, 창 내 재사용 시 실제 쿨타임
                 bool hasPaladinLv2 = (SkillTreeManager.Instance?.GetSkillLevel("Paladin") ?? 0) >= 2;
                 bool hasTankerLv2Spear = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2
@@ -121,7 +121,7 @@ namespace CaptainSkillTree.SkillTree
                     // 2번째 사용(창 내) or 일반: 실제 쿨타임 시작
                     _spearComboPendingWindow.Remove(player);
                     spearEnhancedThrowCooldowns[player] = now + Spear_Config.SpearStep6ComboCooldownValue;
-                    ActiveSkillCooldownRegistry.SetCooldown("H", Spear_Config.SpearStep6ComboCooldownValue);
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "spear_Step5_combo", Spear_Config.SpearStep6ComboCooldownValue);
                 }
                 player.UseStamina(requiredStamina);
             }
@@ -270,78 +270,36 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 창 자동 회수 - 현재 장착 중인 창과 동일한 창을 인벤토리에 추가 후 자동 장착
+        /// 팬텀 투창 재장착 처리 - 창은 RemoveItem 차단으로 인벤에 그대로 있음
+        /// 투척 애니메이션 후 손에만 다시 장착
         /// </summary>
-        public static void AutoReturnSpearToInventory(Player player)
+        public static void RestorePhantomSpear(Player player, ItemDrop.ItemData item)
         {
-            try
+            if (player == null || item == null) return;
+            if (IsSpearComboThrowBuffActive(player))
             {
-                if (player == null) return;
-
-                var inventory = player.GetInventory();
-                if (inventory == null) return;
-
-                // 마지막으로 던진 창 정보 확인
-                if (!lastThrownSpear.ContainsKey(player) || lastThrownSpear[player] == null)
-                {
-                    Plugin.Log.LogWarning("[연공창] 회수할 창 정보 없음");
-                    DrawFloatingText(player, L.Get("combo_spear_retrieve_failed"), Color.red);
-                    return;
-                }
-
-                var thrownSpear = lastThrownSpear[player];
-                string spearName = thrownSpear.m_shared.m_name;
-
-                // 아이템 데이터 복제하여 추가 (m_equipped 초기화 필수!)
-                var newSpear = thrownSpear.Clone();
-                newSpear.m_stack = 1;
-                newSpear.m_equipped = false;  // 중요: 장착 상태 초기화
-                if (inventory.AddItem(newSpear))
-                {
-                    if (IsSpearComboThrowBuffActive(player))
-                    {
-                        float remaining = spearEnhancedThrowBuffEndTime.TryGetValue(player, out float endTime)
-                            ? Mathf.Max(0f, endTime - Time.time)
-                            : Spear_Config.SpearStep6ComboBuffDurationValue;
-                        CreateSpearBuffVFX(player, remaining);
-                    }
-                    player.StartCoroutine(DelayedEquipSpear(player, spearName));
-                    DrawFloatingText(player, L.Get("combo_spear_retrieved_equipped"), new Color(0.5f, 1f, 0.5f, 1f));
-                    return;
-                }
-                // 인벤토리 가득 찬 경우 → 캐릭터 앞에 드롭
-                var prefabName = newSpear.m_dropPrefab?.name;
-                var spearPrefab = (prefabName != null) ? ZNetScene.instance?.GetPrefab(prefabName) : null;
-                if (spearPrefab != null)
-                {
-                    Vector3 dropPos = player.transform.position + player.transform.forward * 1.5f + Vector3.up * 0.5f;
-                    var droppedObj = UnityEngine.Object.Instantiate(spearPrefab, dropPos, Quaternion.identity);
-                    var itemDrop = droppedObj?.GetComponent<ItemDrop>();
-                    if (itemDrop != null)
-                        itemDrop.m_itemData = newSpear;
-                    DrawFloatingText(player, L.Get("combo_spear_inventory_full"), Color.yellow);
-                }
-                else
-                {
-                    DrawFloatingText(player, L.Get("combo_spear_inventory_full"), Color.red);
-                }
+                float remaining = spearEnhancedThrowBuffEndTime.TryGetValue(player, out float endTime)
+                    ? Mathf.Max(0f, endTime - Time.time)
+                    : Spear_Config.SpearStep6ComboBuffDurationValue;
+                CreateSpearBuffVFX(player, remaining);
             }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[연공창] 창 회수 오류: {ex.Message}");
-            }
+            player.StartCoroutine(DelayedEquipSpear(player, item.m_shared.m_name));
         }
 
-        // 리플렉션 캐시 (m_rightItem 접근용)
-        private static System.Reflection.FieldInfo _rightItemField = null;
-        private static System.Reflection.FieldInfo RightItemField
+        /// <summary>
+        /// 창을 플레이어 앞에 드롭 (인벤 꽉 찬 경우 fallback)
+        /// </summary>
+        public static void DropSpearInFront(Player player, ItemDrop.ItemData spear)
         {
-            get
-            {
-                if (_rightItemField == null)
-                    _rightItemField = AccessTools.Field(typeof(Humanoid), "m_rightItem");
-                return _rightItemField;
-            }
+            var prefabName = spear.m_dropPrefab?.name;
+            var spearPrefab = prefabName != null ? ZNetScene.instance?.GetPrefab(prefabName) : null;
+            if (spearPrefab == null) return;
+
+            Vector3 dropPos = player.transform.position + player.transform.forward * 1.5f + Vector3.up * 0.5f;
+            var droppedObj = UnityEngine.Object.Instantiate(spearPrefab, dropPos, Quaternion.identity);
+            var itemDrop = droppedObj?.GetComponent<ItemDrop>();
+            if (itemDrop != null)
+                itemDrop.m_itemData = spear;
         }
 
         /// <summary>
@@ -463,7 +421,6 @@ namespace CaptainSkillTree.SkillTree
                 spearEnhancedThrowCooldowns.Remove(player);
                 spearEnhancedThrowBuffEndTime.Remove(player);
                 spearComboThrowUsesRemaining.Remove(player);
-                lastThrownSpear.Remove(player);
                 _spearComboPendingWindow.Remove(player);
             }
             catch (Exception ex)
@@ -484,7 +441,7 @@ namespace CaptainSkillTree.SkillTree
                 _spearComboPendingWindow.Remove(player);
                 float cd = Spear_Config.SpearStep6ComboCooldownValue;
                 spearEnhancedThrowCooldowns[player] = Time.time + cd;
-                ActiveSkillCooldownRegistry.SetCooldown("H", cd);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "spear_Step5_combo", cd);
                 Plugin.Log.LogDebug("[연공창] Paladin 추가 사용 창 만료 - 쿨타임 시작");
             }
         }
@@ -498,6 +455,7 @@ namespace CaptainSkillTree.SkillTree
     {
         public Player thrower;
         public bool processed = false;
+        public bool isComboThrow = false;  // true = 연공창 버프 투척 (VFX·넉백 활성), false = 팬텀 일반 투창
 
         // 적중 처리된 몬스터 추적 (중복 데미지 방지)
         private HashSet<Character> hitTargets = new HashSet<Character>();
@@ -519,11 +477,11 @@ namespace CaptainSkillTree.SkillTree
 
         void FixedUpdate()
         {
-            if (processed || thrower == null) return;
+            if (processed || thrower == null || !isComboThrow) return;
             if (Time.time - lastCheckTime < checkInterval) return;
             lastCheckTime = Time.time;
 
-            // 창 현재 위치 기준 2m 반경 내 몬스터 탐색
+            // 연공창 버프 중 비행 시 2m 반경 몬스터 자동 적중 (일반 팬텀 투창은 제외)
             CheckNearbyMonsters(transform.position);
         }
 
@@ -582,9 +540,13 @@ namespace CaptainSkillTree.SkillTree
                     // 데미지 적용
                     target.Damage(hitData);
 
-                    SimpleVFX.Play("hit_01", target.transform.position + Vector3.up, 1.5f);
-                    SimpleVFX.Play("flash_star_ellow_purple", target.transform.position + Vector3.up * 0.5f, 2f);
-                    CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("", "fx_crit", target.transform.position, Quaternion.identity, 1f);
+                    // 연공창 버프 투척 시에만 특수 VFX (일반 팬텀 투창은 Valheim 기본 VFX만)
+                    if (isComboThrow)
+                    {
+                        SimpleVFX.Play("hit_01", target.transform.position + Vector3.up, 1.5f);
+                        SimpleVFX.Play("flash_star_ellow_purple", target.transform.position + Vector3.up * 0.5f, 2f);
+                        CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("", "fx_crit", target.transform.position, Quaternion.identity, 1f);
+                    }
                 }
             }
             catch (Exception ex)
@@ -662,8 +624,8 @@ namespace CaptainSkillTree.SkillTree
                 var player = owner as Player;
                 if (player == null) return;
 
-                // 연공창 버프 활성 확인
-                if (!SkillEffect.IsSpearComboThrowBuffActive(player)) return;
+                // 연공창 스킬 보유 여부 확인 (버프 없이도 팬텀 투창 적용)
+                if (!SkillEffect.HasSkill("spear_Step5_combo")) return;
 
                 // 창 투사체인지 확인
                 if (__instance.m_skill != Skills.SkillType.Spears) return;
@@ -671,35 +633,36 @@ namespace CaptainSkillTree.SkillTree
                 // 이미 태그가 있으면 무시
                 if (__instance.GetComponent<ComboSpearProjectileTag>() != null) return;
 
-                if (item != null && item.m_shared.m_skillType == Skills.SkillType.Spears)
-                {
-                    var clonedSpear = item.Clone();
-                    clonedSpear.m_equipped = false;
-                    SkillEffect.lastThrownSpear[player] = clonedSpear;
-                }
-
-                // 태그 추가
+                // 팬텀 태그 추가
+                bool isCombo = SkillEffect.IsSpearComboThrowBuffActive(player);
                 var tag = __instance.gameObject.AddComponent<ComboSpearProjectileTag>();
                 tag.thrower = player;
                 tag.processed = false;
+                tag.isComboThrow = isCombo;
 
-                // 데미지 강화 (280%)
-                float damageMultiplier = Spear_Config.SpearStep6ComboDamageValue / 100f;
-                var damage = __instance.m_damage;
-                damage.m_pierce *= damageMultiplier;
-                damage.m_slash *= damageMultiplier;
-                damage.m_blunt *= damageMultiplier;
-                __instance.m_damage = damage;
+                // 손 재장착만 수행 (창은 ConsumeItem 패치로 인벤에 그대로 있음)
+                if (item != null && item.m_shared.m_skillType == Skills.SkillType.Spears)
+                    SkillEffect.RestorePhantomSpear(player, item);
 
-                // 발사 VFX
-                try
+                // 연공창 버프 활성 중일 때만 데미지 강화 + 사용 횟수 차감
+                if (SkillEffect.IsSpearComboThrowBuffActive(player))
                 {
-                    Vector3 vfxPos = player.transform.position + player.transform.forward * 1.5f + Vector3.up * 1.2f;
-                    SimpleVFX.Play("hit_03", vfxPos, 1.5f);
-                }
-                catch { }
+                    float damageMultiplier = Spear_Config.SpearStep6ComboDamageValue / 100f;
+                    var damage = __instance.m_damage;
+                    damage.m_pierce *= damageMultiplier;
+                    damage.m_slash *= damageMultiplier;
+                    damage.m_blunt *= damageMultiplier;
+                    __instance.m_damage = damage;
 
-                SkillEffect.ConsumeSpearComboThrowUse(player);
+                    try
+                    {
+                        Vector3 vfxPos = player.transform.position + player.transform.forward * 1.5f + Vector3.up * 1.2f;
+                        SimpleVFX.Play("hit_03", vfxPos, 1.5f);
+                    }
+                    catch { }
+
+                    SkillEffect.ConsumeSpearComboThrowUse(player);
+                }
             }
             catch (Exception ex)
             {
@@ -729,15 +692,13 @@ namespace CaptainSkillTree.SkillTree
                 if (tag.processed) return;
                 tag.processed = true;
 
-                // 적중 VFX (물 제외)
-                if (!water)
+                // 적중 VFX (물 제외) — 연공창 버프 중일 때만 특수 VFX·넉백
+                if (!water && tag.isComboThrow)
                 {
                     try
                     {
-                        // 적중 지점 VFX
                         SimpleVFX.Play("hit_01", hitPoint, 1.5f);
 
-                        // 직접 충돌한 대상 확인
                         Character directHitTarget = null;
                         if (collider != null)
                         {
@@ -752,7 +713,6 @@ namespace CaptainSkillTree.SkillTree
                             CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("", "fx_crit", hitPoint, Quaternion.identity, 1f);
                         }
 
-                        // ★ 핵심: 적중 지점 2m 반경 내 모든 몬스터에게 넉백 및 데미지 적용
                         tag.ApplyAreaKnockback(hitPoint);
                     }
                     catch (Exception vfxEx)
@@ -761,11 +721,7 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 창 자동 회수 (땅/몬스터/환경 상관없이 무조건)
-                if (tag.thrower != null)
-                {
-                    SkillEffect.AutoReturnSpearToInventory(tag.thrower);
-                }
+                // 팬텀 투사체 - 창 복원은 ProjectileSetup 시점에 이미 완료됨
             }
             catch (Exception ex)
             {
@@ -798,6 +754,41 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[연공창 드롭 방지] 오류: {ex.Message}");
             }
             return true;
+        }
+    }
+
+    /// <summary>
+    /// 팬텀 투창 핵심 패치 — Attack.ConsumeItem Prefix
+    /// 연공창 스킬 보유 시 UnequipItem(손 비움)만 실행하고 RemoveItem(인벤 제거)을 건너뜀
+    /// 타이밍 플래그 없이 ConsumeItem 호출 시점에 직접 판단 → 타이밍 문제 없음
+    /// </summary>
+    [HarmonyPatch(typeof(Attack), "ConsumeItem")]
+    [HarmonyPriority(Priority.High)]
+    public static class PhantomSpear_ConsumeItem_Patch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(Attack __instance)
+        {
+            try
+            {
+                var character = Traverse.Create(__instance).Field("m_character").GetValue<Humanoid>();
+                var weapon = Traverse.Create(__instance).Field("m_weapon").GetValue<ItemDrop.ItemData>();
+                if (character == null || weapon == null) return true;
+
+                var player = character as Player;
+                if (player == null) return true;
+                if (weapon.m_shared?.m_skillType != Skills.SkillType.Spears) return true;
+                if (!SkillEffect.HasSkill("spear_Step5_combo")) return true;
+
+                // 팬텀 투창: 손만 비우고 인벤 제거 생략
+                character.UnequipItem(weapon, false);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[팬텀 투창] ConsumeItem 패치 오류: {ex.Message}");
+                return true;
+            }
         }
     }
 }

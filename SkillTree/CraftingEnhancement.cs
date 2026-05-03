@@ -144,14 +144,6 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogInfo($"[제작 보너스] Lv4 보너스 적용: 강화 +{Production_Config.CraftingLv4UpgradeChanceValue}%, 내구도 +{Production_Config.CraftingLv4DurabilityBonusValue}%");
                 }
 
-                int producerLevel = manager.GetSkillLevel("Producer");
-                if (producerLevel > 0)
-                {
-                    totalEnhanceChance   += Producer_Config.GetCraftingSuccessRate(producerLevel) / 100f;
-                    totalDurabilityBonus += Producer_Config.GetDurabilityBonus(producerLevel) / 100f;
-                    Plugin.Log.LogInfo($"[제작 보너스] 직업 보너스 적용(Lv{producerLevel}): 성공확률 +{Producer_Config.GetCraftingSuccessRate(producerLevel)}%, 내구도 +{Producer_Config.GetDurabilityBonus(producerLevel)}%");
-                }
-
                 Plugin.Log.LogInfo($"[제작 보너스] 총 보너스 - 강화확률: {totalEnhanceChance * 100:F0}%, 내구도보너스: {totalDurabilityBonus * 100:F0}%");
                 
                 if (totalEnhanceChance > 0)
@@ -399,10 +391,10 @@ namespace CaptainSkillTree.SkillTree
     /// ItemDrop.ItemData.GetMaxDurability 패치 - 내구도 보너스 반영
     /// MMO 시스템 연동 우선 - 안전한 매개변수 없는 GetMaxDurability 메서드 타겟
     /// </summary>
-    [HarmonyPatch(typeof(ItemDrop.ItemData), "GetMaxDurability", new[] { typeof(int) })]
+    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetMaxDurability), new[] { typeof(int) })]
     public static class ItemData_GetMaxDurability_Enhancement_Patch
     {
-        private static void Postfix(ItemDrop.ItemData __instance, ref float __result)
+        public static void Postfix(ItemDrop.ItemData __instance, ref float __result)
         {
             try
             {
@@ -413,14 +405,11 @@ namespace CaptainSkillTree.SkillTree
                         System.Globalization.CultureInfo.InvariantCulture, out float mult))
                 {
                     __result *= mult;
-                    #if DEBUG
-                    Plugin.Log.LogDebug($"[내구도 패치] {__instance.m_shared?.m_name}: x{mult:F2} 내구도 배율 적용");
-                    #endif
                 }
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[내구도 패치] 오류: {ex.Message}");
+                Plugin.Log.LogError($"[내구도 패치-Crafting] 오류: {ex.Message}");
             }
         }
     }

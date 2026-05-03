@@ -327,6 +327,8 @@ namespace CaptainSkillTree
                 UnityEngine.Object.DestroyImmediate(st);
             foreach (var sa in clone.GetComponentsInChildren<ZSyncAnimation>(true))
                 UnityEngine.Object.DestroyImmediate(sa);
+            foreach (var proj in clone.GetComponentsInChildren<Projectile>(true))
+                UnityEngine.Object.DestroyImmediate(proj);
 
             clone.SetActive(false); // 프리팹 템플릿으로 유지 (비활성)
 
@@ -521,6 +523,8 @@ namespace CaptainSkillTree
                 var vfxObj = UnityEngine.Object.Instantiate(prefab, followTarget);
                 if (vfxObj != null)
                 {
+                    if (!vfxObj.activeSelf)
+                        vfxObj.SetActive(true);
                     vfxObj.transform.localPosition = localOffset;
                     UnityEngine.Object.Destroy(vfxObj, duration);
                 }

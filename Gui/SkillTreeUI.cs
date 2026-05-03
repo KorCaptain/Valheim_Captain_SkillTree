@@ -742,7 +742,7 @@ namespace CaptainSkillTree.Gui
                 var node = manager.SkillNodes[pending.Key];
                 pendingPoints += pending.Value * node.RequiredPoints;
             }
-            int availablePoints = maxPoints - usedPoints - pendingPoints;
+            int availablePoints = Mathf.Max(0, maxPoints - usedPoints - pendingPoints);
 
             if (skillPointText != null)
             {
@@ -813,6 +813,8 @@ namespace CaptainSkillTree.Gui
             nodeUI.RefreshNodeStates();
             nodeUI.UpdateConnectionLines();
             UpdateSkillPointText();
+            if (escapeButton != null)
+                escapeButton.gameObject.SetActive(CaptainLevelConfig.ExitButtonEnabledValue);
             
             // RefreshUI 호출 시마다 직업 아이콘을 최상위로 유지 (클릭 후 배경 뒤로 사라지는 문제 방지)
             // nodeUI.RefreshNodeStates() 내부에서 EnsureJobIconsOnTop()이 호출되므로 추가 호출 불필요
@@ -4392,7 +4394,10 @@ namespace CaptainSkillTree.Gui
 
                 // 스킬 노드보다 위에 렌더링되도록 최상위 sibling으로 설정
                 if (escapeButton != null)
+                {
                     escapeButton.transform.SetAsLastSibling();
+                    escapeButton.gameObject.SetActive(CaptainLevelConfig.ExitButtonEnabledValue);
+                }
             }
             catch (System.Exception ex)
             {

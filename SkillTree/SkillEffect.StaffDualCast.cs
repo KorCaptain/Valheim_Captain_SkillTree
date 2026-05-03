@@ -72,7 +72,7 @@ namespace CaptainSkillTree.SkillTree
                 // Eitr 소모 + 쿨타임 설정
                 player.UseEitr(eitrCost);
                 staffDualExplosionCooldowns[player] = Time.time + Staff_Config.StaffDoubleCastCooldownValue;
-                ActiveSkillCooldownRegistry.SetCooldown("R", Staff_Config.StaffDoubleCastCooldownValue);
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("R", "staff_Step6_dual_cast", Staff_Config.StaffDoubleCastCooldownValue);
 
                 // Phase 1 실행
                 SummonFanCast(player);

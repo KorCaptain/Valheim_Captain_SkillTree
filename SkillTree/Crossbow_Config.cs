@@ -199,7 +199,7 @@ namespace CaptainSkillTree.SkillTree
 
         public static float CrossbowOneShotDamageBonusValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_damage_bonus",
-            CrossbowOneShotDamageBonus?.Value ?? 120f);
+            CrossbowOneShotDamageBonus?.Value ?? 400f);
 
         public static float CrossbowOneShotKnockbackValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_knockback",
@@ -530,7 +530,7 @@ namespace CaptainSkillTree.SkillTree
                 UpdateSkillTooltip("crossbow_Step6_expert",
                     $"R Key: Charged shot — reload {CrossbowOneShotDurationValue}s window, +{CrossbowOneShotDamageBonusValue}% damage\n" +
                     $"AOE knockback {CrossbowOneShotAoeRadiusValue}m radius | Cooldown: {CrossbowOneShotCooldownValue}s\n" +
-                    $"<color=#FFD700><size=16>※ Slow reload on activation (-{(1f - 1f / CrossbowOneShotSlowReloadMultiplierValue) * 100f:F0}% speed)</size></color>\n" +
+                    $"<color=#FFD700><size=16>※ Slow reload on activation (-{(CrossbowOneShotSlowReloadMultiplierValue - 1f) * 100f:F0}% speed)</size></color>\n" +
                     $"<color=#DDA0DD><size=16>※ Active when Crossbow equipped</size></color>");
 
                 // Tier 7: 발칸 아이스 (H키 액티브)
@@ -541,7 +541,7 @@ namespace CaptainSkillTree.SkillTree
                     $"<color=#7EC8E3><size=16>❄ Ice damage type</size></color>\n" +
                     $"<color=#DDA0DD><size=16>※ Active when Crossbow equipped</size></color>");
 
-                Plugin.Log.LogInfo("[석궁 툴팁] 모든 석궁 스킬 툴팁 업데이트 완료");
+
             }
             catch (System.Exception ex)
             {
