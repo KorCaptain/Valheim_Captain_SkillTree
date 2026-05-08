@@ -73,7 +73,7 @@ namespace CaptainSkillTree.Localization
                 "【쿨타임 (초)】\n" +
                 "멀티샷 재사용 대기 시간입니다.\n" +
                 "짧을수록 자주 사용할 수 있습니다.\n" +
-                "권장값: 25-40초",
+                "권장값: 20-30초",
 
                 ["Archer_MultiShot_Charges"] =
                 "【발사 회수】\n" +
@@ -84,8 +84,14 @@ namespace CaptainSkillTree.Localization
                 ["Archer_MultiShot_StaminaCost"] =
                 "【스태미나 소모】\n" +
                 "멀티샷 사용 시 소모되는 스태미나입니다.\n" +
-                "스태미나 관리가 중요합니다.\n" +
-                "권장값: 20-35",
+                "0으로 설정 시 스태미나 소모 없음.\n" +
+                "권장값: 0-15",
+
+                ["Archer_MultiShot_FireInterval"] =
+                "【순차 발사 간격 (초)】\n" +
+                "볼리샷 추가 화살 사이의 발사 간격입니다.\n" +
+                "5발이 이 간격으로 순차 발사됩니다.\n" +
+                "권장값: 0.15-0.3초",
 
                 // === Archer Job: 패시브 스킬 (2개) ===
                 ["Archer_JumpHeightBonus"] =
@@ -99,6 +105,40 @@ namespace CaptainSkillTree.Localization
                 "높은 곳에서 떨어질 때 받는 피해를 감소시킵니다.\n" +
                 "아처의 기동성을 강화합니다.\n" +
                 "권장값: 40-60%",
+
+                // === Archer Job: 신규 패시브 - 공격 스테미나 감소 (5개) ===
+                ["Archer_Attack_StaminaReduction_Lv1"] =
+                "【Lv1 패시브: 공격 스테미나 감소 (%)】\n" +
+                "아처 Lv1에서 공격 시 소모되는 스테미나를 감소시킵니다.\n" +
+                "활/석궁/지팡이 모든 공격에 적용됩니다.\n" +
+                "권장값: 10-20%",
+
+                ["Archer_Attack_StaminaReduction_Lv2"] =
+                "【Lv2 패시브: 공격 스테미나 감소 (%)】\n" +
+                "아처 Lv2에서 공격 시 소모되는 스테미나를 감소시킵니다.\n" +
+                "권장값: 20-30%",
+
+                ["Archer_Attack_StaminaReduction_Lv3"] =
+                "【Lv3 패시브: 공격 스테미나 감소 (%)】\n" +
+                "아처 Lv3에서 공격 시 소모되는 스테미나를 감소시킵니다.\n" +
+                "권장값: 30-40%",
+
+                ["Archer_Attack_StaminaReduction_Lv4"] =
+                "【Lv4 패시브: 공격 스테미나 감소 (%)】\n" +
+                "아처 Lv4에서 공격 시 소모되는 스테미나를 감소시킵니다.\n" +
+                "권장값: 40-50%",
+
+                ["Archer_Attack_StaminaReduction_Lv5"] =
+                "【Lv5 패시브: 공격 스테미나 감소 (%)】\n" +
+                "아처 Lv5에서 공격 시 소모되는 스테미나를 감소시킵니다.\n" +
+                "권장값: 50-60%",
+
+                // === Archer Job: 신규 패시브 - 화살/볼트 소모 면제 확률 ===
+                ["Archer_AmmoSaveChance"] =
+                "【화살/볼트 소모 면제 확률 (%)】\n" +
+                "공격 시 화살 또는 볼트를 소모하지 않을 확률입니다.\n" +
+                "50으로 설정 시 평균 절반의 화살만 소모됩니다.\n" +
+                "권장값: 30-60%",
 
                 // === Archer Job: 레벨업 스탯 변화 (9개) ===
                 ["Archer_Lv2_BonusArrows"] =
@@ -410,6 +450,16 @@ namespace CaptainSkillTree.Localization
                 "【탱커 패시브 피해 감소 (%)】\n" +
                 "탱커 직업 패시브: 항상 받는 피해를 감소시킵니다.\n" +
                 "권장값: 10-20%",
+
+                ["Tanker_NormalShield_SpeedBonus"] =
+                "【탱커 일반 방패 이동속도 보너스 (%)】\n" +
+                "탱커 Lv1+: 일반 방패 장착 시 이동속도가 증가합니다.\n" +
+                "기본값: 25%",
+
+                ["Tanker_TowerShield_SpeedBonus"] =
+                "【탱커 타워 방패 이동속도 보너스 (%)】\n" +
+                "탱커 Lv1+: 타워(대형) 방패 장착 시 이동속도가 증가합니다.\n" +
+                "기본값: 30%",
 
                 // === Tanker Job: 레벨별 패시브 (Lv 묶음) ===
                 // --- Lv1 ---
@@ -984,6 +1034,12 @@ namespace CaptainSkillTree.Localization
                 "Stamina management is important.\n" +
                 "Recommended: 20-35",
 
+                ["Archer_MultiShot_FireInterval"] =
+                "【Sequential Fire Interval (sec)】\n" +
+                "Interval between each volley arrow.\n" +
+                "5 arrows fire sequentially at this interval.\n" +
+                "Recommended: 0.15-0.3 sec",
+
                 // === Archer Job: Passive Skills (2 keys) ===
                 ["Archer_JumpHeightBonus"] =
                 "【Jump Height Bonus (%)】\n" +
@@ -1324,6 +1380,16 @@ namespace CaptainSkillTree.Localization
                 "【Tanker Passive Damage Reduction (%)】\n" +
                 "Tanker passive: Permanently reduces incoming damage.\n" +
                 "Recommended: 10-20%",
+
+                ["Tanker_NormalShield_SpeedBonus"] =
+                "【Tanker Normal Shield Move Speed Bonus (%)】\n" +
+                "Tanker Lv1+: Move speed bonus when equipping a normal shield.\n" +
+                "Default: 25%",
+
+                ["Tanker_TowerShield_SpeedBonus"] =
+                "【Tanker Tower Shield Move Speed Bonus (%)】\n" +
+                "Tanker Lv1+: Move speed bonus when equipping a tower (large) shield.\n" +
+                "Default: 30%",
 
                 // === Tanker Job: Level-Up Passives (by level) ===
                 // --- Lv1 ---

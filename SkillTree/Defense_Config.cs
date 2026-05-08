@@ -735,7 +735,7 @@ namespace CaptainSkillTree.SkillTree
             // ===========================================
 
             AttackDodgeBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier6_NerveEnhancement_DodgeBonus", 35f,
+                "Defense Tree", "Tier6_NerveEnhancement_DodgeBonus", 85f,
                 SkillTreeConfig.GetConfigDescription("Tier6_NerveEnhancement_DodgeBonus"), order: 16);
 
             DefenseStep6AttackRequiredPoints = SkillTreeConfig.BindServerSync(config,

@@ -83,6 +83,8 @@ namespace CaptainSkillTree.SkillTree
         public static float BowExplosiveArrowCooldownValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_cooldown", BowExplosiveArrowCooldown.Value);
         public static float BowExplosiveArrowStaminaCostValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_stamina_cost", BowExplosiveArrowStaminaCost.Value);
         public static float BowExplosiveArrowRadiusValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_radius", BowExplosiveArrowRadius.Value);
+        public const float BowExplosiveArrowActivationDuration = 6f;
+        public const float BowExplosiveArrowAutoFireInterval   = 0.7f;
 
         // === 화살비 접근 프로퍼티 ===
         public static float ArrowRainDamagePercentValue  => SkillTreeConfig.GetEffectiveValue("bow_Step6_arrow_rain_damage",   ArrowRainDamagePercent.Value);

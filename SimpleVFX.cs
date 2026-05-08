@@ -334,7 +334,6 @@ namespace CaptainSkillTree
 
             _customVFXNames.Add(vfxName);
             _cachedPrefabs[vfxName] = clone;
-            Plugin.Log?.LogInfo($"[SimpleVFX] {vfxName} 커스텀 VFX로 등록 완료");
         }
 
         #endregion
@@ -931,6 +930,7 @@ namespace CaptainSkillTree
                 SimpleVFX.RegisterValheimVFXAsCustom("vfx_GoblinShield");
                 SimpleVFX.RegisterValheimVFXAsCustom("fx_shield_start");
                 SimpleVFX.RegisterValheimVFXAsCustom("fx_Lightning");
+                SimpleVFX.RegisterValheimVFXAsCustom("fx_batteringram_fire");
                 // ZNetScene에 커스텀 VFX 프리팹 등록 (spawn 명령어 사용 가능)
                 CaptainSkillTree.Prefab.PrefabRegistry.RegisterToZNetScene();
 
@@ -950,6 +950,20 @@ namespace CaptainSkillTree
                             new Action<long, string, long, float>(SimpleVFX.OnReceivePlayOnPlayer));
                     }
                     catch { /* 이미 등록된 경우 무시 */ }
+
+                    try
+                    {
+                        ZRoutedRpc.instance.Register(SkillTree.SkillEffect.RPC_FANCAST_SUMMON,
+                            new Action<long, long>(SkillTree.SkillEffect.OnReceiveFanCastSummon));
+                    }
+                    catch { }
+
+                    try
+                    {
+                        ZRoutedRpc.instance.Register(SkillTree.SkillEffect.RPC_FANCAST_CANCEL,
+                            new Action<long, long>(SkillTree.SkillEffect.OnReceiveFanCastCancel));
+                    }
+                    catch { }
                 }
             }
             catch (Exception ex)
@@ -1001,8 +1015,6 @@ namespace CaptainSkillTree
 
     private void Apply()
     {
-        Plugin.Log?.LogInfo($"[VFXDimmer] Apply START: {name}, factor={factor}");
-
         // 1. Material (multi-material 포함, 전체 슬롯)
         var colorProps = new[] { "_TintColor", "_Color", "_BaseColor" };
         var matList = new List<Material>();
@@ -1034,7 +1046,6 @@ namespace CaptainSkillTree
 
         // 3. ParticleSystem
         var allPS = GetComponentsInChildren<ParticleSystem>(true);
-        Plugin.Log?.LogInfo($"[VFXDimmer] PS count={allPS.Length}");
         if (allPS.Length == 0) return;
 
         // 3a. 개별 Stop
@@ -1085,7 +1096,6 @@ namespace CaptainSkillTree
         foreach (var ps in allPS)
             if (ps != null) ps.Play(false);
 
-        Plugin.Log?.LogInfo($"[VFXDimmer] Apply DONE: {name}");
     }
     } // class VFXDimmerBehaviour
 } // namespace CaptainSkillTree

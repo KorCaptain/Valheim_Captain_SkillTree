@@ -690,27 +690,24 @@ namespace CaptainSkillTree.SkillTree
                         var attacker = hit.GetAttacker();
                         if (attacker == localPlayer)
                         {
+                            // Lv4 저체력 보너스와 Rage 보너스를 가산 합산 후 1회 적용 (multiplicative 스택 방지)
                             int bLvAtk = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0;
+                            float totalAttackBonus = 0f;
+
                             if (bLvAtk >= 4)
                             {
                                 float hpPct = localPlayer.GetHealthPercentage() * 100f;
                                 if (hpPct <= Berserker_Config.BerserkerLv4LowHpAttackThresholdValue)
-                                {
-                                    float bonus = 1f + Berserker_Config.BerserkerLv4LowHpAttackBonusValue / 100f;
-                                    hit.m_damage.Modify(bonus);
-                                    CreateMonsterHitEffect(__instance);
-                                }
+                                    totalAttackBonus += Berserker_Config.BerserkerLv4LowHpAttackBonusValue;
                             }
 
-                            // 분노 데미지 보너스 (공격자가 분노 상태일 때)
                             if (IsPlayerInRage(localPlayer))
+                                totalAttackBonus += GetRageDamageBonus(localPlayer);
+
+                            if (totalAttackBonus > 0f)
                             {
-                                float damageBonus = GetRageDamageBonus(localPlayer);
-                                if (damageBonus > 0f)
-                                {
-                                    hit.m_damage.Modify(1f + damageBonus / 100f);
-                                    CreateMonsterHitEffect(__instance);
-                                }
+                                hit.m_damage.Modify(1f + totalAttackBonus / 100f);
+                                CreateMonsterHitEffect(__instance);
                             }
                         }
                     }

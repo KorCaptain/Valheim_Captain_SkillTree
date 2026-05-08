@@ -197,6 +197,11 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ShieldChargeDamagePercent;
 
         /// <summary>
+        /// 방패돌진 - 다단히트 데미지 비율 (방패 막기력의 %)
+        /// </summary>
+        public static ConfigEntry<float> ShieldChargeMultiHitDamagePercent;
+
+        /// <summary>
         /// 수호자의 진심 - 필요 포인트
         /// </summary>
         public static ConfigEntry<int> GuardianHeartRequiredPoints;
@@ -322,6 +327,12 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float ShieldChargeDamagePercentValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_DamagePercent", ShieldChargeDamagePercent?.Value ?? 70f);
+
+        /// <summary>
+        /// 방패돌진 다단히트 데미지 비율 값 (서버 우선)
+        /// </summary>
+        public static float ShieldChargeMultiHitDamagePercentValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_MultiHitDamagePercent", ShieldChargeMultiHitDamagePercent?.Value ?? 70f);
 
         /// <summary>
         /// 수호자의 진심 필요 포인트 값 (서버 우선)
@@ -579,6 +590,13 @@ namespace CaptainSkillTree.SkillTree
                 "Tier7_ShieldCharge_DamagePercent",
                 70f,
                 SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_DamagePercent")
+            );
+
+            ShieldChargeMultiHitDamagePercent = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier7_ShieldCharge_MultiHitDamagePercent",
+                70f,
+                SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_MultiHitDamagePercent")
             );
 
             GuardianHeartRequiredPoints = SkillTreeConfig.BindServerSync(config,

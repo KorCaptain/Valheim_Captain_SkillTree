@@ -946,6 +946,8 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_EffectScale"] = "War Cry: Effect Scale",
                 ["Tanker_Taunt_ReflectPercent"] = "War Cry: Reflect Damage (%)",
                 ["Tanker_Passive_DamageReduction"] = "Passive: Damage Reduction (%)",
+                ["Tanker_NormalShield_SpeedBonus"] = "Passive: Normal Shield Move Speed (%)",
+                ["Tanker_TowerShield_SpeedBonus"] = "Passive: Tower Shield Move Speed (%)",
                 ["Tanker_ReflectDuration_Lv1"] = "Lv1 Passive: Reflect Duration (sec)",
                 ["Tanker_Hp_Bonus_Lv1"] = "Lv1 Passive: HP Bonus",
                 ["Tanker_Hp_Bonus_Lv2"] = "Lv2 Passive: HP Bonus",

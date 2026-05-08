@@ -64,20 +64,26 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float GetEquippedArmorEnchantTotal(Player player, EnchantType targetType)
         {
-            var inv = player.GetInventory();
-            if (inv == null) return 0f;
+            if (player == null) return 0f;
             float total = 0f;
-            foreach (var item in inv.GetAllItems())
+            try
             {
-                if (!item.m_equipped) continue;
-                var t = item.m_shared.m_itemType;
-                if (t != ItemDrop.ItemData.ItemType.Helmet   &&
-                    t != ItemDrop.ItemData.ItemType.Chest     &&
-                    t != ItemDrop.ItemData.ItemType.Legs      &&
-                    t != ItemDrop.ItemData.ItemType.Shoulder) continue;
-                if (GetEnchantType(item) == targetType)
-                    total += GetEnchantValue(item);
+                var t = Traverse.Create(player);
+                ItemDrop.ItemData[] slots =
+                {
+                    t.Field("m_helmetItem").GetValue<ItemDrop.ItemData>(),
+                    t.Field("m_chestItem").GetValue<ItemDrop.ItemData>(),
+                    t.Field("m_legItem").GetValue<ItemDrop.ItemData>(),
+                    t.Field("m_shoulderItem").GetValue<ItemDrop.ItemData>(),
+                };
+                foreach (var item in slots)
+                {
+                    if (item?.m_shared == null) continue;
+                    if (GetEnchantType(item) == targetType)
+                        total += GetEnchantValue(item);
+                }
             }
+            catch { return 0f; }
             return total;
         }
 
@@ -86,17 +92,16 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float GetEquippedAccessoryEnchantTotal(Player player, EnchantType targetType)
         {
-            var inv = player.GetInventory();
-            if (inv == null) return 0f;
-            float total = 0f;
-            foreach (var item in inv.GetAllItems())
+            if (player == null) return 0f;
+            try
             {
-                if (!item.m_equipped) continue;
-                if (item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Utility) continue;
+                var item = Traverse.Create(player).Field("m_utilityItem").GetValue<ItemDrop.ItemData>();
+                if (item?.m_shared == null) return 0f;
                 if (GetEnchantType(item) == targetType)
-                    total += GetEnchantValue(item);
+                    return GetEnchantValue(item);
             }
-            return total;
+            catch { return 0f; }
+            return 0f;
         }
 
         /// <summary>
@@ -105,17 +110,30 @@ namespace CaptainSkillTree.SkillTree
         public static float GetEquippedSlotEnchantTotal(Player player, EnchantType targetType,
             params ItemDrop.ItemData.ItemType[] allowedSlots)
         {
-            var inv = player.GetInventory();
-            if (inv == null) return 0f;
+            if (player == null) return 0f;
             float total = 0f;
             var slotSet = new HashSet<ItemDrop.ItemData.ItemType>(allowedSlots);
-            foreach (var item in inv.GetAllItems())
+            try
             {
-                if (!item.m_equipped) continue;
-                if (!slotSet.Contains(item.m_shared.m_itemType)) continue;
-                if (GetEnchantType(item) == targetType)
-                    total += GetEnchantValue(item);
+                var t = Traverse.Create(player);
+                ItemDrop.ItemData[] slots =
+                {
+                    t.Field("m_rightItem").GetValue<ItemDrop.ItemData>(),
+                    t.Field("m_leftItem").GetValue<ItemDrop.ItemData>(),
+                    t.Field("m_chestItem").GetValue<ItemDrop.ItemData>(),
+                    t.Field("m_legItem").GetValue<ItemDrop.ItemData>(),
+                    t.Field("m_helmetItem").GetValue<ItemDrop.ItemData>(),
+                    t.Field("m_shoulderItem").GetValue<ItemDrop.ItemData>(),
+                };
+                foreach (var item in slots)
+                {
+                    if (item?.m_shared == null) continue;
+                    if (!slotSet.Contains(item.m_shared.m_itemType)) continue;
+                    if (GetEnchantType(item) == targetType)
+                        total += GetEnchantValue(item);
+                }
             }
+            catch { return 0f; }
             return total;
         }
 

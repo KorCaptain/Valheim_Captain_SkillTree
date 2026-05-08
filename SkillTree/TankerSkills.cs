@@ -941,6 +941,9 @@ namespace CaptainSkillTree.SkillTree
             // ✅ 2. Harmony AI 패치에서 해당 플레이어의 모든 도발 해제
             TankerTauntAIPatch.ClearTauntsByPlayer(player);
 
+            // ✅ 3. 반사 버프 상태 완전 정리
+            TankerReflect.ResetTankerReflect(player);
+
             Plugin.Log.LogDebug($"[탱커 정리] {playerName} 사망 시 플래그 초기화 완료");
         }
     }

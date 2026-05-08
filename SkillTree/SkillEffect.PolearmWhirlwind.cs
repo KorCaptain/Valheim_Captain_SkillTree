@@ -170,10 +170,20 @@ namespace CaptainSkillTree.SkillTree
                     // 오브젝트 충돌 체크 (바위, 나무 등 통과 방지)
                     endPos = ClampWhirlwindEndToObstacle(startPos, endPos);
 
-                    // 착지 지형 높이 보정
-                    if (Physics.Raycast(endPos + Vector3.up * 15f, Vector3.down, out RaycastHit landHit, 25f,
+                    // 던전 출구 트리거(TeleportWorld) 통과 방지
+                    endPos = ClampAwayFromTeleportTrigger(startPos, endPos);
+
+                    // 착지 지형 높이 보정 (던전·실내: 천장 감지 시 스킵 → 던전 이탈 방지)
+                    bool hasCeiling = Physics.Raycast(
+                        startPos + Vector3.up * 0.5f, Vector3.up, 10f,
+                        LayerMask.GetMask("piece", "Default", "static_solid", "terrain"));
+                    if (!hasCeiling && Physics.Raycast(endPos + Vector3.up * 15f, Vector3.down, out RaycastHit landHit, 25f,
                         LayerMask.GetMask("terrain", "Default", "static_solid")))
-                        endPos.y = landHit.point.y;
+                    {
+                        // 착지 높이가 출발점보다 1.5m 이상 높으면 바위/나무 위 → 보정 거부
+                        if (landHit.point.y <= startPos.y + 1.5f)
+                            endPos.y = landHit.point.y;
+                    }
 
                     // 캐릭터 회전
                     player.transform.rotation = Quaternion.LookRotation(jumpDir);
@@ -371,17 +381,37 @@ namespace CaptainSkillTree.SkillTree
             if (dist < 0.5f) return endPos;
             dir.Normalize();
 
-            // 허리 높이에서 SphereCast (지형 콜리전 오인 방지)
-            Vector3 castOrigin = startPos + Vector3.up * 1f;
+            // CapsuleCast: 플레이어 전체 높이 커버 (발 ~ 머리) → 얇은 나무/바위 통과 방지
+            Vector3 capsuleBot = startPos + Vector3.up * 0.4f;
+            Vector3 capsuleTop = startPos + Vector3.up * 1.8f;
             int blockMask = LayerMask.GetMask("piece", "Default", "static_solid");
 
-            if (Physics.SphereCast(castOrigin, 0.4f, dir, out RaycastHit hit, dist, blockMask))
+            if (Physics.CapsuleCast(capsuleBot, capsuleTop, 0.35f, dir, out RaycastHit hit, dist, blockMask))
             {
                 if (hit.collider.GetComponentInParent<Character>() == null)
                 {
                     Plugin.Log.LogDebug($"[휠윈드] 장애물 감지: {hit.collider.name}");
                     float safeDistance = Mathf.Max(0f, hit.distance - 0.5f);
                     return startPos + dir * safeDistance;
+                }
+            }
+            return endPos;
+        }
+
+        /// <summary>
+        /// 도착 지점 근처에 TeleportWorld 트리거가 있으면 이동 차단 (던전 출구 방지)
+        /// </summary>
+        private static Vector3 ClampAwayFromTeleportTrigger(Vector3 startPos, Vector3 endPos)
+        {
+            var nearby = Physics.OverlapSphere(endPos, 2f);
+            foreach (var col in nearby)
+            {
+                if (col == null) continue;
+                if (!col.isTrigger) continue;
+                if (col.GetComponentInParent<TeleportWorld>() != null)
+                {
+                    Plugin.Log.LogDebug("[휠윈드] 던전 출구 트리거 감지 → 이동 차단");
+                    return startPos;
                 }
             }
             return endPos;

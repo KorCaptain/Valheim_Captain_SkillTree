@@ -125,8 +125,12 @@ namespace CaptainSkillTree.VFX
                     vfxObj.transform.localPosition = offset == default ? new Vector3(0f, 0.5f, 0f) : offset;
 
                     // ZNetView 전체 제거 (자식 포함) → 무한 로딩 방지
+                    // physics 콜백 컨텍스트에서 DestroyImmediate 불가 → disabled 후 Destroy
                     foreach (var nv in vfxObj.GetComponentsInChildren<ZNetView>())
-                        UnityEngine.Object.DestroyImmediate(nv);
+                    {
+                        nv.enabled = false;
+                        UnityEngine.Object.Destroy(nv);
+                    }
 
                     UnityEngine.Object.Destroy(vfxObj, duration);
                 }

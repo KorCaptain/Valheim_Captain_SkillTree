@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using BepInEx.Configuration;
 using System.IO;
@@ -32,8 +32,6 @@ namespace CaptainSkillTree.SkillTree
         private static bool _isServer = false;
         private static bool _hasReceivedServerConfig = false;
 
-        // Config 파일 변경 감지
-        private static FileSystemWatcher _configWatcher = null;
         private static ConfigFile _configFile = null;
 
         // === Language Detection for Config Manager (BepInEx F1 Menu) ===
@@ -472,8 +470,6 @@ namespace CaptainSkillTree.SkillTree
         public static float AttackCritChanceValue                   => Attack_Config.AttackCritChanceValue;
         public static float AttackMeleeEnhancementValue             => Attack_Config.AttackMeleeEnhancementValue;
         public static float AttackRangedEnhancementValue            => Attack_Config.AttackRangedEnhancementValue;
-        public static float AttackSpecialStatValue                  => Attack_Config.AttackSpecialStatValue;
-        public static float AttackSpecialChanceValue                => Attack_Config.AttackSpecialChanceValue;
         public static float AttackOneHandedBonusValue               => Attack_Config.AttackOneHandedBonusValue;
 
         #endregion
@@ -971,13 +967,6 @@ namespace CaptainSkillTree.SkillTree
             RegisterConfigChangeEvents();
             SubscribeAdminConfigChanges(config);
 
-            if (_isServer)
-            {
-                // ❌ 초기화 단계에서는 BroadcastConfigToClients() 호출 제거
-                // ZRoutedRpc.instance가 아직 null일 수 있음
-                // Plugin.Patches.cs의 DelayedConfigBroadcast()에서 2초 후 안전하게 호출됨
-                StartConfigFileWatcher(config);
-            }
 
             InitializeJotunnSyncEvents();
 
@@ -1178,40 +1167,5 @@ namespace CaptainSkillTree.SkillTree
 
         #endregion
 
-        #region === Config File Watcher ===
-
-        private static void StartConfigFileWatcher(ConfigFile config)
-        {
-            try
-            {
-                string configPath = config.ConfigFilePath;
-                string configDirectory = Path.GetDirectoryName(configPath);
-                string configFileName = Path.GetFileName(configPath);
-                _configWatcher = new FileSystemWatcher(configDirectory, configFileName);
-                _configWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
-                _configWatcher.EnableRaisingEvents = true;
-                _configWatcher.Changed += OnConfigFileChanged;
-            }
-            catch (Exception ex) { Plugin.Log.LogError($"[SkillTreeConfig] Config 파일 감시 시작 실패: {ex.Message}"); }
-        }
-
-        private static void OnConfigFileChanged(object sender, FileSystemEventArgs e)
-        {
-            try { if (_isServer) BroadcastConfigToClients(); }
-            catch (Exception ex) { Plugin.Log.LogError($"[SkillTreeConfig] Config 파일 변경 처리 실패: {ex.Message}"); }
-        }
-
-        public static void StopConfigFileWatcher()
-        {
-            if (_configWatcher != null)
-            {
-                _configWatcher.EnableRaisingEvents = false;
-                _configWatcher.Changed -= OnConfigFileChanged;
-                _configWatcher.Dispose();
-                _configWatcher = null;
-            }
-        }
-
-        #endregion
     }
 }

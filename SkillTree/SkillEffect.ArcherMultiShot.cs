@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using System.Linq;
+using CaptainSkillTree;
 using CaptainSkillTree.VFX;
 using CaptainSkillTree.Localization;
 
@@ -267,7 +268,7 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 개별 화살 발사 (BowMultishot FireAdditionalArrow 방식)
         /// </summary>
-        private static void FireArcherArrow(Player player, ItemDrop.ItemData weapon, ItemDrop.ItemData ammo,
+        private static GameObject FireArcherArrow(Player player, ItemDrop.ItemData weapon, ItemDrop.ItemData ammo,
             Vector3 baseDirection, float angleOffset, int arrowIndex)
         {
             try
@@ -285,33 +286,33 @@ namespace CaptainSkillTree.SkillTree
                 if (ammoAttack?.m_attackProjectile == null)
                 {
                     Plugin.Log.LogError($"[아처 멀티샷] 화살 프로젝타일 없음: {ammo.m_shared.m_name}");
-                    return;
+                    return null;
                 }
-                
+
                 // 활에서 Attack 설정 가져오기 (속도, 정확도 등)
                 var bowAttack = weapon.m_shared.m_attack;
                 if (bowAttack == null)
                 {
                     Plugin.Log.LogError($"[아처 멀티샷] 활 Attack 정보 없음: {weapon.m_shared.m_name}");
-                    return;
+                    return null;
                 }
-                
+
                 // 발사 위치 계산
-                var spawnPoint = player.transform.position + 
-                    player.transform.up * 1.5f + 
+                var spawnPoint = player.transform.position +
+                    player.transform.up * 1.5f +
                     fireDirection * 0.5f;
-                
+
                 // 프로젝타일 생성 (화살의 프로젝타일 사용)
                 var projectileObj = UnityEngine.Object.Instantiate(
-                    ammoAttack.m_attackProjectile, 
-                    spawnPoint, 
+                    ammoAttack.m_attackProjectile,
+                    spawnPoint,
                     Quaternion.LookRotation(fireDirection)
                 );
-                
+
                 if (projectileObj == null)
                 {
                     Plugin.Log.LogError($"[아처 멀티샷] 프로젝타일 생성 실패");
-                    return;
+                    return null;
                 }
                 
                 // Projectile 컴포넌트 설정
@@ -360,14 +361,91 @@ namespace CaptainSkillTree.SkillTree
                 {
                     Plugin.Log.LogError($"[아처 멀티샷] Projectile 컴포넌트 없음");
                     UnityEngine.Object.Destroy(projectileObj);
+                    return null;
                 }
+                return projectileObj;
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[아처 멀티샷] 화살 {arrowIndex + 1} 발사 실패: {ex.Message}");
+                return null;
             }
         }
-        
+
+        /// <summary>
+        /// 아처 볼리샷 코루틴 시작 (FireProjectileBurst 패치에서 호출)
+        /// 원래 화살 발사 후 5발 순차 볼리를 별도 코루틴으로 실행
+        /// </summary>
+        public static void StartArcherVolleyCoroutine(Player player, ItemDrop.ItemData weapon, Vector3 direction)
+        {
+            SkillTreeInputListener.Instance.StartCoroutine(ArcherVolleyCoroutine(player, weapon, direction));
+        }
+
+        private static IEnumerator ArcherVolleyCoroutine(Player player, ItemDrop.ItemData weapon, Vector3 direction)
+        {
+            var ammo = GetArcherArrow(player);
+            if (ammo == null) yield break;
+
+            var arrowCount = ARCHER_MULTISHOT_ARROWS;
+            var fireInterval = Archer_Config.ArcherMultiShotFireIntervalValue;
+
+            // VFX #1 즉시 재생 (발사 직후) — RegisterValheimVFXAsCustom 클론 사용 (이중시전 패턴)
+            SimpleVFX.PlayFollowing("fx_batteringram_fire", player.transform, new Vector3(0f, 1.5f, 0f), 1.5f);
+
+            for (int i = 0; i < arrowCount; i++)
+            {
+                yield return new WaitForSeconds(fireInterval);
+
+                if (player == null || player.IsDead()) yield break;
+                ammo = GetArcherArrow(player);
+                if (ammo == null) yield break;
+
+                // VFX #2, #3 — 화살 수에 비례한 1/3, 2/3 지점
+                if (i == arrowCount / 3 || i == (2 * arrowCount) / 3)
+                    SimpleVFX.PlayFollowing("fx_batteringram_fire", player.transform, new Vector3(0f, 1.5f, 0f), 1.5f);
+
+                var arrowObj = FireArcherArrow(player, weapon, ammo, direction, 0f, i);
+                if (arrowObj != null)
+                {
+                    var tag = arrowObj.GetComponent<ArcherMultiShotProjectileTag>();
+                    if (tag == null) tag = arrowObj.AddComponent<ArcherMultiShotProjectileTag>();
+                    tag.shooterPlayerId = player.GetPlayerID();
+                }
+            }
+
+            DeductArcherVolleyCharge(player);
+        }
+
+        private static void DeductArcherVolleyCharge(Player player)
+        {
+            var currentCharges = GetArcherMultiShotCharges(player);
+            var newCharges = currentCharges - 1;
+            archerMultiShotCharges[player] = newCharges;
+
+            if (newCharges <= 0)
+            {
+                archerMultiShotCharges.Remove(player);
+
+                if (archerMultiShotBuffEffects.TryGetValue(player, out var buff) && buff != null)
+                {
+                    UnityEngine.Object.Destroy(buff);
+                    archerMultiShotBuffEffects.Remove(player);
+                }
+                if (archerMultiShotStatusEffects.TryGetValue(player, out var status) && status != null)
+                {
+                    UnityEngine.Object.Destroy(status);
+                    archerMultiShotStatusEffects.Remove(player);
+                }
+                ShowSkillEffectText(player, "🏹 " + L.Get("multishot_completed"),
+                    new Color(0.8f, 0.8f, 0.2f), SkillEffectTextType.Combat);
+            }
+            else
+            {
+                ShowSkillEffectText(player, "🏹 " + L.Get("multishot_remaining_charges", newCharges.ToString()),
+                    new Color(0.2f, 0.8f, 0.2f), SkillEffectTextType.Combat);
+            }
+        }
+
         /// <summary>
         /// 화살 수에 따른 부채꼴 각도 계산
         /// </summary>
@@ -632,20 +710,7 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                var znet = ZNetScene.instance;
-                if (znet != null)
-                {
-                    // sfx_StaffLightning_charge 사운드 효과
-                    var soundEffect = znet.GetPrefab("sfx_StaffLightning_charge");
-                    if (soundEffect != null)
-                    {
-                        UnityEngine.Object.Instantiate(soundEffect, player.transform.position, Quaternion.identity);
-                    }
-                    else
-                    {
-                        Plugin.Log.LogWarning("[아처 멀티샷] sfx_StaffLightning_charge 사운드를 찾을 수 없음");
-                    }
-                }
+                VFXManager.PlayVFXAtPosition("sfx_StaffLightning_charge", player.transform.position);
             }
             catch (Exception ex)
             {
@@ -668,26 +733,11 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                if (target == null)
-                {
-                    Plugin.Log.LogWarning("[아처 멀티샷] 타겟이 null - hit_01 효과 생성 불가");
-                    return;
-                }
-                
-                // 몬스터 머리 위 위치 계산 (몬스터 크기에 따라 조정)
-                var headOffset = Vector3.up * 2.0f; // 기본 2미터 위
-                if (target.name.Contains("Troll")) headOffset = Vector3.up * 4.0f; // 트롤은 4미터
-                else if (target.name.Contains("Dragon")) headOffset = Vector3.up * 8.0f; // 드래곤은 8미터
-                else if (target.name.Contains("Deer") || target.name.Contains("Boar")) headOffset = Vector3.up * 1.0f; // 작은 동물은 1미터
-                
-                var headPosition = target.transform.position + headOffset;
-                
-                // SimpleVFX로 hit_01 효과 재생
-                SimpleVFX.PlayWithSound("hit_01", "arrow_hit", headPosition, 1.5f);
+                VFXManager.PlayVFXMultiplayer("fx_batteringram_fire", "", hitPosition);
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[아처 멀티샷] hit_01 적중 효과 재생 오류: {ex.Message}");
+                Plugin.Log.LogError($"[아처 볼리] 적중 VFX 오류: {ex.Message}");
             }
         }
         
@@ -826,17 +876,22 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
-    /// 아처 멀티샷 적중 효과를 위한 Projectile 패치 (성능 최적화를 위해 비활성화)
+    /// 아처 볼리샷 화살 적중 시 fx_batteringram_fire 효과 재생
+    /// ArcherMultiShotProjectileTag가 붙은 화살에만 반응
     /// </summary>
-    [HarmonyPatch(typeof(Projectile), nameof(Projectile.OnHit))]
+    [HarmonyPatch(typeof(Projectile), "OnHit",
+        new System.Type[] { typeof(Collider), typeof(Vector3), typeof(bool), typeof(Vector3) })]
     [HarmonyPriority(Priority.Low)]
     public static class ArcherMultiShot_ProjectileHit_Patch
     {
-        [HarmonyPrefix]
-        private static void Prefix(Projectile __instance, Collider collider, bool water)
+        [HarmonyPostfix]
+        private static void Postfix(Projectile __instance, Collider collider, Vector3 hitPoint, bool water, Vector3 normal)
         {
-            // 성능 최적화: 적중 감지 비활성화 (랙 방지)
-            return;
+            if (water) return;
+            if (__instance.GetComponent<ArcherMultiShotProjectileTag>() == null) return;
+            var hitChar = collider?.GetComponentInParent<Character>();
+            if (hitChar == null || hitChar == Player.m_localPlayer || hitChar.IsDead()) return;
+            SkillEffect.PlayArcherMultiShotHitEffect(hitPoint, hitChar);
         }
     }
 }

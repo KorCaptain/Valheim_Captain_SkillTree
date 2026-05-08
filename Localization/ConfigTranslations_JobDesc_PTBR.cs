@@ -49,6 +49,12 @@ namespace CaptainSkillTree.Localization
                 "Gerenciar stamina é importante.\n" +
                 "Valor recomendado: 20-35",
 
+                ["Archer_MultiShot_FireInterval"] =
+                "【Intervalo de Disparo Sequencial (seg)】\n" +
+                "Intervalo entre cada flecha da salva.\n" +
+                "5 flechas disparam sequencialmente neste intervalo.\n" +
+                "Valor recomendado: 0.15-0.3 seg",
+
                 // === Archer Job: Habilidades passivas (2 chaves) ===
                 ["Archer_JumpHeightBonus"] =
                 "【Bônus de Altura de Salto (%)】\n" +
@@ -298,6 +304,16 @@ namespace CaptainSkillTree.Localization
                 "【Redução Passiva de Dano do Tanque (%)】\n" +
                 "Tanque passivo: reduz continuamente o dano recebido.\n" +
                 "Valor recomendado: 10-20%",
+
+                ["Tanker_NormalShield_SpeedBonus"] =
+                "【Tanque: Velocidade com Escudo Normal (%)】\n" +
+                "Tanque Lv1+: Bônus de velocidade ao equipar escudo normal.\n" +
+                "Padrão: 25%",
+
+                ["Tanker_TowerShield_SpeedBonus"] =
+                "【Tanque: Velocidade com Torre-Escudo (%)】\n" +
+                "Tanque Lv1+: Bônus de velocidade ao equipar torre-escudo.\n" +
+                "Padrão: 30%",
 
                 // === Lv1 ===
                 ["Tanker_ReflectDuration_Lv1"] =

@@ -14,6 +14,10 @@ namespace CaptainSkillTree.SkillTree
         // ── 해결책 1: 실시간 싱크 토글 (기본 OFF → skillconfig sync 커맨드로 수동 적용) ──
         private static ConfigEntry<bool> _liveConfigSync;
 
+        // ── PlantEasily 제작 전문가 제한 토글 ──
+        private static ConfigEntry<bool> _plantEasilyProducerLimit;
+        public static bool PlantEasilyProducerLimit => _plantEasilyProducerLimit?.Value ?? false;
+
         // ── 해결책 2: Debounce — 1.5초 이내 중복 브로드캐스트/RPC 차단 ──
         private static DateTime _lastServerBroadcastTime = DateTime.MinValue;
         private static DateTime _lastClientRpcTime = DateTime.MinValue;
@@ -30,6 +34,16 @@ namespace CaptainSkillTree.SkillTree
                     "F1 메뉴 실시간 Config 싱크 활성화.\n" +
                     "false (기본) = skillconfig sync 커맨드로만 적용 — 크래시 방지 권장\n" +
                     "true = F1 메뉴 변경 즉시 서버 전송 (1.5초 debounce 적용)"));
+
+            // PlantEasily 제작 전문가 제한 Config 바인딩 (로컬 전용)
+            _plantEasilyProducerLimit = config.Bind(
+                "Skill_Tree_Base",
+                "PlantEasily_Producer_Limit",
+                false,
+                new ConfigDescription(
+                    "PlantEasily 모드가 설치된 경우 사용 제한 설정.\n" +
+                    "true (기본) = 제작 전문가만 PlantEasily 기능 사용 가능\n" +
+                    "false = 모든 유저가 PlantEasily 기능 사용 가능"));
 
             config.SettingChanged += OnAdminSettingChanged;
             config.SettingChanged += OnServerSettingChanged;

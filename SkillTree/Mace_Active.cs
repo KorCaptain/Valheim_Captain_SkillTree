@@ -127,9 +127,9 @@ namespace CaptainSkillTree.SkillTree
 
             Vector3 endPos = startPos + lookDir * chargeDistance;
 
-            // 착지 지점 지면 보정
-            if (Physics.Raycast(endPos + Vector3.up * 10f, Vector3.down, out RaycastHit landHit, 20f,
-                LayerMask.GetMask("terrain", "static_solid")))
+            // 착지 지점 지면 보정 — 발 아래 방향 단거리 (던전 내부 천장 관통 방지)
+            if (Physics.Raycast(endPos + Vector3.up * 0.1f, Vector3.down, out RaycastHit landHit, 5f,
+                LayerMask.GetMask("terrain", "static_solid", "piece")))
             {
                 endPos.y = landHit.point.y;
             }
@@ -167,9 +167,9 @@ namespace CaptainSkillTree.SkillTree
 
                 Vector3 newPos = Vector3.Lerp(startPos, endPos, t);
 
-                // 지면 아래로 꺼지지 않도록 클램프
-                if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
-                    LayerMask.GetMask("terrain", "static_solid")))
+                // 지면 아래로 꺼지지 않도록 클램프 — 발 아래 방향 단거리 (던전 천장 관통 방지)
+                if (Physics.Raycast(newPos + Vector3.up * 0.1f, Vector3.down, out RaycastHit groundHit, 5f,
+                    LayerMask.GetMask("terrain", "static_solid", "piece")))
                 {
                     float terrainY = groundHit.point.y + 0.3f;
                     if (newPos.y < terrainY) newPos.y = terrainY;
@@ -192,13 +192,15 @@ namespace CaptainSkillTree.SkillTree
                     catch (Exception ex) { Plugin.Log.LogError($"[돌진방패] 경로 히트 오류: {ex.Message}"); }
                 }
 
-                // 돌진 잔상 VFX
+                // 돌진 잔상 VFX + 다단히트
                 if (vfxTimer >= 0.08f)
                 {
                     var shieldPrefab2 = ZNetScene.instance?.GetPrefab("fx_shieldgenerator_domehit");
                     if (shieldPrefab2 != null)
                         UnityEngine.Object.Instantiate(shieldPrefab2, player.GetCenterPoint(), Quaternion.identity);
                     vfxTimer = 0f;
+
+                    ApplyShieldChargeAreaMultiHit(player, lookDir);
                 }
 
                 yield return null;
@@ -303,6 +305,45 @@ namespace CaptainSkillTree.SkillTree
             VFXManager.PlayVFXMultiplayer("sfx_rock_hit", "", enemy.GetCenterPoint(), Quaternion.identity, 2f);
             DrawFloatingText(player, "🛡️ " + L.Get("guardian_heart_activated") + $" {Mathf.RoundToInt(damage)}", new Color(0.2f, 0.8f, 1f, 1f));
             Plugin.Log.LogInfo($"[돌진방패] 경로 타격: {enemy.name}, 데미지={damage:F0}");
+        }
+
+        /// <summary>
+        /// VFX 발동마다 호출: 3m 반경 모든 적에게 방패 방어력 100% 광역 데미지 + fx_crit
+        /// alreadyHit 무관 — 다단히트 허용
+        /// </summary>
+        private static void ApplyShieldChargeAreaMultiHit(Player player, Vector3 dashDir)
+        {
+            float skillFactor = player.GetSkillFactor(Skills.SkillType.Blocking);
+            var shieldItem = HarmonyLib.Traverse.Create(player)
+                .Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+
+            float blockPower = 0f;
+            if (shieldItem != null &&
+                shieldItem.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+                blockPower = shieldItem.GetBlockPower(skillFactor);
+
+            float damage = Mathf.Max(1f, blockPower * Mace_Config.ShieldChargeMultiHitDamagePercentValue / 100f);
+
+            foreach (var c in Character.GetAllCharacters())
+            {
+                if (c == null || c.IsDead() || c == player) continue;
+                if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                if (Vector3.Distance(c.transform.position, player.transform.position) > 3f) continue;
+
+                var hit = new HitData();
+                hit.m_damage.m_blunt = damage;
+                hit.m_attacker = player.GetZDOID();
+                hit.SetAttacker(player);
+                hit.m_point = c.GetCenterPoint();
+                hit.m_dir = dashDir;
+                hit.m_skill = Skills.SkillType.Clubs;
+                hit.m_blockable = false;
+                hit.m_dodgeable = false;
+
+                c.Damage(hit);
+
+                VFXManager.PlayVFXMultiplayer("fx_crit", "", c.GetCenterPoint(), Quaternion.identity, 1.5f);
+            }
         }
 
         /// <summary>

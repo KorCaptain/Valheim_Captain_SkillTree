@@ -5,6 +5,7 @@ using UnityEngine;
 using HarmonyLib;
 using CaptainSkillTree.SkillTree;
 using CaptainSkillTree.Localization;
+using CaptainSkillTree.Gui;
 
 namespace CaptainSkillTree
 {
@@ -117,11 +118,13 @@ namespace CaptainSkillTree
 
                             player.Message(MessageHud.MessageType.Center, evasionMessage);
 
-                            // 신경강화: 피격 회피 성공 시 30초 쿨다운 시작
+                            // 신경강화: 피격 회피 성공 시 45초 쿨다운 시작
                             if (manager?.GetSkillLevel("defense_Step6_attack") > 0)
                             {
                                 SkillEffect.nerveLastEvasionTime[player] = Time.time;
                                 SkillEffect.UpdateDefenseDodgeRate(player);
+                                ActiveSkillCooldownRegistry.SetCooldownForSkill("PASS", "defense_Step6_attack", 45f);
+                                ActiveSkillHUD.Instance?.OnCooldownStarted();
                                 var nerveTimer = player.GetComponent<NerveEnhancementTimer>();
                                 if (nerveTimer == null)
                                     nerveTimer = player.gameObject.AddComponent<NerveEnhancementTimer>();

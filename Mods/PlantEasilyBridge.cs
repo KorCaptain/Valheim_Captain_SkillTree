@@ -113,6 +113,7 @@ namespace CaptainSkillTree.Mods
         static void TogglePrefix(Player __instance)
         {
             _toggleActive = false;
+            if (!SkillTreeConfig.PlantEasilyProducerLimit) return;
             if (__instance != Player.m_localPlayer) return;
             if (_enabledEntry == null || !_enabledEntry.Value) return;
             if (ProducerSkills.IsProducer(__instance)) return;
@@ -132,10 +133,15 @@ namespace CaptainSkillTree.Mods
         // ── 방식 B 전용: 비제작전문가면 해당 메서드 실행 자체를 차단 ──
         private static bool ProducerOnlyPrefix()
         {
+            if (!SkillTreeConfig.PlantEasilyProducerLimit) return true;
             return ProducerSkills.IsProducer(Player.m_localPlayer);
         }
 
-        public static bool CanUse() =>
-            !IsInstalled || ProducerSkills.IsProducer(Player.m_localPlayer);
+        public static bool CanUse()
+        {
+            if (!IsInstalled) return true;
+            if (!SkillTreeConfig.PlantEasilyProducerLimit) return true;
+            return ProducerSkills.IsProducer(Player.m_localPlayer);
+        }
     }
 }

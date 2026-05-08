@@ -409,6 +409,8 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_EffectScale"] = "ウォークライ: 効果スケール",
                 ["Tanker_Taunt_ReflectPercent"] = "戦吼: 反射ダメージ割合 (%)",
                 ["Tanker_Passive_DamageReduction"] = "パッシブ: ダメージ軽減 (%)",
+                ["Tanker_NormalShield_SpeedBonus"] = "パッシブ: 通常盾 移動速度 (%)",
+                ["Tanker_TowerShield_SpeedBonus"] = "パッシブ: タワー盾 移動速度 (%)",
 
                 // ============================================
                 // ローグ職業スキル

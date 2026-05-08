@@ -968,8 +968,6 @@ namespace CaptainSkillTree.SkillTree
                     {
                         if (!HasTankerLv2SkillPrereq())
                         { lv2SkillOk = false; lv2Error = L.Get("tanker_lv2_skill_prereq_required"); }
-                        else if (!HasTankerLv2RecentSkillUse())
-                        { lv2SkillOk = false; lv2Error = L.Get("tanker_lv2_recent_use_required"); }
                     }
                     else if (skillId == "Paladin" && GetSkillLevel("sword_step5_finalcut") <= 0 && GetSkillLevel("mace_Step7_fury_hammer") <= 0)
                     { lv2SkillOk = false; lv2Error = L.Get("paladin_lv2_skill_required"); }
@@ -1093,13 +1091,6 @@ namespace CaptainSkillTree.SkillTree
                         if ((System.Object)Player.m_localPlayer != null)
                             SkillEffect.DrawFloatingText(Player.m_localPlayer,
                                 "<size=20>⚠️ " + L.Get("tanker_lv2_skill_prereq_required") + "</size>", Color.red);
-                        return;
-                    }
-                    if (!HasTankerLv2RecentSkillUse())
-                    {
-                        if ((System.Object)Player.m_localPlayer != null)
-                            SkillEffect.DrawFloatingText(Player.m_localPlayer,
-                                "<size=20>⚠️ " + L.Get("tanker_lv2_recent_use_required") + "</size>", Color.red);
                         return;
                     }
                 }
@@ -1916,14 +1907,6 @@ namespace CaptainSkillTree.SkillTree
                 || SkillEffect.HasSkill("polearm_step5_king");
         }
 
-        /// <summary>
-        /// 탱커 Lv2 업그레이드 조건: 선행 스킬을 30초 이내 사용했는지 확인
-        /// </summary>
-        public bool HasTankerLv2RecentSkillUse()
-        {
-            return UnityEngine.Time.time - SkillEffect.TankerPrereqLastUsedTime <= 30f;
-        }
-
         public bool HasTankerLevelItems(int targetLevel)
         {
             var player = Player.m_localPlayer;
@@ -1985,7 +1968,6 @@ namespace CaptainSkillTree.SkillTree
                                           GetSkillLevel("spear_Step5_combo") > 0 ||
                                           GetSkillLevel("polearm_step5_king") > 0;
                     if (!hasTankerSkill) missing.Add(L.Get("tanker_lv2_skill_prereq_required"));
-                    else if (!HasTankerLv2RecentSkillUse()) missing.Add(L.Get("tanker_lv2_recent_use_required"));
                     if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add(string.Format(L.Get("coin_deficit_fmt"), SkillTreeConfig.GetJobLevelCost(targetLevel)));
                     break;
                 case 3:

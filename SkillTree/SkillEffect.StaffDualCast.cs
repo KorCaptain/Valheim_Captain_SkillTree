@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using CaptainSkillTree.VFX;
 using CaptainSkillTree.Localization;
@@ -24,6 +25,11 @@ namespace CaptainSkillTree.SkillTree
             = new Dictionary<Player, Coroutine>();
         private static Dictionary<Player, Coroutine> _fanCastLaunchCoroutines
             = new Dictionary<Player, Coroutine>();
+
+        // === 멀티플레이어 RPC ===
+        internal const string RPC_FANCAST_SUMMON = "CaptainFanCast_Summon";
+        internal const string RPC_FANCAST_CANCEL = "CaptainFanCast_Cancel";
+        private static bool _fanCastReceivingRPC = false;
 
         // === VFX 인스턴스 관리 ===
         private static Dictionary<Player, GameObject> staffDualCastBuffEffects = new Dictionary<Player, GameObject>();
@@ -102,6 +108,10 @@ namespace CaptainSkillTree.SkillTree
 
                 var co = SkillTreeInputListener.Instance.StartCoroutine(SummonAndHoverCoroutine(player));
                 _fanCastSummonCoroutines[player] = co;
+
+                // 다른 클라이언트에 소환 브로드캐스트
+                if (!_fanCastReceivingRPC && ZRoutedRpc.instance != null)
+                    ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, RPC_FANCAST_SUMMON, player.GetPlayerID());
             }
             catch (Exception ex)
             {
@@ -169,8 +179,8 @@ namespace CaptainSkillTree.SkillTree
                 yield return new WaitForSeconds(0.4f);
             }
 
-            // 전체 소환 완료 메시지
-            if (_fanCastSuspended.ContainsKey(player))
+            // 전체 소환 완료 메시지 (RPC 수신 중이면 다른 플레이어 화면이므로 표시 안 함)
+            if (_fanCastSuspended.ContainsKey(player) && !_fanCastReceivingRPC)
             {
                 DrawFloatingText(player, L.Get("staff_fan_cast_summoned"), new Color(0.8f, 0.3f, 1f));
             }
@@ -180,7 +190,8 @@ namespace CaptainSkillTree.SkillTree
 
             if (_fanCastSuspended.ContainsKey(player))
             {
-                DrawFloatingText(player, L.Get("staff_fan_cast_expired"), Color.yellow);
+                if (!_fanCastReceivingRPC)
+                    DrawFloatingText(player, L.Get("staff_fan_cast_expired"), Color.yellow);
                 CancelFanCast(player);
             }
         }
@@ -369,6 +380,10 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
+                // 다른 클라이언트에 취소 브로드캐스트
+                if (!_fanCastReceivingRPC && ZRoutedRpc.instance != null)
+                    ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, RPC_FANCAST_CANCEL, player.GetPlayerID());
+
                 if (_fanCastSuspended.TryGetValue(player, out var suspended))
                 {
                     foreach (var (obj, _) in suspended)
@@ -385,6 +400,26 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[팬캐스트] 취소 오류: {ex.Message}");
             }
+        }
+
+        internal static void OnReceiveFanCastSummon(long sender, long playerID)
+        {
+            if (Player.m_localPlayer != null && Player.m_localPlayer.GetPlayerID() == playerID) return;
+            var p = Player.GetAllPlayers().FirstOrDefault(x => x.GetPlayerID() == playerID);
+            if (p == null) return;
+            _fanCastReceivingRPC = true;
+            try { SummonFanCast(p); }
+            finally { _fanCastReceivingRPC = false; }
+        }
+
+        internal static void OnReceiveFanCastCancel(long sender, long playerID)
+        {
+            if (Player.m_localPlayer != null && Player.m_localPlayer.GetPlayerID() == playerID) return;
+            var p = Player.GetAllPlayers().FirstOrDefault(x => x.GetPlayerID() == playerID);
+            if (p == null) return;
+            _fanCastReceivingRPC = true;
+            try { CancelFanCast(p); }
+            finally { _fanCastReceivingRPC = false; }
         }
 
         /// <summary>

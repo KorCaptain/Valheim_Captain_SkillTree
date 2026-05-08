@@ -354,6 +354,7 @@ namespace CaptainSkillTree.SkillTree
             public string additionalInfo = "";
             public string dashDistance = "";
             public string damagePercent = "";
+            public string multiHitInfo = "";
             public string staminaCost = "";
             public string cooldown = "";
             public string skillType = "";
@@ -372,13 +373,14 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep7GuardianHeartTooltip() 호출됨");
 
                 // Config에서 동적 설정값 가져오기
-                float dashDistance = 8f;
+                float dashDistance = 12f;
                 float damagePercent = Mace_Config.ShieldChargeDamagePercentValue;
+                float multiHitDamagePercent = Mace_Config.ShieldChargeMultiHitDamagePercentValue;
                 float staminaCost = Mace_Config.GuardianHeartStaminaCostValue;
                 float cooldown = Mace_Config.GuardianHeartCooldownValue;
                 int requiredPoints = Mace_Config.GuardianHeartRequiredPointsValue;
 
-                Plugin.Log.LogDebug($"[방패돌진 툴팁] 컨피그 값들 - 돌진거리: {dashDistance}m, 데미지: {damagePercent}%, 스태미나: {staminaCost}, 쿨타임: {cooldown}초");
+                Plugin.Log.LogDebug($"[방패돌진 툴팁] 컨피그 값들 - 돌진거리: {dashDistance}m, 충돌데미지: {damagePercent}%, 다단히트: {multiHitDamagePercent}%, 스태미나: {staminaCost}, 쿨타임: {cooldown}초");
 
                 // 상세 툴팁 데이터 생성
                 var data = new GuardianHeartTooltipData
@@ -388,6 +390,7 @@ namespace CaptainSkillTree.SkillTree
                     additionalInfo = "",
                     dashDistance = $"{dashDistance:F0}m",
                     damagePercent = $"{damagePercent:F0}%",
+                    multiHitInfo = L.Get("mace_desc_guardian_multihit", multiHitDamagePercent),
                     staminaCost = $"{staminaCost:F0}",
                     cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
                     skillType = L.Get("skill_type_active_key", "G"),
@@ -435,14 +438,18 @@ namespace CaptainSkillTree.SkillTree
                     tooltip += "</size></color>\n";
                 }
 
-                // 3. 범위 - 돌진 거리 (#FF6B6B / #FFB6C1)
+                // 3. 다단히트 (#FF6B6B / #FFB6C1)
+                if (!string.IsNullOrEmpty(data.multiHitInfo))
+                {
+                    tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{data.multiHitInfo}</size></color>\n";
+                }
+
+                // 4. 범위 - 돌진 거리 (#87CEEB / #B0E0E6)
                 if (!string.IsNullOrEmpty(data.dashDistance))
                 {
                     string effectText = $"{L.Get("mace_effect_buff")} {data.dashDistance}";
-                    tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_range")}: </size></color><color=#FFB6C1><size=16>{effectText}</size></color>\n";
+                    tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{effectText}</size></color>\n";
                 }
-
-                // 4. 범위 - 생략 (자기 자신)
 
                 // 5. 소모 (#FFB347 / #FFDAB9)
                 if (!string.IsNullOrEmpty(data.staminaCost))
@@ -496,9 +503,12 @@ namespace CaptainSkillTree.SkillTree
         {
             int requiredPoints = Mace_Config.GuardianHeartRequiredPointsValue;
 
+            float dmg = Mace_Config.ShieldChargeDamagePercentValue;
+            float mhDmg = Mace_Config.ShieldChargeMultiHitDamagePercentValue;
             return "<color=#FFD700><size=22>방패돌진</size></color>\n\n" +
-                   "<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>방패 돌진하여 방패 막기력의 70% 데미지</size></color>\n" +
-                   "<color=#FF6B6B><size=16>범위: </size></color><color=#FFB6C1><size=16>돌진 거리 8m</size></color>\n" +
+                   $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>방패 돌진하여 방패 막기력의 {dmg:F0}% 충돌 데미지</size></color>\n" +
+                   $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>다단히트: VFX 발동마다 3m 반경 방패 막기력의 {mhDmg:F0}% 추가 타격 + 크리티컬 이펙트</size></color>\n" +
+                   "<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>돌진 거리 12m</size></color>\n" +
                    "<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 20</size></color>\n" +
                    "<color=#FF4500><size=16>스킬유형: </size></color><color=#00FF00><size=16>액티브 스킬 - G키</size></color>\n" +
                    "<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>35초</size></color>\n" +

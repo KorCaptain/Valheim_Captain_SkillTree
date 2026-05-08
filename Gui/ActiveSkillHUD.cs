@@ -53,7 +53,7 @@ namespace CaptainSkillTree.Gui
         private static readonly string[] M2IconNames = { "attack_unlock" };
 
         // HUD 슬롯 정보
-        private static readonly string[] SlotKeys   = { "Y", "R", "G", "H", "M2" };
+        private static readonly string[] SlotKeys   = { "Y", "R", "G", "H", "M2", "PASS" };
 
         // Y슬롯 디버그 로그 (1회만)
         private bool _ySlotDebugLogged = false;
@@ -102,8 +102,8 @@ namespace CaptainSkillTree.Gui
             fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            _slots = new SlotUI[5];
-            for (int i = 0; i < 5; i++)
+            _slots = new SlotUI[6];
+            for (int i = 0; i < 6; i++)
             {
                 _slots[i] = CreateSlot(containerGO.transform, SlotKeys[i]);
                 _slots[i].Root?.SetActive(false); // 초기 숨김 (메인메뉴/캐릭선택 화면에서 빈 박스 방지)
@@ -615,6 +615,7 @@ namespace CaptainSkillTree.Gui
             UpdateSlot(2, "G", mgr);
             UpdateSlot(3, "H", mgr);
             UpdateSlot(4, "M2", mgr);
+            UpdateSlot(5, "PASS", mgr);
 
             // 갱신 후 다음 폴링 간격 재계산
             float minRemaining = SkillTree.ActiveSkillCooldownRegistry.GetMinRemaining();
@@ -816,6 +817,13 @@ namespace CaptainSkillTree.Gui
                         }
                     }
                     break;
+                case "PASS":
+                    if (mgr.GetSkillLevel("defense_Step6_attack") > 0)
+                    {
+                        iconName = "speed_unlock";
+                        activeSkillId = "defense_Step6_attack";
+                    }
+                    break;
             }
 
             if (iconName == null)
@@ -939,6 +947,7 @@ namespace CaptainSkillTree.Gui
                 case "G": return SkillTreeConfig.HotKeyG?.Value ?? "G";
                 case "H": return SkillTreeConfig.HotKeyH?.Value ?? "H";
                 case "M2": return "M2";
+                case "PASS": return "Passive";
                 default:  return defaultKey;
             }
         }

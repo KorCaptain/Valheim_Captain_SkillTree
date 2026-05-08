@@ -263,12 +263,13 @@ namespace CaptainSkillTree.Localization
                 ["tanker_lv2_recent_use_required"] = "배운 스킬을 30초 이내 1회 사용 후 업그레이드 할 수 있습니다",
                 ["tanker_level_req_items"] = "Lv{0} 필요 아이템",
                 ["tanker_taunt_effect"] = "도발 {0}m, {1}초",
-                ["tanker_passive_lv1"] = "생명력 +{0}%, 피해감소 {1}%, 피격시 {2}초간 반사",
-                ["tanker_passive_lv2"] = "추가 체력 +{0}%, 피해감소 {1}%, 방패 막기 방어력 +{2}, 피격시 {3}초간 반사, 배운 선행 스킬(꿰뚫는창/연공창/분노의 망치/돌진베기/패링돌격/방패돌진/관통돌격) 30초 내 +1회 사용",
-                ["tanker_passive_lv3"] = "생명력 +{0}%, 피해감소 {1}%, 방패 막기 방어력 +{2}, 피격시 {3}초간 반사",
-                ["tanker_reflect_activated"] = "🛡️ 도발 반사 활성화!",
+                ["tanker_passive_lv1"] = "생명력 +{0}%, 피해감소 {1}%, 피격시 {2}초간 반사 누적({3}%·{4}m 폭발)",
+                ["tanker_passive_lv2"] = "추가 체력 +{0}%, 피해감소 {1}%, 방패 막기 방어력 +{2}, 피격시 {3}초간 반사 누적({4}%·{5}m 폭발), 배운 선행 스킬(꿰뚫는창/연공창/분노의 망치/돌진베기/패링돌격/방패돌진/관통돌격) 30초 내 +1회 사용",
+                ["tanker_passive_lv3"] = "생명력 +{0}%, 피해감소 {1}%, 방패 막기 방어력 +{2}, 피격시 {3}초간 반사 누적({4}%·{5}m 폭발)",
+                ["tanker_reflect_activated"] = "🛡️ 분노 누적 시작!",
                 ["tanker_reflect_damage"] = "🛡️ 도발 반사: {0}",
-                ["tanker_reflect_info"] = "피격 시 {0}% 반사",
+                ["tanker_reflect_info"] = "버프 종료 시 누적 피해의 {0}% 화염 폭발 ({1}m)",
+                ["tanker_reflect_explosion"] = "🔥 분노 폭발: {0} x{1}적",
 
                 // === Rogue Active Skill Messages ===
                 ["rogue_shadow_strike_activate"] = "💥 그림자 일격!",

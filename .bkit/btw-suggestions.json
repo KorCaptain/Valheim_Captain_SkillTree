@@ -62,6 +62,26 @@
       }
     },
     {
+      "id": "btw-005",
+      "timestamp": "2026-05-05T00:00:00Z",
+      "suggestion": "de.json이 24개 키만 갖는 것이 의도적 설계인지 명확히 문서화 필요. 독일어 부분 번역 방침인지 EN fallback 허용 정책인지 확인 필요.",
+      "context": {
+        "file": "Localization/de.json",
+        "pdcaPhase": "do",
+        "feature": "Localization"
+      },
+      "category": "documentation",
+      "status": "pending",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      }
+    },
+    {
       "id": "btw-004",
       "timestamp": "2026-05-03T00:00:00Z",
       "suggestion": "저 에러 쌓이면 서버 과부하 걸리나?",
@@ -83,7 +103,7 @@
     }
   ],
   "stats": {
-    "total": 4,
+    "total": 5,
     "promoted": 0,
     "dismissed": 0,
     "lastAnalyzed": null

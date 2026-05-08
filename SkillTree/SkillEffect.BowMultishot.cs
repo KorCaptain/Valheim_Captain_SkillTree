@@ -93,6 +93,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 for (int i = 0; i < 3; i++)
                 {
+                    if (player == null || hitChar == null || hitChar.IsDead()) break;
                     var firePos = previews[i] != null
                         ? previews[i].transform.position
                         : player.transform.TransformPoint(localOffsets[i]);
@@ -103,7 +104,11 @@ namespace CaptainSkillTree.SkillTree
                     VFXManager.PlaySound("sfx_bow_draw", firePos, 0.6f);
                     FireAutoTargetArrow(player, weapon, ammo, firePos, baseDir, angles[i]);
 
-                    if (i < 2) yield return new WaitForSeconds(0.3f);
+                    if (i < 2)
+                    {
+                        yield return new WaitForSeconds(0.3f);
+                        if (player == null || hitChar == null || hitChar.IsDead()) break;
+                    }
                 }
 
                 ShowSkillEffectText(player,
@@ -128,9 +133,12 @@ namespace CaptainSkillTree.SkillTree
 
         private static Vector3 SafeGetCenter(Character chr)
         {
-            if (chr == null) return Vector3.zero;
-            try { return chr.GetCenterPoint(); }
-            catch { return chr.transform.position + Vector3.up; }
+            try
+            {
+                if (chr == null) return Vector3.zero;
+                return chr.GetCenterPoint();
+            }
+            catch { return Vector3.zero; }
         }
 
         private static void FireAutoTargetArrow(Player player, ItemDrop.ItemData weapon, ItemDrop.ItemData ammo,
@@ -348,12 +356,12 @@ namespace CaptainSkillTree.SkillTree
                 var currentWeapon = player.GetCurrentWeapon();
                 if (currentWeapon?.m_shared?.m_skillType != Skills.SkillType.Bows) return true;
 
-                // ArcherMultiShot(Y키) 활성 → 기존 방식 유지 (원래 화살 차단)
+                // ArcherMultiShot(Y키) 활성 → 원래 화살 유지 + 순차 볼리 발사
                 if (SkillEffect.IsArcherMultiShotReady(player))
                 {
                     Vector3 attackDir = player.GetLookDir();
-                    SkillEffect.PerformArcherMultiShotAttack(player, currentWeapon, attackDir);
-                    return false;
+                    SkillEffect.StartArcherVolleyCoroutine(player, currentWeapon, attackDir);
+                    return true;
                 }
 
                 // BowExpert 멀티샷: 원래 화살 그대로 발사, OnHit에서 처리
@@ -387,6 +395,9 @@ namespace CaptainSkillTree.SkillTree
                 var player = Player.m_localPlayer;
                 if (player == null) return;
 
+                // 아처 볼리 화살은 BowExpert 처리 스킵 (ArcherMultiShot.cs에서 처리)
+                if (__instance.GetComponent<ArcherMultiShotProjectileTag>() != null) return;
+
                 // 추가 화살 적중 → 폭발 처리 후 종료 (재귀 방지)
                 if (__instance.GetComponent<MultiShotArrowTag>() != null)
                 {
@@ -417,7 +428,6 @@ namespace CaptainSkillTree.SkillTree
 
                 if (UnityEngine.Random.Range(0f, 1f) >= totalChance) return;
 
-                Plugin.Log.LogDebug($"[멀티샷] 발동! 대상: {hitChar.name} (확률: {totalChance * 100f:F0}%)");
                 SkillTreeInputListener.Instance.StartCoroutine(SkillEffect.DelayedFireMultishot(player, hitChar));
             }
             catch (System.Exception ex)

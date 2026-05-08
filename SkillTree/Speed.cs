@@ -123,10 +123,15 @@ namespace CaptainSkillTree.SkillTree
                 {
                     float shieldSpeedBonus = GetJotunnShieldSpeedBonus(player);
                     if (shieldSpeedBonus > 0f)
-                    {
                         conditionalBonus += shieldSpeedBonus;
-                        Plugin.Log.LogDebug($"[Speed] 요툰의 방패 활성화: +{shieldSpeedBonus * 100f:F1}%");
-                    }
+                }
+
+                // === 탱커: 방패 장착 시 이동속도 보너스 ===
+                if (SkillTreeManager.Instance?.GetSkillLevel("Tanker") >= 1)
+                {
+                    float tankerShieldBonus = GetTankerShieldSpeedBonus(player);
+                    if (tankerShieldBonus > 0f)
+                        conditionalBonus += tankerShieldBonus;
                 }
 
                 return conditionalBonus;
@@ -145,39 +150,43 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                var inventory = player.GetInventory();
-                if (inventory == null) return 0f;
+                // GetEquippedItems() 대신 m_leftItem 직접 사용 (TakeAll 중 phantom item 방지)
+                var leftItem = Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+                if (leftItem == null || leftItem.m_shared?.m_itemType != ItemDrop.ItemData.ItemType.Shield)
+                    return 0f;
 
-                // 방패 장착 확인
-                var shieldItem = inventory.GetEquippedItems().FirstOrDefault(item =>
-                    item.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield);
-
-                if (shieldItem != null)
-                {
-                    // 방패 타입 확인: movementModifier로 구분
-                    // 일반 방패: -0.05 (5% 이속 저하)
-                    // 타워/대형 방패: -0.10 (10% 이속 저하)
-                    float movementModifier = shieldItem.m_shared.m_movementModifier;
-
-                    bool isTowerShield = movementModifier <= -0.08f; // -10% 이하면 대형 방패로 판단
-
-                    if (isTowerShield)
-                    {
-                        // 대형 방패: +10% 이동속도
-                        return Defense_Config.JotunnShieldTowerSpeedBonusValue / 100f;
-                    }
-                    else
-                    {
-                        // 일반 방패: +5% 이동속도
-                        return Defense_Config.JotunnShieldNormalSpeedBonusValue / 100f;
-                    }
-                }
-
-                return 0f;
+                bool isTowerShield = leftItem.m_shared.m_movementModifier <= -0.08f;
+                return isTowerShield
+                    ? Defense_Config.JotunnShieldTowerSpeedBonusValue / 100f
+                    : Defense_Config.JotunnShieldNormalSpeedBonusValue / 100f;
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[Speed] 요툰의 방패 보너스 계산 오류: {ex.Message}");
+                return 0f;
+            }
+        }
+
+        /// <summary>
+        /// 탱커 방패 이동속도 보너스 계산 (Lv1+)
+        /// </summary>
+        private static float GetTankerShieldSpeedBonus(Player player)
+        {
+            try
+            {
+                // GetEquippedItems() 대신 m_leftItem 직접 사용 (TakeAll 중 phantom item 방지)
+                var leftItem = Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+                if (leftItem == null || leftItem.m_shared?.m_itemType != ItemDrop.ItemData.ItemType.Shield)
+                    return 0f;
+
+                bool isTowerShield = leftItem.m_shared.m_movementModifier <= -0.08f;
+                return isTowerShield
+                    ? Tanker_Config.TankerTowerShieldSpeedBonusValue / 100f
+                    : Tanker_Config.TankerNormalShieldSpeedBonusValue / 100f;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[Speed] 탱커 방패 보너스 계산 오류: {ex.Message}");
                 return 0f;
             }
         }

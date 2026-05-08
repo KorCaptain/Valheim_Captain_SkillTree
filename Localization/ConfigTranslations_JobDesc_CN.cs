@@ -49,6 +49,12 @@ namespace CaptainSkillTree.Localization
                 "体力管理至关重要。\n" +
                 "推荐：20-35",
 
+                ["Archer_MultiShot_FireInterval"] =
+                "【连续射击间隔（秒）】\n" +
+                "齐射箭矢之间的发射间隔。\n" +
+                "5支箭依次按此间隔发射。\n" +
+                "推荐：0.15-0.3秒",
+
                 // === 弓手：被动技能（2个键）===
                 ["Archer_JumpHeightBonus"] =
                 "【跳跃高度加成(%)】\n" +
@@ -298,6 +304,16 @@ namespace CaptainSkillTree.Localization
                 "【坦克被动伤害减少(%)】\n" +
                 "坦克被动：持续减少受到的伤害。\n" +
                 "推荐：10-20%",
+
+                ["Tanker_NormalShield_SpeedBonus"] =
+                "【坦克普通盾牌移动速度加成(%)】\n" +
+                "坦克Lv1+：装备普通盾牌时移动速度提升。\n" +
+                "默认：25%",
+
+                ["Tanker_TowerShield_SpeedBonus"] =
+                "【坦克塔盾移动速度加成(%)】\n" +
+                "坦克Lv1+：装备塔盾时移动速度提升。\n" +
+                "默认：30%",
 
                 // === Lv1 ===
                 ["Tanker_ReflectDuration_Lv1"] =

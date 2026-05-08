@@ -39,7 +39,9 @@ namespace CaptainSkillTree
                 var player = attacker as Player;
 
                 // === 李??ъ갹 ?꾩슜 泥섎━ (weapon null ?댁쟾 - ?ъ갹 ??weapon ?놁쓣 ???덉쓬) ===
-                bool isSpearThrow = SkillEffect.IsRecentSpearSecondaryAttack(player);
+                // === 투창 스킬 처리 (창 장착 + 2차 공격 플래그 동시 확인) ===
+                bool isSpearEquipped = player.GetCurrentWeapon()?.m_shared?.m_skillType == Skills.SkillType.Spears;
+                bool isSpearThrow = isSpearEquipped && SkillEffect.IsRecentSpearSecondaryAttack(player);
 
                 // === 李??곌났李??≫떚釉??ㅽ궗 (H?? - 2李?怨듦꺽(?ъ갹) ?쒖뿉留??곸슜 ===
                 if (isSpearThrow && SkillEffect.IsSpearComboThrowBuffActive(player))
@@ -54,14 +56,14 @@ namespace CaptainSkillTree
                     hit.m_damage.m_slash *= multiplier;
                     hit.m_damage.m_chop *= multiplier;
 
-                    Log.LogInfo($"[?곌났李? ??媛뺥솕???ъ갹 ?곕?吏 +{damageBonus}% ?곸슜!");
+                    Log.LogInfo($"[창 연공] 콤보 강화 투창 데미지 +{damageBonus}% 적용!");
 
                     // 紐ъ뒪??留욎븯????confetti ?④낵
                     if (__instance != null && !__instance.IsPlayer())
                     {
                         Vector3 monsterPos = __instance.transform.position + Vector3.up * 1f;
                         SimpleVFX.Play("confetti_directional_multicolor", monsterPos, 2f);
-                        Log.LogDebug("[?곌났李? confetti ?④낵 ?ъ깮");
+                        Log.LogDebug("[창 연공] confetti 이펙트 시작");
                     }
 
                     SkillEffect.ConsumeSpearComboThrowUse(player); // 1???ъ슜 ?뚮퉬
@@ -81,8 +83,8 @@ namespace CaptainSkillTree
                     hit.m_damage.m_slash *= multiplier;
                     hit.m_damage.m_chop *= multiplier;
 
-                    Log.LogInfo($"[?ъ갹 ?꾨Ц媛] ???ъ갹 怨듦꺽??+{damageBonus}% ?곸슜!");
-                    SkillEffect.ShowSkillEffectText(player, $"?뮙 ?ъ갹 +{damageBonus}%!", new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
+                    Log.LogInfo($"[투창 패시브] 기본 투창 보너스 +{damageBonus}% 적용!");
+                    SkillEffect.ShowSkillEffectText(player, L.Get("spear_throw_passive_activated", $"{damageBonus:F0}"), new Color(1f, 0.8f, 0.2f), SkillEffect.SkillEffectTextType.Combat);
 
                     SkillEffect.SetSpearThrowPassiveCooldown(player);
                     // return ?놁쓬 - ?щ━?곗뺄??諛쒕룞 媛??
@@ -104,7 +106,7 @@ namespace CaptainSkillTree
                         new Color(1f, 0.3f, 0.1f), SkillEffect.SkillEffectTextType.Combat);
                     CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("fx_crit", "", hit.m_point);
                     showDamageText = false;
-                    Log.LogInfo("[?ㅻ뱶?? 癒몃━ ?곸쨷 ??100% ?щ━?곗뺄 諛쒕룞!");
+                    Log.LogInfo("[헤드샷] 헤드샷 발생 시 100% 치명타 발동!");
                 }
                 else
                 {
@@ -279,12 +281,10 @@ namespace CaptainSkillTree
                     if (player.IsBlocking())
                     {
                         Sword_Skill.OnParryRushTrigger(player, __instance);
-                        Plugin.Log.LogInfo("[?⑤쭅 ?뚭꺽] Stagger 媛먯? ???⑤쭅 ?뚭꺽 諛쒕룞");
                     }
                 }
-                catch (System.Exception ex)
+                catch (System.Exception)
                 {
-                    Plugin.Log.LogError($"[?⑤쭅 ?뚭꺽] Stagger ?⑥튂 ?ㅻ쪟: {ex.Message}");
                 }
             }
         }
@@ -343,9 +343,8 @@ namespace CaptainSkillTree
                         }
                     }
                 }
-                catch (System.Exception ex)
+                catch (System.Exception)
                 {
-                    Plugin.Log.LogError($"[諛섍꺽 ?먯꽭] ApplyDamage ?⑥튂 ?ㅻ쪟: {ex.Message}");
                 }
             }
         }
@@ -486,27 +485,6 @@ namespace CaptainSkillTree
             }
         }
 
-        // ?대씪?댁뼵?몄뿉???쒕쾭 ?ㅼ젙 ?섏떊
-        [HarmonyPatch(typeof(ZNet), "OnNewConnection")]
-        public static class ZNet_OnNewConnection_Patch
-        {
-            static void Postfix(ZNet __instance)
-            {
-                // ???대씪?댁뼵?멸? ?묒냽?섎㈃ ?쒕쾭 ?ㅼ젙 ?꾩넚
-                if (__instance.IsServer())
-                {
-                    // ?쎄컙??吏?????ㅼ젙 ?꾩넚 (?대씪?댁뼵??珥덇린???湲?
-                    __instance.StartCoroutine(DelayedConfigBroadcast());
-                }
-            }
-
-            private static IEnumerator DelayedConfigBroadcast()
-            {
-                yield return new WaitForSeconds(2f);
-                SkillTreeConfig.BroadcastConfigToClients();
-            }
-        }
-
         // 肄섏넄 紐낅졊???깅줉
         [HarmonyPatch(typeof(Terminal), "InitTerminal")]
         public static class Terminal_InitTerminal_Patch
@@ -600,9 +578,8 @@ namespace CaptainSkillTree
                 {
                     TankerSkills.CleanupTankerOnDeath(__instance);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Plugin.Log.LogWarning($"[?깆빱 ?뺣━] ?ㅽ뙣 (臾댁떆): {ex.Message}");
                 }
 
                 // ??2. 吏곸뾽 ?ㅽ궗 ?뺣━
@@ -610,9 +587,8 @@ namespace CaptainSkillTree
                 {
                     JobSkills.CleanupAllJobSkillsOnDeath(__instance);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Plugin.Log.LogWarning($"[?ㅽ궗 ?뺣━] ?ㅽ뙣 (臾댁떆): {ex.Message}");
                 }
 
                 // ??2-1. ?띾룄 ?쒗븳 寃쎄퀬 ?곹깭 珥덇린??
@@ -621,13 +597,11 @@ namespace CaptainSkillTree
                     ImprovedMoveSpeedPatch.ClearWarningState(__instance);
                     AttackSpeedHandler_Game_Awake_Patch.ClearAttackSpeedWarningState(__instance);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Plugin.Log.LogWarning($"[?띾룄 寃쎄퀬 ?뺣━] ?ㅽ뙣 (臾댁떆): {ex.Message}");
                 }
 
                 // ??3. 留덉?留됱쑝濡?肄붾（??以묒? (紐⑤뱺 ?뺣━ ?꾨즺 ??
-                Plugin.Log.LogInfo("[?뚮젅?댁뼱 ?щ쭩] 紐⑤뱺 ?뺣━ ?꾨즺 ??肄붾（??以묒?");
                 Plugin.Instance.StopAllCoroutines();
             }
         }
@@ -700,7 +674,6 @@ namespace CaptainSkillTree
                                 // ??踰덈쭔 寃쎄퀬
                                 if (!_attackSpeedWarningShown.ContainsKey(player) || !_attackSpeedWarningShown[player])
                                 {
-                                    Plugin.Log.LogWarning($"[怨듦꺽?띾룄] {player.GetPlayerName()} 蹂대꼫???쒗븳: {attackSpeedBonus:F1}% ??{maxBonus}%");
                                     player.Message(MessageHud.MessageType.Center,
                                         L.Get("attack_speed_cap_warning", $"{maxBonus:F0}"));
                                     _attackSpeedWarningShown[player] = true;
@@ -719,9 +692,8 @@ namespace CaptainSkillTree
 
                 _attackSpeedHandlerRegistered = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Plugin.Log.LogError($"[怨듦꺽 ?띾룄] AnimationSpeedManager ?깅줉 ?ㅽ뙣: {ex.Message}");
             }
         }
 

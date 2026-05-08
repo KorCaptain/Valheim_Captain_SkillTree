@@ -948,6 +948,8 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_EffectScale"] = "전장의 함성: 효과 크기 배율",
                 ["Tanker_Taunt_ReflectPercent"] = "전장의 함성: 반사 데미지 비율 (%)",
                 ["Tanker_Passive_DamageReduction"] = "패시브: 피해 감소 (%)",
+                ["Tanker_NormalShield_SpeedBonus"] = "패시브: 일반 방패 이동속도 보너스 (%)",
+                ["Tanker_TowerShield_SpeedBonus"] = "패시브: 타워 방패 이동속도 보너스 (%)",
                 // --- Lv1 ---
                 ["Tanker_ReflectDuration_Lv1"] = "Lv1 패시브: 반사 지속시간 (초)",
                 ["Tanker_Hp_Bonus_Lv1"] = "Lv1 패시브: 추가 체력",

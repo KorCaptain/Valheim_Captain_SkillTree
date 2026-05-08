@@ -22,6 +22,8 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> TankerTauntEffectScale;     // taunt 효과 크기 배율
         
         public static ConfigEntry<float> TankerTauntReflectPercent;     // 도발 반사 데미지 비율 (%)
+        public static ConfigEntry<float> TankerExplosionRadius;         // 폭발 반경 (m)
+        public static ConfigEntry<float> TankerBlockPowerMultiplier;    // 방패 막기력 곱연산 비율 (%)
 
         // === 패시브 효과 설정 ===
         public static ConfigEntry<float> TankerPassiveDamageReduction; // 탱커 패시브 피해 감소 (%)
@@ -36,6 +38,10 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> TankerLv3BlockPower;   // Lv3 방패 막기 방어력
         public static ConfigEntry<float> TankerLv4BlockPower;   // Lv4 방패 막기 방어력
         public static ConfigEntry<float> TankerLv5BlockPower;   // Lv5 방패 막기 방어력
+
+        // === 방패 이동속도 설정 ===
+        public static ConfigEntry<float> TankerNormalShieldSpeedBonus;  // 일반 방패 이동속도 보너스 (%)
+        public static ConfigEntry<float> TankerTowerShieldSpeedBonus;   // 타워 방패 이동속도 보너스 (%)
 
         // === 레벨별 반사 지속시간 설정 ===
         public static ConfigEntry<float> TankerReflectDurationLv1; // Lv1 반사 지속시간 (초)
@@ -54,7 +60,9 @@ namespace CaptainSkillTree.SkillTree
         public static float TankerTauntBuffDurationValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_BuffDuration", TankerTauntBuffDuration?.Value ?? 8f);
         public static float TankerTauntEffectHeightValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_EffectHeight", TankerTauntEffectHeight?.Value ?? 2.0f);
         public static float TankerTauntEffectScaleValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_EffectScale", TankerTauntEffectScale?.Value ?? 0.8f);
-        public static float TankerTauntReflectPercentValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_ReflectPercent", TankerTauntReflectPercent?.Value ?? 10f);
+        public static float TankerTauntReflectPercentValue => SkillTreeConfig.GetEffectiveValue("Tanker_Taunt_ReflectPercent", TankerTauntReflectPercent?.Value ?? 100f);
+        public static float TankerExplosionRadiusValue => SkillTreeConfig.GetEffectiveValue("Tanker_Explosion_Radius", TankerExplosionRadius?.Value ?? 12f);
+        public static float TankerBlockPowerMultiplierValue => SkillTreeConfig.GetEffectiveValue("Tanker_BlockPower_Multiplier", TankerBlockPowerMultiplier?.Value ?? 400f);
         public static float TankerPassiveDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Tanker_Passive_DamageReduction", TankerPassiveDamageReduction?.Value ?? 15f);
         public static float TankerHpBonusLv1Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv1", TankerHpBonusLv1?.Value ?? 25f);
         public static float TankerHpBonusLv2Value => SkillTreeConfig.GetEffectiveValue("Tanker_Hp_Bonus_Lv2", TankerHpBonusLv2?.Value ?? 30f);
@@ -65,11 +73,14 @@ namespace CaptainSkillTree.SkillTree
         public static float TankerLv3BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv3_BlockPower", TankerLv3BlockPower?.Value ?? 10f);
         public static float TankerLv4BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv4_BlockPower", TankerLv4BlockPower?.Value ?? 15f);
         public static float TankerLv5BlockPowerValue => SkillTreeConfig.GetEffectiveValue("Tanker_Lv5_BlockPower", TankerLv5BlockPower?.Value ?? 20f);
-        public static float TankerReflectDurationLv1Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv1", TankerReflectDurationLv1?.Value ?? 10f);
-        public static float TankerReflectDurationLv2Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv2", TankerReflectDurationLv2?.Value ?? 12f);
-        public static float TankerReflectDurationLv3Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv3", TankerReflectDurationLv3?.Value ?? 14f);
-        public static float TankerReflectDurationLv4Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv4", TankerReflectDurationLv4?.Value ?? 16f);
-        public static float TankerReflectDurationLv5Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv5", TankerReflectDurationLv5?.Value ?? 20f);
+        public static float TankerReflectDurationLv1Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv1", TankerReflectDurationLv1?.Value ?? 15f);
+        public static float TankerReflectDurationLv2Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv2", TankerReflectDurationLv2?.Value ?? 15f);
+        public static float TankerReflectDurationLv3Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv3", TankerReflectDurationLv3?.Value ?? 15f);
+        public static float TankerReflectDurationLv4Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv4", TankerReflectDurationLv4?.Value ?? 15f);
+        public static float TankerReflectDurationLv5Value => SkillTreeConfig.GetEffectiveValue("Tanker_ReflectDuration_Lv5", TankerReflectDurationLv5?.Value ?? 15f);
+
+        public static float TankerNormalShieldSpeedBonusValue => SkillTreeConfig.GetEffectiveValue("Tanker_NormalShield_SpeedBonus", TankerNormalShieldSpeedBonus?.Value ?? 25f);
+        public static float TankerTowerShieldSpeedBonusValue => SkillTreeConfig.GetEffectiveValue("Tanker_TowerShield_SpeedBonus", TankerTowerShieldSpeedBonus?.Value ?? 30f);
 
         public static float GetTankerReflectDurationForLevel(int level) => level switch
         {
@@ -146,8 +157,22 @@ namespace CaptainSkillTree.SkillTree
                 TankerTauntReflectPercent = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_Taunt_ReflectPercent",
-                    10f,
+                    100f,
                     SkillTreeConfig.GetConfigDescription("Tanker_Taunt_ReflectPercent")
+                );
+
+                TankerExplosionRadius = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_Explosion_Radius",
+                    12f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_Explosion_Radius")
+                );
+
+                TankerBlockPowerMultiplier = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_BlockPower_Multiplier",
+                    400f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_BlockPower_Multiplier")
                 );
 
                 // === 시각 효과 설정 ===
@@ -178,7 +203,7 @@ namespace CaptainSkillTree.SkillTree
                 TankerReflectDurationLv1 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv1",
-                    10f,
+                    15f,
                     SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv1"),
                     order: -2
                 );
@@ -212,7 +237,7 @@ namespace CaptainSkillTree.SkillTree
                 TankerReflectDurationLv2 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv2",
-                    12f,
+                    15f,
                     SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv2"),
                     order: -5
                 );
@@ -237,7 +262,7 @@ namespace CaptainSkillTree.SkillTree
                 TankerReflectDurationLv3 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv3",
-                    14f,
+                    15f,
                     SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv3"),
                     order: -8
                 );
@@ -262,7 +287,7 @@ namespace CaptainSkillTree.SkillTree
                 TankerReflectDurationLv4 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv4",
-                    16f,
+                    15f,
                     SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv4"),
                     order: -11
                 );
@@ -287,9 +312,26 @@ namespace CaptainSkillTree.SkillTree
                 TankerReflectDurationLv5 = SkillTreeConfig.BindServerSync(config,
                     "Tanker Job Skills",
                     "Tanker_ReflectDuration_Lv5",
-                    20f,
+                    15f,
                     SkillTreeConfig.GetConfigDescription("Tanker_ReflectDuration_Lv5"),
                     order: -14
+                );
+
+                // === 방패 이동속도 ===
+                TankerNormalShieldSpeedBonus = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_NormalShield_SpeedBonus",
+                    25f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_NormalShield_SpeedBonus"),
+                    order: -15
+                );
+
+                TankerTowerShieldSpeedBonus = SkillTreeConfig.BindServerSync(config,
+                    "Tanker Job Skills",
+                    "Tanker_TowerShield_SpeedBonus",
+                    30f,
+                    SkillTreeConfig.GetConfigDescription("Tanker_TowerShield_SpeedBonus"),
+                    order: -16
                 );
 
                 Plugin.Log.LogDebug("[탱커 컨피그] 설정 항목 생성 완료");
@@ -337,6 +379,10 @@ namespace CaptainSkillTree.SkillTree
                 TankerReflectDurationLv3.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerReflectDurationLv4.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
                 TankerReflectDurationLv5.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerNormalShieldSpeedBonus.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerTowerShieldSpeedBonus.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerExplosionRadius.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
+                TankerBlockPowerMultiplier.SettingChanged += (sender, args) => Tanker_Tooltip.UpdateTankerTooltip();
 
                 Plugin.Log.LogDebug("[탱커 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화");
             }

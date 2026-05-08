@@ -121,9 +121,9 @@ namespace CaptainSkillTree.Localization
                 // Armbrust-Skilltree - 34 Schlüssel
                 // ============================================
 
-                // === Tier 0: Armbrusstspezialist (2) ===
-                ["Tier0_CrossbowExpert_DamageBonus"] = "Tier 0: [Armbrusstspezialist] Armbrust-Schadensbonus (%)",
-                ["Tier0_CrossbowExpert_RequiredPoints"] = "Tier 0: [Armbrusstspezialist] Benötigte Punkte",
+                // === Tier 0: Armbrustspezialist (2) ===
+                ["Tier0_CrossbowExpert_DamageBonus"] = "Tier 0: [Armbrustspezialist] Armbrust-Schadensbonus (%)",
+                ["Tier0_CrossbowExpert_RequiredPoints"] = "Tier 0: [Armbrustspezialist] Benötigte Punkte",
 
                 // === Tier 1: Schnellfeuer (6) ===
                 ["Tier1_RapidFire_Chance"] = "Tier 1: [Schnellfeuer] Aktivierungschance (%)",
@@ -153,9 +153,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_RapidFireLv2_Delay"] = "Tier 4-1: [Schnellfeuer Lv2] Verzögerung zwischen Schüssen (Sek)",
                 ["Tier4_RapidFireLv2_BoltConsumption"] = "Tier 4-1: [Schnellfeuer Lv2] Bolzenverbrauch",
                 ["Tier4_RapidFireLv2_RequiredPoints"] = "Tier 4-1: [Schnellfeuer Lv2] Benötigte Punkte",
-                ["Tier4_FinalStrike_HpThreshold"] = "Tier 4-2: [Erster Angriff] Gegner-LP-Schwellenwert (%)",
-                ["Tier4_FinalStrike_DamageBonus"] = "Tier 4-2: [Erster Angriff] Schadensbonus (%)",
-                ["Tier4_FinalStrike_RequiredPoints"] = "Tier 4-2: [Erster Angriff] Benötigte Punkte",
+                ["Tier4_FinalStrike_HpThreshold"] = "Tier 4-2: [Finaler Schlag] Gegner-LP-Schwellenwert (%)",
+                ["Tier4_FinalStrike_DamageBonus"] = "Tier 4-2: [Finaler Schlag] Schadensbonus (%)",
+                ["Tier4_FinalStrike_RequiredPoints"] = "Tier 4-2: [Finaler Schlag] Benötigte Punkte",
 
                 // === Tier 5: Einschuss - Aktiv R-Taste (5) ===
                 ["Tier5_OneShot_Duration"] = "Tier 5: [Einschuss] Buff-Dauer (Sek)",
@@ -476,6 +476,8 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_EffectScale"] = "Kriegsschrei: Effektskalierung",
                 ["Tanker_Taunt_ReflectPercent"] = "Kriegsschrei: Reflexschaden (%)",
                 ["Tanker_Passive_DamageReduction"] = "Passiv: Schadensreduzierung (%)",
+                ["Tanker_NormalShield_SpeedBonus"] = "Passiv: Normales Schild Bewegungsgeschwindigkeit (%)",
+                ["Tanker_TowerShield_SpeedBonus"] = "Passiv: Turmschild Bewegungsgeschwindigkeit (%)",
 
                 // ============================================
                 // Klassenfähigkeiten - Schurke

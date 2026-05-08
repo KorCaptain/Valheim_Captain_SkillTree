@@ -137,8 +137,6 @@ namespace CaptainSkillTree.SkillTree
         public static float AttackCritChanceValue             => 0f;
         public static float AttackMeleeEnhancementValue       => 0f;
         public static float AttackRangedEnhancementValue      => 0f;
-        public static float AttackSpecialStatValue            => 0f;
-        public static float AttackSpecialChanceValue          => 0f;
         public static float AttackOneHandedBonusValue         => 0f;
 
         // ============================================================

@@ -64,9 +64,8 @@ namespace CaptainSkillTree.MMO_System
             if (ownedBundle) { bundle.Unload(false); stream.Dispose(); }
 
             _loaded = true;
-            Plugin.Log.LogInfo(_prefab != null
-                ? "[CaptainLevelUpVFX] LevelUpVFX 로드 완료"
-                : "[CaptainLevelUpVFX] LevelUpVFX 프리팹을 번들에서 찾을 수 없음");
+            if (_prefab == null)
+                Plugin.Log.LogWarning("[CaptainLevelUpVFX] LevelUpVFX 프리팹을 번들에서 찾을 수 없음");
         }
 
         // ──────────────────────────────────────────

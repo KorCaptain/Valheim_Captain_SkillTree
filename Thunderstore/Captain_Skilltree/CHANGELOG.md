@@ -1,5 +1,75 @@
 # Changelog / 변경 로그
-## Update
+# [1.22.66] - 2026-05-09
+- ✅fix1: Archer - Add passive skill bow, bolt 50% chance no consumption
+- ✅fix2: Archer - Lv1 to 5 attack system consuming -15% to -55%, modified to Archer skill stemina 5
+-
+- ✅fix1 : 아처 - 패시브 스킬 추가 활,볼트 50% 확률로 소모 없음
+- ✅fix2 : 아처 - Lv1~5 공격시 스테미나 소모 -15%~-55% , 아처 스킬 스테미나 5 로 수정
+
+# [1.22.63] - 2026-05-08
+- ✅fix1 : Fixed hard crash when using TombStone TakeAll — reverted TankerReflect to synchronous direct-reflect (backup v1.22.37 method, no coroutine)
+- ✅fix2 : WeaponHelper.HasShield now uses Traverse instead of GetAllItems() + m_equipped scan
+- ✅fix3 : TankerReflect state is now properly cleaned up on player death
+-
+- ✅fix1 : 비석 TakeAll 하드 크래시 수정 — TankerReflect를 동기 즉시반사 방식으로 복구 (백업 v1.22.37 방식, 코루틴 없음)
+- ✅fix2 : WeaponHelper.HasShield를 Traverse 패턴으로 교체 (GetAllItems 매 프레임 스캔 제거)
+- ✅fix3 : 사망 시 TankerReflect 상태 완전 정리 추가
+
+
+# [1.22.50] - 2026-05-7
+- ✅fix1 : Only producer enabled mode when PlantEasily mode is installed (by default, anyone)
+- ✅fix2 : Efficient server sink operation
+- ✅fix3 : Change the tanker damage reflection skill to a skill that collects the damage + the damage received for a certain period of time and then explodes
+-
+- ✅fix1 : PlantEasily 모드가 설치 된 경우 Producer 만이 모드 사용 가능 하게 설정(기본 누구나 사용)
+- ✅fix2 : 효율적인 서버싱크 작업
+- ✅fix3 : 탱커 피해반사 스킬을 일정 시간동안 막은 피해량+받은 피해량을 모았다가 폭발하는 스킬로 변경
+
+# [1.22.42] - 2026-05-7
+- ✅fix1 : Shield Rush - Solving the problem of going outside when using in Dunjeon
+- ✅fix2 : Berserker - Partial downward action that becomes too strong after Lv4 of aggression
+- ✅fix3 : Increased movement speed related to shields of defense professionals
+-
+- ✅fix1 : 방패돌진 - 던전안에서 사용시 밖으로 나가지는 문제 해결
+- ✅fix2 : 버서커  - 공격력 Lv4 이 후 너무 강해지는 부분 하향 조치
+- ✅fix3 : 방어 전문가의 방패 관련 이동속도 증가
+
+# [1.22.37] - 2026-05-6
+- ✅fix1 : upward revision of defense expert's rushing shield to multiple hits
+- ✅fix2 : Archer job skills (multi-shot) Finished solving infinite loading problem
+-
+- ✅fix1 : 방어 전문가의 돌진방패 다단히트로 상향 수정
+- ✅fix2 : 아처 직업스킬 (멀티샷) 무한로딩 문제 해결완료
+
+# [1.22.35] - 2026-05-5
+- ✅fix1: Can be reused during activation time if it is not fit with an explosive arrow
+- ✅fix2: Arrowbee - Effect only when there is enemy 3 meters
+- ✅fix3 : Multi shot Lv1~2, error message correction of bow expert
+- ✅fix4 : Fixing the problem of exiting the dungeon when using the wheel wind
+- ✅fix5: Archer Vocational Skills Currently solving infinite loading problems. Do not use it
+-
+- ✅fix1 : 폭발화살 적 안맞으면 활성화 시간동안 재사용 가능
+- ✅fix2 : 화살비 - 적 3미터 있을때만 효과 이팩트 
+- ✅fix3 : 활 전문가의 멀티샷 Lv1~2, 에러메시지 수정
+- ✅fix4 : 휠 윈드 사용시 던전에서 나가지는 문제 수정 중
+- ✅fix5 : 아처 직업스킬 현재 무한로딩 문제 해결중 사용 금지~
+
+# [1.22.22] - 2026-05-4
+- ✅fix1 : Tanker lv2 Levelup Bug Correction
+- ✅fix2 : Fixing bugs in window expert's throwing expert skills
+- ✅fix3 : Multi shot Lv1~2, error message correction of bow expert
+- ✅fix4 : Fixing the problem of exiting the dungeon when using the wheel wind
+-
+- ✅fix1 : 탱커 lv2 레밸업 버그 수정
+- ✅fix2 : 창 전문가의 투창 전문가 스킬의 버그 수정
+- ✅fix3 : 활 전문가의 멀티샷 Lv1~2, 에러메시지 수정
+- ✅fix4 : 휠 윈드 사용시 던전에서 나가지는 문제 수정 중
+
+# [1.22.18] - 2026-05-3
+- ✅fix1: Archer - Multi shot newly modified - Change to launch continuously
+-
+- ✅fix1: 아처 - 멀티샷 새롭게 수정함 - 연속발사 하게 변경
+
 # [1.22.15] - 2026-05-3
 - ✅fix1: Modify the configuration user setting to reflect it when updating
 -

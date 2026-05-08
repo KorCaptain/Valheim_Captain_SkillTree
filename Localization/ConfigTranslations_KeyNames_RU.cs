@@ -696,6 +696,8 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_EffectScale"] = "Боевой клич: Масштаб эффекта",
                 ["Tanker_Taunt_ReflectPercent"] = "Боевой клич: Процент отражения урона (%)",
                 ["Tanker_Passive_DamageReduction"] = "Пассивный: Снижение урона (%)",
+                ["Tanker_NormalShield_SpeedBonus"] = "Пассивный: Скорость с обычным щитом (%)",
+                ["Tanker_TowerShield_SpeedBonus"] = "Пассивный: Скорость с башенным щитом (%)",
                 ["Tanker_Hp_Bonus_Lv1"] = "Lv1 Passive: HP Bonus",
                 ["Tanker_Hp_Bonus_Lv2"] = "Lv2 Passive: HP Bonus",
                 ["Tanker_Hp_Bonus_Lv3"] = "Lv3 Passive: HP Bonus",

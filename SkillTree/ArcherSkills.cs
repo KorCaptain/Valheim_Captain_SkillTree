@@ -98,6 +98,19 @@ namespace CaptainSkillTree.SkillTree
             if (level < 5) return 0f;
             return (level - 4) * Archer_Config.ArcherElementalResistPerLevelValue / 100f;
         }
+
+        public static float GetArcherAttackStaminaReduction(int level)
+        {
+            float value = level switch {
+                1 => Archer_Config.ArcherAttackStaminaReductionLv1Value,
+                2 => Archer_Config.ArcherAttackStaminaReductionLv2Value,
+                3 => Archer_Config.ArcherAttackStaminaReductionLv3Value,
+                4 => Archer_Config.ArcherAttackStaminaReductionLv4Value,
+                >= 5 => Archer_Config.ArcherAttackStaminaReductionLv5Value,
+                _ => 0f
+            };
+            return value / 100f;
+        }
     }
 
     /// <summary>
@@ -344,6 +357,63 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[아처 속성 저항] Damage 패치 오류: {ex.Message}");
             }
+        }
+    }
+
+    /// <summary>
+    /// 아처 패시브 - 공격 스테미나 감소 (RogueStaminaReductionPatch 동일 패턴)
+    /// </summary>
+    [HarmonyPatch(typeof(Player), nameof(Player.UseStamina))]
+    public static class ArcherAttackStaminaReductionPatch
+    {
+        static void Prefix(Player __instance, ref float v)
+        {
+            try
+            {
+                int lv = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
+                if (lv <= 0) return;
+                if (!__instance.InAttack()) return;
+                float reduction = ArcherSkills.GetArcherAttackStaminaReduction(lv);
+                v *= (1f - reduction);
+            }
+            catch (System.Exception) { }
+        }
+    }
+
+    /// <summary>
+    /// 아처 패시브 - 화살/볼트 소모 면제 (50% 확률, Attack.UseAmmo Prefix)
+    /// </summary>
+    [HarmonyPatch(typeof(Attack), "UseAmmo")]
+    public static class ArcherAmmoSavePatch
+    {
+        static bool Prefix(Attack __instance, out ItemDrop.ItemData ammoItem, ref bool __result)
+        {
+            ammoItem = null;
+            try
+            {
+                var character = Traverse.Create(__instance).Field("m_character").GetValue<Humanoid>();
+                if (!(character is Player player)) return true;
+                if (!ArcherSkills.IsArcher(player)) return true;
+
+                var weapon = Traverse.Create(__instance).Field("m_weapon").GetValue<ItemDrop.ItemData>();
+                if (weapon == null) return true;
+                string ammoType = weapon?.m_shared?.m_ammoType;
+                if (string.IsNullOrEmpty(ammoType)) return true;
+
+                float saveChance = Archer_Config.ArcherAmmoSaveChanceValue / 100f;
+                if (UnityEngine.Random.value >= saveChance) return true;
+
+                // 소모 없이 ammoItem 참조만 설정 (발사체 스폰은 정상 진행)
+                ammoItem = player.GetAmmoItem();
+                if (ammoItem == null)
+                    ammoItem = player.GetInventory().GetAmmoItem(ammoType, null);
+                if (ammoItem == null) return true;
+
+                Traverse.Create(__instance).Field("m_ammoItem").SetValue(ammoItem);
+                __result = true; // UseAmmo()가 true 반환 → OnAttackTrigger 계속 진행, 발사체 스폰
+                return false; // 원본 건너뜀 → 화살/볼트 소모 없음
+            }
+            catch (System.Exception) { return true; }
         }
     }
 }

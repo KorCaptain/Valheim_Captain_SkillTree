@@ -132,13 +132,37 @@ namespace CaptainSkillTree.SkillTree
 
         private static string GetPassiveStr(int level, float resistVal)
         {
+            int ammoSave = (int)Archer_Config.ArcherAmmoSaveChanceValue;
             switch (level)
             {
-                case 1:  return L.Get("archer_passive_lv1", (int)Archer_Config.ArcherJumpHeightBonusValue, (int)Archer_Config.ArcherFallDamageReductionValue);
-                case 2:  return L.Get("archer_passive_lv2", (int)Archer_Config.ArcherLv2JumpHeightBonusValue, (int)resistVal);
-                case 3:  return L.Get("archer_passive_lv3", (int)Archer_Config.ArcherLv3JumpHeightBonusValue, (int)Archer_Config.ArcherLv3FallDamageReductionValue, (int)resistVal);
-                case 4:  return L.Get("archer_passive_lv4", (int)Archer_Config.ArcherLv4JumpHeightBonusValue, (int)Archer_Config.ArcherLv4FallDamageReductionValue, (int)resistVal);
-                default: return L.Get("archer_passive_lv5", (int)Archer_Config.ArcherLv5JumpHeightBonusValue, (int)Archer_Config.ArcherLv5FallDamageReductionValue, (int)resistVal);
+                case 1:  return L.Get("archer_passive_lv1",
+                    (int)Archer_Config.ArcherJumpHeightBonusValue,
+                    (int)Archer_Config.ArcherFallDamageReductionValue,
+                    (int)Archer_Config.ArcherAttackStaminaReductionLv1Value,
+                    ammoSave);
+                case 2:  return L.Get("archer_passive_lv2",
+                    (int)Archer_Config.ArcherLv2JumpHeightBonusValue,
+                    (int)resistVal,
+                    (int)Archer_Config.ArcherAttackStaminaReductionLv2Value,
+                    ammoSave);
+                case 3:  return L.Get("archer_passive_lv3",
+                    (int)Archer_Config.ArcherLv3JumpHeightBonusValue,
+                    (int)Archer_Config.ArcherLv3FallDamageReductionValue,
+                    (int)resistVal,
+                    (int)Archer_Config.ArcherAttackStaminaReductionLv3Value,
+                    ammoSave);
+                case 4:  return L.Get("archer_passive_lv4",
+                    (int)Archer_Config.ArcherLv4JumpHeightBonusValue,
+                    (int)Archer_Config.ArcherLv4FallDamageReductionValue,
+                    (int)resistVal,
+                    (int)Archer_Config.ArcherAttackStaminaReductionLv4Value,
+                    ammoSave);
+                default: return L.Get("archer_passive_lv5",
+                    (int)Archer_Config.ArcherLv5JumpHeightBonusValue,
+                    (int)Archer_Config.ArcherLv5FallDamageReductionValue,
+                    (int)resistVal,
+                    (int)Archer_Config.ArcherAttackStaminaReductionLv5Value,
+                    ammoSave);
             }
         }
 
@@ -254,10 +278,10 @@ namespace CaptainSkillTree.SkillTree
                 description = L.Get("archer_desc_multishot_fallback"),
                 additionalInfo = L.Get("archer_desc_arrow_damage_fallback"),
                 range = L.Get("tooltip_none"),
-                consumeStamina = "25",
+                consumeStamina = "5",
                 consumeArrow = "1",
                 skillType = L.Get("skill_type_active_key", "Y"),
-                cooldown = $"30{L.Get("unit_seconds")}",
+                cooldown = $"20{L.Get("unit_seconds")}",
                 requirement = L.Get("requirement_bow_equip"),
                 confirmation = L.Get("confirmation_job_only"),
                 requiredItem = L.Get("item_eikthyr_trophy"),

@@ -15,6 +15,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ArcherMultiShotCooldown;          // 쿨타임 (초)
         public static ConfigEntry<int> ArcherMultiShotCharges;             // 발사 회수 (기본 2회)
         public static ConfigEntry<float> ArcherMultiShotStaminaCost;       // 소모 스태미나 (기본 25)
+        public static ConfigEntry<float> ArcherMultiShotFireInterval;      // 순차 발사 간격 (기본 0.2초)
 
         // === 아처 패시브 스킬 컨피그 엔트리들 ===
         public static ConfigEntry<float> ArcherJumpHeightBonus;            // 점프 높이 보너스 (기본: 20%)
@@ -41,6 +42,16 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ArcherLv5DamagePercent;
         public static ConfigEntry<int>   ArcherLv5BonusCharges;
 
+        // === 아처 신규 패시브: 공격 스테미나 감소 (Lv1~5) ===
+        public static ConfigEntry<float> ArcherAttackStaminaReductionLv1;
+        public static ConfigEntry<float> ArcherAttackStaminaReductionLv2;
+        public static ConfigEntry<float> ArcherAttackStaminaReductionLv3;
+        public static ConfigEntry<float> ArcherAttackStaminaReductionLv4;
+        public static ConfigEntry<float> ArcherAttackStaminaReductionLv5;
+
+        // === 아처 신규 패시브: 화살/볼트 소모 면제 확률 ===
+        public static ConfigEntry<float> ArcherAmmoSaveChance;
+
         // === 동적 값 접근자 (MMO 시스템 연동) ===
         public static int ArcherMultiShotArrowCountValue => (int)SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_ArrowCount", ArcherMultiShotArrowCount.Value);
         public static int ArcherMultiShotArrowConsumptionValue => (int)SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_ArrowConsumption", ArcherMultiShotArrowConsumption.Value);
@@ -48,6 +59,7 @@ namespace CaptainSkillTree.SkillTree
         public static float ArcherMultiShotCooldownValue => SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_Cooldown", ArcherMultiShotCooldown.Value);
         public static int ArcherMultiShotChargesValue => (int)SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_Charges", (float)ArcherMultiShotCharges.Value);
         public static float ArcherMultiShotStaminaCostValue => SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_StaminaCost", ArcherMultiShotStaminaCost.Value);
+        public static float ArcherMultiShotFireIntervalValue => SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_FireInterval", ArcherMultiShotFireInterval.Value);
 
         // === 패시브 스킬 동적 값 접근자 ===
         public static float ArcherJumpHeightBonusValue => SkillTreeConfig.GetEffectiveValue("Archer_JumpHeightBonus", ArcherJumpHeightBonus.Value);
@@ -73,6 +85,14 @@ namespace CaptainSkillTree.SkillTree
         public static int   ArcherLv5BonusArrowsValue   => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv5_BonusArrows",   ArcherLv5BonusArrows.Value);
         public static float ArcherLv5DamagePercentValue => SkillTreeConfig.GetEffectiveValue("Archer_Lv5_DamagePercent", ArcherLv5DamagePercent.Value);
         public static int   ArcherLv5BonusChargesValue  => (int)SkillTreeConfig.GetEffectiveValue("Archer_Lv5_BonusCharges",  (float)ArcherLv5BonusCharges.Value);
+
+        // === 신규 패시브 동적 값 접근자 ===
+        public static float ArcherAttackStaminaReductionLv1Value => SkillTreeConfig.GetEffectiveValue("Archer_Attack_StaminaReduction_Lv1", ArcherAttackStaminaReductionLv1.Value);
+        public static float ArcherAttackStaminaReductionLv2Value => SkillTreeConfig.GetEffectiveValue("Archer_Attack_StaminaReduction_Lv2", ArcherAttackStaminaReductionLv2.Value);
+        public static float ArcherAttackStaminaReductionLv3Value => SkillTreeConfig.GetEffectiveValue("Archer_Attack_StaminaReduction_Lv3", ArcherAttackStaminaReductionLv3.Value);
+        public static float ArcherAttackStaminaReductionLv4Value => SkillTreeConfig.GetEffectiveValue("Archer_Attack_StaminaReduction_Lv4", ArcherAttackStaminaReductionLv4.Value);
+        public static float ArcherAttackStaminaReductionLv5Value => SkillTreeConfig.GetEffectiveValue("Archer_Attack_StaminaReduction_Lv5", ArcherAttackStaminaReductionLv5.Value);
+        public static float ArcherAmmoSaveChanceValue            => SkillTreeConfig.GetEffectiveValue("Archer_AmmoSaveChance",              ArcherAmmoSaveChance.Value);
 
         /// <summary>
         /// 아처 컨피그 초기화 (SkillTreeConfig에서 호출)
@@ -109,7 +129,7 @@ namespace CaptainSkillTree.SkillTree
                 ArcherMultiShotCooldown = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
                     "Archer_MultiShot_Cooldown",
-                    30.0f,
+                    20.0f,
                     SkillTreeConfig.GetConfigDescription("Archer_MultiShot_Cooldown")
                 );
 
@@ -123,8 +143,22 @@ namespace CaptainSkillTree.SkillTree
                 ArcherMultiShotStaminaCost = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
                     "Archer_MultiShot_StaminaCost",
-                    25.0f,
+                    5.0f,
                     SkillTreeConfig.GetConfigDescription("Archer_MultiShot_StaminaCost")
+                );
+
+                ArcherMultiShotFireInterval = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_MultiShot_FireInterval",
+                    0.1f,
+                    SkillTreeConfig.GetConfigDescription("Archer_MultiShot_FireInterval")
+                );
+
+                ArcherElementalResistPerLevel = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_ElementalResistPerLevel",
+                    10.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_ElementalResistPerLevel")
                 );
 
                 // === 아처 패시브 스킬 설정 ===
@@ -192,13 +226,6 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Archer_Lv5_FallDamageReduction")
                 );
 
-                ArcherElementalResistPerLevel = SkillTreeConfig.BindServerSync(config,
-                    "Archer Job Skills",
-                    "Archer_ElementalResistPerLevel",
-                    10.0f,
-                    SkillTreeConfig.GetConfigDescription("Archer_ElementalResistPerLevel")
-                );
-
                 // === 아처 레벨업 스탯 변화 설정 (Lv2~5) ===
                 ArcherLv2BonusArrows = SkillTreeConfig.BindServerSync(config,
                     "Archer Job Skills",
@@ -263,6 +290,50 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Archer_Lv5_BonusCharges")
                 );
 
+                // === 신규 패시브: 공격 스테미나 감소 (Lv1~5) ===
+                ArcherAttackStaminaReductionLv1 = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Attack_StaminaReduction_Lv1",
+                    15.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Attack_StaminaReduction_Lv1")
+                );
+
+                ArcherAttackStaminaReductionLv2 = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Attack_StaminaReduction_Lv2",
+                    25.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Attack_StaminaReduction_Lv2")
+                );
+
+                ArcherAttackStaminaReductionLv3 = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Attack_StaminaReduction_Lv3",
+                    35.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Attack_StaminaReduction_Lv3")
+                );
+
+                ArcherAttackStaminaReductionLv4 = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Attack_StaminaReduction_Lv4",
+                    45.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Attack_StaminaReduction_Lv4")
+                );
+
+                ArcherAttackStaminaReductionLv5 = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_Attack_StaminaReduction_Lv5",
+                    55.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_Attack_StaminaReduction_Lv5")
+                );
+
+                // === 신규 패시브: 화살/볼트 소모 면제 확률 ===
+                ArcherAmmoSaveChance = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_AmmoSaveChance",
+                    50.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_AmmoSaveChance")
+                );
+
                 Plugin.Log.LogDebug("[아처 컨피그] 설정 항목 생성 완료 (액티브 + 패시브)");
                 
                 // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
@@ -289,6 +360,8 @@ namespace CaptainSkillTree.SkillTree
                 ArcherMultiShotDamagePercent.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherMultiShotStaminaCost.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherMultiShotArrowConsumption.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherMultiShotFireInterval.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherElementalResistPerLevel.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherMultiShotCooldown.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
 
                 // 패시브 스킬 이벤트 핸들러
@@ -303,7 +376,6 @@ namespace CaptainSkillTree.SkillTree
                 ArcherLv3FallDamageReduction.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherLv4FallDamageReduction.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherLv5FallDamageReduction.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
-                ArcherElementalResistPerLevel.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
 
                 // 레벨업 스탯 변화 이벤트 핸들러
                 ArcherLv2BonusArrows.SettingChanged    += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
@@ -315,6 +387,14 @@ namespace CaptainSkillTree.SkillTree
                 ArcherLv5BonusArrows.SettingChanged    += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherLv5DamagePercent.SettingChanged  += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherLv5BonusCharges.SettingChanged   += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+
+                // 신규 패시브 이벤트 핸들러
+                ArcherAttackStaminaReductionLv1.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherAttackStaminaReductionLv2.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherAttackStaminaReductionLv3.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherAttackStaminaReductionLv4.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherAttackStaminaReductionLv5.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherAmmoSaveChance.SettingChanged            += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
 
                 Plugin.Log.LogDebug("[아처 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화 (액티브 + 패시브)");
             }

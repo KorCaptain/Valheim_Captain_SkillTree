@@ -2,7 +2,6 @@
 # Checks if all L.Get() keys are defined in DefaultLanguages.cs
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$locFile = Join-Path $projectRoot "Localization\DefaultLanguages.cs"
 
 Write-Host "=" * 60
 Write-Host "Localization Key Validation"
@@ -29,29 +28,29 @@ foreach ($file in $csFiles) {
 
 Write-Host "  Found: $($usedKeys.Count) unique keys" -ForegroundColor Cyan
 
-# 2. Extract keys defined in DefaultLanguages.cs
-Write-Host "`n[2/3] Analyzing DefaultLanguages.cs..."
-$locContent = Get-Content $locFile -Raw
+# 2. Extract keys from DefaultLanguages*.cs (line-by-line, tracks KO/EN method context)
+Write-Host "`n[2/3] Analyzing DefaultLanguages*.cs..."
+$locFiles = Get-ChildItem -Path (Join-Path $projectRoot "Localization") -Filter "DefaultLanguages*.cs" |
+    Where-Object { $_.Name -ne "DefaultLanguages.cs" }
 
-# Korean block - 더 정확한 패턴으로 전체 메서드 매칭
-$koreanMatch = [regex]::Match($locContent, 'public static Dictionary<string, string> GetKorean\(\)[^{]*\{(.*?)^\s*\}', [System.Text.RegularExpressions.RegexOptions]::Singleline -bor [System.Text.RegularExpressions.RegexOptions]::Multiline)
 $koreanKeys = @{}
-if ($koreanMatch.Success) {
-    $koreanBlock = $koreanMatch.Groups[1].Value
-    $keyMatches = [regex]::Matches($koreanBlock, '\["([^"]+)"\]')
-    foreach ($match in $keyMatches) {
-        $koreanKeys[$match.Groups[1].Value] = $true
-    }
-}
-
-# English block - 더 정확한 패턴으로 전체 메서드 매칭
-$englishMatch = [regex]::Match($locContent, 'public static Dictionary<string, string> GetEnglish\(\)[^{]*\{(.*?)^\s*\}', [System.Text.RegularExpressions.RegexOptions]::Singleline -bor [System.Text.RegularExpressions.RegexOptions]::Multiline)
 $englishKeys = @{}
-if ($englishMatch.Success) {
-    $englishBlock = $englishMatch.Groups[1].Value
-    $keyMatches = [regex]::Matches($englishBlock, '\["([^"]+)"\]')
-    foreach ($match in $keyMatches) {
-        $englishKeys[$match.Groups[1].Value] = $true
+
+foreach ($file in $locFiles) {
+    $lines = Get-Content $file.FullName
+    $context = ""   # "ko", "en", or ""
+    foreach ($line in $lines) {
+        if ($line -match '(private|public) static.*GetKorean_') { $context = "ko"; continue }
+        if ($line -match '(private|public) static.*GetEnglish_') { $context = "en"; continue }
+        if ($line -match '^\s*\}\s*$' -and $context -ne "") {
+            # closing brace — could be dict end or method end; reset on method end heuristic
+            # (method end: no more keys follow — we just continue and let context reset naturally)
+        }
+        if ($context -ne "" -and $line -match '\["([^"]+)"\]\s*=') {
+            $key = $matches[1]
+            if ($context -eq "ko") { $koreanKeys[$key] = $true }
+            else                   { $englishKeys[$key] = $true }
+        }
     }
 }
 

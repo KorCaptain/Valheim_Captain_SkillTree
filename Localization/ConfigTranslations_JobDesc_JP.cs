@@ -49,6 +49,12 @@ namespace CaptainSkillTree.Localization
                 "スタミナ管理が重要。\n" +
                 "推奨：20-35",
 
+                ["Archer_MultiShot_FireInterval"] =
+                "【連続発射間隔（秒）】\n" +
+                "斉射矢の発射間隔。\n" +
+                "5本の矢がこの間隔で順次発射されます。\n" +
+                "推奨：0.15-0.3秒",
+
                 // === アーチャー：パッシブスキル（2キー）===
                 ["Archer_JumpHeightBonus"] =
                 "【ジャンプ高度ボーナス(%)】\n" +
@@ -298,6 +304,16 @@ namespace CaptainSkillTree.Localization
                 "【タンカーパッシブ被ダメージ減少(%)】\n" +
                 "タンカーパッシブ：常時被ダメージを減少。\n" +
                 "推奨：10-20%",
+
+                ["Tanker_NormalShield_SpeedBonus"] =
+                "【タンカー: 通常盾 移動速度ボーナス (%)】\n" +
+                "タンカーLv1+：通常盾装備時に移動速度が上昇。\n" +
+                "デフォルト：25%",
+
+                ["Tanker_TowerShield_SpeedBonus"] =
+                "【タンカー: タワー盾 移動速度ボーナス (%)】\n" +
+                "タンカーLv1+：タワー盾装備時に移動速度が上昇。\n" +
+                "デフォルト：30%",
 
                 // === Lv1 ===
                 ["Tanker_ReflectDuration_Lv1"] =

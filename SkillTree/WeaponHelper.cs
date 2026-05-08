@@ -264,23 +264,12 @@ namespace CaptainSkillTree.SkillTree
         public static bool HasShield(Player player)
         {
             if (player == null) return false;
-
-            // Humanoid.m_leftItem은 protected이므로 인벤토리에서 장착된 방패 확인
-            var inventory = player.GetInventory();
-            if (inventory == null) return false;
-
-            // 장착된 아이템 중 방패 타입 확인
-            foreach (var item in inventory.GetAllItems())
+            try
             {
-                if (item != null && item.m_equipped && item.m_shared != null)
-                {
-                    if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
-                    {
-                        return true;
-                    }
-                }
+                var leftItem = HarmonyLib.Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+                return leftItem?.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield;
             }
-            return false;
+            catch { return false; }
         }
     }
 }

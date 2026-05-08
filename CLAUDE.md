@@ -64,6 +64,7 @@ Available agents: Arch (Architect), Bob (Builder), Richard (Reviewer)
 3. 가능한 호출은 동시에 실행
 4. 20줄 이상 출력은 서브에이전트로
 5. 사용자가 이미 설명한 내용 반복 금지
+6. 수정하거나 계획 작업은 사용자가 지시 한 것 외에는 승인 없이 진행하면 안된다. 
 
 # CaptainSkillTree - Valheim Skill Tree Mod
 

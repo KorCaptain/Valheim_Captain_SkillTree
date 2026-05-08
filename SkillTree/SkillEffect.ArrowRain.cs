@@ -415,15 +415,26 @@ namespace CaptainSkillTree.SkillTree
                     if (tag.Processed) return;
                     tag.Processed = true;
 
+                    // 착탄 지점 3m 내 적 존재 여부 확인
+                    bool hasEnemy = false;
+                    var nearbyCols = Physics.OverlapSphere(hitPoint, 3f);
+                    foreach (var col in nearbyCols)
+                    {
+                        var ch = col.GetComponent<Character>() ?? col.GetComponentInParent<Character>();
+                        if (ch == null || ch.IsDead() || ch.IsPlayer()) continue;
+                        hasEnemy = true;
+                        break;
+                    }
+
+                    // 적 근방에만 VFX/SFX 재생
+                    if (hasEnemy)
                     {
                         var _icePrefab = ZNetScene.instance?.GetPrefab("fx_DvergerMage_Ice_hit");
                         if (_icePrefab != null)
-                        {
-                            var _iceGo = UnityEngine.Object.Instantiate(_icePrefab, hitPoint, Quaternion.identity);
-                            // ⚠️ Destroy 생략 — 발헤임 기본 VFX 자동 정리
-                        }
+                            UnityEngine.Object.Instantiate(_icePrefab, hitPoint, Quaternion.identity);
+                        VFXManager.PlaySound("sfx_arrow_hit", hitPoint, 5f);
                     }
-                    VFXManager.PlaySound("sfx_arrow_hit", hitPoint, 5f);
+
                     SkillEffect.ApplyArrowRainFrostSlow(hitPoint);
                     SkillEffect.ApplyArrowRainAOEDamage(tag.Owner, hitPoint);
                     return;

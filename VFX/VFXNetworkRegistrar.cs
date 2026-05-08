@@ -42,7 +42,6 @@ namespace CaptainSkillTree.VFX
                     namedPrefabs[hash] = _hostPrefab;
             }
 
-            Plugin.Log?.LogInfo("[VFXNetworkRegistrar] CaptainVFXHost 등록 완료");
         }
     }
 }

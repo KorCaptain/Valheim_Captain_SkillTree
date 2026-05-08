@@ -644,24 +644,15 @@ namespace CaptainSkillTree.SkillTree
                 if (item != null && item.m_shared.m_skillType == Skills.SkillType.Spears)
                     SkillEffect.RestorePhantomSpear(player, item);
 
-                // 연공창 버프 활성 중일 때만 데미지 강화 + 사용 횟수 차감
+                // 연공창 버프 활성 중 투척 VFX (데미지/사용횟수 차감은 Character.ApplyDamage 패치에서 단독 처리)
                 if (SkillEffect.IsSpearComboThrowBuffActive(player))
                 {
-                    float damageMultiplier = Spear_Config.SpearStep6ComboDamageValue / 100f;
-                    var damage = __instance.m_damage;
-                    damage.m_pierce *= damageMultiplier;
-                    damage.m_slash *= damageMultiplier;
-                    damage.m_blunt *= damageMultiplier;
-                    __instance.m_damage = damage;
-
                     try
                     {
                         Vector3 vfxPos = player.transform.position + player.transform.forward * 1.5f + Vector3.up * 1.2f;
                         SimpleVFX.Play("hit_03", vfxPos, 1.5f);
                     }
                     catch { }
-
-                    SkillEffect.ConsumeSpearComboThrowUse(player);
                 }
             }
             catch (Exception ex)

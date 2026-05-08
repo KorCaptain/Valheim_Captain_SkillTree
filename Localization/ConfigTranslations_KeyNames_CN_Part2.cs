@@ -479,6 +479,8 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_EffectScale"] = "战吼: 效果比例",
                 ["Tanker_Taunt_ReflectPercent"] = "战吼: 反射伤害比例 (%)",
                 ["Tanker_Passive_DamageReduction"] = "被动: 伤害减少 (%)",
+                ["Tanker_NormalShield_SpeedBonus"] = "被动: 普通盾牌移动速度 (%)",
+                ["Tanker_TowerShield_SpeedBonus"] = "被动: 塔盾移动速度 (%)",
 
                 // ============================================
                 // 盗贼职业技能 - 10个键

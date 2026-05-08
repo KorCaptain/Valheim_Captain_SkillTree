@@ -437,6 +437,12 @@ namespace CaptainSkillTree.Localization
                 "높을수록 방패 방어력이 공격력으로 전환됩니다.\n" +
                 "권장값: 60-80%",
 
+                ["Tier7_ShieldCharge_MultiHitDamagePercent"] =
+                "【다단히트 데미지 비율 (%)】\n" +
+                "VFX 발동마다 3m 반경 내 모든 적에게 가하는 방패 막기력 대비 데미지 비율입니다.\n" +
+                "기본값 70% — 낮출수록 다단히트 부담이 줄어듭니다.\n" +
+                "권장값: 60-80%",
+
                 ["Tier7_GuardianHeart_RequiredPoints"] =
                 "【필요 포인트】\n" +
                 "방패돌진 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
@@ -1084,6 +1090,12 @@ namespace CaptainSkillTree.Localization
                 "【Shield Block Power Damage Ratio (%)】\n" +
                 "Damage dealt on Shield Charge collision as a percentage of shield block power.\n" +
                 "Higher values convert more of your shield's defense into offensive power.\n" +
+                "Recommended: 60-80%",
+
+                ["Tier7_ShieldCharge_MultiHitDamagePercent"] =
+                "【Multi-Hit Damage Ratio (%)】\n" +
+                "Damage dealt to all enemies within 3m radius on each VFX pulse, as a percentage of shield block power.\n" +
+                "Default 70% — lower values reduce multi-hit pressure.\n" +
                 "Recommended: 60-80%",
 
                 ["Tier7_GuardianHeart_RequiredPoints"] =

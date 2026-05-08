@@ -553,7 +553,7 @@ namespace CaptainSkillTree.SkillTree
                     ["Tanker_Taunt_BuffDuration"]                    = Tanker_Config.TankerTauntBuffDuration?.Value ?? 8f,
                     ["Tanker_Taunt_EffectHeight"]                    = Tanker_Config.TankerTauntEffectHeight?.Value ?? 2f,
                     ["Tanker_Taunt_EffectScale"]                     = Tanker_Config.TankerTauntEffectScale?.Value ?? 0.8f,
-                    ["Tanker_Taunt_ReflectPercent"]                  = Tanker_Config.TankerTauntReflectPercent?.Value ?? 10f,
+                    ["Tanker_Taunt_ReflectPercent"]                  = Tanker_Config.TankerTauntReflectPercent?.Value ?? 100f,
                     ["Tanker_Passive_DamageReduction"]               = Tanker_Config.TankerPassiveDamageReduction?.Value ?? 15f,
                     ["Tanker_Hp_Bonus_Lv1"]                          = Tanker_Config.TankerHpBonusLv1?.Value ?? 25f,
                     ["Tanker_Hp_Bonus_Lv2"]                          = Tanker_Config.TankerHpBonusLv2?.Value ?? 30f,
@@ -564,11 +564,13 @@ namespace CaptainSkillTree.SkillTree
                     ["Tanker_Lv3_BlockPower"]                        = Tanker_Config.TankerLv3BlockPower?.Value ?? 10f,
                     ["Tanker_Lv4_BlockPower"]                        = Tanker_Config.TankerLv4BlockPower?.Value ?? 15f,
                     ["Tanker_Lv5_BlockPower"]                        = Tanker_Config.TankerLv5BlockPower?.Value ?? 20f,
-                    ["Tanker_ReflectDuration_Lv1"]                   = Tanker_Config.TankerReflectDurationLv1?.Value ?? 10f,
-                    ["Tanker_ReflectDuration_Lv2"]                   = Tanker_Config.TankerReflectDurationLv2?.Value ?? 12f,
-                    ["Tanker_ReflectDuration_Lv3"]                   = Tanker_Config.TankerReflectDurationLv3?.Value ?? 14f,
-                    ["Tanker_ReflectDuration_Lv4"]                   = Tanker_Config.TankerReflectDurationLv4?.Value ?? 16f,
-                    ["Tanker_ReflectDuration_Lv5"]                   = Tanker_Config.TankerReflectDurationLv5?.Value ?? 20f,
+                    ["Tanker_ReflectDuration_Lv1"]                   = Tanker_Config.TankerReflectDurationLv1?.Value ?? 15f,
+                    ["Tanker_ReflectDuration_Lv2"]                   = Tanker_Config.TankerReflectDurationLv2?.Value ?? 15f,
+                    ["Tanker_ReflectDuration_Lv3"]                   = Tanker_Config.TankerReflectDurationLv3?.Value ?? 15f,
+                    ["Tanker_ReflectDuration_Lv4"]                   = Tanker_Config.TankerReflectDurationLv4?.Value ?? 15f,
+                    ["Tanker_ReflectDuration_Lv5"]                   = Tanker_Config.TankerReflectDurationLv5?.Value ?? 15f,
+                    ["Tanker_Explosion_Radius"]                      = Tanker_Config.TankerExplosionRadius?.Value ?? 12f,
+                    ["Tanker_BlockPower_Multiplier"]                 = Tanker_Config.TankerBlockPowerMultiplier?.Value ?? 400f,
 
                     // ══════════════════════════════════════════════
                     // Rogue Job

@@ -476,6 +476,8 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Taunt_EffectScale"] = "Grito de Guerra: Escala do Efeito",
                 ["Tanker_Taunt_ReflectPercent"] = "Grito de Guerra: Dano de Reflexo (%)",
                 ["Tanker_Passive_DamageReduction"] = "Passivo: Redução de Dano (%)",
+                ["Tanker_NormalShield_SpeedBonus"] = "Passivo: Velocidade com Escudo Normal (%)",
+                ["Tanker_TowerShield_SpeedBonus"] = "Passivo: Velocidade com Torre-Escudo (%)",
 
                 // ============================================
                 // Habilidades de Classe - Ladino

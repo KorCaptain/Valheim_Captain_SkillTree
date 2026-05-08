@@ -100,11 +100,13 @@ namespace CaptainSkillTree.SkillTree
             float passive = Tanker_Config.TankerPassiveDamageReductionValue;
             float blockPower = TankerSkills.GetTankerBlockPowerForLevel(level);
             int reflectDuration = (int)Tanker_Config.GetTankerReflectDurationForLevel(level);
+            int reflectPercent = (int)Tanker_Config.TankerTauntReflectPercentValue;
+            int explosionRadius = (int)Tanker_Config.TankerExplosionRadiusValue;
 
             if (level <= 1)
-                return L.Get("tanker_passive_lv1", (int)hp, (int)passive, reflectDuration);
+                return L.Get("tanker_passive_lv1", (int)hp, (int)passive, reflectDuration, reflectPercent, explosionRadius);
             else
-                return L.Get("tanker_passive_lv2", (int)hp, (int)passive, (int)blockPower, reflectDuration);
+                return L.Get("tanker_passive_lv2", (int)hp, (int)passive, (int)blockPower, reflectDuration, reflectPercent, explosionRadius);
         }
 
         private static string GetTankerLevelCostText(int targetLevel)

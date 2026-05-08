@@ -49,6 +49,12 @@ namespace CaptainSkillTree.Localization
                 "Ausdauermanagement ist wichtig.\n" +
                 "Empfehlung: 20-35",
 
+                ["Archer_MultiShot_FireInterval"] =
+                "【Serienfeuer-Intervall (Sek.)】\n" +
+                "Abstand zwischen den Salven-Pfeilen.\n" +
+                "5 Pfeile werden in diesem Abstand nacheinander abgefeuert.\n" +
+                "Empfehlung: 0,15-0,3 Sek.",
+
                 // === Bogenschütze: Passive Fähigkeiten (2 Schlüssel) ===
                 ["Archer_JumpHeightBonus"] =
                 "【Sprunghöhe-Bonus (%)】\n" +
@@ -299,6 +305,16 @@ namespace CaptainSkillTree.Localization
                 "Tanker Passiv: Reduziert kontinuierlich den eingehenden Schaden.\n" +
                 "Empfehlung: 10-20%",
 
+                ["Tanker_NormalShield_SpeedBonus"] =
+                "【Tanker: Normales Schild Bewegungsgeschwindigkeit (%)】\n" +
+                "Tanker Lv1+: Bewegungsgeschwindigkeitsbonus beim Tragen eines normalen Schildes.\n" +
+                "Standard: 25%",
+
+                ["Tanker_TowerShield_SpeedBonus"] =
+                "【Tanker: Turmschild Bewegungsgeschwindigkeit (%)】\n" +
+                "Tanker Lv1+: Bewegungsgeschwindigkeitsbonus beim Tragen eines Turmschildes.\n" +
+                "Standard: 30%",
+
                 // === Lv1 ===
                 ["Tanker_ReflectDuration_Lv1"] =
                 "【Tanker Reflektionsdauer Lv1 (Sek)】\n" +
@@ -484,15 +500,15 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv2_SelfHealPercent"] = "【Lv2 Selbstheilung (%)】\nEmpfehlung: 15-20%",
                 ["Paladin_Lv2_AllyHealPercent"] = "【Lv2 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 2-3%",
                 ["Paladin_Lv3_SelfHealPercent"] = "【Lv3 Selbstheilung (%)】\nEmpfehlung: 17-22%",
-                ["Paladin_Lv3_AllyHealPercent"] = "【Lv3 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 2.5-3.5%",
+                ["Paladin_Lv3_AllyHealPercent"] = "【Lv3 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 2,5-3,5%",
                 ["Paladin_Lv3_HealRange"] = "【Lv3 Heilungsreichweite (m)】\nEmpfehlung: 5-7m",
                 ["Paladin_Lv4_SelfHealPercent"] = "【Lv4 Selbstheilung (%)】\nEmpfehlung: 19-24%",
                 ["Paladin_Lv4_AllyHealPercent"] = "【Lv4 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 3-4%",
                 ["Paladin_Lv4_HealRange"] = "【Lv4 Heilungsreichweite (m)】\nEmpfehlung: 6-8m",
                 ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 Selbstheilung (%)】\nEmpfehlung: 22-28%",
-                ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 3.5-5%",
+                ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 3,5-5%",
                 ["Paladin_Lv5_HealRange"] = "【Lv5 Heilungsreichweite (m)】\nEmpfehlung: 7-10m",
-                ["Paladin_Lv5_Cooldown"] = "【Lv5 Abklingzeit (sek)】\nEmpfehlung: 20-30 sek",
+                ["Paladin_Lv5_Cooldown"] = "【Lv5 Abklingzeit (Sek.)】\nEmpfehlung: 20-30 Sek.",
                 ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 Resistenzreduzierung (%)】\nEmpfehlung: 6-10%",
                 ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 Resistenzreduzierung (%)】\nEmpfehlung: 8-12%",
                 ["Paladin_Lv4_ResistanceReduction"] = "【Lv4 Resistenzreduzierung (%)】\nEmpfehlung: 10-14%",
