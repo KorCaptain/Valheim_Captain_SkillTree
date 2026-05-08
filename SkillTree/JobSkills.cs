@@ -962,7 +962,7 @@ namespace CaptainSkillTree.SkillTree
 
         private static bool IsBossMonster(Character monster)
         {
-            return monster?.m_name?.Contains("보스") == true || monster?.GetMaxHealth() > 1000f;
+            return monster?.m_boss == true || monster?.GetMaxHealth() > 1000f;
         }
 
         // =================== 공통 유틸리티 함수들 ===================

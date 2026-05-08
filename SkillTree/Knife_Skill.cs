@@ -627,8 +627,8 @@ namespace CaptainSkillTree.SkillTree
 
                 // 새로운 버프 적용 (치명타 피해 배수만 유지)
                 var assassinHeartSE = ScriptableObject.CreateInstance<SE_Stats>();
-                assassinHeartSE.m_name = "암살자의 심장";
-                assassinHeartSE.m_tooltip = $"치명타 데미지 {Knife_Config.KnifeAssassinHeartCritDamageValue}배";
+                assassinHeartSE.m_name = L.Get("se_assassin_heart");
+                assassinHeartSE.m_tooltip = L.Get("se_assassin_heart_tooltip", Knife_Config.KnifeAssassinHeartCritDamageValue);
                 assassinHeartSE.m_ttl = duration;
 
                 player.GetSEMan()?.AddStatusEffect(assassinHeartSE);

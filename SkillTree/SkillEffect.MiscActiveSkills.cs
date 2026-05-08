@@ -260,7 +260,7 @@ namespace CaptainSkillTree.SkillTree
 
         public static bool IsBossMonster(Character mob)
         {
-            return mob != null && mob.m_name != null && mob.m_name.Contains("보스");
+            return mob != null && mob.m_boss;
         }
 
         private static void ShowTauntEffectOnMonster(Character monster)

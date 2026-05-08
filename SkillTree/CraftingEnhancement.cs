@@ -329,7 +329,7 @@ namespace CaptainSkillTree.SkillTree
                 string itemName = item.m_shared?.m_name?.ToLower() ?? "";
                 
                 // 화살 관련 아이템명들
-                if (itemName.Contains("arrow") || itemName.Contains("화살") || 
+                if (itemName.Contains("arrow") ||
                     itemName.Contains("wood") && itemName.Contains("arrow") ||
                     itemName.Contains("fire") && itemName.Contains("arrow") ||
                     itemName.Contains("frost") && itemName.Contains("arrow") ||
@@ -343,7 +343,7 @@ namespace CaptainSkillTree.SkillTree
                 }
                 
                 // 볼트 관련 아이템명들  
-                if (itemName.Contains("bolt") || itemName.Contains("볼트") ||
+                if (itemName.Contains("bolt") ||
                     itemName.Contains("wood") && itemName.Contains("bolt") ||
                     itemName.Contains("bone") && itemName.Contains("bolt") ||
                     itemName.Contains("iron") && itemName.Contains("bolt") ||

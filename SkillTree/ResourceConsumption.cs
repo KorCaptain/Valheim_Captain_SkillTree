@@ -227,10 +227,10 @@ namespace CaptainSkillTree.SkillTree
                     {
                         if (!string.IsNullOrEmpty(line.Trim()))
                         {
-                            // 이미 소모 비용에 포함된 것은 제외
-                            if ((skillId == "mining_lv2" && line.Contains("구리")) ||
-                                (skillId == "mining_lv3" && line.Contains("철")) ||
-                                (skillId == "mining_lv4" && line.Contains("은")))
+                            // 이미 소모 비용에 포함된 것은 제외 (한국어/영어 DisplayName 모두 대응)
+                            if ((skillId == "mining_lv2" && (line.Contains("구리") || line.Contains("Copper"))) ||
+                                (skillId == "mining_lv3" && (line.Contains("철") || line.Contains("Iron"))) ||
+                                (skillId == "mining_lv4" && (line.Contains("은") || line.Contains("Silver"))))
                             {
                                 continue;
                             }

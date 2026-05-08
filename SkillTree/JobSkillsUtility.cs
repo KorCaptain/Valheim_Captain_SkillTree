@@ -167,7 +167,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 3순위: 무기 표시 이름으로 확인 (다국어 및 커스텀 무기 지원)
                 string weaponName = weapon.m_shared.m_name?.ToLower() ?? "";
-                if (weaponName.Contains("지팡이") || weaponName.Contains("staff") ||
+                if (weaponName.Contains("staff") ||
                     weaponName.Contains("wand") || weaponName.Contains("rod"))
                 {
                     Plugin.Log.LogInfo($"[지팡이 감지] 무기 이름으로 지팡이 감지: {weapon.m_shared.m_name} (프리팹: {prefabName})");

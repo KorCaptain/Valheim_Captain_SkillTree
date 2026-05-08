@@ -1,10 +1,18 @@
 # Changelog / 변경 로그
-# [1.22.66] - 2026-05-09
+# [1.22.69] - 2026-05-09
 - ✅fix1: Archer - Add passive skill bow, bolt 50% chance no consumption
 - ✅fix2: Archer - Lv1 to 5 attack system consuming -15% to -55%, modified to Archer skill stemina 5
+- ✅fix3: F1 config categories now display in Korean (공격 트리, 방어 트리 etc.) instead of English
+- ✅fix4: StatusEffect names (Assassin's Heart, Arrow Rain Frost, Ice Breath Slow) now multilingual via L.Get()
+- ✅fix5: Boss/weapon detection replaced Korean hardcoded strings with Valheim API / English prefab names — works on all locales
+- ✅new1: All translation JSON files (de/ja/ru/zh-cn/pt_BR) completed — 0 missing keys
 -
 - ✅fix1 : 아처 - 패시브 스킬 추가 활,볼트 50% 확률로 소모 없음
 - ✅fix2 : 아처 - Lv1~5 공격시 스테미나 소모 -15%~-55% , 아처 스킬 스테미나 5 로 수정
+- ✅fix3 : F1 Config 카테고리 한국어 표시 수정 (공격 트리, 방어 트리 등)
+- ✅fix4 : StatusEffect 이름(암살자의 심장, 화살비 빙결, 빙결 폭발탄) 다국어 대응 (L.Get 적용)
+- ✅fix5 : 보스/무기 판별 로직의 한글 하드코딩 → Valheim API / 영어 prefab 이름으로 교체 (전 언어 정상 작동)
+- ✅new1 : 다국어 JSON 파일(de/ja/ru/zh-cn/pt_BR) 누락 키 전체 보충 — 0개 누락
 
 # [1.22.63] - 2026-05-08
 - ✅fix1 : Fixed hard crash when using TombStone TakeAll — reverted TankerReflect to synchronous direct-reflect (backup v1.22.37 method, no coroutine)

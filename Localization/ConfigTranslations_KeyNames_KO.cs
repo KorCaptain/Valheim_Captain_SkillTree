@@ -16,8 +16,8 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_G"] = "근접 메인 스킬 키",
                 ["HotKey_H"] = "보조 스킬 키",
                 ["HUD_IconSize"] = "스킬 아이콘 크기",
-                ["HUD_PosX"] = "Skill Icon HUD X 위치",
-                ["HUD_PosY"] = "Skill Icon HUD Y 위치",
+                ["HUD_PosX"] = "스킬 아이콘 HUD X 위치",
+                ["HUD_PosY"] = "스킬 아이콘 HUD Y 위치",
                 ["PassiveMessageDisplay"] = "패시브 메시지 표시",
                 ["GameDifficulty"] = "게임 난이도",
 

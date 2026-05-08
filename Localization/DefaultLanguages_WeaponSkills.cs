@@ -378,6 +378,13 @@ namespace CaptainSkillTree.Localization
                 ["healer_instant_heal"] = "아군 최대체력의 {0} 즉시 회복",
                 ["staff_desc_dual_cast_fallback"] = "7발 추가 마법 발사체를 0.25초 간격으로 연속 발사",
                 ["staff_desc_dual_cast_damage_fallback"] = "지팡이/완드 공격력의 15%",
+
+                // === StatusEffect Names (L.Get 시스템 연동) ===
+                ["se_assassin_heart"] = "암살자의 심장",
+                ["se_assassin_heart_tooltip"] = "치명타 데미지 {0}배",
+                ["se_arrow_rain_frost"] = "화살비 빙결",
+                ["se_ice_breath_slow"] = "빙결 폭발탄",
+                ["se_ice_breath_slow_tooltip"] = "이동속도 -50%",
             };
         }
 
@@ -804,6 +811,13 @@ namespace CaptainSkillTree.Localization
                 ["confirmation_job_only"] = "Only one job can be selected, Level 10+",
                 ["confirmation_job_select_only"] = "Only one job can be selected",
                 ["skill_type_job_active"] = "Job Active Skill - {0} Key",
+
+                // === StatusEffect Names (L.Get system) ===
+                ["se_assassin_heart"] = "Assassin's Heart",
+                ["se_assassin_heart_tooltip"] = "Critical Damage x{0}",
+                ["se_arrow_rain_frost"] = "Arrow Rain: Frost",
+                ["se_ice_breath_slow"] = "Ice Breath: Slow",
+                ["se_ice_breath_slow_tooltip"] = "Move Speed -50%",
             };
         }
     }

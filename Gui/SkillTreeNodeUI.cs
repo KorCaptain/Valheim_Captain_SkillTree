@@ -325,7 +325,7 @@ namespace CaptainSkillTree.Gui
                         if ((node.Id == "Archer" || node.Id == "Producer" || node.Id == "Rogue" || node.Id == "Berserker" || node.Id == "Tanker") && level >= 2)
                         {
                             if (!_suppressBadge.Contains(node.Id))
-                                UpdateLevelBadge(nodeObj, level, node.Id == "Tanker");
+                                UpdateLevelBadge(nodeObj, level, node.Id == "Tanker", node.Id == "Archer" ? -25f : 0f);
                             // 억제 중이면 기존 상태 유지 (배지 미표시)
                         }
                         else
@@ -418,13 +418,13 @@ namespace CaptainSkillTree.Gui
         {
             _suppressBadge.Remove(nodeId);
             if (nodeObjects.TryGetValue(nodeId, out var nodeObj))
-                UpdateLevelBadge(nodeObj, level, nodeId == "Tanker");
+                UpdateLevelBadge(nodeObj, level, nodeId == "Tanker", nodeId == "Archer" ? -25f : 0f);
         }
 
         /// <summary>
         /// 직업 아이콘 위에 붉은 레벨 숫자 배지를 표시/갱신 (Lv2 이상)
         /// </summary>
-        private void UpdateLevelBadge(GameObject nodeObj, int level, bool overlayTopRight = false)
+        private void UpdateLevelBadge(GameObject nodeObj, int level, bool overlayTopRight = false, float xOffset = 0f)
         {
             const string badgeName = "LevelBadge";
             var existing = nodeObj.transform.Find(badgeName);
@@ -458,7 +458,7 @@ namespace CaptainSkillTree.Gui
                     badgeRect.anchorMin        = new Vector2(0.5f, 1f);
                     badgeRect.anchorMax        = new Vector2(0.5f, 1f);
                     badgeRect.pivot            = new Vector2(0.5f, 0f);
-                    badgeRect.anchoredPosition = new Vector2(0f, 8f);
+                    badgeRect.anchoredPosition = new Vector2(xOffset, 8f);
                     badgeRect.sizeDelta        = new Vector2(50f, 28f);
                 }
             }

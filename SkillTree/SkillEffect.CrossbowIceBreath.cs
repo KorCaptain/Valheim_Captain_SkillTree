@@ -246,8 +246,8 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 var slowSE = ScriptableObject.CreateInstance<SE_Stats>();
-                slowSE.m_name          = "빙결 폭발탄";
-                slowSE.m_tooltip       = "이동속도 -50%";
+                slowSE.m_name          = L.Get("se_ice_breath_slow");
+                slowSE.m_tooltip       = L.Get("se_ice_breath_slow_tooltip");
                 slowSE.m_ttl           = 2f;
                 slowSE.m_speedModifier = 0.5f;
                 target.GetSEMan()?.AddStatusEffect(slowSE, true);

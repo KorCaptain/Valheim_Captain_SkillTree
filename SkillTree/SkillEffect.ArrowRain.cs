@@ -132,7 +132,7 @@ namespace CaptainSkillTree.SkillTree
 
                     var se           = ScriptableObject.CreateInstance<SE_Stats>();
                     se.name          = "ArrowRainFrost";
-                    se.m_name        = "화살비 빙결";
+                    se.m_name        = L.Get("se_arrow_rain_frost");
                     se.m_ttl         = 2f;
                     se.m_speedModifier = -0.5f;
                     ch.GetSEMan()?.AddStatusEffect(se);

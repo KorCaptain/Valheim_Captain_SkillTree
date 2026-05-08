@@ -197,7 +197,7 @@ namespace CaptainSkillTree.SkillTree
                 return true;
 
             string weaponName = weapon.m_shared.m_name?.ToLower() ?? "";
-            if (weaponName.Contains("단검") || weaponName.Contains("dagger") ||
+            if (weaponName.Contains("dagger") ||
                 weaponName.Contains("knife") || weaponName.Contains("claw") ||
                 weaponName.Contains("fist"))
                 return true;
