@@ -529,6 +529,15 @@ namespace CaptainSkillTree
             static void Postfix()
             {
                 SkillTreeConfig.DetectServerClientMode();
+            }
+        }
+
+        // ZRoutedRpc.Awake postfix: 이 시점에 ZRoutedRpc.instance가 확실히 존재하므로 RPC 등록 보장
+        [HarmonyPatch(typeof(ZRoutedRpc), "Awake")]
+        public static class ZRoutedRpc_Awake_Patch
+        {
+            static void Postfix()
+            {
                 InitializeServerSync();
             }
         }
