@@ -243,9 +243,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HealthBoost_HPBonus"] = "Tier 3-3: [体力強化] HPボーナス",
                 ["Tier3_HealthBoost_RequiredPoints"] = "Tier 3-3: [体力強化] 必要ポイント",
 
-                // === Tier 3-4: シールド鍛錬 (2) ===
-                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [シールド鍛錬] 盾ブロック力ボーナス",
-                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [シールド鍛錬] 必要ポイント",
+                // === Tier 3-4: ブロック鍛錬 (4) ===
+                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [ブロック鍛錬] 盾ブロック力ボーナス",
+                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [ブロック鍛錬] 必要ポイント",
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] = "Tier 3-4: [ブロック鍛錬] パリィ反撃ブロック力比率 (%)",
+                ["Tier3_BlockTraining_PushDistance"] = "Tier 3-4: [ブロック鍛錬] パリィ反撃ノックバック距離 (m)",
 
                 // === Tier 4-1: 衝撃波 (4) ===
                 ["Tier4_Shockwave_Radius"] = "Tier 4-1: [衝撃波] 範囲",

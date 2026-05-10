@@ -262,9 +262,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HealthBoost_HPBonus"] = "Tier 3-3: [체력증강] 체력 보너스",
                 ["Tier3_HealthBoost_RequiredPoints"] = "Tier 3-3: [체력증강] 필요 포인트",
 
-                // === Tier 3-4: 방패훈련 (2개) ===
-                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [방패훈련] 방패 방어력 보너스",
-                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [방패훈련] 필요 포인트",
+                // === Tier 3-4: 막기훈련 (4개) ===
+                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [막기훈련] 방패 방어력 보너스",
+                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [막기훈련] 필요 포인트",
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] = "Tier 3-4: [막기훈련] 패링 반격 막기력 비율 (%)",
+                ["Tier3_BlockTraining_PushDistance"] = "Tier 3-4: [막기훈련] 패링 반격 밀어내기 거리 (m)",
 
                 // === Tier 4-1: 충격파방출 (4개) ===
                 ["Tier4_Shockwave_Radius"] = "Tier 4-1: [충격파방출] 효과 범위",
@@ -732,13 +734,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_TrueDuel_RequiredPoints"] = "Tier 4-2: [진검승부] 필요 포인트",
                 ["Tier4_TrueDuel_AttackSpeedBonus"] = "Tier 4-2: [진검승부] 공격속도 보너스 (%)",
 
-                // === Tier 5: 패링 돌격 - G키 액티브 (6개) ===
-                ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [패링 돌격] 필요 포인트",
-                ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [패링 돌격] 버프 지속시간 (초)",
-                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [패링 돌격] 막기 방어력",
-                ["Tier5_ParryRush_PushDistance"] = "Tier 5: [패링 돌격] 밀어내기 거리 (m)",
-                ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [패링 돌격] 스태미나 소모",
-                ["Tier5_ParryRush_Cooldown"] = "Tier 5: [패링 돌격] 쿨타임 (초)",
+                // === Tier 5: 회오리베기 - H키 액티브 ===
+                ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [회오리베기] 필요 포인트",
+                ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [회오리베기] (미사용)",
+                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [회오리베기] (미사용)",
+                ["Tier5_ParryRush_PushDistance"] = "Tier 5: [회오리베기] (미사용)",
+                ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [회오리베기] 스태미나 소모",
+                ["Tier5_ParryRush_Cooldown"] = "Tier 5: [회오리베기] 쿨타임 (초)",
 
                 // === Tier 6: 돌진 연속 베기 - G키 액티브 (10개) ===
                 ["Tier6_RushSlash_RequiredPoints"] = "Tier 6: [돌진 연속 베기] 필요 포인트",

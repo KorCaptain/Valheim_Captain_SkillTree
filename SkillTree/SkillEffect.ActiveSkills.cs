@@ -225,7 +225,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (HasSkill("sword_step5_defswitch"))
                 {
-                    Sword_Skill.ActivateParryRush(player);
+                    Sword_Skill.ActivateWhirlwindSlash(player);
                     return;
                 }
                 DrawFloatingText(player, hasAnyHSkill ? L.Get("skill_weapon_mismatch") : L.Get("h_key_skill_required"), Color.red);

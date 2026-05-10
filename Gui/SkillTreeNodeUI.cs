@@ -325,7 +325,7 @@ namespace CaptainSkillTree.Gui
                         if ((node.Id == "Archer" || node.Id == "Producer" || node.Id == "Rogue" || node.Id == "Berserker" || node.Id == "Tanker") && level >= 2)
                         {
                             if (!_suppressBadge.Contains(node.Id))
-                                UpdateLevelBadge(nodeObj, level, node.Id == "Tanker", node.Id == "Archer" ? -25f : 0f);
+                                UpdateLevelBadge(nodeObj, level, node.Id == "Tanker", node.Id == "Archer" ? -45f : 0f);
                             // 억제 중이면 기존 상태 유지 (배지 미표시)
                         }
                         else
@@ -418,7 +418,7 @@ namespace CaptainSkillTree.Gui
         {
             _suppressBadge.Remove(nodeId);
             if (nodeObjects.TryGetValue(nodeId, out var nodeObj))
-                UpdateLevelBadge(nodeObj, level, nodeId == "Tanker", nodeId == "Archer" ? -25f : 0f);
+                UpdateLevelBadge(nodeObj, level, nodeId == "Tanker", nodeId == "Archer" ? -45f : 0f);
         }
 
         /// <summary>

@@ -621,8 +621,9 @@ namespace CaptainSkillTree.SkillTree
     [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.StartAttack))]
     public static class SpearPenetrate_AttackDash_Patch
     {
-        public static void Postfix(Humanoid __instance, bool secondaryAttack)
+        public static void Postfix(Humanoid __instance, bool secondaryAttack, bool __result)
         {
+            if (!__result) return;
             try
             {
                 if (secondaryAttack) return;

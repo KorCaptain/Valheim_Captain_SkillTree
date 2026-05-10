@@ -325,6 +325,16 @@ namespace CaptainSkillTree.Localization
                 "Aumenta o poder de bloqueio do escudo.\n" +
                 "Valor recomendado: 80-120",
 
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] =
+                "【Proporção de Poder de Bloqueio do Contra-Aparar (%)】\n" +
+                "No aparar: dano de contra-ataque = poder de bloqueio × proporção / 100.\n" +
+                "Valor recomendado: 80-150%",
+
+                ["Tier3_BlockTraining_PushDistance"] =
+                "【Distância de Recuo do Contra-Aparar (m)】\n" +
+                "Distância que os inimigos são recuados no contra-aparar.\n" +
+                "Valor recomendado: 3-6m",
+
                 ["Tier4_GroundStomp_Radius"] =
                 "【Raio do Efeito (m)】\n" +
                 "Raio da onda de choque.\n" +

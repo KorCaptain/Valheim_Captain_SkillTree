@@ -424,7 +424,7 @@ namespace CaptainSkillTree.SkillTree
                     ["ParryRush_BlockPowerRatio"]                    = Sword_Config.ParryRushBlockPowerRatio?.Value ?? 50f,
                     ["ParryRush_PushDistance"]                       = Sword_Config.ParryRushPushDistance?.Value ?? 4f,
                     ["ParryRush_StaminaCost"]                        = Sword_Config.ParryRushStaminaCost?.Value ?? 10f,
-                    ["ParryRush_Cooldown"]                           = Sword_Config.ParryRushCooldown?.Value ?? 60f,
+                    ["ParryRush_Cooldown"]                           = Sword_Config.ParryRushCooldown?.Value ?? 35f,
                     ["Sword_Step6_RequiredPoints"]                   = Sword_Config.RushSlashRequiredPoints?.Value ?? 3f,
                     ["Rush_Slash_1st_DamageRatio"]                   = Sword_Config.RushSlash1stDamageRatio?.Value ?? 70f,
                     ["Rush_Slash_2nd_DamageRatio"]                   = Sword_Config.RushSlash2ndDamageRatio?.Value ?? 80f,

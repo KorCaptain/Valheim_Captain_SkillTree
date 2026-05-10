@@ -124,13 +124,19 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> BoostHealthBonus;
 
         // =====================================================
-        // Tier 3: 방패훈련 (defense_Step3_shield)
+        // Tier 3: 막기훈련 (defense_Step3_shield)
         // =====================================================
 
         /// <summary>
-        /// defense_Step3_shield: 방패훈련 - 방패 방어력 보너스
+        /// defense_Step3_shield: 막기훈련 - 방패 방어력 보너스
         /// </summary>
         public static ConfigEntry<float> ShieldTrainingBlockPowerBonus;
+
+        /// <summary>막기훈련 - 패링 반격 막기력 비율 (%)</summary>
+        public static ConfigEntry<float> BlockTrainingParryBlockPowerRatio;
+
+        /// <summary>막기훈련 - 패링 반격 밀어내기 거리 (m)</summary>
+        public static ConfigEntry<float> BlockTrainingPushDistance;
 
         // =====================================================
         // Tier 4: 충격파방출 (defense_Step4_mental)
@@ -370,9 +376,15 @@ namespace CaptainSkillTree.SkillTree
         public static float BoostHealthBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_Boost_HealthBonus", BoostHealthBonus?.Value ?? 15f);
 
-        // === Tier 3: 방패훈련 ===
+        // === Tier 3: 막기훈련 ===
         public static float ShieldTrainingBlockPowerBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_ShieldTraining_BlockPower", ShieldTrainingBlockPowerBonus?.Value ?? 30f);
+
+        public static float BlockTrainingParryBlockPowerRatioValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_BlockTraining_ParryRatio", BlockTrainingParryBlockPowerRatio?.Value ?? 100f);
+
+        public static float BlockTrainingPushDistanceValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_BlockTraining_PushDistance", BlockTrainingPushDistance?.Value ?? 4f);
 
         // === Tier 4: 충격파방출 ===
         public static float ShockwaveRadiusValue =>
@@ -571,7 +583,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier3_HealthBoost_RequiredPoints"), order: 56);
 
             // ===========================================
-            // Tier 3: Shield Training (방패훈련)
+            // Tier 3: Block Training (막기훈련)
             // ===========================================
 
             ShieldTrainingBlockPowerBonus = SkillTreeConfig.BindServerSync(config,
@@ -581,6 +593,14 @@ namespace CaptainSkillTree.SkillTree
             DefenseStep3ShieldRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier3_ShieldTraining_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier3_ShieldTraining_RequiredPoints"), order: 53);
+
+            BlockTrainingParryBlockPowerRatio = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier3_BlockTraining_ParryBlockPowerRatio", 100f,
+                SkillTreeConfig.GetConfigDescription("Tier3_BlockTraining_ParryBlockPowerRatio"), order: 52);
+
+            BlockTrainingPushDistance = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier3_BlockTraining_PushDistance", 4f,
+                SkillTreeConfig.GetConfigDescription("Tier3_BlockTraining_PushDistance"), order: 51);
 
             // ===========================================
             // Tier 4: Shockwave (충격파방출)

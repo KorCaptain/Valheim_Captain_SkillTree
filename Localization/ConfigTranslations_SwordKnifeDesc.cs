@@ -261,39 +261,31 @@ namespace CaptainSkillTree.Localization
 
 
                 ["Tier5_ParryRush_RequiredPoints"] =
-                "【필요 포인트】\n" +
+                "【필요 포인트 — 회오리베기】\n" +
                 "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 1-3",
 
                 ["Tier5_ParryRush_BuffDuration"] =
-                "【버프 지속시간 (초)】\n" +
-                "패링 성공 후 버프가 유지되는 시간입니다.\n" +
-                "이 시간 동안 강화된 공격이 가능합니다.\n" +
-                "권장값: 20-40초",
+                "【(미사용) 이전 패링 돌격 전용】\n" +
+                "회오리베기로 교체되어 더 이상 사용되지 않습니다.",
 
                 ["Tier5_ParryRush_BlockPowerRatio"] =
-                "【막기 방어력 비율 (%)】\n" +
-                "패링 돌격 시 막기 방어력의 비율로 타격 데미지를 줍니다.\n" +
-                "방패 또는 검의 막기 방어력 기준입니다.\n" +
-                "권장값: 30-70%",
+                "【(미사용) 이전 패링 돌격 전용】\n" +
+                "회오리베기로 교체되어 더 이상 사용되지 않습니다.",
 
                 ["Tier5_ParryRush_PushDistance"] =
-                "【밀어내기 거리 (m)】\n" +
-                "돌격 시 적을 밀어내는 거리입니다.\n" +
-                "거리 조절과 전장 제어에 유용합니다.\n" +
-                "권장값: 3-7m",
+                "【(미사용) 이전 패링 돌격 전용】\n" +
+                "회오리베기로 교체되어 더 이상 사용되지 않습니다.",
 
                 ["Tier5_ParryRush_StaminaCost"] =
-                "【스태미나 소모】\n" +
-                "스킬 활성화 시 소모되는 스태미나입니다.\n" +
-                "스태미나 관리가 중요합니다.\n" +
+                "【스태미나 소모 — 회오리베기】\n" +
+                "H키 시전 시 소모되는 스태미나입니다.\n" +
                 "권장값: 10-20",
 
                 ["Tier5_ParryRush_Cooldown"] =
-                "【쿨타임 (초)】\n" +
+                "【쿨타임 (초) — 회오리베기】\n" +
                 "스킬 재사용 대기 시간입니다.\n" +
-                "짧을수록 자주 사용할 수 있습니다.\n" +
-                "권장값: 30-60초",
+                "권장값: 30-50초",
 
 
                 ["Tier6_RushSlash_RequiredPoints"] =
@@ -843,39 +835,31 @@ namespace CaptainSkillTree.Localization
 
 
                 ["Tier5_ParryRush_RequiredPoints"] =
-                "【Required Points】\n" +
+                "【Required Points — Whirlwind Slash】\n" +
                 "Skill points needed to unlock this node.\n" +
                 "Recommended: 1-3",
 
                 ["Tier5_ParryRush_BuffDuration"] =
-                "【Buff Duration (sec)】\n" +
-                "Duration the buff remains after successful parry.\n" +
-                "Enhanced attacks are possible during this time.\n" +
-                "Recommended: 20-40 sec",
+                "【(Unused) Legacy Parry Rush only】\n" +
+                "Replaced by Whirlwind Slash, no longer used.",
 
                 ["Tier5_ParryRush_BlockPowerRatio"] =
-                "【Block Power Ratio (%)】\n" +
-                "Applies blunt damage equal to this ratio of block power on parry rush.\n" +
-                "Based on equipped shield or sword block power.\n" +
-                "Recommended: 30-70%",
+                "【(Unused) Legacy Parry Rush only】\n" +
+                "Replaced by Whirlwind Slash, no longer used.",
 
                 ["Tier5_ParryRush_PushDistance"] =
-                "【Knockback Distance (m)】\n" +
-                "Distance enemies are pushed during rush.\n" +
-                "Useful for range control and battlefield positioning.\n" +
-                "Recommended: 3-7m",
+                "【(Unused) Legacy Parry Rush only】\n" +
+                "Replaced by Whirlwind Slash, no longer used.",
 
                 ["Tier5_ParryRush_StaminaCost"] =
-                "【Stamina Cost】\n" +
-                "Stamina consumed when activating the skill.\n" +
-                "Stamina management is important.\n" +
+                "【Stamina Cost — Whirlwind Slash】\n" +
+                "Stamina consumed when activating H-key skill.\n" +
                 "Recommended: 10-20",
 
                 ["Tier5_ParryRush_Cooldown"] =
-                "【Cooldown (sec)】\n" +
+                "【Cooldown (sec) — Whirlwind Slash】\n" +
                 "Skill reuse wait time.\n" +
-                "Shorter cooldown allows more frequent use.\n" +
-                "Recommended: 30-60 sec",
+                "Recommended: 30-50 sec",
 
 
                 ["Tier6_RushSlash_RequiredPoints"] =

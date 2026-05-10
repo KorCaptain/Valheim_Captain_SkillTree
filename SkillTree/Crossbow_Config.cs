@@ -118,7 +118,7 @@ namespace CaptainSkillTree.SkillTree
 
         public static int CrossbowOneShotRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("crossbow_oneshot_required_points",
-            CrossbowOneShotRequiredPoints?.Value ?? 4);
+            CrossbowOneShotRequiredPoints?.Value ?? 3);
 
         // === 석궁 전문가 동적 값 ===
         public static float CrossbowExpertDamageBonusValue =>
@@ -240,7 +240,7 @@ namespace CaptainSkillTree.SkillTree
 
         public static int CrossbowIceBreathRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_required_points",
-            CrossbowIceBreathRequiredPoints?.Value ?? 4);
+            CrossbowIceBreathRequiredPoints?.Value ?? 3);
 
         #endregion
 
@@ -389,7 +389,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier5_OneShot_AoeRadius"), order: 20);
 
                 CrossbowOneShotRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_OneShot_RequiredPoints", 4,
+                    "Crossbow Tree", "Tier5_OneShot_RequiredPoints", 3,
                     SkillTreeConfig.GetConfigDescription("Tier5_OneShot_RequiredPoints"), order: 19);
 
                 CrossbowOneShotSlowReloadMultiplier = SkillTreeConfig.BindServerSync(config,
@@ -418,7 +418,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_DotCount"), order: 10);
 
                 CrossbowIceBreathRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier6_IceBreath_RequiredPoints", 4,
+                    "Crossbow Tree", "Tier6_IceBreath_RequiredPoints", 3,
                     SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_RequiredPoints"), order: 9);
 
                 // === 이벤트 핸들러 등록 (툴팁 실시간 업데이트) ===
@@ -528,9 +528,8 @@ namespace CaptainSkillTree.SkillTree
 
                 // Tier 6: One Shot (Active Skill)
                 UpdateSkillTooltip("crossbow_Step6_expert",
-                    $"R Key: Charged shot — reload {CrossbowOneShotDurationValue}s window, +{CrossbowOneShotDamageBonusValue}% damage\n" +
-                    $"AOE knockback {CrossbowOneShotAoeRadiusValue}m radius | Cooldown: {CrossbowOneShotCooldownValue}s\n" +
-                    $"<color=#FFD700><size=16>※ Slow reload on activation (-{(CrossbowOneShotSlowReloadMultiplierValue - 1f) * 100f:F0}% speed)</size></color>\n" +
+                    $"R Key: Charged shot — {CrossbowOneShotDurationValue}s window, +{CrossbowOneShotDamageBonusValue}% damage\n" +
+                    $"AOE {CrossbowOneShotAoeRadiusValue}m: knockback + {CrossbowOneShotDamageBonusValue}% damage | Cooldown: {CrossbowOneShotCooldownValue}s\n" +
                     $"<color=#DDA0DD><size=16>※ Active when Crossbow equipped</size></color>");
 
                 // Tier 7: 발칸 아이스 (H키 액티브)

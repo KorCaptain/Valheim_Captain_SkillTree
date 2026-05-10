@@ -1,7 +1,11 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using UnityEngine;
+using CaptainSkillTree.VFX;
+using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
 {
@@ -394,6 +398,151 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[요툰의 생명력] Damage 패치 오류: {ex.Message}");
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(Character), nameof(Character.Stagger))]
+    public static class Character_Stagger_BlockTraining_Patch
+    {
+        private static readonly HashSet<Player> _charging = new HashSet<Player>();
+
+        public static void Postfix(Character __instance)
+        {
+            try
+            {
+                if (__instance == null || __instance.IsPlayer()) return;
+
+                var player = Player.m_localPlayer;
+                if (player == null || player.IsDead()) return;
+                if (!player.IsBlocking()) return;
+
+                if ((SkillTreeManager.Instance?.GetSkillLevel("defense_Step3_shield") ?? 0) <= 0) return;
+                if (_charging.Contains(player)) return;
+
+                var leftItem = HarmonyLib.Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+                bool hasShield = leftItem != null &&
+                                 leftItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield;
+                var rightItem = player.GetCurrentWeapon();
+                bool hasMelee = rightItem != null && (
+                    rightItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.OneHandedWeapon ||
+                    rightItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon ||
+                    rightItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeaponLeft);
+                if (!hasShield && !hasMelee) return;
+
+                float blockPower = hasShield
+                    ? leftItem.GetBlockPower(0f)
+                    : (rightItem?.GetBlockPower(0f) ?? 0f);
+                if (blockPower <= 0) return;
+
+                float damage = blockPower * Defense_Config.BlockTrainingParryBlockPowerRatioValue / 100f;
+
+                _charging.Add(player);
+                player.StartCoroutine(ExecuteCharge(player, __instance, damage));
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[막기훈련] 패링 반격 오류: {ex.Message}");
+            }
+        }
+
+        private static IEnumerator ExecuteCharge(Player player, Character target, float damage)
+        {
+            if (player == null || target == null)
+            {
+                _charging.Remove(player);
+                yield break;
+            }
+
+            ZSyncAnimation zanim = null;
+            try
+            {
+                zanim = player.GetComponentInChildren<ZSyncAnimation>();
+                if (zanim != null) zanim.SetBool("blocking", true);
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[막기훈련] 초기화 오류: {ex.Message}");
+            }
+
+            Vector3 targetPos = target.transform.position;
+            Vector3 direction = targetPos - player.transform.position;
+            direction.y = 0;
+            if (direction.sqrMagnitude > 0.001f)
+                player.transform.rotation = Quaternion.LookRotation(direction.normalized);
+
+            float moveDuration = Mathf.Max(Vector3.Distance(player.transform.position, targetPos) / 20f, 0.05f);
+            float elapsed = 0f;
+            Vector3 startPos = player.transform.position;
+            var rb = player.GetComponent<Rigidbody>();
+
+            while (elapsed < moveDuration)
+            {
+                if (player == null || player.IsDead()) { _charging.Remove(player); yield break; }
+                elapsed += Time.deltaTime;
+                float smoothT = 1f - Mathf.Pow(1f - Mathf.Clamp01(elapsed / moveDuration), 2f);
+                if (target != null && !target.IsDead()) targetPos = target.transform.position;
+
+                Vector3 newPos = Vector3.Lerp(startPos, targetPos, smoothT);
+                if (newPos.y > 4000f)
+                {
+                    if (Physics.Raycast(newPos + Vector3.up * 3f, Vector3.down, out RaycastHit dHit, 8f))
+                        newPos.y = dHit.point.y + 0.1f;
+                }
+                else if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit gHit, 10f,
+                    LayerMask.GetMask("terrain", "Default")))
+                {
+                    newPos.y = gHit.point.y + 0.1f;
+                }
+
+                player.transform.position = newPos;
+                if (rb != null) rb.position = newPos;
+
+                yield return null;
+            }
+
+            // 이동 완료: 속도 리셋 (스냅백 방지)
+            if (rb != null) { rb.velocity = Vector3.zero; rb.angularVelocity = Vector3.zero; }
+            try
+            {
+                var velField = typeof(Character).GetField("m_currentVel",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                velField?.SetValue(player, Vector3.zero);
+            }
+            catch { }
+
+            try
+            {
+                if (target != null && !target.IsDead() && player != null && !player.IsDead())
+                {
+                    var hit = new HitData();
+                    hit.m_damage.m_blunt = damage;
+                    hit.m_point   = target.GetCenterPoint();
+                    hit.m_dir     = (target.transform.position - player.transform.position).normalized;
+                    hit.m_pushForce = Defense_Config.BlockTrainingPushDistanceValue;
+                    hit.SetAttacker(player);
+                    target.Damage(hit);
+
+                    VFXManager.PlayVFXMultiplayer("vfx_blocked", "",
+                        target.GetCenterPoint(), Quaternion.identity, 1f);
+                    SkillEffect.DrawFloatingText(player,
+                        L.Get("defense_shield_parry_counter", Mathf.RoundToInt(damage)), Color.cyan);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[막기훈련] 데미지 처리 오류: {ex.Message}");
+            }
+
+            yield return new WaitForSeconds(0.2f);
+
+            try
+            {
+                if (zanim != null && player != null && !player.IsDead())
+                    zanim.SetBool("blocking", false);
+            }
+            catch { }
+
+            _charging.Remove(player);
         }
     }
 

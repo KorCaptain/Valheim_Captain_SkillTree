@@ -712,7 +712,7 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_bow_equip")}</size></color>\n";
 
             // 9. 필요포인트
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>4</size></color>";
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Bow_Config.BowExplosiveArrowRequiredPointsValue}</size></color>";
 
             return tooltip.TrimEnd('\n');
         }
@@ -750,7 +750,7 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_bow_equip")}</size></color>\n";
 
             // 9. 필요포인트
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>4</size></color>";
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Bow_Config.ArrowRainRequiredPointsValue}</size></color>";
 
             return tooltip.TrimEnd('\n');
         }
@@ -826,7 +826,7 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_crossbow_equip")}</size></color>\n";
 
             // 9. 필요포인트
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>4</size></color>";
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Crossbow_Config.CrossbowOneShotRequiredPointsValue}</size></color>";
 
             return tooltip.TrimEnd('\n');
         }

@@ -597,8 +597,11 @@ namespace CaptainSkillTree.Gui
                 case "defense_Step3_boost": // 체력증강
                     result = L.Get("defense_boost_desc", Defense_Config.BoostHealthBonusValue);
                     break;
-                case "defense_Step3_shield": // 방패훈련
-                    result = L.Get("defense_shield_desc", Defense_Config.ShieldTrainingBlockPowerBonusValue);
+                case "defense_Step3_shield": // 막기훈련
+                    result = L.Get("defense_shield_desc",
+                        Defense_Config.ShieldTrainingBlockPowerBonusValue,
+                        Defense_Config.BlockTrainingParryBlockPowerRatioValue,
+                        Defense_Config.BlockTrainingPushDistanceValue);
                     break;
                 case "defense_Step4_tanker": // 바위피부
                     result = L.Get("defense_tanker_desc", 12);

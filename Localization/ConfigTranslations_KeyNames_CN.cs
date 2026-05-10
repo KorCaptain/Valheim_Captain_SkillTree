@@ -251,9 +251,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HealthBoost_HPBonus"] = "Tier 3-3: [生命强化] 生命值加成",
                 ["Tier3_HealthBoost_RequiredPoints"] = "Tier 3-3: [生命强化] 所需点数",
 
-                // === Tier 3-4: 盾牌训练 (2) ===
-                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [盾牌训练] 盾牌格挡力加成",
-                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [盾牌训练] 所需点数",
+                // === Tier 3-4: 格挡训练 (4) ===
+                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [格挡训练] 盾牌格挡力加成",
+                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [格挡训练] 所需点数",
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] = "Tier 3-4: [格挡训练] 弹反反击格挡力比率 (%)",
+                ["Tier3_BlockTraining_PushDistance"] = "Tier 3-4: [格挡训练] 弹反反击击退距离 (m)",
 
                 // === Tier 4-1: 冲击波 (4) ===
                 ["Tier4_Shockwave_Radius"] = "Tier 4-1: [冲击波] 效果范围",

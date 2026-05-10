@@ -110,7 +110,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("spear_desc_evasion", Spear_Config.SpearStep3EvasionBonusValue, Spear_Config.SpearStep3EvasionStaminaReductionValue),
                 MeleeTooltipUtils.WeaponType.Spear
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Spear_Config.SpearStep3RequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Spear);
         }
@@ -127,7 +127,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("spear_desc_explosion", Spear_Config.SpearQuickAttackSpeedValue),
                 MeleeTooltipUtils.WeaponType.Spear
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Spear_Config.SpearStep3RequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Spear);
         }
@@ -144,7 +144,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("spear_desc_dual", Spear_Config.SpearDualDurationValue, Spear_Config.SpearDualDamageBonusValue),
                 MeleeTooltipUtils.WeaponType.Spear
             );
-            data.requiredPoints = "3";
+            data.requiredPoints = Spear_Config.SpearStep4RequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Spear);
         }
@@ -191,7 +191,7 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
 
                 // 10. 필요포인트 (#87CEEB / #FF6B6B)
-                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>3</size></color>";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Spear_Config.SpearPenetrateRequiredPointsValue}</size></color>";
 
                 return tooltip.TrimEnd('\n');
             }
@@ -240,7 +240,7 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
 
                 // 10. 필요포인트 (#87CEEB / #FF6B6B)
-                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>3</size></color>";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Spear_Config.SpearComboRequiredPointsValue}</size></color>";
 
                 return tooltip.TrimEnd('\n');
             }

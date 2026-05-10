@@ -43,8 +43,8 @@ namespace CaptainSkillTree
                 bool isSpearEquipped = player.GetCurrentWeapon()?.m_shared?.m_skillType == Skills.SkillType.Spears;
                 bool isSpearThrow = isSpearEquipped && SkillEffect.IsRecentSpearSecondaryAttack(player);
 
-                // === 李??곌났李??≫떚釉??ㅽ궗 (H?? - 2李?怨듦꺽(?ъ갹) ?쒖뿉留??곸슜 ===
-                if (isSpearThrow && SkillEffect.IsSpearComboThrowBuffActive(player))
+                // === 연공창 액티브 스킬 (H키) - 투사체 태그 기반으로 콤보 여부 판단 ===
+                if (SpearComboThrow_ProjectileHit_Patch.currentHitIsCombo)
                 {
                     SkillEffect.ConsumeSpearSecondaryAttack(player);
                     float damageBonus = SkillTreeConfig.SpearStep6ComboDamageValue;
@@ -66,8 +66,8 @@ namespace CaptainSkillTree
                         Log.LogDebug("[창 연공] confetti 이펙트 시작");
                     }
 
-                    SkillEffect.ConsumeSpearComboThrowUse(player); // 1???ъ슜 ?뚮퉬
-                    return; // ?ъ갹 ?꾨Ц媛 ?⑥떆釉뚯? 以묐났 諛⑹?
+                    // 사용 횟수 차감은 던지는 시점(ProjectileSetup)에서 처리됨
+                    return;
                 }
 
                 // === 李??ъ갹 ?꾨Ц媛 ?⑥떆釉?- 2李?怨듦꺽(?ъ갹)?먮쭔 ?곸슜 ===
@@ -289,6 +289,54 @@ namespace CaptainSkillTree
             }
         }
 
+
+        // 회오리베기 시전 중 구르기 상태 무시
+        [HarmonyPatch(typeof(Player), nameof(Player.InDodge))]
+        public static class WhirlwindInDodge_Patch
+        {
+            public static bool Prefix(Player __instance, ref bool __result)
+            {
+                if (Sword_Skill.IsWhirlwindCharging(__instance))
+                { __result = false; return false; }
+                return true;
+            }
+        }
+
+        // 회오리베기 시전 중 스태거 상태 무시
+        [HarmonyPatch(typeof(Character), nameof(Character.IsStaggering))]
+        public static class WhirlwindIsStaggering_Patch
+        {
+            public static bool Prefix(Character __instance, ref bool __result)
+            {
+                if (__instance is Player p && Sword_Skill.IsWhirlwindCharging(p))
+                { __result = false; return false; }
+                return true;
+            }
+        }
+
+        // 회오리베기 시전 중 스태거 애니메이션 차단 (기존 ParryRush_Stagger_Patch와 공존)
+        [HarmonyPatch(typeof(Character), nameof(Character.Stagger))]
+        public static class WhirlwindStagger_Patch
+        {
+            public static bool Prefix(Character __instance)
+            {
+                if (__instance is Player p && Sword_Skill.IsWhirlwindCharging(p))
+                    return false;
+                return true;
+            }
+        }
+
+        // 회오리베기 시전 중 마이너액션(점프착지 애니메이션) 무시
+        [HarmonyPatch(typeof(Player), nameof(Player.InMinorAction))]
+        public static class WhirlwindInMinorAction_Patch
+        {
+            public static bool Prefix(Player __instance, ref bool __result)
+            {
+                if (Sword_Skill.IsWhirlwindCharging(__instance))
+                { __result = false; return false; }
+                return true;
+            }
+        }
         public class SE_SwordCounter : StatusEffect
         {
             public SE_SwordCounter()
@@ -638,6 +686,10 @@ namespace CaptainSkillTree
                             return 1.0 + (Sword_Config.RushSlashAttackSpeedBonusValue / 100.0);
                         }
 
+
+                        // 회오리베기 활성 시 300% 절대속도 (animator.speed 직접 조작 대체)
+                        if (Sword_Skill.IsWhirlwindCharging(player))
+                            return 3.0;
                         // 怨듦꺽?띾룄 蹂대꼫??怨꾩궛 (200ms 罹먯떆 ?곸슜)
                         float attackSpeedBonus = SkillEffect.GetTotalAttackSpeedBonus(player);
 

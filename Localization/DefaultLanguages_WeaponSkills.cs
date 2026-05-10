@@ -17,7 +17,7 @@ namespace CaptainSkillTree.Localization
                 ["sword_skill_riposte"] = "칼날 되치기",
                 ["sword_skill_all_in_one"] = "공방일체",
                 ["sword_skill_duel"] = "진검승부",
-                ["sword_skill_parry_rush"] = "패링 돌격",
+                ["sword_skill_parry_rush"] = "회오리베기",
                 ["sword_skill_ultimate"] = "궁극 베기",
 
                 // === Sword Skill Descriptions ===
@@ -34,8 +34,8 @@ namespace CaptainSkillTree.Localization
                 ["sword_desc_riposte"] = "베기 공격력 +{0}",
                 ["sword_desc_all_in_one"] = "양손검 착용 시 공격력 +{0}%, 막기 방어력 +{1}%",
                 ["sword_desc_duel"] = "공격 속도 +{0}%",
-                ["sword_desc_parry_rush"] = "{0}초 동안 패링 성공 시 몬스터에게 방패돌격",
-                ["sword_desc_parry_rush_damage"] = "막기력 x{0}% 타격 데미지",
+                ["sword_desc_parry_rush"] = "H키: 반경 {0}m/{1}m/{2}m 3단계 회오리베기",
+                ["sword_desc_parry_rush_damage"] = "{0}차: 공격력 {1}%",
                 ["requirement_two_handed_sword"] = "양손검 착용",
                 ["requirement_sword_or_shield_equip"] = "검 또는 방패 착용",
                 ["sword_desc_parry_rush_push"] = "{0}m 밀어내기",
@@ -531,7 +531,7 @@ namespace CaptainSkillTree.Localization
                 ["sword_skill_riposte"] = "Riposte",
                 ["sword_skill_all_in_one"] = "Attack & Defense",
                 ["sword_skill_duel"] = "True Duel",
-                ["sword_skill_parry_rush"] = "Parry Rush",
+                ["sword_skill_parry_rush"] = "Whirlwind Slash",
                 ["sword_skill_ultimate"] = "Ultimate Slash",
 
                 // === Sword Skill Descriptions ===
@@ -548,8 +548,8 @@ namespace CaptainSkillTree.Localization
                 ["sword_desc_riposte"] = "Slash damage +{0}",
                 ["sword_desc_all_in_one"] = "Two-Handed Sword: Attack +{0}%, Block Power +{1}%",
                 ["sword_desc_duel"] = "Attack speed +{0}%",
-                ["sword_desc_parry_rush"] = "Shield charge on successful parry for {0}s",
-                ["sword_desc_parry_rush_damage"] = "Block Power x{0}% Blunt Damage",
+                ["sword_desc_parry_rush"] = "H-key: 3-hit whirlwind AoE {0}m/{1}m/{2}m",
+                ["sword_desc_parry_rush_damage"] = "Hit {0}: {1}% damage",
                 ["requirement_two_handed_sword"] = "Two-Handed Sword equipped",
                 ["requirement_sword_or_shield_equip"] = "Sword or Shield equipped",
                 ["sword_desc_parry_rush_push"] = "Knockback {0}m",

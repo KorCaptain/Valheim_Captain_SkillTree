@@ -64,8 +64,9 @@ namespace CaptainSkillTree.SkillTree
             // 드래그/상자 열기 시점에 tex.Apply() GPU 업로드가 발생하지 않도록 여기서 제거
         }
 
-        // InventoryGrid 업데이트 쓰로틀 (인벤토리 열 때 과도한 반복 방지)
-        static float _lastGridUpdate = 0f;
+        // InventoryGrid 업데이트 쓰로틀 — 인스턴스별로 추적해야 플레이어 인벤토리/백팩 간 간섭 없음
+        static readonly Dictionary<InventoryGrid, float> _gridLastUpdate =
+            new Dictionary<InventoryGrid, float>();
         const float GridUpdateInterval = 0.25f; // 4회/초로 제한
         // HotkeyBar 업데이트 쓰로틀 (매 프레임 실행 방지)
         static float _lastHotkeyUpdate = 0f;
@@ -78,10 +79,11 @@ namespace CaptainSkillTree.SkillTree
         [HarmonyPostfix]
         public static void Postfix_InventoryGrid(InventoryGrid __instance)
         {
-            // 쓰로틀: 0.25초 간격으로 제한 (인벤토리 열기/수리/상자 이동 시 과도한 반복 방지)
+            // 쓰로틀: 인스턴스별 0.25초 간격 (플레이어↔백팩 간 쓰로틀 공유 문제 해결)
             float now = Time.time;
-            if (now - _lastGridUpdate < GridUpdateInterval) return;
-            _lastGridUpdate = now;
+            _gridLastUpdate.TryGetValue(__instance, out float lastUpdate);
+            if (now - lastUpdate < GridUpdateInterval) return;
+            _gridLastUpdate[__instance] = now;
 
             EnsureFields();
             // 캐시된 FieldInfo 사용 (Traverse.Create 3회 반복 제거)

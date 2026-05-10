@@ -64,7 +64,7 @@ namespace CaptainSkillTree.SkillTree
         public static int BowStep4RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step4_required_points", BowStep4RequiredPoints?.Value ?? 3);
         public static int BowHuntingInstinctRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_huntinginstinct_required_points", BowHuntingInstinctRequiredPoints?.Value ?? 3);
         public static int BowStep5RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_step5_required_points", BowStep5RequiredPoints?.Value ?? 3);
-        public static int BowExplosiveArrowRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_explosive_required_points", BowExplosiveArrowRequiredPoints?.Value ?? 4);
+        public static int BowExplosiveArrowRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_explosive_required_points", BowExplosiveArrowRequiredPoints?.Value ?? 3);
 
         // === 활 전문가 접근 프로퍼티들 ===
         public static float BowMultishotLv1ChanceValue => SkillTreeConfig.GetEffectiveValue("Bow_MultiShot_Lv1_Chance", BowMultishotLv1Chance.Value);
@@ -202,7 +202,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_StaminaCost"), order: 10);
 
             BowExplosiveArrowRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_ExplosiveArrow_RequiredPoints", 4,
+                "Bow Tree", "Tier5_ExplosiveArrow_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_RequiredPoints"), order: 9);
 
             // === Tier 6: 화살비 (H키 액티브) ===
@@ -227,7 +227,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier6_ArrowRain_StaminaCost"), order: 4);
 
             ArrowRainRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier6_ArrowRain_RequiredPoints", 4,
+                "Bow Tree", "Tier6_ArrowRain_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier6_ArrowRain_RequiredPoints"), order: 3);
 
             Plugin.Log.LogDebug("[Bow_Config] 활 전문가 트리 설정 초기화 완료");

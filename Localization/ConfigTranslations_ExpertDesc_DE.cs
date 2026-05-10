@@ -321,6 +321,16 @@ namespace CaptainSkillTree.Localization
                 "Erhöht die Blockstärke des Schilds.\n" +
                 "Empfehlung: 80-120",
 
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] =
+                "【Parry-Konter Blockstärke-Verhältnis (%)】\n" +
+                "Bei Parry: Konter-Schaden = Blockstärke × Verhältnis / 100.\n" +
+                "Empfehlung: 80-150%",
+
+                ["Tier3_BlockTraining_PushDistance"] =
+                "【Parry-Konter Rückstoß-Distanz (m)】\n" +
+                "Distanz, um die Feinde beim Parry-Konter zurückgestoßen werden.\n" +
+                "Empfehlung: 3-6m",
+
                 ["Tier4_GroundStomp_Radius"] =
                 "【Effektradius (m)】\n" +
                 "Radius der Erschütterungswelle.\n" +

@@ -253,6 +253,8 @@ namespace CaptainSkillTree
                     "vfx_spawn_small", "vfx_spawn_large", "flash_blue_purple",
                     "fx_guardstone_activate", "fx_guardstone_permitted_add",
                     "fx_eikthyr_stomp", "fx_Fader_Spin", "debuff_03",
+                    "fx_Fader_Roar_Projectile_Hit", "fx_Fader_Fissure_Prespawn",
+                    "sfx_fader_claw_pre", "sfx_fader_claw_swipe",
                     // 사운드
                     "sfx_morgen_alert", "sfx_dverger_heal_finish", "sfx_oozebomb_explode"
                 };

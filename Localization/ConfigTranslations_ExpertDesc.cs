@@ -317,6 +317,16 @@ namespace CaptainSkillTree.Localization
                 "더 강한 공격도 막아낼 수 있습니다.\n" +
                 "권장값: 80-120",
 
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] =
+                "【패링 반격 막기력 비율 (%)】\n" +
+                "패링 성공 시 자동 반격 데미지 = 막기력 × 이 값 / 100\n" +
+                "권장값: 80-150%",
+
+                ["Tier3_BlockTraining_PushDistance"] =
+                "【패링 반격 밀어내기 거리 (m)】\n" +
+                "패링 반격 성공 시 적을 밀어내는 거리입니다.\n" +
+                "권장값: 3-6m",
+
                 // === Tier 4: 충격파 발산 (Ground Stomp) ===
                 ["Tier4_GroundStomp_Radius"] =
                 "【효과 반경 (미터)】\n" +
@@ -1101,6 +1111,16 @@ namespace CaptainSkillTree.Localization
                 "Increases shield's blocking power.\n" +
                 "Can block stronger attacks.\n" +
                 "Recommended: 80-120",
+
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] =
+                "【Parry Counter Block Power Ratio (%)】\n" +
+                "On parry, counter damage = block power × ratio / 100.\n" +
+                "Recommended: 80-150%",
+
+                ["Tier3_BlockTraining_PushDistance"] =
+                "【Parry Counter Knockback Distance (m)】\n" +
+                "Distance enemies are knocked back on parry counter.\n" +
+                "Recommended: 3-6m",
 
                 // === Tier 4: Ground Stomp ===
                 ["Tier4_GroundStomp_Radius"] =

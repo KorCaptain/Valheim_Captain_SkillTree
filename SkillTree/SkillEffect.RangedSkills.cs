@@ -731,9 +731,6 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // 발칸 아이스 발동 중 연속 발사 차단
-                if (SkillEffect._iceBreathActivating) return true;
-
                 // ✅ CRITICAL: 플레이어 공격만 처리 (몬스터/NPC 차단)
                 // Attack.m_character로 실제 공격자가 로컬 플레이어인지 검증
                 var attacker = Traverse.Create(__instance).Field("m_character").GetValue<Character>();

@@ -262,9 +262,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HealthBoost_HPBonus"] = "Tier 3-3: [Health Boost] HP Bonus",
                 ["Tier3_HealthBoost_RequiredPoints"] = "Tier 3-3: [Health Boost] Required Points",
 
-                // === Tier 3-4: Shield Training (2) ===
-                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [Shield Training] Shield Block Power Bonus",
-                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [Shield Training] Required Points",
+                // === Tier 3-4: Block Training (4) ===
+                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [Block Training] Shield Block Power Bonus",
+                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [Block Training] Required Points",
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] = "Tier 3-4: [Block Training] Parry Counter Block Power Ratio (%)",
+                ["Tier3_BlockTraining_PushDistance"] = "Tier 3-4: [Block Training] Parry Counter Knockback Distance (m)",
 
                 // === Tier 4-1: Shockwave (4) ===
                 ["Tier4_Shockwave_Radius"] = "Tier 4-1: [Shockwave] Radius",

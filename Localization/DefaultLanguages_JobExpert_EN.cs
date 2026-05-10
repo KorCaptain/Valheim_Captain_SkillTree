@@ -169,7 +169,7 @@ namespace CaptainSkillTree.Localization
                 ["defense_breath_name"] = "Core Breathing",
                 ["defense_agile_name"] = "Evasion Training",
                 ["defense_boost_name"] = "Health Boost",
-                ["defense_shield_name"] = "Shield Training",
+                ["defense_shield_name"] = "Block Training",
                 ["defense_mental_name"] = "Shockwave Release",
                 ["defense_mental_desc"] = "When HP below 45%, stun enemies within {0}m for {1}s (Cooldown: {2}s)",
                 ["defense_instant_name"] = "Ground Stomp",
@@ -201,7 +201,7 @@ namespace CaptainSkillTree.Localization
                 ["defense_breath_desc"] = "Max Eitr +{0}",
                 ["defense_agile_desc"] = "Dodge +{0}%, Roll invincibility +{1}%",
                 ["defense_boost_desc"] = "Health +{0}",
-                ["defense_shield_desc"] = "Shield block power +{0}",
+                ["defense_shield_desc"] = "Shield block power +{0}\nOn parry: block power x{1}% blunt damage + {2}m knockback\nNo cooldown / No stamina cost",
                 ["defense_tanker_desc"] = "Defense +{0}%",
                 ["defense_focus_desc"] = "Run stamina -{0}%, Jump stamina -{1}%",
                 ["defense_stamina_desc"] = "Dodge +{0}%, Roll stamina -{1}%",
@@ -213,7 +213,8 @@ namespace CaptainSkillTree.Localization
 
                 // Defense Expert Tree - Effect Texts (English)
                 ["defense_root_effect"] = "🛡️ Defense Expert! Health +{0}, Defense +{1}",
-                ["defense_shield_effect"] = "🛡️ Shield Training! Shield block power +{0}",
+                ["defense_shield_effect"] = "🛡️ Block Training! Shield block power +{0}",
+                ["defense_shield_parry_counter"] = "⚔️ Parry Counter! ({0} dmg)",
                 ["defense_parry_effect"] = "🛡️ Parry Master! Parry +{0}s, Shield block power +{1}",
                 ["defense_body_effect"] = "🛡️ Jotunn's Vitality! Health +{0}%, Resistance +{1}%",
 

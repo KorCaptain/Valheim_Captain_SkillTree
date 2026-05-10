@@ -19,7 +19,6 @@ namespace CaptainSkillTree.SkillTree
         // === 발칸 아이스 상태 변수 ===
         private static Dictionary<Player, float>     _iceBreathCooldown   = new Dictionary<Player, float>();
         private static Dictionary<Player, Coroutine> _iceBreathCoroutine  = new Dictionary<Player, Coroutine>();
-        public  static bool                          _iceBreathActivating  = false;
 
         private const float IceBreathRange = 10f;
 
@@ -90,11 +89,6 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogWarning($"[발칸 아이스] 캐릭터 회전 실패: {ex.Message}");
             }
-
-            // 석궁 발사 모션
-            _iceBreathActivating = true;
-            try { player.StartAttack(null, false); } catch { }
-            _iceBreathActivating = false;
 
             // 기존 코루틴 정리
             if (_iceBreathCoroutine.ContainsKey(player) && _iceBreathCoroutine[player] != null)

@@ -196,23 +196,25 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 패링 돌격 툴팁 생성 (sword_step5_defswitch)
+        /// 회오리베기 툴팁 생성 (sword_step5_defswitch)
         /// </summary>
         public static string GetDefSwitchTooltip()
         {
-            Plugin.Log.LogDebug("[검 툴팁] GetDefSwitchTooltip() 호출됨 (패링 돌격)");
+            Plugin.Log.LogDebug("[검 툴팁] GetDefSwitchTooltip() 호출됨 (회오리베기)");
 
-            var requiredPoints = 3;
-
-            float duration = Sword_Config.ParryRushDurationValue;
-            float blockPowerRatio = Sword_Config.ParryRushBlockPowerRatioValue;
-            float pushDist = Sword_Config.ParryRushPushDistanceValue;
             float staminaCost = Sword_Config.ParryRushStaminaCostValue;
-            float cooldown = Sword_Config.ParryRushCooldownValue;
+            float cooldown    = Sword_Config.ParryRushCooldownValue;
+            const float r1 = 5f;
+            const float r2 = 8f;
+            const float r3 = 12f;
+            const float d1 = 140f;
+            const float d2 = 180f;
+            const float d3 = 220f;
 
-            string description = L.Get("sword_desc_parry_rush", duration) + "\n" +
-                                $"<color=#98FB98>{L.Get("sword_desc_parry_rush_damage", blockPowerRatio)}</color>\n" +
-                                $"<color=#FFA500>{L.Get("sword_desc_parry_rush_push", pushDist)}</color>";
+            string description = L.Get("sword_desc_parry_rush", r1, r2, r3) + "\n" +
+                $"<color=#98FB98>{L.Get("sword_desc_parry_rush_damage", 1, d1)}</color>\n" +
+                $"<color=#98FB98>{L.Get("sword_desc_parry_rush_damage", 2, d2)}</color>\n" +
+                $"<color=#FFD700>{L.Get("sword_desc_parry_rush_damage", 3, d3)}</color>";
 
             var data = MeleeTooltipUtils.CreateActiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("sword_skill_parry_rush")}</size></color>",
@@ -224,7 +226,7 @@ namespace CaptainSkillTree.SkillTree
                 L.Get("requirement_sword_or_shield_equip"),
                 "H"
             );
-            data.requiredPoints = requiredPoints.ToString();
+            data.requiredPoints = "3";
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
         }

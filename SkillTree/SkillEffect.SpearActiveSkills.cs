@@ -644,11 +644,12 @@ namespace CaptainSkillTree.SkillTree
                 if (item != null && item.m_shared.m_skillType == Skills.SkillType.Spears)
                     SkillEffect.RestorePhantomSpear(player, item);
 
-                // 연공창 버프 활성 중 투척 VFX (데미지/사용횟수 차감은 Character.ApplyDamage 패치에서 단독 처리)
-                if (SkillEffect.IsSpearComboThrowBuffActive(player))
+                // 연공창 버프 활성 중: 사용 횟수 차감 + 투척 VFX (던지는 시점에 처리 — 착탄 시점 의존 제거)
+                if (isCombo)
                 {
                     try
                     {
+                        SkillEffect.ConsumeSpearComboThrowUse(player);
                         Vector3 vfxPos = player.transform.position + player.transform.forward * 1.5f + Vector3.up * 1.2f;
                         SimpleVFX.Play("hit_03", vfxPos, 1.5f);
                     }
@@ -672,10 +673,20 @@ namespace CaptainSkillTree.SkillTree
     [HarmonyPriority(Priority.Low)]
     public static class SpearComboThrow_ProjectileHit_Patch
     {
+        public static bool currentHitIsCombo = false;
+
+        [HarmonyPrefix]
+        public static void Prefix(Projectile __instance, Collider collider, Vector3 hitPoint, bool water, Vector3 normal)
+        {
+            var tag = __instance.GetComponent<ComboSpearProjectileTag>();
+            currentHitIsCombo = tag != null && tag.isComboThrow;
+        }
+
         [HarmonyPostfix]
         public static void Postfix(Projectile __instance, Collider collider,
             Vector3 hitPoint, bool water, Vector3 normal)
         {
+            currentHitIsCombo = false;
             try
             {
                 var tag = __instance.GetComponent<ComboSpearProjectileTag>();

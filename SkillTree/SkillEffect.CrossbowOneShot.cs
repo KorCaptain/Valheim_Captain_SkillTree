@@ -28,17 +28,8 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, GameObject> followingBuffEffects = new Dictionary<Player, GameObject>();
         private static Dictionary<Player, Coroutine> followingBuffCoroutines = new Dictionary<Player, Coroutine>();
 
-        // === 단 한 발 슬로우 리로드 패널티 ===
-        private static Dictionary<Player, bool> _oneShotSlowReloadPending = new Dictionary<Player, bool>();
-
         public static bool IsCrossbowOneShotReady(Player p) =>
             crossbowOneShotReady.TryGetValue(p, out bool v) && v;
-
-        public static bool HasOneShotSlowReloadPending(Player p) =>
-            _oneShotSlowReloadPending.TryGetValue(p, out bool v) && v;
-
-        public static void ConsumeOneShotSlowReloadPending(Player p) =>
-            _oneShotSlowReloadPending[p] = false;
 
         /// <summary>
         /// 석궁 단 한 발 버프 활성화
@@ -75,7 +66,6 @@ namespace CaptainSkillTree.SkillTree
 
             crossbowOneShotReady[player] = true;
             crossbowOneShotExpiry[player] = Time.time + durationTime;
-            _oneShotSlowReloadPending[player] = true;
 
             // 장전 상태 강제 해제 → 다시 장전 모드로 전환
             try
@@ -362,15 +352,16 @@ namespace CaptainSkillTree.SkillTree
                     }
                     catch { }
 
-                    // 직격 대상 중심 AOE 넉백 (m_pushForce 직접 설정 방식 - knockback_implementation.md 참조)
+                    // 직격 대상 중심 AOE 넉백+데미지 (m_pushForce 직접 설정 방식 - knockback_implementation.md 참조)
                     try
                     {
                         float aoeRadius = Crossbow_Config.CrossbowOneShotAoeRadiusValue;
-                        // 7m 거리 = magnitude ~45f (md: 45f → 0.45s × 20m/s ≈ 7m)
                         float pushMagnitude = Crossbow_Config.CrossbowOneShotKnockbackValue;
                         Vector3 aoeCenter = target.transform.position;
                         var hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius);
                         var processedEnemies = new System.Collections.Generic.HashSet<Character>();
+                        var weapon = player.GetCurrentWeapon();
+                        float aoeBonus = Crossbow_Config.CrossbowOneShotDamageBonusValue / 100f;
 
                         foreach (var col in hitColliders)
                         {
@@ -393,6 +384,19 @@ namespace CaptainSkillTree.SkillTree
                                     tEnemy.Field("m_pushForce").SetValue(dir * pushMagnitude);
                             }
                             enemy.Stagger(dir);
+
+                            // AOE 데미지 적용
+                            if (weapon != null)
+                            {
+                                HitData aoeHit = new HitData();
+                                aoeHit.m_damage = weapon.m_shared.m_damages;
+                                aoeHit.m_damage.Modify(aoeBonus);
+                                aoeHit.m_point = enemy.transform.position;
+                                aoeHit.m_dir = dir;
+                                aoeHit.m_attacker = player.GetZDOID();
+                                aoeHit.m_pushForce = 0f;
+                                enemy.Damage(aoeHit);
+                            }
 
                             try
                             {
@@ -503,7 +507,6 @@ namespace CaptainSkillTree.SkillTree
                 crossbowOneShotCooldown.Remove(player);
                 crossbowOneShotExpiry.Remove(player);
                 _archerLv2OneShotChargeReady.Remove(player);
-                _oneShotSlowReloadPending.Remove(player);
 
                 // 장전 소리 코루틴 정리
                 if (_oneShotReloadSoundCoroutines.ContainsKey(player))

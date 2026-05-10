@@ -251,9 +251,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HealthBoost_HPBonus"] = "Tier 3-3: [Impulso de Saúde] Bônus de HP",
                 ["Tier3_HealthBoost_RequiredPoints"] = "Tier 3-3: [Impulso de Saúde] Pontos Necessários",
 
-                // === Tier 3-4: Treinamento de Escudo (2) ===
-                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [Trein. de Escudo] Bônus de Poder de Bloqueio",
-                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [Trein. de Escudo] Pontos Necessários",
+                // === Tier 3-4: Treinamento de Bloqueio (4) ===
+                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [Trein. de Bloqueio] Bônus de Poder de Bloqueio",
+                ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [Trein. de Bloqueio] Pontos Necessários",
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] = "Tier 3-4: [Trein. de Bloqueio] Proporção de Poder de Bloqueio do Contra-Aparar (%)",
+                ["Tier3_BlockTraining_PushDistance"] = "Tier 3-4: [Trein. de Bloqueio] Distância de Recuo do Contra-Aparar (m)",
 
                 // === Tier 4-1: Onda de Choque (4) ===
                 ["Tier4_Shockwave_Radius"] = "Tier 4-1: [Onda de Choque] Raio",

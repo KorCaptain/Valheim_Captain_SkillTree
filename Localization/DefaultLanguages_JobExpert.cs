@@ -30,7 +30,7 @@ namespace CaptainSkillTree.Localization
                 ["defense_breath_name"] = "단전호흡",
                 ["defense_agile_name"] = "회피단련",
                 ["defense_boost_name"] = "체력증강",
-                ["defense_shield_name"] = "방패훈련",
+                ["defense_shield_name"] = "막기훈련",
                 ["defense_mental_name"] = "충격파방출",
                 ["defense_mental_desc"] = "생명력 45% 이하 시 {0}m 이내 적 {1}초간 기절 (쿨타임 {2}초)",
                 ["defense_instant_name"] = "발구르기",
@@ -62,7 +62,7 @@ namespace CaptainSkillTree.Localization
                 ["defense_breath_desc"] = "에이트르 최대치 +{0}",
                 ["defense_agile_desc"] = "회피 +{0}%, 구르기 무적시간 +{1}%",
                 ["defense_boost_desc"] = "체력 +{0}",
-                ["defense_shield_desc"] = "방패 방어력 +{0}",
+                ["defense_shield_desc"] = "방패 방어력 +{0}\n패링 성공 시 막기력 x{1}% 타격 + {2}m 밀어내기\n쿨타임 없음 / 스태미나 소모 없음",
                 ["defense_tanker_desc"] = "방어력 +{0}%",
                 ["defense_focus_desc"] = "달리기 스태미나 -{0}%, 점프 스태미나 -{1}%",
                 ["defense_stamina_desc"] = "회피 +{0}%, 구르기 스태미나 -{1}%",
@@ -74,7 +74,8 @@ namespace CaptainSkillTree.Localization
 
                 // Defense Expert Tree - Effect Texts
                 ["defense_root_effect"] = "🛡️ 방어 전문가! 체력 +{0}, 방어 +{1}",
-                ["defense_shield_effect"] = "🛡️ 방패훈련! 방패 방어력 +{0}",
+                ["defense_shield_effect"] = "🛡️ 막기훈련! 방패 방어력 +{0}",
+                ["defense_shield_parry_counter"] = "⚔️ 패링 반격! ({0} 타격)",
                 ["defense_parry_effect"] = "🛡️ 막기달인! 패링 +{0}초, 방패 방어력 +{1}",
                 ["defense_body_effect"] = "🛡️ 요툰의 생명력! 체력 +{0}%, 저항 +{1}%",
 
@@ -323,13 +324,13 @@ namespace CaptainSkillTree.Localization
                 ["rush_slash_2nd_attack"] = "⚔️ 2차 베기! ({0}%)",
                 ["rush_slash_finisher"] = "💥 피니셔! ({0}%)",
                 ["rush_slash_default"] = "⚔️ 베기! ({0}%)",
-                ["parry_rush_skill_required"] = "패링 돌격 스킬이 필요합니다",
+                ["parry_rush_skill_required"] = "회전베기 스킬이 필요합니다",
                 ["shield_required"] = "방패를 착용해야 합니다",
                 ["sword_or_shield_required"] = "검 또는 방패를 착용해야 합니다",
-                ["parry_rush_already_active"] = "패링 돌격 이미 활성 중",
+                ["parry_rush_already_active"] = "회전베기가 이미 시전 중입니다",
                 ["parry_rush_activate"] = "패링 돌격! ({0}초)",
                 ["parry_rush_buff_name"] = "패링 돌격",
-                ["parry_rush_damage"] = "패링 돌격! (+{0}%)",
+                ["parry_rush_damage"] = "⚔️ 회전베기 {0}차! (+{1}%)",
 
                 // === Berserker Effect Messages ===
                 ["berserker_cooldown"] = "쿨다운 중 ({0}초)",

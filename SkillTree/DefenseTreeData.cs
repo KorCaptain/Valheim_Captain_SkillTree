@@ -147,12 +147,16 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // Tier 3: 방패훈련
+            // Tier 3: 막기훈련
             manager.AddSkill(new SkillNode {
                 Id = "defense_Step3_shield",
                 NameKey = "defense_shield_name",
                 DescriptionKey = "defense_shield_desc",
-                DescriptionArgs = new object[] { Defense_Config.ShieldTrainingBlockPowerBonusValue },
+                DescriptionArgs = new object[] {
+                    Defense_Config.ShieldTrainingBlockPowerBonusValue,
+                    Defense_Config.BlockTrainingParryBlockPowerRatioValue,
+                    Defense_Config.BlockTrainingPushDistanceValue
+                },
                 RequiredPoints = Defense_Config.DefenseStep3ShieldRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,

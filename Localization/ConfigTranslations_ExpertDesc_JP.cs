@@ -315,6 +315,16 @@ namespace CaptainSkillTree.Localization
                 "シールドのブロック力を増加させます。\n" +
                 "推奨: 80-120",
 
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] =
+                "【パリィ反撃ブロック力比率 (%)】\n" +
+                "パリィ成功時の反撃ダメージ = ブロック力 × 比率 / 100。\n" +
+                "推奨: 80-150%",
+
+                ["Tier3_BlockTraining_PushDistance"] =
+                "【パリィ反撃ノックバック距離 (m)】\n" +
+                "パリィ反撃成功時に敵を吹き飛ばす距離です。\n" +
+                "推奨: 3-6m",
+
                 ["Tier4_GroundStomp_Radius"] =
                 "【効果範囲 (m)】\n" +
                 "グラウンドストンプの衝撃波範囲です。\n" +

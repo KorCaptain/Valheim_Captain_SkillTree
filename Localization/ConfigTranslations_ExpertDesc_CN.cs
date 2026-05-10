@@ -321,6 +321,16 @@ namespace CaptainSkillTree.Localization
                 "增加盾牌的格挡力。\n" +
                 "推荐：80-120",
 
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] =
+                "【弹反反击格挡力比率 (%)】\n" +
+                "弹反成功时反击伤害 = 格挡力 × 比率 / 100。\n" +
+                "推荐：80-150%",
+
+                ["Tier3_BlockTraining_PushDistance"] =
+                "【弹反反击击退距离 (m)】\n" +
+                "弹反反击成功时敌人被击退的距离。\n" +
+                "推荐：3-6m",
+
                 ["Tier4_GroundStomp_Radius"] =
                 "【效果范围 (m)】\n" +
                 "震地踏冲击波的效果半径。\n" +

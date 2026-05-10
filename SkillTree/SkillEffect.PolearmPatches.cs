@@ -282,7 +282,7 @@ namespace CaptainSkillTree.SkillTree
     [HarmonyPatch(typeof(Player), "Update")]
     public static class Player_Update_Whirlwind_Patch
     {
-        static void Postfix(Player __instance)
+        static void Prefix(Player __instance)
         {
             try
             {

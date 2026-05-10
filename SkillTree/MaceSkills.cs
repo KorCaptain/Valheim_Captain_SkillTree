@@ -272,8 +272,11 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (!secondaryAttack) return;
                 if (__instance is not Player player) return;
-                if (!WeaponHelper.IsUsingMace(player)) return;
-                if (!SkillBonusCalculator.IsSkillActive("mace_Step3_branch_guard")) return;
+                bool isMaceSpin = WeaponHelper.IsUsingMace(player)
+                    && SkillBonusCalculator.IsSkillActive("mace_Step3_branch_guard");
+                bool isSwordWhirlwind = Sword_Skill.IsUsingSword(player)
+                    && Sword_Skill.IsWhirlwindCharging(player);
+                if (!isMaceSpin && !isSwordWhirlwind) return;
 
                 Attack polearmSecondary = GetCachedPolearmSecondary();
                 if (polearmSecondary == null) return;

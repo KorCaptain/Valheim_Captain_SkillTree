@@ -120,13 +120,13 @@ namespace CaptainSkillTree.SkillTree
             SpearStep3RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier3_Pierce_RequiredPoints",
-                2,
+                3,
                 SkillTreeConfig.GetConfigDescription("Tier3_Pierce_RequiredPoints"));
 
             SpearStep4RequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier4_Evasion_RequiredPoints",
-                2,
+                3,
                 SkillTreeConfig.GetConfigDescription("Tier4_Evasion_RequiredPoints"));
 
             SpearPenetrateRequiredPoints = SkillTreeConfig.BindServerSync(config,

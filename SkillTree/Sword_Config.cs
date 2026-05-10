@@ -254,7 +254,7 @@ namespace CaptainSkillTree.SkillTree
         public static float ParryRushStaminaCostValue =>
             SkillTreeConfig.GetEffectiveValue("ParryRush_StaminaCost", ParryRushStaminaCost?.Value ?? 10f);
         public static float ParryRushCooldownValue =>
-            SkillTreeConfig.GetEffectiveValue("ParryRush_Cooldown", ParryRushCooldown?.Value ?? 60f);
+            SkillTreeConfig.GetEffectiveValue("ParryRush_Cooldown", ParryRushCooldown?.Value ?? 35f);
 
         // === Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ===
         public static int RushSlashRequiredPointsValue =>
@@ -509,7 +509,7 @@ namespace CaptainSkillTree.SkillTree
             ParryRushCooldown = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier5_ParryRush_Cooldown",
-                60f,
+                35f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_Cooldown"),
                 order: -55
             );

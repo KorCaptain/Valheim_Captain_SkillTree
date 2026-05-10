@@ -89,19 +89,36 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 착용 중인 악세사리(Utility/Ring/Necklace) 마법부여 합산
+        /// 모드 추가 반지 슬롯은 m_utilityItem 필드를 쓰지 않으므로
+        /// m_equipped=true 인 모든 Utility 아이템을 스캔한다
         /// </summary>
         public static float GetEquippedAccessoryEnchantTotal(Player player, EnchantType targetType)
         {
             if (player == null) return 0f;
+            float total = 0f;
             try
             {
-                var item = Traverse.Create(player).Field("m_utilityItem").GetValue<ItemDrop.ItemData>();
-                if (item?.m_shared == null) return 0f;
-                if (GetEnchantType(item) == targetType)
-                    return GetEnchantValue(item);
+                // 무기 슬롯(오른손/왼손) 캐시 — Tool 타입 해머·경작기 등 실제 도구 제외용
+                var tr = Traverse.Create(player);
+                var rightItem = tr.Field("m_rightItem").GetValue<ItemDrop.ItemData>();
+                var leftItem  = tr.Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+
+                var equipped = player.GetInventory().GetEquippedItems();
+                foreach (var item in equipped)
+                {
+                    if (item?.m_shared == null) continue;
+                    var iType = item.m_shared.m_itemType;
+                    // Utility(반지·목걸이) 또는 Tool(벨트류) 만 허용
+                    if (iType != ItemDrop.ItemData.ItemType.Utility &&
+                        iType != ItemDrop.ItemData.ItemType.Tool) continue;
+                    // 오른손/왼손 슬롯 아이템 제외 (해머·경작기 등 실제 도구)
+                    if (item == rightItem || item == leftItem) continue;
+                    if (GetEnchantType(item) == targetType)
+                        total += GetEnchantValue(item);
+                }
             }
             catch { return 0f; }
-            return 0f;
+            return total;
         }
 
         /// <summary>
@@ -302,8 +319,9 @@ namespace CaptainSkillTree.SkillTree
                 if (t == ItemDrop.ItemData.ItemType.Shoulder) return "Shoulder";
                 // 방패
                 if (t == ItemDrop.ItemData.ItemType.Shield) return "Shield";
-                // 악세사리
+                // 악세사리 (반지·목걸이 등 Utility) 및 벨트류 (모드 추가 Tool 타입 포함)
                 if (t == ItemDrop.ItemData.ItemType.Utility) return "Accessory";
+                if (t == ItemDrop.ItemData.ItemType.Tool)    return "Accessory";
                 return "";
             }
 
