@@ -90,10 +90,10 @@ namespace CaptainSkillTree
         // ──────────────────────────── 업데이트 오버레이 ────────────────────────────
         /// <summary>
         /// 업데이트 시 자동 호출.
-        /// 1) 현재 유저 값 스냅샷 (메모리에 로드된 기존 키/값)
+        /// 1) User 백업 파일(업데이트 전 cfg)에서 기존 키/값 파싱
         /// 2) VeryHard 전체 적용 (신규 키 포함 모든 항목이 VH 값으로 초기화)
-        /// 3) 스냅샷에 있던 기존 키만 유저 값으로 복원
-        ///    → 신규 추가 키는 VH 기본값 유지, 기존 커스텀 값은 보존
+        /// 3) 백업 파일에 있던 기존 키만 유저 값으로 복원
+        ///    → 신규 추가 키(백업에 없는 키)는 VH 기본값 유지
         /// </summary>
         private static void ApplyVeryhardWithUserOverlay()
         {
@@ -104,17 +104,21 @@ namespace CaptainSkillTree
                 return;
             }
 
-            // 1. 유저 기존 값 스냅샷 (VeryHard 적용 전)
-            var userSnapshot = new Dictionary<ConfigDefinition, string>();
-            foreach (var kvp in config)
-                userSnapshot[kvp.Key] = kvp.Value.GetSerializedValue();
+            // 1. User 백업 파일 파싱 (Plugin.Awake 이전에 저장된 업데이트 전 cfg)
+            string userBackupPath = Path.Combine(GetPresetDirectory(), PRESET_USER);
+            var userValues = ParseCfgFile(userBackupPath);
+            if (userValues.Count == 0)
+            {
+                Plugin.Log?.LogWarning("[Difficulty] User 백업 없음 — VeryHard 그대로 적용.");
+                ApplyVeryHard();
+                return;
+            }
 
-            // 2. VeryHard 전체 적용 (이 시점에서 메모리+디스크가 VH 값으로 덮어씌워짐)
+            // 2. VeryHard 전체 적용
             ApplyVeryHard();
 
-            // 3. 유저 기존 값 복원 (스냅샷에 없는 신규 키는 VH 값 유지)
-            // Language, 스키마 버전, 난이도 플래그는 복원 대상에서 제외
-            var skipKeys = new HashSet<string>
+            // 3. User 백업에 있는 기존 키만 복원 (없는 키 = 신규 스킬 → VH 값 유지)
+            var skipKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
                 "Language",
                 "Config_Schema_Version",
@@ -126,23 +130,21 @@ namespace CaptainSkillTree
             config.SaveOnConfigSet = false;
 
             int restored = 0;
-            int skipped  = 0;
-            foreach (var kvp in userSnapshot)
+            foreach (var kvp in config)
             {
-                if (skipKeys.Contains(kvp.Key.Key)) { skipped++; continue; }
+                string key = kvp.Key.Key;
+                if (skipKeys.Contains(key)) continue;
 
-                var entry = config[kvp.Key];
-                if (entry == null) continue;
+                if (!userValues.TryGetValue(key, out string restoredValue)) continue;
 
                 try
                 {
-                    entry.SetSerializedValue(kvp.Value);
+                    kvp.Value.SetSerializedValue(restoredValue);
                     restored++;
                 }
-                catch { /* 타입 불일치(신규 타입 변경) → 무시 후 VH값 유지 */ }
+                catch { /* 타입 불일치 → VH 값 유지 */ }
             }
 
-            // 결과가 유저 커스텀 값이므로 GameDifficulty를 "UserSettings"로 표시
             var gameDiffEntry = SkillTree.SkillTreeConfig.GameDifficulty;
             if (gameDiffEntry != null)
                 gameDiffEntry.Value = "UserSettings";
@@ -150,6 +152,33 @@ namespace CaptainSkillTree
             config.Save();
             config.SaveOnConfigSet = prev;
 
+            Plugin.Log?.LogInfo($"[Difficulty] 업데이트 병합 완료: {restored}개 유저 설정 복원, 신규 키는 VH 값 유지.");
+        }
+
+        /// <summary>BepInEx cfg 파일을 파싱해서 key → value 딕셔너리 반환 (섹션 무시, 키만 평탄화)</summary>
+        private static Dictionary<string, string> ParseCfgFile(string path)
+        {
+            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (!File.Exists(path)) return result;
+            try
+            {
+                foreach (var line in File.ReadAllLines(path))
+                {
+                    var t = line.Trim();
+                    if (t.Length == 0 || t[0] == '[' || t[0] == '#' || t[0] == ';') continue;
+                    int idx = t.IndexOf('=');
+                    if (idx <= 0) continue;
+                    string k = t.Substring(0, idx).Trim();
+                    string v = t.Substring(idx + 1).Trim();
+                    if (!string.IsNullOrEmpty(k))
+                        result[k] = v;
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log?.LogWarning($"[Difficulty] ParseCfgFile 실패 ({path}): {ex.Message}");
+            }
+            return result;
         }
 
         // ──────────────────────────── 적용 (편의 래퍼) ────────────────────────────

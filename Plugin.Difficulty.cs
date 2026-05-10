@@ -29,10 +29,10 @@ namespace CaptainSkillTree
                 string presetDir  = Path.Combine(Paths.ConfigPath, "CaptainSkillTree");
                 string userBackup = Path.Combine(presetDir, "User_CaptainSkillTree.SkillTreeMod.cfg");
 
-                if (!File.Exists(userBackup) && File.Exists(configPath))
+                if (File.Exists(configPath))
                 {
                     Directory.CreateDirectory(presetDir);
-                    File.Copy(configPath, userBackup, overwrite: false);
+                    File.Copy(configPath, userBackup, overwrite: true);
                     // 이 시점은 Plugin.Log 미초기화 — 로그 불가
                 }
             }

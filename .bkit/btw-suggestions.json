@@ -102,8 +102,29 @@
       }
     }
   ],
+    {
+      "id": "btw-006",
+      "timestamp": "2026-05-11T00:00:00Z",
+      "suggestion": "신규설치자는 난이도 선택하면 되고 만약 선택 안하면 베리하드모드가 기본이야 확인해줘",
+      "context": {
+        "file": "Plugin.Difficulty.cs / DifficultySelectUI.cs",
+        "pdcaPhase": "do",
+        "feature": "SkillTree"
+      },
+      "category": "general",
+      "status": "verified",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      }
+    }
+  ],
   "stats": {
-    "total": 5,
+    "total": 6,
     "promoted": 0,
     "dismissed": 0,
     "lastAnalyzed": null

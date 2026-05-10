@@ -1046,8 +1046,12 @@ namespace CaptainSkillTree.SkillTree
 
         private static void RefreshAllSkillEffects()
         {
-            if (Player.m_localPlayer == null) return;
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            SkillEffect.UpdateDefenseDodgeRate(player);
         }
+
+        public static void RefreshAllSkillEffectsPublic() => RefreshAllSkillEffects();
 
         public static void DetectServerClientMode()
         {
@@ -1127,8 +1131,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     _serverConfigValues = serverConfig;
                     _hasReceivedServerConfig = true;
-                    var player = Player.m_localPlayer;
-                    if (player != null) SkillEffect.UpdateDefenseDodgeRate(player);
+                    RefreshAllSkillEffects();
                 }
             }
             catch (Exception ex) { Plugin.Log.LogError($"[SkillTreeConfig] 서버 설정 수신 실패: {ex.Message}"); }

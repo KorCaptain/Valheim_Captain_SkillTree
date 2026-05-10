@@ -1,5 +1,8 @@
 # Changelog / 변경 로그
-# [1.22.96] - 2026-05-09
+# [1.22.97] - 2026-05-11
+- ✅fix1 : Server config Sync
+
+# [1.22.96] - 2026-05-10
 - ✅new1 : Block Training — renamed from "Shield Training" + parry auto-counter: block power ×300% blunt damage + 4m knockback (no cooldown, no stamina cost, requires melee or shield)
 - ✅new2: Parring charge - Refactoring to change to whirlwind harvester
 - ✅fix1 : Production Professionals (Producer) - Accessories, belt magic modification

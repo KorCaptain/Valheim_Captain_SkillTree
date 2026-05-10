@@ -226,6 +226,10 @@ namespace CaptainSkillTree.SkillTree
                 _configFile.Save();
                 _isProcessingRpcUpdate = false;
 
+                // 서버 자신이 직접 호출한 경우 (솔로/호스트) 로컬 스킬 효과 즉각 갱신
+                if (sender == 0L)
+                    SkillTreeConfig.RefreshAllSkillEffectsPublic();
+
                 BroadcastConfigToClients();
                 Plugin.Log.LogInfo($"[AdminSync] 배치 싱크 완료: {applied}개 항목 적용");
             }
