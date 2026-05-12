@@ -208,7 +208,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_RequiredPoints"), order: 9);
 
             BowExplosiveArrowLevelBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_ExplosiveArrow_LevelBonus", 15f,
+                "Bow Tree", "Tier5_ExplosiveArrow_LevelBonus", 12f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_LevelBonus"), order: 8);
 
             // === Tier 6: 화살비 (H키 액티브) ===
