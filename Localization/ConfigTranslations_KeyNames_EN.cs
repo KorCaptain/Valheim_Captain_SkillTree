@@ -636,6 +636,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [One Shot] Slow Reload Multiplier",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [One Shot] Cooldown (sec)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [One Shot] Required Points",
+                ["Tier5_OneShot_LevelBonus"] = "Tier 5: [One Shot] Damage Bonus per Level (%)",
 
                 // === Tier 6: Vulkan Ice (H-key Active) ===
                 ["Tier6_IceBreath_Cooldown"] = "Tier 6: [Vulkan Ice] Cooldown (sec)",

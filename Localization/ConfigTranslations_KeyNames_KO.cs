@@ -638,6 +638,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [단 한 발] 장전 속도 패널티 배율",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [단 한 발] 쿨타임 (초)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [단 한 발] 필요 포인트",
+                ["Tier5_OneShot_LevelBonus"] = "Tier 5: [단 한 발] 레벨당 데미지 보너스 (%)",
 
                 // === Tier 6: 빙결 폭발탄 (H키 액티브) ===
                 ["Tier6_IceBreath_Cooldown"] = "Tier 6: [빙결 폭발탄] 쿨타임 (초)",

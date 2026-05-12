@@ -68,6 +68,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> CrossbowOneShotCooldown;
         public static ConfigEntry<float> CrossbowOneShotAoeRadius;
         public static ConfigEntry<float> CrossbowOneShotSlowReloadMultiplier;
+        public static ConfigEntry<float> CrossbowOneShotLevelBonus;
 
         // Tier 6: 발칸 아이스 (H키 액티브)
         public static ConfigEntry<float> CrossbowIceBreathCooldown;
@@ -199,7 +200,11 @@ namespace CaptainSkillTree.SkillTree
 
         public static float CrossbowOneShotDamageBonusValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_damage_bonus",
-            CrossbowOneShotDamageBonus?.Value ?? 400f);
+            CrossbowOneShotDamageBonus?.Value ?? 200f);
+
+        public static float CrossbowOneShotLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_level_bonus",
+            CrossbowOneShotLevelBonus?.Value ?? 40f);
 
         public static float CrossbowOneShotKnockbackValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_knockback",
@@ -373,7 +378,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier5_OneShot_Duration"), order: 20);
 
                 CrossbowOneShotDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_OneShot_DamageBonus", 400f,
+                    "Crossbow Tree", "Tier5_OneShot_DamageBonus", 200f,
                     SkillTreeConfig.GetConfigDescription("Tier5_OneShot_DamageBonus"), order: 20);
 
                 CrossbowOneShotKnockback = SkillTreeConfig.BindServerSync(config,
@@ -395,6 +400,10 @@ namespace CaptainSkillTree.SkillTree
                 CrossbowOneShotSlowReloadMultiplier = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier5_OneShot_SlowReloadMultiplier", 2.0f,
                     SkillTreeConfig.GetConfigDescription("Tier5_OneShot_SlowReloadMultiplier"), order: 20);
+
+                CrossbowOneShotLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier5_OneShot_LevelBonus", 40f,
+                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_LevelBonus"), order: 18);
 
                 // === Tier 6: 발칸 아이스 (H키 액티브) ===
                 CrossbowIceBreathCooldown = SkillTreeConfig.BindServerSync(config,

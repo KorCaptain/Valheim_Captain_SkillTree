@@ -462,6 +462,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_SlowReloadMultiplier"] = "Ур.5: [Один выстрел] Множитель медленной перезарядки",
                 ["Tier5_OneShot_Cooldown"] = "Ур.5: [Один выстрел] Перезарядка (сек)",
                 ["Tier5_OneShot_RequiredPoints"] = "Ур.5: [Один выстрел] Необходимые очки",
+                ["Tier5_OneShot_LevelBonus"] = "Ур.5: [Один выстрел] Бонус урона за уровень (%)",
 
                 // === Tier 6: Вулканический Лёд (клавиша H) ===
                 ["Tier6_IceBreath_Cooldown"] = "Ур.6: [Вулк. Лёд] Перезарядка (сек)",

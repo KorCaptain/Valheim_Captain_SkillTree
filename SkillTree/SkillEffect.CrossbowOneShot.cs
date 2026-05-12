@@ -361,7 +361,9 @@ namespace CaptainSkillTree.SkillTree
                         var hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius);
                         var processedEnemies = new System.Collections.Generic.HashSet<Character>();
                         var weapon = player.GetCurrentWeapon();
-                        float aoeBonus = Crossbow_Config.CrossbowOneShotDamageBonusValue / 100f;
+                        int oneShotLevel = SkillTreeManager.Instance?.GetSkillLevel("crossbow_Step6_expert") ?? 1;
+                        float levelBonus = (oneShotLevel - 1) * Crossbow_Config.CrossbowOneShotLevelBonusValue;
+                        float aoeBonus = (Crossbow_Config.CrossbowOneShotDamageBonusValue + levelBonus) / 100f;
 
                         foreach (var col in hitColliders)
                         {

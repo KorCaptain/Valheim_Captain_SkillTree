@@ -190,7 +190,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "crossbow_oneshot_desc",
                 DescriptionArgs = new object[] { Crossbow_Config.CrossbowOneShotDamageBonusValue, Crossbow_Config.CrossbowOneShotDurationValue },
                 RequiredPoints = Crossbow_Config.CrossbowOneShotRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-550, 350),
                 Category = "원거리",
@@ -838,15 +838,21 @@ namespace CaptainSkillTree.SkillTree
         public static string GetOneShotTooltip()
         {
             var tooltip = "";
+            int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("crossbow_Step6_expert") ?? 0;
+            float effectiveDamage = Crossbow_Config.CrossbowOneShotDamageBonusValue +
+                (currentLevel > 0 ? (currentLevel - 1) * Crossbow_Config.CrossbowOneShotLevelBonusValue : 0);
 
-            // 1. 스킬명
-            tooltip += $"<color=#FFD700><size=22>{L.Get("crossbow_oneshot_name")}</size></color>\n\n";
+            // 1. 스킬명 + 현재 레벨
+            if (currentLevel > 0)
+                tooltip += $"<color=#FFD700><size=22>{L.Get("crossbow_oneshot_name")}</size></color> <color=#FFA500><size=18>[Lv{currentLevel}/7]</size></color>\n\n";
+            else
+                tooltip += $"<color=#FFD700><size=22>{L.Get("crossbow_oneshot_name")}</size></color>\n\n";
 
             // 2. 설명
             tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("crossbow_oneshot_tooltip_desc", Crossbow_Config.CrossbowOneShotDurationValue)}</size></color>\n";
 
-            // 3. 데미지
-            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("attack_power_bonus_format", Crossbow_Config.CrossbowOneShotDamageBonusValue)}</size></color>\n";
+            // 3. 데미지 (현재 레벨 실제 데미지%)
+            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("attack_power_bonus_format", effectiveDamage)}</size></color>\n";
 
             // 4. 범위 (AOE 넉백)
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>AOE {Crossbow_Config.CrossbowOneShotAoeRadiusValue}m</size></color>\n";
@@ -869,6 +875,22 @@ namespace CaptainSkillTree.SkillTree
 
             // 9. 필요포인트
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Crossbow_Config.CrossbowOneShotRequiredPointsValue}</size></color>";
+
+            // 10. 다음 레벨 업그레이드 조건 표시
+            if (currentLevel >= 1 && currentLevel < 7)
+            {
+                int nextLevel = currentLevel + 1;
+                tooltip += $"\n\n<color=#FFD700><size=15>▶ {L.Get("oneshot_next_level_req", nextLevel)}</size></color>";
+                var missingItems = SkillTreeManager.Instance?.GetMissingOneShotItems(nextLevel);
+                if (missingItems != null && missingItems.Count > 0)
+                    tooltip += $"\n<color=#FF6B6B><size=14>  {L.Get("oneshot_missing_items", string.Join(", ", missingItems))}</size></color>";
+                else
+                    tooltip += $"\n<color=#00FF00><size=14>  ✅ {L.Get("oneshot_upgrade_ready")}</size></color>";
+            }
+            else if (currentLevel >= 7)
+            {
+                tooltip += $"\n\n<color=#FFD700><size=15>★ {L.Get("oneshot_max_level")}</size></color>";
+            }
 
             return tooltip.TrimEnd('\n');
         }
