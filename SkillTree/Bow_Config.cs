@@ -188,7 +188,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 5: [폭발 화살] (R키 액티브) ===
             BowExplosiveArrowDamage = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_ExplosiveArrow_DamageMultiplier", 120f,
+                "Bow Tree", "Tier5_ExplosiveArrow_DamageMultiplier", 50f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_DamageMultiplier"), order: 10);
 
             BowExplosiveArrowRadius = SkillTreeConfig.BindServerSync(config,
