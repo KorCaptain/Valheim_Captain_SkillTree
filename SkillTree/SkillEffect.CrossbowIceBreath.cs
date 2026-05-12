@@ -105,8 +105,13 @@ namespace CaptainSkillTree.SkillTree
         {
             if (player == null) yield break;
 
-            float firstHitPct = Crossbow_Config.CrossbowIceBreathFirstHitPctValue / 100f;
-            float dotPct      = Crossbow_Config.CrossbowIceBreathDotPctValue       / 100f;
+            int iceBreathLevel = SkillTreeManager.Instance?.GetSkillLevel("crossbow_ice_breath") ?? 1;
+            float effectiveFirstHitPct = Crossbow_Config.CrossbowIceBreathFirstHitPctValue
+                + (iceBreathLevel - 1) * Crossbow_Config.CrossbowIceBreathFirstHitLevelBonusValue;
+            float effectiveDotPct = Crossbow_Config.CrossbowIceBreathDotPctValue
+                + (iceBreathLevel - 1) * Crossbow_Config.CrossbowIceBreathDotLevelBonusValue;
+            float firstHitPct = effectiveFirstHitPct / 100f;
+            float dotPct      = effectiveDotPct       / 100f;
             int   dotCount    = Crossbow_Config.CrossbowIceBreathDotCountValue;
 
             // 무기 기본 공격력 (m_pierce 우선)

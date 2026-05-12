@@ -645,6 +645,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_IceBreath_DotPercent"] = "Tier 6: [Vulkan Ice] DoT Damage (%)",
                 ["Tier6_IceBreath_DotCount"] = "Tier 6: [Vulkan Ice] DoT Count",
                 ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [Vulkan Ice] Required Points",
+                ["Tier6_IceBreath_FirstHitLevelBonus"] = "Tier 6: [Vulkan Ice] First Hit Bonus Per Level (%)",
+                ["Tier6_IceBreath_DotLevelBonus"] = "Tier 6: [Vulkan Ice] DoT Bonus Per Level (%)",
 
                 // ============================================
                 // Knife Tree - 32 Keys

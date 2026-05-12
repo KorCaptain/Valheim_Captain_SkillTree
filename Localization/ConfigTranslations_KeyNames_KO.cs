@@ -647,6 +647,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_IceBreath_DotPercent"] = "Tier 6: [빙결 폭발탄] 도트 데미지 (%)",
                 ["Tier6_IceBreath_DotCount"] = "Tier 6: [빙결 폭발탄] 도트 횟수",
                 ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [빙결 폭발탄] 필요 포인트",
+                ["Tier6_IceBreath_FirstHitLevelBonus"] = "Tier 6: [빙결 폭발탄] 첫 타격 레벨당 보너스(%)",
+                ["Tier6_IceBreath_DotLevelBonus"] = "Tier 6: [빙결 폭발탄] DoT 레벨당 보너스(%)",
 
                 // ============================================
                 // Knife Tree (단검 트리) - 32개

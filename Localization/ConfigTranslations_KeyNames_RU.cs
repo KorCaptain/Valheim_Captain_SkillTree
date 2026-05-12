@@ -471,6 +471,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_IceBreath_DotPercent"] = "Ур.6: [Вулк. Лёд] Урон DoT (%)",
                 ["Tier6_IceBreath_DotCount"] = "Ур.6: [Вулк. Лёд] Количество DoT",
                 ["Tier6_IceBreath_RequiredPoints"] = "Ур.6: [Вулк. Лёд] Необходимые очки",
+                ["Tier6_IceBreath_FirstHitLevelBonus"] = "Ур.6: [Вулк. Лёд] Бонус первого удара за уровень (%)",
+                ["Tier6_IceBreath_DotLevelBonus"] = "Ур.6: [Вулк. Лёд] Бонус DoT за уровень (%)",
 
                 // ============================================
                 // Knife Tree - 32 ключа

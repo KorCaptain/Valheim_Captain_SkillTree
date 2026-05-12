@@ -214,7 +214,7 @@ namespace CaptainSkillTree.SkillTree
                     Crossbow_Config.CrossbowIceBreathCooldownValue
                 },
                 RequiredPoints = Crossbow_Config.CrossbowIceBreathRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(-625, 395),
                 Category = "원거리",
@@ -804,18 +804,26 @@ namespace CaptainSkillTree.SkillTree
         public static string GetIceBreathTooltip()
         {
             var tooltip = "";
+            int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("crossbow_ice_breath") ?? 0;
+            float effectiveFirstHit = Crossbow_Config.CrossbowIceBreathFirstHitPctValue +
+                (currentLevel > 0 ? (currentLevel - 1) * Crossbow_Config.CrossbowIceBreathFirstHitLevelBonusValue : 0);
+            float effectiveDot = Crossbow_Config.CrossbowIceBreathDotPctValue +
+                (currentLevel > 0 ? (currentLevel - 1) * Crossbow_Config.CrossbowIceBreathDotLevelBonusValue : 0);
 
-            // 1. 스킬명
-            tooltip += $"<color=#FFD700><size=22>{L.Get("crossbow_ice_breath_name")}</size></color>\n\n";
+            // 1. 스킬명 + 현재 레벨
+            if (currentLevel > 0)
+                tooltip += $"<color=#FFD700><size=22>{L.Get("crossbow_ice_breath_name")}</size></color> <color=#FFA500><size=18>[Lv{currentLevel}/7]</size></color>\n\n";
+            else
+                tooltip += $"<color=#FFD700><size=22>{L.Get("crossbow_ice_breath_name")}</size></color>\n\n";
 
             // 2. 설명
             tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("crossbow_ice_breath_tooltip_desc")}</size></color>\n";
 
-            // 3. 데미지
-            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("attack_power_bonus_format", Crossbow_Config.CrossbowIceBreathFirstHitPctValue)}  +  DoT {Crossbow_Config.CrossbowIceBreathDotPctValue}%×{Crossbow_Config.CrossbowIceBreathDotCountValue}</size></color>\n";
+            // 3. 데미지 (현재 레벨 실제 데미지)
+            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("attack_power_bonus_format", effectiveFirstHit)}  +  DoT {effectiveDot:F0}%×{Crossbow_Config.CrossbowIceBreathDotCountValue}</size></color>\n";
 
             // 4. 범위
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>10m</size></color>\n";
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </color><color=#B0E0E6><size=16>10m</size></color>\n";
 
             // 5. 소모
             tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_format", Crossbow_Config.CrossbowIceBreathStaminaCostValue)}</size></color>\n";
@@ -831,6 +839,22 @@ namespace CaptainSkillTree.SkillTree
 
             // 9. 필요포인트
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Crossbow_Config.CrossbowIceBreathRequiredPointsValue}</size></color>";
+
+            // 10. 다음 레벨 업그레이드 조건
+            if (currentLevel >= 1 && currentLevel < 7)
+            {
+                int nextLevel = currentLevel + 1;
+                tooltip += $"\n\n<color=#FFD700><size=15>▶ {L.Get("icebreath_next_level_req", nextLevel)}</size></color>";
+                var missingItems = SkillTreeManager.Instance?.GetMissingIceBreathItems(nextLevel);
+                if (missingItems != null && missingItems.Count > 0)
+                    tooltip += $"\n<color=#FF6B6B><size=14>  {L.Get("icebreath_missing_items", string.Join(", ", missingItems))}</size></color>";
+                else
+                    tooltip += $"\n<color=#00FF00><size=14>  ✅ {L.Get("icebreath_upgrade_ready")}</size></color>";
+            }
+            else if (currentLevel >= 7)
+            {
+                tooltip += $"\n\n<color=#FFD700><size=15>★ {L.Get("icebreath_max_level")}</size></color>";
+            }
 
             return tooltip.TrimEnd('\n');
         }
