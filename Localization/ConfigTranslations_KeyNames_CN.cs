@@ -421,6 +421,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [箭雨] 冷却时间 (秒)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [箭雨] 体力消耗 (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [箭雨] 所需点数",
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [箭雨] 每级伤害加成 (%)",
 
                 // ============================================
                 // 剑树 (旧版) - 30个键

@@ -330,6 +330,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Ур.6: [Дождь стрел] Перезарядка (сек)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Ур.6: [Дождь стрел] Расход выносливости (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Ур.6: [Дождь стрел] Необходимые очки",
+                ["Tier6_ArrowRain_LevelBonus"] = "Ур.6: [Дождь стрел] Бонус урона за уровень (%)",
 
                 // ============================================
                 // Sword Tree (старый формат) - 20 ключей

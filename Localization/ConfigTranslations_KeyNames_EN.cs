@@ -434,6 +434,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [Arrow Rain] Cooldown (sec)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [Arrow Rain] Stamina Cost (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [Arrow Rain] Required Points",
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [Arrow Rain] Damage Bonus per Level (%)",
 
                 // ============================================
                 // Sword Tree - 30 Keys

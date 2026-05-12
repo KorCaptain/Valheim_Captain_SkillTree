@@ -421,6 +421,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [Chuva de Flechas] Recarga (seg)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [Chuva de Flechas] Custo de Stamina (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [Chuva de Flechas] Pontos Necessários",
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [Chuva de Flechas] Bônus de Dano por Nível (%)",
 
                 // ============================================
                 // Árvore de Espada (Legado) - 30 Chaves

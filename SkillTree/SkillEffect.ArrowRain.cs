@@ -328,7 +328,9 @@ namespace CaptainSkillTree.SkillTree
 
                 var dmg = weapon != null ? weapon.GetDamage() : new HitData.DamageTypes();
                 if (ammo != null) dmg.Add(ammo.GetDamage());
-                dmg.Modify(Bow_Config.ArrowRainDamagePercentValue / 100f);
+                int arrowRainLevel = SkillTreeManager.Instance?.GetSkillLevel("bow_Step6_arrow_rain") ?? 1;
+                float arrowRainLevelBonus = (arrowRainLevel - 1) * Bow_Config.ArrowRainLevelBonusValue;
+                dmg.Modify((Bow_Config.ArrowRainDamagePercentValue + arrowRainLevelBonus) / 100f);
 
                 var cols = Physics.OverlapSphere(point, 3f);
                 foreach (var col in cols)

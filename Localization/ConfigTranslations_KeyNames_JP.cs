@@ -413,6 +413,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [矢の雨] クールダウン (秒)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [矢の雨] スタミナコスト (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [矢の雨] 必要ポイント",
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [矢の雨] レベルあたりのダメージボーナス (%)",
             };
         }
     }

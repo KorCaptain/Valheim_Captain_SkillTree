@@ -434,6 +434,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [화살비] 쿨타임 (초)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [화살비] 스태미나 소모 (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [화살비] 필요 포인트",
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [화살비] 레벨당 데미지 보너스 (%)",
 
                 // ============================================
                 // Sword Tree (검 트리) - 30개

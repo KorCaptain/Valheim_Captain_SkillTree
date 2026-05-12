@@ -424,7 +424,7 @@ namespace CaptainSkillTree.SkillTree
                     Bow_Config.ArrowRainCooldownValue
                 },
                 RequiredPoints = Bow_Config.ArrowRainRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-280, 475),
                 Category = "원거리",
@@ -745,15 +745,20 @@ namespace CaptainSkillTree.SkillTree
         public static string GetArrowRainTooltip()
         {
             var tooltip = "";
+            int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("bow_Step6_arrow_rain") ?? 0;
+            float effectiveDamage = Bow_Config.ArrowRainDamagePercentValue + (currentLevel > 0 ? (currentLevel - 1) * Bow_Config.ArrowRainLevelBonusValue : 0);
 
-            // 1. 스킬명
-            tooltip += $"<color=#FFD700><size=22>{L.Get("bow_arrow_rain_name")}</size></color>\n\n";
+            // 1. 스킬명 + 현재 레벨
+            if (currentLevel > 0)
+                tooltip += $"<color=#FFD700><size=22>{L.Get("bow_arrow_rain_name")}</size></color> <color=#FFA500><size=18>[Lv{currentLevel}/7]</size></color>\n\n";
+            else
+                tooltip += $"<color=#FFD700><size=22>{L.Get("bow_arrow_rain_name")}</size></color>\n\n";
 
             // 2. 설명
             tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("bow_arrow_rain_tooltip_desc")}</size></color>\n";
 
-            // 3. 데미지 (화살 수 × 데미지%)
-            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("bow_arrow_rain_damage_format", Bow_Config.ArrowRainArrowCountValue, Bow_Config.ArrowRainDamagePercentValue)}</size></color>\n";
+            // 3. 데미지 (현재 레벨 실제 데미지%)
+            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("bow_arrow_rain_damage_format", Bow_Config.ArrowRainArrowCountValue, effectiveDamage)}</size></color>\n";
 
             // 4. 범위 (낙하 반경 / AOE)
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("bow_arrow_rain_range_format", Bow_Config.ArrowRainRadiusValue)}</size></color>\n";
@@ -772,6 +777,22 @@ namespace CaptainSkillTree.SkillTree
 
             // 9. 필요포인트
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Bow_Config.ArrowRainRequiredPointsValue}</size></color>";
+
+            // 10. 다음 레벨 업그레이드 조건 표시
+            if (currentLevel >= 1 && currentLevel < 7)
+            {
+                int nextLevel = currentLevel + 1;
+                tooltip += $"\n\n<color=#FFD700><size=15>▶ {L.Get("arrow_rain_next_level_req", nextLevel)}</size></color>";
+                var missingItems = SkillTreeManager.Instance?.GetMissingArrowRainItems(nextLevel);
+                if (missingItems != null && missingItems.Count > 0)
+                    tooltip += $"\n<color=#FF6B6B><size=14>  {L.Get("arrow_rain_missing_items", string.Join(", ", missingItems))}</size></color>";
+                else
+                    tooltip += $"\n<color=#00FF00><size=14>  ✅ {L.Get("arrow_rain_upgrade_ready")}</size></color>";
+            }
+            else if (currentLevel >= 7)
+            {
+                tooltip += $"\n\n<color=#FFD700><size=15>★ {L.Get("arrow_rain_max_level")}</size></color>";
+            }
 
             return tooltip.TrimEnd('\n');
         }
