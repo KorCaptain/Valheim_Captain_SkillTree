@@ -321,6 +321,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_Cooldown"] = "Ур.5: [Взрывная стрела] Перезарядка (сек)",
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Ур.5: [Взрывная стрела] Расход выносливости (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Ур.5: [Взрывная стрела] Необходимые очки",
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Ур.5: [Взрывная стрела] Бонус урона за уровень (%)",
 
                 // === Tier 6: Дождь стрел (6) ===
                 ["Tier6_ArrowRain_DamagePercent"] = "Ур.6: [Дождь стрел] Урон за стрелу (%)",

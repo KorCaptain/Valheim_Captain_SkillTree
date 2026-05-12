@@ -425,6 +425,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_Cooldown"] = "Tier 5: [폭발 화살] 쿨타임 (초)",
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [폭발 화살] 스태미나 소모 (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [폭발 화살] 필요 포인트",
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Tier 5: [폭발 화살] 레벨당 데미지 보너스 (%)",
 
                 // === Tier 6: [화살비] (6) ===
                 ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [화살비] 화살당 데미지 (%)",

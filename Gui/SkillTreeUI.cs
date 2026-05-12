@@ -1595,6 +1595,127 @@ namespace CaptainSkillTree.Gui
         }
 
         /// <summary>
+        /// 폭발화살 Lv2+ 업그레이드 확인 다이얼로그
+        /// </summary>
+        private void ShowExplosiveArrowUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
+        {
+            if (confirmDialog != null)
+                DestroyImmediate(confirmDialog);
+
+            confirmDialog = new GameObject("ExplosiveArrowUpgradeDialog");
+            confirmDialog.transform.SetParent(panel.transform, false);
+
+            var bgImage = confirmDialog.AddComponent<Image>();
+            bgImage.color = new Color(0, 0, 0, 0.7f);
+
+            var bgRect = confirmDialog.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.sizeDelta = Vector2.zero;
+            bgRect.anchoredPosition = Vector2.zero;
+
+            var dialogPanel = new GameObject("GoldBorder");
+            dialogPanel.transform.SetParent(confirmDialog.transform, false);
+
+            var dialogImage = dialogPanel.AddComponent<Image>();
+            dialogImage.color = new Color(0.85f, 0.7f, 0.1f, 0.85f);
+
+            var dialogRect = dialogPanel.GetComponent<RectTransform>();
+            dialogRect.sizeDelta = new Vector2(420, 260);
+            dialogRect.anchoredPosition = Vector2.zero;
+
+            var darkBgGo = new GameObject("DarkBg");
+            darkBgGo.transform.SetParent(dialogPanel.transform, false);
+
+            var darkBgImage = darkBgGo.AddComponent<Image>();
+            darkBgImage.color = new Color(0.08f, 0.07f, 0.20f, 0.97f);
+
+            var darkBgRect = darkBgGo.GetComponent<RectTransform>();
+            darkBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+            darkBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+            darkBgRect.pivot = new Vector2(0.5f, 0.5f);
+            darkBgRect.sizeDelta = new Vector2(414, 254);
+            darkBgRect.anchoredPosition = Vector2.zero;
+
+            var titleBarGo = new GameObject("TitleBar");
+            titleBarGo.transform.SetParent(darkBgGo.transform, false);
+
+            var titleBarImage = titleBarGo.AddComponent<Image>();
+            titleBarImage.color = new Color(0.10f, 0.08f, 0.25f, 1f);
+            titleBarImage.raycastTarget = false;
+
+            var titleBarRect = titleBarGo.GetComponent<RectTransform>();
+            titleBarRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleBarRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleBarRect.pivot = new Vector2(0.5f, 0.5f);
+            titleBarRect.sizeDelta = new Vector2(414, 44);
+            titleBarRect.anchoredPosition = new Vector2(0, 108);
+
+            var titleObj = new GameObject("Title");
+            titleObj.transform.SetParent(darkBgGo.transform, false);
+
+            var titleText = titleObj.AddComponent<UnityEngine.UI.Text>();
+            titleText.text = L10n.Get("explosive_arrow_upgrade_title");
+            titleText.fontSize = 20;
+            titleText.fontStyle = FontStyle.Bold;
+            titleText.color = new Color(1f, 0.85f, 0f, 1f);
+            titleText.alignment = TextAnchor.MiddleCenter;
+            titleText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+
+            var titleShadow = titleObj.AddComponent<UnityEngine.UI.Shadow>();
+            titleShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            titleShadow.effectDistance = new Vector2(1f, -1f);
+
+            var titleRect = titleObj.GetComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRect.pivot = new Vector2(0.5f, 0.5f);
+            titleRect.sizeDelta = new Vector2(380, 34);
+            titleRect.anchoredPosition = new Vector2(0, 98);
+
+            var contentObj = new GameObject("Content");
+            contentObj.transform.SetParent(darkBgGo.transform, false);
+
+            var contentText = contentObj.AddComponent<UnityEngine.UI.Text>();
+            contentText.text = L10n.Get("explosive_arrow_upgrade_confirm", targetLevel);
+            contentText.fontSize = 16;
+            contentText.color = Color.white;
+            contentText.alignment = TextAnchor.MiddleCenter;
+            contentText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+
+            var contentShadow = contentObj.AddComponent<UnityEngine.UI.Shadow>();
+            contentShadow.effectColor = new Color(0, 0, 0, 0.8f);
+            contentShadow.effectDistance = new Vector2(1f, -1f);
+
+            var contentRect = contentObj.GetComponent<RectTransform>();
+            contentRect.anchorMin = new Vector2(0.5f, 0.5f);
+            contentRect.anchorMax = new Vector2(0.5f, 0.5f);
+            contentRect.pivot = new Vector2(0.5f, 0.5f);
+            contentRect.sizeDelta = new Vector2(390, 120);
+            contentRect.anchoredPosition = new Vector2(0, 10);
+
+            var capturedNodeRect = nodeRect;
+            confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"),
+                new Vector2(-68f, -102f), new Color(0.60f, 0.10f, 0.10f, 1f), darkBgGo.transform, () => {
+                PlayConfirmSound();
+                HideResetConfirmDialog();
+                var mgr = SkillTree.SkillTreeManager.Instance;
+                mgr.AddPendingInvestment("bow_Step6_critboost");
+                mgr.ConfirmInvestments();
+                nodeUI.RefreshNodeStates();
+                RefreshUI();
+            });
+
+            cancelButton = CreateLuxuryButton("CancelButton", L10n.Get("ui_cancel"),
+                new Vector2(68f, -102f), new Color(0.22f, 0.22f, 0.30f, 1f), darkBgGo.transform, () => {
+                PlayCancelSound();
+                HideResetConfirmDialog();
+            });
+
+            confirmDialog.transform.SetAsLastSibling();
+        }
+
+        /// <summary>
         /// 탱커 Lv2+ 업그레이드 확인 다이얼로그
         /// </summary>
         private void ShowTankerUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
@@ -2548,6 +2669,22 @@ namespace CaptainSkillTree.Gui
                     }
                 }
             }
+            else if (node.Id == "bow_Step6_critboost" && currentLevel >= 1)
+            {
+                // 폭발화살 Lv2+ 업그레이드: 트로피 체크 (어드민은 면제)
+                int targetLevel = currentLevel + 1;
+                if (targetLevel > 7)
+                    return new InvestResult(false, L10n.Get("explosive_arrow_max_level"));
+                bool isAdminEA = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                if (!isAdminEA && !manager.HasExplosiveArrowLevelItems(targetLevel))
+                {
+                    var missing = manager.GetMissingExplosiveArrowItems(targetLevel);
+                    var msg = L10n.Get("explosive_arrow_level_item_required", targetLevel);
+                    if (missing.Count > 0)
+                        msg += "\n" + L10n.Get("explosive_arrow_missing_items", string.Join(", ", missing));
+                    return new InvestResult(false, msg);
+                }
+            }
             else if (node.Id == "Producer" && manager.GetSkillLevel("Producer") >= 1)
             {
                 // Producer Lv1+ 업그레이드: 트로피 아이템 체크 (어드민은 면제)
@@ -2859,6 +2996,38 @@ namespace CaptainSkillTree.Gui
                         var msg = L10n.Get("rogue_level_item_required", targetLevel);
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("rogue_missing_items", string.Join(", ", missing));
+                        tooltipUI.ShowWarning(msg);
+                        return;
+                    }
+                }
+
+                // 폭발화살 Lv1+ 업그레이드: 확인 다이얼로그 표시
+                if (node.Id == "bow_Step6_critboost" && manager.GetSkillLevel("bow_Step6_critboost") >= 1)
+                {
+                    int targetLevel = manager.GetSkillLevel("bow_Step6_critboost") + 1;
+                    if (targetLevel > 7)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("explosive_arrow_max_level"));
+                        return;
+                    }
+                    bool isAdminExplosive = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (isAdminExplosive || manager.HasExplosiveArrowLevelItems(targetLevel))
+                    {
+                        RectTransform nodeRectEA = null;
+                        if (nodeUI != null && nodeUI.nodeObjects.ContainsKey(node.Id))
+                        {
+                            var nodeObj = nodeUI.nodeObjects[node.Id];
+                            if (nodeObj != null) nodeRectEA = nodeObj.GetComponent<RectTransform>();
+                        }
+                        ShowExplosiveArrowUpgradeConfirmDialog(targetLevel, nodeRectEA);
+                        return;
+                    }
+                    else
+                    {
+                        var missing = manager.GetMissingExplosiveArrowItems(targetLevel);
+                        var msg = L10n.Get("explosive_arrow_level_item_required", targetLevel);
+                        if (missing.Count > 0)
+                            msg += "\n" + L10n.Get("explosive_arrow_missing_items", string.Join(", ", missing));
                         tooltipUI.ShowWarning(msg);
                         return;
                     }

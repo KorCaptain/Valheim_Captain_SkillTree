@@ -46,6 +46,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> BowExplosiveArrowCooldown;
         public static ConfigEntry<float> BowExplosiveArrowStaminaCost;
         public static ConfigEntry<float> BowExplosiveArrowRadius;
+        public static ConfigEntry<float> BowExplosiveArrowLevelBonus;
 
         // === Tier 6: 화살비 (H키 액티브) ===
         public static ConfigEntry<float> ArrowRainDamagePercent;
@@ -83,6 +84,7 @@ namespace CaptainSkillTree.SkillTree
         public static float BowExplosiveArrowCooldownValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_cooldown", BowExplosiveArrowCooldown.Value);
         public static float BowExplosiveArrowStaminaCostValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_stamina_cost", BowExplosiveArrowStaminaCost.Value);
         public static float BowExplosiveArrowRadiusValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_radius", BowExplosiveArrowRadius.Value);
+        public static float BowExplosiveArrowLevelBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_level_bonus", BowExplosiveArrowLevelBonus?.Value ?? 15f);
         public const float BowExplosiveArrowActivationDuration = 6f;
         public const float BowExplosiveArrowAutoFireInterval   = 0.7f;
 
@@ -204,6 +206,10 @@ namespace CaptainSkillTree.SkillTree
             BowExplosiveArrowRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Bow Tree", "Tier5_ExplosiveArrow_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_RequiredPoints"), order: 9);
+
+            BowExplosiveArrowLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier5_ExplosiveArrow_LevelBonus", 15f,
+                SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_LevelBonus"), order: 8);
 
             // === Tier 6: 화살비 (H키 액티브) ===
             ArrowRainDamagePercent = SkillTreeConfig.BindServerSync(config,

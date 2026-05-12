@@ -412,6 +412,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_Cooldown"] = "Tier 5: [Flecha Explosiva] Recarga (seg)",
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [Flecha Explosiva] Custo de Stamina (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [Flecha Explosiva] Pontos Necessários",
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Tier 5: [Flecha Explosiva] Bônus de Dano por Nível (%)",
 
                 // === Tier 6: Chuva de Flechas (6) ===
                 ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [Chuva de Flechas] Dano por Flecha (%)",

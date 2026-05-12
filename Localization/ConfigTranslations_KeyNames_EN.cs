@@ -425,6 +425,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_Cooldown"] = "Tier 5: [Explosive Arrow] Cooldown (sec)",
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [Explosive Arrow] Stamina Cost (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [Explosive Arrow] Required Points",
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Tier 5: [Explosive Arrow] Damage Bonus per Level (%)",
 
                 // === Tier 6: [Arrow Rain] (6) ===
                 ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [Arrow Rain] Damage per Arrow (%)",

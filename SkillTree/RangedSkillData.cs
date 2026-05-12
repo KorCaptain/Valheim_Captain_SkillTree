@@ -400,7 +400,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "bow_explosive_desc",
                 DescriptionArgs = new object[] { Bow_Config.BowExplosiveArrowDamageValue, Bow_Config.BowExplosiveArrowStaminaCostValue, Bow_Config.BowExplosiveArrowCooldownValue },
                 RequiredPoints = Bow_Config.BowExplosiveArrowRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-365, 475),
                 Category = "원거리",
@@ -686,15 +686,20 @@ namespace CaptainSkillTree.SkillTree
         public static string GetExplosiveArrowTooltip()
         {
             var tooltip = "";
+            int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("bow_Step6_critboost") ?? 0;
+            float effectiveDamage = Bow_Config.BowExplosiveArrowDamageValue + (currentLevel > 0 ? (currentLevel - 1) * Bow_Config.BowExplosiveArrowLevelBonusValue : 0);
 
-            // 1. 스킬명
-            tooltip += $"<color=#FFD700><size=22>{L.Get("bow_explosive_name")}</size></color>\n\n";
+            // 1. 스킬명 + 현재 레벨
+            if (currentLevel > 0)
+                tooltip += $"<color=#FFD700><size=22>{L.Get("bow_explosive_name")}</size></color> <color=#FFA500><size=18>[Lv{currentLevel}/7]</size></color>\n\n";
+            else
+                tooltip += $"<color=#FFD700><size=22>{L.Get("bow_explosive_name")}</size></color>\n\n";
 
             // 2. 설명
             tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("bow_explosive_tooltip_desc")}</size></color>\n";
 
-            // 3. 데미지
-            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("bow_explosive_damage_format", Bow_Config.BowExplosiveArrowDamageValue)}</size></color>\n";
+            // 3. 데미지 (레벨별 실제 데미지 표시)
+            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("bow_explosive_damage_format", effectiveDamage)}</size></color>\n";
 
             // 4. 범위
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("bow_explosive_range_format", 5)}</size></color>\n";
@@ -713,6 +718,22 @@ namespace CaptainSkillTree.SkillTree
 
             // 9. 필요포인트
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Bow_Config.BowExplosiveArrowRequiredPointsValue}</size></color>";
+
+            // 10. 다음 레벨 업그레이드 조건 표시 (Lv1 이상, 최대 미달성 시)
+            if (currentLevel >= 1 && currentLevel < 7)
+            {
+                int nextLevel = currentLevel + 1;
+                tooltip += $"\n\n<color=#FFD700><size=15>▶ {L.Get("explosive_arrow_next_level_req", nextLevel)}</size></color>";
+                var missingItems = SkillTreeManager.Instance?.GetMissingExplosiveArrowItems(nextLevel);
+                if (missingItems != null && missingItems.Count > 0)
+                    tooltip += $"\n<color=#FF6B6B><size=14>  {L.Get("explosive_arrow_missing_items", string.Join(", ", missingItems))}</size></color>";
+                else
+                    tooltip += $"\n<color=#00FF00><size=14>  ✅ {L.Get("explosive_arrow_upgrade_ready")}</size></color>";
+            }
+            else if (currentLevel >= 7)
+            {
+                tooltip += $"\n\n<color=#FFD700><size=15>★ {L.Get("explosive_arrow_max_level")}</size></color>";
+            }
 
             return tooltip.TrimEnd('\n');
         }
