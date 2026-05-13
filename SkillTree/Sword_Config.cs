@@ -135,6 +135,8 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> ParryRushCooldown;
 
+        private static ConfigEntry<float> WhirlwindDamageLevelBonus;
+
         // ===== Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ?≫떚釉??ㅽ궗 =====
 
         /// <summary>
@@ -256,6 +258,8 @@ namespace CaptainSkillTree.SkillTree
             SkillTreeConfig.GetEffectiveValue("ParryRush_StaminaCost", ParryRushStaminaCost?.Value ?? 10f);
         public static float ParryRushCooldownValue =>
             SkillTreeConfig.GetEffectiveValue("ParryRush_Cooldown", ParryRushCooldown?.Value ?? 35f);
+        public static float WhirlwindDamageLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("sword_tier6_whirlwind_damage_level_bonus", WhirlwindDamageLevelBonus?.Value ?? 10f);
 
         // === Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ===
         public static int RushSlashRequiredPointsValue =>
@@ -515,6 +519,14 @@ namespace CaptainSkillTree.SkillTree
                 35f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ParryRush_Cooldown"),
                 order: -55
+            );
+
+            WhirlwindDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier6_Whirlwind_DamageLevelBonus",
+                10f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_DamageLevelBonus"),
+                order: -56
             );
 
             // Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ?≫떚釉??ㅽ궗

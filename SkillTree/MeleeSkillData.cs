@@ -387,7 +387,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "sword_desc_parry_rush",
                 DescriptionArgs = new object[] { Sword_Config.ParryRushDurationValue },
                 RequiredPoints = Sword_Config.SwordStep5DefenseSwitchRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(470, 360),
                 Category = "근접",

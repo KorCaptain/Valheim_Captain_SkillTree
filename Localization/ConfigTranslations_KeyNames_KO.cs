@@ -762,6 +762,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_RushSlash_MoveSpeed"] = "Tier 6: [돌진 연속 베기] 이동 속도 (m/s)",
                 ["Tier6_RushSlash_AttackSpeedBonus"] = "Tier 6: [돌진 연속 베기] 공격속도 보너스 (%)",
                 ["Tier6_RushSlash_DamageLevelBonus"] = "Tier 6: [돌진 연속 베기] 레벨당 데미지 보너스 (%)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Tier 6: [회오리베기] 레벨당 데미지 보너스 (%)",
 
                 // ============================================
                 // Mace Tree (둔기 트리) - 34개

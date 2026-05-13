@@ -551,6 +551,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_RushSlash_AttackSpeedBonus"] = "Ур.6: [Рывок-удар] Бонус скорости атаки (%)",
                 ["Tier6_RushSlash_PathWidth"] = "Tier 6: [Rush Slash] Path Hit Width (m)",
                 ["Tier6_RushSlash_DamageLevelBonus"] = "Ур.6: [Рывок-удар] Бонус урона за уровень (%)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Ур.6: [Вихревой удар] Бонус урона за уровень (%)",
 
                 // ============================================
                 // Mace Tree - 34 ключа

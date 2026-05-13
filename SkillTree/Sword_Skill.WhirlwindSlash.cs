@@ -93,9 +93,11 @@ namespace CaptainSkillTree.SkillTree
             const float radius1 = 5f;
             const float radius2 = 8f;
             const float radius3 = 12f;
-            const float dmg1    = 140f;
-            const float dmg2    = 180f;
-            const float dmg3    = 220f;
+            int whirlLevel = SkillTreeManager.Instance?.GetSkillLevel("sword_step5_defswitch") ?? 1;
+            float levelBonus = (whirlLevel - 1) * Sword_Config.WhirlwindDamageLevelBonusValue;
+            float dmg1 = 80f + levelBonus;
+            float dmg2 = 120f + levelBonus;
+            float dmg3 = 160f + levelBonus;
 
             // === 1차 공격 ===
             if (player != null && !player.IsDead())
