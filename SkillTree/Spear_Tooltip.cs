@@ -159,10 +159,18 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("spear_Step5_penetrate") ?? 0;
+                float levelBonus = currentLevel > 0 ? (currentLevel - 1) * Spear_Config.SpearPenetrateDamageLevelBonusValue : 0;
+                float effectiveDamage = Spear_Config.SpearStep6PenetrateLightningDamageValue + levelBonus;
+
+                string skillNameDisplay = currentLevel > 0
+                    ? $"{L.Get("spear_skill_penetrate")} [Lv{currentLevel}/7]"
+                    : L.Get("spear_skill_penetrate");
+
                 var tooltip = "";
 
                 // 1. 스킬명 (#FFD700, size=22)
-                tooltip += $"<color=#FFD700><size=22>{L.Get("spear_skill_penetrate")}</size></color>\n\n";
+                tooltip += $"<color=#FFD700><size=22>{skillNameDisplay}</size></color>\n\n";
 
                 // 2. 설명 (#FFD700 / #E0E0E0)
                 tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("spear_desc_penetrate", Spear_Config.SpearStep6PenetrateBuffDurationValue, Spear_Config.SpearStep6PenetrateComboCountValue)}</size></color>\n";
@@ -170,10 +178,8 @@ namespace CaptainSkillTree.SkillTree
                 // 2-1. 공격 방식 (#87CEEB / #E0E0E0)
                 tooltip += $"<color=#87CEEB><size=16>▶ </size></color><color=#E0E0E0><size=16>{L.Get("spear_desc_penetrate_mechanic")}</size></color>\n";
 
-                // 3. 데미지 (#FF6B6B / #FFB6C1)
-                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("spear_desc_penetrate_damage", Spear_Config.SpearStep6PenetrateLightningDamageValue)}</size></color>\n";
-
-                // 4. 범위 - 생략 (단일 대상)
+                // 3. 데미지 (#FF6B6B / #FFB6C1) - 레벨 보정 포함
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("spear_desc_penetrate_damage", effectiveDamage)}</size></color>\n";
 
                 // 5. 소모 (#FFB347 / #FFDAB9)
                 tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {Spear_Config.SpearStep6PenetrateStaminaCostValue}</size></color>\n";
@@ -193,13 +199,31 @@ namespace CaptainSkillTree.SkillTree
                 // 10. 필요포인트 (#87CEEB / #FF6B6B)
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Spear_Config.SpearPenetrateRequiredPointsValue}</size></color>";
 
-                return tooltip.TrimEnd('\n');
+                string levelInfo = BuildPenetrateLevelInfo(currentLevel);
+                return string.IsNullOrEmpty(levelInfo)
+                    ? tooltip.TrimEnd('\n')
+                    : tooltip.TrimEnd('\n') + "\n" + levelInfo;
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[창 툴팁] GetSpearStep5PenetrateTooltip 생성 실패: {ex.Message}");
                 return L.Get("tooltip_generation_error");
             }
+        }
+
+        private static string BuildPenetrateLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("penetrate_max_level")}</size></color>";
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingPenetrateItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("penetrate_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("penetrate_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("penetrate_upgrade_ready")}</size></color>";
+            return req;
         }
 
         /// <summary>

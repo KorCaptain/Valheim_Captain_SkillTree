@@ -42,6 +42,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> SpearStep5PenetrateComboCount;
         public static ConfigEntry<float> SpearStep5PenetrateCooldown;
         public static ConfigEntry<float> SpearStep5PenetrateStaminaCost;
+        private static ConfigEntry<float> SpearPenetrateDamageLevelBonus;
 
         public static ConfigEntry<float> SpearStep5ComboCooldown;
         public static ConfigEntry<float> SpearStep5ComboDamage;
@@ -82,7 +83,10 @@ namespace CaptainSkillTree.SkillTree
 
         // === 꿰뚫는 창 (번개 충격) 접근 프로퍼티 ===
         public static float SpearStep6PenetrateBuffDurationValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_buff_duration", SpearStep5PenetrateBuffDuration.Value);
-        public static float SpearStep6PenetrateLightningDamageValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_lightning_damage", SpearStep5PenetrateLightningDamage.Value);
+        public static float SpearStep6PenetrateLightningDamageValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_lightning_damage", SpearStep5PenetrateLightningDamage?.Value ?? 50f);
+        public static float SpearPenetrateDamageLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("spear_tier5_penetrate_damage_level_bonus",
+            SpearPenetrateDamageLevelBonus?.Value ?? 15f);
         public static int SpearStep6PenetrateComboCountValue => (int)SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_combo_count", SpearStep5PenetrateComboCount.Value);
         public static float SpearStep6PenetrateCooldownValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_cooldown", SpearStep5PenetrateCooldown.Value);
         public static float SpearStep6PenetrateStaminaCostValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_stamina_cost", SpearStep5PenetrateStaminaCost.Value);
@@ -134,6 +138,12 @@ namespace CaptainSkillTree.SkillTree
                 "Tier5_Penetrate_RequiredPoints",
                 3,
                 SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_RequiredPoints"));
+
+            SpearPenetrateDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree",
+                "Tier5_Penetrate_LightningDamageLevelBonus",
+                15f,
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_LightningDamageLevelBonus"));
 
             SpearComboRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
@@ -237,7 +247,7 @@ namespace CaptainSkillTree.SkillTree
             SpearStep5PenetrateLightningDamage = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_LightningDamage",
-                125f,
+                50f,
                 SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_LightningDamage"));
 
             SpearStep5PenetrateComboCount = SkillTreeConfig.BindServerSync(config,

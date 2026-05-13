@@ -534,7 +534,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "spear_desc_penetrate",
                 DescriptionArgs = new object[] { Spear_Config.SpearStep6PenetrateBuffDurationValue, Spear_Config.SpearStep6PenetrateComboCountValue },
                 RequiredPoints = Spear_Config.SpearPenetrateRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(615, 135),
                 Category = "근접",

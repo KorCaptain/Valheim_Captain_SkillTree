@@ -521,6 +521,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Penetrate_HitCount"] = "Tier 5-1: [꿰뚫는 창] 번개 발동 연속 적중 횟수",
                 ["Tier5_Penetrate_GKey_Cooldown"] = "Tier 5-1: [꿰뚫는 창] G키 쿨타임 (초)",
                 ["Tier5_Penetrate_GKey_StaminaCost"] = "Tier 5-1: [꿰뚫는 창] G키 스태미나 소모",
+                ["Tier5_Penetrate_LightningDamageLevelBonus"] = "Tier 5-1: [꿰뚫는 창] 레벨당 번개 데미지 보너스 (%)",
 
                 // === Spear Tree: 연공창 (8개) ===
                 ["Tier5_Combo_RequiredPoints"] = "Tier 5-2: [연공창] 필요 포인트",

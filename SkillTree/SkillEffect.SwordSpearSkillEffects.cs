@@ -577,7 +577,9 @@ namespace CaptainSkillTree.SkillTree
             {
                 isProcessingSpearLightningDamage = true;
 
-                float damageMultiplier = Spear_Config.SpearStep6PenetrateLightningDamageValue / 100f;
+                int penetrateLevel = SkillTreeManager.Instance?.GetSkillLevel("spear_Step5_penetrate") ?? 1;
+                float penetrateLevelBonus = (penetrateLevel - 1) * Spear_Config.SpearPenetrateDamageLevelBonusValue;
+                float damageMultiplier = (Spear_Config.SpearStep6PenetrateLightningDamageValue + penetrateLevelBonus) / 100f;
 
                 // 1. 번개 데미지 계산
                 float baseDamage = hit != null ? hit.GetTotalDamage() : 50f;

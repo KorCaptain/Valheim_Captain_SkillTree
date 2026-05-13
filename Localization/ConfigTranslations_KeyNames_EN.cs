@@ -519,6 +519,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Penetrate_HitCount"] = "Tier 5-1: [Penetrating Spear] Lightning Trigger Hit Count",
                 ["Tier5_Penetrate_GKey_Cooldown"] = "Tier 5-1: [Penetrating Spear] G-Key Cooldown (sec)",
                 ["Tier5_Penetrate_GKey_StaminaCost"] = "Tier 5-1: [Penetrating Spear] G-Key Stamina Cost",
+                ["Tier5_Penetrate_LightningDamageLevelBonus"] = "Tier 5-1: [Penetrating Spear] Lightning Damage Level Bonus (%)",
 
                 // === Spear Tree: Combo Spear (8 keys) ===
                 ["Tier5_Combo_RequiredPoints"] = "Tier 5-2: [Combo Spear] Required Points",

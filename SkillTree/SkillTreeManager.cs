@@ -1260,6 +1260,12 @@ namespace CaptainSkillTree.SkillTree
                         int targetLevel = currentLevel + 1;
                         ConsumeFuryHammerLevelItems(targetLevel);
                     }
+                    // 꿰뚫는 창: Lv2+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "spear_Step5_penetrate" && currentLevel >= 1)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumePenetrateItems(targetLevel);
+                    }
                     // 제작 전문가: 레벨별 트로피 소모
                     else if (pending.Key == "Producer")
                     {
@@ -2650,6 +2656,91 @@ namespace CaptainSkillTree.SkillTree
                 case 7:
                     inventory.RemoveItem("$item_trophy_fader", 1);
                     inventory.RemoveItem("$item_trophy_dvergr", 1);
+                    break;
+            }
+        }
+
+        // ──────────────────────────────────────────────────────
+
+        public bool HasPenetrateItems(int targetLevel)
+        {
+            switch (targetLevel)
+            {
+                case 2: return HaveItem("TrophyTheElder") && HaveItem("TrophyGreydwarf");
+                case 3: return HaveItem("TrophyBonemass") && HaveItem("TrophySkeleton");
+                case 4: return HaveItem("TrophyDragonQueen") && HaveItem("TrophySGolem");
+                case 5: return HaveItem("TrophyGoblinKing") && HaveItem("TrophyGoblinShaman");
+                case 6: return HaveItem("TrophySeekerQueen") && HaveItem("TrophyDvergr");
+                case 7: return HaveItem("TrophyFader") && HaveItem("TrophyCharredMage");
+                default: return true;
+            }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingPenetrateItems(int targetLevel)
+        {
+            var missing = new System.Collections.Generic.List<string>();
+            switch (targetLevel)
+            {
+                case 2:
+                    if (!HaveItem("TrophyTheElder")) missing.Add(L.Get("item_trophy_elder"));
+                    if (!HaveItem("TrophyGreydwarf")) missing.Add(L.Get("item_trophy_greydwarf"));
+                    break;
+                case 3:
+                    if (!HaveItem("TrophyBonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (!HaveItem("TrophySkeleton")) missing.Add(L.Get("item_trophy_skeleton"));
+                    break;
+                case 4:
+                    if (!HaveItem("TrophyDragonQueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (!HaveItem("TrophySGolem")) missing.Add(L.Get("item_trophy_sgolem"));
+                    break;
+                case 5:
+                    if (!HaveItem("TrophyGoblinKing")) missing.Add(L.Get("item_trophy_goblinking"));
+                    if (!HaveItem("TrophyGoblinShaman")) missing.Add(L.Get("item_trophy_goblinshaman"));
+                    break;
+                case 6:
+                    if (!HaveItem("TrophySeekerQueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (!HaveItem("TrophyDvergr")) missing.Add(L.Get("item_trophy_dvergr"));
+                    break;
+                case 7:
+                    if (!HaveItem("TrophyFader")) missing.Add(L.Get("item_trophy_fader"));
+                    if (!HaveItem("TrophyCharredMage")) missing.Add(L.Get("item_trophy_charredmage"));
+                    break;
+            }
+            return missing;
+        }
+
+        private void ConsumePenetrateItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            switch (targetLevel)
+            {
+                case 2:
+                    inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_trophy_greydwarf", 1);
+                    break;
+                case 3:
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_trophy_skeleton", 1);
+                    break;
+                case 4:
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_trophy_sgolem", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_goblinking", 1);
+                    inventory.RemoveItem("$item_trophy_goblinshaman", 1);
+                    break;
+                case 6:
+                    inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_trophy_dvergr", 1);
+                    break;
+                case 7:
+                    inventory.RemoveItem("$item_trophy_fader", 1);
+                    inventory.RemoveItem("$item_trophy_charredmage", 1);
                     break;
             }
         }

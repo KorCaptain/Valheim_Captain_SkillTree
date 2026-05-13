@@ -382,6 +382,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Penetrate_HitCount"] = "Ур.5-1: [Пронзающее копьё] Ударов для молнии",
                 ["Tier5_Penetrate_GKey_Cooldown"] = "Ур.5-1: [Пронзающее копьё] Перезарядка G-кн. (сек)",
                 ["Tier5_Penetrate_GKey_StaminaCost"] = "Ур.5-1: [Пронзающее копьё] Расход G-кн.",
+                ["Tier5_Penetrate_LightningDamageLevelBonus"] = "Ур.5-1: [Пронзающее копьё] Бонус урона молнии за уровень (%)",
                 ["Tier5_Combo_RequiredPoints"] = "Ур.5-2: [Комбо-копьё] Необходимые очки",
                 ["Tier5_Combo_HKey_Cooldown"] = "Ур.5-2: [Комбо-копьё] Перезарядка H-кн. (сек)",
                 ["Tier5_Combo_HKey_DamageMultiplier"] = "Ур.5-2: [Комбо-копьё] Множитель урона H-кн. (%)",
