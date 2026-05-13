@@ -193,6 +193,7 @@ namespace CaptainSkillTree.SkillTree
         /// ?대룞 以???諛섍꼍 ??紐ъ뒪?곕? 紐⑤몢 ?곸쨷
         /// </summary>
         public static ConfigEntry<float> RushSlashPathWidth;
+        public static ConfigEntry<float> RushSlashDamageLevelBonus;
 
         // ===== ?숈쟻 媛??꾨줈?쇳떚 (?쒕쾭 ?숆린??吏?? =====
 
@@ -260,11 +261,13 @@ namespace CaptainSkillTree.SkillTree
         public static int RushSlashRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Sword_Step6_RequiredPoints", RushSlashRequiredPoints?.Value ?? 3);
         public static float RushSlash1stDamageRatioValue =>
-            SkillTreeConfig.GetEffectiveValue("Rush_Slash_1st_DamageRatio", RushSlash1stDamageRatio?.Value ?? 70f);
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_1st_DamageRatio", RushSlash1stDamageRatio?.Value ?? 40f);
         public static float RushSlash2ndDamageRatioValue =>
-            SkillTreeConfig.GetEffectiveValue("Rush_Slash_2nd_DamageRatio", RushSlash2ndDamageRatio?.Value ?? 80f);
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_2nd_DamageRatio", RushSlash2ndDamageRatio?.Value ?? 50f);
         public static float RushSlash3rdDamageRatioValue =>
-            SkillTreeConfig.GetEffectiveValue("Rush_Slash_3rd_DamageRatio", RushSlash3rdDamageRatio?.Value ?? 90f);
+            SkillTreeConfig.GetEffectiveValue("Rush_Slash_3rd_DamageRatio", RushSlash3rdDamageRatio?.Value ?? 60f);
+        public static float RushSlashDamageLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("sword_tier6_rushslash_damage_level_bonus", RushSlashDamageLevelBonus?.Value ?? 10f);
         public static float RushSlashInitialDistanceValue =>
             SkillTreeConfig.GetEffectiveValue("Rush_Slash_InitialDistance", RushSlashInitialDistance?.Value ?? 5f);
         public static float RushSlashSideDistanceValue =>
@@ -525,22 +528,29 @@ namespace CaptainSkillTree.SkillTree
             RushSlash1stDamageRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier6_RushSlash_Hit1DamageRatio",
-                70f,
+                40f,
                 SkillTreeConfig.GetConfigDescription("Tier6_RushSlash_Hit1DamageRatio")
             );
 
             RushSlash2ndDamageRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier6_RushSlash_Hit2DamageRatio",
-                80f,
+                50f,
                 SkillTreeConfig.GetConfigDescription("Tier6_RushSlash_Hit2DamageRatio")
             );
 
             RushSlash3rdDamageRatio = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
                 "Tier6_RushSlash_Hit3DamageRatio",
-                90f,
+                60f,
                 SkillTreeConfig.GetConfigDescription("Tier6_RushSlash_Hit3DamageRatio")
+            );
+
+            RushSlashDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier6_RushSlash_DamageLevelBonus",
+                10f,
+                SkillTreeConfig.GetConfigDescription("Tier6_RushSlash_DamageLevelBonus")
             );
 
             RushSlashInitialDistance = SkillTreeConfig.BindServerSync(config,

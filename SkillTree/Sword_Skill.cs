@@ -249,6 +249,12 @@ namespace CaptainSkillTree.SkillTree
             float initialDist = skillData.initialDistance;
             float sideDist = skillData.sideDistance;
 
+            int rushLevel = SkillTreeManager.Instance?.GetSkillLevel("sword_step5_finalcut") ?? 1;
+            float rushLevelBonus = (rushLevel - 1) * Sword_Config.RushSlashDamageLevelBonusValue;
+            float adj1st = skillData.damage1stRatio + rushLevelBonus;
+            float adj2nd = skillData.damage2ndRatio + rushLevelBonus;
+            float adj3rd = skillData.damage3rdRatio + rushLevelBonus;
+
             // 臾닿린 ?뺤씤
             var weapon = player.GetCurrentWeapon();
             if (weapon == null)
@@ -271,7 +277,7 @@ namespace CaptainSkillTree.SkillTree
             // === 1李? ?꾨갑 ?뚯쭊 + 踰좉린 ===
             Vector3 dashTarget = player.transform.position + GetCameraForward(player) * initialDist;
             yield return MoveToPositionWithPathHit(player, dashTarget, initialDist, moveSpeed,
-                weapon, weaponDamage, skillData.damage1stRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
+                weapon, weaponDamage, adj1st, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
 
             if (player == null || player.IsDead() || !rushSlashActive.TryGetValue(player, out bool rsActive1) || !rsActive1)
             {
@@ -280,7 +286,7 @@ namespace CaptainSkillTree.SkillTree
             }
 
             // 1李?踰좉린 ?ㅽ뻾
-            int hits1 = ExecuteSlashAttack(player, weapon, weaponDamage, 1, skillData.damage1stRatio, target);
+            int hits1 = ExecuteSlashAttack(player, weapon, weaponDamage, 1, adj1st, target);
             totalHits += hits1;
             rushSlashAttackCount[player] = 1;
             yield return new WaitForSeconds(0.35f);
@@ -300,7 +306,7 @@ namespace CaptainSkillTree.SkillTree
 
             Vector3 rightPos = CalculateSidePosition(player, targetPos, sideDist, true);
             yield return MoveToPositionWithPathHit(player, rightPos, sideDist, moveSpeed,
-                weapon, weaponDamage, skillData.damage2ndRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
+                weapon, weaponDamage, adj2nd, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
 
             if (player == null || player.IsDead() || !rushSlashActive.TryGetValue(player, out bool rsActive2) || !rsActive2)
             {
@@ -309,7 +315,7 @@ namespace CaptainSkillTree.SkillTree
             }
 
             // 2李?踰좉린 ?ㅽ뻾
-            int hits2 = ExecuteSlashAttack(player, weapon, weaponDamage, 2, skillData.damage2ndRatio, target);
+            int hits2 = ExecuteSlashAttack(player, weapon, weaponDamage, 2, adj2nd, target);
             totalHits += hits2;
             rushSlashAttackCount[player] = 2;
             yield return new WaitForSeconds(0.35f);
@@ -329,7 +335,7 @@ namespace CaptainSkillTree.SkillTree
 
             Vector3 leftPos = CalculateSidePosition(player, targetPos, sideDist, false);
             yield return MoveToPositionWithPathHit(player, leftPos, sideDist, moveSpeed,
-                weapon, weaponDamage, skillData.damage3rdRatio, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
+                weapon, weaponDamage, adj3rd, Sword_Config.RushSlashPathWidthValue, alreadyHitInPath);
 
             if (player == null || player.IsDead() || !rushSlashActive.TryGetValue(player, out bool rsActive3) || !rsActive3)
             {
@@ -338,7 +344,7 @@ namespace CaptainSkillTree.SkillTree
             }
 
             // 3李?踰좉린 ?ㅽ뻾 (留덈Т由??쇰땲??
-            int hits3 = ExecuteSlashAttack(player, weapon, weaponDamage, 3, skillData.damage3rdRatio, target);
+            int hits3 = ExecuteSlashAttack(player, weapon, weaponDamage, 3, adj3rd, target);
             totalHits += hits3;
             rushSlashAttackCount[player] = 3;
             yield return new WaitForSeconds(0.35f);

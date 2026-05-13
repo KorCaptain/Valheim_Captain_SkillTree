@@ -367,7 +367,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "sword_desc_rush_slash",
                 DescriptionArgs = new object[] { Sword_Config.RushSlashInitialDistanceValue },
                 RequiredPoints = Sword_Config.RushSlashRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(435, 420),
                 Category = "근접",

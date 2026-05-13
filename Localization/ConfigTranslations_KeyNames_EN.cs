@@ -759,6 +759,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_RushSlash_Cooldown"] = "Tier 6: [Rush Slash] Cooldown (sec)",
                 ["Tier6_RushSlash_MoveSpeed"] = "Tier 6: [Rush Slash] Move Speed (m/s)",
                 ["Tier6_RushSlash_AttackSpeedBonus"] = "Tier 6: [Rush Slash] Attack Speed Bonus (%)",
+                ["Tier6_RushSlash_DamageLevelBonus"] = "Tier 6: [Rush Slash] Damage Level Bonus (%)",
 
                 // ============================================
                 // Mace Tree - 34 Keys

@@ -210,7 +210,9 @@ namespace CaptainSkillTree.SkillTree
             if (!HasSkill("sword_step5_finalcut") && !HasSkill("sword_slash")) return;
             if (!Sword_Skill.IsSwordSlashActive(player)) return;
 
-            float damageRatio = Sword_Config.RushSlash1stDamageRatioValue / 100f;
+            int rushLvl = SkillTreeManager.Instance?.GetSkillLevel("sword_step5_finalcut") ?? 1;
+            float rushBonus = (rushLvl - 1) * Sword_Config.RushSlashDamageLevelBonusValue;
+            float damageRatio = (Sword_Config.RushSlash1stDamageRatioValue + rushBonus) / 100f;
 
             hit.m_damage.m_blunt *= damageRatio;
             hit.m_damage.m_slash *= damageRatio;
