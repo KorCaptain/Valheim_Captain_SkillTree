@@ -1702,7 +1702,7 @@ namespace CaptainSkillTree.SkillTree
                 case 4: return inventory.HaveItem("$item_trophy_dragonqueen") &&
                                inventory.HaveItem("$item_trophy_hatchling");
                 case 5: return inventory.HaveItem("$item_trophy_goblinking") &&
-                               inventory.HaveItem("$item_trophy_deathsquito");
+                               inventory.HaveItem("$item_trophy_goblin");
                 case 6: return inventory.HaveItem("$item_trophy_seekerqueen") &&
                                inventory.HaveItem("$item_trophy_seeker");
                 case 7: return inventory.HaveItem("$item_trophy_fader") &&
@@ -1735,7 +1735,7 @@ namespace CaptainSkillTree.SkillTree
                     break;
                 case 5:
                     if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
-                    if (!inventory.HaveItem("$item_trophy_deathsquito")) missing.Add(L.Get("item_trophy_deathsquito"));
+                    if (!inventory.HaveItem("$item_trophy_goblin")) missing.Add(L.Get("item_trophy_goblin"));
                     break;
                 case 6:
                     if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
@@ -1772,7 +1772,7 @@ namespace CaptainSkillTree.SkillTree
                     break;
                 case 5:
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
-                    inventory.RemoveItem("$item_trophy_deathsquito", 1);
+                    inventory.RemoveItem("$item_trophy_goblin", 1);
                     break;
                 case 6:
                     inventory.RemoveItem("$item_trophy_seekerqueen", 1);
@@ -2094,9 +2094,9 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 2: return inventory.HaveItem("$item_trophy_elder") && inventory.HaveItem("$item_trophy_skeleton");
-                case 3: return inventory.HaveItem("$item_trophy_bonemass") && inventory.HaveItem("$item_trophy_wraith");
+                case 3: return inventory.HaveItem("$item_trophy_bonemass") && inventory.HaveItem("$item_trophy_leech");
                 case 4: return inventory.HaveItem("$item_trophy_dragonqueen") && inventory.HaveItem("$item_trophy_fenring");
-                case 5: return inventory.HaveItem("$item_trophy_goblinking") && inventory.HaveItem("$item_trophy_deathsquito");
+                case 5: return inventory.HaveItem("$item_trophy_goblinking") && inventory.HaveItem("$item_trophy_goblinshaman");
                 case 6: return inventory.HaveItem("$item_trophy_seekerqueen") && inventory.HaveItem("$item_trophy_gjall");
                 case 7: return inventory.HaveItem("$item_trophy_fader") && inventory.HaveItem("$item_trophy_charredarcher");
                 default: return true;
@@ -2115,9 +2115,9 @@ namespace CaptainSkillTree.SkillTree
             switch (targetLevel)
             {
                 case 2: boss = "$item_trophy_elder"; biome = "$item_trophy_skeleton"; break;
-                case 3: boss = "$item_trophy_bonemass"; biome = "$item_trophy_wraith"; break;
+                case 3: boss = "$item_trophy_bonemass"; biome = "$item_trophy_leech"; break;
                 case 4: boss = "$item_trophy_dragonqueen"; biome = "$item_trophy_fenring"; break;
-                case 5: boss = "$item_trophy_goblinking"; biome = "$item_trophy_deathsquito"; break;
+                case 5: boss = "$item_trophy_goblinking"; biome = "$item_trophy_goblinshaman"; break;
                 case 6: boss = "$item_trophy_seekerqueen"; biome = "$item_trophy_gjall"; break;
                 case 7: boss = "$item_trophy_fader"; biome = "$item_trophy_charredarcher"; break;
                 default: return missing;
@@ -2142,7 +2142,7 @@ namespace CaptainSkillTree.SkillTree
                     break;
                 case 3:
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
-                    inventory.RemoveItem("$item_trophy_wraith", 1);
+                    inventory.RemoveItem("$item_trophy_leech", 1);
                     break;
                 case 4:
                     inventory.RemoveItem("$item_trophy_dragonqueen", 1);
@@ -2150,7 +2150,7 @@ namespace CaptainSkillTree.SkillTree
                     break;
                 case 5:
                     inventory.RemoveItem("$item_trophy_goblinking", 1);
-                    inventory.RemoveItem("$item_trophy_deathsquito", 1);
+                    inventory.RemoveItem("$item_trophy_goblinshaman", 1);
                     break;
                 case 6:
                     inventory.RemoveItem("$item_trophy_seekerqueen", 1);
@@ -2768,7 +2768,7 @@ namespace CaptainSkillTree.SkillTree
                                inventory.HaveItem("$item_trophy_elder") &&
                                GetSkillLevel("staff_Step6_dual_cast") > 0 &&
                                inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
-                case 3: return inventory.HaveItem("$item_trophy_wraith") &&
+                case 3: return inventory.HaveItem("$item_trophy_leech") &&
                                inventory.HaveItem("$item_trophy_bonemass") &&
                                inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 4: return inventory.HaveItem("$item_trophy_hatchling") &&
@@ -2803,7 +2803,7 @@ namespace CaptainSkillTree.SkillTree
                     if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 3:
-                    if (!inventory.HaveItem("$item_trophy_wraith")) missing.Add(L.Get("item_trophy_wraith"));
+                    if (!inventory.HaveItem("$item_trophy_leech")) missing.Add(L.Get("item_trophy_leech"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
                     if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
@@ -2841,7 +2841,7 @@ namespace CaptainSkillTree.SkillTree
                     inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 3:
-                    inventory.RemoveItem("$item_trophy_wraith", 1);
+                    inventory.RemoveItem("$item_trophy_leech", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
