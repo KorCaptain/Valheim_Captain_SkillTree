@@ -203,7 +203,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "knife_desc_stack_explosion",
                 DescriptionArgs = new object[] { Knife_Config.KnifeStackExplosionMaxStacksValue, Knife_Config.KnifeStackExplosionStackDurationValue, Knife_Config.KnifeStackExplosionDamagePercentValue },
                 RequiredPoints = Knife_Config.KnifeStackExplosionRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(335, 520),
                 Category = "근접",

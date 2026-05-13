@@ -1224,6 +1224,12 @@ namespace CaptainSkillTree.SkillTree
                         int targetLevel = currentLevel + 1;
                         ConsumeHealLevelItems(targetLevel);
                     }
+                    // 약점폭발: Lv2+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "knife_step10_stack_explosion" && currentLevel >= 1)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeStackExplosionLevelItems(targetLevel);
+                    }
                     // 제작 전문가: 레벨별 트로피 소모
                     else if (pending.Key == "Producer")
                     {
@@ -2072,6 +2078,87 @@ namespace CaptainSkillTree.SkillTree
                 case 7:
                     inventory.RemoveItem("$item_trophy_fader", 1);
                     inventory.RemoveItem("$item_trophy_bonemaw", 1);
+                    break;
+            }
+        }
+
+        // ──────────────────────────────────────────────────────
+
+        public bool HasStackExplosionLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return false;
+            var inventory = player.GetInventory();
+            if (inventory == null) return false;
+
+            switch (targetLevel)
+            {
+                case 2: return inventory.HaveItem("$item_trophy_elder") && inventory.HaveItem("$item_trophy_skeleton");
+                case 3: return inventory.HaveItem("$item_trophy_bonemass") && inventory.HaveItem("$item_trophy_wraith");
+                case 4: return inventory.HaveItem("$item_trophy_dragonqueen") && inventory.HaveItem("$item_trophy_fenring");
+                case 5: return inventory.HaveItem("$item_trophy_goblinking") && inventory.HaveItem("$item_trophy_deathsquito");
+                case 6: return inventory.HaveItem("$item_trophy_seekerqueen") && inventory.HaveItem("$item_trophy_gjall");
+                case 7: return inventory.HaveItem("$item_trophy_fader") && inventory.HaveItem("$item_trophy_charredarcher");
+                default: return true;
+            }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingStackExplosionItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            var missing = new System.Collections.Generic.List<string>();
+            if (player == null) return missing;
+            var inventory = player.GetInventory();
+            if (inventory == null) return missing;
+
+            string boss = "", biome = "";
+            switch (targetLevel)
+            {
+                case 2: boss = "$item_trophy_elder"; biome = "$item_trophy_skeleton"; break;
+                case 3: boss = "$item_trophy_bonemass"; biome = "$item_trophy_wraith"; break;
+                case 4: boss = "$item_trophy_dragonqueen"; biome = "$item_trophy_fenring"; break;
+                case 5: boss = "$item_trophy_goblinking"; biome = "$item_trophy_deathsquito"; break;
+                case 6: boss = "$item_trophy_seekerqueen"; biome = "$item_trophy_gjall"; break;
+                case 7: boss = "$item_trophy_fader"; biome = "$item_trophy_charredarcher"; break;
+                default: return missing;
+            }
+            if (!inventory.HaveItem(boss)) missing.Add(L.Get(boss.TrimStart('$')));
+            if (!inventory.HaveItem(biome)) missing.Add(L.Get(biome.TrimStart('$')));
+            return missing;
+        }
+
+        private void ConsumeStackExplosionLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            switch (targetLevel)
+            {
+                case 2:
+                    inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_trophy_skeleton", 1);
+                    break;
+                case 3:
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_trophy_wraith", 1);
+                    break;
+                case 4:
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_trophy_fenring", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_goblinking", 1);
+                    inventory.RemoveItem("$item_trophy_deathsquito", 1);
+                    break;
+                case 6:
+                    inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_trophy_gjall", 1);
+                    break;
+                case 7:
+                    inventory.RemoveItem("$item_trophy_fader", 1);
+                    inventory.RemoveItem("$item_trophy_charredarcher", 1);
                     break;
             }
         }

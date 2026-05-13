@@ -890,6 +890,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Взрыв слабого места] Необходимые очки",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Взрыв слабого места] Длительность баффа (сек)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Взрыв слабого места] Коэффициент урона по области (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [Взрыв слабого места] Бонус урона за уровень (%)",
             };
         }
     }

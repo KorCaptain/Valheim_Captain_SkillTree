@@ -1142,6 +1142,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Stack Explosion] Required Points",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Stack Explosion] Buff Duration (sec)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Stack Explosion] AOE Damage Ratio (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [Stack Explosion] Damage Bonus per Level (%)",
             };
         }
     }

@@ -54,6 +54,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> KnifeStackExplosionStaminaCost;
         public static ConfigEntry<float> KnifeStackExplosionCooldown;
         public static ConfigEntry<float> KnifeStackExplosionDamagePercent;
+        private static ConfigEntry<float> KnifeStackExplosionDamageLevelBonus;
         public static ConfigEntry<int>   KnifeStackExplosionMaxStacks;
         public static ConfigEntry<float> KnifeStackExplosionStackDuration;
         public static ConfigEntry<float> KnifeStackExplosionBuffDuration;
@@ -105,7 +106,8 @@ namespace CaptainSkillTree.SkillTree
         public static int   KnifeStackExplosionRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step10_required_points", (float)(KnifeStackExplosionRequiredPoints?.Value ?? 3));
         public static float KnifeStackExplosionStaminaCostValue    => SkillTreeConfig.GetEffectiveValue("knife_step10_stamina_cost", KnifeStackExplosionStaminaCost?.Value ?? 15f);
         public static float KnifeStackExplosionCooldownValue       => SkillTreeConfig.GetEffectiveValue("knife_step10_cooldown", KnifeStackExplosionCooldown?.Value ?? 45f);
-        public static float KnifeStackExplosionDamagePercentValue  => SkillTreeConfig.GetEffectiveValue("knife_step10_damage_percent", KnifeStackExplosionDamagePercent?.Value ?? 60f);
+        public static float KnifeStackExplosionDamagePercentValue  => SkillTreeConfig.GetEffectiveValue("knife_step10_damage_percent", KnifeStackExplosionDamagePercent?.Value ?? 30f);
+        public static float KnifeStackExplosionDamageLevelBonusValue => SkillTreeConfig.GetEffectiveValue("knife_tier9_stack_explosion_damage_level_bonus", KnifeStackExplosionDamageLevelBonus?.Value ?? 5f);
         public static int   KnifeStackExplosionMaxStacksValue      => (int)SkillTreeConfig.GetEffectiveValue("knife_step10_max_stacks", (float)(KnifeStackExplosionMaxStacks?.Value ?? 7));
         public static float KnifeStackExplosionStackDurationValue  => SkillTreeConfig.GetEffectiveValue("knife_step10_stack_duration", KnifeStackExplosionStackDuration?.Value ?? 4f);
         public static float KnifeStackExplosionBuffDurationValue   => SkillTreeConfig.GetEffectiveValue("knife_step10_buff_duration", KnifeStackExplosionBuffDuration?.Value ?? 12f);
@@ -329,7 +331,7 @@ namespace CaptainSkillTree.SkillTree
                 KnifeStackExplosionDamagePercent = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier9_StackExplosion_DamagePercent",
-                    60f,
+                    30f,
                     SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_DamagePercent"));
 
                 KnifeStackExplosionMaxStacks = SkillTreeConfig.BindServerSync(config,
@@ -373,6 +375,12 @@ namespace CaptainSkillTree.SkillTree
                     "Tier9_StackExplosion_AoePercent",
                     45f,
                     SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_AoePercent"));
+
+                KnifeStackExplosionDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_DamageLevelBonus",
+                    5f,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_DamageLevelBonus"));
 
                 Plugin.Log.LogDebug("[단검 컨피그] 모든 설정 로드 완료");
 

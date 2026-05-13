@@ -1149,6 +1149,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [약점폭발] 필요 포인트",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [약점폭발] 버프 지속시간 (초)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [약점폭발] 광역 피해 비율 (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [약점폭발] 레벨당 데미지 보너스(%)",
 
             };
         }
