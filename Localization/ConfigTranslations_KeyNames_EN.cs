@@ -575,6 +575,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Double Casting] Eitr Cost",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Double Casting] Cooldown (sec)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Double Casting] Required Points",
+                ["Tier5_DoubleCast_DamageLevelBonus"] = "Tier 5-1: [Double Casting] Damage Bonus Per Level (%)",
                 ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [Double Casting] Arc Radius (m)",
                 ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [Double Casting] Summon Height (m)",
                 ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [Double Casting] Hover Time (sec)",

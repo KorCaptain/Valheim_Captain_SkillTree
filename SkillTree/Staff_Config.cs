@@ -43,6 +43,7 @@ namespace CaptainSkillTree.SkillTree
         private static ConfigEntry<float> StaffDoubleCastEitrCost;
         private static ConfigEntry<float> StaffDoubleCastCooldown;
         private static ConfigEntry<int> StaffDoubleCastRequiredPoints;
+        private static ConfigEntry<float> StaffDoubleCastDamageLevelBonus;
 
         // === Step 6-1 보조: 팬캐스트 소환 설정 ===
         private static ConfigEntry<float> StaffFanCastRadius;
@@ -147,7 +148,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_AdditionalProjectileCount"));
 
                 StaffDoubleCastDamagePercent = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 60f,
+                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 30f,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_ProjectileDamagePercent"));
 
                 StaffDoubleCastEitrCost = SkillTreeConfig.BindServerSync(config,
@@ -161,6 +162,10 @@ namespace CaptainSkillTree.SkillTree
                 StaffDoubleCastRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_DoubleCast_RequiredPoints", 3,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_RequiredPoints"));
+
+                StaffDoubleCastDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Staff Tree", "Tier5_DoubleCast_DamageLevelBonus", 5f,
+                    SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_DamageLevelBonus"));
 
                 // === Tier 5-1 보조: 팬캐스트 소환 세부 설정 ===
                 StaffFanCastRadius = SkillTreeConfig.BindServerSync(config,
@@ -299,6 +304,7 @@ namespace CaptainSkillTree.SkillTree
         public static float StaffDoubleCastEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_eitr", StaffDoubleCastEitrCost?.Value ?? 20f);
         public static float StaffDoubleCastCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_cd", StaffDoubleCastCooldown?.Value ?? 30f);
         public static int StaffDoubleCastRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_rp", StaffDoubleCastRequiredPoints?.Value ?? 3);
+        public static float StaffDoubleCastDamageLevelBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_damage_level_bonus", StaffDoubleCastDamageLevelBonus?.Value ?? 5f);
 
         // Step 6-1 보조: 팬캐스트
         public static float StaffFanCastRadiusValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_fancast_radius", StaffFanCastRadius?.Value ?? 1.5f);

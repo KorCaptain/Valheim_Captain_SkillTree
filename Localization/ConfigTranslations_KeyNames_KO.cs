@@ -577,6 +577,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [이중시전] Eitr 소모량",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [이중시전] 쿨타임 (초)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [이중시전] 필요 포인트",
+                ["Tier5_DoubleCast_DamageLevelBonus"] = "Tier 5-1: [이중시전] 레벨당 데미지 보너스(%)",
                 ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [이중시전] 반원 호 반경 (m)",
                 ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [이중시전] 소환 기준 높이 (m)",
                 ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [이중시전] 공중 정지 시간 (초)",

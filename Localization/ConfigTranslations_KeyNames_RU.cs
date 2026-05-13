@@ -417,6 +417,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_EitrCost"] = "Ур.5-1: [Двойное колдовство] Расход Эйтра",
                 ["Tier5_DoubleCast_Cooldown"] = "Ур.5-1: [Двойное колдовство] Перезарядка (сек)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Ур.5-1: [Двойное колдовство] Необходимые очки",
+                ["Tier5_DoubleCast_DamageLevelBonus"] = "Ур.5-1: [Двойное колдовство] Бонус урона за уровень (%)",
                 ["Tier5_FanCast_SummonRadius"] = "Ур.5-1: [Двойное колдовство] Радиус дуги (м)",
                 ["Tier5_FanCast_SummonHeight"] = "Ур.5-1: [Двойное колдовство] Высота призыва (м)",
                 ["Tier5_FanCast_HoverTime"] = "Ур.5-1: [Двойное колдовство] Время зависания (сек)",

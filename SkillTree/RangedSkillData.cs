@@ -592,7 +592,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "staff_dual_cast_full_desc",
                 DescriptionArgs = new object[] { Staff_Config.StaffDoubleCastProjectileCountValue, Staff_Config.StaffDoubleCastDamagePercentValue, Staff_Config.StaffDoubleCastEitrCostValue, Staff_Config.StaffDoubleCastCooldownValue },
                 RequiredPoints = Staff_Config.StaffDoubleCastRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-580, 115),
                 Category = "지팡이",
