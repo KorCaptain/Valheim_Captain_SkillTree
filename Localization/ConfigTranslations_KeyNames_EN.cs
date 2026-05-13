@@ -530,6 +530,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Combo_ActiveRange"] = "Tier 5-2: [Combo Spear] Active Effect Range (m)",
                 ["Tier5_Combo_BuffDuration"] = "Tier 5-2: [Combo Spear] Buff Duration (sec)",
                 ["Tier5_Combo_MaxUses"] = "Tier 5-2: [Combo Spear] Max Enhanced Throw Count",
+                ["Tier5_Combo_HKey_DamageLevelBonus"] = "Tier 5-2: [Combo Spear] H-Key Damage Level Bonus (%)",
 
                 // ============================================
                 // Staff Tree - 30 Keys

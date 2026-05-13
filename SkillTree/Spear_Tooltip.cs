@@ -234,16 +234,24 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("spear_Step5_combo") ?? 0;
+                float levelBonus = currentLevel > 0 ? (currentLevel - 1) * Spear_Config.SpearComboDamageLevelBonusValue : 0;
+                float effectiveDamage = SkillTreeConfig.SpearStep6ComboDamageValue + levelBonus;
+
+                string skillNameDisplay = currentLevel > 0
+                    ? $"{L.Get("spear_skill_combo")} [Lv{currentLevel}/7]"
+                    : L.Get("spear_skill_combo");
+
                 var tooltip = "";
 
                 // 1. 스킬명 (#FFD700, size=22)
-                tooltip += $"<color=#FFD700><size=22>{L.Get("spear_skill_combo")}</size></color>\n\n";
+                tooltip += $"<color=#FFD700><size=22>{skillNameDisplay}</size></color>\n\n";
 
                 // 2. 설명 (#FFD700 / #E0E0E0)
                 tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("spear_desc_combo")}</size></color>\n";
 
-                // 3. 데미지 (#FF6B6B / #FFB6C1)
-                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("spear_desc_combo_damage", SkillTreeConfig.SpearStep6ComboDamageValue)}</size></color>\n";
+                // 3. 데미지 (#FF6B6B / #FFB6C1) - 레벨 보정 포함
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("spear_desc_combo_damage", effectiveDamage)}</size></color>\n";
 
                 // 4. 범위 (#87CEEB / #B0E0E6)
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("spear_desc_combo_range", SkillTreeConfig.SpearStep2ThrowRangeValue)}</size></color>\n";
@@ -266,13 +274,31 @@ namespace CaptainSkillTree.SkillTree
                 // 10. 필요포인트 (#87CEEB / #FF6B6B)
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Spear_Config.SpearComboRequiredPointsValue}</size></color>";
 
-                return tooltip.TrimEnd('\n');
+                string levelInfo = BuildComboLevelInfo(currentLevel);
+                return string.IsNullOrEmpty(levelInfo)
+                    ? tooltip.TrimEnd('\n')
+                    : tooltip.TrimEnd('\n') + "\n" + levelInfo;
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[연공창 툴팁] 생성 실패: {ex.Message}");
                 return L.Get("tooltip_generation_error");
             }
+        }
+
+        private static string BuildComboLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("combo_max_level")}</size></color>";
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingComboItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("combo_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("combo_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("combo_upgrade_ready")}</size></color>";
+            return req;
         }
 
         /// <summary>

@@ -553,7 +553,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "spear_desc_combo",
                 DescriptionArgs = new object[] { SkillTreeConfig.SpearStep6ComboDamageValue },
                 RequiredPoints = Spear_Config.SpearComboRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(615, 90),
                 Category = "근접",

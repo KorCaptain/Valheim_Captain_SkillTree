@@ -47,7 +47,9 @@ namespace CaptainSkillTree
                 if (SpearComboThrow_ProjectileHit_Patch.currentHitIsCombo)
                 {
                     SkillEffect.ConsumeSpearSecondaryAttack(player);
-                    float damageBonus = SkillTreeConfig.SpearStep6ComboDamageValue;
+                    int comboLevel = SkillTreeManager.Instance?.GetSkillLevel("spear_Step5_combo") ?? 1;
+                    float comboLevelBonus = (comboLevel - 1) * Spear_Config.SpearComboDamageLevelBonusValue;
+                    float damageBonus = SkillTreeConfig.SpearStep6ComboDamageValue + comboLevelBonus;
                     float multiplier = 1f + (damageBonus / 100f);
 
                     // 臾쇰━ ?곕?吏 4醫?(Rule 11 以??

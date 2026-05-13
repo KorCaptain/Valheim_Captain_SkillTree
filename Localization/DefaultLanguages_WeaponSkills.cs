@@ -469,6 +469,15 @@ namespace CaptainSkillTree.Localization
                 ["penetrate_next_level_req"] = "Lv{0} 강화 조건",
                 ["penetrate_upgrade_ready"] = "강화 가능",
 
+                // 연공창 레벨업 키
+                ["combo_upgrade_title"] = "🌀 연공창 강화",
+                ["combo_upgrade_confirm"] = "연공창을 Lv{0}으로 강화합니다.\n필요 트로피가 인벤토리에서 소모됩니다.\n계속하시겠습니까?",
+                ["combo_max_level"] = "연공창이 최대 레벨(Lv7)입니다.",
+                ["combo_level_item_required"] = "연공창 Lv{0} 강화에 필요한 트로피가 부족합니다.",
+                ["combo_missing_items"] = "부족한 재료: {0}",
+                ["combo_next_level_req"] = "Lv{0} 강화 조건",
+                ["combo_upgrade_ready"] = "강화 가능",
+
                 // === Tanker Job ===
                 ["tanker_skill_warcry"] = "전장의 함성",
                 ["tanker_desc_warcry"] = "{0}m 범위 적을 도발해 {1}초 동안 나를 공격하게 만듭니다.(보스 {2}초), 시전자는 {3}초 동안 피해감소 {4}%",
@@ -1035,6 +1044,14 @@ namespace CaptainSkillTree.Localization
                 ["penetrate_missing_items"] = "Missing: {0}",
                 ["penetrate_next_level_req"] = "Lv{0} Upgrade Requirements",
                 ["penetrate_upgrade_ready"] = "Ready to upgrade",
+
+                ["combo_upgrade_title"] = "🌀 Combo Spear Upgrade",
+                ["combo_upgrade_confirm"] = "Upgrade Combo Spear to Lv{0}.\nRequired trophies will be consumed from inventory.\nProceed?",
+                ["combo_max_level"] = "Combo Spear is at max level (Lv7).",
+                ["combo_level_item_required"] = "Not enough trophies for Combo Spear Lv{0} upgrade.",
+                ["combo_missing_items"] = "Missing: {0}",
+                ["combo_next_level_req"] = "Lv{0} Upgrade Requirements",
+                ["combo_upgrade_ready"] = "Ready to upgrade",
 
                 ["producer_upgrade_title"] = "🛠️ Producer Class Ascension",
                 ["producer_upgrade_confirm"] = "Upgrade Producer to Lv{0}?",

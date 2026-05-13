@@ -391,6 +391,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Combo_ActiveRange"] = "Ур.5-2: [Комбо-копьё] Радиус активного эффекта (м)",
                 ["Tier5_Combo_BuffDuration"] = "Ур.5-2: [Комбо-копьё] Длительность эффекта (сек)",
                 ["Tier5_Combo_MaxUses"] = "Ур.5-2: [Комбо-копьё] Макс. усиленных бросков",
+                ["Tier5_Combo_HKey_DamageLevelBonus"] = "Ур.5-2: [Комбо-копьё] Бонус урона за уровень H-клавиши (%)",
 
                 // ============================================
                 // Staff Tree - 30 ключей

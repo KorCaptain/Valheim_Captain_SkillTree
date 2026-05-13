@@ -532,6 +532,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Combo_ActiveRange"] = "Tier 5-2: [연공창] 액티브 효과 범위 (m)",
                 ["Tier5_Combo_BuffDuration"] = "Tier 5-2: [연공창] 버프 지속시간 (초)",
                 ["Tier5_Combo_MaxUses"] = "Tier 5-2: [연공창] 최대 강화 투창 횟수",
+                ["Tier5_Combo_HKey_DamageLevelBonus"] = "Tier 5-2: [연공창] H키 레벨당 데미지 보너스 (%)",
 
                 // ============================================
                 // Staff Tree (지팡이 트리) - 30개
