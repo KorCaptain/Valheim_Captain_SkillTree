@@ -511,6 +511,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Ур.8: [Сердце ассасина] Кол-во ударов в комбо",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Ур.8: [Сердце ассасина] Интервал атаки (сек)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Ур.8: [Сердце ассасина] Необходимые очки",
+                ["Tier8_AssassinHeart_AttackCountLevelBonus"] = "Ур.8: [Сердце ассасина] Бонус кол-ва атак за уровень",
 
                 // ============================================
                 // Sword Tree (новый формат) - 33 ключа

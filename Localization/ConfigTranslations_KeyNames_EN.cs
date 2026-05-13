@@ -703,6 +703,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Tier 8: [Assassin's Heart] Combo Attack Count",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: [Assassin's Heart] Attack Interval (sec)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Tier 8: [Assassin's Heart] Required Points",
+                ["Tier8_AssassinHeart_AttackCountLevelBonus"] = "Tier 8: [Assassin's Heart] Attack Count Bonus per Level",
 
                 // ============================================
                 // Sword Tree - 33 Keys (new key format)

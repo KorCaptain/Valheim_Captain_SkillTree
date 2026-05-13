@@ -1230,6 +1230,12 @@ namespace CaptainSkillTree.SkillTree
                         int targetLevel = currentLevel + 1;
                         ConsumeStackExplosionLevelItems(targetLevel);
                     }
+                    // 암살자의 심장: Lv2+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "knife_step9_assassin_heart" && currentLevel >= 1)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeAssassinHeartLevelItems(targetLevel);
+                    }
                     // 제작 전문가: 레벨별 트로피 소모
                     else if (pending.Key == "Producer")
                     {
@@ -2159,6 +2165,87 @@ namespace CaptainSkillTree.SkillTree
                 case 7:
                     inventory.RemoveItem("$item_trophy_fader", 1);
                     inventory.RemoveItem("$item_trophy_charredarcher", 1);
+                    break;
+            }
+        }
+
+        // ──────────────────────────────────────────────────────
+
+        public bool HasAssassinHeartLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return false;
+            var inventory = player.GetInventory();
+            if (inventory == null) return false;
+
+            switch (targetLevel)
+            {
+                case 2: return inventory.HaveItem("$item_trophy_elder") && inventory.HaveItem("$item_trophy_foresttroll");
+                case 3: return inventory.HaveItem("$item_trophy_bonemass") && inventory.HaveItem("$item_trophy_blob");
+                case 4: return inventory.HaveItem("$item_trophy_dragonqueen") && inventory.HaveItem("$item_trophy_hatchling");
+                case 5: return inventory.HaveItem("$item_trophy_goblinking") && inventory.HaveItem("$item_trophy_goblinbrute");
+                case 6: return inventory.HaveItem("$item_trophy_seekerqueen") && inventory.HaveItem("$item_trophy_seeker");
+                case 7: return inventory.HaveItem("$item_trophy_fader") && inventory.HaveItem("$item_trophy_charredwarrior");
+                default: return true;
+            }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingAssassinHeartItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            var missing = new System.Collections.Generic.List<string>();
+            if (player == null) return missing;
+            var inventory = player.GetInventory();
+            if (inventory == null) return missing;
+
+            string boss = "", biome = "";
+            switch (targetLevel)
+            {
+                case 2: boss = "$item_trophy_elder"; biome = "$item_trophy_foresttroll"; break;
+                case 3: boss = "$item_trophy_bonemass"; biome = "$item_trophy_blob"; break;
+                case 4: boss = "$item_trophy_dragonqueen"; biome = "$item_trophy_hatchling"; break;
+                case 5: boss = "$item_trophy_goblinking"; biome = "$item_trophy_goblinbrute"; break;
+                case 6: boss = "$item_trophy_seekerqueen"; biome = "$item_trophy_seeker"; break;
+                case 7: boss = "$item_trophy_fader"; biome = "$item_trophy_charredwarrior"; break;
+                default: return missing;
+            }
+            if (!inventory.HaveItem(boss)) missing.Add(L.Get(boss.TrimStart('$')));
+            if (!inventory.HaveItem(biome)) missing.Add(L.Get(biome.TrimStart('$')));
+            return missing;
+        }
+
+        private void ConsumeAssassinHeartLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            switch (targetLevel)
+            {
+                case 2:
+                    inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_trophy_foresttroll", 1);
+                    break;
+                case 3:
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_trophy_blob", 1);
+                    break;
+                case 4:
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_trophy_hatchling", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_goblinking", 1);
+                    inventory.RemoveItem("$item_trophy_goblinbrute", 1);
+                    break;
+                case 6:
+                    inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_trophy_seeker", 1);
+                    break;
+                case 7:
+                    inventory.RemoveItem("$item_trophy_fader", 1);
+                    inventory.RemoveItem("$item_trophy_charredwarrior", 1);
                     break;
             }
         }

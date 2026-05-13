@@ -705,6 +705,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Tier 8: [암살자의 심장] 연속 공격 횟수",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: [암살자의 심장] 공격 간격 (초)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Tier 8: [암살자의 심장] 필요 포인트",
+                ["Tier8_AssassinHeart_AttackCountLevelBonus"] = "Tier 8: [암살자의 심장] 레벨당 공격 횟수 보너스",
 
                 // ============================================
                 // Sword Tree (검 트리) - 33개 (신규 키 형식)
