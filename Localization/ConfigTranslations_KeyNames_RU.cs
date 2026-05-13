@@ -586,6 +586,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Ур.7-1: [Молот ярости] Перезарядка (сек)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Ур.7-1: [Молот ярости] Радиус AOE (м)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Ур.7-1: [Молот ярости] Необходимые очки",
+                ["Tier7_FuryHammer_DamageLevelBonus"] = "Ур.7-1: [Молот ярости] Бонус урона за уровень (%)",
                 ["Tier7_GuardianHeart_Cooldown"] = "Ур.7-2: [Щитовой натиск] Перезарядка (сек)",
                 ["Tier7_GuardianHeart_StaminaCost"] = "Ур.7-2: [Щитовой натиск] Расход выносливости",
                 ["Tier7_ShieldCharge_DamagePercent"] = "Ур.7-2: [Щитовой натиск] Урон от блока (%)",

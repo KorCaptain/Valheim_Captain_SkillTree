@@ -1254,6 +1254,12 @@ namespace CaptainSkillTree.SkillTree
                         int targetLevel = currentLevel + 1;
                         ConsumeShieldChargeLevelItems(targetLevel);
                     }
+                    // 분노의 심장: Lv2+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "mace_Step7_fury_hammer" && currentLevel >= 1)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeFuryHammerLevelItems(targetLevel);
+                    }
                     // 제작 전문가: 레벨별 트로피 소모
                     else if (pending.Key == "Producer")
                     {
@@ -2559,6 +2565,91 @@ namespace CaptainSkillTree.SkillTree
                 case 7:
                     inventory.RemoveItem("$item_trophy_fader", 1);
                     inventory.RemoveItem("$item_trophy_charredwarrior", 1);
+                    break;
+            }
+        }
+
+        // ──────────────────────────────────────────────────────
+
+        public bool HasFuryHammerLevelItems(int targetLevel)
+        {
+            switch (targetLevel)
+            {
+                case 2: return HaveItem("TrophyTheElder") && HaveItem("TrophyNeck");
+                case 3: return HaveItem("TrophyBonemass") && HaveItem("TrophyLeech");
+                case 4: return HaveItem("TrophyDragonQueen") && HaveItem("TrophyHatchling");
+                case 5: return HaveItem("TrophyGoblinKing") && HaveItem("TrophyGoblin");
+                case 6: return HaveItem("TrophySeekerQueen") && HaveItem("TrophyTick");
+                case 7: return HaveItem("TrophyFader") && HaveItem("TrophyDvergr");
+                default: return true;
+            }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingFuryHammerItems(int targetLevel)
+        {
+            var missing = new System.Collections.Generic.List<string>();
+            switch (targetLevel)
+            {
+                case 2:
+                    if (!HaveItem("TrophyTheElder")) missing.Add(L.Get("item_trophy_elder"));
+                    if (!HaveItem("TrophyNeck")) missing.Add(L.Get("item_trophy_neck"));
+                    break;
+                case 3:
+                    if (!HaveItem("TrophyBonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (!HaveItem("TrophyLeech")) missing.Add(L.Get("item_trophy_leech"));
+                    break;
+                case 4:
+                    if (!HaveItem("TrophyDragonQueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (!HaveItem("TrophyHatchling")) missing.Add(L.Get("item_trophy_hatchling"));
+                    break;
+                case 5:
+                    if (!HaveItem("TrophyGoblinKing")) missing.Add(L.Get("item_trophy_goblinking"));
+                    if (!HaveItem("TrophyGoblin")) missing.Add(L.Get("item_trophy_goblin"));
+                    break;
+                case 6:
+                    if (!HaveItem("TrophySeekerQueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (!HaveItem("TrophyTick")) missing.Add(L.Get("item_trophy_tick"));
+                    break;
+                case 7:
+                    if (!HaveItem("TrophyFader")) missing.Add(L.Get("item_trophy_fader"));
+                    if (!HaveItem("TrophyDvergr")) missing.Add(L.Get("item_trophy_dvergr"));
+                    break;
+            }
+            return missing;
+        }
+
+        private void ConsumeFuryHammerLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            switch (targetLevel)
+            {
+                case 2:
+                    inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_trophy_neck", 1);
+                    break;
+                case 3:
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_trophy_leech", 1);
+                    break;
+                case 4:
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_trophy_hatchling", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_goblinking", 1);
+                    inventory.RemoveItem("$item_trophy_goblin", 1);
+                    break;
+                case 6:
+                    inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_trophy_tick", 1);
+                    break;
+                case 7:
+                    inventory.RemoveItem("$item_trophy_fader", 1);
+                    inventory.RemoveItem("$item_trophy_dvergr", 1);
                     break;
             }
         }

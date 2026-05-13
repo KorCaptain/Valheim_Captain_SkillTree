@@ -179,6 +179,8 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> FuryHammerAoeRadius;
 
+        private static ConfigEntry<float> FuryHammerDamageLevelBonus;
+
         // ===== 수호자의 진심 (Guardian Heart) - G키 액티브 스킬 =====
 
         /// <summary>
@@ -284,13 +286,13 @@ namespace CaptainSkillTree.SkillTree
         /// 분노의 망치 1~4타 데미지 배율 (서버 우선) - 현재 공격력 기준
         /// </summary>
         public static float FuryHammerNormalHitMultiplierValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_NormalHitMultiplier", FuryHammerNormalHitMultiplier?.Value ?? 40f);
+            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_NormalHitMultiplier", FuryHammerNormalHitMultiplier?.Value ?? 10f);
 
         /// <summary>
         /// 분노의 망치 5타(최종타) 데미지 배율 (서버 우선) - 현재 공격력 기준
         /// </summary>
         public static float FuryHammerFinalHitMultiplierValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_FinalHitMultiplier", FuryHammerFinalHitMultiplier?.Value ?? 60f);
+            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_FinalHitMultiplier", FuryHammerFinalHitMultiplier?.Value ?? 30f);
 
         // 연속공격횟수와 공격간딜레이는 하드코딩 (5타, 0.5초 고정) - MaceSkills.FuryHammer.cs 참조
 
@@ -311,6 +313,10 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float FuryHammerAoeRadiusValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_AoeRadius", FuryHammerAoeRadius?.Value ?? 5f);
+
+        public static float FuryHammerDamageLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("mace_tier7_furyhammer_damage_level_bonus",
+            FuryHammerDamageLevelBonus?.Value ?? 5f);
 
         /// <summary>
         /// 방패돌진 쿨타임 값 (서버 우선)
@@ -533,14 +539,14 @@ namespace CaptainSkillTree.SkillTree
             FuryHammerNormalHitMultiplier = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_FuryHammer_NormalHitMultiplier",
-                40f,
+                10f,
                 SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_NormalHitMultiplier")
             );
 
             FuryHammerFinalHitMultiplier = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_FuryHammer_FinalHitMultiplier",
-                60f,
+                30f,
                 SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_FinalHitMultiplier")
             );
 
@@ -572,6 +578,13 @@ namespace CaptainSkillTree.SkillTree
                 "Tier7_FuryHammer_RequiredPoints",
                 3,
                 SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_RequiredPoints")
+            );
+
+            FuryHammerDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier7_FuryHammer_DamageLevelBonus",
+                5f,
+                SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_DamageLevelBonus")
             );
 
             // Tier 7: 수호자의 진심 (Guardian Heart)

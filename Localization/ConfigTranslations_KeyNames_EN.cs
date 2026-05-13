@@ -816,6 +816,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Tier 7-1: [Fury Hammer] Cooldown (sec)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [Fury Hammer] AOE Radius (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [Fury Hammer] Required Points",
+                ["Tier7_FuryHammer_DamageLevelBonus"] = "Tier 7-1: [Fury Hammer] Damage Level Bonus (%)",
 
                 // === Tier 7-2: Shield Charge - G-Key Active (4) ===
                 ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Shield Charge] Cooldown (sec)",

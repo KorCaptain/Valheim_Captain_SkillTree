@@ -902,7 +902,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "mace_desc_fury_attack",
                 DescriptionArgs = new object[] { 5 },
                 RequiredPoints = Mace_Config.FuryHammerRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(635, 255),
                 Category = "근접",

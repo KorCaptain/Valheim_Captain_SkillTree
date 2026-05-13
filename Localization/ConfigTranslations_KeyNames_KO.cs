@@ -818,6 +818,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Tier 7-1: [분노의 망치] 쿨타임 (초)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [분노의 망치] AOE 범위 (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [분노의 망치] 필요 포인트",
+                ["Tier7_FuryHammer_DamageLevelBonus"] = "Tier 7-1: [분노의 망치] 레벨당 데미지 보너스 (%)",
 
                 // === Tier 7-2: 방패돌진 - G키 액티브 (4개) ===
                 ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [방패돌진] 쿨타임 (초)",

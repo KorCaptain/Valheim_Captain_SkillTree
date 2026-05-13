@@ -204,19 +204,24 @@ namespace CaptainSkillTree.SkillTree
                 const int attackCount = 5;           // 5타 고정
                 const float attackInterval = 0.5f;   // 0.5초 고정
 
-                // Config에서 동적 설정값 가져오기
-                float normalHitMultiplier = Mace_Config.FuryHammerNormalHitMultiplierValue;
-                float finalHitMultiplier = Mace_Config.FuryHammerFinalHitMultiplierValue;
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_fury_hammer") ?? 0;
+                float levelBonus = currentLevel > 0 ? (currentLevel - 1) * Mace_Config.FuryHammerDamageLevelBonusValue : 0;
+
+                // Config에서 동적 설정값 가져오기 (레벨 보정 포함)
+                float normalHitMultiplier = Mace_Config.FuryHammerNormalHitMultiplierValue + levelBonus;
+                float finalHitMultiplier = Mace_Config.FuryHammerFinalHitMultiplierValue + levelBonus;
                 float aoeRadius = Mace_Config.FuryHammerAoeRadiusValue;
                 float staminaCost = Mace_Config.FuryHammerStaminaCostValue;
                 float cooldown = Mace_Config.FuryHammerCooldownValue;
 
-                Plugin.Log.LogDebug($"[분노의 망치 툴팁] 컨피그 값들 - 공격 횟수: {attackCount}회 (고정), 1~4타 배율: {normalHitMultiplier}%, 5타 배율: {finalHitMultiplier}%, 스태미나: {staminaCost}, 쿨타임: {cooldown}초");
+                string skillNameDisplay = currentLevel > 0
+                    ? $"{L.Get("mace_skill_fury")} [Lv{currentLevel}/7]"
+                    : L.Get("mace_skill_fury");
 
-                // 상세 툴팁 데이터 생성 (간소화)
+                // 상세 툴팁 데이터 생성
                 var data = new FuryHammerTooltipData
                 {
-                    skillName = L.Get("mace_skill_fury"),
+                    skillName = skillNameDisplay,
                     description = L.Get("mace_desc_fury_attack", attackCount),
                     additionalInfo = L.Get("mace_desc_fury_interval", attackInterval, attackInterval),
                     attackCount = "",
@@ -233,7 +238,8 @@ namespace CaptainSkillTree.SkillTree
                 };
 
                 string finalTooltip = GenerateFuryHammerTooltip(data);
-                Plugin.Log.LogDebug($"[분노의 망치 툴팁] 최종 툴팁 생성 완료 - 길이: {finalTooltip?.Length ?? 0}");
+                string levelInfo = BuildFuryHammerLevelInfo(currentLevel);
+                finalTooltip = string.IsNullOrEmpty(levelInfo) ? finalTooltip : finalTooltip + "\n" + levelInfo;
                 return finalTooltip;
             }
             catch (Exception ex)
@@ -326,6 +332,21 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[분노의 망치 툴팁] 구조화된 툴팁 생성 실패: {ex.Message}");
                 return GetFuryHammerFallbackTooltip();
             }
+        }
+
+        private static string BuildFuryHammerLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("fury_hammer_max_level")}</size></color>";
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingFuryHammerItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("fury_hammer_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("fury_hammer_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("fury_hammer_upgrade_ready")}</size></color>";
+            return req;
         }
 
         /// <summary>
