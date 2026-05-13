@@ -57,6 +57,7 @@ namespace CaptainSkillTree.SkillTree
         private static ConfigEntry<float> StaffHealPercentage;
         private static ConfigEntry<float> StaffHealRange;
         private static ConfigEntry<int> StaffHealRequiredPoints;
+        private static ConfigEntry<float> StaffHealLevelBonus;
 
         /// <summary>
         /// 컨피그 초기화
@@ -194,7 +195,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_EitrCost"));
 
                 StaffHealPercentage = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_InstantAreaHeal_HealPercent", 25f,
+                    "Staff Tree", "Tier5_InstantAreaHeal_HealPercent", 10f,
                     SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_HealPercent"));
 
                 StaffHealRange = SkillTreeConfig.BindServerSync(config,
@@ -204,6 +205,10 @@ namespace CaptainSkillTree.SkillTree
                 StaffHealRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Staff Tree", "Tier5_InstantAreaHeal_RequiredPoints", 3,
                     SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_RequiredPoints"));
+
+                StaffHealLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Staff Tree", "Tier5_InstantAreaHeal_HealLevelBonus", 5f,
+                    SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_HealLevelBonus"));
 
                 // === 이벤트 핸들러 등록 ===
                 RegisterStaffEventHandlers();
@@ -315,9 +320,10 @@ namespace CaptainSkillTree.SkillTree
         // Step 6-2: 즉시 범위 힐
         public static float StaffHealCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_cd", StaffHealCooldown?.Value ?? 30f);
         public static float StaffHealEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_eitr", StaffHealEitrCost?.Value ?? 30f);
-        public static float StaffHealPercentageValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_percent", StaffHealPercentage?.Value ?? 25f);
+        public static float StaffHealPercentageValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_percent", StaffHealPercentage?.Value ?? 10f);
         public static float StaffHealRangeValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_range", StaffHealRange?.Value ?? 12f);
         public static int StaffHealRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_rp", StaffHealRequiredPoints?.Value ?? 3);
+        public static float StaffHealLevelBonusValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_level_bonus", StaffHealLevelBonus?.Value ?? 5f);
 
         /// <summary>
         /// 현재 설정값 디버그 출력

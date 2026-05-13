@@ -587,6 +587,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Tier 5-2: [Heal] Heal Amount (% of Max HP)",
                 ["Tier5_InstantAreaHeal_Range"] = "Tier 5-2: [Heal] Heal Range (m)",
                 ["Tier5_InstantAreaHeal_RequiredPoints"] = "Tier 5-2: [Heal] Required Points",
+                ["Tier5_InstantAreaHeal_HealLevelBonus"] = "Tier 5-2: [Heal] Heal Bonus per Level (%)",
 
                 // ============================================
                 // Crossbow Tree - 34 Keys

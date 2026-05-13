@@ -589,6 +589,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Tier 5-2: [힐] 회복량 (최대 HP 대비 %)",
                 ["Tier5_InstantAreaHeal_Range"] = "Tier 5-2: [힐] 치유 범위 (미터)",
                 ["Tier5_InstantAreaHeal_RequiredPoints"] = "Tier 5-2: [힐] 필요 포인트",
+                ["Tier5_InstantAreaHeal_HealLevelBonus"] = "Tier 5-2: [힐] 레벨당 회복량 보너스(%)",
 
                 // ============================================
                 // Crossbow Tree (석궁 트리) - 34개

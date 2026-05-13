@@ -610,7 +610,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "staff_heal_full_desc",
                 DescriptionArgs = new object[] { Staff_Config.StaffHealRangeValue, Staff_Config.StaffHealPercentageValue, Staff_Config.StaffHealEitrCostValue, Staff_Config.StaffHealCooldownValue },
                 RequiredPoints = Staff_Config.StaffHealRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-580, -45),
                 Category = "지팡이",

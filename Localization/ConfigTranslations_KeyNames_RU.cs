@@ -427,6 +427,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Ур.5-2: [Исцеление] Количество исцеления (% макс. ХП)",
                 ["Tier5_InstantAreaHeal_Range"] = "Ур.5-2: [Исцеление] Дальность (м)",
                 ["Tier5_InstantAreaHeal_RequiredPoints"] = "Ур.5-2: [Исцеление] Необходимые очки",
+                ["Tier5_InstantAreaHeal_HealLevelBonus"] = "Ур.5-2: [Исцеление] Бонус лечения за уровень (%)",
 
                 // ============================================
                 // Crossbow Tree - 34 ключа
