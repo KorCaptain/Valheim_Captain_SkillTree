@@ -148,7 +148,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_AdditionalProjectileCount"));
 
                 StaffDoubleCastDamagePercent = SkillTreeConfig.BindServerSync(config,
-                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 30f,
+                    "Staff Tree", "Tier5_DoubleCast_ProjectileDamagePercent", 35f,
                     SkillTreeConfig.GetConfigDescription("Tier5_DoubleCast_ProjectileDamagePercent"));
 
                 StaffDoubleCastEitrCost = SkillTreeConfig.BindServerSync(config,
@@ -300,7 +300,7 @@ namespace CaptainSkillTree.SkillTree
 
         // Step 6-1: 이중시전
         public static int StaffDoubleCastProjectileCountValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_count", StaffDoubleCastProjectileCount?.Value ?? 5);
-        public static float StaffDoubleCastDamagePercentValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_damage", StaffDoubleCastDamagePercent?.Value ?? 30f);
+        public static float StaffDoubleCastDamagePercentValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_damage", StaffDoubleCastDamagePercent?.Value ?? 35f);
         public static float StaffDoubleCastEitrCostValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_eitr", StaffDoubleCastEitrCost?.Value ?? 20f);
         public static float StaffDoubleCastCooldownValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_cd", StaffDoubleCastCooldown?.Value ?? 30f);
         public static int StaffDoubleCastRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_dualcast_rp", StaffDoubleCastRequiredPoints?.Value ?? 3);
