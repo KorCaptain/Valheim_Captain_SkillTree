@@ -201,6 +201,8 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> ShieldChargeMultiHitDamagePercent;
 
+        private static ConfigEntry<float> ShieldChargeDamageLevelBonus;
+
         /// <summary>
         /// 수호자의 진심 - 필요 포인트
         /// </summary>
@@ -326,13 +328,15 @@ namespace CaptainSkillTree.SkillTree
         /// 방패돌진 충돌 데미지 비율 값 (서버 우선)
         /// </summary>
         public static float ShieldChargeDamagePercentValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_DamagePercent", ShieldChargeDamagePercent?.Value ?? 70f);
+            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_DamagePercent", ShieldChargeDamagePercent?.Value ?? 40f);
 
         /// <summary>
         /// 방패돌진 다단히트 데미지 비율 값 (서버 우선)
         /// </summary>
         public static float ShieldChargeMultiHitDamagePercentValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_MultiHitDamagePercent", ShieldChargeMultiHitDamagePercent?.Value ?? 70f);
+            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_MultiHitDamagePercent", ShieldChargeMultiHitDamagePercent?.Value ?? 40f);
+        public static float ShieldChargeDamageLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("mace_tier7_shieldcharge_damage_level_bonus", ShieldChargeDamageLevelBonus?.Value ?? 5f);
 
         /// <summary>
         /// 수호자의 진심 필요 포인트 값 (서버 우선)
@@ -588,15 +592,22 @@ namespace CaptainSkillTree.SkillTree
             ShieldChargeDamagePercent = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_ShieldCharge_DamagePercent",
-                70f,
+                40f,
                 SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_DamagePercent")
             );
 
             ShieldChargeMultiHitDamagePercent = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_ShieldCharge_MultiHitDamagePercent",
-                70f,
+                40f,
                 SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_MultiHitDamagePercent")
+            );
+
+            ShieldChargeDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier7_ShieldCharge_DamageLevelBonus",
+                5f,
+                SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_DamageLevelBonus")
             );
 
             GuardianHeartRequiredPoints = SkillTreeConfig.BindServerSync(config,

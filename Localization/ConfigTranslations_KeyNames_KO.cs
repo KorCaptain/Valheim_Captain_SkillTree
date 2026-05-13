@@ -823,6 +823,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [방패돌진] 쿨타임 (초)",
                 ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [방패돌진] 스태미나 소모",
                 ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [방패돌진] 막기력 데미지 비율 (%)",
+                ["Tier7_ShieldCharge_DamageLevelBonus"] = "Tier 7-2: [방패돌진] 레벨당 데미지 보너스 (%)",
                 ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [방패돌진] 필요 포인트",
 
                 // ========================================

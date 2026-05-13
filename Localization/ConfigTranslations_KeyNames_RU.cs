@@ -589,6 +589,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_GuardianHeart_Cooldown"] = "Ур.7-2: [Щитовой натиск] Перезарядка (сек)",
                 ["Tier7_GuardianHeart_StaminaCost"] = "Ур.7-2: [Щитовой натиск] Расход выносливости",
                 ["Tier7_ShieldCharge_DamagePercent"] = "Ур.7-2: [Щитовой натиск] Урон от блока (%)",
+                ["Tier7_ShieldCharge_DamageLevelBonus"] = "Ур.7-2: [Щитовой натиск] Бонус урона за уровень (%)",
                 ["Tier7_GuardianHeart_RequiredPoints"] = "Ур.7-2: [Щитовой натиск] Необходимые очки",
 
                 // ============================================

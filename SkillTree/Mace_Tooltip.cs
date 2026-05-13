@@ -372,20 +372,22 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep7GuardianHeartTooltip() 호출됨");
 
-                // Config에서 동적 설정값 가져오기
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 0;
+                float levelBonus = currentLevel > 0 ? (currentLevel - 1) * Mace_Config.ShieldChargeDamageLevelBonusValue : 0f;
                 float dashDistance = 12f;
-                float damagePercent = Mace_Config.ShieldChargeDamagePercentValue;
-                float multiHitDamagePercent = Mace_Config.ShieldChargeMultiHitDamagePercentValue;
+                float damagePercent = Mace_Config.ShieldChargeDamagePercentValue + levelBonus;
+                float multiHitDamagePercent = Mace_Config.ShieldChargeMultiHitDamagePercentValue + levelBonus;
                 float staminaCost = Mace_Config.GuardianHeartStaminaCostValue;
                 float cooldown = Mace_Config.GuardianHeartCooldownValue;
                 int requiredPoints = Mace_Config.GuardianHeartRequiredPointsValue;
 
-                Plugin.Log.LogDebug($"[방패돌진 툴팁] 컨피그 값들 - 돌진거리: {dashDistance}m, 충돌데미지: {damagePercent}%, 다단히트: {multiHitDamagePercent}%, 스태미나: {staminaCost}, 쿨타임: {cooldown}초");
+                string skillNameDisplay = currentLevel > 0
+                    ? $"{L.Get("mace_skill_guardian")} [Lv{currentLevel}/7]"
+                    : L.Get("mace_skill_guardian");
 
-                // 상세 툴팁 데이터 생성
                 var data = new GuardianHeartTooltipData
                 {
-                    skillName = L.Get("mace_skill_guardian"),
+                    skillName = skillNameDisplay,
                     description = L.Get("mace_desc_guardian_buff", damagePercent),
                     additionalInfo = "",
                     dashDistance = $"{dashDistance:F0}m",
@@ -400,14 +402,29 @@ namespace CaptainSkillTree.SkillTree
                 };
 
                 string finalTooltip = GenerateGuardianHeartTooltip(data);
-                Plugin.Log.LogDebug($"[수호자의 진심 툴팁] 최종 툴팁 생성 완료 - 길이: {finalTooltip?.Length ?? 0}");
-                return finalTooltip;
+                string levelInfo = BuildShieldChargeLevelInfo(currentLevel);
+                return string.IsNullOrEmpty(levelInfo) ? finalTooltip : finalTooltip + "\n" + levelInfo;
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[수호자의 진심 툴팁] 툴팁 생성 실패: {ex.Message}");
                 return GetGuardianHeartFallbackTooltip();
             }
+        }
+
+        private static string BuildShieldChargeLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("shield_charge_max_level")}</size></color>";
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingShieldChargeItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("shield_charge_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("shield_charge_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("shield_charge_upgrade_ready")}</size></color>";
+            return req;
         }
 
         /// <summary>

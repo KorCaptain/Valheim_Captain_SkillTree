@@ -444,6 +444,13 @@ namespace CaptainSkillTree.Localization
                 ["heal_missing_items"] = "부족한 재료: {0}",
                 ["heal_next_level_req"] = "Lv{0} 강화 조건",
                 ["heal_upgrade_ready"] = "강화 가능",
+                ["shield_charge_upgrade_title"] = "🛡️ 방패돌진 강화",
+                ["shield_charge_upgrade_confirm"] = "방패돌진을 Lv{0}으로 강화합니다.\n필요 트로피가 인벤토리에서 소모됩니다.\n계속하시겠습니까?",
+                ["shield_charge_max_level"] = "방패돌진이 최대 레벨(Lv7)입니다.",
+                ["shield_charge_level_item_required"] = "방패돌진 Lv{0} 강화에 필요한 트로피가 부족합니다.",
+                ["shield_charge_missing_items"] = "부족한 재료: {0}",
+                ["shield_charge_next_level_req"] = "Lv{0} 강화 조건",
+                ["shield_charge_upgrade_ready"] = "강화 가능",
 
                 // === Tanker Job ===
                 ["tanker_skill_warcry"] = "전장의 함성",
@@ -987,6 +994,13 @@ namespace CaptainSkillTree.Localization
                 ["heal_missing_items"] = "Missing: {0}",
                 ["heal_next_level_req"] = "Lv{0} Upgrade Requirements",
                 ["heal_upgrade_ready"] = "Ready to upgrade",
+                ["shield_charge_upgrade_title"] = "🛡️ Shield Charge Upgrade",
+                ["shield_charge_upgrade_confirm"] = "Upgrade Shield Charge to Lv{0}.\nRequired trophies will be consumed from inventory.\nProceed?",
+                ["shield_charge_max_level"] = "Shield Charge is at max level (Lv7).",
+                ["shield_charge_level_item_required"] = "Not enough trophies for Shield Charge Lv{0} upgrade.",
+                ["shield_charge_missing_items"] = "Missing: {0}",
+                ["shield_charge_next_level_req"] = "Lv{0} Upgrade Requirements",
+                ["shield_charge_upgrade_ready"] = "Ready to upgrade",
 
                 ["producer_upgrade_title"] = "🛠️ Producer Class Ascension",
                 ["producer_upgrade_confirm"] = "Upgrade Producer to Lv{0}?",

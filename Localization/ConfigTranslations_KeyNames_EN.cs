@@ -821,6 +821,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Shield Charge] Cooldown (sec)",
                 ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [Shield Charge] Stamina Cost",
                 ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [Shield Charge] Block Power Damage Percent (%)",
+                ["Tier7_ShieldCharge_DamageLevelBonus"] = "Tier 7-2: [Shield Charge] Damage Level Bonus (%)",
                 ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [Shield Charge] Required Points",
 
                 // ========================================

@@ -1248,6 +1248,12 @@ namespace CaptainSkillTree.SkillTree
                         int targetLevel = currentLevel + 1;
                         ConsumeWhirlwindLevelItems(targetLevel);
                     }
+                    // 방패돌진: Lv2+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "mace_Step7_guardian_heart" && currentLevel >= 1)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeShieldChargeLevelItems(targetLevel);
+                    }
                     // 제작 전문가: 레벨별 트로피 소모
                     else if (pending.Key == "Producer")
                     {
@@ -2452,6 +2458,107 @@ namespace CaptainSkillTree.SkillTree
                 case 7:
                     inventory.RemoveItem("$item_trophy_fader", 1);
                     inventory.RemoveItem("$item_trophy_bonemaw", 1);
+                    break;
+            }
+        }
+
+        // ──────────────────────────────────────────────────────
+
+        public bool HasShieldChargeLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return false;
+            var inventory = player.GetInventory();
+            if (inventory == null) return false;
+
+            switch (targetLevel)
+            {
+                case 2: return inventory.HaveItem("$item_trophy_elder") &&
+                               inventory.HaveItem("$item_trophy_greydwarfbrute");
+                case 3: return inventory.HaveItem("$item_trophy_bonemass") &&
+                               inventory.HaveItem("$item_trophy_draugr");
+                case 4: return inventory.HaveItem("$item_trophy_dragonqueen") &&
+                               inventory.HaveItem("$item_trophy_wolf");
+                case 5: return inventory.HaveItem("$item_trophy_goblinking") &&
+                               inventory.HaveItem("$item_trophy_goblinbrute");
+                case 6: return inventory.HaveItem("$item_trophy_seekerqueen") &&
+                               inventory.HaveItem("$item_trophy_seekerbrute");
+                case 7: return inventory.HaveItem("$item_trophy_fader") &&
+                               inventory.HaveItem("$item_trophy_charredwarrior");
+                default: return false;
+            }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingShieldChargeItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            var missing = new System.Collections.Generic.List<string>();
+            if (player == null) return missing;
+            var inventory = player.GetInventory();
+            if (inventory == null) return missing;
+
+            switch (targetLevel)
+            {
+                case 2:
+                    if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_elder"));
+                    if (!inventory.HaveItem("$item_trophy_greydwarfbrute")) missing.Add(L.Get("item_trophy_greydwarfbrute"));
+                    break;
+                case 3:
+                    if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (!inventory.HaveItem("$item_trophy_draugr")) missing.Add(L.Get("item_trophy_draugr"));
+                    break;
+                case 4:
+                    if (!inventory.HaveItem("$item_trophy_dragonqueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (!inventory.HaveItem("$item_trophy_wolf")) missing.Add(L.Get("item_trophy_wolf"));
+                    break;
+                case 5:
+                    if (!inventory.HaveItem("$item_trophy_goblinking")) missing.Add(L.Get("item_trophy_goblinking"));
+                    if (!inventory.HaveItem("$item_trophy_goblinbrute")) missing.Add(L.Get("item_trophy_goblinbrute"));
+                    break;
+                case 6:
+                    if (!inventory.HaveItem("$item_trophy_seekerqueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (!inventory.HaveItem("$item_trophy_seekerbrute")) missing.Add(L.Get("item_trophy_seekerbrute"));
+                    break;
+                case 7:
+                    if (!inventory.HaveItem("$item_trophy_fader")) missing.Add(L.Get("item_trophy_fader"));
+                    if (!inventory.HaveItem("$item_trophy_charredwarrior")) missing.Add(L.Get("item_trophy_charredwarrior"));
+                    break;
+            }
+            return missing;
+        }
+
+        private void ConsumeShieldChargeLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            switch (targetLevel)
+            {
+                case 2:
+                    inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_trophy_greydwarfbrute", 1);
+                    break;
+                case 3:
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_trophy_draugr", 1);
+                    break;
+                case 4:
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_trophy_wolf", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_goblinking", 1);
+                    inventory.RemoveItem("$item_trophy_goblinbrute", 1);
+                    break;
+                case 6:
+                    inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_trophy_seekerbrute", 1);
+                    break;
+                case 7:
+                    inventory.RemoveItem("$item_trophy_fader", 1);
+                    inventory.RemoveItem("$item_trophy_charredwarrior", 1);
                     break;
             }
         }

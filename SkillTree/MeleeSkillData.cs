@@ -920,7 +920,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "mace_desc_guardian_buff",
                 DescriptionArgs = new object[] { 8f },
                 RequiredPoints = Mace_Config.GuardianHeartRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(600, 320), // 현 위치(580, 300)에서 x+20, y+20
                 Category = "근접",
