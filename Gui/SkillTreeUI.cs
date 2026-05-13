@@ -4088,6 +4088,11 @@ namespace CaptainSkillTree.Gui
                         return;
                     }
                     bool isAdminExplosive = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (!isAdminExplosive && manager.GetAvailablePoints(false) < node.RequiredPoints)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, manager.GetAvailablePoints(false)));
+                        return;
+                    }
                     if (isAdminExplosive || manager.HasExplosiveArrowLevelItems(targetLevel))
                     {
                         RectTransform nodeRectEA = null;
@@ -4120,6 +4125,11 @@ namespace CaptainSkillTree.Gui
                         return;
                     }
                     bool isAdminAR = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (!isAdminAR && manager.GetAvailablePoints(false) < node.RequiredPoints)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, manager.GetAvailablePoints(false)));
+                        return;
+                    }
                     if (isAdminAR || manager.HasArrowRainLevelItems(targetLevel))
                     {
                         RectTransform nodeRectAR = null;
@@ -4152,6 +4162,11 @@ namespace CaptainSkillTree.Gui
                         return;
                     }
                     bool isAdminOS = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (!isAdminOS && manager.GetAvailablePoints(false) < node.RequiredPoints)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, manager.GetAvailablePoints(false)));
+                        return;
+                    }
                     if (isAdminOS || manager.HasOneShotLevelItems(targetLevel))
                     {
                         RectTransform nodeRectOS = null;
@@ -4184,6 +4199,11 @@ namespace CaptainSkillTree.Gui
                         return;
                     }
                     bool isAdminIB = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (!isAdminIB && manager.GetAvailablePoints(false) < node.RequiredPoints)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, manager.GetAvailablePoints(false)));
+                        return;
+                    }
                     if (isAdminIB || manager.HasIceBreathLevelItems(targetLevel))
                     {
                         RectTransform nodeRectIB = null;
@@ -4216,6 +4236,11 @@ namespace CaptainSkillTree.Gui
                         return;
                     }
                     bool isAdminDC = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (!isAdminDC && manager.GetAvailablePoints(false) < node.RequiredPoints)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, manager.GetAvailablePoints(false)));
+                        return;
+                    }
                     if (isAdminDC || manager.HasDualCastLevelItems(targetLevel))
                     {
                         RectTransform nodeRectDC = null;
@@ -4248,6 +4273,11 @@ namespace CaptainSkillTree.Gui
                         return;
                     }
                     bool isAdminHeal = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (!isAdminHeal && manager.GetAvailablePoints(false) < node.RequiredPoints)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, manager.GetAvailablePoints(false)));
+                        return;
+                    }
                     if (isAdminHeal || manager.HasHealLevelItems(targetLevel))
                     {
                         RectTransform nodeRectHeal = null;
@@ -4280,6 +4310,11 @@ namespace CaptainSkillTree.Gui
                         return;
                     }
                     bool isAdminSE = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                    if (!isAdminSE && manager.GetAvailablePoints(false) < node.RequiredPoints)
+                    {
+                        tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, manager.GetAvailablePoints(false)));
+                        return;
+                    }
                     if (isAdminSE || manager.HasStackExplosionLevelItems(targetLevel))
                     {
                         RectTransform nodeRectSE = null;
