@@ -501,7 +501,10 @@ namespace CaptainSkillTree.SkillTree
                 if (!SkillEffect.whirlwindDealingDamage.TryGetValue(player, out bool dealing) || !dealing) return;
                 if (!SkillEffect.IsUsingPolearm(player)) return;
 
-                float mult = Polearm_Config.PolearmWhirlwindDamagePercentValue / 100f;
+                int whirlLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step6_whirlwind") ?? 1;
+                float effectiveDamagePct = Polearm_Config.PolearmWhirlwindDamagePercentValue
+                    + (whirlLevel - 1) * Polearm_Config.PolearmWhirlwindDamageLevelBonusValue;
+                float mult = effectiveDamagePct / 100f;
                 hit.m_damage.m_slash   *= mult;
                 hit.m_damage.m_pierce  *= mult;
                 hit.m_damage.m_blunt   *= mult;
@@ -509,7 +512,7 @@ namespace CaptainSkillTree.SkillTree
                 hit.m_damage.m_pickaxe *= mult;
                 hit.m_pushForce = 0f;
 
-                Plugin.Log.LogDebug($"[휠윈드] 데미지 {mult * 100f:F0}% 적용, 넉백 제거");
+                Plugin.Log.LogDebug($"[휠윈드] 데미지 {mult * 100f:F0}% 적용 (Lv{whirlLevel}), 넉백 제거");
             }
             catch (System.Exception ex)
             {

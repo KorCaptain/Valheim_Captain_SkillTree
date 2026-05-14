@@ -45,6 +45,7 @@ namespace CaptainSkillTree.SkillTree
         // === 휠윈드 (Whirlwind) 액티브 스킬 설정 ===
         public static ConfigEntry<int> PolearmWhirlwindRequiredPoints;
         public static ConfigEntry<float> PolearmWhirlwindDamagePercent;
+        public static ConfigEntry<float> PolearmWhirlwindDamageLevelBonus;
         public static ConfigEntry<float> PolearmWhirlwindStaminaPerSec;
         public static ConfigEntry<float> PolearmWhirlwindMoveSpeed;
         public static ConfigEntry<float> PolearmWhirlwindAttackInterval;
@@ -89,7 +90,8 @@ namespace CaptainSkillTree.SkillTree
         public static float PolearmPierceChargeCooldownValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_cooldown", PolearmPierceChargeCooldown.Value);
 
         // === 휠윈드 접근 프로퍼티들 ===
-        public static float PolearmWhirlwindDamagePercentValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_damage_percent", PolearmWhirlwindDamagePercent.Value);
+        public static float PolearmWhirlwindDamagePercentValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_damage_percent", PolearmWhirlwindDamagePercent?.Value ?? 20f);
+        public static float PolearmWhirlwindDamageLevelBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_tier7_whirlwind_damage_level_bonus", PolearmWhirlwindDamageLevelBonus?.Value ?? 5f);
         public static float PolearmWhirlwindStaminaPerSecValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_stamina_per_sec", PolearmWhirlwindStaminaPerSec.Value);
         public static float PolearmWhirlwindMoveSpeedValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_move_speed", PolearmWhirlwindMoveSpeed.Value);
         public static float PolearmWhirlwindAttackIntervalValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_attack_interval", PolearmWhirlwindAttackInterval.Value);
@@ -206,8 +208,11 @@ namespace CaptainSkillTree.SkillTree
 
             // Tier 6: 휠윈드 (Whirlwind) - 마우스 휠 홀드 액티브 스킬
             PolearmWhirlwindDamagePercent = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier6_Whirlwind_DamagePercent", 35f,
+                "Polearm Tree", "Tier6_Whirlwind_DamagePercent", 20f,
                 SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_DamagePercent"));
+            PolearmWhirlwindDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_Whirlwind_DamageLevelBonus", 5f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_DamageLevelBonus"));
             PolearmWhirlwindStaminaPerSec = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier6_Whirlwind_StaminaPerSec", 0.5f,
                 SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_StaminaPerSec"));

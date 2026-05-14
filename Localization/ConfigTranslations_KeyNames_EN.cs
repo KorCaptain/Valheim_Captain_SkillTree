@@ -888,6 +888,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Whirlwind] Max Duration (sec)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Tier 6: [Whirlwind] Damage Level Bonus (%)",
 
                 // ============================================
                 // Archer Job Skills - 8 Keys

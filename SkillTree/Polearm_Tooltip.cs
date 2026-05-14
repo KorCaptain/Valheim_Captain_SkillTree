@@ -307,21 +307,27 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogDebug("[폴암 툴팁] GetPolearmStep6WhirlwindTooltip() 호출됨 (휠윈드)");
 
-                float damagePercent = Polearm_Config.PolearmWhirlwindDamagePercentValue;
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step6_whirlwind") ?? 0;
+                float effectiveDamage = Polearm_Config.PolearmWhirlwindDamagePercentValue
+                    + (currentLevel > 0 ? (currentLevel - 1) * Polearm_Config.PolearmWhirlwindDamageLevelBonusValue : 0);
                 float staminaPerCycle = Polearm_Config.PolearmWhirlwindStaminaPerSecValue;
                 float cooldown = Polearm_Config.PolearmWhirlwindCooldownValue;
                 float maxDuration = Polearm_Config.PolearmWhirlwindMaxDurationValue;
 
+                string skillName = currentLevel > 0
+                    ? $"{L.Get("polearm_skill_whirlwind")} [Lv{currentLevel}/7]"
+                    : L.Get("polearm_skill_whirlwind");
+
                 var tooltip = "";
 
                 // 1. 스킬명 (#FFD700, size=22)
-                tooltip += $"<color=#FFD700><size=22>{L.Get("polearm_skill_whirlwind")}</size></color>\n\n";
+                tooltip += $"<color=#FFD700><size=22>{skillName}</size></color>\n\n";
 
                 // 2. 설명 (#FFD700 / #E0E0E0)
-                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("polearm_desc_whirlwind", damagePercent)}</size></color>\n";
+                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("polearm_desc_whirlwind", effectiveDamage)}</size></color>\n";
 
                 // 3. 데미지 (#FF6B6B / #FFB6C1)
-                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("polearm_desc_whirlwind_damage", damagePercent)}</size></color>\n";
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("polearm_desc_whirlwind_damage", effectiveDamage)}</size></color>\n";
 
                 // 4. 소모 (#FFB347 / #FFDAB9)
                 tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaPerCycle:F0}/{L.Get("unit_cycle")}</size></color>\n";
@@ -344,6 +350,9 @@ namespace CaptainSkillTree.SkillTree
                 // 10. 필요포인트 (#87CEEB / #FF6B6B)
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Polearm_Config.PolearmWhirlwindRequiredPointsValue}</size></color>";
 
+                string levelInfo = BuildWhirlwindLevelInfo(currentLevel);
+                if (!string.IsNullOrEmpty(levelInfo)) tooltip += "\n" + levelInfo;
+
                 Plugin.Log.LogDebug($"[휠윈드 툴팁] 최종 툴팁 생성 완료 - 길이: {tooltip?.Length ?? 0}");
                 return tooltip.TrimEnd('\n');
             }
@@ -352,6 +361,21 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[폴암 툴팁] 휠윈드 생성 실패: {ex.Message}");
                 return $"<color=#FFD700><size=22>{L.Get("polearm_skill_whirlwind")}</size></color>\n\n<color=#E0E0E0><size=16>{L.Get("skill_type_active_key", "Mouse2")}\n{L.Get("tooltip_generation_error")}</size></color>";
             }
+        }
+
+        private static string BuildWhirlwindLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("whirlwind_max_level")}</size></color>";
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingWhirlwindItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("whirlwind_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("whirlwind_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("whirlwind_upgrade_ready")}</size></color>";
+            return req;
         }
 
         #region 스킬 매핑

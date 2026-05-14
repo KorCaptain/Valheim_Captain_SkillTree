@@ -486,6 +486,14 @@ namespace CaptainSkillTree.Localization
                 ["pierce_charge_next_level_req"] = "Lv{0} 강화 조건",
                 ["pierce_charge_upgrade_ready"] = "강화 가능",
 
+                ["whirlwind_upgrade_title"] = "🌪️ 휠윈드 강화",
+                ["whirlwind_upgrade_confirm"] = "휠윈드를 Lv{0}으로 강화합니다.\n필요 트로피가 인벤토리에서 소모됩니다.\n계속하시겠습니까?",
+                ["whirlwind_upgrade_max_level"] = "휠윈드가 최대 레벨(Lv7)입니다.",
+                ["whirlwind_level_item_required"] = "휠윈드 Lv{0} 강화에 필요한 트로피가 부족합니다.",
+                ["whirlwind_missing_items"] = "부족한 재료: {0}",
+                ["whirlwind_next_level_req"] = "Lv{0} 강화 조건",
+                ["whirlwind_upgrade_ready"] = "강화 가능",
+
                 // === Tanker Job ===
                 ["tanker_skill_warcry"] = "전장의 함성",
                 ["tanker_desc_warcry"] = "{0}m 범위 적을 도발해 {1}초 동안 나를 공격하게 만듭니다.(보스 {2}초), 시전자는 {3}초 동안 피해감소 {4}%",
@@ -1068,6 +1076,14 @@ namespace CaptainSkillTree.Localization
                 ["pierce_charge_missing_items"] = "Missing: {0}",
                 ["pierce_charge_next_level_req"] = "Lv{0} Upgrade Requirements",
                 ["pierce_charge_upgrade_ready"] = "Ready to upgrade",
+
+                ["whirlwind_upgrade_title"] = "🌪️ Whirlwind Upgrade",
+                ["whirlwind_upgrade_confirm"] = "Upgrade Whirlwind to Lv{0}.\nRequired trophies will be consumed from inventory.\nProceed?",
+                ["whirlwind_upgrade_max_level"] = "Whirlwind is at max level (Lv7).",
+                ["whirlwind_level_item_required"] = "Not enough trophies for Whirlwind Lv{0} upgrade.",
+                ["whirlwind_missing_items"] = "Missing: {0}",
+                ["whirlwind_next_level_req"] = "Lv{0} Upgrade Requirements",
+                ["whirlwind_upgrade_ready"] = "Ready to upgrade",
 
                 ["producer_upgrade_title"] = "🛠️ Producer Class Ascension",
                 ["producer_upgrade_confirm"] = "Upgrade Producer to Lv{0}?",

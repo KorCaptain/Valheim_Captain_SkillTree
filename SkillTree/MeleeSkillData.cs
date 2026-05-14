@@ -737,7 +737,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "polearm_desc_whirlwind",
                 DescriptionArgs = new object[] { Polearm_Config.PolearmWhirlwindDamagePercentValue },
                 RequiredPoints = Polearm_Config.PolearmWhirlwindRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(680, 20),
                 Category = "근접",

@@ -890,6 +890,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [휠윈드] 쿨타임 (초)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [휠윈드] 필요 포인트",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [휠윈드] 최대 지속 시간 (초)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Tier 6: [휠윈드] 레벨당 데미지 보너스 (%)",
 
                 // ============================================
                 // Archer Job Skills (아처 직업 스킬) - 8개

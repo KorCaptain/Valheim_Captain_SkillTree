@@ -637,6 +637,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Whirlwind] Макс. длительность (сек)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Ур.6: [Вихрь] Бонус урона за уровень (%)",
 
                 // ============================================
                 // Archer Job Skills - 8 ключей
