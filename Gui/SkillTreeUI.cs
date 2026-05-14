@@ -4318,7 +4318,7 @@ namespace CaptainSkillTree.Gui
                     }
                 }
             }
-            else if (node.Id == "bow_Step6_critboost" && currentLevel >= 1)
+            else if (node.Id == "bow_Step6_critboost")
             {
                 return CheckExplosiveArrowInvest(node, currentLevel);
             }

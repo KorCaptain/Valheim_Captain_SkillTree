@@ -5,7 +5,7 @@ using CaptainSkillTree.Localization;
 namespace CaptainSkillTree.SkillTree
 {
     // 폭발화살(bow_Step6_critboost) 레벨 시스템
-    // Lv1: 트로피 없음 / Lv2~7: 보스 트로피 + 바이옴 트로피 + 포인트 3
+    // Lv1: 에기크쉬르 + 멧돼지 트로피 / Lv2~7: 보스 트로피 + 바이옴 트로피 + 포인트 3
     public partial class SkillTreeManager
     {
         public bool HasExplosiveArrowLevelItems(int targetLevel)
@@ -17,6 +17,8 @@ namespace CaptainSkillTree.SkillTree
 
             switch (targetLevel)
             {
+                case 1: return inventory.HaveItem("$item_trophy_eikthyr") &&
+                               inventory.HaveItem("$item_trophy_boar");
                 case 2: return inventory.HaveItem("$item_trophy_elder") &&
                                inventory.HaveItem("$item_trophy_frosttroll");
                 case 3: return inventory.HaveItem("$item_trophy_bonemass") &&
@@ -43,6 +45,10 @@ namespace CaptainSkillTree.SkillTree
 
             switch (targetLevel)
             {
+                case 1:
+                    if (!inventory.HaveItem("$item_trophy_eikthyr")) missing.Add(L.Get("item_trophy_eikthyr"));
+                    if (!inventory.HaveItem("$item_trophy_boar")) missing.Add(L.Get("item_trophy_boar"));
+                    break;
                 case 2:
                     if (!inventory.HaveItem("$item_trophy_elder")) missing.Add(L.Get("item_trophy_elder"));
                     if (!inventory.HaveItem("$item_trophy_frosttroll")) missing.Add(L.Get("item_trophy_frosttroll"));
@@ -80,6 +86,10 @@ namespace CaptainSkillTree.SkillTree
 
             switch (targetLevel)
             {
+                case 1:
+                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_trophy_boar", 1);
+                    break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_elder", 1);
                     inventory.RemoveItem("$item_trophy_frosttroll", 1);

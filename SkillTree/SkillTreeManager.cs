@@ -1189,7 +1189,7 @@ namespace CaptainSkillTree.SkillTree
                         ConsumeArcherLevelItems(targetLevel);
                     }
                     // 폭발화살: Lv2+ 업그레이드 시 트로피 소모
-                    else if (pending.Key == "bow_Step6_critboost" && currentLevel >= 1)
+                    else if (pending.Key == "bow_Step6_critboost")
                     {
                         int targetLevel = currentLevel + 1;
                         ConsumeExplosiveArrowLevelItems(targetLevel);

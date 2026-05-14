@@ -31,7 +31,7 @@ namespace CaptainSkillTree.Gui
         {
             var manager = SkillTree.SkillTreeManager.Instance;
             int skillLevel = manager.GetSkillLevel("bow_Step6_critboost");
-            if (skillLevel < 1) return false;
+            if (skillLevel < 0) return false;
 
             int targetLevel = skillLevel + 1;
             if (targetLevel > 7)
