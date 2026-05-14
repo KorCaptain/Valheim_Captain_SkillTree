@@ -28,7 +28,7 @@ namespace CaptainSkillTree.Gui
         }
     }
 
-    public class SkillTreeUI : MonoBehaviour
+    public partial class SkillTreeUI : MonoBehaviour
     {
         public GameObject? panel;
         private UnityEngine.UI.Text? skillPointText;

@@ -28,7 +28,7 @@ namespace CaptainSkillTree.SkillTree
         }
     }
 
-    public class SkillTreeManager
+    public partial class SkillTreeManager
     {
         public static SkillTreeManager Instance { get; } = new SkillTreeManager();
         public Dictionary<string, SkillNode> SkillNodes = new();
