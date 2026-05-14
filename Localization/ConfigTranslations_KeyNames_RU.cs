@@ -625,6 +625,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Ур.5: [Пронзающий рывок] Расход выносливости",
                 ["Tier5_PierceCharge_Cooldown"] = "Ур.5: [Пронзающий рывок] Перезарядка (сек)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Ур.5: [Пронзающий рывок] Необходимые очки",
+                ["Tier6_PierceCharge_PrimaryLevelBonus"] = "Ур.6: [Пронзающий рывок] Бонус урона первого удара за ур. (%)",
+                ["Tier6_PierceCharge_AoeLevelBonus"] = "Ур.6: [Пронзающий рывок] Бонус урона АОЕ за ур. (%)",
 
                 // === Polearm Tree: Whirlwind (7 keys) ===
                 ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Whirlwind] Damage Ratio (%)",

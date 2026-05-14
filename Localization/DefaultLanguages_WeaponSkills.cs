@@ -478,6 +478,14 @@ namespace CaptainSkillTree.Localization
                 ["combo_next_level_req"] = "Lv{0} 강화 조건",
                 ["combo_upgrade_ready"] = "강화 가능",
 
+                ["pierce_charge_upgrade_title"] = "⚔️ 관통 돌격 강화",
+                ["pierce_charge_upgrade_confirm"] = "관통 돌격을 Lv{0}으로 강화합니다.\n필요 트로피가 인벤토리에서 소모됩니다.\n계속하시겠습니까?",
+                ["pierce_charge_max_level"] = "관통 돌격이 최대 레벨(Lv7)입니다.",
+                ["pierce_charge_level_item_required"] = "관통 돌격 Lv{0} 강화에 필요한 트로피가 부족합니다.",
+                ["pierce_charge_missing_items"] = "부족한 재료: {0}",
+                ["pierce_charge_next_level_req"] = "Lv{0} 강화 조건",
+                ["pierce_charge_upgrade_ready"] = "강화 가능",
+
                 // === Tanker Job ===
                 ["tanker_skill_warcry"] = "전장의 함성",
                 ["tanker_desc_warcry"] = "{0}m 범위 적을 도발해 {1}초 동안 나를 공격하게 만듭니다.(보스 {2}초), 시전자는 {3}초 동안 피해감소 {4}%",
@@ -1052,6 +1060,14 @@ namespace CaptainSkillTree.Localization
                 ["combo_missing_items"] = "Missing: {0}",
                 ["combo_next_level_req"] = "Lv{0} Upgrade Requirements",
                 ["combo_upgrade_ready"] = "Ready to upgrade",
+
+                ["pierce_charge_upgrade_title"] = "⚔️ Pierce Charge Upgrade",
+                ["pierce_charge_upgrade_confirm"] = "Upgrade Pierce Charge to Lv{0}.\nRequired trophies will be consumed from inventory.\nProceed?",
+                ["pierce_charge_max_level"] = "Pierce Charge is at max level (Lv7).",
+                ["pierce_charge_level_item_required"] = "Not enough trophies for Pierce Charge Lv{0} upgrade.",
+                ["pierce_charge_missing_items"] = "Missing: {0}",
+                ["pierce_charge_next_level_req"] = "Lv{0} Upgrade Requirements",
+                ["pierce_charge_upgrade_ready"] = "Ready to upgrade",
 
                 ["producer_upgrade_title"] = "🛠️ Producer Class Ascension",
                 ["producer_upgrade_confirm"] = "Upgrade Producer to Lv{0}?",

@@ -876,6 +876,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [Pierce Charge] Stamina Cost",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [Pierce Charge] Cooldown (sec)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [Pierce Charge] Required Points",
+                ["Tier6_PierceCharge_PrimaryLevelBonus"] = "Tier 6: [Pierce Charge] Primary Damage Level Bonus (%)",
+                ["Tier6_PierceCharge_AoeLevelBonus"] = "Tier 6: [Pierce Charge] AOE Damage Level Bonus (%)",
 
                 // === Polearm Tree: Whirlwind (7 keys) ===
                 ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Whirlwind] Damage Ratio (%)",

@@ -878,6 +878,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [관통 돌격] 스태미나 소모",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [관통 돌격] 쿨타임 (초)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [관통 돌격] 필요 포인트",
+                ["Tier6_PierceCharge_PrimaryLevelBonus"] = "Tier 6: [관통 돌격] 레벨당 첫 타격 보너스 (%)",
+                ["Tier6_PierceCharge_AoeLevelBonus"] = "Tier 6: [관통 돌격] 레벨당 광역 데미지 보너스 (%)",
 
                 // === Polearm Tree: 휠윈드 (7개) ===
                 ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [휠윈드] 공격력 비율 (%)",
