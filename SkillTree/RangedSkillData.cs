@@ -698,7 +698,7 @@ namespace CaptainSkillTree.SkillTree
             float mainDmg = baseDmg + (mainLevel - 1) * bonusPerLevel;
             tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("bow_explosive_damage_format", mainDmg)}</size></color>\n";
             tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("bow_explosive_range_format", 5)}</size></color>\n";
-            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_percent_format", Bow_Config.BowExplosiveArrowStaminaCostValue)}</size></color>\n";
+            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_format", Bow_Config.BowExplosiveArrowStaminaCostValue)}</size></color>\n";
             tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z")}</size></color>\n";
             tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Bow_Config.BowExplosiveArrowCooldownValue)}</size></color>\n";
             tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_bow_equip")}</size></color>\n";

@@ -85,7 +85,7 @@ namespace CaptainSkillTree.SkillTree
         public static float BowExplosiveArrowCooldownValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_cooldown", BowExplosiveArrowCooldown.Value);
         public static float BowExplosiveArrowStaminaCostValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_stamina_cost", BowExplosiveArrowStaminaCost.Value);
         public static float BowExplosiveArrowRadiusValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_radius", BowExplosiveArrowRadius.Value);
-        public static float BowExplosiveArrowLevelBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_level_bonus", BowExplosiveArrowLevelBonus?.Value ?? 15f);
+        public static float BowExplosiveArrowLevelBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_explosive_level_bonus", BowExplosiveArrowLevelBonus?.Value ?? 20f);
         public const float BowExplosiveArrowActivationDuration = 6f;
         public const float BowExplosiveArrowAutoFireInterval   = 0.7f;
 
@@ -190,7 +190,7 @@ namespace CaptainSkillTree.SkillTree
 
             // === Tier 5: [폭발 화살] (R키 액티브) ===
             BowExplosiveArrowDamage = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_ExplosiveArrow_DamageMultiplier", 60f,
+                "Bow Tree", "Tier5_ExplosiveArrow_DamageMultiplier", 80f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_DamageMultiplier"), order: 10);
 
             BowExplosiveArrowRadius = SkillTreeConfig.BindServerSync(config,
@@ -210,7 +210,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_RequiredPoints"), order: 9);
 
             BowExplosiveArrowLevelBonus = SkillTreeConfig.BindServerSync(config,
-                "Bow Tree", "Tier5_ExplosiveArrow_LevelBonus", 12f,
+                "Bow Tree", "Tier5_ExplosiveArrow_LevelBonus", 20f,
                 SkillTreeConfig.GetConfigDescription("Tier5_ExplosiveArrow_LevelBonus"), order: 8);
 
             // === Tier 6: 화살비 (H키 액티브) ===
