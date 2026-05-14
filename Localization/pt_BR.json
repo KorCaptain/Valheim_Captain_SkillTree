@@ -1370,6 +1370,8 @@
   "fury_hammer_next_level_req": "Requisitos Lv{0}",
   "fury_hammer_upgrade_ready": "Pronto para melhorar",
   "item_trophy_neck": "Troféu Neck",
+  "item_trophy_eikthyr": "Troféu Eikthyr",
+  "item_trophy_boar": "Troféu Javali",
   "penetrate_upgrade_title": "⚡ Melhoria da Lança Perfurante",
   "penetrate_upgrade_confirm": "Melhorar Lança Perfurante para Lv{0}.\nOs troféus necessários serão consumidos do inventário.\nContinuar?",
   "penetrate_max_level": "Lança Perfurante está no nível máximo (Lv7).",

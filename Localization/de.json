@@ -1311,6 +1311,8 @@
   "fury_hammer_next_level_req": "Lv{0} Upgrade-Anforderungen",
   "fury_hammer_upgrade_ready": "Upgrade bereit",
   "item_trophy_neck": "Neck-Trophäe",
+  "item_trophy_eikthyr": "Eikthyr-Trophäe",
+  "item_trophy_boar": "Wildschwein-Trophäe",
   "penetrate_upgrade_title": "⚡ Durchbohrer-Upgrade",
   "penetrate_upgrade_confirm": "Durchbohrer auf Lv{0} upgraden.\nBenötigte Trophäen werden aus dem Inventar verbraucht.\nFortfahren?",
   "penetrate_max_level": "Durchbohrer hat den maximalen Level (Lv7) erreicht.",

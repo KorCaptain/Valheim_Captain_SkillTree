@@ -460,6 +460,8 @@ namespace CaptainSkillTree.Localization
                 ["fury_hammer_next_level_req"] = "Lv{0} 강화 조건",
                 ["fury_hammer_upgrade_ready"] = "강화 가능",
                 ["item_trophy_neck"] = "목 트로피",
+                ["item_trophy_eikthyr"] = "에기크쉬르 트로피",
+                ["item_trophy_boar"] = "멧돼지 트로피",
 
                 ["penetrate_upgrade_title"] = "⚡ 꿰뚫는 창 강화",
                 ["penetrate_upgrade_confirm"] = "꿰뚫는 창을 Lv{0}으로 강화합니다.\n필요 트로피가 인벤토리에서 소모됩니다.\n계속하시겠습니까?",
@@ -1052,6 +1054,8 @@ namespace CaptainSkillTree.Localization
                 ["fury_hammer_next_level_req"] = "Lv{0} Upgrade Requirements",
                 ["fury_hammer_upgrade_ready"] = "Ready to upgrade",
                 ["item_trophy_neck"] = "Neck Trophy",
+                ["item_trophy_eikthyr"] = "Eikthyr Trophy",
+                ["item_trophy_boar"] = "Boar Trophy",
 
                 ["penetrate_upgrade_title"] = "⚡ Piercing Spear Upgrade",
                 ["penetrate_upgrade_confirm"] = "Upgrade Piercing Spear to Lv{0}.\nRequired trophies will be consumed from inventory.\nProceed?",

@@ -684,6 +684,8 @@
   "fury_hammer_next_level_req": "Требования для ур. {0}",
   "fury_hammer_upgrade_ready": "Готово к улучшению",
   "item_trophy_neck": "Трофей Некка",
+  "item_trophy_eikthyr": "Трофей Эйктюра",
+  "item_trophy_boar": "Трофей Кабана",
   "penetrate_upgrade_title": "⚡ Улучшение Пронзающего Копья",
   "penetrate_upgrade_confirm": "Улучшить Пронзающее Копьё до ур. {0}.\nНеобходимые трофеи будут изъяты из инвентаря.\nПродолжить?",
   "penetrate_max_level": "Пронзающее Копьё достигло максимального уровня (Lv7).",

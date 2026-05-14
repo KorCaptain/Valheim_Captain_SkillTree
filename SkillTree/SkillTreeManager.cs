@@ -1278,8 +1278,8 @@ namespace CaptainSkillTree.SkillTree
                         int targetLevel = currentLevel + 1;
                         ConsumePierceChargeItems(targetLevel);
                     }
-                    // 휠윈드: Lv2+ 업그레이드 시 트로피 소모
-                    else if (pending.Key == "polearm_step6_whirlwind" && currentLevel >= 1)
+                    // 휠윈드: Lv1 습득 포함 모든 레벨 업그레이드 시 트로피 소모
+                    else if (pending.Key == "polearm_step6_whirlwind")
                     {
                         int targetLevel = currentLevel + 1;
                         ConsumeWhirlwindItems(targetLevel);
@@ -2939,6 +2939,7 @@ namespace CaptainSkillTree.SkillTree
         {
             switch (targetLevel)
             {
+                case 1: return HaveItem("TrophyEikthyr") && HaveItem("TrophyBoar");
                 case 2: return HaveItem("TrophyTheElder") && HaveItem("TrophyGreydwarf");
                 case 3: return HaveItem("TrophyBonemass") && HaveItem("TrophyDraugr");
                 case 4: return HaveItem("TrophyDragonQueen") && HaveItem("TrophySGolem");
@@ -2954,6 +2955,10 @@ namespace CaptainSkillTree.SkillTree
             var missing = new System.Collections.Generic.List<string>();
             switch (targetLevel)
             {
+                case 1:
+                    if (!HaveItem("TrophyEikthyr")) missing.Add(L.Get("item_eikthyr_trophy"));
+                    if (!HaveItem("TrophyBoar")) missing.Add(L.Get("item_trophy_boar"));
+                    break;
                 case 2:
                     if (!HaveItem("TrophyTheElder")) missing.Add(L.Get("item_trophy_elder"));
                     if (!HaveItem("TrophyGreydwarf")) missing.Add(L.Get("item_trophy_greydwarf"));
@@ -2991,6 +2996,10 @@ namespace CaptainSkillTree.SkillTree
 
             switch (targetLevel)
             {
+                case 1:
+                    inventory.RemoveItem("$item_trophy_eikthyr", 1);
+                    inventory.RemoveItem("$item_trophy_boar", 1);
+                    break;
                 case 2:
                     inventory.RemoveItem("$item_trophy_elder", 1);
                     inventory.RemoveItem("$item_trophy_greydwarf", 1);

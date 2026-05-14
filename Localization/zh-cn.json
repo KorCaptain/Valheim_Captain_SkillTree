@@ -1332,6 +1332,8 @@
   "fury_hammer_next_level_req": "Lv{0} 升级条件",
   "fury_hammer_upgrade_ready": "可以升级",
   "item_trophy_neck": "颈蛇战利品",
+  "item_trophy_eikthyr": "艾克斯尔战利品",
+  "item_trophy_boar": "野猪战利品",
   "penetrate_upgrade_title": "⚡ 穿透之枪升级",
   "penetrate_upgrade_confirm": "将穿透之枪升级至Lv{0}。\n所需战利品将从背包中消耗。\n是否继续？",
   "penetrate_max_level": "穿透之枪已达最大等级(Lv7)。",

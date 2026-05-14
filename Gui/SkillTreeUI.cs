@@ -4677,9 +4677,9 @@ namespace CaptainSkillTree.Gui
                     return new InvestResult(false, msg);
                 }
             }
-            else if (node.Id == "polearm_step6_whirlwind" && currentLevel >= 1)
+            else if (node.Id == "polearm_step6_whirlwind")
             {
-                // 휠윈드 Lv2+ 업그레이드: 트로피 체크 (어드민은 면제)
+                // 휠윈드 Lv1 습득 포함 모든 레벨 업그레이드: 트로피 체크 (어드민은 면제)
                 int targetLevel = currentLevel + 1;
                 if (targetLevel > 7)
                     return new InvestResult(false, L10n.Get("whirlwind_upgrade_max_level"));
@@ -5564,8 +5564,8 @@ namespace CaptainSkillTree.Gui
                     }
                 }
 
-                // 휠윈드 Lv1+ 업그레이드: 확인 다이얼로그 표시
-                if (node.Id == "polearm_step6_whirlwind" && manager.GetSkillLevel("polearm_step6_whirlwind") >= 1)
+                // 휠윈드 Lv1 습득 포함 모든 레벨 업그레이드: 확인 다이얼로그 표시
+                if (node.Id == "polearm_step6_whirlwind" && manager.GetSkillLevel("polearm_step6_whirlwind") >= 0)
                 {
                     int targetLevel = manager.GetSkillLevel("polearm_step6_whirlwind") + 1;
                     if (targetLevel > 7)
