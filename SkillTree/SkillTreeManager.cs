@@ -2949,7 +2949,7 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        public System.Collections.Generic.List<string> GetMissingWhirlwindItems(int targetLevel)
+        public System.Collections.Generic.List<string> GetMissingPolearmWhirlwindItems(int targetLevel)
         {
             var missing = new System.Collections.Generic.List<string>();
             switch (targetLevel)

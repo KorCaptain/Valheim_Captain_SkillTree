@@ -369,7 +369,7 @@ namespace CaptainSkillTree.SkillTree
             if (currentLevel >= 7)
                 return $"<color=#FFD700><size=15>★ {L.Get("whirlwind_max_level")}</size></color>";
             int nextLevel = currentLevel + 1;
-            var missing = SkillTreeManager.Instance?.GetMissingWhirlwindItems(nextLevel);
+            var missing = SkillTreeManager.Instance?.GetMissingPolearmWhirlwindItems(nextLevel);
             string req = $"<color=#FFD700><size=15>▶ {L.Get("whirlwind_next_level_req", nextLevel)}</size></color>";
             if (missing != null && missing.Count > 0)
                 req += $"\n<color=#FF6B6B><size=14>  {L.Get("whirlwind_missing_items", string.Join(", ", missing))}</size></color>";

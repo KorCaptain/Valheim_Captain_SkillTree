@@ -3366,7 +3366,7 @@ namespace CaptainSkillTree.Gui
             confirmDialog.transform.SetAsLastSibling();
         }
 
-        private void ShowWhirlwindUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
+        private void ShowPolearmWhirlwindUpgradeConfirmDialog(int targetLevel, RectTransform nodeRect)
         {
             if (confirmDialog != null)
                 DestroyImmediate(confirmDialog);
@@ -3464,7 +3464,7 @@ namespace CaptainSkillTree.Gui
             contentRect.anchoredPosition = new Vector2(0, 10);
 
             confirmButton = CreateLuxuryButton("ConfirmButton", L10n.Get("ui_confirm"),
-                new Vector2(-68f, -102f), new Color(0.05f, 0.45f, 0.3f, 1f), darkBgGo.transform, () => {
+                new Vector2(-68f, -102f), new Color(0.05f, 0.45f, 0.30f, 1f), darkBgGo.transform, () => {
                 PlayConfirmSound();
                 HideResetConfirmDialog();
                 var mgr = SkillTree.SkillTreeManager.Instance;
@@ -4686,7 +4686,7 @@ namespace CaptainSkillTree.Gui
                 bool isAdminWhirl = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
                 if (!isAdminWhirl && !manager.HasWhirlwindItems(targetLevel))
                 {
-                    var missing = manager.GetMissingWhirlwindItems(targetLevel);
+                    var missing = manager.GetMissingPolearmWhirlwindItems(targetLevel);
                     var msg = L10n.Get("whirlwind_level_item_required", targetLevel);
                     if (missing.Count > 0)
                         msg += "\n" + L10n.Get("whirlwind_missing_items", string.Join(", ", missing));
@@ -5587,12 +5587,12 @@ namespace CaptainSkillTree.Gui
                             var nodeObj = nodeUI.nodeObjects[node.Id];
                             if (nodeObj != null) nodeRectWhirl = nodeObj.GetComponent<RectTransform>();
                         }
-                        ShowWhirlwindUpgradeConfirmDialog(targetLevel, nodeRectWhirl);
+                        ShowPolearmWhirlwindUpgradeConfirmDialog(targetLevel, nodeRectWhirl);
                         return;
                     }
                     else
                     {
-                        var missing = manager.GetMissingWhirlwindItems(targetLevel);
+                        var missing = manager.GetMissingPolearmWhirlwindItems(targetLevel);
                         var msg = L10n.Get("whirlwind_level_item_required", targetLevel);
                         if (missing.Count > 0)
                             msg += "\n" + L10n.Get("whirlwind_missing_items", string.Join(", ", missing));
