@@ -1272,6 +1272,12 @@ namespace CaptainSkillTree.SkillTree
                         int targetLevel = currentLevel + 1;
                         ConsumeComboItems(targetLevel);
                     }
+                    // 관통 돌격: Lv2+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "polearm_step5_king" && currentLevel >= 1)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumePierceChargeItems(targetLevel);
+                    }
                     // 제작 전문가: 레벨별 트로피 소모
                     else if (pending.Key == "Producer")
                     {
@@ -2832,6 +2838,91 @@ namespace CaptainSkillTree.SkillTree
                 case 7:
                     inventory.RemoveItem("$item_trophy_fader", 1);
                     inventory.RemoveItem("$item_trophy_morgen", 1);
+                    break;
+            }
+        }
+
+        // ──────────────────────────────────────────────────────
+
+        public bool HasPierceChargeItems(int targetLevel)
+        {
+            switch (targetLevel)
+            {
+                case 2: return HaveItem("TrophyTheElder") && HaveItem("TrophyNeck");
+                case 3: return HaveItem("TrophyBonemass") && HaveItem("TrophyLeech");
+                case 4: return HaveItem("TrophyDragonQueen") && HaveItem("TrophyWolf");
+                case 5: return HaveItem("TrophyGoblinKing") && HaveItem("TrophyDeathsquito");
+                case 6: return HaveItem("TrophySeekerQueen") && HaveItem("TrophySeekerBrute");
+                case 7: return HaveItem("TrophyFader") && HaveItem("TrophyVolture");
+                default: return true;
+            }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingPierceChargeItems(int targetLevel)
+        {
+            var missing = new System.Collections.Generic.List<string>();
+            switch (targetLevel)
+            {
+                case 2:
+                    if (!HaveItem("TrophyTheElder")) missing.Add(L.Get("item_trophy_elder"));
+                    if (!HaveItem("TrophyNeck")) missing.Add(L.Get("item_trophy_neck"));
+                    break;
+                case 3:
+                    if (!HaveItem("TrophyBonemass")) missing.Add(L.Get("item_trophy_bonemass"));
+                    if (!HaveItem("TrophyLeech")) missing.Add(L.Get("item_trophy_leech"));
+                    break;
+                case 4:
+                    if (!HaveItem("TrophyDragonQueen")) missing.Add(L.Get("item_trophy_dragonqueen"));
+                    if (!HaveItem("TrophyWolf")) missing.Add(L.Get("item_trophy_wolf"));
+                    break;
+                case 5:
+                    if (!HaveItem("TrophyGoblinKing")) missing.Add(L.Get("item_trophy_goblinking"));
+                    if (!HaveItem("TrophyDeathsquito")) missing.Add(L.Get("item_trophy_deathsquito"));
+                    break;
+                case 6:
+                    if (!HaveItem("TrophySeekerQueen")) missing.Add(L.Get("item_trophy_seekerqueen"));
+                    if (!HaveItem("TrophySeekerBrute")) missing.Add(L.Get("item_trophy_seekerbrute"));
+                    break;
+                case 7:
+                    if (!HaveItem("TrophyFader")) missing.Add(L.Get("item_trophy_fader"));
+                    if (!HaveItem("TrophyVolture")) missing.Add(L.Get("item_trophy_volture"));
+                    break;
+            }
+            return missing;
+        }
+
+        private void ConsumePierceChargeItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inventory = player.GetInventory();
+            if (inventory == null) return;
+
+            switch (targetLevel)
+            {
+                case 2:
+                    inventory.RemoveItem("$item_trophy_elder", 1);
+                    inventory.RemoveItem("$item_trophy_neck", 1);
+                    break;
+                case 3:
+                    inventory.RemoveItem("$item_trophy_bonemass", 1);
+                    inventory.RemoveItem("$item_trophy_leech", 1);
+                    break;
+                case 4:
+                    inventory.RemoveItem("$item_trophy_dragonqueen", 1);
+                    inventory.RemoveItem("$item_trophy_wolf", 1);
+                    break;
+                case 5:
+                    inventory.RemoveItem("$item_trophy_goblinking", 1);
+                    inventory.RemoveItem("$item_trophy_deathsquito", 1);
+                    break;
+                case 6:
+                    inventory.RemoveItem("$item_trophy_seekerqueen", 1);
+                    inventory.RemoveItem("$item_trophy_seekerbrute", 1);
+                    break;
+                case 7:
+                    inventory.RemoveItem("$item_trophy_fader", 1);
+                    inventory.RemoveItem("$item_trophy_volture", 1);
                     break;
             }
         }

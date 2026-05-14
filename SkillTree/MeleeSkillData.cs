@@ -718,7 +718,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "polearm_desc_king",
                 DescriptionArgs = new object[] { Polearm_Config.PolearmPierceChargeDashDistanceValue },
                 RequiredPoints = Polearm_Config.PolearmKingRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(625, 20),
                 Category = "근접",

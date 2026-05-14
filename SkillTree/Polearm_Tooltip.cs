@@ -161,20 +161,29 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogDebug("[폴암 툴팁] GetPolearmStep5KingTooltip() 호출됨 (관통 돌격)");
 
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step5_king") ?? 0;
+                float levelBonus = currentLevel > 0 ? (currentLevel - 1) : 0;
+                float primaryDamage = Polearm_Config.PolearmPierceChargePrimaryDamageValue
+                    + levelBonus * Polearm_Config.PierceChargePrimaryLevelBonusValue;
+                float aoeDamage = Polearm_Config.PolearmPierceChargeAoeDamageValue
+                    + levelBonus * Polearm_Config.PierceChargeAoeLevelBonusValue;
+
                 // Config에서 동적 설정값 가져오기
                 float dashDistance = Polearm_Config.PolearmPierceChargeDashDistanceValue;
-                float primaryDamage = Polearm_Config.PolearmPierceChargePrimaryDamageValue;
-                float aoeDamage = Polearm_Config.PolearmPierceChargeAoeDamageValue;
                 float aoeAngle = Polearm_Config.PolearmPierceChargeAoeAngleValue;
                 float aoeRadius = Polearm_Config.PolearmPierceChargeAoeRadiusValue;
                 float knockbackDist = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
                 float staminaCost = Polearm_Config.PolearmPierceChargeStaminaCostValue;
                 float cooldown = Polearm_Config.PolearmPierceChargeCooldownValue;
 
+                string skillNameDisplay = currentLevel > 0
+                    ? $"{L.Get("polearm_skill_king")} [Lv{currentLevel}/7]"
+                    : L.Get("polearm_skill_king");
+
                 var tooltip = "";
 
                 // 1. 스킬명 (#FFD700, size=22)
-                tooltip += $"<color=#FFD700><size=22>{L.Get("polearm_skill_king")}</size></color>\n\n";
+                tooltip += $"<color=#FFD700><size=22>{skillNameDisplay}</size></color>\n\n";
 
                 // 2. 설명 (#FFD700 / #E0E0E0)
                 tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("polearm_desc_king", dashDistance)}</size></color>\n";
@@ -206,14 +215,32 @@ namespace CaptainSkillTree.SkillTree
                 // 11. 필요포인트 (#87CEEB / #FF6B6B)
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Polearm_Config.PolearmKingRequiredPointsValue}</size></color>";
 
+                string levelInfo = BuildPierceChargeLevelInfo(currentLevel);
                 Plugin.Log.LogDebug($"[관통 돌격 툴팁] 최종 툴팁 생성 완료 - 길이: {tooltip?.Length ?? 0}");
-                return tooltip.TrimEnd('\n');
+                return string.IsNullOrEmpty(levelInfo)
+                    ? tooltip.TrimEnd('\n')
+                    : tooltip.TrimEnd('\n') + "\n" + levelInfo;
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[관통 돌격 툴팁] 생성 실패: {ex.Message}");
                 return $"<color=#FFD700><size=22>{L.Get("polearm_skill_king")}</size></color>\n\n<color=#E0E0E0><size=16>{L.Get("skill_type_active_key", "G")}\n{L.Get("tooltip_generation_error")}</size></color>";
             }
+        }
+
+        private static string BuildPierceChargeLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("pierce_charge_max_level")}</size></color>";
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingPierceChargeItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("pierce_charge_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("pierce_charge_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("pierce_charge_upgrade_ready")}</size></color>";
+            return req;
         }
 
         // MeleeTooltipUtils.GenerateTooltip() 사용

@@ -17,6 +17,8 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> PolearmMoonSlashRequiredPoints;
         public static ConfigEntry<int> PolearmSuppressRequiredPoints;
         public static ConfigEntry<int> PolearmKingRequiredPoints;
+        private static ConfigEntry<float> PierceChargePrimaryLevelBonus;
+        private static ConfigEntry<float> PierceChargeAoeLevelBonus;
 
         // === 폴암 전문가 스킬 설정 ===
         public static ConfigEntry<float> PolearmExpertRangeBonus;
@@ -76,8 +78,10 @@ namespace CaptainSkillTree.SkillTree
 
         // === 관통 돌격 접근 프로퍼티들 ===
         public static float PolearmPierceChargeDashDistanceValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_dash_distance", PolearmPierceChargeDashDistance.Value);
-        public static float PolearmPierceChargePrimaryDamageValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_primary_damage", PolearmPierceChargePrimaryDamage.Value);
-        public static float PolearmPierceChargeAoeDamageValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_aoe_damage", PolearmPierceChargeAoeDamage.Value);
+        public static float PolearmPierceChargePrimaryDamageValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_primary_damage", PolearmPierceChargePrimaryDamage?.Value ?? 100f);
+        public static float PolearmPierceChargeAoeDamageValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_aoe_damage", PolearmPierceChargeAoeDamage?.Value ?? 80f);
+        public static float PierceChargePrimaryLevelBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_tier6_pierce_charge_primary_level_bonus", PierceChargePrimaryLevelBonus?.Value ?? 20f);
+        public static float PierceChargeAoeLevelBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_tier6_pierce_charge_aoe_level_bonus", PierceChargeAoeLevelBonus?.Value ?? 14f);
         public static float PolearmPierceChargeAoeAngleValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_aoe_angle", PolearmPierceChargeAoeAngle.Value);
         public static float PolearmPierceChargeAoeRadiusValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_aoe_radius", PolearmPierceChargeAoeRadius.Value);
         public static float PolearmPierceChargeKnockbackDistanceValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_knockback_distance", PolearmPierceChargeKnockbackDistance.Value);
@@ -170,10 +174,10 @@ namespace CaptainSkillTree.SkillTree
                 "Polearm Tree", "Tier5_PierceCharge_DashDistance", 10f,
                 SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_DashDistance"));
             PolearmPierceChargePrimaryDamage = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier5_PierceCharge_FirstHitDamageBonus", 200f,
+                "Polearm Tree", "Tier5_PierceCharge_FirstHitDamageBonus", 100f,
                 SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_FirstHitDamageBonus"));
             PolearmPierceChargeAoeDamage = SkillTreeConfig.BindServerSync(config,
-                "Polearm Tree", "Tier5_PierceCharge_AoeDamageBonus", 150f,
+                "Polearm Tree", "Tier5_PierceCharge_AoeDamageBonus", 80f,
                 SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_AoeDamageBonus"));
             PolearmPierceChargeAoeAngle = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier5_PierceCharge_AoeAngle", 280f,
@@ -193,6 +197,12 @@ namespace CaptainSkillTree.SkillTree
             PolearmKingRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier5_PierceCharge_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_RequiredPoints"));
+            PierceChargePrimaryLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_PierceCharge_PrimaryLevelBonus", 20f,
+                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_PrimaryLevelBonus"));
+            PierceChargeAoeLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_PierceCharge_AoeLevelBonus", 14f,
+                SkillTreeConfig.GetConfigDescription("Tier6_PierceCharge_AoeLevelBonus"));
 
             // Tier 6: 휠윈드 (Whirlwind) - 마우스 휠 홀드 액티브 스킬
             PolearmWhirlwindDamagePercent = SkillTreeConfig.BindServerSync(config,
