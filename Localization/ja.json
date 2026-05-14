@@ -486,7 +486,7 @@
   "knife_desc_combat_damage": "攻撃力+{0}%",
   "knife_desc_execution": "クリティカルダメージ+{0}%、クリティカル率+{1}%",
   "knife_desc_assassination": "{0}回連続命中で{1}%確率スタン",
-  "knife_desc_assassin_main": "{0}m内の敵の背後にテレポート\nターゲットを{2}秒スタン+{3}回連続攻撃\n攻撃完了後元の位置に戻る",
+  "knife_desc_assassin_main": "{0}m内の敵の背後にテレポート\nターゲットを{2}秒スタン+{3}回連続攻撃（各{4}%）\n攻撃完了後元の位置に戻る",
   "knife_desc_assassin_note": "全アサシンスキルを解放する究極スキル",
   "knife_desc_assassin_note2": "{0}m範囲内に敵がいない場合スキルキャンセル",
   "requirement_knife_claw": "ダガーまたはクロー装備",

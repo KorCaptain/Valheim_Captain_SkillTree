@@ -49,6 +49,8 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> KnifeAssassinHeartAttackCount;
         public static ConfigEntry<float> KnifeAssassinHeartAttackInterval;
         private static ConfigEntry<float> KnifeAssassinHeartAttackCountLevelBonus;
+        private static ConfigEntry<float> KnifeAssassinHeartDamageRatio;
+        private static ConfigEntry<float> KnifeAssassinHeartDamageLevelBonus;
 
         // === 약점폭발 (H키 액티브 스킬) 설정 ===
         public static ConfigEntry<int>   KnifeStackExplosionRequiredPoints;
@@ -100,9 +102,11 @@ namespace CaptainSkillTree.SkillTree
         public static float KnifeAssassinHeartTeleportRangeValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_teleport_range", KnifeAssassinHeartTeleportRange?.Value ?? 7f);
         public static float KnifeAssassinHeartTeleportBehindValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_teleport_behind", KnifeAssassinHeartTeleportBehind?.Value ?? 1f);
         public static float KnifeAssassinHeartStunDurationValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_stun_duration", KnifeAssassinHeartStunDuration?.Value ?? 1f);
-        public static int KnifeAssassinHeartAttackCountValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_count", (float)(KnifeAssassinHeartAttackCount?.Value ?? 2));
+        public static int KnifeAssassinHeartAttackCountValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_count", (float)(KnifeAssassinHeartAttackCount?.Value ?? 3));
         public static float KnifeAssassinHeartAttackIntervalValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_interval", KnifeAssassinHeartAttackInterval?.Value ?? 0.3f);
-        public static float KnifeAssassinHeartAttackCountLevelBonusValue => SkillTreeConfig.GetEffectiveValue("knife_tier9_assassin_heart_attack_count_level_bonus", KnifeAssassinHeartAttackCountLevelBonus?.Value ?? 1f);
+        public static float KnifeAssassinHeartAttackCountLevelBonusValue => SkillTreeConfig.GetEffectiveValue("knife_tier9_assassin_heart_attack_count_level_bonus", KnifeAssassinHeartAttackCountLevelBonus?.Value ?? 0f);
+        public static float KnifeAssassinHeartDamageRatioValue => SkillTreeConfig.GetEffectiveValue("knife_tier9_assassin_heart_damage_ratio", KnifeAssassinHeartDamageRatio?.Value ?? 60f);
+        public static float KnifeAssassinHeartDamageLevelBonusValue => SkillTreeConfig.GetEffectiveValue("knife_tier9_assassin_heart_damage_level_bonus", KnifeAssassinHeartDamageLevelBonus?.Value ?? 7f);
 
         // === 약점폭발 동적 값 ===
         public static int   KnifeStackExplosionRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step10_required_points", (float)(KnifeStackExplosionRequiredPoints?.Value ?? 3));
@@ -314,7 +318,7 @@ namespace CaptainSkillTree.SkillTree
                 KnifeAssassinHeartAttackCount = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_ComboAttackCount",
-                    2,
+                    3,
                     SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_ComboAttackCount"));
 
                 KnifeAssassinHeartAttackInterval = SkillTreeConfig.BindServerSync(config,
@@ -332,8 +336,20 @@ namespace CaptainSkillTree.SkillTree
                 KnifeAssassinHeartAttackCountLevelBonus = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_AttackCountLevelBonus",
-                    1f,
+                    0f,
                     SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_AttackCountLevelBonus"));
+
+                KnifeAssassinHeartDamageRatio = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier8_AssassinHeart_DamageRatio",
+                    60f,
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_DamageRatio"));
+
+                KnifeAssassinHeartDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier8_AssassinHeart_DamageLevelBonus",
+                    7f,
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_DamageLevelBonus"));
 
                 // === Tier 9: 약점폭발 (H키 액티브) ===
                 KnifeStackExplosionDamagePercent = SkillTreeConfig.BindServerSync(config,

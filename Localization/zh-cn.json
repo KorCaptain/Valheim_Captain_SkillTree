@@ -486,7 +486,7 @@
   "knife_desc_combat_damage": "攻击力+{0}%",
   "knife_desc_execution": "暴击伤害+{0}%，暴击率+{1}%",
   "knife_desc_assassination": "{0}次连续命中时{1}%概率眩晕",
-  "knife_desc_assassin_main": "传送至{0}米内敌人身后\n眩晕目标{2}秒+{3}次连续攻击\n攻击完成后返回原始位置",
+  "knife_desc_assassin_main": "传送至{0}米内敌人身后\n眩晕目标{2}秒+{3}次连续攻击（每次{4}%）\n攻击完成后返回原始位置",
   "knife_desc_assassin_note": "极限释放所有刺客技能的终极技能",
   "knife_desc_assassin_note2": "{0}米范围内没有敌人时技能取消",
   "requirement_knife_claw": "装备匕首或爪",

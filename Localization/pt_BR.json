@@ -316,7 +316,7 @@
   "knife_desc_combat_damage": "Poder de ataque +{0}%",
   "knife_desc_execution": "Dano crítico +{0}%, Chance crítica +{1}%",
   "knife_desc_assassination": "{0}% de chance de cambalear em {1} acertos consecutivos",
-  "knife_desc_assassin_main": "Teleporta atrás do inimigo em {0}m\nAtordoa o alvo por {2}s + {3} ataques consecutivos\nRetorna à posição original após os ataques",
+  "knife_desc_assassin_main": "Teleporta atrás do inimigo em {0}m\nAtordoa o alvo por {2}s + {3} ataques consecutivos ({4}% cada)\nRetorna à posição original após os ataques",
   "knife_desc_assassin_note": "Habilidade suprema que leva todas as capacidades de assassino ao limite",
   "knife_desc_assassin_note2": "Habilidade cancelada se não houver inimigo em {0}m",
   "requirement_knife_claw": "Faca ou Garra equipada",

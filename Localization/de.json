@@ -477,7 +477,7 @@
   "knife_desc_combat_damage": "Angriffskraft +{0}%",
   "knife_desc_execution": "Kritischer Schaden +{0}%, Kritchance +{1}%",
   "knife_desc_assassination": "{0}% Chance zu betäuben bei {1} aufeinanderfolgenden Treffern",
-  "knife_desc_assassin_main": "Teleportiere dich hinter einen Gegner innerhalb von {0}m\nBetäube das Ziel für {2}s + {3} aufeinanderfolgende Angriffe\nKehre nach den Angriffen zur ursprünglichen Position zurück",
+  "knife_desc_assassin_main": "Teleportiere dich hinter einen Gegner innerhalb von {0}m\nBetäube das Ziel für {2}s + {3} aufeinanderfolgende Angriffe ({4}% je)\nKehre nach den Angriffen zur ursprünglichen Position zurück",
   "knife_desc_assassin_note": "Ultimative Fähigkeit, die alle Assassinenfähigkeiten an ihre Grenzen bringt",
   "knife_desc_assassin_note2": "Fähigkeit wird abgebrochen, wenn kein Gegner innerhalb von {0}m ist",
   "requirement_knife_claw": "Messer oder Klaue ausgerüstet",

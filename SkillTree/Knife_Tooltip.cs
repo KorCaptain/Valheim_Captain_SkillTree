@@ -182,8 +182,9 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("knife_step9_assassin_heart") ?? 0;
-                int effectiveCount = Knife_Config.KnifeAssassinHeartAttackCountValue
-                    + (currentLevel > 0 ? (int)((currentLevel - 1) * Knife_Config.KnifeAssassinHeartAttackCountLevelBonusValue) : 0);
+                int effectiveCount = Knife_Config.KnifeAssassinHeartAttackCountValue; // 3회 고정
+                float effectiveDamage = Knife_Config.KnifeAssassinHeartDamageRatioValue
+                    + (currentLevel > 0 ? (currentLevel - 1) * Knife_Config.KnifeAssassinHeartDamageLevelBonusValue : 0);
 
                 var staminaCost    = Knife_Config.KnifeAssassinHeartStaminaCostValue;
                 var cooldown       = Knife_Config.KnifeAssassinHeartCooldownValue;
@@ -198,7 +199,7 @@ namespace CaptainSkillTree.SkillTree
 
                 var data = MeleeTooltipUtils.CreateActiveSkillData(
                     skillNameDisplay,
-                    L.Get("knife_desc_assassin_main", teleportRange, teleportBehind, stunDuration, effectiveCount),
+                    L.Get("knife_desc_assassin_main", teleportRange, teleportBehind, stunDuration, effectiveCount, effectiveDamage),
                     $"{staminaCost}",
                     $"{cooldown}{L.Get("unit_seconds")}",
                     MeleeTooltipUtils.WeaponType.Knife,
