@@ -425,6 +425,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_Cooldown"] = "Tier 5: [Explosive Arrow] Cooldown (sec)",
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [Explosive Arrow] Stamina Cost (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [Explosive Arrow] Required Points",
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Tier 5: [Explosive Arrow] Damage Bonus per Level (%)",
 
                 // === Tier 6: [Arrow Rain] (6) ===
                 ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [Arrow Rain] Damage per Arrow (%)",
@@ -433,6 +434,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [Arrow Rain] Cooldown (sec)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [Arrow Rain] Stamina Cost (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [Arrow Rain] Required Points",
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [Arrow Rain] Damage Bonus per Level (%)",
 
                 // ============================================
                 // Sword Tree - 30 Keys
@@ -517,6 +519,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Penetrate_HitCount"] = "Tier 5-1: [Penetrating Spear] Lightning Trigger Hit Count",
                 ["Tier5_Penetrate_GKey_Cooldown"] = "Tier 5-1: [Penetrating Spear] G-Key Cooldown (sec)",
                 ["Tier5_Penetrate_GKey_StaminaCost"] = "Tier 5-1: [Penetrating Spear] G-Key Stamina Cost",
+                ["Tier5_Penetrate_LightningDamageLevelBonus"] = "Tier 5-1: [Penetrating Spear] Lightning Damage Level Bonus (%)",
 
                 // === Spear Tree: Combo Spear (8 keys) ===
                 ["Tier5_Combo_RequiredPoints"] = "Tier 5-2: [Combo Spear] Required Points",
@@ -527,6 +530,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Combo_ActiveRange"] = "Tier 5-2: [Combo Spear] Active Effect Range (m)",
                 ["Tier5_Combo_BuffDuration"] = "Tier 5-2: [Combo Spear] Buff Duration (sec)",
                 ["Tier5_Combo_MaxUses"] = "Tier 5-2: [Combo Spear] Max Enhanced Throw Count",
+                ["Tier5_Combo_HKey_DamageLevelBonus"] = "Tier 5-2: [Combo Spear] H-Key Damage Level Bonus (%)",
 
                 // ============================================
                 // Staff Tree - 30 Keys
@@ -573,6 +577,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [Double Casting] Eitr Cost",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [Double Casting] Cooldown (sec)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [Double Casting] Required Points",
+                ["Tier5_DoubleCast_DamageLevelBonus"] = "Tier 5-1: [Double Casting] Damage Bonus Per Level (%)",
                 ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [Double Casting] Arc Radius (m)",
                 ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [Double Casting] Summon Height (m)",
                 ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [Double Casting] Hover Time (sec)",
@@ -584,6 +589,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Tier 5-2: [Heal] Heal Amount (% of Max HP)",
                 ["Tier5_InstantAreaHeal_Range"] = "Tier 5-2: [Heal] Heal Range (m)",
                 ["Tier5_InstantAreaHeal_RequiredPoints"] = "Tier 5-2: [Heal] Required Points",
+                ["Tier5_InstantAreaHeal_HealLevelBonus"] = "Tier 5-2: [Heal] Heal Bonus per Level (%)",
 
                 // ============================================
                 // Crossbow Tree - 34 Keys
@@ -634,6 +640,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [One Shot] Slow Reload Multiplier",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [One Shot] Cooldown (sec)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [One Shot] Required Points",
+                ["Tier5_OneShot_LevelBonus"] = "Tier 5: [One Shot] Damage Bonus per Level (%)",
 
                 // === Tier 6: Vulkan Ice (H-key Active) ===
                 ["Tier6_IceBreath_Cooldown"] = "Tier 6: [Vulkan Ice] Cooldown (sec)",
@@ -642,6 +649,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_IceBreath_DotPercent"] = "Tier 6: [Vulkan Ice] DoT Damage (%)",
                 ["Tier6_IceBreath_DotCount"] = "Tier 6: [Vulkan Ice] DoT Count",
                 ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [Vulkan Ice] Required Points",
+                ["Tier6_IceBreath_FirstHitLevelBonus"] = "Tier 6: [Vulkan Ice] First Hit Bonus Per Level (%)",
+                ["Tier6_IceBreath_DotLevelBonus"] = "Tier 6: [Vulkan Ice] DoT Bonus Per Level (%)",
 
                 // ============================================
                 // Knife Tree - 32 Keys
@@ -696,6 +705,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Tier 8: [Assassin's Heart] Combo Attack Count",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: [Assassin's Heart] Attack Interval (sec)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Tier 8: [Assassin's Heart] Required Points",
+                ["Tier8_AssassinHeart_AttackCountLevelBonus"] = "Tier 8: [Assassin's Heart] Attack Count Bonus per Level",
 
                 // ============================================
                 // Sword Tree - 33 Keys (new key format)
@@ -751,6 +761,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_RushSlash_Cooldown"] = "Tier 6: [Rush Slash] Cooldown (sec)",
                 ["Tier6_RushSlash_MoveSpeed"] = "Tier 6: [Rush Slash] Move Speed (m/s)",
                 ["Tier6_RushSlash_AttackSpeedBonus"] = "Tier 6: [Rush Slash] Attack Speed Bonus (%)",
+                ["Tier6_RushSlash_DamageLevelBonus"] = "Tier 6: [Rush Slash] Damage Level Bonus (%)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Tier 6: [Whirlwind Slash] Damage Level Bonus (%)",
 
                 // ============================================
                 // Mace Tree - 34 Keys
@@ -806,11 +818,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Tier 7-1: [Fury Hammer] Cooldown (sec)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [Fury Hammer] AOE Radius (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [Fury Hammer] Required Points",
+                ["Tier7_FuryHammer_DamageLevelBonus"] = "Tier 7-1: [Fury Hammer] Damage Level Bonus (%)",
 
                 // === Tier 7-2: Shield Charge - G-Key Active (4) ===
                 ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Shield Charge] Cooldown (sec)",
                 ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [Shield Charge] Stamina Cost",
                 ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [Shield Charge] Block Power Damage Percent (%)",
+                ["Tier7_ShieldCharge_DamageLevelBonus"] = "Tier 7-2: [Shield Charge] Damage Level Bonus (%)",
                 ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [Shield Charge] Required Points",
 
                 // ========================================
@@ -862,6 +876,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [Pierce Charge] Stamina Cost",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [Pierce Charge] Cooldown (sec)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [Pierce Charge] Required Points",
+                ["Tier6_PierceCharge_PrimaryLevelBonus"] = "Tier 6: [Pierce Charge] Primary Damage Level Bonus (%)",
+                ["Tier6_PierceCharge_AoeLevelBonus"] = "Tier 6: [Pierce Charge] AOE Damage Level Bonus (%)",
 
                 // === Polearm Tree: Whirlwind (7 keys) ===
                 ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Whirlwind] Damage Ratio (%)",
@@ -872,6 +888,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Whirlwind] Max Duration (sec)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Tier 6: [Whirlwind] Damage Level Bonus (%)",
 
                 // ============================================
                 // Archer Job Skills - 8 Keys
@@ -1135,6 +1152,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Stack Explosion] Required Points",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Stack Explosion] Buff Duration (sec)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Stack Explosion] AOE Damage Ratio (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [Stack Explosion] Damage Bonus per Level (%)",
             };
         }
     }

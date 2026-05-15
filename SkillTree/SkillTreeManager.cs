@@ -28,7 +28,7 @@ namespace CaptainSkillTree.SkillTree
         }
     }
 
-    public class SkillTreeManager
+    public partial class SkillTreeManager
     {
         public static SkillTreeManager Instance { get; } = new SkillTreeManager();
         public Dictionary<string, SkillNode> SkillNodes = new();
@@ -1188,6 +1188,102 @@ namespace CaptainSkillTree.SkillTree
                         int targetLevel = currentLevel + 1;
                         ConsumeArcherLevelItems(targetLevel);
                     }
+                    // 폭발화살: Lv2+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "bow_Step6_critboost")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeExplosiveArrowLevelItems(targetLevel);
+                    }
+                    // 화살비: Lv1+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "bow_Step6_arrow_rain" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeArrowRainLevelItems(targetLevel);
+                    }
+                    // 단 한 발: Lv2+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "crossbow_Step6_expert" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeOneShotLevelItems(targetLevel);
+                    }
+                    // 빙결폭발탄: Lv1+ 업그레이드 시 트로피 소모
+                    else if (pending.Key == "crossbow_ice_breath" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeIceBreathLevelItems(targetLevel);
+                    }
+                    // 이중시전: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "staff_Step6_dual_cast" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeDualCastLevelItems(targetLevel);
+                    }
+                    // 힐: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "staff_Step6_heal" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeHealLevelItems(targetLevel);
+                    }
+                    // 약점폭발: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "knife_step10_stack_explosion" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeStackExplosionLevelItems(targetLevel);
+                    }
+                    // 돌진베기: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "sword_step5_finalcut" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeRushSlashLevelItems(targetLevel);
+                    }
+                    // 암살자의 심장: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "knife_step9_assassin_heart" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeAssassinHeartLevelItems(targetLevel);
+                    }
+                    // 회오리베기: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "sword_step5_defswitch" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeWhirlwindLevelItems(targetLevel);
+                    }
+                    // 방패돌진: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "mace_Step7_guardian_heart" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeShieldChargeLevelItems(targetLevel);
+                    }
+                    // 분노의 망치: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "mace_Step7_fury_hammer" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeFuryHammerLevelItems(targetLevel);
+                    }
+                    // 꿰뚫는 창: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "spear_Step5_penetrate" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumePenetrateItems(targetLevel);
+                    }
+                    // 연공창: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "spear_Step5_combo" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeComboItems(targetLevel);
+                    }
+                    // 관통 돌격: 모든 레벨 업그레이드 시 트로피 소모 (Lv0→Lv1 포함)
+                    else if (pending.Key == "polearm_step5_king" && currentLevel >= 0)
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumePierceChargeItems(targetLevel);
+                    }
+                    // 휠윈드: Lv1 습득 포함 모든 레벨 업그레이드 시 트로피 소모
+                    else if (pending.Key == "polearm_step6_whirlwind")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        ConsumeWhirlwindItems(targetLevel);
+                    }
                     // 제작 전문가: 레벨별 트로피 소모
                     else if (pending.Key == "Producer")
                     {
@@ -1439,6 +1535,38 @@ namespace CaptainSkillTree.SkillTree
                     break;
             }
         }
+
+        // ─────────────── 폭발화살 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.BowExplosiveArrow.cs ───────────────
+
+        // 화살비 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.BowArrowRain.cs
+
+        // 단 한 발 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.CrossbowOneShot.cs
+
+        // 빙결폭발탄 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.CrossbowIceBreath.cs
+
+        // 이중시전 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.StaffDualCast.cs
+
+        // 힐 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.StaffHeal.cs
+
+        // 약점폭발 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.KnifeStackExplosion.cs
+
+        // 암살자의 심장 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.KnifeAssassinHeart.cs
+
+        // 돌진베기 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.SwordRushSlash.cs
+
+        // 회오리베기 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.SwordWhirlwind.cs
+
+        // 방패돌진 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.MaceShieldCharge.cs
+
+        // 분노의 망치 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.MaceFuryHammer.cs
+
+        // 꿰뚫는 창 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.SpearPenetrate.cs
+
+        // 연공창 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.SpearCombo.cs
+
+        // 관통 돌격 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.PolearmPierceCharge.cs
+
+        // 폴암 회오리 레벨 시스템 → SkillTree/ActiveSkills/SkillTreeManager.PolearmWhirlwind.cs
 
         public bool HasRogueLevelItems(int targetLevel)
         {
@@ -2043,7 +2171,7 @@ namespace CaptainSkillTree.SkillTree
                                inventory.HaveItem("$item_trophy_elder") &&
                                GetSkillLevel("staff_Step6_dual_cast") > 0 &&
                                inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
-                case 3: return inventory.HaveItem("$item_trophy_wraith") &&
+                case 3: return inventory.HaveItem("$item_trophy_leech") &&
                                inventory.HaveItem("$item_trophy_bonemass") &&
                                inventory.CountItems("$item_coins") >= SkillTreeConfig.GetJobLevelCost(targetLevel);
                 case 4: return inventory.HaveItem("$item_trophy_hatchling") &&
@@ -2078,7 +2206,7 @@ namespace CaptainSkillTree.SkillTree
                     if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
                 case 3:
-                    if (!inventory.HaveItem("$item_trophy_wraith")) missing.Add(L.Get("item_trophy_wraith"));
+                    if (!inventory.HaveItem("$item_trophy_leech")) missing.Add(L.Get("item_trophy_leech"));
                     if (!inventory.HaveItem("$item_trophy_bonemass")) missing.Add(L.Get("item_trophy_bonemass"));
                     if (inventory.CountItems("$item_coins") < SkillTreeConfig.GetJobLevelCost(targetLevel)) missing.Add($"{L.Get("item_coins")} x{SkillTreeConfig.GetJobLevelCost(targetLevel)}");
                     break;
@@ -2116,7 +2244,7 @@ namespace CaptainSkillTree.SkillTree
                     inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;
                 case 3:
-                    inventory.RemoveItem("$item_trophy_wraith", 1);
+                    inventory.RemoveItem("$item_trophy_leech", 1);
                     inventory.RemoveItem("$item_trophy_bonemass", 1);
                     inventory.RemoveItem("$item_coins", SkillTreeConfig.GetJobLevelCost(targetLevel));
                     break;

@@ -538,7 +538,10 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            int requiredHits = Knife_Config.KnifeAssassinHeartAttackCountValue; // 3회 적중 필요
+            int assassinLevel = SkillTreeManager.Instance?.GetSkillLevel("knife_step9_assassin_heart") ?? 1;
+            int requiredHits = Knife_Config.KnifeAssassinHeartAttackCountValue; // 3회 고정
+            float damageRatio = (Knife_Config.KnifeAssassinHeartDamageRatioValue
+                + (assassinLevel - 1) * Knife_Config.KnifeAssassinHeartDamageLevelBonusValue) / 100f;
             float attackSpeedBonus = 500f; // 공격속도 500% 증가
             float attackInterval = 0.15f; // 공격 간격
 
@@ -575,8 +578,8 @@ namespace CaptainSkillTree.SkillTree
                 try
                 {
                     HitData hit = new HitData();
-                    hit.m_damage.m_slash = weaponDamage.m_slash;
-                    hit.m_damage.m_pierce = weaponDamage.m_pierce;
+                    hit.m_damage.m_slash = weaponDamage.m_slash * damageRatio;
+                    hit.m_damage.m_pierce = weaponDamage.m_pierce * damageRatio;
                     hit.m_point = target.GetCenterPoint();
                     hit.m_dir = (target.transform.position - player.transform.position).normalized;
                     hit.m_attacker = player.GetZDOID();

@@ -21,22 +21,26 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[Sword Tooltip] GetSwordSlashTooltip() called");
 
-            // 컨피그에서 실제 값 가져오기
+            int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("sword_step5_finalcut") ?? 0;
+            float levelBonus = currentLevel > 0 ? (currentLevel - 1) * Sword_Config.RushSlashDamageLevelBonusValue : 0f;
+
             var skillData = Sword_Config.GetRushSlashData();
-            var requiredPoints = 3;
+            float eff1 = skillData.damage1stRatio + levelBonus;
+            float eff2 = skillData.damage2ndRatio + levelBonus;
+            float eff3 = skillData.damage3rdRatio + levelBonus;
 
-            Plugin.Log.LogDebug($"[Sword Tooltip] Config values - 1st: {skillData.damage1stRatio}%, 2nd: {skillData.damage2ndRatio}%, 3rd: {skillData.damage3rdRatio}%");
+            string skillNameDisplay = currentLevel > 0
+                ? $"<color=#4FC3F7><size=22>{L.Get("sword_skill_rush_slash")} [Lv{currentLevel}/7]</size></color>"
+                : $"<color=#FFD700><size=22>{L.Get("sword_skill_rush_slash")}</size></color>";
 
-            // 돌진 연속 베기 설명 구성
             string description = L.Get("sword_desc_rush_slash", skillData.initialDistance) + "\n" +
-                                $"<color=#98FB98>{L.Get("sword_desc_rush_slash_1st", skillData.damage1stRatio)}</color>\n" +
-                                $"<color=#FFA500>{L.Get("sword_desc_rush_slash_2nd", skillData.damage2ndRatio)}</color>\n" +
-                                $"<color=#FF6B6B>{L.Get("sword_desc_rush_slash_3rd", skillData.damage3rdRatio)}</color>\n" +
+                                $"<color=#98FB98>{L.Get("sword_desc_rush_slash_1st", eff1)}</color>\n" +
+                                $"<color=#FFA500>{L.Get("sword_desc_rush_slash_2nd", eff2)}</color>\n" +
+                                $"<color=#FF6B6B>{L.Get("sword_desc_rush_slash_3rd", eff3)}</color>\n" +
                                 $"<color=#87CEEB>{L.Get("sword_desc_rush_slash_path")}</color>";
 
-            // MeleeTooltipUtils를 사용한 툴팁 데이터 생성
             var data = MeleeTooltipUtils.CreateActiveSkillData(
-                $"<color=#FFD700><size=22>{L.Get("sword_skill_rush_slash")}</size></color>",
+                skillNameDisplay,
                 description,
                 $"{skillData.staminaCost}",
                 $"{skillData.cooldown}{L.Get("unit_seconds")}",
@@ -45,11 +49,27 @@ namespace CaptainSkillTree.SkillTree
                 "",
                 "G"
             );
-            data.requiredPoints = requiredPoints.ToString();
+            data.requiredPoints = "3";
 
             string finalTooltip = MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
+            string levelInfo = BuildRushSlashLevelInfo(currentLevel);
             Plugin.Log.LogDebug($"[Sword Tooltip] Final tooltip generated - length: {finalTooltip?.Length ?? 0}");
-            return finalTooltip;
+            return string.IsNullOrEmpty(levelInfo) ? finalTooltip : finalTooltip + "\n" + levelInfo;
+        }
+
+        private static string BuildRushSlashLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("rush_slash_max_level")}</size></color>";
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingRushSlashItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("rush_slash_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("rush_slash_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("rush_slash_upgrade_ready")}</size></color>";
+            return req;
         }
 
         /// <summary>
@@ -202,14 +222,20 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetDefSwitchTooltip() 호출됨 (회오리베기)");
 
+            int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("sword_step5_defswitch") ?? 0;
+            float levelBonus = currentLevel > 0 ? (currentLevel - 1) * Sword_Config.WhirlwindDamageLevelBonusValue : 0f;
             float staminaCost = Sword_Config.ParryRushStaminaCostValue;
             float cooldown    = Sword_Config.ParryRushCooldownValue;
             const float r1 = 5f;
             const float r2 = 8f;
             const float r3 = 12f;
-            const float d1 = 140f;
-            const float d2 = 180f;
-            const float d3 = 220f;
+            float d1 = 80f + levelBonus;
+            float d2 = 120f + levelBonus;
+            float d3 = 160f + levelBonus;
+
+            string skillName = currentLevel > 0
+                ? $"<color=#FFD700><size=22>{L.Get("sword_skill_parry_rush")} [Lv{currentLevel}/7]</size></color>"
+                : $"<color=#FFD700><size=22>{L.Get("sword_skill_parry_rush")}</size></color>";
 
             string description = L.Get("sword_desc_parry_rush", r1, r2, r3) + "\n" +
                 $"<color=#98FB98>{L.Get("sword_desc_parry_rush_damage", 1, d1)}</color>\n" +
@@ -217,7 +243,7 @@ namespace CaptainSkillTree.SkillTree
                 $"<color=#FFD700>{L.Get("sword_desc_parry_rush_damage", 3, d3)}</color>";
 
             var data = MeleeTooltipUtils.CreateActiveSkillData(
-                $"<color=#FFD700><size=22>{L.Get("sword_skill_parry_rush")}</size></color>",
+                skillName,
                 description,
                 $"{staminaCost}",
                 $"{cooldown}{L.Get("unit_seconds")}",
@@ -228,7 +254,24 @@ namespace CaptainSkillTree.SkillTree
             );
             data.requiredPoints = "3";
 
-            return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
+            string tooltip = MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
+            string levelInfo = BuildWhirlwindLevelInfo(currentLevel);
+            return string.IsNullOrEmpty(levelInfo) ? tooltip : tooltip + "\n" + levelInfo;
+        }
+
+        private static string BuildWhirlwindLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("whirlwind_max_level")}</size></color>";
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingWhirlwindItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("whirlwind_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("whirlwind_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("whirlwind_upgrade_ready")}</size></color>";
+            return req;
         }
 
         /// <summary>

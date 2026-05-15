@@ -425,6 +425,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_Cooldown"] = "Tier 5: [폭발 화살] 쿨타임 (초)",
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [폭발 화살] 스태미나 소모 (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [폭발 화살] 필요 포인트",
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Tier 5: [폭발 화살] 레벨당 데미지 보너스 (%)",
 
                 // === Tier 6: [화살비] (6) ===
                 ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [화살비] 화살당 데미지 (%)",
@@ -433,6 +434,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [화살비] 쿨타임 (초)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [화살비] 스태미나 소모 (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [화살비] 필요 포인트",
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [화살비] 레벨당 데미지 보너스 (%)",
 
                 // ============================================
                 // Sword Tree (검 트리) - 30개
@@ -519,6 +521,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Penetrate_HitCount"] = "Tier 5-1: [꿰뚫는 창] 번개 발동 연속 적중 횟수",
                 ["Tier5_Penetrate_GKey_Cooldown"] = "Tier 5-1: [꿰뚫는 창] G키 쿨타임 (초)",
                 ["Tier5_Penetrate_GKey_StaminaCost"] = "Tier 5-1: [꿰뚫는 창] G키 스태미나 소모",
+                ["Tier5_Penetrate_LightningDamageLevelBonus"] = "Tier 5-1: [꿰뚫는 창] 레벨당 번개 데미지 보너스 (%)",
 
                 // === Spear Tree: 연공창 (8개) ===
                 ["Tier5_Combo_RequiredPoints"] = "Tier 5-2: [연공창] 필요 포인트",
@@ -529,6 +532,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Combo_ActiveRange"] = "Tier 5-2: [연공창] 액티브 효과 범위 (m)",
                 ["Tier5_Combo_BuffDuration"] = "Tier 5-2: [연공창] 버프 지속시간 (초)",
                 ["Tier5_Combo_MaxUses"] = "Tier 5-2: [연공창] 최대 강화 투창 횟수",
+                ["Tier5_Combo_HKey_DamageLevelBonus"] = "Tier 5-2: [연공창] H키 레벨당 데미지 보너스 (%)",
 
                 // ============================================
                 // Staff Tree (지팡이 트리) - 30개
@@ -575,6 +579,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [이중시전] Eitr 소모량",
                 ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [이중시전] 쿨타임 (초)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [이중시전] 필요 포인트",
+                ["Tier5_DoubleCast_DamageLevelBonus"] = "Tier 5-1: [이중시전] 레벨당 데미지 보너스(%)",
                 ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [이중시전] 반원 호 반경 (m)",
                 ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [이중시전] 소환 기준 높이 (m)",
                 ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [이중시전] 공중 정지 시간 (초)",
@@ -586,6 +591,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Tier 5-2: [힐] 회복량 (최대 HP 대비 %)",
                 ["Tier5_InstantAreaHeal_Range"] = "Tier 5-2: [힐] 치유 범위 (미터)",
                 ["Tier5_InstantAreaHeal_RequiredPoints"] = "Tier 5-2: [힐] 필요 포인트",
+                ["Tier5_InstantAreaHeal_HealLevelBonus"] = "Tier 5-2: [힐] 레벨당 회복량 보너스(%)",
 
                 // ============================================
                 // Crossbow Tree (석궁 트리) - 34개
@@ -636,6 +642,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [단 한 발] 장전 속도 패널티 배율",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [단 한 발] 쿨타임 (초)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [단 한 발] 필요 포인트",
+                ["Tier5_OneShot_LevelBonus"] = "Tier 5: [단 한 발] 레벨당 데미지 보너스 (%)",
 
                 // === Tier 6: 빙결 폭발탄 (H키 액티브) ===
                 ["Tier6_IceBreath_Cooldown"] = "Tier 6: [빙결 폭발탄] 쿨타임 (초)",
@@ -644,6 +651,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_IceBreath_DotPercent"] = "Tier 6: [빙결 폭발탄] 도트 데미지 (%)",
                 ["Tier6_IceBreath_DotCount"] = "Tier 6: [빙결 폭발탄] 도트 횟수",
                 ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [빙결 폭발탄] 필요 포인트",
+                ["Tier6_IceBreath_FirstHitLevelBonus"] = "Tier 6: [빙결 폭발탄] 첫 타격 레벨당 보너스(%)",
+                ["Tier6_IceBreath_DotLevelBonus"] = "Tier 6: [빙결 폭발탄] DoT 레벨당 보너스(%)",
 
                 // ============================================
                 // Knife Tree (단검 트리) - 32개
@@ -698,6 +707,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Tier 8: [암살자의 심장] 연속 공격 횟수",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: [암살자의 심장] 공격 간격 (초)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Tier 8: [암살자의 심장] 필요 포인트",
+                ["Tier8_AssassinHeart_AttackCountLevelBonus"] = "Tier 8: [암살자의 심장] 레벨당 공격 횟수 보너스",
 
                 // ============================================
                 // Sword Tree (검 트리) - 33개 (신규 키 형식)
@@ -753,6 +763,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_RushSlash_Cooldown"] = "Tier 6: [돌진 연속 베기] 쿨타임 (초)",
                 ["Tier6_RushSlash_MoveSpeed"] = "Tier 6: [돌진 연속 베기] 이동 속도 (m/s)",
                 ["Tier6_RushSlash_AttackSpeedBonus"] = "Tier 6: [돌진 연속 베기] 공격속도 보너스 (%)",
+                ["Tier6_RushSlash_DamageLevelBonus"] = "Tier 6: [돌진 연속 베기] 레벨당 데미지 보너스 (%)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Tier 6: [회오리베기] 레벨당 데미지 보너스 (%)",
 
                 // ============================================
                 // Mace Tree (둔기 트리) - 34개
@@ -808,11 +820,13 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Tier 7-1: [분노의 망치] 쿨타임 (초)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [분노의 망치] AOE 범위 (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [분노의 망치] 필요 포인트",
+                ["Tier7_FuryHammer_DamageLevelBonus"] = "Tier 7-1: [분노의 망치] 레벨당 데미지 보너스 (%)",
 
                 // === Tier 7-2: 방패돌진 - G키 액티브 (4개) ===
                 ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [방패돌진] 쿨타임 (초)",
                 ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [방패돌진] 스태미나 소모",
                 ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [방패돌진] 막기력 데미지 비율 (%)",
+                ["Tier7_ShieldCharge_DamageLevelBonus"] = "Tier 7-2: [방패돌진] 레벨당 데미지 보너스 (%)",
                 ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [방패돌진] 필요 포인트",
 
                 // ========================================
@@ -864,6 +878,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [관통 돌격] 스태미나 소모",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [관통 돌격] 쿨타임 (초)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [관통 돌격] 필요 포인트",
+                ["Tier6_PierceCharge_PrimaryLevelBonus"] = "Tier 6: [관통 돌격] 레벨당 첫 타격 보너스 (%)",
+                ["Tier6_PierceCharge_AoeLevelBonus"] = "Tier 6: [관통 돌격] 레벨당 광역 데미지 보너스 (%)",
 
                 // === Polearm Tree: 휠윈드 (7개) ===
                 ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [휠윈드] 공격력 비율 (%)",
@@ -874,6 +890,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [휠윈드] 쿨타임 (초)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [휠윈드] 필요 포인트",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [휠윈드] 최대 지속 시간 (초)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Tier 6: [휠윈드] 레벨당 데미지 보너스 (%)",
 
                 // ============================================
                 // Archer Job Skills (아처 직업 스킬) - 8개
@@ -1142,6 +1159,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [약점폭발] 필요 포인트",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [약점폭발] 버프 지속시간 (초)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [약점폭발] 광역 피해 비율 (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [약점폭발] 레벨당 데미지 보너스(%)",
 
             };
         }

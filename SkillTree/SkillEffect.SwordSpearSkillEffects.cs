@@ -210,7 +210,9 @@ namespace CaptainSkillTree.SkillTree
             if (!HasSkill("sword_step5_finalcut") && !HasSkill("sword_slash")) return;
             if (!Sword_Skill.IsSwordSlashActive(player)) return;
 
-            float damageRatio = Sword_Config.RushSlash1stDamageRatioValue / 100f;
+            int rushLvl = SkillTreeManager.Instance?.GetSkillLevel("sword_step5_finalcut") ?? 1;
+            float rushBonus = (rushLvl - 1) * Sword_Config.RushSlashDamageLevelBonusValue;
+            float damageRatio = (Sword_Config.RushSlash1stDamageRatioValue + rushBonus) / 100f;
 
             hit.m_damage.m_blunt *= damageRatio;
             hit.m_damage.m_slash *= damageRatio;
@@ -575,7 +577,9 @@ namespace CaptainSkillTree.SkillTree
             {
                 isProcessingSpearLightningDamage = true;
 
-                float damageMultiplier = Spear_Config.SpearStep6PenetrateLightningDamageValue / 100f;
+                int penetrateLevel = SkillTreeManager.Instance?.GetSkillLevel("spear_Step5_penetrate") ?? 1;
+                float penetrateLevelBonus = (penetrateLevel - 1) * Spear_Config.SpearPenetrateDamageLevelBonusValue;
+                float damageMultiplier = (Spear_Config.SpearStep6PenetrateLightningDamageValue + penetrateLevelBonus) / 100f;
 
                 // 1. 번개 데미지 계산
                 float baseDamage = hit != null ? hit.GetTotalDamage() : 50f;

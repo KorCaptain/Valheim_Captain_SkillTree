@@ -35,23 +35,23 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // Staff_Config에서 동적 설정값 가져오기
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("staff_Step6_dual_cast") ?? 0;
                 int projectileCount = Staff_Config.StaffDoubleCastProjectileCountValue;
-                float damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue;
+                float effectiveDmg = Staff_Config.StaffDoubleCastDamagePercentValue
+                    + (currentLevel > 0 ? (currentLevel - 1) * Staff_Config.StaffDoubleCastDamageLevelBonusValue : 0);
                 float eitrCost = Staff_Config.StaffDoubleCastEitrCostValue;
                 float cooldown = Staff_Config.StaffDoubleCastCooldownValue;
-
-                // 필요포인트 가져오기
                 var requiredPoints = Staff_Config.StaffDoubleCastRequiredPointsValue;
 
-                // 상세 툴팁 데이터 생성
                 var data = new DualCastTooltipData
                 {
-                    skillName = L.Get("staff_skill_dual_cast"),
+                    skillName = currentLevel > 0
+                        ? $"{L.Get("staff_skill_dual_cast")} [Lv{currentLevel}/7]"
+                        : L.Get("staff_skill_dual_cast"),
                     description = L.Get("staff_desc_dual_cast", projectileCount),
                     additionalInfo = "",
                     projectileCount = $"{projectileCount}{L.Get("unit_pieces")}",
-                    damagePercent = $"{damagePercent:F0}%",
+                    damagePercent = $"{effectiveDmg:F0}%",
                     angleOffset = "",
                     eitrCost = $"{eitrCost:F0}",
                     cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
@@ -62,6 +62,9 @@ namespace CaptainSkillTree.SkillTree
                 };
 
                 string finalTooltip = GenerateDualCastTooltip(data);
+                string levelInfo = BuildDualCastLevelInfo(currentLevel);
+                if (!string.IsNullOrEmpty(levelInfo))
+                    finalTooltip += "\n\n" + levelInfo;
                 return finalTooltip;
             }
             catch (Exception ex)
@@ -69,6 +72,22 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[이중 시전 툴팁] 툴팁 생성 실패: {ex.Message}");
                 return GetDualCastFallbackTooltip();
             }
+        }
+
+        private static string BuildDualCastLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("dualcast_max_level")}</size></color>";
+
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingDualCastItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("dualcast_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("dualcast_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("dualcast_upgrade_ready")}</size></color>";
+            return req;
         }
 
         /// <summary>

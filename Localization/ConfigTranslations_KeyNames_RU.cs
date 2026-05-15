@@ -321,6 +321,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_Cooldown"] = "Ур.5: [Взрывная стрела] Перезарядка (сек)",
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Ур.5: [Взрывная стрела] Расход выносливости (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Ур.5: [Взрывная стрела] Необходимые очки",
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Ур.5: [Взрывная стрела] Бонус урона за уровень (%)",
 
                 // === Tier 6: Дождь стрел (6) ===
                 ["Tier6_ArrowRain_DamagePercent"] = "Ур.6: [Дождь стрел] Урон за стрелу (%)",
@@ -329,6 +330,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Ур.6: [Дождь стрел] Перезарядка (сек)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Ур.6: [Дождь стрел] Расход выносливости (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Ур.6: [Дождь стрел] Необходимые очки",
+                ["Tier6_ArrowRain_LevelBonus"] = "Ур.6: [Дождь стрел] Бонус урона за уровень (%)",
 
                 // ============================================
                 // Sword Tree (старый формат) - 20 ключей
@@ -380,6 +382,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Penetrate_HitCount"] = "Ур.5-1: [Пронзающее копьё] Ударов для молнии",
                 ["Tier5_Penetrate_GKey_Cooldown"] = "Ур.5-1: [Пронзающее копьё] Перезарядка G-кн. (сек)",
                 ["Tier5_Penetrate_GKey_StaminaCost"] = "Ур.5-1: [Пронзающее копьё] Расход G-кн.",
+                ["Tier5_Penetrate_LightningDamageLevelBonus"] = "Ур.5-1: [Пронзающее копьё] Бонус урона молнии за уровень (%)",
                 ["Tier5_Combo_RequiredPoints"] = "Ур.5-2: [Комбо-копьё] Необходимые очки",
                 ["Tier5_Combo_HKey_Cooldown"] = "Ур.5-2: [Комбо-копьё] Перезарядка H-кн. (сек)",
                 ["Tier5_Combo_HKey_DamageMultiplier"] = "Ур.5-2: [Комбо-копьё] Множитель урона H-кн. (%)",
@@ -388,6 +391,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Combo_ActiveRange"] = "Ур.5-2: [Комбо-копьё] Радиус активного эффекта (м)",
                 ["Tier5_Combo_BuffDuration"] = "Ур.5-2: [Комбо-копьё] Длительность эффекта (сек)",
                 ["Tier5_Combo_MaxUses"] = "Ур.5-2: [Комбо-копьё] Макс. усиленных бросков",
+                ["Tier5_Combo_HKey_DamageLevelBonus"] = "Ур.5-2: [Комбо-копьё] Бонус урона за уровень H-клавиши (%)",
 
                 // ============================================
                 // Staff Tree - 30 ключей
@@ -415,6 +419,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_DoubleCast_EitrCost"] = "Ур.5-1: [Двойное колдовство] Расход Эйтра",
                 ["Tier5_DoubleCast_Cooldown"] = "Ур.5-1: [Двойное колдовство] Перезарядка (сек)",
                 ["Tier5_DoubleCast_RequiredPoints"] = "Ур.5-1: [Двойное колдовство] Необходимые очки",
+                ["Tier5_DoubleCast_DamageLevelBonus"] = "Ур.5-1: [Двойное колдовство] Бонус урона за уровень (%)",
                 ["Tier5_FanCast_SummonRadius"] = "Ур.5-1: [Двойное колдовство] Радиус дуги (м)",
                 ["Tier5_FanCast_SummonHeight"] = "Ур.5-1: [Двойное колдовство] Высота призыва (м)",
                 ["Tier5_FanCast_HoverTime"] = "Ур.5-1: [Двойное колдовство] Время зависания (сек)",
@@ -424,6 +429,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Ур.5-2: [Исцеление] Количество исцеления (% макс. ХП)",
                 ["Tier5_InstantAreaHeal_Range"] = "Ур.5-2: [Исцеление] Дальность (м)",
                 ["Tier5_InstantAreaHeal_RequiredPoints"] = "Ур.5-2: [Исцеление] Необходимые очки",
+                ["Tier5_InstantAreaHeal_HealLevelBonus"] = "Ур.5-2: [Исцеление] Бонус лечения за уровень (%)",
 
                 // ============================================
                 // Crossbow Tree - 34 ключа
@@ -460,6 +466,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_SlowReloadMultiplier"] = "Ур.5: [Один выстрел] Множитель медленной перезарядки",
                 ["Tier5_OneShot_Cooldown"] = "Ур.5: [Один выстрел] Перезарядка (сек)",
                 ["Tier5_OneShot_RequiredPoints"] = "Ур.5: [Один выстрел] Необходимые очки",
+                ["Tier5_OneShot_LevelBonus"] = "Ур.5: [Один выстрел] Бонус урона за уровень (%)",
 
                 // === Tier 6: Вулканический Лёд (клавиша H) ===
                 ["Tier6_IceBreath_Cooldown"] = "Ур.6: [Вулк. Лёд] Перезарядка (сек)",
@@ -468,6 +475,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_IceBreath_DotPercent"] = "Ур.6: [Вулк. Лёд] Урон DoT (%)",
                 ["Tier6_IceBreath_DotCount"] = "Ур.6: [Вулк. Лёд] Количество DoT",
                 ["Tier6_IceBreath_RequiredPoints"] = "Ур.6: [Вулк. Лёд] Необходимые очки",
+                ["Tier6_IceBreath_FirstHitLevelBonus"] = "Ур.6: [Вулк. Лёд] Бонус первого удара за уровень (%)",
+                ["Tier6_IceBreath_DotLevelBonus"] = "Ур.6: [Вулк. Лёд] Бонус DoT за уровень (%)",
 
                 // ============================================
                 // Knife Tree - 32 ключа
@@ -504,6 +513,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Ур.8: [Сердце ассасина] Кол-во ударов в комбо",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Ур.8: [Сердце ассасина] Интервал атаки (сек)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Ур.8: [Сердце ассасина] Необходимые очки",
+                ["Tier8_AssassinHeart_AttackCountLevelBonus"] = "Ур.8: [Сердце ассасина] Бонус кол-ва атак за уровень",
 
                 // ============================================
                 // Sword Tree (новый формат) - 33 ключа
@@ -542,6 +552,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_RushSlash_MoveSpeed"] = "Ур.6: [Рывок-удар] Скорость передвижения (м/с)",
                 ["Tier6_RushSlash_AttackSpeedBonus"] = "Ур.6: [Рывок-удар] Бонус скорости атаки (%)",
                 ["Tier6_RushSlash_PathWidth"] = "Tier 6: [Rush Slash] Path Hit Width (m)",
+                ["Tier6_RushSlash_DamageLevelBonus"] = "Ур.6: [Рывок-удар] Бонус урона за уровень (%)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Ур.6: [Вихревой удар] Бонус урона за уровень (%)",
 
                 // ============================================
                 // Mace Tree - 34 ключа
@@ -576,9 +588,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Ур.7-1: [Молот ярости] Перезарядка (сек)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Ур.7-1: [Молот ярости] Радиус AOE (м)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Ур.7-1: [Молот ярости] Необходимые очки",
+                ["Tier7_FuryHammer_DamageLevelBonus"] = "Ур.7-1: [Молот ярости] Бонус урона за уровень (%)",
                 ["Tier7_GuardianHeart_Cooldown"] = "Ур.7-2: [Щитовой натиск] Перезарядка (сек)",
                 ["Tier7_GuardianHeart_StaminaCost"] = "Ур.7-2: [Щитовой натиск] Расход выносливости",
                 ["Tier7_ShieldCharge_DamagePercent"] = "Ур.7-2: [Щитовой натиск] Урон от блока (%)",
+                ["Tier7_ShieldCharge_DamageLevelBonus"] = "Ур.7-2: [Щитовой натиск] Бонус урона за уровень (%)",
                 ["Tier7_GuardianHeart_RequiredPoints"] = "Ур.7-2: [Щитовой натиск] Необходимые очки",
 
                 // ============================================
@@ -611,6 +625,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Ур.5: [Пронзающий рывок] Расход выносливости",
                 ["Tier5_PierceCharge_Cooldown"] = "Ур.5: [Пронзающий рывок] Перезарядка (сек)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Ур.5: [Пронзающий рывок] Необходимые очки",
+                ["Tier6_PierceCharge_PrimaryLevelBonus"] = "Ур.6: [Пронзающий рывок] Бонус урона первого удара за ур. (%)",
+                ["Tier6_PierceCharge_AoeLevelBonus"] = "Ур.6: [Пронзающий рывок] Бонус урона АОЕ за ур. (%)",
 
                 // === Polearm Tree: Whirlwind (7 keys) ===
                 ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [Whirlwind] Damage Ratio (%)",
@@ -621,6 +637,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Whirlwind] Макс. длительность (сек)",
+                ["Tier6_Whirlwind_DamageLevelBonus"] = "Ур.6: [Вихрь] Бонус урона за уровень (%)",
 
                 // ============================================
                 // Archer Job Skills - 8 ключей
@@ -883,6 +900,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Взрыв слабого места] Необходимые очки",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Взрыв слабого места] Длительность баффа (сек)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Взрыв слабого места] Коэффициент урона по области (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [Взрыв слабого места] Бонус урона за уровень (%)",
             };
         }
     }

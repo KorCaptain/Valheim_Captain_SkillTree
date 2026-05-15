@@ -37,39 +37,44 @@ namespace CaptainSkillTree.SkillTree
         public static string GetHealerModeTooltip()
         {
             Plugin.Log.LogDebug("[힐러모드 툴팁] GetHealerModeTooltip() 호출됨");
-            
+
             try
             {
-                // 컨피그에서 실제 값 가져오기 (Staff_Config에서 힐 설정 가져옴)
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("staff_Step6_heal") ?? 0;
                 var cooldown = Staff_Config.StaffHealCooldownValue;
                 var eitrCost = Staff_Config.StaffHealEitrCostValue;
-                var healPercentage = Staff_Config.StaffHealPercentageValue;
+                float effectiveHeal = Staff_Config.StaffHealPercentageValue
+                    + (currentLevel > 0 ? (currentLevel - 1) * Staff_Config.StaffHealLevelBonusValue : 0);
                 var healRange = Staff_Config.StaffHealRangeValue;
-                // 발사체 관련 변수 제거 - 즉시 힐링으로 변경
-
-                Plugin.Log.LogDebug($"[힐러모드 툴팁] 컨피그 값들 - 쿨타임: {cooldown}초, 힐링: {healPercentage}%, 범위: {healRange}m");
-
-                // 상세 툴팁 데이터 생성
                 var requiredPoints = Staff_Config.StaffHealRequiredPointsValue;
                 string selfHealNote = L.Get("healer_self_heal_excluded");
 
+                Plugin.Log.LogDebug($"[힐러모드 툴팁] Lv{currentLevel}, 힐링: {effectiveHeal}%, 범위: {healRange}m");
+
+                string skillNameDisplay = currentLevel > 0
+                    ? $"{L.Get("staff_skill_heal")} [Lv{currentLevel}/7]"
+                    : L.Get("staff_skill_heal");
+
                 var data = new HealerModeTooltipData
                 {
-                    skillName = L.Get("staff_skill_heal"),
+                    skillName = skillNameDisplay,
                     description = L.Get("healer_desc_instant", healRange),
-                    additionalInfo = L.Get("healer_desc_heal_percent", healPercentage),
+                    additionalInfo = L.Get("healer_desc_heal_percent", effectiveHeal),
                     duration = "",
                     cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
                     consumeEitr = $"{eitrCost:F0}",
-                    healPercentage = $"{healPercentage:F0}%",
+                    healPercentage = $"{effectiveHeal:F0}%",
                     healRange = $"{healRange:F0}m",
                     skillType = L.Get("skill_type_active_key", "H"),
                     requirement = L.Get("requirement_staff_wand"),
                     confirmation = "",
                     specialNote = $"{selfHealNote}\n\n<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
                 };
-                
+
                 string finalTooltip = GenerateHealerModeTooltip(data);
+                string levelInfo = BuildHealLevelInfo(currentLevel);
+                if (!string.IsNullOrEmpty(levelInfo))
+                    finalTooltip += "\n\n" + levelInfo;
                 Plugin.Log.LogDebug($"[힐러모드 툴팁] 최종 툴팁 생성 완료 - 길이: {finalTooltip?.Length ?? 0}");
                 return finalTooltip;
             }
@@ -78,6 +83,22 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[힐러모드 툴팁] 툴팁 생성 실패: {ex.Message}");
                 return GetHealerModeFallbackTooltip();
             }
+        }
+
+        private static string BuildHealLevelInfo(int currentLevel)
+        {
+            if (currentLevel <= 0) return "";
+            if (currentLevel >= 7)
+                return $"<color=#FFD700><size=15>★ {L.Get("heal_max_level")}</size></color>";
+
+            int nextLevel = currentLevel + 1;
+            var missing = SkillTreeManager.Instance?.GetMissingHealItems(nextLevel);
+            string req = $"<color=#FFD700><size=15>▶ {L.Get("heal_next_level_req", nextLevel)}</size></color>";
+            if (missing != null && missing.Count > 0)
+                req += $"\n<color=#FF6B6B><size=14>  {L.Get("heal_missing_items", string.Join(", ", missing))}</size></color>";
+            else
+                req += $"\n<color=#00FF00><size=14>  ✅ {L.Get("heal_upgrade_ready")}</size></color>";
+            return req;
         }
 
         /// <summary>

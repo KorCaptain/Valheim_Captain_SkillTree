@@ -347,8 +347,10 @@ namespace CaptainSkillTree.SkillTree
             int attackCount = ATTACK_COUNT;               // 5타 고정
 
             // Config에서 값 가져오기 (데미지 배율, AOE 범위만)
-            float normalHitMultiplier = Mace_Config.FuryHammerNormalHitMultiplierValue / 100f;
-            float finalHitMultiplier = Mace_Config.FuryHammerFinalHitMultiplierValue / 100f;
+            int furyLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_fury_hammer") ?? 1;
+            float furyLevelBonus = (furyLevel - 1) * Mace_Config.FuryHammerDamageLevelBonusValue;
+            float normalHitMultiplier = (Mace_Config.FuryHammerNormalHitMultiplierValue + furyLevelBonus) / 100f;
+            float finalHitMultiplier = (Mace_Config.FuryHammerFinalHitMultiplierValue + furyLevelBonus) / 100f;
             float aoeRadius = Mace_Config.FuryHammerAoeRadiusValue;
 
             int totalHits = 0;

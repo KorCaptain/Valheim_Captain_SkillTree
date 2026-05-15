@@ -268,7 +268,9 @@ namespace CaptainSkillTree.SkillTree
             if (shieldItem != null && shieldItem.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield)
                 blockPower = shieldItem.GetBlockPower(skillFactor);
 
-            float damageRatio = Mace_Config.ShieldChargeDamagePercentValue / 100f;
+            int scLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 1;
+            float scLevelBonus = (scLevel - 1) * Mace_Config.ShieldChargeDamageLevelBonusValue;
+            float damageRatio = (Mace_Config.ShieldChargeDamagePercentValue + scLevelBonus) / 100f;
             float damage = blockPower * damageRatio;
             if (damage < 1f) damage = 1f;
 
@@ -322,7 +324,9 @@ namespace CaptainSkillTree.SkillTree
                 shieldItem.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield)
                 blockPower = shieldItem.GetBlockPower(skillFactor);
 
-            float damage = Mathf.Max(1f, blockPower * Mace_Config.ShieldChargeMultiHitDamagePercentValue / 100f);
+            int scLevelMH = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 1;
+            float scLevelBonusMH = (scLevelMH - 1) * Mace_Config.ShieldChargeDamageLevelBonusValue;
+            float damage = Mathf.Max(1f, blockPower * (Mace_Config.ShieldChargeMultiHitDamagePercentValue + scLevelBonusMH) / 100f);
 
             foreach (var c in Character.GetAllCharacters())
             {

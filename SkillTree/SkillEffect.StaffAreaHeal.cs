@@ -65,7 +65,9 @@ namespace CaptainSkillTree.SkillTree
             {
                 Vector3 casterPos = caster.transform.position;
                 float healRange = Staff_Config.StaffHealRangeValue;
-                float healPercent = Staff_Config.StaffHealPercentageValue / 100f;
+                int healLevel = SkillTreeManager.Instance?.GetSkillLevel("staff_Step6_heal") ?? 1;
+                float levelBonus = (healLevel - 1) * Staff_Config.StaffHealLevelBonusValue;
+                float healPercent = (Staff_Config.StaffHealPercentageValue + levelBonus) / 100f;
 
                 // VFX 재생 (하드코딩)
                 try
