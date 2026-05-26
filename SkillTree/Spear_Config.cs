@@ -36,12 +36,16 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearDualDamageBonus;
         public static ConfigEntry<float> SpearDualDuration;
 
-        // === 꿰뚫는 창 (번개 충격) 설정 ===
-        public static ConfigEntry<float> SpearStep5PenetrateBuffDuration;
-        public static ConfigEntry<float> SpearStep5PenetrateLightningDamage;
-        public static ConfigEntry<int> SpearStep5PenetrateComboCount;
+        // === 꿰뚫는 창 (돌진 회수) 설정 ===
+        public static ConfigEntry<float> SpearStep5PenetrateBuffDuration;      // 레거시 유지
+        public static ConfigEntry<float> SpearStep5PenetrateLightningDamage;   // 레거시 유지
+        public static ConfigEntry<int> SpearStep5PenetrateComboCount;          // 레거시 유지
         public static ConfigEntry<float> SpearStep5PenetrateCooldown;
         public static ConfigEntry<float> SpearStep5PenetrateStaminaCost;
+        public static ConfigEntry<float> SpearPenetrateBaseDamage;
+        public static ConfigEntry<float> SpearPenetrateLevelDamageBonus;
+        public static ConfigEntry<float> SpearPenetrateBaseAreaDamage;
+        public static ConfigEntry<float> SpearPenetrateAreaLevelBonus;
 
         public static ConfigEntry<float> SpearStep5ComboCooldown;
         public static ConfigEntry<float> SpearStep5ComboDamage;
@@ -50,6 +54,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep5ComboRange;
         public static ConfigEntry<float> SpearStep5ComboBuffDuration;
         public static ConfigEntry<int> SpearStep5ComboMaxUses;
+        public static ConfigEntry<float> SpearComboLevelBonus;
 
         // === 필요 포인트 접근 프로퍼티 ===
         public static int SpearExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("spear_expert_required_points", SpearExpertRequiredPoints?.Value ?? 2);
@@ -80,12 +85,16 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearDualDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_dual_damage_bonus", SpearDualDamageBonus.Value);
         public static float SpearDualDurationValue => SkillTreeConfig.GetEffectiveValue("spear_dual_duration", SpearDualDuration.Value);
 
-        // === 꿰뚫는 창 (번개 충격) 접근 프로퍼티 ===
+        // === 꿰뚫는 창 접근 프로퍼티 ===
         public static float SpearStep6PenetrateBuffDurationValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_buff_duration", SpearStep5PenetrateBuffDuration.Value);
         public static float SpearStep6PenetrateLightningDamageValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_lightning_damage", SpearStep5PenetrateLightningDamage.Value);
         public static int SpearStep6PenetrateComboCountValue => (int)SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_combo_count", SpearStep5PenetrateComboCount.Value);
         public static float SpearStep6PenetrateCooldownValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_cooldown", SpearStep5PenetrateCooldown.Value);
         public static float SpearStep6PenetrateStaminaCostValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_penetrate_stamina_cost", SpearStep5PenetrateStaminaCost.Value);
+        public static float SpearPenetrateBaseDamageValue => SkillTreeConfig.GetEffectiveValue("spear_penetrate_base_damage", SpearPenetrateBaseDamage?.Value ?? 100f);
+        public static float SpearPenetrateLevelDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_penetrate_level_bonus", SpearPenetrateLevelDamageBonus?.Value ?? 5f);
+        public static float SpearPenetrateBaseAreaDamageValue => SkillTreeConfig.GetEffectiveValue("spear_penetrate_base_area", SpearPenetrateBaseAreaDamage?.Value ?? 80f);
+        public static float SpearPenetrateAreaLevelBonusValue => SkillTreeConfig.GetEffectiveValue("spear_penetrate_area_bonus", SpearPenetrateAreaLevelBonus?.Value ?? 5f);
 
         public static float SpearStep6ComboCooldownValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_combo_cooldown", SpearStep5ComboCooldown.Value);
         public static float SpearStep6ComboDamageValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_combo_damage", SpearStep5ComboDamage.Value);
@@ -95,6 +104,7 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep2ThrowStaminaCostValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_combo_stamina_cost", SpearStep5ComboStaminaCost.Value);
         public static float SpearStep6ComboBuffDurationValue => SkillTreeConfig.GetEffectiveValue("spear_Step5_combo_buff_duration", SpearStep5ComboBuffDuration.Value);
         public static int SpearStep6ComboMaxUsesValue => (int)SkillTreeConfig.GetEffectiveValue("spear_Step5_combo_max_uses", SpearStep5ComboMaxUses.Value);
+        public static float SpearComboLevelBonusValue => SkillTreeConfig.GetEffectiveValue("spear_combo_level_bonus", SpearComboLevelBonus?.Value ?? 10f);
 
         public static void Initialize(ConfigFile config)
         {
@@ -258,6 +268,30 @@ namespace CaptainSkillTree.SkillTree
                 20f,
                 SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_GKey_StaminaCost"));
 
+            SpearPenetrateBaseDamage = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree",
+                "Tier5_Penetrate_BaseDamage",
+                100f,
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_BaseDamage"));
+
+            SpearPenetrateLevelDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree",
+                "Tier5_Penetrate_LevelDamageBonus",
+                5f,
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_LevelDamageBonus"));
+
+            SpearPenetrateBaseAreaDamage = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree",
+                "Tier5_Penetrate_BaseAreaDamage",
+                80f,
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_BaseAreaDamage"));
+
+            SpearPenetrateAreaLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree",
+                "Tier5_Penetrate_AreaLevelBonus",
+                5f,
+                SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_AreaLevelBonus"));
+
             SpearStep5ComboCooldown = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Combo_HKey_Cooldown",
@@ -299,6 +333,12 @@ namespace CaptainSkillTree.SkillTree
                 "Tier5_Combo_MaxUses",
                 3,
                 SkillTreeConfig.GetConfigDescription("Tier5_Combo_MaxUses"));
+
+            SpearComboLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Spear Tree",
+                "Tier5_Combo_LevelBonus",
+                10f,
+                SkillTreeConfig.GetConfigDescription("Tier5_Combo_LevelBonus"));
 
             Plugin.Log.LogDebug("[Spear_Config] 창 전문가 트리 설정 초기화 완료");
         }

@@ -588,6 +588,12 @@ namespace CaptainSkillTree.Localization
                 "총 데미지 × (이 값 / 100) = 광역 피해\n" +
                 "권장값: 30-50%",
 
+                ["Tier9_StackExplosion_DamageLevelBonus"] =
+                "【레벨당 피해 보너스 (%)】\n" +
+                "약점폭발 레벨 1당 추가되는 스택당 피해 비율입니다.\n" +
+                "Lv1=기본값, Lv2=기본+보너스, ...Lv7=기본+6×보너스\n" +
+                "권장값: 5%",
+
             };
         }
 
@@ -1175,6 +1181,12 @@ namespace CaptainSkillTree.Localization
                 "Ratio of main damage dealt as AOE to enemies within 7m on H key explosion.\n" +
                 "Total damage × (this value / 100) = AOE damage\n" +
                 "Recommended: 30-50%",
+
+                ["Tier9_StackExplosion_DamageLevelBonus"] =
+                "【Damage Bonus per Level (%)】\n" +
+                "Additional damage per stack added for each Stack Explosion level.\n" +
+                "Lv1=base, Lv2=base+bonus, ...Lv7=base+6×bonus\n" +
+                "Recommended: 5%",
 
             };
         }

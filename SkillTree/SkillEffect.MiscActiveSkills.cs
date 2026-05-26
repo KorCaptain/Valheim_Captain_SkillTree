@@ -80,7 +80,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (hitEnemies.Count > 0)
                 {
-                    player.Message(MessageHud.MessageType.Center, L.Get("ground_stomp_effect", hitEnemies.Count.ToString()));
+                    ShowSkillEffectText(player, L.Get("ground_stomp_effect", hitEnemies.Count.ToString()), Color.white, SkillEffectTextType.Standard);
                 }
             }
             catch (Exception ex)
@@ -141,8 +141,7 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Instance.StartCoroutine(ShockwaveRepeatingKnockbackCoroutine(player));
 
                 if (hitEnemies.Count > 0)
-                    player.Message(MessageHud.MessageType.Center,
-                        L.Get("shockwave_effect", hitEnemies.Count.ToString()));
+                    ShowSkillEffectText(player, L.Get("shockwave_effect", hitEnemies.Count.ToString()), Color.white, SkillEffectTextType.Standard);
             }
             catch (Exception ex)
             {

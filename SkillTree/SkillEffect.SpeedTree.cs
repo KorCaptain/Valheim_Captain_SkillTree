@@ -305,8 +305,9 @@ namespace CaptainSkillTree.SkillTree
                 if (HasSkill("melee_speed1"))
                 {
                     bool isMelee = skillType == Skills.SkillType.Swords ||
+                                   skillType == Skills.SkillType.Axes   ||
                                    skillType == Skills.SkillType.Clubs ||
-                                   skillType == Skills.SkillType.Knives ||
+                                   WeaponHelper.IsUsingKnife(player) ||
                                    skillType == Skills.SkillType.Spears ||
                                    skillType == Skills.SkillType.Polearms;
                     if (isMelee)
@@ -440,8 +441,9 @@ namespace CaptainSkillTree.SkillTree
 
                 // 근접 무기 사용 시 연속의 흐름 체크 (근접 속도 전문가 스킬 보유 시에만)
                 bool isMeleeWeapon = weapon.m_shared.m_skillType == Skills.SkillType.Swords ||
+                                    weapon.m_shared.m_skillType == Skills.SkillType.Axes ||
                                     weapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
-                                    weapon.m_shared.m_skillType == Skills.SkillType.Knives ||
+                                    WeaponHelper.IsUsingKnife(player) ||
                                     weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
                                     weapon.m_shared.m_skillType == Skills.SkillType.Polearms;
 

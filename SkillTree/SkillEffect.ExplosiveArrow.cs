@@ -20,6 +20,7 @@ namespace CaptainSkillTree.SkillTree
 
         // Archer Lv2: 추가 사용 차지 관리
         private static Dictionary<Player, bool> _archerLv2ExplosiveArrowChargeReady = new Dictionary<Player, bool>();
+        private static Dictionary<Player, float> _archerLv2ExplosiveArrowChargeTime = new Dictionary<Player, float>();
 
         // 버프 상태 VFX 관리 (머리 위 statusailment_01_aura)
         private static Dictionary<Player, GameObject> explosiveArrowStatusEffects = new Dictionary<Player, GameObject>();
@@ -56,7 +57,9 @@ namespace CaptainSkillTree.SkillTree
                 bool hasArcherLv2 = SkillTreeManager.Instance != null
                     && SkillTreeManager.Instance.GetSkillLevel("Archer") >= 2;
                 bool hasExtraCharge = hasArcherLv2
-                    && _archerLv2ExplosiveArrowChargeReady.TryGetValue(player, out bool eaChargeReady) && eaChargeReady;
+                    && _archerLv2ExplosiveArrowChargeReady.TryGetValue(player, out bool eaChargeReady) && eaChargeReady
+                    && _archerLv2ExplosiveArrowChargeTime.TryGetValue(player, out float eaChargeTime)
+                    && (Time.time - eaChargeTime) < 30f;
 
                 if (!hasExtraCharge)
                 {
@@ -80,9 +83,8 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 4. 스태미나 소모 확인
-                float maxStamina = player.GetMaxStamina();
-                float requiredStamina = maxStamina * (SkillTreeConfig.BowExplosiveArrowStaminaCostValue / 100f);
+                // 4. 스태미나 소모 확인 (플랫 수치)
+                float requiredStamina = SkillTreeConfig.BowExplosiveArrowStaminaCostValue;
                 if (player.GetStamina() < requiredStamina)
                 {
                     ShowSkillEffectText(player, L.Get("stamina_insufficient"), Color.red, SkillEffectTextType.Standard);
@@ -104,6 +106,7 @@ namespace CaptainSkillTree.SkillTree
                 else if (hasArcherLv2)
                 {
                     _archerLv2ExplosiveArrowChargeReady[player] = true;
+                    _archerLv2ExplosiveArrowChargeTime[player] = Time.time;
                     Plugin.Log.LogDebug("[폭발화살] Archer Lv2 1번째 사용 → 추가 사용 준비");
                 }
                 else
@@ -247,6 +250,7 @@ namespace CaptainSkillTree.SkillTree
                 explosiveArrowCooldown.Remove(player);
                 explosiveArrowReady.Remove(player);
                 _archerLv2ExplosiveArrowChargeReady.Remove(player);
+                _archerLv2ExplosiveArrowChargeTime.Remove(player);
 
                 if (explosiveArrowStatusEffects.TryGetValue(player, out var eaDestroyStatus))
                 {
@@ -397,9 +401,11 @@ namespace CaptainSkillTree.SkillTree
                 float bowSkillFactor = attacker.GetSkillFactor(Skills.SkillType.Bows);
                 var baseDamage = weapon.GetDamage(0, bowSkillFactor);
                 float totalBaseDamage = baseDamage.GetTotalDamage();
-                float explosiveDamage = totalBaseDamage * (SkillTreeConfig.BowExplosiveArrowDamageValue / 100f);
+                int explosiveLevel = SkillTreeManager.Instance?.GetSkillLevel("bow_Step6_critboost") ?? 1;
+                float levelBonus = (explosiveLevel - 1) * Bow_Config.BowExplosiveArrowLevelBonusValue;
+                float explosiveDamage = totalBaseDamage * ((SkillTreeConfig.BowExplosiveArrowDamageValue + levelBonus) / 100f);
 
-                Plugin.Log.LogInfo($"[폭발 데미지] 원본 히트에 추가 데미지 적용: +{explosiveDamage:F0} (기본: {totalBaseDamage:F0})");
+                Plugin.Log.LogInfo($"[폭발 데미지] 원본 히트에 추가 데미지 적용: +{explosiveDamage:F0} (기본: {totalBaseDamage:F0}, 레벨: {explosiveLevel}, 보너스: +{levelBonus}%)");
                 hit.m_damage.m_fire += explosiveDamage;
                 SkillEffect.DrawFloatingText(attacker, "💥 " + L.Get("explosion_damage", $"{explosiveDamage:F0}"), Color.red);
                 Plugin.Log.LogInfo($"[폭발 화살] 원본 히트에 폭발 데미지 {explosiveDamage:F0} 추가 완료");
@@ -495,9 +501,15 @@ namespace CaptainSkillTree.SkillTree
 
                 var baseDamage = weapon.GetDamage();
                 float totalBaseDamage = baseDamage.GetTotalDamage();
-                float areaDamage = totalBaseDamage * (SkillTreeConfig.BowExplosiveArrowDamageValue / 100f) * 0.7f;
+                int explosiveLevelArea = SkillTreeManager.Instance?.GetSkillLevel("bow_Step6_critboost") ?? 1;
+                float areaPercent = explosiveLevelArea switch {
+                    2 => 70f, 3 => 85f, 4 => 100f,
+                    5 => 115f, 6 => 130f, 7 => 150f,
+                    _ => 55f
+                };
+                float areaDamage = totalBaseDamage * (areaPercent / 100f);
 
-                Plugin.Log.LogInfo($"[범위 폭발] {target.name}에게 범위 데미지: {areaDamage:F0}");
+                Plugin.Log.LogInfo($"[범위 폭발] {target.name}에게 범위 데미지: {areaDamage:F0} (레벨: {explosiveLevelArea})");
 
                 var hitData = new HitData();
                 hitData.m_damage.m_fire = areaDamage;

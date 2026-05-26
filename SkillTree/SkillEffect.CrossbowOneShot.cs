@@ -23,6 +23,7 @@ namespace CaptainSkillTree.SkillTree
 
         // Archer Lv2: 추가 사용 차지 관리
         private static Dictionary<Player, bool> _archerLv2OneShotChargeReady = new Dictionary<Player, bool>();
+        private static Dictionary<Player, float> _archerLv2OneShotChargeTime = new Dictionary<Player, float>();
 
         // === 버프 이펙트 변수 ===
         private static Dictionary<Player, GameObject> followingBuffEffects = new Dictionary<Player, GameObject>();
@@ -42,7 +43,9 @@ namespace CaptainSkillTree.SkillTree
             bool hasArcherLv2 = SkillTreeManager.Instance != null
                 && SkillTreeManager.Instance.GetSkillLevel("Archer") >= 2;
             bool hasExtraCharge = hasArcherLv2
-                && _archerLv2OneShotChargeReady.TryGetValue(player, out bool chargeReady) && chargeReady;
+                && _archerLv2OneShotChargeReady.TryGetValue(player, out bool chargeReady) && chargeReady
+                && _archerLv2OneShotChargeTime.TryGetValue(player, out float osChargeTime)
+                && (Time.time - osChargeTime) < 30f;
 
             float cooldownTime = Crossbow_Config.CrossbowOneShotCooldownValue;
             float durationTime = Crossbow_Config.CrossbowOneShotDurationValue;
@@ -104,6 +107,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 // 1번째 사용: 차지 부여, 쿨타임 없음
                 _archerLv2OneShotChargeReady[player] = true;
+                _archerLv2OneShotChargeTime[player] = Time.time;
                 Plugin.Log.LogDebug("[단 한 발] Archer Lv2 1번째 사용 → 추가 사용 준비");
             }
             else
@@ -361,7 +365,9 @@ namespace CaptainSkillTree.SkillTree
                         var hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius);
                         var processedEnemies = new System.Collections.Generic.HashSet<Character>();
                         var weapon = player.GetCurrentWeapon();
-                        float aoeBonus = Crossbow_Config.CrossbowOneShotDamageBonusValue / 100f;
+                        int oneShotLevel = SkillTreeManager.Instance?.GetSkillLevel("crossbow_Step6_expert") ?? 1;
+                        float levelBonus = (oneShotLevel - 1) * Crossbow_Config.CrossbowOneShotLevelBonusValue;
+                        float aoeBonus = (Crossbow_Config.CrossbowOneShotDamageBonusValue + levelBonus) / 100f;
 
                         foreach (var col in hitColliders)
                         {
@@ -507,6 +513,7 @@ namespace CaptainSkillTree.SkillTree
                 crossbowOneShotCooldown.Remove(player);
                 crossbowOneShotExpiry.Remove(player);
                 _archerLv2OneShotChargeReady.Remove(player);
+                _archerLv2OneShotChargeTime.Remove(player);
 
                 // 장전 소리 코루틴 정리
                 if (_oneShotReloadSoundCoroutines.ContainsKey(player))

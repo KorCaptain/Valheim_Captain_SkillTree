@@ -57,6 +57,8 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {L.Get("archer_effect_arrows", arrows, charges, damage)}</size></color>\n";
             tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
             tooltip += $"<color=#ADFF2F><size=16>{GetPassiveStr(mainLevel, resistVal)}</size></color>\n";
+            if (mainLevel >= 2)
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("archer_lv2_extra_charge_effect")}</size></color>\n";
             tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
             tooltip += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {stamina}, {L.Get("stat_arrow")} 1{L.Get("unit_pieces")}</size></color>\n";
             tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
@@ -96,7 +98,10 @@ namespace CaptainSkillTree.SkillTree
                         : L.Get("archer_preview_arrows_damage", pvArrows - prevArrows, pvDamage);
 
                     tooltip += $"<color=#808080><size=14>Lv{lv} : {activePreview}\n";
-                    tooltip += $"  {L.Get("tooltip_passive")}: {GetPassiveStr(lv, resistVal)}</size></color>\n";
+                    tooltip += $"  {L.Get("tooltip_passive")}: {GetPassiveStr(lv, resistVal)}";
+                    if (lv == 2)
+                        tooltip += $"\n  + {L.Get("archer_lv2_extra_charge_effect")}";
+                    tooltip += "</size></color>\n";
                 }
             }
 
@@ -170,7 +175,7 @@ namespace CaptainSkillTree.SkillTree
         {
             switch (targetLevel)
             {
-                case 1: return L.Get("item_trophy_greydwarfbrute") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(1);
+                case 1: return L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_trophy_bear") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(1);
                 case 2: return L.Get("item_trophy_elder") + " x1 + " + L.Get("archer_lv2_unlock_cond") + " + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(2);
                 case 3: return L.Get("item_trophy_hatchling") + " x1 + " + L.Get("item_trophy_elder") + " x1 + " + L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(3);
                 case 4: return L.Get("item_trophy_abomination") + " x1 + " + L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_dragonqueen") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(4);

@@ -333,8 +333,14 @@ namespace CaptainSkillTree.SkillTree
         private static IEnumerator ExecuteWhirlwindAoE(Player player)
         {
             const float aoeRadius   = 6f;
-            const float damageMult  = 0.15f;
             const float interval    = 1f / 3f; // 초당 3회
+            int wwAoeLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step6_whirlwind") ?? 1;
+            float aoePercent = wwAoeLevel switch {
+                2 => 20f, 3 => 25f, 4 => 30f,
+                5 => 35f, 6 => 40f, 7 => 50f,
+                _ => 15f
+            };
+            float damageMult = aoePercent / 100f;
 
             while (IsWhirlwindActive(player) && player != null && !player.IsDead())
             {
@@ -501,7 +507,9 @@ namespace CaptainSkillTree.SkillTree
                 if (!SkillEffect.whirlwindDealingDamage.TryGetValue(player, out bool dealing) || !dealing) return;
                 if (!SkillEffect.IsUsingPolearm(player)) return;
 
-                float mult = Polearm_Config.PolearmWhirlwindDamagePercentValue / 100f;
+                int wwLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step6_whirlwind") ?? 1;
+                float levelBonus = (wwLevel - 1) * Polearm_Config.PolearmWhirlwindLevelBonusValue;
+                float mult = (Polearm_Config.PolearmWhirlwindDamagePercentValue + levelBonus) / 100f;
                 hit.m_damage.m_slash   *= mult;
                 hit.m_damage.m_pierce  *= mult;
                 hit.m_damage.m_blunt   *= mult;

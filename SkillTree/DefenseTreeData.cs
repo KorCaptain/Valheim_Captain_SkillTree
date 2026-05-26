@@ -327,9 +327,7 @@ namespace CaptainSkillTree.SkillTree
                 Prerequisites = new List<string> { "defense_Step5_focus" },
                 NextNodes = new List<string>(),
                 MutuallyExclusive = new List<string> {
-                    "sword_step5_finalcut",
                     "knife_step9_assassin_heart",
-                    "spear_Step5_penetrate",
                     "polearm_step5_king",
                     "mace_Step7_guardian_heart"
                 },

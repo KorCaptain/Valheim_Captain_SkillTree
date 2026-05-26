@@ -62,6 +62,26 @@
       }
     },
     {
+      "id": "btw-004",
+      "timestamp": "2026-05-03T00:00:00Z",
+      "suggestion": "저 에러 쌓이면 서버 과부하 걸리나?",
+      "context": {
+        "file": "SimpleVFX.cs",
+        "pdcaPhase": "do",
+        "feature": "SkillTree"
+      },
+      "category": "bug-pattern",
+      "status": "pending",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      }
+    },
+    {
       "id": "btw-005",
       "timestamp": "2026-05-05T00:00:00Z",
       "suggestion": "de.json이 24개 키만 갖는 것이 의도적 설계인지 명확히 문서화 필요. 독일어 부분 번역 방침인지 EN fallback 허용 정책인지 확인 필요.",
@@ -82,27 +102,6 @@
       }
     },
     {
-      "id": "btw-004",
-      "timestamp": "2026-05-03T00:00:00Z",
-      "suggestion": "저 에러 쌓이면 서버 과부하 걸리나?",
-      "context": {
-        "file": "SimpleVFX.cs",
-        "pdcaPhase": "do",
-        "feature": "SkillTree"
-      },
-      "category": "bug-pattern",
-      "status": "pending",
-      "promotedTo": null,
-      "priority": null,
-      "teamContext": {
-        "isTeamSession": false,
-        "phase": "do",
-        "role": "user",
-        "pattern": null
-      }
-    }
-  ],
-    {
       "id": "btw-006",
       "timestamp": "2026-05-11T00:00:00Z",
       "suggestion": "신규설치자는 난이도 선택하면 되고 만약 선택 안하면 베리하드모드가 기본이야 확인해줘",
@@ -121,10 +120,30 @@
         "role": "user",
         "pattern": null
       }
+    },
+    {
+      "id": "btw-007",
+      "timestamp": "2026-05-17T00:00:00Z",
+      "suggestion": "러시아어 번역되어 컨피그 보이는건가?",
+      "context": {
+        "file": "Localization/ConfigTranslations.cs",
+        "pdcaPhase": "do",
+        "feature": "SkillTree"
+      },
+      "category": "general",
+      "status": "verified",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      }
     }
   ],
   "stats": {
-    "total": 6,
+    "total": 7,
     "promoted": 0,
     "dismissed": 0,
     "lastAnalyzed": null

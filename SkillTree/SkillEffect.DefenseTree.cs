@@ -404,7 +404,7 @@ namespace CaptainSkillTree.SkillTree
     [HarmonyPatch(typeof(Character), nameof(Character.Stagger))]
     public static class Character_Stagger_BlockTraining_Patch
     {
-        private static readonly HashSet<Player> _charging = new HashSet<Player>();
+        private static readonly Dictionary<Player, Coroutine> _activeCharge = new Dictionary<Player, Coroutine>();
 
         public static void Postfix(Character __instance)
         {
@@ -415,9 +415,10 @@ namespace CaptainSkillTree.SkillTree
                 var player = Player.m_localPlayer;
                 if (player == null || player.IsDead()) return;
                 if (!player.IsBlocking()) return;
+                if (Vector3.Distance(player.transform.position, __instance.transform.position) > Defense_Config.BlockTrainingMaxChargeDistanceValue) return;
+                if (SkillEffect.IsWhirlwindActive(player)) return;
 
                 if ((SkillTreeManager.Instance?.GetSkillLevel("defense_Step3_shield") ?? 0) <= 0) return;
-                if (_charging.Contains(player)) return;
 
                 var leftItem = HarmonyLib.Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
                 bool hasShield = leftItem != null &&
@@ -436,8 +437,10 @@ namespace CaptainSkillTree.SkillTree
 
                 float damage = blockPower * Defense_Config.BlockTrainingParryBlockPowerRatioValue / 100f;
 
-                _charging.Add(player);
-                player.StartCoroutine(ExecuteCharge(player, __instance, damage));
+                if (_activeCharge.TryGetValue(player, out var existing) && existing != null)
+                    player.StopCoroutine(existing);
+                var routine = player.StartCoroutine(ExecuteCharge(player, __instance, damage));
+                _activeCharge[player] = routine;
             }
             catch (System.Exception ex)
             {
@@ -449,7 +452,7 @@ namespace CaptainSkillTree.SkillTree
         {
             if (player == null || target == null)
             {
-                _charging.Remove(player);
+                _activeCharge.Remove(player);
                 yield break;
             }
 
@@ -477,10 +480,9 @@ namespace CaptainSkillTree.SkillTree
 
             while (elapsed < moveDuration)
             {
-                if (player == null || player.IsDead()) { _charging.Remove(player); yield break; }
+                if (player == null || player.IsDead()) { _activeCharge.Remove(player); yield break; }
                 elapsed += Time.deltaTime;
                 float smoothT = 1f - Mathf.Pow(1f - Mathf.Clamp01(elapsed / moveDuration), 2f);
-                if (target != null && !target.IsDead()) targetPos = target.transform.position;
 
                 Vector3 newPos = Vector3.Lerp(startPos, targetPos, smoothT);
                 if (newPos.y > 4000f)
@@ -542,7 +544,7 @@ namespace CaptainSkillTree.SkillTree
             }
             catch { }
 
-            _charging.Remove(player);
+            _activeCharge.Remove(player);
         }
     }
 

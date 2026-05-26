@@ -157,7 +157,9 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            float damagePercent = Knife_Config.KnifeStackExplosionDamagePercentValue / 100f;
+            int stackExpLevel = SkillTreeManager.Instance?.GetSkillLevel("knife_step10_stack_explosion") ?? 1;
+            float levelBonus = (stackExpLevel - 1) * Knife_Config.KnifeStackExplosionDamageLevelBonusValue;
+            float damagePercent = (Knife_Config.KnifeStackExplosionDamagePercentValue + levelBonus) / 100f;
             float weaponDamage  = GetWeaponBaseDamage(player);
             float totalDamage   = stacks * weaponDamage * damagePercent;
 

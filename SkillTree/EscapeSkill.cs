@@ -63,8 +63,7 @@ namespace CaptainSkillTree.SkillTree
                 if (!CanEscape())
                 {
                     int mins = Mathf.CeilToInt(GetRemainingMinutes());
-                    player.Message(MessageHud.MessageType.TopLeft,
-                        Localization.L.Get("ui_escape_cooldown", mins.ToString()), 0, null);
+                    SkillEffect.ShowSkillEffectText(player, Localization.L.Get("ui_escape_cooldown", mins.ToString()), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                     return;
                 }
 
@@ -134,8 +133,7 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogInfo($"[Escape] TeleportTo 호출 완료 → {dest}");
 
                 // 성공 메시지
-                player.Message(MessageHud.MessageType.Center,
-                    Localization.L.Get("ui_escape"), 0, null);
+                SkillEffect.ShowSkillEffectText(player, Localization.L.Get("ui_escape"), Color.white, SkillEffect.SkillEffectTextType.Standard);
             }
             catch (Exception ex)
             {

@@ -24,12 +24,14 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PaladinElementalResistanceReduction { get; set; }
 
         // === Lv2: 액티브 + 패시브 ===
+        public static ConfigEntry<float> PaladinLv2Cooldown { get; set; }
         public static ConfigEntry<float> PaladinLv2SelfHealPercent { get; set; }
         public static ConfigEntry<float> PaladinLv2AllyHealPercent { get; set; }
         public static ConfigEntry<float> PaladinLv2StaminaBonus { get; set; }
         public static ConfigEntry<float> PaladinLv2ResistanceReduction { get; set; }
 
         // === Lv3: 액티브 + 패시브 ===
+        public static ConfigEntry<float> PaladinLv3Cooldown { get; set; }
         public static ConfigEntry<float> PaladinLv3SelfHealPercent { get; set; }
         public static ConfigEntry<float> PaladinLv3AllyHealPercent { get; set; }
         public static ConfigEntry<float> PaladinLv3HealRange { get; set; }
@@ -37,6 +39,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PaladinLv3StaminaBonus { get; set; }
 
         // === Lv4: 액티브 + 패시브 ===
+        public static ConfigEntry<float> PaladinLv4Cooldown { get; set; }
         public static ConfigEntry<float> PaladinLv4SelfHealPercent { get; set; }
         public static ConfigEntry<float> PaladinLv4AllyHealPercent { get; set; }
         public static ConfigEntry<float> PaladinLv4HealRange { get; set; }
@@ -97,6 +100,10 @@ namespace CaptainSkillTree.SkillTree
                 PaladinElementalResistanceReduction.Value = 5f;
 
             // === Lv2: 액티브 + 패시브 ===
+            PaladinLv2Cooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv2_Cooldown", 29f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv2_Cooldown"));
+
             PaladinLv2SelfHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills", "Paladin_Lv2_SelfHealPercent", 17f,
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv2_SelfHealPercent"));
@@ -115,6 +122,10 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv2_ResistanceReduction"));
 
             // === Lv3: 액티브 + 패시브 ===
+            PaladinLv3Cooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv3_Cooldown", 28f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv3_Cooldown"));
+
             PaladinLv3SelfHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills", "Paladin_Lv3_SelfHealPercent", 19f,
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv3_SelfHealPercent"));
@@ -137,6 +148,10 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv3_StaminaBonus"));
 
             // === Lv4: 액티브 + 패시브 ===
+            PaladinLv4Cooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
+                "Paladin Job Skills", "Paladin_Lv4_Cooldown", 27f,
+                SkillTreeConfig.GetConfigDescription("Paladin_Lv4_Cooldown"));
+
             PaladinLv4SelfHealPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
                 "Paladin Job Skills", "Paladin_Lv4_SelfHealPercent", 21f,
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv4_SelfHealPercent"));
@@ -175,7 +190,7 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv5_HealRange"));
 
             PaladinLv5Cooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                "Paladin Job Skills", "Paladin_Lv5_Cooldown", 25f,
+                "Paladin Job Skills", "Paladin_Lv5_Cooldown", 26f,
                 SkillTreeConfig.GetConfigDescription("Paladin_Lv5_Cooldown"));
 
             PaladinLv5ResistanceReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
@@ -211,6 +226,9 @@ namespace CaptainSkillTree.SkillTree
                 PaladinLv5SelfHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
                 PaladinLv5AllyHealPercent.SettingChanged        += (s, a) => UpdatePaladinTooltip();
                 PaladinLv5HealRange.SettingChanged              += (s, a) => UpdatePaladinTooltip();
+                PaladinLv2Cooldown.SettingChanged               += (s, a) => UpdatePaladinTooltip();
+                PaladinLv3Cooldown.SettingChanged               += (s, a) => UpdatePaladinTooltip();
+                PaladinLv4Cooldown.SettingChanged               += (s, a) => UpdatePaladinTooltip();
                 PaladinLv5Cooldown.SettingChanged               += (s, a) => UpdatePaladinTooltip();
                 PaladinElementalResistanceReduction.SettingChanged += (s, a) => UpdatePaladinTooltip();
                 PaladinLv3ResistanceReduction.SettingChanged    += (s, a) => UpdatePaladinTooltip();
@@ -277,11 +295,16 @@ namespace CaptainSkillTree.SkillTree
             };
         }
 
-        /// <summary>쿨타임 (초) - 레벨별 (Lv5만 25초)</summary>
+        /// <summary>쿨타임 (초) - 레벨별 (Lv2=29, Lv3=28, Lv4=27, Lv5+=26)</summary>
         public static float GetCooldown(int level)
         {
-            return level >= 5 ? (PaladinLv5Cooldown?.Value ?? 25f)
-                              : (PaladinHealCooldown?.Value ?? 30f);
+            return level switch {
+                2 => PaladinLv2Cooldown?.Value ?? 29f,
+                3 => PaladinLv3Cooldown?.Value ?? 28f,
+                4 => PaladinLv4Cooldown?.Value ?? 27f,
+                _ => level >= 5 ? (PaladinLv5Cooldown?.Value ?? 26f)
+                                : (PaladinHealCooldown?.Value ?? 30f)
+            };
         }
 
         /// <summary>최대 스태미나 보너스 - 레벨별 (Lv2부터 시작)</summary>

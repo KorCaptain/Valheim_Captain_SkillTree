@@ -1032,7 +1032,7 @@ namespace CaptainSkillTree.Gui
                     if (string.IsNullOrEmpty(info.Cost))
                         info.Cost = $"{L.Get("stat_stamina")} {Berserker_Config.BerserkerRageStaminaCostValue}";
                     if (string.IsNullOrEmpty(info.Cooldown))
-                        info.Cooldown = $"{Berserker_Config.BerserkerRageCooldownValue}{L.Get("unit_seconds")}";
+                        info.Cooldown = $"{Berserker_Config.GetEffectiveRageCooldown(SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 1)}{L.Get("unit_seconds")}";
                     if (string.IsNullOrEmpty(info.Notice))
                         info.Notice = jobNotice;
                     break;

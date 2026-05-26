@@ -192,7 +192,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 둔기 7단계 분노의 망치 툴팁 생성
+        /// 둔기 7단계 분노의 망치 툴팁 생성 (레벨 연동)
         /// </summary>
         public static string GetMaceStep7FuryHammerTooltip()
         {
@@ -200,41 +200,76 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep7FuryHammerTooltip() 호출됨");
 
-                // 하드코딩 상수 (수정 불가)
-                const int attackCount = 5;           // 5타 고정
-                const float attackInterval = 0.5f;   // 0.5초 고정
-
-                // Config에서 동적 설정값 가져오기
-                float normalHitMultiplier = Mace_Config.FuryHammerNormalHitMultiplierValue;
-                float finalHitMultiplier = Mace_Config.FuryHammerFinalHitMultiplierValue;
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_fury_hammer") ?? 0;
+                float baseNormal = Mace_Config.FuryHammerNormalHitMultiplierValue;
+                float baseFinal = Mace_Config.FuryHammerFinalHitMultiplierValue;
+                float normalLvBonus = Mace_Config.FuryHammerNormalHitLevelBonusValue;
+                float finalLvBonus = Mace_Config.FuryHammerFinalHitLevelBonusValue;
                 float aoeRadius = Mace_Config.FuryHammerAoeRadiusValue;
                 float staminaCost = Mace_Config.FuryHammerStaminaCostValue;
                 float cooldown = Mace_Config.FuryHammerCooldownValue;
+                int requiredPoints = Mace_Config.FuryHammerRequiredPointsValue;
 
-                Plugin.Log.LogDebug($"[분노의 망치 툴팁] 컨피그 값들 - 공격 횟수: {attackCount}회 (고정), 1~4타 배율: {normalHitMultiplier}%, 5타 배율: {finalHitMultiplier}%, 스태미나: {staminaCost}, 쿨타임: {cooldown}초");
+                int dispLevel = currentLevel > 0 ? currentLevel : 1;
+                float normalHit = baseNormal + (dispLevel - 1) * normalLvBonus;
+                float finalHit = baseFinal + (dispLevel - 1) * finalLvBonus;
 
-                // 상세 툴팁 데이터 생성 (간소화)
-                var data = new FuryHammerTooltipData
+                var tooltip = $"<color=#FFD700><size=22>{L.Get("mace_skill_fury")}</size></color>\n\n";
+
+                if (currentLevel > 0)
                 {
-                    skillName = L.Get("mace_skill_fury"),
-                    description = L.Get("mace_desc_fury_attack", attackCount),
-                    additionalInfo = L.Get("mace_desc_fury_interval", attackInterval, attackInterval),
-                    attackCount = "",
-                    baseDamage = L.Get("mace_desc_fury_damage", normalHitMultiplier, finalHitMultiplier),
-                    damageIncrement = "",
-                    aoeRadius = $"{aoeRadius:F0}{L.Get("unit_meter")}",
-                    attackInterval = "",
-                    staminaCost = $"{staminaCost:F0}",
-                    cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
-                    skillType = L.Get("skill_type_active_key", "H"),
-                    requirement = L.Get("requirement_two_hand_mace"),
-                    confirmation = L.Get("tooltip_same_weapon_only"),
-                    requiredPoints = "3"
-                };
+                    tooltip += $"<color=#87CEEB><size=16>Lv{currentLevel}: </size></color>" +
+                               $"<color=#E0E0E0><size=16>{L.Get("fury_hammer_damage_preview", (int)normalHit, (int)finalHit)}</size></color>\n";
+                }
+                else
+                {
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color>" +
+                               $"<color=#E0E0E0><size=16>{L.Get("mace_desc_fury_action")}</size></color>\n";
+                }
 
-                string finalTooltip = GenerateFuryHammerTooltip(data);
-                Plugin.Log.LogDebug($"[분노의 망치 툴팁] 최종 툴팁 생성 완료 - 길이: {finalTooltip?.Length ?? 0}");
-                return finalTooltip;
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color>" +
+                           $"<color=#FFB6C1><size=16>{L.Get("mace_desc_fury_damage", (int)normalHit, (int)finalHit)}</size></color>\n";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color>" +
+                           $"<color=#B0E0E6><size=16>{aoeRadius:F0}{L.Get("unit_meter")}</size></color>\n";
+                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>" +
+                           $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaCost:F0}</size></color>\n";
+                tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color>" +
+                           $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", "H")}</size></color>\n";
+                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>" +
+                           $"<color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>" +
+                           $"<color=#00FF00><size=16>{L.Get("requirement_two_hand_mace")}</size></color>\n";
+                tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color>" +
+                           $"<color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>" +
+                           $"<color=#FF6B6B><size=16>{requiredPoints}</size></color>\n";
+
+                if (currentLevel < 7)
+                {
+                    int nextLevel = (currentLevel > 0 ? currentLevel : 0) + 1;
+                    string itemText = GetShieldChargeItemText(nextLevel);
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("fury_hammer_upgrade_requires", nextLevel)}: </size></color>" +
+                               $"<color=#FF6B6B><size=16>{itemText}</size></color>\n";
+                }
+                else
+                {
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("fury_hammer_max_level")}</size></color>\n";
+                }
+
+                if (currentLevel < 7)
+                {
+                    tooltip += "\n\n<color=#A9A9A9><size=14>────────────────────────</size></color>";
+                    int startPreview = currentLevel > 0 ? currentLevel + 1 : 2;
+                    for (int lv = startPreview; lv <= 7; lv++)
+                    {
+                        float n = baseNormal + (lv - 1) * normalLvBonus;
+                        float f = baseFinal + (lv - 1) * finalLvBonus;
+                        tooltip += $"\n<color=#888888><size=14>Lv{lv}: {L.Get("fury_hammer_damage_preview", (int)n, (int)f)}</size></color>";
+                    }
+                }
+
+                Plugin.Log.LogDebug($"[분노의 망치 툴팁] 생성 완료 Lv{currentLevel}");
+                return tooltip.TrimEnd('\n');
             }
             catch (Exception ex)
             {
@@ -364,44 +399,67 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 수호자의 진심 툴팁 생성
+        /// 수호자의 진심 툴팁 생성 (레벨 연동)
         /// </summary>
         public static string GetMaceStep7GuardianHeartTooltip()
         {
             try
             {
-                Plugin.Log.LogDebug("[둔기 툴팁] GetMaceStep7GuardianHeartTooltip() 호출됨");
-
-                // Config에서 동적 설정값 가져오기
-                float dashDistance = 12f;
-                float damagePercent = Mace_Config.ShieldChargeDamagePercentValue;
-                float multiHitDamagePercent = Mace_Config.ShieldChargeMultiHitDamagePercentValue;
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 0;
+                float baseDmg = Mace_Config.ShieldChargeDamagePercentValue;
+                float levelBonus = Mace_Config.ShieldChargeLevelBonusValue;
                 float staminaCost = Mace_Config.GuardianHeartStaminaCostValue;
                 float cooldown = Mace_Config.GuardianHeartCooldownValue;
                 int requiredPoints = Mace_Config.GuardianHeartRequiredPointsValue;
 
-                Plugin.Log.LogDebug($"[방패돌진 툴팁] 컨피그 값들 - 돌진거리: {dashDistance}m, 충돌데미지: {damagePercent}%, 다단히트: {multiHitDamagePercent}%, 스태미나: {staminaCost}, 쿨타임: {cooldown}초");
+                int dispLevel = currentLevel > 0 ? currentLevel : 1;
+                float singleDmg = baseDmg + (dispLevel - 1) * levelBonus;
+                float multiDmg = GetShieldChargeMultiHitPercent(dispLevel);
 
-                // 상세 툴팁 데이터 생성
-                var data = new GuardianHeartTooltipData
+                var tooltip = $"<color=#FFD700><size=22>{L.Get("mace_skill_guardian")}</size></color>\n\n";
+
+                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color>" +
+                           $"<color=#E0E0E0><size=16>{L.Get("mace_desc_guardian_buff")}</size></color>\n";
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color>" +
+                           $"<color=#FFB6C1><size=16>{L.Get("shield_charge_damage_preview", (int)singleDmg, (int)multiDmg)}</size></color>\n";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color>" +
+                           $"<color=#B0E0E6><size=16>{L.Get("mace_effect_buff")} 12m</size></color>\n";
+                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>" +
+                           $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaCost:F0}</size></color>\n";
+                tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color>" +
+                           $"<color=#00FF00><size=16>{L.Get("skill_type_active_key", "G")}</size></color>\n";
+                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>" +
+                           $"<color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>" +
+                           $"<color=#00FF00><size=16>{L.Get("requirement_mace_shield")}</size></color>\n";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>" +
+                           $"<color=#FF6B6B><size=16>{requiredPoints}</size></color>\n";
+
+                if (currentLevel < 7)
                 {
-                    skillName = L.Get("mace_skill_guardian"),
-                    description = L.Get("mace_desc_guardian_buff", damagePercent),
-                    additionalInfo = "",
-                    dashDistance = $"{dashDistance:F0}m",
-                    damagePercent = $"{damagePercent:F0}%",
-                    multiHitInfo = L.Get("mace_desc_guardian_multihit", multiHitDamagePercent),
-                    staminaCost = $"{staminaCost:F0}",
-                    cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
-                    skillType = L.Get("skill_type_active_key", "G"),
-                    requirement = L.Get("requirement_mace_shield"),
-                    confirmation = "",
-                    specialNote = $"{L.Get("mace_desc_guardian_note")}\n\n<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
-                };
+                    int nextLevel = (currentLevel > 0 ? currentLevel : 0) + 1;
+                    string itemText = GetShieldChargeItemText(nextLevel);
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("shield_charge_upgrade_requires", nextLevel)}: </size></color>" +
+                               $"<color=#FF6B6B><size=16>{itemText}</size></color>\n";
+                }
+                else
+                {
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("shield_charge_max_level")}</size></color>\n";
+                }
 
-                string finalTooltip = GenerateGuardianHeartTooltip(data);
-                Plugin.Log.LogDebug($"[수호자의 진심 툴팁] 최종 툴팁 생성 완료 - 길이: {finalTooltip?.Length ?? 0}");
-                return finalTooltip;
+                if (currentLevel < 7)
+                {
+                    tooltip += "\n\n<color=#A9A9A9><size=14>────────────────────────</size></color>";
+                    int startPreview = currentLevel > 0 ? currentLevel + 1 : 2;
+                    for (int lv = startPreview; lv <= 7; lv++)
+                    {
+                        float sd = baseDmg + (lv - 1) * levelBonus;
+                        float md = GetShieldChargeMultiHitPercent(lv);
+                        tooltip += $"\n<color=#888888><size=14>Lv{lv}: {L.Get("shield_charge_damage_preview", (int)sd, (int)md)}</size></color>";
+                    }
+                }
+
+                return tooltip.TrimEnd('\n');
             }
             catch (Exception ex)
             {
@@ -409,6 +467,21 @@ namespace CaptainSkillTree.SkillTree
                 return GetGuardianHeartFallbackTooltip();
             }
         }
+
+        private static float GetShieldChargeMultiHitPercent(int level) =>
+            150f + (level - 1) * 20f;
+
+        private static string GetShieldChargeItemText(int targetLevel) => targetLevel switch
+        {
+            1 => $"{L.Get("item_trophy_eikthyr")} x1 + {L.Get("item_trophy_boar")} x1",
+            2 => $"{L.Get("item_trophy_elder")} x1 + {L.Get("item_trophy_troll")} x1",
+            3 => $"{L.Get("item_trophy_bonemass")} x1 + {L.Get("item_trophy_abomination")} x1",
+            4 => $"{L.Get("item_trophy_dragonqueen")} x1 + {L.Get("item_trophy_sgolem")} x1",
+            5 => $"{L.Get("item_trophy_goblinking")} x1 + {L.Get("item_trophy_goblinshaman")} x1",
+            6 => $"{L.Get("item_trophy_seekerqueen")} x1 + {L.Get("item_trophy_gjall")} x1",
+            7 => $"{L.Get("item_trophy_fader")} x1 + {L.Get("item_trophy_fallenvalkyrie")} x1",
+            _ => ""
+        };
 
         /// <summary>
         /// 수호자의 진심 툴팁 생성 (G키 액티브 스킬)

@@ -508,6 +508,9 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 Auto-cura (%)】\nRecomendado: 22-28%",
                 ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 Cura de Aliados (%/tick)】\nRecomendado: 3.5-5%",
                 ["Paladin_Lv5_HealRange"] = "【Lv5 Alcance de Cura (m)】\nRecomendado: 7-10m",
+                ["Paladin_Lv2_Cooldown"] = "【Lv2 Tempo de Recarga (seg)】\nRecomendado: 25-35 seg",
+                ["Paladin_Lv3_Cooldown"] = "【Lv3 Tempo de Recarga (seg)】\nRecomendado: 24-34 seg",
+                ["Paladin_Lv4_Cooldown"] = "【Lv4 Tempo de Recarga (seg)】\nRecomendado: 23-33 seg",
                 ["Paladin_Lv5_Cooldown"] = "【Lv5 Tempo de Recarga (seg)】\nRecomendado: 20-30 seg",
                 ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 Redução de Resistência (%)】\nRecomendado: 6-10%",
                 ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 Redução de Resistência (%)】\nRecomendado: 8-12%",
@@ -577,6 +580,110 @@ namespace CaptainSkillTree.Localization
                 "【Bônus de HP Máximo (%)】\n" +
                 "Berserker passivo: aumenta o HP máximo.\n" +
                 "Valor recomendado: 100%",
+
+                // === Berserker: Recarga da Fúria por nível ===
+                ["Berserker_Lv1_Active_Cooldown"] =
+                "【Berserker Lv1: Recarga da Fúria (seg)】\n" +
+                "Recarga da habilidade Fúria no Lv1.\n" +
+                "Recomendado: 45 seg",
+
+                ["Berserker_Lv2_Active_Cooldown"] =
+                "【Berserker Lv2: Recarga da Fúria (seg)】\n" +
+                "Recarga da habilidade Fúria no Lv2.\n" +
+                "Recomendado: 40 seg",
+
+                ["Berserker_Lv3_Active_Cooldown"] =
+                "【Berserker Lv3: Recarga da Fúria (seg)】\n" +
+                "Recarga da habilidade Fúria no Lv3.\n" +
+                "Recomendado: 40 seg",
+
+                ["Berserker_Lv4_Active_Cooldown"] =
+                "【Berserker Lv4: Recarga da Fúria (seg)】\n" +
+                "Recarga da habilidade Fúria no Lv4.\n" +
+                "Recomendado: 40 seg",
+
+                ["Berserker_Lv5_Active_Cooldown"] =
+                "【Berserker Lv5: Recarga da Fúria (seg)】\n" +
+                "Recarga da habilidade Fúria no Lv5.\n" +
+                "Recomendado: 35 seg",
+
+                // === Berserker: Duração da Fúria por nível ===
+                ["Berserker_Lv1_Active_Duration"] =
+                "【Berserker Lv1: Duração da Fúria (seg)】\n" +
+                "Duração do efeito Fúria no Lv1.\n" +
+                "Recomendado: 20 seg",
+
+                ["Berserker_Lv2_Active_Duration"] =
+                "【Berserker Lv2: Duração da Fúria (seg)】\n" +
+                "Duração do efeito Fúria no Lv2.\n" +
+                "Recomendado: 20 seg",
+
+                ["Berserker_Lv3_Active_Duration"] =
+                "【Berserker Lv3: Duração da Fúria (seg)】\n" +
+                "Duração do efeito Fúria no Lv3.\n" +
+                "Recomendado: 25 seg",
+
+                ["Berserker_Lv4_Active_Duration"] =
+                "【Berserker Lv4: Duração da Fúria (seg)】\n" +
+                "Duração do efeito Fúria no Lv4.\n" +
+                "Recomendado: 25 seg",
+
+                ["Berserker_Lv5_Active_Duration"] =
+                "【Berserker Lv5: Duração da Fúria (seg)】\n" +
+                "Duração do efeito Fúria no Lv5.\n" +
+                "Recomendado: 25 seg",
+
+                // === Berserker: Bônus passivo de HP máximo por nível ===
+                ["Berserker_Lv1_Passive_HealthBonus"] =
+                "【Berserker Lv1: Bônus de HP Máximo】\n" +
+                "Bônus fixo de HP máximo no Lv1.\n" +
+                "Recomendado: 40",
+
+                ["Berserker_Lv2_Passive_HealthBonus"] =
+                "【Berserker Lv2: Bônus de HP Máximo】\n" +
+                "Bônus fixo de HP máximo no Lv2.\n" +
+                "Recomendado: 60",
+
+                ["Berserker_Lv3_Passive_HealthBonus"] =
+                "【Berserker Lv3: Bônus de HP Máximo】\n" +
+                "Bônus fixo de HP máximo no Lv3.\n" +
+                "Recomendado: 80",
+
+                ["Berserker_Lv4_Passive_HealthBonus"] =
+                "【Berserker Lv4: Bônus de HP Máximo】\n" +
+                "Bônus fixo de HP máximo no Lv4.\n" +
+                "Recomendado: 100",
+
+                ["Berserker_Lv5_Passive_HealthBonus"] =
+                "【Berserker Lv5: Bônus de HP Máximo】\n" +
+                "Bônus fixo de HP máximo no Lv5.\n" +
+                "Recomendado: 120",
+
+                // === Berserker: Bônus de dano por 1% de HP perdido por nível ===
+                ["Berserker_Lv1_Active_DamagePerHP"] =
+                "【Berserker Lv1: Dano/1% HP perdido (%)】\n" +
+                "Bônus de dano por cada 1% de HP perdido durante Fúria (Lv1).\n" +
+                "Recomendado: 1,5%",
+
+                ["Berserker_Lv2_Active_DamagePerHP"] =
+                "【Berserker Lv2: Dano/1% HP perdido (%)】\n" +
+                "Bônus de dano por cada 1% de HP perdido durante Fúria (Lv2).\n" +
+                "Recomendado: 1,6%",
+
+                ["Berserker_Lv3_Active_DamagePerHP"] =
+                "【Berserker Lv3: Dano/1% HP perdido (%)】\n" +
+                "Bônus de dano por cada 1% de HP perdido durante Fúria (Lv3).\n" +
+                "Recomendado: 1,7%",
+
+                ["Berserker_Lv4_Active_DamagePerHP"] =
+                "【Berserker Lv4: Dano/1% HP perdido (%)】\n" +
+                "Bônus de dano por cada 1% de HP perdido durante Fúria (Lv4).\n" +
+                "Recomendado: 1,8%",
+
+                ["Berserker_Lv5_Active_DamagePerHP"] =
+                "【Berserker Lv5: Dano/1% HP perdido (%)】\n" +
+                "Bônus de dano por cada 1% de HP perdido durante Fúria (Lv5).\n" +
+                "Recomendado: 2,0%",
 
                 // === Mestre Artesão (Producer) Job Skills ===
                 // ========================================

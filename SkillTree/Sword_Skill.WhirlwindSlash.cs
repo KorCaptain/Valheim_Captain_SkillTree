@@ -14,6 +14,7 @@ namespace CaptainSkillTree.SkillTree
         // === 회오리베기 (Whirlwind Slash) 상태 관리 ===
         private static Dictionary<Player, float> whirlwindCooldowns = new Dictionary<Player, float>();
         private static HashSet<Player> whirlwindCharging = new HashSet<Player>();
+        private static Attack s_polearmSecondaryCache = null;
 
         /// <summary>
         /// H키: 회오리베기 발동
@@ -32,10 +33,10 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                // 2. 검 장착 확인
-                if (!IsUsingSword(player))
+                // 2. 검 또는 도끼 장착 확인
+                if (!WeaponHelper.IsUsingSwordOrAxe(player))
                 {
-                    SkillEffect.DrawFloatingText(player, L.Get("sword_required"), Color.red);
+                    SkillEffect.DrawFloatingText(player, L.Get("sword_or_axe_required"), Color.red);
                     return;
                 }
 
@@ -72,7 +73,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 7. 시전 시작
                 whirlwindCharging.Add(player);
-                var weapon = GetEquippedSword(player);
+                var weapon = player.GetCurrentWeapon();
                 player.StartCoroutine(ExecuteWhirlwindSlashCoroutine(player, weapon));
 
                 Plugin.Log.LogInfo($"[회오리베기] 발동 — 쿨타임 {cooldown}초");
@@ -98,35 +99,35 @@ namespace CaptainSkillTree.SkillTree
             const float dmg3    = 220f;
 
             // === 1차 공격 ===
+            Plugin.Log.LogInfo("[회오리베기] 코루틴: 1차 진입");
             if (player != null && !player.IsDead())
             {
-                TriggerSpinAnimation(player, weapon);
+                try { TriggerSpinAnimation(player, weapon); }
+                catch (Exception ex) { Plugin.Log.LogError($"[회오리베기] 1차 애니 오류: {ex.Message}"); }
                 ApplyWhirlwindAoE(player, weapon, radius1, dmg1,
                     "fx_Fader_Roar_Projectile_Hit", "sfx_fader_claw_swipe", 1);
             }
 
-            yield return new WaitForSeconds(0.8f);
-            float t1 = 0f;
-            while (player != null && !player.IsDead() && player.InAttack() && t1 < 0.5f)
-            { yield return null; t1 += Time.deltaTime; }
+            yield return new WaitForSeconds(0.9f);
 
             // === 2차 공격 ===
+            Plugin.Log.LogInfo("[회오리베기] 코루틴: 2차 진입");
             if (player != null && !player.IsDead())
             {
-                TriggerSpinAnimation(player, weapon);
+                try { TriggerSpinAnimation(player, weapon); }
+                catch (Exception ex) { Plugin.Log.LogError($"[회오리베기] 2차 애니 오류: {ex.Message}"); }
                 ApplyWhirlwindAoE(player, weapon, radius2, dmg2,
                     "fx_Fader_Fissure_Prespawn", "sfx_fader_claw_swipe", 2);
             }
 
-            yield return new WaitForSeconds(0.8f);
-            float t2 = 0f;
-            while (player != null && !player.IsDead() && player.InAttack() && t2 < 0.5f)
-            { yield return null; t2 += Time.deltaTime; }
+            yield return new WaitForSeconds(0.9f);
 
             // === 3차 공격 ===
+            Plugin.Log.LogInfo("[회오리베기] 코루틴: 3차 진입");
             if (player != null && !player.IsDead())
             {
-                TriggerSpinAnimation(player, weapon);
+                try { TriggerSpinAnimation(player, weapon); }
+                catch (Exception ex) { Plugin.Log.LogError($"[회오리베기] 3차 애니 오류: {ex.Message}"); }
                 ApplyWhirlwindAoE(player, weapon, radius3, dmg3,
                     "fx_Fader_Spin", "sfx_fader_claw_swipe", 3);
             }
@@ -135,14 +136,55 @@ namespace CaptainSkillTree.SkillTree
             whirlwindCharging.Remove(player);
         }
 
+        private static Attack GetCachedPolearmSecondary()
+        {
+            if (s_polearmSecondaryCache != null) return s_polearmSecondaryCache;
+            string[] candidates = { "AtgeirBlackmetal", "AtgeirHimminAfl", "AtgeirKrom", "AtgeirBronze" };
+            foreach (var name in candidates)
+            {
+                var prefab = ObjectDB.instance?.GetItemPrefab(name);
+                var atk = prefab?.GetComponent<ItemDrop>()?.m_itemData?.m_shared?.m_secondaryAttack;
+                if (atk != null && !string.IsNullOrEmpty(atk.m_attackAnimation))
+                {
+                    s_polearmSecondaryCache = atk;
+                    Plugin.Log.LogInfo($"[회오리베기] 폴암 모션 캐시: {name} → {atk.m_attackAnimation}");
+                    return atk;
+                }
+            }
+            return null;
+        }
+
         private static void TriggerSpinAnimation(Player player, ItemDrop.ItemData weapon)
         {
-            var secAtk = weapon?.m_shared?.m_secondaryAttack;
-            if (secAtk == null) { player.StartAttack(null, true); return; }
-            float orig = secAtk.m_attackStamina;
-            secAtk.m_attackStamina = 0f;
-            player.StartAttack(null, true);
-            secAtk.m_attackStamina = orig;
+            // 검/도끼 모두 폴암 세컨드 모션으로 통일 (StartAttack 블로킹 우회)
+            var polearmAtk = GetCachedPolearmSecondary();
+            var zanim = player.GetComponentInChildren<ZSyncAnimation>();
+
+            if (polearmAtk != null && zanim != null && !string.IsNullOrEmpty(polearmAtk.m_attackAnimation))
+            {
+                string trigger = (polearmAtk.m_attackChainLevels > 1 || polearmAtk.m_attackRandomAnimations >= 2)
+                    ? polearmAtk.m_attackAnimation + "0"
+                    : polearmAtk.m_attackAnimation;
+                zanim.SetTrigger(trigger);
+                return;
+            }
+
+            // 폴백: ObjectDB 미로드 시 기존 방식
+            bool isSword = weapon?.m_shared?.m_skillType == Skills.SkillType.Swords;
+            var fallbackAtk = isSword
+                ? weapon?.m_shared?.m_secondaryAttack
+                : weapon?.m_shared?.m_attack;
+            if (fallbackAtk != null)
+            {
+                float orig = fallbackAtk.m_attackStamina;
+                fallbackAtk.m_attackStamina = 0f;
+                player.StartAttack(null, isSword);
+                fallbackAtk.m_attackStamina = orig;
+            }
+            else
+            {
+                player.StartAttack(null, false);
+            }
         }
 
         /// <summary>
@@ -159,10 +201,10 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
-                var weaponDmg = weapon.GetDamage();
-                float baseDmg = weaponDmg.m_slash + weaponDmg.m_blunt + weaponDmg.m_pierce;
-                if (baseDmg <= 0f) baseDmg = weaponDmg.m_slash;
-                float totalDmg = baseDmg * (damageRatio / 100f);
+                int whirlwindLevel = SkillTreeManager.Instance?.GetSkillLevel("sword_step5_defswitch") ?? 1;
+                float levelBonus = (whirlwindLevel - 1) * Sword_Config.WhirlwindSlashLevelBonusValue;
+                float scaledBase = Sword_Config.WhirlwindSlashBaseDamageValue + levelBonus;
+                float totalDmg = scaledBase * (damageRatio / 100f);
 
                 foreach (var c in Character.GetAllCharacters())
                 {
@@ -187,12 +229,18 @@ namespace CaptainSkillTree.SkillTree
                     hit.m_attacker = player.GetZDOID();
                     hit.SetAttacker(player);
                     hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
+                    hit.m_skill = weapon.m_shared.m_skillType;
+                    hit.m_blockable = false;
+                    hit.m_dodgeable = false;
 
-                    c.Damage(hit);
+                    HitData.DamageModifiers dmgMods = c.GetDamageModifiers();
+                    HitData.DamageModifier dmgMod;
+                    hit.ApplyResistance(dmgMods, out dmgMod);
+                    c.ApplyDamage(hit, true, true, dmgMod);
                     c.Stagger(dir);
                     VFXManager.PlayVFXMultiplayer("fx_crit", "", c.GetCenterPoint(), Quaternion.identity, 1.5f);
 
-                    // 3차 공격: 반경 5m 이내 적 넉백 (~5m 거리, Traverse로 m_pushForce 직접 설정)
+                    // 3차 공격: 반경 5m 이내 적 넉백
                     if (hitPhase == 3 && Vector3.Distance(c.transform.position, playerPos) <= 5f)
                     {
                         Vector3 knockDir = dir;
@@ -210,17 +258,16 @@ namespace CaptainSkillTree.SkillTree
 
                     hitCount++;
                 }
+
+                // 단계별 VFX + SFX (캐릭터 중심)
+                VFXManager.PlayVFXMultiplayer(vfxName, sfxName, playerPos, Quaternion.identity, 2f);
+                SkillEffect.DrawFloatingText(player, L.Get("parry_rush_damage", hitPhase, Mathf.RoundToInt(damageRatio)), Color.yellow);
+                Plugin.Log.LogInfo($"[회오리베기] {hitPhase}차 공격 — 반경 {radius}m, 데미지 {damageRatio}%, 적중 {hitCount}명");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[회오리베기] {hitPhase}차 AoE 오류: {ex.Message}");
+                Plugin.Log.LogError($"[회오리베기] {hitPhase}차 AoE 오류: {ex.Message}\n{ex.StackTrace}");
             }
-
-            // 단계별 VFX + SFX (캐릭터 중심)
-            VFXManager.PlayVFXMultiplayer(vfxName, sfxName, playerPos, Quaternion.identity, 2f);
-            SkillEffect.DrawFloatingText(player, L.Get("parry_rush_damage", hitPhase, Mathf.RoundToInt(damageRatio)), Color.yellow);
-
-            Plugin.Log.LogInfo($"[회오리베기] {hitPhase}차 공격 — 반경 {radius}m, 데미지 {damageRatio}%, 적중 {hitCount}명");
         }
 
         /// <summary>

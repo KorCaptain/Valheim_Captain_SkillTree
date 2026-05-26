@@ -95,6 +95,24 @@ namespace CaptainSkillTree
                             player.m_dodgeEffects.Create(player.transform.position, Quaternion.identity);
                             CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_dodge", "", player.transform.position, Quaternion.identity, 1.5f);
 
+                            // 회피 모션: 상체 본 기울기 (발 고정, 0.6초 복원)
+                            var dodgeAttacker = hit.GetAttacker();
+                            float leanSide;
+                            if (dodgeAttacker != null)
+                            {
+                                Vector3 away = player.transform.position - dodgeAttacker.transform.position;
+                                away.y = 0f;
+                                leanSide = (away.sqrMagnitude > 0.01f && Vector3.Dot(player.transform.right, away.normalized) >= 0f)
+                                    ? 1f : -1f;
+                            }
+                            else
+                            {
+                                leanSide = 1f;
+                            }
+                            var lean = player.gameObject.GetComponent<DodgeLeanComponent>();
+                            if (lean == null) lean = player.gameObject.AddComponent<DodgeLeanComponent>();
+                            lean.StartLean(leanSide);
+
                             // 회피 성공 메시지 - 스킬명 표시
                             var manager = SkillTreeManager.Instance;
                             bool hasKnifeEvasion = manager?.GetSkillLevel("knife_step2_evasion") > 0;
@@ -118,17 +136,22 @@ namespace CaptainSkillTree
 
                             player.Message(MessageHud.MessageType.Center, evasionMessage);
 
-                            // 신경강화: 피격 회피 성공 시 45초 쿨다운 시작
+                            // 신경강화: 준비 상태일 때만 쿨다운 시작 (이미 쿨다운 중이면 다른 스킬이 회피한 것)
                             if (manager?.GetSkillLevel("defense_Step6_attack") > 0)
                             {
-                                SkillEffect.nerveLastEvasionTime[player] = Time.time;
-                                SkillEffect.UpdateDefenseDodgeRate(player);
-                                ActiveSkillCooldownRegistry.SetCooldownForSkill("PASS", "defense_Step6_attack", 45f);
-                                ActiveSkillHUD.Instance?.OnCooldownStarted();
-                                var nerveTimer = player.GetComponent<NerveEnhancementTimer>();
-                                if (nerveTimer == null)
-                                    nerveTimer = player.gameObject.AddComponent<NerveEnhancementTimer>();
-                                nerveTimer.ResetTimer(player);
+                                bool nerveIsReady = !SkillEffect.nerveLastEvasionTime.ContainsKey(player) ||
+                                                    Time.time - SkillEffect.nerveLastEvasionTime[player] >= 45f;
+                                if (nerveIsReady)
+                                {
+                                    SkillEffect.nerveLastEvasionTime[player] = Time.time;
+                                    SkillEffect.UpdateDefenseDodgeRate(player);
+                                    ActiveSkillCooldownRegistry.SetCooldownForSkill("PASS", "defense_Step6_attack", 45f);
+                                    ActiveSkillHUD.Instance?.OnCooldownStarted();
+                                    var nerveTimer = player.GetComponent<NerveEnhancementTimer>();
+                                    if (nerveTimer == null)
+                                        nerveTimer = player.gameObject.AddComponent<NerveEnhancementTimer>();
+                                    nerveTimer.ResetTimer(player);
+                                }
                             }
 
                             return false; // 데미지 적용 자체를 막음 (회피 성공)
@@ -528,5 +551,48 @@ namespace CaptainSkillTree
         }
 
         #endregion
+    }
+
+    internal class DodgeLeanComponent : MonoBehaviour
+    {
+        private float _side;
+        private float _angle;
+        private float _duration;
+        private float _startTime;
+        private bool _active;
+        private Coroutine _coroutine;
+
+        internal void StartLean(float side, float angle = 30f, float duration = 1f)
+        {
+            if (_active) return;
+            _side = side;
+            _angle = angle;
+            _duration = duration;
+            _startTime = Time.time;
+            _active = true;
+            if (_coroutine != null) StopCoroutine(_coroutine);
+            _coroutine = StartCoroutine(LeanCoroutine());
+        }
+
+        private IEnumerator LeanCoroutine()
+        {
+            var player = GetComponent<Player>();
+            if (player == null) { _active = false; yield break; }
+            var visual = player.transform.Find("Visual");
+            if (visual == null) { _active = false; yield break; }
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+                float t = (Time.time - _startTime) / _duration;
+                if (t >= 1f)
+                {
+                    visual.localRotation = Quaternion.identity;
+                    _active = false;
+                    yield break;
+                }
+                float cur = Mathf.Lerp(_angle * _side, 0f, t);
+                visual.localRotation = Quaternion.Euler(0f, 0f, cur);
+            }
+        }
     }
 }

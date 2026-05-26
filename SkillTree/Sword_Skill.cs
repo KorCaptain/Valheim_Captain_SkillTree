@@ -146,9 +146,9 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // 2. 寃 李⑹슜 ?뺤씤
-                if (!IsUsingSword(player))
+                if (!WeaponHelper.IsUsingSwordOrAxe(player))
                 {
-                    SkillEffect.DrawFloatingText(player, L.Get("sword_required"), Color.red);
+                    SkillEffect.DrawFloatingText(player, L.Get("sword_or_axe_required"), Color.red);
                     return;
                 }
 
@@ -286,7 +286,7 @@ namespace CaptainSkillTree.SkillTree
             yield return new WaitForSeconds(0.35f);
 
             // === 2李? 紐ъ뒪???ㅻⅨ履??대룞 + 踰좉린 ===
-            if (player == null || player.IsDead() || !IsUsingSword(player))
+            if (player == null || player.IsDead() || !WeaponHelper.IsUsingSwordOrAxe(player))
             {
                 CleanupRushSlash(player);
                 yield break;
@@ -315,7 +315,7 @@ namespace CaptainSkillTree.SkillTree
             yield return new WaitForSeconds(0.35f);
 
             // === 3李? 紐ъ뒪???쇱そ ?대룞 + 踰좉린 ===
-            if (player == null || player.IsDead() || !IsUsingSword(player))
+            if (player == null || player.IsDead() || !WeaponHelper.IsUsingSwordOrAxe(player))
             {
                 CleanupRushSlash(player);
                 yield break;
@@ -756,7 +756,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float GetSwordExpertDamageBonus(Player player)
         {
-            if (!SkillEffect.HasSkill("sword_expert") || !Sword_Skill.IsUsingSword(player))
+            if (!SkillEffect.HasSkill("sword_expert") || !WeaponHelper.IsUsingSwordOrAxe(player))
                 return 0f;
 
             try
@@ -778,7 +778,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static float GetSwordRiposteDamageBonus(Player player)
         {
-            if (!SkillEffect.HasSkill("sword_step3_riposte") || !Sword_Skill.IsUsingSword(player)) return 0f;
+            if (!SkillEffect.HasSkill("sword_step3_riposte") || !WeaponHelper.IsUsingSwordOrAxe(player)) return 0f;
 
             try
             {

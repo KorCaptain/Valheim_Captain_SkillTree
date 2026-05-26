@@ -40,6 +40,10 @@
 ```
 ❌ 코드에 L.Get() 먼저 쓰고 키 나중에 추가 → Warning 발생
 
+> ⚠️ **DrawFloatingText / MessageHud 연동 시 특히 중요**  
+> 누락 키 → L.Get()이 `[FAIL] Key not found` 경고 출력 → Unity 폰트 아틀라스 재빌드 → **인게임 렉 발생**  
+> DrawFloatingText에 새 L.Get() 키를 추가할 때 반드시 R2 순서를 지킬 것.
+
 ### R3. L.Get() 필수 / 하드코딩 금지
 ```csharp
 // ❌ 금지
@@ -82,6 +86,21 @@ ConfigTranslations.cs에 KO + EN 3종 세트(DisplayName, Description, KeyName)�
 // ✅ 필수 (영문 snake_case)
 "paladin", "berserker"
 ```
+
+### R9. 로그 메시지에 유니코드 특수문자 금지 (폰트 렉 방지)
+
+```csharp
+// ❌ 금지 — ✗/✓ 는 Valheim-AveriaSansLibre 폰트에 없음
+// → Unity 폰트 아틀라스 재빌드 → 렉 발생
+Plugin.Log.LogWarning($"[Localization] ✗ Key not found: '{key}'");
+
+// ✅ 필수 — ASCII 대체 사용
+Plugin.Log.LogWarning($"[Localization] [FAIL] Key not found: '{key}'");
+Plugin.Log.LogDebug($"[Localization] [OK] Loaded successfully");
+```
+
+**BepInEx → Unity Debug.Log 파이프라인 때문에 로그 문자열도 폰트 아틀라스에 영향을 줌.**  
+모든 Plugin.Log 메시지에서 `✗ ✓ ✘ ✔` 등 유니코드 특수문자 사용 금지. `[OK]` / `[FAIL]` / `[WARN]` 사용.
 
 ### R7. 번역 파일 분리 원칙
 | 파일 | 용도 |

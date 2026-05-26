@@ -39,6 +39,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PolearmPierceChargeKnockbackDistance;
         public static ConfigEntry<float> PolearmPierceChargeStaminaCost;
         public static ConfigEntry<float> PolearmPierceChargeCooldown;
+        public static ConfigEntry<float> PolearmPierceChargeLevelBonus;
 
         // === 휠윈드 (Whirlwind) 액티브 스킬 설정 ===
         public static ConfigEntry<int> PolearmWhirlwindRequiredPoints;
@@ -49,6 +50,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> PolearmWhirlwindVfxInterval;
         public static ConfigEntry<float> PolearmWhirlwindCooldown;
         public static ConfigEntry<float> PolearmWhirlwindMaxDuration;
+        public static ConfigEntry<float> PolearmWhirlwindLevelBonus;
 
         // === 필요 포인트 접근 프로퍼티 ===
         public static int PolearmExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("polearm_expert_required_points", PolearmExpertRequiredPoints?.Value ?? 2);
@@ -83,6 +85,7 @@ namespace CaptainSkillTree.SkillTree
         public static float PolearmPierceChargeKnockbackDistanceValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_knockback_distance", PolearmPierceChargeKnockbackDistance.Value);
         public static float PolearmPierceChargeStaminaCostValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_stamina_cost", PolearmPierceChargeStaminaCost.Value);
         public static float PolearmPierceChargeCooldownValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_cooldown", PolearmPierceChargeCooldown.Value);
+        public static float PolearmPierceChargeLevelBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_pierce_charge_level_bonus", PolearmPierceChargeLevelBonus?.Value ?? 30f);
 
         // === 휠윈드 접근 프로퍼티들 ===
         public static float PolearmWhirlwindDamagePercentValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_damage_percent", PolearmWhirlwindDamagePercent.Value);
@@ -92,6 +95,7 @@ namespace CaptainSkillTree.SkillTree
         public static float PolearmWhirlwindVfxIntervalValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_vfx_interval", PolearmWhirlwindVfxInterval.Value);
         public static float PolearmWhirlwindCooldownValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_cooldown", PolearmWhirlwindCooldown.Value);
         public static float PolearmWhirlwindMaxDurationValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_max_duration", PolearmWhirlwindMaxDuration.Value);
+        public static float PolearmWhirlwindLevelBonusValue => SkillTreeConfig.GetEffectiveValue("polearm_whirlwind_level_bonus", PolearmWhirlwindLevelBonus?.Value ?? 10f);
 
         public static void Initialize(ConfigFile config)
         {
@@ -193,6 +197,9 @@ namespace CaptainSkillTree.SkillTree
             PolearmKingRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier5_PierceCharge_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_RequiredPoints"));
+            PolearmPierceChargeLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier5_PierceCharge_LevelBonus", 30f,
+                SkillTreeConfig.GetConfigDescription("Tier5_PierceCharge_LevelBonus"));
 
             // Tier 6: 휠윈드 (Whirlwind) - 마우스 휠 홀드 액티브 스킬
             PolearmWhirlwindDamagePercent = SkillTreeConfig.BindServerSync(config,
@@ -219,6 +226,9 @@ namespace CaptainSkillTree.SkillTree
             PolearmWhirlwindRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Polearm Tree", "Tier6_Whirlwind_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_RequiredPoints"));
+            PolearmWhirlwindLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Polearm Tree", "Tier6_Whirlwind_LevelBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("Tier6_Whirlwind_LevelBonus"));
 
             Plugin.Log.LogDebug("[Polearm_Config] Polearm Expert tree config initialized");
         }

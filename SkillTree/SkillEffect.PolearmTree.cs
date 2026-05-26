@@ -290,7 +290,9 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug($"[관통 돌격] 첫 몬스터 적중! - 돌진 멈춤");
                     finalPos = player.transform.position;
 
-                    float damageMultiplier = 1f + (Polearm_Config.PolearmPierceChargePrimaryDamageValue / 100f);
+                    int pierceLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step5_king") ?? 1;
+                    float pierceBonus = (pierceLevel - 1) * Polearm_Config.PolearmPierceChargeLevelBonusValue;
+                    float damageMultiplier = 1f + ((Polearm_Config.PolearmPierceChargePrimaryDamageValue + pierceBonus) / 100f);
                     float pierceSkillFactor = player.GetSkillFactor(Skills.SkillType.Polearms);
                     var weaponDamage = weapon.GetDamage(0, pierceSkillFactor);
 
@@ -317,7 +319,7 @@ namespace CaptainSkillTree.SkillTree
 
                     ApplyAreaKnockback(player, hitMonster, weapon, knockbackDistance);
 
-                    DrawFloatingText(player, "💥 " + L.Get("pierce_charge_damage", Polearm_Config.PolearmPierceChargePrimaryDamageValue));
+                    DrawFloatingText(player, "💥 " + L.Get("pierce_charge_damage", Polearm_Config.PolearmPierceChargePrimaryDamageValue + pierceBonus));
 
                     break;
                 }
@@ -391,7 +393,13 @@ namespace CaptainSkillTree.SkillTree
             float aoeRadius = Polearm_Config.PolearmPierceChargeAoeRadiusValue; // Config에서 AOE 반경 가져오기
             float aoeAngle = Polearm_Config.PolearmPierceChargeAoeAngleValue; // Config에서 AOE 각도 가져오기 (280도)
             float includeHalfAngle = aoeAngle / 2f; // 포함할 전방 반각 (140도) - 앞쪽 280도 범위
-            float aoeDamageMultiplier = 1f + (Polearm_Config.PolearmPierceChargeAoeDamageValue / 100f);
+            int pierceLevelAoe = SkillTreeManager.Instance?.GetSkillLevel("polearm_step5_king") ?? 1;
+            float aoePercent = pierceLevelAoe switch {
+                2 => 175f, 3 => 200f, 4 => 225f,
+                5 => 250f, 6 => 275f, 7 => 300f,
+                _ => 150f
+            };
+            float aoeDamageMultiplier = 1f + (aoePercent / 100f);
             float aoeSkillFactor = player.GetSkillFactor(Skills.SkillType.Polearms);
             var weaponDamage = weapon.GetDamage(0, aoeSkillFactor);
 

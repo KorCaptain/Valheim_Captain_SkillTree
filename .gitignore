@@ -1,3 +1,6 @@
+# Thunderstore release zips
+Thunderstore/*.zip
+
 # Visual Studio
 .vs/
 *.suo

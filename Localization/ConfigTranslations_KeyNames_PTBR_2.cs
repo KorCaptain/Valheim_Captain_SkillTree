@@ -195,11 +195,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_CombatMastery_BuffDuration"] = "Tier 3: [Ataque Rápido] Duração do Buff (seg)",
                 ["Tier3_CombatMastery_RequiredPoints"] = "Tier 3: [Ataque Rápido] Pontos Necessários",
 
-                // === Tier 4: Maestria Crítica (4) ===
-                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: [Maestria Crítica] Bônus de Evasão (%)",
-                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: [Maestria Crítica] Duração do Buff (seg)",
-                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: [Maestria Crítica] Recarga (seg)",
-                ["Tier4_AttackEvasion_RequiredPoints"] = "Tier 4: [Maestria Crítica] Pontos Necessários",
+                // === Tier 4: Maestria de Evasão (4) ===
+                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: [Maestria de Evasão] Bônus de Evasão (%)",
+                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: [Maestria de Evasão] Duração do Buff (seg)",
+                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: [Maestria de Evasão] Recarga (seg)",
+                ["Tier4_AttackEvasion_RequiredPoints"] = "Tier 4: [Maestria de Evasão] Pontos Necessários",
 
                 // === Tier 5: Dano Letal (2) ===
                 ["Tier5_CriticalDamage_DamageBonus"] = "Tier 5: [Dano Letal] Bônus de Dano (%)",
@@ -520,6 +520,9 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv5_SelfHealPercent"] = "Lv5: Auto-cura (%)",
                 ["Paladin_Lv5_AllyHealPercent"] = "Lv5: Cura de Aliados (%/tick)",
                 ["Paladin_Lv5_HealRange"] = "Lv5: Alcance de Cura (m)",
+                ["Paladin_Lv2_Cooldown"] = "Lv2: Tempo de Recarga (seg)",
+                ["Paladin_Lv3_Cooldown"] = "Lv3: Tempo de Recarga (seg)",
+                ["Paladin_Lv4_Cooldown"] = "Lv4: Tempo de Recarga (seg)",
                 ["Paladin_Lv5_Cooldown"] = "Lv5: Tempo de Recarga (seg)",
                 ["Paladin_Lv2_ResistanceReduction"] = "Lv2: Redução de Resistência (%)",
                 ["Paladin_Lv3_ResistanceReduction"] = "Lv3: Redução de Resistência (%)",
@@ -595,6 +598,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Explosão de Ponto Fraco] Pontos Necessários",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Explosão de Ponto Fraco] Duração do Buff (seg)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Explosão de Ponto Fraco] Proporção de Dano em Área (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [Explosão de Ponto Fraco] Bônus de Dano por Nível (%)",
             };
         }
     }

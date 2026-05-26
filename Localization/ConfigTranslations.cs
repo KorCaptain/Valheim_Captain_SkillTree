@@ -20,6 +20,7 @@ namespace CaptainSkillTree.Localization
             return (lang == "ko") ? GetKoreanCategories()
                  : (lang == "zh-cn") ? GetChineseCategories()
                  : (lang == "de") ? GetGermanCategories()
+                 : (lang == "ru") ? GetRussianCategories()
                  : (lang == "pt_BR") ? GetPortugueseBrazilianCategories()
                  : (lang == "ja") ? GetJapaneseCategories()
                  : GetEnglishCategories();
@@ -177,6 +178,34 @@ namespace CaptainSkillTree.Localization
                 ["Rogue Job Skills"] = "Schurken-Fähigkeiten",
                 ["Paladin Job Skills"] = "Paladin-Fähigkeiten",
                 ["Berserker Job Skills"] = "Berserker-Fähigkeiten",
+            };
+        }
+
+        // ============================================
+        // 카테고리 번역 (러시아어)
+        // ============================================
+        private static Dictionary<string, string> GetRussianCategories()
+        {
+            return new Dictionary<string, string>
+            {
+                ["Attack Tree"] = "Дерево атаки",
+                ["Defense Tree"] = "Дерево защиты",
+                ["Production Tree"] = "Дерево производства",
+                ["Staff Tree"] = "Дерево посоха",
+                ["Crossbow Tree"] = "Дерево арбалета",
+                ["Bow Tree"] = "Дерево лука",
+                ["Sword Tree"] = "Дерево меча",
+                ["Spear Tree"] = "Дерево копья",
+                ["Mace Tree"] = "Дерево булавы",
+                ["Polearm Tree"] = "Дерево древкового оружия",
+                ["Knife Tree"] = "Дерево кинжала",
+                ["Speed Tree"] = "Дерево скорости",
+                ["Archer Job Skills"] = "Навыки лучника",
+                ["Mage Job Skills"] = "Навыки мага",
+                ["Tanker Job Skills"] = "Навыки танка",
+                ["Rogue Job Skills"] = "Навыки плута",
+                ["Paladin Job Skills"] = "Навыки паладина",
+                ["Berserker Job Skills"] = "Навыки берсерка",
             };
         }
 

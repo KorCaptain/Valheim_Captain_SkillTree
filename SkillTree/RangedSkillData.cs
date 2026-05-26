@@ -190,7 +190,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "crossbow_oneshot_desc",
                 DescriptionArgs = new object[] { Crossbow_Config.CrossbowOneShotDamageBonusValue, Crossbow_Config.CrossbowOneShotDurationValue },
                 RequiredPoints = Crossbow_Config.CrossbowOneShotRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-550, 350),
                 Category = "원거리",
@@ -214,7 +214,7 @@ namespace CaptainSkillTree.SkillTree
                     Crossbow_Config.CrossbowIceBreathCooldownValue
                 },
                 RequiredPoints = Crossbow_Config.CrossbowIceBreathRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(-625, 395),
                 Category = "원거리",
@@ -400,7 +400,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "bow_explosive_desc",
                 DescriptionArgs = new object[] { Bow_Config.BowExplosiveArrowDamageValue, Bow_Config.BowExplosiveArrowStaminaCostValue, Bow_Config.BowExplosiveArrowCooldownValue },
                 RequiredPoints = Bow_Config.BowExplosiveArrowRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-365, 475),
                 Category = "원거리",
@@ -424,7 +424,7 @@ namespace CaptainSkillTree.SkillTree
                     Bow_Config.ArrowRainCooldownValue
                 },
                 RequiredPoints = Bow_Config.ArrowRainRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-280, 475),
                 Category = "원거리",
@@ -592,7 +592,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "staff_dual_cast_full_desc",
                 DescriptionArgs = new object[] { Staff_Config.StaffDoubleCastProjectileCountValue, Staff_Config.StaffDoubleCastDamagePercentValue, Staff_Config.StaffDoubleCastEitrCostValue, Staff_Config.StaffDoubleCastCooldownValue },
                 RequiredPoints = Staff_Config.StaffDoubleCastRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-580, 115),
                 Category = "지팡이",
@@ -603,14 +603,14 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // Step 6-2: 힐 (액티브 스킬)
+            // Step 6-2: 힐 (액티브 스킬) — Lv1~7 업그레이드 시스템
             manager.AddSkill(new SkillNode {
                 Id = "staff_Step6_heal",
                 NameKey = "staff_heal_name",
                 DescriptionKey = "staff_heal_full_desc",
                 DescriptionArgs = new object[] { Staff_Config.StaffHealRangeValue, Staff_Config.StaffHealPercentageValue, Staff_Config.StaffHealEitrCostValue, Staff_Config.StaffHealCooldownValue },
                 RequiredPoints = Staff_Config.StaffHealRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-580, -45),
                 Category = "지팡이",
@@ -685,36 +685,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string GetExplosiveArrowTooltip()
         {
-            var tooltip = "";
-
-            // 1. 스킬명
-            tooltip += $"<color=#FFD700><size=22>{L.Get("bow_explosive_name")}</size></color>\n\n";
-
-            // 2. 설명
-            tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("bow_explosive_tooltip_desc")}</size></color>\n";
-
-            // 3. 데미지
-            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("bow_explosive_damage_format", Bow_Config.BowExplosiveArrowDamageValue)}</size></color>\n";
-
-            // 4. 범위
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("bow_explosive_range_format", 5)}</size></color>\n";
-
-            // 5. 소모
-            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_percent_format", Bow_Config.BowExplosiveArrowStaminaCostValue)}</size></color>\n";
-
-            // 6. 스킬유형 (R키 강조)
-            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z")}</size></color>\n";
-
-            // 7. 쿨타임
-            tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Bow_Config.BowExplosiveArrowCooldownValue)}</size></color>\n";
-
-            // 8. 필요조건
-            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_bow_equip")}</size></color>\n";
-
-            // 9. 필요포인트
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Bow_Config.BowExplosiveArrowRequiredPointsValue}</size></color>";
-
-            return tooltip.TrimEnd('\n');
+            return BowExplosive_Tooltip.GetTooltip();
         }
 
         /// <summary>
@@ -723,36 +694,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string GetArrowRainTooltip()
         {
-            var tooltip = "";
-
-            // 1. 스킬명
-            tooltip += $"<color=#FFD700><size=22>{L.Get("bow_arrow_rain_name")}</size></color>\n\n";
-
-            // 2. 설명
-            tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("bow_arrow_rain_tooltip_desc")}</size></color>\n";
-
-            // 3. 데미지 (화살 수 × 데미지%)
-            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("bow_arrow_rain_damage_format", Bow_Config.ArrowRainArrowCountValue, Bow_Config.ArrowRainDamagePercentValue)}</size></color>\n";
-
-            // 4. 범위 (낙하 반경 / AOE)
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("bow_arrow_rain_range_format", Bow_Config.ArrowRainRadiusValue)}</size></color>\n";
-
-            // 5. 소모
-            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_percent_format", Bow_Config.ArrowRainStaminaCostValue)}</size></color>\n";
-
-            // 6. 스킬유형 (H키 강조)
-            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_h")}</size></color>\n";
-
-            // 7. 쿨타임
-            tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Bow_Config.ArrowRainCooldownValue)}</size></color>\n";
-
-            // 8. 필요조건
-            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_bow_equip")}</size></color>\n";
-
-            // 9. 필요포인트
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Bow_Config.ArrowRainRequiredPointsValue}</size></color>";
-
-            return tooltip.TrimEnd('\n');
+            return ArrowRain_Tooltip.GetTooltip();
         }
 
         /// <summary>
@@ -761,74 +703,12 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string GetIceBreathTooltip()
         {
-            var tooltip = "";
-
-            // 1. 스킬명
-            tooltip += $"<color=#FFD700><size=22>{L.Get("crossbow_ice_breath_name")}</size></color>\n\n";
-
-            // 2. 설명
-            tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("crossbow_ice_breath_tooltip_desc")}</size></color>\n";
-
-            // 3. 데미지
-            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("attack_power_bonus_format", Crossbow_Config.CrossbowIceBreathFirstHitPctValue)}  +  DoT {Crossbow_Config.CrossbowIceBreathDotPctValue}%×{Crossbow_Config.CrossbowIceBreathDotCountValue}</size></color>\n";
-
-            // 4. 범위
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>10m</size></color>\n";
-
-            // 5. 소모
-            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_format", Crossbow_Config.CrossbowIceBreathStaminaCostValue)}</size></color>\n";
-
-            // 6. 스킬유형 (H키 강조)
-            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyH?.Value ?? "H")}</size></color>\n";
-
-            // 7. 쿨타임
-            tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Crossbow_Config.CrossbowIceBreathCooldownValue)}</size></color>\n";
-
-            // 8. 필요조건
-            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_crossbow_bolt")}</size></color>\n";
-
-            // 9. 필요포인트
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Crossbow_Config.CrossbowIceBreathRequiredPointsValue}</size></color>";
-
-            return tooltip.TrimEnd('\n');
+            return CrossbowIceBreath_Tooltip.GetTooltip();
         }
 
         public static string GetOneShotTooltip()
         {
-            var tooltip = "";
-
-            // 1. 스킬명
-            tooltip += $"<color=#FFD700><size=22>{L.Get("crossbow_oneshot_name")}</size></color>\n\n";
-
-            // 2. 설명
-            tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("crossbow_oneshot_tooltip_desc", Crossbow_Config.CrossbowOneShotDurationValue)}</size></color>\n";
-
-            // 3. 데미지
-            tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("attack_power_bonus_format", Crossbow_Config.CrossbowOneShotDamageBonusValue)}</size></color>\n";
-
-            // 4. 범위 (AOE 넉백)
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>AOE {Crossbow_Config.CrossbowOneShotAoeRadiusValue}m</size></color>\n";
-
-            // 4-1. 슬로우 리로드
-            float slowPct = (Crossbow_Config.CrossbowOneShotSlowReloadMultiplierValue - 1f) * 100f;
-            tooltip += $"<color=#FFD700><size=16>⚠ 재장전 속도: </size></color><color=#FFD700><size=16>-{slowPct:F0}% ({Crossbow_Config.CrossbowOneShotSlowReloadMultiplierValue:F0}× 느림)</size></color>\n";
-
-            // 5. 소모
-            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stamina_format", 20)}</size></color>\n";
-
-            // 6. 스킬유형 (R키 강조)
-            tooltip += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z")}</size></color>\n";
-
-            // 7. 쿨타임
-            tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{L.Get("seconds_format", Crossbow_Config.CrossbowOneShotCooldownValue)}</size></color>\n";
-
-            // 8. 필요조건
-            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_crossbow_equip")}</size></color>\n";
-
-            // 9. 필요포인트
-            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Crossbow_Config.CrossbowOneShotRequiredPointsValue}</size></color>";
-
-            return tooltip.TrimEnd('\n');
+            return CrossbowOneShot_Tooltip.GetTooltip();
         }
     }
 }

@@ -482,10 +482,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_CombatMastery_DamageBonus"] = "Ур.3: [Боевое мастерство] Бонус урона",
                 ["Tier3_CombatMastery_BuffDuration"] = "Ур.3: [Боевое мастерство] Длительность эффекта (сек)",
                 ["Tier3_CombatMastery_RequiredPoints"] = "Ур.3: [Боевое мастерство] Необходимые очки",
-                ["Tier4_AttackEvasion_EvasionBonus"] = "Ур.4: [Крит. мастерство] Бонус уклонения (%)",
-                ["Tier4_AttackEvasion_BuffDuration"] = "Ур.4: [Крит. мастерство] Длительность эффекта (сек)",
-                ["Tier4_AttackEvasion_Cooldown"] = "Ур.4: [Крит. мастерство] Перезарядка (сек)",
-                ["Tier4_AttackEvasion_RequiredPoints"] = "Ур.4: [Крит. мастерство] Необходимые очки",
+                ["Tier4_AttackEvasion_EvasionBonus"] = "Ур.4: [Маст. уклонения] Бонус уклонения (%)",
+                ["Tier4_AttackEvasion_BuffDuration"] = "Ур.4: [Маст. уклонения] Длительность эффекта (сек)",
+                ["Tier4_AttackEvasion_Cooldown"] = "Ур.4: [Маст. уклонения] Перезарядка (сек)",
+                ["Tier4_AttackEvasion_RequiredPoints"] = "Ур.4: [Маст. уклонения] Необходимые очки",
                 ["Tier5_CriticalDamage_DamageBonus"] = "Ур.5: [Смертельный урон] Бонус урона (%)",
                 ["Tier5_CriticalDamage_RequiredPoints"] = "Ур.5: [Смертельный урон] Необходимые очки",
                 ["Tier6_Assassin_CritDamageBonus"] = "Ур.6: [Ассасин] Бонус крит. урона (%)",
@@ -801,6 +801,9 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv5_SelfHealPercent"] = "Lv5: Самоисцеление (%)",
                 ["Paladin_Lv5_AllyHealPercent"] = "Lv5: Исцеление союзников (%/тик)",
                 ["Paladin_Lv5_HealRange"] = "Lv5: Радиус исцеления (м)",
+                ["Paladin_Lv2_Cooldown"] = "Lv2: Перезарядка (сек)",
+                ["Paladin_Lv3_Cooldown"] = "Lv3: Перезарядка (сек)",
+                ["Paladin_Lv4_Cooldown"] = "Lv4: Перезарядка (сек)",
                 ["Paladin_Lv5_Cooldown"] = "Lv5: Перезарядка (сек)",
                 ["Paladin_Lv2_ResistanceReduction"] = "Lv2: Снижение сопротивления (%)",
                 ["Paladin_Lv3_ResistanceReduction"] = "Lv3: Снижение сопротивления (%)",
@@ -883,6 +886,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [Взрыв слабого места] Необходимые очки",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Взрыв слабого места] Длительность баффа (сек)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Взрыв слабого места] Коэффициент урона по области (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [Взрыв слабого места] Бонус урона за уровень (%)",
             };
         }
     }

@@ -179,6 +179,16 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> FuryHammerAoeRadius;
 
+        /// <summary>
+        /// 분노의 망치 - 레벨당 1~4타 데미지 보너스 (%)
+        /// </summary>
+        public static ConfigEntry<float> FuryHammerNormalHitLevelBonus;
+
+        /// <summary>
+        /// 분노의 망치 - 레벨당 5타 데미지 보너스 (%)
+        /// </summary>
+        public static ConfigEntry<float> FuryHammerFinalHitLevelBonus;
+
         // ===== 수호자의 진심 (Guardian Heart) - G키 액티브 스킬 =====
 
         /// <summary>
@@ -205,6 +215,11 @@ namespace CaptainSkillTree.SkillTree
         /// 수호자의 진심 - 필요 포인트
         /// </summary>
         public static ConfigEntry<int> GuardianHeartRequiredPoints;
+
+        /// <summary>
+        /// 방패돌진 - 레벨당 데미지 보너스 (%)
+        /// </summary>
+        public static ConfigEntry<float> ShieldChargeLevelBonus;
 
         // ===== 동적 값 프로퍼티 (서버 동기화 지원) =====
 
@@ -311,6 +326,18 @@ namespace CaptainSkillTree.SkillTree
             SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_AoeRadius", FuryHammerAoeRadius?.Value ?? 5f);
 
         /// <summary>
+        /// 분노의 망치 레벨당 1~4타 데미지 보너스 값 (서버 우선)
+        /// </summary>
+        public static float FuryHammerNormalHitLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_NormalHitLevelBonus", FuryHammerNormalHitLevelBonus?.Value ?? 5f);
+
+        /// <summary>
+        /// 분노의 망치 레벨당 5타 데미지 보너스 값 (서버 우선)
+        /// </summary>
+        public static float FuryHammerFinalHitLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_FinalHitLevelBonus", FuryHammerFinalHitLevelBonus?.Value ?? 10f);
+
+        /// <summary>
         /// 방패돌진 쿨타임 값 (서버 우선)
         /// </summary>
         public static float GuardianHeartCooldownValue =>
@@ -326,19 +353,25 @@ namespace CaptainSkillTree.SkillTree
         /// 방패돌진 충돌 데미지 비율 값 (서버 우선)
         /// </summary>
         public static float ShieldChargeDamagePercentValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_DamagePercent", ShieldChargeDamagePercent?.Value ?? 70f);
+            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_DamagePercent", ShieldChargeDamagePercent?.Value ?? 300f);
 
         /// <summary>
         /// 방패돌진 다단히트 데미지 비율 값 (서버 우선)
         /// </summary>
         public static float ShieldChargeMultiHitDamagePercentValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_MultiHitDamagePercent", ShieldChargeMultiHitDamagePercent?.Value ?? 70f);
+            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_MultiHitDamagePercent", ShieldChargeMultiHitDamagePercent?.Value ?? 150f);
 
         /// <summary>
         /// 수호자의 진심 필요 포인트 값 (서버 우선)
         /// </summary>
         public static int GuardianHeartRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_RequiredPoints", GuardianHeartRequiredPoints?.Value ?? 3);
+
+        /// <summary>
+        /// 방패돌진 레벨당 데미지 보너스 값 (서버 우선)
+        /// </summary>
+        public static float ShieldChargeLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_LevelBonus", ShieldChargeLevelBonus?.Value ?? 20f);
 
         // ===== 초기화 메서드 =====
 
@@ -570,6 +603,20 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_RequiredPoints")
             );
 
+            FuryHammerNormalHitLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier7_FuryHammer_NormalHitLevelBonus",
+                5f,
+                SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_NormalHitLevelBonus")
+            );
+
+            FuryHammerFinalHitLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier7_FuryHammer_FinalHitLevelBonus",
+                10f,
+                SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_FinalHitLevelBonus")
+            );
+
             // Tier 7: 수호자의 진심 (Guardian Heart)
             GuardianHeartCooldown = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
@@ -588,14 +635,14 @@ namespace CaptainSkillTree.SkillTree
             ShieldChargeDamagePercent = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_ShieldCharge_DamagePercent",
-                70f,
+                300f,
                 SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_DamagePercent")
             );
 
             ShieldChargeMultiHitDamagePercent = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier7_ShieldCharge_MultiHitDamagePercent",
-                70f,
+                150f,
                 SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_MultiHitDamagePercent")
             );
 
@@ -604,6 +651,13 @@ namespace CaptainSkillTree.SkillTree
                 "Tier7_GuardianHeart_RequiredPoints",
                 3,
                 SkillTreeConfig.GetConfigDescription("Tier7_GuardianHeart_RequiredPoints")
+            );
+
+            ShieldChargeLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Mace Tree",
+                "Tier7_ShieldCharge_LevelBonus",
+                20f,
+                SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_LevelBonus")
             );
         }
     }

@@ -174,63 +174,88 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 암살자의 심장 툴팁 생성 (G키 액티브 스킬) - 개선된 상세 툴팁
-        /// 순간이동 + 스턴 + 연속 공격 + 버프 효과 포함
+        /// 암살자의 심장 툴팁 (G키 액티브 스킬) — KnifeAssassinHeart_Tooltip.cs로 위임
         /// </summary>
         public static string GetKnifeAssassinHeartTooltip()
-        {
-            var staminaCost = Knife_Config.KnifeAssassinHeartStaminaCostValue;
-            var cooldown = Knife_Config.KnifeAssassinHeartCooldownValue;
-            var requiredPoints = Knife_Config.KnifeAssassinHeartRequiredPointsValue;
-            var teleportRange = Knife_Config.KnifeAssassinHeartTeleportRangeValue;
-            var teleportBehind = Knife_Config.KnifeAssassinHeartTeleportBehindValue;
-            var stunDuration = Knife_Config.KnifeAssassinHeartStunDurationValue;
-            var attackCount = Knife_Config.KnifeAssassinHeartAttackCountValue;
-
-            var data = MeleeTooltipUtils.CreateActiveSkillData(
-                $"<color=#FFD700><size=22>{L.Get("knife_skill_assassin")}</size></color>",
-                L.Get("knife_desc_assassin_main", teleportRange, teleportBehind, stunDuration, attackCount),
-                $"{staminaCost}",
-                $"{cooldown}{L.Get("unit_seconds")}",
-                MeleeTooltipUtils.WeaponType.Knife,
-                L.Get("knife_desc_assassin_note")
-            );
-            data.requirement = L.Get("requirement_knife_claw");
-            data.requiredPoints = requiredPoints.ToString();
-            data.skillType = L.Get("skill_type_active_key", "G");
-            data.confirmation = L.Get("tooltip_same_weapon_only");
-
-            return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
-        }
+            => KnifeAssassinHeart_Tooltip.GetTooltip();
 
         /// <summary>
-        /// 약점폭발 툴팁 생성 (H키 액티브 스킬)
+        /// 약점폭발 툴팁 생성 (H키 액티브 스킬) — Archer 형식 레벨 업그레이드 표시
         /// </summary>
         public static string GetKnifeStackExplosionTooltip()
         {
-            var staminaCost    = Knife_Config.KnifeStackExplosionStaminaCostValue;
-            var cooldown       = Knife_Config.KnifeStackExplosionCooldownValue;
-            var requiredPoints = Knife_Config.KnifeStackExplosionRequiredPointsValue;
-            var maxStacks      = Knife_Config.KnifeStackExplosionMaxStacksValue;
-            var stackDuration  = Knife_Config.KnifeStackExplosionStackDurationValue;
-            var buffDuration   = Knife_Config.KnifeStackExplosionBuffDurationValue;
-            var damagePercent  = Knife_Config.KnifeStackExplosionDamagePercentValue;
-            var aoePercent     = Knife_Config.KnifeStackExplosionAoePercentValue;
+            var manager      = SkillTreeManager.Instance;
+            int currentLevel = manager?.GetSkillLevel("knife_step10_stack_explosion") ?? 0;
+            int mainLevel    = currentLevel == 0 ? 1 : currentLevel;
+            int displayLevel = System.Math.Min(currentLevel + 1, 7);
 
-            var data = MeleeTooltipUtils.CreateActiveSkillData(
-                $"<color=#FF6600><size=22>{L.Get("knife_skill_stack_explosion")}</size></color>",
-                L.Get("knife_desc_stack_explosion_detail", maxStacks, stackDuration, buffDuration, damagePercent, aoePercent),
-                $"{staminaCost}",
-                $"{cooldown}{L.Get("unit_seconds")}",
-                MeleeTooltipUtils.WeaponType.Knife,
-                L.Get("knife_desc_stack_explosion_note")
-            );
-            data.requirement    = L.Get("requirement_knife_claw");
-            data.requiredPoints = requiredPoints.ToString();
-            data.skillType      = L.Get("skill_type_active_key", "H");
-            data.confirmation   = L.Get("tooltip_same_weapon_only");
+            var staminaCost   = Knife_Config.KnifeStackExplosionStaminaCostValue;
+            var cooldown      = Knife_Config.KnifeStackExplosionCooldownValue;
+            var maxStacks     = (int)Knife_Config.KnifeStackExplosionMaxStacksValue;
+            var stackDuration = Knife_Config.KnifeStackExplosionStackDurationValue;
+            var buffDuration  = Knife_Config.KnifeStackExplosionBuffDurationValue;
+            var aoePercent    = (int)Knife_Config.KnifeStackExplosionAoePercentValue;
+            var reqPoints     = Knife_Config.KnifeStackExplosionRequiredPointsValue;
 
-            return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Knife);
+            int damage = GetStackDamageForLevel(mainLevel);
+
+            var tooltip = $"<color=#FF6600><size=22>{L.Get("knife_skill_stack_explosion")}</size></color>\n";
+            tooltip += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {L.Get("knife_stack_explosion_effect", maxStacks, damage, aoePercent)}</size></color>\n";
+            tooltip += $"<color=#E0E0E0><size=16>{L.Get("knife_stack_explosion_timing", stackDuration, buffDuration)}</size></color>\n";
+            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_stamina")}: </size></color>"
+                     + $"<color=#FFDAB9><size=16>{staminaCost}</size></color>\n";
+            tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>"
+                     + $"<color=#FFDB58><size=16>{cooldown}{L.Get("unit_seconds")}</size></color>\n";
+            tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color>"
+                     + $"<color=#87CEEB><size=16>{L.Get("skill_type_active_key", "H")}</size></color>\n";
+            tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirement")}: </size></color>"
+                     + $"<color=#00FF00><size=16>{L.Get("requirement_knife_claw")}</size></color>\n";
+            tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>"
+                     + $"<color=#FF6B6B><size=16>{reqPoints}</size></color>\n";
+
+            if (currentLevel < 7)
+            {
+                tooltip += $"<color=#FFA500><size=16>{L.Get("stack_explosion_next_level_req", displayLevel)}: </size></color>"
+                         + $"<color=#FF6B6B><size=16>{GetStackExplosionLevelCostText(displayLevel)}</size></color>\n";
+            }
+            else
+            {
+                tooltip += $"<color=#FFD700><size=16>{L.Get("stack_explosion_max_level")}</size></color>\n";
+            }
+
+            if (mainLevel < 7)
+            {
+                tooltip += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
+                for (int lv = mainLevel + 1; lv <= 7; lv++)
+                {
+                    int pvDamage = GetStackDamageForLevel(lv);
+                    tooltip += $"<color=#808080><size=14>Lv{lv} : {L.Get("knife_stack_explosion_preview", pvDamage, aoePercent)}</size></color>\n";
+                }
+            }
+
+            return tooltip.TrimEnd('\n');
+        }
+
+        private static int GetStackDamageForLevel(int level)
+        {
+            int baseDmg  = (int)Knife_Config.KnifeStackExplosionDamagePercentValue;
+            int perLevel = (int)Knife_Config.KnifeStackExplosionDamageLevelBonusValue;
+            return baseDmg + (level - 1) * perLevel;
+        }
+
+        private static string GetStackExplosionLevelCostText(int level)
+        {
+            switch (level)
+            {
+                case 1: return $"{L.Get("item_trophy_eikthyr")} ×1 + {L.Get("item_trophy_troll")} ×1";
+                case 2: return $"{L.Get("item_trophy_elder")} ×1 + {L.Get("item_trophy_skeleton")} ×1";
+                case 3: return $"{L.Get("item_trophy_bonemass")} ×1 + {L.Get("item_trophy_wraith")} ×1";
+                case 4: return $"{L.Get("item_trophy_dragonqueen")} ×1 + {L.Get("item_trophy_fenring")} ×1";
+                case 5: return $"{L.Get("item_trophy_goblinking")} ×1 + {L.Get("item_trophy_deathsquito")} ×1";
+                case 6: return $"{L.Get("item_trophy_seekerqueen")} ×1 + {L.Get("item_trophy_gjall")} ×1";
+                case 7: return $"{L.Get("item_trophy_fader")} ×1 + {L.Get("item_trophy_charredarcher")} ×1";
+                default: return "";
+            }
         }
 
         #endregion

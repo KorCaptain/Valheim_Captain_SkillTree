@@ -105,8 +105,10 @@ namespace CaptainSkillTree.SkillTree
 
             if (level <= 1)
                 return L.Get("tanker_passive_lv1", (int)hp, (int)passive, reflectDuration, reflectPercent, explosionRadius);
-            else
+            else if (level == 2)
                 return L.Get("tanker_passive_lv2", (int)hp, (int)passive, (int)blockPower, reflectDuration, reflectPercent, explosionRadius);
+            else // lv3~5: "선행 스킬 +1회 사용" 문구 없는 텍스트
+                return L.Get("tanker_passive_lv3", (int)hp, (int)passive, (int)blockPower, reflectDuration, reflectPercent, explosionRadius);
         }
 
         private static string GetTankerLevelCostText(int targetLevel)

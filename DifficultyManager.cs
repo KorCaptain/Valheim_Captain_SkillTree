@@ -33,8 +33,11 @@ namespace CaptainSkillTree
         /// <summary>true 이면 FejdStartup 패치에서 선택 창을 표시</summary>
         public static bool NeedsSelection { get; private set; }
 
-        /// <summary>프리셋 적용 중일 때 true — GameDifficulty SettingChanged 재진입 방지용</summary>
-        public static bool IsApplyingPreset { get; private set; }
+        /// <summary>중첩 깊이 카운터 — 0보다 크면 SettingChanged 핸들러 재진입 차단</summary>
+        private static int _applyingPresetDepth = 0;
+        public static bool IsApplyingPreset => _applyingPresetDepth > 0;
+        private static void BeginPreset() => _applyingPresetDepth++;
+        private static void EndPreset() { if (_applyingPresetDepth > 0) _applyingPresetDepth--; }
 
         // ──────────────────────────── 초기화 ────────────────────────────
         /// <summary>
@@ -96,6 +99,19 @@ namespace CaptainSkillTree
         ///    → 신규 추가 키(백업에 없는 키)는 VH 기본값 유지
         /// </summary>
         private static void ApplyVeryhardWithUserOverlay()
+        {
+            BeginPreset();
+            try
+            {
+                ApplyVeryhardWithUserOverlayCore();
+            }
+            finally
+            {
+                EndPreset();
+            }
+        }
+
+        private static void ApplyVeryhardWithUserOverlayCore()
         {
             var config = Plugin.Instance?.Config;
             if (config == null)
@@ -188,61 +204,70 @@ namespace CaptainSkillTree
         /// <summary>Very Hard 프리셋 적용</summary>
         public static void ApplyVeryHard() => ApplyPreset(PRESET_VERYHARD);
 
-        /// <summary>User 프리셋 적용</summary>
-        public static void ApplyUser()     => ApplyPreset(PRESET_USER);
+        /// <summary>VH를 베이스로 깔고 User 백업값 오버레이 — 신규 키는 항상 VH 기본값 보장</summary>
+        public static void ApplyUser()
+        {
+            BeginPreset();
+            try   { ApplyVeryhardWithUserOverlay(); }
+            finally { EndPreset(); }
+        }
 
         // ──────────────────────────── 내부 적용 로직 ────────────────────────────
         private static void ApplyPreset(string presetFileName)
         {
-            IsApplyingPreset = true;
-            string presetPath = Path.Combine(GetPresetDirectory(), presetFileName);
-
-            if (File.Exists(presetPath))
+            BeginPreset();
+            try
             {
-                // 1단계: 파일 복사 (디스크 영속성)
-                try
+                string presetPath = Path.Combine(GetPresetDirectory(), presetFileName);
+
+                if (File.Exists(presetPath))
                 {
-                    File.Copy(presetPath, _configFilePath, overwrite: true);
+                    // 1단계: 파일 복사 (디스크 영속성)
+                    try
+                    {
+                        File.Copy(presetPath, _configFilePath, overwrite: true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Plugin.Log?.LogError($"[Difficulty] 파일 복사 실패: {ex.Message}");
+                    }
+
+                    // 2단계: SaveOnConfigSet 전체 차단 → Reload + 직접 설정 + 기본값 리셋 → 1회 Save
+                    var cfg = Plugin.Instance?.Config;
+                    if (cfg != null)
+                    {
+                        bool prev = cfg.SaveOnConfigSet;
+                        cfg.SaveOnConfigSet = false;
+
+                        cfg.Reload();
+
+                        int applied = ApplyPresetValuesToConfig(presetPath);
+
+                        string diffMode = (presetFileName == PRESET_NORMAL) ? "Vanilla"
+                                        : (presetFileName == PRESET_VERYHARD) ? "VeryHard"
+                                        : "UserSettings";
+                        var diffEntry = SkillTree.SkillTreeConfig.GameDifficulty;
+                        if (diffEntry != null)
+                            diffEntry.Value = diffMode;
+
+                        cfg.Save();
+                        cfg.SaveOnConfigSet = prev;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Plugin.Log?.LogError($"[Difficulty] 파일 복사 실패: {ex.Message}");
+                    Plugin.Log?.LogWarning(
+                        $"[Difficulty] ⚠️ 프리셋 파일 없음: {presetPath}\n" +
+                        $"  → 현재 설정을 그대로 유지합니다.");
                 }
 
-                // 2단계: SaveOnConfigSet 전체 차단 → Reload + 직접 설정 + 기본값 리셋 → 1회 Save
-                // (중간 auto-save가 유저값을 덮어쓰는 문제 방지)
-                var cfg = Plugin.Instance?.Config;
-                if (cfg != null)
-                {
-                    bool prev = cfg.SaveOnConfigSet;
-                    cfg.SaveOnConfigSet = false;          // ← 전체 작업 동안 autosave 차단
-
-                    cfg.Reload();                         // 파일(프리셋)에서 메모리로 로드
-
-                    int applied = ApplyPresetValuesToConfig(presetPath);  // 직접 설정 + 미포함 항목→기본값
-
-                    // GameDifficulty config 동기화 (프리셋 파일에 없는 신규 키이므로 직접 설정)
-                    string diffMode = (presetFileName == PRESET_NORMAL) ? "Vanilla"
-                                    : (presetFileName == PRESET_VERYHARD) ? "VeryHard"
-                                    : "UserSettings";
-                    var diffEntry = SkillTree.SkillTreeConfig.GameDifficulty;
-                    if (diffEntry != null)
-                        diffEntry.Value = diffMode;
-
-                    cfg.Save();                           // 1회 최종 저장
-                    cfg.SaveOnConfigSet = prev;
-                }
+                SaveDifficultyVersion();
+                NeedsSelection = false;
             }
-            else
+            finally
             {
-                Plugin.Log?.LogWarning(
-                    $"[Difficulty] ⚠️ 프리셋 파일 없음: {presetPath}\n" +
-                    $"  → 현재 설정을 그대로 유지합니다.");
+                EndPreset();
             }
-
-            SaveDifficultyVersion();
-            NeedsSelection = false;
-            IsApplyingPreset = false;
         }
 
         // ──────────────────────────── 직접 값 적용 ────────────────────────────

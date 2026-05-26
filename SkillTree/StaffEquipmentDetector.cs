@@ -127,7 +127,6 @@ namespace CaptainSkillTree.SkillTree
         {
             if (player != null)
             {
-                player.Message(MessageHud.MessageType.Center, L.Get("staff_wand_required"));
                 SkillEffect.DrawFloatingText(player, L.Get("staff_wand_required"), Color.red);
             }
         }

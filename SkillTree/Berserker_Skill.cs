@@ -231,7 +231,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 // SimpleVFX 방식: Valheim 내장 VFX로 플레이어 효과
-                SimpleVFX.PlayOnPlayer(player, Berserker_Config.BerserkerRageDurationValue);
+                SimpleVFX.PlayOnPlayer(player, duration);
 
                 // 분노 사운드
                 CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_dragon_scream", "", player.transform.position);
@@ -349,13 +349,17 @@ namespace CaptainSkillTree.SkillTree
                 if (!passiveStates.TryGetValue(player, out var state))
                 {
                     state = new PassiveState();
+                    // 새 state 생성 시 Registry에서 컨피그 기반 쿨타임 복원 (SafeCleanup/OnDestroy로 state가 날아간 경우 대비)
+                    float regRemaining = ActiveSkillCooldownRegistry.GetCooldownRemaining("passive_berserker");
+                    if (regRemaining > 0f)
+                        state.CooldownEndTime = Time.time + regRemaining;
                     passiveStates[player] = state;
                 }
 
                 // 이미 패시브 무적 상태면 패스
                 if (state.IsActive) return;
 
-                // 쿨다운 중이면 패스
+                // 쿨다운 중이면 패스 (생성 시 Registry와 동기화됐으므로 정상 동작)
                 if (state.OnCooldown) return;
 
                 // 체력 임계값 확인 (skipThresholdCheck=true 이면 우회 - 즉사 감지 경로)
@@ -388,7 +392,10 @@ namespace CaptainSkillTree.SkillTree
         public static bool IsPassiveInvincibilityOnCooldown(Player player)
         {
             if (player == null) return false;
-            return passiveStates.TryGetValue(player, out var bsPassiveCd) && bsPassiveCd.OnCooldown;
+            if (passiveStates.TryGetValue(player, out var bsPassiveCd) && bsPassiveCd.OnCooldown)
+                return true;
+            // Registry 이중 방어: passiveStates가 클리어되어도 Registry 쿨타임으로 차단
+            return ActiveSkillCooldownRegistry.GetCooldownRemaining("passive_berserker") > 0f;
         }
 
         /// <summary>
@@ -408,8 +415,8 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 int bLvPassive = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 1;
-                float duration = Berserker_Config.GetEffectiveInvincibilityDuration(bLvPassive);
-                float cooldown = Berserker_Config.GetEffectivePassiveCooldown(bLvPassive);
+                float duration = Berserker_Config.BerserkerPassiveInvincibilityDurationValue;
+                float cooldown = Berserker_Config.BerserkerPassiveCooldownValue;
                 // Config 오설정 보호: 최소 60초 (쿨다운이 무적 지속시간보다 짧으면 무한 반복 방지)
                 cooldown = Mathf.Max(cooldown, 60f);
 
@@ -671,35 +678,16 @@ namespace CaptainSkillTree.SkillTree
                             }
                         }
 
-                        // 2. Lv3: 분노 중 받는 피해 감소
-                        if (IsPlayerInRage(player))
-                        {
-                            int bLv = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0;
-                            if (bLv >= 3)
-                            {
-                                float reduction = 1f - Berserker_Config.BerserkerLv3RageDamageReductionValue / 100f;
-                                hit.m_damage.Modify(reduction);
-                            }
-                        }
                     }
 
-                    // === 공격 측: 공격자가 버서커 플레이어 (Lv4 저체력 공격력 보너스) ===
+                    // === 공격 측: 공격자가 버서커 플레이어 (Rage 데미지 보너스) ===
                     var localPlayer = Player.m_localPlayer;
                     if (localPlayer != null && __instance != localPlayer && HasBerserkerSkill(localPlayer))
                     {
                         var attacker = hit.GetAttacker();
                         if (attacker == localPlayer)
                         {
-                            // Lv4 저체력 보너스와 Rage 보너스를 가산 합산 후 1회 적용 (multiplicative 스택 방지)
-                            int bLvAtk = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0;
                             float totalAttackBonus = 0f;
-
-                            if (bLvAtk >= 4)
-                            {
-                                float hpPct = localPlayer.GetHealthPercentage() * 100f;
-                                if (hpPct <= Berserker_Config.BerserkerLv4LowHpAttackThresholdValue)
-                                    totalAttackBonus += Berserker_Config.BerserkerLv4LowHpAttackBonusValue;
-                            }
 
                             if (IsPlayerInRage(localPlayer))
                                 totalAttackBonus += GetRageDamageBonus(localPlayer);

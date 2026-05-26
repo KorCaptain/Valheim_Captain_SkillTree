@@ -19,7 +19,7 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public enum WeaponGroup
     {
-        None, Knife, Sword, Mace, Spear, Polearm, Bow, Crossbow, Staff
+        None, Knife, Sword, Mace, Spear, Polearm, Bow, Crossbow, Staff, Axe
     }
 
     public struct WeaponBonuses
@@ -72,7 +72,8 @@ namespace CaptainSkillTree.SkillTree
                    FlatFire > 0.01f || FlatFrost > 0.01f || FlatLightning > 0.01f ||
                    SpinAttackBonus   > 0.01f ||
                    HasPolearmBoost || HasSuppressAttack || HeroStrikeChance > 0.01f ||
-                   HasSpearThrow;
+                   HasSpearThrow ||
+                   ProducerEnchantSpd > 0.01f;
         }
     }
 
@@ -102,6 +103,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 case Skills.SkillType.Knives:       return WeaponGroup.Knife;
                 case Skills.SkillType.Swords:       return WeaponGroup.Sword;
+                case Skills.SkillType.Axes:         return WeaponGroup.Axe;
                 case Skills.SkillType.Clubs:        return WeaponGroup.Mace;
                 case Skills.SkillType.Spears:       return WeaponGroup.Spear;
                 case Skills.SkillType.Polearms:     return WeaponGroup.Polearm;
@@ -145,7 +147,7 @@ namespace CaptainSkillTree.SkillTree
             if (SkillEffect.HasSkill("melee_root") &&
                 (group == WeaponGroup.Knife  || group == WeaponGroup.Sword ||
                  group == WeaponGroup.Mace   || group == WeaponGroup.Spear ||
-                 group == WeaponGroup.Polearm))
+                 group == WeaponGroup.Polearm || group == WeaponGroup.Axe))
             {
                 b.FlatAllPhysical += 3f;
                 b.HasMeleeExpert = true;
@@ -273,6 +275,35 @@ namespace CaptainSkillTree.SkillTree
                     // T6: 양손 분쇄 — Polearms 포함 (IsTwoHandedWeapon 기준)
                     if (SkillEffect.HasSkill("atk_twohand_crush"))
                         physPct += Attack_Config.AttackTwoHandedBonusValue;
+                    break;
+
+                case WeaponGroup.Axe:
+                    if (SkillEffect.HasSkill("melee_speed1"))
+                        b.AttackSpeed += Speed_Config.SpeedMeleeAttackSpeedValue;
+                    bool is2HAxe = item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon;
+                    // T6: 연속 근접의 대가 — 한손 도끼 (AttackTree.cs L304 실제 적용과 동기화)
+                    if (SkillEffect.HasSkill("atk_finisher_melee") && !is2HAxe)
+                        physPct += Attack_Config.AttackFinisherMeleeBonusValue;
+                    // T6: 양손 분쇄 — 배틀액스 (검의 is2H 분기 패턴 적용)
+                    if (SkillEffect.HasSkill("atk_twohand_crush") && is2HAxe)
+                        physPct += Attack_Config.AttackTwoHandedBonusValue;
+                    // 검/도끼 전문가 트리 공통 보너스
+                    if (SkillEffect.HasSkill("sword_expert"))
+                        physPct += Sword_Config.SwordExpertDamageValue;
+                    if (SkillEffect.HasSkill("sword_step1_fastslash"))
+                        b.AttackSpeed += Sword_Config.SwordStep1FastSlashSpeedValue;
+                    if (SkillEffect.HasSkill("sword_step4_duel"))
+                        b.AttackSpeed += Sword_Config.SwordStep4TrueDuelSpeedValue;
+                    if (SkillEffect.HasSkill("sword_step3_riposte"))
+                    {
+                        b.FlatSlash += Sword_Config.SwordRiposteDamageBonusValue;
+                        b.HasRiposte = true;
+                    }
+                    if (SkillEffect.HasSkill("sword_step3_allinone") && is2HAxe)
+                    {
+                        physPct += SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue;
+                        b.BlockPower += Sword_Config.SwordStep3AllInOneDefenseBonusValue;
+                    }
                     break;
 
                 case WeaponGroup.Bow:

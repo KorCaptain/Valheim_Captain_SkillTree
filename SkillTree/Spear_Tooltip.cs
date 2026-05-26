@@ -149,51 +149,74 @@ namespace CaptainSkillTree.SkillTree
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Spear);
         }
 
-        /// <summary>
-        /// 꿰뚫는 창 액티브 스킬 툴팁 생성 (번개 충격)
-        /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형(G키 강조) → 쿨타임 → 필요조건 → 확인사항 → 필요포인트
-        /// </summary>
         public static string GetSpearStep5PenetrateTooltip()
         {
             Plugin.Log.LogDebug("[창 툴팁] GetSpearStep5PenetrateTooltip() 호출됨");
 
             try
             {
-                var tooltip = "";
+                var manager = SkillTreeManager.Instance;
+                int currentLevel = manager?.GetSkillLevel("spear_Step5_penetrate") ?? 0;
+                int mainLevel    = currentLevel == 0 ? 1 : currentLevel;
+                int displayLevel = System.Math.Min(currentLevel + 1, 7);
 
-                // 1. 스킬명 (#FFD700, size=22)
-                tooltip += $"<color=#FFD700><size=22>{L.Get("spear_skill_penetrate")}</size></color>\n\n";
+                float singleDmg = Spear_Config.SpearPenetrateBaseDamageValue
+                    + (currentLevel > 0 ? (currentLevel - 1) * Spear_Config.SpearPenetrateLevelDamageBonusValue : 0);
+                float areaDmg   = Spear_Config.SpearPenetrateBaseAreaDamageValue
+                    + (currentLevel > 0 ? (currentLevel - 1) * Spear_Config.SpearPenetrateAreaLevelBonusValue : 0);
+                int charges     = (mainLevel + 1) / 2;
 
-                // 2. 설명 (#FFD700 / #E0E0E0)
-                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("spear_desc_penetrate", Spear_Config.SpearStep6PenetrateBuffDurationValue, Spear_Config.SpearStep6PenetrateComboCountValue)}</size></color>\n";
+                // 1. 스킬명
+                var t = $"<color=#FFD700><size=22>{L.Get("spear_skill_penetrate")}</size></color>\n\n";
 
-                // 2-1. 공격 방식 (#87CEEB / #E0E0E0)
-                tooltip += $"<color=#87CEEB><size=16>▶ </size></color><color=#E0E0E0><size=16>{L.Get("spear_desc_penetrate_mechanic")}</size></color>\n";
+                // 2. Lv + 핵심 효과
+                t += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {L.Get("spear_penetrate_lv1_desc", charges)}</size></color>\n";
 
-                // 3. 데미지 (#FF6B6B / #FFB6C1)
-                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("spear_desc_penetrate_damage", Spear_Config.SpearStep6PenetrateLightningDamageValue)}</size></color>\n";
+                // 3. 소모
+                t += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
+                t += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {Spear_Config.SpearStep6PenetrateStaminaCostValue}</size></color>\n";
 
-                // 4. 범위 - 생략 (단일 대상)
+                // 4. 스킬유형 (G키)
+                t += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
+                t += $"<color=#00FF00><size=16>{L.Get("skill_type_active_key", "G")}</size></color>\n";
 
-                // 5. 소모 (#FFB347 / #FFDAB9)
-                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {Spear_Config.SpearStep6PenetrateStaminaCostValue}</size></color>\n";
+                // 5. 쿨타임
+                t += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";
+                t += $"<color=#FFDB58><size=16>{Spear_Config.SpearStep6PenetrateCooldownValue}{L.Get("unit_seconds")}</size></color>\n";
 
-                // 6. 스킬유형 (G키 강조: #FF4500 / #00FF00)
-                tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FF00><size=16>{L.Get("skill_type_active_key", "G")}</size></color>\n";
+                // 6. 필요조건
+                t += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>";
+                t += $"<color=#00FF00><size=16>{L.Get("requirement_spear_equip")}</size></color>\n";
 
-                // 7. 쿨타임 (#FFA500 / #FFDB58)
-                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{Spear_Config.SpearStep6PenetrateCooldownValue}{L.Get("unit_seconds")}</size></color>\n";
+                // 7. 필요포인트
+                t += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>";
+                t += $"<color=#FF6B6B><size=16>{Spear_Config.SpearPenetrateRequiredPointsValue}</size></color>\n";
 
-                // 8. 필요조건 (#98FB98 / #00FF00)
-                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_spear_equip")}</size></color>\n";
+                // 8. 다음 레벨 강화 재료 or 최대레벨
+                if (currentLevel < 7)
+                {
+                    t += $"<color=#FFA500><size=16>{L.Get("spear_penetrate_upgrade_requires", displayLevel)}: </size></color>";
+                    t += $"<color=#FF6B6B><size=16>{GetSpearPenetrateLevelItemText(displayLevel)}</size></color>\n";
+                }
+                else
+                {
+                    t += $"<color=#FFD700><size=16>{L.Get("spear_penetrate_max_level")}</size></color>\n";
+                }
 
-                // 9. 확인사항 (#F0E68C / #FFE4B5)
-                tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
+                // 9. 구분선 + 레벨 프리뷰
+                if (mainLevel < 7)
+                {
+                    t += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
+                    for (int lv = mainLevel + 1; lv <= 7; lv++)
+                    {
+                        float lvSingle = Spear_Config.SpearPenetrateBaseDamageValue + (lv - 1) * Spear_Config.SpearPenetrateLevelDamageBonusValue;
+                        float lvArea   = Spear_Config.SpearPenetrateBaseAreaDamageValue + (lv - 1) * Spear_Config.SpearPenetrateAreaLevelBonusValue;
+                        int   lvCharge = (lv + 1) / 2;
+                        t += $"<color=#808080><size=14>Lv{lv} : {L.Get("spear_penetrate_lv1_desc", lvCharge)}</size></color>\n";
+                    }
+                }
 
-                // 10. 필요포인트 (#87CEEB / #FF6B6B)
-                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Spear_Config.SpearPenetrateRequiredPointsValue}</size></color>";
-
-                return tooltip.TrimEnd('\n');
+                return t.TrimEnd('\n');
             }
             catch (System.Exception ex)
             {
@@ -202,45 +225,90 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
+        private static string GetSpearPenetrateLevelItemText(int targetLevel)
+        {
+            switch (targetLevel)
+            {
+                case 1: return L.Get("item_trophy_eikthyr") + " x1 + " + L.Get("item_trophy_boar") + " x1";
+                case 2: return L.Get("item_trophy_elder") + " x1 + " + L.Get("item_trophy_greydwarfshaman") + " x1";
+                case 3: return L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_surtling") + " x1";
+                case 4: return L.Get("item_trophy_dragonqueen") + " x1 + " + L.Get("item_trophy_hatchling") + " x1";
+                case 5: return L.Get("item_trophy_goblinking") + " x1 + " + L.Get("item_trophy_goblin") + " x1";
+                case 6: return L.Get("item_trophy_seekerqueen") + " x1 + " + L.Get("item_trophy_seeker") + " x1";
+                case 7: return L.Get("item_trophy_fader") + " x1 + " + L.Get("item_trophy_morgen") + " x1";
+                default: return "";
+            }
+        }
+
         /// <summary>
-        /// 연공창 액티브 스킬 툴팁 생성 (H키 액티브 스킬)
-        /// 표준 항목 순서: 스킬명 → 설명 → 데미지 → 범위 → 소모 → 스킬유형(H키 강조) → 쿨타임 → 필요조건 → 확인사항 → 필요포인트
+        /// 연공창 액티브 스킬 툴팁 생성 (H키 액티브 스킬) — Lv1~7 레벨 시스템 반영
         /// </summary>
         public static string GetSpearEnhancedThrowTooltip()
         {
             try
             {
+                var manager = SkillTreeManager.Instance;
+                int currentLevel = manager?.GetSkillLevel("spear_Step5_combo") ?? 0;
+                int mainLevel = currentLevel == 0 ? 1 : currentLevel;
+                int displayLevel = System.Math.Min(currentLevel + 1, 7);
+                int maxUses = mainLevel + 2;
+                float levelBonus = (mainLevel - 1) * Spear_Config.SpearComboLevelBonusValue;
+                float damageBonus = Spear_Config.SpearStep6ComboDamageValue + levelBonus;
+
                 var tooltip = "";
 
                 // 1. 스킬명 (#FFD700, size=22)
                 tooltip += $"<color=#FFD700><size=22>{L.Get("spear_skill_combo")}</size></color>\n\n";
 
-                // 2. 설명 (#FFD700 / #E0E0E0)
-                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("spear_desc_combo")}</size></color>\n";
+                // 2. 현재 레벨 + 투창 횟수·데미지 (#E0E0E0, size=16)
+                tooltip += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {L.Get("spear_combo_lv1_desc", maxUses, (int)damageBonus)}</size></color>\n";
 
-                // 3. 데미지 (#FF6B6B / #FFB6C1)
-                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("spear_desc_combo_damage", SkillTreeConfig.SpearStep6ComboDamageValue)}</size></color>\n";
-
-                // 4. 범위 (#87CEEB / #B0E0E6)
+                // 3. 범위 (#87CEEB / #B0E0E6)
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color><color=#B0E0E6><size=16>{L.Get("spear_desc_combo_range", SkillTreeConfig.SpearStep2ThrowRangeValue)}</size></color>\n";
 
-                // 5. 소모 (#FFB347 / #FFDAB9)
+                // 4. 소모 (#FFB347 / #FFDAB9)
                 tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {SkillTreeConfig.SpearStep2ThrowStaminaCostValue}</size></color>\n";
 
-                // 6. 스킬유형 (H키 강조: #FF1493 / #00FFFF)
+                // 4-1. 패시브: 자동 회수 (#90EE90 / #98FB98)
+                tooltip += $"<color=#90EE90><size=16>{L.Get("tooltip_passive")}: </size></color><color=#98FB98><size=16>{L.Get("spear_combo_passive_retrieve")}</size></color>\n";
+
+                // 5. 스킬유형 (H키 강조: #FF1493 / #00FFFF)
                 tooltip += $"<color=#FF1493><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FFFF><size=16>{L.Get("skill_type_active_key", "H")}</size></color>\n";
 
-                // 7. 쿨타임 (#FFA500 / #FFDB58)
+                // 6. 쿨타임 (#FFA500 / #FFDB58)
                 tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{SkillTreeConfig.SpearStep6ComboCooldownValue}{L.Get("unit_seconds")}</size></color>\n";
 
-                // 8. 필요조건 (#98FB98 / #00FF00)
+                // 7. 필요조건 (#98FB98 / #00FF00)
                 tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_spear_equip")}</size></color>\n";
 
-                // 9. 확인사항 (#F0E68C / #FFE4B5)
+                // 8. 확인사항 (#F0E68C / #FFE4B5)
                 tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
 
-                // 10. 필요포인트 (#87CEEB / #FF6B6B)
-                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Spear_Config.SpearComboRequiredPointsValue}</size></color>";
+                // 9. 필요포인트 (#87CEEB / #FF6B6B)
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Spear_Config.SpearComboRequiredPointsValue}</size></color>\n";
+
+                // 10. 다음 레벨 강화 재료 or 최대레벨
+                if (currentLevel < 7)
+                {
+                    tooltip += $"<color=#FFA500><size=16>{L.Get("spear_combo_upgrade_requires", displayLevel)}: </size></color>";
+                    tooltip += $"<color=#FF6B6B><size=16>{GetSpearComboLevelItemText(displayLevel)}</size></color>\n";
+                }
+                else
+                {
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("spear_combo_max_level")}</size></color>\n";
+                }
+
+                // 11. 구분선 + 레벨 프리뷰
+                if (mainLevel < 7)
+                {
+                    tooltip += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
+                    for (int lv = mainLevel + 1; lv <= 7; lv++)
+                    {
+                        int lvUses = lv + 2;
+                        float lvBonus = Spear_Config.SpearStep6ComboDamageValue + (lv - 1) * Spear_Config.SpearComboLevelBonusValue;
+                        tooltip += $"<color=#808080><size=14>Lv{lv} : {L.Get("spear_combo_lv1_desc", lvUses, (int)lvBonus)}</size></color>\n";
+                    }
+                }
 
                 return tooltip.TrimEnd('\n');
             }
@@ -248,6 +316,21 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[연공창 툴팁] 생성 실패: {ex.Message}");
                 return L.Get("tooltip_generation_error");
+            }
+        }
+
+        private static string GetSpearComboLevelItemText(int targetLevel)
+        {
+            switch (targetLevel)
+            {
+                case 1: return $"{L.Get("item_trophy_eikthyr")} x1 + {L.Get("item_trophy_boar")} x1";
+                case 2: return $"{L.Get("item_trophy_elder")} x1 + {L.Get("item_trophy_troll")} x1";
+                case 3: return $"{L.Get("item_trophy_bonemass")} x1 + {L.Get("item_trophy_abomination")} x1";
+                case 4: return $"{L.Get("item_trophy_dragonqueen")} x1 + {L.Get("item_trophy_sgolem")} x1";
+                case 5: return $"{L.Get("item_trophy_goblinking")} x1 + {L.Get("item_trophy_goblinshaman")} x1";
+                case 6: return $"{L.Get("item_trophy_seekerqueen")} x1 + {L.Get("item_trophy_gjall")} x1";
+                case 7: return $"{L.Get("item_trophy_fader")} x1 + {L.Get("item_trophy_fallenvalkyrie")} x1";
+                default: return "";
             }
         }
 

@@ -134,6 +134,20 @@ namespace CaptainSkillTree.SkillTree
                 endPos.y = landHit.point.y;
             }
 
+            // 돌진 시작 시 3m 이내 적 수집 (끌어모으기 대상)
+            var gatheredEnemies = new List<Character>();
+            var gatheredIds = new HashSet<int>();
+            foreach (var c in Character.GetAllCharacters())
+            {
+                if (c == null || c.IsDead() || c == player) continue;
+                if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                if (Vector3.Distance(c.transform.position, startPos) <= 3f)
+                {
+                    gatheredEnemies.Add(c);
+                    gatheredIds.Add(c.GetInstanceID());
+                }
+            }
+
             try
             {
                 zanim = player.GetComponentInChildren<ZSyncAnimation>();
@@ -144,7 +158,12 @@ namespace CaptainSkillTree.SkillTree
                     UnityEngine.Object.Instantiate(shieldPrefab, player.GetCenterPoint(), Quaternion.identity);
 
                 VFXManager.PlayVFXMultiplayer("sfx_fader_taunt", "", player.GetCenterPoint(), Quaternion.identity, 2f);
-                Plugin.Log.LogInfo($"[돌진방패] 발동 — 전방 8m 돌진 시작");
+
+                // 수집된 적 스태거 (끌어모으기 시작 연출)
+                foreach (var ge in gatheredEnemies)
+                    if (ge != null && !ge.IsDead()) ge.Stagger(lookDir);
+
+                Plugin.Log.LogInfo($"[돌진방패] 발동 — 전방 12m 돌진 시작, 수집 적: {gatheredEnemies.Count}명");
             }
             catch (Exception ex)
             {
@@ -178,29 +197,52 @@ namespace CaptainSkillTree.SkillTree
                 player.transform.position = newPos;
                 if (rb != null) rb.position = newPos;
 
-                // 경로 히트: 2.5m 이내 모든 몬스터 (중복 방지)
+                // 수집된 적을 플레이어 전방 포메이션으로 유지
+                Vector3 rightDir = Vector3.Cross(lookDir, Vector3.up).normalized;
+                for (int gi = 0; gi < gatheredEnemies.Count; gi++)
+                {
+                    var ge = gatheredEnemies[gi];
+                    if (ge == null || ge.IsDead()) continue;
+                    float sideOff = (gatheredEnemies.Count > 1)
+                        ? (gi - (gatheredEnemies.Count - 1) * 0.5f) * 0.8f : 0f;
+                    Vector3 pullPos = player.transform.position + lookDir * 1.5f + rightDir * sideOff;
+                    if (Physics.Raycast(pullPos + Vector3.up * 0.1f, Vector3.down, out RaycastHit pgh, 5f,
+                        LayerMask.GetMask("terrain", "static_solid", "piece")))
+                        pullPos.y = pgh.point.y;
+                    ge.transform.position = pullPos;
+                    var geRb = HarmonyLib.Traverse.Create(ge).Field("m_body").GetValue<Rigidbody>();
+                    if (geRb == null) geRb = ge.GetComponent<Rigidbody>();
+                    if (geRb != null)
+                    {
+                        geRb.position = pullPos;
+                        geRb.velocity = Vector3.zero;
+                        geRb.angularVelocity = Vector3.zero;
+                    }
+                }
+
+                // 경로 히트: 3m 이내 몬스터 (수집된 적 제외, 중복 방지)
                 foreach (var c in Character.GetAllCharacters())
                 {
                     if (c == null || c.IsDead() || c == player) continue;
                     if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
                     int id = c.GetInstanceID();
                     if (alreadyHit.Contains(id)) continue;
+                    if (gatheredIds.Contains(id)) continue;
                     if (Vector3.Distance(c.transform.position, player.transform.position) > 3f) continue;
 
                     alreadyHit.Add(id);
-                    try { ApplyShieldChargeHit(player, c, lookDir); }
-                    catch (Exception ex) { Plugin.Log.LogError($"[돌진방패] 경로 히트 오류: {ex.Message}"); }
+                    gatheredEnemies.Add(c);
+                    gatheredIds.Add(id);
+                    c.Stagger(lookDir);
                 }
 
-                // 돌진 잔상 VFX + 다단히트
+                // 돌진 잔상 VFX
                 if (vfxTimer >= 0.08f)
                 {
                     var shieldPrefab2 = ZNetScene.instance?.GetPrefab("fx_shieldgenerator_domehit");
                     if (shieldPrefab2 != null)
                         UnityEngine.Object.Instantiate(shieldPrefab2, player.GetCenterPoint(), Quaternion.identity);
                     vfxTimer = 0f;
-
-                    ApplyShieldChargeAreaMultiHit(player, lookDir);
                 }
 
                 yield return null;
@@ -248,11 +290,18 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[돌진방패] blocking 해제 오류: {ex.Message}");
             }
 
+            // 수집된 적 최종 타격
+            if (gatheredEnemies.Count > 0)
+            {
+                try { ApplyShieldChargeGatheredFinishDamage(player, gatheredEnemies, lookDir); }
+                catch (Exception ex) { Plugin.Log.LogError($"[돌진방패] 최종타 오류: {ex.Message}"); }
+            }
+
             shieldChargeActive.Remove(player);
-            Plugin.Log.LogInfo($"[돌진방패] 돌진 완료 — 타격 수: {alreadyHit.Count}");
+            Plugin.Log.LogInfo($"[돌진방패] 돌진 완료 — 경로타격: {alreadyHit.Count}, 수집타격: {gatheredEnemies.Count}");
 
             // 도발 펄스 (타격한 적 대상)
-            if (alreadyHit.Count > 0 && Plugin.Instance != null)
+            if ((alreadyHit.Count > 0 || gatheredEnemies.Count > 0) && Plugin.Instance != null)
                 Plugin.Instance.StartCoroutine(ShieldChargeTauntPulseCoroutine(player, player.transform.position));
         }
 
@@ -268,7 +317,9 @@ namespace CaptainSkillTree.SkillTree
             if (shieldItem != null && shieldItem.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield)
                 blockPower = shieldItem.GetBlockPower(skillFactor);
 
-            float damageRatio = Mace_Config.ShieldChargeDamagePercentValue / 100f;
+            int scLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 1;
+            float levelBonus = (scLevel - 1) * Mace_Config.ShieldChargeLevelBonusValue;
+            float damageRatio = (Mace_Config.ShieldChargeDamagePercentValue + levelBonus) / 100f;
             float damage = blockPower * damageRatio;
             if (damage < 1f) damage = 1f;
 
@@ -308,10 +359,11 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// VFX 발동마다 호출: 3m 반경 모든 적에게 방패 방어력 100% 광역 데미지 + fx_crit
-        /// alreadyHit 무관 — 다단히트 허용
+        /// VFX 발동마다 호출: 3m 반경 모든 적에게 방패 방어력 광역 데미지 + fx_crit
+        /// alreadyHit 무관 — 다단히트 허용. excludeIds 지정 시 해당 적 제외.
         /// </summary>
-        private static void ApplyShieldChargeAreaMultiHit(Player player, Vector3 dashDir)
+        private static void ApplyShieldChargeAreaMultiHit(Player player, Vector3 dashDir,
+            HashSet<int> excludeIds = null)
         {
             float skillFactor = player.GetSkillFactor(Skills.SkillType.Blocking);
             var shieldItem = HarmonyLib.Traverse.Create(player)
@@ -322,12 +374,15 @@ namespace CaptainSkillTree.SkillTree
                 shieldItem.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield)
                 blockPower = shieldItem.GetBlockPower(skillFactor);
 
-            float damage = Mathf.Max(1f, blockPower * Mace_Config.ShieldChargeMultiHitDamagePercentValue / 100f);
+            int scLevelArea = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 1;
+            float multiHitPercent = 150f + (scLevelArea - 1) * 20f;
+            float damage = Mathf.Max(1f, blockPower * multiHitPercent / 100f);
 
             foreach (var c in Character.GetAllCharacters())
             {
                 if (c == null || c.IsDead() || c == player) continue;
                 if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                if (excludeIds != null && excludeIds.Contains(c.GetInstanceID())) continue;
                 if (Vector3.Distance(c.transform.position, player.transform.position) > 3f) continue;
 
                 var hit = new HitData();
@@ -344,6 +399,56 @@ namespace CaptainSkillTree.SkillTree
 
                 VFXManager.PlayVFXMultiplayer("fx_crit", "", c.GetCenterPoint(), Quaternion.identity, 1.5f);
             }
+        }
+
+        /// <summary>
+        /// 돌진 완료 후 끌어모은 적 최종 타격:
+        /// 첫 번째 적 = 단일 공격력, 나머지 적 = 끌어모은 수만큼 다단히트
+        /// </summary>
+        private static void ApplyShieldChargeGatheredFinishDamage(
+            Player player, List<Character> gathered, Vector3 dashDir)
+        {
+            int total = gathered.Count;
+
+            // 첫 번째 적: 단일 공격력
+            var first = gathered[0];
+            if (first != null && !first.IsDead())
+                ApplyShieldChargeHit(player, first, dashDir);
+
+            // 나머지 적: 끌어모은 수(total)만큼 다단히트
+            if (total < 2) return;
+
+            float skillFactor = player.GetSkillFactor(Skills.SkillType.Blocking);
+            var shieldItem = HarmonyLib.Traverse.Create(player)
+                .Field("m_leftItem").GetValue<ItemDrop.ItemData>();
+            float blockPower = 0f;
+            if (shieldItem?.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+                blockPower = shieldItem.GetBlockPower(skillFactor);
+            int scLv = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 1;
+            float pct = 150f + (scLv - 1) * 20f;
+            float multiDmg = Mathf.Max(1f, blockPower * pct / 100f);
+
+            for (int i = 1; i < gathered.Count; i++)
+            {
+                var enemy = gathered[i];
+                if (enemy == null || enemy.IsDead()) continue;
+                for (int h = 0; h < total; h++)
+                {
+                    var hit = new HitData();
+                    hit.m_damage.m_blunt = multiDmg;
+                    hit.m_attacker = player.GetZDOID();
+                    hit.SetAttacker(player);
+                    hit.m_point = enemy.GetCenterPoint();
+                    hit.m_dir = dashDir;
+                    hit.m_skill = Skills.SkillType.Clubs;
+                    hit.m_blockable = false;
+                    hit.m_dodgeable = false;
+                    enemy.Damage(hit);
+                    VFXManager.PlayVFXMultiplayer("fx_crit", "", enemy.GetCenterPoint(),
+                        Quaternion.identity, 1.5f);
+                }
+            }
+            Plugin.Log.LogInfo($"[돌진방패] 최종타 완료 — 수집:{total}명, 첫번째=단일, 나머지={total}회 다단히트");
         }
 
         /// <summary>

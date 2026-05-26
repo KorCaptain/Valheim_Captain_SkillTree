@@ -508,16 +508,16 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>
         /// 플레이어 스폰 시 초기 회피율 설정
         /// </summary>
-        [HarmonyPatch(typeof(Player), "Awake")]
-        public static class Player_Awake_DefenseDodge_Patch
+        [HarmonyPatch(typeof(Player), "Load")]
+        public static class Player_Load_DefenseDodge_Patch
         {
             [HarmonyPriority(Priority.Low)]
             public static void Postfix(Player __instance)
             {
-                // 로컬 플레이어만 처리
+                // 로컬 플레이어만 처리 (SetLocalPlayer()는 Load() 전에 호출됨)
                 if (__instance != Player.m_localPlayer) return;
 
-                // 초기 회피율 설정
+                // 데이터 로드 완료 후 회피율 초기화
                 UpdateDefenseDodgeRate(__instance);
             }
         }

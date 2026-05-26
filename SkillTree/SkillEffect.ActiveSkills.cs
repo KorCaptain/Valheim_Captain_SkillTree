@@ -101,8 +101,8 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            // 2. 검: 돌진 연속 베기
-            if (Sword_Skill.IsUsingSword(player))
+            // 2. 검/도끼: 돌진 연속 베기
+            if (WeaponHelper.IsUsingSwordOrAxe(player))
             {
                 if (HasSkill("sword_step5_finalcut") || HasSkill("sword_slash"))
                 {
@@ -220,8 +220,8 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            // 3. 검: 패링 돌격 (내부에서 방패/검 체크)
-            if (Sword_Skill.IsUsingSword(player))
+            // 3. 검/도끼: 회오리베기
+            if (WeaponHelper.IsUsingSwordOrAxe(player))
             {
                 if (HasSkill("sword_step5_defswitch"))
                 {

@@ -271,7 +271,18 @@ namespace CaptainSkillTree.SkillTree
         private static IEnumerator FanCastLaunchCoroutine(Player player, ItemDrop.ItemData weapon,
             List<(GameObject obj, Vector3 localOffset)> suspended, Character target)
         {
-            float damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue;
+            int dualCastLevel = SkillTreeManager.Instance?.GetSkillLevel("staff_Step6_dual_cast") ?? 1;
+            float damagePercent;
+            switch (dualCastLevel)
+            {
+                case 2: damagePercent = 63f; break;
+                case 3: damagePercent = 66f; break;
+                case 4: damagePercent = 70f; break;
+                case 5: damagePercent = 74f; break;
+                case 6: damagePercent = 78f; break;
+                case 7: damagePercent = 85f; break;
+                default: damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue; break;
+            }
             float gap = Staff_Config.StaffFanCastLaunchGapValue;
 
             for (int i = 0; i < suspended.Count; i++)

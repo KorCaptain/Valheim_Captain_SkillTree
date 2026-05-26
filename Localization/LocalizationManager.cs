@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -101,7 +101,7 @@ namespace CaptainSkillTree.Localization
                 // 현재 언어 번역 개수 확인
                 if (!_translations.ContainsKey(_currentLanguage))
                 {
-                    Plugin.Log.LogError($"[Localization] ✗ CRITICAL: Current language '{_currentLanguage}' NOT LOADED!");
+                    Plugin.Log.LogError($"[Localization] [FAIL] CRITICAL: Current language '{_currentLanguage}' NOT LOADED!");
                 }
             }
             catch (Exception ex)
@@ -281,7 +281,7 @@ namespace CaptainSkillTree.Localization
                     }
 
                     _translations[fileLang] = langData;
-                    Plugin.Log.LogDebug($"[Localization] ✓ Loaded {fileLang}.json ({langData.Count} entries)");
+                    Plugin.Log.LogDebug($"[Localization] [OK] Loaded {fileLang}.json ({langData.Count} entries)");
 
                     // 첫 5개 키 샘플 출력 (디버깅용)
                     var sampleKeys = langData.Keys.Take(5).ToArray();
@@ -401,7 +401,7 @@ namespace CaptainSkillTree.Localization
                     {
                         valheimLang = playerPrefsLang;
                         detected = true;
-                        Plugin.Log.LogDebug($"[Localization]   ✓ PlayerPrefs에서 언어 감지: '{valheimLang}'");
+                        Plugin.Log.LogDebug($"[Localization]   [OK] PlayerPrefs에서 언어 감지: '{valheimLang}'");
                     }
                 }
                 catch (Exception ppEx)
@@ -425,7 +425,7 @@ namespace CaptainSkillTree.Localization
                         if (instanceProp != null)
                         {
                             var locInstance = instanceProp.GetValue(null);
-                            Plugin.Log.LogDebug($"[Localization]   Localization.instance: {(locInstance != null ? "✓ 준비됨" : "✗ NULL (미준비)")}");
+                            Plugin.Log.LogDebug($"[Localization]   Localization.instance: {(locInstance != null ? "[OK] 준비됨" : "[NULL] 미준비")}");
 
                             if (locInstance != null)
                             {
@@ -436,7 +436,7 @@ namespace CaptainSkillTree.Localization
                                     if (!string.IsNullOrEmpty(valheimLang))
                                     {
                                         detected = true;
-                                        Plugin.Log.LogDebug($"[Localization]   ✓ GetSelectedLanguage() 반환: '{valheimLang}'");
+                                        Plugin.Log.LogDebug($"[Localization]   [OK] GetSelectedLanguage() 반환: '{valheimLang}'");
                                     }
                                 }
 
@@ -451,7 +451,7 @@ namespace CaptainSkillTree.Localization
                                         if (!string.IsNullOrEmpty(valheimLang))
                                         {
                                             detected = true;
-                                            Plugin.Log.LogDebug($"[Localization]   ✓ m_language 필드: '{valheimLang}'");
+                                            Plugin.Log.LogDebug($"[Localization]   [OK] m_language 필드: '{valheimLang}'");
                                         }
                                     }
                                 }
@@ -469,7 +469,7 @@ namespace CaptainSkillTree.Localization
                                 if (!string.IsNullOrEmpty(valheimLang))
                                 {
                                     detected = true;
-                                    Plugin.Log.LogDebug($"[Localization]   ✓ Localization.language: '{valheimLang}'");
+                                    Plugin.Log.LogDebug($"[Localization]   [OK] Localization.language: '{valheimLang}'");
                                 }
                             }
                         }
@@ -480,7 +480,7 @@ namespace CaptainSkillTree.Localization
                 if (!detected || string.IsNullOrEmpty(valheimLang))
                 {
                     valheimLang = "Korean";
-                    Plugin.Log.LogWarning("[Localization]   ✗ 언어 감지 실패 - 기본값 Korean 사용");
+                    Plugin.Log.LogWarning("[Localization]   [FAIL] 언어 감지 실패 - 기본값 Korean 사용");
                 }
 
                 Plugin.Log.LogDebug($"[Localization] Valheim 언어 감지됨: '{valheimLang}'");
@@ -491,7 +491,7 @@ namespace CaptainSkillTree.Localization
                 if (lowerLang.Contains("korean") || lowerLang.Contains("한국어"))
                 {
                     _currentLanguage = "ko";
-                    Plugin.Log.LogDebug("[Localization] ✓ 자동 감지: 한국어 (KR)");
+                    Plugin.Log.LogDebug("[Localization] [OK] 자동 감지: 한국어 (KR)");
                 }
                 else if (lowerLang.Contains("japanese") || lowerLang.Contains("日本語") || lowerLang.Contains("japan"))
                 {
@@ -531,7 +531,7 @@ namespace CaptainSkillTree.Localization
                 else if (lowerLang.Contains("english"))
                 {
                     _currentLanguage = "en";
-                    Plugin.Log.LogDebug("[Localization] ✓ 자동 감지: 영어 (EN)");
+                    Plugin.Log.LogDebug("[Localization] [OK] 자동 감지: 영어 (EN)");
                 }
                 else
                 {
@@ -571,7 +571,7 @@ namespace CaptainSkillTree.Localization
                 SetLanguage(configValue);
             }
 
-            Plugin.Log.LogDebug($"[Localization] ✓ 언어 재로드 완료: {GetDisplayLanguage(_currentLanguage)}");
+            Plugin.Log.LogDebug($"[Localization] [OK] 언어 재로드 완료: {GetDisplayLanguage(_currentLanguage)}");
         }
 
         /// <summary>
@@ -598,7 +598,7 @@ namespace CaptainSkillTree.Localization
             if (_supportedLanguages.Contains(upperCode))
             {
                 _currentLanguage = GetFileLanguage(upperCode);
-                Plugin.Log.LogDebug($"[Localization] ✓ Language set to: {upperCode} (file: {_currentLanguage})");
+                Plugin.Log.LogDebug($"[Localization] [OK] Language set to: {upperCode} (file: {_currentLanguage})");
                 return;
             }
 
@@ -607,12 +607,12 @@ namespace CaptainSkillTree.Localization
             if (LanguageCodeMap.Values.Contains(lowerCode))
             {
                 _currentLanguage = lowerCode;
-                Plugin.Log.LogDebug($"[Localization] ✓ Language set to: {GetDisplayLanguage(lowerCode)} (file: {lowerCode})");
+                Plugin.Log.LogDebug($"[Localization] [OK] Language set to: {GetDisplayLanguage(lowerCode)} (file: {lowerCode})");
                 return;
             }
 
             // Fallback to Korean (default)
-            Plugin.Log.LogWarning($"[Localization] ✗ Unsupported language code: '{langCode}'");
+            Plugin.Log.LogWarning($"[Localization] [FAIL] Unsupported language code: '{langCode}'");
             Plugin.Log.LogWarning($"[Localization] Supported codes: {string.Join(", ", _supportedLanguages)}");
             Plugin.Log.LogWarning($"[Localization] Using default: Korean (KR)");
             _currentLanguage = "ko";
@@ -697,7 +697,7 @@ namespace CaptainSkillTree.Localization
 
             // Return key as fallback
             if (_warnedMissingKeys.Add(key))
-                Plugin.Log.LogWarning($"[Localization] ✗ Key not found in any language: '{key}'");
+                Plugin.Log.LogWarning($"[Localization] [FAIL] Key not found in any language: '{key}'");
             return key;
         }
 

@@ -107,13 +107,13 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (!WeaponHelper.IsUsingStaffOrWand(player))
                     {
-                        player.Message(MessageHud.MessageType.Center, L.Get("staff_required"));
+                        SkillEffect.ShowSkillEffectText(player, L.Get("staff_required"), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                         return false;
                     }
                     int eitrCost2 = Mage_Config.MageEitrCostValue;
                     if (player.GetEitr() < eitrCost2)
                     {
-                        player.Message(MessageHud.MessageType.Center, L.Get("eitr_insufficient", eitrCost2.ToString()));
+                        SkillEffect.ShowSkillEffectText(player, L.Get("eitr_insufficient", eitrCost2.ToString()), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                         return false;
                     }
                     bool fired2 = ExecuteFireRainSkill(player, mageLevel);
@@ -131,7 +131,7 @@ namespace CaptainSkillTree.SkillTree
                     float cooldownRemaining = Mage_Config.GetCooldown(mageLevel) - (currentTime - lastTime);
                     if (cooldownRemaining > 0)
                     {
-                        player.Message(MessageHud.MessageType.Center, L.Get("mage_cooldown", cooldownRemaining.ToString("F1")));
+                        SkillEffect.ShowSkillEffectText(player, L.Get("mage_cooldown", cooldownRemaining.ToString("F1")), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                         return false;
                     }
                 }
@@ -140,14 +140,14 @@ namespace CaptainSkillTree.SkillTree
                 int eitrCost = Mage_Config.MageEitrCostValue;
                 if (player.GetEitr() < eitrCost)
                 {
-                    player.Message(MessageHud.MessageType.Center, L.Get("eitr_insufficient", eitrCost.ToString()));
+                    SkillEffect.ShowSkillEffectText(player, L.Get("eitr_insufficient", eitrCost.ToString()), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                     return false;
                 }
 
                 // 지팡이 착용 체크
                 if (!WeaponHelper.IsUsingStaffOrWand(player))
                 {
-                    player.Message(MessageHud.MessageType.Center, L.Get("staff_required"));
+                    SkillEffect.ShowSkillEffectText(player, L.Get("staff_required"), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                     return false;
                 }
 
@@ -217,7 +217,7 @@ namespace CaptainSkillTree.SkillTree
                 Character target = FindTargetInFront(player, range);
                 if (target == null)
                 {
-                    player.Message(MessageHud.MessageType.Center, L.Get("no_targets_in_range"));
+                    SkillEffect.ShowSkillEffectText(player, L.Get("no_targets_in_range"), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                     return false;
                 }
 
@@ -252,8 +252,7 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Instance?.StartCoroutine(FireRainProjectileCoroutine(player, target, mageLevel));
 
                 // 시전 피드백
-                player.Message(MessageHud.MessageType.Center,
-                    L.Get("mage_firerain_cast", target.GetHoverName()));
+                SkillEffect.ShowSkillEffectText(player, L.Get("mage_firerain_cast", target.GetHoverName()), Color.white, SkillEffect.SkillEffectTextType.Standard);
 
                 Plugin.Log.LogInfo($"[불의 비] {player.GetPlayerName()} → {target.GetHoverName()} 시전 (Lv{mageLevel})");
                 return true;
@@ -510,7 +509,7 @@ namespace CaptainSkillTree.SkillTree
 
                     if (damageReduced > 0.1f)
                     {
-                        player.Message(MessageHud.MessageType.TopLeft, L.Get("mage_elemental_resist", damageReduced.ToString("F0")));
+                        SkillEffect.ShowSkillEffectText(player, L.Get("mage_elemental_resist", damageReduced.ToString("F0")), Color.white, SkillEffect.SkillEffectTextType.Passive);
                     }
                 }
             }

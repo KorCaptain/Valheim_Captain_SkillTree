@@ -197,11 +197,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_CombatMastery_BuffDuration"] = "Tier 3: [快速攻击] 效果持续时间 (秒)",
                 ["Tier3_CombatMastery_RequiredPoints"] = "Tier 3: [快速攻击] 所需点数",
 
-                // === Tier 4: 暴击精通 (4) ===
-                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: [暴击精通] 闪避加成 (%)",
-                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: [暴击精通] 效果持续时间 (秒)",
-                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: [暴击精通] 冷却时间 (秒)",
-                ["Tier4_AttackEvasion_RequiredPoints"] = "Tier 4: [暴击精通] 所需点数",
+                // === Tier 4: 闪避大师 (4) ===
+                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: [闪避大师] 闪避加成 (%)",
+                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: [闪避大师] 效果持续时间 (秒)",
+                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: [闪避大师] 冷却时间 (秒)",
+                ["Tier4_AttackEvasion_RequiredPoints"] = "Tier 4: [闪避大师] 所需点数",
 
                 // === Tier 5: 致命伤害 (2) ===
                 ["Tier5_CriticalDamage_DamageBonus"] = "Tier 5: [致命伤害] 伤害加成 (%)",
@@ -523,6 +523,9 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv5_SelfHealPercent"] = "Lv5: 自身治疗率 (%)",
                 ["Paladin_Lv5_AllyHealPercent"] = "Lv5: 盟友治疗率 (%/次)",
                 ["Paladin_Lv5_HealRange"] = "Lv5: 治疗范围 (m)",
+                ["Paladin_Lv2_Cooldown"] = "Lv2: 冷却时间 (秒)",
+                ["Paladin_Lv3_Cooldown"] = "Lv3: 冷却时间 (秒)",
+                ["Paladin_Lv4_Cooldown"] = "Lv4: 冷却时间 (秒)",
                 ["Paladin_Lv5_Cooldown"] = "Lv5: 冷却时间 (秒)",
                 ["Paladin_Lv2_ResistanceReduction"] = "Lv2: 抗性减少 (%)",
                 ["Paladin_Lv3_ResistanceReduction"] = "Lv3: 抗性减少 (%)",
@@ -598,6 +601,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [弱点爆炸] 所需点数",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [弱点爆炸] 增益持续时间 (秒)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [弱点爆炸] 范围伤害比例 (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [弱点爆炸] 每级伤害加成 (%)",
             };
         }
     }

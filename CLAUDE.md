@@ -8,6 +8,7 @@ Available agents: Arch (Architect), Bob (Builder), Richard (Reviewer)
 - 한국어로 대화
 - 코드 800줄 초과 시 경고 후 분할
 - 수정하거나 신규 개발하는 코드 외에는 정상 작동되는 부분은 수정 금지이며, 수정 필요시 사용자에게 허락받고 작업한다.
+- .cs 파일 수정·생성 완료 시 자동으로 빌드(`dotnet build`) 실행 후 `cst-changelog` 스킬 실행
 
 ## qmd 검색 우선 원칙
 
@@ -117,6 +118,13 @@ CaptainSkillTree/
 | `manage-skills` | 검증 스킬 생성/업데이트, CLAUDE.md 관리 |
 | `verify-localization` | 로컬라이제이션 규칙 검증 |
 
+## ⚠️ 인게임 렉 유발 패턴 (반드시 금지)
+
+| 패턴 | 결과 | 올바른 방법 |
+|------|------|-------------|
+| `DrawFloatingText(L.Get("새키"))` 사용 전 DefaultLanguages에 키 미추가 | `[FAIL] Key not found` 경고 → Valheim 폰트 아틀라스 재빌드 → 렉 | 키 먼저 추가 후 L.Get() 사용 (R2 준수) |
+| Plugin.Log에 `✗ ✓ ✘ ✔` 유니코드 기호 사용 | BepInEx→Unity 로그 파이프라인 통해 폰트 렉 발생 | `[OK]` / `[FAIL]` / `[WARN]` 등 ASCII 사용 |
+
 ## 신규 스킬 구현 또는 새롭게 변경 시 다음 사항사항들을 파악하고 적용해서 만든다.
 1. C:\home\ssunyme\.npm-global\bin\CaptainSkillTree\md 관련 자료
 2. 정확한 발헤임  API는 C:\home\ssunyme\.npm-global\bin\valheim_dll_api 를 참고해서 만든다.
@@ -136,6 +144,7 @@ CaptainSkillTree/
 | `cst-vfx-rules` | VFX, ZNetScene, PlayVFXMultiplayer |
 | `cst-mmo` | MMO, EpicMMO, getParameter |
 | `cst-active-skills` | active skill, G키, H키, Y키 |
+| `cst-hud-rules` | ActiveSkillHUD, HUD canvas, CanvasScaler, ScaleWithScreenSize, font atlas, KeyLabel |
 | `cst-workflow` | workflow, 개발 순서, new skill |
 | `cst-build` | build error, 빌드 오류, CS0 |
 | `cst-localization` | localization, L.Get(), 로컬라이제이션 |

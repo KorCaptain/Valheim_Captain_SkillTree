@@ -10,6 +10,7 @@
 2. [무기별 공격력 보너스 규칙 (Rule 11-1)](#rule-11-1-무기별-공격력-보너스-규칙)
 3. [GetDamage 패치 시스템 (Rule 13)](#rule-13-getdamage-패치-시스템)
 4. [MMO 독립성 원칙](#mmo-독립성-원칙)
+5. [EpicMMO 환경 커스텀 AoE 데미지 계산 (Rule 14)](#rule-14-epicmmo-환경-커스텀-aoe-데미지-계산)
 
 ---
 
@@ -126,10 +127,13 @@ originalHit.m_damage.m_pierce += 4;  // 창은 pierce만
 | **검(Sword)** | `m_slash` | `Sword_Skill.cs` | 베기 무기 |
 | **둔기(Mace)** | `m_blunt` | `MaceSkills.cs` | 타격 무기 |
 | **단검(Knife)** | `m_slash` | `Knife_Skill.cs` | 베기 무기 |
+| **도끼(Axe)** | `m_slash` | `SkillEffect.MeleeSkills.cs` | 베기 무기 (m_chop은 벌목 전용) |
 | **활(Bow)** | `m_pierce` | `SkillEffect.RangedSkills.cs` | 화살은 pierce |
 | **석궁(Crossbow)** | `m_pierce` | `SkillEffect.RangedSkills.cs` | 볼트는 pierce |
 
-**주의**: 과거에는 단검이 `pierce + slash` 모두 적용했으나, 사용자 요청에 따라 `slash`만 적용으로 변경되었습니다.
+**주의**:
+- 과거에는 단검이 `pierce + slash` 모두 적용했으나, 사용자 요청에 따라 `slash`만 적용으로 변경되었습니다.
+- 도끼의 `m_chop`은 나무 벌목 전용 데미지 타입이므로 전투 스킬에서는 `m_slash`만 적용합니다.
 
 ### 올바른 구현 패턴
 
@@ -160,6 +164,10 @@ hit.m_damage.m_slash *= multiplier;
 
 // 단검 스킬: slash만 적용 (과거 pierce + slash에서 변경됨)
 float multiplier = critDamageMultiplier;
+hit.m_damage.m_slash *= multiplier;
+
+// 도끼 스킬: slash만 적용 (m_chop은 벌목 전용, 전투 스킬에 사용 금지)
+float multiplier = 1f + (bonusPercent / 100f);
 hit.m_damage.m_slash *= multiplier;
 ```
 
@@ -338,6 +346,7 @@ public static float GetKnifeAttackDamageBonus(Player player)
 | **둔기** | Line 1639-1671 | 둔기 전문가 (+10%), 무거운 타격 (+20%), 공격력 강화 (+20%) | 누적 비율 |
 | **창** | Line 1673-1712 | 창 전문가, 회피 찌르기, 연격창, 삼연창 | 누적 비율 |
 | **폴암** | Line 1714-1747 | 제압 공격 (+30%), 폴암강화 (+5 고정) | 비율 + 고정값 |
+| **도끼(Axe)** | 툴팁 패치 (WeaponGroup.Axe) | 연속 근접의 대가 (+%, 한손), 양손 분쇄 (+%, 배틀액스), 근접 공격속도 | 공통 AttackTree 보너스 (도끼 전용 스킬 없음) |
 
 ### 성능 최적화 주의사항
 
@@ -422,6 +431,81 @@ public static void Prefix(Character __instance, ref HitData hit)
 
 ---
 
+## Rule 14: EpicMMO 환경 커스텀 AoE 데미지 계산
+
+### 🚨 핵심 발견 (회오리베기 버그, 2026-05-15)
+
+**증상**: AoE 커스텀 HitData로 적중 판정은 됐으나 HP 변화 없음  
+**원인**: `weapon.GetDamage()` 가 EpicMMO 환경에서 항상 0 반환
+
+**원인 체인:**
+```
+EpicMMO 패치 → 검 m_shared.m_damages 전체 0 초기화
+→ weapon.GetDamage() = 0
+→ hit.m_damage.m_slash = 0
+→ Character.ApplyDamage() 내 if (totalDamage2 ≤ 0.1f) return; 조기 반환
+→ SetHealth() 미호출 → HP 무변화
+```
+
+**Rule 13과의 관계**: `SkillTree_ItemData_GetDamage_MeleeExpert_Patch` 는 `if (__result.m_slash > 0)` 조건부 → 기저값 0이면 패치도 구해줄 수 없음. Sword는 패치 대상 무기 테이블에 없음(knife/mace/spear/polearm만 명시).
+
+---
+
+### ❌ 금지 패턴
+
+```csharp
+// ❌ EpicMMO 환경에서 weapon.GetDamage()는 0을 반환함
+var weaponDmg = weapon.GetDamage();
+float baseDmg = weaponDmg.m_slash + weaponDmg.m_blunt + weaponDmg.m_pierce;
+if (baseDmg <= 0f) baseDmg = weaponDmg.m_slash;  // 여전히 0
+float totalDmg = baseDmg * (ratio / 100f);        // = 0
+
+// ❌ c.Damage(hit) — ZNet RPC 경로, 코루틴 yield 재개 후 ZDOID 조회 실패 가능
+c.Damage(hit);
+```
+
+### ✅ 올바른 패턴 (커스텀 AoE 액티브 스킬)
+
+```csharp
+// ✅ 1. Config 기반 고정값 사용 (EpicMMO 독립)
+float totalDmg = YourWeapon_Config.AoeBaseDamageValue * (damageRatio / 100f);
+hit.m_damage.m_slash = totalDmg;
+
+// ✅ 2. ZNet RPC 우회 + 저항 수동 처리
+HitData.DamageModifiers dmgMods = c.GetDamageModifiers();
+HitData.DamageModifier dmgMod;
+hit.ApplyResistance(dmgMods, out dmgMod);
+c.ApplyDamage(hit, true, true, dmgMod);  // public, IsOwner 체크 없음, 코루틴 안전
+```
+
+**`c.ApplyDamage()` vs `c.Damage()` 비교:**
+
+| 항목 | `c.Damage(hit)` | `c.ApplyDamage(hit, ...)` |
+|------|-----------------|--------------------------|
+| 경로 | ZNet RPC (`RPC_Damage`) | 직접 호출 |
+| ZDOID 조회 | `GetAttacker()` 실패 시 조용히 차단 | 없음 |
+| IsOwner 체크 | `RPC_Damage` 내부에서 체크 | 없음 (싱글플레이 안전) |
+| 저항 계산 | 자동 | 수동 (`ApplyResistance` 먼저) |
+| 코루틴 안전성 | 불안정 | 안전 |
+
+### Config 추가 패턴
+
+```csharp
+// XxxWeapon_Config.cs
+public static ConfigEntry<float> WhirlwindSlashBaseDamage;
+public static float WhirlwindSlashBaseDamageValue =>
+    SkillTreeConfig.GetEffectiveValue("Tier5_WhirlwindSlash_BaseDamage",
+        WhirlwindSlashBaseDamage?.Value ?? 100f);
+
+// Initialize():
+WhirlwindSlashBaseDamage = SkillTreeConfig.BindServerSync(config,
+    "Sword Tree", "Tier5_WhirlwindSlash_BaseDamage", 100f,
+    SkillTreeConfig.GetConfigDescription("Tier5_WhirlwindSlash_BaseDamage"),
+    order: -56);
+```
+
+---
+
 ## 체크리스트
 
 새 데미지 스킬 구현 시 다음을 확인하세요:
@@ -456,6 +540,13 @@ public static void Prefix(Character __instance, ref HitData hit)
 - [ ] 조건부 적용: 해당 데미지 타입이 있을 때만 증가
 - [ ] Config 기반 동적 관리 사용
 
+### Rule 14 체크리스트 (커스텀 AoE 액티브 스킬)
+- [ ] `weapon.GetDamage()` **사용 금지** — EpicMMO로 인해 0 반환 가능
+- [ ] Config 기반 고정 기저 데미지 추가 (`XxxBaseDamageValue`)
+- [ ] `c.Damage(hit)` 대신 `c.ApplyDamage(hit, true, true, dmgMod)` 사용
+- [ ] `ApplyResistance` 를 `ApplyDamage` 전에 수동 호출
+- [ ] `hit.m_damage.m_slash` (또는 주 데미지 타입) > 0 보장 확인
+
 ---
 
 ## 참고 코드 위치
@@ -480,6 +571,10 @@ public static void Prefix(Character __instance, ref HitData hit)
 - **폴암 공격력**: `SkillEffect.MeleeSkills.cs:1714-1747`
 - **Helper 함수**: `SkillEffect.cs:1253-1319`
 - **생산 스킬 예시**: `SkillEffect.cs:1020-1057` (벌목/채광 효율)
+
+### Rule 14 참고 구현
+- **회오리베기 AoE**: `SkillTree/Sword_Skill.WhirlwindSlash.cs` — Config 기반 AoE, `ApplyDamage` 직접 호출 패턴
+- **Config 추가**: `SkillTree/Sword_Config.cs` — `WhirlwindSlashBaseDamage` BindServerSync 패턴
 
 ---
 

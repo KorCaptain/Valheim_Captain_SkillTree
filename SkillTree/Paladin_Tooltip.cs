@@ -41,6 +41,10 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
             tooltip += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {(int)stamina}, {L.Get("stat_eitr")} {(int)eitr}</size></color>\n";
 
+            // 범위
+            tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_range")}: </size></color>";
+            tooltip += $"<color=#FFDAB9><size=16>{range}m</size></color>\n";
+
             // 스킬 유형
             tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
             tooltip += $"<color=#ADFF2F><size=16>{L.Get("skill_type_active_key", "G")}</size></color>\n";
@@ -79,11 +83,9 @@ namespace CaptainSkillTree.SkillTree
                     float pRange = Paladin_Config.GetHealRange(lv);
                     float pCd   = Paladin_Config.GetCooldown(lv);
                     if (lv == 2)
-                        tooltip += $"<color=#808080><size=14>Lv{lv}: {L.Get("paladin_active_desc", pSelf, pAlly, (int)duration)}\n  {GetPassiveStr(lv)}</size></color>\n";
+                        tooltip += $"<color=#808080><size=14>Lv{lv}: {L.Get("paladin_active_desc", pSelf, pAlly, (int)duration)}\n  {GetPassiveStr(lv)} | {L.Get("tooltip_cooldown")} {(int)pCd}{L.Get("unit_seconds")}</size></color>\n";
                     else
-                        tooltip += $"<color=#808080><size=14>Lv{lv}: {L.Get("paladin_active_desc", pSelf, pAlly, (int)duration)} | {GetPassiveStr(lv)}</size></color>\n";
-                    if (lv == 5)
-                        tooltip += $"<color=#808080><size=14>  {L.Get("tooltip_range")} {pRange}m, {L.Get("tooltip_cooldown")} {(int)pCd}{L.Get("unit_seconds")}</size></color>\n";
+                        tooltip += $"<color=#808080><size=14>Lv{lv}: {L.Get("paladin_active_desc", pSelf, pAlly, (int)duration)} | {GetPassiveStr(lv)} | {L.Get("tooltip_cooldown")} {(int)pCd}{L.Get("unit_seconds")}</size></color>\n";
                 }
             }
 

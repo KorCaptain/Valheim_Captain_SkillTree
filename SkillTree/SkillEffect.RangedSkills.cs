@@ -85,8 +85,8 @@ namespace CaptainSkillTree.SkillTree
                     yield return new WaitForSeconds(delay);
                 }
 
-                // 발사체 생성
-                FireSingleBolt(player, weapon, fireDirection, damagePercent);
+                // 발사체 생성 (첫 발은 100% 고정, 이후 발사체만 Config 수치 적용)
+                FireSingleBolt(player, weapon, fireDirection, i == 0 ? 100f : damagePercent);
             }
         }
 
@@ -679,7 +679,7 @@ namespace CaptainSkillTree.SkillTree
                     if (hit.m_damage.m_poison > 0) hit.m_damage.m_poison *= damageMultiplier;
                     if (hit.m_damage.m_spirit > 0) hit.m_damage.m_spirit *= damageMultiplier;
 
-                    player.Message(MessageHud.MessageType.Center, L.Get("staff_amp_activated"));
+                    SkillEffect.ShowSkillEffectText(player, L.Get("staff_amp_activated"), Color.white, SkillEffect.SkillEffectTextType.Standard);
                 }
             }
             catch (System.Exception ex)

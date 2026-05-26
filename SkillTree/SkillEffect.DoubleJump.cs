@@ -25,6 +25,7 @@ namespace CaptainSkillTree.SkillTree
                 return true;
             }
             
+            [HarmonyPriority(Priority.VeryLow)]
             public static bool Prefix(Character __instance)
             {
                 // 로컬 플레이어가 아니면 패스
@@ -89,19 +90,20 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
             
-            // 점프 스킬 레벨 계산
-            float skillFactor = 0f;
+            // 점프 스킬 경험치 획득
             Skills skills = player.GetSkills();
             if (skills != null)
             {
-                skillFactor = skills.GetSkillFactor(Skills.SkillType.Jump);
                 player.RaiseSkill(Skills.SkillType.Jump);
             }
-            
-            // 점프 벡터 계산 - 간단한 수직 점프
-            float jumpForce = 12f; // 기본 점프 힘
-            float skillOffset = 1f + skillFactor * 0.4f;
-            Vector3 jumpVector = Vector3.up * (jumpForce * skillOffset);
+
+            // 일반 점프와 동일한 높이 (스킬 배율 포함)
+            float jumpSkillFactor = 0f;
+            Skills playerSkills = character.GetSkills();
+            if (playerSkills != null)
+                jumpSkillFactor = playerSkills.GetSkillFactor(Skills.SkillType.Jump);
+            float jumpForce = character.m_jumpForce * (1f + jumpSkillFactor * 0.4f);
+            Vector3 jumpVector = Vector3.up * jumpForce;
             
             // 점프 실행
             player.ForceJump(jumpVector);

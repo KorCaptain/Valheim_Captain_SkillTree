@@ -41,14 +41,18 @@ namespace CaptainSkillTree.SkillTree
                 // 에이트르 소모
                 player.UseEitr(eitrCost);
 
+                // 레벨별 쿨타임 (Lv1=30초, 레벨당 -2초)
+                int healLvForCd = SkillTreeManager.Instance?.GetSkillLevel("staff_Step6_heal") ?? 1;
+                float activeCooldown = GetStaffHealCooldownForLevel(healLvForCd);
+
                 // 쿨타임 적용
-                staffHealCooldowns[player] = Time.time + Staff_Config.StaffHealCooldownValue;
-                ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "staff_Step6_heal", Staff_Config.StaffHealCooldownValue);
+                staffHealCooldowns[player] = Time.time + activeCooldown;
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "staff_Step6_heal", activeCooldown);
 
                 // 범위 힐 실행
                 ExecuteAreaHeal(player);
 
-                Plugin.Log.LogInfo($"[지팡이 범위 힐] 발동 - 범위: {Staff_Config.StaffHealRangeValue}m, 치료량: {Staff_Config.StaffHealPercentageValue}%");
+                Plugin.Log.LogInfo($"[지팡이 범위 힐] 발동 Lv{healLvForCd} - 범위: {Staff_Config.StaffHealRangeValue}m, 치료량: {GetStaffHealPercentForLevel(healLvForCd)}%");
             }
             catch (Exception ex)
             {
@@ -65,7 +69,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 Vector3 casterPos = caster.transform.position;
                 float healRange = Staff_Config.StaffHealRangeValue;
-                float healPercent = Staff_Config.StaffHealPercentageValue / 100f;
+                int healLevel = SkillTreeManager.Instance?.GetSkillLevel("staff_Step6_heal") ?? 1;
+                float healPercent = GetStaffHealPercentForLevel(healLevel) / 100f;
 
                 // VFX 재생 (하드코딩)
                 try
@@ -136,6 +141,26 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogError($"[지팡이 힐] 실행 오류: {ex.Message}");
             }
+        }
+
+        // 레벨별 힐링 % (Lv1=18, Lv2=20, Lv3=22, Lv4=25, Lv5=28, Lv6=31, Lv7=35)
+        internal static float GetStaffHealPercentForLevel(int level) => level switch
+        {
+            2 => 20f,
+            3 => 22f,
+            4 => 25f,
+            5 => 28f,
+            6 => 31f,
+            7 => 35f,
+            _ => 18f   // Lv1 기본값
+        };
+
+        // 레벨별 쿨타임 (Lv1=30초, 레벨당 -2초)
+        internal static float GetStaffHealCooldownForLevel(int level)
+        {
+            float baseCooldown = Staff_Config.StaffHealCooldownValue;
+            float reduction = (level - 1) * 2f;
+            return Mathf.Max(baseCooldown - reduction, 1f);
         }
 
         /// <summary>

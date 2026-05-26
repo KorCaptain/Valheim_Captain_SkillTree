@@ -73,7 +73,7 @@ namespace CaptainSkillTree.MMO_System
 
             foreach (var b in AssetBundle.GetAllLoadedAssetBundles())
             {
-                if (b.Contains("EpicHudPanelCanvas")) { bundle = b; break; }
+                if (b.Contains("EpicHudPanelCanvas") || b.Contains("LevelUpVFX")) { bundle = b; break; }
             }
 
             if (bundle == null)

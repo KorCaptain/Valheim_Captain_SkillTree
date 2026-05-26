@@ -135,6 +135,16 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> ParryRushCooldown;
 
+        /// <summary>
+        /// 회오리베기 - 기저 데미지 (각 단계 ratio%를 곱함)
+        /// </summary>
+        public static ConfigEntry<float> WhirlwindSlashBaseDamage;
+
+        /// <summary>
+        /// 회오리베기 - 레벨당 데미지 보너스 (Lv1~7 업그레이드 시스템)
+        /// </summary>
+        public static ConfigEntry<float> WhirlwindSlashLevelBonus;
+
         // ===== Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ?≫떚釉??ㅽ궗 =====
 
         /// <summary>
@@ -193,6 +203,7 @@ namespace CaptainSkillTree.SkillTree
         /// ?대룞 以???諛섍꼍 ??紐ъ뒪?곕? 紐⑤몢 ?곸쨷
         /// </summary>
         public static ConfigEntry<float> RushSlashPathWidth;
+        public static ConfigEntry<float> RushSlashDamageLevelBonus;
 
         // ===== ?숈쟻 媛??꾨줈?쇳떚 (?쒕쾭 ?숆린??吏?? =====
 
@@ -255,6 +266,10 @@ namespace CaptainSkillTree.SkillTree
             SkillTreeConfig.GetEffectiveValue("ParryRush_StaminaCost", ParryRushStaminaCost?.Value ?? 10f);
         public static float ParryRushCooldownValue =>
             SkillTreeConfig.GetEffectiveValue("ParryRush_Cooldown", ParryRushCooldown?.Value ?? 35f);
+        public static float WhirlwindSlashBaseDamageValue =>
+            SkillTreeConfig.GetEffectiveValue("Tier5_WhirlwindSlash_BaseDamage", WhirlwindSlashBaseDamage?.Value ?? 100f);
+        public static float WhirlwindSlashLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Tier5_WhirlwindSlash_LevelBonus", WhirlwindSlashLevelBonus?.Value ?? 20f);
 
         // === Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ===
         public static int RushSlashRequiredPointsValue =>
@@ -279,6 +294,8 @@ namespace CaptainSkillTree.SkillTree
             SkillTreeConfig.GetEffectiveValue("Rush_Slash_AttackSpeedBonus", RushSlashAttackSpeedBonus?.Value ?? 220f);
         public static float RushSlashPathWidthValue =>
             SkillTreeConfig.GetEffectiveValue("Rush_Slash_PathWidth", RushSlashPathWidth?.Value ?? 3.0f);
+        public static float RushSlashDamageLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("sword_tier6_rushslash_damage_level_bonus", RushSlashDamageLevelBonus?.Value ?? 10f);
 
         // ===== ?명솚???섑띁 (湲곗〈 肄붾뱶 吏?? =====
 
@@ -514,6 +531,22 @@ namespace CaptainSkillTree.SkillTree
                 order: -55
             );
 
+            WhirlwindSlashBaseDamage = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier5_WhirlwindSlash_BaseDamage",
+                100f,
+                SkillTreeConfig.GetConfigDescription("Tier5_WhirlwindSlash_BaseDamage"),
+                order: -56
+            );
+
+            WhirlwindSlashLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier5_WhirlwindSlash_LevelBonus",
+                20f,
+                SkillTreeConfig.GetConfigDescription("Tier5_WhirlwindSlash_LevelBonus"),
+                order: -57
+            );
+
             // Tier 6: ?뚯쭊 ?곗냽 踰좉린 (Rush Slash) ?≫떚釉??ㅽ궗
             RushSlashRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Sword Tree",
@@ -589,6 +622,12 @@ namespace CaptainSkillTree.SkillTree
                 "Sword Tree",
                 "Tier6_RushSlash_PathWidth", 3.0f,
                 SkillTreeConfig.GetConfigDescription("Tier6_RushSlash_PathWidth")
+            );
+            RushSlashDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Sword Tree",
+                "Tier6_RushSlash_DamageLevelBonus",
+                10f,
+                SkillTreeConfig.GetConfigDescription("Tier6_RushSlash_DamageLevelBonus")
             );
 
             Plugin.Log.LogDebug("[Sword Config] 寃 ?ㅽ궗 Config 珥덇린???꾨즺");

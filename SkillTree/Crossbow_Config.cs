@@ -68,6 +68,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> CrossbowOneShotCooldown;
         public static ConfigEntry<float> CrossbowOneShotAoeRadius;
         public static ConfigEntry<float> CrossbowOneShotSlowReloadMultiplier;
+        public static ConfigEntry<float> CrossbowOneShotLevelBonus;
 
         // Tier 6: 발칸 아이스 (H키 액티브)
         public static ConfigEntry<float> CrossbowIceBreathCooldown;
@@ -76,6 +77,8 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> CrossbowIceBreathDotPct;
         public static ConfigEntry<int>   CrossbowIceBreathDotCount;
         public static ConfigEntry<int>   CrossbowIceBreathRequiredPoints;
+        public static ConfigEntry<float> CrossbowIceBreathLevelBonus;
+        public static ConfigEntry<float> CrossbowIceBreathDotLevelBonus;
 
         #endregion
 
@@ -199,7 +202,7 @@ namespace CaptainSkillTree.SkillTree
 
         public static float CrossbowOneShotDamageBonusValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_damage_bonus",
-            CrossbowOneShotDamageBonus?.Value ?? 400f);
+            CrossbowOneShotDamageBonus?.Value ?? 200f);
 
         public static float CrossbowOneShotKnockbackValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_knockback",
@@ -216,6 +219,10 @@ namespace CaptainSkillTree.SkillTree
         public static float CrossbowOneShotSlowReloadMultiplierValue =>
             SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_slow_reload_multiplier",
             CrossbowOneShotSlowReloadMultiplier?.Value ?? 2.0f);
+
+        public static float CrossbowOneShotLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("crossbow_one_shot_level_bonus",
+            CrossbowOneShotLevelBonus?.Value ?? 40f);
 
         // === 발칸 아이스 동적 값 ===
         public static float CrossbowIceBreathCooldownValue =>
@@ -241,6 +248,14 @@ namespace CaptainSkillTree.SkillTree
         public static int CrossbowIceBreathRequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_required_points",
             CrossbowIceBreathRequiredPoints?.Value ?? 3);
+
+        public static float CrossbowIceBreathLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_level_bonus",
+            CrossbowIceBreathLevelBonus?.Value ?? 15f);
+
+        public static float CrossbowIceBreathDotLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("crossbow_ice_breath_dot_level_bonus",
+            CrossbowIceBreathDotLevelBonus?.Value ?? 5f);
 
         #endregion
 
@@ -373,7 +388,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier5_OneShot_Duration"), order: 20);
 
                 CrossbowOneShotDamageBonus = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier5_OneShot_DamageBonus", 400f,
+                    "Crossbow Tree", "Tier5_OneShot_DamageBonus", 200f,
                     SkillTreeConfig.GetConfigDescription("Tier5_OneShot_DamageBonus"), order: 20);
 
                 CrossbowOneShotKnockback = SkillTreeConfig.BindServerSync(config,
@@ -396,6 +411,10 @@ namespace CaptainSkillTree.SkillTree
                     "Crossbow Tree", "Tier5_OneShot_SlowReloadMultiplier", 2.0f,
                     SkillTreeConfig.GetConfigDescription("Tier5_OneShot_SlowReloadMultiplier"), order: 20);
 
+                CrossbowOneShotLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier5_OneShot_LevelBonus", 40f,
+                    SkillTreeConfig.GetConfigDescription("Tier5_OneShot_LevelBonus"), order: 18);
+
                 // === Tier 6: 발칸 아이스 (H키 액티브) ===
                 CrossbowIceBreathCooldown = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier6_IceBreath_Cooldown", 35f,
@@ -410,7 +429,7 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_FirstHitPercent"), order: 10);
 
                 CrossbowIceBreathDotPct = SkillTreeConfig.BindServerSync(config,
-                    "Crossbow Tree", "Tier6_IceBreath_DotPercent", 60f,
+                    "Crossbow Tree", "Tier6_IceBreath_DotPercent", 35f,
                     SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_DotPercent"), order: 10);
 
                 CrossbowIceBreathDotCount = SkillTreeConfig.BindServerSync(config,
@@ -420,6 +439,14 @@ namespace CaptainSkillTree.SkillTree
                 CrossbowIceBreathRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Crossbow Tree", "Tier6_IceBreath_RequiredPoints", 3,
                     SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_RequiredPoints"), order: 9);
+
+                CrossbowIceBreathLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier6_IceBreath_LevelBonus", 15f,
+                    SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_LevelBonus"), order: 9);
+
+                CrossbowIceBreathDotLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Crossbow Tree", "Tier6_IceBreath_DotLevelBonus", 5f,
+                    SkillTreeConfig.GetConfigDescription("Tier6_IceBreath_DotLevelBonus"), order: 9);
 
                 // === 이벤트 핸들러 등록 (툴팁 실시간 업데이트) ===
                 RegisterCrossbowEventHandlers();

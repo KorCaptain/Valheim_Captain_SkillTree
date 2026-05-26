@@ -1,0 +1,15 @@
+* text=auto
+
+*.cs      text eol=crlf
+*.csproj  text eol=crlf
+*.props   text eol=crlf
+*.targets text eol=crlf
+
+*.json text eol=lf
+*.md   text eol=lf
+*.sh   text eol=lf
+
+*.dll   binary
+*.png   binary
+*.jpg   binary
+*.asset binary

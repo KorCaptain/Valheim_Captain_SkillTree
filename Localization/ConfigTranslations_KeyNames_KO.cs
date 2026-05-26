@@ -667,11 +667,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_CombatMastery_BuffDuration"] = "Tier 3: [빠른 공격] 버프 지속시간 (초)",
                 ["Tier3_CombatMastery_RequiredPoints"] = "Tier 3: [빠른 공격] 필요 포인트",
 
-                // === Tier 4: 치명타 숙련 ===
-                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: [치명타 숙련] 회피율 보너스 (%)",
-                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: [치명타 숙련] 버프 지속시간 (초)",
-                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: [치명타 숙련] 쿨타임 (초)",
-                ["Tier4_AttackEvasion_RequiredPoints"] = "Tier 4: [치명타 숙련] 필요 포인트",
+                // === Tier 4: 회피 마스터 ===
+                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: [회피 마스터] 회피율 보너스 (%)",
+                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: [회피 마스터] 버프 지속시간 (초)",
+                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: [회피 마스터] 쿨타임 (초)",
+                ["Tier4_AttackEvasion_RequiredPoints"] = "Tier 4: [회피 마스터] 필요 포인트",
 
                 // === Tier 5: 치명적 피해 ===
                 ["Tier5_CriticalDamage_DamageBonus"] = "Tier 5: [치명적 피해] 데미지 보너스 (%)",
@@ -864,6 +864,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_PierceCharge_StaminaCost"] = "Tier 5: [관통 돌격] 스태미나 소모",
                 ["Tier5_PierceCharge_Cooldown"] = "Tier 5: [관통 돌격] 쿨타임 (초)",
                 ["Tier5_PierceCharge_RequiredPoints"] = "Tier 5: [관통 돌격] 필요 포인트",
+                ["Tier5_PierceCharge_LevelBonus"] = "Tier 5: [관통 돌격] 레벨당 추가 데미지 보너스 (%)",
 
                 // === Polearm Tree: 휠윈드 (7개) ===
                 ["Tier6_Whirlwind_DamagePercent"]   = "Tier 6: [휠윈드] 공격력 비율 (%)",
@@ -1055,6 +1056,9 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv5_SelfHealPercent"] = "Lv5: 자가 치유 (%)",
                 ["Paladin_Lv5_AllyHealPercent"] = "Lv5: 아군 치유 (%/틱)",
                 ["Paladin_Lv5_HealRange"] = "Lv5: 치유 범위 (m)",
+                ["Paladin_Lv2_Cooldown"] = "Lv2: 쿨타임 (초)",
+                ["Paladin_Lv3_Cooldown"] = "Lv3: 쿨타임 (초)",
+                ["Paladin_Lv4_Cooldown"] = "Lv4: 쿨타임 (초)",
                 ["Paladin_Lv5_Cooldown"] = "Lv5: 쿨타임 (초)",
                 ["Paladin_Lv2_ResistanceReduction"] = "Lv2: 저항 감소 (%)",
                 ["Paladin_Lv3_ResistanceReduction"] = "Lv3: 저항 감소 (%)",
@@ -1142,6 +1146,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [약점폭발] 필요 포인트",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [약점폭발] 버프 지속시간 (초)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [약점폭발] 광역 피해 비율 (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [약점폭발] 레벨당 피해 보너스 (%)",
 
             };
         }

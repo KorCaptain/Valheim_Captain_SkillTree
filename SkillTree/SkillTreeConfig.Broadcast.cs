@@ -10,7 +10,7 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static partial class SkillTreeConfig
     {
-        public static void BroadcastConfigToClients()
+        public static void BroadcastConfigToClients(long targetPeerId = 0)
         {
             if (!_isServer) return;
 
@@ -659,22 +659,32 @@ namespace CaptainSkillTree.SkillTree
                     // ══════════════════════════════════════════════
                     // Berserker Job
                     // ══════════════════════════════════════════════
-                    ["Berserker_Rage_Cooldown"]                      = Berserker_Config.BerserkerRageCooldown?.Value ?? 45f,
                     ["Berserker_Rage_StaminaCost"]                   = Berserker_Config.BerserkerRageStaminaCost?.Value ?? 20f,
-                    ["Berserker_Rage_Duration"]                      = Berserker_Config.BerserkerRageDuration?.Value ?? 20f,
-                    ["Berserker_Rage_DamagePerHealthPercent"]        = Berserker_Config.BerserkerRageDamagePerHealthPercent?.Value ?? 2f,
                     ["Berserker_Rage_MaxDamageBonus"]                = Berserker_Config.BerserkerRageMaxDamageBonus?.Value ?? 200f,
                     ["Berserker_Rage_HealthThreshold"]               = Berserker_Config.BerserkerRageHealthThreshold?.Value ?? 100f,
                     ["Berserker_Passive_HealthThreshold"]            = Berserker_Config.BerserkerPassiveHealthThreshold?.Value ?? 10f,
                     ["Berserker_Passive_InvincibilityDuration"]      = Berserker_Config.BerserkerPassiveInvincibilityDuration?.Value ?? 8f,
                     ["Berserker_Passive_Cooldown"]                   = Berserker_Config.BerserkerPassiveCooldown?.Value ?? 600f,
-                    ["Berserker_Passive_HealthBonus"]                = Berserker_Config.BerserkerPassiveHealthBonus?.Value ?? 100f,
-                    ["Berserker_Lv2_CooldownReduction"]              = Berserker_Config.BerserkerLv2CooldownReduction?.Value ?? 5f,
-                    ["Berserker_Lv3_RageDamageReduction"]            = Berserker_Config.BerserkerLv3RageDamageReduction?.Value ?? 15f,
-                    ["Berserker_Lv4_LowHpAttackBonus"]              = Berserker_Config.BerserkerLv4LowHpAttackBonus?.Value ?? 15f,
-                    ["Berserker_Lv4_LowHpAttackThreshold"]          = Berserker_Config.BerserkerLv4LowHpAttackThreshold?.Value ?? 50f,
-                    ["Berserker_Lv5_PassiveCooldownReduction"]       = Berserker_Config.BerserkerLv5PassiveCooldownReduction?.Value ?? 120f,
-                    ["Berserker_Lv5_InvincibilityBonus"]             = Berserker_Config.BerserkerLv5InvincibilityBonus?.Value ?? 2f,
+                    ["Berserker_Rage_Cooldown_Lv1"]                  = Berserker_Config.BerserkerLv1ActiveCooldown?.Value ?? 45f,
+                    ["Berserker_Rage_Cooldown_Lv2"]                  = Berserker_Config.BerserkerLv2ActiveCooldown?.Value ?? 40f,
+                    ["Berserker_Rage_Cooldown_Lv3"]                  = Berserker_Config.BerserkerLv3ActiveCooldown?.Value ?? 40f,
+                    ["Berserker_Rage_Cooldown_Lv4"]                  = Berserker_Config.BerserkerLv4ActiveCooldown?.Value ?? 40f,
+                    ["Berserker_Rage_Cooldown_Lv5"]                  = Berserker_Config.BerserkerLv5ActiveCooldown?.Value ?? 35f,
+                    ["Berserker_Rage_Duration_Lv1"]                  = Berserker_Config.BerserkerLv1ActiveDuration?.Value ?? 20f,
+                    ["Berserker_Rage_Duration_Lv2"]                  = Berserker_Config.BerserkerLv2ActiveDuration?.Value ?? 20f,
+                    ["Berserker_Rage_Duration_Lv3"]                  = Berserker_Config.BerserkerLv3ActiveDuration?.Value ?? 25f,
+                    ["Berserker_Rage_Duration_Lv4"]                  = Berserker_Config.BerserkerLv4ActiveDuration?.Value ?? 25f,
+                    ["Berserker_Rage_Duration_Lv5"]                  = Berserker_Config.BerserkerLv5ActiveDuration?.Value ?? 25f,
+                    ["Berserker_Passive_HealthBonus_Lv1"]            = Berserker_Config.BerserkerLv1PassiveHealthBonus?.Value ?? 40f,
+                    ["Berserker_Passive_HealthBonus_Lv2"]            = Berserker_Config.BerserkerLv2PassiveHealthBonus?.Value ?? 60f,
+                    ["Berserker_Passive_HealthBonus_Lv3"]            = Berserker_Config.BerserkerLv3PassiveHealthBonus?.Value ?? 80f,
+                    ["Berserker_Passive_HealthBonus_Lv4"]            = Berserker_Config.BerserkerLv4PassiveHealthBonus?.Value ?? 100f,
+                    ["Berserker_Passive_HealthBonus_Lv5"]            = Berserker_Config.BerserkerLv5PassiveHealthBonus?.Value ?? 120f,
+                    ["Berserker_Rage_DamagePerHP_Lv1"]               = Berserker_Config.BerserkerLv1ActiveDamagePerHP?.Value ?? 1.5f,
+                    ["Berserker_Rage_DamagePerHP_Lv2"]               = Berserker_Config.BerserkerLv2ActiveDamagePerHP?.Value ?? 1.6f,
+                    ["Berserker_Rage_DamagePerHP_Lv3"]               = Berserker_Config.BerserkerLv3ActiveDamagePerHP?.Value ?? 1.7f,
+                    ["Berserker_Rage_DamagePerHP_Lv4"]               = Berserker_Config.BerserkerLv4ActiveDamagePerHP?.Value ?? 1.8f,
+                    ["Berserker_Rage_DamagePerHP_Lv5"]               = Berserker_Config.BerserkerLv5ActiveDamagePerHP?.Value ?? 2.0f,
 
                     // ══════════════════════════════════════════════
                     // Producer Job
@@ -738,8 +748,10 @@ namespace CaptainSkillTree.SkillTree
                 var configString = SerializeConfigData(configData);
                 if (ZNet.instance != null && ZRoutedRpc.instance != null)
                 {
-                    ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, "CaptainSkillTree.SkillTreeMod_ConfigSync", configString);
-                    Plugin.Log.LogInfo($"[SkillTreeConfig] 서버 설정을 모든 클라이언트에게 전송 ({configData.Count}개 항목)");
+                    long target = targetPeerId == 0 ? ZRoutedRpc.Everybody : targetPeerId;
+                    ZRoutedRpc.instance.InvokeRoutedRPC(target, "CaptainSkillTree.SkillTreeMod_ConfigSync", configString);
+                    string dest = targetPeerId == 0 ? "모든 클라이언트" : $"peerId={targetPeerId}";
+                    Plugin.Log.LogInfo($"[SkillTreeConfig] 서버 설정 전송 → {dest} ({configData.Count}개 항목)");
                 }
                 else
                 {

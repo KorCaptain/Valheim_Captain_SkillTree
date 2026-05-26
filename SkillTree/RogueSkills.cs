@@ -88,7 +88,7 @@ namespace CaptainSkillTree.SkillTree
             if (!hasCharge && JobSkillsUtility.IsOnCooldown(player, "Rogue"))
             {
                 float remainingTime = JobSkillsUtility.GetRemainingCooldown(player, "Rogue");
-                player.Message(MessageHud.MessageType.Center, L.Get("rogue_shadow_strike_cooldown", remainingTime.ToString("F1")));
+                SkillEffect.ShowSkillEffectText(player, L.Get("rogue_shadow_strike_cooldown", remainingTime.ToString("F1")), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                 return;
             }
 
@@ -126,7 +126,7 @@ namespace CaptainSkillTree.SkillTree
 
             try
             {
-                player.Message(MessageHud.MessageType.Center, L.Get("rogue_shadow_strike_activate"));
+                SkillEffect.ShowSkillEffectText(player, L.Get("rogue_shadow_strike_activate"), Color.white, SkillEffect.SkillEffectTextType.Standard);
                 ApplyRogueAttackBuff(player);
                 PlayRogueCastSound(player);
                 Plugin.Instance?.StartCoroutine(RoguePoisonBlastCoroutine(player, lv));
@@ -344,7 +344,7 @@ namespace CaptainSkillTree.SkillTree
 
             if (player != null && !player.IsDead())
             {
-                try { player.Message(MessageHud.MessageType.Center, L.Get("rogue_buff_end")); }
+                try { SkillEffect.ShowSkillEffectText(player, L.Get("rogue_buff_end"), Color.white, SkillEffect.SkillEffectTextType.Standard); }
                 catch (Exception) { }
             }
         }
@@ -389,7 +389,7 @@ namespace CaptainSkillTree.SkillTree
             }
             catch (System.Exception)
             {
-                try { player.Message(MessageHud.MessageType.TopLeft, L.Get("rogue_shadow_strike_activate")); }
+                try { SkillEffect.ShowSkillEffectText(player, L.Get("rogue_shadow_strike_activate"), Color.white, SkillEffect.SkillEffectTextType.Passive); }
                 catch (System.Exception) { }
             }
         }

@@ -542,12 +542,12 @@ namespace CaptainSkillTree.SkillTree
                 if (useDmg)
                 {
                     crafted.m_customData[CRAFT_DMG_KEY] = "5";
-                    player.Message(MessageHud.MessageType.Center, L.Get("crafting_lv2_enchant_dmg"));
+                    SkillEffect.ShowSkillEffectText(player, L.Get("crafting_lv2_enchant_dmg"), Color.white, SkillEffect.SkillEffectTextType.Standard);
                 }
                 else
                 {
                     crafted.m_customData[CRAFT_SPD_KEY] = "5";
-                    player.Message(MessageHud.MessageType.Center, L.Get("crafting_lv2_enchant_spd"));
+                    SkillEffect.ShowSkillEffectText(player, L.Get("crafting_lv2_enchant_spd"), Color.white, SkillEffect.SkillEffectTextType.Standard);
                 }
                 // VFX/SFX - 무기 마법부여 발동 시 재생
                 try

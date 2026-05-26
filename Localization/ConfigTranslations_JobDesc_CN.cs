@@ -508,6 +508,9 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 自身治疗率(%)】\n推荐：22-28%",
                 ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 盟友治疗率(%/次)】\n推荐：3.5-5%",
                 ["Paladin_Lv5_HealRange"] = "【Lv5 治疗范围(m)】\n推荐：7-10m",
+                ["Paladin_Lv2_Cooldown"] = "【Lv2 冷却时间(秒)】\n推荐：25-35秒",
+                ["Paladin_Lv3_Cooldown"] = "【Lv3 冷却时间(秒)】\n推荐：24-34秒",
+                ["Paladin_Lv4_Cooldown"] = "【Lv4 冷却时间(秒)】\n推荐：23-33秒",
                 ["Paladin_Lv5_Cooldown"] = "【Lv5 冷却时间(秒)】\n推荐：20-30秒",
                 ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 抵抗减少(%)】\n推荐：6-10%",
                 ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 抵抗减少(%)】\n推荐：8-12%",
@@ -577,6 +580,110 @@ namespace CaptainSkillTree.Localization
                 "【最大生命值加成(%)】\n" +
                 "狂战士被动：提升最大生命值。\n" +
                 "推荐：100%",
+
+                // === 狂战士：各等级怒火冷却时间 ===
+                ["Berserker_Lv1_Active_Cooldown"] =
+                "【狂战士 Lv1：怒火冷却时间（秒）】\n" +
+                "Lv1的怒火技能冷却时间。\n" +
+                "推荐：45秒",
+
+                ["Berserker_Lv2_Active_Cooldown"] =
+                "【狂战士 Lv2：怒火冷却时间（秒）】\n" +
+                "Lv2的怒火技能冷却时间。\n" +
+                "推荐：40秒",
+
+                ["Berserker_Lv3_Active_Cooldown"] =
+                "【狂战士 Lv3：怒火冷却时间（秒）】\n" +
+                "Lv3的怒火技能冷却时间。\n" +
+                "推荐：40秒",
+
+                ["Berserker_Lv4_Active_Cooldown"] =
+                "【狂战士 Lv4：怒火冷却时间（秒）】\n" +
+                "Lv4的怒火技能冷却时间。\n" +
+                "推荐：40秒",
+
+                ["Berserker_Lv5_Active_Cooldown"] =
+                "【狂战士 Lv5：怒火冷却时间（秒）】\n" +
+                "Lv5的怒火技能冷却时间。\n" +
+                "推荐：35秒",
+
+                // === 狂战士：各等级怒火持续时间 ===
+                ["Berserker_Lv1_Active_Duration"] =
+                "【狂战士 Lv1：怒火持续时间（秒）】\n" +
+                "Lv1的怒火效果持续时间。\n" +
+                "推荐：20秒",
+
+                ["Berserker_Lv2_Active_Duration"] =
+                "【狂战士 Lv2：怒火持续时间（秒）】\n" +
+                "Lv2的怒火效果持续时间。\n" +
+                "推荐：20秒",
+
+                ["Berserker_Lv3_Active_Duration"] =
+                "【狂战士 Lv3：怒火持续时间（秒）】\n" +
+                "Lv3的怒火效果持续时间。\n" +
+                "推荐：25秒",
+
+                ["Berserker_Lv4_Active_Duration"] =
+                "【狂战士 Lv4：怒火持续时间（秒）】\n" +
+                "Lv4的怒火效果持续时间。\n" +
+                "推荐：25秒",
+
+                ["Berserker_Lv5_Active_Duration"] =
+                "【狂战士 Lv5：怒火持续时间（秒）】\n" +
+                "Lv5的怒火效果持续时间。\n" +
+                "推荐：25秒",
+
+                // === 狂战士：各等级被动最大HP加成 ===
+                ["Berserker_Lv1_Passive_HealthBonus"] =
+                "【狂战士 Lv1：最大生命值加成】\n" +
+                "Lv1的固定最大HP加成。\n" +
+                "推荐：40",
+
+                ["Berserker_Lv2_Passive_HealthBonus"] =
+                "【狂战士 Lv2：最大生命值加成】\n" +
+                "Lv2的固定最大HP加成。\n" +
+                "推荐：60",
+
+                ["Berserker_Lv3_Passive_HealthBonus"] =
+                "【狂战士 Lv3：最大生命值加成】\n" +
+                "Lv3的固定最大HP加成。\n" +
+                "推荐：80",
+
+                ["Berserker_Lv4_Passive_HealthBonus"] =
+                "【狂战士 Lv4：最大生命值加成】\n" +
+                "Lv4的固定最大HP加成。\n" +
+                "推荐：100",
+
+                ["Berserker_Lv5_Passive_HealthBonus"] =
+                "【狂战士 Lv5：最大生命值加成】\n" +
+                "Lv5的固定最大HP加成。\n" +
+                "推荐：120",
+
+                // === 狂战士：各等级每损失1%HP的伤害加成 ===
+                ["Berserker_Lv1_Active_DamagePerHP"] =
+                "【狂战士 Lv1：每损1%HP伤害加成(%)】\n" +
+                "怒火中每损失1%HP的攻击力加成(Lv1)。\n" +
+                "推荐：1.5%",
+
+                ["Berserker_Lv2_Active_DamagePerHP"] =
+                "【狂战士 Lv2：每损1%HP伤害加成(%)】\n" +
+                "怒火中每损失1%HP的攻击力加成(Lv2)。\n" +
+                "推荐：1.6%",
+
+                ["Berserker_Lv3_Active_DamagePerHP"] =
+                "【狂战士 Lv3：每损1%HP伤害加成(%)】\n" +
+                "怒火中每损失1%HP的攻击力加成(Lv3)。\n" +
+                "推荐：1.7%",
+
+                ["Berserker_Lv4_Active_DamagePerHP"] =
+                "【狂战士 Lv4：每损1%HP伤害加成(%)】\n" +
+                "怒火中每损失1%HP的攻击力加成(Lv4)。\n" +
+                "推荐：1.8%",
+
+                ["Berserker_Lv5_Active_DamagePerHP"] =
+                "【狂战士 Lv5：每损1%HP伤害加成(%)】\n" +
+                "怒火中每损失1%HP的攻击力加成(Lv5)。\n" +
+                "推荐：2.0%",
 
                 // === 制作专家 (Producer) 职业技能 ===
                 // ========================================

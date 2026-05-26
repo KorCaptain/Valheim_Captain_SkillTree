@@ -152,8 +152,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 관통 돌격 툴팁 생성 (G키 액티브 스킬)
-        /// 전방 돌진 → 첫 관통 타격 → 후방 AOE 넉백
+        /// 관통 돌격 툴팁 생성 (G키 액티브 스킬, Lv1~7 레벨 연동)
         /// </summary>
         public static string GetPolearmStep5KingTooltip()
         {
@@ -161,52 +160,85 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogDebug("[폴암 툴팁] GetPolearmStep5KingTooltip() 호출됨 (관통 돌격)");
 
-                // Config에서 동적 설정값 가져오기
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step5_king") ?? 0;
+                float levelBonus = Polearm_Config.PolearmPierceChargeLevelBonusValue;
+                float basePrimary = Polearm_Config.PolearmPierceChargePrimaryDamageValue;
                 float dashDistance = Polearm_Config.PolearmPierceChargeDashDistanceValue;
-                float primaryDamage = Polearm_Config.PolearmPierceChargePrimaryDamageValue;
-                float aoeDamage = Polearm_Config.PolearmPierceChargeAoeDamageValue;
                 float aoeAngle = Polearm_Config.PolearmPierceChargeAoeAngleValue;
                 float aoeRadius = Polearm_Config.PolearmPierceChargeAoeRadiusValue;
                 float knockbackDist = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
                 float staminaCost = Polearm_Config.PolearmPierceChargeStaminaCostValue;
                 float cooldown = Polearm_Config.PolearmPierceChargeCooldownValue;
 
+                float currentPrimary = basePrimary + (currentLevel > 0 ? (currentLevel - 1) * levelBonus : 0f);
+                float currentAoe = GetPierceChargeAoeForLevel(currentLevel > 0 ? currentLevel : 1);
+
                 var tooltip = "";
 
-                // 1. 스킬명 (#FFD700, size=22)
-                tooltip += $"<color=#FFD700><size=22>{L.Get("polearm_skill_king")}</size></color>\n\n";
+                // 1. 스킬명
+                string lvSuffix = currentLevel > 0 ? $" [Lv{currentLevel}/7]" : "";
+                tooltip += $"<color=#FFD700><size=22>{L.Get("polearm_skill_king")}{lvSuffix}</size></color>\n\n";
 
-                // 2. 설명 (#FFD700 / #E0E0E0)
+                // 2. 현재 레벨 데미지 수치
+                if (currentLevel > 0)
+                    tooltip += $"<color=#AAAAAA><size=16>Lv{currentLevel} : {L.Get("pierce_charge_damage_preview", (int)currentPrimary, (int)currentAoe)}</size></color>\n";
+
+                // 3. 설명
                 tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("polearm_desc_king", dashDistance)}</size></color>\n";
 
-                // 3. 데미지 (#FF6B6B / #FFB6C1)
-                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_first_hit")}: </size></color><color=#FFB6C1><size=16>{L.Get("polearm_desc_king_first", primaryDamage)}</size></color>\n";
+                // 4. 직격 데미지
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_first_hit")}: </size></color><color=#FFB6C1><size=16>{L.Get("polearm_desc_king_first", (int)currentPrimary)}</size></color>\n";
 
-                // 4. AOE 데미지
-                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_aoe_knockback")}: </size></color><color=#FFB6C1><size=16>{L.Get("polearm_desc_king_aoe", aoeDamage, aoeAngle, aoeRadius)}</size></color>\n";
+                // 5. AOE 데미지
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_aoe_knockback")}: </size></color><color=#FFB6C1><size=16>{L.Get("polearm_desc_king_aoe", (int)currentAoe, aoeAngle, aoeRadius)}</size></color>\n";
 
-                // 5. 넉백 거리
+                // 6. 넉백 거리
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_knockback_distance")}: </size></color><color=#ADD8E6><size=16>{L.Get("polearm_desc_king_knockback", knockbackDist)}</size></color>\n";
 
-                // 6. 소모 (#FFB347 / #FFDAB9)
+                // 7. 소모
                 tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaCost:F0}</size></color>\n";
 
-                // 7. 스킬유형 (G키 강조: #FF4500 / #00FF00)
+                // 8. 스킬유형
                 tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FF00><size=16>{L.Get("skill_type_active_key", "G")}</size></color>\n";
 
-                // 8. 쿨타임 (#FFA500 / #FFDB58)
+                // 9. 쿨타임
                 tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
 
-                // 9. 필요조건 (#98FB98 / #00FF00)
+                // 10. 필요조건
                 tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_polearm_equip")}</size></color>\n";
 
-                // 10. 확인사항 (#F0E68C / #FFE4B5)
+                // 11. 확인사항
                 tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
 
-                // 11. 필요포인트 (#87CEEB / #FF6B6B)
-                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Polearm_Config.PolearmKingRequiredPointsValue}</size></color>";
+                // 12. 필요포인트
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Polearm_Config.PolearmKingRequiredPointsValue}</size></color>\n";
 
-                Plugin.Log.LogDebug($"[관통 돌격 툴팁] 최종 툴팁 생성 완료 - 길이: {tooltip?.Length ?? 0}");
+                // 13. 강화 필요 트로피 / 최대 레벨
+                if (currentLevel > 0 && currentLevel < 7)
+                {
+                    int nextLevel = currentLevel + 1;
+                    tooltip += $"\n<color=#FFB347><size=16>Lv{nextLevel} {L.Get("pierce_charge_upgrade_title")}: </size></color>";
+                    tooltip += $"<color=#FF6B6B><size=16>{GetPierceChargeTrophyText(nextLevel)}</size></color>";
+                }
+                else if (currentLevel >= 7)
+                {
+                    tooltip += $"\n<color=#FFD700><size=16>★ {L.Get("pierce_charge_max_level")} ★</size></color>";
+                }
+
+                // 14. 레벨 프리뷰 (미획득 또는 최대 미만)
+                if (currentLevel < 7)
+                {
+                    tooltip += "\n\n<color=#666666><size=14>────────────────────────────</size></color>";
+                    int startLv = currentLevel <= 0 ? 2 : currentLevel + 1;
+                    for (int lv = startLv; lv <= 7; lv++)
+                    {
+                        float p = basePrimary + (lv - 1) * levelBonus;
+                        float a = GetPierceChargeAoeForLevel(lv);
+                        tooltip += $"\n<color=#888888><size=14>Lv{lv} : {L.Get("pierce_charge_damage_preview", (int)p, (int)a)}</size></color>";
+                    }
+                }
+
+                Plugin.Log.LogDebug($"[관통 돌격 툴팁] 완료 - 길이: {tooltip?.Length ?? 0}");
                 return tooltip.TrimEnd('\n');
             }
             catch (System.Exception ex)
@@ -215,6 +247,25 @@ namespace CaptainSkillTree.SkillTree
                 return $"<color=#FFD700><size=22>{L.Get("polearm_skill_king")}</size></color>\n\n<color=#E0E0E0><size=16>{L.Get("skill_type_active_key", "G")}\n{L.Get("tooltip_generation_error")}</size></color>";
             }
         }
+
+        private static float GetPierceChargeAoeForLevel(int level) => level switch
+        {
+            2 => 175f, 3 => 200f, 4 => 225f,
+            5 => 250f, 6 => 275f, 7 => 300f,
+            _ => 150f
+        };
+
+        private static string GetPierceChargeTrophyText(int targetLevel) => targetLevel switch
+        {
+            1 => $"{L.Get("item_trophy_eikthyr")} x1 + {L.Get("item_trophy_boar")} x1",
+            2 => $"{L.Get("item_trophy_elder")} x1 + {L.Get("item_trophy_troll")} x1",
+            3 => $"{L.Get("item_trophy_bonemass")} x1 + {L.Get("item_trophy_abomination")} x1",
+            4 => $"{L.Get("item_trophy_dragonqueen")} x1 + {L.Get("item_trophy_sgolem")} x1",
+            5 => $"{L.Get("item_trophy_goblinking")} x1 + {L.Get("item_trophy_goblinshaman")} x1",
+            6 => $"{L.Get("item_trophy_seekerqueen")} x1 + {L.Get("item_trophy_gjall")} x1",
+            7 => $"{L.Get("item_trophy_fader")} x1 + {L.Get("item_trophy_fallenvalkyrie")} x1",
+            _ => ""
+        };
 
         // MeleeTooltipUtils.GenerateTooltip() 사용
         // 기존 GeneratePolearmTooltip() 제거
@@ -280,50 +331,88 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogDebug("[폴암 툴팁] GetPolearmStep6WhirlwindTooltip() 호출됨 (휠윈드)");
 
-                float damagePercent = Polearm_Config.PolearmWhirlwindDamagePercentValue;
+                var manager = SkillTreeManager.Instance;
+                int currentLevel = manager?.GetSkillLevel("polearm_step6_whirlwind") ?? 0;
+                int mainLevel = currentLevel == 0 ? 1 : currentLevel;
+                int displayLevel = System.Math.Min(currentLevel + 1, 7);
+
                 float staminaPerCycle = Polearm_Config.PolearmWhirlwindStaminaPerSecValue;
                 float cooldown = Polearm_Config.PolearmWhirlwindCooldownValue;
                 float maxDuration = Polearm_Config.PolearmWhirlwindMaxDurationValue;
 
-                var tooltip = "";
+                var t = $"<color=#FFD700><size=22>{L.Get("polearm_skill_whirlwind")}</size></color>\n";
 
-                // 1. 스킬명 (#FFD700, size=22)
-                tooltip += $"<color=#FFD700><size=22>{L.Get("polearm_skill_whirlwind")}</size></color>\n\n";
+                t += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {L.Get("whirlwind_damage_preview", (int)GetWhirlwindHitPercentForLevel(mainLevel), GetWhirlwindAoePercentForLevel(mainLevel))}</size></color>\n";
 
-                // 2. 설명 (#FFD700 / #E0E0E0)
-                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color><color=#E0E0E0><size=16>{L.Get("polearm_desc_whirlwind", damagePercent)}</size></color>\n";
+                t += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
+                t += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaPerCycle:F1}/{L.Get("unit_cycle")}</size></color>\n";
 
-                // 3. 데미지 (#FF6B6B / #FFB6C1)
-                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color><color=#FFB6C1><size=16>{L.Get("polearm_desc_whirlwind_damage", damagePercent)}</size></color>\n";
+                t += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
+                t += $"<color=#00FF00><size=16>{L.Get("skill_type_active_key", "Mouse2")}</size></color>\n";
 
-                // 4. 소모 (#FFB347 / #FFDAB9)
-                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color><color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaPerCycle:F0}/{L.Get("unit_cycle")}</size></color>\n";
+                t += $"<color=#FFA500><size=16>{L.Get("tooltip_max_duration")}: </size></color>";
+                t += $"<color=#FFDB58><size=16>{maxDuration:F0}{L.Get("unit_seconds")}</size></color>\n";
 
-                // 5. 스킬유형 (Mouse2 강조: #FF4500 / #00FF00)
-                tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color><color=#00FF00><size=16>{L.Get("skill_type_active_key", "Mouse2")}</size></color>\n";
+                t += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";
+                t += $"<color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
 
-                // 6. 최대 지속 시간 (#FFA500 / #FFDB58)
-                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_max_duration")}: </size></color><color=#FFDB58><size=16>{maxDuration:F0}{L.Get("unit_seconds")}</size></color>\n";
+                t += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>";
+                t += $"<color=#00FF00><size=16>{L.Get("requirement_polearm_equip")}</size></color>\n";
 
-                // 7. 쿨타임 (#FFA500 / #FFDB58)
-                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color><color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
+                t += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>";
+                t += $"<color=#FF6B6B><size=16>{Polearm_Config.PolearmWhirlwindRequiredPointsValue}</size></color>\n";
 
-                // 8. 필요조건 (#98FB98 / #00FF00)
-                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color><color=#00FF00><size=16>{L.Get("requirement_polearm_equip")}</size></color>\n";
+                if (currentLevel < 7)
+                {
+                    t += $"<color=#FFA500><size=16>{L.Get("whirlwind_upgrade_requires", displayLevel)}: </size></color>";
+                    t += $"<color=#FF6B6B><size=16>{GetWhirlwindLevelItemText(displayLevel)}</size></color>\n";
+                }
+                else
+                {
+                    t += $"<color=#FFD700><size=16>{L.Get("whirlwind_max_level")}</size></color>\n";
+                }
 
-                // 9. 확인사항 (#F0E68C / #FFE4B5)
-                tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color><color=#FFE4B5><size=16>{L.Get("tooltip_same_weapon_only")}</size></color>\n";
+                if (mainLevel < 7)
+                {
+                    t += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
+                    for (int lv = mainLevel + 1; lv <= 7; lv++)
+                    {
+                        t += $"<color=#808080><size=14>Lv{lv} : {L.Get("whirlwind_damage_preview", (int)GetWhirlwindHitPercentForLevel(lv), GetWhirlwindAoePercentForLevel(lv))}</size></color>\n";
+                    }
+                }
 
-                // 10. 필요포인트 (#87CEEB / #FF6B6B)
-                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Polearm_Config.PolearmWhirlwindRequiredPointsValue}</size></color>";
-
-                Plugin.Log.LogDebug($"[휠윈드 툴팁] 최종 툴팁 생성 완료 - 길이: {tooltip?.Length ?? 0}");
-                return tooltip.TrimEnd('\n');
+                Plugin.Log.LogDebug($"[휠윈드 툴팁] 최종 툴팁 생성 완료 - 길이: {t?.Length ?? 0}");
+                return t.TrimEnd('\n');
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[폴암 툴팁] 휠윈드 생성 실패: {ex.Message}");
                 return $"<color=#FFD700><size=22>{L.Get("polearm_skill_whirlwind")}</size></color>\n\n<color=#E0E0E0><size=16>{L.Get("skill_type_active_key", "Mouse2")}\n{L.Get("tooltip_generation_error")}</size></color>";
+            }
+        }
+
+        private static float GetWhirlwindHitPercentForLevel(int level)
+            => Polearm_Config.PolearmWhirlwindDamagePercentValue + (level - 1) * Polearm_Config.PolearmWhirlwindLevelBonusValue;
+
+        private static int GetWhirlwindAoePercentForLevel(int level) => level switch
+        {
+            2 => 20, 3 => 25, 4 => 30,
+            5 => 35, 6 => 40, 7 => 50,
+            _ => 15
+        };
+
+        private static string GetWhirlwindLevelItemText(int targetLevel)
+        {
+            switch (targetLevel)
+            {
+                case 1: return L.Get("item_trophy_eikthyr") + " x1 + " + L.Get("item_trophy_boar") + " x1";
+                case 2: return L.Get("item_trophy_elder") + " x1 + " + L.Get("item_trophy_troll") + " x1";
+                case 3: return L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_abomination") + " x1";
+                case 4: return L.Get("item_trophy_dragonqueen") + " x1 + " + L.Get("item_trophy_sgolem") + " x1";
+                case 5: return L.Get("item_trophy_goblinking") + " x1 + " + L.Get("item_trophy_goblinshaman") + " x1";
+                case 6: return L.Get("item_trophy_seekerqueen") + " x1 + " + L.Get("item_trophy_gjall") + " x1";
+                case 7: return L.Get("item_trophy_fader") + " x1 + " + L.Get("item_trophy_fallenvalkyrie") + " x1";
+                default: return "";
             }
         }
 

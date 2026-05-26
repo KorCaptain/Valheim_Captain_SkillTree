@@ -89,13 +89,8 @@ namespace CaptainSkillTree.SkillTree
         {
             float hpBonus   = Berserker_Config.GetEffectiveHealthBonus(level);
             float threshold = Berserker_Config.BerserkerPassiveHealthThresholdValue;
-            float invDur    = Berserker_Config.GetEffectiveInvincibilityDuration(level);
-            float passCd    = Berserker_Config.GetEffectivePassiveCooldown(level);
-            float dmgRed    = Berserker_Config.BerserkerLv3RageDamageReductionValue;
-            float lowHpAtk  = Berserker_Config.BerserkerLv4LowHpAttackBonusValue;
-            float lowHpThr  = Berserker_Config.BerserkerLv4LowHpAttackThresholdValue;
-            float cdRedMin  = Berserker_Config.BerserkerLv5PassiveCooldownReductionValue / 60f;
-            float invBonus  = Berserker_Config.BerserkerLv5InvincibilityBonusValue;
+            float invDur    = Berserker_Config.BerserkerPassiveInvincibilityDurationValue;
+            float passCd    = Berserker_Config.BerserkerPassiveCooldownValue;
 
             switch (level)
             {
@@ -107,16 +102,13 @@ namespace CaptainSkillTree.SkillTree
                         (int)hpBonus, (int)threshold, (int)invDur, (int)(passCd / 60f));
                 case 3:
                     return L.Get("berserker_passive_lv3",
-                        (int)hpBonus, (int)threshold, (int)invDur, (int)(passCd / 60f), (int)dmgRed);
+                        (int)hpBonus, (int)threshold, (int)invDur, (int)(passCd / 60f));
                 case 4:
                     return L.Get("berserker_passive_lv4",
-                        (int)hpBonus, (int)threshold, (int)invDur, (int)(passCd / 60f),
-                        (int)dmgRed, (int)lowHpAtk, (int)lowHpThr);
+                        (int)hpBonus, (int)threshold, (int)invDur, (int)(passCd / 60f));
                 default:
                     return L.Get("berserker_passive_lv5",
-                        (int)hpBonus, (int)threshold, (int)invDur, (int)(passCd / 60f),
-                        (int)dmgRed, (int)lowHpAtk, (int)lowHpThr,
-                        (int)cdRedMin, (int)invBonus);
+                        (int)hpBonus, (int)threshold, (int)invDur, (int)(passCd / 60f));
             }
         }
 

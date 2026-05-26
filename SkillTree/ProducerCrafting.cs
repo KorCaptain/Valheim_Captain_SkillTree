@@ -284,7 +284,7 @@ namespace CaptainSkillTree.SkillTree
                     System.Globalization.CultureInfo.InvariantCulture);
 
                 string enchantMsg = GetEnchantMessage((EnchantType)enchantId, value);
-                player.Message(MessageHud.MessageType.Center, enchantMsg);
+                SkillEffect.ShowSkillEffectText(player, enchantMsg, Color.white, SkillEffect.SkillEffectTextType.Standard);
                 Plugin.Log.LogDebug($"[제작 전문가] 마법부여: {item.m_shared.m_name} [{slotKey}] id={enchantId} val={value}");
 
                 try

@@ -443,19 +443,21 @@ namespace CaptainSkillTree.SkillTree
             {
                 string coloredText = $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{text}</color>";
 
-                // AlwaysCenter / Critical / XLarge는 config 무관 항상 Center
+                // 모든 타입에 config 적용
+                int displayMode = SkillTreeConfig.PassiveMessageDisplayValue;
+                if (displayMode == 2) return; // Off → 전체 숨김
+
                 if (type == SkillEffectTextType.AlwaysCenter
                  || type == SkillEffectTextType.Critical
                  || type == SkillEffectTextType.XLarge)
                 {
+                    if (displayMode == 1) { ShowTopLeftText(coloredText); return; }
                     ShowStandardText(coloredText);
                     return;
                 }
 
                 // Standard / Passive / Combat → config에 따라 분기
-                int displayMode = SkillTreeConfig.PassiveMessageDisplayValue;
                 if (displayMode == 1) { ShowTopLeftText(coloredText); return; }
-                if (displayMode == 2) { return; } // OFF
 
                 // displayMode == 0: 기존 switch(type) 그대로 실행
                 switch (type)

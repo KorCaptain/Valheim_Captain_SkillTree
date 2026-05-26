@@ -590,8 +590,9 @@ namespace CaptainSkillTree.SkillTree
 
                 // 연속의 흐름: 근접 무기 스태미나 감소
                 bool isMelee = skillType == Skills.SkillType.Swords ||
+                              skillType == Skills.SkillType.Axes ||
                               skillType == Skills.SkillType.Clubs ||
-                              skillType == Skills.SkillType.Knives ||
+                              WeaponHelper.IsUsingKnife(__instance) ||
                               skillType == Skills.SkillType.Spears ||
                               skillType == Skills.SkillType.Polearms;
 
@@ -745,8 +746,9 @@ namespace CaptainSkillTree.SkillTree
 
                 // 근접 무기 3연속 체크 (melee_speed1)
                 bool isMelee = weapon.m_shared.m_skillType == Skills.SkillType.Swords ||
+                              weapon.m_shared.m_skillType == Skills.SkillType.Axes ||
                               weapon.m_shared.m_skillType == Skills.SkillType.Clubs ||
-                              weapon.m_shared.m_skillType == Skills.SkillType.Knives ||
+                              WeaponHelper.IsUsingKnife(player) ||
                               weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
                               weapon.m_shared.m_skillType == Skills.SkillType.Polearms;
 

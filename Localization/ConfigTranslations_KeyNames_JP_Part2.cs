@@ -212,10 +212,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_CombatMastery_DamageBonus"] = "Tier 3: [素早い攻撃] 斬撃/刺突ダメージボーナス",
                 ["Tier3_CombatMastery_BuffDuration"] = "Tier 3: [素早い攻撃] バフ持続時間 (秒)",
                 ["Tier3_CombatMastery_RequiredPoints"] = "Tier 3: [素早い攻撃] 必要ポイント",
-                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: [クリティカル習得] 回避ボーナス (%)",
-                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: [クリティカル習得] バフ持続時間 (秒)",
-                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: [クリティカル習得] クールダウン (秒)",
-                ["Tier4_AttackEvasion_RequiredPoints"] = "Tier 4: [クリティカル習得] 必要ポイント",
+                ["Tier4_AttackEvasion_EvasionBonus"] = "Tier 4: [回避マスター] 回避ボーナス (%)",
+                ["Tier4_AttackEvasion_BuffDuration"] = "Tier 4: [回避マスター] バフ持続時間 (秒)",
+                ["Tier4_AttackEvasion_Cooldown"] = "Tier 4: [回避マスター] クールダウン (秒)",
+                ["Tier4_AttackEvasion_RequiredPoints"] = "Tier 4: [回避マスター] 必要ポイント",
                 ["Tier5_CriticalDamage_DamageBonus"] = "Tier 5: [致命ダメージ] ダメージボーナス (%)",
                 ["Tier5_CriticalDamage_RequiredPoints"] = "Tier 5: [致命ダメージ] 必要ポイント",
                 ["Tier6_Assassin_CritDamageBonus"] = "Tier 6: [アサシン] クリティカルダメージボーナス (%)",
@@ -495,6 +495,9 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv5_SelfHealPercent"] = "Lv5: 自己回復率 (%)",
                 ["Paladin_Lv5_AllyHealPercent"] = "Lv5: 味方回復率 (%/tick)",
                 ["Paladin_Lv5_HealRange"] = "Lv5: 回復範囲 (m)",
+                ["Paladin_Lv2_Cooldown"] = "Lv2: クールダウン (秒)",
+                ["Paladin_Lv3_Cooldown"] = "Lv3: クールダウン (秒)",
+                ["Paladin_Lv4_Cooldown"] = "Lv4: クールダウン (秒)",
                 ["Paladin_Lv5_Cooldown"] = "Lv5: クールダウン (秒)",
                 ["Paladin_Lv2_ResistanceReduction"] = "Lv2: 耐性減少 (%)",
                 ["Paladin_Lv3_ResistanceReduction"] = "Lv3: 耐性減少 (%)",
@@ -597,6 +600,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_RequiredPoints"]  = "Tier 9: [弱点爆発] 必要ポイント",
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [弱点爆発] バフ持続時間 (秒)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [弱点爆発] 範囲ダメージ率 (%)",
+                ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [弱点爆発] レベル毎ダメージボーナス (%)",
             };
         }
     }

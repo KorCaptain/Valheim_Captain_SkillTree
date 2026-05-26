@@ -529,18 +529,41 @@ namespace CaptainSkillTree
             static void Postfix()
             {
                 SkillTreeConfig.DetectServerClientMode();
-            }
-        }
-
-        // ZRoutedRpc.Awake postfix: 이 시점에 ZRoutedRpc.instance가 확실히 존재하므로 RPC 등록 보장
-        [HarmonyPatch(typeof(ZRoutedRpc), "Awake")]
-        public static class ZRoutedRpc_Awake_Patch
-        {
-            static void Postfix()
-            {
                 InitializeServerSync();
             }
         }
+
+        // 신규 클라이언트 접속 시 서버 Config 개별 전송
+        [HarmonyPatch(typeof(ZNet), "RPC_PeerInfo")]
+        public static class ZNet_RPC_PeerInfo_Patch
+        {
+            static void Postfix(ZNet __instance, ZRpc rpc)
+            {
+                if (!__instance.IsServer()) return;
+
+                ZNetPeer peer = null;
+                foreach (var p in __instance.GetPeers())
+                {
+                    if (p.m_rpc == rpc) { peer = p; break; }
+                }
+                if (peer == null) return;
+
+                long peerId = peer.m_uid;
+                ZNet.instance.StartCoroutine(DelayedConfigSync(peerId));
+            }
+
+            private static System.Collections.IEnumerator DelayedConfigSync(long peerId)
+            {
+                yield return new UnityEngine.WaitForSeconds(2f);
+
+                if (ZNet.instance == null) yield break;
+                if (ZNet.instance.GetPeer(peerId) == null) yield break;
+
+                SkillTreeConfig.BroadcastConfigToClients(peerId);
+                Log.LogInfo($"[ConfigSync] 신규 접속자 Config 동기화: peerId={peerId}");
+            }
+        }
+
 
         // 肄섏넄 紐낅졊???깅줉
         [HarmonyPatch(typeof(Terminal), "InitTerminal")]

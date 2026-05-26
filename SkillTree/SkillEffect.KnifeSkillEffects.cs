@@ -47,21 +47,6 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 회피 숙련 - 구르기 후 회피율 증가
-        /// </summary>
-        public static void CheckKnifeEvasion(Player player)
-        {
-            if (!HasSkill("knife_step2_evasion") || !IsUsingDagger(player)) return;
-
-            float duration = Knife_Config.KnifeEvasionDurationValue;
-            knifeEvasionEndTime[player] = Time.time + duration;
-
-            // 패시브 스킬: 텍스트만 표시
-            DrawFloatingText(player, L.Get("knife_evasion_buff", duration.ToString(), Knife_Config.KnifeEvasionBonusValue.ToString()));
-            Plugin.Log.LogDebug($"[회피 숙련] {duration}초간 회피율 +{Knife_Config.KnifeEvasionBonusValue}% 버프 활성화");
-        }
-
-        /// <summary>
         /// 빠른 움직임 - 단검 장착 시 이동속도 패시브 알림
         /// 실제 효과는 GetJogSpeedFactor 패치 (RogueSkills.cs)에서 처리
         /// </summary>
@@ -326,8 +311,8 @@ namespace CaptainSkillTree.SkillTree
                 return false;
             }
 
-            // 스태미나 체크
-            float staminaCost = player.GetMaxStamina() * (Knife_Config.KnifeAssassinHeartStaminaCostValue / 100f);
+            // 스태미나 체크 (플랫 수치)
+            float staminaCost = Knife_Config.KnifeAssassinHeartStaminaCostValue;
             if (player.GetStamina() < staminaCost)
             {
                 DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
@@ -404,15 +389,16 @@ namespace CaptainSkillTree.SkillTree
 
             if (IsKnifeAssassinHeartActive(player))
             {
-                // 치명타 데미지 배수만 적용 (피해 보너스, 치명타 확률 제거됨)
-                float critDamageMultiplier = Knife_Config.KnifeAssassinHeartCritDamageValue;
+                // 치명타 데미지 배수 (레벨 연동)
+                int heartLevel = SkillTreeManager.Instance?.GetSkillLevel("knife_step9_assassin_heart") ?? 1;
+                float critDamageMultiplier = KnifeAssassinHeart_Tooltip.GetCritMultiplierForLevel(heartLevel);
                 hit.m_damage.m_slash *= critDamageMultiplier;
                 hit.m_damage.m_pierce *= critDamageMultiplier;
 
                 SimpleVFX.Play("flash_round_ellow", hit.m_point);
-                DrawFloatingText(player, L.Get("assassin_heart_crit", Knife_Config.KnifeAssassinHeartCritDamageValue.ToString()), Color.red);
+                DrawFloatingText(player, L.Get("assassin_heart_crit", $"{critDamageMultiplier:F1}"), Color.red);
 
-                Plugin.Log.LogDebug($"[암살자의 심장] 치명타 발동! {Knife_Config.KnifeAssassinHeartCritDamageValue}배 피해");
+                Plugin.Log.LogDebug($"[암살자의 심장] 치명타 발동! Lv{heartLevel} {critDamageMultiplier:F1}배 피해");
             }
         }
 
@@ -538,7 +524,8 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
-            int requiredHits = Knife_Config.KnifeAssassinHeartAttackCountValue; // 3회 적중 필요
+            int skillLevel = SkillTreeManager.Instance?.GetSkillLevel("knife_step9_assassin_heart") ?? 1;
+            int requiredHits = KnifeAssassinHeart_Tooltip.GetAttackCountForLevel(skillLevel);
             float attackSpeedBonus = 500f; // 공격속도 500% 증가
             float attackInterval = 0.15f; // 공격 간격
 

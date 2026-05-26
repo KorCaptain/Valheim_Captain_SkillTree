@@ -44,7 +44,7 @@ namespace CaptainSkillTree.Gui
         private static readonly string[] HIconNames = {
             "attack_unlock",
             "ranged_unlock",
-            "defense_unlock", "attack_unlock",
+            "sword_unlock", "attack_unlock",
             "mace_unlock", "ranged_unlock",
             "ranged_unlock"
         };
@@ -57,6 +57,17 @@ namespace CaptainSkillTree.Gui
 
         // Y슬롯 디버그 로그 (1회만)
         private bool _ySlotDebugLogged = false;
+
+        private static Font _hudFont;
+        private static Font GetHudFont()
+        {
+            if (_hudFont != null) return _hudFont;
+            // ScaleWithScreenSize 캔버스는 Valheim UI의 font atlas와 충돌 방지를 위해 전용 font 사용
+            _hudFont = Font.CreateDynamicFontFromOSFont("Arial", 14);
+            if (_hudFont == null)
+                _hudFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            return _hudFont;
+        }
 
         private void Awake()
         {
@@ -78,7 +89,11 @@ namespace CaptainSkillTree.Gui
             _canvas = canvasGO.AddComponent<Canvas>();
             _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             _canvas.sortingOrder = 200;
-            canvasGO.AddComponent<CanvasScaler>();
+            var scaler = canvasGO.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920f, 1080f);
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            scaler.matchWidthOrHeight = 0.5f;
             canvasGO.AddComponent<GraphicRaycaster>();
 
             // 슬롯 컨테이너 - 좌하단 앵커
@@ -203,11 +218,13 @@ namespace CaptainSkillTree.Gui
             var keyGO = new GameObject("KeyLabel");
             keyGO.transform.SetParent(go.transform, false);
             var keyText = keyGO.AddComponent<Text>();
-            keyText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            keyText.font = GetHudFont();
             keyText.fontSize = 28;
             keyText.fontStyle = FontStyle.Bold;
             keyText.color = new Color(1f, 0.9f, 0.2f);
             keyText.alignment = TextAnchor.MiddleCenter;
+            keyText.verticalOverflow = VerticalWrapMode.Overflow;
+            keyText.horizontalOverflow = HorizontalWrapMode.Overflow;
             keyText.raycastTarget = false;
             keyText.text = key;
             var keyRt = keyGO.GetComponent<RectTransform>();
@@ -604,6 +621,8 @@ namespace CaptainSkillTree.Gui
                         slot.LayoutElem.preferredWidth = iconSz;
                         slot.LayoutElem.preferredHeight = iconSz + 34f;
                     }
+                    if (slot?.KeyLabelText != null)
+                        slot.KeyLabelText.rectTransform.sizeDelta = new Vector2(iconSz, 32f);
                 }
             }
 
@@ -796,7 +815,7 @@ namespace CaptainSkillTree.Gui
                     {
                         if (WeaponHelper.IsUsingCrossbow(p) && mgr.GetSkillLevel("crossbow_ice_breath") > 0) { iconName = "ranged_unlock"; activeSkillId = "crossbow_ice_breath"; }
                         else if (WeaponHelper.IsUsingBow(p) && mgr.GetSkillLevel("bow_Step6_arrow_rain") > 0) { iconName = "ranged_unlock"; activeSkillId = "bow_Step6_arrow_rain"; }
-                        else if (SkillTree.Sword_Skill.IsUsingSword(p) && mgr.GetSkillLevel("sword_step5_defswitch") > 0) { iconName = "attack_unlock"; activeSkillId = "sword_step5_defswitch"; }
+                        else if (SkillTree.Sword_Skill.IsUsingSword(p) && mgr.GetSkillLevel("sword_step5_defswitch") > 0) { iconName = "sword_unlock"; activeSkillId = "sword_step5_defswitch"; }
                         else if (WeaponHelper.IsUsingSpear(p) && mgr.GetSkillLevel("spear_Step5_combo") > 0) { iconName = "attack_unlock"; activeSkillId = "spear_Step5_combo"; }
                         else if (WeaponHelper.IsUsingMace(p) && mgr.GetSkillLevel("mace_Step7_fury_hammer") > 0) { iconName = "mace_unlock"; activeSkillId = "mace_Step7_fury_hammer"; }
                         else if (WeaponHelper.IsUsingStaffOrWand(p) && mgr.GetSkillLevel("staff_Step6_heal") > 0) { iconName = "ranged_unlock"; activeSkillId = "staff_Step6_heal"; }
@@ -980,14 +999,16 @@ namespace CaptainSkillTree.Gui
         private void HandleDrag()
         {
             if (_containerRt == null) return;
+            float sf = _canvas != null ? _canvas.scaleFactor : 1f;
+            Vector2 logicalMouse = (Vector2)Input.mousePosition / sf;
             if (Input.GetMouseButtonDown(0) && IsMouseOverHUD())
             {
                 _isDragging = true;
-                _dragOffset = _containerRt.anchoredPosition - (Vector2)Input.mousePosition;
+                _dragOffset = _containerRt.anchoredPosition - logicalMouse;
             }
             if (_isDragging)
             {
-                _containerRt.anchoredPosition = (Vector2)Input.mousePosition + _dragOffset;
+                _containerRt.anchoredPosition = logicalMouse + _dragOffset;
                 if (Input.GetMouseButtonUp(0))
                 {
                     _isDragging = false;
@@ -1001,7 +1022,8 @@ namespace CaptainSkillTree.Gui
 
         private bool IsMouseOverHUD()
         {
-            Vector2 mousePos = Input.mousePosition;
+            float sf = _canvas != null ? _canvas.scaleFactor : 1f;
+            Vector2 mousePos = (Vector2)Input.mousePosition / sf;
             Vector2 pos = _containerRt.anchoredPosition;
             float w = _containerRt.rect.width;
             float h = _containerRt.rect.height;

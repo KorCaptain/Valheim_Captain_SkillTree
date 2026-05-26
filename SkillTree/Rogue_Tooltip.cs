@@ -89,7 +89,6 @@ namespace CaptainSkillTree.SkillTree
                         int   prevBlasts   = RogueSkills.GetPoisonBlastsForLevel(lv - 1);
                         float prevInstant  = RogueSkills.GetPoisonInstantForLevel(lv - 1);
                         float prevDot      = RogueSkills.GetPoisonDotForLevel(lv - 1);
-                        float prevCooldown = RogueSkills.GetCooldownForLevel(lv - 1);
 
                         string activePreview = (lv == 5 && RogueSkills.GetChargesForLevel(lv) > RogueSkills.GetChargesForLevel(lv - 1))
                             ? L.Get("rogue_preview_charges", 1)
@@ -102,9 +101,10 @@ namespace CaptainSkillTree.SkillTree
                         if (instantDelta > 0 || dotDelta > 0)
                             tooltip += $"  {L.Get("rogue_preview_poison", (int)instantDelta, (int)dotDelta)}\n";
 
-                        float cdReduction = prevCooldown - pvCooldown;
-                        if (cdReduction > 0.01f)
-                            tooltip += $"  {L.Get("rogue_preview_cd", (int)Math.Round(cdReduction))}\n";
+                        float lv1Cooldown = RogueSkills.GetCooldownForLevel(1);
+                        float cdReductionFromLv1 = lv1Cooldown - pvCooldown;
+                        if (cdReductionFromLv1 > 0.01f)
+                            tooltip += $"  {L.Get("rogue_preview_cd", (int)Math.Round(cdReductionFromLv1), (int)pvCooldown)}\n";
 
                         tooltip += $"  {L.Get("tooltip_passive")}: {GetPassiveStr(lv)}</size></color>\n";
                     }
@@ -145,7 +145,7 @@ namespace CaptainSkillTree.SkillTree
         private static string GetRogueFallbackTooltip()
         {
             return $"<color=#FFD700><size=22>{L.Get("job_rogue")}</size></color>\n" +
-                   $"<color=#E0E0E0><size=16>Lv1 : {L.Get("rogue_effect_strike", 35, 8, 8)}</size></color>\n" +
+                   $"<color=#E0E0E0><size=16>Lv1 : {L.Get("rogue_effect_strike", 30, 8, 6)}</size></color>\n" +
                    $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>" +
                    $"<color=#ADFF2F><size=16>{L.Get("rogue_passive_lv1", 7, 15, 4, 5)}</size></color>";
         }

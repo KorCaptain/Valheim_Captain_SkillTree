@@ -508,6 +508,9 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 自己回復率(%)】\n推奨：22-28%",
                 ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 味方回復率(%/ティック)】\n推奨：3.5-5%",
                 ["Paladin_Lv5_HealRange"] = "【Lv5 回復範囲(m)】\n推奨：7-10m",
+                ["Paladin_Lv2_Cooldown"] = "【Lv2 クールダウン(秒)】\n推奨：25-35秒",
+                ["Paladin_Lv3_Cooldown"] = "【Lv3 クールダウン(秒)】\n推奨：24-34秒",
+                ["Paladin_Lv4_Cooldown"] = "【Lv4 クールダウン(秒)】\n推奨：23-33秒",
                 ["Paladin_Lv5_Cooldown"] = "【Lv5 クールダウン(秒)】\n推奨：20-30秒",
                 ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 耐性減少(%)】\n推奨：6-10%",
                 ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 耐性減少(%)】\n推奨：8-12%",
@@ -577,6 +580,110 @@ namespace CaptainSkillTree.Localization
                 "【最大HP増加(%)】\n" +
                 "バーサーカーパッシブ：最大HPを向上。\n" +
                 "推奨：100%",
+
+                // === バーサーカー：各レベルの怒りクールタイム ===
+                ["Berserker_Lv1_Active_Cooldown"] =
+                "【バーサーカー Lv1：怒りクールタイム（秒）】\n" +
+                "Lv1の怒りスキルクールタイム。\n" +
+                "推奨：45秒",
+
+                ["Berserker_Lv2_Active_Cooldown"] =
+                "【バーサーカー Lv2：怒りクールタイム（秒）】\n" +
+                "Lv2の怒りスキルクールタイム。\n" +
+                "推奨：40秒",
+
+                ["Berserker_Lv3_Active_Cooldown"] =
+                "【バーサーカー Lv3：怒りクールタイム（秒）】\n" +
+                "Lv3の怒りスキルクールタイム。\n" +
+                "推奨：40秒",
+
+                ["Berserker_Lv4_Active_Cooldown"] =
+                "【バーサーカー Lv4：怒りクールタイム（秒）】\n" +
+                "Lv4の怒りスキルクールタイム。\n" +
+                "推奨：40秒",
+
+                ["Berserker_Lv5_Active_Cooldown"] =
+                "【バーサーカー Lv5：怒りクールタイム（秒）】\n" +
+                "Lv5の怒りスキルクールタイム。\n" +
+                "推奨：35秒",
+
+                // === バーサーカー：各レベルの怒り持続時間 ===
+                ["Berserker_Lv1_Active_Duration"] =
+                "【バーサーカー Lv1：怒り持続時間（秒）】\n" +
+                "Lv1の怒り効果持続時間。\n" +
+                "推奨：20秒",
+
+                ["Berserker_Lv2_Active_Duration"] =
+                "【バーサーカー Lv2：怒り持続時間（秒）】\n" +
+                "Lv2の怒り効果持続時間。\n" +
+                "推奨：20秒",
+
+                ["Berserker_Lv3_Active_Duration"] =
+                "【バーサーカー Lv3：怒り持続時間（秒）】\n" +
+                "Lv3の怒り効果持続時間。\n" +
+                "推奨：25秒",
+
+                ["Berserker_Lv4_Active_Duration"] =
+                "【バーサーカー Lv4：怒り持続時間（秒）】\n" +
+                "Lv4の怒り効果持続時間。\n" +
+                "推奨：25秒",
+
+                ["Berserker_Lv5_Active_Duration"] =
+                "【バーサーカー Lv5：怒り持続時間（秒）】\n" +
+                "Lv5の怒り効果持続時間。\n" +
+                "推奨：25秒",
+
+                // === バーサーカー：各レベルのパッシブ最大HPボーナス ===
+                ["Berserker_Lv1_Passive_HealthBonus"] =
+                "【バーサーカー Lv1：最大HPボーナス】\n" +
+                "Lv1のフラット最大HPボーナス。\n" +
+                "推奨：40",
+
+                ["Berserker_Lv2_Passive_HealthBonus"] =
+                "【バーサーカー Lv2：最大HPボーナス】\n" +
+                "Lv2のフラット最大HPボーナス。\n" +
+                "推奨：60",
+
+                ["Berserker_Lv3_Passive_HealthBonus"] =
+                "【バーサーカー Lv3：最大HPボーナス】\n" +
+                "Lv3のフラット最大HPボーナス。\n" +
+                "推奨：80",
+
+                ["Berserker_Lv4_Passive_HealthBonus"] =
+                "【バーサーカー Lv4：最大HPボーナス】\n" +
+                "Lv4のフラット最大HPボーナス。\n" +
+                "推奨：100",
+
+                ["Berserker_Lv5_Passive_HealthBonus"] =
+                "【バーサーカー Lv5：最大HPボーナス】\n" +
+                "Lv5のフラット最大HPボーナス。\n" +
+                "推奨：120",
+
+                // === バーサーカー：各レベルの失ったHP1%ごとの攻撃力増加 ===
+                ["Berserker_Lv1_Active_DamagePerHP"] =
+                "【バーサーカー Lv1：失HP1%ごとの攻撃力増加(%)】\n" +
+                "怒り中、失ったHP1%ごとの攻撃力ボーナス(Lv1)。\n" +
+                "推奨：1.5%",
+
+                ["Berserker_Lv2_Active_DamagePerHP"] =
+                "【バーサーカー Lv2：失HP1%ごとの攻撃力増加(%)】\n" +
+                "怒り中、失ったHP1%ごとの攻撃力ボーナス(Lv2)。\n" +
+                "推奨：1.6%",
+
+                ["Berserker_Lv3_Active_DamagePerHP"] =
+                "【バーサーカー Lv3：失HP1%ごとの攻撃力増加(%)】\n" +
+                "怒り中、失ったHP1%ごとの攻撃力ボーナス(Lv3)。\n" +
+                "推奨：1.7%",
+
+                ["Berserker_Lv4_Active_DamagePerHP"] =
+                "【バーサーカー Lv4：失HP1%ごとの攻撃力増加(%)】\n" +
+                "怒り中、失ったHP1%ごとの攻撃力ボーナス(Lv4)。\n" +
+                "推奨：1.8%",
+
+                ["Berserker_Lv5_Active_DamagePerHP"] =
+                "【バーサーカー Lv5：失HP1%ごとの攻撃力増加(%)】\n" +
+                "怒り中、失ったHP1%ごとの攻撃力ボーナス(Lv5)。\n" +
+                "推奨：2.0%",
 
                 // ========================================
                 // 製作専家 (Producer) 職業スキル

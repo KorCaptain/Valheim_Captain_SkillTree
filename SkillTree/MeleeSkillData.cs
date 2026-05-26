@@ -184,7 +184,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "knife_desc_assassin_main",
                 DescriptionArgs = new object[] { Knife_Config.KnifeAssassinHeartTeleportRangeValue, Knife_Config.KnifeAssassinHeartTeleportBehindValue, Knife_Config.KnifeAssassinHeartStunDurationValue, Knife_Config.KnifeAssassinHeartAttackCountValue },
                 RequiredPoints = Knife_Config.KnifeAssassinHeartRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(395, 480),
                 Category = "근접",
@@ -203,7 +203,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "knife_desc_stack_explosion",
                 DescriptionArgs = new object[] { Knife_Config.KnifeStackExplosionMaxStacksValue, Knife_Config.KnifeStackExplosionStackDurationValue, Knife_Config.KnifeStackExplosionDamagePercentValue },
                 RequiredPoints = Knife_Config.KnifeStackExplosionRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(335, 520),
                 Category = "근접",
@@ -367,7 +367,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "sword_desc_rush_slash",
                 DescriptionArgs = new object[] { Sword_Config.RushSlashInitialDistanceValue },
                 RequiredPoints = Sword_Config.RushSlashRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(435, 420),
                 Category = "근접",
@@ -375,7 +375,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "sword_step4_duel" },
                 NextNodes = new List<string>(),
-                MutuallyExclusive = new List<string> { "defense_Step6_mind" },
+                MutuallyExclusive = new List<string>(),
                 ApplyEffect = (lv) => { }
             });
 
@@ -387,7 +387,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "sword_desc_parry_rush",
                 DescriptionArgs = new object[] { Sword_Config.ParryRushDurationValue },
                 RequiredPoints = Sword_Config.SwordStep5DefenseSwitchRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(470, 360),
                 Category = "근접",
@@ -534,7 +534,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "spear_desc_penetrate",
                 DescriptionArgs = new object[] { Spear_Config.SpearStep6PenetrateBuffDurationValue, Spear_Config.SpearStep6PenetrateComboCountValue },
                 RequiredPoints = Spear_Config.SpearPenetrateRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(615, 135),
                 Category = "근접",
@@ -542,7 +542,6 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string>(),
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
-                MutuallyExclusive = new List<string> { "defense_Step6_mind" },
                 ApplyEffect = (lv) => { }
             });
 
@@ -553,7 +552,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "spear_desc_combo",
                 DescriptionArgs = new object[] { SkillTreeConfig.SpearStep6ComboDamageValue },
                 RequiredPoints = Spear_Config.SpearComboRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(615, 90),
                 Category = "근접",
@@ -718,7 +717,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "polearm_desc_king",
                 DescriptionArgs = new object[] { Polearm_Config.PolearmPierceChargeDashDistanceValue },
                 RequiredPoints = Polearm_Config.PolearmKingRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(625, 20),
                 Category = "근접",
@@ -737,7 +736,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "polearm_desc_whirlwind",
                 DescriptionArgs = new object[] { Polearm_Config.PolearmWhirlwindDamagePercentValue },
                 RequiredPoints = Polearm_Config.PolearmWhirlwindRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(680, 20),
                 Category = "근접",
@@ -902,7 +901,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "mace_desc_fury_attack",
                 DescriptionArgs = new object[] { 5 },
                 RequiredPoints = Mace_Config.FuryHammerRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(635, 255),
                 Category = "근접",
@@ -920,7 +919,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "mace_desc_guardian_buff",
                 DescriptionArgs = new object[] { 8f },
                 RequiredPoints = Mace_Config.GuardianHeartRequiredPointsValue,
-                MaxLevel = 1,
+                MaxLevel = 7,
                 Tier = 7,
                 Position = new Vector2(600, 320), // 현 위치(580, 300)에서 x+20, y+20
                 Category = "근접",
@@ -928,7 +927,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "mace_Step6_grandmaster" }, // 둔기 마스터에서 직접 연결
                 NextNodes = new List<string>(),
-                MutuallyExclusive = new List<string> { "defense_Step6_mind" },
+                MutuallyExclusive = new List<string>(),
                 ApplyEffect = (lv) => { }
             });
         }

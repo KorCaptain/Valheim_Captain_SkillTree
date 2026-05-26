@@ -508,6 +508,9 @@ namespace CaptainSkillTree.Localization
                 ["Paladin_Lv5_SelfHealPercent"] = "【Lv5 Selbstheilung (%)】\nEmpfehlung: 22-28%",
                 ["Paladin_Lv5_AllyHealPercent"] = "【Lv5 Verbündeten-Heilung (%/Tick)】\nEmpfehlung: 3,5-5%",
                 ["Paladin_Lv5_HealRange"] = "【Lv5 Heilungsreichweite (m)】\nEmpfehlung: 7-10m",
+                ["Paladin_Lv2_Cooldown"] = "【Lv2 Abklingzeit (Sek.)】\nEmpfehlung: 25-35 Sek.",
+                ["Paladin_Lv3_Cooldown"] = "【Lv3 Abklingzeit (Sek.)】\nEmpfehlung: 24-34 Sek.",
+                ["Paladin_Lv4_Cooldown"] = "【Lv4 Abklingzeit (Sek.)】\nEmpfehlung: 23-33 Sek.",
                 ["Paladin_Lv5_Cooldown"] = "【Lv5 Abklingzeit (Sek.)】\nEmpfehlung: 20-30 Sek.",
                 ["Paladin_Lv2_ResistanceReduction"] = "【Lv2 Resistenzreduzierung (%)】\nEmpfehlung: 6-10%",
                 ["Paladin_Lv3_ResistanceReduction"] = "【Lv3 Resistenzreduzierung (%)】\nEmpfehlung: 8-12%",
@@ -577,6 +580,110 @@ namespace CaptainSkillTree.Localization
                 "【Maximaler LP-Bonus (%)】\n" +
                 "Berserker Passiv: Erhöht die maximalen LP.\n" +
                 "Empfehlung: 100%",
+
+                // === Berserker: Lv-basierte Wut-Abklingzeiten ===
+                ["Berserker_Lv1_Active_Cooldown"] =
+                "【Berserker Lv1: Wut-Abklingzeit (Sek.)】\n" +
+                "Abklingzeit der Wut auf Lv1.\n" +
+                "Empfehlung: 45 Sek.",
+
+                ["Berserker_Lv2_Active_Cooldown"] =
+                "【Berserker Lv2: Wut-Abklingzeit (Sek.)】\n" +
+                "Abklingzeit der Wut auf Lv2.\n" +
+                "Empfehlung: 40 Sek.",
+
+                ["Berserker_Lv3_Active_Cooldown"] =
+                "【Berserker Lv3: Wut-Abklingzeit (Sek.)】\n" +
+                "Abklingzeit der Wut auf Lv3.\n" +
+                "Empfehlung: 40 Sek.",
+
+                ["Berserker_Lv4_Active_Cooldown"] =
+                "【Berserker Lv4: Wut-Abklingzeit (Sek.)】\n" +
+                "Abklingzeit der Wut auf Lv4.\n" +
+                "Empfehlung: 40 Sek.",
+
+                ["Berserker_Lv5_Active_Cooldown"] =
+                "【Berserker Lv5: Wut-Abklingzeit (Sek.)】\n" +
+                "Abklingzeit der Wut auf Lv5.\n" +
+                "Empfehlung: 35 Sek.",
+
+                // === Berserker: Lv-basierte Wut-Dauer ===
+                ["Berserker_Lv1_Active_Duration"] =
+                "【Berserker Lv1: Wut-Dauer (Sek.)】\n" +
+                "Wirkungsdauer der Wut auf Lv1.\n" +
+                "Empfehlung: 20 Sek.",
+
+                ["Berserker_Lv2_Active_Duration"] =
+                "【Berserker Lv2: Wut-Dauer (Sek.)】\n" +
+                "Wirkungsdauer der Wut auf Lv2.\n" +
+                "Empfehlung: 20 Sek.",
+
+                ["Berserker_Lv3_Active_Duration"] =
+                "【Berserker Lv3: Wut-Dauer (Sek.)】\n" +
+                "Wirkungsdauer der Wut auf Lv3.\n" +
+                "Empfehlung: 25 Sek.",
+
+                ["Berserker_Lv4_Active_Duration"] =
+                "【Berserker Lv4: Wut-Dauer (Sek.)】\n" +
+                "Wirkungsdauer der Wut auf Lv4.\n" +
+                "Empfehlung: 25 Sek.",
+
+                ["Berserker_Lv5_Active_Duration"] =
+                "【Berserker Lv5: Wut-Dauer (Sek.)】\n" +
+                "Wirkungsdauer der Wut auf Lv5.\n" +
+                "Empfehlung: 25 Sek.",
+
+                // === Berserker: Lv-basierter passiver LP-Bonus ===
+                ["Berserker_Lv1_Passive_HealthBonus"] =
+                "【Berserker Lv1: Max-LP-Bonus】\n" +
+                "Flacher Bonus auf max. LP auf Lv1.\n" +
+                "Empfehlung: 40",
+
+                ["Berserker_Lv2_Passive_HealthBonus"] =
+                "【Berserker Lv2: Max-LP-Bonus】\n" +
+                "Flacher Bonus auf max. LP auf Lv2.\n" +
+                "Empfehlung: 60",
+
+                ["Berserker_Lv3_Passive_HealthBonus"] =
+                "【Berserker Lv3: Max-LP-Bonus】\n" +
+                "Flacher Bonus auf max. LP auf Lv3.\n" +
+                "Empfehlung: 80",
+
+                ["Berserker_Lv4_Passive_HealthBonus"] =
+                "【Berserker Lv4: Max-LP-Bonus】\n" +
+                "Flacher Bonus auf max. LP auf Lv4.\n" +
+                "Empfehlung: 100",
+
+                ["Berserker_Lv5_Passive_HealthBonus"] =
+                "【Berserker Lv5: Max-LP-Bonus】\n" +
+                "Flacher Bonus auf max. LP auf Lv5.\n" +
+                "Empfehlung: 120",
+
+                // === Berserker: Lv-basierter Schaden pro 1% verlorener LP ===
+                ["Berserker_Lv1_Active_DamagePerHP"] =
+                "【Berserker Lv1: Schaden/1% verl. LP (%)】\n" +
+                "Schadensbonus pro 1% verl. LP während Wut (Lv1).\n" +
+                "Empfehlung: 1,5%",
+
+                ["Berserker_Lv2_Active_DamagePerHP"] =
+                "【Berserker Lv2: Schaden/1% verl. LP (%)】\n" +
+                "Schadensbonus pro 1% verl. LP während Wut (Lv2).\n" +
+                "Empfehlung: 1,6%",
+
+                ["Berserker_Lv3_Active_DamagePerHP"] =
+                "【Berserker Lv3: Schaden/1% verl. LP (%)】\n" +
+                "Schadensbonus pro 1% verl. LP während Wut (Lv3).\n" +
+                "Empfehlung: 1,7%",
+
+                ["Berserker_Lv4_Active_DamagePerHP"] =
+                "【Berserker Lv4: Schaden/1% verl. LP (%)】\n" +
+                "Schadensbonus pro 1% verl. LP während Wut (Lv4).\n" +
+                "Empfehlung: 1,8%",
+
+                ["Berserker_Lv5_Active_DamagePerHP"] =
+                "【Berserker Lv5: Schaden/1% verl. LP (%)】\n" +
+                "Schadensbonus pro 1% verl. LP während Wut (Lv5).\n" +
+                "Empfehlung: 2,0%",
 
                 // === Handwerksmeister (Producer) Job Skills ===
                 // ========================================

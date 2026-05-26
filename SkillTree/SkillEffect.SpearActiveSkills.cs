@@ -22,6 +22,7 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, float> spearEnhancedThrowCooldowns = new Dictionary<Player, float>();
         public static Dictionary<Player, float> spearEnhancedThrowBuffEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, int> spearComboThrowUsesRemaining = new Dictionary<Player, int>();
+        internal static Dictionary<Player, float> spearComboDamageBonus = new Dictionary<Player, float>();
 
         // 버프 VFX 인스턴스 저장 (상태 관리용)
         private static Dictionary<Player, GameObject> spearBuffVFXInstances = new Dictionary<Player, GameObject>();
@@ -139,12 +140,15 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 float buffDuration = Spear_Config.SpearStep6ComboBuffDurationValue;
-                int maxUses = Spear_Config.SpearStep6ComboMaxUsesValue;
-                float damageBonus = Spear_Config.SpearStep6ComboDamageValue;
+                int skillLevel = SkillTreeManager.Instance?.GetSkillLevel("spear_Step5_combo") ?? 1;
+                int maxUses = skillLevel + 2;  // Lv1=3, Lv2=4, ..., Lv7=9
+                float levelBonus = (skillLevel - 1) * Spear_Config.SpearComboLevelBonusValue;
+                float damageBonus = Spear_Config.SpearStep6ComboDamageValue + levelBonus;  // 80+10×(lv-1)
 
                 // 버프 상태 설정
                 spearEnhancedThrowBuffEndTime[player] = Time.time + buffDuration;
                 spearComboThrowUsesRemaining[player] = maxUses;
+                spearComboDamageBonus[player] = damageBonus;
 
                 // 버프 VFX 생성 - statusailment_01_aura (머리 위, 버프 동안 유지)
                 CreateSpearBuffVFX(player, buffDuration);
@@ -528,7 +532,10 @@ namespace CaptainSkillTree.SkillTree
                 if (projectile != null && thrower != null)
                 {
                     HitData hitData = new HitData();
-                    hitData.m_damage = projectile.m_damage;
+                    var scaledDamage = projectile.m_damage;
+                    if (SkillEffect.spearComboDamageBonus.TryGetValue(thrower, out float bonus) && bonus > 0f)
+                        scaledDamage.Modify(bonus / 100f);
+                    hitData.m_damage = scaledDamage;
                     hitData.m_point = target.transform.position;
                     hitData.m_dir = (target.transform.position - thrower.transform.position).normalized;
                     hitData.m_attacker = thrower.GetZDOID();

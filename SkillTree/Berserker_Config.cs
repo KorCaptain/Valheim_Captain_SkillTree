@@ -5,97 +5,89 @@ using UnityEngine;
 namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
-    /// 버서커 직업 전용 컨피그 시스템 (Lv1~5 레벨업 지원)
-    /// MMO 시스템과 연동하여 동적 값 변경 지원
+    /// 버서커 직업 전용 컨피그 시스템 (Lv1~5 레벨별 개별 Config)
     /// </summary>
     public static class Berserker_Config
     {
-        #region Berserker Skills Configuration
+        #region ConfigEntry Declarations
 
-        // === Active Skill: Berserker Rage ===
-        public static ConfigEntry<float> BerserkerRageCooldown;
+        // === Active: 공통 (모든 레벨 공유) ===
         public static ConfigEntry<float> BerserkerRageStaminaCost;
-        public static ConfigEntry<float> BerserkerRageDuration;
-        public static ConfigEntry<float> BerserkerRageDamagePerHealthPercent;
-
-        // === Active Skill: Damage Bonus Settings ===
         public static ConfigEntry<float> BerserkerRageMaxDamageBonus;
         public static ConfigEntry<float> BerserkerRageHealthThreshold;
 
-        // === Passive Skill: Death Defiance ===
+        // === Passive: 공통 ===
         public static ConfigEntry<float> BerserkerPassiveHealthThreshold;
         public static ConfigEntry<float> BerserkerPassiveInvincibilityDuration;
         public static ConfigEntry<float> BerserkerPassiveCooldown;
-        public static ConfigEntry<float> BerserkerPassiveHealthBonus;
 
-        // === Level 2: Active Cooldown Reduction ===
-        public static ConfigEntry<float> BerserkerLv2CooldownReduction;
+        // === Lv1~5: 분노 쿨타임 (초) ===
+        public static ConfigEntry<float> BerserkerLv1ActiveCooldown;
+        public static ConfigEntry<float> BerserkerLv2ActiveCooldown;
+        public static ConfigEntry<float> BerserkerLv3ActiveCooldown;
+        public static ConfigEntry<float> BerserkerLv4ActiveCooldown;
+        public static ConfigEntry<float> BerserkerLv5ActiveCooldown;
 
-        // === Level 3: Rage Damage Reduction ===
-        public static ConfigEntry<float> BerserkerLv3RageDamageReduction;
+        // === Lv1~5: 분노 지속시간 (초) ===
+        public static ConfigEntry<float> BerserkerLv1ActiveDuration;
+        public static ConfigEntry<float> BerserkerLv2ActiveDuration;
+        public static ConfigEntry<float> BerserkerLv3ActiveDuration;
+        public static ConfigEntry<float> BerserkerLv4ActiveDuration;
+        public static ConfigEntry<float> BerserkerLv5ActiveDuration;
 
-        // === Level 4: Low HP Attack Bonus ===
-        public static ConfigEntry<float> BerserkerLv4LowHpAttackBonus;
-        public static ConfigEntry<float> BerserkerLv4LowHpAttackThreshold;
+        // === Lv1~5: 패시브 최대 HP 보너스 (플랫) ===
+        public static ConfigEntry<float> BerserkerLv1PassiveHealthBonus;
+        public static ConfigEntry<float> BerserkerLv2PassiveHealthBonus;
+        public static ConfigEntry<float> BerserkerLv3PassiveHealthBonus;
+        public static ConfigEntry<float> BerserkerLv4PassiveHealthBonus;
+        public static ConfigEntry<float> BerserkerLv5PassiveHealthBonus;
 
-        // === Level 5: Passive Enhancement ===
-        public static ConfigEntry<float> BerserkerLv5PassiveCooldownReduction;
-        public static ConfigEntry<float> BerserkerLv5InvincibilityBonus;
+        // === Lv1~5: HP 1%당 공격력 증가 (%) ===
+        public static ConfigEntry<float> BerserkerLv1ActiveDamagePerHP;
+        public static ConfigEntry<float> BerserkerLv2ActiveDamagePerHP;
+        public static ConfigEntry<float> BerserkerLv3ActiveDamagePerHP;
+        public static ConfigEntry<float> BerserkerLv4ActiveDamagePerHP;
+        public static ConfigEntry<float> BerserkerLv5ActiveDamagePerHP;
 
         #endregion
 
         #region Dynamic Value Properties (MMO Integration)
 
-        // === Active Skill Dynamic Values ===
-        public static float BerserkerRageCooldownValue => SkillTreeConfig.GetEffectiveValue("Berserker_Rage_Cooldown", BerserkerRageCooldown?.Value ?? 45f);
-        public static float BerserkerRageStaminaCostValue => SkillTreeConfig.GetEffectiveValue("Berserker_Rage_StaminaCost", BerserkerRageStaminaCost?.Value ?? 20f);
-        public static float BerserkerRageDurationValue => SkillTreeConfig.GetEffectiveValue("Berserker_Rage_Duration", BerserkerRageDuration?.Value ?? 20f);
-        public static float BerserkerRageDamagePerHealthPercentValue => SkillTreeConfig.GetEffectiveValue("Berserker_Rage_DamagePerHealthPercent", BerserkerRageDamagePerHealthPercent?.Value ?? 2f);
-        public static float BerserkerRageMaxDamageBonusValue => SkillTreeConfig.GetEffectiveValue("Berserker_Rage_MaxDamageBonus", BerserkerRageMaxDamageBonus?.Value ?? 200f);
-        public static float BerserkerRageHealthThresholdValue => SkillTreeConfig.GetEffectiveValue("Berserker_Rage_HealthThreshold", BerserkerRageHealthThreshold?.Value ?? 100f);
+        // === Active: 공통 ===
+        public static float BerserkerRageStaminaCostValue        => SkillTreeConfig.GetEffectiveValue("Berserker_Rage_StaminaCost",   BerserkerRageStaminaCost?.Value   ?? 20f);
+        public static float BerserkerRageMaxDamageBonusValue     => SkillTreeConfig.GetEffectiveValue("Berserker_Rage_MaxDamageBonus", BerserkerRageMaxDamageBonus?.Value ?? 200f);
+        public static float BerserkerRageHealthThresholdValue     => SkillTreeConfig.GetEffectiveValue("Berserker_Rage_HealthThreshold",BerserkerRageHealthThreshold?.Value ?? 100f);
 
-        // === Passive Skill Dynamic Values ===
-        public static float BerserkerPassiveHealthThresholdValue => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_HealthThreshold", BerserkerPassiveHealthThreshold?.Value ?? 10f);
+        // === Passive: 공통 ===
+        public static float BerserkerPassiveHealthThresholdValue     => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_HealthThreshold",      BerserkerPassiveHealthThreshold?.Value      ?? 10f);
         public static float BerserkerPassiveInvincibilityDurationValue => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_InvincibilityDuration", BerserkerPassiveInvincibilityDuration?.Value ?? 8f);
-        public static float BerserkerPassiveCooldownValue => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_Cooldown", BerserkerPassiveCooldown?.Value ?? 600f);
-        public static float BerserkerPassiveHealthBonusValue => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_HealthBonus", BerserkerPassiveHealthBonus?.Value ?? 100f);
-
-        // === Level 2~5 Dynamic Values ===
-        public static float BerserkerLv2CooldownReductionValue => SkillTreeConfig.GetEffectiveValue("Berserker_Lv2_CooldownReduction", BerserkerLv2CooldownReduction?.Value ?? 5f);
-        public static float BerserkerLv3RageDamageReductionValue => SkillTreeConfig.GetEffectiveValue("Berserker_Lv3_RageDamageReduction", BerserkerLv3RageDamageReduction?.Value ?? 15f);
-        public static float BerserkerLv4LowHpAttackBonusValue => SkillTreeConfig.GetEffectiveValue("Berserker_Lv4_LowHpAttackBonus", BerserkerLv4LowHpAttackBonus?.Value ?? 15f);
-        public static float BerserkerLv4LowHpAttackThresholdValue => SkillTreeConfig.GetEffectiveValue("Berserker_Lv4_LowHpAttackThreshold", BerserkerLv4LowHpAttackThreshold?.Value ?? 50f);
-        public static float BerserkerLv5PassiveCooldownReductionValue => SkillTreeConfig.GetEffectiveValue("Berserker_Lv5_PassiveCooldownReduction", BerserkerLv5PassiveCooldownReduction?.Value ?? 120f);
-        public static float BerserkerLv5InvincibilityBonusValue => SkillTreeConfig.GetEffectiveValue("Berserker_Lv5_InvincibilityBonus", BerserkerLv5InvincibilityBonus?.Value ?? 2f);
+        public static float BerserkerPassiveCooldownValue            => SkillTreeConfig.GetEffectiveValue("Berserker_Passive_Cooldown",             BerserkerPassiveCooldown?.Value             ?? 540f);
 
         #endregion
 
         #region Level-based Dynamic Helpers
 
-        /// <summary>
-        /// 레벨별 유효 분노 쿨타임 반환 (Lv2: -5초, Lv5: 추가 -5초)
-        /// </summary>
-        public static float GetEffectiveRageCooldown(int level)
+        /// <summary>레벨별 분노 쿨타임 (각 레벨 독립 Config)</summary>
+        public static float GetEffectiveRageCooldown(int level) => level switch
         {
-            float baseCooldown = BerserkerRageCooldownValue;
-            if (level >= 2) baseCooldown -= BerserkerLv2CooldownReductionValue;
-            if (level >= 5) baseCooldown -= 5f;
-            return Mathf.Max(baseCooldown, 15f);
-        }
+            1 => BerserkerLv1ActiveCooldown?.Value ?? 45f,
+            2 => BerserkerLv2ActiveCooldown?.Value ?? 40f,
+            3 => BerserkerLv3ActiveCooldown?.Value ?? 40f,
+            4 => BerserkerLv4ActiveCooldown?.Value ?? 40f,
+            _ => BerserkerLv5ActiveCooldown?.Value ?? 35f,
+        };
 
-        /// <summary>
-        /// 레벨별 유효 분노 지속시간 반환 (Lv3: +5초)
-        /// </summary>
-        public static float GetEffectiveRageDuration(int level)
+        /// <summary>레벨별 분노 지속시간 (각 레벨 독립 Config)</summary>
+        public static float GetEffectiveRageDuration(int level) => level switch
         {
-            float baseDuration = BerserkerRageDurationValue;
-            if (level >= 3) baseDuration += 5f;
-            return baseDuration;
-        }
+            1 => BerserkerLv1ActiveDuration?.Value ?? 20f,
+            2 => BerserkerLv2ActiveDuration?.Value ?? 20f,
+            3 => BerserkerLv3ActiveDuration?.Value ?? 25f,
+            4 => BerserkerLv4ActiveDuration?.Value ?? 25f,
+            _ => BerserkerLv5ActiveDuration?.Value ?? 25f,
+        };
 
-        /// <summary>
-        /// 레벨별 유효 최대 데미지 보너스 반환 (Lv4: +50%)
-        /// </summary>
+        /// <summary>레벨별 최대 데미지 보너스 (Lv4: +50%)</summary>
         public static float GetEffectiveMaxDamageBonus(int level)
         {
             float baseBonus = BerserkerRageMaxDamageBonusValue;
@@ -103,50 +95,25 @@ namespace CaptainSkillTree.SkillTree
             return baseBonus;
         }
 
-        /// <summary>
-        /// 레벨별 체력 1%당 공격력 증가 비율 반환 (Lv1:1.5 ~ Lv5:2.0)
-        /// </summary>
-        public static float GetEffectiveDamagePerHealthPercent(int level)
+        /// <summary>레벨별 HP 1%당 공격력 증가 비율 (각 레벨 독립 Config)</summary>
+        public static float GetEffectiveDamagePerHealthPercent(int level) => level switch
         {
-            switch (level)
-            {
-                case 1: return 1.5f;
-                case 2: return 1.6f;
-                case 3: return 1.7f;
-                case 4: return 1.8f;
-                default: return BerserkerRageDamagePerHealthPercentValue; // 2.0f
-            }
-        }
+            1 => BerserkerLv1ActiveDamagePerHP?.Value ?? 1.5f,
+            2 => BerserkerLv2ActiveDamagePerHP?.Value ?? 1.6f,
+            3 => BerserkerLv3ActiveDamagePerHP?.Value ?? 1.7f,
+            4 => BerserkerLv4ActiveDamagePerHP?.Value ?? 1.8f,
+            _ => BerserkerLv5ActiveDamagePerHP?.Value ?? 2.0f,
+        };
 
-        /// <summary>
-        /// 레벨별 유효 패시브 쿨타임 반환 (Lv5: -120초)
-        /// </summary>
-        public static float GetEffectivePassiveCooldown(int level)
+        /// <summary>레벨별 패시브 HP 보너스 (각 레벨 독립 Config)</summary>
+        public static float GetEffectiveHealthBonus(int level) => level switch
         {
-            float baseCooldown = BerserkerPassiveCooldownValue;
-            if (level >= 5) baseCooldown -= BerserkerLv5PassiveCooldownReductionValue;
-            return Mathf.Max(baseCooldown, 60f);
-        }
-
-        /// <summary>
-        /// 레벨별 유효 HP 플랫 보너스 반환 (Lv1:40, Lv2:60, Lv3:80, Lv4:100, Lv5:120)
-        /// Config 기본값 120 기준 → 단계당 +20 (step = maxBonus / 6)
-        /// </summary>
-        public static float GetEffectiveHealthBonus(int level)
-        {
-            float step = BerserkerPassiveHealthBonusValue / 6f; // default: 20
-            return (level + 1) * step;
-        }
-
-        /// <summary>
-        /// 레벨별 유효 무적 지속시간 반환 (Lv5: +2초)
-        /// </summary>
-        public static float GetEffectiveInvincibilityDuration(int level)
-        {
-            float baseDuration = BerserkerPassiveInvincibilityDurationValue;
-            if (level >= 5) baseDuration += BerserkerLv5InvincibilityBonusValue;
-            return baseDuration;
-        }
+            1 => BerserkerLv1PassiveHealthBonus?.Value ?? 40f,
+            2 => BerserkerLv2PassiveHealthBonus?.Value ?? 60f,
+            3 => BerserkerLv3PassiveHealthBonus?.Value ?? 80f,
+            4 => BerserkerLv4PassiveHealthBonus?.Value ?? 100f,
+            _ => BerserkerLv5PassiveHealthBonus?.Value ?? 120f,
+        };
 
         #endregion
 
@@ -156,79 +123,50 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                // ─── Lv1 액티브: 분노 ───────────────────────────────────────────────
-                BerserkerRageCooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Active_Cooldown", 45f,
-                    SkillTreeConfig.GetConfigDescription("Beserker_Active_Cooldown"));
+                var cfg = Plugin.Instance.Config;
+                const string section = "Berserker Job Skills";
 
-                BerserkerRageDuration = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Active_Duration", 20f,
-                    SkillTreeConfig.GetConfigDescription("Beserker_Active_Duration"));
+                // ─── 액티브 공통 ──────────────────────────────────────────────
+                BerserkerRageStaminaCost    = SkillTreeConfig.BindServerSync(cfg, section, "Beserker_Active_StaminaCost",    20f,  SkillTreeConfig.GetConfigDescription("Beserker_Active_StaminaCost"));
+                BerserkerRageMaxDamageBonus = SkillTreeConfig.BindServerSync(cfg, section, "Beserker_Active_MaxDamageBonus", 200f, SkillTreeConfig.GetConfigDescription("Beserker_Active_MaxDamageBonus"));
+                BerserkerRageHealthThreshold = SkillTreeConfig.BindServerSync(cfg, section, "Beserker_Active_HealthThreshold", 100f, SkillTreeConfig.GetConfigDescription("Beserker_Active_HealthThreshold"));
 
-                BerserkerRageMaxDamageBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Active_MaxDamageBonus", 200f,
-                    SkillTreeConfig.GetConfigDescription("Beserker_Active_MaxDamageBonus"));
+                // ─── 패시브 공통 ──────────────────────────────────────────────
+                BerserkerPassiveHealthThreshold      = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Passive_HealthThreshold",      10f,  SkillTreeConfig.GetConfigDescription("Berserker_Passive_HealthThreshold"));
+                BerserkerPassiveInvincibilityDuration = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Passive_InvincibilityDuration", 8f,   SkillTreeConfig.GetConfigDescription("Berserker_Passive_InvincibilityDuration"));
+                BerserkerPassiveCooldown             = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Passive_Cooldown",             540f, SkillTreeConfig.GetConfigDescription("Berserker_Passive_Cooldown"));
 
-                BerserkerRageStaminaCost = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Active_StaminaCost", 20f,
-                    SkillTreeConfig.GetConfigDescription("Beserker_Active_StaminaCost"));
+                // ─── Lv1~5: 분노 쿨타임 ─────────────────────────────────────
+                BerserkerLv1ActiveCooldown = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv1_Active_Cooldown", 45f, SkillTreeConfig.GetConfigDescription("Berserker_Lv1_Active_Cooldown"));
+                BerserkerLv2ActiveCooldown = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv2_Active_Cooldown", 40f, SkillTreeConfig.GetConfigDescription("Berserker_Lv2_Active_Cooldown"));
+                BerserkerLv3ActiveCooldown = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv3_Active_Cooldown", 40f, SkillTreeConfig.GetConfigDescription("Berserker_Lv3_Active_Cooldown"));
+                BerserkerLv4ActiveCooldown = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv4_Active_Cooldown", 40f, SkillTreeConfig.GetConfigDescription("Berserker_Lv4_Active_Cooldown"));
+                BerserkerLv5ActiveCooldown = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv5_Active_Cooldown", 35f, SkillTreeConfig.GetConfigDescription("Berserker_Lv5_Active_Cooldown"));
 
-                BerserkerRageDamagePerHealthPercent = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Active_DamagePerHealthPercent", 2f,
-                    SkillTreeConfig.GetConfigDescription("Beserker_Active_DamagePerHealthPercent"));
+                // ─── Lv1~5: 분노 지속시간 ───────────────────────────────────
+                BerserkerLv1ActiveDuration = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv1_Active_Duration", 20f, SkillTreeConfig.GetConfigDescription("Berserker_Lv1_Active_Duration"));
+                BerserkerLv2ActiveDuration = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv2_Active_Duration", 20f, SkillTreeConfig.GetConfigDescription("Berserker_Lv2_Active_Duration"));
+                BerserkerLv3ActiveDuration = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv3_Active_Duration", 25f, SkillTreeConfig.GetConfigDescription("Berserker_Lv3_Active_Duration"));
+                BerserkerLv4ActiveDuration = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv4_Active_Duration", 25f, SkillTreeConfig.GetConfigDescription("Berserker_Lv4_Active_Duration"));
+                BerserkerLv5ActiveDuration = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv5_Active_Duration", 25f, SkillTreeConfig.GetConfigDescription("Berserker_Lv5_Active_Duration"));
 
-                BerserkerRageHealthThreshold = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Beserker_Active_HealthThreshold", 100f,
-                    SkillTreeConfig.GetConfigDescription("Beserker_Active_HealthThreshold"));
+                // ─── Lv1~5: 패시브 HP 보너스 ────────────────────────────────
+                BerserkerLv1PassiveHealthBonus = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv1_Passive_HealthBonus",  40f, SkillTreeConfig.GetConfigDescription("Berserker_Lv1_Passive_HealthBonus"));
+                BerserkerLv2PassiveHealthBonus = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv2_Passive_HealthBonus",  60f, SkillTreeConfig.GetConfigDescription("Berserker_Lv2_Passive_HealthBonus"));
+                BerserkerLv3PassiveHealthBonus = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv3_Passive_HealthBonus",  80f, SkillTreeConfig.GetConfigDescription("Berserker_Lv3_Passive_HealthBonus"));
+                BerserkerLv4PassiveHealthBonus = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv4_Passive_HealthBonus", 100f, SkillTreeConfig.GetConfigDescription("Berserker_Lv4_Passive_HealthBonus"));
+                BerserkerLv5PassiveHealthBonus = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv5_Passive_HealthBonus", 120f, SkillTreeConfig.GetConfigDescription("Berserker_Lv5_Passive_HealthBonus"));
 
-                // ─── Lv1 패시브: 죽음의 무시 ────────────────────────────────────────
-                BerserkerPassiveHealthBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Passive_HealthBonus", 120f,
-                    SkillTreeConfig.GetConfigDescription("berserker_passive_health_bonus"));
-
-                BerserkerPassiveHealthThreshold = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Passive_HealthThreshold", 10f,
-                    SkillTreeConfig.GetConfigDescription("Berserker_Passive_HealthThreshold"));
-
-                BerserkerPassiveInvincibilityDuration = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Passive_InvincibilityDuration", 8f,
-                    SkillTreeConfig.GetConfigDescription("Berserker_Passive_InvincibilityDuration"));
-
-                BerserkerPassiveCooldown = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Passive_Cooldown", 540f,
-                    SkillTreeConfig.GetConfigDescription("Berserker_Passive_Cooldown"));
-
-                // ─── Lv2: 분노 쿨타임 -5초 ──────────────────────────────────────────
-                BerserkerLv2CooldownReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Lv2_CooldownReduction", 5f,
-                    SkillTreeConfig.GetConfigDescription("Berserker_Lv2_CooldownReduction"));
-
-                // ─── Lv3: 분노 중 피해 감소 ──────────────────────────────────────────
-                BerserkerLv3RageDamageReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Lv3_RageDamageReduction", 15f,
-                    SkillTreeConfig.GetConfigDescription("Berserker_Lv3_RageDamageReduction"));
-
-                // ─── Lv4: 저체력 공격력 보너스 ────────────────────────────────────────
-                BerserkerLv4LowHpAttackBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Lv4_LowHpAttackBonus", 15f,
-                    SkillTreeConfig.GetConfigDescription("Berserker_Lv4_LowHpAttackBonus"));
-
-                BerserkerLv4LowHpAttackThreshold = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Lv4_LowHpAttackThreshold", 50f,
-                    SkillTreeConfig.GetConfigDescription("Berserker_Lv4_LowHpAttackThreshold"));
-
-                // ─── Lv5: 죽음의 무시 강화 ────────────────────────────────────────────
-                BerserkerLv5PassiveCooldownReduction = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Lv5_PassiveCooldownReduction", 120f,
-                    SkillTreeConfig.GetConfigDescription("Berserker_Lv5_PassiveCooldownReduction"));
-
-                BerserkerLv5InvincibilityBonus = SkillTreeConfig.BindServerSync(Plugin.Instance.Config,
-                    "Berserker Job Skills", "Berserker_Lv5_InvincibilityBonus", 2f,
-                    SkillTreeConfig.GetConfigDescription("Berserker_Lv5_InvincibilityBonus"));
+                // ─── Lv1~5: HP 1%당 공격력 증가 ──────────────────────────────
+                BerserkerLv1ActiveDamagePerHP = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv1_Active_DamagePerHP", 1.5f, SkillTreeConfig.GetConfigDescription("Berserker_Lv1_Active_DamagePerHP"));
+                BerserkerLv2ActiveDamagePerHP = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv2_Active_DamagePerHP", 1.6f, SkillTreeConfig.GetConfigDescription("Berserker_Lv2_Active_DamagePerHP"));
+                BerserkerLv3ActiveDamagePerHP = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv3_Active_DamagePerHP", 1.7f, SkillTreeConfig.GetConfigDescription("Berserker_Lv3_Active_DamagePerHP"));
+                BerserkerLv4ActiveDamagePerHP = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv4_Active_DamagePerHP", 1.8f, SkillTreeConfig.GetConfigDescription("Berserker_Lv4_Active_DamagePerHP"));
+                BerserkerLv5ActiveDamagePerHP = SkillTreeConfig.BindServerSync(cfg, section, "Berserker_Lv5_Active_DamagePerHP", 2.0f, SkillTreeConfig.GetConfigDescription("Berserker_Lv5_Active_DamagePerHP"));
 
                 RegisterBerserkerEventHandlers();
 
-                Plugin.Log.LogDebug("[Berserker Config] All settings loaded (Active + Passive + Lv2~5)");
+                Plugin.Log.LogDebug("[Berserker Config] All settings loaded (Lv1~5 per-level)");
                 LogBerserkerConfigValues();
             }
             catch (System.Exception ex)
@@ -241,24 +179,38 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                BerserkerRageCooldown.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerRageStaminaCost.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerRageDuration.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerRageDamagePerHealthPercent.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerRageMaxDamageBonus.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerRageHealthThreshold.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerPassiveHealthThreshold.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerPassiveInvincibilityDuration.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerPassiveCooldown.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerPassiveHealthBonus.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerLv2CooldownReduction.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerLv3RageDamageReduction.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerLv4LowHpAttackBonus.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerLv4LowHpAttackThreshold.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerLv5PassiveCooldownReduction.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
-                BerserkerLv5InvincibilityBonus.SettingChanged += (sender, args) => OnBerserkerConfigChanged();
+                BerserkerRageStaminaCost.SettingChanged              += (s, a) => OnBerserkerConfigChanged();
+                BerserkerRageMaxDamageBonus.SettingChanged           += (s, a) => OnBerserkerConfigChanged();
+                BerserkerRageHealthThreshold.SettingChanged          += (s, a) => OnBerserkerConfigChanged();
+                BerserkerPassiveHealthThreshold.SettingChanged       += (s, a) => OnBerserkerConfigChanged();
+                BerserkerPassiveInvincibilityDuration.SettingChanged += (s, a) => OnBerserkerConfigChanged();
+                BerserkerPassiveCooldown.SettingChanged              += (s, a) => OnBerserkerConfigChanged();
 
-                Plugin.Log.LogDebug("[Berserker Config] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화");
+                BerserkerLv1ActiveCooldown.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv2ActiveCooldown.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv3ActiveCooldown.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv4ActiveCooldown.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv5ActiveCooldown.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+
+                BerserkerLv1ActiveDuration.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv2ActiveDuration.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv3ActiveDuration.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv4ActiveDuration.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv5ActiveDuration.SettingChanged            += (s, a) => OnBerserkerConfigChanged();
+
+                BerserkerLv1PassiveHealthBonus.SettingChanged        += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv2PassiveHealthBonus.SettingChanged        += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv3PassiveHealthBonus.SettingChanged        += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv4PassiveHealthBonus.SettingChanged        += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv5PassiveHealthBonus.SettingChanged        += (s, a) => OnBerserkerConfigChanged();
+
+                BerserkerLv1ActiveDamagePerHP.SettingChanged         += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv2ActiveDamagePerHP.SettingChanged         += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv3ActiveDamagePerHP.SettingChanged         += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv4ActiveDamagePerHP.SettingChanged         += (s, a) => OnBerserkerConfigChanged();
+                BerserkerLv5ActiveDamagePerHP.SettingChanged         += (s, a) => OnBerserkerConfigChanged();
+
+                Plugin.Log.LogDebug("[Berserker Config] 이벤트 핸들러 등록 완료");
             }
             catch (System.Exception ex)
             {
@@ -275,19 +227,12 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 Plugin.Log.LogDebug("=== [Berserker Config] Current Settings ===");
-                Plugin.Log.LogDebug($"[Active] Cooldown: {BerserkerRageCooldownValue}s");
-                Plugin.Log.LogDebug($"[Active] Stamina Cost: {BerserkerRageStaminaCostValue}");
-                Plugin.Log.LogDebug($"[Active] Duration: {BerserkerRageDurationValue}s");
-                Plugin.Log.LogDebug($"[Active] Damage per 1% HP: {BerserkerRageDamagePerHealthPercentValue}%");
-                Plugin.Log.LogDebug($"[Active] Max Damage Bonus: {BerserkerRageMaxDamageBonusValue}%");
-                Plugin.Log.LogDebug($"[Passive] Health Threshold: {BerserkerPassiveHealthThresholdValue}%");
-                Plugin.Log.LogDebug($"[Passive] Invincibility Duration: {BerserkerPassiveInvincibilityDurationValue}s");
-                Plugin.Log.LogDebug($"[Passive] Cooldown: {BerserkerPassiveCooldownValue}s");
-                Plugin.Log.LogDebug($"[Lv2] CooldownReduction: {BerserkerLv2CooldownReductionValue}s");
-                Plugin.Log.LogDebug($"[Lv3] RageDamageReduction: {BerserkerLv3RageDamageReductionValue}%");
-                Plugin.Log.LogDebug($"[Lv4] LowHpAttackBonus: {BerserkerLv4LowHpAttackBonusValue}%");
-                Plugin.Log.LogDebug($"[Lv5] PassiveCooldownReduction: {BerserkerLv5PassiveCooldownReductionValue}s");
-                Plugin.Log.LogDebug($"[Lv5] InvincibilityBonus: {BerserkerLv5InvincibilityBonusValue}s");
+                Plugin.Log.LogDebug($"[Active] Stamina:{BerserkerRageStaminaCostValue}  MaxDmgBonus:{BerserkerRageMaxDamageBonusValue}%");
+                Plugin.Log.LogDebug($"[Cooldown] Lv1:{BerserkerLv1ActiveCooldown?.Value}s Lv2:{BerserkerLv2ActiveCooldown?.Value}s Lv3:{BerserkerLv3ActiveCooldown?.Value}s Lv4:{BerserkerLv4ActiveCooldown?.Value}s Lv5:{BerserkerLv5ActiveCooldown?.Value}s");
+                Plugin.Log.LogDebug($"[Duration] Lv1:{BerserkerLv1ActiveDuration?.Value}s Lv2:{BerserkerLv2ActiveDuration?.Value}s Lv3:{BerserkerLv3ActiveDuration?.Value}s Lv4:{BerserkerLv4ActiveDuration?.Value}s Lv5:{BerserkerLv5ActiveDuration?.Value}s");
+                Plugin.Log.LogDebug($"[HP Bonus] Lv1:{BerserkerLv1PassiveHealthBonus?.Value} Lv2:{BerserkerLv2PassiveHealthBonus?.Value} Lv3:{BerserkerLv3PassiveHealthBonus?.Value} Lv4:{BerserkerLv4PassiveHealthBonus?.Value} Lv5:{BerserkerLv5PassiveHealthBonus?.Value}");
+                Plugin.Log.LogDebug($"[DmgPerHP] Lv1:{BerserkerLv1ActiveDamagePerHP?.Value}% Lv2:{BerserkerLv2ActiveDamagePerHP?.Value}% Lv3:{BerserkerLv3ActiveDamagePerHP?.Value}% Lv4:{BerserkerLv4ActiveDamagePerHP?.Value}% Lv5:{BerserkerLv5ActiveDamagePerHP?.Value}%");
+                Plugin.Log.LogDebug($"[Passive] Threshold:{BerserkerPassiveHealthThresholdValue}%  Invincibility:{BerserkerPassiveInvincibilityDurationValue}s  Cooldown:{BerserkerPassiveCooldownValue}s");
                 Plugin.Log.LogDebug("=== [Berserker Config] Settings Logged ===");
             }
             catch (System.Exception ex)
@@ -304,8 +249,7 @@ namespace CaptainSkillTree.SkillTree
                 LogBerserkerConfigValues();
                 JobSkills.UpdateBerserkerTooltip();
 
-                int level = SkillTreeManager.Instance?.GetSkillLevel("Berserker") ?? 0;
-                float newCooldown = Mathf.Max(GetEffectivePassiveCooldown(level), 60f);
+                float newCooldown = Mathf.Max(BerserkerPassiveCooldownValue, 60f);
                 ActiveSkillCooldownRegistry.RecalculateCooldown("passive_berserker", newCooldown);
             }
             catch (System.Exception ex)

@@ -363,31 +363,6 @@ namespace CaptainSkillTree.Localization
                 "Lv2 달성 시 분노 스킬 쿨타임이 이 수치만큼 줄어듭니다.\n" +
                 "권장값: 5초",
 
-                ["Berserker_Lv3_RageDamageReduction"] =
-                "【버서커 Lv3: 분노 중 피해 감소 (%)】\n" +
-                "Lv3 달성 시 분노 상태에서 받는 피해가 이 비율만큼 감소합니다.\n" +
-                "권장값: 15%",
-
-                ["Berserker_Lv4_LowHpAttackBonus"] =
-                "【버서커 Lv4: 저체력 공격력 보너스 (%)】\n" +
-                "Lv4 달성 시 체력이 임계값 이하일 때 공격력이 증가합니다.\n" +
-                "권장값: 15%",
-
-                ["Berserker_Lv4_LowHpAttackThreshold"] =
-                "【버서커 Lv4: 저체력 공격력 발동 임계값 (%)】\n" +
-                "체력이 이 비율 이하일 때 Lv4 공격력 보너스가 활성화됩니다.\n" +
-                "권장값: 50%",
-
-                ["Berserker_Lv5_PassiveCooldownReduction"] =
-                "【버서커 Lv5: 죽음의 무시 쿨타임 단축 (초)】\n" +
-                "Lv5 달성 시 죽음의 무시 패시브 쿨타임이 이 수치만큼 줄어듭니다.\n" +
-                "권장값: 120초 (2분)",
-
-                ["Berserker_Lv5_InvincibilityBonus"] =
-                "【버서커 Lv5: 죽음의 무시 무적 시간 추가 (초)】\n" +
-                "Lv5 달성 시 죽음의 무시 발동 시 무적 지속시간이 이 수치만큼 증가합니다.\n" +
-                "권장값: 2초",
-
                 // ========================================
                 // Tanker Job Skills (탱커 직업 스킬)
                 // ========================================
@@ -780,6 +755,21 @@ namespace CaptainSkillTree.Localization
                 "성기사 Lv5에서 적용되는 아군 힐링 범위입니다.\n" +
                 "권장값: 7-10m",
 
+                ["Paladin_Lv2_Cooldown"] =
+                "【Lv2 쿨타임 (초)】\n" +
+                "성기사 Lv2에서 적용되는 힐 쿨타임입니다.\n" +
+                "권장값: 25-35초",
+
+                ["Paladin_Lv3_Cooldown"] =
+                "【Lv3 쿨타임 (초)】\n" +
+                "성기사 Lv3에서 적용되는 힐 쿨타임입니다.\n" +
+                "권장값: 24-34초",
+
+                ["Paladin_Lv4_Cooldown"] =
+                "【Lv4 쿨타임 (초)】\n" +
+                "성기사 Lv4에서 적용되는 힐 쿨타임입니다.\n" +
+                "권장값: 23-33초",
+
                 ["Paladin_Lv5_Cooldown"] =
                 "【Lv5 쿨타임 (초)】\n" +
                 "성기사 Lv5에서 적용되는 단축된 쿨타임입니다.\n" +
@@ -886,6 +876,110 @@ namespace CaptainSkillTree.Localization
                 "【최대 체력 보너스 (%)】\n" +
                 "버서커 패시브: 최대 체력을 증가시킵니다.\n" +
                 "권장값: 100%",
+
+                // === Berserker Job: Lv별 분노 쿨타임 (초) ===
+                ["Berserker_Lv1_Active_Cooldown"] =
+                "【버서커 Lv1: 분노 쿨타임 (초)】\n" +
+                "Lv1 분노 스킬의 재사용 대기시간입니다.\n" +
+                "기본값: 45초",
+
+                ["Berserker_Lv2_Active_Cooldown"] =
+                "【버서커 Lv2: 분노 쿨타임 (초)】\n" +
+                "Lv2 분노 스킬의 재사용 대기시간입니다.\n" +
+                "기본값: 40초",
+
+                ["Berserker_Lv3_Active_Cooldown"] =
+                "【버서커 Lv3: 분노 쿨타임 (초)】\n" +
+                "Lv3 분노 스킬의 재사용 대기시간입니다.\n" +
+                "기본값: 40초",
+
+                ["Berserker_Lv4_Active_Cooldown"] =
+                "【버서커 Lv4: 분노 쿨타임 (초)】\n" +
+                "Lv4 분노 스킬의 재사용 대기시간입니다.\n" +
+                "기본값: 40초",
+
+                ["Berserker_Lv5_Active_Cooldown"] =
+                "【버서커 Lv5: 분노 쿨타임 (초)】\n" +
+                "Lv5 분노 스킬의 재사용 대기시간입니다.\n" +
+                "기본값: 35초",
+
+                // === Berserker Job: Lv별 분노 지속시간 (초) ===
+                ["Berserker_Lv1_Active_Duration"] =
+                "【버서커 Lv1: 분노 지속시간 (초)】\n" +
+                "Lv1 분노 버프가 유지되는 시간입니다.\n" +
+                "기본값: 20초",
+
+                ["Berserker_Lv2_Active_Duration"] =
+                "【버서커 Lv2: 분노 지속시간 (초)】\n" +
+                "Lv2 분노 버프가 유지되는 시간입니다.\n" +
+                "기본값: 20초",
+
+                ["Berserker_Lv3_Active_Duration"] =
+                "【버서커 Lv3: 분노 지속시간 (초)】\n" +
+                "Lv3 분노 버프가 유지되는 시간입니다.\n" +
+                "기본값: 25초",
+
+                ["Berserker_Lv4_Active_Duration"] =
+                "【버서커 Lv4: 분노 지속시간 (초)】\n" +
+                "Lv4 분노 버프가 유지되는 시간입니다.\n" +
+                "기본값: 25초",
+
+                ["Berserker_Lv5_Active_Duration"] =
+                "【버서커 Lv5: 분노 지속시간 (초)】\n" +
+                "Lv5 분노 버프가 유지되는 시간입니다.\n" +
+                "기본값: 25초",
+
+                // === Berserker Job: Lv별 패시브 최대 HP 보너스 (플랫) ===
+                ["Berserker_Lv1_Passive_HealthBonus"] =
+                "【버서커 Lv1: 최대 HP 보너스】\n" +
+                "Lv1 달성 시 최대 체력이 이 수치만큼 증가합니다.\n" +
+                "기본값: 40",
+
+                ["Berserker_Lv2_Passive_HealthBonus"] =
+                "【버서커 Lv2: 최대 HP 보너스】\n" +
+                "Lv2 달성 시 최대 체력이 이 수치만큼 증가합니다.\n" +
+                "기본값: 60",
+
+                ["Berserker_Lv3_Passive_HealthBonus"] =
+                "【버서커 Lv3: 최대 HP 보너스】\n" +
+                "Lv3 달성 시 최대 체력이 이 수치만큼 증가합니다.\n" +
+                "기본값: 80",
+
+                ["Berserker_Lv4_Passive_HealthBonus"] =
+                "【버서커 Lv4: 최대 HP 보너스】\n" +
+                "Lv4 달성 시 최대 체력이 이 수치만큼 증가합니다.\n" +
+                "기본값: 100",
+
+                ["Berserker_Lv5_Passive_HealthBonus"] =
+                "【버서커 Lv5: 최대 HP 보너스】\n" +
+                "Lv5 달성 시 최대 체력이 이 수치만큼 증가합니다.\n" +
+                "기본값: 120",
+
+                // === Berserker Job: Lv별 HP 1%당 공격력 증가 (%) ===
+                ["Berserker_Lv1_Active_DamagePerHP"] =
+                "【버서커 Lv1: 잃은 HP 1%당 공격력 증가 (%)】\n" +
+                "분노 중 잃은 HP 1%마다 공격력이 이 비율만큼 증가합니다.\n" +
+                "기본값: 1.5%",
+
+                ["Berserker_Lv2_Active_DamagePerHP"] =
+                "【버서커 Lv2: 잃은 HP 1%당 공격력 증가 (%)】\n" +
+                "분노 중 잃은 HP 1%마다 공격력이 이 비율만큼 증가합니다.\n" +
+                "기본값: 1.6%",
+
+                ["Berserker_Lv3_Active_DamagePerHP"] =
+                "【버서커 Lv3: 잃은 HP 1%당 공격력 증가 (%)】\n" +
+                "분노 중 잃은 HP 1%마다 공격력이 이 비율만큼 증가합니다.\n" +
+                "기본값: 1.7%",
+
+                ["Berserker_Lv4_Active_DamagePerHP"] =
+                "【버서커 Lv4: 잃은 HP 1%당 공격력 증가 (%)】\n" +
+                "분노 중 잃은 HP 1%마다 공격력이 이 비율만큼 증가합니다.\n" +
+                "기본값: 1.8%",
+
+                ["Berserker_Lv5_Active_DamagePerHP"] =
+                "【버서커 Lv5: 잃은 HP 1%당 공격력 증가 (%)】\n" +
+                "분노 중 잃은 HP 1%마다 공격력이 이 비율만큼 증가합니다.\n" +
+                "기본값: 2.0%",
 
                 // ========================================
                 // Producer Job Skills (제작 전문가 직업)
@@ -1293,31 +1387,6 @@ namespace CaptainSkillTree.Localization
                 "At Lv2, reduces the Rage skill cooldown by this amount.\n" +
                 "Recommended: 5 seconds",
 
-                ["Berserker_Lv3_RageDamageReduction"] =
-                "【Berserker Lv3: Damage Reduction While Raging (%)】\n" +
-                "At Lv3, reduces incoming damage by this percentage while in rage.\n" +
-                "Recommended: 15%",
-
-                ["Berserker_Lv4_LowHpAttackBonus"] =
-                "【Berserker Lv4: Low HP Attack Bonus (%)】\n" +
-                "At Lv4, increases attack power when HP falls below the threshold.\n" +
-                "Recommended: 15%",
-
-                ["Berserker_Lv4_LowHpAttackThreshold"] =
-                "【Berserker Lv4: Low HP Attack Threshold (%)】\n" +
-                "The HP percentage below which the Lv4 attack bonus activates.\n" +
-                "Recommended: 50%",
-
-                ["Berserker_Lv5_PassiveCooldownReduction"] =
-                "【Berserker Lv5: Death Defiance Cooldown Reduction (s)】\n" +
-                "At Lv5, reduces the Death Defiance passive cooldown by this amount.\n" +
-                "Recommended: 120 seconds (2 minutes)",
-
-                ["Berserker_Lv5_InvincibilityBonus"] =
-                "【Berserker Lv5: Death Defiance Invincibility Bonus (s)】\n" +
-                "At Lv5, extends invincibility duration when Death Defiance triggers.\n" +
-                "Recommended: 2 seconds",
-
                 // ========================================
                 // Tanker Job Skills
                 // ========================================
@@ -1710,6 +1779,21 @@ namespace CaptainSkillTree.Localization
                 "Ally healing radius at Paladin Lv5.\n" +
                 "Recommended: 7-10m",
 
+                ["Paladin_Lv2_Cooldown"] =
+                "【Lv2 Cooldown (sec)】\n" +
+                "Heal cooldown applied at Paladin Lv2.\n" +
+                "Recommended: 25-35 sec",
+
+                ["Paladin_Lv3_Cooldown"] =
+                "【Lv3 Cooldown (sec)】\n" +
+                "Heal cooldown applied at Paladin Lv3.\n" +
+                "Recommended: 24-34 sec",
+
+                ["Paladin_Lv4_Cooldown"] =
+                "【Lv4 Cooldown (sec)】\n" +
+                "Heal cooldown applied at Paladin Lv4.\n" +
+                "Recommended: 23-33 sec",
+
                 ["Paladin_Lv5_Cooldown"] =
                 "【Lv5 Cooldown (sec)】\n" +
                 "Reduced cooldown applied at Paladin Lv5.\n" +
@@ -1816,6 +1900,110 @@ namespace CaptainSkillTree.Localization
                 "【Max Health Bonus (%)】\n" +
                 "Berserker passive: increases maximum health.\n" +
                 "Recommended: 100%",
+
+                // === Berserker Job: Per-Level Rage Cooldown (sec) ===
+                ["Berserker_Lv1_Active_Cooldown"] =
+                "【Berserker Lv1: Rage Cooldown (sec)】\n" +
+                "Cooldown before Berserker Rage can be used again at Lv1.\n" +
+                "Default: 45 sec",
+
+                ["Berserker_Lv2_Active_Cooldown"] =
+                "【Berserker Lv2: Rage Cooldown (sec)】\n" +
+                "Cooldown before Berserker Rage can be used again at Lv2.\n" +
+                "Default: 40 sec",
+
+                ["Berserker_Lv3_Active_Cooldown"] =
+                "【Berserker Lv3: Rage Cooldown (sec)】\n" +
+                "Cooldown before Berserker Rage can be used again at Lv3.\n" +
+                "Default: 40 sec",
+
+                ["Berserker_Lv4_Active_Cooldown"] =
+                "【Berserker Lv4: Rage Cooldown (sec)】\n" +
+                "Cooldown before Berserker Rage can be used again at Lv4.\n" +
+                "Default: 40 sec",
+
+                ["Berserker_Lv5_Active_Cooldown"] =
+                "【Berserker Lv5: Rage Cooldown (sec)】\n" +
+                "Cooldown before Berserker Rage can be used again at Lv5.\n" +
+                "Default: 35 sec",
+
+                // === Berserker Job: Per-Level Rage Duration (sec) ===
+                ["Berserker_Lv1_Active_Duration"] =
+                "【Berserker Lv1: Rage Duration (sec)】\n" +
+                "Duration of the Berserker Rage buff at Lv1.\n" +
+                "Default: 20 sec",
+
+                ["Berserker_Lv2_Active_Duration"] =
+                "【Berserker Lv2: Rage Duration (sec)】\n" +
+                "Duration of the Berserker Rage buff at Lv2.\n" +
+                "Default: 20 sec",
+
+                ["Berserker_Lv3_Active_Duration"] =
+                "【Berserker Lv3: Rage Duration (sec)】\n" +
+                "Duration of the Berserker Rage buff at Lv3.\n" +
+                "Default: 25 sec",
+
+                ["Berserker_Lv4_Active_Duration"] =
+                "【Berserker Lv4: Rage Duration (sec)】\n" +
+                "Duration of the Berserker Rage buff at Lv4.\n" +
+                "Default: 25 sec",
+
+                ["Berserker_Lv5_Active_Duration"] =
+                "【Berserker Lv5: Rage Duration (sec)】\n" +
+                "Duration of the Berserker Rage buff at Lv5.\n" +
+                "Default: 25 sec",
+
+                // === Berserker Job: Per-Level Passive Max HP Bonus (flat) ===
+                ["Berserker_Lv1_Passive_HealthBonus"] =
+                "【Berserker Lv1: Max HP Bonus】\n" +
+                "Flat max health increase at Lv1.\n" +
+                "Default: 40",
+
+                ["Berserker_Lv2_Passive_HealthBonus"] =
+                "【Berserker Lv2: Max HP Bonus】\n" +
+                "Flat max health increase at Lv2.\n" +
+                "Default: 60",
+
+                ["Berserker_Lv3_Passive_HealthBonus"] =
+                "【Berserker Lv3: Max HP Bonus】\n" +
+                "Flat max health increase at Lv3.\n" +
+                "Default: 80",
+
+                ["Berserker_Lv4_Passive_HealthBonus"] =
+                "【Berserker Lv4: Max HP Bonus】\n" +
+                "Flat max health increase at Lv4.\n" +
+                "Default: 100",
+
+                ["Berserker_Lv5_Passive_HealthBonus"] =
+                "【Berserker Lv5: Max HP Bonus】\n" +
+                "Flat max health increase at Lv5.\n" +
+                "Default: 120",
+
+                // === Berserker Job: Per-Level Damage Bonus per 1% HP Lost (%) ===
+                ["Berserker_Lv1_Active_DamagePerHP"] =
+                "【Berserker Lv1: Damage Bonus per 1% HP Lost (%)】\n" +
+                "While raging, each 1% HP lost increases attack by this percentage.\n" +
+                "Default: 1.5%",
+
+                ["Berserker_Lv2_Active_DamagePerHP"] =
+                "【Berserker Lv2: Damage Bonus per 1% HP Lost (%)】\n" +
+                "While raging, each 1% HP lost increases attack by this percentage.\n" +
+                "Default: 1.6%",
+
+                ["Berserker_Lv3_Active_DamagePerHP"] =
+                "【Berserker Lv3: Damage Bonus per 1% HP Lost (%)】\n" +
+                "While raging, each 1% HP lost increases attack by this percentage.\n" +
+                "Default: 1.7%",
+
+                ["Berserker_Lv4_Active_DamagePerHP"] =
+                "【Berserker Lv4: Damage Bonus per 1% HP Lost (%)】\n" +
+                "While raging, each 1% HP lost increases attack by this percentage.\n" +
+                "Default: 1.8%",
+
+                ["Berserker_Lv5_Active_DamagePerHP"] =
+                "【Berserker Lv5: Damage Bonus per 1% HP Lost (%)】\n" +
+                "While raging, each 1% HP lost increases attack by this percentage.\n" +
+                "Default: 2.0%",
 
                 // ========================================
                 // Producer Job Skills

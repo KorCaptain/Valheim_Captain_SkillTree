@@ -93,10 +93,10 @@ namespace CaptainSkillTree.SkillTree
 
             switch (level)
             {
-                case 2:
-                    return L.Get("mage_passive_lv2", (int)dmg, (int)resist, (int)cooldown);
-                default:
+                case 1:
                     return L.Get("mage_passive_lv1", (int)dmg, (int)resist, (int)cooldown);
+                default: // lv2~5: 이중시전 포함
+                    return L.Get("mage_passive_lv2", (int)dmg, (int)resist, (int)cooldown);
             }
         }
 
@@ -104,7 +104,7 @@ namespace CaptainSkillTree.SkillTree
         {
             switch (targetLevel)
             {
-                case 1: return L.Get("item_trophy_greydwarfshaman") + " x1 + " + L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(1);
+                case 1: return L.Get("item_eikthyr_trophy") + " x1 + " + L.Get("item_trophy_bear") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(1);
                 case 2: return L.Get("item_trophy_troll") + " x1 + " + L.Get("item_trophy_elder") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(2);
                 case 3: return L.Get("item_trophy_wraith") + " x1 + " + L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(3);
                 case 4: return L.Get("item_trophy_hatchling") + " x1 + " + L.Get("item_trophy_dragonqueen") + " x1 + " + L.Get("item_coins") + " x" + SkillTreeConfig.GetJobLevelCost(4);

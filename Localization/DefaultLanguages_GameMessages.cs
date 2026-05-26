@@ -80,6 +80,9 @@ namespace CaptainSkillTree.Localization
                 ["spear_penetrate_extra_use_ready"] = "⚡ 30초 내 G키 추가 사용 가능!",
                 ["spear_required"] = "창을 착용해야 합니다",
                 ["spear_penetrate_success"] = "꿰뚫기! {0} 데미지!",
+                ["spear_penetrate_rushing"] = "이미 돌진 중입니다!",
+                ["spear_penetrate_charges_remaining"] = "꿰뚫기 {0}회 남음",
+                ["spear_penetrate_rush_active"] = "꿰뚫기!",
                 ["spear_combo_cooldown"] = "연공창 쿨다운 중! 남은 시간: {0}초",
                 ["spear_combo_success"] = "연공창! {0}회 연속 공격!",
 
@@ -338,7 +341,7 @@ namespace CaptainSkillTree.Localization
                 ["bow_explosive_damage_format"] = "공격력의 {0}% 폭발 피해",
                 ["bow_explosive_range_format"] = "폭발 범위 {0}m",
                 ["bow_arrow_rain_tooltip_desc"] = "버프 활성화 후 활로 대상에 적중, 상공 200m에서 화살 낙하",
-                ["bow_arrow_rain_damage_format"] = "{0}발 × (활+화살) {1}% 데미지",
+                ["bow_arrow_rain_damage_format"] = "{0}발 × (활+화살) {1}% 공격력",
                 ["bow_arrow_rain_range_format"] = "낙하 반경 {0}m • AOE 3m",
                 ["crossbow_oneshot_tooltip_desc"] = "발동 즉시 장전 속도 감소(-50%), {0}초 내 발사 시 강력한 일격 + 7m 범위 번개 넉백",
 
@@ -463,6 +466,9 @@ namespace CaptainSkillTree.Localization
                 ["spear_penetrate_extra_use_ready"] = "⚡ G-key usable again within 30s!",
                 ["spear_required"] = "Spear required",
                 ["spear_penetrate_success"] = "Penetrate! {0} damage!",
+                ["spear_penetrate_rushing"] = "Already dashing!",
+                ["spear_penetrate_charges_remaining"] = "Penetrate: {0} charge(s) left",
+                ["spear_penetrate_rush_active"] = "Penetrate!",
                 ["spear_combo_cooldown"] = "Combo Spear on cooldown! Remaining: {0}s",
                 ["spear_combo_success"] = "Combo Spear! {0} consecutive hits!",
 

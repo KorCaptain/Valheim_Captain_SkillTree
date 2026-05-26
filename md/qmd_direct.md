@@ -1,7 +1,7 @@
 # QMD 컬렉션 디렉토리 — CaptainSkillTree
 
 > QMD Collection: `C:\home\ssunyme\.npm-global\bin\CaptainSkillTree`  
-> 총 69개 MD 파일 인덱싱 · 업데이트: `qmd update` · 임베딩: `qmd embed`
+> 총 70개 MD 파일 인덱싱 · 업데이트: `qmd update` · 임베딩: `qmd embed`
 
 ---
 
@@ -72,6 +72,7 @@
 #### UI·툴팁 시스템
 | 파일 | 내용 |
 |------|------|
+| `md/active-skill-hud-rules.md` | **ActiveSkillHUD 구현 규칙** — ScaleWithScreenSize font atlas 충돌, KeyLabel 위치, overflow 설정 |
 | `md/ui-system-rules.md` | UI 렌더링 규칙, 패널 구조 |
 | `md/aattack-tolltip-display.md` | 공격 툴팁 표시 규칙 |
 | `md/armor-tooltip-display-rules.md` | 방어구 툴팁 표시 규칙 |
@@ -97,6 +98,7 @@
 | `md/skill-proficiency-system.md` | 스킬 숙련도 시스템 |
 | `md/job-lv2.md` | 직업 Lv2 스킬 설계 |
 | `md/job-skill-levelup.md` | 직업 스킬 레벨업 규칙 |
+| `md/active-skill-level-upgrade-system.md` | **액티브 스킬 Lv1~7 업그레이드 시스템** — 폭발화살 기준, partial class 구조, 트로피 소모, 툴팁 패턴, 7개 언어 체크리스트 |
 | `md/crossbow-skill-status.md` | 석궁 스킬 현황 |
 
 #### 시스템·통합
@@ -169,3 +171,4 @@
 | 버전 업 절차 | `lex: changelog PATCH MINOR` |
 | 빌드 오류 | `lex: CS0 build error` |
 | 다국어 키 추가 | `lex: DefaultLanguages json` |
+| 서버 Config 싱크 | `lex: BroadcastConfigToClients GetEffectiveValue` |

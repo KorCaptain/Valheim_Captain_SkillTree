@@ -98,15 +98,15 @@ namespace CaptainSkillTree.SkillTree
         // 동적 값 접근자 (Lv1 기본)
         // ====================================================
         public static float RogueShadowStrikeCooldownValue        => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_Cooldown",      RogueShadowStrikeCooldown?.Value      ?? 35f);
-        public static float RogueShadowStrikeStaminaCostValue     => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_StaminaCost",   RogueShadowStrikeStaminaCost?.Value   ?? 20f);
-        public static float RogueShadowStrikeAttackBonusValue     => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_AttackBonus",   RogueShadowStrikeAttackBonus?.Value   ?? 35f);
+        public static float RogueShadowStrikeStaminaCostValue     => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_StaminaCost",   RogueShadowStrikeStaminaCost?.Value   ?? 25f);
+        public static float RogueShadowStrikeAttackBonusValue     => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_AttackBonus",   RogueShadowStrikeAttackBonus?.Value   ?? 30f);
         public static float RogueShadowStrikeBuffDurationValue    => SkillTreeConfig.GetEffectiveValue("Rogue_ShadowStrike_BuffDuration",  RogueShadowStrikeBuffDuration?.Value  ?? 8f);
 
         // Lv2~5 쿨다운
-        public static float RogueLv2CooldownValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_Cooldown", RogueLv2Cooldown?.Value ?? 32f);
-        public static float RogueLv3CooldownValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv3_Cooldown", RogueLv3Cooldown?.Value ?? 30f);
-        public static float RogueLv4CooldownValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv4_Cooldown", RogueLv4Cooldown?.Value ?? 28f);
-        public static float RogueLv5CooldownValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_Cooldown", RogueLv5Cooldown?.Value ?? 25f);
+        public static float RogueLv2CooldownValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_Cooldown", RogueLv2Cooldown?.Value ?? 34f);
+        public static float RogueLv3CooldownValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv3_Cooldown", RogueLv3Cooldown?.Value ?? 33f);
+        public static float RogueLv4CooldownValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv4_Cooldown", RogueLv4Cooldown?.Value ?? 32f);
+        public static float RogueLv5CooldownValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv5_Cooldown", RogueLv5Cooldown?.Value ?? 30f);
 
         // Lv2~5 공격력 버프
         public static float RogueLv2AttackBonusValue => SkillTreeConfig.GetEffectiveValue("Rogue_Lv2_AttackBonus", RogueLv2AttackBonus?.Value ?? 40f);
@@ -122,7 +122,7 @@ namespace CaptainSkillTree.SkillTree
 
         // 독 폭발 Lv1 기본
         public static float RoguePoisonRangeValue        => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_Range",        RoguePoisonRange?.Value        ?? 15f);
-        public static float RoguePoisonInstantDamageValue => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_InstantDamage", RoguePoisonInstantDamage?.Value ?? 20f);
+        public static float RoguePoisonInstantDamageValue => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_InstantDamage", RoguePoisonInstantDamage?.Value ?? 40f);
         public static float RoguePoisonDotDamageValue    => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_DotDamage",    RoguePoisonDotDamage?.Value    ?? 30f);
         public static float RoguePoisonDotDurationValue  => SkillTreeConfig.GetEffectiveValue("Rogue_Poison_DotDuration",  RoguePoisonDotDuration?.Value  ?? 10f);
         public static int   RoguePoisonVFXCountValue     => (int)SkillTreeConfig.GetEffectiveValue("Rogue_Poison_VFXCount", RoguePoisonVFXCount?.Value      ?? 6f);
@@ -193,10 +193,10 @@ namespace CaptainSkillTree.SkillTree
                 RogueShadowStrikeBuffDuration = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_ShadowStrike_BuffDuration", 8f, SkillTreeConfig.GetConfigDescription("Rogue_ShadowStrike_BuffDuration"));
 
                 // === 그림자 일격 Lv2~5 쿨다운 ===
-                RogueLv2Cooldown = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_Cooldown", 32f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_Cooldown"));
-                RogueLv3Cooldown = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv3_Cooldown", 30f, SkillTreeConfig.GetConfigDescription("Rogue_Lv3_Cooldown"));
-                RogueLv4Cooldown = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv4_Cooldown", 28f, SkillTreeConfig.GetConfigDescription("Rogue_Lv4_Cooldown"));
-                RogueLv5Cooldown = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_Cooldown", 25f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_Cooldown"));
+                RogueLv2Cooldown = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_Cooldown", 34f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_Cooldown"));
+                RogueLv3Cooldown = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv3_Cooldown", 33f, SkillTreeConfig.GetConfigDescription("Rogue_Lv3_Cooldown"));
+                RogueLv4Cooldown = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv4_Cooldown", 32f, SkillTreeConfig.GetConfigDescription("Rogue_Lv4_Cooldown"));
+                RogueLv5Cooldown = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv5_Cooldown", 30f, SkillTreeConfig.GetConfigDescription("Rogue_Lv5_Cooldown"));
 
                 // === 그림자 일격 Lv2~5 공격력 버프 ===
                 RogueLv2AttackBonus = SkillTreeConfig.BindServerSync(config, "Rogue Job Skills", "Rogue_Lv2_AttackBonus", 40f, SkillTreeConfig.GetConfigDescription("Rogue_Lv2_AttackBonus"));
@@ -301,7 +301,59 @@ namespace CaptainSkillTree.SkillTree
                 RogueAttackSpeedBonus.SettingChanged        += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
                 RogueStaminaReduction.SettingChanged        += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
                 RogueLv1DodgeChance.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
-                RogueLv1MoveSpeed.SettingChanged             += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv1MoveSpeed.SettingChanged            += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+
+                // === 버프 지속시간 Lv2~5 ===
+                RogueLv2BuffDuration.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv3BuffDuration.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv4BuffDuration.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv5BuffDuration.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+
+                // === 독 폭발 횟수 Lv2~5 ===
+                RogueLv2PoisonBlasts.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv3PoisonBlasts.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv4PoisonBlasts.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv5PoisonBlasts.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+
+                // === 독 즉시 데미지 Lv2~5 ===
+                RogueLv2PoisonInstant.SettingChanged        += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv3PoisonInstant.SettingChanged        += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv4PoisonInstant.SettingChanged        += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv5PoisonInstant.SettingChanged        += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+
+                // === 독 DoT 데미지 Lv2~5 ===
+                RogueLv2PoisonDot.SettingChanged            += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv3PoisonDot.SettingChanged            += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv4PoisonDot.SettingChanged            += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv5PoisonDot.SettingChanged            += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+
+                // === 패시브 공격속도 Lv2~5 ===
+                RogueLv2AttackSpeed.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv3AttackSpeed.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv4AttackSpeed.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv5AttackSpeed.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+
+                // === 패시브 스태미나 감소 Lv2~5 ===
+                RogueLv2StaminaReduction.SettingChanged     += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv3StaminaReduction.SettingChanged     += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv4StaminaReduction.SettingChanged     += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv5StaminaReduction.SettingChanged     += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+
+                // === 패시브 회피율 Lv2~5 ===
+                RogueLv2DodgeChance.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv3DodgeChance.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv4DodgeChance.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv5DodgeChance.SettingChanged          += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+
+                // === 패시브 이동속도 Lv2~5 ===
+                RogueLv2MoveSpeed.SettingChanged            += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv3MoveSpeed.SettingChanged            += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv4MoveSpeed.SettingChanged            += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv5MoveSpeed.SettingChanged            += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+
+                // === 충전 시스템 ===
+                RogueShadowStrikeCharges.SettingChanged     += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
+                RogueLv5BonusCharges.SettingChanged         += (s, a) => Rogue_Tooltip.UpdateRogueTooltip();
 
                 Plugin.Log.LogDebug("[로그 컨피그] 이벤트 핸들러 등록 완료");
             }

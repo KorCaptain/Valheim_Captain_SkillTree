@@ -26,7 +26,6 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, bool> stealthMovementBonus = new Dictionary<Player, bool>();
 
         // 단검 신규 스킬 상태 추적
-        public static Dictionary<Player, float> knifeEvasionEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> knifeMoveSpeedEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> knifeDamageBonusEndTime = new Dictionary<Player, float>();
         public static Dictionary<Player, float> knifeAttackEvasionEndTime = new Dictionary<Player, float>();
@@ -136,14 +135,14 @@ namespace CaptainSkillTree.SkillTree
             ["knife_step2_evasion"] = "회피 숙련",
             ["knife_step3_move_speed"] = "빠른 움직임",
             ["knife_step4_attack_damage"] = "빠른 공격",
-            ["knife_step5_crit_rate"] = "치명타 숙련",
+            ["knife_step5_crit_rate"] = "회피 마스터",
             ["knife_step6_combat_damage"] = "피해로",
             ["knife_step7_execution"] = "암살자",
             ["knife_step8_assassination"] = "암살술",
             ["knife_step9_assassin_heart"] = "암살자의 심장",
 
             // 검 스킬 이름들
-            ["sword_expert"] = "검 전문가",
+            ["sword_expert"] = "검, 도끼 전문가",
             ["sword_Step1_fast_slash"] = "빠른 베기",
             ["sword_Step1_counter_stance"] = "반격 자세",
             ["sword_Step2_combo_slash"] = "연속베기",

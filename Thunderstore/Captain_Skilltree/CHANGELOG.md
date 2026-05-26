@@ -1,6 +1,65 @@
 # Changelog / 변경 로그
-# [1.22.97] - 2026-05-11
-- ✅fix1 : Server config Sync
+# [1.24.59] - 2026-05-26
+- ✅fix1 : Modify tool tips and configurations
+- ✅fix2: Apply the speed expert's claw and fist
+-
+- ✅fix1 : 툴 팁 및 컨피그 수정
+- ✅fix2 : 속도 전문가의 claw 와 fist 적용
+
+# [1.24.52] - 2026-05-25
+- ✅fix1 : Change all active skills to Lv1-7 growth type
+- ✅fix2 : Change the piercing speed anew
+- ✅fix3 : Change the rush shield anew
+-
+- ✅fix1 : 모든 액티브 스킬을 Lv1~7 성장형으로 변경
+- ✅fix2 : 꿰뚫는 창 이동 돌격 형 스킬로 변경
+- ✅fix3 : 돌진방패 새롭게 변경
+
+# [1.23.42] - 2026-05-17
+- ✅fix1 : Pierce spear - Change Attack Motion to Dagger Motion
+- ✅fix2 : Modifying the config siynk
+- ✅fix3 : Berker Lv5 attack and configuration modification
+- ✅fix4 : Modify config siynk
+-
+- ✅fix1 : 꿰뚫는 창 - 공격모션을 단검 모션으로 변경
+- ✅fix2 : 컨피그 싱크 수정
+- ✅fix3 : Berserker Lv5 공격력 및 컨피그 수정
+- ✅fix4 : 컨피그 싱크 수정
+
+
+# [1.23.34] - 2026-05-16
+- ✅fix1 : Application of whirlwind cutting attack
+- ✅fix2 : Berserker Passive 수정
+-
+- ✅fix1 : 회오리베기 수정 
+- ✅fix2 : Berserker Passive 수정
+
+# [1.23.29] - 2026-05-15
+- ✅fix1 : Modifying the server sink
+- ✅fix2 : Correct double jump height
+-
+- ✅fix1 : 서버싱크 수정 
+- ✅fix2 : 이중점프 높이 수정
+
+# [1.23.22] - 2026-05-15
+- ✅fix1: Skill icon - Modify it to show the shortcut key
+- ✅fix2: Block Training - Fix buggy movement
+-
+- ✅fix1 : 스킬아이콘 - 단축키 보이게 수정
+- ✅fix2 : 막기훈련 - 버그성 이동 수정
+
+# [1.23.15] - 2026-05-13
+- ✅new1: Add avoidance motion of the upper body when avoiding
+- ✅fix1: Skill icon - Add automatic size adjustment function according to window size
+-
+- ✅new1 : 회피시 상체 회피모션 추가
+- ✅fix1 : 스킬아이콘 - 창크기에 따라 자동 크기조절기능 추가
+
+
+# [1.22.98] - 2026-05-11
+- ✅fix1 : Server config sync - skillconfig sync modified to work, dedicated server is set to use setting + new config
+-
+- ✅fix1 : Server config Sync - skillconfig sync 작동되게 수정, 전용서버는 유즈세팅 + 신규컨피그로 세팅되게 함
 
 # [1.22.96] - 2026-05-10
 - ✅new1 : Block Training — renamed from "Shield Training" + parry auto-counter: block power ×300% blunt damage + 4m knockback (no cooldown, no stamina cost, requires melee or shield)

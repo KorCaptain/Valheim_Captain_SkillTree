@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using HarmonyLib;
+using CaptainSkillTree.VFX;
 using CaptainSkillTree.Localization;
 
 namespace CaptainSkillTree.SkillTree
@@ -15,23 +16,11 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static partial class SkillEffect
     {
-        // === 꿰뚫는 창 (번개 충격) 시스템 ===
-        public static Dictionary<Player, float> spearPenetrateBuffEndTime = new Dictionary<Player, float>();
-        public static Dictionary<Player, int> spearPenetrateComboCount = new Dictionary<Player, int>();
-        public static Dictionary<Player, float> spearPenetrateLastHitTime = new Dictionary<Player, float>();
-        public static Dictionary<Player, float> spearPenetrateCooldownEndTime = new Dictionary<Player, float>();
-
-        // Tanker Lv2 꿰뚫는창 추가 사용 창 (30초)
-        private static Dictionary<Player, float> _spearPenetratePendingWindow = new Dictionary<Player, float>();
-        private const float SpearPenetrateExtraWindow = 30f;
-
-        // 돌진 실행 중 플래그 (코루틴 중첩 방지)
+        // === 꿰뚫는 창 (돌진 회수) 시스템 ===
+        private static Dictionary<Player, float> spearPenetrateCooldownEndTime = new Dictionary<Player, float>();
         private static HashSet<Player> spearPenetrateDashing = new HashSet<Player>();
-        // 돌진 토글 (true=돌진, false=제자리)
-        private static Dictionary<Player, bool> spearPenetrateDashTurn = new Dictionary<Player, bool>();
-
-        // 재진입 방지 플래그 (번개 충격 데미지가 다시 콤보를 트리거하지 않도록)
-        private static bool isProcessingSpearLightningDamage = false;
+        private static Dictionary<Player, int> spearPenetrateChargesRemaining = new Dictionary<Player, int>();
+        internal static HashSet<Player> s_spearKnifeAnimPending = new HashSet<Player>(); // 하위 호환 stub
 
         // 투창 전문가 2차 공격 감지용 플래그 (consume-once)
         private static HashSet<Player> spearSecondaryPending = new HashSet<Player>();
@@ -63,10 +52,7 @@ namespace CaptainSkillTree.SkillTree
                 spearSecondaryPending.Remove(player);
         }
 
-        /// <summary>
-        /// 번개 충격 처리 중 여부 확인 (외부에서 재진입 방지용)
-        /// </summary>
-        public static bool IsProcessingSpearLightningDamage() => isProcessingSpearLightningDamage;
+        public static bool IsProcessingSpearLightningDamage() => false;
 
         // === 검 연계 시스템 ===
 
@@ -193,10 +179,10 @@ namespace CaptainSkillTree.SkillTree
         {
             if (!HasSkill("sword_step3_allinone")) return;
 
-            if (Sword_Skill.IsUsingSword(player))
+            if (IsUsingTwoHandedSword(player) || WeaponHelper.IsUsingTwoHandedAxe(player))
             {
                 DrawFloatingText(player, "⚔️🛡️ " + L.Get("sword_offense_defense", SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue, Sword_Config.SwordStep3AllInOneDefenseBonusValue));
-                Plugin.Log.LogDebug($"[공방일체] 검 착용 - 공격력 +{SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue}%, 막기 방어력 +{Sword_Config.SwordStep3AllInOneDefenseBonusValue} 적용");
+                Plugin.Log.LogDebug($"[공방일체] 양손검/도끼 착용 - 공격력 +{SkillTreeConfig.SwordStep3OffenseDefenseAttackBonusValue}%, 막기 방어력 +{Sword_Config.SwordStep3AllInOneDefenseBonusValue} 적용");
             }
         }
 
@@ -392,23 +378,49 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug("[투창 전문가] 투창 공격력 +30% 적용 (pierce)");
         }
 
+        private static int GetSpearPenetrateMaxCharges(int level) => (level + 1) / 2;
+
+        private static Attack s_polearmPrimaryCache = null;
+        private static Attack GetCachedPolearmPrimary()
+        {
+            if (s_polearmPrimaryCache != null) return s_polearmPrimaryCache;
+            string[] candidates = { "AtgeirBlackmetal", "AtgeirHimminAfl", "AtgeirKrom", "AtgeirBronze" };
+            foreach (var name in candidates)
+            {
+                var prefab = ObjectDB.instance?.GetItemPrefab(name);
+                var atk = prefab?.GetComponent<ItemDrop>()?.m_itemData?.m_shared?.m_attack;
+                if (atk != null && !string.IsNullOrEmpty(atk.m_attackAnimation))
+                {
+                    s_polearmPrimaryCache = atk;
+                    Plugin.Log.LogInfo($"[꿰뚫는 창] 폴암 일반 모션 캐시: {name} -> {atk.m_attackAnimation}");
+                    return atk;
+                }
+            }
+            return null;
+        }
+
         /// <summary>
-        /// 꿰뚫는 창 G키 액티브 스킬 (쿨타임 및 스태미나 체크)
+        /// 꿰뚫는 창 G키 액티브 스킬 — 회수 기반 전방 12m 돌진
         /// </summary>
         public static void ActivateSpearPenetrateLightning(Player player)
         {
             if (!HasSkill("spear_Step5_penetrate")) return;
+            if (player == null || player.IsDead()) return;
 
-            // 쿨타임 체크
+            float now = Time.time;
             float cooldown = Spear_Config.SpearStep6PenetrateCooldownValue;
-            if (spearPenetrateCooldownEndTime.TryGetValue(player, out float cooldownEnd) && Time.time < cooldownEnd)
+
+            if (spearPenetrateCooldownEndTime.TryGetValue(player, out float cooldownEnd) && now < cooldownEnd)
             {
-                float remaining = cooldownEnd - Time.time;
-                DrawFloatingText(player, L.Get("spear_penetrate_cooldown", $"{remaining:F1}"), Color.red);
+                DrawFloatingText(player, L.Get("cooldown_seconds", Mathf.CeilToInt(cooldownEnd - now).ToString()), Color.yellow);
                 return;
             }
 
-            // 스태미나 체크 (고정값)
+            int level = SkillTreeManager.Instance?.GetSkillLevel("spear_Step5_penetrate") ?? 1;
+            int maxCharges = GetSpearPenetrateMaxCharges(level);
+            if (!spearPenetrateChargesRemaining.TryGetValue(player, out int charges) || charges <= 0)
+                spearPenetrateChargesRemaining[player] = maxCharges;
+
             float staminaCost = Spear_Config.SpearStep6PenetrateStaminaCostValue;
             if (player.GetStamina() < staminaCost)
             {
@@ -416,269 +428,207 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            // 스태미나 소모
+            if (spearPenetrateDashing.Contains(player))
+            {
+                DrawFloatingText(player, L.Get("spear_penetrate_rushing"), Color.yellow);
+                return;
+            }
+
             player.UseStamina(staminaCost);
-
-            // 버프 활성화
-            ActivateSpearPenetrateBuff(player);
-
+            spearPenetrateChargesRemaining[player]--;
             TankerPrereqLastUsedTime = Time.time;
 
-            // Tanker Lv2 + 꿰뚫는창 보유: 첫 사용 시 쿨타임 보류 + 30초 창, 창 내 재사용 시 실제 쿨타임
-            float now = Time.time;
-            bool hasTankerLv2Spear = (SkillTreeManager.Instance?.GetSkillLevel("Tanker") ?? 0) >= 2
-                && HasSkill("spear_Step5_penetrate");
+            player.StartCoroutine(SpearPenetrateRushCoroutine(player));
 
-            bool inPenetrateWindow = hasTankerLv2Spear
-                && _spearPenetratePendingWindow.TryGetValue(player, out float winExpiry)
-                && now <= winExpiry;
-
-            if (hasTankerLv2Spear && !inPenetrateWindow)
+            if (spearPenetrateChargesRemaining[player] <= 0)
             {
-                // 1번째 사용: 쿨타임 없음 + 30초 창 오픈
-                _spearPenetratePendingWindow[player] = now + SpearPenetrateExtraWindow;
-                player.StartCoroutine(ExpireSpearPenetrateWindow(player));
-                DrawFloatingText(player, L.Get("spear_penetrate_extra_use_ready"), new Color(0.5f, 1f, 1f, 1f));
-            }
-            else
-            {
-                // 2번째 사용(창 내) or 일반: 실제 쿨타임 시작
-                _spearPenetratePendingWindow.Remove(player);
                 spearPenetrateCooldownEndTime[player] = now + cooldown;
                 ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "spear_Step5_penetrate", cooldown);
             }
-
-            // VFX 재생 (발헤임 기본 → VFXManager)
-            CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_offering_activate", "", player.transform.position, Quaternion.identity, 1f);
-
-            Plugin.Log.LogInfo($"[꿰뚫는 창] G키 액티브 스킬 발동 - 쿨타임: {cooldown}초, 스태미나: {staminaCost:F0}");
-        }
-
-        /// <summary>
-        /// 꿰뚫는 창 버프 활성화 (내부 호출용)
-        /// </summary>
-        public static void ActivateSpearPenetrateBuff(Player player)
-        {
-            float duration = Spear_Config.SpearStep6PenetrateBuffDurationValue;
-            spearPenetrateBuffEndTime[player] = Time.time + duration;
-            spearPenetrateComboCount[player] = 0;
-            spearPenetrateDashTurn[player] = true; // 첫 공격은 항상 돌진
-
-            DrawFloatingText(player, "⚡ " + L.Get("spear_penetrate_activated", $"{duration}"), Color.yellow);
-            Plugin.Log.LogInfo($"[꿰뚫는 창] 버프 활성화 - {duration}초간 지속");
-        }
-
-        /// <summary>
-        /// 꿰뚫는 창 버프 활성 여부 확인
-        /// </summary>
-        public static bool IsSpearPenetrateBuffActive(Player player)
-        {
-            return spearPenetrateBuffEndTime.TryGetValue(player, out float endTime) && Time.time < endTime;
-        }
-
-        /// <summary>
-        /// 꿰뚫는 창 콤보 체크 및 번개 충격 발동
-        /// G키로 버프 활성화 후 3회 연속 적중 시 번개 충격 발동
-        /// </summary>
-        public static void CheckSpearPenetrateCombo(Player player, Character target, HitData hit)
-        {
-            if (!HasSkill("spear_Step5_penetrate")) return;
-            if (target == null || !target.IsMonsterFaction(Time.time)) return;
-
-            // 번개 충격 데미지 처리 중이면 스킵 (재진입 방지)
-            if (isProcessingSpearLightningDamage) return;
-
-            // 버프가 비활성화 상태면 스킵 (G키로 활성화 필요)
-            if (!IsSpearPenetrateBuffActive(player)) return;
-
-            float now = Time.time;
-            int requiredCombo = Spear_Config.SpearStep6PenetrateComboCountValue;
-
-            // 콤보 카운터 초기화 체크 (3초 이내 연속 적중만 인정)
-            if (!spearPenetrateComboCount.ContainsKey(player))
-                spearPenetrateComboCount[player] = 0;
-
-            if (spearPenetrateLastHitTime.TryGetValue(player, out float lastPenHit) && now - lastPenHit < 5f)
-            {
-                spearPenetrateComboCount[player]++;
-            }
             else
             {
-                spearPenetrateComboCount[player] = 1;
-            }
-            spearPenetrateLastHitTime[player] = now;
-
-            Plugin.Log.LogDebug($"[꿰뚫는 창] 콤보 카운트: {spearPenetrateComboCount[player]}/{requiredCombo}");
-
-            // 연속 적중 횟수 달성 시 번개 충격 발동
-            if (spearPenetrateComboCount[player] >= requiredCombo)
-            {
-                TriggerSpearPenetrateLightning(player, target, hit);
-                spearPenetrateComboCount[player] = 0;
+                int rem = spearPenetrateChargesRemaining[player];
+                DrawFloatingText(player, L.Get("spear_penetrate_charges_remaining", rem.ToString()), new Color(0.8f, 1f, 0.5f, 1f));
             }
         }
 
-        /// <summary>
-        /// 공격 시작(좌클릭) 감지 - 홀수 공격: 전방 7m 내 몬스터 돌진 / 짝수 공격: 제자리
-        /// </summary>
-        public static void OnSpearAttackStart(Player player)
+        private static IEnumerator SpearPenetrateRushCoroutine(Player player)
         {
-            if (!HasSkill("spear_Step5_penetrate")) return;
-            if (!IsSpearPenetrateBuffActive(player)) return;
-            if (spearPenetrateDashing.Contains(player)) return;
-
-            bool isDashTurn = spearPenetrateDashTurn.TryGetValue(player, out bool cur) ? cur : true;
-            spearPenetrateDashTurn[player] = !isDashTurn;
-            if (!isDashTurn) return;
-
-            Character target = FindNearestMonsterInFront(player, 7f);
-            if (target == null) return;
-
             spearPenetrateDashing.Add(player);
-            player.StartCoroutine(SpearPenetrateDashToMonsterCoroutine(player, target));
-        }
 
-        private static Character FindNearestMonsterInFront(Player player, float maxDistance)
-        {
-            Vector3 camForward = Camera.main != null ? Camera.main.transform.forward : player.transform.forward;
-            Vector3 fwd = new Vector3(camForward.x, 0f, camForward.z).normalized;
-            LayerMask charMask = LayerMask.GetMask("character", "hitbox");
-            var cols = Physics.OverlapSphere(player.transform.position, maxDistance, charMask);
+            Vector3 lookDir = player.GetLookDir();
+            lookDir.y = 0f;
+            if (lookDir.sqrMagnitude < 0.01f) lookDir = player.transform.forward;
+            lookDir.Normalize();
 
-            Character nearest = null;
-            float nearestDist = float.MaxValue;
-            foreach (var col in cols)
+            Vector3 startPos = player.transform.position;
+            float chargeDistance = 12f;
+            var rb = player.GetComponent<Rigidbody>();
+
+            int obstacleMask = LayerMask.GetMask("static_solid", "Default", "piece");
+            if (Physics.SphereCast(startPos + Vector3.up * 0.8f, 0.4f, lookDir, out RaycastHit obstacleHit, chargeDistance, obstacleMask))
+                chargeDistance = Mathf.Max(0f, obstacleHit.distance - 0.5f);
+
+            Vector3 endPos = startPos + lookDir * chargeDistance;
+            if (Physics.Raycast(endPos + Vector3.up * 0.1f, Vector3.down, out RaycastHit landHit, 5f,
+                LayerMask.GetMask("terrain", "static_solid", "piece")))
+                endPos.y = landHit.point.y;
+
+            // 캐릭터를 돌진 방향으로 즉시 회전
+            player.transform.rotation = Quaternion.LookRotation(lookDir);
+
+            // 폴암 일반 공격 모션 트리거
+            var polearmAtk = GetCachedPolearmPrimary();
+            var zanim = player.GetComponentInChildren<ZSyncAnimation>();
+            if (polearmAtk != null && zanim != null && !string.IsNullOrEmpty(polearmAtk.m_attackAnimation))
             {
-                var ch = col.GetComponentInParent<Character>();
-                if (ch == null || ch == player || ch.IsPlayer() || ch.IsDead()) continue;
-                if (!ch.IsMonsterFaction(Time.time)) continue;
-                Vector3 toTarget = ch.transform.position - player.transform.position;
-                if (Vector3.Dot(toTarget.normalized, fwd) < 0.3f) continue;
-                float dist = toTarget.magnitude;
-                if (dist < nearestDist) { nearestDist = dist; nearest = ch; }
+                string trigger = (polearmAtk.m_attackChainLevels > 1 || polearmAtk.m_attackRandomAnimations >= 2)
+                    ? polearmAtk.m_attackAnimation + "0"
+                    : polearmAtk.m_attackAnimation;
+                zanim.SetTrigger(trigger);
             }
-            return nearest;
-        }
 
-        /// <summary>
-        /// 꿰뚫는 창 번개 충격 발동
-        /// 3연속 적중 시 번개 데미지 적용
-        /// </summary>
-        private static void TriggerSpearPenetrateLightning(Player player, Character target, HitData hit)
-        {
-            if (target == null || target.IsDead()) return;
-            if (player == null) return;
+            float elapsed = 0f;
+            float vfxTimer = 0f;
+            var alreadyHit = new HashSet<int>();
+            int groundMask = LayerMask.GetMask("terrain", "static_solid", "piece");
 
-            if (isProcessingSpearLightningDamage) return;
+            const float dashDuration = 0.33f; // 기존 0.5f → 50% 빠르게
+            while (elapsed < dashDuration)
+            {
+                if (player == null || player.IsDead()) break;
+
+                elapsed += Time.deltaTime;
+                vfxTimer += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / dashDuration);
+
+                // 돌진 중 캐릭터 방향 유지
+                player.transform.rotation = Quaternion.LookRotation(lookDir);
+
+                Vector3 newPos = Vector3.Lerp(startPos, endPos, t);
+                if (Physics.Raycast(newPos + Vector3.up * 0.1f, Vector3.down, out RaycastHit groundHit, 5f, groundMask))
+                {
+                    float terrainY = groundHit.point.y + 0.3f;
+                    if (newPos.y < terrainY) newPos.y = terrainY;
+                }
+
+                player.transform.position = newPos;
+                if (rb != null) rb.position = newPos;
+
+                foreach (var c in Character.GetAllCharacters())
+                {
+                    if (c == null || c.IsDead() || c == player) continue;
+                    if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                    int id = c.GetInstanceID();
+                    if (alreadyHit.Contains(id)) continue;
+                    if (Vector3.Distance(c.transform.position, player.transform.position) > 5f) continue;
+                    alreadyHit.Add(id);
+                    try { ApplySpearPenetrateHit(player, c, lookDir); }
+                    catch (Exception ex) { Plugin.Log.LogError($"[꿰뚫는 창] 경로 히트 오류: {ex.Message}"); }
+                }
+
+                if (vfxTimer >= 0.08f)
+                {
+                    vfxTimer = 0f;
+                    ApplySpearPenetrateAreaHit(player, lookDir);
+                }
+
+                yield return null;
+            }
+
+            if (player != null && !player.IsDead())
+            {
+                player.transform.position = endPos;
+                if (rb != null) { rb.position = endPos; rb.velocity = Vector3.zero; rb.angularVelocity = Vector3.zero; }
+                var velField = typeof(Character).GetField("m_currentVel", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                velField?.SetValue(player, Vector3.zero);
+                var nview = HarmonyLib.Traverse.Create(player).Field("m_nview").GetValue<ZNetView>();
+                if (nview != null && nview.IsOwner()) nview.GetZDO()?.SetPosition(endPos);
+            }
 
             try
             {
-                isProcessingSpearLightningDamage = true;
-
-                float damageMultiplier = Spear_Config.SpearStep6PenetrateLightningDamageValue / 100f;
-
-                // 1. 번개 데미지 계산
-                float baseDamage = hit != null ? hit.GetTotalDamage() : 50f;
-                float lightningDamage = baseDamage * damageMultiplier;
-
-                // 2. VFX 재생
-                SimpleVFX.Play("flash_blue_purple", target.transform.position, 1.0f);
-
-                // 3. 번개 데미지 적용
-                if (!target.IsDead())
-                {
-                    HitData lightningHit = new HitData();
-                    lightningHit.m_damage.m_lightning = lightningDamage;
-                    lightningHit.m_point = target.transform.position;
-                    lightningHit.m_dir = (target.transform.position - player.transform.position).normalized;
-                    lightningHit.SetAttacker(player);
-                    target.Damage(lightningHit);
-                }
-
-                DrawFloatingText(player, "⚡ " + L.Get("spear_lightning_shock", $"{lightningDamage:F0}"), Color.cyan);
-                Plugin.Log.LogInfo($"[꿰뚫는 창] 번개 충격 + 돌진 발동 - 데미지: {lightningDamage:F0}");
+                var altField = typeof(Character).GetField("m_maxAirAltitude", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                altField?.SetValue(player, endPos.y);
             }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogWarning($"[꿰뚫는 창] 번개 충격 오류: {ex.Message}");
-            }
-            finally
-            {
-                isProcessingSpearLightningDamage = false;
-            }
-        }
-
-        private static System.Collections.IEnumerator SpearPenetrateDashToMonsterCoroutine(Player player, Character target)
-        {
-            if (player == null || target == null) { spearPenetrateDashing.Remove(player); yield break; }
-
-            var body = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
-            Vector3 toTarget = target.transform.position - player.transform.position;
-            Vector3 dir = new Vector3(toTarget.x, 0f, toTarget.z).normalized;
-            Vector3 dashEnd = target.transform.position - dir * 1.5f;
-
-            if (Physics.Raycast(dashEnd + Vector3.up * 5f, Vector3.down, out RaycastHit gHit, 10f,
-                LayerMask.GetMask("terrain", "Default")))
-                dashEnd.y = gHit.point.y + 0.1f;
-
-            Quaternion targetRot = Quaternion.LookRotation(dir);
-            Vector3 startPos = player.transform.position;
-            float dist = Vector3.Distance(startPos, dashEnd);
-            float dashDuration = Mathf.Clamp(dist * 0.05f, 0.12f, 0.28f);
-
-            float elapsed = 0f;
-            while (elapsed < dashDuration)
-            {
-                if (player == null || player.IsDead()) { spearPenetrateDashing.Remove(player); yield break; }
-                elapsed += Time.deltaTime;
-                float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / dashDuration));
-                Vector3 newPos = Vector3.Lerp(startPos, dashEnd, t);
-                if (body != null) { body.velocity = Vector3.zero; body.MovePosition(newPos); }
-                else player.transform.position = newPos;
-                player.transform.rotation = targetRot;
-                yield return new WaitForFixedUpdate();
-            }
+            catch { }
 
             spearPenetrateDashing.Remove(player);
+            Plugin.Log.LogInfo($"[꿰뚫는 창] 돌진 완료 - 타격: {alreadyHit.Count}");
         }
 
-        private static Vector3 GetSpearDashGroundPos(Vector3 pos)
+        private static void ApplySpearPenetrateHit(Player player, Character enemy, Vector3 dashDir)
         {
-            if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f,
-                LayerMask.GetMask("terrain", "Default")))
-                return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
-            return pos;
+            var weapon = player.GetCurrentWeapon();
+            float pierceDmg = weapon?.GetDamage().m_pierce ?? 1f;
+            if (pierceDmg < 1f) pierceDmg = weapon?.GetDamage().GetTotalPhysicalDamage() ?? 1f;
+
+            int level = SkillTreeManager.Instance?.GetSkillLevel("spear_Step5_penetrate") ?? 1;
+            float ratio = (Spear_Config.SpearPenetrateBaseDamageValue + (level - 1) * Spear_Config.SpearPenetrateLevelDamageBonusValue) / 100f;
+            float damage = Mathf.Max(1f, pierceDmg * ratio);
+
+            var hit = new HitData();
+            hit.m_damage.m_pierce = damage;
+            hit.SetAttacker(player);
+            hit.m_attacker = player.GetZDOID();
+            hit.m_point = enemy.GetCenterPoint();
+            hit.m_dir = dashDir;
+            hit.m_skill = Skills.SkillType.Spears;
+            hit.m_pushForce = 3f;
+            hit.m_blockable = false;
+            hit.m_dodgeable = true;
+            hit.m_staggerMultiplier = 2f;
+
+            enemy.Damage(hit);
+            enemy.Stagger(dashDir);
+            VFXManager.PlayVFXMultiplayer("vfx_blocked", "", enemy.GetCenterPoint(), Quaternion.identity, 2f);
+            DrawFloatingText(player, "⚔️ " + L.Get("spear_penetrate_rush_active") + $" {Mathf.RoundToInt(damage)}", new Color(0.5f, 1f, 0.3f, 1f));
         }
 
-        /// <summary>
-        /// Tanker Lv2 꿰뚫는창 추가 사용 창 만료 코루틴 - 30초 후 쿨타임 시작
-        /// </summary>
-        private static IEnumerator ExpireSpearPenetrateWindow(Player player)
+        private static void ApplySpearPenetrateAreaHit(Player player, Vector3 dashDir)
         {
-            yield return new UnityEngine.WaitForSeconds(SpearPenetrateExtraWindow);
-            if (_spearPenetratePendingWindow.ContainsKey(player))
+            var weapon = player.GetCurrentWeapon();
+            float pierceDmg = weapon?.GetDamage().m_pierce ?? 1f;
+            if (pierceDmg < 1f) pierceDmg = weapon?.GetDamage().GetTotalPhysicalDamage() ?? 1f;
+
+            int level = SkillTreeManager.Instance?.GetSkillLevel("spear_Step5_penetrate") ?? 1;
+            float ratio = (Spear_Config.SpearPenetrateBaseAreaDamageValue + (level - 1) * Spear_Config.SpearPenetrateAreaLevelBonusValue) / 100f;
+            float damage = Mathf.Max(1f, pierceDmg * ratio);
+
+            foreach (var c in Character.GetAllCharacters())
             {
-                _spearPenetratePendingWindow.Remove(player);
-                float cd = Spear_Config.SpearStep6PenetrateCooldownValue;
-                spearPenetrateCooldownEndTime[player] = Time.time + cd;
-                ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "spear_Step5_penetrate", cd);
-                Plugin.Log.LogDebug("[꿰뚫는 창] Tanker 추가 사용 창 만료 - 쿨타임 시작");
+                if (c == null || c.IsDead() || c == player) continue;
+                if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                if (Vector3.Distance(c.transform.position, player.transform.position) > 5f) continue;
+
+                var hit = new HitData();
+                hit.m_damage.m_pierce = damage;
+                hit.SetAttacker(player);
+                hit.m_attacker = player.GetZDOID();
+                hit.m_point = c.GetCenterPoint();
+                hit.m_dir = dashDir;
+                hit.m_skill = Skills.SkillType.Spears;
+                hit.m_blockable = false;
+                hit.m_dodgeable = false;
+                c.Damage(hit);
+                VFXManager.PlayVFXMultiplayer("fx_crit", "", c.GetCenterPoint(), Quaternion.identity, 1.5f);
             }
         }
 
-        /// <summary>
-        /// 꿰뚫는창 상태 정리 (플레이어 사망 시)
-        /// </summary>
+        // === 하위 호환 stub ===
+        public static bool IsSpearPenetrateBuffActive(Player player) => false;
+        public static void CheckSpearPenetrateCombo(Player player, Character target, HitData hit) { }
+        public static void OnSpearAttackStart(Player player) { }
+
         public static void CleanupSpearPenetrateOnDeath(Player player)
         {
-            spearPenetrateBuffEndTime.Remove(player);
-            spearPenetrateComboCount.Remove(player);
-            spearPenetrateLastHitTime.Remove(player);
             spearPenetrateCooldownEndTime.Remove(player);
-            _spearPenetratePendingWindow.Remove(player);
             spearPenetrateDashing.Remove(player);
-            spearPenetrateDashTurn.Remove(player);
+            spearPenetrateChargesRemaining.Remove(player);
         }
+
+        internal static Attack GetCachedKnifePrimaryAttack() => null;
+        internal static string GetKnifePrimaryAnimTrigger() => null;
 
     }
 

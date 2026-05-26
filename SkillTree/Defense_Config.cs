@@ -138,6 +138,9 @@ namespace CaptainSkillTree.SkillTree
         /// <summary>막기훈련 - 패링 반격 밀어내기 거리 (m)</summary>
         public static ConfigEntry<float> BlockTrainingPushDistance;
 
+        /// <summary>막기훈련 - 반격 발동 최대 거리 (m, 이 거리 이내 몬스터만 반응)</summary>
+        public static ConfigEntry<float> BlockTrainingMaxChargeDistance;
+
         // =====================================================
         // Tier 4: 충격파방출 (defense_Step4_mental)
         // =====================================================
@@ -386,6 +389,9 @@ namespace CaptainSkillTree.SkillTree
         public static float BlockTrainingPushDistanceValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_BlockTraining_PushDistance", BlockTrainingPushDistance?.Value ?? 4f);
 
+        public static float BlockTrainingMaxChargeDistanceValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_BlockTraining_MaxChargeDistance", BlockTrainingMaxChargeDistance?.Value ?? 8f);
+
         // === Tier 4: 충격파방출 ===
         public static float ShockwaveRadiusValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_Shockwave_Radius", ShockwaveRadius?.Value ?? 3.0f);
@@ -601,6 +607,10 @@ namespace CaptainSkillTree.SkillTree
             BlockTrainingPushDistance = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier3_BlockTraining_PushDistance", 4f,
                 SkillTreeConfig.GetConfigDescription("Tier3_BlockTraining_PushDistance"), order: 51);
+
+            BlockTrainingMaxChargeDistance = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier3_BlockTraining_MaxChargeDistance", 8f,
+                "막기훈련 반격 발동 최대 거리 (m). 이 거리 이내의 몬스터가 스태거될 때만 반격 발동. (Block Training max range)", order: 50);
 
             // ===========================================
             // Tier 4: Shockwave (충격파방출)

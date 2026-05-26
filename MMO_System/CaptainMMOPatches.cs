@@ -238,6 +238,10 @@ namespace CaptainSkillTree.MMO_System
             try
             {
                 LevelSyncManager.Instance.Reset();
+
+                var player = Player.m_localPlayer;
+                if (player != null)
+                    CaptainJobNameHud.RestoreJobTitleFromCustomData(player);
             }
             catch (Exception ex)
             {

@@ -19,37 +19,83 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static string GetSwordSlashTooltip()
         {
-            Plugin.Log.LogDebug("[Sword Tooltip] GetSwordSlashTooltip() called");
-
-            // 컨피그에서 실제 값 가져오기
+            var manager = SkillTreeManager.Instance;
+            int currentLevel = manager?.GetSkillLevel("sword_step5_finalcut") ?? 0;
+            int mainLevel = currentLevel == 0 ? 1 : currentLevel;
+            int displayLevel = System.Math.Min(currentLevel + 1, 7);
+            float levelBonus = (mainLevel - 1) * Sword_Config.RushSlashDamageLevelBonusValue;
             var skillData = Sword_Config.GetRushSlashData();
-            var requiredPoints = 3;
+            float eff1 = skillData.damage1stRatio + levelBonus;
+            float eff2 = skillData.damage2ndRatio + levelBonus;
+            float eff3 = skillData.damage3rdRatio + levelBonus;
 
-            Plugin.Log.LogDebug($"[Sword Tooltip] Config values - 1st: {skillData.damage1stRatio}%, 2nd: {skillData.damage2ndRatio}%, 3rd: {skillData.damage3rdRatio}%");
+            var t = $"<color=#FFD700><size=22>{L.Get("sword_skill_rush_slash")}</size></color>\n";
 
-            // 돌진 연속 베기 설명 구성
-            string description = L.Get("sword_desc_rush_slash", skillData.initialDistance) + "\n" +
-                                $"<color=#98FB98>{L.Get("sword_desc_rush_slash_1st", skillData.damage1stRatio)}</color>\n" +
-                                $"<color=#FFA500>{L.Get("sword_desc_rush_slash_2nd", skillData.damage2ndRatio)}</color>\n" +
-                                $"<color=#FF6B6B>{L.Get("sword_desc_rush_slash_3rd", skillData.damage3rdRatio)}</color>\n" +
-                                $"<color=#87CEEB>{L.Get("sword_desc_rush_slash_path")}</color>";
+            t += $"<color=#E0E0E0><size=16>Lv{mainLevel} : " +
+                 $"{L.Get("sword_desc_rush_slash_1st", (int)eff1)} / " +
+                 $"{L.Get("sword_desc_rush_slash_2nd", (int)eff2)} / " +
+                 $"{L.Get("sword_desc_rush_slash_3rd", (int)eff3)}</size></color>\n";
 
-            // MeleeTooltipUtils를 사용한 툴팁 데이터 생성
-            var data = MeleeTooltipUtils.CreateActiveSkillData(
-                $"<color=#FFD700><size=22>{L.Get("sword_skill_rush_slash")}</size></color>",
-                description,
-                $"{skillData.staminaCost}",
-                $"{skillData.cooldown}{L.Get("unit_seconds")}",
-                MeleeTooltipUtils.WeaponType.Sword,
-                $"{L.Get("tooltip_same_weapon_only")}\n{L.Get("tooltip_not_invincible")}",
-                "",
-                "G"
-            );
-            data.requiredPoints = requiredPoints.ToString();
+            t += $"<color=#E0E0E0><size=16>{L.Get("sword_desc_rush_slash", skillData.initialDistance)}</size></color>\n";
+            t += $"<color=#87CEEB><size=16>{L.Get("sword_desc_rush_slash_path")}</size></color>\n";
 
-            string finalTooltip = MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
-            Plugin.Log.LogDebug($"[Sword Tooltip] Final tooltip generated - length: {finalTooltip?.Length ?? 0}");
-            return finalTooltip;
+            t += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
+            t += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {(int)skillData.staminaCost}</size></color>\n";
+
+            t += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
+            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyG?.Value ?? "G")}</size></color>\n";
+
+            t += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";
+            t += $"<color=#FFDB58><size=16>{skillData.cooldown}{L.Get("unit_seconds")}</size></color>\n";
+
+            t += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>";
+            t += $"<color=#00FF00><size=16>{L.Get("requirement_sword_equip")}</size></color>\n";
+
+            t += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>";
+            t += $"<color=#FF6B6B><size=16>{Sword_Config.RushSlashRequiredPointsValue}</size></color>\n";
+
+            if (currentLevel < 7)
+            {
+                t += $"<color=#FFA500><size=16>{L.Get("rush_slash_next_level_req", displayLevel)}: </size></color>";
+                t += $"<color=#FF6B6B><size=16>{GetRushSlashLevelItemText(displayLevel)}</size></color>\n";
+            }
+            else
+            {
+                t += $"<color=#FFD700><size=16>{L.Get("rush_slash_max_level")}</size></color>\n";
+            }
+
+            if (mainLevel < 7)
+            {
+                t += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
+                for (int lv = mainLevel + 1; lv <= 7; lv++)
+                {
+                    float lvBonus = (lv - 1) * Sword_Config.RushSlashDamageLevelBonusValue;
+                    float lvEff1 = skillData.damage1stRatio + lvBonus;
+                    float lvEff2 = skillData.damage2ndRatio + lvBonus;
+                    float lvEff3 = skillData.damage3rdRatio + lvBonus;
+                    t += $"<color=#808080><size=14>Lv{lv} : " +
+                         $"{L.Get("sword_desc_rush_slash_1st", (int)lvEff1)} / " +
+                         $"{L.Get("sword_desc_rush_slash_2nd", (int)lvEff2)} / " +
+                         $"{L.Get("sword_desc_rush_slash_3rd", (int)lvEff3)}</size></color>\n";
+                }
+            }
+
+            return t.TrimEnd('\n');
+        }
+
+        private static string GetRushSlashLevelItemText(int targetLevel)
+        {
+            switch (targetLevel)
+            {
+                case 1: return L.Get("item_trophy_eikthyr") + " x1 + " + L.Get("item_trophy_boar") + " x1";
+                case 2: return L.Get("item_trophy_elder") + " x1 + " + L.Get("item_trophy_troll") + " x1";
+                case 3: return L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_draugrelite") + " x1";
+                case 4: return L.Get("item_trophy_dragonqueen") + " x1 + " + L.Get("item_trophy_sgolem") + " x1";
+                case 5: return L.Get("item_trophy_goblinking") + " x1 + " + L.Get("item_trophy_goblinshaman") + " x1";
+                case 6: return L.Get("item_trophy_seekerqueen") + " x1 + " + L.Get("item_trophy_seekerbrute") + " x1";
+                case 7: return L.Get("item_trophy_fader") + " x1 + " + L.Get("item_trophy_fallenvalkyrie") + " x1";
+                default: return "";
+            }
         }
 
         /// <summary>
@@ -196,39 +242,98 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 회오리베기 툴팁 생성 (sword_step5_defswitch)
+        /// 회오리베기 툴팁 생성 (sword_step5_defswitch) — CrossbowOneShot 형식, Lv1~7
         /// </summary>
         public static string GetDefSwitchTooltip()
         {
             Plugin.Log.LogDebug("[검 툴팁] GetDefSwitchTooltip() 호출됨 (회오리베기)");
 
-            float staminaCost = Sword_Config.ParryRushStaminaCostValue;
-            float cooldown    = Sword_Config.ParryRushCooldownValue;
-            const float r1 = 5f;
-            const float r2 = 8f;
-            const float r3 = 12f;
-            const float d1 = 140f;
-            const float d2 = 180f;
-            const float d3 = 220f;
+            var manager = SkillTreeManager.Instance;
+            int currentLevel = manager?.GetSkillLevel("sword_step5_defswitch") ?? 0;
+            int mainLevel    = currentLevel == 0 ? 1 : currentLevel;
+            int displayLevel = Math.Min(currentLevel + 1, 7);
 
-            string description = L.Get("sword_desc_parry_rush", r1, r2, r3) + "\n" +
-                $"<color=#98FB98>{L.Get("sword_desc_parry_rush_damage", 1, d1)}</color>\n" +
-                $"<color=#98FB98>{L.Get("sword_desc_parry_rush_damage", 2, d2)}</color>\n" +
-                $"<color=#FFD700>{L.Get("sword_desc_parry_rush_damage", 3, d3)}</color>";
+            const float r1 = 5f, r2 = 8f, r3 = 12f;
+            const float ratio1 = 140f, ratio2 = 180f, ratio3 = 220f;
+            float levelBonus = (mainLevel - 1) * Sword_Config.WhirlwindSlashLevelBonusValue;
+            float scaledBase = Sword_Config.WhirlwindSlashBaseDamageValue + levelBonus;
+            float d1 = scaledBase * (ratio1 / 100f);
+            float d2 = scaledBase * (ratio2 / 100f);
+            float d3 = scaledBase * (ratio3 / 100f);
 
-            var data = MeleeTooltipUtils.CreateActiveSkillData(
-                $"<color=#FFD700><size=22>{L.Get("sword_skill_parry_rush")}</size></color>",
-                description,
-                $"{staminaCost}",
-                $"{cooldown}{L.Get("unit_seconds")}",
-                MeleeTooltipUtils.WeaponType.Sword,
-                L.Get("tooltip_same_weapon_only"),
-                L.Get("requirement_sword_or_shield_equip"),
-                "H"
-            );
-            data.requiredPoints = "3";
+            // 1. 스킬명
+            var t = currentLevel > 0
+                ? $"<color=#4FC3F7><size=22>{L.Get("sword_skill_parry_rush")} [Lv{currentLevel}/7]</size></color>\n"
+                : $"<color=#FFD700><size=22>{L.Get("sword_skill_parry_rush")}</size></color>\n";
 
-            return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Sword);
+            // 2. Lv + 3단계 피해 요약
+            t += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {(int)d1}/{(int)d2}/{(int)d3} {L.Get("tooltip_damage")}, AOE {r1}m/{r2}m/{r3}m</size></color>\n";
+
+            // 3. 밀어내기 부가 효과
+            t += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
+            t += $"<color=#ADFF2F><size=16>{L.Get("sword_desc_parry_rush_push", (int)Sword_Config.ParryRushPushDistanceValue)}</size></color>\n";
+
+            // 4. 소모 (스태미나)
+            t += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
+            t += $"<color=#FFDAB9><size=16>{L.Get("stamina_format", (int)Sword_Config.ParryRushStaminaCostValue)}</size></color>\n";
+
+            // 5. 스킬유형 (H키)
+            t += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
+            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyH?.Value ?? "H")}</size></color>\n";
+
+            // 6. 쿨타임
+            t += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";
+            t += $"<color=#FFDB58><size=16>{Sword_Config.ParryRushCooldownValue}{L.Get("unit_seconds")}</size></color>\n";
+
+            // 7. 필요조건
+            t += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>";
+            t += $"<color=#00FF00><size=16>{L.Get("requirement_sword_or_shield_equip")}</size></color>\n";
+
+            // 8. 필요포인트
+            t += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>";
+            t += $"<color=#FF6B6B><size=16>{Sword_Config.SwordStep5DefenseSwitchRequiredPointsValue}</size></color>\n";
+
+            // 9. 다음 레벨 트로피 조건 or 최대레벨
+            if (currentLevel < 7)
+            {
+                t += $"<color=#FFA500><size=16>{L.Get("whirlwind_next_level_req", displayLevel)}: </size></color>";
+                t += $"<color=#FF6B6B><size=16>{GetWhirlwindLevelItemText(displayLevel)}</size></color>\n";
+            }
+            else
+            {
+                t += $"<color=#FFD700><size=16>{L.Get("whirlwind_max_level")}</size></color>\n";
+            }
+
+            // 10. 구분선 + Lv 프리뷰
+            if (mainLevel < 7)
+            {
+                t += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
+                for (int lv = mainLevel + 1; lv <= 7; lv++)
+                {
+                    float lvBase = Sword_Config.WhirlwindSlashBaseDamageValue + (lv - 1) * Sword_Config.WhirlwindSlashLevelBonusValue;
+                    float lvD1 = lvBase * (ratio1 / 100f);
+                    float lvD2 = lvBase * (ratio2 / 100f);
+                    float lvD3 = lvBase * (ratio3 / 100f);
+                    t += $"<color=#808080><size=14>Lv{lv} : {(int)lvD1}/{(int)lvD2}/{(int)lvD3} {L.Get("tooltip_damage")}, AOE {r1}m/{r2}m/{r3}m</size></color>\n";
+                }
+            }
+
+            return t.TrimEnd('\n');
+        }
+
+        private static string GetWhirlwindLevelItemText(int targetLevel)
+        {
+            switch (targetLevel)
+            {
+                case 1: return L.Get("item_trophy_eikthyr") + " x1 + " + L.Get("item_trophy_boar") + " x1";
+                case 2: return L.Get("item_trophy_elder") + " x1 + " + L.Get("item_trophy_troll") + " x1";
+                case 3: return L.Get("item_trophy_bonemass") + " x1 + " + L.Get("item_trophy_draugrelite") + " x1";
+                case 4: return L.Get("item_trophy_dragonqueen") + " x1 + " + L.Get("item_trophy_sgolem") + " x1";
+                case 5: return L.Get("item_trophy_goblinking") + " x1 + " + L.Get("item_trophy_goblinshaman") + " x1";
+                case 6: return L.Get("item_trophy_seekerqueen") + " x1 + " + L.Get("item_trophy_seekerbrute") + " x1";
+                case 7: return L.Get("item_trophy_fader") + " x1 + " + L.Get("item_trophy_fallenvalkyrie") + " x1";
+                default: return "";
+            }
         }
 
         /// <summary>

@@ -78,7 +78,7 @@ namespace CaptainSkillTree.SkillTree
             if (remainingTime > 0)
             {
                 string message = $"{skillName} 스킬이 쿨다운 중입니다. 남은 시간: {remainingTime:F1}초";
-                player.Message(MessageHud.MessageType.Center, message);
+                SkillEffect.ShowSkillEffectText(player, message, Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                 Plugin.Log.LogInfo($"[스킬 쿨다운] {player.GetPlayerName()} - {message}");
             }
         }
@@ -90,7 +90,7 @@ namespace CaptainSkillTree.SkillTree
         {
             if (player == null) return;
             
-            player.Message(MessageHud.MessageType.Center, message);
+            SkillEffect.ShowSkillEffectText(player, message, Color.yellow, SkillEffect.SkillEffectTextType.Standard);
             Plugin.Log.LogInfo($"[스킬 요구사항] {player.GetPlayerName()} - {message}");
         }
 

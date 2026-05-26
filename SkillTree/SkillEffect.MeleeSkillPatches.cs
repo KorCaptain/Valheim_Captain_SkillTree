@@ -109,7 +109,7 @@ namespace CaptainSkillTree.SkillTree
                 if (attacker == null || !attacker.IsPlayer() || __instance.IsPlayer()) return;
 
                 var player = attacker as Player;
-                if (player == null || !SkillEffect.IsUsingSword(player)) return;
+                if (player == null || !WeaponHelper.IsUsingSwordOrAxe(player)) return;
 
                 // 검술 연계 업데이트
                 SkillEffect.UpdateSwordCombo(player);
@@ -216,9 +216,6 @@ namespace CaptainSkillTree.SkillTree
 
             // 이연창 콤보 체크 (버프 활성화)
             SkillEffect.CheckSpearDualCombo(player);
-
-            // 꿰뚫는 창 콤보 체크
-            SkillEffect.CheckSpearPenetrateCombo(player, target, hit);
 
             // 실제 데미지 수정은 GetDamage 패치(ApplySpearPassiveBonus)에서 처리
         }
@@ -367,7 +364,8 @@ namespace CaptainSkillTree.SkillTree
 
         private static void ApplySwordPassiveBonus(ItemDrop.ItemData item, Player player, ref HitData.DamageTypes result)
         {
-            if (item.m_shared.m_skillType != Skills.SkillType.Swords) return;
+            if (item.m_shared.m_skillType != Skills.SkillType.Swords &&
+                item.m_shared.m_skillType != Skills.SkillType.Axes) return;
 
             float totalSwordBonusPercent = 0f;
             float totalSwordBonusFixed = 0f;
@@ -527,7 +525,6 @@ namespace CaptainSkillTree.SkillTree
                 }
                 evasionBonus.Remove(player);
                 stealthMovementBonus.Remove(player);
-                knifeEvasionEndTime.Remove(player);
                 knifeMoveSpeedEndTime.Remove(player);
                 knifeDamageBonusEndTime.Remove(player);
                 knifeAttackEvasionEndTime.Remove(player);
@@ -615,26 +612,4 @@ namespace CaptainSkillTree.SkillTree
         }
     }
 
-    /// <summary>
-    /// 꿰뚫는 창 공격 감지 - 좌클릭(1회 돌진 / 2회 제자리) 반복
-    /// </summary>
-    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.StartAttack))]
-    public static class SpearPenetrate_AttackDash_Patch
-    {
-        public static void Postfix(Humanoid __instance, bool secondaryAttack, bool __result)
-        {
-            if (!__result) return;
-            try
-            {
-                if (secondaryAttack) return;
-                if (__instance is not Player player) return;
-                if (!SkillEffect.IsUsingSpear(player)) return;
-                SkillEffect.OnSpearAttackStart(player);
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogWarning($"[꿰뚫는 창] 공격 돌진 패치 오류: {ex.Message}");
-            }
-        }
-    }
 }

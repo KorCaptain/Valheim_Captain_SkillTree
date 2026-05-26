@@ -180,6 +180,27 @@ namespace CaptainSkillTree.Localization
                 "스태미나 관리가 중요합니다.\n" +
                 "권장값: 20-35",
 
+                ["Tier5_Penetrate_BaseDamage"] =
+                "【Lv1 기본 단일 피해 (%)】\n" +
+                "꿰뚫는 창 돌진 시 경로 적에게 입히는 기본 단일 피해입니다.\n" +
+                "창 무기의 관통 공격력 대비 비율로 계산됩니다.\n" +
+                "권장값: 80-120%",
+
+                ["Tier5_Penetrate_LevelDamageBonus"] =
+                "【레벨당 단일 피해 증가 (%)】\n" +
+                "꿰뚫는 창 레벨 1당 추가되는 단일 피해 증가량입니다.\n" +
+                "권장값: 3-8%",
+
+                ["Tier5_Penetrate_BaseAreaDamage"] =
+                "【Lv1 기본 범위 피해 (%)】\n" +
+                "꿰뚫는 창 돌진 시 경로 5m 범위에 입히는 기본 피해입니다.\n" +
+                "권장값: 60-100%",
+
+                ["Tier5_Penetrate_AreaLevelBonus"] =
+                "【레벨당 범위 피해 증가 (%)】\n" +
+                "꿰뚫는 창 레벨 1당 추가되는 범위 피해 증가량입니다.\n" +
+                "권장값: 3-8%",
+
                 // === Spear Tree: Tier 5 - 연공창 (H키 액티브, 8개) ===
                 ["Tier5_Combo_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -835,6 +856,27 @@ namespace CaptainSkillTree.Localization
                 "Stamina consumed when using Penetrating Spear.\n" +
                 "Stamina management is critical.\n" +
                 "Recommended: 20-35",
+
+                ["Tier5_Penetrate_BaseDamage"] =
+                "【Lv1 Base Single Hit Damage (%)】\n" +
+                "Base single-target damage dealt to enemies in the dash path.\n" +
+                "Calculated as a ratio of the spear weapon's pierce damage.\n" +
+                "Recommended: 80-120%",
+
+                ["Tier5_Penetrate_LevelDamageBonus"] =
+                "【Single Damage Bonus per Level (%)】\n" +
+                "Additional single-target damage added per skill level.\n" +
+                "Recommended: 3-8%",
+
+                ["Tier5_Penetrate_BaseAreaDamage"] =
+                "【Lv1 Base Area Damage (%)】\n" +
+                "Base damage dealt to enemies within 5m radius of the dash path.\n" +
+                "Recommended: 60-100%",
+
+                ["Tier5_Penetrate_AreaLevelBonus"] =
+                "【Area Damage Bonus per Level (%)】\n" +
+                "Additional area damage added per skill level.\n" +
+                "Recommended: 3-8%",
 
                 // === Spear Tree: Tier 5 - Combo Spear (H-Key Active, 8 keys) ===
                 ["Tier5_Combo_RequiredPoints"] =

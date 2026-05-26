@@ -47,6 +47,7 @@ namespace CaptainSkillTree.SkillTree
 
             config.SettingChanged += OnAdminSettingChanged;
             config.SettingChanged += OnServerSettingChanged;
+            config.SettingChanged += OnClientSettingChanged;
             Plugin.Log.LogDebug("[AdminSync] 어드민 Config 변경 구독 등록 완료");
         }
 
@@ -305,6 +306,19 @@ namespace CaptainSkillTree.SkillTree
                 _isProcessingRpcUpdate = false; // 예외 시에도 플래그 해제
                 Plugin.Log.LogError($"[AdminSync] RPC_AdminConfigUpdate 실패: {ex.Message}");
             }
+        }
+
+        // 서버 Config 수신 후 클라이언트 로컬 변경 시도를 차단 (경고 로그)
+        // 실제 게임 수치 보호는 GetEffectiveValue()가 담당하며, 이 핸들러는 명시적 경고를 제공
+        private static void OnClientSettingChanged(object sender, SettingChangedEventArgs e)
+        {
+            if (_isServer) return;
+            if (_isProcessingRpcUpdate) return;
+            if (!_hasReceivedServerConfig) return;
+
+            Plugin.Log.LogWarning(
+                $"[ConfigSync] 클라이언트 Config 변경 차단됨: {e.ChangedSetting.Definition.Key}" +
+                $" (서버 Config가 우선 적용됩니다)");
         }
     }
 }

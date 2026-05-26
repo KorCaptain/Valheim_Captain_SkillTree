@@ -1,0 +1,464 @@
+Total missing keys: 154
+
+[- Captain Level System -]
+Exit Button = false   # VeryHard was: false
+
+[Archer Job Skills]
+Archer_MultiShot_FireInterval = 0.2   # VeryHard was: 0.1
+
+[Archer Job Skills]
+Archer_Attack_StaminaReduction_Lv1 = 15   # VeryHard was: 15
+
+[Archer Job Skills]
+Archer_Attack_StaminaReduction_Lv2 = 25   # VeryHard was: 25
+
+[Archer Job Skills]
+Archer_Attack_StaminaReduction_Lv3 = 35   # VeryHard was: 35
+
+[Archer Job Skills]
+Archer_Attack_StaminaReduction_Lv4 = 45   # VeryHard was: 45
+
+[Archer Job Skills]
+Archer_Attack_StaminaReduction_Lv5 = 55   # VeryHard was: 55
+
+[Archer Job Skills]
+Archer_AmmoSaveChance = 50   # VeryHard was: 50
+
+[Berserker Job Skills]
+Berserker_Lv1_Active_Cooldown = 45   # VeryHard was: 45
+
+[Berserker Job Skills]
+Berserker_Lv2_Active_Cooldown = 40   # VeryHard was: 40
+
+[Berserker Job Skills]
+Berserker_Lv3_Active_Cooldown = 40   # VeryHard was: 40
+
+[Berserker Job Skills]
+Berserker_Lv4_Active_Cooldown = 40   # VeryHard was: 40
+
+[Berserker Job Skills]
+Berserker_Lv5_Active_Cooldown = 35   # VeryHard was: 35
+
+[Berserker Job Skills]
+Berserker_Lv1_Active_Duration = 20   # VeryHard was: 20
+
+[Berserker Job Skills]
+Berserker_Lv2_Active_Duration = 20   # VeryHard was: 20
+
+[Berserker Job Skills]
+Berserker_Lv3_Active_Duration = 25   # VeryHard was: 25
+
+[Berserker Job Skills]
+Berserker_Lv4_Active_Duration = 25   # VeryHard was: 25
+
+[Berserker Job Skills]
+Berserker_Lv5_Active_Duration = 25   # VeryHard was: 25
+
+[Berserker Job Skills]
+Berserker_Lv1_Passive_HealthBonus = 40   # VeryHard was: 40
+
+[Berserker Job Skills]
+Berserker_Lv2_Passive_HealthBonus = 60   # VeryHard was: 60
+
+[Berserker Job Skills]
+Berserker_Lv3_Passive_HealthBonus = 80   # VeryHard was: 80
+
+[Berserker Job Skills]
+Berserker_Lv4_Passive_HealthBonus = 100   # VeryHard was: 100
+
+[Berserker Job Skills]
+Berserker_Lv5_Passive_HealthBonus = 120   # VeryHard was: 120
+
+[Berserker Job Skills]
+Berserker_Lv1_Active_DamagePerHP = 1.5   # VeryHard was: 1.5
+
+[Berserker Job Skills]
+Berserker_Lv2_Active_DamagePerHP = 1.6   # VeryHard was: 1.6
+
+[Berserker Job Skills]
+Berserker_Lv3_Active_DamagePerHP = 1.7   # VeryHard was: 1.7
+
+[Berserker Job Skills]
+Berserker_Lv4_Active_DamagePerHP = 1.8   # VeryHard was: 1.8
+
+[Berserker Job Skills]
+Berserker_Lv5_Active_DamagePerHP = 2   # VeryHard was: 2
+
+[Berserker-Fähigkeiten]
+Berserker_Lv1_Active_Cooldown = 45   # VeryHard was: 45
+
+[Berserker-Fähigkeiten]
+Berserker_Lv2_Active_Cooldown = 40   # VeryHard was: 40
+
+[Berserker-Fähigkeiten]
+Berserker_Lv3_Active_Cooldown = 40   # VeryHard was: 40
+
+[Berserker-Fähigkeiten]
+Berserker_Lv4_Active_Cooldown = 40   # VeryHard was: 40
+
+[Berserker-Fähigkeiten]
+Berserker_Lv5_Active_Cooldown = 35   # VeryHard was: 35
+
+[Berserker-Fähigkeiten]
+Berserker_Lv1_Active_Duration = 20   # VeryHard was: 20
+
+[Berserker-Fähigkeiten]
+Berserker_Lv2_Active_Duration = 20   # VeryHard was: 20
+
+[Berserker-Fähigkeiten]
+Berserker_Lv3_Active_Duration = 25   # VeryHard was: 25
+
+[Berserker-Fähigkeiten]
+Berserker_Lv4_Active_Duration = 25   # VeryHard was: 25
+
+[Berserker-Fähigkeiten]
+Berserker_Lv5_Active_Duration = 25   # VeryHard was: 25
+
+[Berserker-Fähigkeiten]
+Berserker_Lv1_Passive_HealthBonus = 40   # VeryHard was: 40
+
+[Berserker-Fähigkeiten]
+Berserker_Lv2_Passive_HealthBonus = 60   # VeryHard was: 60
+
+[Berserker-Fähigkeiten]
+Berserker_Lv3_Passive_HealthBonus = 80   # VeryHard was: 80
+
+[Berserker-Fähigkeiten]
+Berserker_Lv4_Passive_HealthBonus = 100   # VeryHard was: 100
+
+[Berserker-Fähigkeiten]
+Berserker_Lv5_Passive_HealthBonus = 120   # VeryHard was: 120
+
+[Berserker-Fähigkeiten]
+Berserker_Lv1_Active_DamagePerHP = 1.5   # VeryHard was: 1.5
+
+[Berserker-Fähigkeiten]
+Berserker_Lv2_Active_DamagePerHP = 1.6   # VeryHard was: 1.6
+
+[Berserker-Fähigkeiten]
+Berserker_Lv3_Active_DamagePerHP = 1.7   # VeryHard was: 1.7
+
+[Berserker-Fähigkeiten]
+Berserker_Lv4_Active_DamagePerHP = 1.8   # VeryHard was: 1.8
+
+[Berserker-Fähigkeiten]
+Berserker_Lv5_Active_DamagePerHP = 2   # VeryHard was: 2
+
+[Bogenschützen-Fähigkeiten]
+Archer_MultiShot_FireInterval = 0.1   # VeryHard was: 0.1
+
+[Bogenschützen-Fähigkeiten]
+Archer_Attack_StaminaReduction_Lv1 = 15   # VeryHard was: 15
+
+[Bogenschützen-Fähigkeiten]
+Archer_Attack_StaminaReduction_Lv2 = 25   # VeryHard was: 25
+
+[Bogenschützen-Fähigkeiten]
+Archer_Attack_StaminaReduction_Lv3 = 35   # VeryHard was: 35
+
+[Bogenschützen-Fähigkeiten]
+Archer_Attack_StaminaReduction_Lv4 = 45   # VeryHard was: 45
+
+[Bogenschützen-Fähigkeiten]
+Archer_Attack_StaminaReduction_Lv5 = 55   # VeryHard was: 55
+
+[Bogenschützen-Fähigkeiten]
+Archer_AmmoSaveChance = 50   # VeryHard was: 50
+
+[Defense Tree]
+Tier4_Shockwave_KnockbackForce = 30   # VeryHard was: 20
+
+[Habilidades de Arqueiro]
+Archer_MultiShot_FireInterval = 0.1   # VeryHard was: 0.1
+
+[Habilidades de Arqueiro]
+Archer_Attack_StaminaReduction_Lv1 = 15   # VeryHard was: 15
+
+[Habilidades de Arqueiro]
+Archer_Attack_StaminaReduction_Lv2 = 25   # VeryHard was: 25
+
+[Habilidades de Arqueiro]
+Archer_Attack_StaminaReduction_Lv3 = 35   # VeryHard was: 35
+
+[Habilidades de Arqueiro]
+Archer_Attack_StaminaReduction_Lv4 = 45   # VeryHard was: 45
+
+[Habilidades de Arqueiro]
+Archer_Attack_StaminaReduction_Lv5 = 55   # VeryHard was: 55
+
+[Habilidades de Arqueiro]
+Archer_AmmoSaveChance = 50   # VeryHard was: 50
+
+[Habilidades de Berserker]
+Berserker_Lv1_Active_Cooldown = 45   # VeryHard was: 45
+
+[Habilidades de Berserker]
+Berserker_Lv2_Active_Cooldown = 40   # VeryHard was: 40
+
+[Habilidades de Berserker]
+Berserker_Lv3_Active_Cooldown = 40   # VeryHard was: 40
+
+[Habilidades de Berserker]
+Berserker_Lv4_Active_Cooldown = 40   # VeryHard was: 40
+
+[Habilidades de Berserker]
+Berserker_Lv5_Active_Cooldown = 35   # VeryHard was: 35
+
+[Habilidades de Berserker]
+Berserker_Lv1_Active_Duration = 20   # VeryHard was: 20
+
+[Habilidades de Berserker]
+Berserker_Lv2_Active_Duration = 20   # VeryHard was: 20
+
+[Habilidades de Berserker]
+Berserker_Lv3_Active_Duration = 25   # VeryHard was: 25
+
+[Habilidades de Berserker]
+Berserker_Lv4_Active_Duration = 25   # VeryHard was: 25
+
+[Habilidades de Berserker]
+Berserker_Lv5_Active_Duration = 25   # VeryHard was: 25
+
+[Habilidades de Berserker]
+Berserker_Lv1_Passive_HealthBonus = 40   # VeryHard was: 40
+
+[Habilidades de Berserker]
+Berserker_Lv2_Passive_HealthBonus = 60   # VeryHard was: 60
+
+[Habilidades de Berserker]
+Berserker_Lv3_Passive_HealthBonus = 80   # VeryHard was: 80
+
+[Habilidades de Berserker]
+Berserker_Lv4_Passive_HealthBonus = 100   # VeryHard was: 100
+
+[Habilidades de Berserker]
+Berserker_Lv5_Passive_HealthBonus = 120   # VeryHard was: 120
+
+[Habilidades de Berserker]
+Berserker_Lv1_Active_DamagePerHP = 1.5   # VeryHard was: 1.5
+
+[Habilidades de Berserker]
+Berserker_Lv2_Active_DamagePerHP = 1.6   # VeryHard was: 1.6
+
+[Habilidades de Berserker]
+Berserker_Lv3_Active_DamagePerHP = 1.7   # VeryHard was: 1.7
+
+[Habilidades de Berserker]
+Berserker_Lv4_Active_DamagePerHP = 1.8   # VeryHard was: 1.8
+
+[Habilidades de Berserker]
+Berserker_Lv5_Active_DamagePerHP = 2   # VeryHard was: 2
+
+[Habilidades de Tanker]
+Tanker_NormalShield_SpeedBonus = 25   # VeryHard was: 25
+
+[Habilidades de Tanker]
+Tanker_TowerShield_SpeedBonus = 30   # VeryHard was: 30
+
+[Keulbaum]
+Tier3_SpinStrike_KnockbackForce = 3   # VeryHard was: 3
+
+[Mace Tree]
+Tier3_SpinStrike_KnockbackForce = 3   # VeryHard was: 3
+
+[Producer Job Skills]
+Producer_Durability_Lv1 = 50   # VeryHard was: 50
+
+[Producer Job Skills]
+Producer_CraftingSuccessRate_Lv1 = 25   # VeryHard was: 25
+
+[Producer Job Skills]
+Producer_CraftingSuccessRate_Lv2 = 45   # VeryHard was: 45
+
+[Producer Job Skills]
+Producer_CraftingSuccessRate_Lv3 = 65   # VeryHard was: 65
+
+[Producer Job Skills]
+Producer_CraftingSuccessRate_Lv4 = 75   # VeryHard was: 75
+
+[Producer Job Skills]
+Producer_CraftingSuccessRate_Lv5 = 100   # VeryHard was: 100
+
+[Skill_Tree_Base]
+GameDifficulty = Vanilla   # VeryHard was: VeryHard
+
+[Skill_Tree_Base]
+ShowResetButtons = true   # VeryHard was: true
+
+[Skill_Tree_Base]
+Job_Reset_Cost = 1000   # VeryHard was: 1000
+
+[Skill_Tree_Base]
+Active_Reset_Cost = 500   # VeryHard was: 500
+
+[Skill_Tree_Base]
+Passive_Reset_Cost = 100   # VeryHard was: 100
+
+[Skill_Tree_Base]
+My VFX 투명도 = 70   # VeryHard was: 90
+
+[Tanker Job Skills]
+Tanker_Explosion_Radius = 12   # VeryHard was: 12
+
+[Tanker Job Skills]
+Tanker_BlockPower_Multiplier = 400   # VeryHard was: 400
+
+[Tanker Job Skills]
+Tanker_NormalShield_SpeedBonus = 25   # VeryHard was: 25
+
+[Tanker Job Skills]
+Tanker_TowerShield_SpeedBonus = 30   # VeryHard was: 30
+
+[Tanker-Fähigkeiten]
+Tanker_NormalShield_SpeedBonus = 25   # VeryHard was: 25
+
+[Tanker-Fähigkeiten]
+Tanker_TowerShield_SpeedBonus = 30   # VeryHard was: 30
+
+[Verteidigungsbaum]
+Tier4_Shockwave_KnockbackForce = 20   # VeryHard was: 20
+
+[Árvore de Defesa]
+Tier4_Shockwave_KnockbackForce = 20   # VeryHard was: 20
+
+[Árvore de Maça]
+Tier3_SpinStrike_KnockbackForce = 3   # VeryHard was: 3
+
+[Árvore de Maça]
+Tier7_ShieldCharge_DamagePercent = 70   # VeryHard was: 70
+
+[Árvore de Maça]
+Tier7_ShieldCharge_MultiHitDamagePercent = 70   # VeryHard was: 70
+
+[アーチャー職業スキル]
+Archer_MultiShot_FireInterval = 0.1   # VeryHard was: 0.1
+
+[アーチャー職業スキル]
+Archer_Attack_StaminaReduction_Lv1 = 15   # VeryHard was: 15
+
+[アーチャー職業スキル]
+Archer_Attack_StaminaReduction_Lv2 = 25   # VeryHard was: 25
+
+[アーチャー職業スキル]
+Archer_Attack_StaminaReduction_Lv3 = 35   # VeryHard was: 35
+
+[アーチャー職業スキル]
+Archer_Attack_StaminaReduction_Lv4 = 45   # VeryHard was: 45
+
+[アーチャー職業スキル]
+Archer_Attack_StaminaReduction_Lv5 = 55   # VeryHard was: 55
+
+[アーチャー職業スキル]
+Archer_AmmoSaveChance = 50   # VeryHard was: 50
+
+[タンカー職業スキル]
+Tanker_NormalShield_SpeedBonus = 25   # VeryHard was: 25
+
+[タンカー職業スキル]
+Tanker_TowerShield_SpeedBonus = 30   # VeryHard was: 30
+
+[バーサーカー職業スキル]
+Berserker_Lv1_Active_Cooldown = 45   # VeryHard was: 45
+
+[バーサーカー職業スキル]
+Berserker_Lv2_Active_Cooldown = 40   # VeryHard was: 40
+
+[バーサーカー職業スキル]
+Berserker_Lv3_Active_Cooldown = 40   # VeryHard was: 40
+
+[バーサーカー職業スキル]
+Berserker_Lv4_Active_Cooldown = 40   # VeryHard was: 40
+
+[バーサーカー職業スキル]
+Berserker_Lv5_Active_Cooldown = 35   # VeryHard was: 35
+
+[バーサーカー職業スキル]
+Berserker_Lv1_Active_Duration = 20   # VeryHard was: 20
+
+[バーサーカー職業スキル]
+Berserker_Lv2_Active_Duration = 20   # VeryHard was: 20
+
+[バーサーカー職業スキル]
+Berserker_Lv3_Active_Duration = 25   # VeryHard was: 25
+
+[バーサーカー職業スキル]
+Berserker_Lv4_Active_Duration = 25   # VeryHard was: 25
+
+[バーサーカー職業スキル]
+Berserker_Lv5_Active_Duration = 25   # VeryHard was: 25
+
+[バーサーカー職業スキル]
+Berserker_Lv1_Passive_HealthBonus = 40   # VeryHard was: 40
+
+[バーサーカー職業スキル]
+Berserker_Lv2_Passive_HealthBonus = 60   # VeryHard was: 60
+
+[バーサーカー職業スキル]
+Berserker_Lv3_Passive_HealthBonus = 80   # VeryHard was: 80
+
+[バーサーカー職業スキル]
+Berserker_Lv4_Passive_HealthBonus = 100   # VeryHard was: 100
+
+[バーサーカー職業スキル]
+Berserker_Lv5_Passive_HealthBonus = 120   # VeryHard was: 120
+
+[バーサーカー職業スキル]
+Berserker_Lv1_Active_DamagePerHP = 1.5   # VeryHard was: 1.5
+
+[バーサーカー職業スキル]
+Berserker_Lv2_Active_DamagePerHP = 1.6   # VeryHard was: 1.6
+
+[バーサーカー職業スキル]
+Berserker_Lv3_Active_DamagePerHP = 1.7   # VeryHard was: 1.7
+
+[バーサーカー職業スキル]
+Berserker_Lv4_Active_DamagePerHP = 1.8   # VeryHard was: 1.8
+
+[バーサーカー職業スキル]
+Berserker_Lv5_Active_DamagePerHP = 2   # VeryHard was: 2
+
+[メイスツリー]
+Tier3_SpinStrike_KnockbackForce = 3   # VeryHard was: 3
+
+[坦克职业技能]
+Tanker_NormalShield_SpeedBonus = 25   # VeryHard was: 25
+
+[坦克职业技能]
+Tanker_TowerShield_SpeedBonus = 30   # VeryHard was: 30
+
+[攻击树]
+Archer_MultiShot_FireInterval = 0.1   # VeryHard was: 0.1
+
+[攻击树]
+Archer_Attack_StaminaReduction_Lv1 = 15   # VeryHard was: 15
+
+[攻击树]
+Archer_Attack_StaminaReduction_Lv2 = 25   # VeryHard was: 25
+
+[攻击树]
+Archer_Attack_StaminaReduction_Lv3 = 35   # VeryHard was: 35
+
+[攻击树]
+Archer_Attack_StaminaReduction_Lv4 = 45   # VeryHard was: 45
+
+[攻击树]
+Archer_Attack_StaminaReduction_Lv5 = 55   # VeryHard was: 55
+
+[攻击树]
+Archer_AmmoSaveChance = 50   # VeryHard was: 50
+
+[锤树]
+Tier3_SpinStrike_KnockbackForce = 3   # VeryHard was: 3
+
+[锤树]
+Tier7_ShieldCharge_DamagePercent = 70   # VeryHard was: 70
+
+[锤树]
+Tier7_ShieldCharge_MultiHitDamagePercent = 70   # VeryHard was: 70
+
+[防御ツリー]
+Tier4_Shockwave_KnockbackForce = 20   # VeryHard was: 20
+
+[防御树]
+Tier4_Shockwave_KnockbackForce = 20   # VeryHard was: 20
+

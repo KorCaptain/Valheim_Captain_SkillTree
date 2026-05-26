@@ -28,7 +28,7 @@ namespace CaptainSkillTree.Gui
         }
     }
 
-    public class SkillTreeUI : MonoBehaviour
+    public partial class SkillTreeUI : MonoBehaviour
     {
         public GameObject? panel;
         private UnityEngine.UI.Text? skillPointText;
@@ -2565,6 +2565,70 @@ namespace CaptainSkillTree.Gui
                 }
                 // 트로피 있으면 canInvest = true → InvestPoint가 업그레이드 다이얼로그 표시
             }
+            else if (node.Id == "staff_Step6_dual_cast")
+            {
+                return CheckDualCastInvest(node, currentLevel);
+            }
+            else if (node.Id == "bow_Step6_critboost")
+            {
+                return CheckExplosiveArrowInvest(node, currentLevel);
+            }
+            else if (node.Id == "spear_Step5_combo")
+            {
+                return CheckSpearComboInvest(node, currentLevel);
+            }
+            else if (node.Id == "spear_Step5_penetrate")
+            {
+                return CheckSpearPenetrateInvest(node, currentLevel);
+            }
+            else if (node.Id == "polearm_step5_king")
+            {
+                return CheckPierceChargeInvest(node, currentLevel);
+            }
+            else if (node.Id == "mace_Step7_fury_hammer")
+            {
+                return CheckFuryHammerInvest(node, currentLevel);
+            }
+            else if (node.Id == "mace_Step7_guardian_heart")
+            {
+                return CheckShieldChargeInvest(node, currentLevel);
+            }
+            else if (node.Id == "knife_step9_assassin_heart")
+            {
+                return CheckAssassinHeartInvest(node, currentLevel);
+            }
+            else if (node.Id == "knife_step10_stack_explosion")
+            {
+                return CheckStackExplosionInvest(node, currentLevel);
+            }
+            else if (node.Id == "bow_Step6_arrow_rain")
+            {
+                return CheckArrowRainInvest(node, currentLevel);
+            }
+            else if (node.Id == "staff_Step6_heal")
+            {
+                return CheckStaffHealInvest(node, currentLevel);
+            }
+            else if (node.Id == "crossbow_Step6_expert")
+            {
+                return CheckOneShotInvest(node, currentLevel);
+            }
+            else if (node.Id == "crossbow_ice_breath")
+            {
+                return CheckIceBreathInvest(node, currentLevel);
+            }
+            else if (node.Id == "sword_step5_finalcut")
+            {
+                return CheckRushSlashInvest(node, currentLevel);
+            }
+            else if (node.Id == "sword_step5_defswitch")
+            {
+                return CheckWhirlwindSlashInvest(node, currentLevel);
+            }
+            else if (node.Id == "polearm_step6_whirlwind")
+            {
+                return CheckPolearmWhirlwindInvest(node, currentLevel);
+            }
             else if (SkillTree.SkillItemRequirements.IsProductionSkill(node.Id))
             {
                 // 생산 스킬: 아이템 요구사항 체크
@@ -2863,6 +2927,54 @@ namespace CaptainSkillTree.Gui
                         return;
                     }
                 }
+
+                // 이중시전 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.StaffDualCast.cs
+                if (HandleDualCastClick(node)) return;
+
+                // 폭발화살 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.BowExplosiveArrow.cs
+                if (HandleExplosiveArrowClick(node)) return;
+
+                // 연공창 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.SpearCombo.cs
+                if (HandleSpearComboClick(node)) return;
+
+                // 꿰뚫는 창 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.SpearPenetrate.cs
+                if (HandleSpearPenetrateClick(node)) return;
+
+                // 관통 돌격 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.PierceCharge.cs
+                if (HandlePierceChargeClick(node)) return;
+
+                // 분노의 망치 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.MaceFuryHammer.cs
+                if (HandleFuryHammerClick(node)) return;
+
+                // 방패돌진 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.ShieldCharge.cs
+                if (HandleShieldChargeClick(node)) return;
+
+                // 암살자의 심장 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.KnifeAssassinHeart.cs
+                if (HandleAssassinHeartClick(node)) return;
+
+                // 약점폭발 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.KnifeStackExplosion.cs
+                if (HandleStackExplosionClick(node)) return;
+
+                // 화살비 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.BowArrowRain.cs
+                if (HandleArrowRainClick(node)) return;
+
+                // 힐 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.StaffHeal.cs
+                if (HandleStaffHealClick(node)) return;
+
+                // 단 한 발 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.CrossbowOneShot.cs
+                if (HandleOneShotClick(node)) return;
+
+                // 빙결폭발탄 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.CrossbowIceBreath.cs
+                if (HandleIceBreathClick(node)) return;
+
+                // 돌진베기 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.SwordRushSlash.cs
+                if (HandleRushSlashClick(node)) return;
+
+                // 회오리베기 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.SwordWhirlwindSlash.cs
+                if (HandleWhirlwindSlashClick(node)) return;
+
+                // 폴암 휠윈드 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.PolearmWhirlwind.cs
+                if (HandlePolearmWhirlwindClick(node)) return;
 
                 // 버서커 Lv1+ 업그레이드: 확인 다이얼로그 표시
                 if (node.Id == "Berserker" && manager.GetSkillLevel("Berserker") >= 1)
@@ -4110,6 +4222,9 @@ namespace CaptainSkillTree.Gui
 
                 // 채팅으로도 표시
                 Chat.instance?.AddString($"<color=yellow>{message}</color>");
+
+                // 직업 프리픽스 ZDO 동기화
+                CaptainJobNameHud.SyncJobTitleToZDO(player, nodeId);
             }
             catch (System.Exception ex)
             {

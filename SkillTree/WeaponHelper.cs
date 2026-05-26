@@ -112,6 +112,24 @@ namespace CaptainSkillTree.SkillTree
             IsUsingWeapon(player, Skills.SkillType.Axes);
 
         /// <summary>
+        /// 검 또는 도끼 사용 여부 확인 (검/도끼 전문가 트리 공용 조건)
+        /// </summary>
+        public static bool IsUsingSwordOrAxe(Player player) =>
+            IsUsingSword(player) || IsUsingAxe(player);
+
+        /// <summary>
+        /// 양손 도끼 사용 여부 확인 (공방일체 양손 조건)
+        /// </summary>
+        public static bool IsUsingTwoHandedAxe(Player player)
+        {
+            if (player == null) return false;
+            var weapon = player.GetCurrentWeapon();
+            if (weapon?.m_shared == null) return false;
+            return weapon.m_shared.m_skillType == Skills.SkillType.Axes &&
+                   weapon.m_shared.m_itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon;
+        }
+
+        /// <summary>
         /// 곡괭이 사용 여부 확인
         /// </summary>
         public static bool IsUsingPickaxe(Player player) =>

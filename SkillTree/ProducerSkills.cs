@@ -73,15 +73,14 @@ namespace CaptainSkillTree.SkillTree
             if (state.OnCooldown)
             {
                 float remaining = state.CooldownEndTime - Time.time;
-                player.Message(MessageHud.MessageType.TopLeft,
-                    L.Get("cooldown_remaining", $"{remaining:F0}"));
+                SkillEffect.ShowSkillEffectText(player, L.Get("cooldown_remaining", $"{remaining:F0}"), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                 return;
             }
 
             float staminaCost = Producer_Config.ProducerBuff_StaminaCostValue;
             if (player.GetStamina() < staminaCost)
             {
-                player.Message(MessageHud.MessageType.Center, L.Get("stamina_insufficient_short"));
+                SkillEffect.ShowSkillEffectText(player, L.Get("stamina_insufficient_short"), Color.yellow, SkillEffect.SkillEffectTextType.Standard);
                 return;
             }
 
@@ -102,7 +101,7 @@ namespace CaptainSkillTree.SkillTree
             // 시전 SFX
             VFXManager.PlayVFXAtPosition("sfx_charred_twitcher_alert", player.transform.position);
 
-            player.Message(MessageHud.MessageType.Center, L.Get("producer_buff_applied"));
+            SkillEffect.ShowSkillEffectText(player, L.Get("producer_buff_applied"), Color.white, SkillEffect.SkillEffectTextType.Standard);
             Plugin.Log.LogDebug($"[제작 전문가] {player.GetPlayerName()} 장인의 축복 발동 ({duration}초)");
         }
 
@@ -238,7 +237,7 @@ namespace CaptainSkillTree.SkillTree
             SetPlayerBuff(player, duration);
             SimpleVFX.Play("buff_01", player.transform.position);
             StartProducerStatusVFX(player, duration);
-            player.Message(MessageHud.MessageType.Center, L.Get("producer_buff_applied"));
+            SkillEffect.ShowSkillEffectText(player, L.Get("producer_buff_applied"), Color.white, SkillEffect.SkillEffectTextType.Standard);
         }
 
         // === Player.Awake: RPC "ProducerBuff_ApplyRPC" 등록 ===

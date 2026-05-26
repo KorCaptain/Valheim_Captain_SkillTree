@@ -40,6 +40,7 @@ namespace CaptainSkillTree.SkillTree
 
         // === 암살자의 심장 (G키 액티브 스킬) 설정 ===
         public static ConfigEntry<float> KnifeAssassinHeartCritDamage;
+        public static ConfigEntry<float> KnifeAssassinHeartLevelBonus;
         public static ConfigEntry<float> KnifeAssassinHeartDuration;
         public static ConfigEntry<float> KnifeAssassinHeartStaminaCost;
         public static ConfigEntry<float> KnifeAssassinHeartCooldown;
@@ -54,6 +55,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> KnifeStackExplosionStaminaCost;
         public static ConfigEntry<float> KnifeStackExplosionCooldown;
         public static ConfigEntry<float> KnifeStackExplosionDamagePercent;
+        private static ConfigEntry<float> KnifeStackExplosionDamageLevelBonus;
         public static ConfigEntry<int>   KnifeStackExplosionMaxStacks;
         public static ConfigEntry<float> KnifeStackExplosionStackDuration;
         public static ConfigEntry<float> KnifeStackExplosionBuffDuration;
@@ -92,6 +94,7 @@ namespace CaptainSkillTree.SkillTree
 
         // === 암살자의 심장 동적 값 ===
         public static float KnifeAssassinHeartCritDamageValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_crit_damage", KnifeAssassinHeartCritDamage?.Value ?? 2f);
+        public static float KnifeAssassinHeartLevelBonusValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_level_bonus", KnifeAssassinHeartLevelBonus?.Value ?? 0.2f);
         public static float KnifeAssassinHeartDurationValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_duration", KnifeAssassinHeartDuration?.Value ?? 15f);
         public static float KnifeAssassinHeartStaminaCostValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_stamina_cost", KnifeAssassinHeartStaminaCost?.Value ?? 30f);
         public static float KnifeAssassinHeartCooldownValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_cooldown", KnifeAssassinHeartCooldown?.Value ?? 60f);
@@ -105,7 +108,8 @@ namespace CaptainSkillTree.SkillTree
         public static int   KnifeStackExplosionRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step10_required_points", (float)(KnifeStackExplosionRequiredPoints?.Value ?? 3));
         public static float KnifeStackExplosionStaminaCostValue    => SkillTreeConfig.GetEffectiveValue("knife_step10_stamina_cost", KnifeStackExplosionStaminaCost?.Value ?? 15f);
         public static float KnifeStackExplosionCooldownValue       => SkillTreeConfig.GetEffectiveValue("knife_step10_cooldown", KnifeStackExplosionCooldown?.Value ?? 45f);
-        public static float KnifeStackExplosionDamagePercentValue  => SkillTreeConfig.GetEffectiveValue("knife_step10_damage_percent", KnifeStackExplosionDamagePercent?.Value ?? 60f);
+        public static float KnifeStackExplosionDamagePercentValue  => SkillTreeConfig.GetEffectiveValue("knife_step10_damage_percent", KnifeStackExplosionDamagePercent?.Value ?? 30f);
+        public static float KnifeStackExplosionDamageLevelBonusValue => SkillTreeConfig.GetEffectiveValue("knife_tier9_stack_explosion_damage_level_bonus", KnifeStackExplosionDamageLevelBonus?.Value ?? 5f);
         public static int   KnifeStackExplosionMaxStacksValue      => (int)SkillTreeConfig.GetEffectiveValue("knife_step10_max_stacks", (float)(KnifeStackExplosionMaxStacks?.Value ?? 7));
         public static float KnifeStackExplosionStackDurationValue  => SkillTreeConfig.GetEffectiveValue("knife_step10_stack_duration", KnifeStackExplosionStackDuration?.Value ?? 4f);
         public static float KnifeStackExplosionBuffDurationValue   => SkillTreeConfig.GetEffectiveValue("knife_step10_buff_duration", KnifeStackExplosionBuffDuration?.Value ?? 12f);
@@ -271,6 +275,12 @@ namespace CaptainSkillTree.SkillTree
                     1f,
                     SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_CritDamageMultiplier"));
 
+                KnifeAssassinHeartLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier8_AssassinHeart_LevelBonus",
+                    0.2f,
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_LevelBonus"));
+
                 KnifeAssassinHeartDuration = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier8_AssassinHeart_Duration",
@@ -329,7 +339,7 @@ namespace CaptainSkillTree.SkillTree
                 KnifeStackExplosionDamagePercent = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier9_StackExplosion_DamagePercent",
-                    60f,
+                    30f,
                     SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_DamagePercent"));
 
                 KnifeStackExplosionMaxStacks = SkillTreeConfig.BindServerSync(config,
@@ -373,6 +383,12 @@ namespace CaptainSkillTree.SkillTree
                     "Tier9_StackExplosion_AoePercent",
                     45f,
                     SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_AoePercent"));
+
+                KnifeStackExplosionDamageLevelBonus = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier9_StackExplosion_DamageLevelBonus",
+                    5f,
+                    SkillTreeConfig.GetConfigDescription("Tier9_StackExplosion_DamageLevelBonus"));
 
                 Plugin.Log.LogDebug("[단검 컨피그] 모든 설정 로드 완료");
 
@@ -427,6 +443,7 @@ namespace CaptainSkillTree.SkillTree
                 
                 // 암살자의 심장 이벤트 핸들러
                 KnifeAssassinHeartCritDamage.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeAssassinHeartLevelBonus.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
                 KnifeAssassinHeartDuration.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
                 KnifeAssassinHeartStaminaCost.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
                 KnifeAssassinHeartCooldown.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
@@ -471,7 +488,7 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogDebug($"회피 숙련 필요 포인트: {KnifeEvasionRequiredPointsValue}");
                 Plugin.Log.LogDebug($"빠른 움직임 필요 포인트: {KnifeMoveSpeedRequiredPointsValue}");
                 Plugin.Log.LogDebug($"빠른 공격 필요 포인트: {KnifeAttackSpeedRequiredPointsValue}");
-                Plugin.Log.LogDebug($"치명타 숙련 필요 포인트: {KnifeCritRateRequiredPointsValue}");
+                Plugin.Log.LogDebug($"회피 마스터 필요 포인트: {KnifeCritRateRequiredPointsValue}");
                 Plugin.Log.LogDebug($"피해로 필요 포인트: {KnifeCombatDamageRequiredPointsValue}");
                 Plugin.Log.LogDebug($"처형술 필요 포인트: {KnifeExecutionRequiredPointsValue}");
                 Plugin.Log.LogDebug($"암살자 필요 포인트: {KnifeAssassinationRequiredPointsValue}");

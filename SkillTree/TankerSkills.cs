@@ -801,7 +801,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyTankerDamageReduction(player, buffDuration);
 
                 // 텍스트 알림
-                player.Message(MessageHud.MessageType.Center, L.Get("tanker_defense_buff_activated"));
+                SkillEffect.ShowSkillEffectText(player, L.Get("tanker_defense_buff_activated"), Color.white, SkillEffect.SkillEffectTextType.Standard);
 
                 Plugin.Log.LogDebug($"[탱커 방어 버프] {player.GetPlayerName()} 방어 버프 적용 완료");
             }
