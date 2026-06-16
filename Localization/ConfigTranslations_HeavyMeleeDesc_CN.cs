@@ -34,15 +34,15 @@ namespace CaptainSkillTree.Localization
                 "持续时间越长，战斗越稳定。\n" +
                 "推荐：4-8秒",
 
-                // === Tier 1: 精准打击 ===
+                // === Tier 1: 快速攻击动作 ===
                 ["Tier1_QuickStrike_RequiredPoints"] =
-                "【所需点数】\n解锁精准打击所需的点数。",
+                "【所需点数】\n解锁快速攻击动作所需的点数。",
 
-                ["Tier1_VitalStrike_DamageBonus"] =
-                "【暴击伤害加成(%)】\n" +
-                "提升长矛暴击的伤害。\n" +
-                "专精于精准打击弱点。\n" +
-                "推荐：20-40%",
+                ["Tier1_AttackMotion"] =
+                "【攻击动作选择】\n" +
+                "更改长矛普通攻击(左键)动作。\n" +
+                "단검(匕首): 3连刺击动作 / 검(剑): 剑的普通攻击动作\n" +
+                "可选值: 단검, 검",
 
                 // === Tier 2: 投矛 ===
                 ["Tier2_Throw_RequiredPoints"] =

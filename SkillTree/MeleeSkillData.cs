@@ -437,12 +437,12 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => { }
             });
 
-            // 2-2단계: 급소 찌르기
+            // 2-2단계: 빠른 공격모션
             manager.AddSkill(new SkillNode {
                 Id = "spear_Step1_crit",
-                NameKey = "spear_skill_crit",
-                DescriptionKey = "spear_desc_crit",
-                DescriptionArgs = new object[] { SkillTreeConfig.SpearStep2CritDamageBonusValue },
+                NameKey = "spear_skill_attack_motion",
+                DescriptionKey = "spear_desc_attack_motion",
+                DescriptionArgs = new object[] {},
                 RequiredPoints = Spear_Config.SpearStep1RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,

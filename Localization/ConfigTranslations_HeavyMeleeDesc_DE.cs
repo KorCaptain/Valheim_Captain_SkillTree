@@ -34,15 +34,15 @@ namespace CaptainSkillTree.Localization
                 "Längere Dauer = stabiler Kampf.\n" +
                 "Empfehlung: 4-8 Sek.",
 
-                // === Tier 1: Präzisionsschlag ===
+                // === Tier 1: Schnelle Angriffsbewegung ===
                 ["Tier1_QuickStrike_RequiredPoints"] =
-                "【Benötigte Punkte】\nPunkte zum Freischalten des Präzisionsschlags.",
+                "【Benötigte Punkte】\nPunkte zum Freischalten der Schnellen Angriffsbewegung.",
 
-                ["Tier1_VitalStrike_DamageBonus"] =
-                "【Kritischer Schadensbonus (%)】\n" +
-                "Erhöht den Schaden kritischer Treffer mit dem Speer.\n" +
-                "Spezialisierung auf präzise Treffer an Schwachstellen.\n" +
-                "Empfehlung: 20-40%",
+                ["Tier1_AttackMotion"] =
+                "【Angriffsbewegung】\n" +
+                "Ändert die Angriffsbewegung des Speers (linke Maustaste).\n" +
+                "단검(Messer): 3-fache Stichbewegung / 검(Schwert): Schwert-Angriff\n" +
+                "Zulässige Werte: 단검, 검",
 
                 // === Tier 2: Speerwurf ===
                 ["Tier2_Throw_RequiredPoints"] =

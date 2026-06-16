@@ -460,8 +460,53 @@ namespace CaptainSkillTree.Localization
                 "Weniger = sofortige Treffer.\n" +
                 "Empfehlung: 0,2-0,5 Sek.",
 
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] =
+                "【Angriffsgeschwindigkeit-Bonus (%)】\n" +
+                "Angriffsgeschwindigkeit-Steigerung während Assassinenherz aktiv ist.\n" +
+                "Empfehlung: 400-600%",
+
                 ["Tier8_AssassinHeart_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Assassinenherzens.",
+
+                ["Tier9_StackExplosion_DamagePercent"] =
+                "【Stapelschaden (%)】\n" +
+                "Waffenschaden-Verhältnis pro Stapel bei H-Explosion.\n" +
+                "Empfehlung: 30-45%",
+
+                ["Tier9_StackExplosion_MaxStacks"] =
+                "【Max. Stapel】\n" +
+                "Maximale Anzahl anhäufbarer Stapel.\n" +
+                "Empfehlung: 5-10",
+
+                ["Tier9_StackExplosion_StackDuration"] =
+                "【Stapeldauer (Sek.)】\n" +
+                "Wie lange Stapel nach dem letzten Treffer bestehen bleiben.\n" +
+                "Empfehlung: 3-6 Sek.",
+
+                ["Tier9_StackExplosion_StaminaCost"] =
+                "【Ausdauerkosten】\n" +
+                "Ausdauer, die beim Auslösen der H-Explosion verbraucht wird.\n" +
+                "Empfehlung: 10-20",
+
+                ["Tier9_StackExplosion_Cooldown"] =
+                "【Abklingzeit (Sek.)】\n" +
+                "Wartezeit vor erneuter Nutzung der Fähigkeit.\n" +
+                "Empfehlung: 40-55 Sek.",
+
+                ["Tier9_StackExplosion_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 3",
+
+                ["Tier9_StackExplosion_BuffDuration"] =
+                "【Buff-Dauer (Sek.)】\n" +
+                "Zeitfenster nach H-Taste zum Aufbauen von Stapeln.\n" +
+                "Empfehlung: 10-15 Sek.",
+
+                ["Tier9_StackExplosion_DamageLevelBonus"] =
+                "【Schadensbonus pro Stufe (%)】\n" +
+                "Zusätzlicher Stapelschaden pro Stapel-Explosionsstufe.\n" +
+                "Empfehlung: 3-8%",
 
                 ["Tier9_StackExplosion_AoePercent"] =
                 "【Flächenschaden-Verhältnis (%)】\n" +

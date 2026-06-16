@@ -418,7 +418,19 @@ namespace CaptainSkillTree.SkillTree
                 if (__instance is Player player && player == Player.m_localPlayer)
                 {
                     SkillEffect.NotifyKnifeMoveSpeedActive(player);
+                    SkillEffect.UpdateDefenseDodgeRate(player);
                 }
+            }
+        }
+
+        [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.UnequipItem))]
+        public static class StatTree_Humanoid_UnequipItem_Patch
+        {
+            [HarmonyPriority(Priority.Low)]
+            public static void Postfix(Humanoid __instance)
+            {
+                if (__instance is Player player && player == Player.m_localPlayer)
+                    SkillEffect.UpdateDefenseDodgeRate(player);
             }
         }
 
@@ -457,21 +469,21 @@ namespace CaptainSkillTree.SkillTree
                     totalDodge += Defense_Config.StaminaDodgeBonusValue / 100f;
                 }
 
-                // defense_Step6_attack: 신경강화 (45초 미발동 조건)
+                // defense_Step6_attack: 신경강화 (30초 미발동 조건)
                 int attackLevel = manager.GetSkillLevel("defense_Step6_attack");
                 if (attackLevel > 0)
                 {
                     bool isInCooldown = nerveLastEvasionTime.ContainsKey(player) &&
-                                        Time.time - nerveLastEvasionTime[player] < 45f;
+                                        Time.time - nerveLastEvasionTime[player] < 30f;
                     if (!isInCooldown)
                         totalDodge += Defense_Config.AttackDodgeBonusValue / 100f;
                 }
             }
 
             // === 단검 전문가 회피율 ===
-            // knife_step2_evasion: 회피 숙련 (방어 트리와 독립적으로 적용)
+            // knife_step2_evasion: 회피 숙련 (단검 착용 시만 적용)
             int knifeEvasionLevel = manager.GetSkillLevel("knife_step2_evasion");
-            if (knifeEvasionLevel > 0)
+            if (knifeEvasionLevel > 0 && IsUsingDagger(player))
             {
                 float knifeEvasionBonus = Knife_Config.KnifeEvasionBonusValue / 100f;
                 totalDodge += knifeEvasionBonus;
@@ -555,7 +567,7 @@ namespace CaptainSkillTree.SkillTree
 
         private IEnumerator RestoreAfterDelay(Player player)
         {
-            yield return new WaitForSeconds(45f);
+            yield return new WaitForSeconds(30f);
             SkillEffect.nerveLastEvasionTime.Remove(player);
             SkillEffect.UpdateDefenseDodgeRate(player);
             _restoreCoroutine = null;

@@ -216,7 +216,7 @@ namespace CaptainSkillTree.SkillTree
                     ["spear_Step1_duration"]                         = Spear_Config.SpearStep1Duration?.Value ?? 5f,
                     ["spear_Step1_throw_cooldown"]                   = Spear_Config.SpearStep1ThrowCooldown?.Value ?? 15f,
                     ["spear_Step1_throw_damage"]                     = Spear_Config.SpearStep1ThrowDamage?.Value ?? 1.5f,
-                    ["spear_Step1_crit_damage_bonus"]                = Spear_Config.SpearStep1CritDamageBonus?.Value ?? 20f,
+
                     ["spear_Step2_evasion_bonus"]                    = Spear_Config.SpearStep2EvasionBonus?.Value ?? 15f,
                     ["spear_Step2_evasion_stamina_reduction"]        = Spear_Config.SpearStep2EvasionStaminaReduction?.Value ?? 10f,
                     ["spear_Step3_pierce_damage"]                    = Spear_Config.SpearStep3PierceDamageBonus?.Value ?? 15f,

@@ -55,17 +55,17 @@ namespace CaptainSkillTree.Localization
                 "기본 100% + 이 수치 = 총 공격속도 배율.\n" +
                 "권장값: 80-120%",
 
-                // === Spear Tree: Tier 1 - 급소 찌르기 (2개) ===
+                // === Spear Tree: Tier 1 - 빠른 공격모션 (2개) ===
                 ["Tier1_QuickStrike_RequiredPoints"] =
                 "【필요 포인트】\n" +
-                "급소 찌르기 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "빠른 공격모션 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3",
 
-                ["Tier1_VitalStrike_DamageBonus"] =
-                "【치명타 피해 보너스 (%)】\n" +
-                "창 공격의 치명타 피해를 증가시킵니다.\n" +
-                "급소를 노리는 정밀 공격에 특화됩니다.\n" +
-                "권장값: 20-40%",
+                ["Tier1_AttackMotion"] =
+                "【공격 모션 선택】\n" +
+                "창의 일반 공격(좌클릭) 모션을 변경합니다.\n" +
+                "단검: 3단 연속 찌르기 모션 / 검: 검 일반 공격 모션\n" +
+                "허용값: 단검, 검",
 
                 // === Spear Tree: Tier 2 - 투창 (3개 + Legacy 1개) ===
                 ["Tier2_Throw_RequiredPoints"] =
@@ -642,6 +642,11 @@ namespace CaptainSkillTree.Localization
                 "관통 돌격 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
                 "권장값: 3",
 
+                ["Tier5_PierceCharge_LevelBonus"] =
+                "【레벨당 추가 데미지 보너스 (%)】\n" +
+                "관통 돌격 스킬의 레벨당 추가 데미지 보너스입니다.\n" +
+                "권장값: 20-40%",
+
                 // === Polearm Tree: 휠윈드 (7개) ===
                 ["Tier6_Whirlwind_DamagePercent"] =
                 "【휠윈드 공격력 비율 (%)】\n" +
@@ -735,14 +740,14 @@ namespace CaptainSkillTree.Localization
                 // === Spear Tree: Tier 1 - Vital Strike (2 keys) ===
                 ["Tier1_QuickStrike_RequiredPoints"] =
                 "【Required Points】\n" +
-                "Skill points required to unlock the Vital Strike node.\n" +
+                "Skill points required to unlock the Quick Attack Motion node.\n" +
                 "Recommended: 3",
 
-                ["Tier1_VitalStrike_DamageBonus"] =
-                "【Critical Damage Bonus (%)】\n" +
-                "Increases spear critical hit damage.\n" +
-                "Specialized for precision vital strikes.\n" +
-                "Recommended: 20-40%",
+                ["Tier1_AttackMotion"] =
+                "【Attack Motion Selection】\n" +
+                "Changes spear normal attack (LMB) animation.\n" +
+                "단검(Knife): 3-hit stab chain / 검(Sword): sword swing\n" +
+                "Acceptable values: 단검, 검",
 
                 // === Spear Tree: Tier 2 - Throw (3 keys + Legacy 1) ===
                 ["Tier2_Throw_RequiredPoints"] =
@@ -1317,6 +1322,11 @@ namespace CaptainSkillTree.Localization
                 "【Required Points】\n" +
                 "Skill points required to unlock the Pierce Charge node.\n" +
                 "Recommended: 3",
+
+                ["Tier5_PierceCharge_LevelBonus"] =
+                "【Level Bonus Damage (%)】\n" +
+                "Additional damage bonus per level for the Pierce Charge skill.\n" +
+                "Recommended: 20-40%",
 
                 // === Polearm Tree: Whirlwind (7 keys) ===
                 ["Tier6_Whirlwind_DamagePercent"] =

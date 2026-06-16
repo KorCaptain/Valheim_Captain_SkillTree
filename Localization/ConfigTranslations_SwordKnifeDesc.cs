@@ -495,7 +495,10 @@ namespace CaptainSkillTree.Localization
                 "빠를수록 순식간에 공격합니다.\n" +
                 "권장값: 0.2-0.5초",
 
-
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] =
+                "【공격속도 보너스 (%)】\n" +
+                "암살자의 심장 발동 중 공격속도 증가량입니다.\n" +
+                "권장값: 400-600%",
 
                 // === Knife Tree: RequiredPoints Descriptions (KO) ===
                 ["Tier0_KnifeExpert_RequiredPoints"] =
@@ -1090,6 +1093,11 @@ namespace CaptainSkillTree.Localization
                 "Time between combo attacks.\n" +
                 "Shorter = faster DPS.\n" +
                 "Recommended: 0.1-0.3 sec",
+
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] =
+                "【Attack Speed Bonus (%)】\n" +
+                "Attack speed increase while Assassin Heart is active.\n" +
+                "Recommended: 400-600%",
 
                 // === Knife Tree: RequiredPoints Descriptions (EN) ===
                 ["Tier0_KnifeExpert_RequiredPoints"] =

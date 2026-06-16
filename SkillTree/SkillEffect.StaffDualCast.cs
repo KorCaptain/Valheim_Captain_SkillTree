@@ -272,16 +272,17 @@ namespace CaptainSkillTree.SkillTree
             List<(GameObject obj, Vector3 localOffset)> suspended, Character target)
         {
             int dualCastLevel = SkillTreeManager.Instance?.GetSkillLevel("staff_Step6_dual_cast") ?? 1;
+            float lv1DmgPct = Staff_Config.StaffDoubleCastDamagePercentValue;
             float damagePercent;
             switch (dualCastLevel)
             {
-                case 2: damagePercent = 63f; break;
-                case 3: damagePercent = 66f; break;
-                case 4: damagePercent = 70f; break;
-                case 5: damagePercent = 74f; break;
-                case 6: damagePercent = 78f; break;
-                case 7: damagePercent = 85f; break;
-                default: damagePercent = Staff_Config.StaffDoubleCastDamagePercentValue; break;
+                case 2: damagePercent = lv1DmgPct + 3f; break;
+                case 3: damagePercent = lv1DmgPct + 6f; break;
+                case 4: damagePercent = lv1DmgPct + 10f; break;
+                case 5: damagePercent = lv1DmgPct + 14f; break;
+                case 6: damagePercent = lv1DmgPct + 18f; break;
+                case 7: damagePercent = lv1DmgPct + 25f; break;
+                default: damagePercent = lv1DmgPct; break;
             }
             float gap = Staff_Config.StaffFanCastLaunchGapValue;
 

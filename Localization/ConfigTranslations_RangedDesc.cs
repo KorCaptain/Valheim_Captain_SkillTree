@@ -377,6 +377,16 @@ namespace CaptainSkillTree.Localization
                 "강력한 충격으로 적을 밀어냅니다.\n" +
                 "권장값: 5-10m",
 
+                ["Tier5_OneShot_AoeRadius"] =
+                "【AOE 반경 (m)】\n" +
+                "원샷 명중 시 주변 적에게 피해를 주는 범위입니다.\n" +
+                "권장값: 5-10m",
+
+                ["Tier5_OneShot_LevelBonus"] =
+                "【레벨당 데미지 보너스 (%)】\n" +
+                "단 한 발 스킬의 레벨당 추가 데미지 보너스입니다.\n" +
+                "권장값: 30-50%",
+
                 ["Tier5_OneShot_SlowReloadMultiplier"] =
                 "【장전 속도 패널티 배율】\n" +
                 "스킬 발동 직후 1회 장전 시 시간이 이 배율만큼 늘어납니다.\n" +
@@ -984,6 +994,16 @@ namespace CaptainSkillTree.Localization
                 "Distance enemies are knocked back on hit.\n" +
                 "Powerful impact pushes enemies away.\n" +
                 "Recommended: 5-10m",
+
+                ["Tier5_OneShot_AoeRadius"] =
+                "【AOE Radius (m)】\n" +
+                "Area radius that damages nearby enemies on One Shot hit.\n" +
+                "Recommended: 5-10m",
+
+                ["Tier5_OneShot_LevelBonus"] =
+                "【Damage Bonus per Level (%)】\n" +
+                "Additional damage bonus per level for the One Shot skill.\n" +
+                "Recommended: 30-50%",
 
                 ["Tier5_OneShot_SlowReloadMultiplier"] =
                 "【Slow Reload Multiplier】\n" +

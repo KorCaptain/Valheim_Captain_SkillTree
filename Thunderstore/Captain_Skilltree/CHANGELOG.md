@@ -1,4 +1,25 @@
 # Changelog / 변경 로그
+# [1.24.95] - 2026-06-14
+- ✅new1 : Spear Tree Tier1 — Replaced "Vital Strike" (flat crit dmg) with "Quick Attack Motion"; config dropdown (단검/검) swaps spear LMB animation to knife 3-hit chain or sword swing; 7-language localization (skill/tooltip/config key & desc) fully updated
+- ✅new2 : Spear Tree — Quick Attack Motion: spear model flips 180° (tip faces forward) when skill is active
+-
+- ✅new1 : 창 전문가 트리 티어1 — "급소 찌르기"(고정 치명타 피해 보너스)를 "빠른 공격모션"으로 교체; 컨피그 드롭다운(단검/검)으로 창 일반 공격(좌클릭) 모션을 단검 3단 연속 또는 검 모션으로 변경; 스킬명·툴팁·컨피그 키/설명 7개 언어 모두 업데이트
+- ✅new2 : 창 전문가 트리 — 빠른 공격모션 스킬 보유 시 창 모델 180° 반전(날 끝이 전방)
+
+# [1.24.86] - 2026-06-01
+- ✅fix1 : Modifying the configuration efficiently
+- ✅fix2 : Vanilla and Very Hard Configuration Modification according to Difficulty
+-
+- ✅fix1 : 효율적 컨피그 수정
+- ✅fix2 : 난이도에따른 바닐라, 베리하드 컨피그 수정
+
+# [1.24.82] - 2026-05-29
+- ✅improve1 : Remove Producer's Crafting Success Rate (config, tooltip, all 7 languages)
+- ✅improve2 : Expand Producer Enchant Chance to Lv1~5: 25/45/65/75/95%
+-
+- ✅improve1 : 제작 전문가 제작 성공 확률 기능 제거 (컨피그·툴팁·7개 언어 전체)
+- ✅improve2 : 제작 전문가 마법부여 확률 Lv1~5 전체 확장: 25/45/65/75/95%
+
 # [1.24.59] - 2026-05-26
 - ✅fix1 : Modify tool tips and configurations
 - ✅fix2: Apply the speed expert's claw and fist

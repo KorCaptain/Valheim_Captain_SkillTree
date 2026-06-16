@@ -140,10 +140,52 @@
         "role": "user",
         "pattern": null
       }
+    },
+    {
+      "id": "btw-008",
+      "timestamp": "2026-05-29T00:00:00Z",
+      "suggestion": "바닐라와 하드모드는 컨피그 수치가 각각 다른거야 맞지?",
+      "context": {
+        "file": "asset/Veryhard_CaptainSkillTree.SkillTreeMod.cfg",
+        "pdcaPhase": "do",
+        "feature": "SkillTree"
+      },
+      "category": "general",
+      "status": "verified",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      }
+    }
+  ],
+    {
+      "id": "btw-009",
+      "timestamp": "2026-05-29T00:00:00Z",
+      "suggestion": "그럼 바닐라로 선택 상태에서 컨피그 수정하면 바닐라 모든 언어는 동일한 컨피그 수치여야하고 베리하드모드는 따로 별도 컨피그 값이 유지되는거지?",
+      "context": {
+        "file": "DifficultyManager.cs",
+        "pdcaPhase": "do",
+        "feature": "SkillTree"
+      },
+      "category": "general",
+      "status": "verified",
+      "promotedTo": null,
+      "priority": "high",
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      },
+      "note": "언어 통합은 완료됨. 그러나 난이도별 독립 cfg 저장은 미구현 — cfg 1개 공유, 난이도 전환 시 프리셋이 덮어씀. 별도 저장/복원 메커니즘 필요 여부 검토 필요."
     }
   ],
   "stats": {
-    "total": 7,
+    "total": 9,
     "promoted": 0,
     "dismissed": 0,
     "lastAnalyzed": null

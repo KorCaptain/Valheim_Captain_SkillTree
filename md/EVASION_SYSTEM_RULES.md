@@ -32,8 +32,8 @@ CaptainSkillTree의 회피 시스템은 **4가지 핵심 요소**로 구성됩�
 |---------|--------|------|--------|--------|----------|---------|-----------|
 | `defense_Step3_agile` | 회피단련 | 방어 | +15% | 없음 | 없음 | **공격 회피** | 항상 누적 |
 | `defense_Step5_stamina` | 기민함 | 방어 | +10% | 없음 | 없음 | **공격 회피** | 항상 누적 |
-| `defense_Step6_attack` | 신경강화 | 방어 | +8% | **45초** | 없음 | **공격 회피** | 준비 시 누적, 발동 시 쿨타임 |
-| `knife_step2_evasion` | 회피 숙련 | 단검 | +15% | 없음 | 없음 | **공격 회피** | 항상 누적 |
+| `defense_Step6_attack` | 신경강화 | 방어 | +8% | **30초** | 없음 | **공격 회피** | 준비 시 누적, 발동 시 쿨타임 |
+| `knife_step2_evasion` | 회피 숙련 | 단검 | +15% | 없음 | **단검 착용 필수** | **공격 회피** | 단검 착용 시 누적 |
 | `knife_step5_crit_rate` | 공격과 회피 | 단검 | 임시 % | 자체 타이머 | 단검 | **공격 회피** | `knifeAttackEvasionEndTime`으로 독립 관리 |
 | `spear_Step2_evasion` | 회피 찌르기 | 창 | 임시 % | 버프 지속시간 | **창 착용 필수** | **공격 회피** | `IsSpearEvasionBuffActive()`로 독립 관리 |
 | `Rogue` | 로그 직업 | 직업 | Lv1:4%~Lv5:12% | 없음 | 없음 | **공격 회피** | 항상 누적, `GetRogueDodgeChance(lv)` |
@@ -65,13 +65,13 @@ public static void UpdateDefenseDodgeRate(Player player)
     if (manager.GetSkillLevel("defense_Step6_attack") > 0)
     {
         bool isInCooldown = nerveLastEvasionTime.ContainsKey(player) &&
-                            Time.time - nerveLastEvasionTime[player] < 45f;
+                            Time.time - nerveLastEvasionTime[player] < 30f;
         if (!isInCooldown)
             totalDodge += Defense_Config.AttackDodgeBonusValue / 100f;
     }
 
-    // knife_step2_evasion: 회피 숙련 +15% (항상 누적, 무기 무관)
-    if (manager.GetSkillLevel("knife_step2_evasion") > 0)
+    // knife_step2_evasion: 회피 숙련 +15% (단검 착용 시만)
+    if (manager.GetSkillLevel("knife_step2_evasion") > 0 && IsUsingDagger(player))
         totalDodge += Knife_Config.KnifeEvasionBonusValue / 100f;
 
     // knife_step5_crit_rate: 공격과 회피 임시 % (단검 착용 + 버프 활성 시)
@@ -110,12 +110,12 @@ if (manager?.GetSkillLevel("defense_Step6_attack") > 0)
     // 이미 쿨타임 중인 경우 = 다른 스킬(회피단련/기민함/회피 숙련)이 회피한 것
     // → 신경강화 쿨타임 재시작 금지
     bool nerveIsReady = !SkillEffect.nerveLastEvasionTime.ContainsKey(player) ||
-                        Time.time - SkillEffect.nerveLastEvasionTime[player] >= 45f;
+                        Time.time - SkillEffect.nerveLastEvasionTime[player] >= 30f;
     if (nerveIsReady)
     {
         SkillEffect.nerveLastEvasionTime[player] = Time.time;
         SkillEffect.UpdateDefenseDodgeRate(player);  // 8% 제외하여 회피율 재계산
-        ActiveSkillCooldownRegistry.SetCooldownForSkill("PASS", "defense_Step6_attack", 45f);
+        ActiveSkillCooldownRegistry.SetCooldownForSkill("PASS", "defense_Step6_attack", 30f);
         ActiveSkillHUD.Instance?.OnCooldownStarted();
         var nerveTimer = player.GetComponent<NerveEnhancementTimer>();
         if (nerveTimer == null)
@@ -132,7 +132,7 @@ if (manager?.GetSkillLevel("defense_Step6_attack") > 0)
   → 회피 풀에 8% 포함 (총 예: 33%)
   → 회피 성공 시 → 쿨타임 시작
   → UpdateDefenseDodgeRate() → 8% 제외 (총 25%)
-  → 45초 후 → NerveEnhancementTimer → nerveLastEvasionTime 제거
+  → 30초 후 → NerveEnhancementTimer → nerveLastEvasionTime 제거
   → UpdateDefenseDodgeRate() → 8% 복구 (총 33%)
 
 [신경강화 쿨타임 중]
@@ -430,7 +430,7 @@ roll < dodgeChance ? (회피 성공)
 - [ ] 기민함 추가: 25% 회피 확인
 - [ ] 신경강화 추가: 33% 회피 확인
 - [ ] 회피 성공 후 신경강화 쿨타임 시작, 8% 제외 (25%로 감소) 확인
-- [ ] 45초 후 신경강화 복구 (33%로 증가) 확인
+- [ ] 30초 후 신경강화 복구 (33%로 증가) 확인
 - [ ] 쿨타임 중 다른 스킬로 회피 성공 → 신경강화 쿨타임 재시작 안 함 확인
 - [ ] 회피 숙련 추가: 기본 누적 합산 확인
 

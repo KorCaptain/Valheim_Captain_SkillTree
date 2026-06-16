@@ -314,6 +314,8 @@ namespace CaptainSkillTree
         /// <summary>
         /// 프리셋 cfg 파일을 파싱해 ConfigEntry에 직접 값을 설정.
         /// Config.Reload() 타이밍 문제를 우회해 즉시 반영.
+        /// 섹션명은 무시하고 키 이름만으로 매칭 → 한국어·일본어·중국어·독일어·
+        /// 포르투갈어·러시아어 등 7개 언어 모두 영어 섹션 1개로 적용 가능.
         /// </summary>
         private static int ApplyPresetValuesToConfig(string presetPath)
         {
@@ -329,8 +331,18 @@ namespace CaptainSkillTree
                 Plugin.Log?.LogWarning("[Difficulty] entries 딕셔너리 접근 실패");
                 return -1;
             }
+
+            // 키 이름만으로 빠른 조회 — 언어별 섹션명 차이를 우회
+            var keyIndex = new Dictionary<string, (ConfigDefinition def, ConfigEntryBase entry)>(
+                StringComparer.OrdinalIgnoreCase);
+            foreach (var kvp in entries)
+            {
+                if (!keyIndex.ContainsKey(kvp.Key.Key))
+                    keyIndex[kvp.Key.Key] = (kvp.Key, kvp.Value);
+            }
+
             int count = 0;
-            string currentSection = "";
+            bool inEnglishSection = false;
             var appliedDefs = new HashSet<ConfigDefinition>();
 
             try
@@ -341,27 +353,26 @@ namespace CaptainSkillTree
 
                     if (line.StartsWith("[") && line.EndsWith("]"))
                     {
-                        currentSection = line.Substring(1, line.Length - 2);
+                        // ASCII 섹션(영어)만 처리 — 다국어 섹션은 건너뜀
+                        inEnglishSection = IsAsciiOnly(line.Substring(1, line.Length - 2));
                         continue;
                     }
 
+                    if (!inEnglishSection) continue;
                     if (line.StartsWith("#") || !line.Contains(" = ")) continue;
 
                     int eqIdx = line.IndexOf(" = ");
                     string key   = line.Substring(0, eqIdx).Trim();
                     string value = line.Substring(eqIdx + 3);
 
-                    var def = new ConfigDefinition(currentSection, key);
-                    if (entries.TryGetValue(def, out var entry))
+                    if (!keyIndex.TryGetValue(key, out var pair)) continue;
+                    try
                     {
-                        try
-                        {
-                            entry.SetSerializedValue(value);
-                            appliedDefs.Add(def);
-                            count++;
-                        }
-                        catch { /* 파싱 실패는 무시 */ }
+                        pair.entry.SetSerializedValue(value);
+                        appliedDefs.Add(pair.def);
+                        count++;
                     }
+                    catch { /* 파싱 실패는 무시 */ }
                 }
             }
             catch (Exception ex)
@@ -384,6 +395,13 @@ namespace CaptainSkillTree
                 }
             }
             return count + resetCount;
+        }
+
+        private static bool IsAsciiOnly(string s)
+        {
+            foreach (char c in s)
+                if (c > 127) return false;
+            return true;
         }
 
         // ──────────────────────────── 헬퍼 ────────────────────────────

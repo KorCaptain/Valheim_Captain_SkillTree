@@ -1,3 +1,110 @@
+# [1.24.95] - 2026-06-14
+- ✅fix1 : Fixed spear throw animation being skipped when using "Fast Attack Motion" skill — secondary attack now correctly clears stale pending animation state before triggering the throw
+-
+- ✅fix1 : 창 전문가 Tier1 "빠른 공격모션" 스킬 사용 후 세컨드 공격(창 던지기) 시 던지기 모션이 생략되는 버그 수정 — 잔류 pending 애니메이션 상태를 클리어하여 정상적으로 머리 위에서 창이 던져지도록 수정
+
+# [1.24.92] - 2026-06-10
+- ✅fix1 : Spear Tree Tier1 "Quick Attack Motion" — Fixed sword (검) config attack animation not playing; restored hardcoded sword prefab lookup (SwordBlackmetal/SwordIron/SwordBronze/SwordNiedhogg) that was replaced with dynamic ObjectDB scan
+-
+- ✅fix1 : 창 전문가 트리 티어1 "빠른 공격모션" — 검 컨피그 공격 모션 미작동 버그 수정; 동적 ObjectDB 스캔으로 교체되었던 하드코딩 검 프리팹 조회(SwordBlackmetal/SwordIron/SwordBronze/SwordNiedhogg) 복원
+
+# [1.24.91] - 2026-06-10
+- ✅new1 : Spear Tree Tier1 — Replaced "Vital Strike" (flat crit dmg) with "Quick Attack Motion"; config dropdown (단검/검) swaps spear LMB animation to knife 3-hit chain or sword swing; 7-language localization (skill/tooltip/config key & desc) fully updated
+- ✅new2 : Spear Tree — Quick Attack Motion: spear model flips 180° (tip faces forward) when skill is active; Harmony patch on VisEquipment.SetRightHandEquipped
+-
+- ✅new1 : 창 전문가 트리 티어1 — "급소 찌르기"(고정 치명타 피해 보너스)를 "빠른 공격모션"으로 교체; 컨피그 드롭다운(단검/검)으로 창 일반 공격(좌클릭) 모션을 단검 3단 연속 또는 검 모션으로 변경; 스킬명·툴팁·컨피그 키/설명 7개 언어 모두 업데이트
+- ✅new2 : 창 전문가 트리 — 빠른 공격모션 스킬 보유 시 창 모델 180° 반전(날 끝이 전방); VisEquipment.SetRightHandEquipped Harmony 패치 적용
+
+# [1.24.84] - 2026-05-30
+- ✅improve1 : Sword Expert Tree — Whirlwind Slash (H-slot) HUD icon changed from sword_unlock to melee_unlock
+-
+- ✅improve1 : 검 전문가 트리 — 회오리베기(H 슬롯) HUD 아이콘을 sword_unlock → melee_unlock(근접 전문가 이미지)으로 변경
+
+# [1.24.81] - 2026-05-29
+- ✅fix1 : VH cfg — Berserker Lv2~5 upgrade keys synced: Lv2_CooldownReduction 5→20, Lv3_RageDamageReduction/Lv4_LowHpAttackBonus/Threshold/Lv5_PassiveCooldownReduction/InvincibilityBonus added (VH×4 values)
+- ✅fix2 : Config — BindServerSync now uses invariant English section names for config.Bind(); values persist correctly across all 7 language changes (no more split [공격 트리] vs [Attack Tree] sections)
+- ✅fix3 : Config — Removed category translation dead code (GetCategoryTranslations + 7 language category dicts, ~177 lines); F1 section headers now always English; per-language key names & descriptions remain translated
+- ✅fix4 : Config — Removed 18 stale Korean sections ([공격 트리] etc.) from live game cfg; single English-section cfg now shared across all languages
+- ✅improve1 : Dagger Tree Tier7 Assassination StaggerChance default 26→18% (Vanilla cfg 10→18%); both Vanilla and VeryHard presets now use 18%
+- ✅fix5 : Dagger Tree — Dodge Proficiency (knife_step2_evasion) attack evasion chance now only applies when dagger is equipped; fixed unintended application with other weapons
+- ✅fix6 : Evasion — weapon equip/unequip now immediately recalculates dodge rate (dagger↔other weapon swap reflected instantly)
+- ✅fix7 : Defense Tree — Nerve Enhancement (defense_Step6_attack) cooldown reduced 45s→30s; evasion chance stacks with other skills when no evasion for 30s
+- ✅improve2 : Berserker tooltip — added "ATK"/"공격력" prefix to {2}% damage text in all 7 languages (KO/EN/DE/JA/PT_BR/RU/ZH-CN) for clarity
+- ✅improve3 : Paladin tooltip — Lv3~5 preview now shows passive (stamina bonus) on a separate line, matching Lv2 format for consistent readability
+-
+- ✅fix1 : VH cfg — 버서커 Lv2~5 업그레이드 키 동기화: Lv2_CooldownReduction 5→20, Lv3~5 신규 키 추가 (VH×4 수치)
+- ✅fix2 : Config — BindServerSync가 영어 불변 섹션명으로 저장하도록 수정; 7개 언어 전환 후 재시작해도 수정값 유지 ([공격 트리]/[Attack Tree] 분리 저장 버그 해결)
+- ✅fix3 : Config — 카테고리 번역 dead code 제거 (GetCategoryTranslations + 7개 언어별 카테고리 딕셔너리 ~177줄); F1 섹션 헤더 영어 고정, 항목명·설명은 다국어 유지
+- ✅fix4 : Config — 게임 cfg에서 한국어 섹션 18개([공격 트리] 등) 제거; 단일 영어 섹션으로 모든 언어 공유
+- ✅improve1 : 단검 트리 티어7 암살술 스태거 발동 확률 기본값 26→18% (바닐라 cfg 10→18%); 바닐라/베리하드 모두 18% 적용
+- ✅fix5 : 단검 트리 — 회피숙련(knife_step2_evasion) 공격 회피 확률이 다른 무기 착용 시에도 적용되던 버그 수정; 단검 착용 시에만 회피율 누적
+- ✅fix6 : 회피 시스템 — 무기 장착/해제 시 회피율 즉시 재계산 (단검↔다른 무기 전환 시 회피율 즉시 반영)
+- ✅fix7 : 방어 전문가 트리 — 신경강화(defense_Step6_attack) 쿨타임 45초→30초 단축; 30초간 회피 미발동 시 회피율 누적 적용
+- ✅improve2 : 버서커 툴팁 — HP당 {2}% 데미지 텍스트에 "공격력" 명시, 7개 언어 동시 수정 (KO/EN/DE/JA/PT_BR/RU/ZH-CN)
+- ✅improve3 : 성기사 툴팁 — Lv3~5 프리뷰 패시브(스태미나 보너스)가 Lv2처럼 별도 줄에 표시되도록 수정; 모든 레벨 프리뷰 가독성 통일
+
+# [1.24.73] - 2026-05-28
+- ✅improve1 : Vanilla — Piercing Spear set to VH×25%: base 60→25, area 48→20; LevelBonus 1.25/lv each
+- ✅improve2 : Vanilla — Spear Combo multiplier 16→20%; LevelBonus 2.5/lv added; Lv1~7: 20/23/25/28/30/33/35%
+- ✅improve3 : Vanilla — Pierce Charge first hit 40→50%, AoE 150→37.5%; LevelBonus 7.5/lv; Lv1~7: 50/58/65/73/80/88/95%
+- ✅improve4 : Vanilla — Polearm Whirlwind LevelBonus 2.5/lv added; Lv1~7: 8.75/11.25/13.75/16.25/18.75/21.25/23.75%
+- ✅improve5 : Vanilla — Archer Multishot DamagePercent Lv1~5 → VH×25%: 12.5/13.75/15/16.25/16.25%
+- ✅improve6 : Vanilla — Mage Fire Rain Damage Multiplier Lv3~5 → VH×25%: 6.5/7/7.5%
+- ✅improve7 : Vanilla — Rogue Shadow Strike AttackBonus Lv1~5 → VH×25%: 7.5/10/11.25/12.5/13.75%
+- ✅improve8 : Vanilla — Rogue Poison InstantDamage & DotDamage Lv1~5 → VH×25%: Instant 5~8.75, DoT 3.75~10
+- ✅improve9 : Vanilla — Berserker job skills → VH×25%: DamagePerHP Lv1~5 0.375~0.5, MaxDamageBonus 100→50, LowHpAttackBonus 15→3.75
+- ✅improve10 : Vanilla — Paladin SelfHeal Lv1~5 → VH×25%: 3.75~6%; AllyHeal 0.5~0.75%; Producer BuffAttackBonus 10→3.75%; Tanker ReflectPercent 100→25, BlockPowerMultiplier 400→100
+- ✅improve11 : Vanilla — Paladin SelfHeal & AllyHeal Lv1~5 restored to VH values: SelfHeal 15/17/19/21/24%, AllyHeal 2/2.2/2.5/2.7/3%
+- ✅improve12 : VH cfg — Removed duplicate config values from non-English sections (JP/CN/DE/PT); English sections are now single source of truth (9,945→8,274 lines)
+- ✅fix1 : DifficultyManager — ApplyPresetValuesToConfig now matches by key name only (ignores section names); VH/Vanilla preset applies correctly for all 7 languages (KO/JA/ZH/DE/PT/RU/EN)
+- ✅improve13 : Vanilla cfg — Removed duplicate config values from non-English sections (JP/CN/DE/PT/RU); English sections are now single source of truth (9,855→8,167 lines)
+- ✅fix2 : Config KeyNames sync — all 7 languages (KO/EN/RU/JP/CN/DE/PTBR) now share 747 identical keys; missing translations added with native text
+- ✅fix3 : Config — Producer job skill 25 KO names added; F1 Config Manager now shows correct Korean names instead of raw keys
+- ✅fix4 : Config — VH/Vanilla cfg sync: 20 keys added to VH, 7 to Vanilla; new skills now get correct difficulty defaults on fresh install
+- ✅improve14 : Config — Removed 89 legacy orphaned keys from VH/Vanilla cfg (5,546→5,316 / 5,288→5,058 lines)
+- ✅fix5 : Berserker — removed "max+X%" from active tooltip; replaced with "X% per 1% HP lost"; Lv4/Lv5 max damage cap fixed at 200% (was 250%)
+-
+- ✅improve1 : 바닐라 — 꿰뚫는 창 VH×25% 적용: 기본 60→25, 광역 48→20; LevelBonus 1.25/레벨
+- ✅improve2 : 바닐라 — 연공창 배율 16→20%; LevelBonus 2.5/레벨 추가; Lv1~7: 20/23/25/28/30/33/35%
+- ✅improve3 : 바닐라 — 관통 돌격 첫타 40→50%, 광역 150→37.5%; LevelBonus 7.5/레벨; Lv1~7: 50~95%
+- ✅improve4 : 바닐라 — 폴암 휠윈드 LevelBonus 2.5/레벨 추가; Lv1~7: 8.75~23.75%
+- ✅improve5 : 바닐라 — 아처 멀티샷 DamagePercent Lv1~5 → VH×25%: 12.5/13.75/15/16.25/16.25%
+- ✅improve6 : 바닐라 — 메이지 파이어볼 데미지 배수 Lv3~5 → VH×25%: 6.5/7/7.5%
+- ✅improve7 : 바닐라 — 로그 그림자일격 AttackBonus Lv1~5 → VH×25%: 7.5/10/11.25/12.5/13.75%
+- ✅improve8 : 바닐라 — 로그 독 즉시 데미지·DoT Lv1~5 → VH×25%: 즉시 5~8.75, DoT 3.75~10
+- ✅improve9 : 바닐라 — 버서커 직업 스킬 VH×25%: DamagePerHP Lv1~5 0.375~0.5, MaxDamageBonus 50, LowHpAttackBonus 3.75
+- ✅improve10 : 바닐라 — 성기사 자가힐 Lv1~5 3.75~6%, 아군힐 0.5~0.75%; 제작전문가 BuffAttackBonus 10→3.75%; 탱커 도발반사 100→25, BlockPower배수 400→100
+- ✅improve11 : 바닐라 — 성기사 자가힐·아군힐 Lv1~5 VH 값으로 복원: 자가힐 15/17/19/21/24%, 아군힐 2/2.2/2.5/2.7/3%
+- ✅improve12 : VH cfg — 비영어 섹션(일본어·중국어·독일어·포르투갈어) 중복 config 값 제거, 영어 섹션 단일 소스로 통일 (9,945→8,274줄)
+- ✅fix1 : DifficultyManager — 섹션명 무시하고 키 이름만으로 매칭; 한/일/중/독/포/러/영 7개 언어 VH·Vanilla 프리셋 정상 적용
+- ✅improve13 : 바닐라 cfg — 비영어 섹션(일본어·중국어·독일어·포르투갈어·러시아어) 중복 config 값 제거, 영어 섹션 단일 소스로 통일 (9,855→8,167줄)
+- ✅fix2 : Config 키 이름 동기화 — 7개 언어(KO/EN/RU/JP/CN/DE/PTBR) 모두 747개로 완전 일치; 누락 번역 각 언어 텍스트로 추가
+- ✅fix3 : Config — 제작전문가 직업 스킬 KO 이름 25개 추가; F1 Config Manager 한국어 선택 시 raw key 대신 정상 표시
+- ✅fix4 : Config — VH·Vanilla cfg 동기화 완료: VH 20개·Vanilla 7개 키 추가; 신규 설치 시 난이도 기본값 정상 적용
+- ✅improve14 : Config — VH·Vanilla cfg 레거시 orphaned 키 89개 제거 (5,546→5,316줄 / 5,288→5,058줄)
+- ✅fix5 : 광전사 — 액티브 툴팁에서 "최대+X%" 제거; "줄어든 HP 1%당 X%증가" 형식으로 변경; Lv4~5 최대 데미지 상한 250%→200% 고정
+
+# [1.24.63] - 2026-05-27
+- ✅improve1 : Vanilla — Staff Area Heal Lv1~7 now Config-driven (base 15%); increments follow VH pattern (+2/4/7/10/13/17); Lv1~7: 15/17/19/22/25/28/32%
+- ✅improve2 : Vanilla — Staff Dual Cast Lv2~7 uses Config Lv1 as base + VH absolute increments (+3/6/10/14/18/25); Lv1~7: 15/18/21/25/29/33/40%
+- ✅improve3 : Vanilla — Ranged active skill level scaling set to VH×25%: ExplosiveArrow LevelBonus 5, OneShot 10, IceBreath 3.75/DotBonus 1.25, ArrowRain 0.5
+- ✅improve4 : Vanilla — Assassin's Heart crit multiplier 0→0.25x; LevelBonus 0.05 added; Lv1~7: 0.25/0.30/0.35/0.40/0.45/0.50/0.55x
+- ✅improve5 : Vanilla — Stack Explosion DamageLevelBonus 1.25 added; Lv1~7: 15/16/17/19/20/21/23%
+- ✅improve6 : Vanilla — Rush Slash hit ratios set to VH×25% (18/20/23%); DamageLevelBonus 2.5 added
+- ✅improve7 : Vanilla — Whirlwind Slash base damage 100→25%; LevelBonus 5 added; Lv1~7: 25/30/35/40/45/50/55%
+- ✅improve8 : Vanilla — Shield Charge 20→17.5%, MultiHit 37.5% added, LevelBonus 5/lv
+- ✅improve9 : Vanilla — Fury Hammer final hit 12→15%; NormalHitLevelBonus 1.25 + FinalHitLevelBonus 2.5 added
+-
+- ✅improve1 : 바닐라 — 지팡이 범위 힐 Lv1~7 Config 연동 (Lv1=15%); VH와 동일한 절대 증가폭 적용; Lv1~7: 15/17/19/22/25/28/32%
+- ✅improve2 : 바닐라 — 이중시전 Lv2~7 Config Lv1 기준+VH 절대 증가폭 적용; Lv1~7: 15/18/21/25/29/33/40%
+- ✅improve3 : 바닐라 — 원거리 액티브 레벨 스케일링 VH×25% 설정 (폭발화살 5, 단한발 10, 빙결폭발탄 3.75/도트 1.25, 화살비 0.5)
+- ✅improve4 : 바닐라 — 암살자의 심장 치명타 배율 0→0.25x; LevelBonus 0.05 추가; Lv1~7: 0.25~0.55x
+- ✅improve5 : 바닐라 — 약점폭발 DamageLevelBonus 1.25 추가; Lv1~7: 15/16/17/19/20/21/23%
+- ✅improve6 : 바닐라 — 돌진베기 히트비율 VH×25% 적용 (18/20/23%); DamageLevelBonus 2.5 추가
+- ✅improve7 : 바닐라 — 회전베기 기본 데미지 100→25%; LevelBonus 5 추가; Lv1~7: 25/30/35/40/45/50/55%
+- ✅improve8 : 바닐라 — 방패돌진 20→17.5%; MultiHit 37.5% 추가; LevelBonus 5/레벨
+- ✅improve9 : 바닐라 — 분노의 심장 최종타 12→15%; NormalBonus 1.25 + FinalBonus 2.5/레벨 추가
+
 # [1.24.59] - 2026-05-25
 - ✅improve1 : Paladin tooltip — heal range moved below cost line; per-level cooldown (29s–26s) added to each Lv2–5 preview entry
 - ✅fix1 : Axe — G-key (Rush Slash) and H-key (Whirlwind Slash) now activate when axe is equipped (dispatcher was using sword-only weapon check)

@@ -111,7 +111,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 창 스킬들
             ["spear_expert"] = new SkillEffectData("", "", Color.clear),
-            ["spear_Step1_vital_strike"] = new SkillEffectData("fx_pierce", "sfx_spear_crit", Color.red),
+            ["spear_Step1_crit"] = new SkillEffectData("", "", Color.clear),
             ["spear_Step2_dodge_strike"] = new SkillEffectData("fx_dodge_attack", "sfx_dodge", Color.green),
             ["spear_Step3_combo_strike"] = new SkillEffectData("fx_double_hit", "sfx_spear_double", new Color(1f, 0.5f, 0f)),
 
@@ -159,7 +159,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 창 스킬 이름들
             ["spear_expert"] = "창 전문가",
-            ["spear_Step1_vital_strike"] = "급소 찌르기",
+            ["spear_Step1_crit"] = "빠른 공격모션",
             ["spear_Step2_dodge_strike"] = "회피 찌르기",
             ["spear_Step3_combo_strike"] = "연격창",
 

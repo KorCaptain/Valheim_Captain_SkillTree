@@ -87,12 +87,10 @@ namespace CaptainSkillTree.SkillTree
             _ => BerserkerLv5ActiveDuration?.Value ?? 25f,
         };
 
-        /// <summary>레벨별 최대 데미지 보너스 (Lv4: +50%)</summary>
+        /// <summary>레벨별 최대 데미지 보너스 (전 레벨 200% 고정)</summary>
         public static float GetEffectiveMaxDamageBonus(int level)
         {
-            float baseBonus = BerserkerRageMaxDamageBonusValue;
-            if (level >= 4) baseBonus += 50f;
-            return baseBonus;
+            return BerserkerRageMaxDamageBonusValue;
         }
 
         /// <summary>레벨별 HP 1%당 공격력 증가 비율 (각 레벨 독립 Config)</summary>

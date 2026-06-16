@@ -140,12 +140,12 @@ namespace CaptainSkillTree
                             if (manager?.GetSkillLevel("defense_Step6_attack") > 0)
                             {
                                 bool nerveIsReady = !SkillEffect.nerveLastEvasionTime.ContainsKey(player) ||
-                                                    Time.time - SkillEffect.nerveLastEvasionTime[player] >= 45f;
+                                                    Time.time - SkillEffect.nerveLastEvasionTime[player] >= 30f;
                                 if (nerveIsReady)
                                 {
                                     SkillEffect.nerveLastEvasionTime[player] = Time.time;
                                     SkillEffect.UpdateDefenseDodgeRate(player);
-                                    ActiveSkillCooldownRegistry.SetCooldownForSkill("PASS", "defense_Step6_attack", 45f);
+                                    ActiveSkillCooldownRegistry.SetCooldownForSkill("PASS", "defense_Step6_attack", 30f);
                                     ActiveSkillHUD.Instance?.OnCooldownStarted();
                                     var nerveTimer = player.GetComponent<NerveEnhancementTimer>();
                                     if (nerveTimer == null)

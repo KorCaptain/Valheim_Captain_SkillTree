@@ -20,7 +20,6 @@ namespace CaptainSkillTree.SkillTree
 
             float cooldown   = Berserker_Config.GetEffectiveRageCooldown(mainLevel);
             float duration   = Berserker_Config.GetEffectiveRageDuration(mainLevel);
-            float maxDmg     = Berserker_Config.GetEffectiveMaxDamageBonus(mainLevel);
             float stamina    = Berserker_Config.BerserkerRageStaminaCostValue;
             float dmgPerHp   = Berserker_Config.GetEffectiveDamagePerHealthPercent(mainLevel);
 
@@ -28,7 +27,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 메인 블록: 현재 레벨 액티브 스탯
             tooltip += $"<color=#E0E0E0><size=16>Lv{mainLevel}: ";
-            tooltip += L.Get("berserker_active_desc", (int)cooldown, (int)duration, (int)maxDmg, dmgPerHp.ToString("F1"));
+            tooltip += L.Get("berserker_active_desc", (int)cooldown, (int)duration, dmgPerHp.ToString("F1"));
             tooltip += $"</size></color>\n";
 
             // 패시브 라인
@@ -74,10 +73,9 @@ namespace CaptainSkillTree.SkillTree
                 {
                     float lvCd      = Berserker_Config.GetEffectiveRageCooldown(lv);
                     float lvDur     = Berserker_Config.GetEffectiveRageDuration(lv);
-                    float lvDmg     = Berserker_Config.GetEffectiveMaxDamageBonus(lv);
                     float lvDmgPerHp = Berserker_Config.GetEffectiveDamagePerHealthPercent(lv);
                     tooltip += $"<color=#808080><size=14>Lv{lv}: ";
-                    tooltip += L.Get("berserker_active_desc", (int)lvCd, (int)lvDur, (int)lvDmg, lvDmgPerHp.ToString("F1"));
+                    tooltip += L.Get("berserker_active_desc", (int)lvCd, (int)lvDur, lvDmgPerHp.ToString("F1"));
                     tooltip += $"\n  {L.Get("tooltip_passive")}: {GetPassiveStr(lv)}</size></color>\n";
                 }
             }

@@ -460,8 +460,53 @@ namespace CaptainSkillTree.Localization
                 "Menos = golpes instantâneos.\n" +
                 "Valor recomendado: 0.2-0.5 seg",
 
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] =
+                "【Bônus de Velocidade de Ataque (%)】\n" +
+                "Aumento de velocidade de ataque enquanto Coração de Assassino está ativo.\n" +
+                "Recomendado: 400-600%",
+
                 ["Tier8_AssassinHeart_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Coração do Assassino.",
+
+                ["Tier9_StackExplosion_DamagePercent"] =
+                "【Dano de Fogo por Pilha (%)】\n" +
+                "Proporção de dano da arma por pilha na explosão da tecla H.\n" +
+                "Recomendado: 30-45%",
+
+                ["Tier9_StackExplosion_MaxStacks"] =
+                "【Pilhas Máximas】\n" +
+                "Número máximo de pilhas que podem ser acumuladas.\n" +
+                "Recomendado: 5-10",
+
+                ["Tier9_StackExplosion_StackDuration"] =
+                "【Duração da Pilha (seg)】\n" +
+                "Por quanto tempo as pilhas persistem após o último acerto.\n" +
+                "Recomendado: 3-6 seg",
+
+                ["Tier9_StackExplosion_StaminaCost"] =
+                "【Custo de Stamina】\n" +
+                "Stamina consumida ao acionar a explosão da tecla H.\n" +
+                "Recomendado: 10-20",
+
+                ["Tier9_StackExplosion_Cooldown"] =
+                "【Recarga (seg)】\n" +
+                "Tempo de espera para reutilização da habilidade.\n" +
+                "Recomendado: 40-55 seg",
+
+                ["Tier9_StackExplosion_RequiredPoints"] =
+                "【Pontos Necessários】\n" +
+                "Pontos de habilidade necessários para desbloquear este nó.\n" +
+                "Recomendado: 3",
+
+                ["Tier9_StackExplosion_BuffDuration"] =
+                "【Duração do Buff (seg)】\n" +
+                "Janela de tempo após tecla H para acumular pilhas.\n" +
+                "Recomendado: 10-15 seg",
+
+                ["Tier9_StackExplosion_DamageLevelBonus"] =
+                "【Bônus de Dano por Nível (%)】\n" +
+                "Dano adicional por pilha adicionado para cada nível de Explosão de Pilha.\n" +
+                "Recomendado: 3-8%",
 
                 ["Tier9_StackExplosion_AoePercent"] =
                 "【Proporção de Dano em Área (%)】\n" +

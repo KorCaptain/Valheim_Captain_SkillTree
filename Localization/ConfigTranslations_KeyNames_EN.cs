@@ -485,9 +485,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_SpearExpert_ProcChance"] = "Tier 0: [Spear Expert] Proc Chance (%)",
                 ["Tier0_SpearExpert_SpeedBoost"] = "Tier 0: [Spear Expert] Speed Boost (%)",
 
-                // === Spear Tree: Vital Strike (2 keys) ===
-                ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [Vital Strike] Required Points",
-                ["Tier1_VitalStrike_DamageBonus"] = "Tier 1: [Vital Strike] Critical Damage Bonus (%)",
+                // === Spear Tree: Quick Attack Motion (2 keys) ===
+                ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [Quick Attack Motion] Required Points",
+                ["Tier1_AttackMotion"] = "Tier 1: [Quick Attack Motion] Motion Selection",
 
                 // === Spear Tree: Throw Spear (3 keys + Legacy 1) ===
                 ["Tier2_Throw_RequiredPoints"] = "Tier 2: [Throw Spear] Required Points",
@@ -695,6 +695,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_StunDuration"] = "Tier 8: [Assassin's Heart] Stun Duration (sec)",
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Tier 8: [Assassin's Heart] Combo Attack Count",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: [Assassin's Heart] Attack Interval (sec)",
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] = "Tier 8: [Assassin's Heart] Attack Speed Bonus (%)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Tier 8: [Assassin's Heart] Required Points",
 
                 // ============================================
@@ -1139,6 +1140,17 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Stack Explosion] Buff Duration (sec)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Stack Explosion] AOE Damage Ratio (%)",
                 ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [Stack Explosion] Damage Bonus per Level (%)",
+
+                // ============================================
+                // Keys added from other language files
+                // ============================================
+                ["Legacy_Penetrate_CritChance"]      = "Legacy: Unused",
+                ["Legacy_Throw_BuffDuration"]         = "Legacy: Unused",
+                ["Mage_Elemental_Resistance"]         = "Passive: Elemental Resistance (%)",
+                ["Rogue_ShadowStrike_AggroRange"]     = "Shadow Strike: Aggro Range (m)",
+                ["Rogue_ShadowStrike_SmokeScale"]     = "Shadow Strike: Smoke Scale",
+                ["Rogue_ShadowStrike_StealthDuration"]= "Shadow Strike: Stealth Duration (sec)",
+                ["Tier5_PierceCharge_LevelBonus"]     = "Tier 5: [Pierce Charge] Level Bonus Damage (%)",
             };
         }
     }

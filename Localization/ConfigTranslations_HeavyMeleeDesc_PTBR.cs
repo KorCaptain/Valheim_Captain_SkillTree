@@ -34,15 +34,15 @@ namespace CaptainSkillTree.Localization
                 "Maior duração = combate estável.\n" +
                 "Valor recomendado: 4-8 seg",
 
-                // === Tier 1: Golpe Preciso ===
+                // === Tier 1: Movimento de Ataque Rápido ===
                 ["Tier1_QuickStrike_RequiredPoints"] =
-                "【Pontos Necessários】\nPontos para desbloquear Golpe Preciso.",
+                "【Pontos Necessários】\nPontos para desbloquear Movimento de Ataque Rápido.",
 
-                ["Tier1_VitalStrike_DamageBonus"] =
-                "【Bônus de Dano Crítico (%)】\n" +
-                "Aumenta o dano de acertos críticos com lança.\n" +
-                "Especialização em golpes precisos nos pontos vulneráveis.\n" +
-                "Valor recomendado: 20-40%",
+                ["Tier1_AttackMotion"] =
+                "【Seleção de Movimento de Ataque】\n" +
+                "Altera o movimento do ataque normal da lança (botão esquerdo).\n" +
+                "단검(Faca): Movimento de 3 estocadas / 검(Espada): Ataque normal da espada\n" +
+                "Valores aceitos: 단검, 검",
 
                 // === Tier 2: Arremesso de Lança ===
                 ["Tier2_Throw_RequiredPoints"] =

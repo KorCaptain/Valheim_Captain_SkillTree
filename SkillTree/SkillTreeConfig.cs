@@ -141,15 +141,6 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 카테고리 로컬라이제이션 (Config Manager F1 메뉴)
-        /// </summary>
-        internal static string GetLocalizedCategory(string categoryKey)
-        {
-            var translations = Localization.ConfigTranslations.GetCategoryTranslations(_detectedConfigLanguage);
-            return translations.ContainsKey(categoryKey) ? translations[categoryKey] : categoryKey;
-        }
-
-        /// <summary>
         /// 설명 로컬라이제이션 (Config Manager F1 메뉴)
         /// </summary>
         internal static string GetLocalizedDescription(string descriptionKey)
@@ -201,11 +192,8 @@ namespace CaptainSkillTree.SkillTree
 
         public static ConfigEntry<float> BindServerSync(ConfigFile config, string section, string key, float defaultValue, string description, int order = 0)
         {
-            // 카테고리명 자동 번역 (Config Manager 표시용)
-            string localizedSection = GetLocalizedCategory(section);
-            // 키 이름 자동 번역 (Config Manager F1 메뉴 2차 항목)
             string localizedKeyName = GetLocalizedKeyName(key);
-            return config.Bind(localizedSection, key, defaultValue,
+            return config.Bind(section, key, defaultValue,
                 new ConfigDescription(description, null,
                     new ConfigurationManagerAttributes {
                         IsAdminOnly = true,
@@ -216,11 +204,8 @@ namespace CaptainSkillTree.SkillTree
 
         public static ConfigEntry<int> BindServerSync(ConfigFile config, string section, string key, int defaultValue, string description, int order = 0)
         {
-            // 카테고리명 자동 번역 (Config Manager 표시용)
-            string localizedSection = GetLocalizedCategory(section);
-            // 키 이름 자동 번역 (Config Manager F1 메뉴 2차 항목)
             string localizedKeyName = GetLocalizedKeyName(key);
-            return config.Bind(localizedSection, key, defaultValue,
+            return config.Bind(section, key, defaultValue,
                 new ConfigDescription(description, null,
                     new ConfigurationManagerAttributes {
                         IsAdminOnly = true,
@@ -231,11 +216,8 @@ namespace CaptainSkillTree.SkillTree
 
         public static ConfigEntry<bool> BindServerSync(ConfigFile config, string section, string key, bool defaultValue, string description, int order = 0)
         {
-            // 카테고리명 자동 번역 (Config Manager 표시용)
-            string localizedSection = GetLocalizedCategory(section);
-            // 키 이름 자동 번역 (Config Manager F1 메뉴 2차 항목)
             string localizedKeyName = GetLocalizedKeyName(key);
-            return config.Bind(localizedSection, key, defaultValue,
+            return config.Bind(section, key, defaultValue,
                 new ConfigDescription(description, null,
                     new ConfigurationManagerAttributes {
                         IsAdminOnly = true,
@@ -246,11 +228,8 @@ namespace CaptainSkillTree.SkillTree
 
         public static ConfigEntry<string> BindServerSync(ConfigFile config, string section, string key, string defaultValue, string description, int order = 0)
         {
-            // 카테고리명 자동 번역 (Config Manager 표시용)
-            string localizedSection = GetLocalizedCategory(section);
-            // 키 이름 자동 번역 (Config Manager F1 메뉴 2차 항목)
             string localizedKeyName = GetLocalizedKeyName(key);
-            return config.Bind(localizedSection, key, defaultValue,
+            return config.Bind(section, key, defaultValue,
                 new ConfigDescription(description, null,
                     new ConfigurationManagerAttributes {
                         IsAdminOnly = true,
@@ -609,7 +588,6 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep1Duration => Spear_Config.SpearStep1Duration;
         public static ConfigEntry<float> SpearStep1ThrowCooldown => Spear_Config.SpearStep1ThrowCooldown;
         public static ConfigEntry<float> SpearStep1ThrowDamage => Spear_Config.SpearStep1ThrowDamage;
-        public static ConfigEntry<float> SpearStep1CritDamageBonus => Spear_Config.SpearStep1CritDamageBonus;
         public static ConfigEntry<float> SpearStep2EvasionBonus => Spear_Config.SpearStep2EvasionBonus;
         public static ConfigEntry<float> SpearStep3PierceDamageBonus => Spear_Config.SpearStep3PierceDamageBonus;
         // 빠른창
@@ -634,7 +612,7 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep1DurationValue => Spear_Config.SpearStep1DurationValue;
         public static float SpearStep2ThrowCooldownValue => Spear_Config.SpearStep2ThrowCooldownValue;
         public static float SpearStep2ThrowDamageValue => Spear_Config.SpearStep2ThrowDamageValue;
-        public static float SpearStep2CritDamageBonusValue => Spear_Config.SpearStep2CritDamageBonusValue;
+        public static string SpearStep1AttackMotionValue => Spear_Config.SpearStep1AttackMotionValue;
         public static float SpearStep3EvasionBonusValue => Spear_Config.SpearStep3EvasionBonusValue;
         public static float SpearStep3PierceDamageBonusValue => Spear_Config.SpearStep3PierceDamageBonusValue;
         // 빠른창 Value

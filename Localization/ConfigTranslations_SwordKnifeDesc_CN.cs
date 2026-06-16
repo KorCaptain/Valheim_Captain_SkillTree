@@ -460,8 +460,53 @@ namespace CaptainSkillTree.Localization
                 "越少 = 命中越即时。\n" +
                 "推荐：0.2-0.5秒",
 
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] =
+                "【攻击速度加成（%）】\n" +
+                "刺客之心激活期间的攻击速度提升量。\n" +
+                "推荐：400-600%",
+
                 ["Tier8_AssassinHeart_RequiredPoints"] =
                 "【所需点数】\n解锁刺客之心所需的点数。",
+
+                ["Tier9_StackExplosion_DamagePercent"] =
+                "【每层火焰伤害（%）】\n" +
+                "H键爆炸时每层叠加的武器伤害倍率。\n" +
+                "推荐：30-45%",
+
+                ["Tier9_StackExplosion_MaxStacks"] =
+                "【最大层数】\n" +
+                "可累积的最大层数。\n" +
+                "推荐：5-10",
+
+                ["Tier9_StackExplosion_StackDuration"] =
+                "【层数持续时间（秒）】\n" +
+                "最后一次命中后层数保持的时间。\n" +
+                "推荐：3-6秒",
+
+                ["Tier9_StackExplosion_StaminaCost"] =
+                "【耐力消耗】\n" +
+                "触发H键爆炸时消耗的耐力。\n" +
+                "推荐：10-20",
+
+                ["Tier9_StackExplosion_Cooldown"] =
+                "【冷却时间（秒）】\n" +
+                "技能重新使用冷却时间。\n" +
+                "推荐：40-55秒",
+
+                ["Tier9_StackExplosion_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此技能节点所需的技能点数。\n" +
+                "推荐：3",
+
+                ["Tier9_StackExplosion_BuffDuration"] =
+                "【增益持续时间（秒）】\n" +
+                "H键后可累积层数的时间窗口。\n" +
+                "推荐：10-15秒",
+
+                ["Tier9_StackExplosion_DamageLevelBonus"] =
+                "【每级伤害加成（%）】\n" +
+                "叠加爆炸每个等级增加的每层伤害比例。\n" +
+                "推荐：3-8%",
 
                 ["Tier9_StackExplosion_AoePercent"] =
                 "【范围伤害比例（%）】\n" +

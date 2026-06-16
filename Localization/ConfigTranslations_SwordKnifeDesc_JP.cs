@@ -460,8 +460,53 @@ namespace CaptainSkillTree.Localization
                 "小さいほど瞬時に命中します。\n" +
                 "推奨: 0.2-0.5秒",
 
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] =
+                "【攻撃速度ボーナス（%）】\n" +
+                "アサシンハート発動中の攻撃速度増加量です。\n" +
+                "推奨：400-600%",
+
                 ["Tier8_AssassinHeart_RequiredPoints"] =
                 "【必要ポイント】\nアサシンハートを解放するための必要ポイントです。",
+
+                ["Tier9_StackExplosion_DamagePercent"] =
+                "【スタックあたり炎ダメージ（%）】\n" +
+                "Hキー爆発時のスタック1個あたりの武器攻撃力倍率です。\n" +
+                "推奨：30-45%",
+
+                ["Tier9_StackExplosion_MaxStacks"] =
+                "【最大スタック数】\n" +
+                "蓄積できる最大スタック数です。\n" +
+                "推奨：5-10",
+
+                ["Tier9_StackExplosion_StackDuration"] =
+                "【スタック持続時間（秒）】\n" +
+                "最後の命中後にスタックが持続する時間です。\n" +
+                "推奨：3-6秒",
+
+                ["Tier9_StackExplosion_StaminaCost"] =
+                "【スタミナ消費】\n" +
+                "Hキー爆発発動時に消費するスタミナです。\n" +
+                "推奨：10-20",
+
+                ["Tier9_StackExplosion_Cooldown"] =
+                "【クールダウン（秒）】\n" +
+                "スキル再使用待機時間です。\n" +
+                "推奨：40-55秒",
+
+                ["Tier9_StackExplosion_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このスキルノードを解放するための必要ポイント数です。\n" +
+                "推奨：3",
+
+                ["Tier9_StackExplosion_BuffDuration"] =
+                "【バフ持続時間（秒）】\n" +
+                "Hキー後にスタックを蓄積できる時間です。\n" +
+                "推奨：10-15秒",
+
+                ["Tier9_StackExplosion_DamageLevelBonus"] =
+                "【レベルあたりダメージボーナス（%）】\n" +
+                "スタック爆発の各レベルごとに追加されるスタックあたりのダメージです。\n" +
+                "推奨：3-8%",
 
                 ["Tier9_StackExplosion_AoePercent"] =
                 "【範囲ダメージ率（%）】\n" +

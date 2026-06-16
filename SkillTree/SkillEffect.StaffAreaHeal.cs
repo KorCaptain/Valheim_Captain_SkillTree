@@ -143,17 +143,20 @@ namespace CaptainSkillTree.SkillTree
             }
         }
 
-        // 레벨별 힐링 % (Lv1=18, Lv2=20, Lv3=22, Lv4=25, Lv5=28, Lv6=31, Lv7=35)
-        internal static float GetStaffHealPercentForLevel(int level) => level switch
+        internal static float GetStaffHealPercentForLevel(int level)
         {
-            2 => 20f,
-            3 => 22f,
-            4 => 25f,
-            5 => 28f,
-            6 => 31f,
-            7 => 35f,
-            _ => 18f   // Lv1 기본값
-        };
+            float lv1 = Staff_Config.StaffHealPercentageValue;
+            return level switch
+            {
+                2 => lv1 + 2f,
+                3 => lv1 + 4f,
+                4 => lv1 + 7f,
+                5 => lv1 + 10f,
+                6 => lv1 + 13f,
+                7 => lv1 + 17f,
+                _ => lv1
+            };
+        }
 
         // 레벨별 쿨타임 (Lv1=30초, 레벨당 -2초)
         internal static float GetStaffHealCooldownForLevel(int level)

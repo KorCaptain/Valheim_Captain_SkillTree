@@ -22,7 +22,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpearStep1Duration;
         public static ConfigEntry<float> SpearStep1ThrowCooldown;
         public static ConfigEntry<float> SpearStep1ThrowDamage;
-        public static ConfigEntry<float> SpearStep1CritDamageBonus;
+        public static ConfigEntry<string> SpearStep1AttackMotion;
         public static ConfigEntry<float> SpearStep2EvasionBonus;
         public static ConfigEntry<float> SpearStep2EvasionStaminaReduction;
         public static ConfigEntry<float> SpearStep3PierceDamageBonus;
@@ -71,7 +71,7 @@ namespace CaptainSkillTree.SkillTree
         public static float SpearStep1DurationValue => SkillTreeConfig.GetEffectiveValue("spear_Step1_duration", SpearStep1Duration.Value);
         public static float SpearStep2ThrowCooldownValue => SkillTreeConfig.GetEffectiveValue("spear_Step1_throw_cooldown", SpearStep1ThrowCooldown.Value);
         public static float SpearStep2ThrowDamageValue => SkillTreeConfig.GetEffectiveValue("spear_Step1_throw_damage", SpearStep1ThrowDamage.Value);
-        public static float SpearStep2CritDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step1_crit_damage_bonus", SpearStep1CritDamageBonus.Value);
+        public static string SpearStep1AttackMotionValue => SpearStep1AttackMotion?.Value ?? "단검";
         public static float SpearStep3EvasionBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step2_evasion_bonus", SpearStep2EvasionBonus.Value);
         public static float SpearStep3EvasionStaminaReductionValue => SkillTreeConfig.GetEffectiveValue("spear_Step2_evasion_stamina_reduction", SpearStep2EvasionStaminaReduction.Value);
         public static float SpearStep3PierceDamageBonusValue => SkillTreeConfig.GetEffectiveValue("spear_Step3_pierce_damage", SpearStep3PierceDamageBonus.Value);
@@ -181,11 +181,18 @@ namespace CaptainSkillTree.SkillTree
                 120f,
                 SkillTreeConfig.GetConfigDescription("Tier2_Throw_DamageMultiplier"));
 
-            SpearStep1CritDamageBonus = SkillTreeConfig.BindServerSync(config,
+            SpearStep1AttackMotion = config.Bind(
                 "Spear Tree",
-                "Tier1_VitalStrike_DamageBonus",
-                5f,
-                SkillTreeConfig.GetConfigDescription("Tier1_VitalStrike_DamageBonus"));
+                "Tier1_AttackMotion",
+                "단검",
+                new ConfigDescription(
+                    SkillTreeConfig.GetConfigDescription("Tier1_AttackMotion"),
+                    new AcceptableValueList<string>("단검", "검"),
+                    new ConfigurationManagerAttributes {
+                        IsAdminOnly = true,
+                        DispName = SkillTreeConfig.GetLocalizedKeyName("Tier1_AttackMotion"),
+                        Order = 0
+                    }));
 
             SpearStep3PierceDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",

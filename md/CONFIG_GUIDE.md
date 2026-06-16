@@ -5,6 +5,50 @@
 
 ---
 
+## 0. 컨피그 값 언어 독립성 원칙 (CRITICAL)
+
+### 핵심: 컨피그 값은 1개 — 다국어(7개)는 표시 전용
+
+| 항목 | 언어 영향 | 저장 위치 |
+|------|----------|-----------|
+| 컨피그 값 (숫자/문자) | ❌ 무관 | BepInEx .cfg 파일 1개 |
+| F1 항목 이름 (DispName) | ✅ 언어별 표시 | `ConfigTranslations_KeyNames_KO/EN.cs` |
+| F1 마우스오버 설명 (Description) | ✅ 언어별 표시 | `ConfigTranslations_*Desc*.cs` |
+
+> 언어 전환만으로 컨피그 값이 달라지는 일은 없다.
+> 한국어 F1에서 수정 = 영어 F1에서 수정 = 동일한 .cfg 파일 수정 → 7개 언어 전체에 즉시 적용.
+
+---
+
+### 3가지 시나리오
+
+**① 처음 설치 (신규 플레이어)**
+- .cfg 파일 없음 → 게임 시작 시 선택한 난이도(Vanilla / VeryHard)의 프리셋으로 초기화
+- 기준 파일: `asset/Veryhard_CaptainSkillTree.SkillTreeMod.cfg`, `asset/Vanilra_Config_CaptainSkillTree.SkillTreeMod.cfg`
+
+**② 업데이트 (기존 설치 → 새 버전)**
+- `DifficultyManager.ApplyVeryhardWithUserOverlay()` 자동 실행
+- 기존 키: 유저 값 100% 보존
+- 신규 추가 키: VeryHard 기본값으로 초기화
+- `GameDifficulty` → `"UserSettings"` 자동 설정
+- → 상세: `rules/CONFIG_INIT_RULES.md` R6
+
+**③ 평상시 사용 (설치/업데이트 이후)**
+- 어떤 언어의 F1 메뉴에서 수정해도 동일한 .cfg 파일 1개만 수정됨
+- 별도 동기화 불필요 — 모든 언어에서 동일한 값이 읽힘
+
+---
+
+### 개발 시 준수 사항
+
+```
+✅ 새 Config 키 추가 시 → R5 (Veryhard cfg 동기화) + R6 (Vanilra cfg 동기화) 준수
+❌ 언어별 별도 Config 파일 생성 금지 (값이 분리됨)
+❌ 언어 코드를 Config 키 이름에 포함 금지 (예: Tier1_Skill_KO, Tier1_Skill_EN)
+```
+
+---
+
 ## 1. Config 키 명명 규칙
 
 ### 기본 형식

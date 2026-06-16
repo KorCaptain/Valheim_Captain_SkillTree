@@ -361,8 +361,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_SpearExpert_2HitAttackSpeed"] = "Ур.0: [Мастер Копья] Скорость атаки при 2 уд. (%)",
                 ["Tier0_SpearExpert_2HitDamageBonus"] = "Ур.0: [Мастер Копья] Бонус урона при 2 уд. (%)",
                 ["Tier0_SpearExpert_EffectDuration"] = "Ур.0: [Мастер Копья] Длительность эффекта (сек)",
-                ["Tier1_QuickStrike_RequiredPoints"] = "Ур.1: [Жизненный удар] Необходимые очки",
-                ["Tier1_VitalStrike_DamageBonus"] = "Ур.1: [Жизненный удар] Бонус крит. урона (%)",
+                ["Tier1_QuickStrike_RequiredPoints"] = "Ур.1: [Быстрое Движение Атаки] Необходимые очки",
+                ["Tier1_AttackMotion"] = "Ур.1: [Быстрое Движение Атаки] Выбор движения",
                 ["Tier2_Throw_RequiredPoints"] = "Ур.2: [Бросок копья] Необходимые очки",
                 ["Tier2_Throw_Cooldown"] = "Ур.2: [Бросок копья] Перезарядка (сек)",
                 ["Tier2_Throw_DamageMultiplier"] = "Ур.2: [Бросок копья] Множитель урона (%)",
@@ -503,6 +503,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_StunDuration"] = "Ур.8: [Сердце ассасина] Длительность оглушения (сек)",
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Ур.8: [Сердце ассасина] Кол-во ударов в комбо",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Ур.8: [Сердце ассасина] Интервал атаки (сек)",
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] = "Ур.8: [Сердце ассасина] Бонус скорости атаки (%)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Ур.8: [Сердце ассасина] Необходимые очки",
 
                 // ============================================
@@ -887,6 +888,16 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [Взрыв слабого места] Длительность баффа (сек)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [Взрыв слабого места] Коэффициент урона по области (%)",
                 ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [Взрыв слабого места] Бонус урона за уровень (%)",
+
+                // ============================================
+                // Недостающие ключи (добавлено для синхронизации)
+                // ============================================
+                ["Legacy_Penetrate_CritChance"]      = "Наследие: не используется",
+                ["Legacy_Throw_BuffDuration"]         = "Наследие: не используется",
+                ["Tier0_SpearExpert_ProcChance"]      = "Ур.0: [Мастер Копья] Шанс активации (%)",
+                ["Tier0_SpearExpert_SpeedBoost"]      = "Ур.0: [Мастер Копья] Ускорение (%)",
+                ["Tier5_OneShot_AoeRadius"]           = "Ур.5: [Один выстрел] Радиус области (м)",
+                ["Tier5_PierceCharge_LevelBonus"]     = "Ур.5: [Пронзающий рывок] Бонусный урон за уровень (%)",
             };
         }
     }

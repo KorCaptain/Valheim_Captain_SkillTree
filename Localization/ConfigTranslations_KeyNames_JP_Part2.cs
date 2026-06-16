@@ -44,9 +44,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_SpearExpert_ProcChance"] = "Tier 0: [槍エキスパート] 発動確率 (%)",
                 ["Tier0_SpearExpert_SpeedBoost"] = "Tier 0: [槍エキスパート] 速度強化 (%)",
 
-                // === Tier 1: 急所突き (2) ===
-                ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [急所突き] 必要ポイント",
-                ["Tier1_VitalStrike_DamageBonus"] = "Tier 1: [急所突き] クリティカルダメージボーナス (%)",
+                // === Tier 1: 素早い攻撃モーション (2) ===
+                ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [素早い攻撃モーション] 必要ポイント",
+                ["Tier1_AttackMotion"] = "Tier 1: [素早い攻撃モーション] モーション選択",
 
                 // === Tier 2: 投槍 (3) ===
                 ["Tier2_Throw_RequiredPoints"] = "Tier 2: [投槍] 必要ポイント",
@@ -233,6 +233,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_StunDuration"] = "Tier 8: [暗殺者の心臓] スタン持続時間 (秒)",
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Tier 8: [暗殺者の心臓] コンボ攻撃回数",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: [暗殺者の心臓] 攻撃間隔 (秒)",
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] = "Tier 8: [暗殺者の心臓] 攻撃速度ボーナス (%)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Tier 8: [暗殺者の心臓] 必要ポイント",
 
                 // ============================================
@@ -601,6 +602,39 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [弱点爆発] バフ持続時間 (秒)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [弱点爆発] 範囲ダメージ率 (%)",
                 ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [弱点爆発] レベル毎ダメージボーナス (%)",
+
+                // ============================================
+                // 不足しているキー (同期のために追加)
+                // ============================================
+                ["Active_Reset_Cost"]                  = "Active Skill Reset Cost",
+                ["Job_Lv1_Cost"]                       = "Job Lv1 Coin Cost",
+                ["Job_Lv2_Cost"]                       = "Job Lv2 Coin Cost",
+                ["Job_Lv3_Cost"]                       = "Job Lv3 Coin Cost",
+                ["Job_Lv4_Cost"]                       = "Job Lv4 Coin Cost",
+                ["Job_Lv5_Cost"]                       = "Job Lv5 Coin Cost",
+                ["Job_Reset_Cost"]                     = "Job Skill Reset Cost",
+                ["Legacy_Penetrate_CritChance"]        = "レガシー: 未使用",
+                ["Legacy_Throw_BuffDuration"]          = "レガシー: 未使用",
+                ["Passive_Reset_Cost"]                 = "Passive Skill Reset Cost",
+                ["Rogue_ShadowStrike_AggroRange"]      = "シャドーストライク: ヘイトクリア範囲 (m)",
+                ["Rogue_ShadowStrike_SmokeScale"]      = "シャドーストライク: 煙エフェクトスケール",
+                ["Rogue_ShadowStrike_StealthDuration"] = "シャドーストライク: ステルス持続時間 (秒)",
+                ["Tanker_Hp_Bonus_Lv1"]                = "Lv1 パッシブ: HP ボーナス",
+                ["Tanker_Hp_Bonus_Lv2"]                = "Lv2 パッシブ: HP ボーナス",
+                ["Tanker_Hp_Bonus_Lv3"]                = "Lv3 パッシブ: HP ボーナス",
+                ["Tanker_Hp_Bonus_Lv4"]                = "Lv4 パッシブ: HP ボーナス",
+                ["Tanker_Hp_Bonus_Lv5"]                = "Lv5 パッシブ: HP ボーナス",
+                ["Tanker_Lv2_BlockPower"]              = "Lv2 パッシブ: ブロックパワー",
+                ["Tanker_Lv3_BlockPower"]              = "Lv3 パッシブ: ブロックパワー",
+                ["Tanker_Lv4_BlockPower"]              = "Lv4 パッシブ: ブロックパワー",
+                ["Tanker_Lv5_BlockPower"]              = "Lv5 パッシブ: ブロックパワー",
+                ["Tanker_ReflectDuration_Lv1"]         = "Lv1 パッシブ: 反射持続時間 (秒)",
+                ["Tanker_ReflectDuration_Lv2"]         = "Lv2 パッシブ: 反射持続時間 (秒)",
+                ["Tanker_ReflectDuration_Lv3"]         = "Lv3 パッシブ: 反射持続時間 (秒)",
+                ["Tanker_ReflectDuration_Lv4"]         = "Lv4 パッシブ: 反射持続時間 (秒)",
+                ["Tanker_ReflectDuration_Lv5"]         = "Lv5 パッシブ: 反射持続時間 (秒)",
+                ["Tier5_OneShot_AoeRadius"]            = "Tier 5: [ワンショット] 範囲半径 (m)",
+                ["Tier5_PierceCharge_LevelBonus"]      = "Tier 5: [貫通突撃] レベルボーナスダメージ (%)",
             };
         }
     }

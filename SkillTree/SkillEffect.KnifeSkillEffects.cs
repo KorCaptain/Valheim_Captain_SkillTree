@@ -526,7 +526,7 @@ namespace CaptainSkillTree.SkillTree
 
             int skillLevel = SkillTreeManager.Instance?.GetSkillLevel("knife_step9_assassin_heart") ?? 1;
             int requiredHits = KnifeAssassinHeart_Tooltip.GetAttackCountForLevel(skillLevel);
-            float attackSpeedBonus = 500f; // 공격속도 500% 증가
+            float attackSpeedBonus = Knife_Config.KnifeAssassinHeartAttackSpeedBonusValue;
             float attackInterval = 0.15f; // 공격 간격
 
             // 공격 모드 활성화 + 공격속도 버프 설정

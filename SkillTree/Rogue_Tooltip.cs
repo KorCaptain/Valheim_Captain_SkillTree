@@ -24,7 +24,7 @@ namespace CaptainSkillTree.SkillTree
                 int stamina    = (int)Rogue_Config.RogueShadowStrikeStaminaCostValue;
                 float cooldown = RogueSkills.GetCooldownForLevel(mainLevel);
 
-                var tooltip = $"<color=#FFD700><size=22>{L.Get("job_rogue")}</size></color>\n";
+                var tooltip = $"<color=#FFD700><size=22>{L.Get("rogue_tooltip_title")}</size></color>\n";
 
                 // 메인 블록: 현재 레벨 스탯
                 float atk    = RogueSkills.GetAttackBonusForLevel(mainLevel);
@@ -144,7 +144,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static string GetRogueFallbackTooltip()
         {
-            return $"<color=#FFD700><size=22>{L.Get("job_rogue")}</size></color>\n" +
+            return $"<color=#FFD700><size=22>{L.Get("rogue_tooltip_title")}</size></color>\n" +
                    $"<color=#E0E0E0><size=16>Lv1 : {L.Get("rogue_effect_strike", 30, 8, 6)}</size></color>\n" +
                    $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>" +
                    $"<color=#ADFF2F><size=16>{L.Get("rogue_passive_lv1", 7, 15, 4, 5)}</size></color>";

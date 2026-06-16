@@ -627,7 +627,42 @@ namespace CaptainSkillTree.SkillTree
             spearPenetrateChargesRemaining.Remove(player);
         }
 
-        internal static Attack GetCachedKnifePrimaryAttack() => null;
+        private static Attack s_knifePrimaryCache;
+        internal static Attack GetCachedKnifePrimaryAttack()
+        {
+            if (s_knifePrimaryCache != null) return s_knifePrimaryCache;
+            foreach (var name in new[] { "KnifeBlackMetal", "KnifeChitin", "KnifeFlint", "KnifeCopper" })
+            {
+                var atk = ObjectDB.instance?.GetItemPrefab(name)
+                                   ?.GetComponent<ItemDrop>()?.m_itemData?.m_shared?.m_attack;
+                if (atk != null && !string.IsNullOrEmpty(atk.m_attackAnimation))
+                {
+                    s_knifePrimaryCache = atk;
+                    Plugin.Log.LogInfo($"[빠른 공격모션] 단검 모션 캐시: {name} -> {atk.m_attackAnimation}(chain:{atk.m_attackChainLevels})");
+                    return atk;
+                }
+            }
+            return null;
+        }
+
+        private static Attack s_swordPrimaryCache;
+        internal static Attack GetCachedSwordPrimaryAttack()
+        {
+            if (s_swordPrimaryCache != null) return s_swordPrimaryCache;
+            foreach (var name in new[] { "SwordBlackmetal", "SwordIron", "SwordBronze", "SwordNiedhogg" })
+            {
+                var atk = ObjectDB.instance?.GetItemPrefab(name)
+                                   ?.GetComponent<ItemDrop>()?.m_itemData?.m_shared?.m_attack;
+                if (atk != null && !string.IsNullOrEmpty(atk.m_attackAnimation))
+                {
+                    s_swordPrimaryCache = atk;
+                    Plugin.Log.LogInfo($"[빠른 공격모션] 검 모션 캐시: {name} -> {atk.m_attackAnimation}(chain:{atk.m_attackChainLevels})");
+                    return atk;
+                }
+            }
+            return null;
+        }
+
         internal static string GetKnifePrimaryAnimTrigger() => null;
 
     }

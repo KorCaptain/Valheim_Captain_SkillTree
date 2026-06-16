@@ -226,9 +226,6 @@ namespace CaptainSkillTree.SkillTree
                     break;
 
                 case WeaponGroup.Spear:
-                    // 급소 찌르기 - 물리 데미지 +20%
-                    if (SkillEffect.HasSkill("spear_Step1_crit"))
-                        physPct += Spear_Config.SpearStep2CritDamageBonusValue;
                     // 투창 전문가 - 2차 공격(휠마우스) 시 추가 데미지
                     if (SkillEffect.HasSkill("spear_Step1_throw"))
                     {

@@ -81,25 +81,26 @@ namespace CaptainSkillTree.SkillTree
 
         private static string GetPassiveStr(int level)
         {
-            float dur       = Producer_Config.GetDurabilityBonus(level);
-            float mat       = Producer_Config.GetMaterialReduction(level);
-            float ench      = Producer_Config.GetEnchantChance(level);
-            float success   = Producer_Config.GetCraftingSuccessRate(level);
+            float dur  = Producer_Config.GetDurabilityBonus(level);
+            float mat  = Producer_Config.GetMaterialReduction(level);
+            float ench = Producer_Config.GetEnchantChance(level);
 
             switch (level)
             {
                 case 1:
-                    return L.Get("producer_passive_lv1", (int)dur, (int)success);
+                    return L.Get("producer_passive_lv1", (int)dur, (int)ench)
+                        + "\n" + L.Get("producer_enchant_detail_lv3");
                 case 2:
-                    return L.Get("producer_passive_lv2", (int)dur, (int)mat, (int)success);
+                    return L.Get("producer_passive_lv2", (int)dur, (int)mat, (int)ench)
+                        + "\n" + L.Get("producer_enchant_detail_lv3");
                 case 3:
-                    return L.Get("producer_passive_lv3", (int)dur, (int)mat, (int)ench, (int)success)
+                    return L.Get("producer_passive_lv3", (int)dur, (int)mat, (int)ench)
                         + "\n" + L.Get("producer_enchant_detail_lv3");
                 case 4:
-                    return L.Get("producer_passive_lv4", (int)dur, (int)mat, (int)ench, (int)success)
+                    return L.Get("producer_passive_lv4", (int)dur, (int)mat, (int)ench)
                         + "\n" + L.Get("producer_enchant_detail_lv4");
                 default:
-                    return L.Get("producer_passive_lv5", (int)dur, (int)mat, (int)ench, (int)success)
+                    return L.Get("producer_passive_lv5", (int)dur, (int)mat, (int)ench)
                         + "\n" + L.Get("producer_enchant_detail_lv5");
             }
         }

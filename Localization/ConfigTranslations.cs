@@ -13,20 +13,6 @@ namespace CaptainSkillTree.Localization
     public static partial class ConfigTranslations
     {
         /// <summary>
-        /// 카테고리 번역 가져오기
-        /// </summary>
-        public static Dictionary<string, string> GetCategoryTranslations(string lang)
-        {
-            return (lang == "ko") ? GetKoreanCategories()
-                 : (lang == "zh-cn") ? GetChineseCategories()
-                 : (lang == "de") ? GetGermanCategories()
-                 : (lang == "ru") ? GetRussianCategories()
-                 : (lang == "pt_BR") ? GetPortugueseBrazilianCategories()
-                 : (lang == "ja") ? GetJapaneseCategories()
-                 : GetEnglishCategories();
-        }
-
-        /// <summary>
         /// 설명 번역 가져오기
         /// </summary>
         public static Dictionary<string, string> GetDescriptionTranslations(string lang)
@@ -53,62 +39,6 @@ namespace CaptainSkillTree.Localization
             if (lang == "pt_BR") return GetPortugueseBrazilianKeyNames();
             if (lang == "ja") return GetJapaneseKeyNames();
             return GetEnglishKeyNames();
-        }
-
-        // ============================================
-        // 카테고리 번역 (한국어)
-        // ============================================
-        private static Dictionary<string, string> GetKoreanCategories()
-        {
-            return new Dictionary<string, string>
-            {
-                ["Attack Tree"] = "공격 트리",
-                ["Defense Tree"] = "방어 트리",
-                ["Production Tree"] = "제작 트리",
-                ["Staff Tree"] = "지팡이 트리",
-                ["Crossbow Tree"] = "석궁 트리",
-                ["Bow Tree"] = "활 트리",
-                ["Sword Tree"] = "검 트리",
-                ["Spear Tree"] = "창 트리",
-                ["Mace Tree"] = "둔기 트리",
-                ["Polearm Tree"] = "폴암 트리",
-                ["Knife Tree"] = "단검 트리",
-                ["Speed Tree"] = "속도 트리",
-                ["Archer Job Skills"] = "아처 직업 스킬",
-                ["Mage Job Skills"] = "메이지 직업 스킬",
-                ["Tanker Job Skills"] = "탱커 직업 스킬",
-                ["Rogue Job Skills"] = "로그 직업 스킬",
-                ["Paladin Job Skills"] = "성기사 직업 스킬",
-                ["Berserker Job Skills"] = "버서커 직업 스킬",
-            };
-        }
-
-        // ============================================
-        // 카테고리 번역 (영어)
-        // ============================================
-        private static Dictionary<string, string> GetEnglishCategories()
-        {
-            return new Dictionary<string, string>
-            {
-                ["Attack Tree"] = "Attack Tree",
-                ["Defense Tree"] = "Defense Tree",
-                ["Production Tree"] = "Production Tree",
-                ["Staff Tree"] = "Staff Tree",
-                ["Crossbow Tree"] = "Crossbow Tree",
-                ["Bow Tree"] = "Bow Tree",
-                ["Sword Tree"] = "Sword Tree",
-                ["Spear Tree"] = "Spear Tree",
-                ["Mace Tree"] = "Mace Tree",
-                ["Polearm Tree"] = "Polearm Tree",
-                ["Knife Tree"] = "Knife Tree",
-                ["Speed Tree"] = "Speed Tree",
-                ["Archer Job Skills"] = "Archer Job Skills",
-                ["Mage Job Skills"] = "Mage Job Skills",
-                ["Tanker Job Skills"] = "Tanker Job Skills",
-                ["Rogue Job Skills"] = "Rogue Job Skills",
-                ["Paladin Job Skills"] = "Paladin Job Skills",
-                ["Berserker Job Skills"] = "Berserker Job Skills",
-            };
         }
 
         // ============================================
@@ -154,90 +84,6 @@ namespace CaptainSkillTree.Localization
         }
 
         // ============================================
-        // 카테고리 번역 (독일어)
-        // ============================================
-        private static Dictionary<string, string> GetGermanCategories()
-        {
-            return new Dictionary<string, string>
-            {
-                ["Attack Tree"] = "Angriffsbaum",
-                ["Defense Tree"] = "Verteidigungsbaum",
-                ["Production Tree"] = "Produktionsbaum",
-                ["Staff Tree"] = "Stabbaum",
-                ["Crossbow Tree"] = "Armbrustsbaum",
-                ["Bow Tree"] = "Bogenbaum",
-                ["Sword Tree"] = "Schwertbaum",
-                ["Spear Tree"] = "Speerstaum",
-                ["Mace Tree"] = "Keulbaum",
-                ["Polearm Tree"] = "Stangenwaffe",
-                ["Knife Tree"] = "Messerstaum",
-                ["Speed Tree"] = "Geschwindigkeitsbaum",
-                ["Archer Job Skills"] = "Bogenschützen-Fähigkeiten",
-                ["Mage Job Skills"] = "Magier-Fähigkeiten",
-                ["Tanker Job Skills"] = "Tanker-Fähigkeiten",
-                ["Rogue Job Skills"] = "Schurken-Fähigkeiten",
-                ["Paladin Job Skills"] = "Paladin-Fähigkeiten",
-                ["Berserker Job Skills"] = "Berserker-Fähigkeiten",
-            };
-        }
-
-        // ============================================
-        // 카테고리 번역 (러시아어)
-        // ============================================
-        private static Dictionary<string, string> GetRussianCategories()
-        {
-            return new Dictionary<string, string>
-            {
-                ["Attack Tree"] = "Дерево атаки",
-                ["Defense Tree"] = "Дерево защиты",
-                ["Production Tree"] = "Дерево производства",
-                ["Staff Tree"] = "Дерево посоха",
-                ["Crossbow Tree"] = "Дерево арбалета",
-                ["Bow Tree"] = "Дерево лука",
-                ["Sword Tree"] = "Дерево меча",
-                ["Spear Tree"] = "Дерево копья",
-                ["Mace Tree"] = "Дерево булавы",
-                ["Polearm Tree"] = "Дерево древкового оружия",
-                ["Knife Tree"] = "Дерево кинжала",
-                ["Speed Tree"] = "Дерево скорости",
-                ["Archer Job Skills"] = "Навыки лучника",
-                ["Mage Job Skills"] = "Навыки мага",
-                ["Tanker Job Skills"] = "Навыки танка",
-                ["Rogue Job Skills"] = "Навыки плута",
-                ["Paladin Job Skills"] = "Навыки паладина",
-                ["Berserker Job Skills"] = "Навыки берсерка",
-            };
-        }
-
-        // ============================================
-        // 카테고리 번역 (포르투갈어 BR)
-        // ============================================
-        private static Dictionary<string, string> GetPortugueseBrazilianCategories()
-        {
-            return new Dictionary<string, string>
-            {
-                ["Attack Tree"] = "Árvore de Ataque",
-                ["Defense Tree"] = "Árvore de Defesa",
-                ["Production Tree"] = "Árvore de Produção",
-                ["Staff Tree"] = "Árvore de Cajado",
-                ["Crossbow Tree"] = "Árvore de Besta",
-                ["Bow Tree"] = "Árvore de Arco",
-                ["Sword Tree"] = "Árvore de Espada",
-                ["Spear Tree"] = "Árvore de Lança",
-                ["Mace Tree"] = "Árvore de Maça",
-                ["Polearm Tree"] = "Árvore de Haste",
-                ["Knife Tree"] = "Árvore de Adaga",
-                ["Speed Tree"] = "Árvore de Velocidade",
-                ["Archer Job Skills"] = "Habilidades de Arqueiro",
-                ["Mage Job Skills"] = "Habilidades de Mago",
-                ["Tanker Job Skills"] = "Habilidades de Tanker",
-                ["Rogue Job Skills"] = "Habilidades de Ladino",
-                ["Paladin Job Skills"] = "Habilidades de Paladino",
-                ["Berserker Job Skills"] = "Habilidades de Berserker",
-            };
-        }
-
-        // ============================================
         // 설명 번역 집합 (독일어) - 각 파일의 부분 메서드를 합산
         // ============================================
         private static Dictionary<string, string> GetGermanDescriptions()
@@ -266,34 +112,6 @@ namespace CaptainSkillTree.Localization
         }
 
         // ============================================
-        // 카테고리 번역 (중국어 간체)
-        // ============================================
-        private static Dictionary<string, string> GetChineseCategories()
-        {
-            return new Dictionary<string, string>
-            {
-                ["Attack Tree"] = "攻击树",
-                ["Defense Tree"] = "防御树",
-                ["Production Tree"] = "生产树",
-                ["Staff Tree"] = "法杖树",
-                ["Crossbow Tree"] = "弩树",
-                ["Bow Tree"] = "弓树",
-                ["Sword Tree"] = "剑树",
-                ["Spear Tree"] = "长矛树",
-                ["Mace Tree"] = "锤树",
-                ["Polearm Tree"] = "长柄武器树",
-                ["Knife Tree"] = "匕首树",
-                ["Speed Tree"] = "速度树",
-                ["Archer Job Skills"] = "弓手职业技能",
-                ["Mage Job Skills"] = "法师职业技能",
-                ["Tanker Job Skills"] = "坦克职业技能",
-                ["Rogue Job Skills"] = "盗贼职业技能",
-                ["Paladin Job Skills"] = "圣骑士职业技能",
-                ["Berserker Job Skills"] = "狂战士职业技能",
-            };
-        }
-
-        // ============================================
         // 설명 번역 집합 (중국어 간체)
         // ============================================
         private static Dictionary<string, string> GetChineseDescriptions()
@@ -318,34 +136,6 @@ namespace CaptainSkillTree.Localization
         // GetSwordKnifeDescriptions_KO/EN/DE/RU/CN() → ConfigTranslations_SwordKnifeDesc.cs / *_DE.cs / *_RU.cs / *_CN.cs
         // GetHeavyMeleeDescriptions_KO/EN/DE/RU/CN() → ConfigTranslations_HeavyMeleeDesc.cs / *_DE.cs / *_RU.cs / *_CN.cs
         // GetJobDescriptions_KO/EN/DE/RU/CN()        → ConfigTranslations_JobDesc.cs / *_DE.cs / *_RU.cs / *_CN.cs
-
-        // ============================================
-        // 카테고리 번역 (일본어)
-        // ============================================
-        private static Dictionary<string, string> GetJapaneseCategories()
-        {
-            return new Dictionary<string, string>
-            {
-                ["Attack Tree"] = "攻撃ツリー",
-                ["Defense Tree"] = "防御ツリー",
-                ["Production Tree"] = "生産ツリー",
-                ["Staff Tree"] = "杖ツリー",
-                ["Crossbow Tree"] = "クロスボウツリー",
-                ["Bow Tree"] = "弓ツリー",
-                ["Sword Tree"] = "剣ツリー",
-                ["Spear Tree"] = "槍ツリー",
-                ["Mace Tree"] = "メイスツリー",
-                ["Polearm Tree"] = "ポールアームツリー",
-                ["Knife Tree"] = "ナイフツリー",
-                ["Speed Tree"] = "速度ツリー",
-                ["Archer Job Skills"] = "アーチャー職業スキル",
-                ["Mage Job Skills"] = "メイジ職業スキル",
-                ["Tanker Job Skills"] = "タンカー職業スキル",
-                ["Rogue Job Skills"] = "ローグ職業スキル",
-                ["Paladin Job Skills"] = "パラディン職業スキル",
-                ["Berserker Job Skills"] = "バーサーカー職業スキル",
-            };
-        }
 
         // ============================================
         // 설명 번역 집합 (일본어)

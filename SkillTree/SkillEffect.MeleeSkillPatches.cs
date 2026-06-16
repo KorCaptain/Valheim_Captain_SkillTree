@@ -448,12 +448,6 @@ namespace CaptainSkillTree.SkillTree
 
             // 창 전문가 - 신규 메커닉은 공격속도 proc (SpeedTree에서 처리), 데미지 보너스 없음
 
-            // 급소 찌르기 - 데미지 보너스 +20%
-            if (SkillEffect.HasSkill("spear_Step1_crit"))
-            {
-                totalSpearBonus += SkillTreeConfig.SpearStep2CritDamageBonusValue;
-            }
-
             // 투창 전문가는 Plugin.Patches.cs WeaponCriticalSystemPatch(ApplyDamage)에서 단일 처리
 
             // 연격창 - 관통 공격력 전용
@@ -609,6 +603,184 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogWarning($"[암살자의 심장] 적중 카운트 패치 오류: {ex.Message}");
             }
+        }
+    }
+
+    /// <summary>
+    /// 빠른 공격모션 - Humanoid.StartAttack에서 pending 세트 설정
+    /// </summary>
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.StartAttack))]
+    public static class SpearAttackMotion_StartAttack_Patch
+    {
+        [HarmonyPrefix, HarmonyPriority(Priority.Normal)]
+        static void Prefix(Humanoid __instance, bool secondaryAttack)
+        {
+            var player = __instance as Player;
+            if (player == null || player != Player.m_localPlayer) return;
+            if (!SkillEffect.HasSkill("spear_Step1_crit")) return;
+            if (player.GetCurrentWeapon()?.m_shared?.m_skillType != Skills.SkillType.Spears) return;
+
+            if (secondaryAttack)
+            {
+                // StartAttack(false)가 내부 실패 시 Attack.Start 미호출로 pending이 잔류할 수 있음
+                // 세컨드 공격 진입 시 반드시 클리어해 던지기 모션 교체 방지
+                SkillEffect.s_spearKnifeAnimPending.Remove(player);
+                SpearAttackMotion_AnimSwap_Patch.s_spearSwordAnimPending.Remove(player);
+
+                // 창 던지기: 플래그 설정 → SetRightHandEquipped 재실행 시 플립 덮어쓰기 방지
+                SpearModelFlip_Patch.s_isThrowingSpear = true;
+                var visEquip = player.GetComponent<VisEquipment>();
+                var rightItem = SpearModelFlip_Patch.s_rightItemField?.GetValue(visEquip) as GameObject;
+                if (rightItem != null)
+                    rightItem.transform.localRotation = Quaternion.identity;
+                return;
+            }
+
+            if (Spear_Config.SpearStep1AttackMotionValue == "단검")
+                SkillEffect.s_spearKnifeAnimPending.Add(player);
+            else
+                SpearAttackMotion_AnimSwap_Patch.s_spearSwordAnimPending.Add(player);
+        }
+    }
+
+    /// <summary>
+    /// 빠른 공격모션 - Attack.Start에서 수동 체인 카운터로 모션 교체
+    /// ATTACK_ANIMATION_CHANGE_RULES.md 방법 1-A: Flag + 수동 체인 카운터
+    /// </summary>
+    [HarmonyPatch(typeof(Attack), nameof(Attack.Start))]
+    public static class SpearAttackMotion_AnimSwap_Patch
+    {
+        internal static readonly HashSet<Player> s_spearSwordAnimPending = new HashSet<Player>();
+
+        static readonly Dictionary<Player, (int level, float lastTime)> s_knifeChain =
+            new Dictionary<Player, (int level, float lastTime)>();
+        static readonly Dictionary<Player, (int level, float lastTime)> s_swordChain =
+            new Dictionary<Player, (int level, float lastTime)>();
+        const float ChainResetSec = 2.0f;
+
+        class State
+        {
+            public string anim;
+            public int chainLevels;
+            public int randomAnims;
+        }
+
+        [HarmonyPrefix]
+        static void Prefix(Attack __instance, Humanoid character, out State __state)
+        {
+            __state = null;
+            var player = character as Player;
+            if (player == null) return;
+
+            // 창 던지기 진행 중이면 애니메이션 교체 건너뜀 (이중 방어)
+            if (SpearModelFlip_Patch.s_isThrowingSpear) return;
+
+            bool isKnife = SkillEffect.s_spearKnifeAnimPending.Remove(player);
+            bool isSword = !isKnife && s_spearSwordAnimPending.Remove(player);
+            if (!isKnife && !isSword) return;
+
+            var src = isKnife
+                ? SkillEffect.GetCachedKnifePrimaryAttack()
+                : SkillEffect.GetCachedSwordPrimaryAttack();
+            if (src == null) return;
+
+            int chainMax = src.m_attackChainLevels > 1 ? src.m_attackChainLevels
+                         : src.m_attackRandomAnimations >= 2 ? src.m_attackRandomAnimations : 1;
+            string trigger;
+            if (chainMax > 1)
+            {
+                var dict = isKnife ? s_knifeChain : s_swordChain;
+                dict.TryGetValue(player, out var prev);
+                int lvl = (Time.time - prev.lastTime > ChainResetSec) ? 0 : prev.level;
+                trigger = src.m_attackAnimation + lvl;
+                dict[player] = ((lvl + 1) % chainMax, Time.time);
+            }
+            else
+            {
+                trigger = src.m_attackAnimation;
+            }
+
+            __state = new State
+            {
+                anim        = __instance.m_attackAnimation,
+                chainLevels = __instance.m_attackChainLevels,
+                randomAnims = __instance.m_attackRandomAnimations
+            };
+            __instance.m_attackAnimation        = trigger;
+            __instance.m_attackChainLevels      = 0;
+            __instance.m_attackRandomAnimations = 0;
+        }
+
+        [HarmonyPostfix]
+        static void Postfix(Attack __instance, State __state)
+        {
+            if (__state == null) return;
+            __instance.m_attackAnimation        = __state.anim;
+            __instance.m_attackChainLevels      = __state.chainLevels;
+            __instance.m_attackRandomAnimations = __state.randomAnims;
+        }
+    }
+
+    [HarmonyPatch(typeof(VisEquipment), "SetRightHandEquipped")]
+    public static class SpearModelFlip_Patch
+    {
+        internal static readonly System.Reflection.FieldInfo s_rightItemField =
+            typeof(VisEquipment).GetField("m_rightItemInstance",
+                System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Instance);
+
+        internal static bool s_isThrowingSpear = false;
+
+        [HarmonyPostfix]
+        static void Postfix(VisEquipment __instance)
+        {
+            var player = __instance.GetComponent<Player>();
+            if (player == null || player != Player.m_localPlayer) return;
+
+            var rightItem = s_rightItemField?.GetValue(__instance) as GameObject;
+
+            // 창이 손에서 사라짐 (던짐 완료) → 플래그 클리어
+            if (rightItem == null)
+            {
+                s_isThrowingSpear = false;
+                return;
+            }
+
+            bool isSpear = player.GetCurrentWeapon()?.m_shared?.m_skillType == Skills.SkillType.Spears
+                        || rightItem.name.IndexOf("Spear", StringComparison.OrdinalIgnoreCase) >= 0;
+            if (!isSpear) return;
+
+            // 던지기 중: Postfix가 플립 덮어쓰기 방지
+            if (s_isThrowingSpear)
+            {
+                rightItem.transform.localRotation = Quaternion.identity;
+                return;
+            }
+
+            rightItem.transform.localRotation = SkillEffect.HasSkill("spear_Step1_crit")
+                ? Quaternion.Euler(0, 180, 0)
+                : Quaternion.identity;
+        }
+    }
+
+    [HarmonyPatch(typeof(SkillTreeManager), nameof(SkillTreeManager.ResetAllSkillLevelsExceptProduction))]
+    public static class SpearModelFlip_SkillReset_Patch
+    {
+        [HarmonyPostfix]
+        static void Postfix()
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var visEquip = player.GetComponent<VisEquipment>();
+            if (visEquip == null) return;
+            var rightItem = SpearModelFlip_Patch.s_rightItemField?.GetValue(visEquip) as GameObject;
+            if (rightItem == null) return;
+
+            bool isSpear = player.GetCurrentWeapon()?.m_shared?.m_skillType == Skills.SkillType.Spears
+                        || rightItem.name.IndexOf("Spear", StringComparison.OrdinalIgnoreCase) >= 0;
+            if (!isSpear) return;
+
+            rightItem.transform.localRotation = Quaternion.identity;
         }
     }
 

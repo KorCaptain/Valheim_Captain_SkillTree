@@ -65,18 +65,19 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// 급소 찌르기 툴팁 생성
+        /// 빠른 공격모션 툴팁 생성
         /// </summary>
         public static string GetSpearStep1CritTooltip()
         {
-            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep1CritTooltip() 호출됨");
+            Plugin.Log.LogDebug("[창 툴팁] GetSpearStep1CritTooltip() (빠른 공격모션) 호출됨");
 
+            string motionVal = Spear_Config.SpearStep1AttackMotionValue;
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
-                $"<color=#FFD700><size=22>{L.Get("spear_skill_crit")}</size></color>",
-                L.Get("spear_desc_crit", Spear_Config.SpearStep2CritDamageBonusValue),
+                $"<color=#FFD700><size=22>{L.Get("spear_skill_attack_motion")}</size></color>",
+                L.Get("spear_desc_attack_motion", motionVal),
                 MeleeTooltipUtils.WeaponType.Spear
             );
-            data.requiredPoints = "2";
+            data.requiredPoints = Spear_Config.SpearStep1RequiredPointsValue.ToString();
 
             return MeleeTooltipUtils.GenerateTooltip(data, MeleeTooltipUtils.WeaponType.Spear);
         }

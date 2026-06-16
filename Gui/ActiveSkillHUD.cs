@@ -44,7 +44,7 @@ namespace CaptainSkillTree.Gui
         private static readonly string[] HIconNames = {
             "attack_unlock",
             "ranged_unlock",
-            "sword_unlock", "attack_unlock",
+            "melee_unlock", "attack_unlock",
             "mace_unlock", "ranged_unlock",
             "ranged_unlock"
         };
@@ -815,7 +815,7 @@ namespace CaptainSkillTree.Gui
                     {
                         if (WeaponHelper.IsUsingCrossbow(p) && mgr.GetSkillLevel("crossbow_ice_breath") > 0) { iconName = "ranged_unlock"; activeSkillId = "crossbow_ice_breath"; }
                         else if (WeaponHelper.IsUsingBow(p) && mgr.GetSkillLevel("bow_Step6_arrow_rain") > 0) { iconName = "ranged_unlock"; activeSkillId = "bow_Step6_arrow_rain"; }
-                        else if (SkillTree.Sword_Skill.IsUsingSword(p) && mgr.GetSkillLevel("sword_step5_defswitch") > 0) { iconName = "sword_unlock"; activeSkillId = "sword_step5_defswitch"; }
+                        else if (SkillTree.Sword_Skill.IsUsingSword(p) && mgr.GetSkillLevel("sword_step5_defswitch") > 0) { iconName = "melee_unlock"; activeSkillId = "sword_step5_defswitch"; }
                         else if (WeaponHelper.IsUsingSpear(p) && mgr.GetSkillLevel("spear_Step5_combo") > 0) { iconName = "attack_unlock"; activeSkillId = "spear_Step5_combo"; }
                         else if (WeaponHelper.IsUsingMace(p) && mgr.GetSkillLevel("mace_Step7_fury_hammer") > 0) { iconName = "mace_unlock"; activeSkillId = "mace_Step7_fury_hammer"; }
                         else if (WeaponHelper.IsUsingStaffOrWand(p) && mgr.GetSkillLevel("staff_Step6_heal") > 0) { iconName = "ranged_unlock"; activeSkillId = "staff_Step6_heal"; }

@@ -12,15 +12,16 @@ description: 코드 수정 완료 후 CHANGELOG.md 기록 및 manifest.json 버�
 ## Step 1: 현재 체인지로그 버전 확인 (즉시 실행, 확인 불필요)
 
 1. `Thunderstore/manifest.json` 읽기
-2. `version_number` 파싱 → 이 값이 현재 체인지로그 버전 (형식: `MAJOR.MINOR.XX`)
+2. `version_number` 파싱 → **이 값을 그대로** 체인지로그 버전으로 사용
 
-> 버전은 빌드 시 `IncrementVersion.ps1`이 자동 설정한다.
-> 빌드 버전(3자리, 예: `1.2.031`)을 10개씩 묶어 체인지로그 버전(2자리, 예: `1.2.04`)으로 표기.
-> 매핑: 001~010 → 01, 011~020 → 02, 031~040 → 04 등
+> 버전 규칙: `MAJOR.MINOR.PATCH` (예: `1.24.92`)
+> - manifest `version_number` = changelog 버전 (그룹핑/변환 없음)
+> - PATCH 99 → MINOR+1, PATCH 00으로 리셋 (예: 1.24.99 → 1.25.00)
+> - 빌드마다 PATCH 1씩 증가 (`IncrementVersion.ps1` 자동 처리)
 
 ```json
-// 예시: manifest.json의 "version_number": "1.2.04"
-//       → 이번 CHANGELOG 항목도 [1.2.04] 로 기록
+// 예시: manifest.json의 "version_number": "1.24.92"
+//       → 이번 CHANGELOG 항목도 [1.24.92] 로 기록
 ```
 
 ---
@@ -49,7 +50,6 @@ description: 코드 수정 완료 후 CHANGELOG.md 기록 및 manifest.json 버�
 
 ```
 [체인지로그 버전: X.X.XX] CHANGELOG에 기록할 내용:
-(빌드 버전 X.X.XXX → 공개 버전 X.X.XX로 그룹 표기)
 
 - ✅fix1 : [English]
 - ✅fix2 : [English]

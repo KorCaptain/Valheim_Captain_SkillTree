@@ -485,9 +485,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_SpearExpert_ProcChance"] = "Tier 0: [창 전문가] 발동 확률 (%)",
                 ["Tier0_SpearExpert_SpeedBoost"] = "Tier 0: [창 전문가] 속도 부스트 (%)",
 
-                // === Spear Tree: 급소 찌르기 (2개) ===
-                ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [급소 찌르기] 필요 포인트",
-                ["Tier1_VitalStrike_DamageBonus"] = "Tier 1: [급소 찌르기] 치명타 피해 보너스 (%)",
+                // === Spear Tree: 빠른 공격모션 (2개) ===
+                ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [빠른 공격모션] 필요 포인트",
+                ["Tier1_AttackMotion"] = "Tier 1: [빠른 공격모션] 공격 모션 선택",
 
                 // === Spear Tree: 투창 (3개 + Legacy 1개) ===
                 ["Tier2_Throw_RequiredPoints"] = "Tier 2: [투창] 필요 포인트",
@@ -697,6 +697,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_StunDuration"] = "Tier 8: [암살자의 심장] 기절 지속시간 (초)",
                 ["Tier8_AssassinHeart_ComboAttackCount"] = "Tier 8: [암살자의 심장] 연속 공격 횟수",
                 ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: [암살자의 심장] 공격 간격 (초)",
+                ["Tier8_AssassinHeart_AttackSpeedBonus"] = "Tier 8: [암살자의 심장] 공격속도 보너스 (%)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Tier 8: [암살자의 심장] 필요 포인트",
 
                 // ============================================
@@ -1034,6 +1035,30 @@ namespace CaptainSkillTree.Localization
                 ["Rogue_Lv5_MoveSpeed"] = "Lv5 패시브: 이동속도 (%)",
 
                 // ============================================
+                // Producer Job Skills (제작 전문가 직업 스킬) - 25개
+                // ============================================
+                ["Producer_Buff_Cooldown"] = "Lv1 장인의 축복: 쿨타임 (초)",
+                ["Producer_Buff_Duration"] = "Lv1 장인의 축복: 지속시간 (초)",
+                ["Producer_Buff_Range"] = "Lv1 장인의 축복: 범위 (m)",
+                ["Producer_Buff_AttackBonus"] = "Lv1 장인의 축복: 공격력 보너스 (%)",
+                ["Producer_Buff_MaxHealthBonus"] = "Lv1 장인의 축복: 최대 체력 보너스 (%)",
+                ["Producer_Buff_StaminaCost"] = "Lv1 장인의 축복: 스태미나 소모",
+                ["Producer_Durability_Lv1"] = "Lv1 패시브: 내구도 보너스 (%)",
+                ["Producer_EnchantChance_Lv1"] = "Lv1 인챈트: 확률 (%)",
+                ["Producer_Durability_Lv2"] = "Lv2 패시브: 내구도 보너스 (%)",
+                ["Producer_MaterialReduction_Lv2"] = "Lv2 패시브: 재료 절감 (%)",
+                ["Producer_EnchantChance_Lv2"] = "Lv2 인챈트: 확률 (%)",
+                ["Producer_Durability_Lv3"] = "Lv3 패시브: 내구도 보너스 (%)",
+                ["Producer_MaterialReduction_Lv3"] = "Lv3 패시브: 재료 절감 (%)",
+                ["Producer_EnchantChance_Lv3"] = "Lv3 인챈트: 확률 (%)",
+                ["Producer_Durability_Lv4"] = "Lv4 패시브: 내구도 보너스 (%)",
+                ["Producer_MaterialReduction_Lv4"] = "Lv4 패시브: 재료 절감 (%)",
+                ["Producer_EnchantChance_Lv4"] = "Lv4 인챈트: 확률 (%)",
+                ["Producer_Durability_Lv5"] = "Lv5 패시브: 내구도 보너스 (%)",
+                ["Producer_MaterialReduction_Lv5"] = "Lv5 패시브: 재료 절감 (%)",
+                ["Producer_EnchantChance_Lv5"] = "Lv5 인챈트: 확률 (%)",
+
+                // ============================================
                 // Paladin Job Skills (성기사 직업 스킬) - 9개
                 // ============================================
                 ["Paladin_Active_Cooldown"] = "신성한 치유: 쿨타임 (초)",
@@ -1099,22 +1124,17 @@ namespace CaptainSkillTree.Localization
                 ["Producer_Buff_MaxHealthBonus"]= "제작: 장인의 축복 최대 체력 보너스 (%)",
                 ["Producer_Buff_StaminaCost"]   = "제작: 장인의 축복 스태미나 소모",
                 ["Producer_Durability_Lv1"]             = "Lv1: 내구도 보너스 (%)",
-                ["Producer_CraftingSuccessRate_Lv1"]    = "Lv1: 제작 성공률 (%)",
                 ["Producer_EnchantChance_Lv1"]          = "Lv1: 마법부여 확률 (%)",
                 ["Producer_Durability_Lv2"]             = "Lv2: 내구도 보너스 (%)",
-                ["Producer_CraftingSuccessRate_Lv2"]    = "Lv2: 제작 성공률 (%)",
                 ["Producer_MaterialReduction_Lv2"]      = "Lv2: 재료 감소 (%)",
                 ["Producer_EnchantChance_Lv2"]          = "Lv2: 마법부여 확률 (%)",
                 ["Producer_Durability_Lv3"]             = "Lv3: 내구도 보너스 (%)",
-                ["Producer_CraftingSuccessRate_Lv3"]    = "Lv3: 제작 성공률 (%)",
                 ["Producer_MaterialReduction_Lv3"]      = "Lv3: 재료 감소 (%)",
                 ["Producer_EnchantChance_Lv3"]          = "Lv3: 마법부여 확률 (%)",
                 ["Producer_Durability_Lv4"]             = "Lv4: 내구도 보너스 (%)",
-                ["Producer_CraftingSuccessRate_Lv4"]    = "Lv4: 제작 성공률 (%)",
                 ["Producer_MaterialReduction_Lv4"]      = "Lv4: 재료 감소 (%)",
                 ["Producer_EnchantChance_Lv4"]          = "Lv4: 마법부여 확률 (%)",
                 ["Producer_Durability_Lv5"]             = "Lv5: 내구도 보너스 (%)",
-                ["Producer_CraftingSuccessRate_Lv5"]    = "Lv5: 제작 성공률 (%)",
                 ["Producer_MaterialReduction_Lv5"]      = "Lv5: 재료 감소 (%)",
                 ["Producer_EnchantChance_Lv5"]          = "Lv5: 마법부여 확률 (%)",
 
@@ -1147,6 +1167,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier9_StackExplosion_BuffDuration"]    = "Tier 9: [약점폭발] 버프 지속시간 (초)",
                 ["Tier9_StackExplosion_AoePercent"]      = "Tier 9: [약점폭발] 광역 피해 비율 (%)",
                 ["Tier9_StackExplosion_DamageLevelBonus"] = "Tier 9: [약점폭발] 레벨당 피해 보너스 (%)",
+
+                // ============================================
+                // Mage / Rogue ShadowStrike (다른 언어 파일에서 누락)
+                // ============================================
+                ["Mage_Elemental_Resistance"]          = "패시브: 원소 저항 (%)",
+                ["Rogue_ShadowStrike_AggroRange"]      = "그림자 일격: 어그로 해제 범위 (m)",
+                ["Rogue_ShadowStrike_SmokeScale"]      = "그림자 일격: 연기 크기",
+                ["Rogue_ShadowStrike_StealthDuration"] = "그림자 일격: 스텔스 지속시간 (초)",
 
             };
         }

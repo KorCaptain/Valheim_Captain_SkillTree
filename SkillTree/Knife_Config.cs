@@ -49,6 +49,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> KnifeAssassinHeartStunDuration;
         public static ConfigEntry<int> KnifeAssassinHeartAttackCount;
         public static ConfigEntry<float> KnifeAssassinHeartAttackInterval;
+        public static ConfigEntry<float> KnifeAssassinHeartAttackSpeedBonus;
 
         // === 약점폭발 (H키 액티브 스킬) 설정 ===
         public static ConfigEntry<int>   KnifeStackExplosionRequiredPoints;
@@ -103,6 +104,7 @@ namespace CaptainSkillTree.SkillTree
         public static float KnifeAssassinHeartStunDurationValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_stun_duration", KnifeAssassinHeartStunDuration?.Value ?? 1f);
         public static int KnifeAssassinHeartAttackCountValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_count", (float)(KnifeAssassinHeartAttackCount?.Value ?? 3));
         public static float KnifeAssassinHeartAttackIntervalValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_interval", KnifeAssassinHeartAttackInterval?.Value ?? 0.3f);
+        public static float KnifeAssassinHeartAttackSpeedBonusValue => SkillTreeConfig.GetEffectiveValue("knife_step9_assassin_heart_attack_speed_bonus", KnifeAssassinHeartAttackSpeedBonus?.Value ?? 500f);
 
         // === 약점폭발 동적 값 ===
         public static int   KnifeStackExplosionRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("knife_step10_required_points", (float)(KnifeStackExplosionRequiredPoints?.Value ?? 3));
@@ -253,7 +255,7 @@ namespace CaptainSkillTree.SkillTree
                 KnifeAssassinationStaggerChance = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
                     "Tier7_Assassination_StaggerChance",
-                    26f,
+                    18f,
                     SkillTreeConfig.GetConfigDescription("Tier7_Assassination_StaggerChance"));
 
                 KnifeAssassinationRequiredHits = SkillTreeConfig.BindServerSync(config,
@@ -328,6 +330,12 @@ namespace CaptainSkillTree.SkillTree
                     "Tier8_AssassinHeart_AttackInterval",
                     0.3f,
                     SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_AttackInterval"));
+
+                KnifeAssassinHeartAttackSpeedBonus = SkillTreeConfig.BindServerSync(config,
+                    "Knife Tree",
+                    "Tier8_AssassinHeart_AttackSpeedBonus",
+                    500f,
+                    SkillTreeConfig.GetConfigDescription("Tier8_AssassinHeart_AttackSpeedBonus"));
 
                 KnifeAssassinHeartRequiredPoints = SkillTreeConfig.BindServerSync(config,
                     "Knife Tree",
@@ -452,6 +460,7 @@ namespace CaptainSkillTree.SkillTree
                 KnifeAssassinHeartStunDuration.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
                 KnifeAssassinHeartAttackCount.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
                 KnifeAssassinHeartAttackInterval.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
+                KnifeAssassinHeartAttackSpeedBonus.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
 
                 // 약점폭발 이벤트 핸들러
                 KnifeStackExplosionRequiredPoints.SettingChanged += (sender, args) => Knife_Tooltip.UpdateKnifeTooltips();
