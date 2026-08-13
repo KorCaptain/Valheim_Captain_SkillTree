@@ -33,7 +33,13 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> DefenseStep6AttackRequiredPoints;     // Tier 6-2: 신경강화
         public static ConfigEntry<int> DefenseStep6DoubleJumpRequiredPoints; // Tier 6-3: 이단점프
         public static ConfigEntry<int> DefenseStep6BodyRequiredPoints;       // Tier 6-4: 요툰의 생명력
-        public static ConfigEntry<int> DefenseStep6TrueRequiredPoints;       // Tier 6-5: 요툰의 방패
+        public static ConfigEntry<float> GuardianHeartCooldown;              // Tier 6-5: 방패돌진
+        public static ConfigEntry<float> GuardianHeartStaminaCost;           // Tier 6-5: 방패돌진
+        public static ConfigEntry<float> ShieldChargeDamagePercent;          // Tier 6-5: 방패돌진
+        public static ConfigEntry<float> ShieldChargeMultiHitDamagePercent;  // Tier 6-5: 방패돌진
+        public static ConfigEntry<float> ShieldChargeMultiHitLevelBonus;     // Tier 6-5: 방패돌진
+        public static ConfigEntry<int> GuardianHeartRequiredPoints;          // Tier 6-5: 방패돌진
+        public static ConfigEntry<float> ShieldChargeLevelBonus;             // Tier 6-5: 방패돌진
 
         // =====================================================
         // Tier 0: 방어 전문가 (defense_root)
@@ -48,6 +54,11 @@ namespace CaptainSkillTree.SkillTree
         /// defense_root: 방어 전문가 - 방어력 보너스
         /// </summary>
         public static ConfigEntry<float> DefenseRootArmorBonus;
+
+        /// <summary>
+        /// defense_root: 방어 전문가 - 공격력 감소 페널티 (%)
+        /// </summary>
+        public static ConfigEntry<float> DefenseRootAttackPowerPenalty;
 
         // =====================================================
         // Tier 1: 피부경화 (defense_Step1_survival)
@@ -286,23 +297,12 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> BodyArmorBonus;  // 변수명 유지 (config key 호환)
 
         // =====================================================
-        // Tier 6: 요툰의 방패 (defense_Step6_true)
+        // Tier 6: 방패돌진 (mace_Step7_guardian_heart) - 둔기 트리에서 이전
         // =====================================================
-
-        /// <summary>
-        /// defense_Step6_true: 요툰의 방패 - 방패 블럭 스태미나 감소 (%)
-        /// </summary>
-        public static ConfigEntry<float> JotunnShieldBlockStaminaReduction;
-
-        /// <summary>
-        /// defense_Step6_true: 요툰의 방패 - 일반 방패 이동속도 보상 (%)
-        /// </summary>
-        public static ConfigEntry<float> JotunnShieldNormalSpeedBonus;
-
-        /// <summary>
-        /// defense_Step6_true: 요툰의 방패 - Tower/대형 방패 이동속도 보상 (%)
-        /// </summary>
-        public static ConfigEntry<float> JotunnShieldTowerSpeedBonus;
+        // 필드 선언은 위쪽 "필요 포인트 설정" 블록에 있음:
+        // GuardianHeartCooldown, GuardianHeartStaminaCost, ShieldChargeDamagePercent,
+        // ShieldChargeMultiHitDamagePercent, ShieldChargeMultiHitLevelBonus,
+        // GuardianHeartRequiredPoints, ShieldChargeLevelBonus
 
         // =====================================================
         // 동적 값 프로퍼티 (서버 동기화 지원)
@@ -334,7 +334,6 @@ namespace CaptainSkillTree.SkillTree
         public static int DefenseStep6AttackRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step6_attack_required_points", DefenseStep6AttackRequiredPoints?.Value ?? 4);
         public static int DefenseStep6DoubleJumpRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step6_doublejump_required_points", DefenseStep6DoubleJumpRequiredPoints?.Value ?? 4);
         public static int DefenseStep6BodyRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step6_body_required_points", DefenseStep6BodyRequiredPoints?.Value ?? 4);
-        public static int DefenseStep6TrueRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("defense_step6_true_required_points", DefenseStep6TrueRequiredPoints?.Value ?? 4);
 
         // === Tier 0: 방어 전문가 ===
         public static float DefenseRootHealthBonusValue =>
@@ -342,6 +341,9 @@ namespace CaptainSkillTree.SkillTree
 
         public static float DefenseRootArmorBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_Root_ArmorBonus", DefenseRootArmorBonus?.Value ?? 2f);
+
+        public static float DefenseRootAttackPowerPenaltyValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_Root_AtkPenalty", DefenseRootAttackPowerPenalty?.Value ?? 3f);
 
         // === Tier 1: 피부경화 ===
         public static float SurvivalHealthBonusValue =>
@@ -464,15 +466,27 @@ namespace CaptainSkillTree.SkillTree
         public static float BodyArmorBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Defense_Body_ArmorBonus", BodyArmorBonus?.Value ?? 10f);
 
-        // === Tier 6: 요툰의 방패 ===
-        public static float JotunnShieldBlockStaminaReductionValue =>
-            SkillTreeConfig.GetEffectiveValue("Defense_JotunnShield_BlockStaminaReduction", JotunnShieldBlockStaminaReduction?.Value ?? 25f);
+        // === Tier 6: 방패돌진 (둔기 트리에서 이전) ===
+        public static float GuardianHeartCooldownValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_GuardianHeart_Cooldown", GuardianHeartCooldown?.Value ?? 20f);
 
-        public static float JotunnShieldNormalSpeedBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Defense_JotunnShield_NormalSpeedBonus", JotunnShieldNormalSpeedBonus?.Value ?? 5f);
+        public static float GuardianHeartStaminaCostValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_GuardianHeart_StaminaCost", GuardianHeartStaminaCost?.Value ?? 20f);
 
-        public static float JotunnShieldTowerSpeedBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Defense_JotunnShield_TowerSpeedBonus", JotunnShieldTowerSpeedBonus?.Value ?? 10f);
+        public static float ShieldChargeDamagePercentValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_ShieldCharge_DamagePercent", ShieldChargeDamagePercent?.Value ?? 150f);
+
+        public static float ShieldChargeMultiHitDamagePercentValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_ShieldCharge_MultiHitDamagePercent", ShieldChargeMultiHitDamagePercent?.Value ?? 30f);
+
+        public static float ShieldChargeMultiHitLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_ShieldCharge_MultiHitLevelBonus", ShieldChargeMultiHitLevelBonus?.Value ?? 10f);
+
+        public static int GuardianHeartRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("Defense_GuardianHeart_RequiredPoints", GuardianHeartRequiredPoints?.Value ?? 3);
+
+        public static float ShieldChargeLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Defense_ShieldCharge_LevelBonus", ShieldChargeLevelBonus?.Value ?? 20f);
 
         // =====================================================
         // 초기화 메서드
@@ -495,6 +509,10 @@ namespace CaptainSkillTree.SkillTree
             DefenseRootArmorBonus = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier0_DefenseExpert_ArmorBonus", 1f,
                 SkillTreeConfig.GetConfigDescription("Tier0_DefenseExpert_ArmorBonus"), order: 79);
+
+            DefenseRootAttackPowerPenalty = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier0_DefenseExpert_AtkPenalty", 3f,
+                SkillTreeConfig.GetConfigDescription("Tier0_DefenseExpert_AtkPenalty"), order: 77);
 
             DefenseRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier0_DefenseExpert_RequiredPoints", 2,
@@ -610,7 +628,7 @@ namespace CaptainSkillTree.SkillTree
 
             BlockTrainingMaxChargeDistance = SkillTreeConfig.BindServerSync(config,
                 "Defense Tree", "Tier3_BlockTraining_MaxChargeDistance", 8f,
-                "막기훈련 반격 발동 최대 거리 (m). 이 거리 이내의 몬스터가 스태거될 때만 반격 발동. (Block Training max range)", order: 50);
+                SkillTreeConfig.GetConfigDescription("Tier3_BlockTraining_MaxChargeDistance"), order: 50);
 
             // ===========================================
             // Tier 4: Shockwave (충격파방출)
@@ -797,24 +815,37 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier6_JotunnVitality_RequiredPoints"), order: 11);
 
             // ===========================================
-            // Tier 6: Jotunn's Shield (요툰의 방패)
+            // Tier 6: Shield Charge / Guardian Heart (방패돌진, 둔기 트리에서 이전)
             // ===========================================
 
-            JotunnShieldBlockStaminaReduction = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier6_JotunnShield_BlockStaminaReduction", 25f,
-                SkillTreeConfig.GetConfigDescription("Tier6_JotunnShield_BlockStaminaReduction"), order: 9);
+            GuardianHeartCooldown = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_GuardianHeart_Cooldown", 20f,
+                SkillTreeConfig.GetConfigDescription("Tier6_GuardianHeart_Cooldown"), order: 10);
 
-            JotunnShieldNormalSpeedBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier6_JotunnShield_NormalShieldMoveSpeedBonus", 5f,
-                SkillTreeConfig.GetConfigDescription("Tier6_JotunnShield_NormalShieldMoveSpeedBonus"), order: 8);
+            GuardianHeartStaminaCost = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_GuardianHeart_StaminaCost", 20f,
+                SkillTreeConfig.GetConfigDescription("Tier6_GuardianHeart_StaminaCost"), order: 9);
 
-            JotunnShieldTowerSpeedBonus = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier6_JotunnShield_TowerShieldMoveSpeedBonus", 10f,
-                SkillTreeConfig.GetConfigDescription("Tier6_JotunnShield_TowerShieldMoveSpeedBonus"), order: 7);
+            ShieldChargeDamagePercent = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_ShieldCharge_DamagePercent", 150f,
+                SkillTreeConfig.GetConfigDescription("Tier6_ShieldCharge_DamagePercent"), order: 8);
 
-            DefenseStep6TrueRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Defense Tree", "Tier6_JotunnShield_RequiredPoints", 4,
-                SkillTreeConfig.GetConfigDescription("Tier6_JotunnShield_RequiredPoints"), order: 6);
+            ShieldChargeMultiHitDamagePercent = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_ShieldCharge_MultiHitDamagePercent", 30f,
+                SkillTreeConfig.GetConfigDescription("Tier6_ShieldCharge_MultiHitDamagePercent"), order: 7);
+
+            ShieldChargeMultiHitLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_ShieldCharge_MultiHitLevelBonus", 10f,
+                SkillTreeConfig.GetConfigDescription("Tier6_ShieldCharge_MultiHitLevelBonus"), order: 6);
+
+            GuardianHeartRequiredPoints = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_GuardianHeart_RequiredPoints", 3,
+                SkillTreeConfig.GetConfigDescription("Tier6_GuardianHeart_RequiredPoints"), order: 5);
+
+            ShieldChargeLevelBonus = SkillTreeConfig.BindServerSync(config,
+                "Defense Tree", "Tier6_ShieldCharge_LevelBonus", 20f,
+                SkillTreeConfig.GetConfigDescription("Tier6_ShieldCharge_LevelBonus"), order: 4);
+
         }
     }
 }

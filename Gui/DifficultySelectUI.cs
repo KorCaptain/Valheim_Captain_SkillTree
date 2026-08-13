@@ -113,7 +113,7 @@ namespace CaptainSkillTree.Gui
         private void OnDestroy()
         {
             if (!_selected)
-                DifficultyManager.ApplyVeryHard(); // 선택 없이 창이 닫힌 경우 기본 베리하드 적용
+                DifficultyManager.ApplyFallbackDefault(); // 선택 없이 창이 닫힌 경우 이전 설정 유지 또는(최초 설치 시) 베리하드 적용
         }
 
         // ────── 레이아웃 헬퍼 ──────

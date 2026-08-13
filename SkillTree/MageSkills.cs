@@ -20,6 +20,11 @@ namespace CaptainSkillTree.SkillTree
         // Lv2+ 이중시전 충전 (30초 이내 추가 시전 가능)
         private static readonly Dictionary<string, float> extraChargeExpiry = new Dictionary<string, float>();
 
+        // 던전 내 대체 버프(공격력 강화) 만료 시각 및 상태 VFX
+        private static readonly Dictionary<string, float> dungeonBuffExpiry = new Dictionary<string, float>();
+        private static readonly Dictionary<Player, GameObject> mageDungeonBuffStatusEffects = new Dictionary<Player, GameObject>();
+        private static GameObject cachedMageDungeonBuffStatusPrefab = null;
+
         /// <summary>메이지 스킬 등록</summary>
         public static void RegisterMageSkills()
         {
@@ -187,7 +192,8 @@ namespace CaptainSkillTree.SkillTree
             foreach (var col in cols)
             {
                 var ch = col.GetComponent<Character>() ?? col.GetComponentInParent<Character>();
-                if (ch == null || ch.IsDead() || ch.IsPlayer()) continue;
+                if (ch == null || ch.IsDead() || ch.IsTamed()) continue;
+                if (ch.IsPlayer() && !(ch.IsPVPEnabled() && player.IsPVPEnabled())) continue;
 
                 Vector3 toTarget = ch.transform.position - playerPos;
                 float dot = Vector3.Dot(camForward.normalized, toTarget.normalized);
@@ -211,6 +217,12 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
+                // 던전 내부(천장으로 낙하 연출이 막힘): 불의 비 대신 공격력 강화 자버프로 대체
+                if (player.transform.position.y > 4000f)
+                {
+                    return ExecuteDungeonBuffSkill(player, mageLevel);
+                }
+
                 float range = Mage_Config.MageAOERangeValue;
 
                 // 타겟 탐색
@@ -262,6 +274,104 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[불의 비] 스킬 실행 실패: {ex.Message}");
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 던전 내부 전용 대체 효과: 타겟 탐색 없이 자기 자신에게 공격력 강화 버프 부여
+        /// (md/버프형_VFX.md 커스텀 버프 VFX 2단계 패턴 - 아처 멀티샷과 동일 방식)
+        /// </summary>
+        private static bool ExecuteDungeonBuffSkill(Player player, int mageLevel)
+        {
+            try
+            {
+                string playerKey = player.GetPlayerID().ToString();
+                float duration = Mage_Config.MageDungeonBuffDurationValue;
+                float bonus = Mage_Config.MageDungeonBuffDamageBonusValue;
+
+                dungeonBuffExpiry[playerKey] = Time.time + duration;
+
+                PlayMageDungeonBuffActivationEffects(player, duration);
+
+                SkillEffect.ShowSkillEffectText(player, L.Get("mage_dungeon_buff_cast", (int)bonus, (int)duration), Color.white, SkillEffect.SkillEffectTextType.Standard);
+
+                Plugin.Log.LogInfo($"[메이지 던전버프] {player.GetPlayerName()} 공격력 +{bonus}% ({duration}초)");
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[메이지 던전버프] 스킬 실행 실패: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>발밑 buff_01(활성화, 2초) + 머리 위 statusailment_01_aura(지속, duration초) 버프 VFX</summary>
+        private static void PlayMageDungeonBuffActivationEffects(Player player, float duration)
+        {
+            try
+            {
+                // 0. 버프 활성화 사운드
+                VFXManager.PlaySound("sfx_reload_dverger_done", player.transform.position, 2f);
+
+                // 1. 활성화 효과 (buff_01) - 발밑, 2초간
+                var buff01Prefab = VFXManager.GetVFXPrefab("buff_01");
+                if (buff01Prefab != null)
+                {
+                    var buff01Effect = UnityEngine.Object.Instantiate(
+                        buff01Prefab,
+                        player.transform.position + Vector3.up * 0.5f,
+                        player.transform.rotation);
+                    buff01Effect.transform.SetParent(player.transform, false);
+                    buff01Effect.transform.localPosition = Vector3.up * 0.5f;
+                    buff01Effect.transform.localScale = Vector3.one * 0.8f;
+                    UnityEngine.Object.Destroy(buff01Effect, 2f);
+                }
+
+                // 2. 상태 표시 효과 (statusailment_01_aura) - 머리 위, duration초 지속
+                if (cachedMageDungeonBuffStatusPrefab == null)
+                {
+                    cachedMageDungeonBuffStatusPrefab = VFXManager.GetVFXPrefab("statusailment_01_aura");
+                }
+
+                if (cachedMageDungeonBuffStatusPrefab != null)
+                {
+                    if (mageDungeonBuffStatusEffects.TryGetValue(player, out var existing) && existing != null)
+                    {
+                        UnityEngine.Object.Destroy(existing);
+                        mageDungeonBuffStatusEffects.Remove(player);
+                    }
+
+                    var headPosition = player.transform.position + Vector3.up * 2.0f;
+                    var statusInstance = UnityEngine.Object.Instantiate(cachedMageDungeonBuffStatusPrefab, headPosition, Quaternion.identity);
+                    statusInstance.transform.SetParent(player.transform, false);
+                    statusInstance.transform.localPosition = Vector3.up * 2.0f;
+                    statusInstance.transform.localScale = Vector3.one * 0.6f;
+
+                    mageDungeonBuffStatusEffects[player] = statusInstance;
+                    UnityEngine.Object.Destroy(statusInstance, duration);
+                }
+                else
+                {
+                    Plugin.Log.LogWarning("[메이지 던전버프] statusailment_01_aura 프리팹을 찾을 수 없음");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[메이지 던전버프] 활성화 효과 재생 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>던전 내 대체 버프가 현재 활성 상태인지 확인</summary>
+        public static bool IsDungeonBuffActive(Player player)
+        {
+            if (player == null) return false;
+            string playerKey = player.GetPlayerID().ToString();
+            return dungeonBuffExpiry.TryGetValue(playerKey, out float expiry) && Time.time < expiry;
+        }
+
+        /// <summary>던전 내 대체 버프의 공격력 보너스(%) 반환 (비활성 시 0)</summary>
+        public static float GetDungeonBuffDamageBonus(Player player)
+        {
+            return IsDungeonBuffActive(player) ? Mage_Config.MageDungeonBuffDamageBonusValue : 0f;
         }
 
         /// <summary>타겟 발밑 area_fire_red 2초 + sfx 8회 (0.25초 간격)</summary>
@@ -404,7 +514,8 @@ namespace CaptainSkillTree.SkillTree
                 foreach (var col in cols)
                 {
                     var ch = col.GetComponent<Character>() ?? col.GetComponentInParent<Character>();
-                    if (ch == null || ch.IsDead() || ch.IsPlayer()) continue;
+                    if (ch == null || ch.IsDead() || ch.IsTamed()) continue;
+                    if (ch.IsPlayer() && !(ch.IsPVPEnabled() && owner.IsPVPEnabled())) continue;
 
                     var hit = new HitData();
                     hit.m_damage = dmg;
@@ -429,6 +540,16 @@ namespace CaptainSkillTree.SkillTree
             lastActivationTime.Remove(playerKey);
             extraChargeExpiry.Remove(playerKey);
             mageStatusCache.Remove(playerKey);
+            dungeonBuffExpiry.Remove(playerKey);
+
+            if (mageDungeonBuffStatusEffects.TryGetValue(player, out var statusEffect))
+            {
+                if (statusEffect != null)
+                {
+                    try { UnityEngine.Object.Destroy(statusEffect); } catch { }
+                }
+                mageDungeonBuffStatusEffects.Remove(player);
+            }
         }
 
         /// <summary>모든 메이지 스킬 상태 정리 (플러그인 종료시)</summary>
@@ -438,6 +559,8 @@ namespace CaptainSkillTree.SkillTree
             pendingExplosions.Clear();
             extraChargeExpiry.Clear();
             mageStatusCache.Clear();
+            dungeonBuffExpiry.Clear();
+            mageDungeonBuffStatusEffects.Clear();
         }
     }
 
@@ -523,6 +646,36 @@ namespace CaptainSkillTree.SkillTree
         {
             return hit.m_damage.m_fire + hit.m_damage.m_frost + hit.m_damage.m_lightning +
                    hit.m_damage.m_poison + hit.m_damage.m_spirit;
+        }
+    }
+
+    // ================================================================
+    // 던전 내 대체 버프 - 공격력 증가 패치
+    // ================================================================
+    [HarmonyPatch(typeof(Character), "Damage")]
+    public static class MageSkills_DungeonBuff_Damage_Patch
+    {
+        static void Prefix(Character __instance, ref HitData hit)
+        {
+            try
+            {
+                var localPlayer = Player.m_localPlayer;
+                if (localPlayer == null || __instance == localPlayer) return;
+                if (!MageSkills.IsMage(localPlayer)) return;
+
+                var attacker = hit.GetAttacker();
+                if (attacker != localPlayer) return;
+
+                float bonus = MageSkills.GetDungeonBuffDamageBonus(localPlayer);
+                if (bonus > 0f)
+                {
+                    hit.m_damage.Modify(1f + bonus / 100f);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[메이지 던전버프] Damage 패치 오류: {ex.Message}");
+            }
         }
     }
 

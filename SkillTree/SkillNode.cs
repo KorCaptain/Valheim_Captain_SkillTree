@@ -30,10 +30,15 @@ namespace CaptainSkillTree.SkillTree
             set => _name = value;
         }
 
+        private bool _descriptionOverridden = false;
+
         public string Description
         {
             get
             {
+                // 명시적으로 오버라이드된 값이 있으면 최우선
+                if (_descriptionOverridden)
+                    return _description;
                 // DescriptionKey가 있으면 동적으로 번역 반환
                 if (!string.IsNullOrEmpty(DescriptionKey))
                 {
@@ -43,9 +48,18 @@ namespace CaptainSkillTree.SkillTree
                 }
                 return _description;
             }
-            set => _description = value;
+            set { _description = value; _descriptionOverridden = true; }
         }
         public int RequiredPoints { get; set; }
+        public Func<int> RequiredPointsResolver;
+        // RequiredPoints는 노드 생성 시 1회 스냅샷되므로, 라이브 Config 변경을 반영하려면
+        // RequiredPointsResolver가 설정된 경우 이 값을 우선 사용해야 한다.
+        public int EffectiveRequiredPoints => RequiredPointsResolver?.Invoke() ?? RequiredPoints;
+        // 레벨별 증가형 포인트 코스트용(선택): targetLevel(1-based) → 해당 레벨 도달에 필요한 포인트.
+        // 미설정 시 EffectiveRequiredPoints(정률)로 폴백하므로 기존 스킬은 영향받지 않는다.
+        public Func<int, int> RequiredPointsForLevelResolver;
+        public int GetRequiredPointsForLevel(int targetLevel) =>
+            RequiredPointsForLevelResolver?.Invoke(targetLevel) ?? EffectiveRequiredPoints;
         public List<ItemRequirement> RequiredItems { get; set; } = new List<ItemRequirement>(); // 필요 아이템 목록
         public List<string> Prerequisites { get; set; } = new List<string>();
         public int MaxLevel { get; set; } = 1;
@@ -60,6 +74,11 @@ namespace CaptainSkillTree.SkillTree
         public List<string> NextNodes { get; set; } = new List<string>(); // 분기/다음 노드
         public List<string> MutuallyExclusive { get; set; } = new List<string>(); // 상호 배타적 스킬 목록 (둘 중 하나만 선택 가능)
         public int RequiredPlayerLevel { get; set; } = 0;
+        // 성장형 스킬용: targetLevel(1-based) → 필요 플레이어 레벨(0=없음)
+        public Func<int, int> RequiredPlayerLevelResolver;
+        // RequiredPlayerLevelResolver가 있으면 우선 사용, 없으면 정적 RequiredPlayerLevel 사용
+        public int GetEffectiveRequiredPlayerLevel(int targetLevel) =>
+            RequiredPlayerLevelResolver?.Invoke(targetLevel) ?? RequiredPlayerLevel;
 
         public string GetRootIconName()
         {

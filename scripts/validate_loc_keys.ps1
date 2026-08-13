@@ -15,7 +15,9 @@ $csFiles = Get-ChildItem -Path $projectRoot -Filter "*.cs" -Recurse | Where-Obje
 foreach ($file in $csFiles) {
     $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
     if ($content) {
-        $matches = [regex]::Matches($content, 'L\.Get\(\s*"([^"]+)"')
+        # (?!\s*\+) 로 리터럴 뒤에 문자열 연결(+)이 오는 동적 키(예: L.Get("item_" + id))는 제외 —
+        # 그런 호출은 실제 키가 아니라 접두사일 뿐이라 "누락 키"로 오탐되는 문제 방지
+        $matches = [regex]::Matches($content, 'L\.Get\(\s*"([^"]+)"(?!\s*\+)')
         foreach ($match in $matches) {
             $key = $match.Groups[1].Value
             if (-not $usedKeys.ContainsKey($key)) {

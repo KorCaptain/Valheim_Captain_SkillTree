@@ -50,7 +50,7 @@ namespace CaptainSkillTree.SkillTree
             public bool IsActive => Time.time < EndTime;
             public bool OnCooldown => Time.time < CooldownEndTime;
             public bool IsDeathProtected(float seconds = 10f)
-                => LastActivationTime > 0f && Time.time < LastActivationTime + seconds;
+                => EndTime > 0f && Time.time < EndTime + seconds;
 
             public void Clear()
             {
@@ -64,6 +64,9 @@ namespace CaptainSkillTree.SkillTree
         #endregion
 
         #region Fields
+
+        // 죽음의 무시 무적 종료 후, 사망해도 스킬 숙련도/경험치가 깎이지 않는 유예시간(초)
+        private const float DeathSkillProtectionSeconds = 10f;
 
         private static Dictionary<Player, RageState> rageStates = new Dictionary<Player, RageState>();
         private static Dictionary<Player, PassiveState> passiveStates = new Dictionary<Player, PassiveState>();
@@ -562,8 +565,14 @@ namespace CaptainSkillTree.SkillTree
                 {
                     if (passiveStates != null && passiveStates.TryGetValue(player, out var bsDeathPassive))
                     {
-                        try { bsDeathPassive?.Clear(); } catch { }
-                        try { passiveStates.Remove(player); } catch { }
+                        // 사망 후 스킬 보호 유예시간이 남아있으면 타이머를 지우지 않음
+                        // (지우면 유예시간 내 재사망 시 보호가 적용되지 않음 — 로그아웃/오브젝트 파괴 시엔
+                        //  Berserker_Player_OnDestroy_Patch(OnDestroy)가 별도로 무조건 정리하므로 안전)
+                        if (bsDeathPassive == null || !bsDeathPassive.IsDeathProtected(DeathSkillProtectionSeconds))
+                        {
+                            try { bsDeathPassive?.Clear(); } catch { }
+                            try { passiveStates.Remove(player); } catch { }
+                        }
                     }
                 }
                 catch { }
@@ -751,6 +760,10 @@ namespace CaptainSkillTree.SkillTree
                     if (!passiveStates.TryGetValue(__instance, out var state))
                     {
                         state = new PassiveState();
+                        // 새 state 생성 시 Registry에서 컨피그 기반 쿨타임 복원 (SafeCleanup으로 state가 날아간 경우 대비)
+                        float regRemaining = ActiveSkillCooldownRegistry.GetCooldownRemaining("passive_berserker");
+                        if (regRemaining > 0f)
+                            state.CooldownEndTime = Time.time + regRemaining;
                         passiveStates[__instance] = state;
                     }
 
@@ -779,7 +792,7 @@ namespace CaptainSkillTree.SkillTree
         #region Experience Protection Patches
 
         /// <summary>
-        /// 발헤임 스킬 숙련도 감소 차단 — 죽음의 무시 발동 후 10초간 보호
+        /// 발헤임 스킬 숙련도 감소 차단 — 죽음의 무시 무적 종료 후 10초간 보호
         /// </summary>
         [HarmonyPatch(typeof(Skills), nameof(Skills.LowerAllSkills))]
         public static class Berserker_Skills_LowerAllSkills_Patch
@@ -792,7 +805,7 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player == null || !HasBerserkerSkill(player)) return true;
                     if (!passiveStates.TryGetValue(player, out var state)) return true;
-                    if (state.IsActive || state.IsDeathProtected(10f))
+                    if (state.IsActive || state.IsDeathProtected(DeathSkillProtectionSeconds))
                     {
                         Plugin.Log.LogInfo("[버서커] 죽음의 무시 - 스킬 숙련도 감소 차단");
                         return false;
@@ -807,7 +820,7 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
-        /// EpicMMO 경험치 감소 차단 — 죽음의 무시 발동 후 10초간 보호
+        /// EpicMMO 경험치 감소 차단 — 죽음의 무시 무적 종료 후 10초간 보호
         /// EpicMMO 없으면 TargetMethod가 null 반환 → 패치 스킵됨
         /// </summary>
         [HarmonyPatch]
@@ -833,7 +846,7 @@ namespace CaptainSkillTree.SkillTree
                     var player = Player.m_localPlayer;
                     if (player == null || !HasBerserkerSkill(player)) return true;
                     if (!passiveStates.TryGetValue(player, out var state)) return true;
-                    if (state.IsActive || state.IsDeathProtected(10f))
+                    if (state.IsActive || state.IsDeathProtected(DeathSkillProtectionSeconds))
                     {
                         Plugin.Log.LogInfo("[버서커] 죽음의 무시 - EpicMMO 경험치 감소 차단");
                         return false;

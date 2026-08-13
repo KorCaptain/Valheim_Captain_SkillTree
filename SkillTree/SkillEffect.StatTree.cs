@@ -263,6 +263,10 @@ namespace CaptainSkillTree.SkillTree
                     if (manager.GetSkillLevel("speed_2") > 0)
                         staminaBonus += SkillTreeConfig.SpeedEnduranceStaminaBonusValue;
 
+                    // 퀘스트 보상: 산 늑대 처치 퀘스트(Mountain_Quest2) 클레임 시 스태미나 최대치 영구 +10
+                    if (__instance != null && QuestManager.IsClaimed(__instance, "Mountain_Quest2"))
+                        staminaBonus += 10f;
+
                     if (staminaBonus > 0)
                         stamina += staminaBonus;
 

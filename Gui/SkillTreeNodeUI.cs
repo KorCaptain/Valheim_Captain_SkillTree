@@ -18,6 +18,25 @@ namespace CaptainSkillTree.Gui
         // 선택적 초기화 모드: 현재 선택된 노드 ID (락 시각 적용)
         private HashSet<string> _resetSelectedIds = new HashSet<string>();
 
+        // 액티브 스킬 노드 ID (R/G/H/Mouse2키 바인딩 스킬)
+        private static readonly HashSet<string> ActiveSkillNodeIds = new HashSet<string>
+        {
+            // R키
+            "crossbow_Step6_expert", "bow_Step6_critboost", "staff_Step6_dual_cast",
+            // G키
+            "sword_step5_finalcut", "sword_slash", "knife_step9_assassin_heart",
+            "spear_Step5_penetrate", "polearm_step5_king", "mace_Step7_shockwave_slam",
+            "defense_Step6_mind",
+            // H키
+            "crossbow_ice_breath", "bow_Step6_arrow_rain", "sword_step5_defswitch",
+            "spear_Step5_combo", "mace_Step7_fury_hammer", "staff_Step6_heal",
+            "knife_step10_stack_explosion",
+            // Mouse2
+            "polearm_step6_whirlwind", "mace_Step7_guardian_heart",
+            // 성장형 패시브 (화살비와 동일한 락/언락 색상 적용)
+            "atk_frenzy_trigger", "atk_crit_dmg"
+        };
+
         /// <summary>선택적 초기화 모드에서 선택된 노드 ID 세트를 전달 (RefreshNodeStates에서 락 시각 적용)</summary>
         public void SetResetSelectedIds(HashSet<string> ids)
         {
@@ -164,7 +183,8 @@ namespace CaptainSkillTree.Gui
                 bool isJobIcon = IsJobIconName(iconName);
                 // 메이지와 Paladin는 강제로 직업 아이콘으로 처리 (인식 문제 해결)
                 bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "Paladin";
-                
+                bool isActiveSkill = ActiveSkillNodeIds.Contains(node.Id);
+
                 // 직업 아이콘인지 확인하여 항상 최상위로 설정 (락/언락 관계없이)
                 if (isJobIconOrForced)
                 {
@@ -193,8 +213,8 @@ namespace CaptainSkillTree.Gui
                 // 3. 픽셀 밀도 정규화
                 img.pixelsPerUnitMultiplier = 1.0f;
                 
-                // 표준 투명도 적용 (모든 일반 노드 50% 투명)
-                img.color = new Color(1f, 1f, 1f, 0.5f); // 표준 50% 투명도
+                // 초기 락 색상: 액티브 스킬=흐린 블루, 그 외=50% 흰색
+                img.color = isActiveSkill ? new Color(0.5f, 0.65f, 1f, 0.5f) : new Color(1f, 1f, 1f, 0.5f);
                 
                 // Image를 raycastTarget으로 설정하여 이벤트를 받도록 함
                 img.raycastTarget = true;
@@ -281,7 +301,8 @@ namespace CaptainSkillTree.Gui
                     bool isJobIcon = IsJobIconName(node.IconName ?? node.Id);
                     // 메이지와 Paladin는 강제로 직업 아이콘으로 처리 (인식 문제 해결)
                     bool isJobIconOrForced = isJobIcon || node.Id == "Mage" || node.Id == "Paladin";
-                    
+                    bool isActiveSkill = ActiveSkillNodeIds.Contains(node.Id);
+
                     // 메이지와 Paladin 특별 디버깅
                     if (isUnlocked)
                     {
@@ -303,8 +324,8 @@ namespace CaptainSkillTree.Gui
 
                         img.pixelsPerUnitMultiplier = 1.0f;
 
-                        // 표준 해제 투명도 설정 (100% 불투명)
-                        img.color = new Color(1f, 1f, 1f, 1f);
+                        // 언락: 액티브 스킬=황금색, 그 외=흰색
+                        img.color = isActiveSkill ? new Color(1f, 0.84f, 0f, 1f) : new Color(1f, 1f, 1f, 1f);
 
                         // 모든 언락된 아이콘은 노드선 위에 렌더링
                         nodeObj.transform.SetAsLastSibling();
@@ -354,8 +375,8 @@ namespace CaptainSkillTree.Gui
 
                         img.pixelsPerUnitMultiplier = 1.0f;
 
-                        // 표준 잠김 투명도 설정 (50% 투명)
-                        img.color = new Color(1f, 1f, 1f, 0.5f);
+                        // 락: 액티브 스킬=흐린 블루, 그 외=50% 흰색
+                        img.color = isActiveSkill ? new Color(0.5f, 0.65f, 1f, 0.5f) : new Color(1f, 1f, 1f, 0.5f);
 
                         // 잠김 상태의 직업 아이콘도 Canvas 제거 확인
                         if (isJobIconOrForced)

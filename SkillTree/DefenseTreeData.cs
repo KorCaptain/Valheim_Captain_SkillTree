@@ -20,8 +20,9 @@ namespace CaptainSkillTree.SkillTree
                 Id = "defense_root",
                 NameKey = "defense_root_name",
                 DescriptionKey = "defense_root_desc",
-                DescriptionArgs = new object[] { Defense_Config.DefenseRootHealthBonusValue, Defense_Config.DefenseRootArmorBonusValue },
+                DescriptionArgs = new object[] { Defense_Config.DefenseRootHealthBonusValue, Defense_Config.DefenseRootArmorBonusValue, Defense_Config.DefenseRootAttackPowerPenaltyValue },
                 RequiredPoints = Defense_Config.DefenseRootRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseRootRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 0,
                 Position = new Vector2(90, -60),
@@ -32,7 +33,7 @@ namespace CaptainSkillTree.SkillTree
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
-                        SkillEffect.DrawFloatingText(player, L.Get("defense_root_effect", Defense_Config.DefenseRootHealthBonusValue, Defense_Config.DefenseRootArmorBonusValue));
+                        SkillEffect.DrawFloatingText(player, L.Get("defense_root_effect", Defense_Config.DefenseRootHealthBonusValue, Defense_Config.DefenseRootArmorBonusValue, Defense_Config.DefenseRootAttackPowerPenaltyValue));
                     }
                 }
             });
@@ -46,6 +47,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_survival_desc",
                 DescriptionArgs = new object[] { Defense_Config.SurvivalHealthBonusValue, Defense_Config.SurvivalArmorBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep1RequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep1RequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
                 Position = new Vector2(160, -100),
@@ -64,6 +66,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_dodge_desc",
                 DescriptionArgs = new object[] { Defense_Config.DodgeStaminaBonusValue, Defense_Config.DodgeEitrBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep2DodgeRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep2DodgeRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(210, -190),
@@ -82,6 +85,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_health_desc",
                 DescriptionArgs = new object[] { Defense_Config.HealthBonusValue, Defense_Config.HealthArmorBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep2HealthRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep2HealthRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(265, -110),
@@ -100,6 +104,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_breath_desc",
                 DescriptionArgs = new object[] { Defense_Config.BreathEitrBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep3BreathRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep3BreathRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
                 Position = new Vector2(230, -270),
@@ -118,6 +123,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_agile_desc",
                 DescriptionArgs = new object[] { Defense_Config.AgileDodgeBonusValue, Defense_Config.AgileInvincibilityBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep3AgileRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep3AgileRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
                 Position = new Vector2(275, -230),
@@ -136,6 +142,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_boost_desc",
                 DescriptionArgs = new object[] { Defense_Config.BoostHealthBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep3BoostRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep3BoostRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
                 Position = new Vector2(315, -165),
@@ -158,6 +165,7 @@ namespace CaptainSkillTree.SkillTree
                     Defense_Config.BlockTrainingPushDistanceValue
                 },
                 RequiredPoints = Defense_Config.DefenseStep3ShieldRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep3ShieldRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
                 Position = new Vector2(345, -110),
@@ -185,6 +193,7 @@ namespace CaptainSkillTree.SkillTree
                     Defense_Config.ShockwaveCooldownValue
                 },
                 RequiredPoints = Defense_Config.DefenseStep4MentalRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep4MentalRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
                 Position = new Vector2(310, -310),
@@ -204,6 +213,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_instant_desc",
                 DescriptionArgs = new object[] { 3, 120 },
                 RequiredPoints = Defense_Config.DefenseStep4InstantRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep4InstantRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
                 Position = new Vector2(350, -230),
@@ -223,6 +233,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_tanker_desc",
                 DescriptionArgs = new object[] { Defense_Config.TankerArmorBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep4TankerRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep4TankerRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
                 Position = new Vector2(390, -160),
@@ -241,6 +252,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_focus_desc",
                 DescriptionArgs = new object[] { Defense_Config.FocusRunStaminaReductionValue, Defense_Config.FocusJumpStaminaReductionValue },
                 RequiredPoints = Defense_Config.DefenseStep5FocusRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep5FocusRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
                 Position = new Vector2(380, -400),
@@ -259,6 +271,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_stamina_desc",
                 DescriptionArgs = new object[] { Defense_Config.StaminaDodgeBonusValue, Defense_Config.StaminaRollStaminaReductionValue },
                 RequiredPoints = Defense_Config.DefenseStep5StaminaRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep5StaminaRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
                 Position = new Vector2(420, -310),
@@ -277,6 +290,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_heal_desc",
                 DescriptionArgs = new object[] { Defense_Config.TrollRegenIntervalValue, Defense_Config.TrollRegenBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep5HealRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep5HealRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
                 Position = new Vector2(465, -230),
@@ -295,6 +309,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_parry_desc",
                 DescriptionArgs = new object[] { Defense_Config.ParryMasterParryDurationBonusValue, Defense_Config.ParryMasterBlockPowerBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep5ParryRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep5ParryRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
                 Position = new Vector2(500, -165),
@@ -302,7 +317,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameLocked = "all_skill_lock",
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "defense_Step4_tanker" },
-                NextNodes = new List<string> { "defense_Step6_body", "defense_Step6_true" },
+                NextNodes = new List<string> { "defense_Step6_body", "mace_Step7_guardian_heart" },
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
                     if (player != null) {
@@ -318,6 +333,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_mind_full_desc",
                 DescriptionArgs = new object[] { (int)Defense_Config.MindShieldDurationValue, (int)Defense_Config.MindShieldEitrCostValue, Defense_Config.MindShieldCooldownValue },
                 RequiredPoints = Defense_Config.DefenseStep6MindRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep6MindRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(415, -475),
@@ -345,6 +361,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_attack_desc",
                 DescriptionArgs = new object[] { Defense_Config.AttackDodgeBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep6AttackRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep6AttackRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(465, -380),
@@ -363,6 +380,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_double_jump_desc",
                 DescriptionArgs = new object[] { 1 },
                 RequiredPoints = Defense_Config.DefenseStep6DoubleJumpRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep6DoubleJumpRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(525, -305),
@@ -381,6 +399,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "defense_body_desc",
                 DescriptionArgs = new object[] { Defense_Config.BodyHealthBonusValue, Defense_Config.BodyArmorBonusValue },
                 RequiredPoints = Defense_Config.DefenseStep6BodyRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.DefenseStep6BodyRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(555, -235),
@@ -397,14 +416,15 @@ namespace CaptainSkillTree.SkillTree
                 }
             });
 
-            // Tier 6: 요툰의 방패
+            // Tier 6: 방패돌진 (수호자의 진심, Mouse2 액티브) - 둔기 트리에서 이전, 탱커 전용
             manager.AddSkill(new SkillNode {
-                Id = "defense_Step6_true",
-                NameKey = "defense_true_name",
-                DescriptionKey = "defense_true_desc",
-                DescriptionArgs = new object[] { Defense_Config.JotunnShieldBlockStaminaReductionValue, Defense_Config.JotunnShieldNormalSpeedBonusValue, Defense_Config.JotunnShieldTowerSpeedBonusValue },
-                RequiredPoints = Defense_Config.DefenseStep6TrueRequiredPointsValue,
-                MaxLevel = 1,
+                Id = "mace_Step7_guardian_heart",
+                NameKey = "mace_skill_guardian",
+                DescriptionKey = "mace_desc_guardian_buff",
+                DescriptionArgs = new object[] { 8f },
+                RequiredPoints = Defense_Config.GuardianHeartRequiredPointsValue,
+                RequiredPointsResolver = () => Defense_Config.GuardianHeartRequiredPointsValue,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(600, -160),
                 Category = "방어",
@@ -412,6 +432,7 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "defense_Step5_parry" },
                 NextNodes = new List<string>(),
+                MutuallyExclusive = new List<string>(),
                 ApplyEffect = (lv) => { }
             });
 

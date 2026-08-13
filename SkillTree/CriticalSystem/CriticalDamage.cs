@@ -1,4 +1,5 @@
 using UnityEngine;
+using CaptainSkillTree.MMO_System;
 
 namespace CaptainSkillTree.SkillTree.CriticalSystem
 {
@@ -67,6 +68,15 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
             hit.m_damage.m_slash *= damageBonus;
             hit.m_damage.m_chop *= damageBonus;
 
+            // 원소 데미지 5종 (Rule #11 예외 — EpicMMOSystem Strength 치명타 흡수로 인한 확장.
+            // EpicMMO 자체 치명타는 원소 데미지도 배율 적용했으므로, 통합 흡수 후에도 동일 체감 유지.
+            // 상세: md/CRITICAL_SYSTEM_RULES.md)
+            hit.m_damage.m_fire *= damageBonus;
+            hit.m_damage.m_frost *= damageBonus;
+            hit.m_damage.m_lightning *= damageBonus;
+            hit.m_damage.m_poison *= damageBonus;
+            hit.m_damage.m_spirit *= damageBonus;
+
             Plugin.Log.LogInfo($"[치명타 피해] {GetWeaponName(weaponType)} 치명타 발생! +{critMultiplier}% 피해 (배수: {damageBonus:F2}x)");
         }
 
@@ -79,13 +89,17 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
         {
             float bonus = 0f;
 
-            // Tier 6: 약점 공격 - 치명타 피해 +7%
-            if (SkillEffect.HasSkill("atk_crit_dmg"))
+            // Tier 6: 약점 공격 - 레벨별 치명타 피해 (Lv1~7: 5/9/13/17/21/25/29%)
+            int critDmgLevel = SkillTreeManager.Instance?.GetSkillLevel("atk_crit_dmg") ?? 0;
+            if (critDmgLevel > 0)
             {
-                float tierBonus = SkillTreeConfig.AttackCritDamageBonusValue;
+                float tierBonus = Attack_Config.GetWeakPointAttackBonus(critDmgLevel);
                 bonus += tierBonus;
-                Plugin.Log.LogDebug($"[공통 치명타 피해] Tier 6 약점 공격: +{tierBonus}%");
+                Plugin.Log.LogDebug($"[공통 치명타 피해] Tier 6 약점 공격 Lv{critDmgLevel}: +{tierBonus}%");
             }
+
+            // EpicMMOSystem Strength 스탯 흡수 (자체 치명타 시스템 Unpatch 후 통합 굴림으로 대체)
+            bonus += EpicMMOCritIntegration.GetStrengthCritDamageBonus();
 
             return bonus;
         }
@@ -149,6 +163,14 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
                 float tierBonus = SkillTreeConfig.BowStep5MasterCritDamageValue;
                 bonus += tierBonus;
                 Plugin.Log.LogDebug($"[치명타 피해] Tier 5 정조준 (패시브): +{tierBonus}%");
+            }
+
+            // Tier 2: 활: 사냥의 눈 (선공격 특화) - 치명타 피해 +[CONFIG]%
+            if (SkillEffect.HasSkill("atk_opener_bow"))
+            {
+                float tierBonus = Attack_Config.AtkOpenerBowCritDamageBonusValue;
+                bonus += tierBonus;
+                Plugin.Log.LogDebug($"[치명타 피해] Tier 2 활: 사냥의 눈 (선공격 특화): +{tierBonus}%");
             }
 
             if (bonus > 0f)

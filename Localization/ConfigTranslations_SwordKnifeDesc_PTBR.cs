@@ -167,21 +167,6 @@ namespace CaptainSkillTree.Localization
                 "Menos = pode usar com mais frequência.\n" +
                 "Valor recomendado: 10-20 seg",
 
-                ["Tier5_ParryRush_BuffDuration"] =
-                "【Duração do Buff (seg)】\n" +
-                "Tempo de ação do buff após aparada bem-sucedida.\n" +
-                "Valor recomendado: 20-40 seg",
-
-                ["Tier5_ParryRush_DamageBonus"] =
-                "【Bônus de Dano da Investida (%)】\n" +
-                "Aumento de dano da investida após aparar.\n" +
-                "Valor recomendado: 50-100%",
-
-                ["Tier5_ParryRush_PushDistance"] =
-                "【Distância de Empurrão (m)】\n" +
-                "Quantos metros o inimigo é empurrado na investida.\n" +
-                "Valor recomendado: 3-7m",
-
                 ["Tier5_ParryRush_StaminaCost"] =
                 "【Custo de Resistência】\n" +
                 "Resistência ao ativar a habilidade.\n" +
@@ -513,6 +498,32 @@ namespace CaptainSkillTree.Localization
                 "Proporção do dano principal como dano em área a inimigos em 7m na explosão H.\n" +
                 "Dano total × (valor / 100) = dano em área\n" +
                 "Valor recomendado: 30-50%",
+
+                ["Tier5_WhirlwindSlash_BaseDamage"] =
+                "【Dano Base (%)】\n" +
+                "Dano base da habilidade Golpe Giratório.\n" +
+                "Valor recomendado: 80-150%",
+
+                ["Tier5_WhirlwindSlash_LevelBonus"] =
+                "【Bônus de Nível (%)】\n" +
+                "Bônus de dano por nível da habilidade Golpe Giratório.\n" +
+                "Valor recomendado: 10-25%",
+
+                ["Tier6_RushSlash_DamageLevelBonus"] =
+                "【Bônus de Dano por Nível (%)】\n" +
+                "Bônus de dano por nível da habilidade Série de Investidas.\n" +
+                "Valor recomendado: 5-15%",
+
+                ["Tier6_RushSlash_PathWidth"] =
+                "【Série de Investidas】Largura do trajeto de acerto (m).\n" +
+                "Acerta todos os monstros dentro deste alcance ao longo do trajeto de movimento.\n" +
+                "Valor recomendado: 1-3m",
+
+                ["Tier8_AssassinHeart_LevelBonus"] =
+                "【Bônus de Nível (%)】\n" +
+                "Bônus de dano por nível da habilidade Coração do Assassino.\n" +
+                "Valor recomendado: 10-30%",
+
             };
         }
     }

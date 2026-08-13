@@ -17,7 +17,6 @@ namespace CaptainSkillTree.Localization
                 ["atk_staff_bonus_desc"] = "지팡이 또는 완드 사용 시 공격 +{0}%",
                 ["atk_crit_chance_desc"] = "치명타 확률 +{0}%",
                 ["atk_melee_crit_desc"] = "한손 근접무기 2연속 공격 시 +{0}% 추가 피해",
-                ["atk_crit_dmg_desc"] = "치명타 피해 +{0}%",
                 ["atk_twohand_crush_desc"] = "양손 무기 공격력 +{0}%",
                 ["atk_staff_mage_desc"] = "지팡이 공격 시 속성 공격 +{0}%",
                 ["atk_finisher_melee_desc"] = "한손 무기 공격력 +{0}%",
@@ -52,10 +51,9 @@ namespace CaptainSkillTree.Localization
                 ["defense_double_jump_name"] = "이단점프",
                 ["defense_double_jump_desc"] = "공중에서 추가로 {0}회 점프",
                 ["defense_body_name"] = "요툰의 생명력",
-                ["defense_true_name"] = "요툰의 방패",
 
                 // Defense Expert Tree - Descriptions
-                ["defense_root_desc"] = "체력 +{0}, 투구 방어력 +{1}",
+                ["defense_root_desc"] = "체력 +{0}, 투구 방어력 +{1}, 공격력 -{2}%",
                 ["defense_survival_desc"] = "체력 +{0}, 흉갑 방어력 +{1}",
                 ["defense_health_desc"] = "체력 +{0}, 각반 방어력 +{1}",
                 ["defense_dodge_desc"] = "스태미나 최대치 +{0}, 에이트르 최대치 +{1}",
@@ -70,10 +68,9 @@ namespace CaptainSkillTree.Localization
                 ["defense_parry_desc"] = "패링 +{0}초, 방패 방어력 +{1}",
                 ["defense_attack_desc"] = "30초 동안 피격 회피 미발동 시 회피 +{0}%",
                 ["defense_body_desc"] = "체력 최대치 +{0}%, 물리/속성 저항 +{1}%",
-                ["defense_true_desc"] = "블럭 스태미나 -{0}%, 일반 방패 이동속도 +{1}%, 대형 방패 이동속도 +{2}%",
 
                 // Defense Expert Tree - Effect Texts
-                ["defense_root_effect"] = "🛡️ 방어 전문가! 체력 +{0}, 방어 +{1}",
+                ["defense_root_effect"] = "🛡️ 방어 전문가! 체력 +{0}, 방어 +{1}, 공격력 -{2}%",
                 ["defense_shield_effect"] = "🛡️ 막기훈련! 방패 방어력 +{0}",
                 ["defense_shield_parry_counter"] = "⚔️ 패링 반격! ({0} 타격)",
                 ["defense_parry_effect"] = "🛡️ 막기달인! 패링 +{0}초, 방패 방어력 +{1}",
@@ -93,7 +90,7 @@ namespace CaptainSkillTree.Localization
                 ["mace_stun_boost_desc2"] = "기절 확률 +{0}%, 지속시간 +{1}초",
                 ["mace_guard_boost_desc2"] = "세컨드 공격 시 공격력 +{0}%, 범위 {1}m, 넉백 {2}m",
                 ["mace_heavy_strike_desc2"] = "무거운 공격 타격 +{0}",
-                ["mace_knockback_desc2"] = "막기 미사용 피격 시 {0}% 확률로 공격자 밀어냄",
+                ["mace_knockback_desc2"] = "둔기로 공격 시 {0}% 확률로 대상의 이동속도와 공격속도를 1.5초간 30% 감소",
                 ["mace_tank_desc2"] = "체력 +{0}%, 받는 데미지 -{1}%",
                 ["mace_dps_desc2"] = "공격력 +{0}%",
                 ["mace_grandmaster_desc2"] = "공격속도 +{0}%",
@@ -139,6 +136,13 @@ namespace CaptainSkillTree.Localization
                 ["producer_enchant_eitr_regen"]       = "✨ 제작 축복: 에이트르 회복 +{0}%",
                 ["producer_enchant_jump_force"]       = "✨ 제작 축복: 점프력 +{0}%",
                 ["producer_enchant_block_power"]      = "✨ 제작 축복: 가드 방어력 +{0}%",
+                // 무기별 차별화 마법부여 키 (속성 확률 피해)
+                ["producer_enchant_fire_proc"]         = "✨ 제작 축복: 화염 피해 확률 +{0}%",
+                ["producer_enchant_spirit_proc"]       = "✨ 제작 축복: 영혼 피해 확률 +{0}%",
+                ["producer_enchant_poison_proc"]       = "✨ 제작 축복: 독 피해 확률 +{0}%",
+                ["producer_enchant_lightning_proc"]    = "✨ 제작 축복: 번개 피해 확률 +{0}%",
+                ["producer_enchant_frost_proc"]        = "✨ 제작 축복: 냉기 피해 확률 +{0}%",
+                ["producer_enchant_polearm_range"]     = "✨ 제작 축복: 사거리 +{0}%",
 
                 // === Prerequisite Text ===
                 ["prerequisite_label"] = "🔗 필요",
@@ -222,9 +226,11 @@ namespace CaptainSkillTree.Localization
                 ["mage_desc_firerain"] = "전방 타겟팅 불의 비(Fire Rain)로 공격한다.",
                 ["mage_firerain_damage"] = "파이어볼 {0}개 × 3버스트 (무기 공격력 {1}%)",
                 ["mage_firerain_range"] = "낙하 반경 {0}m, 적중 범위 {1}m",
+                ["mage_dungeon_buff_desc"] = "던전 안에서는 불의 비 대신 공격력 {0}%를 {1}초 동안 강화하는 버프로 발동됩니다",
+                ["mage_dungeon_buff_cast"] = "공격력 강화! (+{0}%, {1}초)",
                 // === Mage Level System ===
-                ["mage_passive_lv1"] = "AOE 데미지 {0}%, 속성 저항 {1}%",
-                ["mage_passive_lv2"] = "AOE 데미지 {0}%, 이중시전 +1회 (30초 이내), 속성 저항 {1}%",
+                ["mage_passive_lv1"] = "AOE 데미지 {0}%, 쿨타임 {2}초, 속성 저항 {1}%",
+                ["mage_passive_lv2"] = "AOE 데미지 {0}%, 쿨타임 {2}초, 다중시전 +1회 (30초 이내), 속성 저항 {1}%",
                 ["mage_level_req_items"] = "Lv{0} 달성 재료",
                 ["mage_level_item_required"] = "메이지 Lv{0} 전직 트로피가 부족합니다",
                 ["mage_missing_items"] = "부족한 재료: {0}",
@@ -442,7 +448,13 @@ namespace CaptainSkillTree.Localization
                 ["staff_speed1_name"] = "시전 가속",
 
                 // === Speed Expert Tree - Skill Descriptions ===
-                ["speed_root_desc"] = "이동속도 +{0}%",
+                ["speed_root_desc"] = "이동속도 +{0}%/레벨 (최대 Lv7)",
+                ["speedroot_item_required"] = "Lv{0} 강화에 트로피가 필요합니다",
+                ["speedroot_missing_items"] = "부족한 재료: {0}",
+                ["speedroot_max_level"] = "최대 레벨 도달",
+                ["speedroot_trophy_required"] = "강화 필요: {0} x5",
+                ["speedroot_upgrade_requires"] = "Lv{0} 강화 재료",
+                ["speed_root_stat_preview"] = "이동속도 +{0}%",
                 ["speed_base_desc"] = "공격속도 +{0}%, 구르기 후 {1}초간 이동속도 +{2}%",
                 ["melee_combo_desc"] = "근접 2연속 적중 시 {0}초간 공격속도 +{1}%, 스태미나 -{2}%",
                 ["crossbow_reload2_desc"] = "석궁 적중 시 이동속도 +{0}%({1}초), 버프 중 재장전 +{2}%",
@@ -499,7 +511,7 @@ namespace CaptainSkillTree.Localization
                 ["rogue_lv2_unlock_cond"] = "암살자의 심장 스킬 해금 필요",
                 ["archer_lv2_unlock_cond"] = "단 한 발 또는 폭발화살 스킬 중 하나 필요",
                 ["archer_lv2_extra_charge_effect"] = "단 한 발/폭발화살: 30초 이내 1회 추가 사용",
-                ["mage_lv2_unlock_cond"] = "이중시전 스킬 해금 필요",
+                ["mage_lv2_unlock_cond"] = "다중시전 스킬 해금 필요",
                 ["rogue_level_item_required"] = "로그 Lv{0} 업그레이드 재료가 부족합니다",
 
                 // === UI 메시지 ===

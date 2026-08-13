@@ -131,10 +131,13 @@ namespace CaptainSkillTree.Localization
                 "命中时触发体力恢复的概率。\n" +
                 "推荐：20-50",
 
-                ["Tier6_WeakPointAttack_CritDamageBonus"] =
-                "【暴击伤害加成 (%)】\n" +
-                "提升暴击时造成的额外伤害。\n" +
-                "推荐：10-20%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "【弱点攻击 Lv1 暴击伤害加成 (%)】\n达到1级时生效的暴击伤害增幅。\n推荐：5%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "【弱点攻击 Lv2 暴击伤害加成 (%)】\n达到2级时生效的暴击伤害增幅。\n推荐：9%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "【弱点攻击 Lv3 暴击伤害加成 (%)】\n达到3级时生效的暴击伤害增幅。\n推荐：13%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "【弱点攻击 Lv4 暴击伤害加成 (%)】\n达到4级时生效的暴击伤害增幅。\n推荐：17%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "【弱点攻击 Lv5 暴击伤害加成 (%)】\n达到5级时生效的暴击伤害增幅。\n推荐：21%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "【弱点攻击 Lv6 暴击伤害加成 (%)】\n达到6级时生效的暴击伤害增幅。\n推荐：25%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "【弱点攻击 Lv7（最高）暴击伤害加成 (%)】\n达到7级（最高）时生效的暴击伤害增幅。\n推荐：29%",
 
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] =
                 "【双手武器伤害加成 (%)】\n" +
@@ -178,9 +181,9 @@ namespace CaptainSkillTree.Localization
                 "推荐：15-25%",
 
                 ["Tier2_OpenerBow_CritChance"] =
-                "【弓暴击率 (%)】\n" +
-                "战斗开始后第一支箭的暴击率提升。\n" +
-                "推荐：10-20%",
+                "【弓 猎人之眼 暴击伤害 (%)】\n" +
+                "先攻窗口内第一支箭必定暴击时额外增加的暴击伤害。\n" +
+                "推荐：6-10%",
 
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] =
                 "【弩首发加成 (%)】\n" +
@@ -212,10 +215,10 @@ namespace CaptainSkillTree.Localization
                 "战斗中提升移动速度。\n" +
                 "推荐：10-15%",
 
-                ["Tier4_FrenzyTrigger_StaminaReduction"] =
-                "【混战体力削减 (%)】\n" +
-                "附近有多个敌人时减少体力消耗。\n" +
-                "推荐：15-25%",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] =
+                "【致命一击暴击率增量（每级%）】\n" +
+                "每升一级增加的暴击率。（等级 × 增量）\n" +
+                "推荐：1-3%",
 
                 ["Tier5_Frenzy_StackBonusBase"] =
                 "【混战层数基础加成 (%)】\n" +
@@ -250,7 +253,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_OpenerMagic_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
                 ["Tier3_Pursuit_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "【每级所需点数】\n每次升级消耗的技能点数。\n推荐：2",
                 ["Tier5_Frenzy_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
 
                 // ========================================
@@ -265,6 +268,12 @@ namespace CaptainSkillTree.Localization
                 "【护甲加成（固定）】\n" +
                 "增加固定护甲值。\n" +
                 "推荐：1-4",
+
+                ["Tier0_DefenseExpert_AtkPenalty"] =
+                "【攻击力降低（%）】\n" +
+                "学习防御专家会小幅降低攻击力。\n" +
+                "这是防御与攻击之间的权衡。\n" +
+                "推荐：1-3%",
 
                 ["Tier1_SkinHardening_HPBonus"] =
                 "【生命值加成（固定）】\n" +
@@ -405,7 +414,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_NerveEnhancement_DodgeBonus"] =
                 "【条件闪避加成（30秒，%)】\n" +
                 "连续30秒未闪避时激活。\n" +
-                "推荐：30-50%",
+                "推荐：85%",
 
                 ["Tier6_JotunnVitality_HPBonus"] =
                 "【生命值加成 (%)】\n" +
@@ -415,21 +424,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] =
                 "【物理/元素抗性 (%)】\n" +
                 "减少所有物理和元素伤害。\n" +
-                "推荐：8-15%",
-
-                ["Tier6_JotunnShield_BlockStaminaReduction"] =
-                "【格挡体力消耗 (%)】\n" +
-                "减少使用盾牌格挡时的体力消耗。\n" +
-                "推荐：20-30%",
-
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] =
-                "【持普通盾移动速度 (%)】\n" +
-                "提升持普通盾时的移动速度。\n" +
-                "推荐：3-8%",
-
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] =
-                "【持塔盾移动速度 (%)】\n" +
-                "提升持塔盾时的移动速度。\n" +
                 "推荐：8-15%",
 
                 // ========================================
@@ -605,6 +599,294 @@ namespace CaptainSkillTree.Localization
                 "【闪避速度加成 (%)】\n" +
                 "提升翻滚动作的动画速度。\n" +
                 "推荐：5-15%",
+
+                ["Tier3_BlockTraining_MaxChargeDistance"] =
+                "【反击最大有效距离 (m)】\n" +
+                "仅当被击晕的怪物在此距离内时反击才会触发。\n" +
+                "推荐：6-10m",
+
+                ["Tier0_DefenseExpert_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier1_SkinHardening_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier2_MindTraining_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier2_HealthTraining_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier3_CoreBreathing_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier3_EvasionTraining_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier3_HealthBoost_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier3_ShieldTraining_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier4_Shockwave_Radius"] =
+                "【冲击波范围】\n" +
+                "震地踏冲击波技能的效果半径（米）。\n" +
+                "推荐：3",
+
+                ["Tier4_Shockwave_StunDuration"] =
+                "【冲击波晕眩时间】\n" +
+                "晕眩效果的持续时间（秒）。\n" +
+                "推荐：1",
+
+                ["Tier4_Shockwave_Cooldown"] =
+                "【冲击波冷却时间】\n" +
+                "技能再使用的等待时间（秒）。\n" +
+                "推荐：120",
+
+                ["Tier4_Shockwave_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier4_Shockwave_KnockbackForce"] =
+                "【击退力】\n" +
+                "冲击波触发时施加给敌人的力度。\n" +
+                "推荐：15-25",
+
+                ["Tier4_GroundStomp_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier4_RockSkin_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier5_Endurance_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier5_Agility_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier5_TrollRegen_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier5_BlockMaster_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier6_MindShield_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier6_MindShield_Cooldown"] =
+                "【精神护盾冷却时间】\n" +
+                "G键精神护盾技能的再使用等待时间（秒）。\n" +
+                "默认：210（3分30秒）",
+
+                ["Tier6_MindShield_EitrCost"] =
+                "【精神护盾以特尔消耗】\n" +
+                "施放精神护盾时消耗的以特尔数量。\n" +
+                "默认：30",
+
+                ["Tier6_MindShield_Duration"] =
+                "【精神护盾持续时间】\n" +
+                "护盾维持的时间（秒）。期间最多吸收相当于以特尔上限的生命值伤害。\n" +
+                "默认：180（3分钟）",
+
+                ["Tier6_NerveEnhancement_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier6_DoubleJump_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier6_JotunnVitality_RequiredPoints"] =
+                "【所需点数】\n" +
+                "解锁此节点所需的技能点数。\n" +
+                "推荐：2",
+
+                ["Tier0_SpeedExpert_MoveSpeedPerLevel"] = "【移动速度加成/级 (%)】\n每级提升的移动速度增加量。（Lv1~7 成长系统）\n推荐：1-5%",
+
+                ["Tier0_SpeedExpert_PointsPerLevel"] = "【每级所需点数】\n每次升级消耗的技能点数。\n推荐：1-2",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_2"] = "【Lv2所需玩家等级】\n升级到Lv2所需的EpicMMO玩家等级。（0=无）\n默认：15",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_3"] = "【Lv3所需玩家等级】\n升级到Lv3所需的EpicMMO玩家等级。\n默认：30",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_4"] = "【Lv4所需玩家等级】\n升级到Lv4所需的EpicMMO玩家等级。\n默认：45",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_5"] = "【Lv5所需玩家等级】\n升级到Lv5所需的EpicMMO玩家等级。\n默认：50",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_6"] = "【Lv6所需玩家等级】\n升级到Lv6所需的EpicMMO玩家等级。\n默认：65",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_7"] = "【Lv7所需玩家等级】\n升级到Lv7所需的EpicMMO玩家等级。\n默认：80",
+
+                ["Tier2_MeleeFlow_AttackSpeedBonus"] = "【2连击攻击速度加成 (%)】\n近战连续命中2次后攻击速度提升。\n推荐：8-15%",
+
+                ["Tier2_MeleeFlow_StaminaReduction"] = "【体力消耗减少 (%)】\n流畅打击增益期间体力消耗减少。\n推荐：10-20%",
+
+                ["Tier2_MeleeFlow_Duration"] = "【增益持续时间（秒）】\n近战流畅打击增益的持续时间。\n推荐：3-5秒",
+
+                ["Tier2_MeleeFlow_ComboSpeedBonus"] = "【连击速度加成 (%)】\n连招链中额外的攻击速度加成。\n推荐：5-10%",
+
+                ["Tier2_CrossbowExpert_MoveSpeedBonus"] = "【命中后移动速度加成 (%)】\n弩矢命中敌人时移动速度提升。\n推荐：10-15%",
+
+                ["Tier2_CrossbowExpert_BuffDuration"] = "【增益持续时间（秒）】\n命中后速度增益的持续时间。\n推荐：3-5秒",
+
+                ["Tier2_CrossbowExpert_ReloadSpeedBonus"] = "【增益期间装填速度加成 (%)】\n命中增益生效期间装填速度提升。\n推荐：10-15%",
+
+                ["Tier2_BowExpert_StaminaReduction"] = "【2连击体力消耗减少 (%)】\n连续命中2箭后体力消耗减少。\n推荐：10-15%",
+
+                ["Tier2_BowExpert_NextDrawSpeedBonus"] = "【下一箭拉弦速度加成 (%)】\n连击成功后下一箭的拉弦速度提升。\n推荐：10-20%",
+
+                ["Tier2_BowExpert_BuffDuration"] = "【增益持续时间（秒）】\n连击增益的持续时间。\n推荐：4-6秒",
+
+                ["Tier2_MobileCast_MoveSpeedBonus"] = "【施法中移动速度加成 (%)】\n施放法杖法术时的移动速度加成。\n推荐：8-12%",
+
+                ["Tier2_MobileCast_EitrReduction"] = "【以特尔消耗减少 (%)】\n法杖法术的以特尔消耗减少。\n推荐：8-15%",
+
+                ["Tier2_MobileCast_CastMoveSpeed"] = "【法杖施法中移动速度 (%)】\n引导法杖攻击时的基础移动速度。\n推荐：3-6%",
+
+                ["Tier3_Practitioner1_MeleeSkillBonus"] = "【近战武器技能加成】\n提升所有近战武器技能等级。\n推荐：5-10",
+
+                ["Tier3_Practitioner1_CrossbowSkillBonus"] = "【弩技能加成】\n提升弩技能等级。\n推荐：5-10",
+
+                ["Tier3_Practitioner2_StaffSkillBonus"] = "【法杖技能加成】\n提升法杖技能等级（元素法术）。\n推荐：5-10",
+
+                ["Tier3_Practitioner2_BowSkillBonus"] = "【弓技能加成】\n提升弓技能等级。\n推荐：5-10",
+
+                ["Tier4_Energizer_FoodConsumptionReduction"] = "【食物消耗速率减少 (%)】\n降低食物消耗速度，使增益持续更久。\n推荐：10-20%",
+
+                ["Tier4_Captain_ShipSpeedBonus"] = "【船速加成 (%)】\n提升航行速度。\n推荐：10-20%",
+
+                ["Tier5_JumpMaster_JumpSkillBonus"] = "【跳跃技能加成】\n提升跳跃技能等级。\n推荐：5-15",
+
+                ["Tier5_JumpMaster_JumpStaminaReduction"] = "【跳跃体力消耗减少 (%)】\n减少跳跃时的体力消耗。\n推荐：10-20%",
+
+                ["Tier6_Dexterity_MeleeAttackSpeedBonus"] = "【近战攻击速度加成 (%)】\n提升近战武器攻击速度。\n推荐：5-8%",
+
+                ["Tier6_Dexterity_MoveSpeedBonus"] = "【移动速度加成 (%)】\n提升整体移动速度。\n推荐：3-8%",
+
+                ["Tier6_Endurance_StaminaMaxBonus"] = "【最大体力加成】\n增加最大体力上限。\n推荐：20-40",
+
+                ["Tier6_Intellect_EitrMaxBonus"] = "【最大以特尔加成】\n增加用于魔法的最大以特尔上限。\n推荐：30-50",
+
+                ["Tier7_Master_RunSkillBonus"] = "【跑步技能加成】\n提升跑步技能等级。\n推荐：5-15",
+
+                ["Tier7_Master_JumpSkillBonus"] = "【跳跃技能加成】\n提升跳跃技能等级。\n推荐：5-15",
+
+                ["Tier8_MeleeAccel_AttackSpeedBonus"] = "【近战攻击速度加成 (%)】\n近战攻击速度的最终提升。\n推荐：5-10%",
+
+                ["Tier8_MeleeAccel_TripleComboBonus"] = "【3连击后下一击速度加成 (%)】\n3连击后下一次攻击的速度大幅提升。\n推荐：20-30%",
+
+                ["Tier8_CrossbowAccel_ReloadSpeed"] = "【装填速度加成 (%)】\n弩装填速度的最终提升。\n推荐：25-35%",
+
+                ["Tier8_CrossbowAccel_ReloadMoveSpeed"] = "【装填中移动速度 (%)】\n装填弩时的移动速度。\n推荐：20-30%",
+
+                ["Tier8_BowAccel_DrawSpeed"] = "【拉弦速度加成 (%)】\n弓拉弦速度的最终提升。\n推荐：15-20%",
+
+                ["Tier8_BowAccel_DrawMoveSpeed"] = "【拉弦中移动速度 (%)】\n拉弓弦时的移动速度。\n推荐：10-20%",
+
+                ["Tier8_CastAccel_MagicAttackSpeed"] = "【魔法攻击速度加成 (%)】\n魔法攻击速度的最终提升。\n推荐：5-10%",
+
+                ["Tier8_CastAccel_TripleEitrRecovery"] = "【3连击以特尔最大恢复率 (%)】\n3次法术连击后以特尔恢复速度提升。\n推荐：10-15%",
+
+                ["Tier1_AgilityBase_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier2_MeleeFlow_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier2_CrossbowExpert_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier2_BowExpert_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier2_MobileCast_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier3_Practitioner1_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier3_Practitioner2_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier4_Energizer_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier4_Captain_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier5_JumpMaster_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier6_Dexterity_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier6_Endurance_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier6_Intellect_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier7_Master_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier8_MeleeAccel_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier8_CrossbowAccel_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier8_BowAccel_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier8_CastAccel_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier0_AttackExpert_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier1_BaseAttack_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier2_MeleeSpec_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier2_BowSpec_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier2_CrossbowSpec_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier2_StaffSpec_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier3_AttackBoost_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier4_MeleeEnhance_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier4_PrecisionAttack_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier4_RangedEnhance_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier5_SpecialStat_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "【每级所需点数】\n每次升级消耗的技能点数。\n推荐：2",
+
+                ["Tier6_ComboFinisher_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier6_TwoHandCrush_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
+                ["Tier6_ElementalAttack_RequiredPoints"] = "【所需点数】\n解锁此节点所需的技能点数。",
+
             };
         }
     }

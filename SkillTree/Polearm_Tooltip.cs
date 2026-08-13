@@ -214,7 +214,7 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{Polearm_Config.PolearmKingRequiredPointsValue}</size></color>\n";
 
                 // 13. 강화 필요 트로피 / 최대 레벨
-                if (currentLevel > 0 && currentLevel < 7)
+                if (currentLevel < 7)
                 {
                     int nextLevel = currentLevel + 1;
                     tooltip += $"\n<color=#FFB347><size=16>Lv{nextLevel} {L.Get("pierce_charge_upgrade_title")}: </size></color>";
@@ -344,6 +344,8 @@ namespace CaptainSkillTree.SkillTree
 
                 t += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {L.Get("whirlwind_damage_preview", (int)GetWhirlwindHitPercentForLevel(mainLevel), GetWhirlwindAoePercentForLevel(mainLevel))}</size></color>\n";
 
+                t += $"<color=#87CEFA><size=16>{L.Get("whirlwind_reduction_preview", (int)GetWhirlwindReductionPercentForLevel(mainLevel))}</size></color>\n";
+
                 t += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
                 t += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaPerCycle:F1}/{L.Get("unit_cycle")}</size></color>\n";
 
@@ -352,6 +354,9 @@ namespace CaptainSkillTree.SkillTree
 
                 t += $"<color=#FFA500><size=16>{L.Get("tooltip_max_duration")}: </size></color>";
                 t += $"<color=#FFDB58><size=16>{maxDuration:F0}{L.Get("unit_seconds")}</size></color>\n";
+
+                t += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color>";
+                t += $"<color=#FFE4B5><size=16>{L.Get("polearm_whirlwind_hold_notice", (int)maxDuration)}</size></color>\n";
 
                 t += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";
                 t += $"<color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
@@ -378,6 +383,7 @@ namespace CaptainSkillTree.SkillTree
                     for (int lv = mainLevel + 1; lv <= 7; lv++)
                     {
                         t += $"<color=#808080><size=14>Lv{lv} : {L.Get("whirlwind_damage_preview", (int)GetWhirlwindHitPercentForLevel(lv), GetWhirlwindAoePercentForLevel(lv))}</size></color>\n";
+                        t += $"<color=#808080><size=14>{L.Get("whirlwind_reduction_preview", (int)GetWhirlwindReductionPercentForLevel(lv))}</size></color>\n";
                     }
                 }
 
@@ -393,6 +399,9 @@ namespace CaptainSkillTree.SkillTree
 
         private static float GetWhirlwindHitPercentForLevel(int level)
             => Polearm_Config.PolearmWhirlwindDamagePercentValue + (level - 1) * Polearm_Config.PolearmWhirlwindLevelBonusValue;
+
+        private static float GetWhirlwindReductionPercentForLevel(int level)
+            => Polearm_Config.PolearmWhirlwindDamageReductionPercentValue + (level - 1) * Polearm_Config.PolearmWhirlwindDamageReductionLevelBonusValue;
 
         private static int GetWhirlwindAoePercentForLevel(int level) => level switch
         {

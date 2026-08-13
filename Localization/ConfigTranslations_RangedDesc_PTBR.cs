@@ -106,10 +106,6 @@ namespace CaptainSkillTree.Localization
                 "Porcentagem de dano dos projéteis adicionais.\n" +
                 "Valor recomendado: 10-20%",
 
-                ["Tier5_DoubleCast_AngleOffset"] =
-                "【Ângulo de Dispersão (não usado)】\n" +
-                "Não usado na versão atual. Fixo em uma direção.",
-
                 ["Tier5_DoubleCast_EitrCost"] =
                 "【Custo de Eitr】\n" +
                 "Eitr consumido ao ativar a habilidade.\n" +
@@ -496,6 +492,58 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier6_ArrowRain_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Chuva de Flechas.",
+
+                ["Tier5_DoubleCast_LevelBonus"] =
+                "【Bônus de Nível (%)】\n" +
+                "Bônus de dano por nível da habilidade Duplo Lançamento.\n" +
+                "Recomendado: 3-8%",
+
+                ["Tier5_OneShot_AoeRadius"] =
+                "【Raio de Área (m)】\n" +
+                "Raio da área que causa dano a inimigos próximos ao acertar Um Tiro.\n" +
+                "Recomendado: 5-10m",
+
+                ["Tier5_OneShot_LevelBonus"] =
+                "【Bônus de Dano por Nível (%)】\n" +
+                "Bônus de dano adicional por nível da habilidade Um Tiro.\n" +
+                "Recomendado: 30-50%",
+
+                ["Tier5_OneShot_SlowReloadMultiplier"] =
+                "【Multiplicador de Recarga Lenta】\n" +
+                "O tempo de recarga é multiplicado por este valor na primeira recarga após a ativação.\n" +
+                "2.0 = -100% de velocidade (2x mais lento), 6.0 = -500% de velocidade (6x mais lento)\n" +
+                "Recomendado: 2.0 - 6.0",
+
+                ["Tier6_IceBreath_LevelBonus"] =
+                "【Bônus de Nível (%)】\n" +
+                "Bônus de dano direto por nível da habilidade Gelo Vulcânico.\n" +
+                "Recomendado: 10-20%",
+
+                ["Tier6_IceBreath_DotLevelBonus"] =
+                "【Bônus de Nível de Dano DoT (%)】\n" +
+                "Bônus de dano DoT por nível da habilidade Gelo Vulcânico.\n" +
+                "Recomendado: 3-8%",
+
+                ["Tier6_ArrowRain_LevelBonus"] =
+                "【Bônus de Nível (%)】\n" +
+                "Bônus de dano de flecha por nível da habilidade Chuva de Flechas.\n" +
+                "Recomendado: 1-3%",
+
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] =
+                "【Buff de Masmorra: Bônus de Dano (%)】\n" +
+                "Aumento de dano de ataque do autoaperfeiçoamento lançado em vez de Chuva de Flechas ao usar a tecla H dentro de uma masmorra.\n" +
+                "Recomendado: 20-30%",
+
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] =
+                "【Buff de Masmorra: Duração (seg)】\n" +
+                "Por quanto tempo o buff substituto dentro da masmorra dura.\n" +
+                "Recomendado: 8-12 seg",
+
+                ["Tier5_ExplosiveArrow_LevelBonus"] =
+                "【Bônus de Nível (%)】\n" +
+                "Bônus de dano por nível da habilidade Flecha Explosiva.\n" +
+                "Recomendado: 10-25%",
+
             };
         }
     }

@@ -1,5 +1,10 @@
 # MMO 시스템 연동 가이드
 
+> ⚠️ **폐기 안내 (2026-07-16)**: 이 문서의 **"Tier 1: MMO getParameter 패치 주입"** 방식은 실제로 채택되지 않았다.
+> 실제 정책은 `DAMAGE_SYSTEM_RULES.md`의 **"MMO 독립성 원칙"**(getParameter 패치를 통한 스탯 주입 절대 금지, `GetDamage`/`Character.Damage` 직접 패치 방식만 사용)이며,
+> 실제 구현(`SkillEffect.cs`의 `SkillTree_MMO_LevelSystem_getParameter_Patch`)도 getParameter Postfix를 빈 함수로 남겨두어 이 원칙을 따른다.
+> 아래 "Tier 1 (Preferred)" 관련 섹션들은 **과거 설계 검토용 참고 자료**로만 남겨두며, 새 스킬/효과 구현 시 절대 이 패턴을 따르지 말 것 — 반드시 `DAMAGE_SYSTEM_RULES.md`를 우선 확인.
+
 ## MMO System Effect Application Analysis (MMO 시스템 효과 적용 분석)
 
 ### MMO getParameter 시스템 구조
@@ -29,6 +34,7 @@ public int getParameter(Parameter parameter)
 ## Two-Tier Effect Application System
 
 ### Tier 1 (Preferred): MMO Stat Integration
+> ⚠️ **폐기됨** — 문서 상단 안내 참조. 실제로는 사용 금지, `DAMAGE_SYSTEM_RULES.md`의 GetDamage 직접 패치 방식만 사용.
 ```csharp
 // Patch getParameter to increase MMO stats → MMO auto-applies effects
 [HarmonyPatch] // EpicMMOSystem.LevelSystem.getParameter
@@ -299,6 +305,7 @@ public static void Postfix(ref float staminaUse)
 ## CaptainSkillTree 구현 권장사항
 
 ### 1. MMO getParameter 패치 방식 (Tier 1 - 최우선)
+> ⚠️ **폐기됨** — 문서 상단 안내 참조. 이 패턴은 채택되지 않았으며 사용 금지.
 ```csharp
 [HarmonyPatch] // EpicMMOSystem.LevelSystem.getParameter
 [HarmonyPriority(Priority.High)]
@@ -371,20 +378,24 @@ value += flatBonus;  // 체력, 스태미나, 에이트르 등
 
 ## Implementation Priority Guidelines
 
-### MMO 스탯 연동 방식 (Tier 1) 우선 사용
+> ⚠️ **폐기됨** — 아래 우선순위 가이드라인 전체가 문서 상단 안내에 따라 폐기 대상이다.
+> 실제 CaptainSkillTree는 모든 스탯 효과(체력/스태미나/에이트르/공격력 포함)를 `DAMAGE_SYSTEM_RULES.md`의
+> "MMO 독립성 원칙"에 따라 `GetDamage`/`Character.Damage` 등 직접 패치로만 구현한다. getParameter 연동은 사용하지 않는다.
+
+### MMO 스탯 연동 방식 (Tier 1) 우선 사용 — (폐기, 미채택)
 - 모든 기본 스탯 효과는 MMO getParameter 패치로 구현
 - MMO의 검증된 계산 시스템을 활용하여 안정성 확보
 
-### 직접 패치 (Tier 2)는 특수한 경우에만 사용
+### 직접 패치 (Tier 2)는 특수한 경우에만 사용 — (실제로는 이 방식이 표준으로 채택됨)
 - MMO가 지원하지 않는 효과만 직접 패치로 구현
 - 무기별 특수 효과, 조건부 효과 등에 한정
 
-### 체력 시스템 구현 우선순위 (필수 준수)
+### 체력 시스템 구현 우선순위 — (폐기, 미채택 — 실제로는 Character.GetMaxHealth 등 직접 패치가 표준)
 - **1순위 (권장)**: MMO Vigour 스탯 연동 (getParameter 패치, Priority.High)
 - **2순위 (예외적)**: Character.GetMaxHealth 직접 패치 (Priority.Low, MMO 스탯 연동 실패 시만)
 - **테스트 필수**: Vigour 스탯 연동이 정상 작동하는지 먼저 검증
 
-### Standard Implementation (우선순위 순):
+### Standard Implementation (우선순위 순) — (폐기, 미채택 참고자료)
 - **Health**: MMO Vigour stat integration (getParameter, Priority.High) - 필수 권장
 - **Stamina**: MMO Body stat integration (getParameter, Priority.High) - Body는 스태미나 전용
 - **Eitr**: MMO Intellect stat integration (getParameter, Priority.High)

@@ -43,7 +43,7 @@ namespace CaptainSkillTree.SkillTree
             t += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {(int)skillData.staminaCost}</size></color>\n";
 
             t += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
-            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyG?.Value ?? "G")}</size></color>\n";
+            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyG, "G"))}</size></color>\n";
 
             t += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";
             t += $"<color=#FFDB58><size=16>{skillData.cooldown}{L.Get("unit_seconds")}</size></color>\n";
@@ -105,7 +105,7 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[Sword Tooltip] GetSwordExpertTooltip() called");
 
-            var requiredPoints = 2;
+            var requiredPoints = Sword_Config.SwordExpertRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("sword_skill_expert")}</size></color>",
@@ -125,7 +125,7 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetFastSlashTooltip() 호출됨");
 
-            var requiredPoints = 2;
+            var requiredPoints = Sword_Config.SwordStep1FastSlashRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("sword_skill_fast_slash")}</size></color>",
@@ -145,7 +145,7 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetCounterTooltip() 호출됨");
 
-            var requiredPoints = 3;
+            var requiredPoints = Sword_Config.SwordStep1CounterRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("sword_skill_counter")}</size></color>",
@@ -165,7 +165,7 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetComboTooltip() 호출됨");
 
-            var requiredPoints = 2;
+            var requiredPoints = Sword_Config.SwordStep2ComboSlashRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("sword_skill_combo")}</size></color>",
@@ -185,7 +185,7 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetRiposteTooltip() 호출됨");
 
-            var requiredPoints = 3;
+            var requiredPoints = Sword_Config.SwordStep3RiposteRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("sword_skill_riposte")}</size></color>",
@@ -206,7 +206,7 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetAllInOneTooltip() 호출됨");
 
-            var requiredPoints = 2;
+            var requiredPoints = Sword_Config.SwordStep3AllInOneRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("sword_skill_all_in_one")}</size></color>",
@@ -227,7 +227,7 @@ namespace CaptainSkillTree.SkillTree
         {
             Plugin.Log.LogDebug("[검 툴팁] GetDuelTooltip() 호출됨");
 
-            var requiredPoints = 3;
+            var requiredPoints = Sword_Config.SwordStep4TrueDuelRequiredPointsValue;
 
             var data = MeleeTooltipUtils.CreatePassiveSkillData(
                 $"<color=#FFD700><size=22>{L.Get("sword_skill_duel")}</size></color>",
@@ -269,17 +269,13 @@ namespace CaptainSkillTree.SkillTree
             // 2. Lv + 3단계 피해 요약
             t += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {(int)d1}/{(int)d2}/{(int)d3} {L.Get("tooltip_damage")}, AOE {r1}m/{r2}m/{r3}m</size></color>\n";
 
-            // 3. 밀어내기 부가 효과
-            t += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
-            t += $"<color=#ADFF2F><size=16>{L.Get("sword_desc_parry_rush_push", (int)Sword_Config.ParryRushPushDistanceValue)}</size></color>\n";
-
-            // 4. 소모 (스태미나)
+            // 3. 소모 (스태미나)
             t += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
             t += $"<color=#FFDAB9><size=16>{L.Get("stamina_format", (int)Sword_Config.ParryRushStaminaCostValue)}</size></color>\n";
 
             // 5. 스킬유형 (H키)
             t += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
-            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyH?.Value ?? "H")}</size></color>\n";
+            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyH, "H"))}</size></color>\n";
 
             // 6. 쿨타임
             t += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";

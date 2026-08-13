@@ -118,7 +118,7 @@ namespace CaptainSkillTree.SkillTree
                 player.UseStamina(requiredStamina);
                 PlayExplosiveArrowActivationEffects(player);
                 ShowSkillEffectText(player, "💥 " + L.Get("explosive_arrow_ready"), new Color(1f, 0.4f, 0f), SkillEffectTextType.Combat);
-                Plugin.Log.LogInfo("[폭발 화살] ✅ R키 액티브 스킬 발동 완료 - 버프 활성화");
+                Plugin.Log.LogInfo("[폭발 화살] [OK] R키 액티브 스킬 발동 완료 - 버프 활성화");
             }
             catch (System.Exception ex)
             {
@@ -133,7 +133,7 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                VFXManager.PlaySound("sfx_reload_start", player.transform.position, 5f);
+                VFXManager.PlaySoundLoud("sfx_reload_start", player.transform.position, 5f, 3f);
 
                 var buff01Prefab = VFXManager.GetVFXPrefab("buff_01");
                 if (buff01Prefab != null)
@@ -150,7 +150,7 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 PlayExplosiveArrowStatusEffect(player);
-                VFXManager.PlaySound("sfx_reload_dverger_done", player.transform.position, 5f);
+                VFXManager.PlaySoundLoud("sfx_reload_dverger_done", player.transform.position, 5f, 3f);
             }
             catch (System.Exception ex)
             {
@@ -329,7 +329,7 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                Plugin.Log.LogInfo($"[폭발 화살] ✅ 모든 조건 만족! {__instance.name}에게 폭발 적용");
+                Plugin.Log.LogInfo($"[폭발 화살] [OK] 모든 조건 만족! {__instance.name}에게 폭발 적용");
 
                 SkillEffect.ConsumeExplosiveArrow(attacker);
                 ApplyExplosionEffect(__instance.GetCenterPoint(), __instance, attacker, hit);
@@ -383,7 +383,7 @@ namespace CaptainSkillTree.SkillTree
                 PlayExplosionEffects(hitPoint);
                 ApplyExplosionAreaDamage(hitPoint, attacker);
 
-                Plugin.Log.LogInfo("[폭발 화살] ✅ 폭발 효과 적용 완료");
+                Plugin.Log.LogInfo("[폭발 화살] [OK] 폭발 효과 적용 완료");
             }
             catch (System.Exception ex)
             {
@@ -434,7 +434,7 @@ namespace CaptainSkillTree.SkillTree
                 VFXManager.PlaySound("sfx_unstablerock_explosion", position, 5f);
                 CreateLightEffect(position);
 
-                Plugin.Log.LogInfo("[폭발 화살] ✅ VFXManager로 폭발 이팩트 생성 완료");
+                Plugin.Log.LogInfo("[폭발 화살] [OK] VFXManager로 폭발 이팩트 생성 완료");
             }
             catch (System.Exception ex)
             {

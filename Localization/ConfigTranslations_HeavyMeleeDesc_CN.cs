@@ -60,11 +60,6 @@ namespace CaptainSkillTree.Localization
                 "决定远程攻击的强度。\n" +
                 "推荐：100-150%",
 
-                ["Legacy_Throw_BuffDuration"] =
-                "【未使用】\n" +
-                "此参数当前未使用。\n" +
-                "已更改为被动技能。",
-
                 // === Tier 3: 快速长矛 ===
                 ["Tier3_Pierce_RequiredPoints"] =
                 "【所需点数】\n解锁快速长矛所需的点数。",
@@ -112,11 +107,6 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: 穿刺长矛（主动G键）===
                 ["Tier5_Penetrate_RequiredPoints"] =
                 "【所需点数】\n解锁穿刺长矛所需的点数。",
-
-                ["Legacy_Penetrate_CritChance"] =
-                "【未使用】\n" +
-                "此参数当前未使用。\n" +
-                "已更改为闪电打击效果。",
 
                 ["Tier5_Penetrate_BuffDuration"] =
                 "【效果持续时间（秒）】\n" +
@@ -265,15 +255,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HeavyStrike_RequiredPoints"] =
                 "【所需点数】\n解锁重击所需的点数。",
 
-                // === Tier 4: 击退 ===
+                // === Tier 4: 脑震荡 ===
                 ["Tier4_Push_KnockbackChance"] =
-                "【击退概率(%)】\n" +
-                "攻击时使敌人击退的概率。\n" +
-                "有助于保持距离和战场控制。\n" +
-                "推荐：25-35%",
+                "【脑震荡概率(%)】\n" +
+                "使用钝器攻击时，使目标移动速度和攻击速度降低30%、持续1.5秒的概率。\n" +
+                "有助于战斗控制和输出优势。\n" +
+                "推荐：30-40%",
 
                 ["Tier4_Push_RequiredPoints"] =
-                "【所需点数】\n解锁击退所需的点数。",
+                "【所需点数】\n解锁脑震荡所需的点数。",
 
                 // === Tier 5: 坦克 ===
                 ["Tier5_Tank_HealthBonus"] =
@@ -351,24 +341,52 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_RequiredPoints"] =
                 "【所需点数】\n解锁愤怒之锤所需的点数。",
 
-                // === Tier 7: 盾击冲锋（主动G键）===
-                ["Tier7_GuardianHeart_Cooldown"] =
+                // === Tier 6-5: 盾击冲锋（从钝器树移动）===
+                ["Tier6_GuardianHeart_Cooldown"] =
                 "【冷却时间（秒）】\n" +
                 "盾击冲锋的再使用等待时间。\n" +
                 "推荐：30-40秒",
 
-                ["Tier7_GuardianHeart_StaminaCost"] =
+                ["Tier6_GuardianHeart_StaminaCost"] =
                 "【体力消耗】\n" +
                 "使用盾击冲锋时消耗的体力。\n" +
                 "推荐：15-25",
 
-                ["Tier7_ShieldCharge_DamagePercent"] =
+                ["Tier6_ShieldCharge_DamagePercent"] =
                 "【盾格挡力伤害比例(%)】\n" +
                 "碰撞时以盾格挡力的百分比造成伤害。\n" +
                 "推荐：60-80%",
 
-                ["Tier7_GuardianHeart_RequiredPoints"] =
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] =
+                "【连击等级加成(%)】\n" +
+                "盾击冲锋每级增加的连击伤害比例。\n" +
+                "推荐：5-15%",
+
+                ["Tier6_GuardianHeart_RequiredPoints"] =
                 "【所需点数】\n解锁盾击冲锋所需的点数。",
+
+                ["Tier7_ShockwaveSlam_Cooldown"] =
+                "【冷却时间（秒）】\n" +
+                "冲击波强击的再使用等待时间。\n" +
+                "推荐：30-50秒",
+
+                ["Tier7_ShockwaveSlam_StaminaCost"] =
+                "【体力消耗】\n" +
+                "使用冲击波强击时消耗的体力。\n" +
+                "推荐：15-25",
+
+                ["Tier7_ShockwaveSlam_DamagePercent"] =
+                "【武器攻击力伤害比例(%)】\n" +
+                "命中时以武器攻击力的百分比造成伤害。\n" +
+                "推荐：200-260%",
+
+                ["Tier7_ShockwaveSlam_LevelBonus"] =
+                "【等级加成(%)】\n" +
+                "冲击波强击每级的伤害加成。\n" +
+                "推荐：10-30%",
+
+                ["Tier7_ShockwaveSlam_RequiredPoints"] =
+                "【所需点数】\n解锁冲击波强击所需的点数。",
 
                 // ========================================
                 // 长柄武器树 (Polearm Tree)
@@ -547,6 +565,112 @@ namespace CaptainSkillTree.Localization
                 "【所需点数】\n" +
                 "解锁旋风节点所需的技能点数。\n" +
                 "推荐值: 3",
+
+                ["Tier0_SpearExpert_ProcChance"] =
+                "【长矛专家发动概率(%)】\n" +
+                "攻击时触发闪电一击proc的概率。\n" +
+                "发动时下一次攻击将以高速执行。\n" +
+                "推荐：20-35%",
+
+                ["Tier0_SpearExpert_SpeedBoost"] =
+                "【长矛专家速度提升(%)】\n" +
+                "proc发动时附加的攻击速度加成。\n" +
+                "基础100% + 该数值 = 总攻击速度倍率。\n" +
+                "推荐：80-120%",
+
+                ["Tier5_Penetrate_BaseDamage"] =
+                "【Lv1基础单体伤害(%)】\n" +
+                "穿刺长矛冲刺时对路径上敌人造成的基础单体伤害。\n" +
+                "按长矛武器穿刺攻击力的比例计算。\n" +
+                "推荐：80-120%",
+
+                ["Tier5_Penetrate_LevelDamageBonus"] =
+                "【每级单体伤害加成(%)】\n" +
+                "穿刺长矛每提升1级所增加的单体伤害量。\n" +
+                "推荐：3-8%",
+
+                ["Tier5_Penetrate_BaseAreaDamage"] =
+                "【Lv1基础范围伤害(%)】\n" +
+                "穿刺长矛冲刺时对路径5米范围内敌人造成的基础伤害。\n" +
+                "推荐：60-100%",
+
+                ["Tier5_Penetrate_AreaLevelBonus"] =
+                "【每级范围伤害加成(%)】\n" +
+                "穿刺长矛每提升1级所增加的范围伤害量。\n" +
+                "推荐：3-8%",
+
+                ["Tier5_Combo_LevelBonus"] =
+                "【等级加成(%)】\n" +
+                "长矛连招技能每级的伤害加成。\n" +
+                "推荐：5-15%",
+
+                ["Tier3_SpinStrike_DamageBonus"] =
+                "【第二段攻击伤害加成(%)】\n" +
+                "提升第二段攻击的伤害。\n" +
+                "按百分比计算，基础攻击力越高效果越强。\n" +
+                "推荐：15-25%",
+
+                ["Tier3_SpinStrike_Range"] =
+                "【AOE范围（米）】\n" +
+                "第二段攻击对周围敌人造成伤害的范围。\n" +
+                "推荐：5-10米",
+
+                ["Tier3_SpinStrike_KnockbackForce"] =
+                "【旋转打击击退距离（米）】\n" +
+                "第二段攻击击退敌人的距离。单手与双手钝器通用。\n" +
+                "推荐：2-5米",
+
+                ["Tier6_Sokgong_AttackSpeedBonus"] =
+                "【攻击速度加成(%)】\n" +
+                "提升锤的攻击速度。\n" +
+                "弥补钝器攻速缓慢的弱点。\n" +
+                "推荐：8-15%",
+
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] =
+                "【普通打击等级加成(%)】\n" +
+                "愤怒之锤普通打击每级的伤害加成。\n" +
+                "推荐：5-15%",
+
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] =
+                "【最终打击等级加成(%)】\n" +
+                "愤怒之锤最终（爆发）打击每级的伤害加成。\n" +
+                "推荐：10-25%",
+
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] =
+                "【多段命中伤害比例(%)】\n" +
+                "1级基础比例（按盾格挡力百分比计算），适用于冲锋中0.08秒间隔的范围连击\n" +
+                "以及冲锋结束后对聚集敌人的4次0.25秒间隔连击。\n" +
+                "推荐：20-40%",
+
+                ["Tier6_ShieldCharge_LevelBonus"] =
+                "【等级加成(%)】\n" +
+                "盾击冲锋技能每级的冲锋伤害加成。\n" +
+                "推荐：5-15%",
+
+                ["Tier4-1_StormSlash_ExplosionBonus"] =
+                "【闪电属性附加伤害】\n" +
+                "在主攻击后4秒内使用特殊（滚轮）攻击时附加的闪电伤害。\n" +
+                "推荐：10-20",
+
+                ["Tier5_PierceCharge_LevelBonus"] =
+                "【每级伤害加成(%)】\n" +
+                "穿刺冲锋技能每级附加的伤害加成。\n" +
+                "推荐：20-40%",
+
+                ["Tier6_Whirlwind_LevelBonus"] =
+                "【等级加成(%)】\n" +
+                "旋风技能每级的伤害加成。\n" +
+                "推荐：5-15%",
+
+                ["Tier6_Whirlwind_DamageReductionPercent"] =
+                "【受到伤害减免(%)】\n" +
+                "旋风持续期间减少受到的伤害。(Lv1 基础值)\n" +
+                "推荐：20-40%",
+
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] =
+                "【伤害减免等级加成(%)】\n" +
+                "旋风技能每级额外的伤害减免。\n" +
+                "推荐：5-10%",
 
             };
         }

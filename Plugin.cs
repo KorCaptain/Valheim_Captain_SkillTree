@@ -21,7 +21,7 @@ using Jotunn.Managers;
 
 namespace CaptainSkillTree
 {
-    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "1.24.95")]
+    [BepInPlugin("CaptainSkillTree.SkillTreeMod", "Captain SkillTree Mod", "2.1.90")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     [BepInDependency("WackyMole.EpicMMOSystem", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
@@ -112,6 +112,9 @@ namespace CaptainSkillTree
                 Log.LogError($"=== [CRITICAL] Harmony.PatchAll() 실패: {ex.Message} ===");
                 Log.LogError($"=== [CRITICAL] StackTrace: {ex.StackTrace} ===");
             }
+
+            // EpicMMOSystem 자체 치명타(Special/Strength) 시스템 흡수 — PatchAll() 이후에만 유효
+            MMO_System.EpicMMOCritIntegration.UnpatchEpicMmoCrit(harmony);
 
             // 입력 리스너 등록 (중복 방지)
             InitializeInputListener();
@@ -311,6 +314,7 @@ namespace CaptainSkillTree
                     customSkillTreeIcon = customIconBundle.LoadAsset<Sprite>("skill_start");
                     if (customSkillTreeIcon != null)
                     {
+                        customSkillTreeIcon.hideFlags = HideFlags.HideAndDontSave;
                         Log.LogDebug("[아이콘] skill_start 스프라이트 로드 성공");
                     }
                     else
@@ -357,7 +361,10 @@ namespace CaptainSkillTree
                 var assembly = typeof(Plugin).Assembly;
                 var stream = assembly.GetManifestResourceStream("CaptainSkillTree.asset.Resources.skill_node");
                 if (stream != null)
+                {
                     iconAssetBundle = AssetBundle.LoadFromStream(stream);
+                    if (iconAssetBundle != null) iconAssetBundle.hideFlags = HideFlags.HideAndDontSave;
+                }
             }
             return iconAssetBundle;
         }
@@ -369,7 +376,10 @@ namespace CaptainSkillTree
                 var assembly = typeof(Plugin).Assembly;
                 var stream = assembly.GetManifestResourceStream("CaptainSkillTree.asset.Resources.captainskilltreeui");
                 if (stream != null)
+                {
                     uiAssetBundle = AssetBundle.LoadFromStream(stream);
+                    if (uiAssetBundle != null) uiAssetBundle.hideFlags = HideFlags.HideAndDontSave;
+                }
             }
             return uiAssetBundle;
         }
@@ -409,6 +419,7 @@ namespace CaptainSkillTree
                         customIconBundle = AssetBundle.LoadFromStream(stream);
                         if (customIconBundle != null)
                         {
+                            customIconBundle.hideFlags = HideFlags.HideAndDontSave;
                             Log.LogDebug("[번들] AssetBundle 로드 성공");
                         }
                         else
@@ -440,6 +451,7 @@ namespace CaptainSkillTree
                     jobIconBundle = AssetBundle.LoadFromStream(stream);
                     if (jobIconBundle != null)
                     {
+                        jobIconBundle.hideFlags = HideFlags.HideAndDontSave;
                         Log.LogDebug("[아이콘] job_icon 번들 로드 성공");
                         var allAssets = jobIconBundle.GetAllAssetNames();
                         Log.LogDebug($"[아이콘] job_icon 번들 에셋 수: {allAssets.Length}");
@@ -472,6 +484,7 @@ namespace CaptainSkillTree
                     vfxBundle = AssetBundle.LoadFromStream(stream);
                     if (vfxBundle != null)
                     {
+                        vfxBundle.hideFlags = HideFlags.HideAndDontSave;
                         Log.LogDebug("[VFX] VFX 폴더에서 vfxbundle 번들 로드 성공");
                     }
                     else
@@ -498,6 +511,7 @@ namespace CaptainSkillTree
                     jobVfxBundle = AssetBundle.LoadFromStream(stream);
                     if (jobVfxBundle != null)
                     {
+                        jobVfxBundle.hideFlags = HideFlags.HideAndDontSave;
                         Log.LogDebug("[VFX] job_vfx 번들 로드 성공");
                     }
                     else
@@ -583,6 +597,7 @@ namespace CaptainSkillTree
             if (skillTreeIconObj != null)
             {
                 skillTreeIconObj.SetActive(true);
+                UpdateSkillTreeIconDot();
                 return;
             }
 
@@ -613,6 +628,7 @@ namespace CaptainSkillTree
                     if (TryCreateMMOStyleIcon())
                     {
                         ResetIconAttempts();
+                        UpdateSkillTreeIconDot();
                         return;
                     }
                 }
@@ -642,6 +658,15 @@ namespace CaptainSkillTree
                     _emergencyMode = true;
                 }
             }
+        }
+
+        internal static void UpdateSkillTreeIconDot()
+        {
+            if (skillTreeIconObj == null || skillTreeIconObj.transform.childCount == 0)
+                return;
+
+            bool hasAvailablePoints = SkillTreeManager.Instance.GetAvailablePoints() > 0;
+            skillTreeIconObj.transform.GetChild(0).gameObject.SetActive(hasAvailablePoints);
         }
 
         private static bool ValidatePrerequisites()

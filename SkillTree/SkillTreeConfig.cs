@@ -37,6 +37,10 @@ namespace CaptainSkillTree.SkillTree
         // === Language Detection for Config Manager (BepInEx F1 Menu) ===
         private static string _detectedConfigLanguage = "ko";
 
+        // === 액티브 스킬 핫키(Y/R/G/H) 중복 방지용 상태 ===
+        private static readonly Dictionary<ConfigEntry<KeyboardShortcut>, KeyboardShortcut> _lastGoodHotkeyValue = new Dictionary<ConfigEntry<KeyboardShortcut>, KeyboardShortcut>();
+        private static bool _isRevertingHotkey;
+
         /// <summary>
         /// BepInEx INI 파일에서 Language 값을 직접 읽기 (Bind() 호출 전 사용)
         /// </summary>
@@ -115,19 +119,22 @@ namespace CaptainSkillTree.SkillTree
                     return result;
                 }
 
-                // 우선순위 3: LocalizationManager (fallback, 이미 초기화된 경우)
-                string currentLang = Localization.LocalizationManager.GetCurrentLanguage();
-                if (!string.IsNullOrEmpty(currentLang) && currentLang != "ko")
+                // 우선순위 3: OS 시스템 언어 (CultureInfo - BepInEx 로드 타임에도 항상 신뢰할 수 있음)
+                // PlayerPrefs가 비어있는 경우(언어 미변경 영어권 유저 등)의 폴백
+                try
                 {
-                    Plugin.Log.LogDebug($"[SkillTreeConfig] Using LocalizationManager: {currentLang}");
-                    return (currentLang == "ko") ? "ko"
-                         : (currentLang == "zh-cn") ? "zh-cn"
-                         : (currentLang == "de") ? "de"
-                         : (currentLang == "ru") ? "ru"
-                         : (currentLang == "pt_BR") ? "pt_BR"
-                         : (currentLang == "ja") ? "ja"
-                         : "en";
+                    string culture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLowerInvariant();
+                    string sysResult = (culture == "ko") ? "ko"
+                                     : (culture == "ja") ? "ja"
+                                     : (culture == "zh") ? "zh-cn"
+                                     : (culture == "de") ? "de"
+                                     : (culture == "ru") ? "ru"
+                                     : (culture == "pt") ? "pt_BR"
+                                     : "en";
+                    Plugin.Log.LogDebug($"[SkillTreeConfig] OS culture: {culture} -> {sysResult}");
+                    return sysResult;
                 }
+                catch { }
 
                 // 기본값: 한국어
                 Plugin.Log.LogDebug("[SkillTreeConfig] Using default language: ko");
@@ -155,6 +162,8 @@ namespace CaptainSkillTree.SkillTree
                         ? "【Erforderliche Punkte】\nFähigkeitspunkte zum Freischalten dieses Knotens."
                     : _detectedConfigLanguage == "ja"
                         ? "【必要ポイント】\nこのノードを解放するために必要なスキルポイント数。"
+                    : _detectedConfigLanguage == "zh-cn"
+                        ? "【所需点数】\n解锁该节点所需的技能点数。"
                     : _detectedConfigLanguage == "en"
                         ? "【Required Points】\nPoints required to unlock this node."
                         : "【필요 포인트】\n이 노드를 해금하기 위해 필요한 스킬 포인트 개수입니다.";
@@ -181,6 +190,8 @@ namespace CaptainSkillTree.SkillTree
                         ? $"{tierPart}: Erforderliche Punkte"
                     : _detectedConfigLanguage == "ja"
                         ? $"{tierPart}: 必要ポイント"
+                    : _detectedConfigLanguage == "zh-cn"
+                        ? $"{tierPart}: 所需点数"
                     : _detectedConfigLanguage == "en"
                         ? $"{tierPart}: Required Points"
                         : $"{tierPart}: 필요 포인트";
@@ -250,10 +261,10 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> AttackSpeedMaxBonus;
 
         // 액티브 스킬 키 바인딩 (클라이언트 로컬)
-        public static ConfigEntry<string> HotKeyY;
-        public static ConfigEntry<string> HotKeyR;
-        public static ConfigEntry<string> HotKeyG;
-        public static ConfigEntry<string> HotKeyH;
+        public static ConfigEntry<KeyboardShortcut> HotKeyY;
+        public static ConfigEntry<KeyboardShortcut> HotKeyR;
+        public static ConfigEntry<KeyboardShortcut> HotKeyG;
+        public static ConfigEntry<KeyboardShortcut> HotKeyH;
 
         // 직업 레벨업 코인 비용 (모든 직업 공통, 서버 동기화)
         public static ConfigEntry<int> JobLv1Cost;
@@ -329,15 +340,24 @@ namespace CaptainSkillTree.SkillTree
         public static float AttackSpeedMaxBonusValue => GetEffectiveValue("attack_speed_max_bonus", AttackSpeedMaxBonus?.Value ?? 70f);
 
         /// <summary>
-        /// ConfigEntry<string> 키 이름을 KeyCode로 변환합니다.
-        /// 실패 시 fallback 반환.
+        /// ConfigEntry<KeyboardShortcut>에서 주 키(KeyCode)를 가져옵니다.
+        /// 미설정(None) 시 fallback 반환.
         /// </summary>
-        public static KeyCode GetHotKeyCode(ConfigEntry<string> entry, KeyCode fallback)
+        public static KeyCode GetHotKeyCode(ConfigEntry<KeyboardShortcut> entry, KeyCode fallback)
         {
             if (entry == null) return fallback;
-            if (System.Enum.TryParse<KeyCode>(entry.Value, true, out KeyCode result))
-                return result;
-            return fallback;
+            KeyCode key = entry.Value.MainKey;
+            return key == KeyCode.None ? fallback : key;
+        }
+
+        /// <summary>
+        /// 툴팁 등에 표시할 핫키 이름 문자열을 가져옵니다.
+        /// </summary>
+        public static string GetHotKeyDisplayName(ConfigEntry<KeyboardShortcut> entry, string fallback)
+        {
+            if (entry == null) return fallback;
+            KeyCode key = entry.Value.MainKey;
+            return key == KeyCode.None ? fallback : key.ToString();
         }
 
         #endregion
@@ -385,7 +405,6 @@ namespace CaptainSkillTree.SkillTree
 
         // ConfigEntry 프록시 (Tier 0 + Tier 6 활성 노드)
         public static ConfigEntry<float> AttackRootDamageBonus   => Attack_Config.AttackRootDamageBonus;
-        public static ConfigEntry<float> AttackCritDamageBonus   => Attack_Config.AttackCritDamageBonus;
         public static ConfigEntry<float> AttackTwoHandedBonus    => Attack_Config.AttackTwoHandedBonus;
         public static ConfigEntry<float> AttackStaffElemental    => Attack_Config.AttackStaffElemental;
         public static ConfigEntry<float> AttackFinisherMeleeBonus => Attack_Config.AttackFinisherMeleeBonus;
@@ -396,14 +415,14 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> AtkOpenerDuration                 => Attack_Config.AtkOpenerDuration;
         public static ConfigEntry<float> AtkOpenerCooldown                 => Attack_Config.AtkOpenerCooldown;
         public static ConfigEntry<float> AtkOpenerMeleeFinisherBonus       => Attack_Config.AtkOpenerMeleeFinisherBonus;
-        public static ConfigEntry<float> AtkOpenerBowCritChance            => Attack_Config.AtkOpenerBowCritChance;
+        public static ConfigEntry<float> AtkOpenerBowCritDamageBonus       => Attack_Config.AtkOpenerBowCritDamageBonus;
         public static ConfigEntry<float> AtkOpenerCrossbowFirstShotBonus   => Attack_Config.AtkOpenerCrossbowFirstShotBonus;
         public static ConfigEntry<float> AtkOpenerMagicStaggerProc         => Attack_Config.AtkOpenerMagicStaggerProc;
         public static ConfigEntry<float> AtkPursuitDamageBonus             => Attack_Config.AtkPursuitDamageBonus;
         public static ConfigEntry<float> AtkPursuitChainDamageBonus        => Attack_Config.AtkPursuitChainDamageBonus;
         public static ConfigEntry<float> AtkPursuitChainWindow             => Attack_Config.AtkPursuitChainWindow;
         public static ConfigEntry<float> AtkPursuitSpeedBonus              => Attack_Config.AtkPursuitSpeedBonus;
-        public static ConfigEntry<float> AtkFrenzyTriggerStaminaReduction  => Attack_Config.AtkFrenzyTriggerStaminaReduction;
+        public static ConfigEntry<float> AtkFrenzyTriggerCritChancePerLevel  => Attack_Config.AtkFrenzyTriggerCritChancePerLevel;
         public static ConfigEntry<float> AtkFrenzyStackBonusBase           => Attack_Config.AtkFrenzyStackBonusBase;
         public static ConfigEntry<float> AtkFrenzyStackBonusChain          => Attack_Config.AtkFrenzyStackBonusChain;
         public static ConfigEntry<float> AtkFrenzyTier6Amplifier           => Attack_Config.AtkFrenzyTier6Amplifier;
@@ -415,20 +434,19 @@ namespace CaptainSkillTree.SkillTree
         public static float AtkOpenerDurationValue                  => Attack_Config.AtkOpenerDurationValue;
         public static float AtkOpenerCooldownValue                  => Attack_Config.AtkOpenerCooldownValue;
         public static float AtkOpenerMeleeFinisherBonusValue        => Attack_Config.AtkOpenerMeleeFinisherBonusValue;
-        public static float AtkOpenerBowCritChanceValue             => Attack_Config.AtkOpenerBowCritChanceValue;
+        public static float AtkOpenerBowCritDamageBonusValue        => Attack_Config.AtkOpenerBowCritDamageBonusValue;
         public static float AtkOpenerCrossbowFirstShotBonusValue    => Attack_Config.AtkOpenerCrossbowFirstShotBonusValue;
         public static float AtkOpenerMagicStaggerProcValue          => Attack_Config.AtkOpenerMagicStaggerProcValue;
         public static float AtkPursuitDamageBonusValue              => Attack_Config.AtkPursuitDamageBonusValue;
         public static float AtkPursuitChainDamageBonusValue         => Attack_Config.AtkPursuitChainDamageBonusValue;
         public static float AtkPursuitChainWindowValue              => Attack_Config.AtkPursuitChainWindowValue;
         public static float AtkPursuitSpeedBonusValue               => Attack_Config.AtkPursuitSpeedBonusValue;
-        public static float AtkFrenzyTriggerStaminaReductionValue   => Attack_Config.AtkFrenzyTriggerStaminaReductionValue;
+        public static float AtkFrenzyTriggerCritChancePerLevelValue   => Attack_Config.AtkFrenzyTriggerCritChancePerLevelValue;
         public static float AtkFrenzyStackBonusBaseValue            => Attack_Config.AtkFrenzyStackBonusBaseValue;
         public static float AtkFrenzyStackBonusChainValue           => Attack_Config.AtkFrenzyStackBonusChainValue;
         public static int   AtkFrenzyMaxStacksValue                 => Attack_Config.AtkFrenzyMaxStacksValue;
         public static int   AtkFrenzyHitsPerStackValue              => Attack_Config.AtkFrenzyHitsPerStackValue;
         public static float AtkFrenzyTier6AmplifierValue            => Attack_Config.AtkFrenzyTier6AmplifierValue;
-        public static float AttackCritDamageBonusValue              => Attack_Config.AttackCritDamageBonusValue;
         public static float AttackTwoHandedBonusValue               => Attack_Config.AttackTwoHandedBonusValue;
         public static float AttackStaffElementalValue               => Attack_Config.AttackStaffElementalValue;
         public static float AttackFinisherMeleeBonusValue           => Attack_Config.AttackFinisherMeleeBonusValue;
@@ -455,7 +473,7 @@ namespace CaptainSkillTree.SkillTree
 
         #region === Proxy: 속도 전문가 (Speed_Config) ===
 
-        public static ConfigEntry<float> SpeedRootMoveSpeed => Speed_Config.SpeedRootMoveSpeed;
+        public static ConfigEntry<float> SpeedRootMoveSpeedPerLevel => Speed_Config.SpeedRootMoveSpeedPerLevel;
         public static ConfigEntry<float> SpeedBaseDodgeMoveSpeed => Speed_Config.SpeedBaseDodgeMoveSpeed;
         public static ConfigEntry<float> SpeedBaseDodgeDuration => Speed_Config.SpeedBaseDodgeDuration;
         public static ConfigEntry<float> SpeedMeleeComboAttackSpeed => Speed_Config.SpeedMeleeComboAttackSpeed;
@@ -496,7 +514,6 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpeedBowExpertDuration => Speed_Config.SpeedBowExpertDuration;
         public static ConfigEntry<float> SpeedStaffCastSpeed => Speed_Config.SpeedStaffCastSpeed;
 
-        public static float SpeedRootMoveSpeedValue => Speed_Config.SpeedRootMoveSpeedValue;
         public static float SpeedBaseDodgeMoveSpeedValue => Speed_Config.SpeedBaseDodgeMoveSpeedValue;
         public static float SpeedBaseDodgeDurationValue => Speed_Config.SpeedBaseDodgeDurationValue;
         public static float SpeedMeleeComboAttackSpeedValue => Speed_Config.SpeedMeleeComboAttackSpeedValue;
@@ -680,8 +697,6 @@ namespace CaptainSkillTree.SkillTree
             // === STEP 0: 컨피그 스키마 버전 체크 (강제 초기화 여부 판단) ===
             string storedVersion = ConfigMigration.ReadStoredVersion(config);
             bool needsMigration = storedVersion != ConfigMigration.SCHEMA_VERSION;
-            if (needsMigration)
-                Plugin.Log.LogWarning($"[ConfigMigration] 버전 변경 감지: [{storedVersion}] → [{ConfigMigration.SCHEMA_VERSION}]. 초기화 진행 예정.");
 
             // === STEP 1: 언어 감지 (Config Manager 로컬라이제이션용) ===
             // Language.Bind() 전에 INI 파일을 직접 읽어 저장된 언어 값 우선 적용
@@ -718,8 +733,8 @@ namespace CaptainSkillTree.SkillTree
                 string newLang = Language.Value;
                 Plugin.Log.LogWarning("========================================");
                 Plugin.Log.LogWarning("[SkillTreeConfig] Language changed to: " + newLang);
-                Plugin.Log.LogWarning("⚠️ GAME RESTART REQUIRED for Config Manager (F1) to update!");
-                Plugin.Log.LogWarning("⚠️ 게임 재시작이 필요합니다 (F1 메뉴 업데이트)!");
+                Plugin.Log.LogWarning("[WARN] GAME RESTART REQUIRED for Config Manager (F1) to update!");
+                Plugin.Log.LogWarning("[WARN] 게임 재시작이 필요합니다 (F1 메뉴 업데이트)!");
                 Plugin.Log.LogWarning("========================================");
 
                 // UI 언어는 즉시 변경 (스킬트리 UI)
@@ -760,15 +775,13 @@ namespace CaptainSkillTree.SkillTree
                 )
             );
 
-            var keyAcceptable = new AcceptableValueList<string>("Y", "R", "G", "H", "Z", "X", "C", "V", "F", "Q", "E", "T", "U", "I", "O", "P");
-
             HotKeyY = config.Bind(
                 "Skill_Tree_Base",
                 "HotKey_Y",
-                "Y",
+                new KeyboardShortcut(KeyCode.Y),
                 new ConfigDescription(
                     GetConfigDescription("HotKey_Y"),
-                    keyAcceptable,
+                    null,
                     new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HotKey_Y"), Order = -10 }
                 )
             );
@@ -776,10 +789,10 @@ namespace CaptainSkillTree.SkillTree
             HotKeyR = config.Bind(
                 "Skill_Tree_Base",
                 "HotKey_R",
-                "Z",
+                new KeyboardShortcut(KeyCode.Z),
                 new ConfigDescription(
                     GetConfigDescription("HotKey_R"),
-                    keyAcceptable,
+                    null,
                     new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HotKey_R"), Order = -11 }
                 )
             );
@@ -787,10 +800,10 @@ namespace CaptainSkillTree.SkillTree
             HotKeyG = config.Bind(
                 "Skill_Tree_Base",
                 "HotKey_G",
-                "G",
+                new KeyboardShortcut(KeyCode.G),
                 new ConfigDescription(
                     GetConfigDescription("HotKey_G"),
-                    keyAcceptable,
+                    null,
                     new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HotKey_G"), Order = -12 }
                 )
             );
@@ -798,10 +811,10 @@ namespace CaptainSkillTree.SkillTree
             HotKeyH = config.Bind(
                 "Skill_Tree_Base",
                 "HotKey_H",
-                "H",
+                new KeyboardShortcut(KeyCode.H),
                 new ConfigDescription(
                     GetConfigDescription("HotKey_H"),
-                    keyAcceptable,
+                    null,
                     new ConfigurationManagerAttributes { IsAdminOnly = false, DispName = GetLocalizedKeyName("HotKey_H"), Order = -13 }
                 )
             );
@@ -898,13 +911,8 @@ namespace CaptainSkillTree.SkillTree
                 "My VFX 투명도",
                 90,
                 new ConfigDescription(
-                    "메이지 스킬 VFX 전용 투명도 조절 (0=완전 투명, 100=원본 밝기)\n" +
-                    "기본값: 90 (90% 밝기)\n" +
-                    "변경 후 게임 재시작 필요",
+                    GetConfigDescription("My VFX 투명도"),
                     new AcceptableValueRange<int>(0, 100)));
-
-            // en.json 항상 자동 생성 (커뮤니티 번역 템플릿)
-            CaptainSkillTree.Localization.LocalizationExporter.ExportEnJson();
 
             Plugin.Log.LogDebug("[SkillTreeConfig] Skill_Tree_Base 설정 초기화 완료");
 
@@ -938,6 +946,14 @@ namespace CaptainSkillTree.SkillTree
             Paladin_Config.InitializePaladinConfig();           // Paladin (성기사)
             Berserker_Config.InitializeBerserkerConfig();       // Berserker (광전사)
             Producer_Config.InitializeProducerConfig(config);  // Producer (제작 전문가)
+
+            // 5. MMO 연동 (EpicMMOSystem Special/Strength 치명타 흡수)
+            BindServerSync(config, "───────── MMO Integration ─────────", "End", "", "");
+            MMO_CritIntegration_Config.Initialize(config);
+
+            // 6. 퀘스트 시스템 (최하단 배치)
+            BindServerSync(config, "───────── Quest System ─────────", "End", "", "");
+            Quest_Config.Initialize(config);
 
             _configFile = config;
 
@@ -985,6 +1001,43 @@ namespace CaptainSkillTree.SkillTree
                         CaptainSkillTree.AttackSpeedHandler_Game_Awake_Patch.ClearAttackSpeedWarningState(Player.m_localPlayer);
                     }
                 };
+
+                // 액티브 스킬 핫키(Y/R/G/H) 중복 방지
+                var hotkeyEntries = new[] { HotKeyY, HotKeyR, HotKeyG, HotKeyH };
+                foreach (var entry in hotkeyEntries)
+                    _lastGoodHotkeyValue[entry] = entry.Value;
+
+                System.EventHandler validateHotkeyConflict = (sender, args) =>
+                {
+                    if (_isRevertingHotkey) return;
+
+                    var changed = (ConfigEntry<KeyboardShortcut>)sender;
+                    var resolved = new Dictionary<KeyCode, ConfigEntry<KeyboardShortcut>>();
+
+                    foreach (var entry in hotkeyEntries)
+                    {
+                        KeyCode code = GetHotKeyCode(entry, KeyCode.None);
+                        if (code == KeyCode.None) continue;
+
+                        if (resolved.TryGetValue(code, out var other) && other != entry)
+                        {
+                            Plugin.Log.LogWarning(
+                                $"[Config] 핫키 충돌: {changed.Definition.Key}=\"{changed.Value}\" 가 " +
+                                $"{other.Definition.Key} 와 동일한 키입니다. 이전 값으로 되돌립니다.");
+
+                            _isRevertingHotkey = true;
+                            changed.Value = _lastGoodHotkeyValue[changed];
+                            _isRevertingHotkey = false;
+                            return;
+                        }
+                        resolved[code] = entry;
+                    }
+
+                    _lastGoodHotkeyValue[changed] = changed.Value;
+                };
+
+                foreach (var entry in hotkeyEntries)
+                    entry.SettingChanged += validateHotkeyConflict;
 
                 Plugin.Log.LogDebug("[SkillTreeConfig] Config 변경 이벤트 등록 완료");
             }
@@ -1037,10 +1090,13 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogDebug($"[SkillTreeConfig] 모드 감지: {(_isServer ? "서버" : "클라이언트")}");
         }
 
+        /// <summary>Quest_StringSync 등 외부에서 서버/클라이언트 여부를 읽기 전용으로 참조하기 위한 프로퍼티.</summary>
+        public static bool IsServer => _isServer;
+
         public static float GetEffectiveValue(string key, float localValue)
         {
-            if (!_isServer && _hasReceivedServerConfig && _serverConfigValues.ContainsKey(key))
-                return _serverConfigValues[key];
+            if (!_isServer && _hasReceivedServerConfig && _serverConfigValues.TryGetValue(key, out float serverValue))
+                return serverValue;
             return localValue;
         }
 
@@ -1110,6 +1166,7 @@ namespace CaptainSkillTree.SkillTree
                     _serverConfigValues = serverConfig;
                     _hasReceivedServerConfig = true;
                     RefreshAllSkillEffects();
+                    QuestManager.InvalidateCache();
                 }
             }
             catch (Exception ex) { Plugin.Log.LogError($"[SkillTreeConfig] 서버 설정 수신 실패: {ex.Message}"); }
@@ -1130,7 +1187,7 @@ namespace CaptainSkillTree.SkillTree
                 switch (key)
                 {
                     case "Attack_Expert_Damage": Attack_Config.AttackRootDamageBonus.Value = value; break;
-                    case "Speed_Expert_MoveSpeed": Speed_Config.SpeedRootMoveSpeed.Value = value; break;
+                    case "Speed_Root_MoveSpeedPerLevel": Speed_Config.SpeedRootMoveSpeedPerLevel.Value = value; break;
                     case "sword_expert_damage": SwordExpertDamage.Value = value; break;
                     case "Defense_Stomp_Radius": Defense_Config.StompRadius.Value = value; break;
                     default: return false;

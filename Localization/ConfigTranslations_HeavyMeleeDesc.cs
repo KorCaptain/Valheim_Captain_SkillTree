@@ -85,11 +85,6 @@ namespace CaptainSkillTree.Localization
                 "원거리 공격 위력을 결정합니다.\n" +
                 "권장값: 100-150%",
 
-                ["Legacy_Throw_BuffDuration"] =
-                "【사용 안 함】\n" +
-                "이 설정은 현재 사용되지 않습니다.\n" +
-                "패시브 스킬로 변경되었습니다.",
-
                 // === Spear Tree: Tier 3 - 연격창 (2개) ===
                 ["Tier3_Pierce_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -144,11 +139,6 @@ namespace CaptainSkillTree.Localization
                 "【필요 포인트】\n" +
                 "꿰뚫는 창 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 15",
-
-                ["Legacy_Penetrate_CritChance"] =
-                "【사용 안 함】\n" +
-                "이 설정은 현재 사용되지 않습니다.\n" +
-                "번개 충격 효과로 변경되었습니다.",
 
                 ["Tier5_Penetrate_BuffDuration"] =
                 "【버프 지속시간 (초)】\n" +
@@ -249,6 +239,11 @@ namespace CaptainSkillTree.Localization
                 "많을수록 더 오래 강화 효과를 누릴 수 있습니다.\n" +
                 "권장값: 2-5회",
 
+                ["Tier5_Combo_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "연공창 스킬 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 5-15%",
+
                 // ========================================
                 // Mace Tree (티어별 정렬)
                 // ========================================
@@ -345,17 +340,17 @@ namespace CaptainSkillTree.Localization
                 "무거운 일격 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 1",
 
-                // === Tier 4: 밀어내기 (Push) ===
+                // === Tier 4: 뇌진탕 (Concussion) ===
 
                 ["Tier4_Push_KnockbackChance"] =
-                "【넉백 확률 (%)】\n" +
-                "공격 시 적을 밀어내는 확률입니다.\n" +
-                "거리 유지와 전장 제어에 유용합니다.\n" +
-                "권장값: 25-35%",
+                "【뇌진탕 확률 (%)】\n" +
+                "둔기로 공격 시 대상의 이동속도와 공격속도를 1.5초간 30% 감소시키는 확률입니다.\n" +
+                "전투 제어와 딜링 우위 확보에 유용합니다.\n" +
+                "권장값: 30-40%",
 
                 ["Tier4_Push_RequiredPoints"] =
                 "【필요 포인트】\n" +
-                "밀어내기 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "뇌진탕 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 1",
 
                 // === Tier 5: 탱커 (Tank) ===
@@ -441,32 +436,78 @@ namespace CaptainSkillTree.Localization
                 "분노의 망치 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3",
 
-                // === Tier 7: 방패돌진 (Shield Charge - G키 액티브) ===
-                ["Tier7_GuardianHeart_Cooldown"] =
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] =
+                "【일반 타격 레벨 보너스 (%)】\n" +
+                "분노의 망치 일반 타격 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 5-15%",
+
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] =
+                "【최종 타격 레벨 보너스 (%)】\n" +
+                "분노의 망치 최종(폭발) 타격 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 10-25%",
+
+                // === Tier 6-5: 방패돌진 (Shield Charge - 방어 전문가, 둔기 트리에서 이전) ===
+                ["Tier6_GuardianHeart_Cooldown"] =
                 "【쿨타임 (초)】\n" +
-                "G키 스킬 '방패돌진' 재사용 대기 시간입니다.\n" +
+                "G/H키 스킬 '방패돌진' 재사용 대기 시간입니다.\n" +
                 "권장값: 30-40초",
 
-                ["Tier7_GuardianHeart_StaminaCost"] =
+                ["Tier6_GuardianHeart_StaminaCost"] =
                 "【스태미나 소모】\n" +
                 "방패돌진 사용 시 소모되는 스태미나입니다.\n" +
                 "권장값: 15-25",
 
-                ["Tier7_ShieldCharge_DamagePercent"] =
+                ["Tier6_ShieldCharge_DamagePercent"] =
                 "【방패 막기력 데미지 비율 (%)】\n" +
                 "방패돌진 충돌 시 방패 막기력 대비 가하는 데미지 비율입니다.\n" +
                 "높을수록 방패 방어력이 공격력으로 전환됩니다.\n" +
                 "권장값: 60-80%",
 
-                ["Tier7_ShieldCharge_MultiHitDamagePercent"] =
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] =
                 "【다단히트 데미지 비율 (%)】\n" +
-                "VFX 발동마다 3m 반경 내 모든 적에게 가하는 방패 막기력 대비 데미지 비율입니다.\n" +
-                "기본값 70% — 낮출수록 다단히트 부담이 줄어듭니다.\n" +
-                "권장값: 60-80%",
+                "돌진 중 0.08초 간격 광역타 및 끌어모은 적 최종타(4회, 0.25초 간격)에\n" +
+                "적용되는 방패 막기력 대비 기준 데미지 비율(레벨 1 기준)입니다.\n" +
+                "권장값: 20-40%",
 
-                ["Tier7_GuardianHeart_RequiredPoints"] =
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] =
+                "【다단히트 레벨 보너스 (%)】\n" +
+                "방패돌진 스킬 레벨당 다단히트 데미지 비율 증가량입니다.\n" +
+                "권장값: 5-15%",
+
+                ["Tier6_ShieldCharge_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "방패돌진 스킬 레벨당 돌진 데미지 보너스입니다.\n" +
+                "권장값: 5-15%",
+
+                ["Tier6_GuardianHeart_RequiredPoints"] =
                 "【필요 포인트】\n" +
                 "방패돌진 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "권장값: 3",
+
+                // === Tier 7: 충격파 강타 (Shockwave Slam - G키 액티브) ===
+                ["Tier7_ShockwaveSlam_Cooldown"] =
+                "【쿨타임 (초)】\n" +
+                "G키 스킬 '충격파 강타' 재사용 대기 시간입니다.\n" +
+                "권장값: 30-50초",
+
+                ["Tier7_ShockwaveSlam_StaminaCost"] =
+                "【스태미나 소모】\n" +
+                "충격파 강타 사용 시 소모되는 스태미나입니다.\n" +
+                "권장값: 15-25",
+
+                ["Tier7_ShockwaveSlam_DamagePercent"] =
+                "【무기 공격력 데미지 비율 (%)】\n" +
+                "충격파 강타 적중 시 무기 공격력 대비 가하는 데미지 비율입니다.\n" +
+                "권장값: 200-260%",
+
+                ["Tier7_ShockwaveSlam_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "충격파 강타 스킬 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 10-30%",
+
+                ["Tier7_ShockwaveSlam_RequiredPoints"] =
+                "【필요 포인트】\n" +
+                "충격파 강타 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3",
 
 
@@ -683,6 +724,21 @@ namespace CaptainSkillTree.Localization
                 "휠윈드 노드를 해제하는 데 필요한 스킬 포인트입니다.\n" +
                 "권장값: 3",
 
+                ["Tier6_Whirlwind_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "휠윈드 스킬 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 5-15%",
+
+                ["Tier6_Whirlwind_DamageReductionPercent"] =
+                "【받는 피해 감소 (%)】\n" +
+                "휠윈드 사용 중 받는 피해를 감소시킵니다. (Lv1 기준값)\n" +
+                "권장값: 20-40%",
+
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] =
+                "【피해 감소 레벨 보너스 (%)】\n" +
+                "휠윈드 스킬 레벨당 추가 피해 감소량입니다.\n" +
+                "권장값: 5-10%",
+
             };
         }
 
@@ -767,11 +823,6 @@ namespace CaptainSkillTree.Localization
                 "Determines ranged attack power.\n" +
                 "Recommended: 100-150%",
 
-                ["Legacy_Throw_BuffDuration"] =
-                "【Not Used】\n" +
-                "This setting is currently unused.\n" +
-                "Changed to passive skill.",
-
                 // === Spear Tree: Tier 3 - Rapid Pierce (2 keys) ===
                 ["Tier3_Pierce_RequiredPoints"] =
                 "【Required Points】\n" +
@@ -826,11 +877,6 @@ namespace CaptainSkillTree.Localization
                 "【Required Points】\n" +
                 "Skill points required to unlock the Penetrating Spear node.\n" +
                 "Recommended: 15",
-
-                ["Legacy_Penetrate_CritChance"] =
-                "【Not Used】\n" +
-                "This setting is currently unused.\n" +
-                "Changed to lightning strike effect.",
 
                 ["Tier5_Penetrate_BuffDuration"] =
                 "【Buff Duration (sec)】\n" +
@@ -931,6 +977,11 @@ namespace CaptainSkillTree.Localization
                 "More uses extend enhanced effect duration.\n" +
                 "Recommended: 2-5 uses",
 
+                ["Tier5_Combo_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Damage bonus per level for the Combo Spear skill.\n" +
+                "Recommended: 5-15%",
+
                 // Mace Tree (Tier-based Sorting)
                 // ========================================
 
@@ -1026,17 +1077,17 @@ namespace CaptainSkillTree.Localization
                 "Skill points required to unlock the Heavy Strike node.\n" +
                 "Recommended: 1",
 
-                // === Tier 4: Push ===
+                // === Tier 4: Concussion ===
 
                 ["Tier4_Push_KnockbackChance"] =
-                "【Knockback Chance (%)】\n" +
-                "Chance to knock back enemies on attack.\n" +
-                "Useful for distance control and battlefield management.\n" +
-                "Recommended: 25-35%",
+                "【Concussion Chance (%)】\n" +
+                "Chance on hit with a mace to slow the target's movement and attack speed by 30% for 1.5s.\n" +
+                "Useful for combat control and gaining a damage-race advantage.\n" +
+                "Recommended: 30-40%",
 
                 ["Tier4_Push_RequiredPoints"] =
                 "【Required Points】\n" +
-                "Skill points required to unlock the Push node.\n" +
+                "Skill points required to unlock the Concussion node.\n" +
                 "Recommended: 1",
 
                 // === Tier 5: Tank ===
@@ -1122,32 +1173,77 @@ namespace CaptainSkillTree.Localization
                 "Skill points required to unlock the Fury Hammer node.\n" +
                 "Recommended: 3",
 
-                // === Tier 7: Shield Charge (G-Key Active) ===
-                ["Tier7_GuardianHeart_Cooldown"] =
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] =
+                "【Normal Hit Level Bonus (%)】\n" +
+                "Damage bonus per level for Fury Hammer normal hits.\n" +
+                "Recommended: 5-15%",
+
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] =
+                "【Final Hit Level Bonus (%)】\n" +
+                "Damage bonus per level for Fury Hammer final (explosion) hit.\n" +
+                "Recommended: 10-25%",
+
+                // === Tier 6-5: Shield Charge (Defense Expert, moved from Mace tree) ===
+                ["Tier6_GuardianHeart_Cooldown"] =
                 "【Cooldown (sec)】\n" +
-                "Reuse delay for G-key skill 'Shield Charge'.\n" +
+                "Reuse delay for G/H-key skill 'Shield Charge'.\n" +
                 "Recommended: 30-40 sec",
 
-                ["Tier7_GuardianHeart_StaminaCost"] =
+                ["Tier6_GuardianHeart_StaminaCost"] =
                 "【Stamina Cost】\n" +
                 "Stamina consumed when using Shield Charge.\n" +
                 "Recommended: 15-25",
 
-                ["Tier7_ShieldCharge_DamagePercent"] =
+                ["Tier6_ShieldCharge_DamagePercent"] =
                 "【Shield Block Power Damage Ratio (%)】\n" +
                 "Damage dealt on Shield Charge collision as a percentage of shield block power.\n" +
                 "Higher values convert more of your shield's defense into offensive power.\n" +
                 "Recommended: 60-80%",
 
-                ["Tier7_ShieldCharge_MultiHitDamagePercent"] =
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] =
                 "【Multi-Hit Damage Ratio (%)】\n" +
-                "Damage dealt to all enemies within 3m radius on each VFX pulse, as a percentage of shield block power.\n" +
-                "Default 70% — lower values reduce multi-hit pressure.\n" +
-                "Recommended: 60-80%",
+                "Base damage ratio (at level 1) as a percentage of shield block power, applied to the\n" +
+                "0.08s-interval area multi-hit during the dash and the 4-tick/0.25s finish multi-hit on gathered enemies.\n" +
+                "Recommended: 20-40%",
 
-                ["Tier7_GuardianHeart_RequiredPoints"] =
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] =
+                "【Multi-Hit Level Bonus (%)】\n" +
+                "Multi-hit damage ratio increase per Shield Charge skill level.\n" +
+                "Recommended: 5-15%",
+
+                ["Tier6_ShieldCharge_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Damage bonus per level for the Shield Charge skill.\n" +
+                "Recommended: 5-15%",
+
+                ["Tier6_GuardianHeart_RequiredPoints"] =
                 "【Required Points】\n" +
                 "Skill points required to unlock the Shield Charge node.\n" +
+                "Recommended: 3",
+
+                ["Tier7_ShockwaveSlam_Cooldown"] =
+                "【Cooldown (seconds)】\n" +
+                "Cooldown time for the G-key skill 'Shockwave Slam'.\n" +
+                "Recommended: 30-50 seconds",
+
+                ["Tier7_ShockwaveSlam_StaminaCost"] =
+                "【Stamina Cost】\n" +
+                "Stamina consumed when using Shockwave Slam.\n" +
+                "Recommended: 15-25",
+
+                ["Tier7_ShockwaveSlam_DamagePercent"] =
+                "【Weapon Damage Ratio (%)】\n" +
+                "Damage dealt on Shockwave Slam hit as a percentage of weapon damage.\n" +
+                "Recommended: 200-260%",
+
+                ["Tier7_ShockwaveSlam_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Damage bonus per level for the Shockwave Slam skill.\n" +
+                "Recommended: 10-30%",
+
+                ["Tier7_ShockwaveSlam_RequiredPoints"] =
+                "【Required Points】\n" +
+                "Skill points required to unlock the Shockwave Slam node.\n" +
                 "Recommended: 3",
 
 
@@ -1363,6 +1459,21 @@ namespace CaptainSkillTree.Localization
                 "【Required Points】\n" +
                 "Skill points required to unlock the Whirlwind node.\n" +
                 "Recommended: 3",
+
+                ["Tier6_Whirlwind_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Damage bonus per level for the Whirlwind skill.\n" +
+                "Recommended: 5-15%",
+
+                ["Tier6_Whirlwind_DamageReductionPercent"] =
+                "【Damage Reduction (%)】\n" +
+                "Reduces damage taken while Whirlwind is active. (Lv1 base value)\n" +
+                "Recommended: 20-40%",
+
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] =
+                "【Damage Reduction Level Bonus (%)】\n" +
+                "Additional damage reduction per Whirlwind skill level.\n" +
+                "Recommended: 5-10%",
 
             };
         }

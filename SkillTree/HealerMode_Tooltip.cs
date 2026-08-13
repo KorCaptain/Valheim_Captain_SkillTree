@@ -15,14 +15,16 @@ namespace CaptainSkillTree.SkillTree
                 int mainLevel    = currentLevel == 0 ? 1 : currentLevel;
                 int displayLevel = Math.Min(currentLevel + 1, 7);
 
-                float mainHeal = SkillEffect.GetStaffHealPercentForLevel(mainLevel);
-                float mainCd   = SkillEffect.GetStaffHealCooldownForLevel(mainLevel);
-                float eitr     = Staff_Config.StaffHealEitrCostValue;
-                float range    = Staff_Config.StaffHealRangeValue;
-                int   pts      = Staff_Config.StaffHealRequiredPointsValue;
+                float mainHeal      = SkillEffect.GetStaffHealPercentForLevel(mainLevel);
+                float mainCd        = SkillEffect.GetStaffHealCooldownForLevel(mainLevel);
+                float mainLightning = SkillEffect.GetLightningDamagePercent(mainLevel);
+                float eitr          = Staff_Config.StaffHealEitrCostValue;
+                float range         = Staff_Config.StaffHealRangeValue;
+                int   pts           = Staff_Config.StaffHealRequiredPointsValue;
 
                 var t = $"<color=#FFD700><size=22>{L.Get("staff_skill_heal")}</size></color>\n";
                 t += $"<color=#E0E0E0><size=16>Lv{mainLevel} : {L.Get("healer_lv_stat", (int)mainHeal, (int)mainCd)}</size></color>\n";
+                t += $"<color=#FFFF00><size=16>⚡ {L.Get("staff_heal_lightning_desc", (int)mainLightning)}</size></color>\n";
                 t += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color>";
                 t += $"<color=#B0E0E6><size=16>{range:F0}m</size></color>\n";
                 t += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>";
@@ -53,9 +55,10 @@ namespace CaptainSkillTree.SkillTree
                     t += $"<color=#808080><size=14>────────────────────────────────────</size></color>\n";
                     for (int lv = mainLevel + 1; lv <= 7; lv++)
                     {
-                        float h  = SkillEffect.GetStaffHealPercentForLevel(lv);
-                        float cd = SkillEffect.GetStaffHealCooldownForLevel(lv);
-                        t += $"<color=#808080><size=14>Lv{lv} : {L.Get("healer_lv_stat", (int)h, (int)cd)}</size></color>\n";
+                        float h   = SkillEffect.GetStaffHealPercentForLevel(lv);
+                        float cd  = SkillEffect.GetStaffHealCooldownForLevel(lv);
+                        float ltg = SkillEffect.GetLightningDamagePercent(lv);
+                        t += $"<color=#808080><size=14>Lv{lv} : {L.Get("healer_lv_stat", (int)h, (int)cd)} ⚡{(int)ltg}%</size></color>\n";
                     }
                 }
 

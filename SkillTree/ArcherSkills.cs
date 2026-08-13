@@ -111,6 +111,14 @@ namespace CaptainSkillTree.SkillTree
             };
             return value / 100f;
         }
+
+        /// <summary>
+        /// 아처 패시브 - 길들인 생물 초당 회복량 (레벨 × 레벨당 증가량)
+        /// </summary>
+        public static float GetArcherTameHealPerSecond(int level)
+        {
+            return level > 0 ? level * Archer_Config.ArcherTameHealPerLevelValue : 0f;
+        }
     }
 
     /// <summary>
@@ -414,6 +422,85 @@ namespace CaptainSkillTree.SkillTree
                 return false; // 원본 건너뜀 → 화살/볼트 소모 없음
             }
             catch (System.Exception) { return true; }
+        }
+    }
+
+    /// <summary>
+    /// 아처 패시브 - 길들인 생물 초당 체력 회복 (Player.Update 상시 훅, 트롤의 재생력과 동일 패턴)
+    /// </summary>
+    [HarmonyPatch(typeof(Player), "Update")]
+    public static class ArcherTameHealPatch
+    {
+        private static float _skillCheckTimer = 0f;
+        private static int _archerLevel = 0;
+        private const float SkillCheckInterval = 1f;
+        private const float HealInterval = 1f;
+
+        private static readonly System.Collections.Generic.Dictionary<Player, float> tameHealTimers =
+            new System.Collections.Generic.Dictionary<Player, float>();
+
+        [HarmonyPriority(Priority.Low)]
+        public static void Postfix(Player __instance)
+        {
+            try
+            {
+                if (__instance != Player.m_localPlayer) return;
+
+                // 아처 레벨은 1초마다만 체크 (매 프레임 GetSkillLevel 호출 방지)
+                _skillCheckTimer += Time.deltaTime;
+                if (_skillCheckTimer >= SkillCheckInterval)
+                {
+                    _skillCheckTimer = 0f;
+                    _archerLevel = SkillTreeManager.Instance?.GetSkillLevel("Archer") ?? 0;
+                }
+
+                if (_archerLevel > 0)
+                {
+                    if (!tameHealTimers.ContainsKey(__instance))
+                        tameHealTimers[__instance] = 0f;
+
+                    tameHealTimers[__instance] += Time.deltaTime;
+
+                    if (tameHealTimers[__instance] >= HealInterval)
+                    {
+                        tameHealTimers[__instance] = 0f;
+
+                        float healAmount = ArcherSkills.GetArcherTameHealPerSecond(_archerLevel);
+                        if (healAmount > 0f)
+                        {
+                            float range = Archer_Config.ArcherTameHealRangeValue;
+                            Vector3 pos = __instance.transform.position;
+
+                            foreach (var c in Character.GetAllCharacters())
+                            {
+                                if (c == null || c.IsDead() || !c.IsTamed()) continue;
+                                if (Vector3.Distance(c.transform.position, pos) > range) continue;
+
+                                c.Heal(healAmount, false);
+                            }
+
+                            Plugin.Log.LogDebug($"[아처 패시브] 길들인 생물 회복: +{healAmount}/초 (범위 {range}m)");
+                        }
+                    }
+                }
+                else
+                {
+                    if (tameHealTimers.ContainsKey(__instance))
+                        tameHealTimers.Remove(__instance);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[아처 패시브] 길들인 생물 회복 패치 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 사망/로그아웃 시 타이머 정리
+        /// </summary>
+        public static void ClearPlayer(Player player)
+        {
+            tameHealTimers.Remove(player);
         }
     }
 }

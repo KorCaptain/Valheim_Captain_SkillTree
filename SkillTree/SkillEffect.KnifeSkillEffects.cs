@@ -160,8 +160,9 @@ namespace CaptainSkillTree.SkillTree
             float minDist = float.MaxValue;
             foreach (var c in Character.GetAllCharacters())
             {
-                if (c == null || c.IsDead() || c == player || c.IsPlayer()) continue;
-                if (c.GetFaction() == Character.Faction.Players) continue;
+                if (c == null || c.IsDead() || c == player) continue;
+                if (c.IsPlayer() && !(c.IsPVPEnabled() && player.IsPVPEnabled())) continue;
+                if (!c.IsPlayer() && c.GetFaction() == Character.Faction.Players) continue;
                 float dist = Vector3.Distance(playerPos, c.transform.position);
                 if (dist > range) continue;
 
@@ -169,6 +170,9 @@ namespace CaptainSkillTree.SkillTree
                 dirToMonster.y = 0;
                 dirToMonster.Normalize();
                 if (Vector3.Angle(cameraForward, dirToMonster) > maxAngle) continue;
+
+                // 벽/던전 벽 너머의 몬스터는 타게팅 대상에서 제외 (던전 밖 몬스터 끌려나감 방지)
+                if (IsAssassinHeartLineBlocked(player.GetCenterPoint(), c.GetCenterPoint())) continue;
 
                 if (dist < minDist)
                 {
@@ -178,6 +182,23 @@ namespace CaptainSkillTree.SkillTree
             }
 
             return frontMonster;
+        }
+
+        /// <summary>
+        /// 두 지점 사이에 벽/오브젝트(던전 벽 포함)가 있는지 확인 (암살자의 심장 타게팅 시야 차단 체크용)
+        /// </summary>
+        private static bool IsAssassinHeartLineBlocked(Vector3 from, Vector3 to)
+        {
+            float dist = Vector3.Distance(from, to);
+            if (dist < 0.5f) return false;
+            Vector3 dir = (to - from).normalized;
+            int blockMask = LayerMask.GetMask("piece", "Default", "static_solid");
+            if (Physics.SphereCast(from, 0.3f, dir, out RaycastHit hit, dist - 0.3f, blockMask))
+            {
+                if (hit.collider.GetComponentInParent<Character>() == null)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -204,8 +225,17 @@ namespace CaptainSkillTree.SkillTree
                 Vector3 targetForward = target.transform.forward;
                 Vector3 behindPosition = targetPos - (targetForward * behindDistance);
 
-                // 지형 높이 조정 (던전/외부 모두 안전)
-                behindPosition = GetGroundPositionSafe(behindPosition);
+                // 오브젝트/던전 벽 충돌 체크 (통과 방지) — 휠윈드와 동일 로직 재사용
+                behindPosition = ClampWhirlwindEndToObstacle(originalPosition, behindPosition);
+                // 던전 출구 트리거(TeleportWorld) 통과 방지 — 휠윈드와 동일 로직 재사용
+                behindPosition = ClampAwayFromTeleportTrigger(originalPosition, behindPosition);
+
+                // 지형 높이 조정 (던전/외부 모두 안전) — 바닥 미검출 시 돌격 취소 (허공 낙하/던전 밖 이탈 방지)
+                if (!TryGetGroundPositionSafe(behindPosition, out behindPosition))
+                {
+                    Plugin.Log.LogDebug("[암살자의 심장] 착지 지점 바닥 미검출 → 돌격 취소");
+                    return false;
+                }
 
                 // 시작점 VFX (발헤임 기본 → VFXManager)
                 CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_spawn_small", "", originalPosition, Quaternion.identity, 1.5f);
@@ -529,6 +559,12 @@ namespace CaptainSkillTree.SkillTree
             float attackSpeedBonus = Knife_Config.KnifeAssassinHeartAttackSpeedBonusValue;
             float attackInterval = 0.15f; // 공격 간격
 
+            // 연속 공격 모션용 (StartAttack 금지 — 데미지는 아래 HitData로 별도 처리, 모션만 재생)
+            var zanim = player.GetComponentInChildren<ZSyncAnimation>();
+            var attackAsset = weapon.m_shared.m_attack;
+            bool useChainTrigger = attackAsset != null && !string.IsNullOrEmpty(attackAsset.m_attackAnimation)
+                && (attackAsset.m_attackChainLevels > 1 || attackAsset.m_attackRandomAnimations >= 2);
+
             // 공격 모드 활성화 + 공격속도 버프 설정
             assassinHeartAttackMode[player] = true;
             assassinHeartTarget[player] = target;
@@ -556,6 +592,15 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug($"[암살자의 심장] 대상 사망 - 연속 공격 완료 ({i}회 적중)");
                     DrawFloatingText(player, L.Get("assassin_complete_hits", i.ToString()), Color.red);
                     break;
+                }
+
+                // 평타 모션 재생 (StartAttack 없이 SetTrigger만 - 모션 전용, 데미지 없음)
+                if (zanim != null && attackAsset != null && !string.IsNullOrEmpty(attackAsset.m_attackAnimation))
+                {
+                    string motionTrigger = useChainTrigger
+                        ? attackAsset.m_attackAnimation + (i % 3)
+                        : attackAsset.m_attackAnimation;
+                    zanim.SetTrigger(motionTrigger);
                 }
 
                 // 직접 HitData로 데미지 적용 (StartAttack 없이 - 이중 공격 방지)
@@ -767,6 +812,30 @@ namespace CaptainSkillTree.SkillTree
             if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("terrain", "Default")))
                 return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
             return pos;
+        }
+
+        /// <summary>
+        /// 던전(y>4000)/외부 지형에서 바닥 높이를 반환. 바닥을 찾지 못하면 false (돌격 취소용).
+        /// </summary>
+        private static bool TryGetGroundPositionSafe(Vector3 pos, out Vector3 result)
+        {
+            if (pos.y > 4000f)
+            {
+                if (Physics.Raycast(pos + Vector3.up * 3f, Vector3.down, out RaycastHit dungeonHit, 8f))
+                {
+                    result = new Vector3(pos.x, dungeonHit.point.y + 0.1f, pos.z);
+                    return true;
+                }
+                result = pos;
+                return false;
+            }
+            if (Physics.Raycast(pos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("terrain", "Default")))
+            {
+                result = new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
+                return true;
+            }
+            result = pos;
+            return false;
         }
 
         /// <summary>

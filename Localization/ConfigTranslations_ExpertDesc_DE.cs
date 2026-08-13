@@ -131,10 +131,13 @@ namespace CaptainSkillTree.Localization
                 "Chance auf Ausdauerregeneration bei Treffern.\n" +
                 "Empfehlung: 20-50",
 
-                ["Tier6_WeakPointAttack_CritDamageBonus"] =
-                "【Kritischer Schadensbonus (%)】\n" +
-                "Erhöht den Zusatzschaden bei kritischen Treffern.\n" +
-                "Empfehlung: 10-20%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "【Schwachpunkt Lv1 Kritischer Schadensbonus (%)】\nKritischer Schadensbonus bei Stufe 1.\nEmpfehlung: 5%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "【Schwachpunkt Lv2 Kritischer Schadensbonus (%)】\nKritischer Schadensbonus bei Stufe 2.\nEmpfehlung: 9%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "【Schwachpunkt Lv3 Kritischer Schadensbonus (%)】\nKritischer Schadensbonus bei Stufe 3.\nEmpfehlung: 13%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "【Schwachpunkt Lv4 Kritischer Schadensbonus (%)】\nKritischer Schadensbonus bei Stufe 4.\nEmpfehlung: 17%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "【Schwachpunkt Lv5 Kritischer Schadensbonus (%)】\nKritischer Schadensbonus bei Stufe 5.\nEmpfehlung: 21%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "【Schwachpunkt Lv6 Kritischer Schadensbonus (%)】\nKritischer Schadensbonus bei Stufe 6.\nEmpfehlung: 25%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "【Schwachpunkt Lv7 (Max.) Kritischer Schadensbonus (%)】\nKritischer Schadensbonus bei Stufe 7 (Max.).\nEmpfehlung: 29%",
 
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] =
                 "【Zweihand-Schadensbonus (%)】\n" +
@@ -178,9 +181,9 @@ namespace CaptainSkillTree.Localization
                 "Empfehlung: 15-25%",
 
                 ["Tier2_OpenerBow_CritChance"] =
-                "【Bogen-Kritische-Trefferchance (%)】\n" +
-                "Erhöht die kritische Trefferchance beim ersten Bogenschuss nach Kampfbeginn.\n" +
-                "Empfehlung: 10-20%",
+                "【Bogen: Jägerauge - Kritischer Schaden (%)】\n" +
+                "Zusätzlicher kritischer Schaden für den garantierten Krit beim ersten Pfeil im Erstschlag-Fenster.\n" +
+                "Empfehlung: 6-10%",
 
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] =
                 "【Armbrust-Erster-Schuss-Bonus (%)】\n" +
@@ -212,10 +215,10 @@ namespace CaptainSkillTree.Localization
                 "Erhöht die Bewegungsgeschwindigkeit während des Kampfes.\n" +
                 "Empfehlung: 10-15%",
 
-                ["Tier4_FrenzyTrigger_StaminaReduction"] =
-                "【Ausdauerreduktion im Nahkampf (%)】\n" +
-                "Reduziert den Ausdauerverbrauch, wenn mehrere Feinde in der Nähe sind.\n" +
-                "Empfehlung: 15-25%",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] =
+                "【Kritische-Trefferchance pro Stufe (%)】\n" +
+                "Kritische Trefferchance, die pro Stufe hinzugefügt wird. (Stufe × Zuwachs)\n" +
+                "Empfehlung: 1-3%",
 
                 ["Tier5_Frenzy_StackBonusBase"] =
                 "【Kampfgetümmel-Stack-Grundbonus (%)】\n" +
@@ -250,7 +253,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_OpenerMagic_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
                 ["Tier3_Pursuit_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "【Benötigte Punkte pro Stufe】\nFertigkeitspunkte, die pro Stufenaufstieg verbraucht werden.\nEmpfehlung: 2",
                 ["Tier5_Frenzy_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
 
                 // ========================================
@@ -265,6 +268,12 @@ namespace CaptainSkillTree.Localization
                 "【Rüstungsbonus (Fest)】\n" +
                 "Erhöht die Rüstung um einen festen Wert.\n" +
                 "Empfehlung: 1-4",
+
+                ["Tier0_DefenseExpert_AtkPenalty"] =
+                "【Angriffskraft-Malus (%)】\n" +
+                "Das Erlernen von Verteidigungs-Experte verringert die Angriffskraft leicht.\n" +
+                "Ein Kompromiss zwischen Verteidigung und Angriff.\n" +
+                "Empfehlung: 1-3%",
 
                 ["Tier1_SkinHardening_HPBonus"] =
                 "【LP-Bonus (Fest)】\n" +
@@ -405,7 +414,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_NerveEnhancement_DodgeBonus"] =
                 "【Bedingter Ausweichbonus (30 Sek., %)】\n" +
                 "Aktiviert sich, wenn 30 Sekunden lang nicht ausgewichen wurde.\n" +
-                "Empfehlung: 30-50%",
+                "Empfehlung: 85%",
 
                 ["Tier6_JotunnVitality_HPBonus"] =
                 "【LP-Bonus (%)】\n" +
@@ -415,21 +424,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] =
                 "【Physische/Elementare Resistenz (%)】\n" +
                 "Reduziert den gesamten physischen und elementaren Schaden.\n" +
-                "Empfehlung: 8-15%",
-
-                ["Tier6_JotunnShield_BlockStaminaReduction"] =
-                "【Ausdauerverbrauch beim Blocken (%)】\n" +
-                "Reduziert den Ausdauerverbrauch beim Blocken mit dem Schild.\n" +
-                "Empfehlung: 20-30%",
-
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] =
-                "【Bewegungsgeschwindigkeit mit Normalschild (%)】\n" +
-                "Erhöht die Bewegungsgeschwindigkeit mit normalem Schild.\n" +
-                "Empfehlung: 3-8%",
-
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] =
-                "【Bewegungsgeschwindigkeit mit Turmschild (%)】\n" +
-                "Erhöht die Bewegungsgeschwindigkeit mit Turmschild.\n" +
                 "Empfehlung: 8-15%",
 
                 // ========================================
@@ -605,6 +599,294 @@ namespace CaptainSkillTree.Localization
                 "【Ausweichgeschwindigkeitsbonus (%)】\n" +
                 "Erhöht die Animationsgeschwindigkeit beim Rollen.\n" +
                 "Empfehlung: 5-15%",
+
+                ["Tier3_BlockTraining_MaxChargeDistance"] =
+                "【Konter-Maximalreichweite (m)】\n" +
+                "Der Konter wird nur ausgelöst, wenn das taumelnde Monster sich innerhalb dieser Distanz befindet.\n" +
+                "Empfehlung: 6-10m",
+
+                ["Tier0_DefenseExpert_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier1_SkinHardening_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier2_MindTraining_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier2_HealthTraining_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier3_CoreBreathing_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier3_EvasionTraining_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier3_HealthBoost_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier3_ShieldTraining_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier4_Shockwave_Radius"] =
+                "【Schockwellen-Radius】\n" +
+                "Effektradius der Schockwelle-Fähigkeit in Metern.\n" +
+                "Empfehlung: 3",
+
+                ["Tier4_Shockwave_StunDuration"] =
+                "【Schockwellen-Betäubungsdauer】\n" +
+                "Dauer des Betäubungseffekts in Sekunden.\n" +
+                "Empfehlung: 1",
+
+                ["Tier4_Shockwave_Cooldown"] =
+                "【Schockwellen-Abklingzeit】\n" +
+                "Abklingzeit der Fähigkeit in Sekunden.\n" +
+                "Empfehlung: 120",
+
+                ["Tier4_Shockwave_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier4_Shockwave_KnockbackForce"] =
+                "【Rückstoßkraft】\n" +
+                "Kraft, die auf Feinde wirkt, wenn die Schockwelle ausgelöst wird.\n" +
+                "Empfehlung: 15-25",
+
+                ["Tier4_GroundStomp_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier4_RockSkin_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier5_Endurance_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier5_Agility_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier5_TrollRegen_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier5_BlockMaster_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier6_MindShield_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier6_MindShield_Cooldown"] =
+                "【Mentalschild-Abklingzeit】\n" +
+                "Abklingzeit der H-Taste-Fähigkeit Mentalschild (Sekunden).\n" +
+                "Standard: 210 (3 Min. 30 Sek.)",
+
+                ["Tier6_MindShield_EitrCost"] =
+                "【Mentalschild-Eitr-Kosten】\n" +
+                "Menge an Eitr, die beim Aktivieren des Mentalschilds verbraucht wird.\n" +
+                "Standard: 30",
+
+                ["Tier6_MindShield_Duration"] =
+                "【Mentalschild-Dauer】\n" +
+                "Dauer des Schilds (Sekunden). Absorbiert während dieser Zeit Schaden bis zum maximalen Eitr-LP-Wert.\n" +
+                "Standard: 180 (3 Min.)",
+
+                ["Tier6_NerveEnhancement_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier6_DoubleJump_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier6_JotunnVitality_RequiredPoints"] =
+                "【Benötigte Punkte】\n" +
+                "Fertigkeitspunkte zum Freischalten dieses Knotens.\n" +
+                "Empfehlung: 2",
+
+                ["Tier0_SpeedExpert_MoveSpeedPerLevel"] = "【Bewegungsgeschwindigkeitsbonus/Level (%)】\nErhöhung der Bewegungsgeschwindigkeit pro Level. (Wachstumssystem Lv1-7)\nEmpfehlung: 1-5%",
+
+                ["Tier0_SpeedExpert_PointsPerLevel"] = "【Benötigte Punkte pro Level】\nFertigkeitspunkte, die pro Stufenaufstieg verbraucht werden.\nEmpfehlung: 1-2",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_2"] = "【Benötigtes Spielerlevel für Lv2】\nEpicMMO-Spielerlevel, das für den Aufstieg auf Lv2 erforderlich ist. (0=keins)\nStandard: 15",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_3"] = "【Benötigtes Spielerlevel für Lv3】\nEpicMMO-Spielerlevel, das für den Aufstieg auf Lv3 erforderlich ist.\nStandard: 30",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_4"] = "【Benötigtes Spielerlevel für Lv4】\nEpicMMO-Spielerlevel, das für den Aufstieg auf Lv4 erforderlich ist.\nStandard: 45",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_5"] = "【Benötigtes Spielerlevel für Lv5】\nEpicMMO-Spielerlevel, das für den Aufstieg auf Lv5 erforderlich ist.\nStandard: 50",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_6"] = "【Benötigtes Spielerlevel für Lv6】\nEpicMMO-Spielerlevel, das für den Aufstieg auf Lv6 erforderlich ist.\nStandard: 65",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_7"] = "【Benötigtes Spielerlevel für Lv7】\nEpicMMO-Spielerlevel, das für den Aufstieg auf Lv7 erforderlich ist.\nStandard: 80",
+
+                ["Tier2_MeleeFlow_AttackSpeedBonus"] = "【Angriffsgeschwindigkeitsbonus bei 2 Treffern (%)】\nAngriffsgeschwindigkeit erhöht sich nach 2 aufeinanderfolgenden Nahkampftreffern.\nEmpfehlung: 8-15%",
+
+                ["Tier2_MeleeFlow_StaminaReduction"] = "【Ausdauerreduktion (%)】\nAusdauerverbrauchsreduktion während des Flow-Buffs.\nEmpfehlung: 10-20%",
+
+                ["Tier2_MeleeFlow_Duration"] = "【Pufferdauer (Sek.)】\nDauer des Nahkampf-Flow-Buffs.\nEmpfehlung: 3-5 Sek.",
+
+                ["Tier2_MeleeFlow_ComboSpeedBonus"] = "【Kombo-Geschwindigkeitsbonus (%)】\nZusätzlicher Angriffsgeschwindigkeitsbonus für Kombo-Ketten.\nEmpfehlung: 5-10%",
+
+                ["Tier2_CrossbowExpert_MoveSpeedBonus"] = "【Bewegungsgeschwindigkeitsbonus bei Treffer (%)】\nBewegungsgeschwindigkeit erhöht sich, wenn ein Armbrustbolzen den Feind trifft.\nEmpfehlung: 10-15%",
+
+                ["Tier2_CrossbowExpert_BuffDuration"] = "【Pufferdauer (Sek.)】\nDauer des Geschwindigkeitsbonus nach erfolgreichem Treffer.\nEmpfehlung: 3-5 Sek.",
+
+                ["Tier2_CrossbowExpert_ReloadSpeedBonus"] = "【Nachladegeschwindigkeitsbonus während Buff (%)】\nNachladegeschwindigkeit erhöht sich, während der Treffer-Buff aktiv ist.\nEmpfehlung: 10-15%",
+
+                ["Tier2_BowExpert_StaminaReduction"] = "【Ausdauerreduktion bei 2-Treffer-Kombo (%)】\nAusdauerverbrauchsreduktion nach 2 aufeinanderfolgenden Bogenschüssen.\nEmpfehlung: 10-15%",
+
+                ["Tier2_BowExpert_NextDrawSpeedBonus"] = "【Zugsgeschwindigkeitsbonus für nächsten Pfeil (%)】\nZugsgeschwindigkeit für den nächsten Pfeil erhöht sich nach einer erfolgreichen Kombo.\nEmpfehlung: 10-20%",
+
+                ["Tier2_BowExpert_BuffDuration"] = "【Pufferdauer (Sek.)】\nDauer des Kombo-Buffs.\nEmpfehlung: 4-6 Sek.",
+
+                ["Tier2_MobileCast_MoveSpeedBonus"] = "【Bewegungsgeschwindigkeitsbonus beim Zaubern (%)】\nBewegungsgeschwindigkeitsbonus beim Wirken von Stabzaubern.\nEmpfehlung: 8-12%",
+
+                ["Tier2_MobileCast_EitrReduction"] = "【Eitr-Kostenreduktion (%)】\nReduziert den Eitr-Verbrauch bei Stabzaubern.\nEmpfehlung: 8-15%",
+
+                ["Tier2_MobileCast_CastMoveSpeed"] = "【Bewegungsgeschwindigkeit beim Stabzauber (%)】\nGrundbewegungsgeschwindigkeit während des Kanalisierens von Stabangriffen.\nEmpfehlung: 3-6%",
+
+                ["Tier3_Practitioner1_MeleeSkillBonus"] = "【Nahkampfwaffen-Skillbonus】\nErhöht alle Nahkampfwaffen-Skilllevel.\nEmpfehlung: 5-10",
+
+                ["Tier3_Practitioner1_CrossbowSkillBonus"] = "【Armbrust-Skillbonus】\nErhöht das Armbrust-Skilllevel.\nEmpfehlung: 5-10",
+
+                ["Tier3_Practitioner2_StaffSkillBonus"] = "【Stab-Skillbonus】\nErhöht das Stab-Skilllevel (Elementalmagi).\nEmpfehlung: 5-10",
+
+                ["Tier3_Practitioner2_BowSkillBonus"] = "【Bogen-Skillbonus】\nErhöht das Bogen-Skilllevel.\nEmpfehlung: 5-10",
+
+                ["Tier4_Energizer_FoodConsumptionReduction"] = "【Nahrungsverbrauchsrate-Reduktion (%)】\nVerlangsamt den Nahrungsverbrauch, sodass Buffs länger anhalten.\nEmpfehlung: 10-20%",
+
+                ["Tier4_Captain_ShipSpeedBonus"] = "【Schiffsgeschwindigkeitsbonus (%)】\nErhöht die Segelgeschwindigkeit.\nEmpfehlung: 10-20%",
+
+                ["Tier5_JumpMaster_JumpSkillBonus"] = "【Sprung-Skillbonus】\nErhöht das Sprung-Skilllevel.\nEmpfehlung: 5-15",
+
+                ["Tier5_JumpMaster_JumpStaminaReduction"] = "【Sprung-Ausdauerreduktion (%)】\nReduziert den Ausdauerverbrauch beim Springen.\nEmpfehlung: 10-20%",
+
+                ["Tier6_Dexterity_MeleeAttackSpeedBonus"] = "【Nahkampf-Angriffsgeschwindigkeitsbonus (%)】\nErhöht die Nahkampf-Angriffsgeschwindigkeit.\nEmpfehlung: 5-8%",
+
+                ["Tier6_Dexterity_MoveSpeedBonus"] = "【Bewegungsgeschwindigkeitsbonus (%)】\nErhöht die allgemeine Bewegungsgeschwindigkeit.\nEmpfehlung: 3-8%",
+
+                ["Tier6_Endurance_StaminaMaxBonus"] = "【Maximaler Ausdauerbonus】\nErhöht den maximalen Ausdauerpool.\nEmpfehlung: 20-40",
+
+                ["Tier6_Intellect_EitrMaxBonus"] = "【Maximaler Eitr-Bonus】\nErhöht den maximalen Eitr-Pool für Magie.\nEmpfehlung: 30-50",
+
+                ["Tier7_Master_RunSkillBonus"] = "【Lauf-Skillbonus】\nErhöht das Lauf-Skilllevel.\nEmpfehlung: 5-15",
+
+                ["Tier7_Master_JumpSkillBonus"] = "【Sprung-Skillbonus】\nErhöht das Sprung-Skilllevel.\nEmpfehlung: 5-15",
+
+                ["Tier8_MeleeAccel_AttackSpeedBonus"] = "【Nahkampf-Angriffsgeschwindigkeitsbonus (%)】\nFinale Steigerung der Nahkampf-Angriffsgeschwindigkeit.\nEmpfehlung: 5-10%",
+
+                ["Tier8_MeleeAccel_TripleComboBonus"] = "【Angriffsgeschwindigkeitsbonus für nächsten Angriff bei 3-Treffer-Kombo (%)】\nMassiver Angriffsgeschwindigkeitsbonus für den nächsten Angriff nach einer 3-Treffer-Kombo.\nEmpfehlung: 20-30%",
+
+                ["Tier8_CrossbowAccel_ReloadSpeed"] = "【Nachladegeschwindigkeitsbonus (%)】\nFinale Steigerung der Armbrust-Nachladegeschwindigkeit.\nEmpfehlung: 25-35%",
+
+                ["Tier8_CrossbowAccel_ReloadMoveSpeed"] = "【Bewegungsgeschwindigkeit beim Nachladen (%)】\nBewegungsgeschwindigkeit beim Nachladen der Armbrust.\nEmpfehlung: 20-30%",
+
+                ["Tier8_BowAccel_DrawSpeed"] = "【Zugsgeschwindigkeitsbonus (%)】\nFinale Steigerung der Bogen-Zugsgeschwindigkeit.\nEmpfehlung: 15-20%",
+
+                ["Tier8_BowAccel_DrawMoveSpeed"] = "【Bewegungsgeschwindigkeit beim Spannen (%)】\nBewegungsgeschwindigkeit beim Spannen der Bogensehne.\nEmpfehlung: 10-20%",
+
+                ["Tier8_CastAccel_MagicAttackSpeed"] = "【Magie-Angriffsgeschwindigkeitsbonus (%)】\nFinale Steigerung der Magie-Angriffsgeschwindigkeit.\nEmpfehlung: 5-10%",
+
+                ["Tier8_CastAccel_TripleEitrRecovery"] = "【Eitr-Max-Regenerationsrate bei 3-Treffer-Kombo (%)】\nErhöht die Eitr-Regenerationsrate nach einer 3-Zauber-Kombo.\nEmpfehlung: 10-15%",
+
+                ["Tier1_AgilityBase_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier2_MeleeFlow_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier2_CrossbowExpert_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier2_BowExpert_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier2_MobileCast_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier3_Practitioner1_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier3_Practitioner2_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier4_Energizer_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier4_Captain_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier5_JumpMaster_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier6_Dexterity_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier6_Endurance_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier6_Intellect_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier7_Master_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier8_MeleeAccel_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier8_CrossbowAccel_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier8_BowAccel_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier8_CastAccel_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier0_AttackExpert_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier1_BaseAttack_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier2_MeleeSpec_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier2_BowSpec_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier2_CrossbowSpec_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier2_StaffSpec_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier3_AttackBoost_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier4_MeleeEnhance_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier4_PrecisionAttack_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier4_RangedEnhance_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier5_SpecialStat_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "【Benötigte Punkte pro Stufe】\nFertigkeitspunkte, die pro Stufenaufstieg verbraucht werden.\nEmpfehlung: 2",
+
+                ["Tier6_ComboFinisher_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier6_TwoHandCrush_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
+                ["Tier6_ElementalAttack_RequiredPoints"] = "【Benötigte Punkte】\nFertigkeitspunkte zum Freischalten dieses Knotens.",
+
             };
         }
     }

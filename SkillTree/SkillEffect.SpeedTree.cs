@@ -355,7 +355,10 @@ namespace CaptainSkillTree.SkillTree
                 // 분노의 망치 1타 공격속도 버프 (+200%)
                 bonus += FuryHammerSkill.GetFuryHammer1stHitSpeedBonus(player);
 
-                // 휠윈드 공격 모션 공격속도 버프 (+100%)
+                // 충격파 강타 스윙 공격속도 버프 (+100%)
+                bonus += GetShockwaveSlam1stHitSpeedBonus(player);
+
+                // 휠윈드 공격 모션 공격속도 버프 (+80%)
                 bonus += SkillEffect.GetWhirlwindAttackSpeedBonus(player);
 
                 // crafting_lv2 무기 마법부여 공격속도 보너스

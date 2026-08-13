@@ -23,6 +23,7 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "Fernkampffähigkeitstaste",
                 ["HotKey_G"] = "Nahkampf-Hauptfähigkeitstaste",
                 ["HotKey_H"] = "Sekundäre Fähigkeitstaste",
+                ["QuestToggleKey"] = "Questfenster-Tastenkürzel",
                 ["HUD_IconSize"] = "Skill-Icon-Größe",
                 ["HUD_PosX"] = "Skill Icon HUD X-Position",
                 ["HUD_PosY"] = "Skill Icon HUD Y-Position",
@@ -45,7 +46,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_Opener_RequiredPoints"] = "Tier 1: [Erster Schlag] Benötigte Punkte",
                 ["Tier2_OpenerMelee_FinisherBonus"] = "Tier 2-1: [Nahkampf] Abschlussbonus (%)",
                 ["Tier2_OpenerMelee_RequiredPoints"] = "Tier 2-1: [Nahkampf] Benötigte Punkte",
-                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [Bogen] Krit.-Trefferchance (%)",
+                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [Bogen] Krit.-Schadensbonus (%)",
                 ["Tier2_OpenerBow_RequiredPoints"] = "Tier 2-2: [Bogen] Benötigte Punkte",
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] = "Tier 2-3: [Armbrust] Erster-Schuss-Bonus (%)",
                 ["Tier2_OpenerCrossbow_RequiredPoints"] = "Tier 2-3: [Armbrust] Benötigte Punkte",
@@ -57,8 +58,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_Pursuit_RequiredPoints"] = "Tier 3: [Verfolgung] Benötigte Punkte",
                 ["Tier4_PursuitSpeed_SpeedBonus"] = "Tier 4-1: [Sturm-Jagd] Bewegungsgeschw.-Bonus (%)",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "Tier 4-1: [Sturm-Jagd] Benötigte Punkte",
-                ["Tier4_FrenzyTrigger_StaminaReduction"] = "Tier 4-2: [Raserei-Ansturm] Ausdauerreduz. (%)",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "Tier 4-2: [Raserei-Ansturm] Benötigte Punkte",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] = "Tier 4-2: [Tödlicher Schlag] Krit.-Chance/Stufe (%)",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "Tier 4-2: [Tödlicher Schlag] Benötigte Punkte pro Stufe",
                 ["Tier5_Frenzy_StackBonusBase"] = "Tier 5: [Raserei] Basis-Stapelbonus (%)",
                 ["Tier5_Frenzy_StackBonusChain"] = "Tier 5: [Raserei] Ketten-Stapelbonus (%)",
                 ["Tier5_Frenzy_MaxStacks"] = "Tier 5: [Raserei] Max. Stapel",
@@ -104,8 +105,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [Ladung] Benötigte Punkte",
 
                 // === Tier 6: Abschlussverbesserung (8) ===
-                ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [Schwachpunkt] Kritischer Schadensbonus (%)",
-                ["Tier6_WeakPointAttack_RequiredPoints"] = "Tier 6-1: [Schwachpunkt] Benötigte Punkte",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "Tier 6-1: [Schwachpunkt] Kritischer Schadensbonus Lv1 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "Tier 6-1: [Schwachpunkt] Kritischer Schadensbonus Lv2 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "Tier 6-1: [Schwachpunkt] Kritischer Schadensbonus Lv3 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "Tier 6-1: [Schwachpunkt] Kritischer Schadensbonus Lv4 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "Tier 6-1: [Schwachpunkt] Kritischer Schadensbonus Lv5 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "Tier 6-1: [Schwachpunkt] Kritischer Schadensbonus Lv6 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "Tier 6-1: [Schwachpunkt] Kritischer Schadensbonus Lv7 (%)",
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "Tier 6-1: [Schwachpunkt] Benötigte Punkte pro Stufe",
                 ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [Kombo-Abschluss] 3-Treffer-Kombo-Bonus (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Tier 6-2: [Kombo-Abschluss] Benötigte Punkte",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Tier 6-3: [Zweihandschlag] Schadensbonus (%)",
@@ -221,6 +228,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 0: Verteidigungs-Experte (3) ===
                 ["Tier0_DefenseExpert_HPBonus"] = "Tier 0: [Verteidigungs-Experte] LP-Bonus",
                 ["Tier0_DefenseExpert_ArmorBonus"] = "Tier 0: [Verteidigungs-Experte] Rüstungsbonus",
+                ["Tier0_DefenseExpert_AtkPenalty"] = "Tier 0: [Verteidigungs-Experte] Angriffskraft-Malus (%)",
                 ["Tier0_DefenseExpert_RequiredPoints"] = "Tier 0: [Verteidigungs-Experte] Benötigte Punkte",
 
                 // === Tier 1: Hautverhärtung (3) ===
@@ -313,11 +321,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6-4: [Jotunn-Vitalität] Physische/Elementare Resistenz (%)",
                 ["Tier6_JotunnVitality_RequiredPoints"] = "Tier 6-4: [Jotunn-Vitalität] Benötigte Punkte",
 
-                // === Tier 6-5: Jotunn-Schild (4) ===
-                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6-5: [Jotunn-Schild] Block-Ausdauerreduzierung (%)",
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6-5: [Jotunn-Schild] Geschw.-Bonus mit Normalschild (%)",
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6-5: [Jotunn-Schild] Geschw.-Bonus mit Turmschild (%)",
-                ["Tier6_JotunnShield_RequiredPoints"] = "Tier 6-5: [Jotunn-Schild] Benötigte Punkte",
+                // === Tier 6-5: Schildsturm (7, vom Streitkolben-Baum verschoben) ===
+                ["Tier6_GuardianHeart_Cooldown"] = "Tier 6-5: [Schildsturm] Abklingzeit (Sek)",
+                ["Tier6_GuardianHeart_StaminaCost"] = "Tier 6-5: [Schildsturm] Ausdauerkosten",
+                ["Tier6_ShieldCharge_DamagePercent"] = "Tier 6-5: [Schildsturm] Blockschaden (%)",
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] = "Tier 6-5: [Schildsturm] Mehrfachtreffer-Schaden (%)",
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] = "Tier 6-5: [Schildsturm] Mehrfachtreffer-Levelbonus (%)",
+                ["Tier6_GuardianHeart_RequiredPoints"] = "Tier 6-5: [Schildsturm] Benötigte Punkte",
+                ["Tier6_ShieldCharge_LevelBonus"] = "Tier 6-5: [Schildsturm] Levelbonus (%)",
 
                 // ============================================
                 // Produktions-Skilltree - 22 Schlüssel

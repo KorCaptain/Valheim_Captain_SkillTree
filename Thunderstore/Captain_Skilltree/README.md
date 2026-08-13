@@ -22,7 +22,7 @@
 ### 🏃 Rush Slash (Sword / G)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/Rush.gif)
 
-### 🛡️ Parry Rush (Sword / H)
+### ⚔️ Whirlwind Slash / 회오리베기 (Sword / H)
 ![Demo](https://raw.githubusercontent.com/KorCaptain/Valheim_Captain_SkillTree/main/images/parry.gif)
 
 ### 🏹 Explosive Arrow (Bow / Z)
@@ -93,6 +93,13 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 
 ### 스킬트리 UI 편의 기능
 - **탈출 버튼**: 스킬트리 UI에서 클릭 한 번으로 즉시 닫기 가능
+- **스킬 아이콘 HUD**: 화면 크기에 따라 자동 크기 조절, 단축키 표시
+- **상체 회피모션**: 회피 시 상체가 회피 방향으로 자연스럽게 기울어지는 모션
+
+### 막기훈련 (Block Training)
+- **방어 전문가** 트리 보유 스킬
+- 패링 성공 시 자동 반격: 막기력 × 300% 타격 데미지 + 4m 밀어내기
+- 쿨타임 없음, 스태미나 소모 없음 (근접무기 또는 방패 착용 시 발동)
 
 ### 게임 난이도 선택
 - 첫 설치 시 팝업 창으로 난이도 선택 (Easy / Normal / Hard / Veryhard)
@@ -138,7 +145,7 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 |----|------|------|
 | **Z** | 원거리 액티브 | 석궁/활/지팡이 중 택1 |
 | **G** | 근접 메인 액티브 | 
-| **H** | 보조 액티브 | 화살비(활), 빙결폭발(석궁), 패링돌격(검), 방패돌진(둔기), 휠윈드(폴암), 스택폭발(단검) 등 |
+| **H** | 보조 액티브 | 화살비(활), 빙결폭발(석궁), 회오리베기(검), 방패돌진(둔기), 휠윈드(폴암), 스택폭발(단검) 등 |
 | **Y** | 직업 액티브 | 7개 직업 중 택1 |
 
 </details>
@@ -152,8 +159,8 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 | 트리 | 설명 | 주요 효과 |
 |------|------|----------|
 | Attack | 공격 전문가 | 데미지+, 크리티컬 확률/데미지 |
-| Speed | 속도 전문가 | 이동속도, 공격속도, 쿨타임 감소 |
-| Defense | 방어 전문가 | 체력, 방어력, 회피율, 재생력 |
+| Speed | 속도 전문가 | 이동속도, 공격속도, 쿨타임 감소 (Lv1~7 성장형) |
+| Defense | 방어 전문가 | 체력, 방어력, 회피율, 재생력, 막기훈련(패링 자동 반격) |
 | Production | 생산 전문가 | 채집 효율, 제작 보너스 |
 
 ### 무기 트리 (Weapon Trees)
@@ -162,24 +169,24 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 | 트리 | 설명 | 액티브 스킬 |
 |------|------|-----------|
 | Bow | 활 전문가 | 폭발화살 (Z키), 화살비 (H키) |
-| Staff | 지팡이 전문가 | 연속시전, 힐 (Z/H키) |
+| Staff | 지팡이 전문가 | 연속시전 (Z키), 힐+범위넉백 (H키) |
 | Crossbow | 석궁 전문가 | 단한발 (Z키), 빙결폭발 (H키) |
 
 **근접**
 | 트리 | 설명 | 액티브 스킬 |
 |------|------|-----------|
 | Knife | 단검 전문가 | 암살자 (G키), 스택폭발 (H키) |
-| Sword | 검 전문가 | 돌진베기 (G키), 패링돌격 (H키) |
+| Sword | 검 전문가 | 돌진베기 (G키), 회오리베기 (H키) |
 | Mace | 둔기 전문가 | 분노의망치 (G키), 방패돌진 (H키) |
-| Spear | 창 전문가 | 꿰뚫기, 연공창 (G/H키) |
+| Spear | 창 전문가 | 꿰뚫기+돌진 (G키), 연공창 (H키), 빠른공격모션 (Tier1, 모션 변경) |
 | Polearm | 폴암 전문가 | 장창제왕 (G키), 휠윈드 (H키) |
 
 ### 직업 트리 (Job Classes)
 | 직업 | 설명 | 액티브 (Y키) | 패시브 |
 |------|------|------------|--------|
-| Archer | 궁수 | 멀티샷 | 점프 높이+, 낙사 감소 |
+| Archer | 궁수 | 멀티샷 | 점프 높이+, 낙사 감소, 화살/볼트 50% 무소모, 스태미나 소모 -15~55% |
 | Mage | 마법사 | 마나폭발 | Eitr 보너스 |
-| Tanker | 탱커 | 전장의 함성 (범위 도발 + 반사 + 피해감소) | 피해감소, 체력+ |
+| Tanker | 탱커 | 전장의 함성 (범위 도발 + 피해 축적 폭발 + 피해감소) | 피해감소, 체력+ |
 | Rogue | 로그 | 암살 | 크리티컬+, 은신 |
 | Berserker | 광전사 | 광전사의 분노 | 체력 낮을수록 데미지+ |
 | Paladin | 성기사 | 신성한 빛 | 힐, 버프 |
@@ -220,9 +227,11 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 
 | 레벨 | 확률 |
 |------|------|
-| Lv3 | 25% |
-| Lv4 | 30% |
-| Lv5 | 35% |
+| Lv1 | 25% |
+| Lv2 | 45% |
+| Lv3 | 65% |
+| Lv4 | 75% |
+| Lv5 | 95% |
 
 **마법부여 종류 - 일반 무기** (공격력/공격속도 1:1):
 
@@ -361,12 +370,47 @@ CaptainSkillTree는 발헤임의 캐릭터 성장을 위한 종합 스킬트리 
 ---
 
 <details>
+<summary>📜 퀘스트 시스템</summary>
+
+### 개요
+바이옴별 채집·처치·보스 처치 퀘스트를 완료하고 코인, 아이템, 특수 보상(테이밍, 영구 스탯 보너스 등)을 획득하세요.
+
+### 여는 방법
+- 스킬트리 UI 내 **퀘스트 버튼** 클릭
+- 탭 인벤토리 화면의 **퀘스트 아이콘** 클릭
+- **Ctrl + J** 단축키 (F1 Config Manager의 "Quest System" 항목에서 변경 가능)
+- 닫기: **ESC** 또는 **Tab**
+
+### 진행 방식
+1. 목표 달성 시 폭죽 VFX와 함께 **"완료"** 상태로 전환 (보상은 자동 지급되지 않음)
+2. 퀘스트 창의 **[보상]** 버튼을 눌러야 실제 보상이 지급되고 **"수령완료"** 상태로 바뀜
+
+### 바이옴별 퀘스트
+목초지 / 검은숲 / 늪지 / 산 / 평원 / 안개숲 / 잿빛땅, 총 7개 바이옴에 채집·처치·보스 처치 퀘스트가 배치되어 있습니다.
+
+### 보상 종류
+- **코인**: 인벤토리에 자리가 있으면 즉시 지급, 없으면 캐릭터 앞에 드롭
+- **아이템**: 퀘스트당 최대 2종류 지정 가능
+- **특수 보상**: 테이밍된 새끼 동물(록스/늑대) 지급, 점프 숙련도·스태미나 최대치·물리/속성 공격력 등 영구 스탯 보너스
+
+### Config로 전체 커스터마이즈
+- F1 ConfigurationManager → **Quest System** 섹션에서 퀘스트별 활성화 여부, 목표 대상/수량, 보상 아이템/수량, 코인 범위까지 전부 조정 가능
+- 관리자가 설정하면 서버에 접속한 모든 클라이언트에 자동 동기화 (재시작 불필요)
+
+</details>
+
+---
+
+<details>
 <summary>🛠️ 관리자 명령어</summary>
+
+> ⚠️ `skillreset`, `skilladd`는 **devcommands** 활성화 필요
 
 | 명령어 | 설명 |
 |--------|------|
-| `skillreset <플레이어이름>` | 플레이어 스킬 초기화 |
+| `skillreset <플레이어이름>` | 플레이어 스킬 초기화 (생산 전문가 스킬 유지) |
 | `skilladd <숫자> <캐릭터이름>` | 스킬 포인트 추가 |
+| `skillconfig sync` | 관리자 Config를 서버에 동기화 및 전체 클라이언트 즉시 적용 |
 
 </details>
 
@@ -508,6 +552,13 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 
 ### Skill Tree UI
 - **Exit Button**: Close the skill tree UI instantly with the button at the **bottom-right corner**
+- **Skill Icon HUD**: Auto-scales with screen size, displays key shortcut labels
+- **Dodge Upper Body Motion**: Natural upper-body lean animation when dodging
+
+### Block Training
+- **Defense Expert** tree skill
+- Successful parry triggers auto-counter: Block Power × 300% blunt damage + 4m knockback
+- No cooldown, no stamina cost (requires melee weapon or shield)
 
 ### Game Difficulty Selection
 - Choose difficulty on first install via popup (Easy / Normal / Hard / Veryhard)
@@ -552,7 +603,7 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 |-----|----------|-------------|
 | **Z** | Ranged Active | Crossbow/Bow/Staff skill (choose 1) |
 | **G** | Melee Main Active | Same weapon tree only |
-| **H** | Sub Active | Arrow Rain (Bow), Freeze Burst (Crossbow), Parry Rush (Sword), Rush Shield (Mace), Whirlwind (Polearm), Stack Burst (Knife), etc. |
+| **H** | Sub Active | Arrow Rain (Bow), Freeze Burst (Crossbow), Whirlwind Slash (Sword), Rush Shield (Mace), Whirlwind (Polearm), Stack Burst (Knife), etc. |
 | **Y** | Job Active | 1 of 7 jobs |
 
 </details>
@@ -566,8 +617,8 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 | Tree | Description | Main Effects |
 |------|-------------|--------------|
 | Attack | Attack Expert | Damage+, Critical Chance/Damage |
-| Speed | Speed Expert | Move Speed, Attack Speed, Cooldown Reduction |
-| Defense | Defense Expert | HP, Armor, Dodge Rate, Regeneration |
+| Speed | Speed Expert | Move Speed, Attack Speed, Cooldown Reduction (Lv1~7 scaling) |
+| Defense | Defense Expert | HP, Armor, Dodge Rate, Regeneration, Block Training (parry auto-counter) |
 | Production | Production Expert | Gathering Efficiency, Crafting Bonuses |
 
 ### Weapon Trees
@@ -576,24 +627,24 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 | Tree | Description | Active Skill |
 |------|-------------|--------------|
 | Bow | Bow Expert | Explosive Arrow (Z), Arrow Rain (H) |
-| Staff | Staff Expert | Double Cast, Heal (Z/H) |
+| Staff | Staff Expert | Double Cast (Z), Heal + AOE Knockback (H) |
 | Crossbow | Crossbow Expert | Single Shot (Z), Freeze Burst (H) |
 
 **Melee**
 | Tree | Description | Active Skill |
 |------|-------------|--------------|
-| Sword | Sword Expert | Rush Slash (G), Parry Rush (H) |
+| Sword | Sword Expert | Rush Slash (G), Whirlwind Slash (H) |
 | Knife | Knife Expert | Assassin (G), Stack Burst (H) |
-| Spear | Spear Expert | Penetrate, Combo Spear (G/H) |
+| Spear | Spear Expert | Penetrate + Charge (G), Combo Spear (H), Quick Attack Motion (Tier1, animation swap) |
 | Polearm | Polearm Expert | Polearm King (G), Whirlwind (H) |
 | Mace | Mace Expert | Fury Hammer (G), Rush Shield (H) |
 
 ### Job Classes
 | Job | Description | Active (Y) | Passive |
 |-----|-------------|------------|---------|
-| Archer | Bowman | Multi-Shot | Jump Height+, Fall Damage- |
+| Archer | Bowman | Multi-Shot | Jump Height+, Fall Damage-, 50% chance no arrow/bolt consumed, Stamina cost -15~55% |
 | Mage | Wizard | Mana Burst | Eitr Bonus |
-| Tanker | Tank | War Cry (AOE Taunt + Reflect + Damage Reduction) | Damage Reduction, HP+ |
+| Tanker | Tank | War Cry (AOE Taunt + Damage Absorption Explosion + Damage Reduction) | Damage Reduction, HP+ |
 | Rogue | Assassin | Assassination | Critical+, Stealth |
 | Berserker | Berserker | Berserker Rage | Lower HP = Higher Damage |
 | Paladin | Holy Knight | Holy Light | Heal, Buffs |
@@ -634,9 +685,11 @@ CaptainSkillTree is a comprehensive skill tree mod for Valheim that adds Expert 
 
 | Level | Chance |
 |-------|--------|
-| Lv3 | 25% |
-| Lv4 | 30% |
-| Lv5 | 35% |
+| Lv1 | 25% |
+| Lv2 | 45% |
+| Lv3 | 65% |
+| Lv4 | 75% |
+| Lv5 | 95% |
 
 **Weapon Enchants** (50/50 chance each):
 
@@ -771,12 +824,47 @@ To increase Bow Crit max values and make it appear twice as often as Weapon Dama
 ---
 
 <details>
+<summary>📜 Quest System</summary>
+
+### Overview
+Complete biome-specific gather, monster-kill, and boss-kill quests to earn coins, items, and special rewards (taming animals, permanent stat bonuses, etc.).
+
+### How to Open
+- Click the **Quest button** inside the Skill Tree UI
+- Click the **Quest icon** on the Tab-inventory screen
+- **Ctrl + J** shortcut (rebindable in the F1 Config Manager under "Quest System")
+- Close with **ESC** or **Tab**
+
+### How It Works
+1. Reaching a quest's goal plays a confetti VFX and marks it **"Completed"** (rewards are NOT granted automatically)
+2. Press the **[Claim]** button in the Quest window to actually receive the reward and mark it **"Claimed"**
+
+### Quests by Biome
+Meadows / Black Forest / Swamp / Mountain / Plains / Mistlands / Ashlands — all 7 biomes have their own set of gather, kill, and boss-kill quests.
+
+### Reward Types
+- **Coins**: Granted straight to inventory if there's room, otherwise dropped in front of your character
+- **Items**: Up to 2 item rewards per quest
+- **Special Rewards**: A tamed baby animal (Lox calf / Wolf cub), or a permanent stat bonus (Jump Proficiency, Max Stamina, Physical/Elemental Damage, etc.)
+
+### Fully Customizable via Config
+- F1 ConfigurationManager → **Quest System** section lets you adjust every quest's enabled state, target/amount, item rewards/amounts, and coin range
+- Admin changes sync automatically to every connected client — no server restart needed
+
+</details>
+
+---
+
+<details>
 <summary>🛠️ Admin Commands</summary>
+
+> ⚠️ `skillreset`, `skilladd` require **devcommands** to be active
 
 | Command | Description |
 |---------|-------------|
-| `skillreset <player>` | Reset player's skills |
-| `skilladd <amount> <player>` | Add skill points to player |
+| `skillreset <player>` | Reset player's skills (keeps Production Expert skills) |
+| `skilladd <amount> <player>` | Add bonus skill points to player |
+| `skillconfig sync` | Push admin Config to server and broadcast to all clients instantly |
 
 </details>
 

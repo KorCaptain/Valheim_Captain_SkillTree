@@ -446,7 +446,8 @@ namespace CaptainSkillTree.SkillTree
             {
                 foreach (var ch in Character.GetAllCharacters())
                 {
-                    if (ch == null || ch.IsPlayer() || ch.IsDead()) continue;
+                    if (ch == null || ch.IsDead() || ch.IsTamed()) continue;
+                    if (ch.IsPlayer() && !(ch.IsPVPEnabled() && player.IsPVPEnabled())) continue;
                     float dist = Vector3.Distance(ch.transform.position, aimSpot);
                     if (dist < 3f && dist < minDist) { minDist = dist; nearest = ch; }
                 }
@@ -460,7 +461,8 @@ namespace CaptainSkillTree.SkillTree
 
             foreach (var ch in Character.GetAllCharacters())
             {
-                if (ch == null || ch.IsPlayer() || ch.IsDead()) continue;
+                if (ch == null || ch.IsDead() || ch.IsTamed()) continue;
+                if (ch.IsPlayer() && !(ch.IsPVPEnabled() && player.IsPVPEnabled())) continue;
                 Vector3 toTarget = ch.GetEyePoint() - playerEye;
                 float dist = toTarget.magnitude;
                 if (dist > 40f) continue;
@@ -553,7 +555,11 @@ namespace CaptainSkillTree.SkillTree
             {
                 var sfx = ZNetScene.instance?.GetPrefab("sfx_StaffLightning_charge");
                 if (sfx != null)
-                    UnityEngine.Object.Instantiate(sfx, player.transform.position, Quaternion.identity);
+                {
+                    var sfxObj = UnityEngine.Object.Instantiate(sfx, player.transform.position, Quaternion.identity);
+                    foreach (var src in sfxObj.GetComponentsInChildren<AudioSource>(true))
+                        src.volume *= 3f;
+                }
             }
             catch (Exception ex)
             {

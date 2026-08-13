@@ -119,6 +119,15 @@ namespace CaptainSkillTree.SkillTree
         }
         
         /// <summary>
+        /// 플레이어 정리 시 호출 - 이중 점프 착지 시간 추적 상태 제거 (메모리 누수 방지)
+        /// </summary>
+        public static void CleanupDoubleJumpOnDeath(Player player)
+        {
+            if (player == null) return;
+            lastGroundTime.Remove(player);
+        }
+
+        /// <summary>
         /// 착지 시 콤보 리셋 (안전장치)
         /// </summary>
         [HarmonyPatch(typeof(Character), "UpdateGroundContact")]

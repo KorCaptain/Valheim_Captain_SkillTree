@@ -190,6 +190,32 @@ namespace CaptainSkillTree.Localization
                 "Magia explosiva poderosa para eliminar inimigos.\n" +
                 "Valor recomendado: 250-350%",
 
+                ["Mage_Fire_Rain_Radius"] =
+                "【Raio de Queda da Chuva de Fogo (m)】\n" +
+                "Raio ao redor do alvo onde 30 bolas de fogo caem.\n" +
+                "Valor recomendado: 6-10 m",
+
+                ["Mage_Fire_Rain_Impact_Radius"] =
+                "【Raio de Dano de Impacto da Bola de Fogo (m)】\n" +
+                "Raio de dano ao atingir cada bola de fogo.\n" +
+                "Valor recomendado: 2-4 m",
+
+                ["Mage_Fire_Rain_Projectile_Count"] =
+                "【Bolas de Fogo por Rajada】\n" +
+                "Número de bolas de fogo que caem por rajada.\n" +
+                "Total de 2 rajadas (1ª rajada -> 1 seg. -> 2ª rajada).\n" +
+                "Valor recomendado: 15-25",
+
+                ["Mage_Dungeon_Buff_Damage_Bonus"] =
+                "【Bônus de Dano do Buff de Masmorra (%)】\n" +
+                "Aumento de dano do autoaperfeiçoamento lançado dentro de masmorras em vez da Chuva de Fogo.\n" +
+                "Valor recomendado: 20-30%",
+
+                ["Mage_Dungeon_Buff_Duration"] =
+                "【Duração do Buff de Masmorra (seg)】\n" +
+                "Por quanto tempo o buff substituto dura dentro da masmorra.\n" +
+                "Valor recomendado: 8-12 seg",
+
                 ["Mage_Cooldown"] =
                 "【Recarga (seg)】\n" +
                 "Tempo de espera para reutilizar a habilidade.\n" +
@@ -718,27 +744,32 @@ namespace CaptainSkillTree.Localization
                 "Padrão: 20",
 
                 // === Producer Lv1 ===
-                ["Producer_EnchantChance_Lv1"] = "【Chance de Encantamento Lv1 (%)】\nChance de encantar item fabricado em Lv1.\nPadrão: 0%",
+                ["Producer_EnchantChance_Lv1"] = "【Chance de Encantamento Lv1 (%)】\nChance de encantar item fabricado em Lv1.\nPadrão: 45%",
+                ["Producer_ElementalProcChance_Lv1"] = "【Chance de Dano Elemental Lv1 (%)】\nChance de um encantamento elemental Lv1 (Fogo/Espírito/Veneno/Raio/Gelo) ativar a cada acerto.\nPadrão: 25%",
 
                 // === Producer Lv2 ===
                 ["Producer_Durability_Lv2"] = "【Bônus de Durabilidade Lv2 (%)】\nBônus de durabilidade em itens fabricados em Lv2.\nPadrão: 10%",
                 ["Producer_MaterialReduction_Lv2"] = "【Redução de Material Lv2 (%)】\nMateriais economizados por fabricação em Lv2.\nPadrão: 10%",
-                ["Producer_EnchantChance_Lv2"] = "【Chance de Encantamento Lv2 (%)】\nChance de encantar item fabricado em Lv2.\nPadrão: 0%",
+                ["Producer_EnchantChance_Lv2"] = "【Chance de Encantamento Lv2 (%)】\nChance de encantar item fabricado em Lv2.\nPadrão: 55%",
+                ["Producer_ElementalProcChance_Lv2"] = "【Chance de Dano Elemental Lv2 (%)】\nChance de um encantamento elemental Lv2 ativar a cada acerto.\nPadrão: 30%",
 
                 // === Producer Lv3 ===
                 ["Producer_Durability_Lv3"] = "【Bônus de Durabilidade Lv3 (%)】\nBônus de durabilidade em itens fabricados em Lv3.\nPadrão: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【Redução de Material Lv3 (%)】\nMateriais economizados por fabricação em Lv3.\nPadrão: 15%",
                 ["Producer_EnchantChance_Lv3"] = "【Chance de Encantamento Lv3 (%)】\nChance de encantar item fabricado em Lv3.\nPadrão: 25%",
+                ["Producer_ElementalProcChance_Lv3"] = "【Chance de Dano Elemental Lv3 (%)】\nChance de um encantamento elemental Lv3 ativar a cada acerto.\nPadrão: 35%",
 
                 // === Producer Lv4 ===
                 ["Producer_Durability_Lv4"] = "【Bônus de Durabilidade Lv4 (%)】\nBônus de durabilidade em itens fabricados em Lv4.\nPadrão: 20%",
                 ["Producer_MaterialReduction_Lv4"] = "【Redução de Material Lv4 (%)】\nMateriais economizados por fabricação em Lv4.\nPadrão: 20%",
-                ["Producer_EnchantChance_Lv4"] = "【Chance de Encantamento Lv4 (%)】\nChance de encantar item fabricado em Lv4.\nPadrão: 30%",
+                ["Producer_EnchantChance_Lv4"] = "【Chance de Encantamento Lv4 (%)】\nChance de encantar item fabricado em Lv4.\nPadrão: 80%",
+                ["Producer_ElementalProcChance_Lv4"] = "【Chance de Dano Elemental Lv4 (%)】\nChance de um encantamento elemental Lv4 ativar a cada acerto.\nPadrão: 40%",
 
                 // === Producer Lv5 ===
                 ["Producer_Durability_Lv5"] = "【Bônus de Durabilidade Lv5 (%)】\nBônus de durabilidade em itens fabricados em Lv5.\nPadrão: 30%",
                 ["Producer_MaterialReduction_Lv5"] = "【Redução de Material Lv5 (%)】\nMateriais economizados por fabricação em Lv5.\nPadrão: 30%",
                 ["Producer_EnchantChance_Lv5"] = "【Chance de Encantamento Lv5 (%)】\nChance de encantar item fabricado em Lv5.\nPadrão: 35%",
+                ["Producer_ElementalProcChance_Lv5"] = "【Chance de Dano Elemental Lv5 (%)】\nChance de um encantamento elemental Lv5 ativar a cada acerto.\nPadrão: 45%",
 
                 ["Job_Lv1_Cost"] = "【Custo de Moedas Lv1 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv1.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 1000",
                 ["Job_Lv2_Cost"] = "【Custo de Moedas Lv2 de Profissão】\nMoedas consumidas ao subir qualquer profissão para Lv2.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 2000",
@@ -749,6 +780,310 @@ namespace CaptainSkillTree.Localization
                 ["Job_Reset_Cost"]    = "【Custo de Reset de Profissão】\nMoedas consumidas ao resetar pontos de habilidade de profissão.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 1000",
                 ["Active_Reset_Cost"] = "【Custo de Reset Ativo】\nMoedas consumidas ao resetar pontos de habilidade ativa.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 500",
                 ["Passive_Reset_Cost"]= "【Custo de Reset Passivo】\nMoedas consumidas ao resetar pontos de habilidade passiva.\nSomente admin do servidor, sincronizado com clientes.\nPadrão: 100",
+
+                ["HotKey_Y"] =
+                "【Tecla de Habilidade de Profissão】\n" +
+                "Tecla para ativar a habilidade ativa da sua profissão.\n" +
+                "Padrão: Y",
+
+                ["HotKey_R"] =
+                "【Tecla de Habilidade à Distância】\n" +
+                "Tecla para ativar habilidades ativas à distância (Disparo Múltiplo, Conjuração Dupla, etc.).\n" +
+                "Padrão: R",
+
+                ["HotKey_G"] =
+                "【Tecla de Habilidade Principal Corpo a Corpo】\n" +
+                "Tecla para ativar habilidades ativas principais corpo a corpo (Corte Avançado, etc.).\n" +
+                "Padrão: G",
+
+                ["HotKey_H"] =
+                "【Tecla de Habilidade Secundária】\n" +
+                "Tecla para ativar habilidades ativas secundárias (Lança Combo, Coração do Guardião, etc.).\n" +
+                "Padrão: H",
+
+                ["QuestToggleKey"] =
+                "【Atalho do Painel de Missões】\n" +
+                "Atalho para abrir e fechar o painel de missões.\n" +
+                "Padrão: Ctrl+J",
+
+                ["HUD_IconSize"] =
+                "【Tamanho do Ícone de Habilidade】\n" +
+                "Tamanho dos ícones exibidos no HUD de habilidades ativas.\n" +
+                "Padrão: 62",
+
+                ["HUD_PosX"] =
+                "【Posição X do HUD de Ícone de Habilidade】\n" +
+                "Posição horizontal do HUD de habilidades ativas.\n" +
+                "Padrão: 306 (a partir da esquerda da tela)",
+
+                ["HUD_PosY"] =
+                "【Posição Y do HUD de Ícone de Habilidade】\n" +
+                "Posição vertical do HUD de habilidades ativas.\n" +
+                "Padrão: 139 (a partir da base da tela)",
+
+                ["Archer_Attack_StaminaReduction_Lv1"] =
+                "【Lv1 Passivo: Redução de Resistência em Ataque (%)】\n" +
+                "Reduz o consumo de resistência ao atacar no Arqueiro Lv1.\n" +
+                "Aplica-se a todos os ataques de arco/besta/cajado.\n" +
+                "Valor recomendado: 10-20%",
+
+                ["Archer_Attack_StaminaReduction_Lv2"] =
+                "【Lv2 Passivo: Redução de Resistência em Ataque (%)】\n" +
+                "Reduz o consumo de resistência ao atacar no Arqueiro Lv2.\n" +
+                "Valor recomendado: 20-30%",
+
+                ["Archer_Attack_StaminaReduction_Lv3"] =
+                "【Lv3 Passivo: Redução de Resistência em Ataque (%)】\n" +
+                "Reduz o consumo de resistência ao atacar no Arqueiro Lv3.\n" +
+                "Valor recomendado: 30-40%",
+
+                ["Archer_Attack_StaminaReduction_Lv4"] =
+                "【Lv4 Passivo: Redução de Resistência em Ataque (%)】\n" +
+                "Reduz o consumo de resistência ao atacar no Arqueiro Lv4.\n" +
+                "Valor recomendado: 40-50%",
+
+                ["Archer_Attack_StaminaReduction_Lv5"] =
+                "【Lv5 Passivo: Redução de Resistência em Ataque (%)】\n" +
+                "Reduz o consumo de resistência ao atacar no Arqueiro Lv5.\n" +
+                "Valor recomendado: 50-60%",
+
+                ["Archer_AmmoSaveChance"] =
+                "【Chance de Economizar Flecha/Virote (%)】\n" +
+                "Chance de não consumir uma flecha ou virote ao atacar.\n" +
+                "Em 50, em média metade das flechas são economizadas.\n" +
+                "Valor recomendado: 30-60%",
+
+                ["Archer_TameHeal_PerLevel"] =
+                "【Passiva: Cura de Animal Domesticado (HP/s)】\n" +
+                "Cura animais domesticados próximos a cada segundo em Nível do Arqueiro × este valor.\n" +
+                "No Lv1 cura este valor, no Lv5 cura 5x este valor.\n" +
+                "Valor recomendado: 1",
+
+                ["Archer_TameHeal_Range"] =
+                "【Passiva: Alcance da Cura de Animal Domesticado (m)】\n" +
+                "Animais domesticados dentro desta distância do Arqueiro recebem a cura.\n" +
+                "Valor recomendado: 8-15",
+
+                ["Mage_Lv1_Cooldown"] =
+                "【Recarga Lv1 (seg)】\n" +
+                "Tempo de espera para reativar a habilidade no Mago Lv1.\n" +
+                "Valor recomendado: 120 seg",
+
+                ["Mage_Lv2_Cooldown"] =
+                "【Recarga Lv2 (seg)】\n" +
+                "Tempo de espera para reativar a habilidade no Mago Lv2.\n" +
+                "Valor recomendado: 110 seg",
+
+                ["Mage_Lv3_Cooldown"] =
+                "【Recarga Lv3 (seg)】\n" +
+                "Tempo de espera para reativar a habilidade no Mago Lv3.\n" +
+                "Valor recomendado: 100 seg",
+
+                ["Mage_Lv4_Cooldown"] =
+                "【Recarga Lv4 (seg)】\n" +
+                "Tempo de espera para reativar a habilidade no Mago Lv4.\n" +
+                "Valor recomendado: 90 seg",
+
+                ["Mage_Lv5_Cooldown"] =
+                "【Recarga Lv5 (seg)】\n" +
+                "Tempo de espera para reativar a habilidade no Mago Lv5.\n" +
+                "Valor recomendado: 80 seg",
+
+                ["Mage_Lv1_AOE_Max_Targets"] =
+                "【Número Máximo de Alvos Lv1】\n" +
+                "Número máximo de monstros atingidos simultaneamente no Mago Lv1. Selecionados por proximidade.\n" +
+                "Valor recomendado: 6",
+
+                ["Mage_Lv2_AOE_Max_Targets"] =
+                "【Número Máximo de Alvos Lv2】\n" +
+                "Número máximo de monstros atingidos simultaneamente no Mago Lv2.\n" +
+                "Valor recomendado: 7",
+
+                ["Mage_Lv3_AOE_Max_Targets"] =
+                "【Número Máximo de Alvos Lv3】\n" +
+                "Número máximo de monstros atingidos simultaneamente no Mago Lv3.\n" +
+                "Valor recomendado: 8",
+
+                ["Mage_Lv4_AOE_Max_Targets"] =
+                "【Número Máximo de Alvos Lv4】\n" +
+                "Número máximo de monstros atingidos simultaneamente no Mago Lv4.\n" +
+                "Valor recomendado: 9",
+
+                ["Mage_Lv5_AOE_Max_Targets"] =
+                "【Número Máximo de Alvos Lv5】\n" +
+                "Número máximo de monstros atingidos simultaneamente no Mago Lv5.\n" +
+                "Valor recomendado: 10",
+
+                ["Mage_Lv1_Elemental_Resistance"] =
+                "【Resistência Elemental Lv1 (%)】\n" +
+                "Resistência elemental do Mago Lv1. Reduz Fogo/Gelo/Raio/Veneno/Espírito.\n" +
+                "Valor recomendado: 5%",
+
+                ["Mage_Lv2_Elemental_Resistance"] =
+                "【Resistência Elemental Lv2 (%)】\n" +
+                "Resistência elemental do Mago Lv2. Inclui +1 conjuração extra (em 30s).\n" +
+                "Valor recomendado: 7%",
+
+                ["Mage_Lv3_Elemental_Resistance"] =
+                "【Resistência Elemental Lv3 (%)】\n" +
+                "Resistência elemental do Mago Lv3.\n" +
+                "Valor recomendado: 9%",
+
+                ["Mage_Lv4_Elemental_Resistance"] =
+                "【Resistência Elemental Lv4 (%)】\n" +
+                "Resistência elemental do Mago Lv4.\n" +
+                "Valor recomendado: 12%",
+
+                ["Mage_Lv5_Elemental_Resistance"] =
+                "【Resistência Elemental Lv5 (%)】\n" +
+                "Resistência elemental do Mago Lv5.\n" +
+                "Valor recomendado: 15%",
+
+                ["Mage_Lv1_Damage_Multiplier"] =
+                "【Multiplicador de Dano AOE Lv1 (%)】\n" +
+                "Multiplicador de dano em área do Mago Lv1.\n" +
+                "Valor recomendado: 70%",
+
+                ["Mage_Lv2_Damage_Multiplier"] =
+                "【Multiplicador de Dano AOE Lv2 (%)】\n" +
+                "Multiplicador de dano em área do Mago Lv2.\n" +
+                "Valor recomendado: 90%",
+
+                ["Mage_Lv3_Damage_Multiplier"] =
+                "【Multiplicador de Dano AOE Lv3 (%)】\n" +
+                "Multiplicador de dano em área do Mago Lv3.\n" +
+                "Valor recomendado: 110%",
+
+                ["Mage_Lv4_Damage_Multiplier"] =
+                "【Multiplicador de Dano AOE Lv4 (%)】\n" +
+                "Multiplicador de dano em área do Mago Lv4.\n" +
+                "Valor recomendado: 130%",
+
+                ["Mage_Lv5_Damage_Multiplier"] =
+                "【Multiplicador de Dano AOE Lv5 (%)】\n" +
+                "Multiplicador de dano em área do Mago Lv5.\n" +
+                "Valor recomendado: 150%",
+
+                ["Tanker_Explosion_Radius"] =
+                "【Raio de Explosão da Provocação (m)】\n" +
+                "Raio do efeito de explosão quando a habilidade de provocação do Tanque é ativada.\n" +
+                "Valor recomendado: 6-12m",
+
+                ["Tanker_BlockPower_Multiplier"] =
+                "【Multiplicador de Poder de Bloqueio do Escudo】\n" +
+                "Multiplicador aplicado ao poder de bloqueio do escudo com base no nível de profissão do Tanque.\n" +
+                "Valor recomendado: 1.0-2.0",
+
+                ["Rogue_Poison_Range"] =
+                "【Alcance da Explosão de Veneno (m)】\n" +
+                "Raio de cada VFX de explosão de veneno.\n" +
+                "Valor recomendado: 8-15m",
+
+                ["Rogue_Poison_InstantDamage"] =
+                "【Dano de Veneno Instantâneo】\n" +
+                "Dano de veneno imediato causado por cada ativação do VFX.\n" +
+                "Valor recomendado: 8-20",
+
+                ["Rogue_Poison_DotDamage"] =
+                "【Dano de Veneno por Segundo (DoT)】\n" +
+                "Dano por segundo do efeito de veneno contínuo.\n" +
+                "Valor recomendado: 3-8",
+
+                ["Rogue_Poison_DotDuration"] =
+                "【Duração do Veneno Contínuo (seg)】\n" +
+                "Duração do efeito de dano de veneno ao longo do tempo.\n" +
+                "Valor recomendado: 8-15 seg",
+
+                ["Rogue_Poison_VFXCount"] =
+                "【Quantidade de Explosões de Veneno】\n" +
+                "Número de vezes que o VFX de explosão de veneno se repete.\n" +
+                "Valor recomendado: 6-10",
+
+                ["Rogue_Poison_VFXInterval"] =
+                "【Intervalo das Explosões de Veneno (seg)】\n" +
+                "Tempo entre cada explosão de veneno.\n" +
+                "Valor recomendado: 0.3-1.0 seg",
+
+                ["Rogue_Lv2_Cooldown"] = "【Recarga do Golpe das Sombras Lv2 (seg)】\nRecomendado: 25-30s",
+
+                ["Rogue_Lv3_Cooldown"] = "【Recarga do Golpe das Sombras Lv3 (seg)】\nRecomendado: 22-28s",
+
+                ["Rogue_Lv4_Cooldown"] = "【Recarga do Golpe das Sombras Lv4 (seg)】\nRecomendado: 20-26s",
+
+                ["Rogue_Lv5_Cooldown"] = "【Recarga do Golpe das Sombras Lv5 (seg)】\nRecomendado: 18-24s",
+
+                ["Rogue_Lv2_AttackBonus"] = "【Buff de Ataque Lv2 (%)】\nRecomendado: 35-50%",
+
+                ["Rogue_Lv3_AttackBonus"] = "【Buff de Ataque Lv3 (%)】\nRecomendado: 40-55%",
+
+                ["Rogue_Lv4_AttackBonus"] = "【Buff de Ataque Lv4 (%)】\nRecomendado: 45-60%",
+
+                ["Rogue_Lv5_AttackBonus"] = "【Buff de Ataque Lv5 (%)】\nRecomendado: 50-65%",
+
+                ["Rogue_Lv2_BuffDuration"] = "【Duração do Buff Lv2 (seg)】\nRecomendado: 8-12s",
+
+                ["Rogue_Lv3_BuffDuration"] = "【Duração do Buff Lv3 (seg)】\nRecomendado: 9-13s",
+
+                ["Rogue_Lv4_BuffDuration"] = "【Duração do Buff Lv4 (seg)】\nRecomendado: 10-14s",
+
+                ["Rogue_Lv5_BuffDuration"] = "【Duração do Buff Lv5 (seg)】\nRecomendado: 11-15s",
+
+                ["Rogue_Lv2_PoisonBlasts"] = "【Quantidade de Explosões de Veneno Lv2】\nRecomendado: 8-12",
+
+                ["Rogue_Lv3_PoisonBlasts"] = "【Quantidade de Explosões de Veneno Lv3】\nRecomendado: 9-13",
+
+                ["Rogue_Lv4_PoisonBlasts"] = "【Quantidade de Explosões de Veneno Lv4】\nRecomendado: 10-14",
+
+                ["Rogue_Lv5_PoisonBlasts"] = "【Quantidade de Explosões de Veneno Lv5】\nRecomendado: 11-15",
+
+                ["Rogue_Lv2_PoisonInstant"] = "【Dano de Veneno Instantâneo Lv2】\nRecomendado: 10-15",
+
+                ["Rogue_Lv3_PoisonInstant"] = "【Dano de Veneno Instantâneo Lv3】\nRecomendado: 12-18",
+
+                ["Rogue_Lv4_PoisonInstant"] = "【Dano de Veneno Instantâneo Lv4】\nRecomendado: 14-20",
+
+                ["Rogue_Lv5_PoisonInstant"] = "【Dano de Veneno Instantâneo Lv5】\nRecomendado: 16-25",
+
+                ["Rogue_Lv2_PoisonDot"] = "【Dano de Veneno por Segundo Lv2】\nRecomendado: 5-8",
+
+                ["Rogue_Lv3_PoisonDot"] = "【Dano de Veneno por Segundo Lv3】\nRecomendado: 6-9",
+
+                ["Rogue_Lv4_PoisonDot"] = "【Dano de Veneno por Segundo Lv4】\nRecomendado: 7-10",
+
+                ["Rogue_Lv5_PoisonDot"] = "【Dano de Veneno por Segundo Lv5】\nRecomendado: 8-12",
+
+                ["Rogue_ShadowStrike_Charges"] = "【Cargas Base do Golpe das Sombras】\nNúmero base de cargas disponíveis.\nRecomendado: 1",
+
+                ["Rogue_Lv5_BonusCharges"] = "【Cargas Bônus Lv5】\nCargas extras desbloqueadas no Lv5.\nRecomendado: 1",
+
+                ["Rogue_Lv2_AttackSpeed"] = "【Bônus de Velocidade de Ataque Lv2 (%)】\nRecomendado: 10-15%",
+
+                ["Rogue_Lv3_AttackSpeed"] = "【Bônus de Velocidade de Ataque Lv3 (%)】\nRecomendado: 12-18%",
+
+                ["Rogue_Lv4_AttackSpeed"] = "【Bônus de Velocidade de Ataque Lv4 (%)】\nRecomendado: 14-20%",
+
+                ["Rogue_Lv5_AttackSpeed"] = "【Bônus de Velocidade de Ataque Lv5 (%)】\nRecomendado: 16-22%",
+
+                ["Rogue_Lv2_StaminaReduction"] = "【Redução de Resistência Lv2 (%)】\nRecomendado: 15-20%",
+
+                ["Rogue_Lv3_StaminaReduction"] = "【Redução de Resistência Lv3 (%)】\nRecomendado: 17-22%",
+
+                ["Rogue_Lv4_StaminaReduction"] = "【Redução de Resistência Lv4 (%)】\nRecomendado: 19-25%",
+
+                ["Rogue_Lv5_StaminaReduction"] = "【Redução de Resistência Lv5 (%)】\nRecomendado: 22-30%",
+
+                ["Rogue_Lv1_MoveSpeed"] = "【Bônus de Velocidade de Movimento Lv1 (%)】\nRecomendado: 3-7%",
+
+                ["Rogue_Lv2_MoveSpeed"] = "【Bônus de Velocidade de Movimento Lv2 (%)】\nRecomendado: 5-10%",
+
+                ["Rogue_Lv3_MoveSpeed"] = "【Bônus de Velocidade de Movimento Lv3 (%)】\nRecomendado: 7-12%",
+
+                ["Rogue_Lv4_MoveSpeed"] = "【Bônus de Velocidade de Movimento Lv4 (%)】\nRecomendado: 10-15%",
+
+                ["Rogue_Lv5_MoveSpeed"] = "【Bônus de Velocidade de Movimento Lv5 (%)】\nRecomendado: 12-18%",
+
+                ["Producer_Durability_Lv1"] = "【Bônus de Durabilidade de Item Fabricado Lv1 (%)】\nBônus de durabilidade de itens fabricados no Lv1.\nPadrão: 50%",
+
             };
         }
     }

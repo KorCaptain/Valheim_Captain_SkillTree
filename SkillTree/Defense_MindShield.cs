@@ -54,8 +54,8 @@ namespace CaptainSkillTree.SkillTree
                 int min = Mathf.FloorToInt(remaining / 60f);
                 int sec = Mathf.FloorToInt(remaining % 60f);
                 string msg = min > 0
-                    ? L.Get("mind_shield_cooldown") + $" ({min}분 {sec}초)"
-                    : L.Get("mind_shield_cooldown") + $" ({sec}초)";
+                    ? L.Get("mind_shield_cooldown") + " " + string.Format(L.Get("time_suffix_min_sec_fmt"), min, sec)
+                    : L.Get("mind_shield_cooldown") + " " + string.Format(L.Get("time_suffix_sec_fmt"), sec);
                 SkillEffect.DrawFloatingText(player, msg, Color.yellow);
                 return;
             }
@@ -142,6 +142,21 @@ namespace CaptainSkillTree.SkillTree
                 catch { }
             }
             _shieldVfx.Remove(player);
+        }
+
+        /// <summary>
+        /// 플레이어 사망/접속종료 시 마인드쉴드 관련 static Dictionary 전체 정리
+        /// (JobSkills.CleanupAllJobSkillsOnDeath에서 호출 - 다른 액티브 스킬과 동일한 패턴)
+        /// </summary>
+        public static void CleanupOnDeath(Player player)
+        {
+            if (player == null) return;
+            StopExpiryCoroutine(player);
+            RemoveShieldVFX(player);
+            _shieldActive.Remove(player);
+            _shieldHp.Remove(player);
+            _shieldExpiry.Remove(player);
+            _shieldMaxHp.Remove(player);
         }
 
         // === VFX ===

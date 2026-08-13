@@ -93,7 +93,8 @@ namespace CaptainSkillTree.SkillTree
                     .Where(p => p != null &&
                                p != caster &&  // 시전자 항상 제외 (객체 비교)
                                Vector3.Distance(p.transform.position, casterPos) <= healRange &&
-                               !p.IsDead())
+                               !p.IsDead() &&
+                               IsHealAllowed(caster, p))
                     .ToList();
 
                 int healedCount = 0;
@@ -110,9 +111,17 @@ namespace CaptainSkillTree.SkillTree
                         // 개별 힐 이펙트: buff_03a_aura 왼쪽 어깨 / 머리 / 오른쪽 어깨
                         try
                         {
-                            SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a_aura", 2.5f, new Vector3(-0.3f, 1.5f, 0f));
-                            SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a_aura", 2.5f, new Vector3(0f, 1.8f, 0f));
-                            SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a_aura", 2.5f, new Vector3(0.3f, 1.5f, 0f));
+                            var leftVfx = SimpleVFX.PlayOnPlayer(targetPlayer, "buff_03a_aura", 2.5f, new Vector3(-0.3f, 1.5f, 0f));
+                            if (leftVfx != null)
+                            {
+                                var headVfx = UnityEngine.Object.Instantiate(leftVfx, targetPlayer.transform);
+                                headVfx.transform.localPosition = new Vector3(0f, 1.8f, 0f);
+                                UnityEngine.Object.Destroy(headVfx, 2.5f);
+
+                                var rightVfx = UnityEngine.Object.Instantiate(leftVfx, targetPlayer.transform);
+                                rightVfx.transform.localPosition = new Vector3(0.3f, 1.5f, 0f);
+                                UnityEngine.Object.Destroy(rightVfx, 2.5f);
+                            }
                         }
                         catch { }
 
@@ -136,11 +145,104 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 Plugin.Log.LogInfo($"[지팡이 힐] 총 {healedCount}명 치료 완료");
+
+                // 번개 속성 범위 데미지
+                ExecuteLightningDamage(caster, casterPos, healRange, healLevel);
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[지팡이 힐] 실행 오류: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// 힐 범위 내 적(몬스터/PvP 플레이어)에게 번개 속성 데미지
+        /// </summary>
+        private static void ExecuteLightningDamage(Player caster, Vector3 pos, float range, int level)
+        {
+            try
+            {
+                float pct = GetLightningDamagePercent(level) / 100f;
+
+                var weapon = caster.GetCurrentWeapon();
+                var baseDmgTypes = weapon != null ? weapon.GetDamage() : new HitData.DamageTypes();
+                float elemBase = baseDmgTypes.m_fire + baseDmgTypes.m_lightning +
+                                 baseDmgTypes.m_frost + baseDmgTypes.m_poison + baseDmgTypes.m_spirit;
+                if (elemBase <= 0f) elemBase = baseDmgTypes.GetTotalDamage();
+                float finalDmg = elemBase * pct;
+
+                if (finalDmg <= 0f) return;
+
+                // 몬스터 타겟
+                var targets = Character.GetAllCharacters()
+                    .Where(c => c != null && !c.IsDead() && !c.IsTamed() &&
+                           (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss) &&
+                           Vector3.Distance(c.transform.position, pos) <= range)
+                    .ToList();
+
+                // PvP 플레이어 타겟 (시전자·타겟 모두 PvP 활성화 시)
+                if (caster.IsPVPEnabled())
+                {
+                    targets.AddRange(Player.GetAllPlayers()
+                        .Where(p => p != null && p != caster && p.IsPVPEnabled() && !p.IsDead() &&
+                               Vector3.Distance(p.transform.position, pos) <= range)
+                        .Cast<Character>());
+                }
+
+                int hitCount = 0;
+                foreach (var enemy in targets)
+                {
+                    try
+                    {
+                        var hit = new HitData();
+                        hit.m_damage.m_lightning = finalDmg;
+                        hit.m_pushForce = 0f;
+                        hit.m_dir = (enemy.transform.position - pos).normalized;
+                        hit.m_point = enemy.GetCenterPoint();
+                        hit.SetAttacker(caster);
+                        enemy.Damage(hit);
+
+                        // 3m 넉백 (magnitude 20f → ~3m, Traverse로 private 필드 접근)
+                        Vector3 knockDir = (enemy.transform.position - pos);
+                        knockDir.y = 0.3f;
+                        knockDir.Normalize();
+                        const float knockMagnitude = 20f;
+                        var traverseEnemy = HarmonyLib.Traverse.Create(enemy);
+                        if (traverseEnemy.Field("m_pushForce").FieldExists())
+                        {
+                            Vector3 cur = (Vector3)traverseEnemy.Field("m_pushForce").GetValue();
+                            if (cur.magnitude < knockMagnitude)
+                                traverseEnemy.Field("m_pushForce").SetValue(knockDir * knockMagnitude);
+                        }
+
+                        // 적중 VFX
+                        try
+                        {
+                            CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer(
+                                "fx_chainlightning_hit", "", enemy.GetCenterPoint(), Quaternion.identity, 1.5f);
+                        }
+                        catch { }
+
+                        hitCount++;
+                    }
+                    catch (Exception hitEx)
+                    {
+                        Plugin.Log.LogError($"[번개 힐] 타겟 {enemy?.name ?? "Unknown"} 데미지 실패: {hitEx.Message}");
+                    }
+                }
+
+                Plugin.Log.LogInfo($"[번개 힐] Lv{level} {(int)(pct * 100)}% → {finalDmg:F1} 번개 데미지, {hitCount}마리 적중");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[번개 힐] 실행 오류: {ex.Message}");
+            }
+        }
+
+        internal static float GetLightningDamagePercent(int level)
+        {
+            float basePct = Staff_Config.StaffHealLightningDamageValue;
+            return basePct + (level - 1) * 20f;
         }
 
         internal static float GetStaffHealPercentForLevel(int level)

@@ -37,48 +37,48 @@ namespace CaptainSkillTree.Localization
                 // Attack Tree (공격 트리) — 4국면 연쇄 시스템
                 // ========================================
 
-                // === Tier 1: 선빵 ===
+                // === Tier 1: 선공격 ===
                 ["Tier1_Opener_DamageBonus"] =
-                "【선빵 데미지 보너스 (%)】\n전투 시작 후 첫 N초간 전체 데미지가 증가합니다.\n권장값: 15-25%",
+                "【선공격 데미지 보너스 (%)】\n전투 시작 후 첫 N초간 전체 데미지가 증가합니다.\n권장값: 15-25%",
 
                 ["Tier1_Opener_StaminaReduction"] =
-                "【선빵 스태미나 소비 감소 (%)】\n선빵 발동 중 스태미나 소비가 감소합니다.\n권장값: 20-30%",
+                "【선공격 스태미나 소비 감소 (%)】\n선공격 발동 중 스태미나 소비가 감소합니다.\n권장값: 20-30%",
 
                 ["Tier1_Opener_Duration"] =
-                "【선빵 지속 시간 (초)】\n선빵 데미지 보너스가 유지되는 시간입니다.\n권장값: 4-6초",
+                "【선공격 지속 시간 (초)】\n선공격 데미지 보너스가 유지되는 시간입니다.\n권장값: 4-6초",
 
                 ["Tier1_Opener_Cooldown"] =
-                "【선빵 쿨다운 (초)】\n선빵을 다시 발동할 수 있을 때까지의 대기 시간입니다.\n권장값: 25-35초",
+                "【선공격 쿨다운 (초)】\n선공격을 다시 발동할 수 있을 때까지의 대기 시간입니다.\n권장값: 25-35초",
 
-                // === Tier 2: 무기별 선빵 특화 ===
+                // === Tier 2: 무기별 선공격 특화 ===
                 ["Tier2_OpenerMelee_FinisherBonus"] =
-                "【근접 마무리 예열 보너스 (%)】\n선빵 윈도우 내 첫 근접 타격의 마무리 배율 증가량입니다.\n권장값: 15-25%",
+                "【근접 마무리 예열 보너스 (%)】\n선공격 윈도우 내 첫 근접 타격의 마무리 배율 증가량입니다.\n권장값: 15-25%",
 
                 ["Tier2_OpenerBow_CritChance"] =
-                "【활 사냥의 눈 크리 확률 (%)】\n선빵 윈도우 내 크리티컬 확률 추가 증가량입니다.\n권장값: 10-20%",
+                "【활 사냥의 눈 크리티컬 피해 (%)】\n선공격 윈도우 내 첫 화살 확정 크리티컬에 추가되는 크리티컬 피해 증가량입니다.\n권장값: 6-10%",
 
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] =
-                "【석궁 결전의 일격 보너스 (%)】\n선빵 윈도우 내 첫 볼트 데미지 증가량입니다.\n권장값: 40-60%",
+                "【석궁 결전의 일격 보너스 (%)】\n선공격 윈도우 내 첫 볼트 데미지 증가량입니다.\n권장값: 40-60%",
 
                 ["Tier2_OpenerMagic_StaggerProc"] =
-                "【마법 혼돈의 시작 스태거 (1=활성)】\n1이면 선빵 윈도우 내 첫 마법 공격 시 스태거 확정 발동.\n권장값: 1",
+                "【마법 혼돈의 시작 스태거 (1=활성)】\n1이면 선공격 윈도우 내 첫 마법 공격 시 스태거 확정 발동.\n권장값: 1",
 
                 // === Tier 3: 추격전 ===
                 ["Tier3_Pursuit_DamageBonus"] =
                 "【추격전 기본 데미지 보너스 (%)】\n이동/도주 중인 적에게 주는 데미지 증가량입니다.\n권장값: 12-18%",
 
                 ["Tier3_Pursuit_ChainDamageBonus"] =
-                "【추격전 연쇄 데미지 보너스 (%)】\n선빵 발동 후 연쇄 윈도우 내 적에게 주는 데미지 증가량입니다.\n권장값: 20-30%",
+                "【추격전 연쇄 데미지 보너스 (%)】\n선공격 발동 후 연쇄 윈도우 내 적에게 주는 데미지 증가량입니다.\n권장값: 20-30%",
 
                 ["Tier3_Pursuit_ChainWindow"] =
-                "【선빵→추격 연쇄 윈도우 (초)】\n선빵 발동 후 이 시간 내 추격전이 연쇄 보너스를 받습니다.\n권장값: 4-6초",
+                "【선공격→추격 연쇄 윈도우 (초)】\n선공격 발동 후 이 시간 내 추격전이 연쇄 보너스를 받습니다.\n권장값: 4-6초",
 
                 // === Tier 4: 전환 분기 ===
                 ["Tier4_PursuitSpeed_SpeedBonus"] =
                 "【질풍 추격 이동속도 보너스 (%)】\n전투 중 이동속도 증가량입니다.\n권장값: 10-15%",
 
-                ["Tier4_FrenzyTrigger_StaminaReduction"] =
-                "【혼전 돌입 스태미나 소비 감소 (%)】\n주변 3m 내 적 2명 이상일 때 스태미나 소비 감소량입니다.\n권장값: 15-25%",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] =
+                "【치명적인 공격 치명타 확률 증가량 (레벨당 %)】\n레벨업 시마다 증가하는 치명타 확률입니다. (Lv × 증가량)\n권장값: 1-3%",
 
                 // === Tier 5: 난전 ===
                 ["Tier5_Frenzy_StackBonusBase"] =
@@ -207,11 +207,13 @@ namespace CaptainSkillTree.Localization
                 "권장값: 20-50",
 
                 // === Tier 6: 최종 강화 (Final Enhancement) ===
-                ["Tier6_WeakPointAttack_CritDamageBonus"] =
-                "【크리티컬 데미지 보너스 (%)】\n" +
-                "치명타 발생 시 추가 데미지가 증가합니다.\n" +
-                "크리티컬 히트의 위력을 극대화합니다.\n" +
-                "권장값: 10-20%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "【약점 공격 Lv1 치명타 피해 보너스 (%)】\n레벨 1 달성 시 적용되는 치명타 피해 증가량입니다.\n권장값: 5%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "【약점 공격 Lv2 치명타 피해 보너스 (%)】\n레벨 2 달성 시 적용되는 치명타 피해 증가량입니다.\n권장값: 9%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "【약점 공격 Lv3 치명타 피해 보너스 (%)】\n레벨 3 달성 시 적용되는 치명타 피해 증가량입니다.\n권장값: 13%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "【약점 공격 Lv4 치명타 피해 보너스 (%)】\n레벨 4 달성 시 적용되는 치명타 피해 증가량입니다.\n권장값: 17%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "【약점 공격 Lv5 치명타 피해 보너스 (%)】\n레벨 5 달성 시 적용되는 치명타 피해 증가량입니다.\n권장값: 21%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "【약점 공격 Lv6 치명타 피해 보너스 (%)】\n레벨 6 달성 시 적용되는 치명타 피해 증가량입니다.\n권장값: 25%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "【약점 공격 Lv7(최대) 치명타 피해 보너스 (%)】\n레벨 7(최대) 달성 시 적용되는 치명타 피해 증가량입니다.\n권장값: 29%",
 
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] =
                 "【양손 무기 데미지 보너스 (%)】\n" +
@@ -254,6 +256,12 @@ namespace CaptainSkillTree.Localization
                 "방어력을 고정값으로 증가시킵니다.\n" +
                 "받는 데미지를 감소시킵니다.\n" +
                 "권장값: 1-4",
+
+                ["Tier0_DefenseExpert_AtkPenalty"] =
+                "【공격력 감소 (%)】\n" +
+                "방어 전문가를 배우면 공격력이 소폭 감소합니다.\n" +
+                "방어와 공격의 트레이드오프입니다.\n" +
+                "권장값: 1-3%",
 
                 // === Tier 1: 피부경화 (Skin Hardening) ===
                 ["Tier1_SkinHardening_HPBonus"] =
@@ -326,6 +334,11 @@ namespace CaptainSkillTree.Localization
                 "【패링 반격 밀어내기 거리 (m)】\n" +
                 "패링 반격 성공 시 적을 밀어내는 거리입니다.\n" +
                 "권장값: 3-6m",
+
+                ["Tier3_BlockTraining_MaxChargeDistance"] =
+                "【반격 최대 유효 거리 (m)】\n" +
+                "이 거리 이내의 몬스터가 스태거될 때만 반격이 발동합니다.\n" +
+                "권장값: 6-10m",
 
                 // === Tier 4: 충격파 발산 (Ground Stomp) ===
                 ["Tier4_GroundStomp_Radius"] =
@@ -406,7 +419,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_NerveEnhancement_DodgeBonus"] =
                 "【회피율 조건부 보너스 (30초 미발동, %)】\n" +
                 "30초 동안 피격 회피가 발동되지 않으면 활성화됩니다.\n" +
-                "권장값: 30-50%",
+                "권장값: 85%",
 
                 ["Tier6_JotunnVitality_HPBonus"] =
                 "【체력 보너스 (%)】\n" +
@@ -416,21 +429,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] =
                 "【물리/속성 저항 (%)】\n" +
                 "요툰의 생명력으로 모든 물리/속성 데미지가 감소합니다.\n" +
-                "권장값: 8-15%",
-
-                ["Tier6_JotunnShield_BlockStaminaReduction"] =
-                "【방어 스태미나 감소 (%)】\n" +
-                "방패로 막을 때 스태미나 소모를 줄입니다.\n" +
-                "권장값: 20-30%",
-
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] =
-                "【일반 방패 이동속도 보너스 (%)】\n" +
-                "일반 방패 들고 있을 때 이동 속도가 증가합니다.\n" +
-                "권장값: 3-8%",
-
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] =
-                "【타워 실드 이동속도 보너스 (%)】\n" +
-                "타워 실드 들고 있을 때 이동 속도가 증가합니다.\n" +
                 "권장값: 8-15%",
 
                 // === RequiredPoints Descriptions ===
@@ -494,6 +492,11 @@ namespace CaptainSkillTree.Localization
                 "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 2",
 
+                ["Tier4_Shockwave_KnockbackForce"] =
+                "【넉백 강도】\n" +
+                "충격파 발동 시 적을 밀어내는 힘입니다.\n" +
+                "권장값: 15-25",
+
                 ["Tier4_GroundStomp_RequiredPoints"] =
                 "【필요 포인트】\n" +
                 "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
@@ -555,11 +558,6 @@ namespace CaptainSkillTree.Localization
                 "권장값: 2",
 
                 ["Tier6_JotunnVitality_RequiredPoints"] =
-                "【필요 포인트】\n" +
-                "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
-                "권장값: 2",
-
-                ["Tier6_JotunnShield_RequiredPoints"] =
                 "【필요 포인트】\n" +
                 "이 노드를 해금하는 데 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 2",
@@ -665,8 +663,15 @@ namespace CaptainSkillTree.Localization
                 "권장값: 20-30%",
 
 
-                // === Tier 0: 속도 전문가 (1개) ===
-                ["Tier0_SpeedExpert_MoveSpeedBonus"] = "【이동속도 보너스 (%)】\n영구적인 이동 속도 증가입니다.\n권장값: 5-10%",
+                // === Tier 0: 속도 전문가 (8개) ===
+                ["Tier0_SpeedExpert_MoveSpeedPerLevel"] = "【이동속도 보너스/레벨 (%)】\n레벨당 이동속도 증가량입니다. (Lv1~7 성장형)\n권장값: 1-5%",
+                ["Tier0_SpeedExpert_PointsPerLevel"] = "【레벨당 필요 포인트】\n강화 1회당 소모 스킬 포인트입니다.\n권장값: 1-2",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_2"] = "【Lv2 필요 플레이어 레벨】\nLv2 강화에 필요한 EpicMMO 플레이어 레벨입니다. (0=없음)\n기본값: 15",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_3"] = "【Lv3 필요 플레이어 레벨】\nLv3 강화에 필요한 EpicMMO 플레이어 레벨입니다.\n기본값: 30",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_4"] = "【Lv4 필요 플레이어 레벨】\nLv4 강화에 필요한 EpicMMO 플레이어 레벨입니다.\n기본값: 45",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_5"] = "【Lv5 필요 플레이어 레벨】\nLv5 강화에 필요한 EpicMMO 플레이어 레벨입니다.\n기본값: 50",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_6"] = "【Lv6 필요 플레이어 레벨】\nLv6 강화에 필요한 EpicMMO 플레이어 레벨입니다.\n기본값: 65",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_7"] = "【Lv7 필요 플레이어 레벨】\nLv7 강화에 필요한 EpicMMO 플레이어 레벨입니다.\n기본값: 80",
 
                 // === Tier 1: 민첩함의 기초 (4개) ===
                 ["Tier1_AgilityBase_DodgeMoveSpeedBonus"] = "【구르기 후 이동속도 보너스 (%)】\n구르기(회피) 직후 짧은 시간 동안 이동 속도가 증가합니다.\n재빠른 회피 후 재배치에 유용합니다.\n권장값: 10-20%",
@@ -736,7 +741,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_CastAccel_TripleEitrRecovery"] = "【3연타 시 Eitr 최대 회복률 (%)】\n3회 주문 콤보 후 Eitr 재생 속도가 증가합니다.\n권장값: 10-15%",
 
                 // === Speed Tree: 필요 포인트 설명 ===
-                ["Tier0_SpeedExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier1_AgilityBase_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier2_MeleeFlow_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier2_CrossbowExpert_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
@@ -776,9 +780,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_OpenerMagic_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier3_Pursuit_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "【레벨당 필요 포인트】\n레벨업 1회당 소모되는 스킬 포인트입니다.\n권장값: 2",
                 ["Tier5_Frenzy_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
-                ["Tier6_WeakPointAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "【레벨당 필요 포인트】\n레벨업 1회당 소모되는 스킬 포인트입니다.\n권장값: 2",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier6_TwoHandCrush_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
                 ["Tier6_ElementalAttack_RequiredPoints"] = "【필요 포인트】\n이 노드 해금에 필요한 스킬 포인트 수입니다.",
@@ -853,7 +857,7 @@ namespace CaptainSkillTree.Localization
                 "【Melee Finisher Warmup Bonus (%)】\nIncreases finisher multiplier on first melee hit within the First Strike window.\nRecommended: 15-25%",
 
                 ["Tier2_OpenerBow_CritChance"] =
-                "【Bow Hunter's Eye Crit Chance (%)】\nAdditional critical chance within the First Strike window.\nRecommended: 10-20%",
+                "【Bow Hunter's Eye Crit Damage (%)】\nExtra critical damage added to the guaranteed crit on the first arrow within the First Strike window.\nRecommended: 6-10%",
 
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] =
                 "【Crossbow Decisive Strike Bonus (%)】\nIncreases damage of the first bolt within the First Strike window.\nRecommended: 40-60%",
@@ -875,8 +879,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_PursuitSpeed_SpeedBonus"] =
                 "【Swift Chase Move Speed Bonus (%)】\nIncreases movement speed during combat.\nRecommended: 10-15%",
 
-                ["Tier4_FrenzyTrigger_StaminaReduction"] =
-                "【Frenzy Rush Stamina Cost Reduction (%)】\nReduces stamina cost when 2+ enemies are within 3m.\nRecommended: 15-25%",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] =
+                "【Deadly Strike Crit Chance Per Level (%)】\nCrit chance gained per level. (Lv × increment)\nRecommended: 1-3%",
 
                 // === Tier 5: Frenzy ===
                 ["Tier5_Frenzy_StackBonusBase"] =
@@ -1002,11 +1006,13 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 20-50",
 
                 // === Tier 6: Final Enhancement ===
-                ["Tier6_WeakPointAttack_CritDamageBonus"] =
-                "【Critical Damage Bonus (%)】\n" +
-                "Increases additional damage on critical hits.\n" +
-                "Maximizes the power of critical strikes.\n" +
-                "Recommended: 10-20%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "【Weak Point Lv1 Crit Damage Bonus (%)】\nCrit damage bonus applied at level 1.\nRecommended: 5%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "【Weak Point Lv2 Crit Damage Bonus (%)】\nCrit damage bonus applied at level 2.\nRecommended: 9%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "【Weak Point Lv3 Crit Damage Bonus (%)】\nCrit damage bonus applied at level 3.\nRecommended: 13%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "【Weak Point Lv4 Crit Damage Bonus (%)】\nCrit damage bonus applied at level 4.\nRecommended: 17%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "【Weak Point Lv5 Crit Damage Bonus (%)】\nCrit damage bonus applied at level 5.\nRecommended: 21%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "【Weak Point Lv6 Crit Damage Bonus (%)】\nCrit damage bonus applied at level 6.\nRecommended: 25%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "【Weak Point Lv7 (Max) Crit Damage Bonus (%)】\nCrit damage bonus applied at level 7 (max).\nRecommended: 29%",
 
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] =
                 "【Two-Hand Damage Bonus (%)】\n" +
@@ -1049,6 +1055,12 @@ namespace CaptainSkillTree.Localization
                 "Increases armor by a flat amount.\n" +
                 "Reduces incoming damage.\n" +
                 "Recommended: 1-4",
+
+                ["Tier0_DefenseExpert_AtkPenalty"] =
+                "【Attack Power Penalty (%)】\n" +
+                "Learning Defense Expert slightly reduces attack power.\n" +
+                "A tradeoff between defense and offense.\n" +
+                "Recommended: 1-3%",
 
                 // === Tier 1: Skin Hardening ===
                 ["Tier1_SkinHardening_HPBonus"] =
@@ -1121,6 +1133,11 @@ namespace CaptainSkillTree.Localization
                 "【Parry Counter Knockback Distance (m)】\n" +
                 "Distance enemies are knocked back on parry counter.\n" +
                 "Recommended: 3-6m",
+
+                ["Tier3_BlockTraining_MaxChargeDistance"] =
+                "【Counter Max Effective Range (m)】\n" +
+                "Counter only triggers when the staggered monster is within this distance.\n" +
+                "Recommended: 6-10m",
 
                 // === Tier 4: Ground Stomp ===
                 ["Tier4_GroundStomp_Radius"] =
@@ -1201,7 +1218,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_NerveEnhancement_DodgeBonus"] =
                 "【Conditional Dodge Bonus (30s no-evasion, %)】\n" +
                 "Activates if no evasion triggered for 30 seconds.\n" +
-                "Recommended: 30-50%",
+                "Recommended: 85%",
 
                 ["Tier6_JotunnVitality_HPBonus"] =
                 "【Health Bonus (%)】\n" +
@@ -1211,21 +1228,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] =
                 "【Physical/Elemental Resistance (%)】\n" +
                 "Reduces all physical and elemental damage received.\n" +
-                "Recommended: 8-15%",
-
-                ["Tier6_JotunnShield_BlockStaminaReduction"] =
-                "【Block Stamina Reduction (%)】\n" +
-                "Reduces stamina cost when blocking with shield.\n" +
-                "Recommended: 20-30%",
-
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] =
-                "【Normal Shield Move Speed Bonus (%)】\n" +
-                "Increases movement speed while holding normal shield.\n" +
-                "Recommended: 3-8%",
-
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] =
-                "【Tower Shield Move Speed Bonus (%)】\n" +
-                "Increases movement speed while holding tower shield.\n" +
                 "Recommended: 8-15%",
 
                 // === RequiredPoints Descriptions ===
@@ -1289,6 +1291,11 @@ namespace CaptainSkillTree.Localization
                 "Number of skill points required to unlock this node.\n" +
                 "Recommended: 2",
 
+                ["Tier4_Shockwave_KnockbackForce"] =
+                "【Knockback Force】\n" +
+                "Force applied to enemies when shockwave triggers.\n" +
+                "Recommended: 15-25",
+
                 ["Tier4_GroundStomp_RequiredPoints"] =
                 "【Required Points】\n" +
                 "Number of skill points required to unlock this node.\n" +
@@ -1350,11 +1357,6 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 2",
 
                 ["Tier6_JotunnVitality_RequiredPoints"] =
-                "【Required Points】\n" +
-                "Number of skill points required to unlock this node.\n" +
-                "Recommended: 2",
-
-                ["Tier6_JotunnShield_RequiredPoints"] =
                 "【Required Points】\n" +
                 "Number of skill points required to unlock this node.\n" +
                 "Recommended: 2",
@@ -1460,8 +1462,15 @@ namespace CaptainSkillTree.Localization
                 "Recommended: 20-30%",
 
 
-                // === Speed Tree: Tier 0 Speed Expert (1개) ===
-                ["Tier0_SpeedExpert_MoveSpeedBonus"] = "【Move Speed Bonus (%)】\nPermanent movement speed increase.\nRecommended: 5-10%",
+                // === Speed Tree: Tier 0 Speed Expert (8개) ===
+                ["Tier0_SpeedExpert_MoveSpeedPerLevel"] = "【Move Speed Bonus/Level (%)】\nMovement speed increase per level. (Lv1~7 growth system)\nRecommended: 1-5%",
+                ["Tier0_SpeedExpert_PointsPerLevel"] = "【Required Points Per Level】\nSkill points consumed per upgrade.\nRecommended: 1-2",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_2"] = "【Lv2 Required Player Level】\nEpicMMO player level required for Lv2 upgrade. (0=none)\nDefault: 15",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_3"] = "【Lv3 Required Player Level】\nEpicMMO player level required for Lv3 upgrade.\nDefault: 30",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_4"] = "【Lv4 Required Player Level】\nEpicMMO player level required for Lv4 upgrade.\nDefault: 45",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_5"] = "【Lv5 Required Player Level】\nEpicMMO player level required for Lv5 upgrade.\nDefault: 50",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_6"] = "【Lv6 Required Player Level】\nEpicMMO player level required for Lv6 upgrade.\nDefault: 65",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_7"] = "【Lv7 Required Player Level】\nEpicMMO player level required for Lv7 upgrade.\nDefault: 80",
 
                 // === Speed Tree: Tier 1 Agility Base (4개) ===
                 ["Tier1_AgilityBase_DodgeMoveSpeedBonus"] = "【Post-Dodge Move Speed Bonus (%)】\nMovement speed increases briefly after dodging.\nUseful for quick repositioning after evasion.\nRecommended: 10-20%",
@@ -1531,7 +1540,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_CastAccel_TripleEitrRecovery"] = "【Eitr Max Recovery Rate on 3-Hit Combo (%)】\nBoosts Eitr regeneration rate after a 3-spell combo.\nRecommended: 10-15%",
 
                 // === Speed Tree: Required Points ===
-                ["Tier0_SpeedExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier1_AgilityBase_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier2_MeleeFlow_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier2_CrossbowExpert_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
@@ -1571,9 +1579,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_OpenerMagic_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier3_Pursuit_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "【Points Required Per Level】\nSkill points consumed for each level-up.\nRecommended: 2",
                 ["Tier5_Frenzy_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
-                ["Tier6_WeakPointAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "【Points Required Per Level】\nSkill points consumed for each level-up.\nRecommended: 2",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier6_TwoHandCrush_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",
                 ["Tier6_ElementalAttack_RequiredPoints"] = "【Required Points】\nSkill points required to unlock this node.",

@@ -190,6 +190,32 @@ namespace CaptainSkillTree.Localization
                 "Mächtige Explosionsmagie zum Vernichten von Feinden.\n" +
                 "Empfehlung: 250-350%",
 
+                ["Mage_Fire_Rain_Radius"] =
+                "【Feuerregen-Fallradius (m)】\n" +
+                "Radius um das Ziel, in dem 30 Feuerbälle niedergehen.\n" +
+                "Empfehlung: 6-10 m",
+
+                ["Mage_Fire_Rain_Impact_Radius"] =
+                "【Feuerball-Einschlagradius (m)】\n" +
+                "Schadensradius beim Einschlag jedes Feuerballs.\n" +
+                "Empfehlung: 2-4 m",
+
+                ["Mage_Fire_Rain_Projectile_Count"] =
+                "【Feuerbälle pro Salve】\n" +
+                "Anzahl der Feuerbälle, die pro Salve niedergehen.\n" +
+                "Insgesamt 2 Salven (1. Salve -> 1 Sek. -> 2. Salve).\n" +
+                "Empfehlung: 15-25",
+
+                ["Mage_Dungeon_Buff_Damage_Bonus"] =
+                "【Dungeon-Buff Schadensbonus (%)】\n" +
+                "Schadenserhöhung des Selbstbuffs, der in Dungeons anstelle von Feuerregen ausgelöst wird.\n" +
+                "Empfehlung: 20-30%",
+
+                ["Mage_Dungeon_Buff_Duration"] =
+                "【Dungeon-Buff Dauer (Sek.)】\n" +
+                "Wie lange der Ersatz-Buff im Dungeon anhält.\n" +
+                "Empfehlung: 8-12 Sek.",
+
                 ["Mage_Cooldown"] =
                 "【Abklingzeit (Sek.)】\n" +
                 "Wartezeit bis zur erneuten Verwendung.\n" +
@@ -718,27 +744,32 @@ namespace CaptainSkillTree.Localization
                 "Standard: 20",
 
                 // === Producer Lv1 ===
-                ["Producer_EnchantChance_Lv1"] = "【Verzauberungschance Lv1 (%)】\nChance auf Verzauberung bei Herstellung (Lv1).\nStandard: 0%",
+                ["Producer_EnchantChance_Lv1"] = "【Verzauberungschance Lv1 (%)】\nChance auf Verzauberung bei Herstellung (Lv1).\nStandard: 45%",
+                ["Producer_ElementalProcChance_Lv1"] = "【Elementarschadenchance Lv1 (%)】\nChance, dass eine Lv1-Elementarverzauberung (Feuer/Geist/Gift/Blitz/Frost) bei jedem Treffer auslöst.\nStandard: 25%",
 
                 // === Producer Lv2 ===
                 ["Producer_Durability_Lv2"] = "【Haltbarkeitsbonus Lv2 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv2.\nStandard: 10%",
                 ["Producer_MaterialReduction_Lv2"] = "【Materialeinsparung Lv2 (%)】\nEingesparte Materialien pro Herstellung bei Lv2.\nStandard: 10%",
-                ["Producer_EnchantChance_Lv2"] = "【Verzauberungschance Lv2 (%)】\nChance auf Verzauberung bei Herstellung (Lv2).\nStandard: 0%",
+                ["Producer_EnchantChance_Lv2"] = "【Verzauberungschance Lv2 (%)】\nChance auf Verzauberung bei Herstellung (Lv2).\nStandard: 55%",
+                ["Producer_ElementalProcChance_Lv2"] = "【Elementarschadenchance Lv2 (%)】\nChance, dass eine Lv2-Elementarverzauberung bei jedem Treffer auslöst.\nStandard: 30%",
 
                 // === Producer Lv3 ===
                 ["Producer_Durability_Lv3"] = "【Haltbarkeitsbonus Lv3 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv3.\nStandard: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【Materialeinsparung Lv3 (%)】\nEingesparte Materialien pro Herstellung bei Lv3.\nStandard: 15%",
                 ["Producer_EnchantChance_Lv3"] = "【Verzauberungschance Lv3 (%)】\nChance auf Verzauberung bei Herstellung (Lv3).\nStandard: 25%",
+                ["Producer_ElementalProcChance_Lv3"] = "【Elementarschadenchance Lv3 (%)】\nChance, dass eine Lv3-Elementarverzauberung bei jedem Treffer auslöst.\nStandard: 35%",
 
                 // === Producer Lv4 ===
                 ["Producer_Durability_Lv4"] = "【Haltbarkeitsbonus Lv4 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv4.\nStandard: 20%",
                 ["Producer_MaterialReduction_Lv4"] = "【Materialeinsparung Lv4 (%)】\nEingesparte Materialien pro Herstellung bei Lv4.\nStandard: 20%",
-                ["Producer_EnchantChance_Lv4"] = "【Verzauberungschance Lv4 (%)】\nChance auf Verzauberung bei Herstellung (Lv4).\nStandard: 30%",
+                ["Producer_EnchantChance_Lv4"] = "【Verzauberungschance Lv4 (%)】\nChance auf Verzauberung bei Herstellung (Lv4).\nStandard: 80%",
+                ["Producer_ElementalProcChance_Lv4"] = "【Elementarschadenchance Lv4 (%)】\nChance, dass eine Lv4-Elementarverzauberung bei jedem Treffer auslöst.\nStandard: 40%",
 
                 // === Producer Lv5 ===
                 ["Producer_Durability_Lv5"] = "【Haltbarkeitsbonus Lv5 (%)】\nBonushaltbarkeit hergestellter Gegenstände bei Lv5.\nStandard: 30%",
                 ["Producer_MaterialReduction_Lv5"] = "【Materialeinsparung Lv5 (%)】\nEingesparte Materialien pro Herstellung bei Lv5.\nStandard: 30%",
                 ["Producer_EnchantChance_Lv5"] = "【Verzauberungschance Lv5 (%)】\nChance auf Verzauberung bei Herstellung (Lv5).\nStandard: 35%",
+                ["Producer_ElementalProcChance_Lv5"] = "【Elementarschadenchance Lv5 (%)】\nChance, dass eine Lv5-Elementarverzauberung bei jedem Treffer auslöst.\nStandard: 45%",
 
                 ["Job_Lv1_Cost"] = "【Job Lv1 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv1.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 1000",
                 ["Job_Lv2_Cost"] = "【Job Lv2 Münzkosten】\nMünzen beim Aufsteigen eines Berufs auf Lv2.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 2000",
@@ -749,6 +780,310 @@ namespace CaptainSkillTree.Localization
                 ["Job_Reset_Cost"]    = "【Job-Skill Reset-Kosten】\nMünzen beim Zurücksetzen der Job-Skillpunkte.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 1000",
                 ["Active_Reset_Cost"] = "【Aktiv-Skill Reset-Kosten】\nMünzen beim Zurücksetzen der Aktiv-Skillpunkte.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 500",
                 ["Passive_Reset_Cost"]= "【Passiv-Skill Reset-Kosten】\nMünzen beim Zurücksetzen der Passiv-Skillpunkte.\nNur Serveradmin, wird an Clients synchronisiert.\nStandard: 100",
+
+                ["HotKey_Y"] =
+                "【Job Skill Key】\n" +
+                "Taste zum Auslösen der aktiven Berufsfähigkeit.\n" +
+                "Standard: Y",
+
+                ["HotKey_R"] =
+                "【Fernkampf-Skill-Taste】\n" +
+                "Taste zum Auslösen von Fernkampf-Aktivskills (Mehrfachschuss, Doppelzauber usw.).\n" +
+                "Standard: R",
+
+                ["HotKey_G"] =
+                "【Nahkampf-Hauptskill-Taste】\n" +
+                "Taste zum Auslösen von Nahkampf-Hauptaktivskills (Sturmangriff usw.).\n" +
+                "Standard: G",
+
+                ["HotKey_H"] =
+                "【Sekundär-Skill-Taste】\n" +
+                "Taste zum Auslösen sekundärer Aktivskills (Speerkombo, Beschützerherz usw.).\n" +
+                "Standard: H",
+
+                ["QuestToggleKey"] =
+                "【Questfenster-Tastenkürzel】\n" +
+                "Tastenkürzel zum Öffnen und Schließen des Questfensters.\n" +
+                "Standard: Strg+J",
+
+                ["HUD_IconSize"] =
+                "【Skill-Symbolgröße】\n" +
+                "Größe der Symbole im Aktivskill-HUD.\n" +
+                "Standard: 62",
+
+                ["HUD_PosX"] =
+                "【Skill-Symbol HUD X-Position】\n" +
+                "Horizontale Position des Aktivskill-HUD.\n" +
+                "Standard: 306 (vom linken Bildschirmrand)",
+
+                ["HUD_PosY"] =
+                "【Skill-Symbol HUD Y-Position】\n" +
+                "Vertikale Position des Aktivskill-HUD.\n" +
+                "Standard: 139 (vom unteren Bildschirmrand)",
+
+                ["Archer_Attack_StaminaReduction_Lv1"] =
+                "【Lv1 Passiv: Angriffs-Ausdauerreduzierung (%)】\n" +
+                "Reduziert den Ausdauerverbrauch bei Angriffen auf Bogenschütze Lv1.\n" +
+                "Gilt für alle Bogen-/Armbrust-/Stab-Angriffe.\n" +
+                "Empfehlung: 10-20%",
+
+                ["Archer_Attack_StaminaReduction_Lv2"] =
+                "【Lv2 Passiv: Angriffs-Ausdauerreduzierung (%)】\n" +
+                "Reduziert den Ausdauerverbrauch bei Angriffen auf Bogenschütze Lv2.\n" +
+                "Empfehlung: 20-30%",
+
+                ["Archer_Attack_StaminaReduction_Lv3"] =
+                "【Lv3 Passiv: Angriffs-Ausdauerreduzierung (%)】\n" +
+                "Reduziert den Ausdauerverbrauch bei Angriffen auf Bogenschütze Lv3.\n" +
+                "Empfehlung: 30-40%",
+
+                ["Archer_Attack_StaminaReduction_Lv4"] =
+                "【Lv4 Passiv: Angriffs-Ausdauerreduzierung (%)】\n" +
+                "Reduziert den Ausdauerverbrauch bei Angriffen auf Bogenschütze Lv4.\n" +
+                "Empfehlung: 40-50%",
+
+                ["Archer_Attack_StaminaReduction_Lv5"] =
+                "【Lv5 Passiv: Angriffs-Ausdauerreduzierung (%)】\n" +
+                "Reduziert den Ausdauerverbrauch bei Angriffen auf Bogenschütze Lv5.\n" +
+                "Empfehlung: 50-60%",
+
+                ["Archer_AmmoSaveChance"] =
+                "【Pfeil-/Bolzen-Erhaltungschance (%)】\n" +
+                "Chance, beim Angriff keinen Pfeil oder Bolzen zu verbrauchen.\n" +
+                "Bei 50 wird im Schnitt die Hälfte der Pfeile eingespart.\n" +
+                "Empfehlung: 30-60%",
+
+                ["Archer_TameHeal_PerLevel"] =
+                "【Passiv: Zahmtier-Heilung (HP/s)】\n" +
+                "Heilt nahe gezähmte Tiere jede Sekunde um Bogenschütze-Level × diesen Wert.\n" +
+                "Bei Lv1 dieser Wert, bei Lv5 das 5-fache.\n" +
+                "Empfehlung: 1",
+
+                ["Archer_TameHeal_Range"] =
+                "【Passiv: Zahmtier-Heilung Reichweite (m)】\n" +
+                "Gezähmte Tiere in dieser Entfernung erhalten die Heilung.\n" +
+                "Empfehlung: 8-15",
+
+                ["Mage_Lv1_Cooldown"] =
+                "【Abklingzeit Lv1 (Sek.)】\n" +
+                "Magier Lv1: Wartezeit bis zur erneuten Verwendung der Fähigkeit.\n" +
+                "Empfehlung: 120 Sek.",
+
+                ["Mage_Lv2_Cooldown"] =
+                "【Abklingzeit Lv2 (Sek.)】\n" +
+                "Magier Lv2: Wartezeit bis zur erneuten Verwendung der Fähigkeit.\n" +
+                "Empfehlung: 110 Sek.",
+
+                ["Mage_Lv3_Cooldown"] =
+                "【Abklingzeit Lv3 (Sek.)】\n" +
+                "Magier Lv3: Wartezeit bis zur erneuten Verwendung der Fähigkeit.\n" +
+                "Empfehlung: 100 Sek.",
+
+                ["Mage_Lv4_Cooldown"] =
+                "【Abklingzeit Lv4 (Sek.)】\n" +
+                "Magier Lv4: Wartezeit bis zur erneuten Verwendung der Fähigkeit.\n" +
+                "Empfehlung: 90 Sek.",
+
+                ["Mage_Lv5_Cooldown"] =
+                "【Abklingzeit Lv5 (Sek.)】\n" +
+                "Magier Lv5: Wartezeit bis zur erneuten Verwendung der Fähigkeit.\n" +
+                "Empfehlung: 80 Sek.",
+
+                ["Mage_Lv1_AOE_Max_Targets"] =
+                "【Maximale Zielanzahl Lv1】\n" +
+                "Magier Lv1: Maximale Anzahl gleichzeitig getroffener Monster. Auswahl nach Nähe.\n" +
+                "Empfehlung: 6",
+
+                ["Mage_Lv2_AOE_Max_Targets"] =
+                "【Maximale Zielanzahl Lv2】\n" +
+                "Magier Lv2: Maximale Anzahl gleichzeitig getroffener Monster.\n" +
+                "Empfehlung: 7",
+
+                ["Mage_Lv3_AOE_Max_Targets"] =
+                "【Maximale Zielanzahl Lv3】\n" +
+                "Magier Lv3: Maximale Anzahl gleichzeitig getroffener Monster.\n" +
+                "Empfehlung: 8",
+
+                ["Mage_Lv4_AOE_Max_Targets"] =
+                "【Maximale Zielanzahl Lv4】\n" +
+                "Magier Lv4: Maximale Anzahl gleichzeitig getroffener Monster.\n" +
+                "Empfehlung: 9",
+
+                ["Mage_Lv5_AOE_Max_Targets"] =
+                "【Maximale Zielanzahl Lv5】\n" +
+                "Magier Lv5: Maximale Anzahl gleichzeitig getroffener Monster.\n" +
+                "Empfehlung: 10",
+
+                ["Mage_Lv1_Elemental_Resistance"] =
+                "【Elementarresistenz Lv1 (%)】\n" +
+                "Magier Lv1 Elementarresistenz. Reduziert Feuer/Frost/Blitz/Gift/Geist.\n" +
+                "Empfehlung: 5%",
+
+                ["Mage_Lv2_Elemental_Resistance"] =
+                "【Elementarresistenz Lv2 (%)】\n" +
+                "Magier Lv2 Elementarresistenz. Beinhaltet +1 zusätzlichen Zauber (innerhalb von 30 Sek.).\n" +
+                "Empfehlung: 7%",
+
+                ["Mage_Lv3_Elemental_Resistance"] =
+                "【Elementarresistenz Lv3 (%)】\n" +
+                "Magier Lv3 Elementarresistenz.\n" +
+                "Empfehlung: 9%",
+
+                ["Mage_Lv4_Elemental_Resistance"] =
+                "【Elementarresistenz Lv4 (%)】\n" +
+                "Magier Lv4 Elementarresistenz.\n" +
+                "Empfehlung: 12%",
+
+                ["Mage_Lv5_Elemental_Resistance"] =
+                "【Elementarresistenz Lv5 (%)】\n" +
+                "Magier Lv5 Elementarresistenz.\n" +
+                "Empfehlung: 15%",
+
+                ["Mage_Lv1_Damage_Multiplier"] =
+                "【AOE-Schadensmultiplikator Lv1 (%)】\n" +
+                "Magier Lv1 AOE-Schadensmultiplikator.\n" +
+                "Empfehlung: 70%",
+
+                ["Mage_Lv2_Damage_Multiplier"] =
+                "【AOE-Schadensmultiplikator Lv2 (%)】\n" +
+                "Magier Lv2 AOE-Schadensmultiplikator.\n" +
+                "Empfehlung: 90%",
+
+                ["Mage_Lv3_Damage_Multiplier"] =
+                "【AOE-Schadensmultiplikator Lv3 (%)】\n" +
+                "Magier Lv3 AOE-Schadensmultiplikator.\n" +
+                "Empfehlung: 110%",
+
+                ["Mage_Lv4_Damage_Multiplier"] =
+                "【AOE-Schadensmultiplikator Lv4 (%)】\n" +
+                "Magier Lv4 AOE-Schadensmultiplikator.\n" +
+                "Empfehlung: 130%",
+
+                ["Mage_Lv5_Damage_Multiplier"] =
+                "【AOE-Schadensmultiplikator Lv5 (%)】\n" +
+                "Magier Lv5 AOE-Schadensmultiplikator.\n" +
+                "Empfehlung: 150%",
+
+                ["Tanker_Explosion_Radius"] =
+                "【Provokations-Explosionsradius (m)】\n" +
+                "Radius des Explosionseffekts beim Aktivieren der Tanker-Provokation.\n" +
+                "Empfehlung: 6-12 m",
+
+                ["Tanker_BlockPower_Multiplier"] =
+                "【Schild-Blockstärke-Multiplikator】\n" +
+                "Multiplikator, der je nach Tanker-Berufslevel auf die Schild-Blockstärke angewendet wird.\n" +
+                "Empfehlung: 1,0-2,0",
+
+                ["Rogue_Poison_Range"] =
+                "【Giftexplosionsreichweite (m)】\n" +
+                "Radius jeder Giftexplosions-VFX.\n" +
+                "Empfehlung: 8-15 m",
+
+                ["Rogue_Poison_InstantDamage"] =
+                "【Sofortiger Giftschaden】\n" +
+                "Sofortiger Giftschaden pro VFX-Auslösung.\n" +
+                "Empfehlung: 8-20",
+
+                ["Rogue_Poison_DotDamage"] =
+                "【Gift-DoT-Schaden pro Sekunde】\n" +
+                "Schaden pro Sekunde durch den Gift-DoT-Effekt.\n" +
+                "Empfehlung: 3-8",
+
+                ["Rogue_Poison_DotDuration"] =
+                "【Gift-DoT-Dauer (Sek.)】\n" +
+                "Dauer des anhaltenden Giftschadeneffekts.\n" +
+                "Empfehlung: 8-15 Sek.",
+
+                ["Rogue_Poison_VFXCount"] =
+                "【Giftexplosionsanzahl】\n" +
+                "Anzahl der Wiederholungen der Giftexplosions-VFX.\n" +
+                "Empfehlung: 6-10",
+
+                ["Rogue_Poison_VFXInterval"] =
+                "【Giftexplosionsintervall (Sek.)】\n" +
+                "Zeit zwischen den einzelnen Giftexplosionen.\n" +
+                "Empfehlung: 0,3-1,0 Sek.",
+
+                ["Rogue_Lv2_Cooldown"] = "【Lv2 Schattenschlag-Abklingzeit (Sek.)】\nEmpfehlung: 25-30 Sek.",
+
+                ["Rogue_Lv3_Cooldown"] = "【Lv3 Schattenschlag-Abklingzeit (Sek.)】\nEmpfehlung: 22-28 Sek.",
+
+                ["Rogue_Lv4_Cooldown"] = "【Lv4 Schattenschlag-Abklingzeit (Sek.)】\nEmpfehlung: 20-26 Sek.",
+
+                ["Rogue_Lv5_Cooldown"] = "【Lv5 Schattenschlag-Abklingzeit (Sek.)】\nEmpfehlung: 18-24 Sek.",
+
+                ["Rogue_Lv2_AttackBonus"] = "【Lv2 Angriffs-Buff (%)】\nEmpfehlung: 35-50%",
+
+                ["Rogue_Lv3_AttackBonus"] = "【Lv3 Angriffs-Buff (%)】\nEmpfehlung: 40-55%",
+
+                ["Rogue_Lv4_AttackBonus"] = "【Lv4 Angriffs-Buff (%)】\nEmpfehlung: 45-60%",
+
+                ["Rogue_Lv5_AttackBonus"] = "【Lv5 Angriffs-Buff (%)】\nEmpfehlung: 50-65%",
+
+                ["Rogue_Lv2_BuffDuration"] = "【Lv2 Buff-Dauer (Sek.)】\nEmpfehlung: 8-12 Sek.",
+
+                ["Rogue_Lv3_BuffDuration"] = "【Lv3 Buff-Dauer (Sek.)】\nEmpfehlung: 9-13 Sek.",
+
+                ["Rogue_Lv4_BuffDuration"] = "【Lv4 Buff-Dauer (Sek.)】\nEmpfehlung: 10-14 Sek.",
+
+                ["Rogue_Lv5_BuffDuration"] = "【Lv5 Buff-Dauer (Sek.)】\nEmpfehlung: 11-15 Sek.",
+
+                ["Rogue_Lv2_PoisonBlasts"] = "【Lv2 Giftexplosionsanzahl】\nEmpfehlung: 8-12",
+
+                ["Rogue_Lv3_PoisonBlasts"] = "【Lv3 Giftexplosionsanzahl】\nEmpfehlung: 9-13",
+
+                ["Rogue_Lv4_PoisonBlasts"] = "【Lv4 Giftexplosionsanzahl】\nEmpfehlung: 10-14",
+
+                ["Rogue_Lv5_PoisonBlasts"] = "【Lv5 Giftexplosionsanzahl】\nEmpfehlung: 11-15",
+
+                ["Rogue_Lv2_PoisonInstant"] = "【Lv2 Sofortiger Giftschaden】\nEmpfehlung: 10-15",
+
+                ["Rogue_Lv3_PoisonInstant"] = "【Lv3 Sofortiger Giftschaden】\nEmpfehlung: 12-18",
+
+                ["Rogue_Lv4_PoisonInstant"] = "【Lv4 Sofortiger Giftschaden】\nEmpfehlung: 14-20",
+
+                ["Rogue_Lv5_PoisonInstant"] = "【Lv5 Sofortiger Giftschaden】\nEmpfehlung: 16-25",
+
+                ["Rogue_Lv2_PoisonDot"] = "【Lv2 Gift-DoT pro Sekunde】\nEmpfehlung: 5-8",
+
+                ["Rogue_Lv3_PoisonDot"] = "【Lv3 Gift-DoT pro Sekunde】\nEmpfehlung: 6-9",
+
+                ["Rogue_Lv4_PoisonDot"] = "【Lv4 Gift-DoT pro Sekunde】\nEmpfehlung: 7-10",
+
+                ["Rogue_Lv5_PoisonDot"] = "【Lv5 Gift-DoT pro Sekunde】\nEmpfehlung: 8-12",
+
+                ["Rogue_ShadowStrike_Charges"] = "【Schattenschlag-Basisladungen】\nGrundanzahl der verfügbaren Ladungen.\nEmpfehlung: 1",
+
+                ["Rogue_Lv5_BonusCharges"] = "【Lv5 Zusatzladungen】\nZusätzliche Ladungen, die auf Lv5 freigeschaltet werden.\nEmpfehlung: 1",
+
+                ["Rogue_Lv2_AttackSpeed"] = "【Lv2 Angriffsgeschwindigkeitsbonus (%)】\nEmpfehlung: 10-15%",
+
+                ["Rogue_Lv3_AttackSpeed"] = "【Lv3 Angriffsgeschwindigkeitsbonus (%)】\nEmpfehlung: 12-18%",
+
+                ["Rogue_Lv4_AttackSpeed"] = "【Lv4 Angriffsgeschwindigkeitsbonus (%)】\nEmpfehlung: 14-20%",
+
+                ["Rogue_Lv5_AttackSpeed"] = "【Lv5 Angriffsgeschwindigkeitsbonus (%)】\nEmpfehlung: 16-22%",
+
+                ["Rogue_Lv2_StaminaReduction"] = "【Lv2 Ausdauerreduzierung (%)】\nEmpfehlung: 15-20%",
+
+                ["Rogue_Lv3_StaminaReduction"] = "【Lv3 Ausdauerreduzierung (%)】\nEmpfehlung: 17-22%",
+
+                ["Rogue_Lv4_StaminaReduction"] = "【Lv4 Ausdauerreduzierung (%)】\nEmpfehlung: 19-25%",
+
+                ["Rogue_Lv5_StaminaReduction"] = "【Lv5 Ausdauerreduzierung (%)】\nEmpfehlung: 22-30%",
+
+                ["Rogue_Lv1_MoveSpeed"] = "【Lv1 Bewegungsgeschwindigkeitsbonus (%)】\nEmpfehlung: 3-7%",
+
+                ["Rogue_Lv2_MoveSpeed"] = "【Lv2 Bewegungsgeschwindigkeitsbonus (%)】\nEmpfehlung: 5-10%",
+
+                ["Rogue_Lv3_MoveSpeed"] = "【Lv3 Bewegungsgeschwindigkeitsbonus (%)】\nEmpfehlung: 7-12%",
+
+                ["Rogue_Lv4_MoveSpeed"] = "【Lv4 Bewegungsgeschwindigkeitsbonus (%)】\nEmpfehlung: 10-15%",
+
+                ["Rogue_Lv5_MoveSpeed"] = "【Lv5 Bewegungsgeschwindigkeitsbonus (%)】\nEmpfehlung: 12-18%",
+
+                ["Producer_Durability_Lv1"] = "【Haltbarkeitsbonus für hergestellte Gegenstände Lv1 (%)】\nHaltbarkeitsbonus hergestellter Gegenstände bei Lv1.\nStandard: 50%",
+
             };
         }
     }

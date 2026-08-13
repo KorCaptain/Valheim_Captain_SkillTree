@@ -4,7 +4,7 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 공격 전문가 스킬트리 Config 설정
-    /// 선빵 → 추격전 → 난전 → 마무리 4국면 연쇄 증폭 구조
+    /// 선공격 → 추격전 → 난전 → 마무리 4국면 연쇄 증폭 구조
     /// </summary>
     public static class Attack_Config
     {
@@ -17,10 +17,10 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> AtkOpenerMagicRequiredPoints;
         public static ConfigEntry<int> AtkPursuitRequiredPoints;
         public static ConfigEntry<int> AtkPursuitSpeedRequiredPoints;
-        public static ConfigEntry<int> AtkFrenzyTriggerRequiredPoints;
+        public static ConfigEntry<int> AtkFrenzyTriggerPointsPerLevel;
         public static ConfigEntry<int> AtkFrenzyRequiredPoints;
         // Tier 6 (기존 유지)
-        public static ConfigEntry<int> AttackStep6CritDmgRequiredPoints;
+        public static ConfigEntry<int> AtkCritDmgPointsPerLevel;
         public static ConfigEntry<int> AttackStep6FinisherRequiredPoints;
         public static ConfigEntry<int> AttackStep6TwoHandRequiredPoints;
         public static ConfigEntry<int> AttackStep6StaffRequiredPoints;
@@ -28,15 +28,15 @@ namespace CaptainSkillTree.SkillTree
         // === Tier 0: 공격 전문가 루트 ===
         public static ConfigEntry<float> AttackRootDamageBonus;
 
-        // === Tier 1: 선빵 ===
+        // === Tier 1: 선공격 ===
         public static ConfigEntry<float> AtkOpenerDamageBonus;
         public static ConfigEntry<float> AtkOpenerStaminaReduction;
         public static ConfigEntry<float> AtkOpenerDuration;
         public static ConfigEntry<float> AtkOpenerCooldown;
 
-        // === Tier 2: 무기별 선빵 특화 ===
+        // === Tier 2: 무기별 선공격 특화 ===
         public static ConfigEntry<float> AtkOpenerMeleeFinisherBonus;
-        public static ConfigEntry<float> AtkOpenerBowCritChance;
+        public static ConfigEntry<float> AtkOpenerBowCritDamageBonus;
         public static ConfigEntry<float> AtkOpenerCrossbowFirstShotBonus;
         public static ConfigEntry<float> AtkOpenerMagicStaggerProc;
 
@@ -47,7 +47,7 @@ namespace CaptainSkillTree.SkillTree
 
         // === Tier 4: 전환 분기 ===
         public static ConfigEntry<float> AtkPursuitSpeedBonus;
-        public static ConfigEntry<float> AtkFrenzyTriggerStaminaReduction;
+        public static ConfigEntry<float> AtkFrenzyTriggerCritChancePerLevel;
 
         // === Tier 5: 난전 ===
         public static ConfigEntry<float> AtkFrenzyStackBonusBase;
@@ -56,8 +56,16 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int>   AtkFrenzyHitsPerStack;
         public static ConfigEntry<float> AtkFrenzyTier6Amplifier;
 
+        // === Tier 6: 약점 공격 (성장형 Lv1~7, 레벨별 개별 수치) ===
+        public static ConfigEntry<float> AttackCritDamageBonus_Lv1;
+        public static ConfigEntry<float> AttackCritDamageBonus_Lv2;
+        public static ConfigEntry<float> AttackCritDamageBonus_Lv3;
+        public static ConfigEntry<float> AttackCritDamageBonus_Lv4;
+        public static ConfigEntry<float> AttackCritDamageBonus_Lv5;
+        public static ConfigEntry<float> AttackCritDamageBonus_Lv6;
+        public static ConfigEntry<float> AttackCritDamageBonus_Lv7;
+
         // === Tier 6: 마무리 최종 (기존 유지) ===
-        public static ConfigEntry<float> AttackCritDamageBonus;
         public static ConfigEntry<float> AttackTwoHandedBonus;
         public static ConfigEntry<float> AttackStaffElemental;
         public static ConfigEntry<float> AttackFinisherMeleeBonus;
@@ -73,9 +81,9 @@ namespace CaptainSkillTree.SkillTree
         public static int AtkOpenerMagicRequiredPointsValue   => (int)SkillTreeConfig.GetEffectiveValue("atk_opener_magic_required_points",     AtkOpenerMagicRequiredPoints?.Value ?? 2);
         public static int AtkPursuitRequiredPointsValue       => (int)SkillTreeConfig.GetEffectiveValue("atk_pursuit_required_points",          AtkPursuitRequiredPoints?.Value ?? 2);
         public static int AtkPursuitSpeedRequiredPointsValue  => (int)SkillTreeConfig.GetEffectiveValue("atk_pursuit_speed_required_points",    AtkPursuitSpeedRequiredPoints?.Value ?? 2);
-        public static int AtkFrenzyTriggerRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("atk_frenzy_trigger_required_points",   AtkFrenzyTriggerRequiredPoints?.Value ?? 2);
+        public static int AtkFrenzyTriggerPointsPerLevelValue => (int)SkillTreeConfig.GetEffectiveValue("atk_frenzy_trigger_points_per_level",   AtkFrenzyTriggerPointsPerLevel?.Value ?? 2);
         public static int AtkFrenzyRequiredPointsValue        => (int)SkillTreeConfig.GetEffectiveValue("atk_frenzy_required_points",           AtkFrenzyRequiredPoints?.Value ?? 3);
-        public static int AttackStep6CritDmgRequiredPointsValue   => (int)SkillTreeConfig.GetEffectiveValue("attack_step6_critdmg_required_points",  AttackStep6CritDmgRequiredPoints?.Value ?? 3);
+        public static int AtkCritDmgPointsPerLevelValue            => (int)SkillTreeConfig.GetEffectiveValue("atk_crit_dmg_points_per_level",  AtkCritDmgPointsPerLevel?.Value ?? 2);
         public static int AttackStep6FinisherRequiredPointsValue  => (int)SkillTreeConfig.GetEffectiveValue("attack_step6_finisher_required_points", AttackStep6FinisherRequiredPoints?.Value ?? 3);
         public static int AttackStep6TwoHandRequiredPointsValue   => (int)SkillTreeConfig.GetEffectiveValue("attack_step6_twohand_required_points",  AttackStep6TwoHandRequiredPoints?.Value ?? 3);
         public static int AttackStep6StaffRequiredPointsValue     => (int)SkillTreeConfig.GetEffectiveValue("attack_step6_staff_required_points",    AttackStep6StaffRequiredPoints?.Value ?? 3);
@@ -93,7 +101,7 @@ namespace CaptainSkillTree.SkillTree
 
         // Tier 2
         public static float AtkOpenerMeleeFinisherBonusValue  => SkillTreeConfig.GetEffectiveValue("Tier2_OpenerMelee_FinisherBonus",    AtkOpenerMeleeFinisherBonus?.Value ?? 10f);
-        public static float AtkOpenerBowCritChanceValue       => SkillTreeConfig.GetEffectiveValue("Tier2_OpenerBow_CritChance",         AtkOpenerBowCritChance?.Value ?? 8f);
+        public static float AtkOpenerBowCritDamageBonusValue  => SkillTreeConfig.GetEffectiveValue("Tier2_OpenerBow_CritChance",         AtkOpenerBowCritDamageBonus?.Value ?? 8f);
         public static float AtkOpenerCrossbowFirstShotBonusValue => SkillTreeConfig.GetEffectiveValue("Tier2_OpenerCrossbow_FirstShotBonus", AtkOpenerCrossbowFirstShotBonus?.Value ?? 10f);
         public static float AtkOpenerMagicStaggerProcValue    => SkillTreeConfig.GetEffectiveValue("Tier2_OpenerMagic_StaggerProc",      AtkOpenerMagicStaggerProc?.Value ?? 1f);
 
@@ -104,7 +112,7 @@ namespace CaptainSkillTree.SkillTree
 
         // Tier 4
         public static float AtkPursuitSpeedBonusValue         => SkillTreeConfig.GetEffectiveValue("Tier4_PursuitSpeed_SpeedBonus",      AtkPursuitSpeedBonus?.Value ?? 12f);
-        public static float AtkFrenzyTriggerStaminaReductionValue => SkillTreeConfig.GetEffectiveValue("Tier4_FrenzyTrigger_StaminaReduction", AtkFrenzyTriggerStaminaReduction?.Value ?? 15f);
+        public static float AtkFrenzyTriggerCritChancePerLevelValue => SkillTreeConfig.GetEffectiveValue("Tier4_FrenzyTrigger_CritChancePerLevel", AtkFrenzyTriggerCritChancePerLevel?.Value ?? 2f);
 
         // Tier 5
         public static float AtkFrenzyStackBonusBaseValue      => SkillTreeConfig.GetEffectiveValue("Tier5_Frenzy_StackBonusBase",        AtkFrenzyStackBonusBase?.Value ?? 5f);
@@ -113,8 +121,22 @@ namespace CaptainSkillTree.SkillTree
         public static int   AtkFrenzyHitsPerStackValue        => (int)SkillTreeConfig.GetEffectiveValue("Tier5_Frenzy_HitsPerStack",     AtkFrenzyHitsPerStack?.Value ?? 3);
         public static float AtkFrenzyTier6AmplifierValue      => SkillTreeConfig.GetEffectiveValue("Tier5_Frenzy_Tier6Amplifier",        AtkFrenzyTier6Amplifier?.Value ?? 1.3f);
 
-        // Tier 6
-        public static float AttackCritDamageBonusValue        => SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus",       AttackCritDamageBonus?.Value ?? 5f);
+        // Tier 6: 약점 공격 (성장형 Lv1~7)
+        public static float GetWeakPointAttackBonus(int level)
+        {
+            switch (level)
+            {
+                case 1: return SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus_Lv1", AttackCritDamageBonus_Lv1?.Value ?? 5f);
+                case 2: return SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus_Lv2", AttackCritDamageBonus_Lv2?.Value ?? 9f);
+                case 3: return SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus_Lv3", AttackCritDamageBonus_Lv3?.Value ?? 13f);
+                case 4: return SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus_Lv4", AttackCritDamageBonus_Lv4?.Value ?? 17f);
+                case 5: return SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus_Lv5", AttackCritDamageBonus_Lv5?.Value ?? 21f);
+                case 6: return SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus_Lv6", AttackCritDamageBonus_Lv6?.Value ?? 25f);
+                case 7: return SkillTreeConfig.GetEffectiveValue("Attack_Step6_CritDamageBonus_Lv7", AttackCritDamageBonus_Lv7?.Value ?? 29f);
+                default: return 0f;
+            }
+        }
+
         public static float AttackTwoHandedBonusValue         => SkillTreeConfig.GetEffectiveValue("Attack_Step6_TwoHandedBonus",        AttackTwoHandedBonus?.Value ?? 5f);
         public static float AttackStaffElementalValue         => SkillTreeConfig.GetEffectiveValue("Attack_Step6_StaffElemental",        AttackStaffElemental?.Value ?? 5f);
         public static float AttackFinisherMeleeBonusValue     => SkillTreeConfig.GetEffectiveValue("Attack_Step6_FinisherMeleeBonus",    AttackFinisherMeleeBonus?.Value ?? 5f);
@@ -153,7 +175,7 @@ namespace CaptainSkillTree.SkillTree
                 "Attack Tree", "Tier0_AttackExpert_RequiredPoints", 2,
                 SkillTreeConfig.GetConfigDescription("Tier0_AttackExpert_RequiredPoints"), order: 59);
 
-            // === Tier 1: 선빵 ===
+            // === Tier 1: 선공격 ===
             AtkOpenerDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Attack Tree", "Tier1_Opener_DamageBonus", 10f,
                 SkillTreeConfig.GetConfigDescription("Tier1_Opener_DamageBonus"), order: 55);
@@ -174,7 +196,7 @@ namespace CaptainSkillTree.SkillTree
                 "Attack Tree", "Tier1_Opener_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier1_Opener_RequiredPoints"), order: 51);
 
-            // === Tier 2: 무기별 선빵 특화 ===
+            // === Tier 2: 무기별 선공격 특화 ===
             AtkOpenerMeleeFinisherBonus = SkillTreeConfig.BindServerSync(config,
                 "Attack Tree", "Tier2_OpenerMelee_FinisherBonus", 10f,
                 SkillTreeConfig.GetConfigDescription("Tier2_OpenerMelee_FinisherBonus"), order: 48);
@@ -183,7 +205,8 @@ namespace CaptainSkillTree.SkillTree
                 "Attack Tree", "Tier2_OpenerMelee_RequiredPoints", 2,
                 SkillTreeConfig.GetConfigDescription("Tier2_OpenerMelee_RequiredPoints"), order: 47);
 
-            AtkOpenerBowCritChance = SkillTreeConfig.BindServerSync(config,
+            // Tier2_OpenerBow_CritChance 키 이름은 그대로 유지(세이브 호환성) - 의미는 크리 확률 → 크리티컬 피해로 변경됨
+            AtkOpenerBowCritDamageBonus = SkillTreeConfig.BindServerSync(config,
                 "Attack Tree", "Tier2_OpenerBow_CritChance", 8f,
                 SkillTreeConfig.GetConfigDescription("Tier2_OpenerBow_CritChance"), order: 46);
 
@@ -233,13 +256,13 @@ namespace CaptainSkillTree.SkillTree
                 "Attack Tree", "Tier4_PursuitSpeed_RequiredPoints", 2,
                 SkillTreeConfig.GetConfigDescription("Tier4_PursuitSpeed_RequiredPoints"), order: 29);
 
-            AtkFrenzyTriggerStaminaReduction = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier4_FrenzyTrigger_StaminaReduction", 20f,
-                SkillTreeConfig.GetConfigDescription("Tier4_FrenzyTrigger_StaminaReduction"), order: 28);
+            AtkFrenzyTriggerCritChancePerLevel = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier4_FrenzyTrigger_CritChancePerLevel", 2f,
+                SkillTreeConfig.GetConfigDescription("Tier4_FrenzyTrigger_CritChancePerLevel"), order: 28);
 
-            AtkFrenzyTriggerRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier4_FrenzyTrigger_RequiredPoints", 2,
-                SkillTreeConfig.GetConfigDescription("Tier4_FrenzyTrigger_RequiredPoints"), order: 27);
+            AtkFrenzyTriggerPointsPerLevel = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier4_FrenzyTrigger_PointsPerLevel", 2,
+                SkillTreeConfig.GetConfigDescription("Tier4_FrenzyTrigger_PointsPerLevel"), order: 27);
 
             // === Tier 5: 난전 ===
             AtkFrenzyStackBonusBase = SkillTreeConfig.BindServerSync(config,
@@ -266,14 +289,38 @@ namespace CaptainSkillTree.SkillTree
                 "Attack Tree", "Tier5_Frenzy_RequiredPoints", 3,
                 SkillTreeConfig.GetConfigDescription("Tier5_Frenzy_RequiredPoints"), order: 15);
 
-            // === Tier 6: 마무리 최종 (기존 유지) ===
-            AttackCritDamageBonus = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus", 12f,
-                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_CritDamageBonus"), order: 8);
+            // === Tier 6: 약점 공격 (성장형 Lv1~7) ===
+            AttackCritDamageBonus_Lv1 = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus_Lv1", 5f,
+                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_CritDamageBonus_Lv1"), order: 14);
 
-            AttackStep6CritDmgRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Attack Tree", "Tier6_WeakPointAttack_RequiredPoints", 3,
-                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_RequiredPoints"), order: 7);
+            AttackCritDamageBonus_Lv2 = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus_Lv2", 9f,
+                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_CritDamageBonus_Lv2"), order: 13);
+
+            AttackCritDamageBonus_Lv3 = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus_Lv3", 13f,
+                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_CritDamageBonus_Lv3"), order: 12);
+
+            AttackCritDamageBonus_Lv4 = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus_Lv4", 17f,
+                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_CritDamageBonus_Lv4"), order: 11);
+
+            AttackCritDamageBonus_Lv5 = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus_Lv5", 21f,
+                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_CritDamageBonus_Lv5"), order: 10);
+
+            AttackCritDamageBonus_Lv6 = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus_Lv6", 25f,
+                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_CritDamageBonus_Lv6"), order: 9);
+
+            AttackCritDamageBonus_Lv7 = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_WeakPointAttack_CritDamageBonus_Lv7", 29f,
+                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_CritDamageBonus_Lv7"), order: 8);
+
+            AtkCritDmgPointsPerLevel = SkillTreeConfig.BindServerSync(config,
+                "Attack Tree", "Tier6_WeakPointAttack_PointsPerLevel", 2,
+                SkillTreeConfig.GetConfigDescription("Tier6_WeakPointAttack_PointsPerLevel"), order: 7);
 
             AttackFinisherMeleeBonus = SkillTreeConfig.BindServerSync(config,
                 "Attack Tree", "Tier6_ComboFinisher_3HitComboBonus", 5f,

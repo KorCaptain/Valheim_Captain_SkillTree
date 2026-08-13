@@ -15,6 +15,7 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "遠距離スキルキー",
                 ["HotKey_G"] = "近接メインスキルキー",
                 ["HotKey_H"] = "補助スキルキー",
+                ["QuestToggleKey"] = "クエストパネルのショートカット",
                 ["HUD_IconSize"] = "スキルアイコンサイズ",
                 ["HUD_PosX"] = "スキルアイコン HUD X座標",
                 ["HUD_PosY"] = "スキルアイコン HUD Y座標",
@@ -37,7 +38,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_Opener_RequiredPoints"] = "Tier 1: [先制攻撃] 必要ポイント",
                 ["Tier2_OpenerMelee_FinisherBonus"] = "Tier 2-1: [近接] フィニッシャーボーナス (%)",
                 ["Tier2_OpenerMelee_RequiredPoints"] = "Tier 2-1: [近接] 必要ポイント",
-                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [弓] クリティカル率 (%)",
+                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [弓] クリティカルダメージボーナス (%)",
                 ["Tier2_OpenerBow_RequiredPoints"] = "Tier 2-2: [弓] 必要ポイント",
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] = "Tier 2-3: [クロスボウ] 初弾ボーナス (%)",
                 ["Tier2_OpenerCrossbow_RequiredPoints"] = "Tier 2-3: [クロスボウ] 必要ポイント",
@@ -49,8 +50,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_Pursuit_RequiredPoints"] = "Tier 3: [追撃] 必要ポイント",
                 ["Tier4_PursuitSpeed_SpeedBonus"] = "Tier 4-1: [疾風追撃] 移動速度ボーナス (%)",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "Tier 4-1: [疾風追撃] 必要ポイント",
-                ["Tier4_FrenzyTrigger_StaminaReduction"] = "Tier 4-2: [乱戦突入] スタミナ減少 (%)",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "Tier 4-2: [乱戦突入] 必要ポイント",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] = "Tier 4-2: [致命の一撃] クリティカル率/レベル (%)",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "Tier 4-2: [致命の一撃] レベル毎必要ポイント",
                 ["Tier5_Frenzy_StackBonusBase"] = "Tier 5: [乱戦] 基本スタックボーナス (%)",
                 ["Tier5_Frenzy_StackBonusChain"] = "Tier 5: [乱戦] 連鎖スタックボーナス (%)",
                 ["Tier5_Frenzy_MaxStacks"] = "Tier 5: [乱戦] 最大スタック数",
@@ -96,8 +97,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [チャージ] 必要ポイント",
 
                 // === Tier 6: 最終強化 (8) ===
-                ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [弱点攻撃] クリティカルダメージボーナス (%)",
-                ["Tier6_WeakPointAttack_RequiredPoints"] = "Tier 6-1: [弱点攻撃] 必要ポイント",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "Tier 6-1: [弱点攻撃] クリティカルダメージボーナス Lv1 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "Tier 6-1: [弱点攻撃] クリティカルダメージボーナス Lv2 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "Tier 6-1: [弱点攻撃] クリティカルダメージボーナス Lv3 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "Tier 6-1: [弱点攻撃] クリティカルダメージボーナス Lv4 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "Tier 6-1: [弱点攻撃] クリティカルダメージボーナス Lv5 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "Tier 6-1: [弱点攻撃] クリティカルダメージボーナス Lv6 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "Tier 6-1: [弱点攻撃] クリティカルダメージボーナス Lv7 (%)",
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "Tier 6-1: [弱点攻撃] レベル毎必要ポイント",
                 ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [コンボフィニッシャー] 常時ボーナス (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Tier 6-2: [コンボフィニッシャー] 必要ポイント",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Tier 6-3: [両手粉砕] ダメージボーナス (%)",
@@ -213,6 +220,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 0: 防御エキスパート (3) ===
                 ["Tier0_DefenseExpert_HPBonus"] = "Tier 0: [防御エキスパート] HPボーナス",
                 ["Tier0_DefenseExpert_ArmorBonus"] = "Tier 0: [防御エキスパート] 防御力ボーナス",
+                ["Tier0_DefenseExpert_AtkPenalty"] = "Tier 0: [防御エキスパート] 攻撃力低下 (%)",
                 ["Tier0_DefenseExpert_RequiredPoints"] = "Tier 0: [防御エキスパート] 必要ポイント",
 
                 // === Tier 1: 皮膚強化 (3) ===
@@ -305,11 +313,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6-4: [ヨトゥンの活力] 物理/属性耐性 (%)",
                 ["Tier6_JotunnVitality_RequiredPoints"] = "Tier 6-4: [ヨトゥンの活力] 必要ポイント",
 
-                // === Tier 6-5: ヨトゥンの盾 (4) ===
-                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6-5: [ヨトゥンの盾] ブロックスタミナ軽減 (%)",
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6-5: [ヨトゥンの盾] 通常盾移動速度ボーナス (%)",
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6-5: [ヨトゥンの盾] タワーシールド移動速度ボーナス (%)",
-                ["Tier6_JotunnShield_RequiredPoints"] = "Tier 6-5: [ヨトゥンの盾] 必要ポイント",
+                // === Tier 6-5: シールドチャージ (7、メイスツリーから移動) ===
+                ["Tier6_GuardianHeart_Cooldown"] = "Tier 6-5: [シールドチャージ] クールダウン (秒)",
+                ["Tier6_GuardianHeart_StaminaCost"] = "Tier 6-5: [シールドチャージ] スタミナコスト",
+                ["Tier6_ShieldCharge_DamagePercent"] = "Tier 6-5: [シールドチャージ] ブロック力ダメージ率 (%)",
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] = "Tier 6-5: [シールドチャージ] 連続ヒットダメージ率 (%)",
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] = "Tier 6-5: [シールドチャージ] 連続ヒットレベルボーナス (%)",
+                ["Tier6_GuardianHeart_RequiredPoints"] = "Tier 6-5: [シールドチャージ] 必要ポイント",
+                ["Tier6_ShieldCharge_LevelBonus"] = "Tier 6-5: [シールドチャージ] レベルボーナス (%)",
 
                 // ============================================
                 // 生産ツリー - 22キー

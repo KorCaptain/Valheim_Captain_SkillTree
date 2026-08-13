@@ -12,7 +12,7 @@ namespace CaptainSkillTree.SkillTree
     // ===== 공격 전문가 트리 상태 추적 =====
     public static class AttackTreeTracker
     {
-        // === 선빵 상태 ===
+        // === 선공격 상태 ===
         public static Dictionary<Player, float> openerStartTime     = new Dictionary<Player, float>();
         public static Dictionary<Player, float> openerLastUsedTime  = new Dictionary<Player, float>();
         public static Dictionary<Player, bool>  firstMeleeUsed      = new Dictionary<Player, bool>();
@@ -29,28 +29,28 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, float> frenzyLastHitTime   = new Dictionary<Player, float>();
         public static Dictionary<Player, bool>  frenzyMaxReached    = new Dictionary<Player, bool>();
 
-        // 선빵 버프 활성 여부
+        // 선공격 버프 활성 여부
         public static bool IsOpenerActive(Player p)
         {
             if (!openerStartTime.TryGetValue(p, out float t)) return false;
             return Time.time - t < Attack_Config.AtkOpenerDurationValue;
         }
 
-        // 선빵→추격 연쇄 윈도우 여부 (5초)
+        // 선공격→추격 연쇄 윈도우 여부 (5초)
         public static bool IsOpenerChainActive(Player p)
         {
             if (!openerStartTime.TryGetValue(p, out float t)) return false;
             return Time.time - t < Attack_Config.AtkPursuitChainWindowValue;
         }
 
-        // 선빵 쿨다운 완료 여부
+        // 선공격 쿨다운 완료 여부
         public static bool IsOpenerReady(Player p)
         {
             if (!openerLastUsedTime.TryGetValue(p, out float t)) return true;
             return Time.time - t >= Attack_Config.AtkOpenerCooldownValue;
         }
 
-        // 선빵 발동 (첫 타격 시)
+        // 선공격 발동 (첫 타격 시)
         public static void TriggerOpener(Player p)
         {
             openerStartTime[p]    = Time.time;
@@ -147,11 +147,17 @@ namespace CaptainSkillTree.SkillTree
                     totalDamageMultiplier *= 1f + Attack_Config.AttackRootDamageBonusValue / 100f;
 
                 // ──────────────────────────────────────────────
-                // Tier 1: 선빵 발동 감지 + 데미지 보너스 적용
+                // Tier 0: 방어 전문가 루트 (-3%, 공격/방어 트레이드오프)
+                // ──────────────────────────────────────────────
+                if (manager.GetSkillLevel("defense_root") > 0)
+                    totalDamageMultiplier *= 1f - Defense_Config.DefenseRootAttackPowerPenaltyValue / 100f;
+
+                // ──────────────────────────────────────────────
+                // Tier 1: 선공격 발동 감지 + 데미지 보너스 적용
                 // ──────────────────────────────────────────────
                 if (manager.GetSkillLevel("atk_opener") > 0)
                 {
-                    // 쿨다운 완료 시 첫 타격에 선빵 발동
+                    // 쿨다운 완료 시 첫 타격에 선공격 발동
                     if (AttackTreeTracker.IsOpenerReady(player))
                     {
                         AttackTreeTracker.TriggerOpener(player);
@@ -164,11 +170,11 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // ──────────────────────────────────────────────
-                // Tier 2: 무기별 선빵 특화
+                // Tier 2: 무기별 선공격 특화
                 // ──────────────────────────────────────────────
                 bool openerActive = AttackTreeTracker.IsOpenerActive(player);
 
-                // 근접: 마무리 예열 — 선빵 윈도우 내 첫 근접 타격 +20%
+                // 근접: 마무리 예열 — 선공격 윈도우 내 첫 근접 타격 +20%
                 {
                     bool meleeUsed = AttackTreeTracker.firstMeleeUsed.TryGetValue(player, out var mu) && mu;
                     if (openerActive && isMelee && manager.GetSkillLevel("atk_opener_melee") > 0 && !meleeUsed)
@@ -180,7 +186,7 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
-                // 활: 선빵 윈도우 내 첫발 크리 확정
+                // 활: 선공격 윈도우 내 첫발 크리 확정
                 {
                     bool bowUsed = AttackTreeTracker.firstBowUsed.TryGetValue(player, out var bu) && bu;
                     if (openerActive && isBow && manager.GetSkillLevel("atk_opener_bow") > 0 && !bowUsed)
@@ -215,7 +221,8 @@ namespace CaptainSkillTree.SkillTree
                 // 마법: 첫 마법 공격 스태거 확정
                 {
                     bool magicUsed = AttackTreeTracker.firstMagicUsed.TryGetValue(player, out var mgu) && mgu;
-                    if (openerActive && isStaff && manager.GetSkillLevel("atk_opener_magic") > 0 && !magicUsed)
+                    if (openerActive && isStaff && manager.GetSkillLevel("atk_opener_magic") > 0 && !magicUsed
+                        && Attack_Config.AtkOpenerMagicStaggerProcValue >= 1f)
                     {
                         AttackTreeTracker.firstMagicUsed[player] = true;
                         hit.m_staggerMultiplier = 10f;
@@ -249,8 +256,8 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 // ──────────────────────────────────────────────
-                // Tier 4: atk_frenzy_trigger — 주변 3m 적 2명↑ 시 난전 진입 가속
-                // (스태미나 감소는 UseStamina 패치에서 별도 처리)
+                // Tier 4-2: atk_frenzy_trigger(치명적인 공격) — 레벨당 치명타 확률 증가(패시브)
+                // 실제 적용은 CriticalSystem/Critical.cs GetCommonCritChanceBonus()에서 처리
                 // ──────────────────────────────────────────────
 
                 // ──────────────────────────────────────────────
@@ -328,8 +335,31 @@ namespace CaptainSkillTree.SkillTree
                             new Color(1f, 0.5f, 0f), SkillEffect.SkillEffectTextType.Critical);
                 }
 
-                // 약점 공격: 크리티컬 피해 +12% (Critical.cs에서 처리, tier6Amp는 전달)
-                // CriticalDamage.AttackTreeTier6Amp = tier6Amp; // 필요시 전달 가능
+                // ──────────────────────────────────────────────
+                // 퀘스트 보상: 처치 퀘스트 클레임 시 영구 데미지 보너스
+                // ──────────────────────────────────────────────
+                // 풀링 샤먼(고블린 샤먼) 처치 퀘스트(Plains_Quest1): 속성 공격력 영구 +2%
+                if (QuestManager.IsClaimed(player, "Plains_Quest1"))
+                {
+                    const float questElemBonus = 1.02f;
+                    hit.m_damage.m_fire      *= questElemBonus;
+                    hit.m_damage.m_frost     *= questElemBonus;
+                    hit.m_damage.m_lightning *= questElemBonus;
+                    hit.m_damage.m_poison    *= questElemBonus;
+                    hit.m_damage.m_spirit    *= questElemBonus;
+                }
+
+                // 시커 처치 퀘스트(Mistlands_Quest2): 물리 공격력 영구 +1%
+                if (QuestManager.IsClaimed(player, "Mistlands_Quest2"))
+                {
+                    const float questPhysBonus = 1.01f;
+                    hit.m_damage.m_damage  *= questPhysBonus;
+                    hit.m_damage.m_blunt   *= questPhysBonus;
+                    hit.m_damage.m_slash   *= questPhysBonus;
+                    hit.m_damage.m_pierce  *= questPhysBonus;
+                    hit.m_damage.m_chop    *= questPhysBonus;
+                    hit.m_damage.m_pickaxe *= questPhysBonus;
+                }
 
                 // ──────────────────────────────────────────────
                 // 제작 전문가 장인의 축복 버프 (기존 유지)
@@ -340,7 +370,7 @@ namespace CaptainSkillTree.SkillTree
                 // ──────────────────────────────────────────────
                 // 총 데미지 배율 적용
                 // ──────────────────────────────────────────────
-                if (totalDamageMultiplier > 1f)
+                if (totalDamageMultiplier != 1f)
                 {
                     hit.m_damage.m_damage   *= totalDamageMultiplier;
                     hit.m_damage.m_blunt    *= totalDamageMultiplier;
@@ -359,7 +389,7 @@ namespace CaptainSkillTree.SkillTree
                         bool dbgPursuit = AttackTreeTracker.pursuitTriggered.TryGetValue(player, out var pp) && pp;
                         int  dbgStack   = AttackTreeTracker.frenzyStack.TryGetValue(player, out var fs) ? fs : 0;
                         Plugin.Log.LogInfo($"[공격 트리] 총 배율: {totalDamageMultiplier:F2}x " +
-                            $"(선빵={openerActive}, 추격={dbgPursuit}, 난전스택={dbgStack}, MaxAmplify={frenzyMax})");
+                            $"(선공격={openerActive}, 추격={dbgPursuit}, 난전스택={dbgStack}, MaxAmplify={frenzyMax})");
                     }
                 }
 
@@ -395,6 +425,24 @@ namespace CaptainSkillTree.SkillTree
                    weapon.m_shared.m_skillType == Skills.SkillType.Polearms ||
                    weapon.m_shared.m_skillType == Skills.SkillType.Spears ||
                    weapon.m_shared.m_skillType == Skills.SkillType.Crossbows;
+        }
+    }
+
+    // ===== 선공격(atk_opener) 스태미나 소비 감소 패치 =====
+    // ArcherAttackStaminaReductionPatch/RogueStaminaReductionPatch와 동일 패턴
+    [HarmonyPatch(typeof(Player), nameof(Player.UseStamina))]
+    public static class AttackTree_OpenerStaminaReduction_Patch
+    {
+        static void Prefix(Player __instance, ref float v)
+        {
+            try
+            {
+                int lv = SkillTreeManager.Instance?.GetSkillLevel("atk_opener") ?? 0;
+                if (lv <= 0) return;
+                if (!AttackTreeTracker.IsOpenerActive(__instance)) return;
+                v *= (1f - Attack_Config.AtkOpenerStaminaReductionValue / 100f);
+            }
+            catch (System.Exception) { }
         }
     }
 

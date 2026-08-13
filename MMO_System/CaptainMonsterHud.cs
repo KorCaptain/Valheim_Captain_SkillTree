@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using TMPro;
@@ -22,6 +23,14 @@ namespace CaptainSkillTree.MMO_System
         // Reflection 캐시
         private static FieldInfo _m_hudsField;
         private static FieldInfo _m_guiField;
+
+        // UpdateHuds throttle (몬스터 레벨은 자주 바뀌지 않으므로 프레임마다 갱신 불필요)
+        private static float _lastUpdateTime;
+        private const float UpdateInterval = 0.5f;
+
+        // ZDOID 기반 텍스트 컴포넌트 캐시 (매 틱 Transform.Find 문자열 경로 탐색 회피, CaptainJobNameHud와 동일 패턴)
+        private static readonly Dictionary<ZDOID, TextMeshProUGUI> _cachedLevelText = new Dictionary<ZDOID, TextMeshProUGUI>();
+        private static readonly Dictionary<ZDOID, TextMeshProUGUI> _cachedMonsterNameText = new Dictionary<ZDOID, TextMeshProUGUI>();
 
         /// <summary>
         /// Reflection 필드 초기화
@@ -185,12 +194,18 @@ namespace CaptainSkillTree.MMO_System
                 // 자체 시스템 비활성화 시 스킵
                 if (!CaptainLevelConfig.EnableCaptainLevel.Value) return;
 
+                // throttle: 0.5초 간격으로만 갱신 (매 프레임 문자열/컴포넌트 연산 방지)
+                if (Time.time - _lastUpdateTime < UpdateInterval) return;
+                _lastUpdateTime = Time.time;
+
                 // m_huds 필드 가져오기 (Reflection)
                 InitReflection();
                 if (_m_hudsField == null) return;
 
                 var hudsDict = _m_hudsField.GetValue(__instance) as IDictionary;
                 if (hudsDict == null) return;
+
+                var activeZdoids = new HashSet<ZDOID>();
 
                 // 모든 HUD 업데이트
                 foreach (DictionaryEntry entry in hudsDict)
@@ -202,6 +217,9 @@ namespace CaptainSkillTree.MMO_System
 
                     GameObject hudGui = GetHudGui(entry.Value);
                     if (hudGui == null) continue;
+
+                    ZDOID zdoid = c.GetZDOID();
+                    activeZdoids.Add(zdoid);
 
                     // 몬스터 레벨 정보
                     string monsterName = GetMonsterName(c);
@@ -241,59 +259,86 @@ namespace CaptainSkillTree.MMO_System
                             levelColor = Color.white;
                     }
 
-                    // 기존 레벨 텍스트 찾기
-                    Transform levelTransform = hudGui.transform.Find("Name/CaptainLevel(Clone)");
-                    if (levelTransform != null)
+                    // 레벨 텍스트 컴포넌트 캐시 조회 (ZDOID 기반 - 매 틱 Transform.Find 문자열 탐색 회피)
+                    if (!_cachedLevelText.TryGetValue(zdoid, out TextMeshProUGUI tmpText) || tmpText == null)
                     {
-                        levelTransform.gameObject.SetActive(true);
-
-                        var tmpText = levelTransform.GetComponent<TextMeshProUGUI>();
-                        if (tmpText != null)
+                        Transform levelTransform = hudGui.transform.Find("Name/CaptainLevel(Clone)");
+                        if (levelTransform != null)
                         {
-                            tmpText.text = levelString;
-                            tmpText.color = levelColor;
+                            tmpText = levelTransform.GetComponent<TextMeshProUGUI>();
                         }
-                    }
-                    else
-                    {
-                        // 레벨 텍스트가 없으면 생성
-                        GameObject nameComponent = hudGui.transform.Find("Name")?.gameObject;
-                        if (nameComponent != null)
+                        else
                         {
-                            GameObject levelTextObj = UnityEngine.Object.Instantiate(nameComponent, nameComponent.transform);
-                            levelTextObj.name = "CaptainLevel(Clone)";
-
-                            var rect = levelTextObj.GetComponent<RectTransform>();
-                            rect.anchoredPosition = c.IsBoss() ? BossLevelPosition : MobLevelPosition;
-
-                            var tmpText = levelTextObj.GetComponent<TextMeshProUGUI>();
-                            if (tmpText != null)
+                            // 레벨 텍스트가 없으면 생성
+                            GameObject nameComponent = hudGui.transform.Find("Name")?.gameObject;
+                            if (nameComponent != null)
                             {
-                                tmpText.overflowMode = TextOverflowModes.Overflow;
-                                tmpText.text = levelString;
-                                tmpText.color = levelColor;
-                            }
+                                GameObject levelTextObj = UnityEngine.Object.Instantiate(nameComponent, nameComponent.transform);
+                                levelTextObj.name = "CaptainLevel(Clone)";
 
-                            var fitter = levelTextObj.GetComponent<ContentSizeFitter>();
-                            if (fitter == null)
-                            {
-                                fitter = levelTextObj.AddComponent<ContentSizeFitter>();
+                                var rect = levelTextObj.GetComponent<RectTransform>();
+                                rect.anchoredPosition = c.IsBoss() ? BossLevelPosition : MobLevelPosition;
+
+                                tmpText = levelTextObj.GetComponent<TextMeshProUGUI>();
+                                if (tmpText != null)
+                                {
+                                    tmpText.overflowMode = TextOverflowModes.Overflow;
+                                }
+
+                                var fitter = levelTextObj.GetComponent<ContentSizeFitter>();
+                                if (fitter == null)
+                                {
+                                    fitter = levelTextObj.AddComponent<ContentSizeFitter>();
+                                }
+                                fitter.SetLayoutHorizontal();
                             }
-                            fitter.SetLayoutHorizontal();
                         }
+                        _cachedLevelText[zdoid] = tmpText;
                     }
 
-                    // 이름 색상도 업데이트
-                    var nameText = hudGui.transform.Find("Name")?.GetComponent<TextMeshProUGUI>();
+                    if (tmpText != null)
+                    {
+                        tmpText.gameObject.SetActive(true);
+                        tmpText.text = levelString;
+                        tmpText.color = levelColor;
+                    }
+
+                    // 이름 색상도 업데이트 (컴포넌트 캐시)
+                    if (!_cachedMonsterNameText.TryGetValue(zdoid, out TextMeshProUGUI nameText) || nameText == null)
+                    {
+                        nameText = hudGui.transform.Find("Name")?.GetComponent<TextMeshProUGUI>();
+                        _cachedMonsterNameText[zdoid] = nameText;
+                    }
                     if (nameText != null)
                     {
                         nameText.color = levelColor;
                     }
                 }
+
+                CleanupStaleEntries(activeZdoids);
             }
             catch (Exception ex)
             {
                 Plugin.Log.LogDebug($"[CaptainMonsterHud] UpdateHuds 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 더 이상 활성화되지 않은(HUD 목록에서 사라진) 몬스터의 캐시 항목 정리
+        /// </summary>
+        private static void CleanupStaleEntries(HashSet<ZDOID> activeZdoids)
+        {
+            if (_cachedLevelText.Count == 0 && _cachedMonsterNameText.Count == 0) return;
+
+            var staleKeys = new List<ZDOID>();
+            foreach (var key in _cachedLevelText.Keys)
+            {
+                if (!activeZdoids.Contains(key)) staleKeys.Add(key);
+            }
+            foreach (var key in staleKeys)
+            {
+                _cachedLevelText.Remove(key);
+                _cachedMonsterNameText.Remove(key);
             }
         }
 

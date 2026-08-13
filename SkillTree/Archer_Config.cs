@@ -52,6 +52,10 @@ namespace CaptainSkillTree.SkillTree
         // === 아처 신규 패시브: 화살/볼트 소모 면제 확률 ===
         public static ConfigEntry<float> ArcherAmmoSaveChance;
 
+        // === 아처 신규 패시브: 길들인 생물 회복 ===
+        public static ConfigEntry<float> ArcherTameHealPerLevel;   // 레벨당 초당 회복량 (기본: 1)
+        public static ConfigEntry<float> ArcherTameHealRange;      // 적용 반경 (기본: 10m)
+
         // === 동적 값 접근자 (MMO 시스템 연동) ===
         public static int ArcherMultiShotArrowCountValue => (int)SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_ArrowCount", ArcherMultiShotArrowCount.Value);
         public static int ArcherMultiShotArrowConsumptionValue => (int)SkillTreeConfig.GetEffectiveValue("Archer_MultiShot_ArrowConsumption", ArcherMultiShotArrowConsumption.Value);
@@ -93,6 +97,8 @@ namespace CaptainSkillTree.SkillTree
         public static float ArcherAttackStaminaReductionLv4Value => SkillTreeConfig.GetEffectiveValue("Archer_Attack_StaminaReduction_Lv4", ArcherAttackStaminaReductionLv4.Value);
         public static float ArcherAttackStaminaReductionLv5Value => SkillTreeConfig.GetEffectiveValue("Archer_Attack_StaminaReduction_Lv5", ArcherAttackStaminaReductionLv5.Value);
         public static float ArcherAmmoSaveChanceValue            => SkillTreeConfig.GetEffectiveValue("Archer_AmmoSaveChance",              ArcherAmmoSaveChance.Value);
+        public static float ArcherTameHealPerLevelValue          => SkillTreeConfig.GetEffectiveValue("Archer_TameHeal_PerLevel",           ArcherTameHealPerLevel.Value);
+        public static float ArcherTameHealRangeValue              => SkillTreeConfig.GetEffectiveValue("Archer_TameHeal_Range",              ArcherTameHealRange.Value);
 
         /// <summary>
         /// 아처 컨피그 초기화 (SkillTreeConfig에서 호출)
@@ -334,6 +340,21 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Archer_AmmoSaveChance")
                 );
 
+                // === 신규 패시브: 길들인 생물 회복 ===
+                ArcherTameHealPerLevel = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_TameHeal_PerLevel",
+                    1.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_TameHeal_PerLevel")
+                );
+
+                ArcherTameHealRange = SkillTreeConfig.BindServerSync(config,
+                    "Archer Job Skills",
+                    "Archer_TameHeal_Range",
+                    10.0f,
+                    SkillTreeConfig.GetConfigDescription("Archer_TameHeal_Range")
+                );
+
                 Plugin.Log.LogDebug("[아처 컨피그] 설정 항목 생성 완료 (액티브 + 패시브)");
                 
                 // === 이벤트 핸들러 등록 (툴팁 자동 업데이트) ===
@@ -395,6 +416,8 @@ namespace CaptainSkillTree.SkillTree
                 ArcherAttackStaminaReductionLv4.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherAttackStaminaReductionLv5.SettingChanged += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
                 ArcherAmmoSaveChance.SettingChanged            += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherTameHealPerLevel.SettingChanged          += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
+                ArcherTameHealRange.SettingChanged             += (sender, args) => Archer_Tooltip.UpdateArcherTooltip();
 
                 Plugin.Log.LogDebug("[아처 컨피그] 이벤트 핸들러 등록 완료 - 툴팁 자동 업데이트 활성화 (액티브 + 패시브)");
             }

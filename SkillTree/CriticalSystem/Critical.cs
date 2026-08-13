@@ -1,4 +1,5 @@
 using UnityEngine;
+using CaptainSkillTree.MMO_System;
 
 namespace CaptainSkillTree.SkillTree.CriticalSystem
 {
@@ -72,15 +73,17 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
         {
             float bonus = 0f;
 
-            // Tier 4: 정밀 공격 - 치명타 확률 +5%
-            if (SkillEffect.HasSkill("atk_crit_chance"))
+            // Tier 4-2: 치명적인 공격(atk_frenzy_trigger, 성장형 Lv1~7) - 치명타 확률 +레벨×증가량%
+            int frenzyLv = SkillTreeManager.Instance.GetSkillLevel("atk_frenzy_trigger");
+            if (frenzyLv > 0)
             {
-                float tierBonus = SkillTreeConfig.AttackCritChanceValue;
+                float tierBonus = frenzyLv * Attack_Config.AtkFrenzyTriggerCritChancePerLevelValue;
                 bonus += tierBonus;
-                Plugin.Log.LogDebug($"[공통 치명타] Tier 4 정밀 공격: +{tierBonus}%");
+                Plugin.Log.LogDebug($"[공통 치명타] 치명적인 공격 Lv{frenzyLv}: +{tierBonus}%");
             }
 
-
+            // EpicMMOSystem Special 스탯 흡수 (자체 치명타 시스템 Unpatch 후 통합 굴림으로 대체)
+            bonus += EpicMMOCritIntegration.GetSpecialCritChanceBonus();
 
             return bonus;
         }
@@ -135,7 +138,8 @@ namespace CaptainSkillTree.SkillTree.CriticalSystem
         /// <returns>헤드샷 여부</returns>
         public static bool IsHeadshot(Character target, Vector3 hitPoint)
         {
-            if (target == null || target.IsPlayer()) return false;
+            if (target == null) return false;
+            if (target.IsPlayer() && !target.IsPVPEnabled()) return false;
 
             Vector3 topPoint = target.GetTopPoint();
             float bottom = target.transform.position.y;

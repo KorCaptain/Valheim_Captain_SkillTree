@@ -313,9 +313,6 @@ namespace CaptainSkillTree.SkillTree
                         b.FlatPierce += Bow_Config.BowStep3SilentShotDamageBonusValue;
                     if (SkillEffect.HasSkill("bow_Step1_damage"))
                         physPct += Bow_Config.BowStep1ExpertDamageBonusValue;
-                    // atk_opener_bow: 크리확률 +15% 상시 패시브
-                    if (SkillEffect.HasSkill("atk_opener_bow"))
-                        b.CritChance += Attack_Config.AtkOpenerBowCritChanceValue;
                     if (SkillEffect.HasSkill("bow_draw1"))
                         b.AttackSpeed += Speed_Config.SpeedBowDrawSpeedValue;
                     if (SkillEffect.HasSkill("bow_Step2_multishot"))

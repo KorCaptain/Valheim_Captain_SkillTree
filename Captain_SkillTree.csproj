@@ -20,7 +20,7 @@
     <UseSharedCompilation>false</UseSharedCompilation>
     <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
     <!-- 🔧 버전 관리 시스템 -->
-    <Version>1.24.95</Version>
+    <Version>2.1.90</Version>
     <AutoIncrementVersion>true</AutoIncrementVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -152,8 +152,17 @@
     <EmbeddedResource Include="asset/Resources/skill_start" />
     <EmbeddedResource Include="asset/Resources/skill_node" />
     <EmbeddedResource Include="asset/Resources/job_icon" />
+    <EmbeddedResource Include="asset/Resources/quest_bg" />
     <!-- BGM 음원 파일 (Resources 폴더 유지) -->
     <EmbeddedResource Include="asset/Resources/Skill_Tree_BGM.ogg" />
+    <!-- 퀘스트 완료 효과음 (파일명에 공백이 있어 LogicalName 명시) -->
+    <EmbeddedResource Include="asset/Resources/Quest Complete.ogg">
+      <LogicalName>CaptainSkillTree.asset.Resources.QuestComplete</LogicalName>
+    </EmbeddedResource>
+    <!-- 레벨업 팡파레 (파일명에 공백이 있어 LogicalName 명시) -->
+    <EmbeddedResource Include="asset/Resources/Hero Awakens.ogg">
+      <LogicalName>CaptainSkillTree.asset.Resources.HeroAwakens</LogicalName>
+    </EmbeddedResource>
     <!-- 제작 마법부여 데이터 JSON -->
     <EmbeddedResource Include="asset/Producer_Enchant.json" />
     <!-- 난이도 프리셋 cfg (첫 실행 시 config\CaptainSkillTree\ 에 자동 추출) -->
@@ -232,17 +241,22 @@
     * EpicMMOSystem.dll, Jotunn.dll 등은 최신 버전으로 직접 복사 필요
   -->
   <!-- 🔧 자동 버전 증가 타겟 -->
-  <Target Name="IncrementVersion" AfterTargets="Build" Condition="'$(AutoIncrementVersion)' == 'true'">
+  <Target Name="IncrementVersion" BeforeTargets="CoreCompile" Condition="'$(AutoIncrementVersion)' == 'true'">
     <Message Text="🔧 버전 자동 증가 시스템 실행..." Importance="high" />
     <Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)build/IncrementVersion.ps1&quot; -ProjectFile &quot;$(MSBuildProjectFullPath)&quot; -ProjectDir &quot;$(ProjectDir)&quot;" ConsoleToMSBuild="true" IgnoreStandardErrorWarningFormat="true" />
   </Target>
-  <!-- 🚀 빌드 후 자동 배포 (r2modmanPlus 플러그인 폴더로 복사, Windows 환경에서만 실행) -->
-  <Target Name="DeployToR2ModMan" AfterTargets="Build" Condition="'$(APPDATA)' != '' And Exists('$(APPDATA)\r2modmanPlus-local')">
+  <!-- 🚀 빌드 후 자동 배포 (Thunderstore Mod Manager 플러그인 폴더로 복사, Windows 환경에서만 실행) -->
+  <Target Name="DeployToThunderstoreModManager" AfterTargets="Build" Condition="'$(APPDATA)' != '' And Exists('$(APPDATA)\Thunderstore Mod Manager')">
     <PropertyGroup>
-      <R2ModManPluginsPath>$(APPDATA)\r2modmanPlus-local\Valheim\profiles\Cusor_1\BepInEx\plugins\Captain_Skilltree\</R2ModManPluginsPath>
+      <ThunderstoreModManagerPluginsPath>$(APPDATA)\Thunderstore Mod Manager\DataFolder\Valheim\profiles\Cusor_1\BepInEx\plugins\korCaptain-CaptainSkillTree\</ThunderstoreModManagerPluginsPath>
     </PropertyGroup>
-    <Message Text="🚀 DLL 배포 중: $(OutputPath)$(AssemblyName).dll → $(R2ModManPluginsPath)" Importance="high" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(R2ModManPluginsPath)" SkipUnchangedFiles="false" />
+    <Message Text="🚀 DLL 배포 중: $(OutputPath)$(AssemblyName).dll → $(ThunderstoreModManagerPluginsPath)" Importance="high" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ThunderstoreModManagerPluginsPath)" SkipUnchangedFiles="false" />
     <Message Text="✅ 배포 완료!" Importance="high" />
+  </Target>
+  <!-- 📦 Thunderstore 패키지 폴더 + zip 자동 동기화 (DLL/manifest 버전 일치 보장) -->
+  <Target Name="SyncThunderstorePackage" AfterTargets="Build">
+    <Message Text="📦 Thunderstore 패키지 동기화 중..." Importance="high" />
+    <Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)build/SyncThunderstorePackage.ps1&quot; -DllPath &quot;$(ProjectDir)$(OutputPath)$(AssemblyName).dll&quot; -ProjectDir &quot;$(ProjectDir)&quot;" ConsoleToMSBuild="true" IgnoreStandardErrorWarningFormat="true" />
   </Target>
 </Project>

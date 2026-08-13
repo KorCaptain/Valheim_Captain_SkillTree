@@ -61,6 +61,8 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static void UpdateSwordCombo(Player player)
         {
+            if (!HasSkill("sword_expert")) return;
+
             if (!swordComboCount.ContainsKey(player))
                 swordComboCount[player] = 0;
 
@@ -210,7 +212,7 @@ namespace CaptainSkillTree.SkillTree
             hit.m_damage.m_spirit *= damageRatio;
 
             PlaySkillEffect(player, "sword_slash", target.transform.position);
-            DrawFloatingText(player, $"⚔️ Sword Slash! ({damageRatio * 100:F0}%)", Color.red);
+            DrawFloatingText(player, string.Format(L.Get("sword_slash_combo_fmt"), damageRatio * 100f), Color.red);
 
             Plugin.Log.LogInfo($"[Sword Slash] 데미지 보너스 적용 - {damageRatio * 100:F0}%");
         }
@@ -518,7 +520,11 @@ namespace CaptainSkillTree.SkillTree
                 foreach (var c in Character.GetAllCharacters())
                 {
                     if (c == null || c.IsDead() || c == player) continue;
-                    if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                    if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction()))
+                    {
+                        var tp = c as Player;
+                        if (tp == null || !tp.IsPVPEnabled() || !player.IsPVPEnabled()) continue;
+                    }
                     int id = c.GetInstanceID();
                     if (alreadyHit.Contains(id)) continue;
                     if (Vector3.Distance(c.transform.position, player.transform.position) > 5f) continue;
@@ -598,7 +604,11 @@ namespace CaptainSkillTree.SkillTree
             foreach (var c in Character.GetAllCharacters())
             {
                 if (c == null || c.IsDead() || c == player) continue;
-                if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction()))
+                {
+                    var tp = c as Player;
+                    if (tp == null || !tp.IsPVPEnabled() || !player.IsPVPEnabled()) continue;
+                }
                 if (Vector3.Distance(c.transform.position, player.transform.position) > 5f) continue;
 
                 var hit = new HitData();

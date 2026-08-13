@@ -76,7 +76,7 @@ namespace CaptainSkillTree
                     // 회피 적용
                     float dodgeChance = player.GetCustomDodgeChance();
 
-                    if (dodgeChance > 0 && !player.IsBlocking())
+                    if (dodgeChance > 0 && !player.IsBlocking() && hit.m_dodgeable)
                     {
                         float roll = UnityEngine.Random.Range(0f, 1f);
 
@@ -120,21 +120,21 @@ namespace CaptainSkillTree
                                                      manager?.GetSkillLevel("defense_Step5_stamina") > 0 ||
                                                      manager?.GetSkillLevel("defense_Step6_attack") > 0;
 
-                            string evasionMessage = "회피 성공!";
+                            string evasionMessage = L.Get("evasion_dodge_success");
                             if (hasKnifeEvasion && hasDefenseEvasion)
                             {
-                                evasionMessage = "🗡️ 회피 숙련 + 방어 트리 회피!";
+                                evasionMessage = L.Get("evasion_knife_defense_combo");
                             }
                             else if (hasKnifeEvasion)
                             {
-                                evasionMessage = "🗡️ 회피 숙련!";
+                                evasionMessage = L.Get("evasion_knife_mastery_msg");
                             }
                             else if (hasDefenseEvasion)
                             {
-                                evasionMessage = "🛡️ 방어 트리 회피!";
+                                evasionMessage = L.Get("evasion_defense_tree_msg");
                             }
 
-                            player.Message(MessageHud.MessageType.Center, evasionMessage);
+                            SkillEffect.DrawFloatingText(player, evasionMessage);
 
                             // 신경강화: 준비 상태일 때만 쿨다운 시작 (이미 쿨다운 중이면 다른 스킬이 회피한 것)
                             if (manager?.GetSkillLevel("defense_Step6_attack") > 0)
@@ -185,7 +185,9 @@ namespace CaptainSkillTree
                             if (damageReduced > 0f)
                             {
                                 Plugin.Log.LogDebug($"[탱커 패시브] {player.GetPlayerName()} 피해 감소 적용 - 원래: {originalDamage:F1} → 감소후: {reducedDamage:F1} (감소량: {damageReduced:F1})");
-                                player.Message(MessageHud.MessageType.TopLeft, $"탱커 방어: -{damageReduced:F0} 피해 차단!");
+                                SkillEffect.ShowSkillEffectText(player,
+                                    L.Get("tanker_passive_damage_reduction", damageReduced.ToString("F0")),
+                                    Color.white, SkillEffect.SkillEffectTextType.Passive);
                             }
                         }
                     }
@@ -271,11 +273,11 @@ namespace CaptainSkillTree
                 {
                     yield return new WaitForSeconds(wait30);
                     if (player != null && !player.IsDead())
-                        player.Message(MessageHud.MessageType.Center, L.Get("stomp_30sec_remaining"));
+                        SkillEffect.DrawFloatingText(player, L.Get("stomp_30sec_remaining"));
                 }
                 yield return new WaitForSeconds(Mathf.Min(30f, cooldown));
                 if (player != null && !player.IsDead())
-                    player.Message(MessageHud.MessageType.Center, L.Get("stomp_ready"));
+                    SkillEffect.DrawFloatingText(player, L.Get("stomp_ready"));
                 stompNotifyCoroutines.Remove(player);
             }
 
@@ -313,11 +315,11 @@ namespace CaptainSkillTree
                 {
                     yield return new WaitForSeconds(wait30);
                     if (player != null && !player.IsDead())
-                        player.Message(MessageHud.MessageType.Center, L.Get("shockwave_30sec_remaining"));
+                        SkillEffect.DrawFloatingText(player, L.Get("shockwave_30sec_remaining"));
                 }
                 yield return new WaitForSeconds(Mathf.Min(30f, cooldown));
                 if (player != null && !player.IsDead())
-                    player.Message(MessageHud.MessageType.Center, L.Get("shockwave_ready"));
+                    SkillEffect.DrawFloatingText(player, L.Get("shockwave_ready"));
                 shockwaveNotifyCoroutines.Remove(player);
             }
 
@@ -369,6 +371,7 @@ namespace CaptainSkillTree
                     ZRoutedRpc.instance.Register<string>("CaptainSkillTree.SkillTreeMod_ConfigSync", RPC_ReceiveConfigSync);
                     ZRoutedRpc.instance.Register<string>("CaptainSkillTree.AdminConfigUpdate", SkillTreeConfig.RPC_AdminConfigUpdate);
                     ZRoutedRpc.instance.Register<string>("CaptainSkillTree.AdminBatchSync", SkillTreeConfig.RPC_AdminBatchSync);
+                    ZRoutedRpc.instance.Register<string>(Quest_StringSync.RpcName, Quest_StringSync.RPC_Receive);
 
                     // ❌ VFX RPC 초기화 비활성화 (EpicMMOSystem 방식 - 무한 로딩 방지)
                     // VFX.VFXManager.InitializeVFXRPC();
@@ -516,13 +519,13 @@ namespace CaptainSkillTree
             Log.LogInfo($"석궁 특화 피해: {SkillTreeConfig.AttackCrossbowBonusDamageValue}%");
             Log.LogInfo($"지팡이 특화 확률: {SkillTreeConfig.AttackStaffBonusChanceValue}%");
             Log.LogInfo($"지팡이 특화 피해: {SkillTreeConfig.AttackStaffBonusDamageValue}%");
-            Log.LogInfo($"치명타 피해 보너스: {SkillTreeConfig.AttackCritDamageBonusValue}%");
+            Log.LogInfo($"치명타 피해 보너스 (Lv1~Lv7): {Attack_Config.GetWeakPointAttackBonus(1)}%~{Attack_Config.GetWeakPointAttackBonus(7)}%");
             Log.LogInfo($"양손 무기 보너스: {SkillTreeConfig.AttackTwoHandedBonusValue}%");
             Log.LogInfo($"한손 무기 보너스: {SkillTreeConfig.AttackOneHandedBonusValue}%");
             Log.LogInfo($"연속 근접 보너스: {SkillTreeConfig.AttackFinisherMeleeBonusValue}%");
 
             Log.LogInfo("=== 현재 속도 전문가 설정 ===");
-            Log.LogInfo($"속도 루트 이동속도: {SkillTreeConfig.SpeedRootMoveSpeedValue}%");
+            Log.LogInfo($"속도 루트 이동속도/레벨: {Speed_Config.SpeedRootMoveSpeedPerLevelValue}%");
             Log.LogInfo($"구르기 속도: {SkillTreeConfig.SpeedBaseDodgeSpeedValue}%");
             Log.LogInfo($"근접 콤보 보너스: {SkillTreeConfig.SpeedMeleeComboBonusValue}%");
             Log.LogInfo($"근접 콤보 지속시간: {SkillTreeConfig.SpeedMeleeComboDurationValue}초");

@@ -235,6 +235,7 @@ namespace CaptainSkillTree.MMO_System
 
                 // EpicMMO LevelUpVFX (플레이어 Spine2 본에 재생)
                 CaptainLevelUpVFX.Play();
+                CaptainSkillTree.Audio.HeroAwakensSoundManager.Instance.PlayOnce();
             }
             catch { }
         }

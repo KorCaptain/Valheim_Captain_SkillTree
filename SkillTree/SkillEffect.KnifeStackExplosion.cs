@@ -181,9 +181,9 @@ namespace CaptainSkillTree.SkillTree
 
             foreach (var ch in Character.GetAllCharacters())
             {
-                if (ch == null || ch == target) continue;
-                if (ch.IsPlayer()) continue;
-                if (!ch.IsMonsterFaction(0f) && ch.m_faction != Character.Faction.Boss) continue;
+                if (ch == null || ch == target || ch == (Character)player) continue;
+                if (ch.IsPlayer() && !(ch.IsPVPEnabled() && player.IsPVPEnabled())) continue;
+                if (!ch.IsPlayer() && !ch.IsMonsterFaction(0f) && ch.m_faction != Character.Faction.Boss) continue;
                 if (Vector3.Distance(ch.transform.position, center) > aoeRadius) continue;
 
                 var aoeHit = new HitData();
@@ -204,7 +204,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 실제 계산값 확인 (데미지 검증용)
             Plugin.Log.LogInfo($"[약점폭발] {stacks}스택 | 무기:{GetWeaponBaseDamage(player):F1} | %:{Knife_Config.KnifeStackExplosionDamagePercentValue} | 총:{totalDamage:F1}");
-            SkillEffect.DrawFloatingText(player, $"폭발 {totalDamage:F0}", new Color(1f, 0.3f, 0f));
+            SkillEffect.DrawFloatingText(player, string.Format(L.Get("knife_stack_explosion_dmg_fmt"), totalDamage), new Color(1f, 0.3f, 0f));
             ClearAll(player);
         }
 

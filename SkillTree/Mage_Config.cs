@@ -14,6 +14,8 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> MageFireRainRadius;               // 낙하 반경 (기본: 8m)
         public static ConfigEntry<float> MageFireRainImpactRadius;         // 착지 데미지 범위 (기본: 3m)
         public static ConfigEntry<int>   MageFireRainProjectileCount;     // 버스트당 발사체 수 (기본: 20개)
+        public static ConfigEntry<float> MageDungeonBuffDamageBonus;      // 던전 내 대체 버프 공격력 보너스 (기본: 25%)
+        public static ConfigEntry<float> MageDungeonBuffDuration;         // 던전 내 대체 버프 지속시간 (기본: 10초)
 
         // === 메이지 쿨타임 (레벨별 - 모두 45초) ===
         public static ConfigEntry<float> MageCooldown_Lv1;
@@ -42,6 +44,8 @@ namespace CaptainSkillTree.SkillTree
         public static float MageFireRainRadiusValue => SkillTreeConfig.GetEffectiveValue("Mage_Fire_Rain_Radius", MageFireRainRadius.Value);
         public static float MageFireRainImpactRadiusValue => SkillTreeConfig.GetEffectiveValue("Mage_Fire_Rain_Impact_Radius", MageFireRainImpactRadius.Value);
         public static int   MageFireRainProjectileCountValue => (int)SkillTreeConfig.GetEffectiveValue("Mage_Fire_Rain_Projectile_Count", (float)(MageFireRainProjectileCount?.Value ?? 20));
+        public static float MageDungeonBuffDamageBonusValue => SkillTreeConfig.GetEffectiveValue("Mage_Dungeon_Buff_Damage_Bonus", MageDungeonBuffDamageBonus?.Value ?? 25f);
+        public static float MageDungeonBuffDurationValue    => SkillTreeConfig.GetEffectiveValue("Mage_Dungeon_Buff_Duration", MageDungeonBuffDuration?.Value ?? 10f);
 
         // === 호환성 접근자 (기존 코드 호환) ===
         public static float MageCooldownValue            => GetCooldown(1);
@@ -115,6 +119,14 @@ namespace CaptainSkillTree.SkillTree
                 MageFireRainProjectileCount = SkillTreeConfig.BindServerSync(config,
                     "Mage Job Skills", "Mage_Fire_Rain_Projectile_Count", 20,
                     SkillTreeConfig.GetConfigDescription("Mage_Fire_Rain_Projectile_Count"));
+
+                MageDungeonBuffDamageBonus = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Dungeon_Buff_Damage_Bonus", 25.0f,
+                    SkillTreeConfig.GetConfigDescription("Mage_Dungeon_Buff_Damage_Bonus"));
+
+                MageDungeonBuffDuration = SkillTreeConfig.BindServerSync(config,
+                    "Mage Job Skills", "Mage_Dungeon_Buff_Duration", 10.0f,
+                    SkillTreeConfig.GetConfigDescription("Mage_Dungeon_Buff_Duration"));
 
                 // === 레벨별 그룹 (AOE 데미지 배수 → 쿨타임 → 속성 저항) ===
                 // --- Lv1 ---
@@ -193,6 +205,8 @@ namespace CaptainSkillTree.SkillTree
                 MageFireRainRadius.SettingChanged        += (s, a) => Mage_Tooltip.UpdateMageTooltip();
                 MageFireRainImpactRadius.SettingChanged  += (s, a) => Mage_Tooltip.UpdateMageTooltip();
                 MageFireRainProjectileCount.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
+                MageDungeonBuffDamageBonus.SettingChanged  += (s, a) => Mage_Tooltip.UpdateMageTooltip();
+                MageDungeonBuffDuration.SettingChanged     += (s, a) => Mage_Tooltip.UpdateMageTooltip();
 
                 MageCooldown_Lv1.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();
                 MageCooldown_Lv2.SettingChanged += (s, a) => Mage_Tooltip.UpdateMageTooltip();

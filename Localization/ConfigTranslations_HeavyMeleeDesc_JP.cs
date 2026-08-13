@@ -60,11 +60,6 @@ namespace CaptainSkillTree.Localization
                 "遠距離攻撃の威力を決定。\n" +
                 "推奨：100-150%",
 
-                ["Legacy_Throw_BuffDuration"] =
-                "【未使用】\n" +
-                "このパラメータは現在未使用。\n" +
-                "パッシブスキルに変更されました。",
-
                 // === Tier 3: 速突き槍 ===
                 ["Tier3_Pierce_RequiredPoints"] =
                 "【必要ポイント】\n速突き槍を解放するために必要なポイント数。",
@@ -112,11 +107,6 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: 貫通突き（アクティブGキー）===
                 ["Tier5_Penetrate_RequiredPoints"] =
                 "【必要ポイント】\n貫通突きを解放するために必要なポイント数。",
-
-                ["Legacy_Penetrate_CritChance"] =
-                "【未使用】\n" +
-                "このパラメータは現在未使用。\n" +
-                "ライトニングストライク効果に変更されました。",
 
                 ["Tier5_Penetrate_BuffDuration"] =
                 "【効果持続時間（秒）】\n" +
@@ -265,15 +255,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HeavyStrike_RequiredPoints"] =
                 "【必要ポイント】\nヘビーストライクを解放するために必要なポイント数。",
 
-                // === Tier 4: ノックバック ===
+                // === Tier 4: 脳震盪 ===
                 ["Tier4_Push_KnockbackChance"] =
-                "【ノックバック確率(%)】\n" +
-                "攻撃時に敵をノックバックさせる確率。\n" +
-                "距離の維持と戦場制御に役立つ。\n" +
-                "推奨：25-35%",
+                "【脳震盪確率(%)】\n" +
+                "メイスで攻撃時、対象の移動速度と攻撃速度を1.5秒間30%低下させる確率。\n" +
+                "戦闘コントロールとダメージレースの優位確保に役立つ。\n" +
+                "推奨：30-40%",
 
                 ["Tier4_Push_RequiredPoints"] =
-                "【必要ポイント】\nノックバックを解放するために必要なポイント数。",
+                "【必要ポイント】\n脳震盪を解放するために必要なポイント数。",
 
                 // === Tier 5: タンク ===
                 ["Tier5_Tank_HealthBonus"] =
@@ -351,24 +341,52 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_RequiredPoints"] =
                 "【必要ポイント】\nフューリーハンマーを解放するために必要なポイント数。",
 
-                // === Tier 7: シールドチャージ（アクティブGキー）===
-                ["Tier7_GuardianHeart_Cooldown"] =
+                // === Tier 6-5: シールドチャージ（メイスツリーから移動）===
+                ["Tier6_GuardianHeart_Cooldown"] =
                 "【クールダウン（秒）】\n" +
                 "シールドチャージの再使用待機時間。\n" +
                 "推奨：30-40秒",
 
-                ["Tier7_GuardianHeart_StaminaCost"] =
+                ["Tier6_GuardianHeart_StaminaCost"] =
                 "【スタミナ消費】\n" +
                 "シールドチャージ使用時に消費するスタミナ。\n" +
                 "推奨：15-25",
 
-                ["Tier7_ShieldCharge_DamagePercent"] =
+                ["Tier6_ShieldCharge_DamagePercent"] =
                 "【盾ブロック力ダメージ率(%)】\n" +
                 "衝突時に盾ブロック力の何%をダメージとして与えるか。\n" +
                 "推奨：60-80%",
 
-                ["Tier7_GuardianHeart_RequiredPoints"] =
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] =
+                "【連続ヒットレベルボーナス(%)】\n" +
+                "シールドチャージのレベルごとの連続ヒットダメージ率上昇量。\n" +
+                "推奨：5-15%",
+
+                ["Tier6_GuardianHeart_RequiredPoints"] =
                 "【必要ポイント】\nシールドチャージを解放するために必要なポイント数。",
+
+                ["Tier7_ShockwaveSlam_Cooldown"] =
+                "【クールダウン（秒）】\n" +
+                "衝撃波強打の再使用待機時間。\n" +
+                "推奨：30-50秒",
+
+                ["Tier7_ShockwaveSlam_StaminaCost"] =
+                "【スタミナ消費】\n" +
+                "衝撃波強打使用時に消費するスタミナ。\n" +
+                "推奨：15-25",
+
+                ["Tier7_ShockwaveSlam_DamagePercent"] =
+                "【武器攻撃力ダメージ率(%)】\n" +
+                "命中時に武器攻撃力の何%をダメージとして与えるか。\n" +
+                "推奨：200-260%",
+
+                ["Tier7_ShockwaveSlam_LevelBonus"] =
+                "【レベルボーナス(%)】\n" +
+                "衝撃波強打のレベルごとのダメージボーナス。\n" +
+                "推奨：10-30%",
+
+                ["Tier7_ShockwaveSlam_RequiredPoints"] =
+                "【必要ポイント】\n衝撃波強打を解放するために必要なポイント数。",
 
                 // ========================================
                 // ポールアームツリー (Polearm Tree)
@@ -547,6 +565,113 @@ namespace CaptainSkillTree.Localization
                 "【必要ポイント】\n" +
                 "旋風ノードを解放するために必要なスキルポイント数。\n" +
                 "推奨値: 3",
+
+                ["Tier0_SpearExpert_ProcChance"] =
+                "【槍の達人発動確率(%)】\n" +
+                "攻撃時に雷撃procが発動する確率。\n" +
+                "発動時、追加で高速攻撃が1回発生。\n" +
+                "推奨：20-35%",
+
+                ["Tier0_SpearExpert_SpeedBoost"] =
+                "【槍の達人速度ブースト(%)】\n" +
+                "proc発動時に追加される攻撃速度ボーナス。\n" +
+                "基本100%＋この数値＝総攻撃速度倍率。\n" +
+                "推奨：80-120%",
+
+                ["Tier5_Penetrate_BaseDamage"] =
+                "【Lv1基本単体ダメージ(%)】\n" +
+                "突進経路上の敵に与える基本単体ダメージ。\n" +
+                "槍武器の貫通攻撃力に対する比率で計算。\n" +
+                "推奨：80-120%",
+
+                ["Tier5_Penetrate_LevelDamageBonus"] =
+                "【レベル毎単体ダメージ増加(%)】\n" +
+                "スキルレベル1につき追加される単体ダメージ増加量。\n" +
+                "推奨：3-8%",
+
+                ["Tier5_Penetrate_BaseAreaDamage"] =
+                "【Lv1基本範囲ダメージ(%)】\n" +
+                "突進経路の半径5m範囲内の敵に与える基本ダメージ。\n" +
+                "推奨：60-100%",
+
+                ["Tier5_Penetrate_AreaLevelBonus"] =
+                "【レベル毎範囲ダメージ増加(%)】\n" +
+                "スキルレベル1につき追加される範囲ダメージ増加量。\n" +
+                "推奨：3-8%",
+
+                ["Tier5_Combo_LevelBonus"] =
+                "【レベルボーナス(%)】\n" +
+                "槍連撃スキルのレベル毎ダメージボーナス。\n" +
+                "推奨：5-15%",
+
+                ["Tier3_SpinStrike_DamageBonus"] =
+                "【セカンドアタックダメージボーナス(%)】\n" +
+                "セカンドアタック時の攻撃力を増加。\n" +
+                "パーセント基準のため基礎攻撃力が高いほど効果が大きい。\n" +
+                "推奨：15-25%",
+
+                ["Tier3_SpinStrike_Range"] =
+                "【AOE範囲（メートル）】\n" +
+                "セカンドアタック時に周囲の敵にダメージを与える範囲。\n" +
+                "推奨：5-10m",
+
+                ["Tier3_SpinStrike_KnockbackForce"] =
+                "【回転打撃ノックバック距離（メートル）】\n" +
+                "セカンドアタック時に敵を押し出す距離。片手・両手メイス共通適用。\n" +
+                "推奨：2-5m",
+
+                ["Tier6_Sokgong_AttackSpeedBonus"] =
+                "【攻撃速度ボーナス(%)】\n" +
+                "メイスの攻撃速度を向上。\n" +
+                "メイスの遅い攻撃速度を補う。\n" +
+                "推奨：8-15%",
+
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] =
+                "【通常打撃レベルボーナス(%)】\n" +
+                "フューリーハンマー通常打撃のレベル毎ダメージボーナス。\n" +
+                "推奨：5-15%",
+
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] =
+                "【最終打撃レベルボーナス(%)】\n" +
+                "フューリーハンマー最終（爆発）打撃のレベル毎ダメージボーナス。\n" +
+                "推奨：10-25%",
+
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] =
+                "【多段ヒットダメージ比率(%)】\n" +
+                "レベル1時点の盾ブロック力に対する基準ダメージ比率。突進中0.08秒間隔の範囲連続ヒットと、\n" +
+                "突進終了後に集めた敵への4回・0.25秒間隔の最終連続ヒットに適用される。\n" +
+                "推奨：20-40%",
+
+                ["Tier6_ShieldCharge_LevelBonus"] =
+                "【レベルボーナス(%)】\n" +
+                "シールドチャージスキルのレベル毎突進ダメージボーナス。\n" +
+                "推奨：5-15%",
+
+                ["Tier4-1_StormSlash_ExplosionBonus"] =
+                "【雷属性追加ダメージ】\n" +
+                "1次攻撃後4秒以内に特殊（ホイールマウス）攻撃を行った際に追加される雷ダメージ。\n" +
+                "推奨：10-20",
+
+                ["Tier5_PierceCharge_LevelBonus"] =
+                "【レベルボーナスダメージ(%)】\n" +
+                "ピアースチャージスキルのレベル毎追加ダメージボーナス。\n" +
+                "推奨：20-40%",
+
+                ["Tier6_Whirlwind_LevelBonus"] =
+                "【レベルボーナス(%)】\n" +
+                "旋風スキルのレベル毎ダメージボーナス。\n" +
+                "推奨：5-15%",
+
+                ["Tier6_Whirlwind_DamageReductionPercent"] =
+                "【被ダメージ軽減(%)】\n" +
+                "旋風発動中に受けるダメージを軽減します。(Lv1基準値)\n" +
+                "推奨：20-40%",
+
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] =
+                "【被ダメージ軽減 レベルボーナス(%)】\n" +
+                "旋風スキルのレベル毎の追加ダメージ軽減量。\n" +
+                "推奨：5-10%",
+
 
             };
         }

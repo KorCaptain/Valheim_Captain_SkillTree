@@ -186,7 +186,8 @@ namespace CaptainSkillTree.SkillTree
 
             foreach (var enemy in Character.GetAllCharacters())
             {
-                if (enemy == null || enemy.IsDead() || enemy == player || enemy.IsPlayer()) continue;
+                if (enemy == null || enemy.IsDead() || enemy == player) continue;
+                if (enemy.IsPlayer() && !(enemy.IsPVPEnabled() && player.IsPVPEnabled())) continue;
                 if (Vector3.Distance(pos, enemy.transform.position) > range) continue;
                 try
                 {
@@ -469,8 +470,9 @@ namespace CaptainSkillTree.SkillTree
         {
             float totalBonus = 0f;
 
-            if (manager.GetSkillLevel("speed_root") > 0)
-                totalBonus += SkillTreeConfig.SpeedRootMoveSpeedValue;
+            int speedRootLv = manager.GetSkillLevel("speed_root");
+            if (speedRootLv > 0)
+                totalBonus += speedRootLv * Speed_Config.SpeedRootMoveSpeedPerLevelValue;
 
             if (manager.GetSkillLevel("speed_1") > 0)
                 totalBonus += SkillTreeConfig.SpeedDexterityMoveSpeedBonusValue;

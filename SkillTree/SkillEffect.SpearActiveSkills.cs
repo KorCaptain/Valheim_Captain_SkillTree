@@ -373,8 +373,8 @@ namespace CaptainSkillTree.SkillTree
                     yield return new WaitForSeconds(0.1f);
                 }
 
-                // 손 숨기기
-                player.HideHandItems();
+                // 손 숨기기 (오른손만 - 방패가 함께 해제되는 것 방지)
+                player.HideHandItems(true);
                 yield return new WaitForSeconds(0.05f);
 
                 // m_equipped 상태 강제 초기화
@@ -472,6 +472,9 @@ namespace CaptainSkillTree.SkillTree
         private float checkInterval = 0.05f;
         private float lastCheckTime = 0f;
 
+        // 초당 20회 호출되는 CheckNearbyMonsters용 재사용 버퍼 (매 호출 배열 할당 방지)
+        private static readonly Collider[] _nearbyBuffer = new Collider[32];
+
         private Projectile projectile;
 
         void Start()
@@ -496,9 +499,10 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                var colliders = Physics.OverlapSphere(position, HIT_RADIUS);
-                foreach (var col in colliders)
+                int hitCount = Physics.OverlapSphereNonAlloc(position, HIT_RADIUS, _nearbyBuffer);
+                for (int i = 0; i < hitCount; i++)
                 {
+                    var col = _nearbyBuffer[i];
                     if (col == null) continue;
 
                     Character target = col.GetComponent<Character>();
@@ -506,7 +510,7 @@ namespace CaptainSkillTree.SkillTree
                         target = col.GetComponentInParent<Character>();
 
                     if (target == null) continue;
-                    if (target.IsPlayer()) continue;  // 플레이어 제외
+                    if (target.IsPlayer() && !(target.IsPVPEnabled() && thrower.IsPVPEnabled())) continue;
                     if (hitTargets.Contains(target)) continue;  // 이미 적중한 대상 제외
 
                     // 적중 처리
@@ -583,7 +587,7 @@ namespace CaptainSkillTree.SkillTree
                         target = col.GetComponentInParent<Character>();
 
                     if (target == null) continue;
-                    if (target.IsPlayer()) continue;
+                    if (target.IsPlayer() && !(target.IsPVPEnabled() && thrower.IsPVPEnabled())) continue;
 
                     // 이미 적중한 대상도 넉백은 적용 (추가 데미지 없이)
                     if (!hitTargets.Contains(target))

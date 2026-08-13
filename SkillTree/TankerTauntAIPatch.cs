@@ -20,20 +20,34 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Character, (Player tanker, float expiry)> tauntedMonsters
             = new Dictionary<Character, (Player tanker, float expiry)>();
 
+        // Reflection 캐시 (m_character는 protected이므로 리플렉션 접근, 클래스 로드 시 1회만 조회)
+        private static readonly FieldInfo _characterField = typeof(BaseAI).GetField("m_character",
+            BindingFlags.NonPublic | BindingFlags.Instance);
+
+        // ForceTankerTarget용 Reflection 캐시
+        private static readonly MethodInfo _setHuntMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer",
+            BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly MethodInfo _setTargetMethod = typeof(MonsterAI).GetMethod("SetTarget",
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo _targetField = typeof(MonsterAI).GetField("m_target",
+            BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo _targetCreatureField = typeof(MonsterAI).GetField("m_targetCreature",
+            BindingFlags.NonPublic | BindingFlags.Instance);
+
         /// <summary>
         /// MonsterAI.UpdateAI 실행 전 호출 - 도발 중인 몬스터 타겟 강제 유지
         /// 매 프레임 실행되지만 Dictionary 조회만 하므로 성능 영향 최소
         /// </summary>
         static void Prefix(MonsterAI __instance)
         {
+            // 도발 중인 몬스터가 없으면 즉시 반환 (reflection 비용 회피 - 서버 전체 몬스터 AI tick마다 실행되는 패치이므로 중요)
+            if (tauntedMonsters.Count == 0) return;
+
             try
             {
-                // m_character는 protected이므로 리플렉션으로 접근
-                var characterField = typeof(BaseAI).GetField("m_character",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (characterField == null) return;
+                if (_characterField == null) return;
 
-                Character monster = characterField.GetValue(__instance) as Character;
+                Character monster = _characterField.GetValue(__instance) as Character;
                 if (monster == null) return;
 
                 // 도발 중인 몬스터인지 확인 (O(1) Dictionary 조회)
@@ -123,36 +137,16 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 // 1. SetHuntPlayer 호출 (MonsterAI 전용, 가장 효과적)
-                var setHuntMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (setHuntMethod != null)
-                {
-                    setHuntMethod.Invoke(ai, new object[] { tanker });
-                }
+                _setHuntMethod?.Invoke(ai, new object[] { tanker });
 
                 // 2. SetTarget 호출 (BaseAI 메서드, 백업)
-                var setTargetMethod = ai.GetType().GetMethod("SetTarget",
-                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (setTargetMethod != null)
-                {
-                    setTargetMethod.Invoke(ai, new object[] { tanker });
-                }
+                _setTargetMethod?.Invoke(ai, new object[] { tanker });
 
                 // 3. m_target 필드 직접 설정 (최종 백업)
-                var targetField = ai.GetType().GetField("m_target",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (targetField != null)
-                {
-                    targetField.SetValue(ai, tanker);
-                }
+                _targetField?.SetValue(ai, tanker);
 
                 // 4. m_targetCreature 필드도 설정 (추가 백업)
-                var targetCreatureField = ai.GetType().GetField("m_targetCreature",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (targetCreatureField != null)
-                {
-                    targetCreatureField.SetValue(ai, tanker);
-                }
+                _targetCreatureField?.SetValue(ai, tanker);
             }
             catch (System.Exception ex)
             {
@@ -217,6 +211,20 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
+    /// 도발 중이던 몬스터가 죽으면 즉시 tauntedMonsters에서 제거
+    /// (몬스터가 죽으면 UpdateAI가 더 이상 호출되지 않아 Prefix의 만료 체크가 실행될 기회가 없어짐 → 정리 누락 방지)
+    /// </summary>
+    [HarmonyPatch(typeof(Character), "OnDeath")]
+    public static class TankerTauntAIPatch_Character_OnDeath_Patch
+    {
+        static void Postfix(Character __instance)
+        {
+            if (__instance != null)
+                TankerTauntAIPatch.RemoveTauntedMonster(__instance);
+        }
+    }
+
+    /// <summary>
     /// 도발 중인 몬스터의 발헤임 기본 느낌표(!) 숨김
     /// EnemyHud.UpdateHuds Postfix로 매 프레임 비활성화
     /// </summary>
@@ -230,6 +238,9 @@ namespace CaptainSkillTree.SkillTree
 
         static void Postfix(EnemyHud __instance)
         {
+            // 도발 중인 몬스터가 없으면 즉시 반환 (매 프레임 전체 HUD 순회 회피)
+            if (TankerTauntAIPatch.GetTauntedMonsterCount() == 0) return;
+
             try
             {
                 if (_hudsField == null)

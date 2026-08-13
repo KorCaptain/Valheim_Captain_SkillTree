@@ -17,8 +17,8 @@ namespace CaptainSkillTree.Localization
                 // === Common Messages ===
                 ["attack_speed_cap_warning"] = "공격속도 보너스가 {0}%를 초과할 수 없습니다.",
                 ["move_speed_cap_warning"] = "이동속도 보너스가 {0}%를 초과할 수 없습니다.",
-                ["cooldown_remaining"] = "{0} 쿨다운 중! 남은 시간: {1}초",
                 ["skill_cooldown"] = "{0} 스킬 쿨타임: {1}초 남음",
+                ["level_upgrade_items_changed"] = "재료가 변경되어 레벨업이 취소되었습니다. 다시 시도해주세요.",
                 ["skill_on_cooldown"] = "쿨다운 중: {0}초",
                 ["stamina_insufficient"] = "스태미나가 부족합니다",
                 ["not_enough_stamina"] = "스태미나 부족",
@@ -42,7 +42,6 @@ namespace CaptainSkillTree.Localization
                 // === Rogue Skills ===
                 ["rogue_shadow_strike_cooldown"] = "그림자 일격 쿨다운 중! 남은 시간: {0}초",
                 ["rogue_dagger_required"] = "단검 또는 클로 착용이 필요합니다",
-                ["rogue_shadow_strike_success"] = "그림자 일격! 독성 폭발 시작!",
                 ["rogue_stealth_start"] = "스텔스 시작! ({0}초)",
                 ["rogue_stealth_end"] = "스텔스 해제! (이유: {0})",
                 ["rogue_buff_end"] = "그림자 일격 버프 종료!",
@@ -163,7 +162,6 @@ namespace CaptainSkillTree.Localization
                 ["parry_rush_already_active"] = "회오리베기가 이미 시전 중입니다",
                 ["parry_rush_activate"] = "⚔️ 회오리베기!",
                 ["parry_rush_buff_name"] = "회오리베기",
-                ["parry_rush_damage"] = "⚔️ 회오리베기 {0}차! (+{1}%)",
 
                 // === Knife Skills ===
                 ["knife_assassin_cooldown"] = "암살자의 심장 쿨다운 중! 남은 시간: {0}초",
@@ -172,6 +170,12 @@ namespace CaptainSkillTree.Localization
                 ["knife_expert_backstab"] = "🗡️ 백스탭! +{0}% 데미지!",
                 ["knife_evasion_buff"] = "🌀 회피 숙련! {0}초간 회피율 +{1}%",
                 ["knife_attack_evasion_buff"] = "⚔️ 공격 회피! 회피율 +{0}%, {1}초 지속",
+
+                // === Evasion Success (Knife + Defense Tree combo) ===
+                ["evasion_dodge_success"] = "회피 성공!",
+                ["evasion_knife_defense_combo"] = "🗡️ 회피 숙련 + 방어 트리 회피!",
+                ["evasion_knife_mastery_msg"] = "🗡️ 회피 숙련!",
+                ["evasion_defense_tree_msg"] = "🛡️ 방어 트리 회피!",
                 ["knife_combat_mastery"] = "⚔️ 전투 숙련! 공격력 +{0}%",
                 ["knife_text_assassination_stagger"] = "💀 암살 스태거!",
                 ["assassin_complete_hits"] = "암살 {0}회 완료!",
@@ -204,10 +208,12 @@ namespace CaptainSkillTree.Localization
                 ["skill_cooldown_format"] = "{0} 쿨다운: {1}초",
 
                 // === Staff Skills ===
-                ["staff_dual_cast_cooldown"] = "이중시전 쿨다운 중! 남은 시간: {0}초",
-                ["staff_dual_cast_success"] = "이중시전! 추가 마법 발사체!",
+                ["staff_dual_cast_cooldown"] = "다중시전 쿨다운 중! 남은 시간: {0}초",
+                ["staff_dual_cast_success"] = "다중시전! 추가 마법 발사체!",
                 ["staff_heal_cooldown"] = "힐 쿨다운 중! 남은 시간: {0}초",
                 ["staff_heal_success"] = "힐! +{0} 체력 회복!",
+                ["staff_heal_lightning_hit"] = "⚡ -{0} 번개",
+                ["staff_heal_lightning_desc"] = "번개 데미지: 무기 속성 데미지의 {0}%",
 
                 // === Job Active Skills (Y Key) ===
                 ["job_skill_activated"] = "{0} 스킬 발동!",
@@ -367,6 +373,13 @@ namespace CaptainSkillTree.Localization
 
                 // === Skill Effect Messages ===
                 ["shockwave_effect"] = "⚡ 충격파! {0}마리에게 피해!",
+                ["crafting_enhance_and_durability_applied"] = "✨ 강화 및 내구도 효과가 적용되었습니다.",
+                ["crafting_enhance_level_applied_fmt"] = "✨ 강화 +{0} 효과",
+                ["crafting_durability_bonus_applied_fmt"] = "🔧 내구도 +{0:F0}% 효과",
+                ["knife_stack_explosion_dmg_fmt"] = "폭발 {0:F0}",
+                ["sword_slash_combo_fmt"] = "⚔️ 검격! ({0:F0}%)",
+                ["time_suffix_min_sec_fmt"] = "({0}분 {1}초)",
+                ["time_suffix_sec_fmt"] = "({0}초)",
 
                 // === Respawn Message ===
                 ["respawn_message"] = "성장해서 다시 도전하세요~!",
@@ -401,8 +414,8 @@ namespace CaptainSkillTree.Localization
                 // === Common Messages ===
                 ["attack_speed_cap_warning"] = "Attack speed bonus cannot exceed {0}%.",
                 ["move_speed_cap_warning"] = "Move speed bonus cannot exceed {0}%.",
-                ["cooldown_remaining"] = "{0} on cooldown! Remaining: {1}s",
                 ["skill_cooldown"] = "{0} skill cooldown: {1}s remaining",
+                ["level_upgrade_items_changed"] = "Materials changed — the upgrade was cancelled. Please try again.",
                 ["skill_on_cooldown"] = "On cooldown: {0}s",
                 ["stamina_insufficient"] = "Not enough stamina",
                 ["not_enough_stamina"] = "Not enough stamina",
@@ -426,7 +439,6 @@ namespace CaptainSkillTree.Localization
                 // === Rogue Skills ===
                 ["rogue_shadow_strike_cooldown"] = "Shadow Strike on cooldown! Remaining: {0}s",
                 ["rogue_dagger_required"] = "Dagger or Claw required",
-                ["rogue_shadow_strike_success"] = "Shadow Strike! Poison Blast started!",
                 ["rogue_stealth_start"] = "Stealth started! ({0}s)",
                 ["rogue_stealth_end"] = "Stealth ended! (Reason: {0})",
                 ["rogue_buff_end"] = "Shadow Strike buff ended!",
@@ -534,6 +546,12 @@ namespace CaptainSkillTree.Localization
                 ["knife_expert_backstab"] = "🗡️ Backstab! +{0}% damage!",
                 ["knife_evasion_buff"] = "🌀 Evasion Mastery! Evasion +{1}% for {0}s",
                 ["knife_attack_evasion_buff"] = "⚔️ Attack Evasion! Evasion +{0}%, lasts {1}s",
+
+                // === Evasion Success (Knife + Defense Tree combo) ===
+                ["evasion_dodge_success"] = "Evasion Success!",
+                ["evasion_knife_defense_combo"] = "🗡️ Evasion Mastery + Defense Tree Evasion!",
+                ["evasion_knife_mastery_msg"] = "🗡️ Evasion Mastery!",
+                ["evasion_defense_tree_msg"] = "🛡️ Defense Tree Evasion!",
                 ["knife_combat_mastery"] = "⚔️ Combat Mastery! Attack +{0}%",
                 ["knife_text_assassination_stagger"] = "💀 Assassination Stagger!",
                 ["assassin_complete_hits"] = "Assassination {0} hits completed!",
@@ -566,8 +584,8 @@ namespace CaptainSkillTree.Localization
                 ["skill_cooldown_format"] = "{0} cooldown: {1}s",
 
                 // === Staff Skills ===
-                ["staff_dual_cast_cooldown"] = "Double Casting on cooldown! Remaining: {0}s",
-                ["staff_dual_cast_success"] = "Double Casting! Extra magic projectile!",
+                ["staff_dual_cast_cooldown"] = "Multi Cast on cooldown! Remaining: {0}s",
+                ["staff_dual_cast_success"] = "Multi Cast! Extra magic projectile!",
                 ["staff_heal_cooldown"] = "Heal on cooldown! Remaining: {0}s",
                 ["staff_heal_success"] = "Heal! +{0} HP!",
 
@@ -591,6 +609,13 @@ namespace CaptainSkillTree.Localization
                 ["shockwave_effect"] = "⚡ Shockwave! {0} enemies hit!",
                 ["shockwave_30sec_remaining"] = "⚡ Shockwave ready in 30s!",
                 ["shockwave_ready"] = "⚡ Shockwave Ready!",
+                ["crafting_enhance_and_durability_applied"] = "✨ Enhancement and durability effect applied.",
+                ["crafting_enhance_level_applied_fmt"] = "✨ Enhance +{0} effect",
+                ["crafting_durability_bonus_applied_fmt"] = "🔧 Durability +{0:F0}% effect",
+                ["knife_stack_explosion_dmg_fmt"] = "Explosion {0:F0}",
+                ["sword_slash_combo_fmt"] = "⚔️ Sword Slash! ({0:F0}%)",
+                ["time_suffix_min_sec_fmt"] = "({0}m {1}s)",
+                ["time_suffix_sec_fmt"] = "({0}s)",
                 ["luck_magic_activated"] = "✨ Luck Magic Activated!",
                 ["staff_wand_required"] = "❌ You must equip a staff or wand!",
 
@@ -640,7 +665,6 @@ namespace CaptainSkillTree.Localization
                 ["parry_rush_already_active"] = "Whirlwind Slash already in progress",
                 ["parry_rush_activate"] = "⚔️ Whirlwind Slash!",
                 ["parry_rush_buff_name"] = "Whirlwind Slash",
-                ["parry_rush_damage"] = "⚔️ Whirlwind {0}! (+{1}%)",
 
                 // === Berserker Effect Messages ===
                 ["berserker_cooldown"] = "On cooldown ({0}s)",
@@ -653,6 +677,8 @@ namespace CaptainSkillTree.Localization
                 ["heal_cooldown"] = "Heal Cooldown: {0}s",
                 ["sacred_heal"] = "Staff Sacred Heal! ({0} healed)",
                 ["no_heal_target"] = "No target to heal",
+                ["staff_heal_lightning_hit"] = "⚡ -{0} Lightning",
+                ["staff_heal_lightning_desc"] = "Lightning DMG: {0}% of weapon elemental DMG",
 
                 // === Resource Consumption Messages ===
                 ["equipment_consumed"] = "Equipment Consumed: {0}",

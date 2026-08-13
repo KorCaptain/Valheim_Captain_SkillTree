@@ -92,7 +92,7 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> MaceStep3HeavyDamageBonus;
 
-        // ===== Tier 4: 밀어내기 =====
+        // ===== Tier 4: 뇌진탕 =====
 
         /// <summary>
         /// Tier 4 - 필요 포인트
@@ -100,7 +100,7 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> MaceStep4RequiredPoints;
 
         /// <summary>
-        /// Tier 4 - 넉백 확률 (%)
+        /// Tier 4 - 뇌진탕(슬로우) 확률 (%)
         /// </summary>
         public static ConfigEntry<float> MaceStep4KnockbackChance;
 
@@ -189,37 +189,30 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static ConfigEntry<float> FuryHammerFinalHitLevelBonus;
 
-        // ===== 수호자의 진심 (Guardian Heart) - G키 액티브 스킬 =====
+        /// <summary>
+        /// 충격파 강타 - 쿨타임 (초)
+        /// </summary>
+        public static ConfigEntry<float> ShockwaveSlamCooldown;
 
         /// <summary>
-        /// 수호자의 진심 - 쿨타임 (초)
+        /// 충격파 강타 - 스태미나 소모
         /// </summary>
-        public static ConfigEntry<float> GuardianHeartCooldown;
+        public static ConfigEntry<float> ShockwaveSlamStaminaCost;
 
         /// <summary>
-        /// 수호자의 진심 - 스태미나 소모
+        /// 충격파 강타 - 데미지 비율 (무기 공격력의 %)
         /// </summary>
-        public static ConfigEntry<float> GuardianHeartStaminaCost;
+        public static ConfigEntry<float> ShockwaveSlamDamagePercent;
 
         /// <summary>
-        /// 방패돌진 - 충돌 데미지 비율 (방패 막기력의 %)
+        /// 충격파 강타 - 레벨당 데미지 보너스 (%)
         /// </summary>
-        public static ConfigEntry<float> ShieldChargeDamagePercent;
+        public static ConfigEntry<float> ShockwaveSlamLevelBonus;
 
         /// <summary>
-        /// 방패돌진 - 다단히트 데미지 비율 (방패 막기력의 %)
+        /// 충격파 강타 - 필요 포인트
         /// </summary>
-        public static ConfigEntry<float> ShieldChargeMultiHitDamagePercent;
-
-        /// <summary>
-        /// 수호자의 진심 - 필요 포인트
-        /// </summary>
-        public static ConfigEntry<int> GuardianHeartRequiredPoints;
-
-        /// <summary>
-        /// 방패돌진 - 레벨당 데미지 보너스 (%)
-        /// </summary>
-        public static ConfigEntry<float> ShieldChargeLevelBonus;
+        public static ConfigEntry<int> ShockwaveSlamRequiredPoints;
 
         // ===== 동적 값 프로퍼티 (서버 동기화 지원) =====
 
@@ -263,11 +256,11 @@ namespace CaptainSkillTree.SkillTree
         public static float MaceStep3HeavyDamageBonusValue =>
             SkillTreeConfig.GetEffectiveValue("Mace_Step3_Heavy_DamageBonus", MaceStep3HeavyDamageBonus?.Value ?? 20f);
 
-        // === Tier 4: 밀어내기 ===
+        // === Tier 4: 뇌진탕 ===
         public static int MaceStep4RequiredPointsValue =>
             (int)SkillTreeConfig.GetEffectiveValue("Mace_Step4_RequiredPoints", MaceStep4RequiredPoints?.Value ?? 3);
         public static float MaceStep4KnockbackChanceValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_Step4_KnockbackChance", MaceStep4KnockbackChance?.Value ?? 30f);
+            SkillTreeConfig.GetEffectiveValue("Mace_Step4_KnockbackChance", MaceStep4KnockbackChance?.Value ?? 35f);
 
         // === Tier 5: 탱커 ===
         public static int MaceStep5TankRequiredPointsValue =>
@@ -338,40 +331,34 @@ namespace CaptainSkillTree.SkillTree
             SkillTreeConfig.GetEffectiveValue("Mace_FuryHammer_FinalHitLevelBonus", FuryHammerFinalHitLevelBonus?.Value ?? 10f);
 
         /// <summary>
-        /// 방패돌진 쿨타임 값 (서버 우선)
+        /// 충격파 강타 쿨타임 값 (서버 우선)
         /// </summary>
-        public static float GuardianHeartCooldownValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_Cooldown", GuardianHeartCooldown?.Value ?? 35f);
+        public static float ShockwaveSlamCooldownValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_ShockwaveSlam_Cooldown", ShockwaveSlamCooldown?.Value ?? 40f);
 
         /// <summary>
-        /// 방패돌진 스태미나 소모 값 (서버 우선)
+        /// 충격파 강타 스태미나 소모 값 (서버 우선)
         /// </summary>
-        public static float GuardianHeartStaminaCostValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_StaminaCost", GuardianHeartStaminaCost?.Value ?? 20f);
+        public static float ShockwaveSlamStaminaCostValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_ShockwaveSlam_StaminaCost", ShockwaveSlamStaminaCost?.Value ?? 20f);
 
         /// <summary>
-        /// 방패돌진 충돌 데미지 비율 값 (서버 우선)
+        /// 충격파 강타 데미지 비율 값 (서버 우선)
         /// </summary>
-        public static float ShieldChargeDamagePercentValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_DamagePercent", ShieldChargeDamagePercent?.Value ?? 300f);
+        public static float ShockwaveSlamDamagePercentValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_ShockwaveSlam_DamagePercent", ShockwaveSlamDamagePercent?.Value ?? 230f);
 
         /// <summary>
-        /// 방패돌진 다단히트 데미지 비율 값 (서버 우선)
+        /// 충격파 강타 레벨당 데미지 보너스 값 (서버 우선)
         /// </summary>
-        public static float ShieldChargeMultiHitDamagePercentValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_MultiHitDamagePercent", ShieldChargeMultiHitDamagePercent?.Value ?? 150f);
+        public static float ShockwaveSlamLevelBonusValue =>
+            SkillTreeConfig.GetEffectiveValue("Mace_ShockwaveSlam_LevelBonus", ShockwaveSlamLevelBonus?.Value ?? 20f);
 
         /// <summary>
-        /// 수호자의 진심 필요 포인트 값 (서버 우선)
+        /// 충격파 강타 필요 포인트 값 (서버 우선)
         /// </summary>
-        public static int GuardianHeartRequiredPointsValue =>
-            (int)SkillTreeConfig.GetEffectiveValue("Mace_GuardianHeart_RequiredPoints", GuardianHeartRequiredPoints?.Value ?? 3);
-
-        /// <summary>
-        /// 방패돌진 레벨당 데미지 보너스 값 (서버 우선)
-        /// </summary>
-        public static float ShieldChargeLevelBonusValue =>
-            SkillTreeConfig.GetEffectiveValue("Mace_ShieldCharge_LevelBonus", ShieldChargeLevelBonus?.Value ?? 20f);
+        public static int ShockwaveSlamRequiredPointsValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("Mace_ShockwaveSlam_RequiredPoints", ShockwaveSlamRequiredPoints?.Value ?? 3);
 
         // ===== 초기화 메서드 =====
 
@@ -491,11 +478,11 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier3_HeavyStrike_RequiredPoints")
             );
 
-            // Tier 4: 밀어내기
+            // Tier 4: 뇌진탕
             MaceStep4KnockbackChance = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
                 "Tier4_Push_KnockbackChance",
-                30f,
+                35f,
                 SkillTreeConfig.GetConfigDescription("Tier4_Push_KnockbackChance")
             );
 
@@ -617,47 +604,40 @@ namespace CaptainSkillTree.SkillTree
                 SkillTreeConfig.GetConfigDescription("Tier7_FuryHammer_FinalHitLevelBonus")
             );
 
-            // Tier 7: 수호자의 진심 (Guardian Heart)
-            GuardianHeartCooldown = SkillTreeConfig.BindServerSync(config,
+            // Tier 7: 충격파 강타 (Shockwave Slam)
+            ShockwaveSlamCooldown = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_GuardianHeart_Cooldown",
-                35f,
-                SkillTreeConfig.GetConfigDescription("Tier7_GuardianHeart_Cooldown")
+                "Tier7_ShockwaveSlam_Cooldown",
+                40f,
+                SkillTreeConfig.GetConfigDescription("Tier7_ShockwaveSlam_Cooldown")
             );
 
-            GuardianHeartStaminaCost = SkillTreeConfig.BindServerSync(config,
+            ShockwaveSlamStaminaCost = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_GuardianHeart_StaminaCost",
+                "Tier7_ShockwaveSlam_StaminaCost",
                 20f,
-                SkillTreeConfig.GetConfigDescription("Tier7_GuardianHeart_StaminaCost")
+                SkillTreeConfig.GetConfigDescription("Tier7_ShockwaveSlam_StaminaCost")
             );
 
-            ShieldChargeDamagePercent = SkillTreeConfig.BindServerSync(config,
+            ShockwaveSlamDamagePercent = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_ShieldCharge_DamagePercent",
-                300f,
-                SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_DamagePercent")
+                "Tier7_ShockwaveSlam_DamagePercent",
+                230f,
+                SkillTreeConfig.GetConfigDescription("Tier7_ShockwaveSlam_DamagePercent")
             );
 
-            ShieldChargeMultiHitDamagePercent = SkillTreeConfig.BindServerSync(config,
+            ShockwaveSlamLevelBonus = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_ShieldCharge_MultiHitDamagePercent",
-                150f,
-                SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_MultiHitDamagePercent")
+                "Tier7_ShockwaveSlam_LevelBonus",
+                20f,
+                SkillTreeConfig.GetConfigDescription("Tier7_ShockwaveSlam_LevelBonus")
             );
 
-            GuardianHeartRequiredPoints = SkillTreeConfig.BindServerSync(config,
+            ShockwaveSlamRequiredPoints = SkillTreeConfig.BindServerSync(config,
                 "Mace Tree",
-                "Tier7_GuardianHeart_RequiredPoints",
+                "Tier7_ShockwaveSlam_RequiredPoints",
                 3,
-                SkillTreeConfig.GetConfigDescription("Tier7_GuardianHeart_RequiredPoints")
-            );
-
-            ShieldChargeLevelBonus = SkillTreeConfig.BindServerSync(config,
-                "Mace Tree",
-                "Tier7_ShieldCharge_LevelBonus",
-                20f,
-                SkillTreeConfig.GetConfigDescription("Tier7_ShieldCharge_LevelBonus")
+                SkillTreeConfig.GetConfigDescription("Tier7_ShockwaveSlam_RequiredPoints")
             );
         }
     }

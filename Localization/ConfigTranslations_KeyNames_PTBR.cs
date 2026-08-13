@@ -23,6 +23,7 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "Tecla de Habilidade à Distância",
                 ["HotKey_G"] = "Tecla de Habilidade Corpo a Corpo Principal",
                 ["HotKey_H"] = "Tecla de Habilidade Secundária",
+                ["QuestToggleKey"] = "Atalho do Painel de Missões",
                 ["HUD_IconSize"] = "Tamanho do Ícone",
                 ["HUD_PosX"] = "Posição X do Ícone HUD",
                 ["HUD_PosY"] = "Posição Y do Ícone HUD",
@@ -45,7 +46,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_Opener_RequiredPoints"] = "Tier 1: [Primeiro Golpe] Pontos Necessários",
                 ["Tier2_OpenerMelee_FinisherBonus"] = "Tier 2-1: [Corpo a Corpo] Bônus Finalizador (%)",
                 ["Tier2_OpenerMelee_RequiredPoints"] = "Tier 2-1: [Corpo a Corpo] Pontos Necessários",
-                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [Arco] Chance de Crítico (%)",
+                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [Arco] Bônus de Dano Crítico (%)",
                 ["Tier2_OpenerBow_RequiredPoints"] = "Tier 2-2: [Arco] Pontos Necessários",
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] = "Tier 2-3: [Besta] Bônus Primeiro Disparo (%)",
                 ["Tier2_OpenerCrossbow_RequiredPoints"] = "Tier 2-3: [Besta] Pontos Necessários",
@@ -57,8 +58,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_Pursuit_RequiredPoints"] = "Tier 3: [Perseguição] Pontos Necessários",
                 ["Tier4_PursuitSpeed_SpeedBonus"] = "Tier 4-1: [Perseguição Veloz] Bônus de Velocidade (%)",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "Tier 4-1: [Perseguição Veloz] Pontos Necessários",
-                ["Tier4_FrenzyTrigger_StaminaReduction"] = "Tier 4-2: [Ímpeto Frenético] Redução Estamina (%)",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "Tier 4-2: [Ímpeto Frenético] Pontos Necessários",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] = "Tier 4-2: [Golpe Mortal] Chance Crítica/Nível (%)",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "Tier 4-2: [Golpe Mortal] Pontos Necessários por Nível",
                 ["Tier5_Frenzy_StackBonusBase"] = "Tier 5: [Frenesi] Bônus de Pilha Base (%)",
                 ["Tier5_Frenzy_StackBonusChain"] = "Tier 5: [Frenesi] Bônus de Pilha em Cadeia (%)",
                 ["Tier5_Frenzy_MaxStacks"] = "Tier 5: [Frenesi] Pilhas Máximas",
@@ -104,8 +105,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [Carga] Pontos Necessários",
 
                 // === Tier 6: Aprimoramento Final (8) ===
-                ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [Ponto Fraco] Bônus de Dano Crítico (%)",
-                ["Tier6_WeakPointAttack_RequiredPoints"] = "Tier 6-1: [Ponto Fraco] Pontos Necessários",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "Tier 6-1: [Ponto Fraco] Bônus de Dano Crítico Lv1 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "Tier 6-1: [Ponto Fraco] Bônus de Dano Crítico Lv2 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "Tier 6-1: [Ponto Fraco] Bônus de Dano Crítico Lv3 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "Tier 6-1: [Ponto Fraco] Bônus de Dano Crítico Lv4 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "Tier 6-1: [Ponto Fraco] Bônus de Dano Crítico Lv5 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "Tier 6-1: [Ponto Fraco] Bônus de Dano Crítico Lv6 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "Tier 6-1: [Ponto Fraco] Bônus de Dano Crítico Lv7 (%)",
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "Tier 6-1: [Ponto Fraco] Pontos Necessários por Nível",
                 ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [Finalizador de Combo] Bônus Combo 3 Golpes (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Tier 6-2: [Finalizador de Combo] Pontos Necessários",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Tier 6-3: [Golpe Duas Mãos] Bônus de Dano (%)",
@@ -221,6 +228,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 0: Mestre de Defesa (3) ===
                 ["Tier0_DefenseExpert_HPBonus"] = "Tier 0: [Mestre de Defesa] Bônus de HP",
                 ["Tier0_DefenseExpert_ArmorBonus"] = "Tier 0: [Mestre de Defesa] Bônus de Armadura",
+                ["Tier0_DefenseExpert_AtkPenalty"] = "Tier 0: [Mestre de Defesa] Penalidade de Poder de Ataque (%)",
                 ["Tier0_DefenseExpert_RequiredPoints"] = "Tier 0: [Mestre de Defesa] Pontos Necessários",
 
                 // === Tier 1: Endurecimento da Pele (3) ===
@@ -313,11 +321,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6-4: [Vitalidade de Jotunn] Resistência Física/Elemental (%)",
                 ["Tier6_JotunnVitality_RequiredPoints"] = "Tier 6-4: [Vitalidade de Jotunn] Pontos Necessários",
 
-                // === Tier 6-5: Escudo de Jotunn (4) ===
-                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6-5: [Escudo de Jotunn] Redução de Stamina no Bloqueio (%)",
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6-5: [Escudo de Jotunn] Bônus de Vel. com Escudo Normal (%)",
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6-5: [Escudo de Jotunn] Bônus de Vel. com Escudo Torre (%)",
-                ["Tier6_JotunnShield_RequiredPoints"] = "Tier 6-5: [Escudo de Jotunn] Pontos Necessários",
+                // === Tier 6-5: Investida com Escudo (7, movido da árvore de maça) ===
+                ["Tier6_GuardianHeart_Cooldown"] = "Tier 6-5: [Investida com Escudo] Recarga (seg)",
+                ["Tier6_GuardianHeart_StaminaCost"] = "Tier 6-5: [Investida com Escudo] Custo de Stamina",
+                ["Tier6_ShieldCharge_DamagePercent"] = "Tier 6-5: [Investida com Escudo] Dano do Bloqueio (%)",
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] = "Tier 6-5: [Investida com Escudo] Dano de Múltiplos Golpes (%)",
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] = "Tier 6-5: [Investida com Escudo] Bônus de Nível de Múltiplos Golpes (%)",
+                ["Tier6_GuardianHeart_RequiredPoints"] = "Tier 6-5: [Investida com Escudo] Pontos Necessários",
+                ["Tier6_ShieldCharge_LevelBonus"] = "Tier 6-5: [Investida com Escudo] Bônus de Nível (%)",
 
                 // ============================================
                 // Árvore de Produção - 22 Chaves

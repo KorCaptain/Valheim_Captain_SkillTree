@@ -265,18 +265,6 @@ namespace CaptainSkillTree.Localization
                 "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 1-3",
 
-                ["Tier5_ParryRush_BuffDuration"] =
-                "【(미사용) 이전 패링 돌격 전용】\n" +
-                "회오리베기로 교체되어 더 이상 사용되지 않습니다.",
-
-                ["Tier5_ParryRush_BlockPowerRatio"] =
-                "【(미사용) 이전 패링 돌격 전용】\n" +
-                "회오리베기로 교체되어 더 이상 사용되지 않습니다.",
-
-                ["Tier5_ParryRush_PushDistance"] =
-                "【(미사용) 이전 패링 돌격 전용】\n" +
-                "회오리베기로 교체되어 더 이상 사용되지 않습니다.",
-
                 ["Tier5_ParryRush_StaminaCost"] =
                 "【스태미나 소모 — 회오리베기】\n" +
                 "H키 시전 시 소모되는 스태미나입니다.\n" +
@@ -287,6 +275,15 @@ namespace CaptainSkillTree.Localization
                 "스킬 재사용 대기 시간입니다.\n" +
                 "권장값: 30-50초",
 
+                ["Tier5_WhirlwindSlash_BaseDamage"] =
+                "【기본 데미지 (%)】\n" +
+                "회오리베기 기본 데미지입니다.\n" +
+                "권장값: 80-150%",
+
+                ["Tier5_WhirlwindSlash_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "회오리베기 스킬 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 10-25%",
 
                 ["Tier6_RushSlash_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -346,6 +343,11 @@ namespace CaptainSkillTree.Localization
                 "스킬 중 공격속도 보너스 (기본 대비)입니다.\n" +
                 "다른 트리의 공격속도는 무시되고 이 값만 적용됩니다.\n" +
                 "권장값: 150-250%",
+
+                ["Tier6_RushSlash_DamageLevelBonus"] =
+                "【레벨 데미지 보너스 (%)】\n" +
+                "돌진 연속 베기 스킬 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 5-15%",
 
                 ["Tier6_RushSlash_PathWidth"] =
                 "【돌진 연속 베기】이동 경로 히트 너비(m).\n" +
@@ -545,6 +547,11 @@ namespace CaptainSkillTree.Localization
                 "【필요 포인트】\n" +
                 "이 스킬 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3-5",
+
+                ["Tier8_AssassinHeart_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "암살자의 심장 스킬 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 10-30%",
 
                 // === Tier 9: 약점폭발 (H키 액티브) ===
                 ["Tier9_StackExplosion_DamagePercent"] =
@@ -848,18 +855,6 @@ namespace CaptainSkillTree.Localization
                 "Skill points needed to unlock this node.\n" +
                 "Recommended: 1-3",
 
-                ["Tier5_ParryRush_BuffDuration"] =
-                "【(Unused) Legacy Parry Rush only】\n" +
-                "Replaced by Whirlwind Slash, no longer used.",
-
-                ["Tier5_ParryRush_BlockPowerRatio"] =
-                "【(Unused) Legacy Parry Rush only】\n" +
-                "Replaced by Whirlwind Slash, no longer used.",
-
-                ["Tier5_ParryRush_PushDistance"] =
-                "【(Unused) Legacy Parry Rush only】\n" +
-                "Replaced by Whirlwind Slash, no longer used.",
-
                 ["Tier5_ParryRush_StaminaCost"] =
                 "【Stamina Cost — Whirlwind Slash】\n" +
                 "Stamina consumed when activating H-key skill.\n" +
@@ -870,6 +865,15 @@ namespace CaptainSkillTree.Localization
                 "Skill reuse wait time.\n" +
                 "Recommended: 30-50 sec",
 
+                ["Tier5_WhirlwindSlash_BaseDamage"] =
+                "【Base Damage (%)】\n" +
+                "Base damage of Whirlwind Slash skill.\n" +
+                "Recommended: 80-150%",
+
+                ["Tier5_WhirlwindSlash_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Damage bonus per Whirlwind Slash skill level.\n" +
+                "Recommended: 10-25%",
 
                 ["Tier6_RushSlash_RequiredPoints"] =
                 "【Required Points】\n" +
@@ -929,6 +933,11 @@ namespace CaptainSkillTree.Localization
                 "Attack speed bonus during skill (vs base).\n" +
                 "Other tree bonuses are ignored, only this value applies.\n" +
                 "Recommended: 150-250%",
+
+                ["Tier6_RushSlash_DamageLevelBonus"] =
+                "【Damage Level Bonus (%)】\n" +
+                "Damage bonus per Rush Slash skill level.\n" +
+                "Recommended: 5-15%",
 
                 ["Tier6_RushSlash_PathWidth"] =
                 "【Rush Slash】Path hit width (m).\n" +
@@ -1144,6 +1153,11 @@ namespace CaptainSkillTree.Localization
                 "【Required Points】\n" +
                 "Skill points needed to unlock this node.\n" +
                 "Recommended: 3-5",
+
+                ["Tier8_AssassinHeart_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Damage bonus per Assassin's Heart skill level.\n" +
+                "Recommended: 10-30%",
 
                 // === Tier 9: Stack Explosion (H key active) ===
                 ["Tier9_StackExplosion_DamagePercent"] =

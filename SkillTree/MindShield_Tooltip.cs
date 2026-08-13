@@ -32,7 +32,7 @@ namespace CaptainSkillTree.SkillTree
                     description = L.Get("defense_mind_short_desc"),
                     duration = $"{(int)duration}{L.Get("unit_seconds")}",
                     eitrCost = $"{(int)eitrCost}",
-                    skillType = L.Get("skill_type_active_key", SkillTreeConfig.HotKeyG?.Value ?? "G"),
+                    skillType = L.Get("skill_type_active_key", SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyG, "G")),
                     cooldown = $"{cooldown:F0}{L.Get("unit_seconds")}",
                     requirement = L.Get("requirement_staff_wand"),
                     specialNote = $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>"
@@ -94,7 +94,7 @@ namespace CaptainSkillTree.SkillTree
                    $"• {L.Get("tooltip_cost")}: {L.Get("stat_eitr")} 30\n" +
                    $"• {L.Get("tooltip_cooldown")}: 210{L.Get("unit_seconds")}\n" +
                    $"• {L.Get("tooltip_requirements")}: {L.Get("requirement_staff_wand")}\n\n" +
-                   $"{L.Get("tooltip_skill_type")}: {L.Get("skill_type_active_key", SkillTreeConfig.HotKeyG?.Value ?? "G")}\n\n" +
+                   $"{L.Get("tooltip_skill_type")}: {L.Get("skill_type_active_key", SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyG, "G"))}\n\n" +
                    $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color></size></color>";
         }
     }

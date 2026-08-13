@@ -264,6 +264,23 @@ namespace CaptainSkillTree.SkillTree
             return result;
         }
 
+        // PvP 전투 여부 확인 (공격자·피격자 모두 PvP 활성화된 경우)
+        public static bool IsPvPCombat(Character victim, Character attacker)
+        {
+            if (victim == null || !victim.IsPlayer()) return false;
+            if (attacker == null || !attacker.IsPlayer()) return false;
+            return victim.IsPVPEnabled() && attacker.IsPVPEnabled();
+        }
+
+        // 시전자가 대상에게 힐을 적용할 수 있는지 확인 (파티원 우선, PvP 적대 차단)
+        public static bool IsHealAllowed(Player caster, Player target)
+        {
+            if (caster == null || target == null) return false;
+            if (CaptainSkillTree.MMO_System.CaptainPartyExp.AreInSameParty(caster, target)) return true;
+            if (caster.IsPVPEnabled() && target.IsPVPEnabled()) return false;
+            return true;
+        }
+
         // 적의 체력 비율 확인
         public static float GetHealthPercent(Character character)
         {
@@ -1203,6 +1220,9 @@ namespace CaptainSkillTree.SkillTree
 
                 // 3. 트롤 재생력 타이머 정리
                 trollRegenTimers.Remove(player);
+
+                // 4. 아처 길들인 생물 회복 타이머 정리
+                ArcherTameHealPatch.ClearPlayer(player);
 
                 Plugin.Log.LogInfo($"[스킬 정리] {player.GetPlayerName()} 모든 스킬 효과 정리 완료");
             }

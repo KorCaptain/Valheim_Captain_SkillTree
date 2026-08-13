@@ -60,11 +60,6 @@ namespace CaptainSkillTree.Localization
                 "Bestimmt die Stärke des Fernkampfangriffs.\n" +
                 "Empfehlung: 100-150%",
 
-                ["Legacy_Throw_BuffDuration"] =
-                "【Nicht verwendet】\n" +
-                "Dieser Parameter wird derzeit nicht verwendet.\n" +
-                "Zu passiver Fähigkeit geändert.",
-
                 // === Tier 3: Schnellspeer ===
                 ["Tier3_Pierce_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Schnellspeers.",
@@ -112,11 +107,6 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: Durchbohrspeer (Aktiv G) ===
                 ["Tier5_Penetrate_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Durchbohrspeers.",
-
-                ["Legacy_Penetrate_CritChance"] =
-                "【Nicht verwendet】\n" +
-                "Dieser Parameter wird derzeit nicht verwendet.\n" +
-                "Zu Blitztreffereffekt geändert.",
 
                 ["Tier5_Penetrate_BuffDuration"] =
                 "【Buff-Dauer (Sek.)】\n" +
@@ -265,15 +255,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HeavyStrike_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des schweren Schlags.",
 
-                // === Tier 4: Rückstoß ===
+                // === Tier 4: Gehirnerschütterung ===
                 ["Tier4_Push_KnockbackChance"] =
-                "【Rückstoßchance (%)】\n" +
-                "Chance, den Feind beim Angriff zurückzustoßen.\n" +
-                "Nützlich zum Abstandhalten und Schlachtkontrolle.\n" +
-                "Empfehlung: 25-35%",
+                "【Gehirnerschütterungschance (%)】\n" +
+                "Chance beim Treffer mit einem Streitkolben, die Bewegungs- und Angriffsgeschwindigkeit des Ziels für 1,5 Sekunden um 30% zu verringern.\n" +
+                "Nützlich für Kampfkontrolle und einen Schadensvorteil.\n" +
+                "Empfehlung: 30-40%",
 
                 ["Tier4_Push_RequiredPoints"] =
-                "【Benötigte Punkte】\nPunkte zum Freischalten des Rückstoßes.",
+                "【Benötigte Punkte】\nPunkte zum Freischalten der Gehirnerschütterung.",
 
                 // === Tier 5: Tanker ===
                 ["Tier5_Tank_HealthBonus"] =
@@ -351,24 +341,53 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Wuthammers.",
 
-                // === Tier 7: Schildsturm (Aktiv G) ===
-                ["Tier7_GuardianHeart_Cooldown"] =
+                // === Tier 6-5: Schildsturm (vom Streitkolben-Baum verschoben) ===
+                ["Tier6_GuardianHeart_Cooldown"] =
                 "【Abklingzeit (Sek.)】\n" +
                 "Wartezeit für erneuten Schildsturm.\n" +
                 "Empfehlung: 30-40 Sek.",
 
-                ["Tier7_GuardianHeart_StaminaCost"] =
+                ["Tier6_GuardianHeart_StaminaCost"] =
                 "【Ausdauerkosten】\n" +
                 "Ausdauer bei Schildsturm-Nutzung.\n" +
                 "Empfehlung: 15-25",
 
-                ["Tier7_ShieldCharge_DamagePercent"] =
+                ["Tier6_ShieldCharge_DamagePercent"] =
                 "【Schildblock-Schaden (%)】\n" +
                 "Schaden beim Aufprall als Prozentsatz der Schildblockkraft.\n" +
                 "Empfehlung: 60-80%",
 
-                ["Tier7_GuardianHeart_RequiredPoints"] =
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] =
+                "【Mehrfachtreffer-Levelbonus (%)】\n" +
+                "Erhöhung des Mehrfachtreffer-Schadensanteils pro Skill-Level.\n" +
+                "Empfehlung: 5-15%",
+
+                ["Tier6_GuardianHeart_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Schildsturms.",
+
+                // === Tier 7: Schockwellenschlag (Aktiv G) ===
+                ["Tier7_ShockwaveSlam_Cooldown"] =
+                "【Abklingzeit (Sek.)】\n" +
+                "Wartezeit für erneuten Schockwellenschlag.\n" +
+                "Empfehlung: 30-50 Sek.",
+
+                ["Tier7_ShockwaveSlam_StaminaCost"] =
+                "【Ausdauerkosten】\n" +
+                "Ausdauer bei Schockwellenschlag-Nutzung.\n" +
+                "Empfehlung: 15-25",
+
+                ["Tier7_ShockwaveSlam_DamagePercent"] =
+                "【Waffenschaden-Verhältnis (%)】\n" +
+                "Schaden bei Treffer als Prozentsatz des Waffenschadens.\n" +
+                "Empfehlung: 200-260%",
+
+                ["Tier7_ShockwaveSlam_LevelBonus"] =
+                "【Stufenbonus (%)】\n" +
+                "Schadensbonus pro Stufe für Schockwellenschlag.\n" +
+                "Empfehlung: 10-30%",
+
+                ["Tier7_ShockwaveSlam_RequiredPoints"] =
+                "【Benötigte Punkte】\nPunkte zum Freischalten des Schockwellenschlags.",
 
                 // ========================================
                 // Stangenwaffen-Skilltree (Polearm Tree)
@@ -547,6 +566,113 @@ namespace CaptainSkillTree.Localization
                 "【Benötigte Punkte】\n" +
                 "Punkte zum Freischalten des Wirbelwind-Knotens.\n" +
                 "Empfohlen: 3",
+
+                ["Tier0_SpearExpert_ProcChance"] =
+                "【Speer-Experte Auslösechance (%)】\n" +
+                "Chance, beim Angriff den Blitzschlag-Proc auszulösen.\n" +
+                "Löst bei Aktivierung 1 zusätzlichen schnellen Angriff aus.\n" +
+                "Empfehlung: 20-35%",
+
+                ["Tier0_SpearExpert_SpeedBoost"] =
+                "【Speer-Experte Geschwindigkeitsbonus (%)】\n" +
+                "Zusätzlicher Angriffsgeschwindigkeitsbonus bei Proc-Aktivierung.\n" +
+                "Basis 100% + dieser Wert = Gesamtangriffsgeschwindigkeitsmultiplikator.\n" +
+                "Empfehlung: 80-120%",
+
+                ["Tier5_Penetrate_BaseDamage"] =
+                "【Lv1 Grundschaden Einzeltreffer (%)】\n" +
+                "Grundschaden gegen einzelne Feinde im Ansturmpfad.\n" +
+                "Wird als Verhältnis zum Durchbohrschaden der Speerwaffe berechnet.\n" +
+                "Empfehlung: 80-120%",
+
+                ["Tier5_Penetrate_LevelDamageBonus"] =
+                "【Einzelschadensbonus pro Stufe (%)】\n" +
+                "Zusätzlicher Einzelschaden pro Fähigkeitsstufe.\n" +
+                "Empfehlung: 3-8%",
+
+                ["Tier5_Penetrate_BaseAreaDamage"] =
+                "【Lv1 Grundflächenschaden (%)】\n" +
+                "Grundschaden gegen Feinde im 5m-Radius des Ansturmpfads.\n" +
+                "Empfehlung: 60-100%",
+
+                ["Tier5_Penetrate_AreaLevelBonus"] =
+                "【Flächenschadensbonus pro Stufe (%)】\n" +
+                "Zusätzlicher Flächenschaden pro Fähigkeitsstufe.\n" +
+                "Empfehlung: 3-8%",
+
+                ["Tier5_Combo_LevelBonus"] =
+                "【Stufenbonus (%)】\n" +
+                "Schadensbonus pro Stufe der Speerkombo-Fähigkeit.\n" +
+                "Empfehlung: 5-15%",
+
+                ["Tier3_SpinStrike_DamageBonus"] =
+                "【Zweitangriff-Schadensbonus (%)】\n" +
+                "Erhöht den Schaden beim Zweitangriff.\n" +
+                "Prozentual; höherer Grundschaden ergibt größere Wirkung.\n" +
+                "Empfehlung: 15-25%",
+
+                ["Tier3_SpinStrike_Range"] =
+                "【AOE-Radius (Meter)】\n" +
+                "Radius, in dem nahe Feinde beim Zweitangriff Schaden erleiden.\n" +
+                "Empfehlung: 5-10 m",
+
+                ["Tier3_SpinStrike_KnockbackForce"] =
+                "【Drehschlag-Rückstoßdistanz (Meter)】\n" +
+                "Distanz, um die Feinde beim Zweitangriff zurückgestoßen werden. Gilt für einhändige und zweihändige Streitkolben.\n" +
+                "Empfehlung: 2-5 m",
+
+                ["Tier6_Sokgong_AttackSpeedBonus"] =
+                "【Angriffsgeschwindigkeitsbonus (%)】\n" +
+                "Erhöht die Angriffsgeschwindigkeit des Streitkolbens.\n" +
+                "Kompensiert die langsame Schlagrate des Streitkolbens.\n" +
+                "Empfehlung: 8-15%",
+
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] =
+                "【Normaltreffer-Stufenbonus (%)】\n" +
+                "Schadensbonus pro Stufe für normale Wuthammer-Treffer.\n" +
+                "Empfehlung: 5-15%",
+
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] =
+                "【Abschlusstreffer-Stufenbonus (%)】\n" +
+                "Schadensbonus pro Stufe für den Wuthammer-Abschlusstreffer (Explosion).\n" +
+                "Empfehlung: 10-25%",
+
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] =
+                "【Mehrfachtreffer-Schadensverhältnis (%)】\n" +
+                "Basisverhältnis (Stufe 1) der Schildblockkraft, angewendet auf den Flächentreffer im 0,08s-Takt\n" +
+                "während des Sturms sowie den 4-fachen Abschlusstreffer (0,25s-Takt) auf gesammelte Gegner.\n" +
+                "Empfehlung: 20-40%",
+
+                ["Tier6_ShieldCharge_LevelBonus"] =
+                "【Stufenbonus (%)】\n" +
+                "Schadensbonus pro Stufe der Schildsturm-Fähigkeit.\n" +
+                "Empfehlung: 5-15%",
+
+                ["Tier4-1_StormSlash_ExplosionBonus"] =
+                "【Blitzschadensbonus】\n" +
+                "Zusätzlicher Blitzschaden bei Nutzung des Mausrad-Angriffs innerhalb von 4 Sek. nach einem Grundangriff.\n" +
+                "Empfehlung: 10-20",
+
+                ["Tier5_PierceCharge_LevelBonus"] =
+                "【Stufenbonus-Schaden (%)】\n" +
+                "Zusätzlicher Schadensbonus pro Stufe der Durchbohr-Ansturm-Fähigkeit.\n" +
+                "Empfehlung: 20-40%",
+
+                ["Tier6_Whirlwind_LevelBonus"] =
+                "【Stufenbonus (%)】\n" +
+                "Schadensbonus pro Stufe der Wirbelwind-Fähigkeit.\n" +
+                "Empfehlung: 5-15%",
+
+                ["Tier6_Whirlwind_DamageReductionPercent"] =
+                "【Schadensreduzierung (%)】\n" +
+                "Reduziert erlittenen Schaden während Wirbelwind aktiv ist. (Basiswert Lv1)\n" +
+                "Empfehlung: 20-40%",
+
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] =
+                "【Schadensreduzierung Stufenbonus (%)】\n" +
+                "Zusätzliche Schadensreduzierung pro Stufe der Wirbelwind-Fähigkeit.\n" +
+                "Empfehlung: 5-10%",
+
 
             };
         }

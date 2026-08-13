@@ -118,7 +118,7 @@ Rogue Job Skills, Paladin Job Skills, Berserker Job Skills
 - Tier 6-2 : 신경강화
 - Tier 6-3 : 이단점프
 - Tier 6-4 : 요툰의 생명력
-- Tier 6-5 : 요툰의 방패
+- Tier 6-5 : 방패돌진 (Shield Charge, 둔기 트리에서 이전)
 
 ### Tier 번호 규칙
 | Tier | 용도 | 예시 |

@@ -35,7 +35,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 5. 스킬유형
             t += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
-            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyR?.Value ?? "Z")}</size></color>\n";
+            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyR, "Z"))}</size></color>\n";
 
             // 6. 쿨타임
             t += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";

@@ -190,6 +190,32 @@ namespace CaptainSkillTree.Localization
                 "强力爆炸魔法消灭敌人。\n" +
                 "推荐：250-350%",
 
+                ["Mage_Fire_Rain_Radius"] =
+                "【火雨落下半径（米）】\n" +
+                "30个火球在目标周围落下的半径。\n" +
+                "推荐：6-10米",
+
+                ["Mage_Fire_Rain_Impact_Radius"] =
+                "【火球落地伤害范围（米）】\n" +
+                "每个火球落地时造成伤害的范围。\n" +
+                "推荐：2-4米",
+
+                ["Mage_Fire_Rain_Projectile_Count"] =
+                "【每波发射数量（个）】\n" +
+                "每波落下的火球数量。\n" +
+                "共发射2波（第1波 -> 1秒 -> 第2波）。\n" +
+                "推荐：15-25个",
+
+                ["Mage_Dungeon_Buff_Damage_Bonus"] =
+                "【地下城buff攻击力加成 (%)】\n" +
+                "在地下城内使用Y键技能时，代替火雨发动的自我强化buff的攻击力提升量。\n" +
+                "推荐：20-30%",
+
+                ["Mage_Dungeon_Buff_Duration"] =
+                "【地下城buff持续时间（秒）】\n" +
+                "地下城内替代buff的持续时间。\n" +
+                "推荐：8-12秒",
+
                 ["Mage_Cooldown"] =
                 "【冷却时间（秒）】\n" +
                 "再次使用前的等待时间。\n" +
@@ -718,27 +744,32 @@ namespace CaptainSkillTree.Localization
                 "默认：20",
 
                 // === Producer Lv1 ===
-                ["Producer_EnchantChance_Lv1"] = "【附魔概率 Lv1 (%)】\nLv1时对制作物品附魔的概率。\n默认：0%",
+                ["Producer_EnchantChance_Lv1"] = "【附魔概率 Lv1 (%)】\nLv1时对制作物品附魔的概率。\n默认：45%",
+                ["Producer_ElementalProcChance_Lv1"] = "【属性伤害触发概率 Lv1 (%)】\nLv1属性附魔(火/灵/毒/雷/冰)每次攻击的触发概率。\n默认：25%",
 
                 // === Producer Lv2 ===
                 ["Producer_Durability_Lv2"] = "【制作品耐久度加成 Lv2 (%)】\nLv2时制作物品的耐久度加成。\n默认：10%",
                 ["Producer_MaterialReduction_Lv2"] = "【材料消耗减少 Lv2 (%)】\nLv2时每次制作节省的材料。\n默认：10%",
-                ["Producer_EnchantChance_Lv2"] = "【附魔概率 Lv2 (%)】\nLv2时对制作物品附魔的概率。\n默认：0%",
+                ["Producer_EnchantChance_Lv2"] = "【附魔概率 Lv2 (%)】\nLv2时对制作物品附魔的概率。\n默认：55%",
+                ["Producer_ElementalProcChance_Lv2"] = "【属性伤害触发概率 Lv2 (%)】\nLv2属性附魔每次攻击的触发概率。\n默认：30%",
 
                 // === Producer Lv3 ===
                 ["Producer_Durability_Lv3"] = "【制作品耐久度加成 Lv3 (%)】\nLv3时制作物品的耐久度加成。\n默认：15%",
                 ["Producer_MaterialReduction_Lv3"] = "【材料消耗减少 Lv3 (%)】\nLv3时每次制作节省的材料。\n默认：15%",
-                ["Producer_EnchantChance_Lv3"] = "【附魔概率 Lv3 (%)】\nLv3时对制作物品附魔的概率。\n默认：25%",
+                ["Producer_EnchantChance_Lv3"] = "【附魔概率 Lv3 (%)】\nLv3时对制作物品附魔的概率。\n默认：65%",
+                ["Producer_ElementalProcChance_Lv3"] = "【属性伤害触发概率 Lv3 (%)】\nLv3属性附魔每次攻击的触发概率。\n默认：35%",
 
                 // === Producer Lv4 ===
                 ["Producer_Durability_Lv4"] = "【制作品耐久度加成 Lv4 (%)】\nLv4时制作物品的耐久度加成。\n默认：20%",
                 ["Producer_MaterialReduction_Lv4"] = "【材料消耗减少 Lv4 (%)】\nLv4时每次制作节省的材料。\n默认：20%",
-                ["Producer_EnchantChance_Lv4"] = "【附魔概率 Lv4 (%)】\nLv4时对制作物品附魔的概率。\n默认：30%",
+                ["Producer_EnchantChance_Lv4"] = "【附魔概率 Lv4 (%)】\nLv4时对制作物品附魔的概率。\n默认：80%",
+                ["Producer_ElementalProcChance_Lv4"] = "【属性伤害触发概率 Lv4 (%)】\nLv4属性附魔每次攻击的触发概率。\n默认：40%",
 
                 // === Producer Lv5 ===
                 ["Producer_Durability_Lv5"] = "【制作品耐久度加成 Lv5 (%)】\nLv5时制作物品的耐久度加成。\n默认：30%",
                 ["Producer_MaterialReduction_Lv5"] = "【材料消耗减少 Lv5 (%)】\nLv5时每次制作节省的材料。\n默认：30%",
-                ["Producer_EnchantChance_Lv5"] = "【附魔概率 Lv5 (%)】\nLv5时对制作物品附魔的概率。\n默认：35%",
+                ["Producer_EnchantChance_Lv5"] = "【附魔概率 Lv5 (%)】\nLv5时对制作物品附魔的概率。\n默认：95%",
+                ["Producer_ElementalProcChance_Lv5"] = "【属性伤害触发概率 Lv5 (%)】\nLv5属性附魔每次攻击的触发概率。\n默认：45%",
 
                 ["Job_Lv1_Cost"] = "【职业Lv1金币消耗】\n所有职业升级到Lv1时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：1000",
                 ["Job_Lv2_Cost"] = "【职业Lv2金币消耗】\n所有职业升级到Lv2时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：2000",
@@ -749,6 +780,310 @@ namespace CaptainSkillTree.Localization
                 ["Job_Reset_Cost"]    = "【职业技能重置费用】\n重置职业技能点时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：1000",
                 ["Active_Reset_Cost"] = "【主动技能重置费用】\n重置主动技能点时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：500",
                 ["Passive_Reset_Cost"]= "【被动技能重置费用】\n重置被动技能点时消耗的金币数量。\n仅服务器管理员可修改，自动同步至客户端。\n默认：100",
+
+                ["HotKey_Y"] =
+                "【职业技能键】\n" +
+                "用于发动职业主动技能的按键。\n" +
+                "默认：Y",
+
+                ["HotKey_R"] =
+                "【远程技能键】\n" +
+                "用于发动远程主动技能（多重射击、双重施法等）的按键。\n" +
+                "默认：R",
+
+                ["HotKey_G"] =
+                "【近战主技能键】\n" +
+                "用于发动近战主要主动技能（冲锋连斩等）的按键。\n" +
+                "默认：G",
+
+                ["HotKey_H"] =
+                "【辅助技能键】\n" +
+                "用于发动辅助主动技能（长矛连招、盾击冲锋等）的按键。\n" +
+                "默认：H",
+
+                ["QuestToggleKey"] =
+                "【任务面板快捷键】\n" +
+                "打开和关闭任务面板的快捷键。\n" +
+                "默认：Ctrl+J",
+
+                ["HUD_IconSize"] =
+                "【技能图标大小】\n" +
+                "主动技能HUD中显示图标的大小。\n" +
+                "默认：62",
+
+                ["HUD_PosX"] =
+                "【技能图标HUD X坐标】\n" +
+                "主动技能HUD的水平位置。\n" +
+                "默认：306（以屏幕左侧为基准）",
+
+                ["HUD_PosY"] =
+                "【技能图标HUD Y坐标】\n" +
+                "主动技能HUD的垂直位置。\n" +
+                "默认：139（以屏幕底部为基准）",
+
+                ["Archer_Attack_StaminaReduction_Lv1"] =
+                "【Lv1被动：攻击体力消耗减少 (%)】\n" +
+                "弓箭手Lv1时减少攻击消耗的体力。\n" +
+                "适用于所有弓/弩/法杖攻击。\n" +
+                "推荐：10-20%",
+
+                ["Archer_Attack_StaminaReduction_Lv2"] =
+                "【Lv2被动：攻击体力消耗减少 (%)】\n" +
+                "弓箭手Lv2时减少攻击消耗的体力。\n" +
+                "推荐：20-30%",
+
+                ["Archer_Attack_StaminaReduction_Lv3"] =
+                "【Lv3被动：攻击体力消耗减少 (%)】\n" +
+                "弓箭手Lv3时减少攻击消耗的体力。\n" +
+                "推荐：30-40%",
+
+                ["Archer_Attack_StaminaReduction_Lv4"] =
+                "【Lv4被动：攻击体力消耗减少 (%)】\n" +
+                "弓箭手Lv4时减少攻击消耗的体力。\n" +
+                "推荐：40-50%",
+
+                ["Archer_Attack_StaminaReduction_Lv5"] =
+                "【Lv5被动：攻击体力消耗减少 (%)】\n" +
+                "弓箭手Lv5时减少攻击消耗的体力。\n" +
+                "推荐：50-60%",
+
+                ["Archer_AmmoSaveChance"] =
+                "【箭/弩矢消耗减免概率 (%)】\n" +
+                "攻击时不消耗箭或弩矢的概率。\n" +
+                "设为50时平均节省一半箭矢。\n" +
+                "推荐：30-60%",
+
+                ["Archer_TameHeal_PerLevel"] =
+                "【被动：驯服生物回复 (每秒HP)】\n" +
+                "每秒为附近的驯服生物恢复 弓箭手等级 × 此数值 的生命值。\n" +
+                "Lv1时恢复此数值，Lv5时恢复5倍。\n" +
+                "推荐：1",
+
+                ["Archer_TameHeal_Range"] =
+                "【被动：驯服生物回复范围 (m)】\n" +
+                "弓箭手周围此距离内的驯服生物会获得回复效果。\n" +
+                "推荐：8-15",
+
+                ["Mage_Lv1_Cooldown"] =
+                "【冷却时间 Lv1（秒）】\n" +
+                "法师Lv1技能再使用的等待时间。\n" +
+                "推荐：120秒",
+
+                ["Mage_Lv2_Cooldown"] =
+                "【冷却时间 Lv2（秒）】\n" +
+                "法师Lv2技能再使用的等待时间。\n" +
+                "推荐：110秒",
+
+                ["Mage_Lv3_Cooldown"] =
+                "【冷却时间 Lv3（秒）】\n" +
+                "法师Lv3技能再使用的等待时间。\n" +
+                "推荐：100秒",
+
+                ["Mage_Lv4_Cooldown"] =
+                "【冷却时间 Lv4（秒）】\n" +
+                "法师Lv4技能再使用的等待时间。\n" +
+                "推荐：90秒",
+
+                ["Mage_Lv5_Cooldown"] =
+                "【冷却时间 Lv5（秒）】\n" +
+                "法师Lv5技能再使用的等待时间。\n" +
+                "推荐：80秒",
+
+                ["Mage_Lv1_AOE_Max_Targets"] =
+                "【最大目标数 Lv1】\n" +
+                "法师Lv1同时命中的最大怪物数量。按距离远近选取。\n" +
+                "推荐：6",
+
+                ["Mage_Lv2_AOE_Max_Targets"] =
+                "【最大目标数 Lv2】\n" +
+                "法师Lv2同时命中的最大怪物数量。\n" +
+                "推荐：7",
+
+                ["Mage_Lv3_AOE_Max_Targets"] =
+                "【最大目标数 Lv3】\n" +
+                "法师Lv3同时命中的最大怪物数量。\n" +
+                "推荐：8",
+
+                ["Mage_Lv4_AOE_Max_Targets"] =
+                "【最大目标数 Lv4】\n" +
+                "法师Lv4同时命中的最大怪物数量。\n" +
+                "推荐：9",
+
+                ["Mage_Lv5_AOE_Max_Targets"] =
+                "【最大目标数 Lv5】\n" +
+                "法师Lv5同时命中的最大怪物数量。\n" +
+                "推荐：10",
+
+                ["Mage_Lv1_Elemental_Resistance"] =
+                "【元素抗性 Lv1 (%)】\n" +
+                "法师Lv1元素抗性。降低火焰/冰霜/闪电/毒素/灵魂伤害。\n" +
+                "推荐：5%",
+
+                ["Mage_Lv2_Elemental_Resistance"] =
+                "【元素抗性 Lv2 (%)】\n" +
+                "法师Lv2元素抗性。包含额外+1次施法（30秒内）。\n" +
+                "推荐：7%",
+
+                ["Mage_Lv3_Elemental_Resistance"] =
+                "【元素抗性 Lv3 (%)】\n" +
+                "法师Lv3元素抗性。\n" +
+                "推荐：9%",
+
+                ["Mage_Lv4_Elemental_Resistance"] =
+                "【元素抗性 Lv4 (%)】\n" +
+                "法师Lv4元素抗性。\n" +
+                "推荐：12%",
+
+                ["Mage_Lv5_Elemental_Resistance"] =
+                "【元素抗性 Lv5 (%)】\n" +
+                "法师Lv5元素抗性。\n" +
+                "推荐：15%",
+
+                ["Mage_Lv1_Damage_Multiplier"] =
+                "【AOE伤害倍率 Lv1 (%)】\n" +
+                "法师Lv1的AOE伤害倍率。\n" +
+                "推荐：70%",
+
+                ["Mage_Lv2_Damage_Multiplier"] =
+                "【AOE伤害倍率 Lv2 (%)】\n" +
+                "法师Lv2的AOE伤害倍率。\n" +
+                "推荐：90%",
+
+                ["Mage_Lv3_Damage_Multiplier"] =
+                "【AOE伤害倍率 Lv3 (%)】\n" +
+                "法师Lv3的AOE伤害倍率。\n" +
+                "推荐：110%",
+
+                ["Mage_Lv4_Damage_Multiplier"] =
+                "【AOE伤害倍率 Lv4 (%)】\n" +
+                "法师Lv4的AOE伤害倍率。\n" +
+                "推荐：130%",
+
+                ["Mage_Lv5_Damage_Multiplier"] =
+                "【AOE伤害倍率 Lv5 (%)】\n" +
+                "法师Lv5的AOE伤害倍率。\n" +
+                "推荐：150%",
+
+                ["Tanker_Explosion_Radius"] =
+                "【嘲讽爆炸半径 (m)】\n" +
+                "坦克嘲讽技能发动时爆炸效果的影响半径。\n" +
+                "推荐：6-12米",
+
+                ["Tanker_BlockPower_Multiplier"] =
+                "【盾牌格挡力倍率】\n" +
+                "根据坦克职业等级施加到盾牌格挡力的倍率。\n" +
+                "推荐：1.0-2.0",
+
+                ["Rogue_Poison_Range"] =
+                "【毒爆范围 (m)】\n" +
+                "每次毒爆VFX的影响范围。\n" +
+                "推荐：8-15米",
+
+                ["Rogue_Poison_InstantDamage"] =
+                "【即时毒素伤害】\n" +
+                "每次VFX触发时立即造成的毒素伤害。\n" +
+                "推荐：8-20",
+
+                ["Rogue_Poison_DotDamage"] =
+                "【毒素持续伤害（每秒）】\n" +
+                "毒素持续伤害效果的每秒伤害量。\n" +
+                "推荐：3-8",
+
+                ["Rogue_Poison_DotDuration"] =
+                "【毒素持续伤害时间（秒）】\n" +
+                "毒素持续伤害效果维持的时间。\n" +
+                "推荐：8-15秒",
+
+                ["Rogue_Poison_VFXCount"] =
+                "【毒爆次数】\n" +
+                "毒爆VFX重复触发的次数。\n" +
+                "推荐：6-10",
+
+                ["Rogue_Poison_VFXInterval"] =
+                "【毒爆间隔（秒）】\n" +
+                "每次毒爆之间的时间间隔。\n" +
+                "推荐：0.3-1.0秒",
+
+                ["Rogue_Lv2_Cooldown"] = "【Lv2暗影一击冷却时间（秒）】\n推荐：25-30秒",
+
+                ["Rogue_Lv3_Cooldown"] = "【Lv3暗影一击冷却时间（秒）】\n推荐：22-28秒",
+
+                ["Rogue_Lv4_Cooldown"] = "【Lv4暗影一击冷却时间（秒）】\n推荐：20-26秒",
+
+                ["Rogue_Lv5_Cooldown"] = "【Lv5暗影一击冷却时间（秒）】\n推荐：18-24秒",
+
+                ["Rogue_Lv2_AttackBonus"] = "【Lv2攻击力增益 (%)】\n推荐：35-50%",
+
+                ["Rogue_Lv3_AttackBonus"] = "【Lv3攻击力增益 (%)】\n推荐：40-55%",
+
+                ["Rogue_Lv4_AttackBonus"] = "【Lv4攻击力增益 (%)】\n推荐：45-60%",
+
+                ["Rogue_Lv5_AttackBonus"] = "【Lv5攻击力增益 (%)】\n推荐：50-65%",
+
+                ["Rogue_Lv2_BuffDuration"] = "【Lv2增益持续时间（秒）】\n推荐：8-12秒",
+
+                ["Rogue_Lv3_BuffDuration"] = "【Lv3增益持续时间（秒）】\n推荐：9-13秒",
+
+                ["Rogue_Lv4_BuffDuration"] = "【Lv4增益持续时间（秒）】\n推荐：10-14秒",
+
+                ["Rogue_Lv5_BuffDuration"] = "【Lv5增益持续时间（秒）】\n推荐：11-15秒",
+
+                ["Rogue_Lv2_PoisonBlasts"] = "【Lv2毒爆次数】\n推荐：8-12",
+
+                ["Rogue_Lv3_PoisonBlasts"] = "【Lv3毒爆次数】\n推荐：9-13",
+
+                ["Rogue_Lv4_PoisonBlasts"] = "【Lv4毒爆次数】\n推荐：10-14",
+
+                ["Rogue_Lv5_PoisonBlasts"] = "【Lv5毒爆次数】\n推荐：11-15",
+
+                ["Rogue_Lv2_PoisonInstant"] = "【Lv2即时毒素伤害】\n推荐：10-15",
+
+                ["Rogue_Lv3_PoisonInstant"] = "【Lv3即时毒素伤害】\n推荐：12-18",
+
+                ["Rogue_Lv4_PoisonInstant"] = "【Lv4即时毒素伤害】\n推荐：14-20",
+
+                ["Rogue_Lv5_PoisonInstant"] = "【Lv5即时毒素伤害】\n推荐：16-25",
+
+                ["Rogue_Lv2_PoisonDot"] = "【Lv2毒素持续伤害（每秒）】\n推荐：5-8",
+
+                ["Rogue_Lv3_PoisonDot"] = "【Lv3毒素持续伤害（每秒）】\n推荐：6-9",
+
+                ["Rogue_Lv4_PoisonDot"] = "【Lv4毒素持续伤害（每秒）】\n推荐：7-10",
+
+                ["Rogue_Lv5_PoisonDot"] = "【Lv5毒素持续伤害（每秒）】\n推荐：8-12",
+
+                ["Rogue_ShadowStrike_Charges"] = "【暗影一击基础充能次数】\n基础可用充能次数。\n推荐：1",
+
+                ["Rogue_Lv5_BonusCharges"] = "【Lv5额外充能次数】\n达到Lv5时解锁的额外充能次数。\n推荐：1",
+
+                ["Rogue_Lv2_AttackSpeed"] = "【Lv2攻击速度加成 (%)】\n推荐：10-15%",
+
+                ["Rogue_Lv3_AttackSpeed"] = "【Lv3攻击速度加成 (%)】\n推荐：12-18%",
+
+                ["Rogue_Lv4_AttackSpeed"] = "【Lv4攻击速度加成 (%)】\n推荐：14-20%",
+
+                ["Rogue_Lv5_AttackSpeed"] = "【Lv5攻击速度加成 (%)】\n推荐：16-22%",
+
+                ["Rogue_Lv2_StaminaReduction"] = "【Lv2体力消耗减少 (%)】\n推荐：15-20%",
+
+                ["Rogue_Lv3_StaminaReduction"] = "【Lv3体力消耗减少 (%)】\n推荐：17-22%",
+
+                ["Rogue_Lv4_StaminaReduction"] = "【Lv4体力消耗减少 (%)】\n推荐：19-25%",
+
+                ["Rogue_Lv5_StaminaReduction"] = "【Lv5体力消耗减少 (%)】\n推荐：22-30%",
+
+                ["Rogue_Lv1_MoveSpeed"] = "【Lv1移动速度加成 (%)】\n推荐：3-7%",
+
+                ["Rogue_Lv2_MoveSpeed"] = "【Lv2移动速度加成 (%)】\n推荐：5-10%",
+
+                ["Rogue_Lv3_MoveSpeed"] = "【Lv3移动速度加成 (%)】\n推荐：7-12%",
+
+                ["Rogue_Lv4_MoveSpeed"] = "【Lv4移动速度加成 (%)】\n推荐：10-15%",
+
+                ["Rogue_Lv5_MoveSpeed"] = "【Lv5移动速度加成 (%)】\n推荐：12-18%",
+
+                ["Producer_Durability_Lv1"] = "【制作物品耐久度加成 Lv1 (%)】\nLv1时制作物品的耐久度提升比例。\n默认：50%",
+
             };
         }
     }

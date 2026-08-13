@@ -135,10 +135,13 @@ namespace CaptainSkillTree.Localization
                 "Chance de recuperar resistência ao acertar.\n" +
                 "Valor recomendado: 20-50",
 
-                ["Tier6_WeakPointAttack_CritDamageBonus"] =
-                "【Bônus de Dano Crítico (%)】\n" +
-                "Aumenta o dano adicional ao acertar um golpe crítico.\n" +
-                "Valor recomendado: 10-20%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "【Ponto Fraco Lv1 Bônus de Dano Crítico (%)】\nBônus de dano crítico aplicado ao atingir o nível 1.\nValor recomendado: 5%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "【Ponto Fraco Lv2 Bônus de Dano Crítico (%)】\nBônus de dano crítico aplicado ao atingir o nível 2.\nValor recomendado: 9%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "【Ponto Fraco Lv3 Bônus de Dano Crítico (%)】\nBônus de dano crítico aplicado ao atingir o nível 3.\nValor recomendado: 13%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "【Ponto Fraco Lv4 Bônus de Dano Crítico (%)】\nBônus de dano crítico aplicado ao atingir o nível 4.\nValor recomendado: 17%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "【Ponto Fraco Lv5 Bônus de Dano Crítico (%)】\nBônus de dano crítico aplicado ao atingir o nível 5.\nValor recomendado: 21%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "【Ponto Fraco Lv6 Bônus de Dano Crítico (%)】\nBônus de dano crítico aplicado ao atingir o nível 6.\nValor recomendado: 25%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "【Ponto Fraco Lv7 (Máx.) Bônus de Dano Crítico (%)】\nBônus de dano crítico aplicado ao atingir o nível 7 (máx.).\nValor recomendado: 29%",
 
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] =
                 "【Bônus Dano - Duas Mãos (%)】\n" +
@@ -182,9 +185,9 @@ namespace CaptainSkillTree.Localization
                 "Valor recomendado: 15-25%",
 
                 ["Tier2_OpenerBow_CritChance"] =
-                "【Chance Crítica de Arco (%)】\n" +
-                "Aumenta a chance de acerto crítico na primeira flecha após o início do combate.\n" +
-                "Valor recomendado: 10-20%",
+                "【Arco: Olho do Caçador - Dano Crítico (%)】\n" +
+                "Dano crítico extra aplicado ao crítico garantido da primeira flecha dentro da janela de Ataque Inicial.\n" +
+                "Valor recomendado: 6-10%",
 
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] =
                 "【Bônus Primeiro Tiro de Besta (%)】\n" +
@@ -216,10 +219,10 @@ namespace CaptainSkillTree.Localization
                 "Aumenta a velocidade de movimento durante o combate.\n" +
                 "Valor recomendado: 10-15%",
 
-                ["Tier4_FrenzyTrigger_StaminaReduction"] =
-                "【Redução de Resistência em Combate Múltiplo (%)】\n" +
-                "Reduz o consumo de resistência quando há múltiplos inimigos próximos.\n" +
-                "Valor recomendado: 15-25%",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] =
+                "【Chance de Acerto Crítico por Nível (%)】\n" +
+                "Chance de acerto crítico ganha por nível. (Nível × incremento)\n" +
+                "Valor recomendado: 1-3%",
 
                 ["Tier5_Frenzy_StackBonusBase"] =
                 "【Bônus Base por Carga de Frenesi (%)】\n" +
@@ -254,7 +257,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_OpenerMagic_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
                 ["Tier3_Pursuit_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "【Pontos Necessários por Nível】\nPontos de habilidade consumidos por nível ganho.\nRecomendado: 2",
                 ["Tier5_Frenzy_RequiredPoints"] = "【Pontos Necessários】\nPontos de habilidade necessários para desbloquear este nó.",
 
                 // ========================================
@@ -269,6 +272,12 @@ namespace CaptainSkillTree.Localization
                 "【Bônus de Armadura (fixo)】\n" +
                 "Aumenta a armadura em valor fixo.\n" +
                 "Valor recomendado: 1-4",
+
+                ["Tier0_DefenseExpert_AtkPenalty"] =
+                "【Penalidade de Poder de Ataque (%)】\n" +
+                "Aprender Especialista em Defesa reduz levemente o poder de ataque.\n" +
+                "Uma troca entre defesa e ataque.\n" +
+                "Valor recomendado: 1-3%",
 
                 ["Tier1_SkinHardening_HPBonus"] =
                 "【Bônus de Vida (fixo)】\n" +
@@ -409,7 +418,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_NerveEnhancement_DodgeBonus"] =
                 "【Bônus de Evasão Condicional (30s, %)】\n" +
                 "Ativa quando não há evasão por 30 segundos.\n" +
-                "Valor recomendado: 30-50%",
+                "Valor recomendado: 85%",
 
                 ["Tier6_JotunnVitality_HPBonus"] =
                 "【Bônus de Vida (%)】\n" +
@@ -421,20 +430,6 @@ namespace CaptainSkillTree.Localization
                 "Reduz todo o dano físico e elemental.\n" +
                 "Valor recomendado: 8-15%",
 
-                ["Tier6_JotunnShield_BlockStaminaReduction"] =
-                "【Redução de Resistência ao Bloquear (%)】\n" +
-                "Reduz o consumo de resistência ao bloquear com escudo.\n" +
-                "Valor recomendado: 20-30%",
-
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] =
-                "【Velocidade com Escudo Normal (%)】\n" +
-                "Aumenta a velocidade de movimento com escudo normal.\n" +
-                "Valor recomendado: 3-8%",
-
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] =
-                "【Velocidade com Escudo de Torre (%)】\n" +
-                "Aumenta a velocidade de movimento com escudo de torre.\n" +
-                "Valor recomendado: 8-15%",
             };
         }
     }

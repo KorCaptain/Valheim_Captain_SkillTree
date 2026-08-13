@@ -106,10 +106,6 @@ namespace CaptainSkillTree.Localization
                 "额外弹射物的伤害百分比。\n" +
                 "推荐：10-20%",
 
-                ["Tier5_DoubleCast_AngleOffset"] =
-                "【散射角度（未使用）】\n" +
-                "当前版本未使用。方向固定。",
-
                 ["Tier5_DoubleCast_EitrCost"] =
                 "【以特尔消耗】\n" +
                 "激活技能时消耗的以特尔量。\n" +
@@ -496,6 +492,58 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier6_ArrowRain_RequiredPoints"] =
                 "【所需点数】\n解锁箭雨节点所需的技能点数。",
+
+                ["Tier5_DoubleCast_LevelBonus"] =
+                "【等级加成（%）】\n" +
+                "双重施法技能每级提升的伤害加成。\n" +
+                "推荐：3-8%",
+
+                ["Tier5_OneShot_AoeRadius"] =
+                "【AOE范围（米）】\n" +
+                "一击必杀命中时对周围敌人造成伤害的范围半径。\n" +
+                "推荐：5-10米",
+
+                ["Tier5_OneShot_LevelBonus"] =
+                "【每级伤害加成（%）】\n" +
+                "一击必杀技能每级提升的额外伤害加成。\n" +
+                "推荐：30-50%",
+
+                ["Tier5_OneShot_SlowReloadMultiplier"] =
+                "【装填速度惩罚倍率】\n" +
+                "发动后首次装填的装填时间将乘以此数值。\n" +
+                "2.0 = 速度-100%（慢2倍），6.0 = 速度-500%（慢6倍）\n" +
+                "推荐：2.0 - 6.0",
+
+                ["Tier6_IceBreath_LevelBonus"] =
+                "【等级加成（%）】\n" +
+                "火山之冰技能每级提升的直击伤害加成。\n" +
+                "推荐：10-20%",
+
+                ["Tier6_IceBreath_DotLevelBonus"] =
+                "【持续伤害等级加成（%）】\n" +
+                "火山之冰技能每级提升的持续伤害加成。\n" +
+                "推荐：3-8%",
+
+                ["Tier6_ArrowRain_LevelBonus"] =
+                "【等级加成（%）】\n" +
+                "箭雨技能每级提升的箭矢伤害加成。\n" +
+                "推荐：1-3%",
+
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] =
+                "【地下城buff：攻击力加成（%）】\n" +
+                "在地下城内按H键时，将改为发动自我强化buff，此为其攻击力提升幅度。\n" +
+                "推荐：20-30%",
+
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] =
+                "【地下城buff：持续时间（秒）】\n" +
+                "地下城内替代buff的持续时间。\n" +
+                "推荐：8-12秒",
+
+                ["Tier5_ExplosiveArrow_LevelBonus"] =
+                "【等级加成（%）】\n" +
+                "爆裂箭技能每级提升的伤害加成。\n" +
+                "推荐：10-25%",
+
             };
         }
     }

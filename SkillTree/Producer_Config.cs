@@ -36,6 +36,14 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> ProducerEnchantChance_Lv4;
         public static ConfigEntry<float> ProducerEnchantChance_Lv5;
 
+        // === 확률적 속성 피해(FireProc 등) 발동 확률 (%) — 인챈트 롤 레벨(1~5)에 연동 ===
+        // 피해량(%)은 Producer_Enchant.json에서 별도 관리, 이 값은 "발동 확률"만 담당
+        public static ConfigEntry<float> ProducerElementalProcChance_Lv1;
+        public static ConfigEntry<float> ProducerElementalProcChance_Lv2;
+        public static ConfigEntry<float> ProducerElementalProcChance_Lv3;
+        public static ConfigEntry<float> ProducerElementalProcChance_Lv4;
+        public static ConfigEntry<float> ProducerElementalProcChance_Lv5;
+
         // === 동적 값 접근자 ===
         public static float ProducerBuff_CooldownValue    => SkillTreeConfig.GetEffectiveValue("Producer_Buff_Cooldown", ProducerBuff_Cooldown.Value);
         public static float ProducerBuff_DurationValue    => SkillTreeConfig.GetEffectiveValue("Producer_Buff_Duration", ProducerBuff_Duration.Value);
@@ -60,6 +68,12 @@ namespace CaptainSkillTree.SkillTree
         public static float ProducerEnchantChance_Lv3Value => SkillTreeConfig.GetEffectiveValue("Producer_EnchantChance_Lv3", ProducerEnchantChance_Lv3.Value);
         public static float ProducerEnchantChance_Lv4Value => SkillTreeConfig.GetEffectiveValue("Producer_EnchantChance_Lv4", ProducerEnchantChance_Lv4.Value);
         public static float ProducerEnchantChance_Lv5Value => SkillTreeConfig.GetEffectiveValue("Producer_EnchantChance_Lv5", ProducerEnchantChance_Lv5.Value);
+
+        public static float ProducerElementalProcChance_Lv1Value => SkillTreeConfig.GetEffectiveValue("Producer_ElementalProcChance_Lv1", ProducerElementalProcChance_Lv1.Value);
+        public static float ProducerElementalProcChance_Lv2Value => SkillTreeConfig.GetEffectiveValue("Producer_ElementalProcChance_Lv2", ProducerElementalProcChance_Lv2.Value);
+        public static float ProducerElementalProcChance_Lv3Value => SkillTreeConfig.GetEffectiveValue("Producer_ElementalProcChance_Lv3", ProducerElementalProcChance_Lv3.Value);
+        public static float ProducerElementalProcChance_Lv4Value => SkillTreeConfig.GetEffectiveValue("Producer_ElementalProcChance_Lv4", ProducerElementalProcChance_Lv4.Value);
+        public static float ProducerElementalProcChance_Lv5Value => SkillTreeConfig.GetEffectiveValue("Producer_ElementalProcChance_Lv5", ProducerElementalProcChance_Lv5.Value);
 
         // === 레벨별 내구도 보너스 반환 헬퍼 ===
         public static float GetDurabilityBonus(int level)
@@ -93,6 +107,18 @@ namespace CaptainSkillTree.SkillTree
                 3 => ProducerEnchantChance_Lv3Value,
                 4 => ProducerEnchantChance_Lv4Value,
                 _ => level >= 5 ? ProducerEnchantChance_Lv5Value : 0f
+            };
+        }
+
+        // === 롤 레벨별 속성 확률 피해 발동 확률 반환 헬퍼 ===
+        public static float GetElementalProcChance(int level)
+        {
+            return level switch {
+                1 => ProducerElementalProcChance_Lv1Value,
+                2 => ProducerElementalProcChance_Lv2Value,
+                3 => ProducerElementalProcChance_Lv3Value,
+                4 => ProducerElementalProcChance_Lv4Value,
+                _ => level >= 5 ? ProducerElementalProcChance_Lv5Value : 0f
             };
         }
 
@@ -134,8 +160,12 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_Durability_Lv1"));
 
                 ProducerEnchantChance_Lv1 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantChance_Lv1", 25f,
+                    "Producer Job Skills", "Producer_EnchantChance_Lv1", 45f,
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv1"));
+
+                ProducerElementalProcChance_Lv1 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_ElementalProcChance_Lv1", 25f,
+                    SkillTreeConfig.GetConfigDescription("Producer_ElementalProcChance_Lv1"));
 
                 // === Lv2 패시브 ===
                 ProducerDurability_Lv2 = SkillTreeConfig.BindServerSync(config,
@@ -147,8 +177,12 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_MaterialReduction_Lv2"));
 
                 ProducerEnchantChance_Lv2 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantChance_Lv2", 45f,
+                    "Producer Job Skills", "Producer_EnchantChance_Lv2", 55f,
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv2"));
+
+                ProducerElementalProcChance_Lv2 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_ElementalProcChance_Lv2", 30f,
+                    SkillTreeConfig.GetConfigDescription("Producer_ElementalProcChance_Lv2"));
 
                 // === Lv3 패시브 ===
                 ProducerDurability_Lv3 = SkillTreeConfig.BindServerSync(config,
@@ -163,6 +197,10 @@ namespace CaptainSkillTree.SkillTree
                     "Producer Job Skills", "Producer_EnchantChance_Lv3", 65f,
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv3"));
 
+                ProducerElementalProcChance_Lv3 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_ElementalProcChance_Lv3", 35f,
+                    SkillTreeConfig.GetConfigDescription("Producer_ElementalProcChance_Lv3"));
+
                 // === Lv4 패시브 ===
                 ProducerDurability_Lv4 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_Durability_Lv4", 125f,
@@ -173,8 +211,12 @@ namespace CaptainSkillTree.SkillTree
                     SkillTreeConfig.GetConfigDescription("Producer_MaterialReduction_Lv4"));
 
                 ProducerEnchantChance_Lv4 = SkillTreeConfig.BindServerSync(config,
-                    "Producer Job Skills", "Producer_EnchantChance_Lv4", 75f,
+                    "Producer Job Skills", "Producer_EnchantChance_Lv4", 80f,
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv4"));
+
+                ProducerElementalProcChance_Lv4 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_ElementalProcChance_Lv4", 40f,
+                    SkillTreeConfig.GetConfigDescription("Producer_ElementalProcChance_Lv4"));
 
                 // === Lv5 패시브 ===
                 ProducerDurability_Lv5 = SkillTreeConfig.BindServerSync(config,
@@ -188,6 +230,10 @@ namespace CaptainSkillTree.SkillTree
                 ProducerEnchantChance_Lv5 = SkillTreeConfig.BindServerSync(config,
                     "Producer Job Skills", "Producer_EnchantChance_Lv5", 95f,
                     SkillTreeConfig.GetConfigDescription("Producer_EnchantChance_Lv5"));
+
+                ProducerElementalProcChance_Lv5 = SkillTreeConfig.BindServerSync(config,
+                    "Producer Job Skills", "Producer_ElementalProcChance_Lv5", 45f,
+                    SkillTreeConfig.GetConfigDescription("Producer_ElementalProcChance_Lv5"));
 
                 Plugin.Log.LogDebug("[제작 전문가 컨피그] 초기화 완료");
                 RegisterProducerEventHandlers();
@@ -222,6 +268,11 @@ namespace CaptainSkillTree.SkillTree
                 ProducerEnchantChance_Lv3.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerEnchantChance_Lv4.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 ProducerEnchantChance_Lv5.SettingChanged  += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerElementalProcChance_Lv1.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerElementalProcChance_Lv2.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerElementalProcChance_Lv3.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerElementalProcChance_Lv4.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
+                ProducerElementalProcChance_Lv5.SettingChanged += (s, a) => Producer_Tooltip.UpdateProducerTooltip();
                 Plugin.Log.LogDebug("[제작 전문가 컨피그] 이벤트 핸들러 등록 완료");
             }
             catch (System.Exception ex)

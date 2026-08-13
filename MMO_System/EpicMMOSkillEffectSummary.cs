@@ -46,7 +46,7 @@ namespace CaptainSkillTree.MMO_System
             "knife_step9_assassin_heart",
             "spear_Step5_penetrate",
             "polearm_step5_king",
-            "mace_Step7_guardian_heart"
+            "mace_Step7_shockwave_slam"
         };
 
         // 액티브 스킬 H키 목록

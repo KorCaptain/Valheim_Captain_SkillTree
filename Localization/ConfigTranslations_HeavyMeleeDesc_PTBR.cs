@@ -60,11 +60,6 @@ namespace CaptainSkillTree.Localization
                 "Determina o poder do ataque à distância.\n" +
                 "Valor recomendado: 100-150%",
 
-                ["Legacy_Throw_BuffDuration"] =
-                "【Não usado】\n" +
-                "Este parâmetro não está em uso atualmente.\n" +
-                "Alterado para habilidade passiva.",
-
                 // === Tier 3: Lança Rápida ===
                 ["Tier3_Pierce_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Lança Rápida.",
@@ -112,11 +107,6 @@ namespace CaptainSkillTree.Localization
                 // === Tier 5: Lança Perfurante (Ativa G) ===
                 ["Tier5_Penetrate_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Lança Perfurante.",
-
-                ["Legacy_Penetrate_CritChance"] =
-                "【Não usado】\n" +
-                "Este parâmetro não está em uso atualmente.\n" +
-                "Alterado para efeito de golpe de raio.",
 
                 ["Tier5_Penetrate_BuffDuration"] =
                 "【Duração do Buff (seg)】\n" +
@@ -265,15 +255,15 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HeavyStrike_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Golpe Pesado.",
 
-                // === Tier 4: Recuo ===
+                // === Tier 4: Concussão ===
                 ["Tier4_Push_KnockbackChance"] =
-                "【Chance de Recuo (%)】\n" +
-                "Chance de repelir o inimigo ao atacar.\n" +
-                "Útil para manter distância e controlar o campo de batalha.\n" +
-                "Valor recomendado: 25-35%",
+                "【Chance de Concussão (%)】\n" +
+                "Chance ao acertar com uma maça de reduzir a velocidade de movimento e ataque do alvo em 30% por 1,5s.\n" +
+                "Útil para controle de combate e vantagem de dano.\n" +
+                "Valor recomendado: 30-40%",
 
                 ["Tier4_Push_RequiredPoints"] =
-                "【Pontos Necessários】\nPontos para desbloquear Recuo.",
+                "【Pontos Necessários】\nPontos para desbloquear Concussão.",
 
                 // === Tier 5: Tanque ===
                 ["Tier5_Tank_HealthBonus"] =
@@ -351,24 +341,52 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Martelo da Fúria.",
 
-                // === Tier 7: Investida com Escudo (Ativa G) ===
-                ["Tier7_GuardianHeart_Cooldown"] =
+                // === Tier 6-5: Investida com Escudo (movido da árvore de maça) ===
+                ["Tier6_GuardianHeart_Cooldown"] =
                 "【Recarga (seg)】\n" +
                 "Tempo de espera para reutilizar a Investida com Escudo.\n" +
                 "Valor recomendado: 30-40 seg",
 
-                ["Tier7_GuardianHeart_StaminaCost"] =
+                ["Tier6_GuardianHeart_StaminaCost"] =
                 "【Custo de Resistência】\n" +
                 "Resistência ao usar Investida com Escudo.\n" +
                 "Valor recomendado: 15-25",
 
-                ["Tier7_ShieldCharge_DamagePercent"] =
+                ["Tier6_ShieldCharge_DamagePercent"] =
                 "【Dano do Bloqueio do Escudo (%)】\n" +
                 "Dano causado na colisão como porcentagem do poder de bloqueio.\n" +
                 "Valor recomendado: 60-80%",
 
-                ["Tier7_GuardianHeart_RequiredPoints"] =
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] =
+                "【Bônus de Nível de Múltiplos Golpes (%)】\n" +
+                "Aumento do dano de múltiplos golpes por nível da habilidade.\n" +
+                "Valor recomendado: 5-15%",
+
+                ["Tier6_GuardianHeart_RequiredPoints"] =
                 "【Pontos Necessários】\nPontos para desbloquear Investida com Escudo.",
+
+                ["Tier7_ShockwaveSlam_Cooldown"] =
+                "【Recarga (seg)】\n" +
+                "Tempo de espera para reutilizar o Golpe de Onda de Choque.\n" +
+                "Valor recomendado: 30-50 seg",
+
+                ["Tier7_ShockwaveSlam_StaminaCost"] =
+                "【Custo de Resistência】\n" +
+                "Resistência ao usar Golpe de Onda de Choque.\n" +
+                "Valor recomendado: 15-25",
+
+                ["Tier7_ShockwaveSlam_DamagePercent"] =
+                "【Proporção de Dano da Arma (%)】\n" +
+                "Dano causado ao acertar como porcentagem do dano da arma.\n" +
+                "Valor recomendado: 200-260%",
+
+                ["Tier7_ShockwaveSlam_LevelBonus"] =
+                "【Bônus por Nível (%)】\n" +
+                "Bônus de dano por nível do Golpe de Onda de Choque.\n" +
+                "Valor recomendado: 10-30%",
+
+                ["Tier7_ShockwaveSlam_RequiredPoints"] =
+                "【Pontos Necessários】\nPontos para desbloquear Golpe de Onda de Choque.",
 
                 // ========================================
                 // Polearm Tree (Árvore de Haste)
@@ -547,6 +565,113 @@ namespace CaptainSkillTree.Localization
                 "【Pontos Necessários】\n" +
                 "Pontos de habilidade para desbloquear o Redemoinho.\n" +
                 "Recomendado: 3",
+
+                ["Tier0_SpearExpert_ProcChance"] =
+                "【Chance de Ativação do Mestre da Lança (%)】\n" +
+                "Chance de ativar o proc de Golpe de Raio ao atacar.\n" +
+                "Ao ativar, o próximo ataque é executado em alta velocidade.\n" +
+                "Valor recomendado: 20-35%",
+
+                ["Tier0_SpearExpert_SpeedBoost"] =
+                "【Aumento de Velocidade do Mestre da Lança (%)】\n" +
+                "Bônus de velocidade de ataque adicionado quando o proc é ativado.\n" +
+                "Base 100% + este valor = multiplicador total de velocidade de ataque.\n" +
+                "Valor recomendado: 80-120%",
+
+                ["Tier5_Penetrate_BaseDamage"] =
+                "【Dano Único Base Lv1 (%)】\n" +
+                "Dano único base causado a inimigos no caminho da investida.\n" +
+                "Calculado como proporção do dano de perfuração da lança.\n" +
+                "Valor recomendado: 80-120%",
+
+                ["Tier5_Penetrate_LevelDamageBonus"] =
+                "【Bônus de Dano Único por Nível (%)】\n" +
+                "Dano único adicional por nível da habilidade.\n" +
+                "Valor recomendado: 3-8%",
+
+                ["Tier5_Penetrate_BaseAreaDamage"] =
+                "【Dano em Área Base Lv1 (%)】\n" +
+                "Dano base causado a inimigos dentro de um raio de 5m do caminho da investida.\n" +
+                "Valor recomendado: 60-100%",
+
+                ["Tier5_Penetrate_AreaLevelBonus"] =
+                "【Bônus de Dano em Área por Nível (%)】\n" +
+                "Dano em área adicional por nível da habilidade.\n" +
+                "Valor recomendado: 3-8%",
+
+                ["Tier5_Combo_LevelBonus"] =
+                "【Bônus por Nível (%)】\n" +
+                "Bônus de dano por nível da habilidade Lança em Série.\n" +
+                "Valor recomendado: 5-15%",
+
+                ["Tier3_SpinStrike_DamageBonus"] =
+                "【Bônus de Dano do Ataque Secundário (%)】\n" +
+                "Aumenta o dano no ataque secundário.\n" +
+                "Baseado em porcentagem; maior dano base gera maior efeito.\n" +
+                "Valor recomendado: 15-25%",
+
+                ["Tier3_SpinStrike_Range"] =
+                "【Raio AOE (metros)】\n" +
+                "Raio no qual os inimigos próximos recebem dano no ataque secundário.\n" +
+                "Valor recomendado: 5-10m",
+
+                ["Tier3_SpinStrike_KnockbackForce"] =
+                "【Distância de Recuo do Golpe Giratório (metros)】\n" +
+                "Distância que os inimigos são repelidos no ataque secundário. Aplica-se a maças de uma e duas mãos.\n" +
+                "Valor recomendado: 2-5m",
+
+                ["Tier6_Sokgong_AttackSpeedBonus"] =
+                "【Bônus de Velocidade de Ataque (%)】\n" +
+                "Aumenta a velocidade de ataque da maça.\n" +
+                "Compensa a lentidão do ataque de maça.\n" +
+                "Valor recomendado: 8-15%",
+
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] =
+                "【Bônus de Nível do Golpe Normal (%)】\n" +
+                "Bônus de dano por nível para os golpes normais do Martelo da Fúria.\n" +
+                "Valor recomendado: 5-15%",
+
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] =
+                "【Bônus de Nível do Golpe Final (%)】\n" +
+                "Bônus de dano por nível para o golpe final (explosão) do Martelo da Fúria.\n" +
+                "Valor recomendado: 10-25%",
+
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] =
+                "【Proporção de Dano Multi-Golpe (%)】\n" +
+                "Proporção base (nível 1) do poder de bloqueio do escudo, aplicada ao golpe em área a cada 0.08s\n" +
+                "durante a investida e ao golpe final de múltiplos golpes (4 vezes, intervalo de 0.25s) nos inimigos reunidos.\n" +
+                "Valor recomendado: 20-40%",
+
+                ["Tier6_ShieldCharge_LevelBonus"] =
+                "【Bônus por Nível (%)】\n" +
+                "Bônus de dano por nível da habilidade Investida com Escudo.\n" +
+                "Valor recomendado: 5-15%",
+
+                ["Tier4-1_StormSlash_ExplosionBonus"] =
+                "【Bônus de Dano de Raio】\n" +
+                "Dano de raio adicionado ao usar o ataque do botão da roda do mouse dentro de 4s de um ataque primário.\n" +
+                "Valor recomendado: 10-20",
+
+                ["Tier5_PierceCharge_LevelBonus"] =
+                "【Bônus de Dano por Nível (%)】\n" +
+                "Bônus de dano adicional por nível da habilidade Investida Perfurante.\n" +
+                "Valor recomendado: 20-40%",
+
+                ["Tier6_Whirlwind_LevelBonus"] =
+                "【Bônus por Nível (%)】\n" +
+                "Bônus de dano por nível da habilidade Redemoinho.\n" +
+                "Valor recomendado: 5-15%",
+
+                ["Tier6_Whirlwind_DamageReductionPercent"] =
+                "【Redução de Dano (%)】\n" +
+                "Reduz o dano recebido enquanto o Redemoinho está ativo. (valor base Lv1)\n" +
+                "Valor recomendado: 20-40%",
+
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] =
+                "【Bônus de Nível de Redução de Dano (%)】\n" +
+                "Redução de dano adicional por nível da habilidade Redemoinho.\n" +
+                "Valor recomendado: 5-10%",
+
 
             };
         }

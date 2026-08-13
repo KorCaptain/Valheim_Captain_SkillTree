@@ -33,6 +33,9 @@ namespace CaptainSkillTree
         /// <summary>true 이면 FejdStartup 패치에서 선택 창을 표시</summary>
         public static bool NeedsSelection { get; private set; }
 
+        /// <summary>true 이면 과거에 확정된 난이도 선택 이력(difficulty_ver)이 존재함</summary>
+        public static bool HasPriorSelection { get; private set; }
+
         /// <summary>중첩 깊이 카운터 — 0보다 크면 SettingChanged 핸들러 재진입 차단</summary>
         private static int _applyingPresetDepth = 0;
         public static bool IsApplyingPreset => _applyingPresetDepth > 0;
@@ -59,6 +62,8 @@ namespace CaptainSkillTree
 
             string currentVer  = File.Exists(versionFile)       ? File.ReadAllText(versionFile).Trim()       : "";
             string selectedVer = File.Exists(difficultyVerFile)  ? File.ReadAllText(difficultyVerFile).Trim() : "";
+
+            HasPriorSelection = !string.IsNullOrEmpty(selectedVer);
 
             EnsurePresetDirectory();
             Application.quitting += SaveUserBackupOnQuit;
@@ -210,6 +215,26 @@ namespace CaptainSkillTree
             BeginPreset();
             try   { ApplyVeryhardWithUserOverlay(); }
             finally { EndPreset(); }
+        }
+
+        /// <summary>
+        /// 선택 창을 띄울 수 없거나(Canvas 없음) 선택 없이 창이 닫힌 경우 호출되는 폴백.
+        /// 이전에 확정된 설정 이력(difficulty_ver)이 있으면 그 값을 그대로 유지하고,
+        /// 설정 이력이 전혀 없는 최초 설치인 경우에만 VeryHard를 기본 적용한다.
+        /// </summary>
+        public static void ApplyFallbackDefault()
+        {
+            if (HasPriorSelection)
+            {
+                Plugin.Log?.LogWarning("[Difficulty] 선택 창 표시 불가 — 기존 사용 설정을 그대로 유지합니다.");
+                SaveDifficultyVersion();
+                NeedsSelection = false;
+            }
+            else
+            {
+                Plugin.Log?.LogWarning("[Difficulty] 선택 창 표시 불가 — 최초 설치이므로 VeryHard를 기본 적용합니다.");
+                ApplyVeryHard();
+            }
         }
 
         // ──────────────────────────── 내부 적용 로직 ────────────────────────────

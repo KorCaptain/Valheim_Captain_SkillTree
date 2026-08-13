@@ -166,3 +166,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# bkit tool internal audit/session state (contains local absolute paths)
+.bkit/audit/
+.bkit/state/

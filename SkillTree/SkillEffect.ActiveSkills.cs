@@ -86,7 +86,7 @@ namespace CaptainSkillTree.SkillTree
                                 HasSkill("knife_step9_assassin_heart") ||
                                 HasSkill("spear_Step5_penetrate") ||
                                 HasSkill("polearm_step5_king") ||
-                                HasSkill("mace_Step7_guardian_heart") ||
+                                HasSkill("mace_Step7_shockwave_slam") ||
                                 HasSkill("defense_Step6_mind");
 
             // 1. 지팡이/완드: 마인드쉴드 (방어전문가)
@@ -107,13 +107,6 @@ namespace CaptainSkillTree.SkillTree
                 if (HasSkill("sword_step5_finalcut") || HasSkill("sword_slash"))
                 {
                     Sword_Skill.ActivateSwordSlash(player);
-                    return;
-                }
-                // 검 G스킬 없음 → 방패돌진 폴백 (검+방패 조합)
-                if (HasSkill("mace_Step7_guardian_heart"))
-                {
-                    if (WeaponHelper.HasShield(player)) { ActivateShieldCharge(player); return; }
-                    DrawFloatingText(player, L.Get("shield_equip_required"), Color.red);
                     return;
                 }
                 DrawFloatingText(player, hasAnyGSkill ? L.Get("skill_weapon_mismatch") : L.Get("g_key_skill_required"), Color.red);
@@ -156,15 +149,15 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
-            // 6. 방패돌진: 무기 종류 무관, 방패 착용 여부만 확인
-            if (HasSkill("mace_Step7_guardian_heart"))
+            // 6. 둔기: 충격파 강타
+            if (WeaponHelper.IsUsingMace(player))
             {
-                if (WeaponHelper.HasShield(player))
+                if (HasSkill("mace_Step7_shockwave_slam"))
                 {
-                    ActivateShieldCharge(player);
+                    ActivateShockwaveSlam(player);
                     return;
                 }
-                DrawFloatingText(player, L.Get("shield_equip_required"), Color.red);
+                DrawFloatingText(player, hasAnyGSkill ? L.Get("skill_weapon_mismatch") : L.Get("g_key_skill_required"), Color.red);
                 return;
             }
 

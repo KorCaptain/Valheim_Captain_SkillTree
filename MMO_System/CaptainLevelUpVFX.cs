@@ -1,4 +1,3 @@
-using System.Reflection;
 using HarmonyLib;
 using UnityEngine;
 
@@ -27,44 +26,15 @@ namespace CaptainSkillTree.MMO_System
         public static void ZNetScene_Awake_Postfix()
         {
             if (_loaded) return;
+            _loaded = true;
 
-            // 이미 로드된 epicasset 번들 재사용 (EpicMMO가 먼저 로드했을 수 있음)
-            AssetBundle bundle = null;
-            System.IO.Stream stream = null;
-            bool ownedBundle = false;
-
-            foreach (var b in AssetBundle.GetAllLoadedAssetBundles())
-            {
-                if (b.Contains("LevelUpVFX") || b.Contains("EpicHudPanelCanvas")) { bundle = b; break; }
-            }
-
-            if (bundle == null)
-            {
-                stream = Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream("CaptainSkillTree.asset.Resources.epicasset");
-                if (stream == null)
-                {
-                    Plugin.Log.LogWarning("[CaptainLevelUpVFX] epicasset 스트림 없음");
-                    return;
-                }
-                bundle = AssetBundle.LoadFromStream(stream);
-                if (bundle == null)
-                {
-                    Plugin.Log.LogWarning("[CaptainLevelUpVFX] epicasset 번들 로드 실패");
-                    stream.Dispose();
-                    return;
-                }
-                ownedBundle = true;
-            }
+            var bundle = EpicAssetBundleCache.Get();
+            if (bundle == null) return;
 
             _prefab = bundle.LoadAsset<GameObject>("LevelUpVFX");
             if (_prefab != null)
                 Object.DontDestroyOnLoad(_prefab);
-
-            if (ownedBundle) { bundle.Unload(false); stream.Dispose(); }
-
-            _loaded = true;
-            if (_prefab == null)
+            else
                 Plugin.Log.LogWarning("[CaptainLevelUpVFX] LevelUpVFX 프리팹을 번들에서 찾을 수 없음");
         }
 

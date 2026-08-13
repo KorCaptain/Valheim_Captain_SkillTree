@@ -210,6 +210,18 @@ namespace CaptainSkillTree.Gui
                 // 이중 시전 스킬 전용 동적 툴팁 처리
                 tooltipText = Staff_Tooltip.GetDualCastTooltip();
             }
+            else if (node.Id == "speed_root")
+            {
+                tooltipText = Speed_Tooltip.GetSpeedRootTooltip();
+            }
+            else if (node.Id == "atk_frenzy_trigger")
+            {
+                tooltipText = Attack_Tooltip.GetFrenzyTriggerTooltip();
+            }
+            else if (node.Id == "atk_crit_dmg")
+            {
+                tooltipText = Attack_Tooltip.GetWeakPointAttackTooltip();
+            }
             else if (node.Id == "defense_Step6_mind")
             {
                 // 마인드쉴드 액티브 스킬 전용 동적 툴팁 처리
@@ -449,8 +461,8 @@ namespace CaptainSkillTree.Gui
                     result = L.Get("attack_root_desc", SkillTreeConfig.AttackRootDamageBonusValue);
                     break;
 
-                case "defense_root": // 방어 전문가 루트 노드 - "체력 +5, 방어 +2"
-                    result = L.Get("defense_root_desc", Defense_Config.DefenseRootHealthBonusValue, Defense_Config.DefenseRootArmorBonusValue);
+                case "defense_root": // 방어 전문가 루트 노드 - "체력 +5, 방어 +2, 공격력 -3%"
+                    result = L.Get("defense_root_desc", Defense_Config.DefenseRootHealthBonusValue, Defense_Config.DefenseRootArmorBonusValue, Defense_Config.DefenseRootAttackPowerPenaltyValue);
                     break;
 
                 // === 둔기 트리 스킬들 ===
@@ -461,7 +473,7 @@ namespace CaptainSkillTree.Gui
                     result = L.Get("mace_stun_boost_desc2", Mace_Config.MaceStep2StunChanceBonusValue, Mace_Config.MaceStep2StunDurationBonusValue);
                     break;
                 case "mace_Step3_branch_guard": // 회전 타격
-                    result = L.Get("mace_guard_boost_desc2", Mace_Config.MaceStep3SpinDamageBonusValue, Mace_Config.MaceStep3SpinRangeValue);
+                    result = L.Get("mace_guard_boost_desc2", Mace_Config.MaceStep3SpinDamageBonusValue, Mace_Config.MaceStep3SpinRangeValue, Mace_Config.MaceStep3SpinKnockbackForceValue);
                     break;
                 case "mace_Step3_branch_heavy": // 무거운 타격
                     result = L.Get("mace_heavy_strike_desc2", Mace_Config.MaceStep3HeavyDamageBonusValue);
@@ -483,6 +495,9 @@ namespace CaptainSkillTree.Gui
                     break;
                 case "mace_Step7_guardian_heart": // 수호자의 진심 (액티브 스킬)
                     result = Mace_Tooltip.GetMaceStep7GuardianHeartTooltip();
+                    break;
+                case "mace_Step7_shockwave_slam": // 충격파 강타 (액티브 스킬)
+                    result = Mace_Tooltip.GetMaceStep7ShockwaveSlamTooltip();
                     break;
 
                 // === 지팡이 트리 스킬들 ===
@@ -516,6 +531,12 @@ namespace CaptainSkillTree.Gui
                 case "staff_Step6_dual_cast": // 이중 시전 (액티브 스킬)
                     result = Staff_Tooltip.GetDualCastTooltip();
                     break;
+                case "speed_root": // 속도 전문가 (성장형 Lv1~7)
+                    result = Speed_Tooltip.GetSpeedRootTooltip();
+                    break;
+                case "atk_frenzy_trigger": // 치명적인 공격 (성장형 Lv1~7)
+                    result = Attack_Tooltip.GetFrenzyTriggerTooltip();
+                    break;
                 case "defense_Step6_mind": // 마인드쉴드 (액티브 스킬)
                     result = MindShield_Tooltip.GetMindShieldTooltip();
                     break;
@@ -548,8 +569,8 @@ namespace CaptainSkillTree.Gui
                     break;
 
                 // 6단계 노드들
-                case "atk_crit_dmg": // 약점 공격
-                    result = L.Get("atk_crit_dmg_desc", SkillTreeConfig.AttackCritDamageBonusValue);
+                case "atk_crit_dmg": // 약점 공격 (성장형 Lv1~7)
+                    result = Attack_Tooltip.GetWeakPointAttackTooltip();
                     break;
                 case "atk_twohand_crush": // 양손 분쇄
                     result = L.Get("atk_twohand_crush_desc", SkillTreeConfig.AttackTwoHandedBonusValue);
@@ -624,8 +645,84 @@ namespace CaptainSkillTree.Gui
                 case "defense_Step6_body": // 요툰의 생명력
                     result = L.Get("defense_body_desc", Defense_Config.BodyHealthBonusValue, Defense_Config.BodyArmorBonusValue);
                     break;
-                case "defense_Step6_true": // 요툰의 방패
-                    result = L.Get("defense_true_desc", Defense_Config.JotunnShieldBlockStaminaReductionValue, Defense_Config.JotunnShieldNormalSpeedBonusValue, Defense_Config.JotunnShieldTowerSpeedBonusValue);
+                // === 활(Bow) 일반 노드들 (Step6 액티브 제외) ===
+                case "bow_Step1_damage": // 궁수 전문가
+                    result = L.Get("bow_expert_desc", Bow_Config.BowStep1ExpertDamageBonusValue);
+                    break;
+                case "bow_Step2_multishot": // 멀티샷
+                    result = L.Get("bow_multishot_lv1_desc", Bow_Config.BowMultishotLv1ChanceValue);
+                    break;
+                case "bow_Step3_speedshot": // 숙련도
+                    result = L.Get("bow_proficiency_desc", Bow_Config.BowStep3SpeedShotSkillBonusValue);
+                    break;
+                case "bow_Step3_silentshot": // 관통
+                    result = L.Get("bow_penetration_desc", Bow_Config.BowStep3SilentShotDamageBonusValue);
+                    break;
+                case "bow_Step4_multishot2": // 멀티샷 Lv2
+                    result = L.Get("bow_multishot_lv2_desc", Bow_Config.BowMultishotLv2ChanceValue);
+                    break;
+                case "bow_Step5_instinct": // 본능
+                    result = L.Get("bow_instinct_desc", Bow_Config.BowStep5InstinctCritBonusValue);
+                    break;
+                case "bow_Step5_master": // 정밀
+                    result = L.Get("bow_precision_desc", Bow_Config.BowStep5MasterCritDamageValue);
+                    break;
+
+                // === 석궁(Crossbow) 일반 노드들 (Step6 액티브 제외) ===
+                case "crossbow_Step1_damage": // 석궁 전문가
+                    result = L.Get("crossbow_expert_desc", Crossbow_Config.CrossbowExpertDamageBonusValue);
+                    break;
+                case "crossbow_Step2_rapid_fire": // 연속 사격
+                    result = L.Get("crossbow_rapid_fire_desc",
+                        Crossbow_Config.CrossbowRapidFireChanceValue,
+                        Crossbow_Config.CrossbowRapidFireShotCountValue,
+                        Crossbow_Config.CrossbowRapidFireDamagePercentValue,
+                        Crossbow_Config.CrossbowRapidFireBoltConsumptionValue);
+                    break;
+                case "crossbow_Step2_balance": // 균형
+                    result = L.Get("crossbow_balance_desc", Crossbow_Config.CrossbowBalanceKnockbackChanceValue, Crossbow_Config.CrossbowBalanceKnockbackDistanceValue);
+                    break;
+                case "crossbow_Step3_rapid": // 신속 재장전
+                    result = L.Get("crossbow_rapid_desc", Crossbow_Config.CrossbowRapidReloadSpeedValue);
+                    break;
+                case "crossbow_Step3_mark": // 표식
+                    result = L.Get("crossbow_mark_desc", Crossbow_Config.CrossbowMarkDamageBonusValue);
+                    break;
+                case "crossbow_Step4_re": // 자동 재장전
+                    result = L.Get("crossbow_auto_reload_desc", Crossbow_Config.CrossbowAutoReloadChanceValue);
+                    break;
+                case "crossbow_Step4_rapid_fire_lv2": // 연속 사격 Lv2
+                    result = L.Get("crossbow_rapid_fire_lv2_desc",
+                        Crossbow_Config.CrossbowRapidFireLv2ChanceValue,
+                        Crossbow_Config.CrossbowRapidFireLv2ShotCountValue,
+                        Crossbow_Config.CrossbowRapidFireLv2DamagePercentValue,
+                        Crossbow_Config.CrossbowRapidFireLv2BoltConsumptionValue);
+                    break;
+                case "crossbow_Step5_final": // 결정타
+                    result = L.Get("crossbow_final_strike_desc", Crossbow_Config.CrossbowFinalStrikeHpThresholdValue, Crossbow_Config.CrossbowFinalStrikeDamageBonusValue);
+                    break;
+
+                // === 속도(Speed) 일반 노드들 ===
+                case "speed_base": // 속도 기반
+                    result = L.Get("speed_base_desc", Speed_Config.SpeedBaseAttackSpeedValue, Speed_Config.SpeedBaseDodgeDurationValue, Speed_Config.SpeedBaseDodgeMoveSpeedValue);
+                    break;
+                case "speed_ex1": // 수련자1
+                    result = L.Get("speed_ex1_desc", Speed_Config.SpeedEx1MeleeSkillValue, Speed_Config.SpeedEx1CrossbowSkillValue);
+                    break;
+                case "speed_ex2": // 수련자2
+                    result = L.Get("speed_ex2_desc", Speed_Config.SpeedEx2StaffSkillValue, Speed_Config.SpeedEx2BowSkillValue);
+                    break;
+                case "speed_master": // 에너자이저
+                    result = L.Get("speed_master_desc", Speed_Config.SpeedFoodEfficiencyValue);
+                    break;
+                case "speed_1": // 민첩
+                    result = L.Get("speed_1_desc", Speed_Config.SpeedDexterityAttackSpeedBonusValue, Speed_Config.SpeedDexterityMoveSpeedBonusValue);
+                    break;
+                case "speed_2": // 인내
+                    result = L.Get("speed_2_desc", Speed_Config.SpeedEnduranceStaminaBonusValue);
+                    break;
+                case "speed_3": // 지력
+                    result = L.Get("speed_3_desc", Speed_Config.SpeedIntellectEitrBonusValue);
                     break;
 
                 // === 직업 스킬들 - 실제 노드 ID 사용 ===
@@ -740,7 +837,7 @@ namespace CaptainSkillTree.Gui
             }
             else
             {
-                requiredPointsText = node.RequiredPoints.ToString();
+                requiredPointsText = node.EffectiveRequiredPoints.ToString();
             }
             
             // 생산 스킬 여부 확인
@@ -815,65 +912,72 @@ namespace CaptainSkillTree.Gui
                 {
                     var trimmedLine = line.Trim();
                     
-                    if (trimmedLine.StartsWith("설명:") || trimmedLine.StartsWith("설명 :"))
+                    if (trimmedLine.StartsWith("설명:") || trimmedLine.StartsWith("설명 :") ||
+                        trimmedLine.StartsWith("Description:") || trimmedLine.StartsWith("Description :"))
                     {
-                        // "설명:" 라벨이 있는 경우 - Job_Tooltip 시스템에서 생성된 툴팁
-                        var descContent = trimmedLine.StartsWith("설명:") ? 
-                            trimmedLine.Substring(3).Trim() : 
-                            trimmedLine.Substring(4).Trim();
+                        // "설명:"/"Description:" 라벨이 있는 경우 - Job_Tooltip 시스템에서 생성된 툴팁
+                        var descContent = trimmedLine.StartsWith("설명:") ? trimmedLine.Substring(3).Trim() :
+                            trimmedLine.StartsWith("설명 :") ? trimmedLine.Substring(4).Trim() :
+                            trimmedLine.StartsWith("Description:") ? trimmedLine.Substring(12).Trim() :
+                            trimmedLine.Substring(13).Trim();
                         if (!string.IsNullOrEmpty(descContent))
                         {
                             description += (string.IsNullOrEmpty(description) ? "" : " ") + descContent;
                         }
                     }
-                    else if (trimmedLine.StartsWith("범위:"))
+                    else if (trimmedLine.StartsWith("범위:") || trimmedLine.StartsWith("Range:"))
                     {
-                        info.Range = trimmedLine.Substring(3).Trim();
+                        info.Range = (trimmedLine.StartsWith("범위:") ? trimmedLine.Substring(3) : trimmedLine.Substring(6)).Trim();
                         // 설명에는 포함하지 않음 (별도 항목으로 표시)
                     }
-                    else if (trimmedLine.StartsWith("소모:"))
+                    else if (trimmedLine.StartsWith("소모:") || trimmedLine.StartsWith("Cost:"))
                     {
-                        info.Cost = trimmedLine.Substring(3).Trim();
+                        info.Cost = (trimmedLine.StartsWith("소모:") ? trimmedLine.Substring(3) : trimmedLine.Substring(5)).Trim();
                         // 설명에는 포함하지 않음 (별도 항목으로 표시)
                     }
-                    else if (trimmedLine.StartsWith("쿨타임:"))
+                    else if (trimmedLine.StartsWith("쿨타임:") || trimmedLine.StartsWith("Cooldown:"))
                     {
-                        info.Cooldown = trimmedLine.Substring(4).Trim();
+                        info.Cooldown = (trimmedLine.StartsWith("쿨타임:") ? trimmedLine.Substring(4) : trimmedLine.Substring(9)).Trim();
                         // 설명에는 포함하지 않음 (별도 항목으로 표시)
                     }
-                    else if (trimmedLine.StartsWith("스킬유형:"))
+                    else if (trimmedLine.StartsWith("스킬유형:") || trimmedLine.StartsWith("Skill Type:"))
                     {
-                        info.SkillType = trimmedLine.Substring(5).Trim();
+                        info.SkillType = (trimmedLine.StartsWith("스킬유형:") ? trimmedLine.Substring(5) : trimmedLine.Substring(11)).Trim();
                         // 설명에는 포함하지 않음 (별도 항목으로 표시)
                     }
-                    else if (trimmedLine.StartsWith("필요조건:"))
+                    else if (trimmedLine.StartsWith("필요조건:") || trimmedLine.StartsWith("Requirement:"))
                     {
-                        info.Requirements = trimmedLine.Substring(5).Trim();
+                        info.Requirements = (trimmedLine.StartsWith("필요조건:") ? trimmedLine.Substring(5) : trimmedLine.Substring(12)).Trim();
                         // 설명에는 포함하지 않음 (별도 항목으로 표시)
                     }
-                    else if (trimmedLine.Contains("키:"))
+                    else if (trimmedLine.Contains("키:") || System.Text.RegularExpressions.Regex.IsMatch(trimmedLine, @"^[A-Za-z]+\s*key:", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                     {
-                        // Y키, R키, G키, H키 설명은 스킬 설명에 포함 (단, 키 정보와 쿨타임 정보는 제외)
+                        // Y키, R키, G키, H키 / Y key, R key 등의 설명은 스킬 설명에 포함 (단, 키 정보와 쿨타임 정보는 제외)
                         string cleanLine = trimmedLine;
-                        
-                        // 키 정보 제거 (Y키:, R키:, G키:, H키:, F키: 등)
+
+                        // 키 정보 제거 (Y키:, R키:, G키:, H키:, F키: 등 / Y key:, G key: 등)
                         cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"[A-Z]키:\s*", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
-                        
+                        cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"^[A-Za-z]+\s*key:\s*", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
+
                         // 쿨타임 정보 제거
                         cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"\(쿨타임\s*\d+초\)", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
                         cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @",?\s*쿨타임\s*\d+초", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
-                        
+                        cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @"\(Cooldown\s*\d+s\)", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
+                        cleanLine = System.Text.RegularExpressions.Regex.Replace(cleanLine, @",?\s*Cooldown\s*\d+s", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
+
                         if (!string.IsNullOrEmpty(cleanLine))
                         {
                             description += (string.IsNullOrEmpty(description) ? "" : " ") + cleanLine;
                         }
                     }
-                    else if (trimmedLine.StartsWith("⚠️확인사항:"))
+                    else if (trimmedLine.StartsWith("⚠️확인사항:") || trimmedLine.StartsWith("⚠️Notice:") || trimmedLine.StartsWith("Notice:"))
                     {
                         // 확인사항을 Notice로 설정
-                        info.Notice = trimmedLine.Substring(6).Trim();
+                        info.Notice = trimmedLine.StartsWith("⚠️확인사항:") ? trimmedLine.Substring(6).Trim() :
+                            trimmedLine.StartsWith("⚠️Notice:") ? trimmedLine.Substring(8).Trim() :
+                            trimmedLine.Substring(7).Trim();
                     }
-                    else if (trimmedLine.StartsWith("⚠️필요 아이템:"))
+                    else if (trimmedLine.StartsWith("⚠️필요 아이템:") || trimmedLine.StartsWith("⚠️Required Item:") || trimmedLine.StartsWith("Required Item:"))
                     {
                         // 필요 아이템 정보는 별도 처리 (현재는 설명에서 제외)
                         // 나중에 필요하면 별도 필드로 추가할 수 있음
@@ -961,10 +1065,10 @@ namespace CaptainSkillTree.Gui
         /// </summary>
         private string DetermineSkillType(string nodeId, string descMain)
         {
-            string rKey = SkillTreeConfig.HotKeyR?.Value ?? "Z";
-            string gKey = SkillTreeConfig.HotKeyG?.Value ?? "G";
-            string hKey = SkillTreeConfig.HotKeyH?.Value ?? "H";
-            string yKey = SkillTreeConfig.HotKeyY?.Value ?? "Y";
+            string rKey = SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyR, "Z");
+            string gKey = SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyG, "G");
+            string hKey = SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyH, "H");
+            string yKey = SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyY, "Y");
 
             // 액티브 스킬 키 확인
             if (descMain.Contains("Y키:") || descMain.Contains($"{yKey}키:"))
@@ -1234,7 +1338,7 @@ namespace CaptainSkillTree.Gui
             else
             {
                 // 일반 스킬: 필요 포인트 표시
-                statusText.Append(string.Format($"<color=#87CEEB><size=16><b>💎 {L.Get("tooltip_required_points")}: <color=#FF6B6B><b>{{0}}</b></color></b></size></color>", node.RequiredPoints));
+                statusText.Append(string.Format($"<color=#87CEEB><size=16><b>💎 {L.Get("tooltip_required_points")}: <color=#FF6B6B><b>{{0}}</b></color></b></size></color>", node.EffectiveRequiredPoints));
             }
 
             // 현재 레벨 정보 (가능하다면)

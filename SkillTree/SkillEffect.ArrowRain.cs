@@ -21,6 +21,11 @@ namespace CaptainSkillTree.SkillTree
         private static Dictionary<Player, GameObject> arrowRainStatusEffects = new Dictionary<Player, GameObject>();
         private static GameObject cachedArrowRainStatusPrefab = null;
 
+        // === 던전 내 대체 버프(공격력 강화) 만료 시각 및 상태 VFX ===
+        private static Dictionary<Player, float> arrowRainDungeonBuffExpiry = new Dictionary<Player, float>();
+        private static Dictionary<Player, GameObject> arrowRainDungeonBuffStatusEffects = new Dictionary<Player, GameObject>();
+        private static GameObject cachedArrowRainDungeonBuffStatusPrefab = null;
+
         /// <summary>
         /// H키 화살비 실행 진입점 - 버프 활성화
         /// </summary>
@@ -65,6 +70,13 @@ namespace CaptainSkillTree.SkillTree
                 arrowRainCooldown[player] = Time.time;
                 ActiveSkillCooldownRegistry.SetCooldownForSkill("H", "bow_Step6_arrow_rain", cooldown);
                 player.UseStamina(reqStamina);
+
+                // 던전 내부(천장으로 상공 낙하 연출이 막힘): 화살비 대신 공격력 강화 자버프로 대체
+                if (player.transform.position.y > 4000f)
+                {
+                    ExecuteArrowRainDungeonBuff(player);
+                    return;
+                }
 
                 // 5. 버프 활성화
                 arrowRainReady[player] = true;
@@ -125,7 +137,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     var ch = col.GetComponent<Character>()
                           ?? col.GetComponentInParent<Character>();
-                    if (ch == null || ch.IsDead() || ch.IsPlayer()) continue;
+                    if (ch == null || ch.IsDead()) continue;
+                    if (ch.IsPlayer() && !IsPvPCombat(ch, Player.m_localPlayer)) continue;
 
                     var hash = "ArrowRainFrost".GetStableHashCode();
                     ch.GetSEMan()?.RemoveStatusEffect(hash);
@@ -319,6 +332,100 @@ namespace CaptainSkillTree.SkillTree
             arrowRainStatusEffects.Remove(player);
         }
 
+        /// <summary>
+        /// 던전 내부 전용 대체 효과: 화살비 대신 자기 자신에게 공격력 강화 버프 부여
+        /// </summary>
+        private static void ExecuteArrowRainDungeonBuff(Player player)
+        {
+            try
+            {
+                float duration = Bow_Config.ArrowRainDungeonBuffDurationValue;
+                float bonus = Bow_Config.ArrowRainDungeonBuffDamageBonusValue;
+
+                arrowRainDungeonBuffExpiry[player] = Time.time + duration;
+
+                PlayArrowRainDungeonBuffActivationEffects(player, duration);
+
+                ShowSkillEffectText(player, "🏹 " + L.Get("bow_arrow_rain_dungeon_buff_cast", (int)bonus, (int)duration),
+                    new Color(0.3f, 0.8f, 1f), SkillEffectTextType.Combat);
+
+                Plugin.Log.LogInfo($"[화살비 던전버프] {player.GetPlayerName()} 공격력 +{bonus}% ({duration}초)");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[화살비 던전버프] 스킬 실행 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>발밑 buff_01(활성화, 2초) + 머리 위 statusailment_01_aura(지속, duration초) 버프 VFX</summary>
+        private static void PlayArrowRainDungeonBuffActivationEffects(Player player, float duration)
+        {
+            try
+            {
+                // 0. 버프 활성화 사운드
+                VFXManager.PlaySound("sfx_reload_dverger_done", player.transform.position, 2f);
+
+                // 1. 활성화 효과 (buff_01) - 발밑, 2초간
+                var buff01Prefab = VFXManager.GetVFXPrefab("buff_01");
+                if (buff01Prefab != null)
+                {
+                    var buff01Effect = UnityEngine.Object.Instantiate(
+                        buff01Prefab,
+                        player.transform.position + Vector3.up * 0.5f,
+                        player.transform.rotation);
+                    buff01Effect.transform.SetParent(player.transform, false);
+                    buff01Effect.transform.localPosition = Vector3.up * 0.5f;
+                    buff01Effect.transform.localScale = Vector3.one * 0.8f;
+                    UnityEngine.Object.Destroy(buff01Effect, 2f);
+                }
+
+                // 2. 상태 표시 효과 (statusailment_01_aura) - 머리 위, duration초 지속
+                if (cachedArrowRainDungeonBuffStatusPrefab == null)
+                {
+                    cachedArrowRainDungeonBuffStatusPrefab = VFXManager.GetVFXPrefab("statusailment_01_aura");
+                }
+
+                if (cachedArrowRainDungeonBuffStatusPrefab != null)
+                {
+                    if (arrowRainDungeonBuffStatusEffects.TryGetValue(player, out var existing) && existing != null)
+                    {
+                        UnityEngine.Object.Destroy(existing);
+                        arrowRainDungeonBuffStatusEffects.Remove(player);
+                    }
+
+                    var headPosition = player.transform.position + Vector3.up * 2.0f;
+                    var statusInstance = UnityEngine.Object.Instantiate(cachedArrowRainDungeonBuffStatusPrefab, headPosition, Quaternion.identity);
+                    statusInstance.transform.SetParent(player.transform, false);
+                    statusInstance.transform.localPosition = Vector3.up * 2.0f;
+                    statusInstance.transform.localScale = Vector3.one * 0.6f;
+
+                    arrowRainDungeonBuffStatusEffects[player] = statusInstance;
+                    UnityEngine.Object.Destroy(statusInstance, duration);
+                }
+                else
+                {
+                    Plugin.Log.LogWarning("[화살비 던전버프] statusailment_01_aura 프리팹을 찾을 수 없음");
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[화살비 던전버프] 활성화 효과 재생 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>던전 내 대체 버프가 현재 활성 상태인지 확인</summary>
+        public static bool IsArrowRainDungeonBuffActive(Player player)
+        {
+            if (player == null) return false;
+            return arrowRainDungeonBuffExpiry.TryGetValue(player, out float expiry) && Time.time < expiry;
+        }
+
+        /// <summary>던전 내 대체 버프의 공격력 보너스(%) 반환 (비활성 시 0)</summary>
+        public static float GetArrowRainDungeonBuffDamageBonus(Player player)
+        {
+            return IsArrowRainDungeonBuffActive(player) ? Bow_Config.ArrowRainDungeonBuffDamageBonusValue : 0f;
+        }
+
         /// <summary>화살비 착지 AOE 데미지 - 반경 3m 내 몬스터에게 적용</summary>
         public static void ApplyArrowRainAOEDamage(Player owner, Vector3 point)
         {
@@ -339,7 +446,8 @@ namespace CaptainSkillTree.SkillTree
                 {
                     var ch = col.GetComponent<Character>()
                           ?? col.GetComponentInParent<Character>();
-                    if (ch == null || ch.IsDead() || ch.IsPlayer()) continue;
+                    if (ch == null || ch.IsDead()) continue;
+                    if (ch.IsPlayer() && !(ch.IsPVPEnabled() && owner.IsPVPEnabled())) continue;
 
                     var hit = new HitData();
 
@@ -376,6 +484,11 @@ namespace CaptainSkillTree.SkillTree
                 arrowRainCooldown.Remove(player);
                 arrowRainReady.Remove(player);
                 CleanupArrowRainStatusEffect(player);
+
+                arrowRainDungeonBuffExpiry.Remove(player);
+                if (arrowRainDungeonBuffStatusEffects.TryGetValue(player, out var dungeonBuffFx) && dungeonBuffFx != null)
+                    UnityEngine.Object.Destroy(dungeonBuffFx);
+                arrowRainDungeonBuffStatusEffects.Remove(player);
             }
             catch (Exception ex)
             {
@@ -425,7 +538,8 @@ namespace CaptainSkillTree.SkillTree
                     foreach (var col in nearbyCols)
                     {
                         var ch = col.GetComponent<Character>() ?? col.GetComponentInParent<Character>();
-                        if (ch == null || ch.IsDead() || ch.IsPlayer()) continue;
+                        if (ch == null || ch.IsDead()) continue;
+                        if (ch.IsPlayer() && !SkillEffect.IsPvPCombat(ch, tag.Owner)) continue;
                         hasEnemy = true;
                         break;
                     }
@@ -456,6 +570,35 @@ namespace CaptainSkillTree.SkillTree
             catch (Exception ex)
             {
                 Plugin.Log.LogError($"[화살비] OnHit 패치 오류: {ex.Message}");
+            }
+        }
+    }
+
+    // ================================================================
+    // 화살비 던전 내 대체 버프 - 공격력 증가 패치
+    // ================================================================
+    [HarmonyPatch(typeof(Character), "Damage")]
+    public static class ArrowRain_DungeonBuff_Damage_Patch
+    {
+        static void Prefix(Character __instance, ref HitData hit)
+        {
+            try
+            {
+                var localPlayer = Player.m_localPlayer;
+                if (localPlayer == null || __instance == localPlayer) return;
+
+                var attacker = hit.GetAttacker();
+                if (attacker != localPlayer) return;
+
+                float bonus = SkillEffect.GetArrowRainDungeonBuffDamageBonus(localPlayer);
+                if (bonus > 0f)
+                {
+                    hit.m_damage.Modify(1f + bonus / 100f);
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[화살비 던전버프] Damage 패치 오류: {ex.Message}");
             }
         }
     }

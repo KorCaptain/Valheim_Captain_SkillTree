@@ -294,6 +294,12 @@ namespace CaptainSkillTree.MMO_System
             // 이벤트 발생
             OnLevelIncreased?.Invoke(newLevel);
 
+            // 레벨업 팡파레
+            if (CaptainLevelConfig.ShowLevelUpEffect.Value)
+            {
+                CaptainSkillTree.Audio.HeroAwakensSoundManager.Instance.PlayOnce();
+            }
+
             // UI 갱신
             RefreshUI();
 

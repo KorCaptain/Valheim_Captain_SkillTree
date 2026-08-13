@@ -81,20 +81,16 @@ namespace CaptainSkillTree.Localization
                 "행운의 마력으로 무한 시전이 가능합니다.\n" +
                 "권장값: 30-40%",
 
-                // === Tier 5-1: 이중 시전 (Double Cast - R키 액티브) ===
+                // === Tier 5-1: 다중시전 (Multi Cast - R키 액티브) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] =
                 "【추가 발사체 개수】\n" +
-                "이중시전 시 추가로 발사되는 마법 발사체 수입니다.\n" +
+                "다중시전 시 추가로 발사되는 마법 발사체 수입니다.\n" +
                 "권장값: 5~10발",
 
                 ["Tier5_DoubleCast_ProjectileDamagePercent"] =
                 "【투사체 데미지 비율 (%)】\n" +
                 "추가 발사체의 데미지 비율입니다.\n" +
                 "권장값: 10-20%",
-
-                ["Tier5_DoubleCast_AngleOffset"] =
-                "【각도 오프셋 (미사용)】\n" +
-                "현재 버전에서 사용되지 않습니다. 동일 방향으로 고정됨.",
 
                 ["Tier5_DoubleCast_EitrCost"] =
                 "【Eitr 소모량】\n" +
@@ -191,8 +187,13 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【필요 포인트】\n" +
-                "이중시전 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
+                "다중시전 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 3",
+
+                ["Tier5_DoubleCast_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "다중시전 스킬 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 3-8%",
 
                 ["Tier5_InstantAreaHeal_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -403,6 +404,11 @@ namespace CaptainSkillTree.Localization
                 "단 한 발 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 4",
 
+                ["Tier5_OneShot_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "단 한 발 스킬 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 20-50%",
+
                 // === Tier 6: 빙결 폭발탄 (H키 액티브) ===
                 ["Tier6_IceBreath_Cooldown"] =
                 "【쿨타임 (초)】\n" +
@@ -433,6 +439,16 @@ namespace CaptainSkillTree.Localization
                 "【필요 포인트】\n" +
                 "빙결 폭발탄 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 4",
+
+                ["Tier6_IceBreath_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "빙결 폭발탄 스킬 레벨당 직격 데미지 보너스입니다.\n" +
+                "권장값: 10-20%",
+
+                ["Tier6_IceBreath_DotLevelBonus"] =
+                "【도트 레벨 보너스 (%)】\n" +
+                "빙결 폭발탄 스킬 레벨당 도트 데미지 보너스입니다.\n" +
+                "권장값: 3-8%",
 
                 // === Bow Tree ===
                 // === Tier 0: 활 전문가 (Bow Expert) ===
@@ -572,6 +588,21 @@ namespace CaptainSkillTree.Localization
                 "화살비 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 4",
 
+                ["Tier6_ArrowRain_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "화살비 스킬 레벨당 화살 데미지 보너스입니다.\n" +
+                "권장값: 1-3%",
+
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] =
+                "【던전 버프 공격력 보너스 (%)】\n" +
+                "던전 안에서 H키 사용 시 화살비 대신 발동되는 자버프의 공격력 증가량입니다.\n" +
+                "권장값: 20-30%",
+
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] =
+                "【던전 버프 지속시간 (초)】\n" +
+                "던전 내 대체 버프가 유지되는 시간입니다.\n" +
+                "권장값: 8-12초",
+
                 // === Bow Tree RequiredPoints ===
                 ["Tier0_BowExpert_RequiredPoints"] =
                 "【필요 포인트】\n" +
@@ -617,6 +648,11 @@ namespace CaptainSkillTree.Localization
                 "【필요 포인트】\n" +
                 "폭발 화살 노드 해금에 필요한 스킬 포인트 수입니다.\n" +
                 "권장값: 4",
+
+                ["Tier5_ExplosiveArrow_LevelBonus"] =
+                "【레벨 보너스 (%)】\n" +
+                "폭발 화살 스킬 레벨당 데미지 보너스입니다.\n" +
+                "권장값: 10-25%",
 
 
             };
@@ -699,7 +735,7 @@ namespace CaptainSkillTree.Localization
                 "Lucky mana enables infinite casting.\n" +
                 "Recommended: 30-40%",
 
-                // === Tier 5-1: Double Cast (R-key Active) ===
+                // === Tier 5-1: Multi Cast (R-key Active) ===
                 ["Tier5_DoubleCast_AdditionalProjectileCount"] =
                 "【Extra Projectile Count】\n" +
                 "Additional magic projectiles fired per rapid barrage.\n" +
@@ -709,10 +745,6 @@ namespace CaptainSkillTree.Localization
                 "【Projectile Damage Percent (%)】\n" +
                 "Damage percentage of additional projectiles.\n" +
                 "Recommended: 10-20%",
-
-                ["Tier5_DoubleCast_AngleOffset"] =
-                "【Angle Offset (Unused)】\n" +
-                "Not used in current version. Fixed to same direction.",
 
                 ["Tier5_DoubleCast_EitrCost"] =
                 "【Eitr Cost】\n" +
@@ -809,8 +841,13 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier5_DoubleCast_RequiredPoints"] =
                 "【Required Points】\n" +
-                "Skill points required to unlock the Double Casting node.\n" +
+                "Skill points required to unlock the Multi Casting node.\n" +
                 "Recommended: 3",
+
+                ["Tier5_DoubleCast_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Damage bonus per Multi Casting skill level.\n" +
+                "Recommended: 3-8%",
 
                 ["Tier5_InstantAreaHeal_RequiredPoints"] =
                 "【Required Points】\n" +
@@ -1052,6 +1089,16 @@ namespace CaptainSkillTree.Localization
                 "Skill points required to unlock the Vulkan Ice node.\n" +
                 "Recommended: 4",
 
+                ["Tier6_IceBreath_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Direct hit damage bonus per Vulkan Ice skill level.\n" +
+                "Recommended: 10-20%",
+
+                ["Tier6_IceBreath_DotLevelBonus"] =
+                "【DoT Level Bonus (%)】\n" +
+                "DoT damage bonus per Vulkan Ice skill level.\n" +
+                "Recommended: 3-8%",
+
                 // === Bow Tree ===
                 // === Tier 0: Bow Expert ===
 
@@ -1190,6 +1237,21 @@ namespace CaptainSkillTree.Localization
                 "Skill points required to unlock the Arrow Rain node.\n" +
                 "Recommended: 4",
 
+                ["Tier6_ArrowRain_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Arrow damage bonus per Arrow Rain skill level.\n" +
+                "Recommended: 1-3%",
+
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] =
+                "【Dungeon Buff Damage Bonus (%)】\n" +
+                "Attack damage increase from the self-buff cast instead of Arrow Rain when using the H-key skill inside a dungeon.\n" +
+                "Recommended: 20-30%",
+
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] =
+                "【Dungeon Buff Duration (sec)】\n" +
+                "How long the in-dungeon replacement buff lasts.\n" +
+                "Recommended: 8-12 sec",
+
                 // === Bow Tree RequiredPoints ===
                 ["Tier0_BowExpert_RequiredPoints"] =
                 "【Required Points】\n" +
@@ -1235,6 +1297,11 @@ namespace CaptainSkillTree.Localization
                 "【Required Points】\n" +
                 "Skill points required to unlock the Explosive Arrow node.\n" +
                 "Recommended: 4",
+
+                ["Tier5_ExplosiveArrow_LevelBonus"] =
+                "【Level Bonus (%)】\n" +
+                "Damage bonus per Explosive Arrow skill level.\n" +
+                "Recommended: 10-25%",
 
 
             };

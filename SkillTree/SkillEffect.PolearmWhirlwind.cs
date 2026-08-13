@@ -31,7 +31,7 @@ namespace CaptainSkillTree.SkillTree
         // 휠윈드 공격 데미지 활성 플래그 (패치용)
         public static Dictionary<Player, bool> whirlwindDealingDamage = new Dictionary<Player, bool>();
 
-        // 휠윈드 공격속도 버프 활성 플래그 (공격 모션 중 +100%)
+        // 휠윈드 공격속도 버프 활성 플래그 (공격 모션 중 +80%)
         public static Dictionary<Player, bool> whirlwindAttackSpeedActive = new Dictionary<Player, bool>();
 
         // HUD 지속시간 표시용 (M2 슬롯 서브 아이콘)
@@ -44,7 +44,7 @@ namespace CaptainSkillTree.SkillTree
         public static float GetWhirlwindAttackSpeedBonus(Player player)
         {
             if (player == null) return 0f;
-            return whirlwindAttackSpeedActive.TryGetValue(player, out bool active) && active ? 100f : 0f;
+            return whirlwindAttackSpeedActive.TryGetValue(player, out bool active) && active ? 80f : 0f;
         }
 
         // 가슴 높이 오프셋
@@ -356,8 +356,9 @@ namespace CaptainSkillTree.SkillTree
 
                 foreach (var ch in Character.GetAllCharacters())
                 {
-                    if (ch == null || ch.IsPlayer()) continue;
-                    if (!ch.IsMonsterFaction(0f) && ch.m_faction != Character.Faction.Boss) continue;
+                    if (ch == null) continue;
+                    if (ch.IsPlayer() && !(ch.IsPVPEnabled() && player.IsPVPEnabled())) continue;
+                    if (!ch.IsPlayer() && !ch.IsMonsterFaction(0f) && ch.m_faction != Character.Faction.Boss) continue;
                     if (Vector3.Distance(ch.transform.position, center) > aoeRadius) continue;
 
                     var hit = new HitData();
@@ -496,7 +497,7 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 if (__instance == null || hit == null) return;
-                if (__instance.IsPlayer()) return;
+                if (__instance.IsPlayer() && !SkillEffect.IsPvPCombat(__instance, hit.GetAttacker())) return;
 
                 var attacker = hit.GetAttacker();
                 if (attacker == null || !attacker.IsPlayer()) return;
@@ -522,6 +523,46 @@ namespace CaptainSkillTree.SkillTree
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[Character_Damage_Whirlwind_Patch] 오류: {ex.Message}");
+            }
+        }
+    }
+
+    // ============================================================
+    // 휠윈드 방어 패시브: 사용 중 받는 피해 감소 (Lv1 30% ~ Lv7 78%)
+    // ============================================================
+
+    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+    public static class Character_Damage_WhirlwindReduction_Patch
+    {
+        static void Prefix(Character __instance, HitData hit)
+        {
+            try
+            {
+                if (!(__instance is Player player)) return;
+                if (hit.m_attacker.IsNone()) return; // 낙사 등 공격자 없는 데미지 제외
+                if (!SkillEffect.IsWhirlwindActive(player)) return;
+                if (!SkillEffect.IsUsingPolearm(player)) return; // 무기 교체 악용 방지
+
+                int wwLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step6_whirlwind") ?? 1;
+                float levelBonus = (wwLevel - 1) * Polearm_Config.PolearmWhirlwindDamageReductionLevelBonusValue;
+                float reduction = Mathf.Clamp(Polearm_Config.PolearmWhirlwindDamageReductionPercentValue + levelBonus, 0f, 100f);
+                float mult = 1f - reduction / 100f;
+
+                hit.m_damage.m_blunt     *= mult;
+                hit.m_damage.m_slash     *= mult;
+                hit.m_damage.m_pierce    *= mult;
+                hit.m_damage.m_chop      *= mult;
+                hit.m_damage.m_pickaxe   *= mult;
+                hit.m_damage.m_fire      *= mult;
+                hit.m_damage.m_frost     *= mult;
+                hit.m_damage.m_lightning *= mult;
+                hit.m_damage.m_poison    *= mult;
+                hit.m_damage.m_spirit    *= mult;
+                hit.m_damage.m_damage    *= mult;
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"[휠윈드 방어 패시브] 오류: {ex.Message}");
             }
         }
     }

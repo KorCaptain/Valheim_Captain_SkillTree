@@ -52,6 +52,9 @@ namespace CaptainSkillTree.SkillTree
                 _skillNameMap["잠행"] = Skills.SkillType.Sneak;
                 _skillNameMap["곡괭이"] = Skills.SkillType.Pickaxes;
                 _skillNameMap["벌목"] = Skills.SkillType.WoodCutting;
+                _skillNameMap["농사"] = Skills.SkillType.Farming;
+                _skillNameMap["요리"] = Skills.SkillType.Cooking;
+                _skillNameMap["낚시"] = Skills.SkillType.Fishing;
             }
 
             Skills.SkillType result;
@@ -208,6 +211,9 @@ namespace CaptainSkillTree.SkillTree
 
             // 우리 모드의 보너스 계산
             float bonusLevel = SkillEffect.GetSkillLevelBonus(skillType);
+            bool isLifeSkill = skillType == Skills.SkillType.Farming || skillType == Skills.SkillType.Cooking || skillType == Skills.SkillType.Fishing;
+            if (isLifeSkill)
+                Plugin.Log.LogInfo($"[숙련도 UI] {skillType} 행 감지 - 이름='{skillName}' 표시값={displayedLevel} 계산된보너스={bonusLevel}");
             if (bonusLevel <= 0f) return;
 
             int bonusLevelInt = Mathf.RoundToInt(bonusLevel);

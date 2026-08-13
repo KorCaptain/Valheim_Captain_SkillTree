@@ -485,7 +485,8 @@ namespace CaptainSkillTree.SkillTree
             foreach (var targetPlayer in Player.GetAllPlayers())
             {
                 if (targetPlayer == player || targetPlayer.IsDead() ||
-                    Vector3.Distance(targetPlayer.transform.position, healerPos) > healRange) continue;
+                    Vector3.Distance(targetPlayer.transform.position, healerPos) > healRange ||
+                    !SkillEffect.IsHealAllowed(player, targetPlayer)) continue;
 
                 healedCount++;
 
@@ -539,12 +540,16 @@ namespace CaptainSkillTree.SkillTree
             GameObject allyAuraRight = null;
             try
             {
-                CreatePaladinAuraEffect(target, healDuration);
+                // buff_03a_aura: 아군 왼쪽 어깨 / 머리 위 / 오른쪽 어깨 (RPC 1회 + 로컬 복제 2회로 중복 방지)
+                allyAuraLeft = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(-0.3f, 1.5f, 0f));
+                if (allyAuraLeft != null)
+                {
+                    allyAuraHead = UnityEngine.Object.Instantiate(allyAuraLeft, target.transform);
+                    allyAuraHead.transform.localPosition = new Vector3(0f, 1.8f, 0f);
 
-                // buff_03a_aura: 아군 왼쪽 어깨 / 머리 위 / 오른쪽 어깨
-                allyAuraLeft  = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(-0.3f, 1.5f, 0f));
-                allyAuraHead  = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(0f, 1.8f, 0f));
-                allyAuraRight = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", healDuration + 1f, new Vector3(0.3f, 1.5f, 0f));
+                    allyAuraRight = UnityEngine.Object.Instantiate(allyAuraLeft, target.transform);
+                    allyAuraRight.transform.localPosition = new Vector3(0.3f, 1.5f, 0f);
+                }
 
                 // 멀티플레이어 사운드 (발헤임 기본 SFX → VFXManager)
                 CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("sfx_dverger_heal_finish", "", target.transform.position, Quaternion.identity, 2f);
@@ -652,9 +657,17 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", duration, new Vector3(-0.3f, 1.5f, 0f));
-                SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", duration, new Vector3(0f,    1.8f, 0f));
-                SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", duration, new Vector3(0.3f,  1.5f, 0f));
+                var left = SimpleVFX.PlayOnPlayer(target, "buff_03a_aura", duration, new Vector3(-0.3f, 1.5f, 0f));
+                if (left != null)
+                {
+                    var head = UnityEngine.Object.Instantiate(left, target.transform);
+                    head.transform.localPosition = new Vector3(0f, 1.8f, 0f);
+                    UnityEngine.Object.Destroy(head, duration);
+
+                    var right = UnityEngine.Object.Instantiate(left, target.transform);
+                    right.transform.localPosition = new Vector3(0.3f, 1.5f, 0f);
+                    UnityEngine.Object.Destroy(right, duration);
+                }
             }
             catch (System.Exception ex)
             {
@@ -1038,6 +1051,16 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[Speed Tree] 정리 실패 (무시): {ex.Message}");
                 }
 
+                // 0-2b. Speed Tree 추가 효과 정리 (구르기/연속 콤보/장전 상태 추적)
+                try
+                {
+                    SkillEffect.CleanupSpeedTree2OnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[Speed Tree 추가 효과] 정리 실패 (무시): {ex.Message}");
+                }
+
                 // 0-3. Melee Skills 정리 (단검, 검, 창 패시브)
                 try
                 {
@@ -1070,6 +1093,16 @@ namespace CaptainSkillTree.SkillTree
 
                 // 0-5. Staff Heal 정리 - 제거됨 (H키 즉시 범위 힐로 변경, 쿨다운만 관리)
 
+                // 0-5b. 마인드쉴드 정리 (방어전문가 Tier 6 G키 액티브)
+                try
+                {
+                    MindShieldSkill.CleanupOnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[마인드쉴드] 정리 실패 (무시): {ex.Message}");
+                }
+
                 // 0-6. Rogue Skills 정리 (로그 그림자 일격)
                 try
                 {
@@ -1090,7 +1123,7 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[Archer MultiShot] 정리 실패 (무시): {ex.Message}");
                 }
 
-                // 0-8. 수호자의 진심 정리 (둔기 G키 액티브)
+                // 0-8. 수호자의 진심 정리 (방패돌진, 방어 트리 Mouse2 액티브)
                 try
                 {
                     SkillEffect.CleanupShieldChargeOnDeath(player);
@@ -1098,6 +1131,16 @@ namespace CaptainSkillTree.SkillTree
                 catch (Exception ex)
                 {
                     Plugin.Log.LogWarning($"[수호자의 진심] 정리 실패 (무시): {ex.Message}");
+                }
+
+                // 0-8-1. 충격파 강타 정리 (둔기 G키 액티브)
+                try
+                {
+                    SkillEffect.CleanupShockwaveSlamOnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[충격파 강타] 정리 실패 (무시): {ex.Message}");
                 }
 
                 // 0-9. 석궁 단 한 발 정리 (석궁 R키 액티브)
@@ -1140,6 +1183,46 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogWarning($"[창 강화 투척] 정리 실패 (무시): {ex.Message}");
                 }
 
+                // 0-13. 제작 전문가 정리 (장인의 축복 버프/상태 VFX)
+                try
+                {
+                    ProducerSkills.CleanupOnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[제작 전문가] 정리 실패 (무시): {ex.Message}");
+                }
+
+                // 0-14. 석궁 자동 장전 상태 정리
+                try
+                {
+                    SkillEffect.CleanupCrossbowReloadOnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[석궁 자동 장전] 정리 실패 (무시): {ex.Message}");
+                }
+
+                // 0-15. 폴암 스킬 정리 (관통 돌격 코루틴 포함 - 기존에 구현되어 있었으나 미등록 상태였음)
+                try
+                {
+                    SkillEffect.CleanupPolearmSkillsOnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[폴암 스킬] 정리 실패 (무시): {ex.Message}");
+                }
+
+                // 0-16. 창 관통(연공창) 정리
+                try
+                {
+                    SkillEffect.CleanupSpearPenetrateOnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[창 관통] 정리 실패 (무시): {ex.Message}");
+                }
+
                 // 1. 성기사 힐링 코루틴 중단
                 if (activeHealCoroutines.ContainsKey(player) && activeHealCoroutines[player] != null)
                 {
@@ -1173,6 +1256,36 @@ namespace CaptainSkillTree.SkillTree
 
                 // 5. 메이지 정리 (MageSkills.cs 호출)
                 // TODO: 메이지 코루틴 추적 시스템 추가 후 활성화
+
+                // 6. 둔기 회전 타격 시간 추적 정리
+                try
+                {
+                    MaceSkills.CleanupMaceSkillsOnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[둔기 스킬] 정리 실패 (무시): {ex.Message}");
+                }
+
+                // 7. 이중 점프 착지 시간 추적 정리 (방어 전문가 최종 스킬)
+                try
+                {
+                    SkillEffect.CleanupDoubleJumpOnDeath(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[이중 점프] 정리 실패 (무시): {ex.Message}");
+                }
+
+                // 8. 지팡이 착용 감지 캐시 정리 (StaffEquipmentDetector)
+                try
+                {
+                    StaffEquipmentDetector.ClearPlayerCache(player);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[지팡이 착용 감지] 캐시 정리 실패 (무시): {ex.Message}");
+                }
             }
             catch (Exception ex)
             {

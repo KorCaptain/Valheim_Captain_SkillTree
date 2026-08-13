@@ -58,6 +58,10 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogDebug($"[반달 베기] 공격 범위 +{SkillTreeConfig.PolearmStep4MoonRangeBonusValue}%");
             }
 
+            // 제작 축복: 폴암 사거리 마법부여
+            if (ProducerCrafting.GetEnchantType(weapon) == ProducerCrafting.EnchantType.PolearmRange)
+                bonus += ProducerCrafting.GetEnchantValue(weapon);
+
             return bonus;
         }
 
@@ -208,155 +212,161 @@ namespace CaptainSkillTree.SkillTree
 
         private static IEnumerator ExecutePierceChargeSequence(Player player, Character target)
         {
-            if (player == null || player.IsDead())
+            try
             {
-                CleanupPierceCharge(player);
-                yield break;
-            }
-
-            var weapon = player.GetCurrentWeapon();
-            if (weapon == null)
-            {
-                CleanupPierceCharge(player);
-                yield break;
-            }
-
-            float dashDistance = Polearm_Config.PolearmPierceChargeDashDistanceValue;
-            float dashDuration = 0.35f;
-
-            // === Phase 0: 타겟 기준 3D 방향 설정 (공중 직선 이동) ===
-            Vector3 startPos = player.transform.position;
-            Vector3 dashDir3D = (target.GetCenterPoint() - player.GetCenterPoint()).normalized;
-            Vector3 dashDirH = new Vector3(dashDir3D.x, 0f, dashDir3D.z);
-            if (dashDirH.sqrMagnitude > 0.01f) dashDirH.Normalize();
-            else dashDirH = player.GetLookDir();
-
-            Vector3 endPos = startPos + dashDir3D * dashDistance;
-
-            Plugin.Log.LogDebug($"[관통 돌격] 공중 직선 돌진 시작 - 거리: {dashDistance}m, 타겟: {target.name}");
-
-            SetPlayerAttackSpeedBoost(player, 8.0f);
-
-            var rigidbody = player.GetComponent<Rigidbody>();
-
-            // === Phase 1: 공중 직선 돌진 + 거리 판정 적중 ===
-            float elapsed = 0f;
-            Character hitMonster = null;
-            float knockbackDistance = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
-            Vector3 finalPos = startPos;
-
-            TriggerMeleeAttack(player, weapon);
-
-            while (elapsed < dashDuration && player != null && !player.IsDead())
-            {
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / dashDuration);
-                float easedT = 1f - Mathf.Pow(1f - t, 2f);
-
-                Vector3 newPos = Vector3.Lerp(startPos, endPos, easedT);
-
-                // 지형 아래 꺼짐 방지 (공중 이동이지만 땅 밑으로는 안 꺼짐)
-                if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
-                    LayerMask.GetMask("terrain", "static_solid")))
+                if (player == null || player.IsDead())
                 {
-                    float terrainY = groundHit.point.y + 0.3f;
-                    if (newPos.y < terrainY) newPos.y = terrainY;
+                    yield break;
                 }
 
-                // 캐릭터 회전 동기화
-                if (dashDirH != Vector3.zero)
+                var weapon = player.GetCurrentWeapon();
+                if (weapon == null)
                 {
-                    player.transform.rotation = Quaternion.LookRotation(dashDirH);
-                    HarmonyLib.Traverse.Create(player).Field("m_lookDir").SetValue(dashDirH);
+                    yield break;
+                }
+
+                float dashDistance = Polearm_Config.PolearmPierceChargeDashDistanceValue;
+                float dashDuration = 0.35f;
+
+                // === Phase 0: 타겟 기준 3D 방향 설정 (공중 직선 이동) ===
+                Vector3 startPos = player.transform.position;
+                Vector3 dashDir3D = (target.GetCenterPoint() - player.GetCenterPoint()).normalized;
+                Vector3 dashDirH = new Vector3(dashDir3D.x, 0f, dashDir3D.z);
+                if (dashDirH.sqrMagnitude > 0.01f) dashDirH.Normalize();
+                else dashDirH = player.GetLookDir();
+
+                Vector3 endPos = startPos + dashDir3D * dashDistance;
+
+                // 오브젝트/던전 벽 충돌 체크 (통과 방지) — 휠윈드와 동일 로직 재사용
+                endPos = ClampWhirlwindEndToObstacle(startPos, endPos);
+                // 던전 출구 트리거(TeleportWorld) 통과 방지 — 휠윈드와 동일 로직 재사용
+                endPos = ClampAwayFromTeleportTrigger(startPos, endPos);
+
+                Plugin.Log.LogDebug($"[관통 돌격] 공중 직선 돌진 시작 - 거리: {dashDistance}m, 타겟: {target.name}");
+
+                SetPlayerAttackSpeedBoost(player, 8.0f);
+
+                var rigidbody = player.GetComponent<Rigidbody>();
+
+                // === Phase 1: 공중 직선 돌진 + 거리 판정 적중 ===
+                float elapsed = 0f;
+                Character hitMonster = null;
+                float knockbackDistance = Polearm_Config.PolearmPierceChargeKnockbackDistanceValue;
+                Vector3 finalPos = startPos;
+
+                TriggerMeleeAttack(player, weapon);
+
+                while (elapsed < dashDuration && player != null && !player.IsDead())
+                {
+                    elapsed += Time.deltaTime;
+                    float t = Mathf.Clamp01(elapsed / dashDuration);
+                    float easedT = 1f - Mathf.Pow(1f - t, 2f);
+
+                    Vector3 newPos = Vector3.Lerp(startPos, endPos, easedT);
+
+                    // 지형 아래 꺼짐 방지 (공중 이동이지만 땅 밑으로는 안 꺼짐)
+                    if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit groundHit, 10f,
+                        LayerMask.GetMask("terrain", "static_solid")))
+                    {
+                        float terrainY = groundHit.point.y + 0.3f;
+                        if (newPos.y < terrainY) newPos.y = terrainY;
+                    }
+
+                    // 캐릭터 회전 동기화
+                    if (dashDirH != Vector3.zero)
+                    {
+                        player.transform.rotation = Quaternion.LookRotation(dashDirH);
+                        HarmonyLib.Traverse.Create(player).Field("m_lookDir").SetValue(dashDirH);
+                    }
+
+                    if (rigidbody != null)
+                    {
+                        rigidbody.MovePosition(newPos);
+                    }
+                    player.transform.position = newPos;
+                    finalPos = newPos;
+
+                    // 적중 판정: 타겟과 3m 이내
+                    if (target != null && !target.IsDead())
+                    {
+                        float distNow = Vector3.Distance(player.transform.position, target.transform.position);
+                        if (distNow <= 3f)
+                            hitMonster = target;
+                    }
+
+                    if (hitMonster != null)
+                    {
+                        Plugin.Log.LogDebug($"[관통 돌격] 첫 몬스터 적중! - 돌진 멈춤");
+                        finalPos = player.transform.position;
+
+                        int pierceLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step5_king") ?? 1;
+                        float pierceBonus = (pierceLevel - 1) * Polearm_Config.PolearmPierceChargeLevelBonusValue;
+                        float damageMultiplier = 1f + ((Polearm_Config.PolearmPierceChargePrimaryDamageValue + pierceBonus) / 100f);
+                        float pierceSkillFactor = player.GetSkillFactor(Skills.SkillType.Polearms);
+                        var weaponDamage = weapon.GetDamage(0, pierceSkillFactor);
+
+                        var hit = new HitData();
+                        hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
+                        hit.m_damage.m_blunt = weaponDamage.m_blunt * damageMultiplier;
+                        hit.m_damage.m_pierce = weaponDamage.m_pierce * damageMultiplier;
+
+                        Vector3 knockDir = (hitMonster.transform.position - player.transform.position).normalized;
+
+                        hit.m_point = hitMonster.GetCenterPoint();
+                        hit.m_dir = knockDir;
+                        hit.m_pushForce = knockbackDistance * 2f;
+                        hit.m_attacker = player.GetZDOID();
+                        hit.SetAttacker(player);
+                        hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
+
+                        hitMonster.Damage(hit);
+                        hitMonster.Stagger(knockDir);
+                        hitMonster.transform.position = ResolveKnockbackDestination(hitMonster.transform.position, knockDir, knockbackDistance);
+
+                        VFXManager.PlayVFXMultiplayer("fx_crit", "", hitMonster.GetCenterPoint(), Quaternion.identity, 2f);
+                        SimpleVFX.Play("confetti_blast_multicolor", hitMonster.GetCenterPoint(), 2f);
+
+                        ApplyAreaKnockback(player, hitMonster, weapon, knockbackDistance);
+
+                        DrawFloatingText(player, "💥 " + L.Get("pierce_charge_damage", Polearm_Config.PolearmPierceChargePrimaryDamageValue + pierceBonus));
+
+                        break;
+                    }
+
+                    yield return null;
+                }
+
+                if (player == null || player.IsDead())
+                {
+                    yield break;
                 }
 
                 if (rigidbody != null)
                 {
-                    rigidbody.MovePosition(newPos);
+                    if (!rigidbody.isKinematic) rigidbody.velocity = Vector3.zero;
+                    rigidbody.MovePosition(finalPos);
                 }
-                player.transform.position = newPos;
-                finalPos = newPos;
+                player.transform.position = finalPos;
 
-                // 적중 판정: 타겟과 3m 이내
-                if (target != null && !target.IsDead())
+                if (hitMonster == null)
                 {
-                    float distNow = Vector3.Distance(player.transform.position, target.transform.position);
-                    if (distNow <= 3f)
-                        hitMonster = target;
+                    DrawFloatingText(player, "🔱 " + L.Get("charge_complete"));
                 }
 
-                if (hitMonster != null)
+                yield return new WaitForSeconds(0.1f);
+
+                if (player != null && rigidbody != null)
                 {
-                    Plugin.Log.LogDebug($"[관통 돌격] 첫 몬스터 적중! - 돌진 멈춤");
-                    finalPos = player.transform.position;
-
-                    int pierceLevel = SkillTreeManager.Instance?.GetSkillLevel("polearm_step5_king") ?? 1;
-                    float pierceBonus = (pierceLevel - 1) * Polearm_Config.PolearmPierceChargeLevelBonusValue;
-                    float damageMultiplier = 1f + ((Polearm_Config.PolearmPierceChargePrimaryDamageValue + pierceBonus) / 100f);
-                    float pierceSkillFactor = player.GetSkillFactor(Skills.SkillType.Polearms);
-                    var weaponDamage = weapon.GetDamage(0, pierceSkillFactor);
-
-                    var hit = new HitData();
-                    hit.m_damage.m_slash = weaponDamage.m_slash * damageMultiplier;
-                    hit.m_damage.m_blunt = weaponDamage.m_blunt * damageMultiplier;
-                    hit.m_damage.m_pierce = weaponDamage.m_pierce * damageMultiplier;
-
-                    Vector3 knockDir = (hitMonster.transform.position - player.transform.position).normalized;
-
-                    hit.m_point = hitMonster.GetCenterPoint();
-                    hit.m_dir = knockDir;
-                    hit.m_pushForce = knockbackDistance * 2f;
-                    hit.m_attacker = player.GetZDOID();
-                    hit.SetAttacker(player);
-                    hit.m_toolTier = (short)weapon.m_shared.m_toolTier;
-
-                    hitMonster.Damage(hit);
-                    hitMonster.Stagger(knockDir);
-                    hitMonster.transform.position += knockDir * knockbackDistance;
-
-                    VFXManager.PlayVFXMultiplayer("fx_crit", "", hitMonster.GetCenterPoint(), Quaternion.identity, 2f);
-                    SimpleVFX.Play("confetti_blast_multicolor", hitMonster.GetCenterPoint(), 2f);
-
-                    ApplyAreaKnockback(player, hitMonster, weapon, knockbackDistance);
-
-                    DrawFloatingText(player, "💥 " + L.Get("pierce_charge_damage", Polearm_Config.PolearmPierceChargePrimaryDamageValue + pierceBonus));
-
-                    break;
+                    rigidbody.MovePosition(finalPos);
+                    player.transform.position = finalPos;
                 }
-
-                yield return null;
             }
-
-            if (player == null || player.IsDead())
+            finally
             {
+                // 예외/중단 여부와 무관하게 공격속도 부스트 원복 및 "실행 중" 플래그 리셋을 보장
                 SetPlayerAttackSpeedBoost(player, 1.0f);
                 CleanupPierceCharge(player);
-                yield break;
             }
-
-            if (rigidbody != null)
-            {
-                if (!rigidbody.isKinematic) rigidbody.velocity = Vector3.zero;
-                rigidbody.MovePosition(finalPos);
-            }
-            player.transform.position = finalPos;
-
-            if (hitMonster == null)
-            {
-                DrawFloatingText(player, "🔱 " + L.Get("charge_complete"));
-            }
-
-            yield return new WaitForSeconds(0.1f);
-            SetPlayerAttackSpeedBoost(player, 1.0f);
-
-            if (player != null && rigidbody != null)
-            {
-                rigidbody.MovePosition(finalPos);
-                player.transform.position = finalPos;
-            }
-
-            CleanupPierceCharge(player);
-            yield return null;
         }
 
         /// <summary>
@@ -416,7 +426,11 @@ namespace CaptainSkillTree.SkillTree
             foreach (var enemy in Character.GetAllCharacters())
             {
                 if (enemy == null || enemy.IsDead() || enemy == player) continue;
-                if (!enemy.IsMonsterFaction(Time.time) && !enemy.IsBoss()) continue;
+                if (!enemy.IsMonsterFaction(Time.time) && !enemy.IsBoss())
+                {
+                    var tp = enemy as Player;
+                    if (tp == null || !tp.IsPVPEnabled() || !player.IsPVPEnabled()) continue;
+                }
 
                 // 첫 몬스터는 이미 처리했으므로 제외
                 if (firstMonster != null && enemy == firstMonster) continue;
@@ -466,7 +480,7 @@ namespace CaptainSkillTree.SkillTree
 
                 // 강제 위치 이동 (10m 넉백)
                 Vector3 oldPos = enemy.transform.position;
-                enemy.transform.position += knockDir * knockbackForce;
+                enemy.transform.position = ResolveKnockbackDestination(enemy.transform.position, knockDir, knockbackForce);
 
                 Plugin.Log.LogDebug($"[관통 돌격 AOE] {enemy.name} 넉백: {oldPos} → {enemy.transform.position}");
 
@@ -537,6 +551,28 @@ namespace CaptainSkillTree.SkillTree
                 return new Vector3(pos.x, hit.point.y + 0.1f, pos.z);
             }
             return pos;
+        }
+
+        /// <summary>
+        /// 몬스터 넉백 목적지 계산: 경로상 장애물(바위/벽) 충돌 시 그 앞에서 정지, 최종 위치는 지면 높이로 보정
+        /// </summary>
+        private static Vector3 ResolveKnockbackDestination(Vector3 startPos, Vector3 knockDir, float distance)
+        {
+            if (distance <= 0f || knockDir.sqrMagnitude < 0.0001f) return startPos;
+            knockDir.Normalize();
+
+            // 장애물 충돌 체크 (바위·벽 등) — 휠윈드/돌진방패와 동일 레이어 마스크
+            int blockMask = LayerMask.GetMask("piece", "Default", "static_solid");
+            if (Physics.SphereCast(startPos + Vector3.up * 0.8f, 0.4f, knockDir, out RaycastHit hit, distance, blockMask))
+            {
+                if (hit.collider.GetComponentInParent<Character>() == null)
+                {
+                    distance = Mathf.Max(0f, hit.distance - 0.3f);
+                }
+            }
+
+            Vector3 endPos = startPos + knockDir * distance;
+            return GetGroundPosition(endPos); // 기존 지면 보정 헬퍼 재사용 (땅속 매몰 방지)
         }
 
         /// <summary>
@@ -698,7 +734,11 @@ namespace CaptainSkillTree.SkillTree
             foreach (var enemy in Character.GetAllCharacters())
             {
                 if (enemy == null || enemy == player || enemy.IsDead()) continue;
-                if (enemy.GetFaction() == Character.Faction.Players) continue;
+                if (enemy.GetFaction() == Character.Faction.Players)
+                {
+                    var tp = enemy as Player;
+                    if (tp == null || !tp.IsPVPEnabled() || !player.IsPVPEnabled()) continue;
+                }
 
                 float dist = Vector3.Distance(origin, enemy.GetCenterPoint());
                 if (dist > range) continue;
@@ -727,7 +767,7 @@ namespace CaptainSkillTree.SkillTree
             if (dist < 0.5f) return false;
 
             Vector3 dir = (to - from).normalized;
-            LayerMask blockMask = LayerMask.GetMask("piece", "Default");
+            LayerMask blockMask = LayerMask.GetMask("piece", "Default", "static_solid");
 
             if (Physics.SphereCast(from, 0.35f, dir, out RaycastHit hit, dist - 0.5f, blockMask))
             {

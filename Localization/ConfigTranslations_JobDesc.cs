@@ -18,7 +18,7 @@ namespace CaptainSkillTree.Localization
 
                 ["HotKey_R"] =
                 "【원거리 스킬 키】\n" +
-                "원거리 액티브 스킬(멀티샷, 이중시전 등)을 발동하는 키입니다.\n" +
+                "원거리 액티브 스킬(멀티샷, 다중시전 등)을 발동하는 키입니다.\n" +
                 "기본값: R",
 
                 ["HotKey_G"] =
@@ -30,6 +30,11 @@ namespace CaptainSkillTree.Localization
                 "【보조 스킬 키】\n" +
                 "보조 액티브 스킬(연공창, 수호자의 진심 등)을 발동하는 키입니다.\n" +
                 "기본값: H",
+
+                ["QuestToggleKey"] =
+                "【퀘스트 패널 단축키】\n" +
+                "퀘스트 패널을 열고 닫는 단축키입니다.\n" +
+                "기본값: Ctrl+J",
 
                 ["HUD_IconSize"] =
                 "【스킬 아이콘 크기】\n" +
@@ -84,8 +89,8 @@ namespace CaptainSkillTree.Localization
                 ["Archer_MultiShot_StaminaCost"] =
                 "【스태미나 소모】\n" +
                 "멀티샷 사용 시 소모되는 스태미나입니다.\n" +
-                "0으로 설정 시 스태미나 소모 없음.\n" +
-                "권장값: 0-15",
+                "스태미나 관리가 중요합니다.\n" +
+                "권장값: 20-35",
 
                 ["Archer_MultiShot_FireInterval"] =
                 "【순차 발사 간격 (초)】\n" +
@@ -139,6 +144,18 @@ namespace CaptainSkillTree.Localization
                 "공격 시 화살 또는 볼트를 소모하지 않을 확률입니다.\n" +
                 "50으로 설정 시 평균 절반의 화살만 소모됩니다.\n" +
                 "권장값: 30-60%",
+
+                // === Archer Job: 신규 패시브 - 길들인 생물 회복 ===
+                ["Archer_TameHeal_PerLevel"] =
+                "【패시브: 길들인 생물 회복 (초당 HP)】\n" +
+                "아처 레벨 × 이 값만큼, 주변의 길들인 생물을 매초 회복시킵니다.\n" +
+                "Lv1에서는 이 값만큼, Lv5에서는 5배만큼 회복됩니다.\n" +
+                "권장값: 1",
+
+                ["Archer_TameHeal_Range"] =
+                "【패시브: 길들인 생물 회복 범위 (m)】\n" +
+                "아처 주변 이 거리 이내의 길들인 생물에게 회복 효과가 적용됩니다.\n" +
+                "권장값: 8-15",
 
                 // === Archer Job: 레벨업 스탯 변화 (9개) ===
                 ["Archer_Lv2_BonusArrows"] =
@@ -255,6 +272,12 @@ namespace CaptainSkillTree.Localization
                 "스킬 사용 시 소모되는 Eitr입니다.\n" +
                 "권장값: 30-45",
 
+                ["Mage_Damage_Multiplier"] =
+                "【데미지 배수 (%)】\n" +
+                "광역 마법 공격의 데미지 배수입니다.\n" +
+                "적을 섬멸하는 강력한 폭발형 마법입니다.\n" +
+                "권장값: 250-350%",
+
                 ["Mage_Fire_Rain_Radius"] =
                 "【불의 비 낙하 반경 (m)】\n" +
                 "파이어볼 30개가 타겟 주변에 낙하하는 반경입니다.\n" +
@@ -271,31 +294,67 @@ namespace CaptainSkillTree.Localization
                 "총 2회 버스트로 발사됩니다 (1버스트 → 1초 → 2버스트).\n" +
                 "권장값: 15-25개",
 
+                ["Mage_Dungeon_Buff_Damage_Bonus"] =
+                "【던전 버프 공격력 보너스 (%)】\n" +
+                "던전 안에서 Y키 사용 시 불의 비 대신 발동되는 자버프의 공격력 증가량입니다.\n" +
+                "권장값: 20-30%",
+
+                ["Mage_Dungeon_Buff_Duration"] =
+                "【던전 버프 지속시간 (초)】\n" +
+                "던전 내 대체 버프가 유지되는 시간입니다.\n" +
+                "권장값: 8-12초",
+
                 // === Mage Job: 쿨타임 (레벨별 - 기본 45초) ===
                 ["Mage_Lv1_Cooldown"] =
                 "【쿨타임 Lv1 (초)】\n" +
-                "Lv1 불의 비 재사용 대기 시간입니다.\n" +
-                "권장값: 45초",
+                "마법사 Lv1 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 120초",
 
                 ["Mage_Lv2_Cooldown"] =
                 "【쿨타임 Lv2 (초)】\n" +
-                "Lv2 불의 비 재사용 대기 시간입니다.\n" +
-                "권장값: 45초",
+                "마법사 Lv2 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 110초",
 
                 ["Mage_Lv3_Cooldown"] =
                 "【쿨타임 Lv3 (초)】\n" +
-                "Lv3 불의 비 재사용 대기 시간입니다.\n" +
-                "권장값: 45초",
+                "마법사 Lv3 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 100초",
 
                 ["Mage_Lv4_Cooldown"] =
                 "【쿨타임 Lv4 (초)】\n" +
-                "Lv4 불의 비 재사용 대기 시간입니다.\n" +
-                "권장값: 45초",
+                "마법사 Lv4 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 90초",
 
                 ["Mage_Lv5_Cooldown"] =
                 "【쿨타임 Lv5 (초)】\n" +
-                "Lv5 불의 비 재사용 대기 시간입니다.\n" +
-                "권장값: 45초",
+                "마법사 Lv5 스킬 재사용 대기 시간입니다.\n" +
+                "권장값: 80초",
+
+                // === Mage Job: 최대 타겟 수 (레벨별) ===
+                ["Mage_Lv1_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv1】\n" +
+                "마법사 Lv1 동시 타격 가능한 몬스터 최대 수입니다. 근접한 순서로 선택됩니다.\n" +
+                "권장값: 6",
+
+                ["Mage_Lv2_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv2】\n" +
+                "마법사 Lv2 동시 타격 가능한 몬스터 최대 수입니다.\n" +
+                "권장값: 7",
+
+                ["Mage_Lv3_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv3】\n" +
+                "마법사 Lv3 동시 타격 가능한 몬스터 최대 수입니다.\n" +
+                "권장값: 8",
+
+                ["Mage_Lv4_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv4】\n" +
+                "마법사 Lv4 동시 타격 가능한 몬스터 최대 수입니다.\n" +
+                "권장값: 9",
+
+                ["Mage_Lv5_AOE_Max_Targets"] =
+                "【최대 타겟 수 Lv5】\n" +
+                "마법사 Lv5 동시 타격 가능한 몬스터 최대 수입니다.\n" +
+                "권장값: 10",
 
                 // === Mage Job: 패시브 속성 저항 (레벨별, 기존 유지) ===
                 ["Mage_Lv1_Elemental_Resistance"] =
@@ -325,29 +384,29 @@ namespace CaptainSkillTree.Localization
 
                 // === Mage Job: 공격력 배수 (무기 공격력 %) ===
                 ["Mage_Lv1_Damage_Multiplier"] =
-                "【공격력 배수 Lv1 (%)】\n" +
-                "Lv1 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
-                "권장값: 22%",
+                "【AOE 데미지 배수 Lv1 (%)】\n" +
+                "마법사 Lv1 AOE 데미지 배수입니다.\n" +
+                "권장값: 70%",
 
                 ["Mage_Lv2_Damage_Multiplier"] =
-                "【공격력 배수 Lv2 (%)】\n" +
-                "Lv2 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
-                "권장값: 24%",
+                "【AOE 데미지 배수 Lv2 (%)】\n" +
+                "마법사 Lv2 AOE 데미지 배수입니다.\n" +
+                "권장값: 90%",
 
                 ["Mage_Lv3_Damage_Multiplier"] =
-                "【공격력 배수 Lv3 (%)】\n" +
-                "Lv3 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
-                "권장값: 26%",
+                "【AOE 데미지 배수 Lv3 (%)】\n" +
+                "마법사 Lv3 AOE 데미지 배수입니다.\n" +
+                "권장값: 110%",
 
                 ["Mage_Lv4_Damage_Multiplier"] =
-                "【공격력 배수 Lv4 (%)】\n" +
-                "Lv4 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
-                "권장값: 28%",
+                "【AOE 데미지 배수 Lv4 (%)】\n" +
+                "마법사 Lv4 AOE 데미지 배수입니다.\n" +
+                "권장값: 130%",
 
                 ["Mage_Lv5_Damage_Multiplier"] =
-                "【공격력 배수 Lv5 (%)】\n" +
-                "Lv5 파이어볼 1개당 무기 공격력 대비 데미지 비율입니다.\n" +
-                "권장값: 30%",
+                "【AOE 데미지 배수 Lv5 (%)】\n" +
+                "마법사 Lv5 AOE 데미지 배수입니다.\n" +
+                "권장값: 150%",
 
                 // === Berserker Job: 패시브 스킬 체력 보너스 ===
                 ["berserker_passive_health_bonus"] =
@@ -435,6 +494,16 @@ namespace CaptainSkillTree.Localization
                 "【탱커 타워 방패 이동속도 보너스 (%)】\n" +
                 "탱커 Lv1+: 타워(대형) 방패 장착 시 이동속도가 증가합니다.\n" +
                 "기본값: 30%",
+
+                ["Tanker_Explosion_Radius"] =
+                "【도발 폭발 반경 (m)】\n" +
+                "탱커 도발 스킬 발동 시 폭발 효과의 영향 반경입니다.\n" +
+                "권장값: 6-12m",
+
+                ["Tanker_BlockPower_Multiplier"] =
+                "【방패 막기력 보너스 배율】\n" +
+                "탱커 직업 레벨에 따라 방패 막기력에 곱해지는 배율입니다.\n" +
+                "권장값: 1.0-2.0",
 
                 // === Tanker Job: 레벨별 패시브 (Lv 묶음) ===
                 // --- Lv1 ---
@@ -1016,27 +1085,48 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv1 ---
                 ["Producer_Durability_Lv1"] = "【제작 아이템 내구도 보너스 Lv1 (%)】\nLv1에서 제작 아이템의 내구도 증가율입니다.\n기본값: 50%",
-                ["Producer_EnchantChance_Lv1"] = "【마법부여 확률 Lv1 (%)】\nLv1에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 25%",
+                ["Producer_EnchantChance_Lv1"] = "【마법부여 확률 Lv1 (%)】\nLv1에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 45%",
+                ["Producer_ElementalProcChance_Lv1"] = "【속성 피해 발동 확률 Lv1 (%)】\nLv1 롤 속성 인챈트(화염/영혼/독/번개/냉기)가 매 타격마다 발동할 확률입니다.\n기본값: 25%",
 
                 // --- Lv2 ---
                 ["Producer_Durability_Lv2"] = "【제작 아이템 내구도 보너스 Lv2 (%)】\nLv2에서 제작 아이템의 내구도 증가율입니다.\n기본값: 10%",
                 ["Producer_MaterialReduction_Lv2"] = "【제작 재료 감소 Lv2 (%)】\nLv2에서 제작 시 절약되는 재료 비율입니다.\n기본값: 10%",
-                ["Producer_EnchantChance_Lv2"] = "【마법부여 확률 Lv2 (%)】\nLv2에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 45%",
+                ["Producer_EnchantChance_Lv2"] = "【마법부여 확률 Lv2 (%)】\nLv2에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 55%",
+                ["Producer_ElementalProcChance_Lv2"] = "【속성 피해 발동 확률 Lv2 (%)】\nLv2 롤 속성 인챈트가 매 타격마다 발동할 확률입니다.\n기본값: 30%",
 
                 // --- Lv3 ---
                 ["Producer_Durability_Lv3"] = "【제작 아이템 내구도 보너스 Lv3 (%)】\nLv3에서 제작 아이템의 내구도 증가율입니다.\n기본값: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【제작 재료 감소 Lv3 (%)】\nLv3에서 제작 시 절약되는 재료 비율입니다.\n기본값: 15%",
                 ["Producer_EnchantChance_Lv3"] = "【마법부여 확률 Lv3 (%)】\nLv3에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 65%",
+                ["Producer_ElementalProcChance_Lv3"] = "【속성 피해 발동 확률 Lv3 (%)】\nLv3 롤 속성 인챈트가 매 타격마다 발동할 확률입니다.\n기본값: 35%",
 
                 // --- Lv4 ---
                 ["Producer_Durability_Lv4"] = "【제작 아이템 내구도 보너스 Lv4 (%)】\nLv4에서 제작 아이템의 내구도 증가율입니다.\n기본값: 20%",
                 ["Producer_MaterialReduction_Lv4"] = "【제작 재료 감소 Lv4 (%)】\nLv4에서 제작 시 절약되는 재료 비율입니다.\n기본값: 20%",
-                ["Producer_EnchantChance_Lv4"] = "【마법부여 확률 Lv4 (%)】\nLv4에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 75%",
+                ["Producer_EnchantChance_Lv4"] = "【마법부여 확률 Lv4 (%)】\nLv4에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 80%",
+                ["Producer_ElementalProcChance_Lv4"] = "【속성 피해 발동 확률 Lv4 (%)】\nLv4 롤 속성 인챈트가 매 타격마다 발동할 확률입니다.\n기본값: 40%",
 
                 // --- Lv5 ---
                 ["Producer_Durability_Lv5"] = "【제작 아이템 내구도 보너스 Lv5 (%)】\nLv5에서 제작 아이템의 내구도 증가율입니다.\n기본값: 30%",
                 ["Producer_MaterialReduction_Lv5"] = "【제작 재료 감소 Lv5 (%)】\nLv5에서 제작 시 절약되는 재료 비율입니다.\n기본값: 30%",
                 ["Producer_EnchantChance_Lv5"] = "【마법부여 확률 Lv5 (%)】\nLv5에서 제작 아이템에 마법부여가 붙을 확률입니다.\n기본값: 95%",
+                ["Producer_ElementalProcChance_Lv5"] = "【속성 피해 발동 확률 Lv5 (%)】\nLv5 롤 속성 인챈트가 매 타격마다 발동할 확률입니다.\n기본값: 45%",
+
+                // ============================================
+                // Job Level Coin Cost (직업 레벨업 코인 비용)
+                // ============================================
+                ["Job_Lv1_Cost"] = "【직업 Lv1 코인 비용】\n모든 직업을 Lv1로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 1000",
+                ["Job_Lv2_Cost"] = "【직업 Lv2 코인 비용】\n모든 직업을 Lv2로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 2000",
+                ["Job_Lv3_Cost"] = "【직업 Lv3 코인 비용】\n모든 직업을 Lv3로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 3000",
+                ["Job_Lv4_Cost"] = "【직업 Lv4 코인 비용】\n모든 직업을 Lv4로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 4000",
+                ["Job_Lv5_Cost"] = "【직업 Lv5 코인 비용】\n모든 직업을 Lv5로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 5000",
+
+                // ============================================
+                // Skill Reset Cost (스킬 포인트 초기화 비용)
+                // ============================================
+                ["Job_Reset_Cost"]    = "【직업스킬 포인트 초기화 비용】\n직업 스킬 포인트를 초기화할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 1000",
+                ["Active_Reset_Cost"] = "【액티브스킬 포인트 초기화 비용】\n액티브 스킬 포인트를 초기화할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 500",
+                ["Passive_Reset_Cost"]= "【패시브스킬 포인트 초기화 비용】\n패시브 스킬 포인트를 초기화할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 100",
             };
         }
 
@@ -1054,7 +1144,7 @@ namespace CaptainSkillTree.Localization
 
                 ["HotKey_R"] =
                 "【Ranged Skill Key】\n" +
-                "Key to activate ranged active skills (Multishot, Dual Cast, etc.).\n" +
+                "Key to activate ranged active skills (Multishot, Multi Cast, etc.).\n" +
                 "Default: R",
 
                 ["HotKey_G"] =
@@ -1066,6 +1156,11 @@ namespace CaptainSkillTree.Localization
                 "【Secondary Skill Key】\n" +
                 "Key to activate secondary active skills (Combo Spear, Guardian Heart, etc.).\n" +
                 "Default: H",
+
+                ["QuestToggleKey"] =
+                "【Quest Panel Shortcut】\n" +
+                "Shortcut to open and close the Quest panel.\n" +
+                "Default: Ctrl+J",
 
                 ["HUD_IconSize"] =
                 "【Skill Icon Size】\n" +
@@ -1141,6 +1236,52 @@ namespace CaptainSkillTree.Localization
                 "Reduces damage from falling.\n" +
                 "Enhances archer mobility.\n" +
                 "Recommended: 40-60%",
+
+                // === Archer Job: New Passives - Attack Stamina Reduction (5 keys) ===
+                ["Archer_Attack_StaminaReduction_Lv1"] =
+                "【Lv1 Passive: Attack Stamina Reduction (%)】\n" +
+                "Reduces stamina cost on attack at Archer Lv1.\n" +
+                "Applies to all bow/crossbow/staff attacks.\n" +
+                "Recommended: 10-20%",
+
+                ["Archer_Attack_StaminaReduction_Lv2"] =
+                "【Lv2 Passive: Attack Stamina Reduction (%)】\n" +
+                "Reduces stamina cost on attack at Archer Lv2.\n" +
+                "Recommended: 20-30%",
+
+                ["Archer_Attack_StaminaReduction_Lv3"] =
+                "【Lv3 Passive: Attack Stamina Reduction (%)】\n" +
+                "Reduces stamina cost on attack at Archer Lv3.\n" +
+                "Recommended: 30-40%",
+
+                ["Archer_Attack_StaminaReduction_Lv4"] =
+                "【Lv4 Passive: Attack Stamina Reduction (%)】\n" +
+                "Reduces stamina cost on attack at Archer Lv4.\n" +
+                "Recommended: 40-50%",
+
+                ["Archer_Attack_StaminaReduction_Lv5"] =
+                "【Lv5 Passive: Attack Stamina Reduction (%)】\n" +
+                "Reduces stamina cost on attack at Archer Lv5.\n" +
+                "Recommended: 50-60%",
+
+                // === Archer Job: New Passive - Ammo Save Chance ===
+                ["Archer_AmmoSaveChance"] =
+                "【Arrow/Bolt Save Chance (%)】\n" +
+                "Chance to not consume an arrow or bolt on attack.\n" +
+                "At 50, half of arrows are saved on average.\n" +
+                "Recommended: 30-60%",
+
+                // === Archer Job: New Passive - Tamed Creature Heal ===
+                ["Archer_TameHeal_PerLevel"] =
+                "【Passive: Tamed Creature Heal (HP/s)】\n" +
+                "Heals nearby tamed creatures every second by Archer Level x this value.\n" +
+                "At Lv1 it heals this much, at Lv5 it heals 5x this much.\n" +
+                "Recommended: 1",
+
+                ["Archer_TameHeal_Range"] =
+                "【Passive: Tamed Creature Heal Range (m)】\n" +
+                "Tamed creatures within this distance of the Archer receive the heal.\n" +
+                "Recommended: 8-15",
 
                 // === Archer Job: Level-up Stat Changes (9 keys) ===
                 ["Archer_Lv2_BonusArrows"] =
@@ -1263,6 +1404,32 @@ namespace CaptainSkillTree.Localization
                 "Damage multiplier for AOE magic attack.\n" +
                 "Powerful explosive magic to annihilate enemies.\n" +
                 "Recommended: 250-350%",
+
+                ["Mage_Fire_Rain_Radius"] =
+                "【Fire Rain Fall Radius (m)】\n" +
+                "Radius around the target where 30 fireballs fall.\n" +
+                "Recommended: 6-10m",
+
+                ["Mage_Fire_Rain_Impact_Radius"] =
+                "【Fireball Impact Damage Radius (m)】\n" +
+                "Damage radius when each fireball lands.\n" +
+                "Recommended: 2-4m",
+
+                ["Mage_Fire_Rain_Projectile_Count"] =
+                "【Fireballs per Burst】\n" +
+                "Number of fireballs that fall per burst.\n" +
+                "Fired in 2 bursts total (1st burst -> 1 sec -> 2nd burst).\n" +
+                "Recommended: 15-25",
+
+                ["Mage_Dungeon_Buff_Damage_Bonus"] =
+                "【Dungeon Buff Damage Bonus (%)】\n" +
+                "Attack damage increase from the self-buff cast instead of Fire Rain when using the Y-key skill inside a dungeon.\n" +
+                "Recommended: 20-30%",
+
+                ["Mage_Dungeon_Buff_Duration"] =
+                "【Dungeon Buff Duration (sec)】\n" +
+                "How long the in-dungeon replacement buff lasts.\n" +
+                "Recommended: 8-12 sec",
 
                 // === Mage Job: Cooldown (level-based) ===
                 ["Mage_Lv1_Cooldown"] =
@@ -1454,6 +1621,16 @@ namespace CaptainSkillTree.Localization
                 "【Tanker Tower Shield Move Speed Bonus (%)】\n" +
                 "Tanker Lv1+: Move speed bonus when equipping a tower (large) shield.\n" +
                 "Default: 30%",
+
+                ["Tanker_Explosion_Radius"] =
+                "【Taunt Explosion Radius (m)】\n" +
+                "Radius of the explosion effect when the Tanker taunt skill activates.\n" +
+                "Recommended: 6-12m",
+
+                ["Tanker_BlockPower_Multiplier"] =
+                "【Shield Block Power Multiplier】\n" +
+                "Multiplier applied to shield block power based on Tanker job level.\n" +
+                "Recommended: 1.0-2.0",
 
                 // === Tanker Job: Level-Up Passives (by level) ===
                 // --- Lv1 ---
@@ -2035,43 +2212,48 @@ namespace CaptainSkillTree.Localization
 
                 // --- Lv1 ---
                 ["Producer_Durability_Lv1"] = "【Crafted Item Durability Bonus Lv1 (%)】\nDurability bonus of crafted items at Lv1.\nDefault: 50%",
-                ["Producer_EnchantChance_Lv1"] = "【Enchant Chance Lv1 (%)】\nChance for crafted items to receive an enchantment at Lv1.\nDefault: 25%",
+                ["Producer_EnchantChance_Lv1"] = "【Enchant Chance Lv1 (%)】\nChance for crafted items to receive an enchantment at Lv1.\nDefault: 45%",
+                ["Producer_ElementalProcChance_Lv1"] = "【Elemental Proc Chance Lv1 (%)】\nChance for a Lv1-rolled elemental enchant (Fire/Spirit/Poison/Lightning/Frost) to trigger on each hit.\nDefault: 25%",
 
                 // --- Lv2 ---
                 ["Producer_Durability_Lv2"] = "【Crafted Item Durability Bonus Lv2 (%)】\nDurability bonus of crafted items at Lv2.\nDefault: 10%",
                 ["Producer_MaterialReduction_Lv2"] = "【Material Reduction Lv2 (%)】\nMaterials saved per craft at Lv2.\nDefault: 10%",
-                ["Producer_EnchantChance_Lv2"] = "【Enchant Chance Lv2 (%)】\nChance for crafted items to receive an enchantment at Lv2.\nDefault: 45%",
+                ["Producer_EnchantChance_Lv2"] = "【Enchant Chance Lv2 (%)】\nChance for crafted items to receive an enchantment at Lv2.\nDefault: 55%",
+                ["Producer_ElementalProcChance_Lv2"] = "【Elemental Proc Chance Lv2 (%)】\nChance for a Lv2-rolled elemental enchant to trigger on each hit.\nDefault: 30%",
 
                 // --- Lv3 ---
                 ["Producer_Durability_Lv3"] = "【Crafted Item Durability Bonus Lv3 (%)】\nDurability bonus of crafted items at Lv3.\nDefault: 15%",
                 ["Producer_MaterialReduction_Lv3"] = "【Material Reduction Lv3 (%)】\nMaterials saved per craft at Lv3.\nDefault: 15%",
                 ["Producer_EnchantChance_Lv3"] = "【Enchant Chance Lv3 (%)】\nChance for crafted items to receive an enchantment at Lv3.\nDefault: 65%",
+                ["Producer_ElementalProcChance_Lv3"] = "【Elemental Proc Chance Lv3 (%)】\nChance for a Lv3-rolled elemental enchant to trigger on each hit.\nDefault: 35%",
 
                 // --- Lv4 ---
                 ["Producer_Durability_Lv4"] = "【Crafted Item Durability Bonus Lv4 (%)】\nDurability bonus of crafted items at Lv4.\nDefault: 20%",
                 ["Producer_MaterialReduction_Lv4"] = "【Material Reduction Lv4 (%)】\nMaterials saved per craft at Lv4.\nDefault: 20%",
-                ["Producer_EnchantChance_Lv4"] = "【Enchant Chance Lv4 (%)】\nChance for crafted items to receive an enchantment at Lv4.\nDefault: 75%",
+                ["Producer_EnchantChance_Lv4"] = "【Enchant Chance Lv4 (%)】\nChance for crafted items to receive an enchantment at Lv4.\nDefault: 80%",
+                ["Producer_ElementalProcChance_Lv4"] = "【Elemental Proc Chance Lv4 (%)】\nChance for a Lv4-rolled elemental enchant to trigger on each hit.\nDefault: 40%",
 
                 // --- Lv5 ---
                 ["Producer_Durability_Lv5"] = "【Crafted Item Durability Bonus Lv5 (%)】\nDurability bonus of crafted items at Lv5.\nDefault: 30%",
                 ["Producer_MaterialReduction_Lv5"] = "【Material Reduction Lv5 (%)】\nMaterials saved per craft at Lv5.\nDefault: 30%",
                 ["Producer_EnchantChance_Lv5"] = "【Enchant Chance Lv5 (%)】\nChance for crafted items to receive an enchantment at Lv5.\nDefault: 95%",
+                ["Producer_ElementalProcChance_Lv5"] = "【Elemental Proc Chance Lv5 (%)】\nChance for a Lv5-rolled elemental enchant to trigger on each hit.\nDefault: 45%",
 
                 // ============================================
-                // Job Level Coin Cost (직업 레벨업 코인 비용)
+                // Job Level Coin Cost
                 // ============================================
-                ["Job_Lv1_Cost"] = "【직업 Lv1 코인 비용】\n모든 직업을 Lv1로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 1000",
-                ["Job_Lv2_Cost"] = "【직업 Lv2 코인 비용】\n모든 직업을 Lv2로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 2000",
-                ["Job_Lv3_Cost"] = "【직업 Lv3 코인 비용】\n모든 직업을 Lv3로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 3000",
-                ["Job_Lv4_Cost"] = "【직업 Lv4 코인 비용】\n모든 직업을 Lv4로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 4000",
-                ["Job_Lv5_Cost"] = "【직업 Lv5 코인 비용】\n모든 직업을 Lv5로 업그레이드할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 5000",
+                ["Job_Lv1_Cost"] = "【Job Lv1 Coin Cost】\nCoins consumed when upgrading any job to Lv1.\nServer admin only, auto-synced to all clients.\nDefault: 1000",
+                ["Job_Lv2_Cost"] = "【Job Lv2 Coin Cost】\nCoins consumed when upgrading any job to Lv2.\nServer admin only, auto-synced to all clients.\nDefault: 2000",
+                ["Job_Lv3_Cost"] = "【Job Lv3 Coin Cost】\nCoins consumed when upgrading any job to Lv3.\nServer admin only, auto-synced to all clients.\nDefault: 3000",
+                ["Job_Lv4_Cost"] = "【Job Lv4 Coin Cost】\nCoins consumed when upgrading any job to Lv4.\nServer admin only, auto-synced to all clients.\nDefault: 4000",
+                ["Job_Lv5_Cost"] = "【Job Lv5 Coin Cost】\nCoins consumed when upgrading any job to Lv5.\nServer admin only, auto-synced to all clients.\nDefault: 5000",
 
                 // ============================================
-                // Skill Reset Cost (스킬 포인트 초기화 비용)
+                // Skill Reset Cost
                 // ============================================
-                ["Job_Reset_Cost"]    = "【직업스킬 포인트 초기화 비용】\n직업 스킬 포인트를 초기화할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 1000",
-                ["Active_Reset_Cost"] = "【액티브스킬 포인트 초기화 비용】\n액티브 스킬 포인트를 초기화할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 500",
-                ["Passive_Reset_Cost"]= "【패시브스킬 포인트 초기화 비용】\n패시브 스킬 포인트를 초기화할 때 소모되는 코인 수입니다.\n서버 관리자만 수정 가능, 모든 클라이언트에 자동 동기화.\n기본값: 100",
+                ["Job_Reset_Cost"]    = "【Job Skill Point Reset Cost】\nCoins consumed when resetting job skill points.\nServer admin only, auto-synced to all clients.\nDefault: 1000",
+                ["Active_Reset_Cost"] = "【Active Skill Point Reset Cost】\nCoins consumed when resetting active skill points.\nServer admin only, auto-synced to all clients.\nDefault: 500",
+                ["Passive_Reset_Cost"]= "【Passive Skill Point Reset Cost】\nCoins consumed when resetting passive skill points.\nServer admin only, auto-synced to all clients.\nDefault: 100",
             };
         }
     }

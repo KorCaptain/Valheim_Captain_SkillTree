@@ -6,7 +6,7 @@ namespace CaptainSkillTree.SkillTree
 {
     /// <summary>
     /// 공격 전문가 스킬트리 노드 등록
-    /// 선빵(T1) → 무기특화(T2) → 추격전(T3) → 전환(T4) → 난전(T5) → 마무리(T6)
+    /// 선공격(T1) → 무기특화(T2) → 추격전(T3) → 전환(T4) → 난전(T5) → 마무리(T6)
     /// </summary>
     public static class AttackSkillData
     {
@@ -23,6 +23,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "attack_root_desc",
                 DescriptionArgs = new object[] { Attack_Config.AttackRootDamageBonusValue },
                 RequiredPoints = Attack_Config.AttackRootRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AttackRootRequiredPointsValue,
                 MaxLevel = 1,
                 Position = new Vector2(0, 95),
                 Category = "공격",
@@ -38,7 +39,7 @@ namespace CaptainSkillTree.SkillTree
             });
 
             // ========================================================
-            // Tier 1: 선빵
+            // Tier 1: 선공격
             // ========================================================
             manager.AddSkill(new SkillNode {
                 Id = "atk_opener",
@@ -51,6 +52,7 @@ namespace CaptainSkillTree.SkillTree
                     Attack_Config.AtkOpenerCooldownValue
                 },
                 RequiredPoints = Attack_Config.AtkOpenerRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AtkOpenerRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 1,
                 Position = new Vector2(0, 145),
@@ -68,7 +70,7 @@ namespace CaptainSkillTree.SkillTree
             });
 
             // ========================================================
-            // Tier 2: 무기별 선빵 특화 (복수 선택 가능)
+            // Tier 2: 무기별 선공격 특화 (복수 선택 가능)
             // ========================================================
             manager.AddSkill(new SkillNode {
                 Id = "atk_opener_melee",
@@ -76,6 +78,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "atk_opener_melee_desc",
                 DescriptionArgs = new object[] { Attack_Config.AtkOpenerMeleeFinisherBonusValue },
                 RequiredPoints = Attack_Config.AtkOpenerMeleeRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AtkOpenerMeleeRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(-90, 205),
@@ -96,8 +99,9 @@ namespace CaptainSkillTree.SkillTree
                 Id = "atk_opener_bow",
                 NameKey = "atk_opener_bow_name",
                 DescriptionKey = "atk_opener_bow_desc",
-                DescriptionArgs = new object[] { Attack_Config.AtkOpenerBowCritChanceValue },
+                DescriptionArgs = new object[] { Attack_Config.AtkOpenerBowCritDamageBonusValue },
                 RequiredPoints = Attack_Config.AtkOpenerBowRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AtkOpenerBowRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(-30, 205),
@@ -120,6 +124,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "atk_opener_crossbow_desc",
                 DescriptionArgs = new object[] { Attack_Config.AtkOpenerCrossbowFirstShotBonusValue },
                 RequiredPoints = Attack_Config.AtkOpenerCrossbowRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AtkOpenerCrossbowRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(30, 205),
@@ -142,6 +147,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "atk_opener_magic_desc",
                 DescriptionArgs = new object[] { },
                 RequiredPoints = Attack_Config.AtkOpenerMagicRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AtkOpenerMagicRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 2,
                 Position = new Vector2(90, 205),
@@ -171,6 +177,7 @@ namespace CaptainSkillTree.SkillTree
                     Attack_Config.AtkPursuitChainWindowValue
                 },
                 RequiredPoints = Attack_Config.AtkPursuitRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AtkPursuitRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 3,
                 Position = new Vector2(0, 275),
@@ -196,6 +203,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "atk_pursuit_speed_desc",
                 DescriptionArgs = new object[] { Attack_Config.AtkPursuitSpeedBonusValue },
                 RequiredPoints = Attack_Config.AtkPursuitSpeedRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AtkPursuitSpeedRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 4,
                 Position = new Vector2(-45, 335),
@@ -212,13 +220,15 @@ namespace CaptainSkillTree.SkillTree
                 }
             });
 
+            // === Tier 4-2: 치명적인 공격 (성장형 Lv1~7, 레벨당 치명타 확률 증가) ===
             manager.AddSkill(new SkillNode {
                 Id = "atk_frenzy_trigger",
                 NameKey = "atk_frenzy_trigger_name",
                 DescriptionKey = "atk_frenzy_trigger_desc",
-                DescriptionArgs = new object[] { Attack_Config.AtkFrenzyTriggerStaminaReductionValue },
-                RequiredPoints = Attack_Config.AtkFrenzyTriggerRequiredPointsValue,
-                MaxLevel = 1,
+                DescriptionArgs = new object[] { Attack_Config.AtkFrenzyTriggerCritChancePerLevelValue },
+                RequiredPoints = Attack_Config.AtkFrenzyTriggerPointsPerLevelValue,
+                RequiredPointsResolver = () => Attack_Config.AtkFrenzyTriggerPointsPerLevelValue,
+                MaxLevel = 7,
                 Tier = 4,
                 Position = new Vector2(45, 335),
                 Category = "공격",
@@ -228,9 +238,13 @@ namespace CaptainSkillTree.SkillTree
                 NextNodes = new List<string> { "atk_frenzy" },
                 ApplyEffect = (lv) => {
                     var player = Player.m_localPlayer;
-                    if (player != null)
-                        SkillEffect.ShowSkillEffectText(player, L.Get("atk_frenzy_trigger_effect"),
+                    if (player != null) {
+                        float totalBonus = lv * Attack_Config.AtkFrenzyTriggerCritChancePerLevelValue;
+                        SkillEffect.ShowSkillEffectText(player,
+                            L.Get("atk_frenzy_trigger_effect", totalBonus),
                             new Color(1f, 0.4f, 0.2f), SkillEffect.SkillEffectTextType.Standard);
+                        Plugin.Log.LogInfo($"[치명적인 공격] Lv{lv} 투자 완료: +{totalBonus}% 치명타 확률");
+                    }
                 }
             });
 
@@ -249,6 +263,7 @@ namespace CaptainSkillTree.SkillTree
                     Attack_Config.AtkFrenzyTier6AmplifierValue
                 },
                 RequiredPoints = Attack_Config.AtkFrenzyRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AtkFrenzyRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 5,
                 Position = new Vector2(0, 395),
@@ -266,15 +281,19 @@ namespace CaptainSkillTree.SkillTree
             });
 
             // ========================================================
-            // Tier 6: 마무리 최종 (기존 유지, Prerequisites만 변경)
+            // Tier 6: 약점 공격 (성장형 Lv1~7, 레벨당 치명타 피해 증가: 5/9/13/17/21/25/29%)
             // ========================================================
             manager.AddSkill(new SkillNode {
                 Id = "atk_crit_dmg",
                 NameKey = "atk_crit_dmg_name",
                 DescriptionKey = "atk_crit_dmg_desc",
-                DescriptionArgs = new object[] { Attack_Config.AttackCritDamageBonusValue },
-                RequiredPoints = Attack_Config.AttackStep6CritDmgRequiredPointsValue,
-                MaxLevel = 1,
+                DescriptionArgs = new object[] {
+                    Attack_Config.GetWeakPointAttackBonus(1),
+                    Attack_Config.GetWeakPointAttackBonus(7)
+                },
+                RequiredPoints = Attack_Config.AtkCritDmgPointsPerLevelValue,
+                RequiredPointsResolver = () => Attack_Config.AtkCritDmgPointsPerLevelValue,
+                MaxLevel = 7,
                 Tier = 6,
                 Position = new Vector2(-90, 445),
                 Category = "공격",
@@ -282,7 +301,16 @@ namespace CaptainSkillTree.SkillTree
                 IconNameUnlocked = "all_skill_unlock",
                 Prerequisites = new List<string> { "atk_frenzy" },
                 NextNodes = new List<string>(),
-                ApplyEffect = (lv) => { }
+                ApplyEffect = (lv) => {
+                    var player = Player.m_localPlayer;
+                    if (player != null) {
+                        float totalBonus = Attack_Config.GetWeakPointAttackBonus(lv);
+                        SkillEffect.ShowSkillEffectText(player,
+                            L.Get("atk_crit_dmg_effect", totalBonus),
+                            new Color(1f, 0.6f, 0.1f), SkillEffect.SkillEffectTextType.Standard);
+                        Plugin.Log.LogInfo($"[약점 공격] Lv{lv} 투자 완료: +{totalBonus}% 치명타 피해");
+                    }
+                }
             });
 
             manager.AddSkill(new SkillNode {
@@ -291,6 +319,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "atk_finisher_melee_desc",
                 DescriptionArgs = new object[] { Attack_Config.AttackFinisherMeleeBonusValue },
                 RequiredPoints = Attack_Config.AttackStep6FinisherRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AttackStep6FinisherRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(-30, 445),
@@ -308,6 +337,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "atk_twohand_crush_desc",
                 DescriptionArgs = new object[] { Attack_Config.AttackTwoHandedBonusValue },
                 RequiredPoints = Attack_Config.AttackStep6TwoHandRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AttackStep6TwoHandRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(30, 445),
@@ -325,6 +355,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = "atk_staff_mage_desc",
                 DescriptionArgs = new object[] { Attack_Config.AttackStaffElementalValue },
                 RequiredPoints = Attack_Config.AttackStep6StaffRequiredPointsValue,
+                RequiredPointsResolver = () => Attack_Config.AttackStep6StaffRequiredPointsValue,
                 MaxLevel = 1,
                 Tier = 6,
                 Position = new Vector2(90, 445),

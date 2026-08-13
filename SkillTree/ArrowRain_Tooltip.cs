@@ -41,6 +41,9 @@ namespace CaptainSkillTree.SkillTree
             t += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>";
             t += $"<color=#FF6B6B><size=16>{Bow_Config.ArrowRainRequiredPointsValue}</size></color>\n";
 
+            t += $"<color=#FF69B4><size=16>{L.Get("tooltip_special")}: </size></color>";
+            t += $"<color=#FFB6C1><size=16>{L.Get("bow_arrow_rain_dungeon_buff_desc", (int)Bow_Config.ArrowRainDungeonBuffDamageBonusValue, (int)Bow_Config.ArrowRainDungeonBuffDurationValue)}</size></color>\n";
+
             if (currentLevel < 7)
             {
                 t += $"<color=#FFA500><size=16>{L.Get("arrow_rain_next_level_req", displayLevel)}: </size></color>";

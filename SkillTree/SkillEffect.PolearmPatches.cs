@@ -249,6 +249,7 @@ namespace CaptainSkillTree.SkillTree
                 // 관통 돌격 상태 정리
                 polearmPierceChargeLastUseTime.Remove(player);
                 polearmPierceChargeActive.Remove(player);
+                _pierceChargePendingWindow.Remove(player);
 
                 if (polearmPierceChargeCoroutines.TryGetValue(player, out var ppCleanupCoroutine) && ppCleanupCoroutine != null)
                 {
@@ -299,9 +300,25 @@ namespace CaptainSkillTree.SkillTree
                     }
 
                     // 폴암 휠윈드
-                    if (!SkillEffect.HasSkill("polearm_step6_whirlwind")) return;
-                    if (!SkillEffect.IsUsingPolearm(__instance)) return;
-                    SkillEffect.UseWhirlwindSkill(__instance);
+                    if (SkillEffect.HasSkill("polearm_step6_whirlwind") && SkillEffect.IsUsingPolearm(__instance))
+                    {
+                        SkillEffect.UseWhirlwindSkill(__instance);
+                        return;
+                    }
+
+                    // 방패돌진 (수호자의 진심, 방어 트리·탱커 전용) - 무기 종류 무관, 방패 착용 여부만 확인
+                    if (SkillEffect.HasSkill("mace_Step7_guardian_heart"))
+                    {
+                        if (WeaponHelper.HasShield(__instance))
+                        {
+                            SkillEffect.ActivateShieldCharge(__instance);
+                        }
+                        else
+                        {
+                            SkillEffect.DrawFloatingText(__instance, L.Get("shield_equip_required"), Color.red);
+                        }
+                        return;
+                    }
                 }
             }
             catch (System.Exception ex)

@@ -25,11 +25,11 @@
 스킬 추가/수정 시 아래를 **동시에** 수정:
 1. `DefaultLanguages_*.cs` — KO 블록 키 추가/수정
 2. `DefaultLanguages_*.cs` — EN 블록 키 추가/수정
-3. `ru.json` — 동기화 (번역 없으면 EN 원문 임시값 사용)
-4. `de.json` — 동기화 (번역 없으면 EN 원문 임시값 사용)
-5. `pt_BR.json` — 동기화 (번역 없으면 EN 원문 임시값 사용)
-6. `zh-cn.json` — 동기화 (번역 없으면 EN 원문 임시값 사용)
-7. `ja.json` — 동기화 (번역 없으면 EN 원문 임시값 사용)
+3. `ru.json` — 동기화 (해당 언어로 실제 번역, EN 원문 임시값 사용 금지)
+4. `de.json` — 동기화 (해당 언어로 실제 번역, EN 원문 임시값 사용 금지)
+5. `pt_BR.json` — 동기화 (해당 언어로 실제 번역, EN 원문 임시값 사용 금지)
+6. `zh-cn.json` — 동기화 (해당 언어로 실제 번역, EN 원문 임시값 사용 금지)
+7. `ja.json` — 동기화 (해당 언어로 실제 번역, EN 원문 임시값 사용 금지)
 
 ### R2. 키 추가 올바른 순서
 ```
@@ -136,7 +136,7 @@ powershell -ExecutionPolicy Bypass -File validate_loc_keys.ps1
 - [ ] DefaultLanguages_*.cs — KO 블록 키 추가
 - [ ] DefaultLanguages_*.cs — EN 블록 키 추가
 - [ ] {0}, {1} 플레이스홀더 개수·번호 모든 언어 동일 확인
-- [ ] ru/de/pt_BR/zh-cn/ja.json 동기화
+- [ ] ru/de/pt_BR/zh-cn/ja.json 동기화 (실제 번역 반영, EN 원문 임시값 금지)
 - [ ] validate_loc_keys.ps1 실행 (누락 키 0개)
 
 ### 새 Config 추가 시

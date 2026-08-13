@@ -125,10 +125,13 @@ namespace CaptainSkillTree.Localization
                 "命中時にスタミナ回復が発動する確率です。\n" +
                 "推奨: 20-50",
 
-                ["Tier6_WeakPointAttack_CritDamageBonus"] =
-                "【クリティカルダメージボーナス (%)】\n" +
-                "クリティカル時の追加ダメージを増加させます。\n" +
-                "推奨: 10-20%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "【弱点攻撃 Lv1 クリティカルダメージボーナス (%)】\nレベル1到達時に適用されるクリティカルダメージ増加量です。\n推奨: 5%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "【弱点攻撃 Lv2 クリティカルダメージボーナス (%)】\nレベル2到達時に適用されるクリティカルダメージ増加量です。\n推奨: 9%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "【弱点攻撃 Lv3 クリティカルダメージボーナス (%)】\nレベル3到達時に適用されるクリティカルダメージ増加量です。\n推奨: 13%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "【弱点攻撃 Lv4 クリティカルダメージボーナス (%)】\nレベル4到達時に適用されるクリティカルダメージ増加量です。\n推奨: 17%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "【弱点攻撃 Lv5 クリティカルダメージボーナス (%)】\nレベル5到達時に適用されるクリティカルダメージ増加量です。\n推奨: 21%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "【弱点攻撃 Lv6 クリティカルダメージボーナス (%)】\nレベル6到達時に適用されるクリティカルダメージ増加量です。\n推奨: 25%",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "【弱点攻撃 Lv7（最大）クリティカルダメージボーナス (%)】\nレベル7（最大）到達時に適用されるクリティカルダメージ増加量です。\n推奨: 29%",
 
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] =
                 "【両手武器ダメージボーナス (%)】\n" +
@@ -172,9 +175,9 @@ namespace CaptainSkillTree.Localization
                 "推奨: 15-25%",
 
                 ["Tier2_OpenerBow_CritChance"] =
-                "【弓クリティカル確率 (%)】\n" +
-                "戦闘開始後の最初の矢でクリティカル確率が増加します。\n" +
-                "推奨: 10-20%",
+                "【弓：ハンターの瞳 クリティカルダメージ (%)】\n" +
+                "先制窓内で最初の矢が確定クリティカルになる際、追加されるクリティカルダメージです。\n" +
+                "推奨: 6-10%",
 
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] =
                 "【クロスボウ初弾ボーナス (%)】\n" +
@@ -206,10 +209,10 @@ namespace CaptainSkillTree.Localization
                 "戦闘中の移動速度が増加します。\n" +
                 "推奨: 10-15%",
 
-                ["Tier4_FrenzyTrigger_StaminaReduction"] =
-                "【乱戦スタミナ削減 (%)】\n" +
-                "近くに複数の敵がいる場合のスタミナ消費を削減します。\n" +
-                "推奨: 15-25%",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] =
+                "【致命の一撃 クリティカル率増加量 (レベルごと%)】\n" +
+                "レベルアップごとに増加するクリティカル率です。(Lv × 増加量)\n" +
+                "推奨: 1-3%",
 
                 ["Tier5_Frenzy_StackBonusBase"] =
                 "【乱戦スタック基本ボーナス (%)】\n" +
@@ -244,7 +247,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier2_OpenerMagic_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイント数です。",
                 ["Tier3_Pursuit_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイント数です。",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイント数です。",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイント数です。",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "【レベルごとの必要ポイント】\nレベルアップ1回につき消費するスキルポイントです。\n推奨: 2",
                 ["Tier5_Frenzy_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイント数です。",
 
                 // ========================================
@@ -259,6 +262,12 @@ namespace CaptainSkillTree.Localization
                 "【防御力ボーナス（固定値）】\n" +
                 "防御力を固定値で増加させます。\n" +
                 "推奨: 1-4",
+
+                ["Tier0_DefenseExpert_AtkPenalty"] =
+                "【攻撃力低下（%）】\n" +
+                "防御専家を習得すると攻撃力が少し低下します。\n" +
+                "防御と攻撃のトレードオフです。\n" +
+                "推奨: 1-3%",
 
                 ["Tier1_SkinHardening_HPBonus"] =
                 "【HP ボーナス（固定値）】\n" +
@@ -399,7 +408,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_NerveEnhancement_DodgeBonus"] =
                 "【条件付き回避ボーナス（30秒, %)】\n" +
                 "30秒間回避しないと発動します。\n" +
-                "推奨: 30-50%",
+                "推奨: 85%",
 
                 ["Tier6_JotunnVitality_HPBonus"] =
                 "【HP ボーナス (%)】\n" +
@@ -409,21 +418,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] =
                 "【物理/属性耐性 (%)】\n" +
                 "全物理・属性ダメージを減少させます。\n" +
-                "推奨: 8-15%",
-
-                ["Tier6_JotunnShield_BlockStaminaReduction"] =
-                "【ブロックスタミナ消費 (%)】\n" +
-                "シールドでブロック時のスタミナ消費を減少させます。\n" +
-                "推奨: 20-30%",
-
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] =
-                "【通常シールド装備時移動速度 (%)】\n" +
-                "通常シールド装備時の移動速度を増加させます。\n" +
-                "推奨: 3-8%",
-
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] =
-                "【タワーシールド装備時移動速度 (%)】\n" +
-                "タワーシールド装備時の移動速度を増加させます。\n" +
                 "推奨: 8-15%",
 
                 // ========================================
@@ -599,6 +593,300 @@ namespace CaptainSkillTree.Localization
                 "【回避速度ボーナス (%)】\n" +
                 "ローリングアニメーションの速度を増加させます。\n" +
                 "推奨: 5-15%",
+
+                ["ShowResetButtons"] =
+                "【リセットボタン表示】\n" +
+                "スキルツリーUIでポイント/職業/生産リセットボタンの表示を設定します。\n" +
+                "  true  = リセットボタンを表示（デフォルト）\n" +
+                "  false = リセットボタンを非表示（サーバーでスキルポイントリセットを防止する場合に使用）",
+
+                ["Tier3_BlockTraining_MaxChargeDistance"] =
+                "【カウンター最大有効距離 (m)】\n" +
+                "よろめいたモンスターがこの距離内にいる場合のみカウンターが発動します。\n" +
+                "推奨: 6-10m",
+
+                ["Tier0_DefenseExpert_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier1_SkinHardening_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier2_MindTraining_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier2_HealthTraining_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier3_CoreBreathing_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier3_EvasionTraining_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier3_HealthBoost_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier3_ShieldTraining_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier4_Shockwave_Radius"] =
+                "【衝撃波範囲】\n" +
+                "衝撃波放出スキルの効果範囲（メートル）です。\n" +
+                "推奨: 3",
+
+                ["Tier4_Shockwave_StunDuration"] =
+                "【衝撃波スタン時間】\n" +
+                "スタン効果の持続時間（秒）です。\n" +
+                "推奨: 1",
+
+                ["Tier4_Shockwave_Cooldown"] =
+                "【衝撃波クールダウン】\n" +
+                "スキル再使用までの待機時間（秒）です。\n" +
+                "推奨: 120",
+
+                ["Tier4_Shockwave_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier4_Shockwave_KnockbackForce"] =
+                "【ノックバック力】\n" +
+                "衝撃波発動時に敵を吹き飛ばす力です。\n" +
+                "推奨: 15-25",
+
+                ["Tier4_GroundStomp_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier4_RockSkin_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier5_Endurance_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier5_Agility_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier5_TrollRegen_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier5_BlockMaster_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier6_MindShield_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier6_MindShield_Cooldown"] =
+                "【マインドシールドクールダウン】\n" +
+                "Hキー マインドシールドスキルの再使用待機時間です（秒）。\n" +
+                "デフォルト: 210（3分30秒）",
+
+                ["Tier6_MindShield_EitrCost"] =
+                "【マインドシールドエイトル消費】\n" +
+                "マインドシールド発動時に消費するエイトル量です。\n" +
+                "デフォルト: 30",
+
+                ["Tier6_MindShield_Duration"] =
+                "【マインドシールド持続時間】\n" +
+                "シールドの持続時間です（秒）。この間、最大エイトルHPまでダメージを吸収します。\n" +
+                "デフォルト: 180（3分）",
+
+                ["Tier6_NerveEnhancement_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier6_DoubleJump_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier6_JotunnVitality_RequiredPoints"] =
+                "【必要ポイント】\n" +
+                "このノードを解放するために必要なスキルポイント数です。\n" +
+                "推奨: 2",
+
+                ["Tier0_SpeedExpert_MoveSpeedPerLevel"] = "【移動速度ボーナス/レベル (%)】\nレベルごとの移動速度増加量です。（Lv1~7成長式）\n推奨: 1-5%",
+
+                ["Tier0_SpeedExpert_PointsPerLevel"] = "【レベルごとの必要ポイント】\n強化1回あたりに消費するスキルポイントです。\n推奨: 1-2",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_2"] = "【Lv2必要プレイヤーレベル】\nLv2強化に必要なEpicMMOプレイヤーレベルです。（0=なし）\nデフォルト: 15",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_3"] = "【Lv3必要プレイヤーレベル】\nLv3強化に必要なEpicMMOプレイヤーレベルです。\nデフォルト: 30",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_4"] = "【Lv4必要プレイヤーレベル】\nLv4強化に必要なEpicMMOプレイヤーレベルです。\nデフォルト: 45",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_5"] = "【Lv5必要プレイヤーレベル】\nLv5強化に必要なEpicMMOプレイヤーレベルです。\nデフォルト: 50",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_6"] = "【Lv6必要プレイヤーレベル】\nLv6強化に必要なEpicMMOプレイヤーレベルです。\nデフォルト: 65",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_7"] = "【Lv7必要プレイヤーレベル】\nLv7強化に必要なEpicMMOプレイヤーレベルです。\nデフォルト: 80",
+
+                ["Tier2_MeleeFlow_AttackSpeedBonus"] = "【2連撃時攻撃速度ボーナス (%)】\n近接武器で2回連続ヒット後に攻撃速度が増加します。\n推奨: 8-15%",
+
+                ["Tier2_MeleeFlow_StaminaReduction"] = "【スタミナ消費削減 (%)】\nフローバフ中のスタミナ消費を削減します。\n推奨: 10-20%",
+
+                ["Tier2_MeleeFlow_Duration"] = "【バフ持続時間（秒）】\n近接フローバフの持続時間です。\n推奨: 3-5秒",
+
+                ["Tier2_MeleeFlow_ComboSpeedBonus"] = "【コンボ速度ボーナス (%)】\nコンボ連携時の追加攻撃速度ボーナスです。\n推奨: 5-10%",
+
+                ["Tier2_CrossbowExpert_MoveSpeedBonus"] = "【命中時移動速度ボーナス (%)】\nクロスボウのボルトが敵に命中すると移動速度が増加します。\n推奨: 10-15%",
+
+                ["Tier2_CrossbowExpert_BuffDuration"] = "【バフ持続時間（秒）】\n命中成功後の速度バフの持続時間です。\n推奨: 3-5秒",
+
+                ["Tier2_CrossbowExpert_ReloadSpeedBonus"] = "【バフ中リロード速度ボーナス (%)】\n命中バフが有効な間リロード速度が増加します。\n推奨: 10-15%",
+
+                ["Tier2_BowExpert_StaminaReduction"] = "【2連撃コンボ時スタミナ削減 (%)】\n弓で2回連続命中後のスタミナ消費が削減されます。\n推奨: 10-15%",
+
+                ["Tier2_BowExpert_NextDrawSpeedBonus"] = "【次の矢の引き速度ボーナス (%)】\nコンボ成功後、次の矢の引き速度が増加します。\n推奨: 10-20%",
+
+                ["Tier2_BowExpert_BuffDuration"] = "【バフ持続時間（秒）】\nコンボバフの持続時間です。\n推奨: 4-6秒",
+
+                ["Tier2_MobileCast_MoveSpeedBonus"] = "【詠唱中移動速度ボーナス (%)】\n杖の魔法詠唱中の移動速度ボーナスです。\n推奨: 8-12%",
+
+                ["Tier2_MobileCast_EitrReduction"] = "【エイトル消費削減 (%)】\n杖の魔法のエイトル消費を削減します。\n推奨: 8-15%",
+
+                ["Tier2_MobileCast_CastMoveSpeed"] = "【杖詠唱中移動速度 (%)】\n杖攻撃をチャネリング中の基本移動速度です。\n推奨: 3-6%",
+
+                ["Tier3_Practitioner1_MeleeSkillBonus"] = "【近接武器スキルボーナス】\n全ての近接武器スキルレベルを増加させます。\n推奨: 5-10",
+
+                ["Tier3_Practitioner1_CrossbowSkillBonus"] = "【クロスボウスキルボーナス】\nクロスボウスキルレベルを増加させます。\n推奨: 5-10",
+
+                ["Tier3_Practitioner2_StaffSkillBonus"] = "【杖スキルボーナス】\n杖スキルレベル（エレメンタルマギ）を増加させます。\n推奨: 5-10",
+
+                ["Tier3_Practitioner2_BowSkillBonus"] = "【弓スキルボーナス】\n弓スキルレベルを増加させます。\n推奨: 5-10",
+
+                ["Tier4_Energizer_FoodConsumptionReduction"] = "【食料消費速度低下 (%)】\n食料の消費速度を遅くし、バフがより長く持続します。\n推奨: 10-20%",
+
+                ["Tier4_Captain_ShipSpeedBonus"] = "【船速度ボーナス (%)】\n航海速度を増加させます。\n推奨: 10-20%",
+
+                ["Tier5_JumpMaster_JumpSkillBonus"] = "【ジャンプスキルボーナス】\nジャンプスキルレベルを増加させます。\n推奨: 5-15",
+
+                ["Tier5_JumpMaster_JumpStaminaReduction"] = "【ジャンプスタミナ削減 (%)】\nジャンプ時のスタミナ消費を削減します。\n推奨: 10-20%",
+
+                ["Tier6_Dexterity_MeleeAttackSpeedBonus"] = "【近接攻撃速度ボーナス (%)】\n近接武器の攻撃速度を増加させます。\n推奨: 5-8%",
+
+                ["Tier6_Dexterity_MoveSpeedBonus"] = "【移動速度ボーナス (%)】\n全体的な移動速度を増加させます。\n推奨: 3-8%",
+
+                ["Tier6_Endurance_StaminaMaxBonus"] = "【最大スタミナボーナス】\n最大スタミナ量を増加させます。\n推奨: 20-40",
+
+                ["Tier6_Intellect_EitrMaxBonus"] = "【最大エイトルボーナス】\n魔法用の最大エイトル量を増加させます。\n推奨: 30-50",
+
+                ["Tier7_Master_RunSkillBonus"] = "【走行スキルボーナス】\n走行スキルレベルを増加させます。\n推奨: 5-15",
+
+                ["Tier7_Master_JumpSkillBonus"] = "【ジャンプスキルボーナス】\nジャンプスキルレベルを増加させます。\n推奨: 5-15",
+
+                ["Tier8_MeleeAccel_AttackSpeedBonus"] = "【近接攻撃速度ボーナス (%)】\n近接攻撃速度の最終強化です。\n推奨: 5-10%",
+
+                ["Tier8_MeleeAccel_TripleComboBonus"] = "【3連撃時次攻撃速度ボーナス (%)】\n3連撃コンボ後、次の攻撃速度が大幅に増加します。\n推奨: 20-30%",
+
+                ["Tier8_CrossbowAccel_ReloadSpeed"] = "【リロード速度ボーナス (%)】\nクロスボウのリロード速度の最終強化です。\n推奨: 25-35%",
+
+                ["Tier8_CrossbowAccel_ReloadMoveSpeed"] = "【リロード中移動速度 (%)】\nクロスボウのリロード中の移動速度です。\n推奨: 20-30%",
+
+                ["Tier8_BowAccel_DrawSpeed"] = "【引き速度ボーナス (%)】\n弓の引き速度の最終強化です。\n推奨: 15-20%",
+
+                ["Tier8_BowAccel_DrawMoveSpeed"] = "【引き中移動速度 (%)】\n弓の弦を引いている間の移動速度です。\n推奨: 10-20%",
+
+                ["Tier8_CastAccel_MagicAttackSpeed"] = "【魔法攻撃速度ボーナス (%)】\n魔法攻撃速度の最終強化です。\n推奨: 5-10%",
+
+                ["Tier8_CastAccel_TripleEitrRecovery"] = "【3連撃時エイトル最大回復率 (%)】\n3回の魔法コンボ後、エイトル回復速度が増加します。\n推奨: 10-15%",
+
+                ["Tier1_AgilityBase_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier2_MeleeFlow_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier2_CrossbowExpert_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier2_BowExpert_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier2_MobileCast_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier3_Practitioner1_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier3_Practitioner2_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier4_Energizer_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier4_Captain_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier5_JumpMaster_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier6_Dexterity_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier6_Endurance_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier6_Intellect_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier7_Master_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier8_MeleeAccel_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier8_CrossbowAccel_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier8_BowAccel_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier8_CastAccel_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier0_AttackExpert_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier1_BaseAttack_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier2_MeleeSpec_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier2_BowSpec_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier2_CrossbowSpec_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier2_StaffSpec_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier3_AttackBoost_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier4_MeleeEnhance_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier4_PrecisionAttack_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier4_RangedEnhance_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier5_SpecialStat_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "【レベルごとの必要ポイント】\nレベルアップ1回につき消費するスキルポイントです。\n推奨: 2",
+
+                ["Tier6_ComboFinisher_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier6_TwoHandCrush_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
+                ["Tier6_ElementalAttack_RequiredPoints"] = "【必要ポイント】\nこのノードを解放するために必要なスキルポイントです。",
+
             };
         }
     }

@@ -18,6 +18,7 @@ namespace CaptainSkillTree.SkillTree
     {
         private const string ENCHANT_TYPE_KEY  = "cspt_enchant_type";
         private const string ENCHANT_VALUE_KEY = "cspt_enchant_value";
+        private const string ENCHANT_LEVEL_KEY = "cspt_enchant_level";
         private const string DUR_BONUS_KEY     = "cspt_dur_bonus_mult";
 
         public enum EnchantType
@@ -38,6 +39,12 @@ namespace CaptainSkillTree.SkillTree
             EitrRegen     = 13,  // 악세사리: 에이트르 회복속도 +%
             JumpForce     = 14,  // 악세사리: 점프력 +%
             BlockPower    = 15,  // 방패: 가드 방어력 +%
+            FireProc      = 16,  // 검/도끼/지팡이: 화염 피해 확률 +%
+            SpiritProc    = 17,  // 둔기: 영혼 피해 확률 +%
+            PoisonProc    = 18,  // 단검/지팡이: 독 피해 확률 +%
+            LightningProc = 19,  // 활/폴암/지팡이: 번개 피해 확률 +%
+            FrostProc     = 20,  // 석궁/창/지팡이: 냉기 피해 확률 +%
+            PolearmRange  = 21,  // 폴암: 공격 사거리 +%
         }
 
         public static EnchantType GetEnchantType(ItemDrop.ItemData item)
@@ -57,6 +64,19 @@ namespace CaptainSkillTree.SkillTree
                     System.Globalization.CultureInfo.InvariantCulture, out float v))
                 return v;
             return 0f;
+        }
+
+        /// <summary>
+        /// 인챈트가 부여될 당시의 제작 전문가 레벨(1~5). 확률형 속성 피해(FireProc 등)의
+        /// 발동 확률을 Producer_Config.GetElementalProcChance(level)로 조회할 때 사용.
+        /// </summary>
+        public static int GetEnchantLevel(ItemDrop.ItemData item)
+        {
+            if (item?.m_customData == null) return 0;
+            if (item.m_customData.TryGetValue(ENCHANT_LEVEL_KEY, out string val) &&
+                int.TryParse(val, out int lv))
+                return lv;
+            return 0;
         }
 
         /// <summary>
@@ -223,8 +243,9 @@ namespace CaptainSkillTree.SkillTree
                     float enchChance = Producer_Config.GetEnchantChance(level);
                     if (enchChance > 0f && UnityEngine.Random.Range(0f, 100f) < enchChance)
                     {
-                        ApplyEnchantment(player, crafted, level); // 내부에서 VFX 처리
-                        enchantApplied = true;
+                        enchantApplied = ApplyEnchantment(player, crafted, level); // 내부에서 VFX 처리
+                        if (!enchantApplied)
+                            Plugin.Log.LogWarning($"[제작 전문가] 마법부여 적용 실패 (슬롯 풀 누락 등): {crafted.m_shared.m_name}");
                     }
 
                     // 내구도만 적용된 경우 VFX (마법부여는 ApplyEnchantment 내부에서 처리)
@@ -264,13 +285,13 @@ namespace CaptainSkillTree.SkillTree
                 return !string.IsNullOrEmpty(GetSlotKey(item));
             }
 
-            private static void ApplyEnchantment(Player player, ItemDrop.ItemData item, int level)
+            private static bool ApplyEnchantment(Player player, ItemDrop.ItemData item, int level)
             {
                 string slotKey = GetSlotKey(item);
-                if (string.IsNullOrEmpty(slotKey)) return;
+                if (string.IsNullOrEmpty(slotKey)) return false;
 
                 int enchantId = ProducerEnchantData.PickRandom(slotKey);
-                if (enchantId == 0) return;
+                if (enchantId == 0) return false;
 
                 var range = ProducerEnchantData.GetRange(enchantId, level);
                 float value = UnityEngine.Random.Range(range.Min, range.Max);
@@ -282,6 +303,7 @@ namespace CaptainSkillTree.SkillTree
                 item.m_customData[ENCHANT_TYPE_KEY]  = enchantId.ToString();
                 item.m_customData[ENCHANT_VALUE_KEY] = value.ToString(
                     System.Globalization.CultureInfo.InvariantCulture);
+                item.m_customData[ENCHANT_LEVEL_KEY] = level.ToString();
 
                 string enchantMsg = GetEnchantMessage((EnchantType)enchantId, value);
                 SkillEffect.ShowSkillEffectText(player, enchantMsg, Color.white, SkillEffect.SkillEffectTextType.Standard);
@@ -294,6 +316,8 @@ namespace CaptainSkillTree.SkillTree
                     CaptainSkillTree.VFX.VFXManager.PlayVFXMultiplayer("vfx_shieldgenerator_refuel", "", player.transform.position, Quaternion.identity, 3f);
                 }
                 catch (Exception) { }
+
+                return true;
             }
 
             /// <summary>
@@ -301,17 +325,41 @@ namespace CaptainSkillTree.SkillTree
             /// </summary>
             private static string GetSlotKey(ItemDrop.ItemData item)
             {
-                var t = item.m_shared.m_itemType;
+                var t  = item.m_shared.m_itemType;
+                var sk = item.m_shared.m_skillType;
                 // 석궁: skillType으로 구분
-                if (item.m_shared.m_skillType == Skills.SkillType.Crossbows)
+                if (sk == Skills.SkillType.Crossbows)
                     return "Crossbow";
                 // 활
                 if (t == ItemDrop.ItemData.ItemType.Bow)
                     return "Bow";
-                // 일반 무기
+                // 지팡이/완드: skillType 기준 (itemType과 무관하게 최우선 판정)
+                if (sk == Skills.SkillType.ElementalMagic || sk == Skills.SkillType.BloodMagic)
+                    return "Staff";
+                // 근접무기: 무기군별로 세분화
                 if (t == ItemDrop.ItemData.ItemType.OneHandedWeapon ||
                     t == ItemDrop.ItemData.ItemType.TwoHandedWeapon)
+                {
+                    switch (sk)
+                    {
+                        case Skills.SkillType.Swords:   return "Sword";
+                        case Skills.SkillType.Axes:     return "Axe";
+                        case Skills.SkillType.Clubs:    return "Mace";
+                        case Skills.SkillType.Spears:   return "Spear";
+                        case Skills.SkillType.Polearms: return "Polearm";
+                        case Skills.SkillType.Knives:   return "Knife";
+                    }
+                    // 단검류 프리팹/이름 키워드 폴백 (WeaponHelper.IsUsingKnife와 동일 판정)
+                    string prefabName = item.m_dropPrefab != null ? item.m_dropPrefab.name : "";
+                    string itemName   = item.m_shared.m_name ?? "";
+                    if (prefabName.IndexOf("Dagger", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        prefabName.IndexOf("Claw",   StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        prefabName.IndexOf("Fist",   StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        itemName.IndexOf("Dagger",   StringComparison.OrdinalIgnoreCase) >= 0)
+                        return "Knife";
+                    // 미분류 근접무기 폴백 (기존 동작 유지)
                     return "Weapon";
+                }
                 // 방어구 슬롯
                 if (t == ItemDrop.ItemData.ItemType.Helmet)   return "Helmet";
                 if (t == ItemDrop.ItemData.ItemType.Chest)    return "Chest";

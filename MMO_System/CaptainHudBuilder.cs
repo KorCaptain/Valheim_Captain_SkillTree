@@ -66,33 +66,12 @@ namespace CaptainSkillTree.MMO_System
         {
             var comp = new HudComponents();
 
-            // 1. epicasset 번들 로드 (이미 로드된 번들 재사용, EpicMMO 중복 로드 방지)
-            AssetBundle bundle = null;
-            System.IO.Stream stream = null;
-            bool ownedBundle = false;
-
-            foreach (var b in AssetBundle.GetAllLoadedAssetBundles())
-            {
-                if (b.Contains("EpicHudPanelCanvas") || b.Contains("LevelUpVFX")) { bundle = b; break; }
-            }
-
+            // 1. epicasset 번들 로드 (CaptainLevelUpVFX와 공유 캐시 사용, 중복 로드 방지)
+            var bundle = EpicAssetBundleCache.Get();
             if (bundle == null)
             {
-                stream = Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream("CaptainSkillTree.asset.Resources.epicasset");
-                if (stream == null)
-                {
-                    Plugin.Log.LogError("[CaptainHudBuilder] epicasset 리소스 스트림을 찾을 수 없습니다.");
-                    return comp;
-                }
-                bundle = AssetBundle.LoadFromStream(stream);
-                if (bundle == null)
-                {
-                    Plugin.Log.LogError("[CaptainHudBuilder] epicasset AssetBundle 로드 실패.");
-                    stream.Dispose();
-                    return comp;
-                }
-                ownedBundle = true;
+                Plugin.Log.LogError("[CaptainHudBuilder] epicasset AssetBundle을 가져올 수 없습니다.");
+                return comp;
             }
 
             // 2. EpicHudPanelCanvas 프리팹 로드 & 인스턴스화
@@ -100,7 +79,6 @@ namespace CaptainSkillTree.MMO_System
             if (prefab == null)
             {
                 Plugin.Log.LogError("[CaptainHudBuilder] EpicHudPanelCanvas 프리팹을 찾을 수 없습니다.");
-                if (ownedBundle) { bundle.Unload(false); stream.Dispose(); }
                 return comp;
             }
 
@@ -172,8 +150,7 @@ namespace CaptainSkillTree.MMO_System
             if (expPanel != null)
                 CaptainHudDrag.AttachTo(expPanel.gameObject, "MainHud", canvas);
 
-            // 6. 번들 언로드 (우리가 로드한 경우에만, 에셋 인스턴스는 유지)
-            if (ownedBundle) { bundle.Unload(false); stream.Dispose(); }
+            // 6. 번들은 EpicAssetBundleCache가 세션 동안 유지 관리 (여기서 언로드하지 않음)
 
             // 컴포넌트 참조 null 경고
             LogNullWarnings(comp);

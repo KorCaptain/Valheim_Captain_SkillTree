@@ -190,11 +190,12 @@ for (int i = 0; i < 5; i++)
 - `taunt` — 도발 효과
 - `plexus` — 번개 파란 라운드 (반복, 종료코드 필요)
 - `LevelUpVFX2` — MMO 레벨업
+- `confetti_blast_multicolor` — 퀘스트 완료 컨페티
 
 **미사용 (등록 예정)**
 - `area_circles_blue`, `area_fire_red`, `area_heal_green`, `area_magic_multicolor`, `area_star_ellow`
 - `shine_blue`, `shine_pink`, `shine_ellow`
-- `sparkle_ellow`, `confetti_blast_multicolor`, `confetti_directional_multicolor`
+- `sparkle_ellow`, `confetti_directional_multicolor`
 - `flash_blue_purple`, `flash_ellow`, `flash_ellow_pink`, `flash_magic_blue_pink`, `flash_magic_ellow_blue`
 - `flash_round_ellow`, `flash_star_ellow_purple`, `water_blast_blue`, `water_blast_green`
 - `guard_01`, `dust_permanently_blue`

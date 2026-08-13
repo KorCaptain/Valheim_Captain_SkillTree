@@ -65,7 +65,7 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
 
-                float requiredStamina = Mace_Config.GuardianHeartStaminaCostValue;
+                float requiredStamina = Defense_Config.GuardianHeartStaminaCostValue;
                 if (player.GetStamina() < requiredStamina)
                 {
                     DrawFloatingText(player, L.Get("stamina_insufficient"), Color.red);
@@ -78,14 +78,14 @@ namespace CaptainSkillTree.SkillTree
                     // 1번째 사용: 쿨타임 보류 + 30초 창 오픈
                     _shieldChargePendingWindow[player] = now + ShieldChargeExtraWindow;
                     player.StartCoroutine(ExpireShieldChargeWindow(player));
-                    ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "mace_Step7_guardian_heart", ShieldChargeExtraWindow);
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("M2", "mace_Step7_guardian_heart", ShieldChargeExtraWindow);
                 }
                 else
                 {
                     // 2번째 사용(창 내) or 비탱커: 쿨타임 즉시 시작
                     _shieldChargePendingWindow.Remove(player);
-                    shieldChargeCooldowns[player] = now + Mace_Config.GuardianHeartCooldownValue;
-                    ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "mace_Step7_guardian_heart", Mace_Config.GuardianHeartCooldownValue);
+                    shieldChargeCooldowns[player] = now + Defense_Config.GuardianHeartCooldownValue;
+                    ActiveSkillCooldownRegistry.SetCooldownForSkill("M2", "mace_Step7_guardian_heart", Defense_Config.GuardianHeartCooldownValue);
                 }
                 player.UseStamina(requiredStamina);
                 TankerPrereqLastUsedTime = Time.time;
@@ -115,7 +115,10 @@ namespace CaptainSkillTree.SkillTree
 
             Vector3 startPos = player.transform.position;
             float chargeDistance = 12f;
-            var rb = player.GetComponent<Rigidbody>();
+            var rb = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
+            if (rb == null) rb = player.GetComponent<Rigidbody>();
+            var velField = typeof(Character).GetField("m_currentVel",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
             // 장애물(바위·나무 등) 충돌 체크 — static_solid/Default/piece 레이어 기준
             int obstacleMask = LayerMask.GetMask("static_solid", "Default", "piece");
@@ -140,7 +143,11 @@ namespace CaptainSkillTree.SkillTree
             foreach (var c in Character.GetAllCharacters())
             {
                 if (c == null || c.IsDead() || c == player) continue;
-                if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction()))
+                {
+                    var tp = c as Player;
+                    if (tp == null || !tp.IsPVPEnabled() || !player.IsPVPEnabled()) continue;
+                }
                 if (Vector3.Distance(c.transform.position, startPos) <= 3f)
                 {
                     gatheredEnemies.Add(c);
@@ -172,6 +179,10 @@ namespace CaptainSkillTree.SkillTree
                 yield break;
             }
 
+            // 다단히트는 시전 즉시 시작 (돌진 종료를 기다리지 않음) — 경로 중 추가되는 적도
+            // gatheredEnemies 원본 리스트를 그대로 공유하므로 다음 틱부터 자동 포함됨
+            StartShieldChargeGatheredMultiHit(player, gatheredEnemies, lookDir);
+
             float elapsed = 0f;
             float vfxTimer = 0f;
             var alreadyHit = new HashSet<int>();
@@ -195,7 +206,13 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 player.transform.position = newPos;
-                if (rb != null) rb.position = newPos;
+                if (rb != null)
+                {
+                    rb.position = newPos;
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+                velField?.SetValue(player, Vector3.zero);
 
                 // 수집된 적을 플레이어 전방 포메이션으로 유지
                 Vector3 rightDir = Vector3.Cross(lookDir, Vector3.up).normalized;
@@ -224,7 +241,11 @@ namespace CaptainSkillTree.SkillTree
                 foreach (var c in Character.GetAllCharacters())
                 {
                     if (c == null || c.IsDead() || c == player) continue;
-                    if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction())) continue;
+                    if (!JobSkillsUtility.IsMonsterFaction(c.GetFaction()))
+                    {
+                        var tp = c as Player;
+                        if (tp == null || !tp.IsPVPEnabled() || !player.IsPVPEnabled()) continue;
+                    }
                     int id = c.GetInstanceID();
                     if (alreadyHit.Contains(id)) continue;
                     if (gatheredIds.Contains(id)) continue;
@@ -236,13 +257,15 @@ namespace CaptainSkillTree.SkillTree
                     c.Stagger(lookDir);
                 }
 
-                // 돌진 잔상 VFX
+                // 돌진 잔상 VFX + 다단히트
                 if (vfxTimer >= 0.08f)
                 {
                     var shieldPrefab2 = ZNetScene.instance?.GetPrefab("fx_shieldgenerator_domehit");
                     if (shieldPrefab2 != null)
                         UnityEngine.Object.Instantiate(shieldPrefab2, player.GetCenterPoint(), Quaternion.identity);
                     vfxTimer = 0f;
+
+                    ApplyShieldChargeAreaMultiHit(player, lookDir, gatheredIds);
                 }
 
                 yield return null;
@@ -259,8 +282,6 @@ namespace CaptainSkillTree.SkillTree
                     rb.angularVelocity = Vector3.zero;
                 }
                 // Valheim 내부 속도 초기화 (m_currentVel 스냅백 핵심 원인)
-                var velField = typeof(Character).GetField("m_currentVel",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 velField?.SetValue(player, Vector3.zero);
                 // ZDO 위치 동기화 (네트워크 스냅백 방지 — FuryHammer 패턴)
                 var nview = HarmonyLib.Traverse.Create(player).Field("m_nview").GetValue<ZNetView>();
@@ -290,13 +311,6 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[돌진방패] blocking 해제 오류: {ex.Message}");
             }
 
-            // 수집된 적 최종 타격
-            if (gatheredEnemies.Count > 0)
-            {
-                try { ApplyShieldChargeGatheredFinishDamage(player, gatheredEnemies, lookDir); }
-                catch (Exception ex) { Plugin.Log.LogError($"[돌진방패] 최종타 오류: {ex.Message}"); }
-            }
-
             shieldChargeActive.Remove(player);
             Plugin.Log.LogInfo($"[돌진방패] 돌진 완료 — 경로타격: {alreadyHit.Count}, 수집타격: {gatheredEnemies.Count}");
 
@@ -318,8 +332,8 @@ namespace CaptainSkillTree.SkillTree
                 blockPower = shieldItem.GetBlockPower(skillFactor);
 
             int scLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 1;
-            float levelBonus = (scLevel - 1) * Mace_Config.ShieldChargeLevelBonusValue;
-            float damageRatio = (Mace_Config.ShieldChargeDamagePercentValue + levelBonus) / 100f;
+            float levelBonus = (scLevel - 1) * Defense_Config.ShieldChargeLevelBonusValue;
+            float damageRatio = (Defense_Config.ShieldChargeDamagePercentValue + levelBonus) / 100f;
             float damage = blockPower * damageRatio;
             if (damage < 1f) damage = 1f;
 
@@ -338,19 +352,22 @@ namespace CaptainSkillTree.SkillTree
             enemy.Damage(chargeHit);
             enemy.Stagger(dashDir);
 
-            // 도발
-            TankerTauntAIPatch.AddTauntedMonster(enemy, player, 5f);
-
-            // 머리 위 도발 아이콘
-            try
+            // 도발 (몬스터만)
+            if (!enemy.IsPlayer())
             {
-                var tauntCol = enemy.GetComponent<Collider>();
-                float headHeight = (tauntCol != null && tauntCol.bounds.size.y > 0.1f)
-                    ? tauntCol.bounds.max.y - enemy.transform.position.y + 0.5f
-                    : 2.5f;
-                SimpleVFX.PlayFollowing("taunt", enemy.transform, Vector3.up * headHeight, 5f);
+                TankerTauntAIPatch.AddTauntedMonster(enemy, player, 5f);
+
+                // 머리 위 도발 아이콘
+                try
+                {
+                    var tauntCol = enemy.GetComponent<Collider>();
+                    float headHeight = (tauntCol != null && tauntCol.bounds.size.y > 0.1f)
+                        ? tauntCol.bounds.max.y - enemy.transform.position.y + 0.5f
+                        : 2.5f;
+                    SimpleVFX.PlayFollowing("taunt", enemy.transform, Vector3.up * headHeight, 5f);
+                }
+                catch { }
             }
-            catch { }
 
             VFXManager.PlayVFXMultiplayer("vfx_blocked", "", enemy.GetCenterPoint(), Quaternion.identity, 2f);
             VFXManager.PlayVFXMultiplayer("sfx_rock_hit", "", enemy.GetCenterPoint(), Quaternion.identity, 2f);
@@ -375,9 +392,11 @@ namespace CaptainSkillTree.SkillTree
                 blockPower = shieldItem.GetBlockPower(skillFactor);
 
             int scLevelArea = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 1;
-            float multiHitPercent = 150f + (scLevelArea - 1) * 20f;
+            float multiHitPercent = Defense_Config.ShieldChargeMultiHitDamagePercentValue
+                + (scLevelArea - 1) * Defense_Config.ShieldChargeMultiHitLevelBonusValue;
             float damage = Mathf.Max(1f, blockPower * multiHitPercent / 100f);
 
+            bool hitAny = false;
             foreach (var c in Character.GetAllCharacters())
             {
                 if (c == null || c.IsDead() || c == player) continue;
@@ -396,27 +415,28 @@ namespace CaptainSkillTree.SkillTree
                 hit.m_dodgeable = false;
 
                 c.Damage(hit);
-
-                VFXManager.PlayVFXMultiplayer("fx_crit", "", c.GetCenterPoint(), Quaternion.identity, 1.5f);
+                hitAny = true;
             }
+
+            // VFX는 대상 수와 무관하게 스킬 발동당 1회만 재생 (RPC 부하 방지)
+            if (hitAny)
+                VFXManager.PlayVFXMultiplayer("fx_crit", "", player.transform.position, Quaternion.identity, 1.5f);
         }
 
         /// <summary>
-        /// 돌진 완료 후 끌어모은 적 최종 타격:
-        /// 첫 번째 적 = 단일 공격력, 나머지 적 = 끌어모은 수만큼 다단히트
+        /// 시전 즉시(t=0) 끌어모은 적 다단히트 시작:
+        /// 첫 번째 적 = 즉시 단일 공격력, 나머지(및 돌진 중 추가되는 적) = 0.25초 간격 4회 다단히트(1초)
+        /// gathered는 원본 리스트를 그대로 넘겨받아 돌진 중 경로 히트로 추가되는 적도 다음 틱부터 포함됨
         /// </summary>
-        private static void ApplyShieldChargeGatheredFinishDamage(
+        private static void StartShieldChargeGatheredMultiHit(
             Player player, List<Character> gathered, Vector3 dashDir)
         {
-            int total = gathered.Count;
+            if (gathered.Count == 0) return;
 
-            // 첫 번째 적: 단일 공격력
+            // 첫 번째 적: 즉시 단일 공격력
             var first = gathered[0];
             if (first != null && !first.IsDead())
                 ApplyShieldChargeHit(player, first, dashDir);
-
-            // 나머지 적: 끌어모은 수(total)만큼 다단히트
-            if (total < 2) return;
 
             float skillFactor = player.GetSkillFactor(Skills.SkillType.Blocking);
             var shieldItem = HarmonyLib.Traverse.Create(player)
@@ -425,15 +445,30 @@ namespace CaptainSkillTree.SkillTree
             if (shieldItem?.m_shared?.m_itemType == ItemDrop.ItemData.ItemType.Shield)
                 blockPower = shieldItem.GetBlockPower(skillFactor);
             int scLv = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 1;
-            float pct = 150f + (scLv - 1) * 20f;
+            float pct = Defense_Config.ShieldChargeMultiHitDamagePercentValue
+                + (scLv - 1) * Defense_Config.ShieldChargeMultiHitLevelBonusValue;
             float multiDmg = Mathf.Max(1f, blockPower * pct / 100f);
 
-            for (int i = 1; i < gathered.Count; i++)
+            player.StartCoroutine(ShieldChargeGatheredMultiHitCoroutine(player, gathered, first, dashDir, multiDmg));
+
+            Plugin.Log.LogInfo($"[돌진방패] 다단히트 시작(시전 즉시) — 초기 수집:{gathered.Count}명, 첫번째=단일, 나머지 4회 다단히트(0.25초 간격)");
+        }
+
+        /// <summary>
+        /// 나머지 적(및 돌진 중 gathered에 새로 추가되는 적) 다단히트: 4회, 0.25초 간격(총 1초).
+        /// 매 타격마다 몬스터별 hit_04 VFX + sfx_ice_hit 사운드. firstEnemy는 단일타로 이미 처리했으므로 제외.
+        /// </summary>
+        private static IEnumerator ShieldChargeGatheredMultiHitCoroutine(
+            Player player, List<Character> gathered, Character firstEnemy, Vector3 dashDir, float multiDmg)
+        {
+            for (int tick = 0; tick < 4; tick++)
             {
-                var enemy = gathered[i];
-                if (enemy == null || enemy.IsDead()) continue;
-                for (int h = 0; h < total; h++)
+                if (player == null || player.IsDead()) yield break;
+
+                foreach (var enemy in gathered)
                 {
+                    if (enemy == null || enemy.IsDead() || enemy == firstEnemy) continue;
+
                     var hit = new HitData();
                     hit.m_damage.m_blunt = multiDmg;
                     hit.m_attacker = player.GetZDOID();
@@ -444,11 +479,13 @@ namespace CaptainSkillTree.SkillTree
                     hit.m_blockable = false;
                     hit.m_dodgeable = false;
                     enemy.Damage(hit);
-                    VFXManager.PlayVFXMultiplayer("fx_crit", "", enemy.GetCenterPoint(),
-                        Quaternion.identity, 1.5f);
+
+                    VFXManager.PlayVFXMultiplayer("hit_04", "sfx_ice_hit", enemy.GetCenterPoint(), Quaternion.identity, 1.5f);
                 }
+
+                if (tick < 3)
+                    yield return new WaitForSeconds(0.25f);
             }
-            Plugin.Log.LogInfo($"[돌진방패] 최종타 완료 — 수집:{total}명, 첫번째=단일, 나머지={total}회 다단히트");
         }
 
         /// <summary>
@@ -515,8 +552,8 @@ namespace CaptainSkillTree.SkillTree
             if (_shieldChargePendingWindow.ContainsKey(player))
             {
                 _shieldChargePendingWindow.Remove(player);
-                shieldChargeCooldowns[player] = Time.time + Mace_Config.GuardianHeartCooldownValue;
-                ActiveSkillCooldownRegistry.SetCooldownForSkill("G", "mace_Step7_guardian_heart", Mace_Config.GuardianHeartCooldownValue);
+                shieldChargeCooldowns[player] = Time.time + Defense_Config.GuardianHeartCooldownValue;
+                ActiveSkillCooldownRegistry.SetCooldownForSkill("M2", "mace_Step7_guardian_heart", Defense_Config.GuardianHeartCooldownValue);
             }
         }
     }

@@ -218,8 +218,8 @@ namespace CaptainSkillTree.SkillTree
                 try
                 {
                     if (c == null || c == player || c.IsDead()) continue;
-                    if (c.IsPlayer()) continue;
-                    if (!c.IsMonsterFaction(Time.time) && c.GetFaction() != Character.Faction.Boss) continue;
+                    if (c.IsPlayer() && !(c.IsPVPEnabled() && player.IsPVPEnabled())) continue;
+                    if (!c.IsPlayer() && !c.IsMonsterFaction(Time.time) && c.GetFaction() != Character.Faction.Boss) continue;
 
                     float dist = (c.GetCenterPoint() - origin).magnitude;
                     if (dist > IceBreathRange) continue;

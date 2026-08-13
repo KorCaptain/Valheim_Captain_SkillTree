@@ -106,10 +106,6 @@ namespace CaptainSkillTree.Localization
                 "追加弾のダメージ割合です。\n" +
                 "推奨: 10-20%",
 
-                ["Tier5_DoubleCast_AngleOffset"] =
-                "【拡散角度（未使用）】\n" +
-                "現バージョンでは未使用です。方向は固定です。",
-
                 ["Tier5_DoubleCast_EitrCost"] =
                 "【エイトル消費】\n" +
                 "スキル発動時に消費するエイトル量です。\n" +
@@ -496,6 +492,58 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier6_ArrowRain_RequiredPoints"] =
                 "【必要ポイント】\n矢の雨を解放するための必要ポイントです。",
+
+                ["Tier5_DoubleCast_LevelBonus"] =
+                "【レベルボーナス(%)】\n" +
+                "二重詠唱スキルのレベル毎ダメージボーナス。\n" +
+                "推奨: 3-8%",
+
+                ["Tier5_OneShot_AoeRadius"] =
+                "【AOE半径 (m)】\n" +
+                "ワンショット命中時に周囲の敵にダメージを与える範囲半径。\n" +
+                "推奨: 5-10m",
+
+                ["Tier5_OneShot_LevelBonus"] =
+                "【レベル毎ダメージボーナス (%)】\n" +
+                "ワンショットスキルのレベル毎追加ダメージボーナス。\n" +
+                "推奨: 30-50%",
+
+                ["Tier5_OneShot_SlowReloadMultiplier"] =
+                "【装填速度ペナルティ倍率】\n" +
+                "発動直後の1回目の装填にこの倍率分時間が延長されます。\n" +
+                "2.0＝-100%速度（2倍遅い）、6.0＝-500%速度（6倍遅い）\n" +
+                "推奨: 2.0 - 6.0",
+
+                ["Tier6_IceBreath_LevelBonus"] =
+                "【レベルボーナス (%)】\n" +
+                "ヴァルカンアイススキルのレベル毎直撃ダメージボーナス。\n" +
+                "推奨: 10-20%",
+
+                ["Tier6_IceBreath_DotLevelBonus"] =
+                "【DoTレベルボーナス (%)】\n" +
+                "ヴァルカンアイススキルのレベル毎DoTダメージボーナス。\n" +
+                "推奨: 3-8%",
+
+                ["Tier6_ArrowRain_LevelBonus"] =
+                "【レベルボーナス (%)】\n" +
+                "矢の雨スキルのレベル毎矢ダメージボーナス。\n" +
+                "推奨: 1-3%",
+
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] =
+                "【ダンジョンバフ：攻撃力ボーナス (%)】\n" +
+                "ダンジョン内でHキー使用時、矢の雨の代わりに発動する自己バフの攻撃力増加量です。\n" +
+                "推奨: 20-30%",
+
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] =
+                "【ダンジョンバフ：持続時間 (秒)】\n" +
+                "ダンジョン内代替バフが維持される時間です。\n" +
+                "推奨: 8-12秒",
+
+                ["Tier5_ExplosiveArrow_LevelBonus"] =
+                "【レベルボーナス (%)】\n" +
+                "爆裂矢スキルのレベル毎ダメージボーナス。\n" +
+                "推奨: 10-25%",
+
             };
         }
     }

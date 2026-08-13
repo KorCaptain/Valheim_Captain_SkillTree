@@ -172,7 +172,7 @@ namespace CaptainSkillTree.SkillTree
 
                 if (isActualCrafting)
                 {
-                    Plugin.Log.LogInfo("[제작 감지] ✅ 실제 제작 상황 확인됨");
+                    Plugin.Log.LogInfo("[제작 감지] [OK] 실제 제작 상황 확인됨");
 
                     var recentItem = GetRecentlyCraftedItem(__instance);
                     if (recentItem != null)
@@ -251,7 +251,7 @@ namespace CaptainSkillTree.SkillTree
             {
                 if (player != Player.m_localPlayer) return;
 
-                Plugin.Log.LogInfo("[DoCrafting] ✅ 실제 제작 메서드 직접 호출됨!");
+                Plugin.Log.LogInfo("[DoCrafting] [OK] 실제 제작 메서드 직접 호출됨!");
 
                 // DoCrafting 호출 플래그 설정 (ConsumeResources 검증용)
                 CraftButtonDetector.materialConsumed = true;

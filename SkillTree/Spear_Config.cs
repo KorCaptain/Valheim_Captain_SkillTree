@@ -266,7 +266,7 @@ namespace CaptainSkillTree.SkillTree
             SpearStep5PenetrateCooldown = SkillTreeConfig.BindServerSync(config,
                 "Spear Tree",
                 "Tier5_Penetrate_GKey_Cooldown",
-                60f,
+                35f,
                 SkillTreeConfig.GetConfigDescription("Tier5_Penetrate_GKey_Cooldown"));
 
             SpearStep5PenetrateStaminaCost = SkillTreeConfig.BindServerSync(config,

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using BepInEx.Configuration;
 using UnityEngine;
 
@@ -18,6 +19,10 @@ namespace CaptainSkillTree.Localization
         private static string _currentLanguage = "ko";
         private static bool _initialized = false;
         private static readonly HashSet<string> _warnedMissingKeys = new HashSet<string>();
+        private static readonly HashSet<string> _warnedFormatErrors = new HashSet<string>();
+
+        // BepInEx/config/CaptainSkillTree/Translation/ 폴더에서 유저 편집을 읽어들이는 언어 (커뮤니티 번역 대상)
+        private static readonly string[] TranslationOverrideLanguages = { "en", "ru", "pt_BR", "de", "zh-cn", "ja" };
 
         // Config entry for language selection (references SkillTreeConfig)
         public static ConfigEntry<string> LanguageConfig => SkillTree.SkillTreeConfig.Language;
@@ -94,9 +99,6 @@ namespace CaptainSkillTree.Localization
                 }
 
                 _initialized = true;
-
-                // Translation 폴더에 en.json / ru.json 내보내기 (유저 번역 기여용)
-                ExportTranslationTemplates();
 
                 // 현재 언어 번역 개수 확인
                 if (!_translations.ContainsKey(_currentLanguage))
@@ -234,12 +236,15 @@ namespace CaptainSkillTree.Localization
                         foreach (var kvp in (defaultData ?? new Dictionary<string, string>()))
                             if (!embeddedData.ContainsKey(kvp.Key))
                                 embeddedData[kvp.Key] = kvp.Value;
+                        ApplyTranslationFolderOverride(fileLang, embeddedData);
                         _translations[fileLang] = embeddedData;
                         Plugin.Log.LogDebug($"[Localization] {fileLang}: 임베디드 리소스 로드 ({embeddedData.Count} entries)");
                     }
                     else
                     {
-                        _translations[fileLang] = defaultData ?? new Dictionary<string, string>();
+                        var fallbackData = defaultData ?? new Dictionary<string, string>();
+                        ApplyTranslationFolderOverride(fileLang, fallbackData);
+                        _translations[fileLang] = fallbackData;
                         Plugin.Log.LogDebug($"[Localization] {fileLang}: 파일 없음 - DefaultLanguages 메모리 사용 ({_translations[fileLang].Count} entries)");
                     }
                     continue;
@@ -280,6 +285,7 @@ namespace CaptainSkillTree.Localization
                         }
                     }
 
+                    ApplyTranslationFolderOverride(fileLang, langData);
                     _translations[fileLang] = langData;
                     Plugin.Log.LogDebug($"[Localization] [OK] Loaded {fileLang}.json ({langData.Count} entries)");
 
@@ -291,9 +297,118 @@ namespace CaptainSkillTree.Localization
                 {
                     Plugin.Log.LogWarning($"[Localization] Failed to load {fileLang}.json: {ex.Message}");
                     // Use default translations as fallback
-                    _translations[fileLang] = defaultData ?? new Dictionary<string, string>();
+                    var recoveryData = defaultData ?? new Dictionary<string, string>();
+                    ApplyTranslationFolderOverride(fileLang, recoveryData);
+                    _translations[fileLang] = recoveryData;
                 }
             }
+        }
+
+        /// <summary>
+        /// BepInEx/config/CaptainSkillTree/Translation/{lang}.json 을 읽어 유저 편집을 langData에 반영한다.
+        /// - 키가 존재하고 {N} placeholder 개수가 영어 원문과 일치하면 유저 값으로 덮어씀 (실제 적용).
+        /// - 개수가 안 맞거나 파싱 실패하면 안전한 기존 값을 유지하고 1회만 경고 로그.
+        /// - langData에 있지만 파일에 없는 신규 키가 있을 때만 파일을 다시 써서 최신 키 목록을 유지 (기존 값은 절대 덮어쓰지 않음).
+        /// </summary>
+        private static void ApplyTranslationFolderOverride(string fileLang, Dictionary<string, string> langData)
+        {
+            if (Array.IndexOf(TranslationOverrideLanguages, fileLang) < 0) return;
+
+            var translationPath = Path.Combine(BepInEx.Paths.ConfigPath, "CaptainSkillTree", "Translation");
+            var filePath = Path.Combine(translationPath, $"{fileLang}.json");
+            var englishAuthoritative = DefaultLanguages.GetEnglish();
+            bool needsRewrite;
+
+            if (File.Exists(filePath))
+            {
+                Dictionary<string, string> userData;
+                try
+                {
+                    userData = ParseJsonToDict(File.ReadAllText(filePath));
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[Localization] Translation/{fileLang}.json 파싱 실패, 기존 값 유지: {ex.Message}");
+                    return;
+                }
+
+                foreach (var kvp in userData)
+                {
+                    // 모드에서 이미 제거된 구버전 키는 무시
+                    if (!langData.ContainsKey(kvp.Key)) continue;
+
+                    englishAuthoritative.TryGetValue(kvp.Key, out var authoritativeText);
+                    if (IsPlaceholderCountSafe(authoritativeText ?? kvp.Value, kvp.Value))
+                    {
+                        langData[kvp.Key] = kvp.Value; // 유저 편집 적용
+                    }
+                    else if (_warnedFormatErrors.Add($"{fileLang}:{kvp.Key}"))
+                    {
+                        Plugin.Log.LogWarning($"[Localization] [WARN] Translation/{fileLang}.json key '{kvp.Key}' has mismatched placeholders - ignoring edit, using safe default");
+                    }
+                }
+
+                // langData에는 있지만 유저 파일엔 없는 키(모드 업데이트로 추가된 신규 키)가 있을 때만 다시 씀
+                needsRewrite = langData.Keys.Any(k => !userData.ContainsKey(k));
+            }
+            else
+            {
+                needsRewrite = true; // 파일이 아직 없으면 새로 생성
+            }
+
+            if (!needsRewrite) return;
+
+            try
+            {
+                if (!Directory.Exists(translationPath)) Directory.CreateDirectory(translationPath);
+                File.WriteAllText(filePath, DictToJson(langData), System.Text.Encoding.UTF8);
+                Plugin.Log.LogDebug($"[Localization] Translation/{fileLang}.json 갱신 ({langData.Count} keys)");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[Localization] Translation/{fileLang}.json 저장 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// candidateText가 authoritativeText와 동일한 {N} placeholder 개수를 만족하여
+        /// string.Format 호출 시 안전한지 검증한다.
+        /// </summary>
+        private static bool IsPlaceholderCountSafe(string authoritativeText, string candidateText)
+        {
+            if (string.IsNullOrEmpty(authoritativeText)) return true;
+            try
+            {
+                int argCount = CountPlaceholders(authoritativeText);
+                if (argCount == 0)
+                {
+                    string.Format(candidateText);
+                    return true;
+                }
+                var args = new object[argCount];
+                for (int i = 0; i < argCount; i++) args[i] = i;
+                string.Format(candidateText, args);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // {N}, {N,align}, {N:format}, {N,align:format} 형태의 composite format placeholder를 모두 인식
+        private static readonly Regex PlaceholderRegex = new Regex(@"\{(\d+)(?:,-?\d+)?(?::[^{}]*)?\}", RegexOptions.Compiled);
+
+        /// <summary>텍스트 내 최대 {N} placeholder 인덱스 + 1을 반환 (없으면 0)</summary>
+        private static int CountPlaceholders(string text)
+        {
+            int max = -1;
+            foreach (Match m in PlaceholderRegex.Matches(text))
+            {
+                int num = int.Parse(m.Groups[1].Value);
+                if (num > max) max = num;
+            }
+            return max + 1;
         }
 
         /// <summary>
@@ -639,9 +754,9 @@ namespace CaptainSkillTree.Localization
                     ? DefaultLanguages.GetKorean()
                     : DefaultLanguages.GetEnglish();
 
-                if (defaultDict.TryGetValue(key, out var defaultText))
+                if (defaultDict.TryGetValue(key, out var defaultText) && TryFormat(defaultText, key, args, out var defaultFormatted))
                 {
-                    return args.Length > 0 ? string.Format(defaultText, args) : defaultText;
+                    return defaultFormatted;
                 }
 
                 // Fallback to the other language if key not found
@@ -649,9 +764,9 @@ namespace CaptainSkillTree.Localization
                     ? DefaultLanguages.GetEnglish()
                     : DefaultLanguages.GetKorean();
 
-                if (fallbackDict.TryGetValue(key, out var earlyFallbackText))
+                if (fallbackDict.TryGetValue(key, out var earlyFallbackText) && TryFormat(earlyFallbackText, key, args, out var earlyFormatted))
                 {
-                    return args.Length > 0 ? string.Format(earlyFallbackText, args) : earlyFallbackText;
+                    return earlyFormatted;
                 }
 
                 Plugin.Log.LogDebug($"[Localization] Key not found (not initialized): '{key}'");
@@ -661,44 +776,69 @@ namespace CaptainSkillTree.Localization
             // Try current language
             if (_translations.TryGetValue(_currentLanguage, out var langDict))
             {
-                if (langDict.TryGetValue(key, out var text))
+                if (langDict.TryGetValue(key, out var text) && TryFormat(text, key, args, out var formatted))
                 {
-                    return args.Length > 0 ? string.Format(text, args) : text;
+                    return formatted;
                 }
             }
 
             // Fallback to English (universal fallback)
             if (_currentLanguage != "en" && _translations.TryGetValue("en", out var enDict))
             {
-                if (enDict.TryGetValue(key, out var enText))
+                if (enDict.TryGetValue(key, out var enText) && TryFormat(enText, key, args, out var enFormatted))
                 {
-                    Plugin.Log.LogDebug($"[Localization] Key '{key}' not found in {_currentLanguage}, using English fallback");
-                    return args.Length > 0 ? string.Format(enText, args) : enText;
+                    Plugin.Log.LogDebug($"[Localization] Key '{key}' not found/unsafe in {_currentLanguage}, using English fallback");
+                    return enFormatted;
                 }
             }
 
             // Fallback to Korean
             if (_currentLanguage != "ko" && _translations.TryGetValue("ko", out var koDict))
             {
-                if (koDict.TryGetValue(key, out var koText))
+                if (koDict.TryGetValue(key, out var koText) && TryFormat(koText, key, args, out var koFormatted))
                 {
-                    Plugin.Log.LogDebug($"[Localization] Key '{key}' not found in {_currentLanguage}, using Korean fallback");
-                    return args.Length > 0 ? string.Format(koText, args) : koText;
+                    Plugin.Log.LogDebug($"[Localization] Key '{key}' not found/unsafe in {_currentLanguage}, using Korean fallback");
+                    return koFormatted;
                 }
             }
 
             // Last resort: try DefaultLanguages directly
             var fallbackKo = DefaultLanguages.GetKorean();
-            if (fallbackKo.TryGetValue(key, out var fallbackText))
+            if (fallbackKo.TryGetValue(key, out var fallbackText) && TryFormat(fallbackText, key, args, out var fallbackFormatted))
             {
                 Plugin.Log.LogDebug($"[Localization] Key '{key}' found in DefaultLanguages.Korean");
-                return args.Length > 0 ? string.Format(fallbackText, args) : fallbackText;
+                return fallbackFormatted;
             }
 
             // Return key as fallback
             if (_warnedMissingKeys.Add(key))
                 Plugin.Log.LogWarning($"[Localization] [FAIL] Key not found in any language: '{key}'");
             return key;
+        }
+
+        /// <summary>
+        /// text에 args를 안전하게 string.Format 적용. 실패(예: 유저가 Translation 파일을 잘못 고쳐 {N}이 깨진 경우)하면
+        /// false를 반환해 호출부가 다음 언어 폴백 단계로 넘어가도록 한다 (크래시 방지).
+        /// </summary>
+        private static bool TryFormat(string text, string key, object[] args, out string result)
+        {
+            if (args.Length == 0)
+            {
+                result = text;
+                return true;
+            }
+            try
+            {
+                result = string.Format(text, args);
+                return true;
+            }
+            catch (FormatException)
+            {
+                if (_warnedFormatErrors.Add($"get:{key}"))
+                    Plugin.Log.LogWarning($"[Localization] [WARN] Format error for key '{key}' - mismatched {{N}} placeholders, falling back");
+                result = null;
+                return false;
+            }
         }
 
         /// <summary>
@@ -722,100 +862,6 @@ namespace CaptainSkillTree.Localization
             LoadLanguageFiles();
             Plugin.Log.LogDebug("[Localization] Language files reloaded");
         }
-
-        #region Translation Export
-
-        /// <summary>
-        /// BepInEx\config\CaptainSkillTree\Translation\ 폴더에 en.json / ru.json 내보내기.
-        /// 유저가 번역본을 수정해 개발자에게 보낼 수 있도록 매 게임 시작 시 최신 버전 덮어씀.
-        /// </summary>
-        private static void ExportTranslationTemplates()
-        {
-            var translationPath = Path.Combine(BepInEx.Paths.ConfigPath, "CaptainSkillTree", "Translation");
-            try
-            {
-                if (!Directory.Exists(translationPath))
-                    Directory.CreateDirectory(translationPath);
-
-                // en.json: DefaultLanguages.GetEnglish() 기준 최신본
-                var enPath = Path.Combine(translationPath, "en.json");
-                var enData = DefaultLanguages.GetEnglish();
-                File.WriteAllText(enPath, DictToJson(enData), System.Text.Encoding.UTF8);
-                Plugin.Log.LogDebug($"[Localization] Translation/en.json exported ({enData.Count} keys)");
-
-                // ru.json: EN 전체 키를 기준으로, RU 번역값으로 덮어씌우기
-                // → 두 파일 동일 키 수 보장, 미번역 신규 키는 영어 fallback
-                var ruPath = Path.Combine(translationPath, "ru.json");
-                var ruData = new Dictionary<string, string>(enData);
-                var ruTranslations = LoadFromEmbeddedResource("ru") ??
-                                     (_translations.ContainsKey("ru") ? _translations["ru"] : null);
-                if (ruTranslations != null)
-                {
-                    foreach (var kvp in ruTranslations)
-                        ruData[kvp.Key] = kvp.Value;
-                }
-                File.WriteAllText(ruPath, DictToJson(ruData), System.Text.Encoding.UTF8);
-                Plugin.Log.LogDebug($"[Localization] Translation/ru.json exported ({ruData.Count} keys, {ruTranslations?.Count ?? 0} RU translated)");
-
-                // pt_BR.json: EN 전체 키를 기준으로, PT_BR 번역값으로 덮어씌우기
-                var ptBrPath = Path.Combine(translationPath, "pt_BR.json");
-                var ptBrData = new Dictionary<string, string>(enData);
-                var ptBrTranslations = LoadFromEmbeddedResource("pt_BR") ??
-                                       (_translations.ContainsKey("pt_BR") ? _translations["pt_BR"] : null);
-                if (ptBrTranslations != null)
-                {
-                    foreach (var kvp in ptBrTranslations)
-                        ptBrData[kvp.Key] = kvp.Value;
-                }
-                File.WriteAllText(ptBrPath, DictToJson(ptBrData), System.Text.Encoding.UTF8);
-                Plugin.Log.LogDebug($"[Localization] Translation/pt_BR.json exported ({ptBrData.Count} keys, {ptBrTranslations?.Count ?? 0} PT_BR translated)");
-
-                // de.json: EN 전체 키를 기준으로, DE 번역값으로 덮어씌우기
-                var dePath = Path.Combine(translationPath, "de.json");
-                var deData = new Dictionary<string, string>(enData);
-                var deTranslations = LoadFromEmbeddedResource("de") ??
-                                     (_translations.ContainsKey("de") ? _translations["de"] : null);
-                if (deTranslations != null)
-                {
-                    foreach (var kvp in deTranslations)
-                        deData[kvp.Key] = kvp.Value;
-                }
-                File.WriteAllText(dePath, DictToJson(deData), System.Text.Encoding.UTF8);
-                Plugin.Log.LogDebug($"[Localization] Translation/de.json exported ({deData.Count} keys, {deTranslations?.Count ?? 0} DE translated)");
-
-                // zh-cn.json: EN 전체 키를 기준으로, ZH-CN 번역값으로 덮어씌우기
-                var zhPath = Path.Combine(translationPath, "zh-cn.json");
-                var zhData = new Dictionary<string, string>(enData);
-                var zhTranslations = LoadFromEmbeddedResource("zh-cn") ??
-                                     (_translations.ContainsKey("zh-cn") ? _translations["zh-cn"] : null);
-                if (zhTranslations != null)
-                {
-                    foreach (var kvp in zhTranslations)
-                        zhData[kvp.Key] = kvp.Value;
-                }
-                File.WriteAllText(zhPath, DictToJson(zhData), System.Text.Encoding.UTF8);
-                Plugin.Log.LogDebug($"[Localization] Translation/zh-cn.json exported ({zhData.Count} keys, {zhTranslations?.Count ?? 0} ZH-CN translated)");
-
-                // ja.json: EN 전체 키를 기준으로, JA 번역값으로 덮어씌우기
-                var jaPath = Path.Combine(translationPath, "ja.json");
-                var jaData = new Dictionary<string, string>(enData);
-                var jaTranslations = LoadFromEmbeddedResource("ja") ??
-                                     (_translations.ContainsKey("ja") ? _translations["ja"] : null);
-                if (jaTranslations != null)
-                {
-                    foreach (var kvp in jaTranslations)
-                        jaData[kvp.Key] = kvp.Value;
-                }
-                File.WriteAllText(jaPath, DictToJson(jaData), System.Text.Encoding.UTF8);
-                Plugin.Log.LogDebug($"[Localization] Translation/ja.json exported ({jaData.Count} keys, {jaTranslations?.Count ?? 0} JA translated)");
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogWarning($"[Localization] Translation export 실패: {ex.Message}");
-            }
-        }
-
-        #endregion
 
         #region JSON Parsing (Simple implementation without external dependencies)
 

@@ -73,12 +73,13 @@ namespace CaptainSkillTree.Localization
                 // === Mace Skill Names ===
                 ["mace_skill_expert"] = "둔기 전문가",
                 ["mace_skill_guardian"] = "방패돌진",
+                ["mace_skill_shockwave_slam"] = "충격파 강타",
                 ["mace_skill_fury"] = "분노의 망치",
                 ["mace_skill_damage_boost"] = "둔기 강화",
                 ["mace_skill_stun_boost"] = "기절 강화",
                 ["mace_skill_guard_boost"] = "회전 타격",
                 ["mace_skill_heavy_strike"] = "무거운 일격",
-                ["mace_skill_knockback"] = "밀어내기",
+                ["mace_skill_knockback"] = "뇌진탕",
                 ["mace_skill_tanker"] = "탱커",
                 ["mace_skill_dps_boost"] = "데미지 강화",
                 ["mace_skill_grandmaster"] = "속공",
@@ -89,7 +90,7 @@ namespace CaptainSkillTree.Localization
                 ["mace_desc_stun_boost"] = "기절 확률 +{0}%, 기절 지속시간 +{1}초",
                 ["mace_desc_guard_boost"] = "세컨드 공격 시 공격력 +{0}%, 범위 {1}m, 넉백 {2}m",
                 ["mace_desc_heavy_strike"] = "타격 +{0}",
-                ["mace_desc_knockback"] = "막기 미사용 상태에서 피격 시 {0}% 확률로 공격자를 밀어냄",
+                ["mace_desc_knockback"] = "둔기로 공격 시 {0}% 확률로 대상의 이동속도와 공격속도를 1.5초간 30% 감소시킴",
                 ["mace_desc_tanker"] = "체력 +{0}, 피해 감소 +{1}%",
                 ["mace_desc_dps_boost"] = "공격력 +{0}%",
                 ["mace_desc_grandmaster"] = "공격속도 +{0}%",
@@ -102,6 +103,11 @@ namespace CaptainSkillTree.Localization
                 ["mace_desc_guardian_damage"] = "방패 막기력의 {0}% 데미지",
                 ["mace_desc_guardian_note"] = "방패로 적을 가격하고 주변 5m 적을 도발한다",
                 ["mace_desc_guardian_multihit"] = "나머지 적: 끌어모은 수만큼 다단히트, 1회당 막기력의 {0}%",
+                ["mace_desc_shockwave_slam"] = "슬랫지를 내리찍는 순간 반경 7m 몬스터를 1.5초간 스태거시키며 광역 데미지",
+                ["shockwave_slam_damage_preview"] = "무기 공격력의 {0}%",
+                ["shockwave_slam_max_level"] = "충격파 강타가 최대 레벨입니다",
+                ["shockwave_slam_prereq_required"] = "속공 필요",
+                ["shockwave_slam_upgrade_title"] = "💥 충격파 강타 강화",
                 ["mace_effect_buff"] = "돌진 거리",
                 ["requirement_two_hand_mace"] = "한손, 양손 둔기 착용",
                 ["requirement_mace_shield"] = "방패 착용",
@@ -110,11 +116,16 @@ namespace CaptainSkillTree.Localization
                 ["shield_charge_max_level"] = "방패돌진이 최대 레벨입니다",
                 ["shield_charge_level_item_required"] = "Lv{0} 강화에 트로피가 필요합니다",
                 ["shield_charge_missing_items"] = "부족: {0}",
-                ["shield_charge_prereq_required"] = "속공 필요",
+                ["shield_charge_prereq_required"] = "막기달인 필요",
                 ["shield_charge_damage_preview"] = "단일 막기력의 {0}%, 다단히트 {1}%",
                 ["shield_charge_upgrade_requires"] = "Lv{0} 강화 필요",
+                ["shield_charge_tanker_only"] = "이 스킬은 탱커만 배울 수 있습니다",
+                ["shield_charge_tanker_refund_notice"] = "방패돌진은 탱커 전용 스킬로 변경되어, 보유하고 있던 방패돌진 투자가 초기화되고 스킬 포인트가 반납되었습니다.",
+                ["tooltip_required_job"] = "필요 직업",
+                ["job_name_tanker"] = "탱커",
                 ["tooltip_effect"] = "효과",
                 ["tooltip_special_note"] = "특별안내",
+                ["tooltip_special"] = "특수",
 
                 // === Spear Skill Names ===
                 ["spear_skill_expert"] = "창 전문가",
@@ -248,7 +259,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Staff Skill Names ===
                 ["staff_skill_expert"] = "지팡이 전문가",
-                ["staff_skill_dual_cast"] = "이중시전",
+                ["staff_skill_dual_cast"] = "다중시전",
                 ["staff_skill_heal"] = "힐",
 
                 // === Staff Skill Descriptions ===
@@ -377,11 +388,11 @@ namespace CaptainSkillTree.Localization
                 ["archer_desc_multishot_fallback"] = "5발씩 2회 발사합니다.",
                 ["archer_desc_arrow_damage_fallback"] = "화살 1발은 활+화살 공격력의 50%",
                 ["archer_passive_skills"] = "점프 높이 +{0}%, 낙하 데미지 -{1}%",
-                ["archer_passive_lv1"] = "점프 +{0}%, 낙하 -{1}%, 공격 스테미나 -{2}%, 화살/볼트 {3}% 미소모",
-                ["archer_passive_lv2"] = "점프 +{0}%, 독 저항 +{1}%, 공격 스테미나 -{2}%, 화살/볼트 {3}% 미소모",
-                ["archer_passive_lv3"] = "점프 +{0}%, 낙하 -{1}%, 독/냉기 저항 +{2}%, 공격 스테미나 -{3}%, 화살/볼트 {4}% 미소모",
-                ["archer_passive_lv4"] = "점프 +{0}%, 낙하 -{1}%, 독/냉기/화염 저항 +{2}%, 공격 스테미나 -{3}%, 화살/볼트 {4}% 미소모",
-                ["archer_passive_lv5"] = "점프 +{0}%, 낙하 -{1}%, 모든 속성 저항 +{2}%, 공격 스테미나 -{3}%, 화살/볼트 {4}% 미소모",
+                ["archer_passive_lv1"] = "점프 +{0}%, 낙하 -{1}%, 공격 스테미나 -{2}%, 화살/볼트 {3}% 미소모, 길들인 생물 회복 +{4}/초",
+                ["archer_passive_lv2"] = "점프 +{0}%, 독 저항 +{1}%, 공격 스테미나 -{2}%, 화살/볼트 {3}% 미소모, 길들인 생물 회복 +{4}/초",
+                ["archer_passive_lv3"] = "점프 +{0}%, 낙하 -{1}%, 독/냉기 저항 +{2}%, 공격 스테미나 -{3}%, 화살/볼트 {4}% 미소모, 길들인 생물 회복 +{5}/초",
+                ["archer_passive_lv4"] = "점프 +{0}%, 낙하 -{1}%, 독/냉기/화염 저항 +{2}%, 공격 스테미나 -{3}%, 화살/볼트 {4}% 미소모, 길들인 생물 회복 +{5}/초",
+                ["archer_passive_lv5"] = "점프 +{0}%, 낙하 -{1}%, 모든 속성 저항 +{2}%, 공격 스테미나 -{3}%, 화살/볼트 {4}% 미소모, 길들인 생물 회복 +{5}/초",
                 ["requirement_archer"] = "활 착용, 아처 직업",
                 ["archer_current_level"] = "현재 레벨",
                 ["archer_max_level"] = "★ 최대 레벨 달성",
@@ -497,10 +508,10 @@ namespace CaptainSkillTree.Localization
                 ["item_trophy_tick"] = "진드기 트로피",
                 ["item_trophy_charredwarrior"] = "타락 전사 트로피",
 
-                // === Dual Cast Upgrade Dialog ===
-                ["dual_cast_upgrade_title"] = "✨ 이중시전 강화",
-                ["dual_cast_upgrade_confirm"] = "이중시전을 Lv{0}로 강화하시겠습니까?\n필요 트로피가 소모됩니다.",
-                ["dual_cast_max_level"] = "이중시전이 최대 레벨입니다.",
+                // === Multi Cast Upgrade Dialog ===
+                ["dual_cast_upgrade_title"] = "✨ 다중시전 강화",
+                ["dual_cast_upgrade_confirm"] = "다중시전을 Lv{0}로 강화하시겠습니까?\n필요 트로피가 소모됩니다.",
+                ["dual_cast_max_level"] = "다중시전이 최대 레벨입니다.",
                 ["dual_cast_level_item_required"] = "Lv{0} 강화에 필요한 트로피가 없습니다.",
                 ["dual_cast_missing_items"] = "부족: {0}",
                 ["dual_cast_upgrade_requires"] = "Lv{0} 강화 필요:",
@@ -570,7 +581,9 @@ namespace CaptainSkillTree.Localization
                 ["whirlwind_missing_items"] = "부족: {0}",
                 ["whirlwind_upgrade_requires"] = "Lv{0} 강화 필요:",
                 ["whirlwind_damage_preview"] = "직격 {0}% · 광역 {1}%",
+                ["whirlwind_reduction_preview"] = "받는 피해 감소 {0}%",
                 ["whirlwind_prereq_required"] = "관통 돌격(polearm_step5_king)을 먼저 배워야 합니다.",
+                ["polearm_whirlwind_hold_notice"] = "휠마우스 버튼을 누르고 있는 동안(최대 {0}초) 연속공격 가능",
             };
         }
 
@@ -794,12 +807,13 @@ namespace CaptainSkillTree.Localization
                 // === Mace Skill Names ===
                 ["mace_skill_expert"] = "Mace Expert",
                 ["mace_skill_guardian"] = "Shield Charge",
+                ["mace_skill_shockwave_slam"] = "Shockwave Slam",
                 ["mace_skill_fury"] = "Fury Hammer",
                 ["mace_skill_damage_boost"] = "Mace Enhancement",
                 ["mace_skill_stun_boost"] = "Stun Enhancement",
                 ["mace_skill_guard_boost"] = "Spin Strike",
                 ["mace_skill_heavy_strike"] = "Heavy Strike",
-                ["mace_skill_knockback"] = "Knockback",
+                ["mace_skill_knockback"] = "Concussion",
                 ["mace_skill_tanker"] = "Tanker",
                 ["mace_skill_dps_boost"] = "DPS Enhancement",
                 ["mace_skill_grandmaster"] = "Swift Attack",
@@ -810,7 +824,7 @@ namespace CaptainSkillTree.Localization
                 ["mace_desc_stun_boost"] = "Stun chance +{0}%, Stun duration +{1}s",
                 ["mace_desc_guard_boost"] = "Secondary attack damage +{0}%, AoE range {1}m, knockback {2}m",
                 ["mace_desc_heavy_strike"] = "Blunt +{0}",
-                ["mace_desc_knockback"] = "When not blocking, {0}% chance to push attacker on hit",
+                ["mace_desc_knockback"] = "{0}% chance on hit with a mace to slow the target's movement and attack speed by 30% for 1.5s",
                 ["mace_desc_tanker"] = "Health +{0}, Damage reduction +{1}%",
                 ["mace_desc_dps_boost"] = "Damage +{0}%",
                 ["mace_desc_grandmaster"] = "Attack speed +{0}%",
@@ -823,6 +837,11 @@ namespace CaptainSkillTree.Localization
                 ["mace_desc_guardian_damage"] = "Deal {0}% of block power as damage",
                 ["mace_desc_guardian_note"] = "Strike enemies with your shield and taunt nearby enemies within 5m",
                 ["mace_desc_guardian_multihit"] = "Other gathered enemies: multi-hit equal to gathered count, {0}% of block power per hit",
+                ["mace_desc_shockwave_slam"] = "Slam the sledgehammer down, staggering monsters within a 7m radius for 1.5s and dealing area damage",
+                ["shockwave_slam_damage_preview"] = "{0}% of weapon damage",
+                ["shockwave_slam_max_level"] = "Shockwave Slam is at max level",
+                ["shockwave_slam_prereq_required"] = "Swift Attack required",
+                ["shockwave_slam_upgrade_title"] = "💥 Shockwave Slam Upgrade",
                 ["mace_effect_buff"] = "Dash distance",
                 ["requirement_two_hand_mace"] = "One/Two-handed mace equipped",
                 ["requirement_mace_shield"] = "Shield equipped",
@@ -831,11 +850,16 @@ namespace CaptainSkillTree.Localization
                 ["shield_charge_max_level"] = "Shield Charge is at max level",
                 ["shield_charge_level_item_required"] = "Trophies required for Lv{0} upgrade",
                 ["shield_charge_missing_items"] = "Missing: {0}",
-                ["shield_charge_prereq_required"] = "Swift Attack required",
+                ["shield_charge_prereq_required"] = "Block Master required",
                 ["shield_charge_damage_preview"] = "Single block power {0}%, Multi-hit {1}%",
                 ["shield_charge_upgrade_requires"] = "Lv{0} Upgrade Required",
+                ["shield_charge_tanker_only"] = "Only the Tanker job can learn this skill",
+                ["shield_charge_tanker_refund_notice"] = "Shield Charge is now Tanker-only. Your existing Shield Charge investment has been reset and the skill points refunded.",
+                ["tooltip_required_job"] = "Required Job",
+                ["job_name_tanker"] = "Tanker",
                 ["tooltip_effect"] = "Effect",
                 ["tooltip_special_note"] = "Special Note",
+                ["tooltip_special"] = "Special",
 
                 // === Spear Skill Names ===
                 ["spear_skill_expert"] = "Spear Expert",
@@ -969,7 +993,7 @@ namespace CaptainSkillTree.Localization
 
                 // === Staff Skill Names ===
                 ["staff_skill_expert"] = "Staff Expert",
-                ["staff_skill_dual_cast"] = "Double Casting",
+                ["staff_skill_dual_cast"] = "Multi Cast",
                 ["staff_skill_heal"] = "Heal",
 
                 // === Staff Skill Descriptions ===
@@ -1091,10 +1115,10 @@ namespace CaptainSkillTree.Localization
                 ["confirmation_job_select_only"] = "Only one job can be selected",
                 ["skill_type_job_active"] = "Job Active Skill - {0} Key",
 
-                // === Dual Cast Upgrade Dialog ===
-                ["dual_cast_upgrade_title"] = "✨ Dual Cast Upgrade",
-                ["dual_cast_upgrade_confirm"] = "Upgrade Dual Cast to Lv{0}?\nRequired trophies will be consumed.",
-                ["dual_cast_max_level"] = "Dual Cast is at max level.",
+                // === Multi Cast Upgrade Dialog ===
+                ["dual_cast_upgrade_title"] = "✨ Multi Cast Upgrade",
+                ["dual_cast_upgrade_confirm"] = "Upgrade Multi Cast to Lv{0}?\nRequired trophies will be consumed.",
+                ["dual_cast_max_level"] = "Multi Cast is at max level.",
                 ["dual_cast_level_item_required"] = "Missing trophies for Lv{0} upgrade.",
                 ["dual_cast_missing_items"] = "Missing: {0}",
                 ["dual_cast_upgrade_requires"] = "Lv{0} Upgrade Items:",
@@ -1165,7 +1189,9 @@ namespace CaptainSkillTree.Localization
                 ["whirlwind_missing_items"] = "Missing: {0}",
                 ["whirlwind_upgrade_requires"] = "Lv{0} Upgrade Items:",
                 ["whirlwind_damage_preview"] = "Hit {0}% · AoE {1}%",
+                ["whirlwind_reduction_preview"] = "Damage Reduction {0}%",
                 ["whirlwind_prereq_required"] = "Requires Pierce Charge (polearm_step5_king) first.",
+                ["polearm_whirlwind_hold_notice"] = "Hold the mouse wheel button to attack continuously (up to {0} seconds)",
 
                 // === StatusEffect Names (L.Get system) ===
                 ["se_assassin_heart"] = "Assassin's Heart",

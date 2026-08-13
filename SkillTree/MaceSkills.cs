@@ -76,6 +76,33 @@ namespace CaptainSkillTree.SkillTree
 
         // 마지막 세컨드 어택 시간 추적 (회전 타격용)
         internal static Dictionary<Player, float> s_lastSpinTime = new Dictionary<Player, float>();
+
+        /// <summary>
+        /// 플레이어 정리 시 호출 - 회전 타격 추적 상태 제거 (메모리 누수 방지)
+        /// </summary>
+        public static void CleanupMaceSkillsOnDeath(Player player)
+        {
+            if (player == null) return;
+            s_lastSpinTime.Remove(player);
+        }
+
+        // 뇌진탕(Tier 4) 공격속도 슬로우 대상 및 만료 시각 (AnimationSpeedManager 연동, 이동속도는 SE_Stats로 별도 처리)
+        internal static Dictionary<Character, float> s_concussionSlowUntil = new Dictionary<Character, float>();
+
+        /// <summary>
+        /// 대상이 현재 뇌진탕 공격속도 슬로우 상태인지 확인. 만료된 항목은 조회 시 자동 정리
+        /// </summary>
+        public static bool IsConcussionSlowActive(Character character)
+        {
+            if (character == null) return false;
+            if (!s_concussionSlowUntil.TryGetValue(character, out float until)) return false;
+            if (Time.time >= until)
+            {
+                s_concussionSlowUntil.Remove(character);
+                return false;
+            }
+            return true;
+        }
     }
 
     // ===== Harmony 패치 =====
@@ -141,45 +168,44 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
-    /// 둔기 밀어내기 효과 패치
-    /// Tier 4: 막기 미사용 상태에서 피격 시 30% 확률로 공격자를 5m 밀어냄
+    /// 둔기 뇌진탕 효과 패치
+    /// Tier 4: 둔기로 공격 시 35% 확률로 대상을 1.5초간 이동속도+공격속도 30% 감소(슬로우)시킴
     /// </summary>
     [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
-    public static class MaceSkills_KnockbackPatch
+    public static class MaceSkills_ConcussionPatch
     {
-        static void Prefix(Character __instance, HitData hit)
+        static void Postfix(Character __instance, HitData hit)
         {
             try
             {
-                // 피격자가 플레이어인지 확인
-                if (__instance is not Player player) return;
-                if (!WeaponHelper.IsUsingMace(player)) return;
+                var attacker = hit.GetAttacker();
+                if (attacker == null || !attacker.IsPlayer()) return;
+                if (__instance.IsPlayer() && !SkillEffect.IsPvPCombat(__instance, attacker as Character)) return;
+
+                var player = attacker as Player;
+                if (player == null || !WeaponHelper.IsUsingMace(player)) return;
                 if (!SkillBonusCalculator.IsSkillActive("mace_Step4_push")) return;
-                if (player.IsBlocking()) return;
+                if (__instance == null || __instance.IsDead()) return;
 
-                // 공격자가 몬스터인지 확인
-                Character attacker = hit.GetAttacker() as Character;
-                if (attacker == null || attacker.IsPlayer()) return;
+                float slowChance = Mace_Config.MaceStep4KnockbackChanceValue;
+                if (UnityEngine.Random.Range(0f, 100f) > slowChance) return;
 
-                float knockbackChance = Mace_Config.MaceStep4KnockbackChanceValue;
-                if (UnityEngine.Random.Range(0f, 100f) > knockbackChance) return;
+                // 대상에게 뇌진탕(슬로우) 적용: 1.5초간 이동속도 30% 감소
+                var slowSE = ScriptableObject.CreateInstance<SE_Stats>();
+                slowSE.m_name = L.Get("mace_skill_knockback");
+                slowSE.m_tooltip = L.Get("mace_desc_knockback", slowChance);
+                slowSE.m_ttl = 1.5f;
+                slowSE.m_speedModifier = 0.7f;
+                __instance.GetSEMan()?.AddStatusEffect(slowSE, true);
 
-                // 공격자를 밀어냄 (m_damage > 0 필수 - Valheim은 damage=0이면 pushForce 무시)
-                Vector3 pushDir = (attacker.transform.position - player.transform.position).normalized;
-                var pushHit = new HitData();
-                pushHit.m_damage.m_blunt = 0.1f;  // pushForce 활성화용 최소 damage
-                pushHit.m_pushForce = 50f;
-                pushHit.m_dir = pushDir;
-                pushHit.m_point = attacker.GetCenterPoint();
-                pushHit.m_blockable = false;
-                pushHit.m_dodgeable = false;
-                attacker.Damage(pushHit);
+                // 공격속도 30% 감소 (AnimationSpeedManager 연동, Plugin.Patches.cs에서 참조)
+                MaceSkills.s_concussionSlowUntil[__instance] = Time.time + 1.5f;
 
-                Plugin.Log.LogDebug($"[둔기 밀어내기] 확률 {knockbackChance}% 발동! 공격자를 밀어냄");
+                Plugin.Log.LogDebug($"[둔기 뇌진탕] 확률 {slowChance}% 발동! 대상을 1.5초간 슬로우");
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"[둔기 밀어내기 패치] 오류: {ex.Message}");
+                Plugin.Log.LogError($"[둔기 뇌진탕 패치] 오류: {ex.Message}");
             }
         }
     }
@@ -379,17 +405,27 @@ namespace CaptainSkillTree.SkillTree
     [HarmonyPatch(typeof(Player), "Update")]
     public static class MaceSkills_TwoHandedSpinInput_Patch
     {
+        // 무기 교체 시에만 재계산 (매 프레임 IsUsingTwoHandedMace의 문자열 연산 방지)
+        private static ItemDrop.ItemData _cachedWeapon;
+        private static bool _cachedIsTwoHandedMace;
+
         static void Postfix(Player __instance)
         {
             try
             {
                 if (__instance != Player.m_localPlayer) return;
-                if (!WeaponHelper.IsUsingTwoHandedMace(__instance)) return;
-                if (!SkillBonusCalculator.IsSkillActive("mace_Step3_branch_guard")) return;
-                if (!Input.GetMouseButtonDown(2) && !ZInput.GetButtonDown("SecondaryAttack")) return;
 
                 var weapon = __instance.GetCurrentWeapon();
                 if (weapon?.m_shared == null) return;
+
+                if (!ReferenceEquals(weapon, _cachedWeapon))
+                {
+                    _cachedWeapon = weapon;
+                    _cachedIsTwoHandedMace = WeaponHelper.IsUsingTwoHandedMace(__instance);
+                }
+                if (!_cachedIsTwoHandedMace) return;
+                if (!SkillBonusCalculator.IsSkillActive("mace_Step3_branch_guard")) return;
+                if (!Input.GetMouseButtonDown(2) && !ZInput.GetButtonDown("SecondaryAttack")) return;
 
                 // 자체 세컨드가 유효한 무기(예: Stagbreaker)는 제외 - Valheim이 자연스럽게 처리
                 var sec = weapon.m_shared.m_secondaryAttack;
@@ -436,7 +472,12 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 if (s_applyingAoe) return;
-                if (__instance == null || __instance.IsPlayer()) return;
+                if (__instance == null) return;
+                if (__instance.IsPlayer())
+                {
+                    if (hit.GetAttacker() is not Player pvpAttacker) return;
+                    if (!SkillEffect.IsPvPCombat(__instance, pvpAttacker)) return;
+                }
 
                 if (hit.GetAttacker() is not Player attacker) return;
                 if (!WeaponHelper.IsUsingMace(attacker)) return;

@@ -262,22 +262,22 @@ namespace CaptainSkillTree.SkillTree
             if (enhanceSuccess && durabilityApplied)
             {
                 // 두 효과가 모두 적용된 경우: 통합 메시지
-                SkillEffect.DrawFloatingText(player, 
-                    "✨ 강화 및 내구도 효과가 적용되었습니다.", 
+                SkillEffect.DrawFloatingText(player,
+                    L.Get("crafting_enhance_and_durability_applied"),
                     Color.yellow);
             }
             else if (enhanceSuccess)
             {
                 // 강화만 성공한 경우: 개별 메시지
-                SkillEffect.DrawFloatingText(player, 
-                    $"✨ 강화 +{craftingBonus.EnhanceLevel} 효과", 
+                SkillEffect.DrawFloatingText(player,
+                    string.Format(L.Get("crafting_enhance_level_applied_fmt"), craftingBonus.EnhanceLevel),
                     Color.yellow);
             }
             else if (durabilityApplied)
             {
                 // 내구도만 적용된 경우: 개별 메시지
-                SkillEffect.DrawFloatingText(player, 
-                    $"🔧 내구도 +{craftingBonus.DurabilityBonus * 100:F0}% 효과", 
+                SkillEffect.DrawFloatingText(player,
+                    string.Format(L.Get("crafting_durability_bonus_applied_fmt"), craftingBonus.DurabilityBonus * 100f),
                     Color.cyan);
             }
         }

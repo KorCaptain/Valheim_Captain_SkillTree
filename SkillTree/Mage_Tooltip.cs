@@ -57,6 +57,10 @@ namespace CaptainSkillTree.SkillTree
             tooltip += $"<color=#F0E68C><size=16>{L.Get("tooltip_notice")}: </size></color>";
             tooltip += $"<color=#FFE4B5><size=16>{L.Get("confirmation_job_only")}</size></color>\n";
 
+            // 특수 (던전 내 대체 효과)
+            tooltip += $"<color=#FF69B4><size=16>{L.Get("tooltip_special")}: </size></color>";
+            tooltip += $"<color=#FFB6C1><size=16>{L.Get("mage_dungeon_buff_desc", (int)Mage_Config.MageDungeonBuffDamageBonusValue, (int)Mage_Config.MageDungeonBuffDurationValue)}</size></color>\n";
+
             // 패시브 (현재 레벨)
             tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_passive")}: </size></color>";
             tooltip += $"<color=#ADFF2F><size=16>{GetPassiveStr(mainLevel)}</size></color>\n";

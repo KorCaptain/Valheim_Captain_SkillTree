@@ -331,41 +331,6 @@ namespace CaptainSkillTree.SkillTree
     }
 
     /// <summary>
-    /// 요툰의 방패: 방패 블럭 스태미나 소모 -25%
-    /// SEMan.ModifyBlockStaminaUsage 패치
-    /// </summary>
-    [HarmonyPatch(typeof(SEMan), nameof(SEMan.ModifyBlockStaminaUsage))]
-    public static class SEMan_ModifyBlockStaminaUsage_JotunnShield_Patch
-    {
-        [HarmonyPriority(Priority.Low)]
-        public static void Postfix(ref float staminaUse)
-        {
-            try
-            {
-                var player = Player.m_localPlayer;
-                if (player == null) return;
-
-                var manager = SkillTreeManager.Instance;
-                if (manager == null) return;
-
-                // defense_Step6_true: 요툰의 방패
-                if (manager.GetSkillLevel("defense_Step6_true") > 0)
-                {
-                    float reduction = Defense_Config.JotunnShieldBlockStaminaReductionValue / 100f;
-                    float originalUse = staminaUse;
-                    staminaUse = staminaUse - (reduction * staminaUse);
-
-                    Plugin.Log.LogDebug($"[요툰의 방패] 블럭 스태미나 감소: {originalUse:F1} → {staminaUse:F1} (-{reduction * 100f}%)");
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[방어 트리] ModifyBlockStaminaUsage 패치 오류: {ex.Message}");
-            }
-        }
-    }
-
-    /// <summary>
     /// 요툰의 생명력: 물리/속성 저항 +10%
     /// Character.Damage 패치 (Prefix)
     /// </summary>
@@ -467,16 +432,23 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogError($"[막기훈련] 초기화 오류: {ex.Message}");
             }
 
-            Vector3 targetPos = target.transform.position;
-            Vector3 direction = targetPos - player.transform.position;
-            direction.y = 0;
-            if (direction.sqrMagnitude > 0.001f)
-                player.transform.rotation = Quaternion.LookRotation(direction.normalized);
+            // 큰 몹(곰 등)은 transform.position이 발 아래 — 1.5m 앞에서 멈춤
+            Vector3 toTarget = target.transform.position - player.transform.position;
+            toTarget.y = 0f;
+            Vector3 dirNorm = toTarget.sqrMagnitude > 0.001f ? toTarget.normalized : player.transform.forward;
+            if (toTarget.sqrMagnitude > 0.001f)
+                player.transform.rotation = Quaternion.LookRotation(dirNorm);
+            float rawDist = Mathf.Max(0f, toTarget.magnitude - 1.5f);
+            Vector3 targetPos = player.transform.position + dirNorm * rawDist;
+            targetPos.y = player.transform.position.y;
 
-            float moveDuration = Mathf.Max(Vector3.Distance(player.transform.position, targetPos) / 20f, 0.05f);
+            float moveDuration = Mathf.Max(rawDist / 20f, 0.05f);
             float elapsed = 0f;
             Vector3 startPos = player.transform.position;
-            var rb = player.GetComponent<Rigidbody>();
+            var rb = HarmonyLib.Traverse.Create(player).Field("m_body").GetValue<Rigidbody>();
+            if (rb == null) rb = player.GetComponent<Rigidbody>();
+            var velField = typeof(Character).GetField("m_currentVel",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
             while (elapsed < moveDuration)
             {
@@ -487,29 +459,31 @@ namespace CaptainSkillTree.SkillTree
                 Vector3 newPos = Vector3.Lerp(startPos, targetPos, smoothT);
                 if (newPos.y > 4000f)
                 {
-                    if (Physics.Raycast(newPos + Vector3.up * 3f, Vector3.down, out RaycastHit dHit, 8f))
+                    if (Physics.Raycast(newPos + Vector3.up * 3f, Vector3.down, out RaycastHit dHit, 8f,
+                        LayerMask.GetMask("terrain", "static_solid", "piece")))
                         newPos.y = dHit.point.y + 0.1f;
                 }
                 else if (Physics.Raycast(newPos + Vector3.up * 5f, Vector3.down, out RaycastHit gHit, 10f,
-                    LayerMask.GetMask("terrain", "Default")))
+                    LayerMask.GetMask("terrain", "static_solid", "piece")))
                 {
                     newPos.y = gHit.point.y + 0.1f;
                 }
 
                 player.transform.position = newPos;
-                if (rb != null) rb.position = newPos;
+                if (rb != null)
+                {
+                    rb.position = newPos;
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+                velField?.SetValue(player, Vector3.zero);
 
                 yield return null;
             }
 
             // 이동 완료: 속도 리셋 (스냅백 방지)
             if (rb != null) { rb.velocity = Vector3.zero; rb.angularVelocity = Vector3.zero; }
-            try
-            {
-                var velField = typeof(Character).GetField("m_currentVel",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                velField?.SetValue(player, Vector3.zero);
-            }
+            try { velField?.SetValue(player, Vector3.zero); }
             catch { }
 
             try

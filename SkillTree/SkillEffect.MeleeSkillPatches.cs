@@ -22,7 +22,8 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 var attacker = hit.GetAttacker();
-                if (attacker == null || !attacker.IsPlayer() || __instance.IsPlayer()) return;
+                if (attacker == null || !attacker.IsPlayer()) return;
+                if (__instance.IsPlayer() && !SkillEffect.IsPvPCombat(__instance, attacker as Character)) return;
                 var player = attacker as Player;
                 if (player == null || !SkillEffect.IsUsingDagger(player)) return;
                 // 직접 단검 공격(Knives 스킬)만 적용 — 로그 AOE 등 스킬 생성 데미지 제외
@@ -54,7 +55,8 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 var attacker = hit.GetAttacker();
-                if (attacker == null || !attacker.IsPlayer() || __instance.IsPlayer()) return;
+                if (attacker == null || !attacker.IsPlayer()) return;
+                if (__instance.IsPlayer() && !SkillEffect.IsPvPCombat(__instance, attacker as Character)) return;
 
                 var player = attacker as Player;
                 if (player == null || !SkillEffect.IsUsingDagger(player)) return;
@@ -106,7 +108,8 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 var attacker = hit.GetAttacker();
-                if (attacker == null || !attacker.IsPlayer() || __instance.IsPlayer()) return;
+                if (attacker == null || !attacker.IsPlayer()) return;
+                if (__instance.IsPlayer() && !SkillEffect.IsPvPCombat(__instance, attacker as Character)) return;
 
                 var player = attacker as Player;
                 if (player == null || !WeaponHelper.IsUsingSwordOrAxe(player)) return;
@@ -177,7 +180,8 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 var attacker = hit.GetAttacker();
-                if (attacker == null || !attacker.IsPlayer() || __instance.IsPlayer()) return;
+                if (attacker == null || !attacker.IsPlayer()) return;
+                if (__instance.IsPlayer() && !SkillEffect.IsPvPCombat(__instance, attacker as Character)) return;
 
                 var player = attacker as Player;
                 if (player == null) return;
@@ -684,6 +688,9 @@ namespace CaptainSkillTree.SkillTree
                 : SkillEffect.GetCachedSwordPrimaryAttack();
             if (src == null) return;
 
+            // 빌려온 모션 재생 확정 → 전방 2m 보정 판정 대상으로 등록
+            SpearQuickAttackGuaranteedHit_Trigger_Patch.s_guaranteedHitPending.Add(player);
+
             int chainMax = src.m_attackChainLevels > 1 ? src.m_attackChainLevels
                          : src.m_attackRandomAnimations >= 2 ? src.m_attackRandomAnimations : 1;
             string trigger;
@@ -760,6 +767,139 @@ namespace CaptainSkillTree.SkillTree
             rightItem.transform.localRotation = SkillEffect.HasSkill("spear_Step1_crit")
                 ? Quaternion.Euler(0, 180, 0)
                 : Quaternion.identity;
+        }
+    }
+
+    /// <summary>
+    /// 빠른 공격모션 - 전방 2m 보정 판정
+    /// 빌려온 단검/검 애니메이션의 히트 트리거 타이밍이 창 고유 판정과 어긋나
+    /// 키 작은 몬스터를 놓치는 경우가 있어, 네이티브 판정이 못 맞춘 전방 2m 이내 적을 보정 적중시킨다.
+    /// </summary>
+    [HarmonyPatch(typeof(Attack), nameof(Attack.OnAttackTrigger))]
+    public static class SpearQuickAttackGuaranteedHit_Trigger_Patch
+    {
+        internal static readonly HashSet<Player> s_guaranteedHitPending = new HashSet<Player>();
+        internal static readonly HashSet<Player> s_swingActive = new HashSet<Player>();
+        internal static readonly Dictionary<Player, HashSet<Character>> s_nativeHitTargets =
+            new Dictionary<Player, HashSet<Character>>();
+
+        private const float HitRadius = 2f;
+        private const float ForwardHalfAngle = 80f;
+
+        internal static Player GetAttacker(Attack attack)
+        {
+            return Traverse.Create(attack).Field("m_character").GetValue<Humanoid>() as Player;
+        }
+
+        [HarmonyPrefix]
+        static void Prefix(Attack __instance)
+        {
+            var player = GetAttacker(__instance);
+            if (player == null) return;
+            if (!s_guaranteedHitPending.Remove(player)) return;
+
+            s_swingActive.Add(player);
+            s_nativeHitTargets[player] = new HashSet<Character>();
+        }
+
+        [HarmonyPostfix]
+        static void Postfix(Attack __instance)
+        {
+            var player = GetAttacker(__instance);
+            if (player == null) return;
+            if (!s_swingActive.Remove(player)) return;
+
+            try
+            {
+                ApplyGuaranteedHit(player);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[빠른 공격모션] 보정 판정 오류: {ex.Message}");
+            }
+            finally
+            {
+                s_nativeHitTargets.Remove(player);
+            }
+        }
+
+        private static void ApplyGuaranteedHit(Player player)
+        {
+            var weapon = player.GetCurrentWeapon();
+            if (weapon == null) return;
+
+            s_nativeHitTargets.TryGetValue(player, out var alreadyHit);
+
+            Vector3 playerPos = player.transform.position;
+            Vector3 forward = player.transform.forward;
+            forward.y = 0f;
+            forward.Normalize();
+
+            float skillFactor = player.GetSkillFactor(Skills.SkillType.Spears);
+            var weaponDamage = weapon.GetDamage(0, skillFactor);
+
+            var colliders = Physics.OverlapSphere(playerPos, HitRadius);
+            var processed = new HashSet<Character>();
+
+            foreach (var col in colliders)
+            {
+                if (col == null) continue;
+                var target = col.GetComponent<Character>() ?? col.GetComponentInParent<Character>();
+                if (target == null || target == player || target.IsDead()) continue;
+                if (!processed.Add(target)) continue;
+                if (alreadyHit != null && alreadyHit.Contains(target)) continue;
+
+                bool isMonster = target.IsMonsterFaction(Time.time) || target.IsBoss();
+                if (!isMonster)
+                {
+                    var targetPlayer = target as Player;
+                    if (targetPlayer == null || !targetPlayer.IsPVPEnabled() || !player.IsPVPEnabled()) continue;
+                }
+
+                Vector3 toTarget = target.transform.position - playerPos;
+                toTarget.y = 0f;
+                if (toTarget.sqrMagnitude < 0.001f)
+                    toTarget = forward;
+                else
+                    toTarget.Normalize();
+
+                if (Vector3.Angle(forward, toTarget) > ForwardHalfAngle) continue;
+
+                var hitData = new HitData();
+                hitData.m_damage = weaponDamage;
+                hitData.m_point = target.GetCenterPoint();
+                hitData.m_dir = toTarget;
+                hitData.m_pushForce = weapon.m_shared.m_attackForce * skillFactor;
+                hitData.m_toolTier = (short)weapon.m_shared.m_toolTier;
+                hitData.m_skill = Skills.SkillType.Spears;
+                hitData.m_blockable = weapon.m_shared.m_blockable;
+                hitData.m_dodgeable = weapon.m_shared.m_dodgeable;
+                hitData.SetAttacker(player);
+
+                target.Damage(hitData);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 빠른 공격모션 - 네이티브 판정이 실제로 맞춘 대상을 기록 (전방 2m 보정 시 중복 데미지 방지)
+    /// Attack.AddHitPoint는 실제 게임 어셈블리에서 public이 아니라 접근 불가 → Character.Damage로 대체 추적
+    /// </summary>
+    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+    public static class SpearQuickAttackGuaranteedHit_TrackNativeHit_Patch
+    {
+        [HarmonyPrefix]
+        static void Prefix(Character __instance, HitData hit)
+        {
+            if (SpearQuickAttackGuaranteedHit_Trigger_Patch.s_swingActive.Count == 0) return;
+
+            var player = hit.GetAttacker() as Player;
+            if (player == null) return;
+            if (hit.m_skill != Skills.SkillType.Spears) return;
+            if (!SpearQuickAttackGuaranteedHit_Trigger_Patch.s_swingActive.Contains(player)) return;
+
+            if (SpearQuickAttackGuaranteedHit_Trigger_Patch.s_nativeHitTargets.TryGetValue(player, out var set))
+                set.Add(__instance);
         }
     }
 

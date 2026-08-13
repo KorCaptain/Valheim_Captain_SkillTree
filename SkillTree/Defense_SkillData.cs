@@ -62,9 +62,9 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogDebug("[방어 스킬 데이터] 방어 스킬 시스템 초기화 시작");
 
                 // Config 초기화 확인
-                if (Mace_Config.GuardianHeartCooldown == null)
+                if (Defense_Config.GuardianHeartCooldown == null)
                 {
-                    Plugin.Log.LogWarning("[방어 스킬 데이터] Mace_Config가 초기화되지 않음");
+                    Plugin.Log.LogWarning("[방어 스킬 데이터] Defense_Config가 초기화되지 않음");
                     return;
                 }
 
@@ -88,10 +88,10 @@ namespace CaptainSkillTree.SkillTree
             {
                 Plugin.Log.LogInfo($"[방어 스킬 데이터] === 방패돌진 현재 설정값 ===");
                 Plugin.Log.LogInfo($"[방어 스킬 데이터] 돌진 거리: 8m");
-                Plugin.Log.LogInfo($"[방어 스킬 데이터] 충돌 데미지: {Mace_Config.ShieldChargeDamagePercentValue}%");
-                Plugin.Log.LogInfo($"[방어 스킬 데이터] 스태미나 소모: {Mace_Config.GuardianHeartStaminaCostValue}");
-                Plugin.Log.LogInfo($"[방어 스킬 데이터] 쿨타임: {Mace_Config.GuardianHeartCooldownValue}초");
-                Plugin.Log.LogInfo($"[방어 스킬 데이터] 필요 포인트: {Mace_Config.GuardianHeartRequiredPointsValue}");
+                Plugin.Log.LogInfo($"[방어 스킬 데이터] 충돌 데미지: {Defense_Config.ShieldChargeDamagePercentValue}%");
+                Plugin.Log.LogInfo($"[방어 스킬 데이터] 스태미나 소모: {Defense_Config.GuardianHeartStaminaCostValue}");
+                Plugin.Log.LogInfo($"[방어 스킬 데이터] 쿨타임: {Defense_Config.GuardianHeartCooldownValue}초");
+                Plugin.Log.LogInfo($"[방어 스킬 데이터] 필요 포인트: {Defense_Config.GuardianHeartRequiredPointsValue}");
             }
             catch (Exception ex)
             {

@@ -31,6 +31,7 @@ namespace CaptainSkillTree.SkillTree
                     var itemType = item.m_shared.m_itemType;
                     bool isWeapon = itemType == ItemDrop.ItemData.ItemType.OneHandedWeapon
                                  || itemType == ItemDrop.ItemData.ItemType.TwoHandedWeapon
+                                 || itemType == ItemDrop.ItemData.ItemType.TwoHandedWeaponLeft
                                  || itemType == ItemDrop.ItemData.ItemType.Bow;
                     if (!isWeapon) return;
 
@@ -47,6 +48,18 @@ namespace CaptainSkillTree.SkillTree
                             __result += $"\n<color=#FFD700>{L.Get("producer_enchant_bow_crit", $"{enchantVal:F1}")}</color>";
                         else if (enchantType == ProducerCrafting.EnchantType.CrossbowReload)
                             __result += $"\n<color=#FFD700>{L.Get("producer_enchant_crossbow_reload", $"{enchantVal:F1}")}</color>";
+                        else if (enchantType == ProducerCrafting.EnchantType.FireProc)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_fire_proc", $"{enchantVal:F1}")}</color>";
+                        else if (enchantType == ProducerCrafting.EnchantType.SpiritProc)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_spirit_proc", $"{enchantVal:F1}")}</color>";
+                        else if (enchantType == ProducerCrafting.EnchantType.PoisonProc)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_poison_proc", $"{enchantVal:F1}")}</color>";
+                        else if (enchantType == ProducerCrafting.EnchantType.LightningProc)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_lightning_proc", $"{enchantVal:F1}")}</color>";
+                        else if (enchantType == ProducerCrafting.EnchantType.FrostProc)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_frost_proc", $"{enchantVal:F1}")}</color>";
+                        else if (enchantType == ProducerCrafting.EnchantType.PolearmRange)
+                            __result += $"\n<color=#FFD700>{L.Get("producer_enchant_polearm_range", $"{enchantVal:F1}")}</color>";
                     }
 
                     // 버프 활성 시 공격력 출처 라인 (방어구의 체력 라인과 동일한 포맷)

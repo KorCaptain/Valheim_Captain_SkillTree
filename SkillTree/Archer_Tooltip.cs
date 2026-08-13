@@ -138,36 +138,37 @@ namespace CaptainSkillTree.SkillTree
         private static string GetPassiveStr(int level, float resistVal)
         {
             int ammoSave = (int)Archer_Config.ArcherAmmoSaveChanceValue;
+            int tameHeal = (int)(level * Archer_Config.ArcherTameHealPerLevelValue);
             switch (level)
             {
                 case 1:  return L.Get("archer_passive_lv1",
                     (int)Archer_Config.ArcherJumpHeightBonusValue,
                     (int)Archer_Config.ArcherFallDamageReductionValue,
                     (int)Archer_Config.ArcherAttackStaminaReductionLv1Value,
-                    ammoSave);
+                    ammoSave, tameHeal);
                 case 2:  return L.Get("archer_passive_lv2",
                     (int)Archer_Config.ArcherLv2JumpHeightBonusValue,
                     (int)resistVal,
                     (int)Archer_Config.ArcherAttackStaminaReductionLv2Value,
-                    ammoSave);
+                    ammoSave, tameHeal);
                 case 3:  return L.Get("archer_passive_lv3",
                     (int)Archer_Config.ArcherLv3JumpHeightBonusValue,
                     (int)Archer_Config.ArcherLv3FallDamageReductionValue,
                     (int)resistVal,
                     (int)Archer_Config.ArcherAttackStaminaReductionLv3Value,
-                    ammoSave);
+                    ammoSave, tameHeal);
                 case 4:  return L.Get("archer_passive_lv4",
                     (int)Archer_Config.ArcherLv4JumpHeightBonusValue,
                     (int)Archer_Config.ArcherLv4FallDamageReductionValue,
                     (int)resistVal,
                     (int)Archer_Config.ArcherAttackStaminaReductionLv4Value,
-                    ammoSave);
+                    ammoSave, tameHeal);
                 default: return L.Get("archer_passive_lv5",
                     (int)Archer_Config.ArcherLv5JumpHeightBonusValue,
                     (int)Archer_Config.ArcherLv5FallDamageReductionValue,
                     (int)resistVal,
                     (int)Archer_Config.ArcherAttackStaminaReductionLv5Value,
-                    ammoSave);
+                    ammoSave, tameHeal);
             }
         }
 

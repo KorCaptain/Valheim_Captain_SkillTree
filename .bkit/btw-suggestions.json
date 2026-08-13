@@ -160,8 +160,7 @@
         "role": "user",
         "pattern": null
       }
-    }
-  ],
+    },
     {
       "id": "btw-009",
       "timestamp": "2026-05-29T00:00:00Z",
@@ -182,10 +181,31 @@
         "pattern": null
       },
       "note": "언어 통합은 완료됨. 그러나 난이도별 독립 cfg 저장은 미구현 — cfg 1개 공유, 난이도 전환 시 프리셋이 덮어씀. 별도 저장/복원 메커니즘 필요 여부 검토 필요."
+    },
+    {
+      "id": "btw-010",
+      "timestamp": "2026-07-16T00:00:00Z",
+      "suggestion": "에픽엠엠오에서는 스트랭스 스탯 효과에 공격력와 치명타 피해에도 영향이 되는데 우리 캡틴스킬트리에도 공격력과 치명타 피해에 합산 적용이 필요해 보이는데 이도 적용이 가능한지 검토해야해",
+      "context": {
+        "file": "MMO_System/EpicMMOCritIntegration.cs",
+        "pdcaPhase": "do",
+        "feature": "EpicMMOCritIntegration"
+      },
+      "category": "general",
+      "status": "verified",
+      "promotedTo": null,
+      "priority": null,
+      "teamContext": {
+        "isTeamSession": false,
+        "phase": "do",
+        "role": "user",
+        "pattern": null
+      },
+      "note": "조사 완료(2026-07-16). EpicMMO Strength는 치명타 피해(getAddCriticalDmg, 이미 흡수됨)와 별개로 물리 공격력 보너스(getAddPhysicDamage, LevelSystem_Strength.cs:60-65)도 갖고 있으나, 이는 Character.ApplyDamage에 독립 굴림을 거는 치명타 방식과 달리 ItemDrop.ItemData.GetDamage에 Postfix로 배율만 곱하는 방식. CaptainSkillTree의 무기별 공격력 보너스도 동일하게 GetDamage에 각자 Postfix로 배율을 곱하므로, Harmony가 두 모드의 Postfix를 순서대로 누적 실행 — 서로 다른 출처값을 각 1회씩 읽어 곱하는 구조라 이중 적용 없이 이미 자동 합산됨(Intellect 마법데미지 등과 동일 패턴, DAMAGE_SYSTEM_RULES.md Rule 13/MMO 독립성 원칙 확인). EpicMMO 설치 시 자동 합산, 미설치 시 EpicMMO Postfix 자체가 등록되지 않아 캡틴스킬트리 단독 적용 — 두 경우 모두 이미 정상 동작. 결론: 물리 공격력 흡수 코드는 불필요, 추가 작업 없음. 부수적으로 MMO_INTEGRATION_GUIDE.md의 폐기된 Tier 1(getParameter 주입) 권장 섹션들에 경고 주석 추가함."
     }
   ],
   "stats": {
-    "total": 9,
+    "total": 10,
     "promoted": 0,
     "dismissed": 0,
     "lastAnalyzed": null

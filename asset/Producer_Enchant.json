@@ -7,107 +7,131 @@
       "name": "WeaponDmg",
       "display_key": "producer_enchant_weapon_dmg",
       "unit": "%",
-      "lv3": { "min": 3.0, "max": 5.0 },
-      "lv4": { "min": 6.0, "max": 8.0 },
-      "lv5": { "min": 9.0, "max": 12.0 }
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
     },
     {
       "id": 2,
       "name": "Armor",
       "display_key": "producer_enchant_armor",
       "unit": "%",
-      "lv3": { "min": 3.0, "max": 5.0 },
-      "lv4": { "min": 6.0, "max": 8.0 },
-      "lv5": { "min": 9.0, "max": 12.0 }
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
     },
     {
       "id": 3,
       "name": "MaxHP",
       "display_key": "producer_enchant_hp",
       "unit": "%",
-      "lv3": { "min": 3.0, "max": 5.0 },
-      "lv4": { "min": 6.0, "max": 8.0 },
-      "lv5": { "min": 9.0, "max": 12.0 }
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
     },
     {
       "id": 4,
       "name": "WeaponSpd",
       "display_key": "producer_enchant_weapon_spd",
       "unit": "%",
-      "lv3": { "min": 3.0, "max": 5.0 },
-      "lv4": { "min": 6.0, "max": 8.0 },
-      "lv5": { "min": 9.0, "max": 12.0 }
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
     },
     {
       "id": 5,
       "name": "MaxStamina",
       "display_key": "producer_enchant_stamina_pct",
       "unit": "%",
-      "lv3": { "min": 5.0, "max": 8.0 },
-      "lv4": { "min": 9.0, "max": 12.0 },
-      "lv5": { "min": 13.0, "max": 15.0 }
+      "lv1": { "min": 5.0, "max": 10.0 },
+      "lv2": { "min": 11.0, "max": 15.0 },
+      "lv3": { "min": 16.0, "max": 20.0 },
+      "lv4": { "min": 21.0, "max": 25.0 },
+      "lv5": { "min": 26.0, "max": 30.0 }
     },
     {
       "id": 6,
       "name": "BowCrit",
       "display_key": "producer_enchant_bow_crit",
       "unit": "%",
-      "lv3": { "min": 3.0, "max": 5.0 },
-      "lv4": { "min": 6.0, "max": 8.0 },
-      "lv5": { "min": 9.0, "max": 12.0 }
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
     },
     {
       "id": 7,
       "name": "CrossbowReload",
       "display_key": "producer_enchant_crossbow_reload",
       "unit": "%",
-      "lv3": { "min": 20.0, "max": 40.0 },
-      "lv4": { "min": 45.0, "max": 70.0 },
-      "lv5": { "min": 75.0, "max": 100.0 }
+      "lv1": { "min": 20.0, "max": 30.0 },
+      "lv2": { "min": 35.0, "max": 45.0 },
+      "lv3": { "min": 50.0, "max": 65.0 },
+      "lv4": { "min": 70.0, "max": 85.0 },
+      "lv5": { "min": 90.0, "max": 120.0 }
     },
     {
       "id": 8,
       "name": "CooldownReduce",
       "display_key": "producer_enchant_cooldown_reduce",
       "unit": "%",
-      "lv3": { "min": 3.0, "max": 5.0 },
-      "lv4": { "min": 6.0, "max": 8.0 },
-      "lv5": { "min": 9.0, "max": 12.0 }
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
     },
     {
       "id": 9,
       "name": "DodgeRoll",
       "display_key": "producer_enchant_dodge_roll",
       "unit": "%",
-      "lv3": { "min": 3.0, "max": 5.0 },
-      "lv4": { "min": 6.0, "max": 8.0 },
-      "lv5": { "min": 9.0, "max": 12.0 }
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
     },
     {
       "id": 10,
       "name": "MoveSpeed",
       "display_key": "producer_enchant_move_speed",
       "unit": "%",
-      "lv3": { "min": 3.0, "max": 5.0 },
-      "lv4": { "min": 6.0, "max": 8.0 },
-      "lv5": { "min": 9.0, "max": 12.0 }
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
     },
     {
       "id": 11,
       "name": "Eitr",
       "display_key": "producer_enchant_eitr",
       "unit": "",
-      "lv3": { "min": 5.0, "max": 8.0 },
-      "lv4": { "min": 9.0, "max": 12.0 },
-      "lv5": { "min": 13.0, "max": 15.0 }
+      "lv1": { "min": 5.0, "max": 10.0 },
+      "lv2": { "min": 11.0, "max": 15.0 },
+      "lv3": { "min": 16.0, "max": 20.0 },
+      "lv4": { "min": 21.0, "max": 25.0 },
+      "lv5": { "min": 26.0, "max": 30.0 }
     },
     {
       "id": 12,
       "name": "InvWeight",
       "display_key": "producer_enchant_inv_weight",
       "unit": "",
+      "lv1": { "min": 30.0, "max": 50.0 },
+      "lv2": { "min": 55.0, "max": 75.0 },
       "lv3": { "min": 80.0, "max": 100.0 },
-      "lv4": { "min": 100.0, "max": 125.0 },
+      "lv4": { "min": 101.0, "max": 125.0 },
       "lv5": { "min": 130.0, "max": 150.0 }
     },
     {
@@ -115,38 +139,117 @@
       "name": "EitrRegen",
       "display_key": "producer_enchant_eitr_regen",
       "unit": "%",
-      "lv3": { "min": 5.0, "max": 8.0 },
-      "lv4": { "min": 9.0, "max": 12.0 },
-      "lv5": { "min": 13.0, "max": 15.0 }
+      "lv1": { "min": 5.0, "max": 10.0 },
+      "lv2": { "min": 11.0, "max": 15.0 },
+      "lv3": { "min": 16.0, "max": 20.0 },
+      "lv4": { "min": 21.0, "max": 25.0 },
+      "lv5": { "min": 26.0, "max": 30.0 }
     },
     {
       "id": 14,
       "name": "JumpForce",
       "display_key": "producer_enchant_jump_force",
       "unit": "%",
-      "lv3": { "min": 5.0, "max": 8.0 },
-      "lv4": { "min": 9.0, "max": 12.0 },
-      "lv5": { "min": 13.0, "max": 15.0 }
+      "lv1": { "min": 5.0, "max": 10.0 },
+      "lv2": { "min": 11.0, "max": 15.0 },
+      "lv3": { "min": 16.0, "max": 20.0 },
+      "lv4": { "min": 21.0, "max": 25.0 },
+      "lv5": { "min": 26.0, "max": 30.0 }
     },
     {
       "id": 15,
       "name": "BlockPower",
       "display_key": "producer_enchant_block_power",
       "unit": "%",
-      "lv3": { "min": 3.0, "max": 5.0 },
-      "lv4": { "min": 6.0, "max": 8.0 },
-      "lv5": { "min": 9.0, "max": 12.0 }
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
+    },
+    {
+      "id": 16,
+      "name": "FireProc",
+      "display_key": "producer_enchant_fire_proc",
+      "unit": "%",
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
+    },
+    {
+      "id": 17,
+      "name": "SpiritProc",
+      "display_key": "producer_enchant_spirit_proc",
+      "unit": "%",
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
+    },
+    {
+      "id": 18,
+      "name": "PoisonProc",
+      "display_key": "producer_enchant_poison_proc",
+      "unit": "%",
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
+    },
+    {
+      "id": 19,
+      "name": "LightningProc",
+      "display_key": "producer_enchant_lightning_proc",
+      "unit": "%",
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
+    },
+    {
+      "id": 20,
+      "name": "FrostProc",
+      "display_key": "producer_enchant_frost_proc",
+      "unit": "%",
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
+    },
+    {
+      "id": 21,
+      "name": "PolearmRange",
+      "display_key": "producer_enchant_polearm_range",
+      "unit": "%",
+      "lv1": { "min": 3.0, "max": 4.0 },
+      "lv2": { "min": 5.0, "max": 6.0 },
+      "lv3": { "min": 7.0, "max": 8.0 },
+      "lv4": { "min": 9.0, "max": 10.0 },
+      "lv5": { "min": 11.0, "max": 15.0 }
     }
   ],
   "slot_pools": {
     "Weapon":    [{"id": 1, "weight": 1}, {"id": 4, "weight": 1}],
-    "Bow":       [{"id": 1, "weight": 1}, {"id": 6, "weight": 1}],
-    "Crossbow":  [{"id": 1, "weight": 1}, {"id": 7, "weight": 1}],
-    "Helmet":    [{"id": 3, "weight": 1}, {"id": 8, "weight": 1}],
+    "Bow":       [{"id": 1, "weight": 1}, {"id": 6, "weight": 1}, {"id": 19, "weight": 1}],
+    "Crossbow":  [{"id": 1, "weight": 1}, {"id": 7, "weight": 1}, {"id": 20, "weight": 1}],
+    "Helmet":    [{"id": 3, "weight": 1}, {"id": 8, "weight": 1}, {"id": 2, "weight": 1}],
     "Chest":     [{"id": 3, "weight": 1}, {"id": 2, "weight": 1}],
-    "Legs":      [{"id": 9, "weight": 1}, {"id": 10, "weight": 1}],
+    "Legs":      [{"id": 9, "weight": 1}, {"id": 10, "weight": 1}, {"id": 5, "weight": 1}],
     "Shoulder":  [{"id": 5, "weight": 1}, {"id": 11, "weight": 1}],
     "Accessory": [{"id": 12, "weight": 1}, {"id": 13, "weight": 1}, {"id": 14, "weight": 1}],
-    "Shield":    [{"id": 15, "weight": 1}, {"id": 10, "weight": 1}]
+    "Shield":    [{"id": 15, "weight": 1}, {"id": 10, "weight": 1}],
+    "Sword":     [{"id": 1, "weight": 1}, {"id": 4, "weight": 1}, {"id": 16, "weight": 1}],
+    "Axe":       [{"id": 1, "weight": 1}, {"id": 4, "weight": 1}, {"id": 16, "weight": 1}],
+    "Mace":      [{"id": 1, "weight": 1}, {"id": 4, "weight": 1}, {"id": 17, "weight": 1}],
+    "Spear":     [{"id": 1, "weight": 1}, {"id": 4, "weight": 1}, {"id": 20, "weight": 1}],
+    "Polearm":   [{"id": 1, "weight": 1}, {"id": 4, "weight": 1}, {"id": 21, "weight": 1}, {"id": 19, "weight": 1}, {"id": 20, "weight": 1}],
+    "Knife":     [{"id": 1, "weight": 1}, {"id": 4, "weight": 1}, {"id": 18, "weight": 1}],
+    "Staff":     [{"id": 16, "weight": 1}, {"id": 18, "weight": 1}, {"id": 19, "weight": 1}, {"id": 20, "weight": 1}]
   }
 }

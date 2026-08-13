@@ -20,6 +20,28 @@ namespace CaptainSkillTree.SkillTree
         private static HashSet<long> tankerDamageReductionActive = new HashSet<long>();
         private static Dictionary<long, float> tankerDamageReductionEndTime = new Dictionary<long, float>();
 
+        // 도발 관련 Reflection 캐시 (매 도발 시도마다 재조회하지 않도록 클래스 로드 시 1회만 조회)
+        private static readonly System.Reflection.MethodInfo _setHuntPlayerMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        private static readonly System.Reflection.MethodInfo _setTargetMethod = typeof(MonsterAI).GetMethod("SetTarget",
+            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        private static readonly System.Reflection.MethodInfo _getTargetMethod = typeof(MonsterAI).GetMethod("GetTarget",
+            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        private static readonly System.Reflection.FieldInfo _targetField = typeof(MonsterAI).GetField("m_target",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        private static readonly System.Reflection.FieldInfo _targetCreatureField = typeof(MonsterAI).GetField("m_targetCreature",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        private static readonly System.Reflection.FieldInfo _huntField = typeof(MonsterAI).GetField("m_hunt",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        private static readonly System.Reflection.FieldInfo _currentStateField = typeof(BaseAI).GetField("m_currentState",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        private static readonly System.Reflection.FieldInfo _alertedField = typeof(BaseAI).GetField("m_alerted",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        private static readonly System.Reflection.FieldInfo _lastDamageTimeField = typeof(BaseAI).GetField("m_lastDamageTime",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        private static readonly System.Reflection.MethodInfo _alertMethod = typeof(BaseAI).GetMethod("Alert",
+            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
         /// <summary>
         /// 탱커 스킬을 SkillTreeManager에 등록
         /// </summary>
@@ -306,10 +328,9 @@ namespace CaptainSkillTree.SkillTree
                     try
                     {
                         // MonsterAI.SetHuntPlayer 호출 - 가장 효과적인 도발
-                        var setHuntMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        if (setHuntMethod != null)
+                        if (_setHuntPlayerMethod != null)
                         {
-                            setHuntMethod.Invoke(monsterAI, new object[] { tanker });
+                            _setHuntPlayerMethod.Invoke(monsterAI, new object[] { tanker });
                             Plugin.Log.LogDebug($"[안전한 도발] {enemyName} SetHuntPlayer 호출 성공");
                         }
                     }
@@ -318,14 +339,13 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogWarning($"[안전한 도발] {enemyName} SetHuntPlayer 실패: {huntEx.Message}");
                     }
                 }
-                
+
                 // 2단계: 리플렉션으로 SetTarget 호출 (백업)
                 try
                 {
-                    var setTargetMethod = ai.GetType().GetMethod("SetTarget", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (setTargetMethod != null)
+                    if (_setTargetMethod != null)
                     {
-                        setTargetMethod.Invoke(ai, new object[] { tanker });
+                        _setTargetMethod.Invoke(ai, new object[] { tanker });
                         Plugin.Log.LogDebug($"[안전한 도발] {enemyName} SetTarget 호출 성공");
                     }
                     else
@@ -379,7 +399,7 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogDebug($"[안전한 도발] {enemyName} 최종 타겟 확인: {finalTargetInfo}");
 
                 // ✅ AI 패치가 매 프레임 강제로 타겟을 설정하므로 즉시 성공 여부와 관계없이 true 반환
-                Plugin.Log.LogDebug($"[✅ 강화된 도발] {enemyName} 도발 등록 완료 - AI 패치가 매 프레임 강제 타겟 유지");
+                Plugin.Log.LogDebug($"[강화된 도발] {enemyName} 도발 등록 완료 [OK] - AI 패치가 매 프레임 강제 타겟 유지");
                 return true;
             }
             catch (System.Exception ex)
@@ -396,19 +416,17 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                var getTargetMethod = ai.GetType().GetMethod("GetTarget", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (getTargetMethod != null)
+                if (_getTargetMethod != null)
                 {
-                    return getTargetMethod.Invoke(ai, null) as Character;
+                    return _getTargetMethod.Invoke(ai, null) as Character;
                 }
-                
+
                 // 백업: 리플렉션으로 m_target 필드 직접 접근
-                var targetField = ai.GetType().GetField("m_target", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (targetField != null)
+                if (_targetField != null)
                 {
-                    return targetField.GetValue(ai) as Character;
+                    return _targetField.GetValue(ai) as Character;
                 }
-                
+
                 return null;
             }
             catch (System.Exception ex)
@@ -430,10 +448,9 @@ namespace CaptainSkillTree.SkillTree
                 // 1. 타겟 완전 해제
                 try
                 {
-                    var setTargetMethod = ai.GetType().GetMethod("SetTarget", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (setTargetMethod != null)
+                    if (_setTargetMethod != null)
                     {
-                        setTargetMethod.Invoke(ai, new object[] { null });
+                        _setTargetMethod.Invoke(ai, new object[] { null });
                         Plugin.Log.LogDebug($"[어그로 초기화] {enemyName} SetTarget(null) 호출 성공");
                     }
                 }
@@ -441,7 +458,7 @@ namespace CaptainSkillTree.SkillTree
                 {
                     Plugin.Log.LogWarning($"[어그로 초기화] {enemyName} SetTarget(null) 실패: {ex.Message}");
                 }
-                
+
                 // 2. MonsterAI 특수 처리 (Hunt 상태 해제)
                 var monsterAI = ai as MonsterAI;
                 if (monsterAI != null)
@@ -449,27 +466,24 @@ namespace CaptainSkillTree.SkillTree
                     try
                     {
                         // Hunt 상태를 null로 설정
-                        var setHuntMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        if (setHuntMethod != null)
+                        if (_setHuntPlayerMethod != null)
                         {
-                            setHuntMethod.Invoke(monsterAI, new object[] { null });
+                            _setHuntPlayerMethod.Invoke(monsterAI, new object[] { null });
                             Plugin.Log.LogDebug($"[어그로 초기화] {enemyName} SetHuntPlayer(null) 호출 성공");
                         }
-                        
+
                         // m_hunt 필드를 직접 null로 설정
-                        var huntField = typeof(MonsterAI).GetField("m_hunt", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        if (huntField != null)
+                        if (_huntField != null)
                         {
-                            huntField.SetValue(monsterAI, null);
+                            _huntField.SetValue(monsterAI, null);
                             Plugin.Log.LogDebug($"[어그로 초기화] {enemyName} m_hunt 필드 null 설정 성공");
                         }
-                        
+
                         // AI 상태도 리셋 (Idle로 강제 변경)
-                        var stateField = typeof(BaseAI).GetField("m_currentState", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        if (stateField != null)
+                        if (_currentStateField != null)
                         {
                             // Idle 상태로 변경하여 완전히 리셋
-                            stateField.SetValue(ai, null); // null로 설정하면 기본 상태로 돌아감
+                            _currentStateField.SetValue(ai, null); // null로 설정하면 기본 상태로 돌아감
                             Plugin.Log.LogDebug($"[어그로 초기화] {enemyName} AI 상태 리셋 완료");
                         }
                     }
@@ -478,23 +492,21 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogWarning($"[어그로 초기화] {enemyName} MonsterAI 처리 실패: {ex.Message}");
                     }
                 }
-                
+
                 // 3. 기본 상태 리셋
                 try
                 {
                     // 알림 상태 해제
-                    var alertedField = ai.GetType().GetField("m_alerted", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (alertedField != null)
+                    if (_alertedField != null)
                     {
-                        alertedField.SetValue(ai, false);
+                        _alertedField.SetValue(ai, false);
                         Plugin.Log.LogDebug($"[어그로 초기화] {enemyName} alerted 상태 해제");
                     }
-                    
+
                     // 마지막 데미지 시간 리셋
-                    var lastDamageField = ai.GetType().GetField("m_lastDamageTime", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (lastDamageField != null)
+                    if (_lastDamageTimeField != null)
                     {
-                        lastDamageField.SetValue(ai, 0f);
+                        _lastDamageTimeField.SetValue(ai, 0f);
                         Plugin.Log.LogDebug($"[어그로 초기화] {enemyName} lastDamageTime 리셋");
                     }
                 }
@@ -521,51 +533,45 @@ namespace CaptainSkillTree.SkillTree
                 Plugin.Log.LogDebug($"[어그로 덮어쓰기] {enemyName} 탱커로 강제 어그로 덮어쓰기 시작");
                 
                 // 1. 직접 타겟 설정 (여러 방법 동시 사용)
-                var setTargetMethod = ai.GetType().GetMethod("SetTarget", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (setTargetMethod != null)
+                if (_setTargetMethod != null)
                 {
-                    setTargetMethod.Invoke(ai, new object[] { tanker });
+                    _setTargetMethod.Invoke(ai, new object[] { tanker });
                 }
-                
+
                 // 2. m_target 필드 직접 설정
-                var targetField = ai.GetType().GetField("m_target", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (targetField != null)
+                if (_targetField != null)
                 {
-                    targetField.SetValue(ai, tanker);
+                    _targetField.SetValue(ai, tanker);
                 }
-                
+
                 // 3. m_targetCreature 필드도 설정
-                var targetCreatureField = ai.GetType().GetField("m_targetCreature", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (targetCreatureField != null)
+                if (_targetCreatureField != null)
                 {
-                    targetCreatureField.SetValue(ai, tanker);
+                    _targetCreatureField.SetValue(ai, tanker);
                 }
-                
+
                 // 4. MonsterAI 특수 처리
                 var monsterAI = ai as MonsterAI;
                 if (monsterAI != null)
                 {
                     // SetHuntPlayer로 강제 설정
-                    var setHuntMethod = typeof(MonsterAI).GetMethod("SetHuntPlayer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (setHuntMethod != null)
+                    if (_setHuntPlayerMethod != null)
                     {
-                        setHuntMethod.Invoke(monsterAI, new object[] { tanker });
+                        _setHuntPlayerMethod.Invoke(monsterAI, new object[] { tanker });
                     }
-                    
+
                     // m_hunt 필드 직접 설정
-                    var huntField = typeof(MonsterAI).GetField("m_hunt", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (huntField != null)
+                    if (_huntField != null)
                     {
-                        huntField.SetValue(monsterAI, tanker);
+                        _huntField.SetValue(monsterAI, tanker);
                     }
-                    
+
                     // Alert 메서드도 호출하여 즉각적인 반응 유도
                     try
                     {
-                        var alertMethod = typeof(BaseAI).GetMethod("Alert", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        if (alertMethod != null)
+                        if (_alertMethod != null)
                         {
-                            alertMethod.Invoke(ai, null);
+                            _alertMethod.Invoke(ai, null);
                             Plugin.Log.LogDebug($"[어그로 덮어쓰기] {enemyName} Alert 호출 성공");
                         }
                     }
@@ -574,12 +580,11 @@ namespace CaptainSkillTree.SkillTree
                         Plugin.Log.LogWarning($"[어그로 덮어쓰기] {enemyName} Alert 호출 실패: {alertEx.Message}");
                     }
                 }
-                
+
                 // 5. 알림 상태 활성화
-                var alertedField = ai.GetType().GetField("m_alerted", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (alertedField != null)
+                if (_alertedField != null)
                 {
-                    alertedField.SetValue(ai, true);
+                    _alertedField.SetValue(ai, true);
                 }
                 
                 // 6. 연속 물리적 어그로 생성 제거 (AI 패치가 매 프레임 강제하므로 불필요)
@@ -651,7 +656,7 @@ namespace CaptainSkillTree.SkillTree
                         if (leftItem.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield ||
                             leftItem.m_shared.m_blockPower > 0)
                         {
-                            Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 왼손 방패: {leftItem.m_shared.m_name}");
+                            Plugin.Log.LogDebug($"[Tanker 방패 체크] [OK] 왼손 방패: {leftItem.m_shared.m_name}");
                             return true;
                         }
                     }
@@ -667,7 +672,7 @@ namespace CaptainSkillTree.SkillTree
                         // Shield 타입만 허용 - m_blockPower > 0은 검/도끼 등 일반 무기도 해당되므로 제외
                         if (item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
                         {
-                            Plugin.Log.LogDebug($"[Tanker 방패 체크] ✅ 인벤토리 방패: {item.m_shared.m_name}");
+                            Plugin.Log.LogDebug($"[Tanker 방패 체크] [OK] 인벤토리 방패: {item.m_shared.m_name}");
                             return true;
                         }
                     }

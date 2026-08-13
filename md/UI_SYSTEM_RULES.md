@@ -7,6 +7,7 @@ CaptainSkillTree 모드의 스킬 아이콘 크기 일관성 유지 및 계층 �
 ## 📚 규칙 목록
 
 - **Rule 10**: 스킬 아이콘 크기 규칙 (Skill Icon Size Rules)
+- **Rule 11**: 액티브 스킬 노드 색상 규칙 (Active Skill Node Color Rules)
 
 ---
 
@@ -354,11 +355,37 @@ UI 아이콘 크기 구현 시 다음을 확인하세요:
 
 ---
 
+---
+
+## Rule 11: 액티브 스킬 노드 색상 규칙
+
+> 상세 내용: [active_skill_ui.md](active_skill_ui.md)
+
+### 적용 대상
+R/G/H/Mouse2 키에 바인딩된 액티브 스킬 노드만 적용 (`ActiveSkillNodeIds` HashSet으로 판별).
+
+### 색상 사양
+
+| 상태 | 노드 타입 | 색상 |
+|------|----------|------|
+| 락 (미습득) | 액티브 스킬 | `Color(0.5, 0.65, 1, 0.5)` 흐린 파란색 |
+| 언락 (습득) | 액티브 스킬 | `Color(1, 0.84, 0, 1)` 황금색 |
+| 락 | 패시브 / 무기전문가 | `Color(1, 1, 1, 0.5)` 흰색 50% (기존) |
+| 언락 | 패시브 / 무기전문가 | `Color(1, 1, 1, 1)` 흰색 (기존) |
+
+직업 아이콘(Berserker 등)은 별도 분기로 처리되어 색상 규칙 미적용.
+
+### 구현 위치
+`SkillTreeNodeUI.cs` — `GenerateSkillTreeNodesAndLines()` 및 `RefreshNodeStates()` 2곳.
+
+---
+
 ## 🔗 관련 문서
 
 - [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - UI 렌더링 순서 빠른 참조
 - [CLAUDE.md](../CLAUDE.md) - 전체 개발 규칙 목차
 - [CORE_PROTECTION_README.md](CORE_PROTECTION_README.md) - UI 보호 규칙
+- [active_skill_ui.md](active_skill_ui.md) - 액티브 스킬 노드 색상 상세 규칙
 
 ---
 

@@ -7,6 +7,7 @@ CaptainSkillTree 모드의 치명타 확률 및 피해를 중앙에서 관리하
 ## 📚 규칙 목록
 
 - **Rule 12**: 중앙화된 치명타 시스템 (Centralized Critical Hit System)
+- **Rule 13**: EpicMMOSystem Special/Strength 치명타 흡수 (MMO Crit Absorption)
 
 ---
 
@@ -538,6 +539,33 @@ public static void ApplyCriticalDamage(Player player, HitData hit, float critMul
 
 ---
 
+## Rule 13: EpicMMOSystem Special/Strength 치명타 흡수
+
+### 📋 배경
+EpicMMOSystem(기반 MMO 프레임워크) 자체에도 독립적인 치명타 시스템이 있다 — "Special" 스탯(치명타 확률), "Strength" 스탯(치명타 피해)에 기반해 `Character.ApplyDamage`에 자체 Harmony Prefix(`EpicMMOSystem.LevelSystem+AddCritDmg`)를 걸어 별도로 굴림/적용한다. 이를 그대로 두면 한 타격에 대해 CaptainSkillTree의 통합 치명타 굴림과 EpicMMO 자체 굴림이 **각각 독립적으로** 발생해 이중 발동/불일치가 생긴다.
+
+### 🎯 해결 방식
+1. **Unpatch**: `MMO_System\EpicMMOCritIntegration.UnpatchEpicMmoCrit()`가 `Plugin.cs Awake()`에서 `harmony.PatchAll()` 직후 `Harmony.GetPatchInfo(Character.ApplyDamage).Prefixes`를 순회해 `AddCritDmg` 패치를 찾아 `harmony.Unpatch()`로 제거한다. EpicMMO 자체 config 파일은 건드리지 않는다 (Unpatch만, 값 변경 없음).
+2. **흡수**: Special/Strength 원시 포인트는 `EpicMMOSystem_API.GetAttribute(Attribut)` 공개 API를 통해 실시간으로 읽어와(`MMO_System\EpicMMOReflectionHelper.GetSpecialPoints()`/`GetStrengthPoints()`), EpicMMO 원래 공식과 동일한 구조(포인트 × 레벨당 증가량 + 기본값, `MMO_System\MMO_CritIntegration_Config.cs`로 독립 소유)로 계산해 `Critical.cs GetCommonCritChanceBonus()` / `CriticalDamage.cs GetCommonCritDamageBonus()`에 합산한다.
+3. **폴백**: Unpatch 대상을 찾지 못하거나(버전 변경 등) EpicMMOSystem 자체가 없으면, 예외를 삼키고 경고 로그만 남긴 뒤 흡수 없이 종료 — 크래시하지 않는다. `EpicMMOCritIntegration.IsEpicMmoCritSuppressed`로 성공 여부 확인 가능.
+
+### ⚠️ Rule 11(물리 4종) 예외
+Strength 흡수를 위해 `CriticalDamage.ApplyCriticalDamage()`가 **원소 데미지 5종(m_fire/m_frost/m_lightning/m_poison/m_spirit)에도 치명타 배율을 적용**하도록 확장되었다 (EpicMMO 자체 치명타가 원래 10개 채널 전부에 적용되던 것과 동일한 체감 유지 목적). 이는 `DAMAGE_SYSTEM_RULES.md` Rule 11("물리 4종만")의 **명시적 예외**이며, 원소 무기(지팡이 등) 사용자도 Strength 투자 효과를 동일하게 받도록 하기 위한 의도적 설계다.
+
+### 🔧 유지보수 — 버전 확인 필수
+`EpicMMOCritIntegration`/`EpicMMOReflectionHelper`는 EpicMMOSystem 내부 구조(클래스/메서드명)에 리플렉션으로 의존한다. WackyEpicMMOSystem 의존성 버전을 올릴 때는 반드시 공개 소스 **https://github.com/Wacky-Mole/WackyEpicMMOSystem** 에서 다음을 대조 확인할 것:
+- `LevelSystem_Strength.cs` — `AddCritDmg` 패치 클래스명, `getAddCriticalChance`/`getAddCriticalDmg` 공식
+- `EpicMMOSystem_API.cs` — `GetAttribute(Attribut)` 시그니처, `Attribut` enum 순서(Strength=0 ... Special=5)
+
+시그니처가 바뀌면 `EpicMMOCritIntegration.UnpatchEpicMmoCrit()`가 Unpatch에 실패하고 경고 로그(`[EpicMMOCritIntegration] EpicMMOSystem AddCritDmg 패치를 찾지 못함...`)를 남기므로, 로그 확인으로 문제를 조기 발견할 수 있다.
+
+### 📂 관련 파일
+- `MMO_System\EpicMMOCritIntegration.cs` — Unpatch + 흡수 계산
+- `MMO_System\EpicMMOReflectionHelper.cs` — `GetSpecialPoints()`/`GetStrengthPoints()`/`GetMmoAttributePoints()`
+- `MMO_System\MMO_CritIntegration_Config.cs` — 흡수 공식 Config (기본값은 EpicMMO 원본과 동일)
+
+---
+
 ## 🔗 관련 문서
 
 - [DAMAGE_SYSTEM_RULES.md](DAMAGE_SYSTEM_RULES.md) - Rule 11 (발헤임 데미지 타입 시스템)
@@ -549,5 +577,6 @@ public static void ApplyCriticalDamage(Player player, HitData hit, float critMul
 ---
 
 **작성일**: 2025-01-29
-**버전**: 1.0
-**적용 범위**: Rule 12
+**최종 수정**: 2026-07-16 (Rule 13 추가)
+**버전**: 1.1
+**적용 범위**: Rule 12, Rule 13

@@ -120,9 +120,6 @@ ParryMasterParryDurationBonus = SkillTreeConfig.BindServerSync(config, "Defense 
 AttackDodgeBonus = SkillTreeConfig.BindServerSync(config, "Defense Tree", "Tier6_NerveEnhancement_DodgeBonus", ..., SkillTreeConfig.GetConfigDescription("config_t_i_e_r6__n_e_r_v_e_e_n_h_a_n_c_e_m_e_n_t__d_o_d_g_e_b_o_n_u_s"));
 BodyHealthBonus = SkillTreeConfig.BindServerSync(config, "Defense Tree", "Tier6_JotunnVitality_HPBonus", ..., SkillTreeConfig.GetConfigDescription("config_t_i_e_r6__j_o_t_u_n_n_v_i_t_a_l_i_t_y__h_p_b_o_n_u_s"));
 BodyArmorBonus = SkillTreeConfig.BindServerSync(config, "Defense Tree", "Tier6_JotunnVitality_ArmorBonus", ..., SkillTreeConfig.GetConfigDescription("config_t_i_e_r6__j_o_t_u_n_n_v_i_t_a_l_i_t_y__a_r_m_o_r_b_o_n_u_s"));
-JotunnShieldBlockStaminaReduction = SkillTreeConfig.BindServerSync(config, "Defense Tree", "Tier6_JotunnShield_BlockStaminaReduction", ..., SkillTreeConfig.GetConfigDescription("config_t_i_e_r6__j_o_t_u_n_n_s_h_i_e_l_d__b_l_o_c_k_s_t_a_m_i_n_a_r_e_d_u_c_t_i_o_n"));
-JotunnShieldNormalSpeedBonus = SkillTreeConfig.BindServerSync(config, "Defense Tree", "Tier6_JotunnShield_NormalShieldMoveSpeedBonus", ..., SkillTreeConfig.GetConfigDescription("config_t_i_e_r6__j_o_t_u_n_n_s_h_i_e_l_d__n_o_r_m_a_l_s_h_i_e_l_d_m_o_v_e_s_p_e_e_d_b_o_n_u_s"));
-JotunnShieldTowerSpeedBonus = SkillTreeConfig.BindServerSync(config, "Defense Tree", "Tier6_JotunnShield_TowerShieldMoveSpeedBonus", ..., SkillTreeConfig.GetConfigDescription("config_t_i_e_r6__j_o_t_u_n_n_s_h_i_e_l_d__t_o_w_e_r_s_h_i_e_l_d_m_o_v_e_s_p_e_e_d_b_o_n_u_s"));
 
 // === Knife ===
 KnifeExpertBackstabBonus = SkillTreeConfig.BindServerSync(config, "Knife Tree", "Tier0_KnifeExpert_BackstabBonus", ..., SkillTreeConfig.GetConfigDescription("config_t_i_e_r0__k_n_i_f_e_e_x_p_e_r_t__b_a_c_k_s_t_a_b_b_o_n_u_s"));

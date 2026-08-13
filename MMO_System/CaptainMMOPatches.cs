@@ -68,7 +68,7 @@ namespace CaptainSkillTree.MMO_System
         /// 플레이어 또는 파티원이 죽인 몬스터인지 확인
         /// Reflection으로 m_lastHit 접근
         /// </summary>
-        private static bool IsKilledByPlayerOrParty(Character monster, Player localPlayer)
+        internal static bool IsKilledByPlayerOrParty(Character monster, Player localPlayer)
         {
             try
             {
@@ -76,43 +76,21 @@ namespace CaptainSkillTree.MMO_System
                 var lastHitField = typeof(Character).GetField("m_lastHit",
                     System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
+                Character resolvedAttacker = null;
                 if (lastHitField != null)
                 {
                     var lastHit = lastHitField.GetValue(monster) as HitData;
-                    if (lastHit != null)
-                    {
-                        var attacker = lastHit.GetAttacker();
-                        if (attacker != null)
-                        {
-                            // 로컬 플레이어가 공격자인 경우
-                            if (attacker == localPlayer)
-                                return true;
-
-                            // 플레이어의 길들인 동물이 공격자인 경우
-                            if (attacker.IsTamed())
-                            {
-                                // 길들인 동물의 주인이 플레이어인지 확인
-                                var tamedCharacter = attacker as Character;
-                                if (tamedCharacter != null)
-                                {
-                                    float distanceToPlayer = Vector3.Distance(localPlayer.transform.position, tamedCharacter.transform.position);
-                                    if (distanceToPlayer <= 50f) // 플레이어 근처 길들인 동물
-                                        return true;
-                                }
-                            }
-
-                            // 다른 플레이어가 공격자인 경우 (파티 시스템)
-                            if (attacker.IsPlayer())
-                            {
-                                // 파티원 확인: 일정 거리 내 플레이어
-                                float partyRange = 50f; // 파티 경험치 공유 범위
-                                float distance = Vector3.Distance(localPlayer.transform.position, attacker.transform.position);
-                                if (distance <= partyRange)
-                                    return true;
-                            }
-                        }
-                    }
+                    resolvedAttacker = lastHit?.GetAttacker();
                 }
+
+                if (resolvedAttacker != null && EvaluateAttacker(resolvedAttacker, localPlayer))
+                    return true;
+
+                // Fallback: 도트(독/화상 등) 사망 시 m_lastHit에는 공격자 정보가 없는 HitData만
+                // 남으므로, 최근 유효 타격 시점에 기록해둔 공격자로 재판정한다.
+                if (CaptainLastAttackerCache.TryGetRecent(monster, 15f, out var cachedAttacker)
+                    && EvaluateAttacker(cachedAttacker, localPlayer))
+                    return true;
 
                 // Fallback: 플레이어가 최근에 이 몬스터를 공격했는지 확인
                 // 플레이어와 매우 가까운 거리 (전투 범위)
@@ -130,6 +108,34 @@ namespace CaptainSkillTree.MMO_System
             catch (Exception ex)
             {
                 Plugin.Log.LogDebug($"[CaptainMMOPatches] IsKilledByPlayerOrParty 오류: {ex.Message}");
+            }
+
+            return false;
+        }
+
+        /// <summary>주어진 공격자가 로컬 플레이어 본인 / 그의 길들인 동물 / 파티원인지 판정한다.</summary>
+        private static bool EvaluateAttacker(Character attacker, Player localPlayer)
+        {
+            // 로컬 플레이어가 공격자인 경우
+            if (attacker == localPlayer)
+                return true;
+
+            // 플레이어의 길들인 동물이 공격자인 경우
+            if (attacker.IsTamed())
+            {
+                float distanceToPlayer = Vector3.Distance(localPlayer.transform.position, attacker.transform.position);
+                if (distanceToPlayer <= 50f) // 플레이어 근처 길들인 동물
+                    return true;
+            }
+
+            // 다른 플레이어가 공격자인 경우 (파티 시스템)
+            if (attacker.IsPlayer())
+            {
+                // 파티원 확인: 일정 거리 내 플레이어
+                float partyRange = 50f; // 파티 경험치 공유 범위
+                float distance = Vector3.Distance(localPlayer.transform.position, attacker.transform.position);
+                if (distance <= partyRange)
+                    return true;
             }
 
             return false;
@@ -170,11 +176,146 @@ namespace CaptainSkillTree.MMO_System
                 else if (CaptainLevelConfig.CurveExp.Value)
                 {
                     int diff = monsterLevel > maxRange ? monsterLevel - maxRange : minRange - monsterLevel;
-                    resultExp = resultExp / (diff + 1);
+                    resultExp = (int)(resultExp * GetExpDiffMultiplier(diff));
                 }
             }
 
             return Mathf.Max(0, resultExp);
+        }
+
+        #endregion
+
+        #region === Last Attacker Cache (도트 킬 판정용) ===
+
+        /// <summary>
+        /// 공격자 정보가 있는 모든 타격을 몬스터별로 캐시해둔다.
+        /// 독/화상 등 도트 틱은 공격자 없는 HitData로 ApplyDamage를 호출하므로,
+        /// 도트 사망 시 IsKilledByPlayerOrParty가 여기 캐시된 마지막 유효 공격자로 fallback 판정한다.
+        /// </summary>
+        [HarmonyPatch(typeof(Character), nameof(Character.ApplyDamage))]
+        [HarmonyPostfix]
+        public static void RecordAttacker_ApplyDamage_Postfix(Character __instance, HitData hit)
+        {
+            var attacker = hit?.GetAttacker();
+            if (attacker != null)
+                CaptainLastAttackerCache.Record(__instance, attacker);
+        }
+
+        #endregion
+
+        #region === Level Diff Attack Damage Reduction (LV 차이 공격옵션) ===
+
+        /// <summary>
+        /// LV 차이 공격옵션: 몬스터 레벨이 플레이어보다 크게 높을 때 플레이어가 가하는 피해를 감소시킴
+        /// 경험치 감소 로직과는 독립적인 PvE 밸런스 옵션 (서버싱크 Config)
+        /// </summary>
+        [HarmonyPatch(typeof(Character), nameof(Character.ApplyDamage))]
+        [HarmonyPriority(Priority.Low)]
+        [HarmonyPrefix]
+        public static void LevelDiffAttack_ApplyDamage_Prefix(Character __instance, HitData hit)
+        {
+            try
+            {
+                if (!CaptainLevelConfig.EnableLevelDiffDamageReductionValue) return;
+
+                // 공격자가 플레이어인지 확인
+                var attacker = hit.GetAttacker();
+                if (attacker == null || !(attacker is Player)) return;
+
+                // 피격자가 몬스터인지 확인 (플레이어 본인 / 길들인 동물 제외)
+                if (__instance.IsPlayer()) return;
+                if (__instance.IsTamed()) return;
+
+                // 몬스터 레벨 조회 (미등록 몬스터 = 0 = "???" -> 스킵)
+                string monsterName = GetMonsterName(__instance);
+                if (string.IsNullOrEmpty(monsterName)) return;
+
+                int monsterLevel = CaptainMonsterExp.GetLevel(monsterName);
+                if (monsterLevel <= 0) return;
+
+                int playerLevel = CaptainMMOBridge.GetLevel();
+                int diff = monsterLevel - playerLevel;
+                if (diff < 11) return; // 11 미만 차이는 정상 데미지 (100%)
+
+                float multiplier = GetLevelDiffDamageMultiplier(diff);
+                hit.m_damage.Modify(multiplier);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[CaptainMMOPatches] LevelDiffAttack_ApplyDamage_Prefix 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 레벨 차이 구간별 데미지 배율 반환 (Config 값 기반, 0.0~1.0)
+        /// 구간 경계값(11/16/21/31)은 고정 상수 - Config로 노출하지 않음
+        /// </summary>
+        private static float GetLevelDiffDamageMultiplier(int levelDiff)
+        {
+            if (levelDiff <= 15) return CaptainLevelConfig.LevelDiffTier1DamagePercentValue / 100f;   // 11~15
+            if (levelDiff <= 20) return CaptainLevelConfig.LevelDiffTier2DamagePercentValue / 100f;   // 16~20
+            if (levelDiff <= 30) return CaptainLevelConfig.LevelDiffTier3DamagePercentValue / 100f;   // 21~30
+            return CaptainLevelConfig.LevelDiffTier4DamagePercentValue / 100f;                        // 31+
+        }
+
+        /// <summary>
+        /// 레벨 차이(범위 초과분) 구간별 경험치 배율 반환 (Config 값 기반, 0.0~1.0)
+        /// 구간 경계값(10/16/21/31)은 데미지 감소와 동일 - Config로 노출하지 않음
+        /// CaptainMMOPatches.CalculateMonsterExp / CaptainPartyExp.ApplyLevelCurve 공용
+        /// </summary>
+        internal static float GetExpDiffMultiplier(int levelDiff)
+        {
+            if (levelDiff <= 15) return CaptainLevelConfig.ExpDiffTier1PercentValue / 100f;   // 11~15
+            if (levelDiff <= 20) return CaptainLevelConfig.ExpDiffTier2PercentValue / 100f;   // 16~20
+            if (levelDiff <= 30) return CaptainLevelConfig.ExpDiffTier3PercentValue / 100f;   // 21~30
+            return CaptainLevelConfig.ExpDiffTier4PercentValue / 100f;                        // 31+
+        }
+
+        #endregion
+
+        #region === Level Diff Drop Suppression (레벨 차이 아이템 드랍 억제) ===
+
+        /// <summary>
+        /// 레벨 차이 아이템 드랍 억제: 몬스터 레벨이 플레이어보다 DropSuppressionLevelDiff 이상 높으면
+        /// 아이템 드랍 자체를 막음. 데미지/경험치 감소와는 독립적인 PvE 밸런스 옵션 (서버싱크 Config)
+        /// </summary>
+        [HarmonyPatch(typeof(CharacterDrop), "OnDeath")]
+        [HarmonyPriority(Priority.Low)]
+        [HarmonyPrefix]
+        public static bool LevelDiffDrop_OnDeath_Prefix(CharacterDrop __instance)
+        {
+            try
+            {
+                if (!CaptainLevelConfig.EnableLevelDiffDropSuppressionValue) return true;
+
+                var monster = Traverse.Create(__instance).Field("m_character").GetValue<Character>();
+                if (monster == null || monster.IsPlayer() || monster.IsTamed()) return true;
+
+                var localPlayer = Player.m_localPlayer;
+                if (localPlayer == null) return true;
+                if (!IsKilledByPlayerOrParty(monster, localPlayer)) return true;
+
+                string monsterName = GetMonsterName(monster);
+                if (string.IsNullOrEmpty(monsterName)) return true;
+
+                int monsterLevel = CaptainMonsterExp.GetLevel(monsterName);
+                if (monsterLevel <= 0) return true;
+
+                int playerLevel = CaptainMMOBridge.GetLevel();
+                int diff = monsterLevel - playerLevel;
+                bool suppressed = diff >= CaptainLevelConfig.DropSuppressionLevelDiffValue;
+
+                Plugin.Log?.LogInfo($"[CaptainMMOPatches] LevelDiffDrop 판정: monster={monsterName} monsterLv={monsterLevel} playerLv={playerLevel} diff={diff} threshold={CaptainLevelConfig.DropSuppressionLevelDiffValue} => {(suppressed ? "억제됨(드랍 없음)" : "드랍 허용")}");
+
+                if (!suppressed) return true;
+
+                return false; // 드랍 억제 - 원본 OnDeath(드랍 스폰) 실행 안 함
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[CaptainMMOPatches] LevelDiffDrop_OnDeath_Prefix 오류: {ex.Message}");
+                return true; // 오류 시 안전하게 원래 드랍 허용
+            }
         }
 
         #endregion

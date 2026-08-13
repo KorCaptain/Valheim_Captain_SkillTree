@@ -43,9 +43,10 @@ namespace CaptainSkillTree.Gui
                 return true;
             }
             bool isAdmin = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
-            if (!isAdmin && manager.GetAvailablePoints(false) < node.RequiredPoints)
+            int requiredPts = SkillTree.Crossbow_Config.CrossbowIceBreathRequiredPointsValue;
+            if (!isAdmin && manager.GetAvailablePoints(false) < requiredPts)
             {
-                tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, manager.GetAvailablePoints(false)));
+                tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", requiredPts, manager.GetAvailablePoints(false)));
                 return true;
             }
             if (isAdmin || manager.HasIceBreathLevelItems(targetLevel))

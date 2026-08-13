@@ -29,10 +29,11 @@ namespace CaptainSkillTree.SkillTree
             {
                 float totalBonus = 0f;
                 
-                // 속도 전문가 루트: 모든 이동속도 +5%
-                if (SkillTreeManager.Instance?.GetSkillLevel("speed_root") > 0)
+                // 속도 전문가 루트: 레벨당 이동속도 +X% (Lv1~7)
+                int speedRootLv = SkillTreeManager.Instance?.GetSkillLevel("speed_root") ?? 0;
+                if (speedRootLv > 0)
                 {
-                    totalBonus += SkillTreeConfig.SpeedRootMoveSpeedValue / 100f;
+                    totalBonus += (speedRootLv * Speed_Config.SpeedRootMoveSpeedPerLevelValue) / 100f;
                 }
                 
                 Plugin.Log.LogDebug($"[Speed] 기본 속도 보너스: +{totalBonus * 100f:F1}%");
@@ -118,14 +119,6 @@ namespace CaptainSkillTree.SkillTree
                     Plugin.Log.LogDebug($"[Speed] 석궁 가속 재장전 중: +{crossbowReloadBonus * 100f:F1}%");
                 }
 
-                // === 요툰의 방패: 방패 장착 시 이동속도 보너스 ===
-                if (SkillTreeManager.Instance?.GetSkillLevel("defense_Step6_true") > 0)
-                {
-                    float shieldSpeedBonus = GetJotunnShieldSpeedBonus(player);
-                    if (shieldSpeedBonus > 0f)
-                        conditionalBonus += shieldSpeedBonus;
-                }
-
                 // === 탱커: 방패 장착 시 이동속도 보너스 ===
                 if (SkillTreeManager.Instance?.GetSkillLevel("Tanker") >= 1)
                 {
@@ -134,35 +127,22 @@ namespace CaptainSkillTree.SkillTree
                         conditionalBonus += tankerShieldBonus;
                 }
 
+                // === 질풍 추격: 전투 중 이동속도 보너스 (중첩 가능) ===
+                if (SkillTreeManager.Instance?.GetSkillLevel("atk_pursuit_speed") > 0)
+                {
+                    var seman = player.GetSEMan();
+                    if (seman != null && seman.GetStatusEffect("InCombat".GetStableHashCode()) != null)
+                    {
+                        conditionalBonus += Attack_Config.AtkPursuitSpeedBonusValue / 100f;
+                        Plugin.Log.LogDebug($"[Speed] 질풍 추격 활성화: +{Attack_Config.AtkPursuitSpeedBonusValue}%");
+                    }
+                }
+
                 return conditionalBonus;
             }
             catch (System.Exception ex)
             {
                 Plugin.Log.LogError($"[Speed] 조건부 속도 계산 오류: {ex.Message}");
-                return 0f;
-            }
-        }
-
-        /// <summary>
-        /// 요툰의 방패 이동속도 보너스 계산
-        /// </summary>
-        private static float GetJotunnShieldSpeedBonus(Player player)
-        {
-            try
-            {
-                // GetEquippedItems() 대신 m_leftItem 직접 사용 (TakeAll 중 phantom item 방지)
-                var leftItem = Traverse.Create(player).Field("m_leftItem").GetValue<ItemDrop.ItemData>();
-                if (leftItem == null || leftItem.m_shared?.m_itemType != ItemDrop.ItemData.ItemType.Shield)
-                    return 0f;
-
-                bool isTowerShield = leftItem.m_shared.m_movementModifier <= -0.08f;
-                return isTowerShield
-                    ? Defense_Config.JotunnShieldTowerSpeedBonusValue / 100f
-                    : Defense_Config.JotunnShieldNormalSpeedBonusValue / 100f;
-            }
-            catch (System.Exception ex)
-            {
-                Plugin.Log.LogError($"[Speed] 요툰의 방패 보너스 계산 오류: {ex.Message}");
                 return 0f;
             }
         }

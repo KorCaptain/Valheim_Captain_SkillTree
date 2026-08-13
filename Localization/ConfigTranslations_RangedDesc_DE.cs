@@ -106,10 +106,6 @@ namespace CaptainSkillTree.Localization
                 "Schadensprozentsatz der zusätzlichen Projektile.\n" +
                 "Empfehlung: 10-20%",
 
-                ["Tier5_DoubleCast_AngleOffset"] =
-                "【Streuwinkel (nicht verwendet)】\n" +
-                "In der aktuellen Version nicht verwendet. Feste Richtung.",
-
                 ["Tier5_DoubleCast_EitrCost"] =
                 "【Eitr-Kosten】\n" +
                 "Verbrauchter Eitr bei Fähigkeitsaktivierung.\n" +
@@ -496,6 +492,58 @@ namespace CaptainSkillTree.Localization
 
                 ["Tier6_ArrowRain_RequiredPoints"] =
                 "【Benötigte Punkte】\nPunkte zum Freischalten des Pfeilregens.",
+
+                ["Tier5_DoubleCast_LevelBonus"] =
+                "【Level-Bonus (%)】\n" +
+                "Schadensbonus pro Doppelwurf-Fähigkeitslevel.\n" +
+                "Empfehlung: 3-8%",
+
+                ["Tier5_OneShot_AoeRadius"] =
+                "【AOE-Radius (m)】\n" +
+                "Bereich, in dem bei einem Treffer mit 'Ein Schuss' nahe Feinde Schaden erleiden.\n" +
+                "Empfehlung: 5-10m",
+
+                ["Tier5_OneShot_LevelBonus"] =
+                "【Schadensbonus pro Level (%)】\n" +
+                "Zusätzlicher Schadensbonus pro Level für die Fähigkeit 'Ein Schuss'.\n" +
+                "Empfehlung: 30-50%",
+
+                ["Tier5_OneShot_SlowReloadMultiplier"] =
+                "【Nachlade-Verlangsamungsfaktor】\n" +
+                "Die Nachladezeit wird beim ersten Nachladen nach der Aktivierung mit diesem Wert multipliziert.\n" +
+                "2.0 = -100% Geschwindigkeit (2x langsamer), 6.0 = -500% Geschwindigkeit (6x langsamer)\n" +
+                "Empfehlung: 2.0 - 6.0",
+
+                ["Tier6_IceBreath_LevelBonus"] =
+                "【Level-Bonus (%)】\n" +
+                "Direkter Treffer-Schadensbonus pro Vulkan-Eis-Fähigkeitslevel.\n" +
+                "Empfehlung: 10-20%",
+
+                ["Tier6_IceBreath_DotLevelBonus"] =
+                "【DoT-Level-Bonus (%)】\n" +
+                "DoT-Schadensbonus pro Vulkan-Eis-Fähigkeitslevel.\n" +
+                "Empfehlung: 3-8%",
+
+                ["Tier6_ArrowRain_LevelBonus"] =
+                "【Level-Bonus (%)】\n" +
+                "Pfeilschadensbonus pro Pfeilregen-Fähigkeitslevel.\n" +
+                "Empfehlung: 1-3%",
+
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] =
+                "【Dungeon-Buff: Schadensbonus (%)】\n" +
+                "Schadenserhöhung durch den Selbstbuff, der in Dungeons bei Nutzung der H-Taste anstelle von Pfeilregen ausgelöst wird.\n" +
+                "Empfehlung: 20-30%",
+
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] =
+                "【Dungeon-Buff: Dauer (Sek.)】\n" +
+                "Wie lange der Ersatzbuff im Dungeon anhält.\n" +
+                "Empfehlung: 8-12 Sek.",
+
+                ["Tier5_ExplosiveArrow_LevelBonus"] =
+                "【Level-Bonus (%)】\n" +
+                "Schadensbonus pro Explosivpfeil-Fähigkeitslevel.\n" +
+                "Empfehlung: 10-25%",
+
             };
         }
     }

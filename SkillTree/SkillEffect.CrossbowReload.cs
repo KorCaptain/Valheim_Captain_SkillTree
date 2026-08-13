@@ -60,6 +60,16 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 플레이어 사망/접속종료 시 자동 장전 상태 정리 (JobSkills.CleanupAllJobSkillsOnDeath에서 호출)
+        /// </summary>
+        public static void CleanupCrossbowReloadOnDeath(Player player)
+        {
+            if (player == null) return;
+            autoReloadBuffActive.Remove(player);
+            lastAutoReloadConsumedTime.Remove(player);
+        }
+
+        /// <summary>
         /// 석궁 장전 속도 보너스 계산 (고속 장전 스킬만)
         /// </summary>
         /// <param name="player">플레이어 인스턴스</param>

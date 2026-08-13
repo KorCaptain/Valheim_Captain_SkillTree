@@ -64,7 +64,7 @@ namespace CaptainSkillTree.Gui
             "crossbow_Step6_expert", "bow_Step6_critboost", "staff_Step6_dual_cast",
             // G키 액티브
             "sword_step5_finalcut", "knife_step9_assassin_heart", "spear_Step5_penetrate",
-            "polearm_step5_king", "mace_Step7_guardian_heart",
+            "polearm_step5_king", "mace_Step7_guardian_heart", "mace_Step7_shockwave_slam",
             // H키 액티브
             "sword_step5_defswitch", "spear_Step5_combo", "mace_Step7_fury_hammer",
             "staff_Step6_heal", "bow_Step6_arrow_rain", "crossbow_ice_breath",
@@ -169,7 +169,7 @@ namespace CaptainSkillTree.Gui
                     tooltipUI.RefreshTooltip();
                 }
 
-                Plugin.Log.LogInfo("[SkillTreeUI] ✓ UI 텍스트 갱신 완료");
+                Plugin.Log.LogInfo("[SkillTreeUI] [OK] UI 텍스트 갱신 완료");
             }
             catch (System.Exception ex)
             {
@@ -330,6 +330,9 @@ namespace CaptainSkillTree.Gui
 
             // 행 1 버튼 공통 크기: 130x38, 폰트 13, 간격 12px
             // x 중심 위치: 120 / 262 / 404
+
+            // [퀘스트] 버튼 (좌측 상단)
+            CreateQuestButton(panel);
 
             // [포인트/직업/생산 초기화] 버튼 (Config ShowResetButtons가 false이면 숨김)
             if (CaptainSkillTree.SkillTree.SkillTreeConfig.ShowResetButtonsValue)
@@ -740,7 +743,9 @@ namespace CaptainSkillTree.Gui
             foreach (var pending in manager.pendingInvestments)
             {
                 var node = manager.SkillNodes[pending.Key];
-                pendingPoints += pending.Value * node.RequiredPoints;
+                int baseLevel = manager.GetSkillLevel(pending.Key);
+                for (int lv = baseLevel + 1; lv <= baseLevel + pending.Value; lv++)
+                    pendingPoints += node.GetRequiredPointsForLevel(lv);
             }
             int availablePoints = Mathf.Max(0, maxPoints - usedPoints - pendingPoints);
 
@@ -813,6 +818,7 @@ namespace CaptainSkillTree.Gui
             nodeUI.RefreshNodeStates();
             nodeUI.UpdateConnectionLines();
             UpdateSkillPointText();
+            Plugin.UpdateSkillTreeIconDot();
             if (escapeButton != null)
                 escapeButton.gameObject.SetActive(CaptainLevelConfig.ExitButtonEnabledValue);
             
@@ -2334,6 +2340,8 @@ namespace CaptainSkillTree.Gui
                 // 버튼 이벤트 연결
                 btn.onClick.AddListener(() =>
                 {
+                    if (TryHandleJobSelectionClick(node)) return;
+
                     var investResult = CanInvestWithMessage(node);
                     if (investResult.canInvest) {
                         InvestPoint(node);
@@ -2450,24 +2458,38 @@ namespace CaptainSkillTree.Gui
         {
             var manager = SkillTree.SkillTreeManager.Instance;
             // 투자 조건 체크 시작
-            
-            // 0. 플레이어 레벨 조건 체크 (직업 아이콘 등)
-            if (node.RequiredPlayerLevel > 0)
-            {
-                int currentPlayerLevel = CaptainMMOBridge.GetLevel();
-                if (currentPlayerLevel < node.RequiredPlayerLevel)
-                {
-                    return new InvestResult(false, L10n.Get("player_level_required", node.RequiredPlayerLevel.ToString(), currentPlayerLevel.ToString()));
-                }
-            }
-            
-            // 1. 최대 레벨 체크 - 이미 언락된 스킬은 조용히 처리
+
+            // 0. 플레이어 레벨 조건 체크 (정적 요구치 또는 성장형 리졸버)
             int currentLevel = manager.GetSkillLevel(node.Id);
             int pendingLevel = manager.pendingInvestments.ContainsKey(node.Id) ? manager.pendingInvestments[node.Id] : 0;
-            if (currentLevel + pendingLevel >= node.MaxLevel) 
+            int reqLv = node.GetEffectiveRequiredPlayerLevel(currentLevel + pendingLevel + 1);
+            if (reqLv > 0)
+            {
+                int currentPlayerLevel = CaptainMMOBridge.GetLevel();
+                if (currentPlayerLevel < reqLv)
+                {
+                    return new InvestResult(false, L10n.Get("player_level_required", reqLv.ToString(), currentPlayerLevel.ToString()));
+                }
+            }
+
+            // 1. 최대 레벨 체크 - 이미 언락된 스킬은 조용히 처리
+            if (currentLevel + pendingLevel >= node.MaxLevel)
             {
                 // 이미 습득 완료된 스킬에 대해서는 메시지 없이 조용히 실패 처리
                 return new InvestResult(false, "");
+            }
+            // speed_root 레벨별 트로피 체크 (포인트 체크는 else 분기에서 자동 처리)
+            if (node.Id == "speed_root")
+            {
+                bool isAdminSR = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                int targetLvSR = currentLevel + pendingLevel + 1;
+                if (!isAdminSR && !manager.HasSpeedRootLevelItems(targetLvSR))
+                {
+                    var missingSR = manager.GetMissingSpeedRootItems(targetLvSR);
+                    var msgSR = L10n.Get("speedroot_item_required", targetLvSR);
+                    if (missingSR.Count > 0) msgSR += "\n" + L10n.Get("speedroot_missing_items", string.Join(", ", missingSR));
+                    return new InvestResult(false, msgSR);
+                }
             }
 
             // 2. 직업 중복 선택 방지 (Producer 포함, 최우선 체크)
@@ -2593,6 +2615,10 @@ namespace CaptainSkillTree.Gui
             {
                 return CheckShieldChargeInvest(node, currentLevel);
             }
+            else if (node.Id == "mace_Step7_shockwave_slam")
+            {
+                return CheckShockwaveSlamInvest(node, currentLevel);
+            }
             else if (node.Id == "knife_step9_assassin_heart")
             {
                 return CheckAssassinHeartInvest(node, currentLevel);
@@ -2641,9 +2667,9 @@ namespace CaptainSkillTree.Gui
             {
                 // 일반 스킬: 포인트 체크
                 int availablePoints = manager.GetAvailablePoints(true);
-                if (availablePoints < node.RequiredPoints)
+                if (availablePoints < node.EffectiveRequiredPoints)
                 {
-                    return new InvestResult(false, L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, availablePoints));
+                    return new InvestResult(false, L10n.Get("skill_insufficient_points_detail", node.EffectiveRequiredPoints, availablePoints));
                 }
             }
 
@@ -2706,22 +2732,26 @@ namespace CaptainSkillTree.Gui
             var manager = SkillTree.SkillTreeManager.Instance;
             // 투자 조건 체크 시작
 
-            // 0. 플레이어 레벨 조건 체크 (직업 아이콘 등)
-            if (node.RequiredPlayerLevel > 0)
+            // 0. 플레이어 레벨 조건 체크 (정적 요구치 또는 성장형 리졸버)
+            int currentLevel = manager.GetSkillLevel(node.Id);
+            int pendingLevel = manager.pendingInvestments.ContainsKey(node.Id) ? manager.pendingInvestments[node.Id] : 0;
+            int reqLv = node.GetEffectiveRequiredPlayerLevel(currentLevel + pendingLevel + 1);
+            if (reqLv > 0 && CaptainMMOBridge.GetLevel() < reqLv)
             {
-                int currentPlayerLevel = CaptainMMOBridge.GetLevel();
-                if (currentPlayerLevel < node.RequiredPlayerLevel)
-                {
-                    return false;
-                }
+                return false;
             }
 
             // 1. 최대 레벨 체크
-            int currentLevel = manager.GetSkillLevel(node.Id);
-            int pendingLevel = manager.pendingInvestments.ContainsKey(node.Id) ? manager.pendingInvestments[node.Id] : 0;
             if (currentLevel + pendingLevel >= node.MaxLevel)
             {
                 return false;
+            }
+            // speed_root 레벨별 트로피 체크
+            if (node.Id == "speed_root")
+            {
+                bool isAdminSR = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
+                int targetLvSR = currentLevel + pendingLevel + 1;
+                if (!isAdminSR && !manager.HasSpeedRootLevelItems(targetLvSR)) return false;
             }
 
             // 2. 직업 스킬은 트로피 체크, 생산 스킬은 아이템 체크, 일반 스킬은 포인트 체크
@@ -2769,7 +2799,7 @@ namespace CaptainSkillTree.Gui
             else
             {
                 // 일반 스킬: 포인트 체크
-                if (manager.GetAvailablePoints(true) < node.RequiredPoints)
+                if (manager.GetAvailablePoints(true) < node.EffectiveRequiredPoints)
                 {
                     return false;
                 }
@@ -2948,6 +2978,9 @@ namespace CaptainSkillTree.Gui
 
                 // 방패돌진 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.ShieldCharge.cs
                 if (HandleShieldChargeClick(node)) return;
+
+                // 충격파 강타 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.ShockwaveSlam.cs
+                if (HandleShockwaveSlamClick(node)) return;
 
                 // 암살자의 심장 Lv1+ 업그레이드 → Gui/ActiveSkills/SkillTreeUI.KnifeAssassinHeart.cs
                 if (HandleAssassinHeartClick(node)) return;
@@ -3161,12 +3194,15 @@ namespace CaptainSkillTree.Gui
                 int beforePending = manager.pendingInvestments.ContainsKey(node.Id) ? manager.pendingInvestments[node.Id] : 0;
                 manager.AddPendingInvestment(node.Id);
                 int afterPending = manager.pendingInvestments.ContainsKey(node.Id) ? manager.pendingInvestments[node.Id] : 0;
-                
+
                 // 투자가 차단된 경우 (직업 제한 등) 아무것도 하지 않고 리턴
                 if (beforePending == afterPending)
                 {
                     return;
                 }
+
+                // 클릭 즉시 열려 있는 툴팁을 다시 그려 예약(pending) 레벨 표시를 갱신
+                tooltipUI.RefreshTooltip();
             }
             
             // 모든 아이콘에 클릭 효과음 재생 (직업 아이콘 포함)
@@ -3322,12 +3358,17 @@ namespace CaptainSkillTree.Gui
                     tooltipText += $"<color=#00BFFF><size=18>{condLine.Trim()}</size></color>\n";
                 }
             }
-            // 플레이어 레벨 조건 강조
-            if (node.RequiredPlayerLevel > 0)
+            // 플레이어 레벨 조건 강조 (정적 요구치 또는 성장형 리졸버)
             {
-                tooltipText += $"<color=#FFD700><b>{L10n.Get("player_level_required_short", node.RequiredPlayerLevel.ToString())}</b></color>\n";
+                var lvManager = SkillTree.SkillTreeManager.Instance;
+                int curLv = lvManager.GetSkillLevel(node.Id);
+                int pendLv = lvManager.pendingInvestments.ContainsKey(node.Id) ? lvManager.pendingInvestments[node.Id] : 0;
+                int reqLv = node.GetEffectiveRequiredPlayerLevel(curLv + pendLv + 1);
+                if (reqLv > 0)
+                {
+                    tooltipText += $"<color=#FFD700><b>{L10n.Get("player_level_required_short", reqLv.ToString())}</b></color>\n";
+                }
             }
-
             // Prerequisites 조건 표시 (특히 장인 노드용)
             if (node.Prerequisites != null && node.Prerequisites.Count > 0)
             {
@@ -3371,7 +3412,7 @@ namespace CaptainSkillTree.Gui
                 }
             }
 
-            tooltipText += $"<size=18>{L10n.Get("required_points_label")} <color=#FF0000>{node.RequiredPoints}</color></size>";
+            tooltipText += $"<size=18>{L10n.Get("required_points_label")} <color=#FF0000>{node.EffectiveRequiredPoints}</color></size>";
             txt.supportRichText = true;
             txt.text = tooltipText;
             // 마우스 위치를 Canvas 로컬 좌표로 변환

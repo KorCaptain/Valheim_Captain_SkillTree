@@ -260,9 +260,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_TrueDuel_RequiredPoints"] = "Tier 4-2: [真の決闘] 必要ポイント",
                 ["Tier4_TrueDuel_AttackSpeedBonus"] = "Tier 4-2: [真の決闘] 攻撃速度ボーナス (%)",
                 ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [パリィラッシュ] 必要ポイント",
-                ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [パリィラッシュ] バフ持続時間 (秒)",
-                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [パリィラッシュ] ブロック力",
-                ["Tier5_ParryRush_PushDistance"] = "Tier 5: [パリィラッシュ] 押しつけ距離 (m)",
                 ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [パリィラッシュ] スタミナコスト",
                 ["Tier5_ParryRush_Cooldown"] = "Tier 5: [パリィラッシュ] クールダウン (秒)",
                 ["Tier6_RushSlash_RequiredPoints"] = "Tier 6: [ラッシュ斬り] 必要ポイント",
@@ -295,8 +292,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_Guard_RequiredPoints"] = "Tier 3-1: [スピン斬り] 必要ポイント",
                 ["Tier3_HeavyStrike_DamageBonus"] = "Tier 3-2: [ヘビーストライク] 打撃ボーナス",
                 ["Tier3_HeavyStrike_RequiredPoints"] = "Tier 3-2: [ヘビーストライク] 必要ポイント",
-                ["Tier4_Push_KnockbackChance"] = "Tier 4: [プッシュ] ノックバック確率 (%)",
-                ["Tier4_Push_RequiredPoints"] = "Tier 4: [プッシュ] 必要ポイント",
+                ["Tier4_Push_KnockbackChance"] = "Tier 4: [脳震盪] 脳震盪確率 (%)",
+                ["Tier4_Push_RequiredPoints"] = "Tier 4: [脳震盪] 必要ポイント",
                 ["Tier5_Tank_HealthBonus"] = "Tier 5-1: [タンク] 体力ボーナス (%)",
                 ["Tier5_Tank_DamageReduction"] = "Tier 5-1: [タンク] 被ダメージ軽減 (%)",
                 ["Tier5_Tank_RequiredPoints"] = "Tier 5-1: [タンク] 必要ポイント",
@@ -310,10 +307,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Tier 7-1: [怒りの鎚] クールダウン (秒)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [怒りの鎚] AOE範囲 (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [怒りの鎚] 必要ポイント",
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [シールドチャージ] クールダウン (秒)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [シールドチャージ] スタミナコスト",
-                ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [シールドチャージ] ブロック力ダメージ率 (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [シールドチャージ] 必要ポイント",
+                ["Tier7_ShockwaveSlam_Cooldown"] = "Tier 7-2: [衝撃波強打] クールダウン (秒)",
+                ["Tier7_ShockwaveSlam_StaminaCost"] = "Tier 7-2: [衝撃波強打] スタミナコスト",
+                ["Tier7_ShockwaveSlam_DamagePercent"] = "Tier 7-2: [衝撃波強打] 武器攻撃力ダメージ率 (%)",
+                ["Tier7_ShockwaveSlam_LevelBonus"] = "Tier 7-2: [衝撃波強打] レベルボーナス (%)",
+                ["Tier7_ShockwaveSlam_RequiredPoints"] = "Tier 7-2: [衝撃波強打] 必要ポイント",
 
                 // ============================================
                 // ポールアームツリー - 37キー
@@ -356,6 +354,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [旋風] クールダウン (秒)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [旋風] 必要ポイント",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [旋風] 最大持続時間 (秒)",
+                ["Tier6_Whirlwind_DamageReductionPercent"]    = "Tier 6: [旋風] 被ダメージ軽減 (%)",
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] = "Tier 6: [旋風] 被ダメージ軽減 レベルボーナス (%)",
 
                 // ============================================
                 // アーチャー職業スキル
@@ -541,22 +541,27 @@ namespace CaptainSkillTree.Localization
                 ["Producer_Durability_Lv1"]          = "Lv1 パッシブ: 耐久度ボーナス (%)",
                 ["Producer_CraftingSuccessRate_Lv1"] = "Lv1 パッシブ: 製作成功率 (%)",
                 ["Producer_EnchantChance_Lv1"]       = "Lv1 エンチャント: 確率 (%)",
+                ["Producer_ElementalProcChance_Lv1"] = "Lv1 属性エンチャント: 発動確率 (%)",
                 ["Producer_Durability_Lv2"]          = "Lv2 パッシブ: 耐久度ボーナス (%)",
                 ["Producer_CraftingSuccessRate_Lv2"] = "Lv2 パッシブ: 製作成功率 (%)",
                 ["Producer_MaterialReduction_Lv2"]   = "Lv2 パッシブ: 素材軽減 (%)",
                 ["Producer_EnchantChance_Lv2"]       = "Lv2 エンチャント: 確率 (%)",
+                ["Producer_ElementalProcChance_Lv2"] = "Lv2 属性エンチャント: 発動確率 (%)",
                 ["Producer_Durability_Lv3"]          = "Lv3 パッシブ: 耐久度ボーナス (%)",
                 ["Producer_CraftingSuccessRate_Lv3"] = "Lv3 パッシブ: 製作成功率 (%)",
                 ["Producer_MaterialReduction_Lv3"]   = "Lv3 パッシブ: 素材軽減 (%)",
                 ["Producer_EnchantChance_Lv3"]       = "Lv3 エンチャント: 確率 (%)",
+                ["Producer_ElementalProcChance_Lv3"] = "Lv3 属性エンチャント: 発動確率 (%)",
                 ["Producer_Durability_Lv4"]          = "Lv4 パッシブ: 耐久度ボーナス (%)",
                 ["Producer_CraftingSuccessRate_Lv4"] = "Lv4 パッシブ: 製作成功率 (%)",
                 ["Producer_MaterialReduction_Lv4"]   = "Lv4 パッシブ: 素材軽減 (%)",
                 ["Producer_EnchantChance_Lv4"]       = "Lv4 エンチャント: 確率 (%)",
+                ["Producer_ElementalProcChance_Lv4"] = "Lv4 属性エンチャント: 発動確率 (%)",
                 ["Producer_Durability_Lv5"]          = "Lv5 パッシブ: 耐久度ボーナス (%)",
                 ["Producer_CraftingSuccessRate_Lv5"] = "Lv5 パッシブ: 製作成功率 (%)",
                 ["Producer_MaterialReduction_Lv5"]   = "Lv5 パッシブ: 素材軽減 (%)",
                 ["Producer_EnchantChance_Lv5"]       = "Lv5 エンチャント: 確率 (%)",
+                ["Producer_ElementalProcChance_Lv5"] = "Lv5 属性エンチャント: 発動確率 (%)",
 
                 // ============================================
                 // 剣ツリー - パスヒット追加
@@ -569,6 +574,8 @@ namespace CaptainSkillTree.Localization
                 ["Mage_Fire_Rain_Radius"] = "降下半径 (m)",
                 ["Mage_Fire_Rain_Impact_Radius"] = "着弾ダメージ範囲 (m)",
                 ["Mage_Fire_Rain_Projectile_Count"] = "バーストあたり発射体数 (個)",
+                ["Mage_Dungeon_Buff_Damage_Bonus"] = "ダンジョンバフ：攻撃力ボーナス (%)",
+                ["Mage_Dungeon_Buff_Duration"] = "ダンジョンバフ：持続時間 (秒)",
                 ["Mage_Lv1_Damage_Multiplier"] = "Lv1 AOEダメージ倍率 (%)",
                 ["Mage_Lv1_Cooldown"] = "Lv1 クールダウン (秒)",
                 ["Mage_Lv1_Elemental_Resistance"] = "Lv1 属性耐性 (%)",
@@ -613,8 +620,6 @@ namespace CaptainSkillTree.Localization
                 ["Job_Lv4_Cost"]                       = "Job Lv4 Coin Cost",
                 ["Job_Lv5_Cost"]                       = "Job Lv5 Coin Cost",
                 ["Job_Reset_Cost"]                     = "Job Skill Reset Cost",
-                ["Legacy_Penetrate_CritChance"]        = "レガシー: 未使用",
-                ["Legacy_Throw_BuffDuration"]          = "レガシー: 未使用",
                 ["Passive_Reset_Cost"]                 = "Passive Skill Reset Cost",
                 ["Rogue_ShadowStrike_AggroRange"]      = "シャドーストライク: ヘイトクリア範囲 (m)",
                 ["Rogue_ShadowStrike_SmokeScale"]      = "シャドーストライク: 煙エフェクトスケール",
@@ -635,6 +640,128 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_ReflectDuration_Lv5"]         = "Lv5 パッシブ: 反射持続時間 (秒)",
                 ["Tier5_OneShot_AoeRadius"]            = "Tier 5: [ワンショット] 範囲半径 (m)",
                 ["Tier5_PierceCharge_LevelBonus"]      = "Tier 5: [貫通突撃] レベルボーナスダメージ (%)",
+
+                ["Tier0_SpeedExpert_MoveSpeedPerLevel"] = "Tier 0: [Speed Expert] Move Speed Bonus/Level (%)",
+
+                ["Tier0_SpeedExpert_PointsPerLevel"] = "Tier 0: [Speed Expert] Required Points Per Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_2"] = "Tier 0: [Speed Expert] Lv2 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_3"] = "Tier 0: [Speed Expert] Lv3 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_4"] = "Tier 0: [Speed Expert] Lv4 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_5"] = "Tier 0: [Speed Expert] Lv5 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_6"] = "Tier 0: [Speed Expert] Lv6 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_7"] = "Tier 0: [Speed Expert] Lv7 Required Player Level",
+
+                ["Tier3_BlockTraining_MaxChargeDistance"] = "Tier 3-4: [Block Training] Counter Max Effective Range (m)",
+
+                ["Tier4_Shockwave_KnockbackForce"] = "Tier 4-1: [Shockwave] Knockback Force",
+
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Tier 5: [Explosive Arrow] Level Bonus (%)",
+
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [Arrow Rain] Level Bonus (%)",
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] = "Tier 6: [矢の雨] ダンジョンバフ：攻撃力ボーナス (%)",
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] = "Tier 6: [矢の雨] ダンジョンバフ：持続時間 (秒)",
+
+                ["Tier5_Penetrate_BaseDamage"] = "Tier 5-1: [Penetrating Spear] Base Damage (%)",
+
+                ["Tier5_Penetrate_LevelDamageBonus"] = "Tier 5-1: [Penetrating Spear] Level Damage Bonus (%)",
+
+                ["Tier5_Penetrate_BaseAreaDamage"] = "Tier 5-1: [Penetrating Spear] Base Area Damage (%)",
+
+                ["Tier5_Penetrate_AreaLevelBonus"] = "Tier 5-1: [Penetrating Spear] Area Damage Level Bonus (%)",
+
+                ["Tier5_Combo_LevelBonus"] = "Tier 5-2: [Combo Spear] Level Bonus (%)",
+
+                ["Tier5_DoubleCast_LevelBonus"] = "Tier 5-1: [Multi Cast] Level Bonus (%)",
+
+                ["Tier5_InstantAreaHeal_LightningDamagePercent"] = "Tier 5-2: [Heal] Lightning Damage % (Lv1 base)",
+
+                ["Tier5_OneShot_LevelBonus"] = "Tier 5: [One Shot] Level Bonus (%)",
+
+                ["Tier6_IceBreath_LevelBonus"] = "Tier 6: [Vulkan Ice] Level Bonus (%)",
+
+                ["Tier6_IceBreath_DotLevelBonus"] = "Tier 6: [Vulkan Ice] DoT Level Bonus (%)",
+
+                ["Tier8_AssassinHeart_LevelBonus"] = "Tier 8: [Assassin's Heart] Level Bonus (%)",
+
+                ["Tier5_WhirlwindSlash_BaseDamage"] = "Tier 5: [Whirlwind Slash] Base Damage (%)",
+
+                ["Tier5_WhirlwindSlash_LevelBonus"] = "Tier 5: [Whirlwind Slash] Level Bonus (%)",
+
+                ["Tier6_RushSlash_DamageLevelBonus"] = "Tier 6: [Rush Slash] Damage Level Bonus (%)",
+
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] = "Tier 7-1: [Fury Hammer] Normal Hit Level Bonus (%)",
+
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] = "Tier 7-1: [Fury Hammer] Final Hit Level Bonus (%)",
+
+
+                ["Tier6_Whirlwind_LevelBonus"] = "Tier 6: [Whirlwind] Level Bonus (%)",
+
+                ["Archer_MultiShot_FireInterval"] = "Lv1 Multishot: Arrow Fire Interval (sec)",
+
+                ["Archer_Attack_StaminaReduction_Lv1"] = "Lv1 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv2"] = "Lv2 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv3"] = "Lv3 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv4"] = "Lv4 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv5"] = "Lv5 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_AmmoSaveChance"] = "Passive: Ammo Save Chance (%)",
+                ["Archer_TameHeal_PerLevel"] = "Passive: Tamed Heal (HP/s)",
+                ["Archer_TameHeal_Range"] = "Passive: Tamed Heal Range (m)",
+
+                ["Tanker_Explosion_Radius"] = "Active: Explosion Radius (m)",
+
+                ["Tanker_BlockPower_Multiplier"] = "Passive: Block Power Multiplier (%)",
+
+                ["Berserker_Lv1_Active_Cooldown"] = "Berserker Lv1: Rage Cooldown (sec)",
+
+                ["Berserker_Lv2_Active_Cooldown"] = "Berserker Lv2: Rage Cooldown (sec)",
+
+                ["Berserker_Lv3_Active_Cooldown"] = "Berserker Lv3: Rage Cooldown (sec)",
+
+                ["Berserker_Lv4_Active_Cooldown"] = "Berserker Lv4: Rage Cooldown (sec)",
+
+                ["Berserker_Lv5_Active_Cooldown"] = "Berserker Lv5: Rage Cooldown (sec)",
+
+                ["Berserker_Lv1_Active_Duration"] = "Berserker Lv1: Rage Duration (sec)",
+
+                ["Berserker_Lv2_Active_Duration"] = "Berserker Lv2: Rage Duration (sec)",
+
+                ["Berserker_Lv3_Active_Duration"] = "Berserker Lv3: Rage Duration (sec)",
+
+                ["Berserker_Lv4_Active_Duration"] = "Berserker Lv4: Rage Duration (sec)",
+
+                ["Berserker_Lv5_Active_Duration"] = "Berserker Lv5: Rage Duration (sec)",
+
+                ["Berserker_Lv1_Passive_HealthBonus"] = "Berserker Lv1: Passive Max HP Bonus",
+
+                ["Berserker_Lv2_Passive_HealthBonus"] = "Berserker Lv2: Passive Max HP Bonus",
+
+                ["Berserker_Lv3_Passive_HealthBonus"] = "Berserker Lv3: Passive Max HP Bonus",
+
+                ["Berserker_Lv4_Passive_HealthBonus"] = "Berserker Lv4: Passive Max HP Bonus",
+
+                ["Berserker_Lv5_Passive_HealthBonus"] = "Berserker Lv5: Passive Max HP Bonus",
+
+                ["Berserker_Lv1_Active_DamagePerHP"] = "Berserker Lv1: Damage Per HP% (%)",
+
+                ["Berserker_Lv2_Active_DamagePerHP"] = "Berserker Lv2: Damage Per HP% (%)",
+
+                ["Berserker_Lv3_Active_DamagePerHP"] = "Berserker Lv3: Damage Per HP% (%)",
+
+                ["Berserker_Lv4_Active_DamagePerHP"] = "Berserker Lv4: Damage Per HP% (%)",
+
+                ["Berserker_Lv5_Active_DamagePerHP"] = "Berserker Lv5: Damage Per HP% (%)",
+
             };
         }
     }

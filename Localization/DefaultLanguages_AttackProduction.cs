@@ -11,8 +11,8 @@ namespace CaptainSkillTree.Localization
                 // === Attack Expert Tree - Skill Names (Tier 0~6) ===
                 ["attack_root_name"] = "공격 전문가",
                 // Tier 1
-                ["atk_opener_name"] = "선빵",
-                // Tier 2: 무기별 선빵 특화
+                ["atk_opener_name"] = "선공격",
+                // Tier 2: 무기별 선공격 특화
                 ["atk_opener_melee_name"] = "근접: 마무리 예열",
                 ["atk_opener_bow_name"] = "활: 사냥의 눈",
                 ["atk_opener_crossbow_name"] = "석궁: 결전의 일격",
@@ -21,7 +21,7 @@ namespace CaptainSkillTree.Localization
                 ["atk_pursuit_name"] = "추격전",
                 // Tier 4
                 ["atk_pursuit_speed_name"] = "질풍 추격",
-                ["atk_frenzy_trigger_name"] = "혼전 돌입",
+                ["atk_frenzy_trigger_name"] = "치명적인 공격",
                 // Tier 5
                 ["atk_frenzy_name"] = "난전",
                 // Tier 6 (기존 유지)
@@ -34,35 +34,41 @@ namespace CaptainSkillTree.Localization
                 ["attack_root_desc"] = "모든 공격력 +{0}%",
                 ["atk_opener_desc"] = "전투 시작 후 {2}초간 데미지 +{0}%, 스태미나 소비 -{1}%\n(쿨다운 {3}초)",
                 ["atk_base_desc"] = "관통 공격 +{0}, 화염 속성 +1",
-                ["atk_opener_melee_desc"] = "선빵 윈도우 내 첫 근접 타격 마무리 배율 +{0}%",
-                ["atk_opener_bow_desc"] = "선빵 윈도우 내 첫 화살 크리티컬 확정 + 크리확률 +{0}%",
-                ["atk_opener_crossbow_desc"] = "선빵 윈도우 내 첫 볼트 데미지 +{0}%",
-                ["atk_opener_magic_desc"] = "선빵 윈도우 내 첫 마법 공격 스태거 확정",
-                ["atk_pursuit_desc"] = "이동/도주 중인 적 데미지 +{0}%\n선빵 {2}초 연쇄 시 +{1}%로 증폭",
+                ["atk_opener_melee_desc"] = "선공격 윈도우 내 첫 근접 타격 마무리 배율 +{0}%",
+                ["atk_opener_bow_desc"] = "선공격 윈도우 내 첫 화살 크리티컬 확정 + 크리티컬피해 +{0}%",
+                ["atk_opener_crossbow_desc"] = "선공격 윈도우 내 첫 볼트 데미지 +{0}%",
+                ["atk_opener_magic_desc"] = "선공격 윈도우 내 첫 마법 공격 스태거 확정",
+                ["atk_pursuit_desc"] = "이동/도주 중인 적 데미지 +{0}%\n선공격 {2}초 연쇄 시 +{1}%로 증폭",
                 ["atk_pursuit_speed_desc"] = "전투 중 이동속도 +{0}%",
-                ["atk_frenzy_trigger_desc"] = "주변 3m 내 적 2명 이상 시 스태미나 소비 -{0}%",
+                ["atk_frenzy_trigger_desc"] = "치명타 확률 +{0}%/레벨 (최대 Lv7)",
+                ["atk_frenzy_trigger_stat_preview"] = "치명타 확률 +{0}%",
+                ["atk_frenzy_trigger_max_level"] = "최대 레벨 도달",
                 ["atk_frenzy_desc"] = "연속 {0}히트마다 데미지 스택 +{1}% (최대 {2}스택)\n추격전 연쇄 시 스택당 +{3}%, Max 달성 시 최종 노드 ×{4}",
+                ["atk_crit_dmg_desc"] = "치명타 피해 +{0}%~+{1}% (레벨별 성장, 최대 Lv7)",
+                ["atk_crit_dmg_stat_preview"] = "치명타 피해 +{0}%",
+                ["atk_crit_dmg_max_level"] = "최대 레벨 도달",
 
                 // === Attack Expert Tree - Effect Texts ===
                 ["attack_root_effect"] = "⚔️ 공격 전문가 습득! 모든 공격력 +3%",
-                ["atk_opener_effect"] = "⚡ 선빵 습득! 전투 개시 5초간 데미지 +20%",
+                ["atk_opener_effect"] = "⚡ 선공격 습득! 전투 개시 5초간 데미지 +20%",
                 ["atk_opener_melee_effect"] = "⚔️ 근접: 마무리 예열 습득!",
                 ["atk_opener_bow_effect"] = "🏹 활: 사냥의 눈 습득!",
                 ["atk_opener_crossbow_effect"] = "🎯 석궁: 결전의 일격 습득!",
                 ["atk_opener_magic_effect"] = "🔥 마법: 혼돈의 시작 습득!",
                 ["atk_pursuit_effect"] = "🏃 추격전 습득! 이동 중 적 데미지 +15%",
                 ["atk_pursuit_speed_effect"] = "💨 질풍 추격 습득! 이동속도 +12%",
-                ["atk_frenzy_trigger_effect"] = "🔥 혼전 돌입 습득!",
+                ["atk_frenzy_trigger_effect"] = "🗡️ 치명적인 공격 투자 완료! (+{0}% 치명타 확률)",
                 ["atk_frenzy_effect"] = "🔥 난전 습득! 연속 타격으로 스택 쌓기 시작!",
+                ["atk_crit_dmg_effect"] = "🎪 약점 공격 투자 완료! (+{0}% 치명타 피해)",
                 ["atk_staff_mage_effect"] = "🔥 속성 공격!",
 
                 // === Opener Activated Texts (인게임 표시) ===
-                ["atk_opener_activated"] = "⚡ 선빵!",
+                ["atk_opener_activated"] = "⚡ 선공격!",
                 ["atk_opener_melee_activated"] = "⚔️ 마무리 예열!",
                 ["atk_opener_bow_activated"] = "🏹 사냥의 눈!",
                 ["atk_opener_crossbow_activated"] = "🎯 결전의 일격!",
                 ["atk_opener_magic_activated"] = "✨ 혼돈의 시작!",
-                ["atk_pursuit_chain"] = "🔗 선빵→추격 연쇄!",
+                ["atk_pursuit_chain"] = "🔗 선공격→추격 연쇄!",
                 ["atk_frenzy_stack"] = "🔥 난전 {0}스택 (+{1}%)",
                 ["atk_frenzy_max_elemental"] = "🌟 난전 MAX! 속성 증폭!",
 
@@ -192,7 +198,7 @@ namespace CaptainSkillTree.Localization
                 ["staff_fire_name"] = "화염 속성",
                 ["staff_lightning_name"] = "번개 속성",
                 ["staff_luck_mana_name"] = "행운 마력",
-                ["staff_dual_cast_name"] = "이중시전",
+                ["staff_dual_cast_name"] = "다중시전",
                 ["staff_heal_name"] = "힐",
 
                 // === Ranged/Crossbow/Bow Descriptions ===
@@ -249,6 +255,8 @@ namespace CaptainSkillTree.Localization
                 ["bow_arrow_rain_desc"] = "버프 활성화 후 활로 대상에 적중!\n적중 지점 위 200m에서 화살 {0}발 낙하\n반경 {2}m • 화살당 (활+화살) × {1}%\n보스 대상 피해 50% 감소\n스태미나 {3}% 소모 • 쿨타임 {4}초",
                 ["bow_arrow_rain_ready"] = "화살비 발동!",
                 ["bow_arrow_rain_complete"] = "화살비 완료",
+                ["bow_arrow_rain_dungeon_buff_desc"] = "던전 안에서는 화살비 대신 공격력 {0}%를 {1}초 동안 강화하는 버프로 발동됩니다",
+                ["bow_arrow_rain_dungeon_buff_cast"] = "공격력 강화! (+{0}%, {1}초)",
 
                 // === Skill Activation Messages ===
                 ["bow_equip_required"] = "활을 착용해야 합니다!",
@@ -262,7 +270,7 @@ namespace CaptainSkillTree.Localization
                 ["spear_penetrate_cooldown"] = "꿰뚫는 창 쿨타임 ({0}초)",
                 ["spear_penetrate_activated"] = "꿰뚫는 창 발동! ({0}초)",
                 ["spear_penetrate_no_target"] = "주변에 적이 없습니다",
-                ["staff_dual_cast_activated"] = "이중시전 발동! {0}발 추가 발사",
+                ["staff_dual_cast_activated"] = "다중시전 발동! {0}발 추가 발사",
                 ["knife_assassin_heart_activated"] = "암살자의 심장 발동!",
 
                 // === Sword Skill Messages ===
@@ -279,12 +287,12 @@ namespace CaptainSkillTree.Localization
                 ["spear_lightning_shock"] = "번개 충격! ({0})",
 
                 // === Staff Skill Messages ===
-                ["staff_dual_cast_cooldown"] = "이중시전 쿨타임: {0}초",
+                ["staff_dual_cast_cooldown"] = "다중시전 쿨타임: {0}초",
                 ["staff_eitr_insufficient"] = "에이트르가 부족합니다 ({0} 필요)",
-                ["staff_dual_cast_ready"] = "이중시전 준비! ({0}초간)",
-                ["staff_dual_cast_remaining"] = "이중시전 준비됨 ({0}초)",
-                ["staff_dual_cast_expired"] = "이중시전 버프 만료",
-                ["staff_fan_cast_summoned"] = "파이어볼 7개 소환! R키로 발사",
+                ["staff_dual_cast_ready"] = "다중시전 준비! ({0}초간)",
+                ["staff_dual_cast_remaining"] = "다중시전 준비됨 ({0}초)",
+                ["staff_dual_cast_expired"] = "다중시전 버프 만료",
+                ["staff_fan_cast_summoned"] = "파이어볼 7개 소환! Z키로 발사",
                 ["staff_fan_cast_launched"] = "파이어볼 발사!",
                 ["staff_fan_cast_expired"] = "소환 만료",
 
@@ -401,7 +409,7 @@ namespace CaptainSkillTree.Localization
                 ["atk_opener_magic_name"] = "Magic: Chaos Initiation",
                 ["atk_pursuit_name"] = "Pursuit",
                 ["atk_pursuit_speed_name"] = "Swift Pursuit",
-                ["atk_frenzy_trigger_name"] = "Melee Frenzy",
+                ["atk_frenzy_trigger_name"] = "Deadly Strike",
                 ["atk_frenzy_name"] = "Frenzy",
                 ["atk_crit_dmg_name"] = "Weak Point Strike",
                 ["atk_finisher_melee_name"] = "Combo Finisher",
@@ -413,13 +421,18 @@ namespace CaptainSkillTree.Localization
                 ["atk_opener_desc"] = "+{0}% damage for {2}s after combat start, stamina cost -{1}%\n(Cooldown: {3}s)",
                 ["atk_base_desc"] = "Piercing attack +{0}, Fire attribute +1",
                 ["atk_opener_melee_desc"] = "First melee hit during opener window +{0}% finisher bonus",
-                ["atk_opener_bow_desc"] = "First arrow guaranteed crit + crit chance +{0}%",
+                ["atk_opener_bow_desc"] = "First arrow guaranteed crit + crit damage +{0}%",
                 ["atk_opener_crossbow_desc"] = "First bolt +{0}% damage",
                 ["atk_opener_magic_desc"] = "First magic attack causes guaranteed stagger",
                 ["atk_pursuit_desc"] = "+{0}% damage vs moving/fleeing enemies\nChain from First Strike within {2}s: +{1}%",
                 ["atk_pursuit_speed_desc"] = "+{0}% movement speed in combat",
-                ["atk_frenzy_trigger_desc"] = "-{0}% stamina cost when 2+ enemies within 3m",
+                ["atk_frenzy_trigger_desc"] = "Crit chance +{0}%/level (max Lv7)",
+                ["atk_frenzy_trigger_stat_preview"] = "Crit chance +{0}%",
+                ["atk_frenzy_trigger_max_level"] = "Max level reached",
                 ["atk_frenzy_desc"] = "+{1}% damage stack per {0} hits (max {2} stacks)\nPursuit chain: +{3}%/stack, Max stacks: final nodes ×{4}",
+                ["atk_crit_dmg_desc"] = "Crit damage +{0}%~+{1}% (grows per level, max Lv7)",
+                ["atk_crit_dmg_stat_preview"] = "Crit damage +{0}%",
+                ["atk_crit_dmg_max_level"] = "Max level reached",
 
                 // === Attack Expert Tree - Effect Texts (English) ===
                 ["attack_root_effect"] = "⚔️ Attack Expert! All damage +3%",
@@ -430,8 +443,9 @@ namespace CaptainSkillTree.Localization
                 ["atk_opener_magic_effect"] = "🔥 Magic: Chaos Initiation!",
                 ["atk_pursuit_effect"] = "🏃 Pursuit! +15% vs fleeing enemies",
                 ["atk_pursuit_speed_effect"] = "💨 Swift Pursuit! +12% move speed",
-                ["atk_frenzy_trigger_effect"] = "🔥 Melee Frenzy!",
+                ["atk_frenzy_trigger_effect"] = "🗡️ Deadly Strike Invested! (+{0}% Crit Chance)",
                 ["atk_frenzy_effect"] = "🔥 Frenzy! Stack hits to amplify!",
+                ["atk_crit_dmg_effect"] = "🎪 Weak Point Strike Invested! (+{0}% Crit Damage)",
                 ["atk_staff_mage_effect"] = "🔥 Elemental Strike!",
 
                 ["atk_opener_activated"] = "⚡ First Strike!",
@@ -569,7 +583,7 @@ namespace CaptainSkillTree.Localization
                 ["staff_fire_name"] = "Fire Element",
                 ["staff_lightning_name"] = "Lightning Element",
                 ["staff_luck_mana_name"] = "Lucky Mana",
-                ["staff_dual_cast_name"] = "Double Casting",
+                ["staff_dual_cast_name"] = "Multi Cast",
                 ["staff_heal_name"] = "Heal",
 
                 // === Ranged/Crossbow/Bow Descriptions ===
@@ -626,6 +640,8 @@ namespace CaptainSkillTree.Localization
                 ["bow_arrow_rain_desc"] = "Buff active → fire bow at any target!\n{0} arrows rain from 200m above hit point\nRadius {2}m • Per arrow: (Bow+Arrow) × {1}%\n50% reduced damage vs Bosses\nStamina {3}% • Cooldown {4}s",
                 ["bow_arrow_rain_ready"] = "Arrow Rain activated!",
                 ["bow_arrow_rain_complete"] = "Arrow Rain complete",
+                ["bow_arrow_rain_dungeon_buff_desc"] = "Inside dungeons, this casts a self-buff instead: +{0}% attack damage for {1}s",
+                ["bow_arrow_rain_dungeon_buff_cast"] = "Attack Boost! (+{0}%, {1}s)",
 
                 // === Skill Activation Messages ===
                 ["bow_equip_required"] = "You must equip a bow!",
@@ -639,7 +655,7 @@ namespace CaptainSkillTree.Localization
                 ["spear_penetrate_cooldown"] = "Piercing Spear cooldown ({0}s)",
                 ["spear_penetrate_activated"] = "Piercing Spear activated! ({0}s)",
                 ["spear_penetrate_no_target"] = "No enemies nearby",
-                ["staff_dual_cast_activated"] = "Double Casting! Firing {0} additional projectiles",
+                ["staff_dual_cast_activated"] = "Multi Cast! Firing {0} additional projectiles",
                 ["knife_assassin_heart_activated"] = "Assassin's Heart activated!",
 
                 // === Sword Skill Messages ===
@@ -656,12 +672,12 @@ namespace CaptainSkillTree.Localization
                 ["spear_lightning_shock"] = "Lightning Shock! ({0})",
 
                 // === Staff Skill Messages ===
-                ["staff_dual_cast_cooldown"] = "Double Casting cooldown: {0}s",
+                ["staff_dual_cast_cooldown"] = "Multi Cast cooldown: {0}s",
                 ["staff_eitr_insufficient"] = "Not enough Eitr ({0} required)",
-                ["staff_dual_cast_ready"] = "Double Casting ready! ({0}s)",
-                ["staff_dual_cast_remaining"] = "Double Casting ready ({0}s)",
-                ["staff_dual_cast_expired"] = "Double Casting buff expired",
-                ["staff_fan_cast_summoned"] = "7 Fireballs summoned! Press R to launch",
+                ["staff_dual_cast_ready"] = "Multi Cast ready! ({0}s)",
+                ["staff_dual_cast_remaining"] = "Multi Cast ready ({0}s)",
+                ["staff_dual_cast_expired"] = "Multi Cast buff expired",
+                ["staff_fan_cast_summoned"] = "7 Fireballs summoned! Press Z to launch",
                 ["staff_fan_cast_launched"] = "Fireballs launched!",
                 ["staff_fan_cast_expired"] = "Summon expired",
 

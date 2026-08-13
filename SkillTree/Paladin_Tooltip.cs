@@ -47,7 +47,7 @@ namespace CaptainSkillTree.SkillTree
 
             // 스킬 유형
             tooltip += $"<color=#1E90FF><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
-            tooltip += $"<color=#ADFF2F><size=16>{L.Get("skill_type_active_key", "G")}</size></color>\n";
+            tooltip += $"<color=#ADFF2F><size=16>{L.Get("skill_type_active_key", "Y")}</size></color>\n";
 
             // 쿨타임
             tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";

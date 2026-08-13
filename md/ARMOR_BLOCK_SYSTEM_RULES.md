@@ -243,6 +243,8 @@ public static class ParryDuration_Patch
 - **Valheim API**: `Player.BlockAttack()` 내부의 스태미나 계산
 - **구현 위치**: Prefix에서 스태미나 소모량 조정
 
+> ⚠️ **superseded**: `defense_Step6_true`(요툰의 방패)는 Tier 6-5 자리에 실제 구현된 적 없는 계획 항목이었으며, 해당 자리는 방패돌진(Shield Charge, `mace_Step7_guardian_heart`)이 둔기 트리에서 이전되어 대체함. 아래 구현 패턴은 참고용으로만 남겨둠.
+
 **현재 구현된 스킬**:
 | 스킬 ID | 이름 | 효과 |
 |---------|------|------|

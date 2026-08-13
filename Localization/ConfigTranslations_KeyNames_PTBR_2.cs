@@ -265,9 +265,6 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 5: Investida de Aparar - Ativo Tecla G (6) ===
                 ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [Investida de Aparar] Pontos Necessários",
-                ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [Investida de Aparar] Duração do Buff (seg)",
-                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [Investida de Aparar] Poder de Bloqueio",
-                ["Tier5_ParryRush_PushDistance"] = "Tier 5: [Investida de Aparar] Distância de Empurrão (m)",
                 ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [Investida de Aparar] Custo de Stamina",
                 ["Tier5_ParryRush_Cooldown"] = "Tier 5: [Investida de Aparar] Recarga (seg)",
 
@@ -313,8 +310,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HeavyStrike_RequiredPoints"] = "Tier 3-2: [Golpe Pesado] Pontos Necessários",
 
                 // === Tier 4: Empurrão (2) ===
-                ["Tier4_Push_KnockbackChance"] = "Tier 4: [Empurrão] Chance de Knockback (%)",
-                ["Tier4_Push_RequiredPoints"] = "Tier 4: [Empurrão] Pontos Necessários",
+                ["Tier4_Push_KnockbackChance"] = "Tier 4: [Concussão] Chance de Concussão (%)",
+                ["Tier4_Push_RequiredPoints"] = "Tier 4: [Concussão] Pontos Necessários",
 
                 // === Tier 5-1: Tanque (3) ===
                 ["Tier5_Tank_HealthBonus"] = "Tier 5-1: [Tanque] Bônus de HP (%)",
@@ -337,11 +334,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [Martelo Furioso] Raio AOE (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [Martelo Furioso] Pontos Necessários",
 
-                // === Tier 7-2: Investida com Escudo - Ativo Tecla G (4) ===
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [Investida com Escudo] Recarga (seg)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [Investida com Escudo] Custo de Stamina",
-                ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [Investida com Escudo] Dano do Bloqueio (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [Investida com Escudo] Pontos Necessários",
+                ["Tier7_ShockwaveSlam_Cooldown"] = "Tier 7-2: [Golpe de Onda de Choque] Recarga (seg)",
+                ["Tier7_ShockwaveSlam_StaminaCost"] = "Tier 7-2: [Golpe de Onda de Choque] Custo de Stamina",
+                ["Tier7_ShockwaveSlam_DamagePercent"] = "Tier 7-2: [Golpe de Onda de Choque] Dano da Arma (%)",
+                ["Tier7_ShockwaveSlam_LevelBonus"] = "Tier 7-2: [Golpe de Onda de Choque] Bônus por Nível (%)",
+                ["Tier7_ShockwaveSlam_RequiredPoints"] = "Tier 7-2: [Golpe de Onda de Choque] Pontos Necessários",
 
                 // ============================================
                 // Árvore de Alabarda - 37 Chaves
@@ -400,6 +397,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Redemoinho] Recarga (seg)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Redemoinho] Pontos Necessários",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Redemoinho] Duração Máxima (seg)",
+                ["Tier6_Whirlwind_DamageReductionPercent"]    = "Tier 6: [Redemoinho] Redução de Dano (%)",
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] = "Tier 6: [Redemoinho] Bônus de Nível de Redução de Dano (%)",
 
                 // ============================================
                 // Habilidades de Classe - Arqueiro
@@ -439,6 +438,8 @@ namespace CaptainSkillTree.Localization
                 ["Mage_Fire_Rain_Radius"] = "Raio de Queda (m)",
                 ["Mage_Fire_Rain_Impact_Radius"] = "Raio de Dano no Impacto (m)",
                 ["Mage_Fire_Rain_Projectile_Count"] = "Projéteis por Salva",
+                ["Mage_Dungeon_Buff_Damage_Bonus"] = "Buff de Masmorra: Bônus de Dano (%)",
+                ["Mage_Dungeon_Buff_Duration"] = "Buff de Masmorra: Duração (seg)",
                 ["Mage_Damage_Multiplier"] = "Ativo: Multiplicador de Dano (%)",
                 ["Mage_Cooldown"] = "Ativo: Recarga (seg)",
                 ["Mage_Elemental_Resistance"] = "Passivo: Resistência Elemental (%)",
@@ -571,22 +572,27 @@ namespace CaptainSkillTree.Localization
                 ["Producer_Durability_Lv1"]          = "Mestre Artesão: Bônus de Durabilidade Lv1 (%)",
                 ["Producer_CraftingSuccessRate_Lv1"] = "Mestre Artesão: Taxa de Sucesso de Criação Lv1 (%)",
                 ["Producer_EnchantChance_Lv1"]       = "Mestre Artesão: Chance de Encantamento Lv1 (%)",
+                ["Producer_ElementalProcChance_Lv1"] = "Mestre Artesão: Chance de Dano Elemental Lv1 (%)",
                 ["Producer_Durability_Lv2"]          = "Mestre Artesão: Bônus de Durabilidade Lv2 (%)",
                 ["Producer_CraftingSuccessRate_Lv2"] = "Mestre Artesão: Taxa de Sucesso de Criação Lv2 (%)",
                 ["Producer_MaterialReduction_Lv2"]   = "Mestre Artesão: Redução de Material Lv2 (%)",
                 ["Producer_EnchantChance_Lv2"]       = "Mestre Artesão: Chance de Encantamento Lv2 (%)",
+                ["Producer_ElementalProcChance_Lv2"] = "Mestre Artesão: Chance de Dano Elemental Lv2 (%)",
                 ["Producer_Durability_Lv3"]          = "Mestre Artesão: Bônus de Durabilidade Lv3 (%)",
                 ["Producer_CraftingSuccessRate_Lv3"] = "Mestre Artesão: Taxa de Sucesso de Criação Lv3 (%)",
                 ["Producer_MaterialReduction_Lv3"]   = "Mestre Artesão: Redução de Material Lv3 (%)",
                 ["Producer_EnchantChance_Lv3"]       = "Mestre Artesão: Chance de Encantamento Lv3 (%)",
+                ["Producer_ElementalProcChance_Lv3"] = "Mestre Artesão: Chance de Dano Elemental Lv3 (%)",
                 ["Producer_Durability_Lv4"]          = "Mestre Artesão: Bônus de Durabilidade Lv4 (%)",
                 ["Producer_CraftingSuccessRate_Lv4"] = "Mestre Artesão: Taxa de Sucesso de Criação Lv4 (%)",
                 ["Producer_MaterialReduction_Lv4"]   = "Mestre Artesão: Redução de Material Lv4 (%)",
                 ["Producer_EnchantChance_Lv4"]       = "Mestre Artesão: Chance de Encantamento Lv4 (%)",
+                ["Producer_ElementalProcChance_Lv4"] = "Mestre Artesão: Chance de Dano Elemental Lv4 (%)",
                 ["Producer_Durability_Lv5"]          = "Mestre Artesão: Bônus de Durabilidade Lv5 (%)",
                 ["Producer_CraftingSuccessRate_Lv5"] = "Mestre Artesão: Taxa de Sucesso de Criação Lv5 (%)",
                 ["Producer_MaterialReduction_Lv5"]   = "Mestre Artesão: Redução de Material Lv5 (%)",
                 ["Producer_EnchantChance_Lv5"]       = "Mestre Artesão: Chance de Encantamento Lv5 (%)",
+                ["Producer_ElementalProcChance_Lv5"] = "Mestre Artesão: Chance de Dano Elemental Lv5 (%)",
 
                 // ============================================
                 // Knife Tree - Explosão de Ponto Fraco (Tier 9)
@@ -611,8 +617,6 @@ namespace CaptainSkillTree.Localization
                 ["Job_Lv4_Cost"]                       = "Job Lv4 Coin Cost",
                 ["Job_Lv5_Cost"]                       = "Job Lv5 Coin Cost",
                 ["Job_Reset_Cost"]                     = "Job Skill Reset Cost",
-                ["Legacy_Penetrate_CritChance"]        = "Legado: Não Usado",
-                ["Legacy_Throw_BuffDuration"]          = "Legado: Não Usado",
                 ["Passive_Reset_Cost"]                 = "Passive Skill Reset Cost",
                 ["Rogue_Lv1_MoveSpeed"]                = "Lv1 Passivo: Vel. de Movimento (%)",
                 ["Rogue_Lv2_AttackBonus"]              = "Lv2: Bônus de Ataque (%)",
@@ -678,6 +682,128 @@ namespace CaptainSkillTree.Localization
                 ["Tier4-1_StormSlash_ExplosionBonus"]  = "Tier 4-1: [Corte da Tempestade] Bônus de Raio",
                 ["Tier5_OneShot_AoeRadius"]            = "Tier 5: [Um Tiro] Raio AOE (m)",
                 ["Tier5_PierceCharge_LevelBonus"]      = "Tier 5: [Carga Penetrante] Bônus de Dano por Nível (%)",
+
+                ["Tier0_SpeedExpert_MoveSpeedPerLevel"] = "Tier 0: [Speed Expert] Move Speed Bonus/Level (%)",
+
+                ["Tier0_SpeedExpert_PointsPerLevel"] = "Tier 0: [Speed Expert] Required Points Per Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_2"] = "Tier 0: [Speed Expert] Lv2 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_3"] = "Tier 0: [Speed Expert] Lv3 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_4"] = "Tier 0: [Speed Expert] Lv4 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_5"] = "Tier 0: [Speed Expert] Lv5 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_6"] = "Tier 0: [Speed Expert] Lv6 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_7"] = "Tier 0: [Speed Expert] Lv7 Required Player Level",
+
+                ["Tier3_BlockTraining_MaxChargeDistance"] = "Tier 3-4: [Block Training] Counter Max Effective Range (m)",
+
+                ["Tier4_Shockwave_KnockbackForce"] = "Tier 4-1: [Shockwave] Knockback Force",
+
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Tier 5: [Explosive Arrow] Level Bonus (%)",
+
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [Arrow Rain] Level Bonus (%)",
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] = "Tier 6: [Chuva de Flechas] Buff de Masmorra: Bônus de Dano (%)",
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] = "Tier 6: [Chuva de Flechas] Buff de Masmorra: Duração (seg)",
+
+                ["Tier5_Penetrate_BaseDamage"] = "Tier 5-1: [Penetrating Spear] Base Damage (%)",
+
+                ["Tier5_Penetrate_LevelDamageBonus"] = "Tier 5-1: [Penetrating Spear] Level Damage Bonus (%)",
+
+                ["Tier5_Penetrate_BaseAreaDamage"] = "Tier 5-1: [Penetrating Spear] Base Area Damage (%)",
+
+                ["Tier5_Penetrate_AreaLevelBonus"] = "Tier 5-1: [Penetrating Spear] Area Damage Level Bonus (%)",
+
+                ["Tier5_Combo_LevelBonus"] = "Tier 5-2: [Combo Spear] Level Bonus (%)",
+
+                ["Tier5_DoubleCast_LevelBonus"] = "Tier 5-1: [Multi Cast] Level Bonus (%)",
+
+                ["Tier5_InstantAreaHeal_LightningDamagePercent"] = "Tier 5-2: [Heal] Lightning Damage % (Lv1 base)",
+
+                ["Tier5_OneShot_LevelBonus"] = "Tier 5: [One Shot] Level Bonus (%)",
+
+                ["Tier6_IceBreath_LevelBonus"] = "Tier 6: [Vulkan Ice] Level Bonus (%)",
+
+                ["Tier6_IceBreath_DotLevelBonus"] = "Tier 6: [Vulkan Ice] DoT Level Bonus (%)",
+
+                ["Tier8_AssassinHeart_LevelBonus"] = "Tier 8: [Assassin's Heart] Level Bonus (%)",
+
+                ["Tier5_WhirlwindSlash_BaseDamage"] = "Tier 5: [Whirlwind Slash] Base Damage (%)",
+
+                ["Tier5_WhirlwindSlash_LevelBonus"] = "Tier 5: [Whirlwind Slash] Level Bonus (%)",
+
+                ["Tier6_RushSlash_DamageLevelBonus"] = "Tier 6: [Rush Slash] Damage Level Bonus (%)",
+
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] = "Tier 7-1: [Fury Hammer] Normal Hit Level Bonus (%)",
+
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] = "Tier 7-1: [Fury Hammer] Final Hit Level Bonus (%)",
+
+
+                ["Tier6_Whirlwind_LevelBonus"] = "Tier 6: [Whirlwind] Level Bonus (%)",
+
+                ["Archer_MultiShot_FireInterval"] = "Lv1 Multishot: Arrow Fire Interval (sec)",
+
+                ["Archer_Attack_StaminaReduction_Lv1"] = "Lv1 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv2"] = "Lv2 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv3"] = "Lv3 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv4"] = "Lv4 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv5"] = "Lv5 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_AmmoSaveChance"] = "Passive: Ammo Save Chance (%)",
+                ["Archer_TameHeal_PerLevel"] = "Passive: Tamed Heal (HP/s)",
+                ["Archer_TameHeal_Range"] = "Passive: Tamed Heal Range (m)",
+
+                ["Tanker_Explosion_Radius"] = "Active: Explosion Radius (m)",
+
+                ["Tanker_BlockPower_Multiplier"] = "Passive: Block Power Multiplier (%)",
+
+                ["Berserker_Lv1_Active_Cooldown"] = "Berserker Lv1: Rage Cooldown (sec)",
+
+                ["Berserker_Lv2_Active_Cooldown"] = "Berserker Lv2: Rage Cooldown (sec)",
+
+                ["Berserker_Lv3_Active_Cooldown"] = "Berserker Lv3: Rage Cooldown (sec)",
+
+                ["Berserker_Lv4_Active_Cooldown"] = "Berserker Lv4: Rage Cooldown (sec)",
+
+                ["Berserker_Lv5_Active_Cooldown"] = "Berserker Lv5: Rage Cooldown (sec)",
+
+                ["Berserker_Lv1_Active_Duration"] = "Berserker Lv1: Rage Duration (sec)",
+
+                ["Berserker_Lv2_Active_Duration"] = "Berserker Lv2: Rage Duration (sec)",
+
+                ["Berserker_Lv3_Active_Duration"] = "Berserker Lv3: Rage Duration (sec)",
+
+                ["Berserker_Lv4_Active_Duration"] = "Berserker Lv4: Rage Duration (sec)",
+
+                ["Berserker_Lv5_Active_Duration"] = "Berserker Lv5: Rage Duration (sec)",
+
+                ["Berserker_Lv1_Passive_HealthBonus"] = "Berserker Lv1: Passive Max HP Bonus",
+
+                ["Berserker_Lv2_Passive_HealthBonus"] = "Berserker Lv2: Passive Max HP Bonus",
+
+                ["Berserker_Lv3_Passive_HealthBonus"] = "Berserker Lv3: Passive Max HP Bonus",
+
+                ["Berserker_Lv4_Passive_HealthBonus"] = "Berserker Lv4: Passive Max HP Bonus",
+
+                ["Berserker_Lv5_Passive_HealthBonus"] = "Berserker Lv5: Passive Max HP Bonus",
+
+                ["Berserker_Lv1_Active_DamagePerHP"] = "Berserker Lv1: Damage Per HP% (%)",
+
+                ["Berserker_Lv2_Active_DamagePerHP"] = "Berserker Lv2: Damage Per HP% (%)",
+
+                ["Berserker_Lv3_Active_DamagePerHP"] = "Berserker Lv3: Damage Per HP% (%)",
+
+                ["Berserker_Lv4_Active_DamagePerHP"] = "Berserker Lv4: Damage Per HP% (%)",
+
+                ["Berserker_Lv5_Active_DamagePerHP"] = "Berserker Lv5: Damage Per HP% (%)",
+
             };
         }
     }

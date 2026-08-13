@@ -381,7 +381,9 @@ namespace CaptainSkillTree.SkillTree
                     // ✅ 매 타격마다 현재 플레이어 위치 기준으로 동적 계산
                     Vector3 hitPosition = player.transform.position + player.GetLookDir() * 2f;
                     var mobs = Character.GetAllCharacters().Where(c =>
-                        (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss) &&
+                        c != null && !c.IsDead() && c != (Character)player &&
+                        (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss ||
+                         (c is Player tp && tp.IsPVPEnabled() && player.IsPVPEnabled())) &&
                         Vector3.Distance(c.transform.position, hitPosition) < aoeRadius
                     );
 
@@ -475,7 +477,9 @@ namespace CaptainSkillTree.SkillTree
 
                     // 데미지 적용
                     var mobs = Character.GetAllCharacters().Where(c =>
-                        (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss) &&
+                        c != null && !c.IsDead() && c != (Character)player &&
+                        (c.IsMonsterFaction(0f) || c.m_faction == Character.Faction.Boss ||
+                         (c is Player tp && tp.IsPVPEnabled() && player.IsPVPEnabled())) &&
                         Vector3.Distance(c.transform.position, hitPosition) < aoeRadius
                     );
 

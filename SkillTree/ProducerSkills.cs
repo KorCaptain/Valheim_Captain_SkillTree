@@ -177,6 +177,17 @@ namespace CaptainSkillTree.SkillTree
         }
 
         /// <summary>
+        /// 플레이어 사망/접속종료 시 제작 전문가 버프 상태 정리 (JobSkills.CleanupAllJobSkillsOnDeath에서 호출)
+        /// </summary>
+        public static void CleanupOnDeath(Player player)
+        {
+            if (player == null) return;
+            long id = player.GetPlayerID();
+            StopProducerStatusVFX(id);
+            buffStates.Remove(id);
+        }
+
+        /// <summary>
         /// 플레이어가 제작 전문가 버프 중인지 확인
         /// </summary>
         public static bool IsProducerBuffActive(Player player)

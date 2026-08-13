@@ -32,6 +32,22 @@ namespace CaptainSkillTree.SkillTree
         public static Dictionary<Player, bool> isReloadingCrossbow = new Dictionary<Player, bool>();
 
         /// <summary>
+        /// 플레이어 정리 시 호출 - Speed Tree 추가 효과 추적 상태 제거 (메모리 누수 방지)
+        /// </summary>
+        public static void CleanupSpeedTree2OnDeath(Player player)
+        {
+            if (player == null) return;
+            dodgeSpeedEndTime.Remove(player);
+            tier8MeleeComboCount.Remove(player);
+            tier8MeleeLastHitTime.Remove(player);
+            tier8MeleeComboEndTime.Remove(player);
+            staffComboCount.Remove(player);
+            staffLastCastTime.Remove(player);
+            isDrawingBow.Remove(player);
+            isReloadingCrossbow.Remove(player);
+        }
+
+        /// <summary>
         /// 구르기 후 이동속도 버프 활성화 체크
         /// </summary>
         public static bool IsDodgeSpeedActive(Player player)
@@ -430,6 +446,14 @@ namespace CaptainSkillTree.SkillTree
                     }
                 }
 
+                // 평원 보스 퀘스트(GoblinKing) 클레임 보상: 점프 숙련 영구 +10
+                if (skillType == Skills.SkillType.Jump
+                    && Player.m_localPlayer != null
+                    && QuestManager.IsClaimed(Player.m_localPlayer, "Plains_Quest5"))
+                {
+                    bonus += 10f;
+                }
+
                 // === 활 전문가 트리 ===
 
                 // 활 숙련 (bow_Step3_speedshot): 활 숙련도 +10
@@ -443,6 +467,49 @@ namespace CaptainSkillTree.SkillTree
 
                 // === 석궁 전문가 트리 ===
                 // (현재 석궁 숙련도 보너스 스킬 없음, 추후 추가 가능)
+
+                // === 생활 퀘스트 보상: 농사/요리/낚시 숙련도 (영구, 사망해도 유지) ===
+                if (Player.m_localPlayer != null)
+                {
+                    switch (skillType)
+                    {
+                        case Skills.SkillType.Farming:
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Life_Quest1")) bonus += 2f;
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Life_Quest2")) bonus += 8f;
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Life_Quest3")) bonus += 10f;
+                            break;
+                        case Skills.SkillType.Cooking:
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Life_Quest4")) bonus += 2f;
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Life_Quest5")) bonus += 8f;
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Life_Quest6")) bonus += 10f;
+                            break;
+                        case Skills.SkillType.Fishing:
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Life_Quest7")) bonus += 2f;
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Life_Quest8")) bonus += 8f;
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Life_Quest9")) bonus += 20f;
+                            break;
+                    }
+                }
+
+                // === 산 보스 퀘스트 보상: 모더 근접/원거리 전용 처치 숙련도 (영구, 사망해도 유지) ===
+                if (Player.m_localPlayer != null)
+                {
+                    switch (skillType)
+                    {
+                        case Skills.SkillType.Swords:
+                        case Skills.SkillType.Clubs:
+                        case Skills.SkillType.Knives:
+                        case Skills.SkillType.Spears:
+                        case Skills.SkillType.Polearms:
+                        case Skills.SkillType.Axes:
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Mountain_Quest5")) bonus += 5f;
+                            break;
+                        case Skills.SkillType.Bows:
+                        case Skills.SkillType.Crossbows:
+                            if (QuestManager.IsClaimed(Player.m_localPlayer, "Mountain_Quest6")) bonus += 5f;
+                            break;
+                    }
+                }
             }
             catch (Exception ex)
             {

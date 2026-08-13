@@ -7,8 +7,7 @@ namespace CaptainSkillTree.SkillTree
     /// </summary>
     public static class Speed_Config
     {
-        // === 필요 포인트 설정 (단일 스킬 4개) ===
-        public static ConfigEntry<int> SpeedRootRequiredPoints;
+        // === 필요 포인트 설정 (단일 스킬 3개) ===
         public static ConfigEntry<int> SpeedStep1RequiredPoints;
         public static ConfigEntry<int> SpeedStep5RequiredPoints;
         public static ConfigEntry<int> SpeedStep7RequiredPoints;
@@ -30,8 +29,15 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int> SpeedStep8_BowAccelRequiredPoints;
         public static ConfigEntry<int> SpeedStep8_CastAccelRequiredPoints;
 
-        // === 티어0: 속도 전문가 ===
-        public static ConfigEntry<float> SpeedRootMoveSpeed;
+        // === 티어0: 속도 전문가 (성장형 Lv1~7) ===
+        public static ConfigEntry<float> SpeedRootMoveSpeedPerLevel;
+        public static ConfigEntry<int>   SpeedRootPointsPerLevel;
+        public static ConfigEntry<int>   SpeedRootRequiredLevel_2;
+        public static ConfigEntry<int>   SpeedRootRequiredLevel_3;
+        public static ConfigEntry<int>   SpeedRootRequiredLevel_4;
+        public static ConfigEntry<int>   SpeedRootRequiredLevel_5;
+        public static ConfigEntry<int>   SpeedRootRequiredLevel_6;
+        public static ConfigEntry<int>   SpeedRootRequiredLevel_7;
 
         // === 티어1: 민첩함의 기초 ===
         public static ConfigEntry<float> SpeedBaseDodgeMoveSpeed;
@@ -93,7 +99,6 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<float> SpeedStaffTripleEitrRecovery;
 
         // === 필요 포인트 접근 프로퍼티 (단일 스킬) ===
-        public static int SpeedRootRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_root_required_points", SpeedRootRequiredPoints?.Value ?? 2);
         public static int SpeedStep1RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step1_required_points", SpeedStep1RequiredPoints?.Value ?? 2);
         public static int SpeedStep5RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step5_required_points", SpeedStep5RequiredPoints?.Value ?? 3);
         public static int SpeedStep7RequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step7_required_points", SpeedStep7RequiredPoints?.Value ?? 3);
@@ -116,7 +121,21 @@ namespace CaptainSkillTree.SkillTree
         public static int SpeedStep8_CastAccelRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("speed_step8_castaccel_rp", SpeedStep8_CastAccelRequiredPoints?.Value ?? 2);
 
         // === 속도 전문가 접근 프로퍼티들 ===
-        public static float SpeedRootMoveSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Expert_MoveSpeed", SpeedRootMoveSpeed.Value);
+        public static float SpeedRootMoveSpeedPerLevelValue => SkillTreeConfig.GetEffectiveValue("Speed_Root_MoveSpeedPerLevel", SpeedRootMoveSpeedPerLevel?.Value ?? 2f);
+        public static int SpeedRootPointsPerLevelValue => (int)SkillTreeConfig.GetEffectiveValue("Speed_Root_PointsPerLevel", (float)(SpeedRootPointsPerLevel?.Value ?? 1));
+        public static int GetSpeedRootRequiredPlayerLevel(int skillLevel)
+        {
+            switch (skillLevel)
+            {
+                case 2: return (int)SkillTreeConfig.GetEffectiveValue("Speed_Root_RequiredLevel_2", (float)(SpeedRootRequiredLevel_2?.Value ?? 15));
+                case 3: return (int)SkillTreeConfig.GetEffectiveValue("Speed_Root_RequiredLevel_3", (float)(SpeedRootRequiredLevel_3?.Value ?? 30));
+                case 4: return (int)SkillTreeConfig.GetEffectiveValue("Speed_Root_RequiredLevel_4", (float)(SpeedRootRequiredLevel_4?.Value ?? 45));
+                case 5: return (int)SkillTreeConfig.GetEffectiveValue("Speed_Root_RequiredLevel_5", (float)(SpeedRootRequiredLevel_5?.Value ?? 50));
+                case 6: return (int)SkillTreeConfig.GetEffectiveValue("Speed_Root_RequiredLevel_6", (float)(SpeedRootRequiredLevel_6?.Value ?? 65));
+                case 7: return (int)SkillTreeConfig.GetEffectiveValue("Speed_Root_RequiredLevel_7", (float)(SpeedRootRequiredLevel_7?.Value ?? 80));
+                default: return 0;
+            }
+        }
         public static float SpeedBaseDodgeMoveSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Step1_DodgeMoveSpeed", SpeedBaseDodgeMoveSpeed.Value);
         public static float SpeedBaseDodgeDurationValue => SkillTreeConfig.GetEffectiveValue("Speed_Step1_DodgeDuration", SpeedBaseDodgeDuration.Value);
         public static float SpeedMeleeComboAttackSpeedValue => SkillTreeConfig.GetEffectiveValue("Speed_Step2_MeleeComboAttackSpeed", SpeedMeleeComboAttackSpeed.Value);
@@ -167,13 +186,37 @@ namespace CaptainSkillTree.SkillTree
         public static void Initialize(ConfigFile config)
         {
             // === 티어0: 속도 전문가 ===
-            SpeedRootRequiredPoints = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier0_SpeedExpert_RequiredPoints", 2,
-                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_RequiredPoints"), 79);
+            SpeedRootMoveSpeedPerLevel = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier0_SpeedExpert_MoveSpeedPerLevel", 2f,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_MoveSpeedPerLevel"), 80);
 
-            SpeedRootMoveSpeed = SkillTreeConfig.BindServerSync(config,
-                "Speed Tree", "Tier0_SpeedExpert_MoveSpeedBonus", 5f,
-                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_MoveSpeedBonus"), 80);
+            SpeedRootPointsPerLevel = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier0_SpeedExpert_PointsPerLevel", 1,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_PointsPerLevel"), 79);
+
+            SpeedRootRequiredLevel_2 = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier0_SpeedExpert_RequiredPlayerLevel_2", 15,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_RequiredPlayerLevel_2"), 79);
+
+            SpeedRootRequiredLevel_3 = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier0_SpeedExpert_RequiredPlayerLevel_3", 30,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_RequiredPlayerLevel_3"), 79);
+
+            SpeedRootRequiredLevel_4 = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier0_SpeedExpert_RequiredPlayerLevel_4", 45,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_RequiredPlayerLevel_4"), 79);
+
+            SpeedRootRequiredLevel_5 = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier0_SpeedExpert_RequiredPlayerLevel_5", 50,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_RequiredPlayerLevel_5"), 79);
+
+            SpeedRootRequiredLevel_6 = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier0_SpeedExpert_RequiredPlayerLevel_6", 65,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_RequiredPlayerLevel_6"), 79);
+
+            SpeedRootRequiredLevel_7 = SkillTreeConfig.BindServerSync(config,
+                "Speed Tree", "Tier0_SpeedExpert_RequiredPlayerLevel_7", 80,
+                SkillTreeConfig.GetConfigDescription("Tier0_SpeedExpert_RequiredPlayerLevel_7"), 79);
 
             // === 티어1: 민첩함의 기초 ===
             SpeedStep1RequiredPoints = SkillTreeConfig.BindServerSync(config,

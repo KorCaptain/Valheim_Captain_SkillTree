@@ -454,8 +454,9 @@ namespace CaptainSkillTree.SkillTree
 
                 checkedCount++;
 
-                // 더 관대한 조건: Tamed가 아니고 Player가 아니면 공격 대상
-                if (c.IsTamed() || c.IsPlayer()) continue;
+                // 더 관대한 조건: Tamed가 아니고 Player가 아니면 공격 대상 (PvP 활성화 플레이어는 포함)
+                if (c.IsTamed()) continue;
+                if (c.IsPlayer() && !(c.IsPVPEnabled() && player.IsPVPEnabled())) continue;
 
                 validCount++;
                 float dist = Vector3.Distance(c.transform.position, player.transform.position);

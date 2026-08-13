@@ -52,6 +52,7 @@ namespace CaptainSkillTree.Localization
             foreach (var kv in GetSwordKnifeDescriptions_KO()) dict[kv.Key] = kv.Value;
             foreach (var kv in GetHeavyMeleeDescriptions_KO()) dict[kv.Key] = kv.Value;
             foreach (var kv in GetJobDescriptions_KO())        dict[kv.Key] = kv.Value;
+            foreach (var kv in GetCaptainLevelDescriptions_KO()) dict[kv.Key] = kv.Value;
             return dict;
         }
 
@@ -66,6 +67,7 @@ namespace CaptainSkillTree.Localization
             foreach (var kv in GetSwordKnifeDescriptions_EN()) dict[kv.Key] = kv.Value;
             foreach (var kv in GetHeavyMeleeDescriptions_EN()) dict[kv.Key] = kv.Value;
             foreach (var kv in GetJobDescriptions_EN())        dict[kv.Key] = kv.Value;
+            foreach (var kv in GetCaptainLevelDescriptions_EN()) dict[kv.Key] = kv.Value;
             return dict;
         }
 

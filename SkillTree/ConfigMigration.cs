@@ -16,8 +16,10 @@ namespace CaptainSkillTree.SkillTree
     {
         /// <summary>
         /// 형식: "YYYY.MM.patch" — 이 값을 올리면 ApplyMigration()이 실행됨.
+        /// ⚠️ YYYY.MM은 반드시 이 값을 실제로 올리는 시점(오늘 날짜)을 반영해야 함.
+        /// 과거 변경 사유를 적더라도 라벨은 항상 "지금 배포되는 날짜" 기준으로 갱신할 것.
         /// </summary>
-        public const string SCHEMA_VERSION = "2026.03.1";
+        public const string SCHEMA_VERSION = "2026.08.2";
 
         // 절대 변경 금지 키 (언어 설정, 스키마 버전 보존)
         private static readonly System.Collections.Generic.HashSet<string> _preserveKeys =
@@ -42,7 +44,14 @@ namespace CaptainSkillTree.SkillTree
         private static readonly System.Collections.Generic.HashSet<string> _balanceChangedKeys =
             new System.Collections.Generic.HashSet<string>
             {
-                // v2026.03.1 밸런스 변경 항목을 여기에 추가
+                // v2026.08.2: 목초지/검은숲/늪 특수(히든) 보스 퀘스트에 코인 보상이 새로 추가됨(0 → 500/800/1200).
+                // 이미 0으로 저장되어 있던 기존 사용자 .cfg 값을 새 기본값으로 강제 리셋.
+                "Meadows_Quest6_CoinMin",
+                "Meadows_Quest6_CoinMax",
+                "BlackForest_Quest7_CoinMin",
+                "BlackForest_Quest7_CoinMax",
+                "Swamp_Quest7_CoinMin",
+                "Swamp_Quest7_CoinMax",
             };
 
         /// <summary>
@@ -83,25 +92,17 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         public static void ApplyMigration(ConfigFile config)
         {
-            int balanceReset = 0;
-            int total = 0;
-
             foreach (var pair in config)
             {
                 if (_preserveKeys.Contains(pair.Key.Key))
                     continue;
-                total++;
                 if (_balanceChangedKeys.Contains(pair.Key.Key))
                 {
                     pair.Value.BoxedValue = pair.Value.DefaultValue;
-                    balanceReset++;
                 }
             }
 
             config.Save();
-            Plugin.Log.LogWarning(
-                $"[ConfigMigration] ✅ 마이그레이션 완료: 전체 {total}개 항목, " +
-                $"밸런스 변경 {balanceReset}개 업데이트, {total - balanceReset}개 사용자 값 유지.");
         }
 
         /// <summary>
@@ -120,7 +121,7 @@ namespace CaptainSkillTree.SkillTree
                 resetCount++;
             }
             config.Save();
-            Plugin.Log.LogWarning($"[ConfigMigration] ⚠️ 전체 초기화 완료: {resetCount}개 항목 → 기본값으로 리셋.");
+            Plugin.Log.LogWarning($"[ConfigMigration] [WARN] 전체 초기화 완료: {resetCount}개 항목 → 기본값으로 리셋.");
         }
     }
 }

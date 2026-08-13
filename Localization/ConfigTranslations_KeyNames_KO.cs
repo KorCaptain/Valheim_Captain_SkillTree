@@ -15,6 +15,7 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "원거리 스킬 키",
                 ["HotKey_G"] = "근접 메인 스킬 키",
                 ["HotKey_H"] = "보조 스킬 키",
+                ["QuestToggleKey"] = "퀘스트 패널 단축키",
                 ["HUD_IconSize"] = "스킬 아이콘 크기",
                 ["HUD_PosX"] = "스킬 아이콘 HUD X 위치",
                 ["HUD_PosY"] = "스킬 아이콘 HUD Y 위치",
@@ -31,19 +32,19 @@ namespace CaptainSkillTree.Localization
                 ["Tier0_AttackExpert_RequiredPoints"] = "Tier 0: [공격 전문가] 필요 포인트",
 
                 // === 4국면 연쇄 시스템 신규 키 (Tier1~5) ===
-                // === Tier 1: 선빵 (5개) ===
-                ["Tier1_Opener_DamageBonus"] = "Tier 1: [선빵] 데미지 보너스 (%)",
-                ["Tier1_Opener_StaminaReduction"] = "Tier 1: [선빵] 스태미나 소비 감소 (%)",
-                ["Tier1_Opener_Duration"] = "Tier 1: [선빵] 지속 시간 (초)",
-                ["Tier1_Opener_Cooldown"] = "Tier 1: [선빵] 쿨다운 (초)",
-                ["Tier1_Opener_RequiredPoints"] = "Tier 1: [선빵] 필요 포인트",
+                // === Tier 1: 선공격 (5개) ===
+                ["Tier1_Opener_DamageBonus"] = "Tier 1: [선공격] 데미지 보너스 (%)",
+                ["Tier1_Opener_StaminaReduction"] = "Tier 1: [선공격] 스태미나 소비 감소 (%)",
+                ["Tier1_Opener_Duration"] = "Tier 1: [선공격] 지속 시간 (초)",
+                ["Tier1_Opener_Cooldown"] = "Tier 1: [선공격] 쿨다운 (초)",
+                ["Tier1_Opener_RequiredPoints"] = "Tier 1: [선공격] 필요 포인트",
 
                 // === Tier 2-1: 근접 (2개) ===
                 ["Tier2_OpenerMelee_FinisherBonus"] = "Tier 2-1: [근접] 마무리 보너스 (%)",
                 ["Tier2_OpenerMelee_RequiredPoints"] = "Tier 2-1: [근접] 필요 포인트",
 
                 // === Tier 2-2: 활 (2개) ===
-                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [활] 크리 확률 보너스 (%)",
+                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [활] 크리티컬 피해 보너스 (%)",
                 ["Tier2_OpenerBow_RequiredPoints"] = "Tier 2-2: [활] 필요 포인트",
 
                 // === Tier 2-3: 석궁 (2개) ===
@@ -64,9 +65,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_PursuitSpeed_SpeedBonus"] = "Tier 4-1: [질풍 추격] 이동속도 보너스 (%)",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "Tier 4-1: [질풍 추격] 필요 포인트",
 
-                // === Tier 4-2: 혼전 돌입 (2개) ===
-                ["Tier4_FrenzyTrigger_StaminaReduction"] = "Tier 4-2: [혼전 돌입] 스태미나 감소 (%)",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "Tier 4-2: [혼전 돌입] 필요 포인트",
+                // === Tier 4-2: 치명적인 공격 (2개) ===
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] = "Tier 4-2: [치명적인 공격] 치명타 확률/레벨 (%)",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "Tier 4-2: [치명적인 공격] 레벨당 필요 포인트",
 
                 // === Tier 5: 난전 (6개) ===
                 ["Tier5_Frenzy_StackBonusBase"] = "Tier 5: [난전] 기본 스택 보너스 (%)",
@@ -114,8 +115,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [충전] 필요 포인트",
 
                 // === Tier 6: 최종 강화 (8개) ===
-                ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 (%)",
-                ["Tier6_WeakPointAttack_RequiredPoints"] = "Tier 6-1: [약점 공격] 필요 포인트",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 Lv1 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 Lv2 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 Lv3 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 Lv4 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 Lv5 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 Lv6 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "Tier 6-1: [약점 공격] 치명타 데미지 보너스 Lv7 (%)",
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "Tier 6-1: [약점 공격] 레벨당 필요 포인트",
                 ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [연속 근접] 상시 보너스 (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Tier 6-2: [연속 근접] 필요 포인트",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Tier 6-3: [양손 분쇄] 양손 데미지 보너스 (%)",
@@ -128,9 +135,15 @@ namespace CaptainSkillTree.Localization
                 // ============================================
 
 
-                // === Tier 0: 속도 전문가 (2개) ===
-                ["Tier0_SpeedExpert_MoveSpeedBonus"] = "Tier 0: [속도 전문가] 이동속도 보너스 (%)",
-                ["Tier0_SpeedExpert_RequiredPoints"] = "Tier 0: [속도 전문가] 필요 포인트",
+                // === Tier 0: 속도 전문가 (8개) ===
+                ["Tier0_SpeedExpert_MoveSpeedPerLevel"] = "Tier 0: [속도 전문가] 이동속도 보너스/레벨 (%)",
+                ["Tier0_SpeedExpert_PointsPerLevel"] = "Tier 0: [속도 전문가] 레벨당 필요 포인트",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_2"] = "Tier 0: [속도 전문가] Lv2 필요 플레이어 레벨",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_3"] = "Tier 0: [속도 전문가] Lv3 필요 플레이어 레벨",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_4"] = "Tier 0: [속도 전문가] Lv4 필요 플레이어 레벨",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_5"] = "Tier 0: [속도 전문가] Lv5 필요 플레이어 레벨",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_6"] = "Tier 0: [속도 전문가] Lv6 필요 플레이어 레벨",
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_7"] = "Tier 0: [속도 전문가] Lv7 필요 플레이어 레벨",
 
                 // === Tier 1: 민첩함의 기초 (5개) ===
                 ["Tier1_AgilityBase_DodgeMoveSpeedBonus"] = "Tier 1: [민첩함의 기초] 구르기 후 이동속도 보너스 (%)",
@@ -232,6 +245,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 0: 방어 전문가 (3개) ===
                 ["Tier0_DefenseExpert_HPBonus"] = "Tier 0: [방어 전문가] 체력 보너스",
                 ["Tier0_DefenseExpert_ArmorBonus"] = "Tier 0: [방어 전문가] 방어력 보너스",
+                ["Tier0_DefenseExpert_AtkPenalty"] = "Tier 0: [방어 전문가] 공격력 감소 (%)",
                 ["Tier0_DefenseExpert_RequiredPoints"] = "Tier 0: [방어 전문가] 필요 포인트",
 
                 // === Tier 1: 피부 경화 (3개) ===
@@ -267,12 +281,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_ShieldTraining_RequiredPoints"] = "Tier 3-4: [막기훈련] 필요 포인트",
                 ["Tier3_BlockTraining_ParryBlockPowerRatio"] = "Tier 3-4: [막기훈련] 패링 반격 막기력 비율 (%)",
                 ["Tier3_BlockTraining_PushDistance"] = "Tier 3-4: [막기훈련] 패링 반격 밀어내기 거리 (m)",
+                ["Tier3_BlockTraining_MaxChargeDistance"] = "Tier 3-4: [막기훈련] 반격 최대 유효 거리 (m)",
 
                 // === Tier 4-1: 충격파방출 (4개) ===
                 ["Tier4_Shockwave_Radius"] = "Tier 4-1: [충격파방출] 효과 범위",
                 ["Tier4_Shockwave_StunDuration"] = "Tier 4-1: [충격파방출] 기절 지속시간",
                 ["Tier4_Shockwave_Cooldown"] = "Tier 4-1: [충격파방출] 쿨타임",
                 ["Tier4_Shockwave_RequiredPoints"] = "Tier 4-1: [충격파방출] 필요 포인트",
+                ["Tier4_Shockwave_KnockbackForce"] = "Tier 4-1: [충격파방출] 넉백 강도",
 
                 // === Tier 4-2: 발구르기 (6개) ===
                 ["Tier4_GroundStomp_Radius"] = "Tier 4-2: [발구르기] 효과 반경 (미터)",
@@ -324,11 +340,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6-4: [요툰의 생명력] 물리/속성 저항 (%)",
                 ["Tier6_JotunnVitality_RequiredPoints"] = "Tier 6-4: [요툰의 생명력] 필요 포인트",
 
-                // === Tier 6-5: 요툰의 방패 (4개) ===
-                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6-5: [요툰의 방패] 방어 스태미나 감소 (%)",
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6-5: [요툰의 방패] 일반 방패 이동속도 보너스 (%)",
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6-5: [요툰의 방패] 타워 실드 이동속도 보너스 (%)",
-                ["Tier6_JotunnShield_RequiredPoints"] = "Tier 6-5: [요툰의 방패] 필요 포인트",
+                // === Tier 6-5: 방패돌진 (7개, 둔기 트리에서 이전) ===
+                ["Tier6_GuardianHeart_Cooldown"] = "Tier 6-5: [방패돌진] 쿨타임 (초)",
+                ["Tier6_GuardianHeart_StaminaCost"] = "Tier 6-5: [방패돌진] 스태미나 소모",
+                ["Tier6_ShieldCharge_DamagePercent"] = "Tier 6-5: [방패돌진] 막기력 데미지 비율 (%)",
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] = "Tier 6-5: [방패돌진] 다중 타격 데미지 비율 (%)",
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] = "Tier 6-5: [방패돌진] 다중 타격 레벨 보너스 (%)",
+                ["Tier6_GuardianHeart_RequiredPoints"] = "Tier 6-5: [방패돌진] 필요 포인트",
+                ["Tier6_ShieldCharge_LevelBonus"] = "Tier 6-5: [방패돌진] 레벨 보너스 (%)",
 
                 // ============================================
                 // Production Tree (생산 트리) - 22개
@@ -425,6 +444,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_ExplosiveArrow_Cooldown"] = "Tier 5: [폭발 화살] 쿨타임 (초)",
                 ["Tier5_ExplosiveArrow_StaminaCost"] = "Tier 5: [폭발 화살] 스태미나 소모 (%)",
                 ["Tier5_ExplosiveArrow_RequiredPoints"] = "Tier 5: [폭발 화살] 필요 포인트",
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Tier 5: [폭발 화살] 레벨 보너스 (%)",
 
                 // === Tier 6: [화살비] (6) ===
                 ["Tier6_ArrowRain_DamagePercent"] = "Tier 6: [화살비] 화살당 데미지 (%)",
@@ -433,6 +453,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_ArrowRain_Cooldown"] = "Tier 6: [화살비] 쿨타임 (초)",
                 ["Tier6_ArrowRain_StaminaCost"] = "Tier 6: [화살비] 스태미나 소모 (%)",
                 ["Tier6_ArrowRain_RequiredPoints"] = "Tier 6: [화살비] 필요 포인트",
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [화살비] 레벨 보너스 (%)",
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] = "Tier 6: [화살비] 던전 버프: 공격력 보너스 (%)",
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] = "Tier 6: [화살비] 던전 버프: 지속시간 (초)",
 
                 // ============================================
                 // Sword Tree (검 트리) - 30개
@@ -489,11 +512,10 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_QuickStrike_RequiredPoints"] = "Tier 1: [빠른 공격모션] 필요 포인트",
                 ["Tier1_AttackMotion"] = "Tier 1: [빠른 공격모션] 공격 모션 선택",
 
-                // === Spear Tree: 투창 (3개 + Legacy 1개) ===
+                // === Spear Tree: 투창 (3개) ===
                 ["Tier2_Throw_RequiredPoints"] = "Tier 2: [투창] 필요 포인트",
                 ["Tier2_Throw_Cooldown"] = "Tier 2: [투창] 쿨타임 (초)",
                 ["Tier2_Throw_DamageMultiplier"] = "Tier 2: [투창] 데미지 배율 (%)",
-                ["Legacy_Throw_BuffDuration"] = "레거시: 미사용",
 
                 // === Spear Tree: 연격창 (2개) ===
                 ["Tier3_Pierce_RequiredPoints"] = "Tier 3-1: [연격창] 필요 포인트",
@@ -511,14 +533,17 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_Dual_DamageBonus"] = "Tier 4-2: [이연창] 2연속 공격력 보너스 (%)",
                 ["Tier4_Dual_Duration"] = "Tier 4-2: [이연창] 버프 지속시간 (초)",
 
-                // === Spear Tree: 꿰뚫는 창 (6개 + Legacy 1개) ===
+                // === Spear Tree: 꿰뚫는 창 (6개) ===
                 ["Tier5_Penetrate_RequiredPoints"] = "Tier 5-1: [꿰뚫는 창] 필요 포인트",
-                ["Legacy_Penetrate_CritChance"] = "레거시: 미사용",
                 ["Tier5_Penetrate_BuffDuration"] = "Tier 5-1: [꿰뚫는 창] 버프 지속시간 (초)",
                 ["Tier5_Penetrate_LightningDamage"] = "Tier 5-1: [꿰뚫는 창] 번개 충격 데미지 배율 (%)",
                 ["Tier5_Penetrate_HitCount"] = "Tier 5-1: [꿰뚫는 창] 번개 발동 연속 적중 횟수",
                 ["Tier5_Penetrate_GKey_Cooldown"] = "Tier 5-1: [꿰뚫는 창] G키 쿨타임 (초)",
                 ["Tier5_Penetrate_GKey_StaminaCost"] = "Tier 5-1: [꿰뚫는 창] G키 스태미나 소모",
+                ["Tier5_Penetrate_BaseDamage"] = "Tier 5-1: [꿰뚫는 창] 기본 데미지 (%)",
+                ["Tier5_Penetrate_LevelDamageBonus"] = "Tier 5-1: [꿰뚫는 창] 레벨당 데미지 보너스 (%)",
+                ["Tier5_Penetrate_BaseAreaDamage"] = "Tier 5-1: [꿰뚫는 창] 기본 광역 데미지 (%)",
+                ["Tier5_Penetrate_AreaLevelBonus"] = "Tier 5-1: [꿰뚫는 창] 레벨당 광역 데미지 보너스 (%)",
 
                 // === Spear Tree: 연공창 (8개) ===
                 ["Tier5_Combo_RequiredPoints"] = "Tier 5-2: [연공창] 필요 포인트",
@@ -529,6 +554,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_Combo_ActiveRange"] = "Tier 5-2: [연공창] 액티브 효과 범위 (m)",
                 ["Tier5_Combo_BuffDuration"] = "Tier 5-2: [연공창] 버프 지속시간 (초)",
                 ["Tier5_Combo_MaxUses"] = "Tier 5-2: [연공창] 최대 강화 투창 횟수",
+                ["Tier5_Combo_LevelBonus"] = "Tier 5-2: [연공창] 레벨 보너스 (%)",
 
                 // ============================================
                 // Staff Tree (지팡이 트리) - 30개
@@ -569,23 +595,25 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_LuckyMana_Chance"] = "Tier 4: [행운 마력] Eitr 무소모 발동 확률 (%)",
                 ["Tier4_LuckyMana_RequiredPoints"] = "Tier 4: [행운 마력] 필요 포인트",
 
-                // === Tier 5-1: 이중시전 - R키 액티브 (9개) ===
-                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [이중시전] 추가 발사체 개수",
-                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [이중시전] 발사체 데미지 비율 (%)",
-                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [이중시전] Eitr 소모량",
-                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [이중시전] 쿨타임 (초)",
-                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [이중시전] 필요 포인트",
-                ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [이중시전] 반원 호 반경 (m)",
-                ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [이중시전] 소환 기준 높이 (m)",
-                ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [이중시전] 공중 정지 시간 (초)",
-                ["Tier5_FanCast_LaunchGap"] = "Tier 5-1: [이중시전] 발사 간격 (초)",
+                // === Tier 5-1: 다중시전 - R키 액티브 (9개) ===
+                ["Tier5_DoubleCast_AdditionalProjectileCount"] = "Tier 5-1: [다중시전] 추가 발사체 개수",
+                ["Tier5_DoubleCast_ProjectileDamagePercent"] = "Tier 5-1: [다중시전] 발사체 데미지 비율 (%)",
+                ["Tier5_DoubleCast_EitrCost"] = "Tier 5-1: [다중시전] Eitr 소모량",
+                ["Tier5_DoubleCast_Cooldown"] = "Tier 5-1: [다중시전] 쿨타임 (초)",
+                ["Tier5_DoubleCast_RequiredPoints"] = "Tier 5-1: [다중시전] 필요 포인트",
+                ["Tier5_DoubleCast_LevelBonus"] = "Tier 5-1: [다중시전] 레벨 보너스 (%)",
+                ["Tier5_FanCast_SummonRadius"] = "Tier 5-1: [다중시전] 반원 호 반경 (m)",
+                ["Tier5_FanCast_SummonHeight"] = "Tier 5-1: [다중시전] 소환 기준 높이 (m)",
+                ["Tier5_FanCast_HoverTime"] = "Tier 5-1: [다중시전] 공중 정지 시간 (초)",
+                ["Tier5_FanCast_LaunchGap"] = "Tier 5-1: [다중시전] 발사 간격 (초)",
 
-                // === Tier 5-2: 즉시 범위 힐 - H키 액티브 (6개) ===
+                // === Tier 5-2: 즉시 범위 힐 - H키 액티브 (7개) ===
                 ["Tier5_InstantAreaHeal_Cooldown"] = "Tier 5-2: [힐] 쿨타임 (초)",
                 ["Tier5_InstantAreaHeal_EitrCost"] = "Tier 5-2: [힐] Eitr 소모량",
                 ["Tier5_InstantAreaHeal_HealPercent"] = "Tier 5-2: [힐] 회복량 (최대 HP 대비 %)",
                 ["Tier5_InstantAreaHeal_Range"] = "Tier 5-2: [힐] 치유 범위 (미터)",
                 ["Tier5_InstantAreaHeal_RequiredPoints"] = "Tier 5-2: [힐] 필요 포인트",
+                ["Tier5_InstantAreaHeal_LightningDamagePercent"] = "Tier 5-2: [힐] 번개 데미지 (Lv1 기준 %)",
 
                 // ============================================
                 // Crossbow Tree (석궁 트리) - 34개
@@ -636,6 +664,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_OneShot_SlowReloadMultiplier"] = "Tier 5: [단 한 발] 장전 속도 패널티 배율",
                 ["Tier5_OneShot_Cooldown"] = "Tier 5: [단 한 발] 쿨타임 (초)",
                 ["Tier5_OneShot_RequiredPoints"] = "Tier 5: [단 한 발] 필요 포인트",
+                ["Tier5_OneShot_LevelBonus"] = "Tier 5: [단 한 발] 레벨 보너스 (%)",
 
                 // === Tier 6: 빙결 폭발탄 (H키 액티브) ===
                 ["Tier6_IceBreath_Cooldown"] = "Tier 6: [빙결 폭발탄] 쿨타임 (초)",
@@ -644,6 +673,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_IceBreath_DotPercent"] = "Tier 6: [빙결 폭발탄] 도트 데미지 (%)",
                 ["Tier6_IceBreath_DotCount"] = "Tier 6: [빙결 폭발탄] 도트 횟수",
                 ["Tier6_IceBreath_RequiredPoints"] = "Tier 6: [빙결 폭발탄] 필요 포인트",
+                ["Tier6_IceBreath_LevelBonus"] = "Tier 6: [빙결 폭발탄] 레벨 보너스 (%)",
+                ["Tier6_IceBreath_DotLevelBonus"] = "Tier 6: [빙결 폭발탄] 도트 레벨 보너스 (%)",
 
                 // ============================================
                 // Knife Tree (단검 트리) - 32개
@@ -699,6 +730,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier8_AssassinHeart_AttackInterval"] = "Tier 8: [암살자의 심장] 공격 간격 (초)",
                 ["Tier8_AssassinHeart_AttackSpeedBonus"] = "Tier 8: [암살자의 심장] 공격속도 보너스 (%)",
                 ["Tier8_AssassinHeart_RequiredPoints"] = "Tier 8: [암살자의 심장] 필요 포인트",
+                ["Tier8_AssassinHeart_LevelBonus"] = "Tier 8: [암살자의 심장] 레벨 보너스 (%)",
 
                 // ============================================
                 // Sword Tree (검 트리) - 33개 (신규 키 형식)
@@ -737,11 +769,10 @@ namespace CaptainSkillTree.Localization
 
                 // === Tier 5: 회오리베기 - H키 액티브 ===
                 ["Tier5_ParryRush_RequiredPoints"] = "Tier 5: [회오리베기] 필요 포인트",
-                ["Tier5_ParryRush_BuffDuration"] = "Tier 5: [회오리베기] (미사용)",
-                ["Tier5_ParryRush_BlockPowerRatio"] = "Tier 5: [회오리베기] (미사용)",
-                ["Tier5_ParryRush_PushDistance"] = "Tier 5: [회오리베기] (미사용)",
                 ["Tier5_ParryRush_StaminaCost"] = "Tier 5: [회오리베기] 스태미나 소모",
                 ["Tier5_ParryRush_Cooldown"] = "Tier 5: [회오리베기] 쿨타임 (초)",
+                ["Tier5_WhirlwindSlash_BaseDamage"] = "Tier 5: [회오리베기] 기본 데미지 (%)",
+                ["Tier5_WhirlwindSlash_LevelBonus"] = "Tier 5: [회오리베기] 레벨 보너스 (%)",
 
                 // === Tier 6: 돌진 연속 베기 - G키 액티브 (10개) ===
                 ["Tier6_RushSlash_RequiredPoints"] = "Tier 6: [돌진 연속 베기] 필요 포인트",
@@ -754,6 +785,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_RushSlash_Cooldown"] = "Tier 6: [돌진 연속 베기] 쿨타임 (초)",
                 ["Tier6_RushSlash_MoveSpeed"] = "Tier 6: [돌진 연속 베기] 이동 속도 (m/s)",
                 ["Tier6_RushSlash_AttackSpeedBonus"] = "Tier 6: [돌진 연속 베기] 공격속도 보너스 (%)",
+                ["Tier6_RushSlash_DamageLevelBonus"] = "Tier 6: [돌진 연속 베기] 레벨 데미지 보너스 (%)",
 
                 // ============================================
                 // Mace Tree (둔기 트리) - 34개
@@ -786,8 +818,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_HeavyStrike_RequiredPoints"] = "Tier 3-2: [무거운 일격] 필요 포인트",
 
                 // === Tier 4: 밀어내기 (2개) ===
-                ["Tier4_Push_KnockbackChance"] = "Tier 4: [밀어내기] 넉백 확률 (%)",
-                ["Tier4_Push_RequiredPoints"] = "Tier 4: [밀어내기] 필요 포인트",
+                ["Tier4_Push_KnockbackChance"] = "Tier 4: [뇌진탕] 뇌진탕 확률 (%)",
+                ["Tier4_Push_RequiredPoints"] = "Tier 4: [뇌진탕] 필요 포인트",
 
                 // === Tier 5-1: 탱커 (3개) ===
                 ["Tier5_Tank_HealthBonus"] = "Tier 5-1: [탱커] 체력 보너스 (%)",
@@ -809,12 +841,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Tier 7-1: [분노의 망치] 쿨타임 (초)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Tier 7-1: [분노의 망치] AOE 범위 (m)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Tier 7-1: [분노의 망치] 필요 포인트",
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] = "Tier 7-1: [분노의 망치] 일반 타격 레벨 보너스 (%)",
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] = "Tier 7-1: [분노의 망치] 최종 타격 레벨 보너스 (%)",
 
-                // === Tier 7-2: 방패돌진 - G키 액티브 (4개) ===
-                ["Tier7_GuardianHeart_Cooldown"] = "Tier 7-2: [방패돌진] 쿨타임 (초)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Tier 7-2: [방패돌진] 스태미나 소모",
-                ["Tier7_ShieldCharge_DamagePercent"] = "Tier 7-2: [방패돌진] 막기력 데미지 비율 (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Tier 7-2: [방패돌진] 필요 포인트",
+                ["Tier7_ShockwaveSlam_Cooldown"] = "Tier 7-2: [충격파 강타] 쿨타임 (초)",
+                ["Tier7_ShockwaveSlam_StaminaCost"] = "Tier 7-2: [충격파 강타] 스태미나 소모",
+                ["Tier7_ShockwaveSlam_DamagePercent"] = "Tier 7-2: [충격파 강타] 무기 공격력 데미지 비율 (%)",
+                ["Tier7_ShockwaveSlam_LevelBonus"] = "Tier 7-2: [충격파 강타] 레벨 보너스 (%)",
+                ["Tier7_ShockwaveSlam_RequiredPoints"] = "Tier 7-2: [충격파 강타] 필요 포인트",
 
                 // ========================================
                 // Polearm Tree (37개 키)
@@ -876,6 +910,9 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [휠윈드] 쿨타임 (초)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [휠윈드] 필요 포인트",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [휠윈드] 최대 지속 시간 (초)",
+                ["Tier6_Whirlwind_LevelBonus"]      = "Tier 6: [휠윈드] 레벨 보너스 (%)",
+                ["Tier6_Whirlwind_DamageReductionPercent"]    = "Tier 6: [휠윈드] 받는 피해 감소 (%)",
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] = "Tier 6: [휠윈드] 피해 감소 레벨 보너스 (%)",
 
                 // ============================================
                 // Archer Job Skills (아처 직업 스킬) - 8개
@@ -886,6 +923,7 @@ namespace CaptainSkillTree.Localization
                 ["Archer_MultiShot_Cooldown"] = "Lv1 멀티샷: 쿨타임 (초)",
                 ["Archer_MultiShot_Charges"] = "Lv1 멀티샷: 추가 발사 회수",
                 ["Archer_MultiShot_StaminaCost"] = "Lv1 멀티샷: 스태미나 소모",
+                ["Archer_MultiShot_FireInterval"] = "Lv1 멀티샷: 화살 발사 간격 (초)",
                 ["Archer_JumpHeightBonus"] = "Lv1 패시브: 점프 높이 보너스 (%)",
                 ["Archer_FallDamageReduction"] = "Lv1 패시브: 낙하 데미지 감소 (%)",
                 ["Archer_Lv2_BonusArrows"]   = "Lv2 멀티샷: 추가 발사체 수",
@@ -905,6 +943,14 @@ namespace CaptainSkillTree.Localization
                 ["Archer_Lv4_FallDamageReduction"] = "Lv4 패시브: 낙하 데미지 감소 (%)",
                 ["Archer_Lv5_FallDamageReduction"] = "Lv5 패시브: 낙하 데미지 감소 (%)",
                 ["Archer_ElementalResistPerLevel"] = "패시브: 속성 저항/레벨 (%)",
+                ["Archer_Attack_StaminaReduction_Lv1"] = "Lv1 패시브: 공격 스태미나 감소 (%)",
+                ["Archer_Attack_StaminaReduction_Lv2"] = "Lv2 패시브: 공격 스태미나 감소 (%)",
+                ["Archer_Attack_StaminaReduction_Lv3"] = "Lv3 패시브: 공격 스태미나 감소 (%)",
+                ["Archer_Attack_StaminaReduction_Lv4"] = "Lv4 패시브: 공격 스태미나 감소 (%)",
+                ["Archer_Attack_StaminaReduction_Lv5"] = "Lv5 패시브: 공격 스태미나 감소 (%)",
+                ["Archer_AmmoSaveChance"] = "패시브: 화살 절약 확률 (%)",
+                ["Archer_TameHeal_PerLevel"] = "패시브: 길들인 생물 회복 (HP/초)",
+                ["Archer_TameHeal_Range"] = "패시브: 길들인 생물 회복 범위 (m)",
 
                 // ============================================
                 // Mage Job Skills (메이지 직업 스킬) - 6개
@@ -915,6 +961,8 @@ namespace CaptainSkillTree.Localization
                 ["Mage_Fire_Rain_Radius"] = "낙하 반경 (m)",
                 ["Mage_Fire_Rain_Impact_Radius"] = "착지 데미지 범위 (m)",
                 ["Mage_Fire_Rain_Projectile_Count"] = "버스트당 발사체 수 (개)",
+                ["Mage_Dungeon_Buff_Damage_Bonus"] = "던전 버프: 공격력 보너스 (%)",
+                ["Mage_Dungeon_Buff_Duration"] = "던전 버프: 지속시간 (초)",
                 ["Mage_Damage_Multiplier"] = "액티브: 데미지 배수 (%)",
                 ["Mage_Cooldown"] = "액티브: 쿨타임 (초)",
                 ["Mage_Lv1_Damage_Multiplier"] = "Lv1 AOE 데미지 배수 (%)",
@@ -973,6 +1021,8 @@ namespace CaptainSkillTree.Localization
                 ["Tanker_Hp_Bonus_Lv5"] = "Lv5 패시브: 추가 체력",
                 ["Tanker_Lv5_BlockPower"] = "Lv5 패시브: 방패 막기 방어력",
                 ["Tanker_ReflectDuration_Lv5"] = "Lv5 패시브: 반사 지속시간 (초)",
+                ["Tanker_Explosion_Radius"] = "액티브: 폭발 범위 (m)",
+                ["Tanker_BlockPower_Multiplier"] = "패시브: 막기력 배율 (%)",
 
                 // ============================================
                 // Rogue Job Skills (로그 직업 스킬) - 10개
@@ -1045,18 +1095,23 @@ namespace CaptainSkillTree.Localization
                 ["Producer_Buff_StaminaCost"] = "Lv1 장인의 축복: 스태미나 소모",
                 ["Producer_Durability_Lv1"] = "Lv1 패시브: 내구도 보너스 (%)",
                 ["Producer_EnchantChance_Lv1"] = "Lv1 인챈트: 확률 (%)",
+                ["Producer_ElementalProcChance_Lv1"] = "Lv1 속성 인챈트: 발동 확률 (%)",
                 ["Producer_Durability_Lv2"] = "Lv2 패시브: 내구도 보너스 (%)",
                 ["Producer_MaterialReduction_Lv2"] = "Lv2 패시브: 재료 절감 (%)",
                 ["Producer_EnchantChance_Lv2"] = "Lv2 인챈트: 확률 (%)",
+                ["Producer_ElementalProcChance_Lv2"] = "Lv2 속성 인챈트: 발동 확률 (%)",
                 ["Producer_Durability_Lv3"] = "Lv3 패시브: 내구도 보너스 (%)",
                 ["Producer_MaterialReduction_Lv3"] = "Lv3 패시브: 재료 절감 (%)",
                 ["Producer_EnchantChance_Lv3"] = "Lv3 인챈트: 확률 (%)",
+                ["Producer_ElementalProcChance_Lv3"] = "Lv3 속성 인챈트: 발동 확률 (%)",
                 ["Producer_Durability_Lv4"] = "Lv4 패시브: 내구도 보너스 (%)",
                 ["Producer_MaterialReduction_Lv4"] = "Lv4 패시브: 재료 절감 (%)",
                 ["Producer_EnchantChance_Lv4"] = "Lv4 인챈트: 확률 (%)",
+                ["Producer_ElementalProcChance_Lv4"] = "Lv4 속성 인챈트: 발동 확률 (%)",
                 ["Producer_Durability_Lv5"] = "Lv5 패시브: 내구도 보너스 (%)",
                 ["Producer_MaterialReduction_Lv5"] = "Lv5 패시브: 재료 절감 (%)",
                 ["Producer_EnchantChance_Lv5"] = "Lv5 인챈트: 확률 (%)",
+                ["Producer_ElementalProcChance_Lv5"] = "Lv5 속성 인챈트: 발동 확률 (%)",
 
                 // ============================================
                 // Paladin Job Skills (성기사 직업 스킬) - 9개
@@ -1114,6 +1169,28 @@ namespace CaptainSkillTree.Localization
                 ["Berserker_Lv5_PassiveCooldownReduction"] = "Lv5: 패시브 쿨타임 감소 (초)",
                 ["Berserker_Lv5_InvincibilityBonus"] = "Lv5: 추가 무적 시간 (초)",
 
+                // === Berserker Lv1~5 Active/Passive Config ===
+                ["Berserker_Lv1_Active_Cooldown"] = "버서커 Lv1: 분노 쿨타임 (초)",
+                ["Berserker_Lv2_Active_Cooldown"] = "버서커 Lv2: 분노 쿨타임 (초)",
+                ["Berserker_Lv3_Active_Cooldown"] = "버서커 Lv3: 분노 쿨타임 (초)",
+                ["Berserker_Lv4_Active_Cooldown"] = "버서커 Lv4: 분노 쿨타임 (초)",
+                ["Berserker_Lv5_Active_Cooldown"] = "버서커 Lv5: 분노 쿨타임 (초)",
+                ["Berserker_Lv1_Active_Duration"] = "버서커 Lv1: 분노 지속시간 (초)",
+                ["Berserker_Lv2_Active_Duration"] = "버서커 Lv2: 분노 지속시간 (초)",
+                ["Berserker_Lv3_Active_Duration"] = "버서커 Lv3: 분노 지속시간 (초)",
+                ["Berserker_Lv4_Active_Duration"] = "버서커 Lv4: 분노 지속시간 (초)",
+                ["Berserker_Lv5_Active_Duration"] = "버서커 Lv5: 분노 지속시간 (초)",
+                ["Berserker_Lv1_Passive_HealthBonus"] = "버서커 Lv1: 패시브 최대 체력 보너스",
+                ["Berserker_Lv2_Passive_HealthBonus"] = "버서커 Lv2: 패시브 최대 체력 보너스",
+                ["Berserker_Lv3_Passive_HealthBonus"] = "버서커 Lv3: 패시브 최대 체력 보너스",
+                ["Berserker_Lv4_Passive_HealthBonus"] = "버서커 Lv4: 패시브 최대 체력 보너스",
+                ["Berserker_Lv5_Passive_HealthBonus"] = "버서커 Lv5: 패시브 최대 체력 보너스",
+                ["Berserker_Lv1_Active_DamagePerHP"] = "버서커 Lv1: HP 1%당 공격력 증가 (%)",
+                ["Berserker_Lv2_Active_DamagePerHP"] = "버서커 Lv2: HP 1%당 공격력 증가 (%)",
+                ["Berserker_Lv3_Active_DamagePerHP"] = "버서커 Lv3: HP 1%당 공격력 증가 (%)",
+                ["Berserker_Lv4_Active_DamagePerHP"] = "버서커 Lv4: HP 1%당 공격력 증가 (%)",
+                ["Berserker_Lv5_Active_DamagePerHP"] = "버서커 Lv5: HP 1%당 공격력 증가 (%)",
+
                 // ============================================
                 // Producer Job Skills (제작 전문가 직업)
                 // ============================================
@@ -1125,18 +1202,23 @@ namespace CaptainSkillTree.Localization
                 ["Producer_Buff_StaminaCost"]   = "제작: 장인의 축복 스태미나 소모",
                 ["Producer_Durability_Lv1"]             = "Lv1: 내구도 보너스 (%)",
                 ["Producer_EnchantChance_Lv1"]          = "Lv1: 마법부여 확률 (%)",
+                ["Producer_ElementalProcChance_Lv1"]    = "Lv1: 속성 피해 발동 확률 (%)",
                 ["Producer_Durability_Lv2"]             = "Lv2: 내구도 보너스 (%)",
                 ["Producer_MaterialReduction_Lv2"]      = "Lv2: 재료 감소 (%)",
                 ["Producer_EnchantChance_Lv2"]          = "Lv2: 마법부여 확률 (%)",
+                ["Producer_ElementalProcChance_Lv2"]    = "Lv2: 속성 피해 발동 확률 (%)",
                 ["Producer_Durability_Lv3"]             = "Lv3: 내구도 보너스 (%)",
                 ["Producer_MaterialReduction_Lv3"]      = "Lv3: 재료 감소 (%)",
                 ["Producer_EnchantChance_Lv3"]          = "Lv3: 마법부여 확률 (%)",
+                ["Producer_ElementalProcChance_Lv3"]    = "Lv3: 속성 피해 발동 확률 (%)",
                 ["Producer_Durability_Lv4"]             = "Lv4: 내구도 보너스 (%)",
                 ["Producer_MaterialReduction_Lv4"]      = "Lv4: 재료 감소 (%)",
                 ["Producer_EnchantChance_Lv4"]          = "Lv4: 마법부여 확률 (%)",
+                ["Producer_ElementalProcChance_Lv4"]    = "Lv4: 속성 피해 발동 확률 (%)",
                 ["Producer_Durability_Lv5"]             = "Lv5: 내구도 보너스 (%)",
                 ["Producer_MaterialReduction_Lv5"]      = "Lv5: 재료 감소 (%)",
                 ["Producer_EnchantChance_Lv5"]          = "Lv5: 마법부여 확률 (%)",
+                ["Producer_ElementalProcChance_Lv5"]    = "Lv5: 속성 피해 발동 확률 (%)",
 
                 // ============================================
                 // Sword Tree (검 트리) - 경로 히트 추가분

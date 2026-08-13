@@ -175,6 +175,21 @@ namespace CaptainSkillTree.MMO_System
                 if (attacker != null && attacker.IsPlayer()) return false;
             }
 
+            // Fallback: 도트(독/화상 등) 사망 시 m_lastHit에는 공격자 정보가 없는 HitData만
+            // 남으므로, CaptainMMOPatches의 ApplyDamage Postfix가 기록해둔 최근 유효 공격자로 재판정한다.
+            if (CaptainLastAttackerCache.TryGetRecent(monster, 15f, out var cachedAttacker))
+            {
+                if (cachedAttacker == localPlayer) return true;
+
+                if (cachedAttacker.IsTamed())
+                {
+                    if (Vector3.Distance(localPlayer.transform.position, cachedAttacker.transform.position) <= 50f)
+                        return true;
+                }
+
+                if (cachedAttacker.IsPlayer()) return false;
+            }
+
             // Fallback: 로컬 플레이어가 전투 범위(15m) 내에 있고 무기를 들고 있으면
             if (Vector3.Distance(localPlayer.transform.position, monster.transform.position) <= 15f)
             {
@@ -226,12 +241,12 @@ namespace CaptainSkillTree.MMO_System
             if (monsterLevel > maxRangeLvl)
             {
                 if (noExp) return 0;
-                if (curveExp) result = baseExp / Math.Max(1, monsterLevel - maxRangeLvl);
+                if (curveExp) result = (int)(baseExp * CaptainMMOPatches.GetExpDiffMultiplier(monsterLevel - maxRangeLvl));
             }
             else if (monsterLevel < minRangeLvl)
             {
                 if (noExp) return 0;
-                if (curveExp) result = baseExp / Math.Max(1, minRangeLvl - monsterLevel);
+                if (curveExp) result = (int)(baseExp * CaptainMMOPatches.GetExpDiffMultiplier(minRangeLvl - monsterLevel));
             }
 
             return Math.Max(0, result);
@@ -297,6 +312,26 @@ namespace CaptainSkillTree.MMO_System
                 return f != null ? Convert.ToInt64(f.GetValue(member)) : 0L;
             }
             catch { return 0L; }
+        }
+
+        /// <summary>두 플레이어가 같은 Groups 파티에 속하는지 확인</summary>
+        public static bool AreInSameParty(Player a, Player b)
+        {
+            if (a == null || b == null) return false;
+            if (!Groups_IsLoaded()) return false;
+
+            string aName = a.GetPlayerName();
+            string bName = b.GetPlayerName();
+            bool aIn = false, bIn = false;
+
+            foreach (var member in Groups_GetPlayers())
+            {
+                string name = GetMemberName(member);
+                if (name == aName) aIn = true;
+                if (name == bName) bIn = true;
+                if (aIn && bIn) return true;
+            }
+            return false;
         }
     }
 }

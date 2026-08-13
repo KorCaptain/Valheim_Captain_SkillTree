@@ -190,6 +190,32 @@ namespace CaptainSkillTree.Localization
                 "強力な爆発魔法で敵を殲滅。\n" +
                 "推奨：250-350%",
 
+                ["Mage_Fire_Rain_Radius"] =
+                "【ファイアレイン落下半径 (m)】\n" +
+                "ファイアボール30個が対象周辺に落下する半径。\n" +
+                "推奨：6-10m",
+
+                ["Mage_Fire_Rain_Impact_Radius"] =
+                "【ファイアボール着弾ダメージ範囲 (m)】\n" +
+                "各ファイアボール着弾時にダメージを与える範囲。\n" +
+                "推奨：2-4m",
+
+                ["Mage_Fire_Rain_Projectile_Count"] =
+                "【バーストごとの発射数】\n" +
+                "1回のバーストで落下するファイアボールの数。\n" +
+                "合計2回のバーストで発射（1バースト -> 1秒 -> 2バースト）。\n" +
+                "推奨：15-25個",
+
+                ["Mage_Dungeon_Buff_Damage_Bonus"] =
+                "【ダンジョンバフ攻撃力ボーナス (%)】\n" +
+                "ダンジョン内でYキー使用時、火の雨の代わりに発動する自己強化バフの攻撃力上昇量。\n" +
+                "推奨：20-30%",
+
+                ["Mage_Dungeon_Buff_Duration"] =
+                "【ダンジョンバフ持続時間（秒）】\n" +
+                "ダンジョン内の代替バフが持続する時間。\n" +
+                "推奨：8-12秒",
+
                 ["Mage_Cooldown"] =
                 "【クールダウン（秒）】\n" +
                 "再使用前の待機時間。\n" +
@@ -719,27 +745,32 @@ namespace CaptainSkillTree.Localization
                 "デフォルト：20",
 
                 // === Producer Lv1 ===
-                ["Producer_EnchantChance_Lv1"] = "【エンチャント確率 Lv1 (%)】\nLv1時に製作アイテムをエンチャントする確率。\nデフォルト：0%",
+                ["Producer_EnchantChance_Lv1"] = "【エンチャント確率 Lv1 (%)】\nLv1時に製作アイテムをエンチャントする確率。\nデフォルト：45%",
+                ["Producer_ElementalProcChance_Lv1"] = "【属性ダメージ発動確率 Lv1 (%)】\nLv1の属性エンチャント(火/霊/毒/雷/氷)が攻撃ごとに発動する確率。\nデフォルト：25%",
 
                 // === Producer Lv2 ===
                 ["Producer_Durability_Lv2"] = "【製作品耐久度ボーナス Lv2 (%)】\nLv2時の製作アイテム耐久度ボーナス。\nデフォルト：10%",
                 ["Producer_MaterialReduction_Lv2"] = "【素材消費減少 Lv2 (%)】\nLv2時の製作ごとに節約される素材。\nデフォルト：10%",
-                ["Producer_EnchantChance_Lv2"] = "【エンチャント確率 Lv2 (%)】\nLv2時に製作アイテムをエンチャントする確率。\nデフォルト：0%",
+                ["Producer_EnchantChance_Lv2"] = "【エンチャント確率 Lv2 (%)】\nLv2時に製作アイテムをエンチャントする確率。\nデフォルト：55%",
+                ["Producer_ElementalProcChance_Lv2"] = "【属性ダメージ発動確率 Lv2 (%)】\nLv2の属性エンチャントが攻撃ごとに発動する確率。\nデフォルト：30%",
 
                 // === Producer Lv3 ===
                 ["Producer_Durability_Lv3"] = "【製作品耐久度ボーナス Lv3 (%)】\nLv3時の製作アイテム耐久度ボーナス。\nデフォルト：15%",
                 ["Producer_MaterialReduction_Lv3"] = "【素材消費減少 Lv3 (%)】\nLv3時の製作ごとに節約される素材。\nデフォルト：15%",
                 ["Producer_EnchantChance_Lv3"] = "【エンチャント確率 Lv3 (%)】\nLv3時に製作アイテムをエンチャントする確率。\nデフォルト：25%",
+                ["Producer_ElementalProcChance_Lv3"] = "【属性ダメージ発動確率 Lv3 (%)】\nLv3の属性エンチャントが攻撃ごとに発動する確率。\nデフォルト：35%",
 
                 // === Producer Lv4 ===
                 ["Producer_Durability_Lv4"] = "【製作品耐久度ボーナス Lv4 (%)】\nLv4時の製作アイテム耐久度ボーナス。\nデフォルト：20%",
                 ["Producer_MaterialReduction_Lv4"] = "【素材消費減少 Lv4 (%)】\nLv4時の製作ごとに節約される素材。\nデフォルト：20%",
-                ["Producer_EnchantChance_Lv4"] = "【エンチャント確率 Lv4 (%)】\nLv4時に製作アイテムをエンチャントする確率。\nデフォルト：30%",
+                ["Producer_EnchantChance_Lv4"] = "【エンチャント確率 Lv4 (%)】\nLv4時に製作アイテムをエンチャントする確率。\nデフォルト：80%",
+                ["Producer_ElementalProcChance_Lv4"] = "【属性ダメージ発動確率 Lv4 (%)】\nLv4の属性エンチャントが攻撃ごとに発動する確率。\nデフォルト：40%",
 
                 // === Producer Lv5 ===
                 ["Producer_Durability_Lv5"] = "【製作品耐久度ボーナス Lv5 (%)】\nLv5時の製作アイテム耐久度ボーナス。\nデフォルト：30%",
                 ["Producer_MaterialReduction_Lv5"] = "【素材消費減少 Lv5 (%)】\nLv5時の製作ごとに節約される素材。\nデフォルト：30%",
                 ["Producer_EnchantChance_Lv5"] = "【エンチャント確率 Lv5 (%)】\nLv5時に製作アイテムをエンチャントする確率。\nデフォルト：35%",
+                ["Producer_ElementalProcChance_Lv5"] = "【属性ダメージ発動確率 Lv5 (%)】\nLv5の属性エンチャントが攻撃ごとに発動する確率。\nデフォルト：45%",
 
                 ["Job_Lv1_Cost"] = "【職業Lv1コインコスト】\nすべての職業をLv1にアップグレードする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：1000",
                 ["Job_Lv2_Cost"] = "【職業Lv2コインコスト】\nすべての職業をLv2にアップグレードする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：2000",
@@ -750,6 +781,310 @@ namespace CaptainSkillTree.Localization
                 ["Job_Reset_Cost"]    = "【職業スキルリセットコスト】\n職業スキルポイントをリセットする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：1000",
                 ["Active_Reset_Cost"] = "【アクティブスキルリセットコスト】\nアクティブスキルポイントをリセットする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：500",
                 ["Passive_Reset_Cost"]= "【パッシブスキルリセットコスト】\nパッシブスキルポイントをリセットする際に消費するコイン数。\nサーバー管理者のみ変更可、クライアントに自動同期。\nデフォルト：100",
+
+                ["HotKey_Y"] =
+                "【職業スキルキー】\n" +
+                "職業のアクティブスキルを発動するキーです。\n" +
+                "デフォルト: Y",
+
+                ["HotKey_R"] =
+                "【遠距離スキルキー】\n" +
+                "遠距離アクティブスキル（マルチショット、デュアルキャストなど）を発動するキーです。\n" +
+                "デフォルト: R",
+
+                ["HotKey_G"] =
+                "【近接メインスキルキー】\n" +
+                "近接メインアクティブスキル（突進斬りなど）を発動するキーです。\n" +
+                "デフォルト: G",
+
+                ["HotKey_H"] =
+                "【補助スキルキー】\n" +
+                "補助アクティブスキル（連功槍、守護者の真心など）を発動するキーです。\n" +
+                "デフォルト: H",
+
+                ["QuestToggleKey"] =
+                "【クエストパネルのショートカット】\n" +
+                "クエストパネルを開閉するショートカットです。\n" +
+                "デフォルト: Ctrl+J",
+
+                ["HUD_IconSize"] =
+                "【スキルアイコンサイズ】\n" +
+                "アクティブスキルHUDに表示されるアイコンのサイズです。\n" +
+                "デフォルト: 62",
+
+                ["HUD_PosX"] =
+                "【スキルアイコンHUD X位置】\n" +
+                "アクティブスキルHUDの左右の位置です。\n" +
+                "デフォルト: 306（画面左基準）",
+
+                ["HUD_PosY"] =
+                "【スキルアイコンHUD Y位置】\n" +
+                "アクティブスキルHUDの上下の位置です。\n" +
+                "デフォルト: 139（画面下基準）",
+
+                ["Archer_Attack_StaminaReduction_Lv1"] =
+                "【Lv1パッシブ: 攻撃スタミナ消費削減 (%)】\n" +
+                "アーチャーLv1で攻撃時に消費するスタミナを削減します。\n" +
+                "弓/クロスボウ/杖の全攻撃に適用されます。\n" +
+                "推奨: 10-20%",
+
+                ["Archer_Attack_StaminaReduction_Lv2"] =
+                "【Lv2パッシブ: 攻撃スタミナ消費削減 (%)】\n" +
+                "アーチャーLv2で攻撃時に消費するスタミナを削減します。\n" +
+                "推奨: 20-30%",
+
+                ["Archer_Attack_StaminaReduction_Lv3"] =
+                "【Lv3パッシブ: 攻撃スタミナ消費削減 (%)】\n" +
+                "アーチャーLv3で攻撃時に消費するスタミナを削減します。\n" +
+                "推奨: 30-40%",
+
+                ["Archer_Attack_StaminaReduction_Lv4"] =
+                "【Lv4パッシブ: 攻撃スタミナ消費削減 (%)】\n" +
+                "アーチャーLv4で攻撃時に消費するスタミナを削減します。\n" +
+                "推奨: 40-50%",
+
+                ["Archer_Attack_StaminaReduction_Lv5"] =
+                "【Lv5パッシブ: 攻撃スタミナ消費削減 (%)】\n" +
+                "アーチャーLv5で攻撃時に消費するスタミナを削減します。\n" +
+                "推奨: 50-60%",
+
+                ["Archer_AmmoSaveChance"] =
+                "【矢/ボルト消費免除確率 (%)】\n" +
+                "攻撃時に矢またはボルトを消費しない確率です。\n" +
+                "50に設定すると平均で半分の矢が節約されます。\n" +
+                "推奨: 30-60%",
+
+                ["Archer_TameHeal_PerLevel"] =
+                "【パッシブ: テイム生物回復 (秒間HP)】\n" +
+                "アーチャーレベル × この値の分、周囲のテイムした生物を毎秒回復させます。\n" +
+                "Lv1ではこの値、Lv5では5倍回復します。\n" +
+                "推奨: 1",
+
+                ["Archer_TameHeal_Range"] =
+                "【パッシブ: テイム生物回復範囲 (m)】\n" +
+                "アーチャー周囲のこの距離以内のテイム生物に回復効果が適用されます。\n" +
+                "推奨: 8-15",
+
+                ["Mage_Lv1_Cooldown"] =
+                "【クールダウン Lv1（秒）】\n" +
+                "メイジLv1スキルの再使用待機時間です。\n" +
+                "推奨: 120秒",
+
+                ["Mage_Lv2_Cooldown"] =
+                "【クールダウン Lv2（秒）】\n" +
+                "メイジLv2スキルの再使用待機時間です。\n" +
+                "推奨: 110秒",
+
+                ["Mage_Lv3_Cooldown"] =
+                "【クールダウン Lv3（秒）】\n" +
+                "メイジLv3スキルの再使用待機時間です。\n" +
+                "推奨: 100秒",
+
+                ["Mage_Lv4_Cooldown"] =
+                "【クールダウン Lv4（秒）】\n" +
+                "メイジLv4スキルの再使用待機時間です。\n" +
+                "推奨: 90秒",
+
+                ["Mage_Lv5_Cooldown"] =
+                "【クールダウン Lv5（秒）】\n" +
+                "メイジLv5スキルの再使用待機時間です。\n" +
+                "推奨: 80秒",
+
+                ["Mage_Lv1_AOE_Max_Targets"] =
+                "【最大対象数 Lv1】\n" +
+                "メイジLv1が同時にヒットさせる最大モンスター数です。近い順に選択されます。\n" +
+                "推奨: 6",
+
+                ["Mage_Lv2_AOE_Max_Targets"] =
+                "【最大対象数 Lv2】\n" +
+                "メイジLv2が同時にヒットさせる最大モンスター数です。\n" +
+                "推奨: 7",
+
+                ["Mage_Lv3_AOE_Max_Targets"] =
+                "【最大対象数 Lv3】\n" +
+                "メイジLv3が同時にヒットさせる最大モンスター数です。\n" +
+                "推奨: 8",
+
+                ["Mage_Lv4_AOE_Max_Targets"] =
+                "【最大対象数 Lv4】\n" +
+                "メイジLv4が同時にヒットさせる最大モンスター数です。\n" +
+                "推奨: 9",
+
+                ["Mage_Lv5_AOE_Max_Targets"] =
+                "【最大対象数 Lv5】\n" +
+                "メイジLv5が同時にヒットさせる最大モンスター数です。\n" +
+                "推奨: 10",
+
+                ["Mage_Lv1_Elemental_Resistance"] =
+                "【魔法属性耐性 Lv1 (%)】\n" +
+                "Lv1メイジの属性耐性です。火炎/氷/雷/毒/霊魂ダメージを減少させます。\n" +
+                "推奨: 5%",
+
+                ["Mage_Lv2_Elemental_Resistance"] =
+                "【魔法属性耐性 Lv2 (%)】\n" +
+                "Lv2メイジの属性耐性です。追加詠唱+1回（30秒以内）を含みます。\n" +
+                "推奨: 7%",
+
+                ["Mage_Lv3_Elemental_Resistance"] =
+                "【魔法属性耐性 Lv3 (%)】\n" +
+                "Lv3メイジの属性耐性です。\n" +
+                "推奨: 9%",
+
+                ["Mage_Lv4_Elemental_Resistance"] =
+                "【魔法属性耐性 Lv4 (%)】\n" +
+                "Lv4メイジの属性耐性です。\n" +
+                "推奨: 12%",
+
+                ["Mage_Lv5_Elemental_Resistance"] =
+                "【魔法属性耐性 Lv5 (%)】\n" +
+                "Lv5メイジの属性耐性です。\n" +
+                "推奨: 15%",
+
+                ["Mage_Lv1_Damage_Multiplier"] =
+                "【範囲ダメージ倍率 Lv1 (%)】\n" +
+                "メイジLv1の範囲ダメージ倍率です。\n" +
+                "推奨: 70%",
+
+                ["Mage_Lv2_Damage_Multiplier"] =
+                "【範囲ダメージ倍率 Lv2 (%)】\n" +
+                "メイジLv2の範囲ダメージ倍率です。\n" +
+                "推奨: 90%",
+
+                ["Mage_Lv3_Damage_Multiplier"] =
+                "【範囲ダメージ倍率 Lv3 (%)】\n" +
+                "メイジLv3の範囲ダメージ倍率です。\n" +
+                "推奨: 110%",
+
+                ["Mage_Lv4_Damage_Multiplier"] =
+                "【範囲ダメージ倍率 Lv4 (%)】\n" +
+                "メイジLv4の範囲ダメージ倍率です。\n" +
+                "推奨: 130%",
+
+                ["Mage_Lv5_Damage_Multiplier"] =
+                "【範囲ダメージ倍率 Lv5 (%)】\n" +
+                "メイジLv5の範囲ダメージ倍率です。\n" +
+                "推奨: 150%",
+
+                ["Tanker_Explosion_Radius"] =
+                "【挑発爆発範囲 (m)】\n" +
+                "タンカーの挑発スキル発動時の爆発効果の影響範囲です。\n" +
+                "推奨: 6-12m",
+
+                ["Tanker_BlockPower_Multiplier"] =
+                "【シールドブロック力倍率】\n" +
+                "タンカー職業レベルに応じてシールドのブロック力に乗算される倍率です。\n" +
+                "推奨: 1.0-2.0",
+
+                ["Rogue_Poison_Range"] =
+                "【毒爆発範囲 (m)】\n" +
+                "各毒爆発エフェクトの影響範囲です。\n" +
+                "推奨: 8-15m",
+
+                ["Rogue_Poison_InstantDamage"] =
+                "【即時毒ダメージ】\n" +
+                "エフェクト1回ごとに敵に与える即時毒ダメージです。\n" +
+                "推奨: 8-20",
+
+                ["Rogue_Poison_DotDamage"] =
+                "【毒DoT秒間ダメージ】\n" +
+                "毒の継続ダメージ（DoT）の秒間ダメージ量です。\n" +
+                "推奨: 3-8",
+
+                ["Rogue_Poison_DotDuration"] =
+                "【毒DoT持続時間（秒）】\n" +
+                "毒の継続ダメージが維持される時間です。\n" +
+                "推奨: 8-15秒",
+
+                ["Rogue_Poison_VFXCount"] =
+                "【毒爆発回数】\n" +
+                "スキル発動時の毒爆発エフェクトの繰り返し回数です。\n" +
+                "推奨: 6-10",
+
+                ["Rogue_Poison_VFXInterval"] =
+                "【毒爆発間隔（秒）】\n" +
+                "各毒爆発の間の時間間隔です。\n" +
+                "推奨: 0.3-1.0秒",
+
+                ["Rogue_Lv2_Cooldown"] = "【Lv2シャドウストライククールダウン（秒）】\n推奨: 25-30秒",
+
+                ["Rogue_Lv3_Cooldown"] = "【Lv3シャドウストライククールダウン（秒）】\n推奨: 22-28秒",
+
+                ["Rogue_Lv4_Cooldown"] = "【Lv4シャドウストライククールダウン（秒）】\n推奨: 20-26秒",
+
+                ["Rogue_Lv5_Cooldown"] = "【Lv5シャドウストライククールダウン（秒）】\n推奨: 18-24秒",
+
+                ["Rogue_Lv2_AttackBonus"] = "【Lv2攻撃力バフ (%)】\n推奨: 35-50%",
+
+                ["Rogue_Lv3_AttackBonus"] = "【Lv3攻撃力バフ (%)】\n推奨: 40-55%",
+
+                ["Rogue_Lv4_AttackBonus"] = "【Lv4攻撃力バフ (%)】\n推奨: 45-60%",
+
+                ["Rogue_Lv5_AttackBonus"] = "【Lv5攻撃力バフ (%)】\n推奨: 50-65%",
+
+                ["Rogue_Lv2_BuffDuration"] = "【Lv2バフ持続時間（秒）】\n推奨: 8-12秒",
+
+                ["Rogue_Lv3_BuffDuration"] = "【Lv3バフ持続時間（秒）】\n推奨: 9-13秒",
+
+                ["Rogue_Lv4_BuffDuration"] = "【Lv4バフ持続時間（秒）】\n推奨: 10-14秒",
+
+                ["Rogue_Lv5_BuffDuration"] = "【Lv5バフ持続時間（秒）】\n推奨: 11-15秒",
+
+                ["Rogue_Lv2_PoisonBlasts"] = "【Lv2毒爆発回数】\n推奨: 8-12",
+
+                ["Rogue_Lv3_PoisonBlasts"] = "【Lv3毒爆発回数】\n推奨: 9-13",
+
+                ["Rogue_Lv4_PoisonBlasts"] = "【Lv4毒爆発回数】\n推奨: 10-14",
+
+                ["Rogue_Lv5_PoisonBlasts"] = "【Lv5毒爆発回数】\n推奨: 11-15",
+
+                ["Rogue_Lv2_PoisonInstant"] = "【Lv2即時毒ダメージ】\n推奨: 10-15",
+
+                ["Rogue_Lv3_PoisonInstant"] = "【Lv3即時毒ダメージ】\n推奨: 12-18",
+
+                ["Rogue_Lv4_PoisonInstant"] = "【Lv4即時毒ダメージ】\n推奨: 14-20",
+
+                ["Rogue_Lv5_PoisonInstant"] = "【Lv5即時毒ダメージ】\n推奨: 16-25",
+
+                ["Rogue_Lv2_PoisonDot"] = "【Lv2毒DoT秒間ダメージ】\n推奨: 5-8",
+
+                ["Rogue_Lv3_PoisonDot"] = "【Lv3毒DoT秒間ダメージ】\n推奨: 6-9",
+
+                ["Rogue_Lv4_PoisonDot"] = "【Lv4毒DoT秒間ダメージ】\n推奨: 7-10",
+
+                ["Rogue_Lv5_PoisonDot"] = "【Lv5毒DoT秒間ダメージ】\n推奨: 8-12",
+
+                ["Rogue_ShadowStrike_Charges"] = "【シャドウストライク基本チャージ数】\n基本使用可能チャージ数です。\n推奨: 1",
+
+                ["Rogue_Lv5_BonusCharges"] = "【Lv5追加チャージ数】\nLv5到達時に追加されるチャージ数です。\n推奨: 1",
+
+                ["Rogue_Lv2_AttackSpeed"] = "【Lv2攻撃速度ボーナス (%)】\n推奨: 10-15%",
+
+                ["Rogue_Lv3_AttackSpeed"] = "【Lv3攻撃速度ボーナス (%)】\n推奨: 12-18%",
+
+                ["Rogue_Lv4_AttackSpeed"] = "【Lv4攻撃速度ボーナス (%)】\n推奨: 14-20%",
+
+                ["Rogue_Lv5_AttackSpeed"] = "【Lv5攻撃速度ボーナス (%)】\n推奨: 16-22%",
+
+                ["Rogue_Lv2_StaminaReduction"] = "【Lv2スタミナ消費削減 (%)】\n推奨: 15-20%",
+
+                ["Rogue_Lv3_StaminaReduction"] = "【Lv3スタミナ消費削減 (%)】\n推奨: 17-22%",
+
+                ["Rogue_Lv4_StaminaReduction"] = "【Lv4スタミナ消費削減 (%)】\n推奨: 19-25%",
+
+                ["Rogue_Lv5_StaminaReduction"] = "【Lv5スタミナ消費削減 (%)】\n推奨: 22-30%",
+
+                ["Rogue_Lv1_MoveSpeed"] = "【Lv1移動速度ボーナス (%)】\n推奨: 3-7%",
+
+                ["Rogue_Lv2_MoveSpeed"] = "【Lv2移動速度ボーナス (%)】\n推奨: 5-10%",
+
+                ["Rogue_Lv3_MoveSpeed"] = "【Lv3移動速度ボーナス (%)】\n推奨: 7-12%",
+
+                ["Rogue_Lv4_MoveSpeed"] = "【Lv4移動速度ボーナス (%)】\n推奨: 10-15%",
+
+                ["Rogue_Lv5_MoveSpeed"] = "【Lv5移動速度ボーナス (%)】\n推奨: 12-18%",
+
+                ["Producer_Durability_Lv1"] = "【製作アイテム耐久度ボーナス Lv1 (%)】\nLv1での製作アイテムの耐久度増加率です。\nデフォルト: 50%",
+
             };
         }
     }

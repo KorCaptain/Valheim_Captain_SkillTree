@@ -23,7 +23,7 @@ namespace CaptainSkillTree.SkillTree
             t += $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {(int)stamina}</size></color>\n";
 
             t += $"<color=#9400D3><size=16>{L.Get("tooltip_skill_type")}: </size></color>";
-            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.HotKeyG?.Value ?? "G")}</size></color>\n";
+            t += $"<color=#FFD700><size=16>{L.Get("skill_type_active_key", SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyG, "G"))}</size></color>\n";
 
             t += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>";
             t += $"<color=#FFDB58><size=16>{cooldown}{L.Get("unit_seconds")}</size></color>\n";

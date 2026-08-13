@@ -167,21 +167,6 @@ namespace CaptainSkillTree.Localization
                 "Weniger = häufigere Nutzung möglich.\n" +
                 "Empfehlung: 10-20 Sek.",
 
-                ["Tier5_ParryRush_BuffDuration"] =
-                "【Buff-Dauer (Sek.)】\n" +
-                "Wirkungsdauer des Buffs nach erfolgreichem Parieren.\n" +
-                "Empfehlung: 20-40 Sek.",
-
-                ["Tier5_ParryRush_DamageBonus"] =
-                "【Ansturm-Schadensbonus (%)】\n" +
-                "Schadenserhöhung des Ansturms nach dem Parieren.\n" +
-                "Empfehlung: 50-100%",
-
-                ["Tier5_ParryRush_PushDistance"] =
-                "【Stoßdistanz (m)】\n" +
-                "Wie viele Meter der Feind beim Ansturm gestoßen wird.\n" +
-                "Empfehlung: 3-7 m",
-
                 ["Tier5_ParryRush_StaminaCost"] =
                 "【Ausdauerkosten】\n" +
                 "Ausdauer bei Fähigkeitsaktivierung.\n" +
@@ -513,6 +498,32 @@ namespace CaptainSkillTree.Localization
                 "Anteil des Hauptschadens als Flächenschaden an Feinden in 7m bei H-Explosion.\n" +
                 "Gesamtschaden × (Wert / 100) = Flächenschaden\n" +
                 "Empfehlung: 30-50%",
+
+                ["Tier5_WhirlwindSlash_BaseDamage"] =
+                "【Grundschaden (%)】\n" +
+                "Grundschaden des Wirbelwind-Schnitts.\n" +
+                "Empfehlung: 80-150%",
+
+                ["Tier5_WhirlwindSlash_LevelBonus"] =
+                "【Stufenbonus (%)】\n" +
+                "Schadensbonus pro Wirbelwind-Schnitt-Stufe.\n" +
+                "Empfehlung: 10-25%",
+
+                ["Tier6_RushSlash_DamageLevelBonus"] =
+                "【Stufen-Schadensbonus (%)】\n" +
+                "Schadensbonus pro Stufe der Ansturm-Schnittserie.\n" +
+                "Empfehlung: 5-15%",
+
+                ["Tier6_RushSlash_PathWidth"] =
+                "【Ansturm-Schnittserie】Trefferbreite des Bewegungspfades (m).\n" +
+                "Trifft alle Monster innerhalb dieser Reichweite entlang des Bewegungspfades.\n" +
+                "Empfehlung: 1-3 m",
+
+                ["Tier8_AssassinHeart_LevelBonus"] =
+                "【Stufenbonus (%)】\n" +
+                "Schadensbonus pro Assassinenherz-Stufe.\n" +
+                "Empfehlung: 10-30%",
+
             };
         }
     }

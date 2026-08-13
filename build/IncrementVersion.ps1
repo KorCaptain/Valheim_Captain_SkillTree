@@ -24,25 +24,13 @@ try {
     $currentVersion = $versionNode.Version
     Write-Host "[VERSION] Current: $currentVersion" -ForegroundColor Yellow
 
-    # 2. Parse Semantic Versioning (major.minor.patch) - patch is zero-padded 2 digits (00-99)
+    # 2. Parse Semantic Versioning (major.minor.patch) - patch increments by 1, no rollover/padding
     if ($currentVersion -match '^(\d+)\.(\d+)\.(\d+)$') {
         $major = [int]$matches[1]
         $minor = [int]$matches[2]
         $patch = [int]$matches[3] + 1
 
-        # PATCH rollover: x.y.99 -> x.MINOR_NEXT.00
-        # MINOR rule: single-digit (e.g. 2) -> append "1" (2 -> 21), then +1 per rollover (21->22->...->29->30->...)
-        if ($patch -ge 100) {
-            if ($minor -lt 10) {
-                $minor = [int]("$minor" + "1")
-            } else {
-                $minor = $minor + 1
-            }
-            $patch = 0
-        }
-
-        $patchStr = $patch.ToString("D2")
-        $newVersion = "$major.$minor.$patchStr"
+        $newVersion = "$major.$minor.$patch"
         $newAssemblyVersion = "$major.$minor.$patch.0"
     } else {
         throw "Version format error: $currentVersion (expected: 1.2.31)"
@@ -76,6 +64,28 @@ try {
         $readmeContent = $readmeContent -replace 'v\d+\.\d+\.\d+', "v$newVersion"
         [System.IO.File]::WriteAllText($readmePath, $readmeContent, [System.Text.Encoding]::UTF8)
         Write-Host "[OK] README.md updated" -ForegroundColor Green
+    }
+
+    # 5.5. Sync top CHANGELOG.md entry's version tag (content untouched, cst-changelog owns content)
+    # NOTE (2026-08-12): the regex used to match the legacy "# [X.X.X]" header format only.
+    # cst-changelog has written the current "## YYYY-MM-DD (vX.X.XX)" format for a while now,
+    # so this step silently no-op'd on every build (topMatch.Success was always false) --
+    # manifest.json/Plugin.cs kept incrementing while the CHANGELOG.md header stayed frozen at
+    # whatever version cst-changelog last wrote (2.1.87 vs manifest's 2.1.90 when discovered).
+    # Match the current format's version number specifically; the date portion is left untouched.
+    $changelogPath = Join-Path $ProjectDir "Thunderstore\CHANGELOG.md"
+    if (Test-Path $changelogPath) {
+        $changelogContent = Get-Content $changelogPath -Raw -Encoding UTF8
+        $topHeaderPattern = [regex]'(## \d{4}-\d{2}-\d{2} \(v)\d+\.\d+\.\d+(\))'
+        $topMatch = $topHeaderPattern.Match($changelogContent)
+        if ($topMatch.Success) {
+            $changelogContent = $topHeaderPattern.Replace($changelogContent, "`${1}$newVersion`$2", 1)
+            $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+            [System.IO.File]::WriteAllText($changelogPath, $changelogContent, $utf8NoBom)
+            Write-Host "[OK] CHANGELOG.md top version tag updated" -ForegroundColor Green
+        } else {
+            Write-Host "[WARN] CHANGELOG.md top header didn't match expected format -- version tag NOT synced" -ForegroundColor Yellow
+        }
     }
 
     # 6. Create/Update manifest.json (Thunderstore)

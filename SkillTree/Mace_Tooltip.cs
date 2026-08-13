@@ -406,11 +406,11 @@ namespace CaptainSkillTree.SkillTree
             try
             {
                 int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_guardian_heart") ?? 0;
-                float baseDmg = Mace_Config.ShieldChargeDamagePercentValue;
-                float levelBonus = Mace_Config.ShieldChargeLevelBonusValue;
-                float staminaCost = Mace_Config.GuardianHeartStaminaCostValue;
-                float cooldown = Mace_Config.GuardianHeartCooldownValue;
-                int requiredPoints = Mace_Config.GuardianHeartRequiredPointsValue;
+                float baseDmg = Defense_Config.ShieldChargeDamagePercentValue;
+                float levelBonus = Defense_Config.ShieldChargeLevelBonusValue;
+                float staminaCost = Defense_Config.GuardianHeartStaminaCostValue;
+                float cooldown = Defense_Config.GuardianHeartCooldownValue;
+                int requiredPoints = Defense_Config.GuardianHeartRequiredPointsValue;
 
                 int dispLevel = currentLevel > 0 ? currentLevel : 1;
                 float singleDmg = baseDmg + (dispLevel - 1) * levelBonus;
@@ -427,11 +427,13 @@ namespace CaptainSkillTree.SkillTree
                 tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>" +
                            $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaCost:F0}</size></color>\n";
                 tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color>" +
-                           $"<color=#00FF00><size=16>{L.Get("skill_type_active_key", "G")}</size></color>\n";
+                           $"<color=#00FF00><size=16>{L.Get("skill_type_active_key", "Mouse2")}</size></color>\n";
                 tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>" +
                            $"<color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
                 tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>" +
                            $"<color=#00FF00><size=16>{L.Get("requirement_mace_shield")}</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_required_job")}: </size></color>" +
+                           $"<color=#00FF00><size=16>{L.Get("job_name_tanker")}</size></color>\n";
                 tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>" +
                            $"<color=#FF6B6B><size=16>{requiredPoints}</size></color>\n";
 
@@ -469,7 +471,8 @@ namespace CaptainSkillTree.SkillTree
         }
 
         private static float GetShieldChargeMultiHitPercent(int level) =>
-            150f + (level - 1) * 20f;
+            Defense_Config.ShieldChargeMultiHitDamagePercentValue
+            + (level - 1) * Defense_Config.ShieldChargeMultiHitLevelBonusValue;
 
         private static string GetShieldChargeItemText(int targetLevel) => targetLevel switch
         {
@@ -482,6 +485,74 @@ namespace CaptainSkillTree.SkillTree
             7 => $"{L.Get("item_trophy_fader")} x1 + {L.Get("item_trophy_fallenvalkyrie")} x1",
             _ => ""
         };
+
+        /// <summary>
+        /// 충격파 강타 툴팁 생성 (레벨 연동, 방패돌진 툴팁과 동일한 순서/색상 구조)
+        /// </summary>
+        public static string GetMaceStep7ShockwaveSlamTooltip()
+        {
+            try
+            {
+                int currentLevel = SkillTreeManager.Instance?.GetSkillLevel("mace_Step7_shockwave_slam") ?? 0;
+                float baseDmg = Mace_Config.ShockwaveSlamDamagePercentValue;
+                float levelBonus = Mace_Config.ShockwaveSlamLevelBonusValue;
+                float staminaCost = Mace_Config.ShockwaveSlamStaminaCostValue;
+                float cooldown = Mace_Config.ShockwaveSlamCooldownValue;
+                int requiredPoints = Mace_Config.ShockwaveSlamRequiredPointsValue;
+
+                int dispLevel = currentLevel > 0 ? currentLevel : 1;
+                float dmg = baseDmg + (dispLevel - 1) * levelBonus;
+
+                var tooltip = $"<color=#FFD700><size=22>{L.Get("mace_skill_shockwave_slam")}</size></color>\n\n";
+
+                tooltip += $"<color=#FFD700><size=16>{L.Get("tooltip_description")}: </size></color>" +
+                           $"<color=#E0E0E0><size=16>{L.Get("mace_desc_shockwave_slam")}</size></color>\n";
+                tooltip += $"<color=#FF6B6B><size=16>{L.Get("tooltip_damage")}: </size></color>" +
+                           $"<color=#FFB6C1><size=16>{L.Get("shockwave_slam_damage_preview", (int)dmg)}</size></color>\n";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_range")}: </size></color>" +
+                           $"<color=#B0E0E6><size=16>7m</size></color>\n";
+                tooltip += $"<color=#FFB347><size=16>{L.Get("tooltip_cost")}: </size></color>" +
+                           $"<color=#FFDAB9><size=16>{L.Get("stat_stamina")} {staminaCost:F0}</size></color>\n";
+                tooltip += $"<color=#FF4500><size=16>{L.Get("tooltip_skill_type")}: </size></color>" +
+                           $"<color=#00FF00><size=16>{L.Get("skill_type_active_key", "G")}</size></color>\n";
+                tooltip += $"<color=#FFA500><size=16>{L.Get("tooltip_cooldown")}: </size></color>" +
+                           $"<color=#FFDB58><size=16>{cooldown:F0}{L.Get("unit_seconds")}</size></color>\n";
+                tooltip += $"<color=#98FB98><size=16>{L.Get("tooltip_requirements")}: </size></color>" +
+                           $"<color=#00FF00><size=16>{L.Get("requirement_two_hand_mace")}</size></color>\n";
+                tooltip += $"<color=#87CEEB><size=16>{L.Get("tooltip_required_points")}: </size></color>" +
+                           $"<color=#FF6B6B><size=16>{requiredPoints}</size></color>\n";
+
+                if (currentLevel < 7)
+                {
+                    int nextLevel = (currentLevel > 0 ? currentLevel : 0) + 1;
+                    string itemText = GetShieldChargeItemText(nextLevel);
+                    tooltip += $"<color=#FFB347><size=16>{L.Get("shield_charge_upgrade_requires", nextLevel)}: </size></color>" +
+                               $"<color=#FF6B6B><size=16>{itemText}</size></color>\n";
+                }
+                else
+                {
+                    tooltip += $"<color=#FFD700><size=16>{L.Get("shockwave_slam_max_level")}</size></color>\n";
+                }
+
+                if (currentLevel < 7)
+                {
+                    tooltip += "\n\n<color=#A9A9A9><size=14>────────────────────────</size></color>";
+                    int startPreview = currentLevel > 0 ? currentLevel + 1 : 2;
+                    for (int lv = startPreview; lv <= 7; lv++)
+                    {
+                        float sd = baseDmg + (lv - 1) * levelBonus;
+                        tooltip += $"\n<color=#888888><size=14>Lv{lv}: {L.Get("shockwave_slam_damage_preview", (int)sd)}</size></color>";
+                    }
+                }
+
+                return tooltip.TrimEnd('\n');
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[충격파 강타 툴팁] 툴팁 생성 실패: {ex.Message}");
+                return $"<color=#FFD700><size=22>{L.Get("mace_skill_shockwave_slam")}</size></color>";
+            }
+        }
 
         /// <summary>
         /// 수호자의 진심 툴팁 생성 (G키 액티브 스킬)
@@ -574,18 +645,19 @@ namespace CaptainSkillTree.SkillTree
         /// </summary>
         private static string GetGuardianHeartFallbackTooltip()
         {
-            int requiredPoints = Mace_Config.GuardianHeartRequiredPointsValue;
+            int requiredPoints = Defense_Config.GuardianHeartRequiredPointsValue;
 
-            float dmg = Mace_Config.ShieldChargeDamagePercentValue;
-            float mhDmg = Mace_Config.ShieldChargeMultiHitDamagePercentValue;
+            float dmg = Defense_Config.ShieldChargeDamagePercentValue;
+            float mhDmg = Defense_Config.ShieldChargeMultiHitDamagePercentValue;
             return "<color=#FFD700><size=22>방패돌진</size></color>\n\n" +
                    $"<color=#FFD700><size=16>설명: </size></color><color=#E0E0E0><size=16>방패 돌진하여 방패 막기력의 {dmg:F0}% 충돌 데미지</size></color>\n" +
                    $"<color=#FF6B6B><size=16>데미지: </size></color><color=#FFB6C1><size=16>다단히트: VFX 발동마다 3m 반경 방패 막기력의 {mhDmg:F0}% 추가 타격 + 크리티컬 이펙트</size></color>\n" +
                    "<color=#87CEEB><size=16>범위: </size></color><color=#B0E0E6><size=16>돌진 거리 12m</size></color>\n" +
                    "<color=#FFB347><size=16>소모: </size></color><color=#FFDAB9><size=16>스태미나 20</size></color>\n" +
-                   "<color=#FF4500><size=16>스킬유형: </size></color><color=#00FF00><size=16>액티브 스킬 - G키</size></color>\n" +
+                   "<color=#FF4500><size=16>스킬유형: </size></color><color=#00FF00><size=16>액티브 스킬 - Mouse2</size></color>\n" +
                    "<color=#FFA500><size=16>쿨타임: </size></color><color=#FFDB58><size=16>35초</size></color>\n" +
                    "<color=#98FB98><size=16>필요조건: </size></color><color=#00FF00><size=16>방패 착용</size></color>\n" +
+                   "<color=#98FB98><size=16>필요 직업: </size></color><color=#00FF00><size=16>탱커</size></color>\n" +
                    "<color=#DDA0DD><size=16>특별안내: </size></color><color=#E6E6FA><size=16>방패로 적을 가격하고 주변 5m 적을 도발한다.</size></color>\n\n" +
                    $"<color=#87CEEB><size=16>필요포인트: </size></color><color=#FF6B6B><size=16>{requiredPoints}</size></color>";
         }
@@ -612,7 +684,8 @@ namespace CaptainSkillTree.SkillTree
             { "mace_Step5_dps", GetMaceStep5DpsTooltip },
             { "mace_Step6_grandmaster", GetMaceStep6GrandmasterTooltip },
             { "mace_Step7_fury_hammer", GetMaceStep7FuryHammerTooltip },
-            { "mace_Step7_guardian_heart", GetMaceStep7GuardianHeartTooltip }
+            { "mace_Step7_guardian_heart", GetMaceStep7GuardianHeartTooltip },
+            { "mace_Step7_shockwave_slam", GetMaceStep7ShockwaveSlamTooltip }
         };
 
         #endregion

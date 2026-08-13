@@ -15,6 +15,7 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"]  = "Ranged Skill Key",
                 ["HotKey_G"]  = "Melee Main Skill Key",
                 ["HotKey_H"]  = "Secondary Skill Key",
+                ["QuestToggleKey"] = "Клавиша панели заданий",
                 ["HUD_IconSize"] = "Размер иконки",
                 ["HUD_PosX"]  = "Skill Icon HUD X Position",
                 ["HUD_PosY"]  = "Skill Icon HUD Y Position",
@@ -34,7 +35,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_Opener_RequiredPoints"] = "Ур.1: [Первый удар] Необходимые очки",
                 ["Tier2_OpenerMelee_FinisherBonus"] = "Ур.2-1: [Ближний бой] Бонус финишера (%)",
                 ["Tier2_OpenerMelee_RequiredPoints"] = "Ур.2-1: [Ближний бой] Необходимые очки",
-                ["Tier2_OpenerBow_CritChance"] = "Ур.2-2: [Лук] Шанс крит. удара (%)",
+                ["Tier2_OpenerBow_CritChance"] = "Ур.2-2: [Лук] Бонус урона крита (%)",
                 ["Tier2_OpenerBow_RequiredPoints"] = "Ур.2-2: [Лук] Необходимые очки",
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] = "Ур.2-3: [Арбалет] Бонус первого выстрела (%)",
                 ["Tier2_OpenerCrossbow_RequiredPoints"] = "Ур.2-3: [Арбалет] Необходимые очки",
@@ -46,8 +47,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_Pursuit_RequiredPoints"] = "Ур.3: [Преследование] Необходимые очки",
                 ["Tier4_PursuitSpeed_SpeedBonus"] = "Ур.4-1: [Стремительная погоня] Бонус скорости (%)",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "Ур.4-1: [Стремительная погоня] Необходимые очки",
-                ["Tier4_FrenzyTrigger_StaminaReduction"] = "Ур.4-2: [Яростный натиск] Снижение выносливости (%)",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "Ур.4-2: [Яростный натиск] Необходимые очки",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] = "Ур.4-2: [Смертельный удар] Шанс крита/уровень (%)",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "Ур.4-2: [Смертельный удар] Очки за уровень",
                 ["Tier5_Frenzy_StackBonusBase"] = "Ур.5: [Ярость] Базовый бонус стека (%)",
                 ["Tier5_Frenzy_StackBonusChain"] = "Ур.5: [Ярость] Цепной бонус стека (%)",
                 ["Tier5_Frenzy_MaxStacks"] = "Ур.5: [Ярость] Макс. стеков",
@@ -81,8 +82,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_SpecialStat_SpecBonus"] = "Ур.5: [Спец. стат] Бонус специализации оружия",
                 ["Tier5_Charge_TriggerChance"] = "Tier 5: [Charge] Trigger Chance (%)",
                 ["Tier5_SpecialStat_RequiredPoints"] = "Ур.5: [Спец. стат] Необходимые очки",
-                ["Tier6_WeakPointAttack_CritDamageBonus"] = "Ур.6-1: [Слабое место] Бонус урона крит. (%)",
-                ["Tier6_WeakPointAttack_RequiredPoints"] = "Ур.6-1: [Слабое место] Необходимые очки",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "Ур.6-1: [Слабое место] Бонус урона крит. Ур.1 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "Ур.6-1: [Слабое место] Бонус урона крит. Ур.2 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "Ур.6-1: [Слабое место] Бонус урона крит. Ур.3 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "Ур.6-1: [Слабое место] Бонус урона крит. Ур.4 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "Ур.6-1: [Слабое место] Бонус урона крит. Ур.5 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "Ур.6-1: [Слабое место] Бонус урона крит. Ур.6 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "Ур.6-1: [Слабое место] Бонус урона крит. Ур.7 (%)",
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "Ур.6-1: [Слабое место] Очки за уровень",
                 ["Tier6_ComboFinisher_3HitComboBonus"] = "Ур.6-2: [Финишер] Бонус комбо 3 удара (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Ур.6-2: [Финишер] Необходимые очки",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Ур.6-3: [Двуруч.] Бонус урона (%)",
@@ -157,50 +164,51 @@ namespace CaptainSkillTree.Localization
                 // Defense Tree - 56 ключей
                 // ============================================
 
-                // === Tier 0: Defense Expert (3) ===
-                ["Tier0_DefenseExpert_HPBonus"]        = "Tier 0: [Defense Expert] HP Bonus",
-                ["Tier0_DefenseExpert_ArmorBonus"]     = "Tier 0: [Defense Expert] Armor Bonus",
-                ["Tier0_DefenseExpert_RequiredPoints"] = "Tier 0: [Defense Expert] Required Points",
+                // === Ур. 0: Эксперт защиты (4) ===
+                ["Tier0_DefenseExpert_HPBonus"]        = "Ур.0: [Эксперт защиты] Бонус здоровья",
+                ["Tier0_DefenseExpert_ArmorBonus"]     = "Ур.0: [Эксперт защиты] Бонус брони",
+                ["Tier0_DefenseExpert_AtkPenalty"]     = "Ур.0: [Эксперт защиты] Снижение силы атаки (%)",
+                ["Tier0_DefenseExpert_RequiredPoints"] = "Ур.0: [Эксперт защиты] Необходимые очки",
 
-                // === Tier 1: Skin Hardening (3) ===
-                ["Tier1_SkinHardening_HPBonus"]        = "Tier 1: [Skin Hardening] HP Bonus",
-                ["Tier1_SkinHardening_ArmorBonus"]     = "Tier 1: [Skin Hardening] Armor Bonus",
-                ["Tier1_SkinHardening_RequiredPoints"] = "Tier 1: [Skin Hardening] Required Points",
+                // === Ур. 1: Закалка кожи (3) ===
+                ["Tier1_SkinHardening_HPBonus"]        = "Ур.1: [Закалка кожи] Бонус здоровья",
+                ["Tier1_SkinHardening_ArmorBonus"]     = "Ур.1: [Закалка кожи] Бонус брони",
+                ["Tier1_SkinHardening_RequiredPoints"] = "Ур.1: [Закалка кожи] Необходимые очки",
 
-                // === Tier 2-1: Mind-Body Training (3) ===
-                ["Tier2_MindBodyTraining_StaminaBonus"] = "Tier 2-1: [Mind-Body Training] Max Stamina Bonus",
-                ["Tier2_MindBodyTraining_EitrBonus"]    = "Tier 2-1: [Mind-Body Training] Max Eitr Bonus",
-                ["Tier2_MindTraining_RequiredPoints"]   = "Tier 2-1: [Mind-Body Training] Required Points",
+                // === Ур. 2-1: Тренировка тела и разума (3) ===
+                ["Tier2_MindBodyTraining_StaminaBonus"] = "Ур.2-1: [Трен. тела и разума] Бонус макс. выносливости",
+                ["Tier2_MindBodyTraining_EitrBonus"]    = "Ур.2-1: [Трен. тела и разума] Бонус макс. эйтра",
+                ["Tier2_MindTraining_RequiredPoints"]   = "Ур.2-1: [Трен. тела и разума] Необходимые очки",
 
-                // === Tier 2-2: Health Training (3) ===
-                ["Tier2_HealthTraining_HPBonus"]        = "Tier 2-2: [Health Training] HP Bonus",
-                ["Tier2_HealthTraining_ArmorBonus"]     = "Tier 2-2: [Health Training] Armor Bonus",
-                ["Tier2_HealthTraining_RequiredPoints"] = "Tier 2-2: [Health Training] Required Points",
+                // === Ур. 2-2: Тренировка здоровья (3) ===
+                ["Tier2_HealthTraining_HPBonus"]        = "Ур.2-2: [Трен. здоровья] Бонус здоровья",
+                ["Tier2_HealthTraining_ArmorBonus"]     = "Ур.2-2: [Трен. здоровья] Бонус брони",
+                ["Tier2_HealthTraining_RequiredPoints"] = "Ур.2-2: [Трен. здоровья] Необходимые очки",
 
-                // === Tier 3-1: Core Breathing (2) ===
-                ["Tier3_CoreBreathing_EitrBonus"]      = "Tier 3-1: [Core Breathing] Eitr Bonus",
-                ["Tier3_CoreBreathing_RequiredPoints"] = "Tier 3-1: [Core Breathing] Required Points",
+                // === Ур. 3-1: Стержневое дыхание (2) ===
+                ["Tier3_CoreBreathing_EitrBonus"]      = "Ур.3-1: [Стержн. дыхание] Бонус эйтра",
+                ["Tier3_CoreBreathing_RequiredPoints"] = "Ур.3-1: [Стержн. дыхание] Необходимые очки",
 
-                // === Tier 3-2: Evasion Training (3) ===
-                ["Tier3_EvasionTraining_DodgeBonus"]         = "Tier 3-2: [Evasion Training] Dodge Bonus (%)",
-                ["Tier3_EvasionTraining_InvincibilityBonus"] = "Tier 3-2: [Evasion Training] Roll Invincibility Increase (%)",
-                ["Tier3_EvasionTraining_RequiredPoints"]     = "Tier 3-2: [Evasion Training] Required Points",
+                // === Ур. 3-2: Тренировка уклонения (3) ===
+                ["Tier3_EvasionTraining_DodgeBonus"]         = "Ур.3-2: [Трен. уклонения] Бонус уклонения (%)",
+                ["Tier3_EvasionTraining_InvincibilityBonus"] = "Ур.3-2: [Трен. уклонения] Увеличение неуязвимости переката (%)",
+                ["Tier3_EvasionTraining_RequiredPoints"]     = "Ур.3-2: [Трен. уклонения] Необходимые очки",
 
-                // === Tier 3-3: Health Boost (2) ===
-                ["Tier3_HealthBoost_HPBonus"]        = "Tier 3-3: [Health Boost] HP Bonus",
-                ["Tier3_HealthBoost_RequiredPoints"] = "Tier 3-3: [Health Boost] Required Points",
+                // === Ур. 3-3: Увеличение здоровья (2) ===
+                ["Tier3_HealthBoost_HPBonus"]        = "Ур.3-3: [Увел. здоровья] Бонус здоровья",
+                ["Tier3_HealthBoost_RequiredPoints"] = "Ур.3-3: [Увел. здоровья] Необходимые очки",
 
-                // === Tier 3-4: Block Training (4) ===
-                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Tier 3-4: [Block Training] Shield Block Power Bonus",
-                ["Tier3_ShieldTraining_RequiredPoints"]  = "Tier 3-4: [Block Training] Required Points",
-                ["Tier3_BlockTraining_ParryBlockPowerRatio"] = "Tier 3-4: [Block Training] Parry Counter Block Power Ratio (%)",
-                ["Tier3_BlockTraining_PushDistance"] = "Tier 3-4: [Block Training] Parry Counter Knockback Distance (m)",
+                // === Ур. 3-4: Тренировка блокировки (4) ===
+                ["Tier3_ShieldTraining_BlockPowerBonus"] = "Ур.3-4: [Трен. блокировки] Бонус силы блока щитом",
+                ["Tier3_ShieldTraining_RequiredPoints"]  = "Ур.3-4: [Трен. блокировки] Необходимые очки",
+                ["Tier3_BlockTraining_ParryBlockPowerRatio"] = "Ур.3-4: [Трен. блокировки] Коэфф. силы блока при парировании (%)",
+                ["Tier3_BlockTraining_PushDistance"] = "Ур.3-4: [Трен. блокировки] Дистанция откидывания при парировании (м)",
 
-                // === Tier 4-1: Shockwave (4) ===
-                ["Tier4_Shockwave_Radius"]         = "Tier 4-1: [Shockwave] Radius",
-                ["Tier4_Shockwave_StunDuration"]   = "Tier 4-1: [Shockwave] Stun Duration",
-                ["Tier4_Shockwave_Cooldown"]       = "Tier 4-1: [Shockwave] Cooldown",
-                ["Tier4_Shockwave_RequiredPoints"] = "Tier 4-1: [Shockwave] Required Points",
+                // === Ур. 4-1: Ударная волна (4) ===
+                ["Tier4_Shockwave_Radius"]         = "Ур.4-1: [Удар. волна] Радиус",
+                ["Tier4_Shockwave_StunDuration"]   = "Ур.4-1: [Удар. волна] Длительность оглушения",
+                ["Tier4_Shockwave_Cooldown"]       = "Ур.4-1: [Удар. волна] Перезарядка",
+                ["Tier4_Shockwave_RequiredPoints"] = "Ур.4-1: [Удар. волна] Необходимые очки",
 
                 // === Tier 4-2: Ground Stomp ===
                 ["Tier4_GroundStomp_Radius"] = "Ур.4: Радиус эффекта (м)",
@@ -252,11 +260,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] = "Ур.6: Физ./стих. сопротивление (%)",
                 ["Tier6_JotunnVitality_RequiredPoints"] = "Ур.6-4: [Живуч. Ётуна] Необходимые очки",
 
-                // === Ур. 6-5: Щит Ётуна (4) ===
-                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Ур.6: Снижение вынос. при блоке (%)",
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Ур.6: Скорость с обычным щитом (%)",
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Ур.6: Скорость с башенным щитом (%)",
-                ["Tier6_JotunnShield_RequiredPoints"] = "Ур.6-5: [Щит Ётуна] Необходимые очки",
+                // === Ур. 6-5: Щитовой натиск (7, перенесено из дерева булавы) ===
+                ["Tier6_GuardianHeart_Cooldown"] = "Ур.6-5: [Щитовой натиск] Перезарядка (сек)",
+                ["Tier6_GuardianHeart_StaminaCost"] = "Ур.6-5: [Щитовой натиск] Расход выносливости",
+                ["Tier6_ShieldCharge_DamagePercent"] = "Ур.6-5: [Щитовой натиск] Урон от блока (%)",
+                ["Tier6_GuardianHeart_RequiredPoints"] = "Ур.6-5: [Щитовой натиск] Необходимые очки",
 
                 // ============================================
                 // Production Tree - 36 ключей
@@ -527,9 +535,6 @@ namespace CaptainSkillTree.Localization
                 ["Tier4_TrueDuel_RequiredPoints"] = "Ур.4-2: [Истинная дуэль] Необходимые очки",
                 ["Tier4_TrueDuel_AttackSpeedBonus"] = "Ур.4-2: [Истинная дуэль] Бонус скорости атаки (%)",
                 ["Tier5_ParryRush_RequiredPoints"] = "Ур.5: [Парир. рывок] Необходимые очки",
-                ["Tier5_ParryRush_BuffDuration"] = "Ур.5: [Парир. рывок] Длительность эффекта (сек)",
-                ["Tier5_ParryRush_BlockPowerRatio"] = "Ур.5: [Парир. рывок] Сила блока",
-                ["Tier5_ParryRush_PushDistance"] = "Ур.5: [Парир. рывок] Дистанция отталкивания (м)",
                 ["Tier5_ParryRush_StaminaCost"] = "Ур.5: [Парир. рывок] Расход выносливости",
                 ["Tier5_ParryRush_Cooldown"] = "Ур.5: [Парир. рывок] Перезарядка (сек)",
                 ["Tier6_RushSlash_RequiredPoints"] = "Ур.6: [Рывок-удар] Необходимые очки",
@@ -562,8 +567,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_Guard_RequiredPoints"] = "Ур.3-1: [Вращ. удар] Необходимые очки",
                 ["Tier3_HeavyStrike_DamageBonus"] = "Ур.3-2: [Тяжёлый удар] Бонус дробящего",
                 ["Tier3_HeavyStrike_RequiredPoints"] = "Ур.3-2: [Тяжёлый удар] Необходимые очки",
-                ["Tier4_Push_KnockbackChance"] = "Ур.4: [Толчок] Шанс откидывания (%)",
-                ["Tier4_Push_RequiredPoints"] = "Ур.4: [Толчок] Необходимые очки",
+                ["Tier4_Push_KnockbackChance"] = "Ур.4: [Сотрясение] Шанс сотрясения (%)",
+                ["Tier4_Push_RequiredPoints"] = "Ур.4: [Сотрясение] Необходимые очки",
                 ["Tier5_Tank_HealthBonus"] = "Ур.5-1: [Танк] Бонус к здоровью (%)",
                 ["Tier5_Tank_DamageReduction"] = "Ур.5-1: [Танк] Снижение входящего урона (%)",
                 ["Tier5_Tank_RequiredPoints"] = "Ур.5-1: [Танк] Необходимые очки",
@@ -577,10 +582,11 @@ namespace CaptainSkillTree.Localization
                 ["Tier7_FuryHammer_Cooldown"] = "Ур.7-1: [Молот ярости] Перезарядка (сек)",
                 ["Tier7_FuryHammer_AoeRadius"] = "Ур.7-1: [Молот ярости] Радиус AOE (м)",
                 ["Tier7_FuryHammer_RequiredPoints"] = "Ур.7-1: [Молот ярости] Необходимые очки",
-                ["Tier7_GuardianHeart_Cooldown"] = "Ур.7-2: [Щитовой натиск] Перезарядка (сек)",
-                ["Tier7_GuardianHeart_StaminaCost"] = "Ур.7-2: [Щитовой натиск] Расход выносливости",
-                ["Tier7_ShieldCharge_DamagePercent"] = "Ур.7-2: [Щитовой натиск] Урон от блока (%)",
-                ["Tier7_GuardianHeart_RequiredPoints"] = "Ур.7-2: [Щитовой натиск] Необходимые очки",
+                ["Tier7_ShockwaveSlam_Cooldown"] = "Ур.7-2: [Удар Ударной Волны] Перезарядка (сек)",
+                ["Tier7_ShockwaveSlam_StaminaCost"] = "Ур.7-2: [Удар Ударной Волны] Расход выносливости",
+                ["Tier7_ShockwaveSlam_DamagePercent"] = "Ур.7-2: [Удар Ударной Волны] Урон от оружия (%)",
+                ["Tier7_ShockwaveSlam_LevelBonus"] = "Ур.7-2: [Удар Ударной Волны] Бонус за уровень (%)",
+                ["Tier7_ShockwaveSlam_RequiredPoints"] = "Ур.7-2: [Удар Ударной Волны] Необходимые очки",
 
                 // ============================================
                 // Polearm Tree - 37 ключей
@@ -622,6 +628,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_Whirlwind_Cooldown"]        = "Tier 6: [Whirlwind] Cooldown (sec)",
                 ["Tier6_Whirlwind_RequiredPoints"]  = "Tier 6: [Whirlwind] Required Points",
                 ["Tier6_Whirlwind_MaxDuration"]     = "Tier 6: [Whirlwind] Макс. длительность (сек)",
+                ["Tier6_Whirlwind_DamageReductionPercent"]    = "Tier 6: [Whirlwind] Damage Reduction (%)",
+                ["Tier6_Whirlwind_DamageReductionLevelBonus"] = "Tier 6: [Whirlwind] Damage Reduction Level Bonus (%)",
 
                 // ============================================
                 // Archer Job Skills - 8 ключей
@@ -660,6 +668,8 @@ namespace CaptainSkillTree.Localization
                 ["Mage_Fire_Rain_Radius"] = "Радиус падения (м)",
                 ["Mage_Fire_Rain_Impact_Radius"] = "Радиус урона при ударе (м)",
                 ["Mage_Fire_Rain_Projectile_Count"] = "Снарядов за залп (шт)",
+                ["Mage_Dungeon_Buff_Damage_Bonus"] = "Бафф подземелья: бонус урона (%)",
+                ["Mage_Dungeon_Buff_Duration"] = "Бафф подземелья: длительность (сек)",
                 ["Mage_Damage_Multiplier"] = "Активный: Множитель урона (%)",
                 ["Mage_Cooldown"] = "Активный: Перезарядка (сек)",
                 ["Mage_Elemental_Resistance"] = "Пассивный: Сопротивление стихиям (%)",
@@ -847,22 +857,27 @@ namespace CaptainSkillTree.Localization
                 ["Producer_Durability_Lv1"]          = "Мастер ремесла: Бонус прочности Lv1 (%)",
                 ["Producer_CraftingSuccessRate_Lv1"] = "Мастер ремесла: Шанс успешного создания Lv1 (%)",
                 ["Producer_EnchantChance_Lv1"]       = "Мастер ремесла: Шанс зачарования Lv1 (%)",
+                ["Producer_ElementalProcChance_Lv1"] = "Мастер ремесла: Шанс стихийного урона Lv1 (%)",
                 ["Producer_Durability_Lv2"]          = "Мастер ремесла: Бонус прочности Lv2 (%)",
                 ["Producer_CraftingSuccessRate_Lv2"] = "Мастер ремесла: Шанс успешного создания Lv2 (%)",
                 ["Producer_MaterialReduction_Lv2"]   = "Мастер ремесла: Экономия материалов Lv2 (%)",
                 ["Producer_EnchantChance_Lv2"]       = "Мастер ремесла: Шанс зачарования Lv2 (%)",
+                ["Producer_ElementalProcChance_Lv2"] = "Мастер ремесла: Шанс стихийного урона Lv2 (%)",
                 ["Producer_Durability_Lv3"]          = "Мастер ремесла: Бонус прочности Lv3 (%)",
                 ["Producer_CraftingSuccessRate_Lv3"] = "Мастер ремесла: Шанс успешного создания Lv3 (%)",
                 ["Producer_MaterialReduction_Lv3"]   = "Мастер ремесла: Экономия материалов Lv3 (%)",
                 ["Producer_EnchantChance_Lv3"]       = "Мастер ремесла: Шанс зачарования Lv3 (%)",
+                ["Producer_ElementalProcChance_Lv3"] = "Мастер ремесла: Шанс стихийного урона Lv3 (%)",
                 ["Producer_Durability_Lv4"]          = "Мастер ремесла: Бонус прочности Lv4 (%)",
                 ["Producer_CraftingSuccessRate_Lv4"] = "Мастер ремесла: Шанс успешного создания Lv4 (%)",
                 ["Producer_MaterialReduction_Lv4"]   = "Мастер ремесла: Экономия материалов Lv4 (%)",
                 ["Producer_EnchantChance_Lv4"]       = "Мастер ремесла: Шанс зачарования Lv4 (%)",
+                ["Producer_ElementalProcChance_Lv4"] = "Мастер ремесла: Шанс стихийного урона Lv4 (%)",
                 ["Producer_Durability_Lv5"]          = "Мастер ремесла: Бонус прочности Lv5 (%)",
                 ["Producer_CraftingSuccessRate_Lv5"] = "Мастер ремесла: Шанс успешного создания Lv5 (%)",
                 ["Producer_MaterialReduction_Lv5"]   = "Мастер ремесла: Экономия материалов Lv5 (%)",
                 ["Producer_EnchantChance_Lv5"]       = "Мастер ремесла: Шанс зачарования Lv5 (%)",
+                ["Producer_ElementalProcChance_Lv5"] = "Мастер ремесла: Шанс стихийного урона Lv5 (%)",
 
                 // ============================================
                 // Job Level Coin Cost
@@ -892,12 +907,137 @@ namespace CaptainSkillTree.Localization
                 // ============================================
                 // Недостающие ключи (добавлено для синхронизации)
                 // ============================================
-                ["Legacy_Penetrate_CritChance"]      = "Наследие: не используется",
-                ["Legacy_Throw_BuffDuration"]         = "Наследие: не используется",
                 ["Tier0_SpearExpert_ProcChance"]      = "Ур.0: [Мастер Копья] Шанс активации (%)",
                 ["Tier0_SpearExpert_SpeedBoost"]      = "Ур.0: [Мастер Копья] Ускорение (%)",
                 ["Tier5_OneShot_AoeRadius"]           = "Ур.5: [Один выстрел] Радиус области (м)",
                 ["Tier5_PierceCharge_LevelBonus"]     = "Ур.5: [Пронзающий рывок] Бонусный урон за уровень (%)",
+
+                ["Tier0_SpeedExpert_MoveSpeedPerLevel"] = "Tier 0: [Speed Expert] Move Speed Bonus/Level (%)",
+
+                ["Tier0_SpeedExpert_PointsPerLevel"] = "Tier 0: [Speed Expert] Required Points Per Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_2"] = "Tier 0: [Speed Expert] Lv2 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_3"] = "Tier 0: [Speed Expert] Lv3 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_4"] = "Tier 0: [Speed Expert] Lv4 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_5"] = "Tier 0: [Speed Expert] Lv5 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_6"] = "Tier 0: [Speed Expert] Lv6 Required Player Level",
+
+                ["Tier0_SpeedExpert_RequiredPlayerLevel_7"] = "Tier 0: [Speed Expert] Lv7 Required Player Level",
+
+                ["Tier3_BlockTraining_MaxChargeDistance"] = "Ур.3-4: [Трен. блокировки] Макс. дальность парирования (м)",
+
+                ["Tier4_Shockwave_KnockbackForce"] = "Ур.4-1: [Удар. волна] Сила отталкивания",
+
+                ["Tier5_ExplosiveArrow_LevelBonus"] = "Tier 5: [Explosive Arrow] Level Bonus (%)",
+
+                ["Tier6_ArrowRain_LevelBonus"] = "Tier 6: [Arrow Rain] Level Bonus (%)",
+                ["Tier6_ArrowRain_DungeonBuff_DamageBonus"] = "Tier 6: [Дождь из стрел] Бафф подземелья: бонус урона (%)",
+                ["Tier6_ArrowRain_DungeonBuff_Duration"] = "Tier 6: [Дождь из стрел] Бафф подземелья: длительность (сек)",
+
+                ["Tier5_Penetrate_BaseDamage"] = "Tier 5-1: [Penetrating Spear] Base Damage (%)",
+
+                ["Tier5_Penetrate_LevelDamageBonus"] = "Tier 5-1: [Penetrating Spear] Level Damage Bonus (%)",
+
+                ["Tier5_Penetrate_BaseAreaDamage"] = "Tier 5-1: [Penetrating Spear] Base Area Damage (%)",
+
+                ["Tier5_Penetrate_AreaLevelBonus"] = "Tier 5-1: [Penetrating Spear] Area Damage Level Bonus (%)",
+
+                ["Tier5_Combo_LevelBonus"] = "Tier 5-2: [Combo Spear] Level Bonus (%)",
+
+                ["Tier5_DoubleCast_LevelBonus"] = "Tier 5-1: [Multi Cast] Level Bonus (%)",
+
+                ["Tier5_InstantAreaHeal_LightningDamagePercent"] = "Tier 5-2: [Heal] Lightning Damage % (Lv1 base)",
+
+                ["Tier5_OneShot_LevelBonus"] = "Tier 5: [One Shot] Level Bonus (%)",
+
+                ["Tier6_IceBreath_LevelBonus"] = "Tier 6: [Vulkan Ice] Level Bonus (%)",
+
+                ["Tier6_IceBreath_DotLevelBonus"] = "Tier 6: [Vulkan Ice] DoT Level Bonus (%)",
+
+                ["Tier8_AssassinHeart_LevelBonus"] = "Tier 8: [Assassin's Heart] Level Bonus (%)",
+
+                ["Tier5_WhirlwindSlash_BaseDamage"] = "Tier 5: [Whirlwind Slash] Base Damage (%)",
+
+                ["Tier5_WhirlwindSlash_LevelBonus"] = "Tier 5: [Whirlwind Slash] Level Bonus (%)",
+
+                ["Tier6_RushSlash_DamageLevelBonus"] = "Tier 6: [Rush Slash] Damage Level Bonus (%)",
+
+                ["Tier7_FuryHammer_NormalHitLevelBonus"] = "Tier 7-1: [Fury Hammer] Normal Hit Level Bonus (%)",
+
+                ["Tier7_FuryHammer_FinalHitLevelBonus"] = "Tier 7-1: [Fury Hammer] Final Hit Level Bonus (%)",
+
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] = "Tier 6-5: [Shield Charge] Multi-Hit Damage Percent (%)",
+
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] = "Tier 6-5: [Shield Charge] Multi-Hit Level Bonus (%)",
+
+                ["Tier6_ShieldCharge_LevelBonus"] = "Tier 6-5: [Shield Charge] Level Bonus (%)",
+
+                ["Tier6_Whirlwind_LevelBonus"] = "Tier 6: [Whirlwind] Level Bonus (%)",
+
+                ["Archer_MultiShot_FireInterval"] = "Lv1 Multishot: Arrow Fire Interval (sec)",
+
+                ["Archer_Attack_StaminaReduction_Lv1"] = "Lv1 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv2"] = "Lv2 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv3"] = "Lv3 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv4"] = "Lv4 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_Attack_StaminaReduction_Lv5"] = "Lv5 Passive: Attack Stamina Reduction (%)",
+
+                ["Archer_AmmoSaveChance"] = "Passive: Ammo Save Chance (%)",
+                ["Archer_TameHeal_PerLevel"] = "Passive: Tamed Heal (HP/s)",
+                ["Archer_TameHeal_Range"] = "Passive: Tamed Heal Range (m)",
+
+                ["Tanker_Explosion_Radius"] = "Active: Explosion Radius (m)",
+
+                ["Tanker_BlockPower_Multiplier"] = "Passive: Block Power Multiplier (%)",
+
+                ["Berserker_Lv1_Active_Cooldown"] = "Berserker Lv1: Rage Cooldown (sec)",
+
+                ["Berserker_Lv2_Active_Cooldown"] = "Berserker Lv2: Rage Cooldown (sec)",
+
+                ["Berserker_Lv3_Active_Cooldown"] = "Berserker Lv3: Rage Cooldown (sec)",
+
+                ["Berserker_Lv4_Active_Cooldown"] = "Berserker Lv4: Rage Cooldown (sec)",
+
+                ["Berserker_Lv5_Active_Cooldown"] = "Berserker Lv5: Rage Cooldown (sec)",
+
+                ["Berserker_Lv1_Active_Duration"] = "Berserker Lv1: Rage Duration (sec)",
+
+                ["Berserker_Lv2_Active_Duration"] = "Berserker Lv2: Rage Duration (sec)",
+
+                ["Berserker_Lv3_Active_Duration"] = "Berserker Lv3: Rage Duration (sec)",
+
+                ["Berserker_Lv4_Active_Duration"] = "Berserker Lv4: Rage Duration (sec)",
+
+                ["Berserker_Lv5_Active_Duration"] = "Berserker Lv5: Rage Duration (sec)",
+
+                ["Berserker_Lv1_Passive_HealthBonus"] = "Berserker Lv1: Passive Max HP Bonus",
+
+                ["Berserker_Lv2_Passive_HealthBonus"] = "Berserker Lv2: Passive Max HP Bonus",
+
+                ["Berserker_Lv3_Passive_HealthBonus"] = "Berserker Lv3: Passive Max HP Bonus",
+
+                ["Berserker_Lv4_Passive_HealthBonus"] = "Berserker Lv4: Passive Max HP Bonus",
+
+                ["Berserker_Lv5_Passive_HealthBonus"] = "Berserker Lv5: Passive Max HP Bonus",
+
+                ["Berserker_Lv1_Active_DamagePerHP"] = "Berserker Lv1: Damage Per HP% (%)",
+
+                ["Berserker_Lv2_Active_DamagePerHP"] = "Berserker Lv2: Damage Per HP% (%)",
+
+                ["Berserker_Lv3_Active_DamagePerHP"] = "Berserker Lv3: Damage Per HP% (%)",
+
+                ["Berserker_Lv4_Active_DamagePerHP"] = "Berserker Lv4: Damage Per HP% (%)",
+
+                ["Berserker_Lv5_Active_DamagePerHP"] = "Berserker Lv5: Damage Per HP% (%)",
+
             };
         }
     }

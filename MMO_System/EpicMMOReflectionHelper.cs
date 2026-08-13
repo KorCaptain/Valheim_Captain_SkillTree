@@ -23,6 +23,8 @@ namespace CaptainSkillTree.MMO_System
         private static Type _apiType;
         private static MethodInfo _apiGetLevelMethod;
         private static MethodInfo _apiAddExpMethod;
+        private static MethodInfo _apiGetAttributeMethod;
+        private static Type _attributEnumType;
 
         #endregion
 
@@ -96,6 +98,16 @@ namespace CaptainSkillTree.MMO_System
                     _apiAddExpMethod = _apiType.GetMethod("AddExp",
                         BindingFlags.Public | BindingFlags.Static,
                         null, new Type[] { typeof(int) }, null);
+
+                    // GetAttribute(Attribut) — 치명타 확률/피해 흡수용 원시 스탯 포인트 조회
+                    // Wacky-Mole/WackyEpicMMOSystem: EpicMMOSystem.API.EpicMMOSystem_API.GetAttribute / Attribut enum
+                    _attributEnumType = _apiType.GetNestedType("Attribut", BindingFlags.Public);
+                    if (_attributEnumType != null)
+                    {
+                        _apiGetAttributeMethod = _apiType.GetMethod("GetAttribute",
+                            BindingFlags.Public | BindingFlags.Static,
+                            null, new Type[] { _attributEnumType }, null);
+                    }
                 }
 
                 IsAvailable = _getLevelMethod != null;
@@ -301,6 +313,40 @@ namespace CaptainSkillTree.MMO_System
                 AddExp(exp);
             }
         }
+
+        /// <summary>
+        /// EpicMMOSystem_API.GetAttribute(Attribut) 호출 — 원시 스탯 포인트(0~200) 반환.
+        /// attributeIndex: Strength=0, Agility=1, Intellect=2, Body=3, Vigour=4, Special=5
+        /// (WackyEpicMMOSystem 버전업 시 enum 순서가 바뀔 수 있으므로,
+        ///  버전 변경 시 https://github.com/Wacky-Mole/WackyEpicMMOSystem 의
+        ///  EpicMMOSystem_API.cs Attribut enum과 대조 확인할 것)
+        /// </summary>
+        public static int GetMmoAttributePoints(int attributeIndex)
+        {
+            if (_apiGetAttributeMethod == null || _attributEnumType == null) return 0;
+
+            try
+            {
+                object attributeValue = Enum.ToObject(_attributEnumType, attributeIndex);
+                var result = _apiGetAttributeMethod.Invoke(null, new object[] { attributeValue });
+                return result != null ? (int)result : 0;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log?.LogDebug($"[EpicMMOReflectionHelper] GetMmoAttributePoints({attributeIndex}) 실패: {ex.Message}");
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Special(특수화) 스탯 포인트 — 치명타 확률 흡수용
+        /// </summary>
+        public static int GetSpecialPoints() => GetMmoAttributePoints(5);
+
+        /// <summary>
+        /// Strength(힘) 스탯 포인트 — 치명타 피해 흡수용
+        /// </summary>
+        public static int GetStrengthPoints() => GetMmoAttributePoints(0);
 
         #endregion
 

@@ -29,6 +29,8 @@ namespace CaptainSkillTree.SkillTree
             public string Name;
             public string DisplayKey;
             public string Unit;
+            public LevelRange Lv1;
+            public LevelRange Lv2;
             public LevelRange Lv3;
             public LevelRange Lv4;
             public LevelRange Lv5;
@@ -69,10 +71,12 @@ namespace CaptainSkillTree.SkillTree
             {
                 string configPath = ConfigFilePath;
                 string json;
+                bool loadedFromDisk = false;
 
                 if (File.Exists(configPath))
                 {
                     json = File.ReadAllText(configPath, Encoding.UTF8);
+                    loadedFromDisk = true;
                     Plugin.Log.LogInfo($"[ProducerEnchantData] 설정 파일 로드: {configPath}");
                 }
                 else
@@ -82,6 +86,12 @@ namespace CaptainSkillTree.SkillTree
                 }
 
                 ParseJson(json);
+
+                // 구버전 모드에서 생성된 온디스크 파일에는 이후 추가된 enchant_types/slot_pools가
+                // 빠져 있을 수 있음 → 내장 리소스 기준으로 누락분만 자동 병합 (사용자 커스텀 수치는 보존)
+                if (loadedFromDisk)
+                    MergeMissingFromEmbedded(configPath);
+
                 _loaded = true;
                 Plugin.Log.LogInfo("[ProducerEnchantData] JSON 로드 완료");
             }
@@ -91,6 +101,168 @@ namespace CaptainSkillTree.SkillTree
                 LoadDefaults();
                 _loaded = true;
             }
+        }
+
+        /// <summary>
+        /// 온디스크 설정 파일에 내장 리소스 대비 누락된 enchant_types/slot_pools 항목이 있으면
+        /// (근접무기 세분화 이전 구버전 파일 등) 자동으로 채워 넣고 다시 저장한다.
+        /// 이미 존재하는 항목의 수치(사용자 커스터마이즈)는 절대 덮어쓰지 않는다 — 완전히 없는
+        /// id/슬롯 키만 추가한다.
+        /// </summary>
+        private static void MergeMissingFromEmbedded(string configPath)
+        {
+            try
+            {
+                string embeddedJson = ReadEmbeddedJson();
+
+                var embeddedTypes = new Dictionary<int, EnchantTypeDef>();
+                int typesStart = embeddedJson.IndexOf("\"enchant_types\"");
+                if (typesStart >= 0)
+                {
+                    int arrStart = embeddedJson.IndexOf('[', typesStart);
+                    string typesArr = ExtractArray(embeddedJson, arrStart);
+                    foreach (string obj in SplitObjects(typesArr))
+                    {
+                        var def = ParseEnchantType(obj);
+                        if (def != null) embeddedTypes[def.Id] = def;
+                    }
+                }
+
+                var embeddedPools = new Dictionary<string, List<WeightedEnchant>>();
+                int poolsStart = embeddedJson.IndexOf("\"slot_pools\"");
+                if (poolsStart >= 0)
+                {
+                    int objStart = embeddedJson.IndexOf('{', poolsStart);
+                    string poolsObj = ExtractObject(embeddedJson, objStart);
+                    string[] slotKeys = { "Weapon", "Bow", "Crossbow", "Helmet", "Chest",
+                                          "Legs", "Shoulder", "Accessory", "Shield",
+                                          "Sword", "Axe", "Mace", "Spear", "Polearm", "Knife", "Staff" };
+                    foreach (string slot in slotKeys)
+                    {
+                        int keyIdx = poolsObj.IndexOf($"\"{slot}\"");
+                        if (keyIdx < 0) continue;
+                        int arrStart = poolsObj.IndexOf('[', keyIdx);
+                        string arr = ExtractArray(poolsObj, arrStart);
+                        var pool = new List<WeightedEnchant>();
+                        foreach (string entry in SplitObjects(arr))
+                        {
+                            string idStr = GetJsonValue(entry, "id");
+                            string wStr  = GetJsonValue(entry, "weight");
+                            if (!string.IsNullOrEmpty(idStr))
+                                pool.Add(new WeightedEnchant
+                                {
+                                    Id     = int.Parse(idStr),
+                                    Weight = string.IsNullOrEmpty(wStr) ? 1 : int.Parse(wStr)
+                                });
+                        }
+                        if (pool.Count > 0) embeddedPools[slot] = pool;
+                    }
+                }
+
+                bool changed = false;
+                var addedTypes = new List<string>();
+                var addedPoolEntries = new List<string>();
+
+                foreach (var kv in embeddedTypes)
+                {
+                    if (_types.ContainsKey(kv.Key)) continue;
+                    _types[kv.Key] = kv.Value;
+                    addedTypes.Add($"{kv.Key}:{kv.Value.Name}");
+                    changed = true;
+                }
+
+                foreach (var kv in embeddedPools)
+                {
+                    if (!_pools.TryGetValue(kv.Key, out var existingPool))
+                    {
+                        _pools[kv.Key] = kv.Value;
+                        addedPoolEntries.Add($"{kv.Key}(신규 풀)");
+                        changed = true;
+                        continue;
+                    }
+
+                    var existingIds = new HashSet<int>();
+                    foreach (var e in existingPool) existingIds.Add(e.Id);
+
+                    foreach (var entry in kv.Value)
+                    {
+                        if (existingIds.Contains(entry.Id)) continue;
+                        existingPool.Add(entry);
+                        addedPoolEntries.Add($"{kv.Key}+id{entry.Id}");
+                        changed = true;
+                    }
+                }
+
+                if (!changed) return;
+
+                File.WriteAllText(configPath, SerializeToJson(), Encoding.UTF8);
+                Plugin.Log.LogInfo("[ProducerEnchantData] 구버전 설정 파일에 누락된 항목 자동 병합 완료: " +
+                    $"types=[{string.Join(", ", addedTypes)}] pools=[{string.Join(", ", addedPoolEntries)}]");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[ProducerEnchantData] 자동 병합 실패 (기존 설정 유지): {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 현재 메모리 상의 _types/_pools를 Producer_Enchant.json과 동일한 스키마로 직렬화.
+        /// MergeMissingFromEmbedded가 병합 결과를 온디스크 파일에 다시 저장할 때 사용.
+        /// </summary>
+        private static string SerializeToJson()
+        {
+            var sb = new StringBuilder();
+            sb.Append("{\n");
+            sb.Append("  \"version\": \"1.0\",\n");
+            sb.Append("  \"comment\": \"제작 전문가 마법부여 시스템 데이터. 수치 수정 시 이 파일만 변경하면 됩니다.\",\n");
+            sb.Append("  \"enchant_types\": [\n");
+
+            var ids = new List<int>(_types.Keys);
+            ids.Sort();
+            for (int i = 0; i < ids.Count; i++)
+            {
+                var def = _types[ids[i]];
+                sb.Append("    {\n");
+                sb.Append($"      \"id\": {def.Id},\n");
+                sb.Append($"      \"name\": \"{def.Name}\",\n");
+                sb.Append($"      \"display_key\": \"{def.DisplayKey}\",\n");
+                sb.Append($"      \"unit\": \"{def.Unit}\",\n");
+                AppendRange(sb, "lv1", def.Lv1, true);
+                AppendRange(sb, "lv2", def.Lv2, true);
+                AppendRange(sb, "lv3", def.Lv3, true);
+                AppendRange(sb, "lv4", def.Lv4, true);
+                AppendRange(sb, "lv5", def.Lv5, false);
+                sb.Append(i < ids.Count - 1 ? "    },\n" : "    }\n");
+            }
+            sb.Append("  ],\n");
+
+            sb.Append("  \"slot_pools\": {\n");
+            string[] slotOrder = { "Weapon", "Bow", "Crossbow", "Helmet", "Chest",
+                                    "Legs", "Shoulder", "Accessory", "Shield",
+                                    "Sword", "Axe", "Mace", "Spear", "Polearm", "Knife", "Staff" };
+            var presentSlots = new List<string>();
+            foreach (var slot in slotOrder)
+                if (_pools.ContainsKey(slot)) presentSlots.Add(slot);
+
+            for (int i = 0; i < presentSlots.Count; i++)
+            {
+                string slot = presentSlots[i];
+                var entries = new List<string>();
+                foreach (var e in _pools[slot])
+                    entries.Add($"{{\"id\": {e.Id}, \"weight\": {e.Weight}}}");
+                sb.Append($"    \"{slot}\": [{string.Join(", ", entries)}]");
+                sb.Append(i < presentSlots.Count - 1 ? ",\n" : "\n");
+            }
+            sb.Append("  }\n");
+            sb.Append("}\n");
+            return sb.ToString();
+        }
+
+        private static void AppendRange(StringBuilder sb, string key, LevelRange range, bool comma)
+        {
+            sb.Append($"      \"{key}\": {{ \"min\": {range.Min.ToString(System.Globalization.CultureInfo.InvariantCulture)}, " +
+                      $"\"max\": {range.Max.ToString(System.Globalization.CultureInfo.InvariantCulture)} }}");
+            sb.Append(comma ? ",\n" : "\n");
         }
 
         /// <summary>
@@ -114,6 +286,8 @@ namespace CaptainSkillTree.SkillTree
                 return new LevelRange { Min = 0f, Max = 0f };
             return level switch
             {
+                1 => def.Lv1,
+                2 => def.Lv2,
                 3 => def.Lv3,
                 4 => def.Lv4,
                 _ => def.Lv5
@@ -122,7 +296,8 @@ namespace CaptainSkillTree.SkillTree
 
         /// <summary>
         /// 슬롯 키에 해당하는 마법부여 풀 반환
-        /// slotKey: "Weapon","Bow","Crossbow","Helmet","Chest","Legs","Shoulder","Accessory"
+        /// slotKey: "Weapon","Bow","Crossbow","Helmet","Chest","Legs","Shoulder","Accessory","Shield",
+        ///           "Sword","Axe","Mace","Spear","Polearm","Knife","Staff"
         /// </summary>
         public static List<WeightedEnchant> GetPool(string slotKey)
         {
@@ -241,6 +416,8 @@ namespace CaptainSkillTree.SkillTree
                 def.Name       = GetJsonString(obj, "name");
                 def.DisplayKey = GetJsonString(obj, "display_key");
                 def.Unit       = GetJsonString(obj, "unit");
+                def.Lv1        = ParseRange(obj, "lv1");
+                def.Lv2        = ParseRange(obj, "lv2");
                 def.Lv3        = ParseRange(obj, "lv3");
                 def.Lv4        = ParseRange(obj, "lv4");
                 def.Lv5        = ParseRange(obj, "lv5");
@@ -268,7 +445,8 @@ namespace CaptainSkillTree.SkillTree
         {
             // 각 슬롯 키와 배열 파싱
             string[] slotKeys = { "Weapon", "Bow", "Crossbow", "Helmet", "Chest",
-                                  "Legs", "Shoulder", "Accessory", "Shield" };
+                                  "Legs", "Shoulder", "Accessory", "Shield",
+                                  "Sword", "Axe", "Mace", "Spear", "Polearm", "Knife", "Staff" };
             foreach (string slot in slotKeys)
             {
                 int keyIdx = obj.IndexOf($"\"{slot}\"");
@@ -373,42 +551,58 @@ namespace CaptainSkillTree.SkillTree
             Plugin.Log.LogWarning("[ProducerEnchantData] 기본값으로 폴백");
 
             void Add(int id, string name, string key, string unit,
+                float l1min, float l1max, float l2min, float l2max,
                 float l3min, float l3max, float l4min, float l4max, float l5min, float l5max)
             {
                 _types[id] = new EnchantTypeDef
                 {
                     Id = id, Name = name, DisplayKey = key, Unit = unit,
+                    Lv1 = new LevelRange { Min = l1min, Max = l1max },
+                    Lv2 = new LevelRange { Min = l2min, Max = l2max },
                     Lv3 = new LevelRange { Min = l3min, Max = l3max },
                     Lv4 = new LevelRange { Min = l4min, Max = l4max },
                     Lv5 = new LevelRange { Min = l5min, Max = l5max }
                 };
             }
 
-            Add(1, "WeaponDmg",      "producer_enchant_weapon_dmg",      "%",  3,5,  6,8,  9,12);
-            Add(2, "Armor",          "producer_enchant_armor",            "%",  3,5,  6,8,  9,12);
-            Add(3, "MaxHP",          "producer_enchant_hp",               "%",  3,5,  6,8,  9,12);
-            Add(4, "WeaponSpd",      "producer_enchant_weapon_spd",       "%",  3,5,  6,8,  9,12);
-            Add(5, "MaxStamina",     "producer_enchant_stamina_pct",      "%",  5,8,  9,12, 13,15);
-            Add(6, "BowCrit",        "producer_enchant_bow_crit",         "%",  3,5,  6,8,  9,12);
-            Add(7, "CrossbowReload", "producer_enchant_crossbow_reload",  "%",  20,40, 45,70, 75,100);
-            Add(8, "CooldownReduce", "producer_enchant_cooldown_reduce",  "%",  3,5,  6,8,  9,12);
-            Add(9, "DodgeRoll",      "producer_enchant_dodge_roll",       "%",  3,5,  6,8,  9,12);
-            Add(10,"MoveSpeed",      "producer_enchant_move_speed",       "%",  3,5,  6,8,  9,12);
-            Add(11,"Eitr",           "producer_enchant_eitr",             "",   5,8,  9,12, 13,15);
-            Add(12,"InvWeight",      "producer_enchant_inv_weight",       "",   80,100, 100,125, 130,150);
-            Add(13,"EitrRegen",      "producer_enchant_eitr_regen",       "%",  5,8,  9,12, 13,15);
-            Add(14,"JumpForce",      "producer_enchant_jump_force",       "%",  5,8,  9,12, 13,15);
-            Add(15,"BlockPower",     "producer_enchant_block_power",      "%",  3,5,  6,8,  9,12);
+            Add(1, "WeaponDmg",      "producer_enchant_weapon_dmg",      "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(2, "Armor",          "producer_enchant_armor",            "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(3, "MaxHP",          "producer_enchant_hp",               "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(4, "WeaponSpd",      "producer_enchant_weapon_spd",       "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(5, "MaxStamina",     "producer_enchant_stamina_pct",      "%",  5,10, 11,15, 16,20, 21,25, 26,30);
+            Add(6, "BowCrit",        "producer_enchant_bow_crit",         "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(7, "CrossbowReload", "producer_enchant_crossbow_reload",  "%",  20,30, 35,45, 50,65, 70,85, 90,120);
+            Add(8, "CooldownReduce", "producer_enchant_cooldown_reduce",  "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(9, "DodgeRoll",      "producer_enchant_dodge_roll",       "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(10,"MoveSpeed",      "producer_enchant_move_speed",       "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(11,"Eitr",           "producer_enchant_eitr",             "",   5,10, 11,15, 16,20, 21,25, 26,30);
+            Add(12,"InvWeight",      "producer_enchant_inv_weight",       "",   30,50, 55,75, 80,100, 101,125, 130,150);
+            Add(13,"EitrRegen",      "producer_enchant_eitr_regen",       "%",  5,10, 11,15, 16,20, 21,25, 26,30);
+            Add(14,"JumpForce",      "producer_enchant_jump_force",       "%",  5,10, 11,15, 16,20, 21,25, 26,30);
+            Add(15,"BlockPower",     "producer_enchant_block_power",      "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(16,"FireProc",       "producer_enchant_fire_proc",        "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(17,"SpiritProc",     "producer_enchant_spirit_proc",      "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(18,"PoisonProc",     "producer_enchant_poison_proc",      "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(19,"LightningProc",  "producer_enchant_lightning_proc",   "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(20,"FrostProc",      "producer_enchant_frost_proc",       "%",  3,4,  5,6,  7,8,  9,10,  11,15);
+            Add(21,"PolearmRange",   "producer_enchant_polearm_range",    "%",  3,4,  5,6,  7,8,  9,10,  11,15);
 
             _pools["Weapon"]    = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=4,Weight=1} };
-            _pools["Bow"]       = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=6,Weight=1} };
-            _pools["Crossbow"]  = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=7,Weight=1} };
-            _pools["Helmet"]    = new List<WeightedEnchant> { new WeightedEnchant{Id=3,Weight=1}, new WeightedEnchant{Id=8,Weight=1} };
+            _pools["Bow"]       = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=6,Weight=1}, new WeightedEnchant{Id=19,Weight=1} };
+            _pools["Crossbow"]  = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=7,Weight=1}, new WeightedEnchant{Id=20,Weight=1} };
+            _pools["Helmet"]    = new List<WeightedEnchant> { new WeightedEnchant{Id=3,Weight=1}, new WeightedEnchant{Id=8,Weight=1}, new WeightedEnchant{Id=2,Weight=1} };
             _pools["Chest"]     = new List<WeightedEnchant> { new WeightedEnchant{Id=3,Weight=1}, new WeightedEnchant{Id=2,Weight=1} };
-            _pools["Legs"]      = new List<WeightedEnchant> { new WeightedEnchant{Id=9,Weight=1}, new WeightedEnchant{Id=10,Weight=1} };
+            _pools["Legs"]      = new List<WeightedEnchant> { new WeightedEnchant{Id=9,Weight=1}, new WeightedEnchant{Id=10,Weight=1}, new WeightedEnchant{Id=5,Weight=1} };
             _pools["Shoulder"]  = new List<WeightedEnchant> { new WeightedEnchant{Id=5,Weight=1}, new WeightedEnchant{Id=11,Weight=1} };
             _pools["Accessory"] = new List<WeightedEnchant> { new WeightedEnchant{Id=12,Weight=1}, new WeightedEnchant{Id=13,Weight=1}, new WeightedEnchant{Id=14,Weight=1} };
             _pools["Shield"]    = new List<WeightedEnchant> { new WeightedEnchant{Id=15,Weight=1}, new WeightedEnchant{Id=10,Weight=1} };
+            _pools["Sword"]     = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=4,Weight=1}, new WeightedEnchant{Id=16,Weight=1} };
+            _pools["Axe"]       = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=4,Weight=1}, new WeightedEnchant{Id=16,Weight=1} };
+            _pools["Mace"]      = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=4,Weight=1}, new WeightedEnchant{Id=17,Weight=1} };
+            _pools["Spear"]     = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=4,Weight=1}, new WeightedEnchant{Id=20,Weight=1} };
+            _pools["Polearm"]   = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=4,Weight=1}, new WeightedEnchant{Id=21,Weight=1}, new WeightedEnchant{Id=19,Weight=1}, new WeightedEnchant{Id=20,Weight=1} };
+            _pools["Knife"]     = new List<WeightedEnchant> { new WeightedEnchant{Id=1,Weight=1}, new WeightedEnchant{Id=4,Weight=1}, new WeightedEnchant{Id=18,Weight=1} };
+            _pools["Staff"]     = new List<WeightedEnchant> { new WeightedEnchant{Id=16,Weight=1}, new WeightedEnchant{Id=18,Weight=1}, new WeightedEnchant{Id=19,Weight=1}, new WeightedEnchant{Id=20,Weight=1} };
         }
     }
 }

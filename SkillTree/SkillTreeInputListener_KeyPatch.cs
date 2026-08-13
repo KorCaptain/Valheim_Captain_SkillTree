@@ -75,6 +75,26 @@ namespace CaptainSkillTree.SkillTree
                 }
             }
 
+            // === Quest 패널: 컨피그 키(기본 Ctrl+J) 토글, ESC/Tab 닫기 (스킬트리 패널과 독립적으로 동작) ===
+            try
+            {
+                if (Quest_Config.IsEnabled && Quest_Config.QuestToggleKey.Value.IsDown())
+                {
+                    CaptainSkillTree.Gui.QuestPanelUI.Toggle();
+                }
+
+                if (CaptainSkillTree.Gui.QuestPanelUI.IsOpen
+                    && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab)))
+                {
+                    CaptainSkillTree.Gui.QuestPanelUI.Close();
+                    return false;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Plugin.Log.LogWarning($"[SkillTree] Quest 입력 처리 실패: {e.Message}");
+            }
+
             // === UI가 열려 있을 때만 ESC/Tab 처리 ===
             if (__instance.skillTreeUI == null ||
                 __instance.skillTreeUI.panel == null ||

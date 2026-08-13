@@ -44,9 +44,9 @@ namespace CaptainSkillTree.SkillTree
                     ["atk_opener_magic_required_points"]             = Attack_Config.AtkOpenerMagicRequiredPoints?.Value ?? 2f,
                     ["atk_pursuit_required_points"]                  = Attack_Config.AtkPursuitRequiredPoints?.Value ?? 2f,
                     ["atk_pursuit_speed_required_points"]            = Attack_Config.AtkPursuitSpeedRequiredPoints?.Value ?? 2f,
-                    ["atk_frenzy_trigger_required_points"]           = Attack_Config.AtkFrenzyTriggerRequiredPoints?.Value ?? 2f,
+                    ["atk_frenzy_trigger_points_per_level"]           = Attack_Config.AtkFrenzyTriggerPointsPerLevel?.Value ?? 2f,
                     ["atk_frenzy_required_points"]                   = Attack_Config.AtkFrenzyRequiredPoints?.Value ?? 3f,
-                    ["attack_step6_critdmg_required_points"]         = Attack_Config.AttackStep6CritDmgRequiredPoints?.Value ?? 3f,
+                    ["atk_crit_dmg_points_per_level"]                = Attack_Config.AtkCritDmgPointsPerLevel?.Value ?? 2f,
                     ["attack_step6_finisher_required_points"]        = Attack_Config.AttackStep6FinisherRequiredPoints?.Value ?? 3f,
                     ["attack_step6_twohand_required_points"]         = Attack_Config.AttackStep6TwoHandRequiredPoints?.Value ?? 3f,
                     ["attack_step6_staff_required_points"]           = Attack_Config.AttackStep6StaffRequiredPoints?.Value ?? 3f,
@@ -56,20 +56,26 @@ namespace CaptainSkillTree.SkillTree
                     ["Tier1_Opener_Duration"]                        = Attack_Config.AtkOpenerDuration?.Value ?? 5f,
                     ["Tier1_Opener_Cooldown"]                        = Attack_Config.AtkOpenerCooldown?.Value ?? 35f,
                     ["Tier2_OpenerMelee_FinisherBonus"]              = Attack_Config.AtkOpenerMeleeFinisherBonus?.Value ?? 10f,
-                    ["Tier2_OpenerBow_CritChance"]                   = Attack_Config.AtkOpenerBowCritChance?.Value ?? 8f,
+                    ["Tier2_OpenerBow_CritChance"]                   = Attack_Config.AtkOpenerBowCritDamageBonus?.Value ?? 8f,
                     ["Tier2_OpenerCrossbow_FirstShotBonus"]          = Attack_Config.AtkOpenerCrossbowFirstShotBonus?.Value ?? 10f,
                     ["Tier2_OpenerMagic_StaggerProc"]                = Attack_Config.AtkOpenerMagicStaggerProc?.Value ?? 1f,
                     ["Tier3_Pursuit_DamageBonus"]                    = Attack_Config.AtkPursuitDamageBonus?.Value ?? 5f,
                     ["Tier3_Pursuit_ChainDamageBonus"]               = Attack_Config.AtkPursuitChainDamageBonus?.Value ?? 5f,
                     ["Tier3_Pursuit_ChainWindow"]                    = Attack_Config.AtkPursuitChainWindow?.Value ?? 5f,
                     ["Tier4_PursuitSpeed_SpeedBonus"]                = Attack_Config.AtkPursuitSpeedBonus?.Value ?? 12f,
-                    ["Tier4_FrenzyTrigger_StaminaReduction"]         = Attack_Config.AtkFrenzyTriggerStaminaReduction?.Value ?? 15f,
+                    ["Tier4_FrenzyTrigger_CritChancePerLevel"]         = Attack_Config.AtkFrenzyTriggerCritChancePerLevel?.Value ?? 2f,
                     ["Tier5_Frenzy_StackBonusBase"]                  = Attack_Config.AtkFrenzyStackBonusBase?.Value ?? 5f,
                     ["Tier5_Frenzy_StackBonusChain"]                 = Attack_Config.AtkFrenzyStackBonusChain?.Value ?? 8f,
                     ["Tier5_Frenzy_MaxStacks"]                       = Attack_Config.AtkFrenzyMaxStacks?.Value ?? 5f,
                     ["Tier5_Frenzy_HitsPerStack"]                    = Attack_Config.AtkFrenzyHitsPerStack?.Value ?? 3f,
                     ["Tier5_Frenzy_Tier6Amplifier"]                  = Attack_Config.AtkFrenzyTier6Amplifier?.Value ?? 1.3f,
-                    ["Attack_Step6_CritDamageBonus"]                 = Attack_Config.AttackCritDamageBonus?.Value ?? 5f,
+                    ["Attack_Step6_CritDamageBonus_Lv1"]             = Attack_Config.AttackCritDamageBonus_Lv1?.Value ?? 5f,
+                    ["Attack_Step6_CritDamageBonus_Lv2"]             = Attack_Config.AttackCritDamageBonus_Lv2?.Value ?? 9f,
+                    ["Attack_Step6_CritDamageBonus_Lv3"]             = Attack_Config.AttackCritDamageBonus_Lv3?.Value ?? 13f,
+                    ["Attack_Step6_CritDamageBonus_Lv4"]             = Attack_Config.AttackCritDamageBonus_Lv4?.Value ?? 17f,
+                    ["Attack_Step6_CritDamageBonus_Lv5"]             = Attack_Config.AttackCritDamageBonus_Lv5?.Value ?? 21f,
+                    ["Attack_Step6_CritDamageBonus_Lv6"]             = Attack_Config.AttackCritDamageBonus_Lv6?.Value ?? 25f,
+                    ["Attack_Step6_CritDamageBonus_Lv7"]             = Attack_Config.AttackCritDamageBonus_Lv7?.Value ?? 29f,
                     ["Attack_Step6_TwoHandedBonus"]                  = Attack_Config.AttackTwoHandedBonus?.Value ?? 5f,
                     ["Attack_Step6_StaffElemental"]                  = Attack_Config.AttackStaffElemental?.Value ?? 5f,
                     ["Attack_Step6_FinisherMeleeBonus"]              = Attack_Config.AttackFinisherMeleeBonus?.Value ?? 5f,
@@ -77,7 +83,7 @@ namespace CaptainSkillTree.SkillTree
                     // ══════════════════════════════════════════════
                     // Speed Tree
                     // ══════════════════════════════════════════════
-                    ["speed_root_required_points"]                   = Speed_Config.SpeedRootRequiredPoints?.Value ?? 2f,
+                    ["Speed_Root_PointsPerLevel"]                    = Speed_Config.SpeedRootPointsPerLevel?.Value ?? 1f,
                     ["speed_step1_required_points"]                  = Speed_Config.SpeedStep1RequiredPoints?.Value ?? 2f,
                     ["speed_step5_required_points"]                  = Speed_Config.SpeedStep5RequiredPoints?.Value ?? 3f,
                     ["speed_step7_required_points"]                  = Speed_Config.SpeedStep7RequiredPoints?.Value ?? 3f,
@@ -96,7 +102,7 @@ namespace CaptainSkillTree.SkillTree
                     ["speed_step8_crossbowaccel_rp"]                 = Speed_Config.SpeedStep8_CrossbowAccelRequiredPoints?.Value ?? 2f,
                     ["speed_step8_bowaccel_rp"]                      = Speed_Config.SpeedStep8_BowAccelRequiredPoints?.Value ?? 2f,
                     ["speed_step8_castaccel_rp"]                     = Speed_Config.SpeedStep8_CastAccelRequiredPoints?.Value ?? 2f,
-                    ["Speed_Expert_MoveSpeed"]                       = Speed_Config.SpeedRootMoveSpeed?.Value ?? 5f,
+                    ["Speed_Root_MoveSpeedPerLevel"]                 = Speed_Config.SpeedRootMoveSpeedPerLevel?.Value ?? 2f,
                     ["Speed_Step1_DodgeMoveSpeed"]                   = Speed_Config.SpeedBaseDodgeMoveSpeed?.Value ?? 10f,
                     ["Speed_Step1_DodgeDuration"]                    = Speed_Config.SpeedBaseDodgeDuration?.Value ?? 0.1f,
                     ["Speed_Step2_MeleeComboAttackSpeed"]            = Speed_Config.SpeedMeleeComboAttackSpeed?.Value ?? 10f,
@@ -163,9 +169,9 @@ namespace CaptainSkillTree.SkillTree
                     ["defense_step6_attack_required_points"]         = Defense_Config.DefenseStep6AttackRequiredPoints?.Value ?? 4f,
                     ["defense_step6_doublejump_required_points"]     = Defense_Config.DefenseStep6DoubleJumpRequiredPoints?.Value ?? 4f,
                     ["defense_step6_body_required_points"]           = Defense_Config.DefenseStep6BodyRequiredPoints?.Value ?? 4f,
-                    ["defense_step6_true_required_points"]           = Defense_Config.DefenseStep6TrueRequiredPoints?.Value ?? 4f,
                     ["Defense_Root_HealthBonus"]                     = Defense_Config.DefenseRootHealthBonus?.Value ?? 5f,
                     ["Defense_Root_ArmorBonus"]                      = Defense_Config.DefenseRootArmorBonus?.Value ?? 2f,
+                    ["Defense_Root_AtkPenalty"]                      = Defense_Config.DefenseRootAttackPowerPenalty?.Value ?? 3f,
                     ["Defense_Survival_HealthBonus"]                 = Defense_Config.SurvivalHealthBonus?.Value ?? 5f,
                     ["Defense_Survival_ArmorBonus"]                  = Defense_Config.SurvivalArmorBonus?.Value ?? 5f,
                     ["Defense_Dodge_StaminaBonus"]                   = Defense_Config.DodgeStaminaBonus?.Value ?? 10f,
@@ -197,10 +203,13 @@ namespace CaptainSkillTree.SkillTree
                     ["Defense_Attack_DodgeBonus"]                    = Defense_Config.AttackDodgeBonus?.Value ?? 5f,
                     ["Defense_Body_HealthBonus"]                     = Defense_Config.BodyHealthBonus?.Value ?? 30f,
                     ["Defense_Body_ArmorBonus"]                      = Defense_Config.BodyArmorBonus?.Value ?? 10f,
-                    ["Defense_JotunnShield_BlockStaminaReduction"]   = Defense_Config.JotunnShieldBlockStaminaReduction?.Value ?? 25f,
-                    ["Defense_JotunnShield_NormalSpeedBonus"]        = Defense_Config.JotunnShieldNormalSpeedBonus?.Value ?? 5f,
-                    ["Defense_JotunnShield_TowerSpeedBonus"]         = Defense_Config.JotunnShieldTowerSpeedBonus?.Value ?? 10f,
-
+                    ["Defense_GuardianHeart_Cooldown"]                = Defense_Config.GuardianHeartCooldown?.Value ?? 20f,
+                    ["Defense_GuardianHeart_StaminaCost"]             = Defense_Config.GuardianHeartStaminaCost?.Value ?? 20f,
+                    ["Defense_ShieldCharge_DamagePercent"]            = Defense_Config.ShieldChargeDamagePercent?.Value ?? 150f,
+                    ["Defense_ShieldCharge_MultiHitDamagePercent"]    = Defense_Config.ShieldChargeMultiHitDamagePercent?.Value ?? 30f,
+                    ["Defense_ShieldCharge_MultiHitLevelBonus"]       = Defense_Config.ShieldChargeMultiHitLevelBonus?.Value ?? 10f,
+                    ["Defense_GuardianHeart_RequiredPoints"]          = Defense_Config.GuardianHeartRequiredPoints?.Value ?? 3f,
+                    ["Defense_ShieldCharge_LevelBonus"]               = Defense_Config.ShieldChargeLevelBonus?.Value ?? 20f,
                     // ══════════════════════════════════════════════
                     // Spear Tree
                     // ══════════════════════════════════════════════
@@ -272,6 +281,8 @@ namespace CaptainSkillTree.SkillTree
                     ["bow_Step6_arrow_rain_cooldown"]                = Bow_Config.ArrowRainCooldown?.Value ?? 30f,
                     ["bow_Step6_arrow_rain_stamina"]                 = Bow_Config.ArrowRainStaminaCost?.Value ?? 20f,
                     ["bow_Step6_arrow_rain_points"]                  = Bow_Config.ArrowRainRequiredPoints?.Value ?? 4f,
+                    ["bow_Step6_arrow_rain_dungeon_damage"]          = Bow_Config.ArrowRainDungeonBuffDamageBonus?.Value ?? 25f,
+                    ["bow_Step6_arrow_rain_dungeon_duration"]        = Bow_Config.ArrowRainDungeonBuffDuration?.Value ?? 10f,
 
                     // ══════════════════════════════════════════════
                     // Crossbow Tree
@@ -349,10 +360,11 @@ namespace CaptainSkillTree.SkillTree
                     ["Mace_FuryHammer_StaminaCost"]                  = Mace_Config.FuryHammerStaminaCost?.Value ?? 30f,
                     ["Mace_FuryHammer_Cooldown"]                     = Mace_Config.FuryHammerCooldown?.Value ?? 30f,
                     ["Mace_FuryHammer_AoeRadius"]                    = Mace_Config.FuryHammerAoeRadius?.Value ?? 5f,
-                    ["Mace_GuardianHeart_Cooldown"]                  = Mace_Config.GuardianHeartCooldown?.Value ?? 35f,
-                    ["Mace_GuardianHeart_StaminaCost"]               = Mace_Config.GuardianHeartStaminaCost?.Value ?? 20f,
-                    ["Mace_ShieldCharge_DamagePercent"]              = Mace_Config.ShieldChargeDamagePercent?.Value ?? 70f,
-                    ["Mace_GuardianHeart_RequiredPoints"]            = Mace_Config.GuardianHeartRequiredPoints?.Value ?? 3f,
+                    ["Mace_ShockwaveSlam_Cooldown"]                  = Mace_Config.ShockwaveSlamCooldown?.Value ?? 40f,
+                    ["Mace_ShockwaveSlam_StaminaCost"]               = Mace_Config.ShockwaveSlamStaminaCost?.Value ?? 20f,
+                    ["Mace_ShockwaveSlam_DamagePercent"]             = Mace_Config.ShockwaveSlamDamagePercent?.Value ?? 230f,
+                    ["Mace_ShockwaveSlam_LevelBonus"]                = Mace_Config.ShockwaveSlamLevelBonus?.Value ?? 20f,
+                    ["Mace_ShockwaveSlam_RequiredPoints"]            = Mace_Config.ShockwaveSlamRequiredPoints?.Value ?? 3f,
 
                     // ══════════════════════════════════════════════
                     // Knife Tree
@@ -420,9 +432,6 @@ namespace CaptainSkillTree.SkillTree
                     ["Sword_Step4_RequiredPoints"]                   = Sword_Config.SwordStep4TrueDuelRequiredPoints?.Value ?? 3f,
                     ["Sword_Step4_TrueDuel_Speed"]                   = Sword_Config.SwordStep4TrueDuelSpeed?.Value ?? 15f,
                     ["Sword_Step5_RequiredPoints"]                   = Sword_Config.SwordStep5DefenseSwitchRequiredPoints?.Value ?? 3f,
-                    ["ParryRush_Duration"]                           = Sword_Config.ParryRushDuration?.Value ?? 30f,
-                    ["ParryRush_BlockPowerRatio"]                    = Sword_Config.ParryRushBlockPowerRatio?.Value ?? 50f,
-                    ["ParryRush_PushDistance"]                       = Sword_Config.ParryRushPushDistance?.Value ?? 4f,
                     ["ParryRush_StaminaCost"]                        = Sword_Config.ParryRushStaminaCost?.Value ?? 10f,
                     ["ParryRush_Cooldown"]                           = Sword_Config.ParryRushCooldown?.Value ?? 35f,
                     ["Sword_Step6_RequiredPoints"]                   = Sword_Config.RushSlashRequiredPoints?.Value ?? 3f,
@@ -743,7 +752,34 @@ namespace CaptainSkillTree.SkillTree
                     ["CaptainLevel_SkillPointsPerLevel"]             = CaptainLevelConfig.SkillPointsPerLevel?.Value ?? 2f,
                     ["CaptainLevel_PointsRequired"]                  = CaptainLevelConfig.PointsRequiredPerLevel?.Value ?? 2f,
                     ["exit_button_enabled"]                          = CaptainLevelConfig.ExitButtonEnabled?.Value == true ? 1f : 0f,
+                    ["CaptainLevel_LevelDiffEnabled"]                = CaptainLevelConfig.EnableLevelDiffDamageReduction?.Value == true ? 1f : 0f,
+                    ["CaptainLevel_LevelDiffTier1Percent"]           = CaptainLevelConfig.LevelDiffTier1DamagePercent?.Value ?? 40f,
+                    ["CaptainLevel_LevelDiffTier2Percent"]           = CaptainLevelConfig.LevelDiffTier2DamagePercent?.Value ?? 20f,
+                    ["CaptainLevel_LevelDiffTier3Percent"]           = CaptainLevelConfig.LevelDiffTier3DamagePercent?.Value ?? 10f,
+                    ["CaptainLevel_LevelDiffTier4Percent"]           = CaptainLevelConfig.LevelDiffTier4DamagePercent?.Value ?? 0f,
+                    ["CaptainLevel_ExpDiffTier1Percent"]             = CaptainLevelConfig.ExpDiffTier1Percent?.Value ?? 30f,
+                    ["CaptainLevel_ExpDiffTier2Percent"]             = CaptainLevelConfig.ExpDiffTier2Percent?.Value ?? 25f,
+                    ["CaptainLevel_ExpDiffTier3Percent"]             = CaptainLevelConfig.ExpDiffTier3Percent?.Value ?? 20f,
+                    ["CaptainLevel_ExpDiffTier4Percent"]             = CaptainLevelConfig.ExpDiffTier4Percent?.Value ?? 10f,
+                    ["CaptainLevel_DropSuppressionEnabled"]          = CaptainLevelConfig.EnableLevelDiffDropSuppression?.Value == true ? 1f : 0f,
+                    ["CaptainLevel_DropSuppressionLevelDiff"]        = CaptainLevelConfig.DropSuppressionLevelDiff?.Value ?? 16f,
                 };
+
+                // ══════════════════════════════════════════════
+                // Quest System (바이옴 7 × 퀘스트 최대 5개, 데이터 기반 순회로 등록)
+                // ══════════════════════════════════════════════
+                configData[Quest_Config.SyncKeySystemEnabled] = Quest_Config.QuestSystemEnabled?.Value == true ? 1f : 0f;
+                foreach (var kvp in Quest_Config.Quests)
+                {
+                    string prefix = kvp.Key;
+                    var q = kvp.Value;
+                    configData[Quest_Config.SyncKeyEnabled(prefix)]     = q.Enabled?.Value == true ? 1f : 0f;
+                    configData[Quest_Config.SyncKeyAmount(prefix)]      = q.Amount?.Value ?? 0f;
+                    configData[Quest_Config.SyncKeyItem1Amount(prefix)] = q.ItemReward1Amount?.Value ?? 0f;
+                    configData[Quest_Config.SyncKeyItem2Amount(prefix)] = q.ItemReward2Amount?.Value ?? 0f;
+                    configData[Quest_Config.SyncKeyCoinMin(prefix)]     = q.CoinMin?.Value ?? 0f;
+                    configData[Quest_Config.SyncKeyCoinMax(prefix)]     = q.CoinMax?.Value ?? 0f;
+                }
 
                 var configString = SerializeConfigData(configData);
                 if (ZNet.instance != null && ZRoutedRpc.instance != null)
@@ -752,6 +788,9 @@ namespace CaptainSkillTree.SkillTree
                     ZRoutedRpc.instance.InvokeRoutedRPC(target, "CaptainSkillTree.SkillTreeMod_ConfigSync", configString);
                     string dest = targetPeerId == 0 ? "모든 클라이언트" : $"peerId={targetPeerId}";
                     Plugin.Log.LogInfo($"[SkillTreeConfig] 서버 설정 전송 → {dest} ({configData.Count}개 항목)");
+
+                    // 퀘스트 문자열 필드(Type/TargetPrefab/보상 아이템명 등)는 별도 채널로 항상 같이 전송
+                    Quest_StringSync.BroadcastToClients(targetPeerId);
                 }
                 else
                 {

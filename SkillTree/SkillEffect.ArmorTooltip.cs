@@ -137,7 +137,6 @@ namespace CaptainSkillTree.SkillTree
 
                     // 추가 스킬 체크
                     bool bodyActive         = manager.GetSkillLevel("defense_Step6_body") > 0;
-                    bool jotunnShieldActive = manager.GetSkillLevel("defense_Step6_true") > 0;
                     bool boostActive        = manager.GetSkillLevel("defense_Step3_boost") > 0;
                     bool berserkerActive    = manager.GetSkillLevel("Berserker") > 0;
                     bool producerBuffActive = ProducerSkills.IsProducerBuffActive(player);
@@ -159,8 +158,9 @@ namespace CaptainSkillTree.SkillTree
                         dodgeTotal += Knife_Config.KnifeEvasionBonusValue;
 
                     float moveSpeedTotal = 0f;
-                    if (manager.GetSkillLevel("speed_root") > 0)
-                        moveSpeedTotal += Speed_Config.SpeedRootMoveSpeedValue;
+                    int speedRootLv = manager.GetSkillLevel("speed_root");
+                    if (speedRootLv > 0)
+                        moveSpeedTotal += speedRootLv * Speed_Config.SpeedRootMoveSpeedPerLevelValue;
                     if (manager.GetSkillLevel("speed_1") > 0)
                         moveSpeedTotal += Speed_Config.SpeedDexterityMoveSpeedBonusValue;
                     if (manager.GetSkillLevel("knife_step3_move_speed") > 0 && WeaponHelper.IsUsingDagger(player))
@@ -374,14 +374,6 @@ namespace CaptainSkillTree.SkillTree
                                 bonusText += $"\n<color=#00BFFF>⚔️</color><color=white>{L.Get("armor_effect_parry_master")}</color> : {L.Get("armor_stat_parry")} <color=#4FC3F7>+{Defense_Config.ParryMasterParryDurationBonusValue:F0}{L.Get("armor_stat_sec")}</color>, {L.Get("armor_stat_defense")} <color=#4FC3F7>+{Defense_Config.ParryMasterBlockPowerBonusValue:F0}</color>";
                             if (rockSkinActive)
                                 bonusText += $"\n<color=#FF8C00>🪨</color><color=white>{L.Get("armor_effect_rockskin")}</color> : <color=orange>+{rockSkinPct:F0}%</color>";
-                            if (jotunnShieldActive)
-                            {
-                                bool isTower = item.m_shared.m_name?.ToLower().Contains("tower") ?? false;
-                                float speed  = isTower
-                                    ? Defense_Config.JotunnShieldTowerSpeedBonusValue
-                                    : Defense_Config.JotunnShieldNormalSpeedBonusValue;
-                                bonusText += $"\n<color=#9400D3>✨</color><color=white>{L.Get("armor_effect_jotunn_shield")}</color> : {L.Get("armor_stat_block_stamina")} <color=orange>-{Defense_Config.JotunnShieldBlockStaminaReductionValue:F0}%</color>, {L.Get("armor_effect_move_spd")} <color=#00BFFF>+{speed:F0}%</color>";
-                            }
                             if (producerBuffActive)
                                 bonusText += $"\n<color=#FF8C00>⚒️</color><color=white>{L.Get("armor_effect_producer_buff")}</color> : {L.Get("armor_stat_hp")} <color=orange>+{producerHpBonus:F0}%</color>";
                             if (enchantBlockPower > 0f)

@@ -167,21 +167,6 @@ namespace CaptainSkillTree.Localization
                 "越少 = 可越频繁使用。\n" +
                 "推荐：10-20秒",
 
-                ["Tier5_ParryRush_BuffDuration"] =
-                "【增益持续时间（秒）】\n" +
-                "成功招架后增益的生效时间。\n" +
-                "推荐：20-40秒",
-
-                ["Tier5_ParryRush_DamageBonus"] =
-                "【冲锋伤害加成(%)】\n" +
-                "招架后冲锋的伤害提升量。\n" +
-                "推荐：50-100%",
-
-                ["Tier5_ParryRush_PushDistance"] =
-                "【击退距离（米）】\n" +
-                "冲锋时将敌人击退的距离。\n" +
-                "推荐：3-7米",
-
                 ["Tier5_ParryRush_StaminaCost"] =
                 "【体力消耗】\n" +
                 "激活技能消耗的体力。\n" +
@@ -513,6 +498,32 @@ namespace CaptainSkillTree.Localization
                 "H键爆炸时对7m内敌人造成的范围伤害比例。\n" +
                 "总伤害 × (值 / 100) = 范围伤害\n" +
                 "推荐：30-50%",
+
+                ["Tier5_WhirlwindSlash_BaseDamage"] =
+                "【基础伤害（%）】\n" +
+                "旋风斩技能的基础伤害。\n" +
+                "推荐：80-150%",
+
+                ["Tier5_WhirlwindSlash_LevelBonus"] =
+                "【等级加成（%）】\n" +
+                "旋风斩技能每级提升的伤害加成。\n" +
+                "推荐：10-25%",
+
+                ["Tier6_RushSlash_DamageLevelBonus"] =
+                "【伤害等级加成（%）】\n" +
+                "突进连斩技能每级提升的伤害加成。\n" +
+                "推荐：5-15%",
+
+                ["Tier6_RushSlash_PathWidth"] =
+                "【突进连斩】移动路径命中宽度（m）。\n" +
+                "沿移动路径命中此范围内的所有怪物。\n" +
+                "推荐：1-3m",
+
+                ["Tier8_AssassinHeart_LevelBonus"] =
+                "【等级加成（%）】\n" +
+                "刺客之心技能每级提升的伤害加成。\n" +
+                "推荐：10-30%",
+
             };
         }
     }

@@ -169,6 +169,57 @@ namespace CaptainSkillTree.MMO_System
 
         #endregion
 
+        #region === 레벨 차이 공격 데미지 감소 설정 (LV 차이 공격옵션) ===
+
+        /// <summary>
+        /// LV 차이 공격옵션 활성화 (관리자 전용, 서버 싱크)
+        /// 몬스터 레벨이 플레이어보다 11 이상 높으면 플레이어가 가하는 피해가 감소합니다.
+        /// </summary>
+        public static ConfigEntry<bool> EnableLevelDiffDamageReduction;
+
+        /// <summary>레벨 차이 11~15 구간 데미지 배율 % (기본: 40)</summary>
+        public static ConfigEntry<float> LevelDiffTier1DamagePercent;
+
+        /// <summary>레벨 차이 16~20 구간 데미지 배율 % (기본: 20)</summary>
+        public static ConfigEntry<float> LevelDiffTier2DamagePercent;
+
+        /// <summary>레벨 차이 21~30 구간 데미지 배율 % (기본: 10)</summary>
+        public static ConfigEntry<float> LevelDiffTier3DamagePercent;
+
+        /// <summary>레벨 차이 31 이상 구간 데미지 배율 % (기본: 0)</summary>
+        public static ConfigEntry<float> LevelDiffTier4DamagePercent;
+
+        #endregion
+
+        #region === 레벨 차이 경험치 감소 설정 (구간별) ===
+
+        /// <summary>레벨 차이(범위 초과분) 11~15 구간 경험치 배율 % (기본: 30)</summary>
+        public static ConfigEntry<float> ExpDiffTier1Percent;
+
+        /// <summary>레벨 차이(범위 초과분) 16~20 구간 경험치 배율 % (기본: 25)</summary>
+        public static ConfigEntry<float> ExpDiffTier2Percent;
+
+        /// <summary>레벨 차이(범위 초과분) 21~30 구간 경험치 배율 % (기본: 20)</summary>
+        public static ConfigEntry<float> ExpDiffTier3Percent;
+
+        /// <summary>레벨 차이(범위 초과분) 31 이상 구간 경험치 배율 % (기본: 10)</summary>
+        public static ConfigEntry<float> ExpDiffTier4Percent;
+
+        #endregion
+
+        #region === 레벨 차이 아이템 드랍 억제 설정 ===
+
+        /// <summary>
+        /// 레벨 차이 아이템 드랍 억제 활성화 (관리자 전용, 서버 싱크)
+        /// 몬스터 레벨이 플레이어보다 DropSuppressionLevelDiff 이상 높으면 아이템이 드랍되지 않습니다.
+        /// </summary>
+        public static ConfigEntry<bool> EnableLevelDiffDropSuppression;
+
+        /// <summary>드랍 억제가 발동하는 레벨 차이 기준 (기본: 16)</summary>
+        public static ConfigEntry<int> DropSuppressionLevelDiff;
+
+        #endregion
+
         #region === JSON 설정 ===
 
         /// <summary>
@@ -200,6 +251,31 @@ namespace CaptainSkillTree.MMO_System
         public static int   PointsRequiredPerLevelValue => (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_PointsRequired",    PointsRequiredPerLevel?.Value ?? 2);
         public static bool  ExitButtonEnabledValue     => SkillTreeConfig.GetEffectiveValue("exit_button_enabled", ExitButtonEnabled?.Value == true ? 1f : 0f) >= 0.5f;
 
+        public static bool  EnableLevelDiffDamageReductionValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_LevelDiffEnabled", EnableLevelDiffDamageReduction?.Value == true ? 1f : 0f) >= 0.5f;
+        public static float LevelDiffTier1DamagePercentValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_LevelDiffTier1Percent", LevelDiffTier1DamagePercent?.Value ?? 40f);
+        public static float LevelDiffTier2DamagePercentValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_LevelDiffTier2Percent", LevelDiffTier2DamagePercent?.Value ?? 20f);
+        public static float LevelDiffTier3DamagePercentValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_LevelDiffTier3Percent", LevelDiffTier3DamagePercent?.Value ?? 10f);
+        public static float LevelDiffTier4DamagePercentValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_LevelDiffTier4Percent", LevelDiffTier4DamagePercent?.Value ?? 0f);
+
+        public static float ExpDiffTier1PercentValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_ExpDiffTier1Percent", ExpDiffTier1Percent?.Value ?? 30f);
+        public static float ExpDiffTier2PercentValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_ExpDiffTier2Percent", ExpDiffTier2Percent?.Value ?? 25f);
+        public static float ExpDiffTier3PercentValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_ExpDiffTier3Percent", ExpDiffTier3Percent?.Value ?? 20f);
+        public static float ExpDiffTier4PercentValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_ExpDiffTier4Percent", ExpDiffTier4Percent?.Value ?? 10f);
+
+        public static bool EnableLevelDiffDropSuppressionValue =>
+            SkillTreeConfig.GetEffectiveValue("CaptainLevel_DropSuppressionEnabled", EnableLevelDiffDropSuppression?.Value == true ? 1f : 0f) >= 0.5f;
+        public static int DropSuppressionLevelDiffValue =>
+            (int)SkillTreeConfig.GetEffectiveValue("CaptainLevel_DropSuppressionLevelDiff", DropSuppressionLevelDiff?.Value ?? 16);
+
         #endregion
 
         /// <summary>
@@ -216,222 +292,217 @@ namespace CaptainSkillTree.MMO_System
                 SECTION,
                 "Enable Captain Level System",
                 true,
-                "자체 레벨 시스템 활성화 여부\n" +
-                "EpicMMOSystem이 감지되면 자동으로 비활성화됩니다.\n" +
-                "[기본: true]");
+                SkillTreeConfig.GetConfigDescription("Enable Captain Level System"));
 
             MaxLevel = config.Bind(
                 SECTION,
                 "Max Level",
                 100,
-                "최대 레벨\n" +
-                "[기본: 100, 범위: 1-999]");
+                SkillTreeConfig.GetConfigDescription("Max Level"));
 
             // === 경험치 설정 ===
             LevelExp = config.Bind(
                 SECTION,
                 "Base Level Exp",
                 300,
-                "기본 경험치 (레벨 1에서 2로 올리는데 필요한 경험치)\n" +
-                "[기본: 300]");
+                SkillTreeConfig.GetConfigDescription("Base Level Exp"));
 
             MultiNextLevel = config.Bind(
                 SECTION,
                 "Multi Next Level",
                 1.05f,
-                "다음 레벨 경험치 배수\n" +
-                "레벨이 오를수록 필요 경험치가 이 배수만큼 증가합니다.\n" +
-                "[기본: 1.05]");
+                SkillTreeConfig.GetConfigDescription("Multi Next Level"));
 
             RateExp = config.Bind(
                 SECTION,
                 "Exp Rate",
                 1.0f,
-                "경험치 배율\n" +
-                "획득하는 모든 경험치에 적용됩니다.\n" +
-                "[기본: 1.0, 범위: 0.1-10.0]");
+                SkillTreeConfig.GetConfigDescription("Exp Rate"));
 
             LevelExpForEachLevel = config.Bind(
                 SECTION,
                 "Cumulative Exp Mode",
                 true,
-                "누적 경험치 모드\n" +
-                "true: 필요 경험치 = (이전 필요 경험치 * 배수) + 기본 경험치\n" +
-                "false: 필요 경험치 = 이전 필요 경험치 * 배수\n" +
-                "[기본: true]");
+                SkillTreeConfig.GetConfigDescription("Cumulative Exp Mode"));
 
             // === 레벨 범위 설정 ===
             MaxLevelExp = config.Bind(
                 SECTION,
                 "Max Level Exp Range",
                 10,
-                "최대 레벨 차이\n" +
-                "플레이어 레벨 + 이 값보다 높은 몬스터는 경험치가 감소합니다.\n" +
-                "[기본: 10]");
+                SkillTreeConfig.GetConfigDescription("Max Level Exp Range"));
 
             MinLevelExp = config.Bind(
                 SECTION,
                 "Min Level Exp Range",
                 10,
-                "최소 레벨 차이\n" +
-                "플레이어 레벨 - 이 값보다 낮은 몬스터는 경험치가 감소합니다.\n" +
-                "[기본: 10]");
+                SkillTreeConfig.GetConfigDescription("Min Level Exp Range"));
 
             CurveExp = config.Bind(
                 SECTION,
                 "Curve Exp Outside Range",
                 false,
-                "범위 밖 경험치 점진적 감소\n" +
-                "범위 밖 몬스터의 경험치가 거리에 따라 점진적으로 감소합니다.\n" +
-                "[기본: false]");
+                SkillTreeConfig.GetConfigDescription("Curve Exp Outside Range"));
 
             NoExpPastLevel = config.Bind(
                 SECTION,
                 "No Exp Past Level Range",
                 false,
-                "범위 밖 경험치 0\n" +
-                "범위 밖 몬스터의 경험치가 0이 됩니다.\n" +
-                "[기본: false]");
+                SkillTreeConfig.GetConfigDescription("No Exp Past Level Range"));
 
             // === 몬스터 설정 ===
             ExpForLvlMonster = config.Bind(
                 SECTION,
                 "Star Level Exp Multiplier",
                 1.5f,
-                "별 레벨 경험치 배수\n" +
-                "몬스터 별 1개당 추가 경험치 배율입니다.\n" +
-                "예: 1성 몬스터 = 기본 경험치 + (최대 경험치 * 이 값 * 1)\n" +
-                "[기본: 1.5]");
+                SkillTreeConfig.GetConfigDescription("Star Level Exp Multiplier"));
 
             MobLevelPerStar = config.Bind(
                 SECTION,
                 "Mob Level Per Star",
                 true,
-                "별당 몬스터 레벨 증가\n" +
-                "true: 1성 몬스터는 기본 레벨 + 1로 표시됩니다.\n" +
-                "예: Lv.10 몬스터가 1성이면 Lv.11로 표시\n" +
-                "[기본: true]");
+                SkillTreeConfig.GetConfigDescription("Mob Level Per Star"));
 
             // === UI 설정 ===
             ShowExpPopup = config.Bind(
                 SECTION,
                 "Show Exp Popup",
                 true,
-                "경험치 획득 시 팝업 표시\n" +
-                "[기본: true]");
+                SkillTreeConfig.GetConfigDescription("Show Exp Popup"));
 
             ShowLevelUpEffect = config.Bind(
                 SECTION,
                 "Show Level Up Effect",
                 true,
-                "레벨업 시 이펙트 표시\n" +
-                "[기본: true]");
+                SkillTreeConfig.GetConfigDescription("Show Level Up Effect"));
 
             ShowLevelHUD = config.Bind(
                 SECTION,
                 "Show Level HUD",
                 true,
-                "레벨/경험치 바 HUD 표시\n" +
-                "[기본: true]");
+                SkillTreeConfig.GetConfigDescription("Show Level HUD"));
 
             // === HUD 색상/스케일 설정 ===
             HudHpColor = config.Bind(
                 SECTION,
                 "HUD HP Color",
                 "#870000",
-                "HP 바 색상 (HTML 16진수)\n" +
-                "[기본: #870000]");
+                SkillTreeConfig.GetConfigDescription("HUD HP Color"));
 
             HudStaminaColor = config.Bind(
                 SECTION,
                 "HUD Stamina Color",
                 "#986100",
-                "스태미나 바 색상 (HTML 16진수)\n" +
-                "[기본: #986100]");
+                SkillTreeConfig.GetConfigDescription("HUD Stamina Color"));
 
             HudEitrColor = config.Bind(
                 SECTION,
                 "HUD Eitr Color",
                 "#84257C",
-                "에이트르 바 색상 (HTML 16진수)\n" +
-                "[기본: #84257C]");
+                SkillTreeConfig.GetConfigDescription("HUD Eitr Color"));
 
             HudExpColor = config.Bind(
                 SECTION,
                 "HUD Exp Color",
                 "#C87820",
-                "경험치 바 색상 (HTML 16진수)\n" +
-                "[기본: #C87820]");
+                SkillTreeConfig.GetConfigDescription("HUD Exp Color"));
 
             HudScale = config.Bind(
                 SECTION,
                 "HUD Scale",
                 1.0f,
-                "HUD 전체 스케일\n" +
-                "[기본: 1.0, 범위: 0.5-3.0]");
+                SkillTreeConfig.GetConfigDescription("HUD Scale"));
 
             // === 스킬 포인트 설정 ===
             SkillPointsPerLevel = config.Bind(
                 SECTION,
                 "Skill Points Per Level",
                 2,
-                "레벨당 스킬 포인트 획득량\n" +
-                "[기본: 2, 범위: 1-10]");
+                SkillTreeConfig.GetConfigDescription("Skill Points Per Level"));
 
             // === 스킬포인트 기반 레벨 설정 ===
             UseSkillPointBasedLevel = config.Bind(
                 SECTION,
                 "Use Skill Point Based Level",
                 true,
-                "스킬포인트 기반 레벨 계산 사용\n" +
-                "EpicMMO가 없을 때 사용한 스킬 포인트를 기준으로 레벨을 계산합니다.\n" +
-                "예: 102 포인트 사용 / 2 = 51레벨\n" +
-                "[기본: true]");
+                SkillTreeConfig.GetConfigDescription("Use Skill Point Based Level"));
 
             PointsRequiredPerLevel = config.Bind(
                 SECTION,
                 "Points Required Per Level",
                 2,
-                "레벨당 필요 스킬 포인트\n" +
-                "스킬포인트 기반 레벨 계산 시 사용됩니다.\n" +
-                "예: 102 포인트 / 2 = 51레벨\n" +
-                "[기본: 2, 범위: 1-10]");
+                SkillTreeConfig.GetConfigDescription("Points Required Per Level"));
 
             AutoSyncToEpicMMO = config.Bind(
                 SECTION,
                 "Auto Sync To EpicMMO",
                 true,
-                "EpicMMO 자동 동기화\n" +
-                "EpicMMO 설치 시 스킬포인트 기반 레벨을 EpicMMO에 동기화합니다.\n" +
-                "[기본: true]");
+                SkillTreeConfig.GetConfigDescription("Auto Sync To EpicMMO"));
 
             ExitButtonEnabled = SkillTreeConfig.BindServerSync(
                 config, SECTION, "Exit Button", false,
-                "탈출 버튼 표시 (기본: false)\n" +
-                "스킬트리 UI에 탈출 버튼을 표시합니다.\n" +
-                "⚠️ 관리자만 변경 가능. 서버 설정이 모든 클라이언트에 동기화됩니다.\n" +
-                "[기본: false]");
+                SkillTreeConfig.GetConfigDescription("Exit Button"));
+
+            // === 레벨 차이 공격 데미지 감소 설정 (LV 차이 공격옵션) ===
+            EnableLevelDiffDamageReduction = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Enable Level Diff Damage Reduction", true,
+                SkillTreeConfig.GetConfigDescription("Enable Level Diff Damage Reduction"));
+
+            LevelDiffTier1DamagePercent = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Level Diff Tier1 Damage Percent", 40f,
+                SkillTreeConfig.GetConfigDescription("Level Diff Tier1 Damage Percent"));
+
+            LevelDiffTier2DamagePercent = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Level Diff Tier2 Damage Percent", 20f,
+                SkillTreeConfig.GetConfigDescription("Level Diff Tier2 Damage Percent"));
+
+            LevelDiffTier3DamagePercent = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Level Diff Tier3 Damage Percent", 10f,
+                SkillTreeConfig.GetConfigDescription("Level Diff Tier3 Damage Percent"));
+
+            LevelDiffTier4DamagePercent = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Level Diff Tier4 Damage Percent", 0f,
+                SkillTreeConfig.GetConfigDescription("Level Diff Tier4 Damage Percent"));
+
+            // === 레벨 차이 경험치 감소 설정 (구간별) ===
+            ExpDiffTier1Percent = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Exp Diff Tier1 Percent", 30f,
+                SkillTreeConfig.GetConfigDescription("Exp Diff Tier1 Percent"));
+
+            ExpDiffTier2Percent = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Exp Diff Tier2 Percent", 25f,
+                SkillTreeConfig.GetConfigDescription("Exp Diff Tier2 Percent"));
+
+            ExpDiffTier3Percent = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Exp Diff Tier3 Percent", 20f,
+                SkillTreeConfig.GetConfigDescription("Exp Diff Tier3 Percent"));
+
+            ExpDiffTier4Percent = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Exp Diff Tier4 Percent", 10f,
+                SkillTreeConfig.GetConfigDescription("Exp Diff Tier4 Percent"));
+
+            // === 레벨 차이 아이템 드랍 억제 설정 ===
+            EnableLevelDiffDropSuppression = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Enable Level Diff Drop Suppression", true,
+                SkillTreeConfig.GetConfigDescription("Enable Level Diff Drop Suppression"));
+
+            DropSuppressionLevelDiff = SkillTreeConfig.BindServerSync(
+                config, SECTION, "Drop Suppression Level Diff", 16,
+                SkillTreeConfig.GetConfigDescription("Drop Suppression Level Diff"));
 
             // === JSON 설정 ===
             GenerateJsonFiles = config.Bind(
                 SECTION,
                 "Generate JSON Files",
                 true,
-                "JSON 기본 파일 생성 여부\n" +
-                "true로 설정 시 BepInEx/config/CaptainSkillTree/ 폴더에\n" +
-                "MonsterExp.json, LevelExp.json 기본 파일이 생성됩니다.\n" +
-                "(이미 파일이 있으면 덮어쓰지 않음)\n" +
-                "[기본: true]");
+                SkillTreeConfig.GetConfigDescription("Generate JSON Files"));
 
             // === 관리자 설정 ===
             AdminMode = config.Bind(
                 SECTION,
                 "Admin Mode",
                 false,
-                "관리자 모드 (기본: false)\n" +
-                "On: 스킬/직업 배우기 및 초기화 시 모든 조건(코인/트로피/포인트/전제조건) 무시\n" +
-                "⚠️ 관리자 권한(서버 호스트 또는 AdminList)이 있는 플레이어만 적용됩니다.\n" +
-                "[기본: false]");
+                SkillTreeConfig.GetConfigDescription("Admin Mode"));
 
             Plugin.Log.LogDebug("[CaptainLevelConfig] Config 바인딩 완료 (기본 Config 사용)");
         }

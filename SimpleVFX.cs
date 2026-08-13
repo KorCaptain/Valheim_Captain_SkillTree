@@ -41,15 +41,6 @@ namespace CaptainSkillTree
             = new Dictionary<string, float>();
 
         /// <summary>
-        /// VFX 이름 → dim factor 매핑 (Initialize에서 등록, 모든 생성 경로에서 자동 적용)
-        /// </summary>
-        private static readonly Dictionary<string, float> _vfxDimMapping
-            = new Dictionary<string, float>();
-
-        public static void RegisterVFXDim(string vfxName, float factor)
-            => _vfxDimMapping[vfxName] = factor;
-
-        /// <summary>
         /// 커스텀 VFX 네트워크 RPC 이름
         /// </summary>
         internal const string RPC_PLAY_CUSTOM_VFX  = "CaptainVFX_PlayCustom";
@@ -932,6 +923,7 @@ namespace CaptainSkillTree
                 SimpleVFX.RegisterValheimVFXAsCustom("vfx_GoblinShield");
                 SimpleVFX.RegisterValheimVFXAsCustom("fx_shield_start");
                 SimpleVFX.RegisterValheimVFXAsCustom("fx_Lightning");
+                SimpleVFX.RegisterValheimVFXAsCustom("fx_chainlightning_hit");
                 SimpleVFX.RegisterValheimVFXAsCustom("fx_batteringram_fire");
                 // ZNetScene에 커스텀 VFX 프리팹 등록 (spawn 명령어 사용 가능)
                 CaptainSkillTree.Prefab.PrefabRegistry.RegisterToZNetScene();

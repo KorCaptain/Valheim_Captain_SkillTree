@@ -27,12 +27,12 @@ namespace CaptainSkillTree.Gui
         private static readonly string[] GSkillIds = {
             "sword_step5_finalcut", "sword_slash", "knife_step9_assassin_heart",
             "spear_Step5_penetrate", "polearm_step5_king",
-            "defense_Step6_mind", "mace_Step7_guardian_heart"
+            "defense_Step6_mind", "mace_Step7_shockwave_slam"
         };
         private static readonly string[] GIconNames = {
             "sword_unlock", "sword_unlock", "dagger_unlock",
             "spear_unlock", "polearm_unlock",
-            "defense_unlock", "defense_unlock"
+            "defense_unlock", "attack_unlock"
         };
         private static readonly string[] HSkillIds = {
             "knife_step10_stack_explosion",
@@ -48,9 +48,9 @@ namespace CaptainSkillTree.Gui
             "mace_unlock", "ranged_unlock",
             "ranged_unlock"
         };
-        // M2 슬롯: 휠윈드 전용
-        private static readonly string[] M2SkillIds  = { "polearm_step6_whirlwind" };
-        private static readonly string[] M2IconNames = { "attack_unlock" };
+        // M2 슬롯: 휠윈드, 방패돌진(수호자의 진심, 탱커 전용)
+        private static readonly string[] M2SkillIds  = { "polearm_step6_whirlwind", "mace_Step7_guardian_heart" };
+        private static readonly string[] M2IconNames = { "attack_unlock", "defense_unlock" };
 
         // HUD 슬롯 정보
         private static readonly string[] SlotKeys   = { "Y", "R", "G", "H", "M2", "PASS" };
@@ -553,6 +553,11 @@ namespace CaptainSkillTree.Gui
 
         private void Update()
         {
+            bool userHidden = Hud.IsUserHidden();
+            if (_canvas != null && _canvas.enabled != !userHidden)
+                _canvas.enabled = !userHidden;
+            if (userHidden) return;
+
             HandleDrag();
 
             // 플레이어 스폰 감지: null→non-null 전환 시 HUD 강제 갱신
@@ -801,7 +806,7 @@ namespace CaptainSkillTree.Gui
                         else if (WeaponHelper.IsUsingDagger(p) && mgr.GetSkillLevel("knife_step9_assassin_heart") > 0) { iconName = "dagger_unlock"; activeSkillId = "knife_step9_assassin_heart"; }
                         else if (WeaponHelper.IsUsingSpear(p) && mgr.GetSkillLevel("spear_Step5_penetrate") > 0) { iconName = "spear_unlock"; activeSkillId = "spear_Step5_penetrate"; }
                         else if (WeaponHelper.IsUsingPolearm(p) && mgr.GetSkillLevel("polearm_step5_king") > 0) { iconName = "polearm_unlock"; activeSkillId = "polearm_step5_king"; }
-                        else if (WeaponHelper.HasShield(p) && mgr.GetSkillLevel("mace_Step7_guardian_heart") > 0) { iconName = "defense_unlock"; activeSkillId = "mace_Step7_guardian_heart"; }
+                        else if (WeaponHelper.IsUsingMace(p) && mgr.GetSkillLevel("mace_Step7_shockwave_slam") > 0) { iconName = "attack_unlock"; activeSkillId = "mace_Step7_shockwave_slam"; }
                     }
                     if (iconName == null)
                         for (int i = 0; i < GSkillIds.Length; i++)
@@ -961,10 +966,10 @@ namespace CaptainSkillTree.Gui
         {
             switch (defaultKey)
             {
-                case "Y": return SkillTreeConfig.HotKeyY?.Value ?? "Y";
-                case "R": return SkillTreeConfig.HotKeyR?.Value ?? "R";
-                case "G": return SkillTreeConfig.HotKeyG?.Value ?? "G";
-                case "H": return SkillTreeConfig.HotKeyH?.Value ?? "H";
+                case "Y": return SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyY, "Y");
+                case "R": return SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyR, "R");
+                case "G": return SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyG, "G");
+                case "H": return SkillTreeConfig.GetHotKeyDisplayName(SkillTreeConfig.HotKeyH, "H");
                 case "M2": return "M2";
                 case "PASS": return "";
                 default:  return defaultKey;

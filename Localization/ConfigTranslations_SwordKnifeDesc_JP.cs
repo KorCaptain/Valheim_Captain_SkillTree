@@ -167,21 +167,6 @@ namespace CaptainSkillTree.Localization
                 "小さいほど頻繁に使用できます。\n" +
                 "推奨: 10-20秒",
 
-                ["Tier5_ParryRush_BuffDuration"] =
-                "【バフ持続時間（秒）】\n" +
-                "パリィ成功後のバフ持続時間です。\n" +
-                "推奨: 20-40秒",
-
-                ["Tier5_ParryRush_DamageBonus"] =
-                "【チャージダメージボーナス (%)】\n" +
-                "パリィ後のチャージ攻撃のダメージ増加量です。\n" +
-                "推奨: 50-100%",
-
-                ["Tier5_ParryRush_PushDistance"] =
-                "【ノックバック距離（メートル）】\n" +
-                "チャージ時に敵を吹き飛ばす距離です。\n" +
-                "推奨: 3-7メートル",
-
                 ["Tier5_ParryRush_StaminaCost"] =
                 "【スタミナ消費】\n" +
                 "スキル発動時に消費するスタミナです。\n" +
@@ -513,6 +498,32 @@ namespace CaptainSkillTree.Localization
                 "Hキー爆発時に7m以内の敵への範囲ダメージ割合です。\n" +
                 "合計ダメージ × (値 / 100) = 範囲ダメージ\n" +
                 "推奨: 30-50%",
+
+                ["Tier5_WhirlwindSlash_BaseDamage"] =
+                "【基本ダメージ (%)】\n" +
+                "旋風斬りスキルの基本ダメージ。\n" +
+                "推奨：80-150%",
+
+                ["Tier5_WhirlwindSlash_LevelBonus"] =
+                "【レベルボーナス (%)】\n" +
+                "旋風斬りスキルのレベル毎ダメージボーナス。\n" +
+                "推奨：10-25%",
+
+                ["Tier6_RushSlash_DamageLevelBonus"] =
+                "【ダメージレベルボーナス (%)】\n" +
+                "ラッシュスラッシュスキルのレベル毎ダメージボーナス。\n" +
+                "推奨：5-15%",
+
+                ["Tier6_RushSlash_PathWidth"] =
+                "【ラッシュスラッシュ】移動経路ヒット幅（m）。\n" +
+                "経路上のこの範囲内の全ての敵にヒットします。\n" +
+                "推奨：1-3m",
+
+                ["Tier8_AssassinHeart_LevelBonus"] =
+                "【レベルボーナス (%)】\n" +
+                "アサシンハートスキルのレベル毎ダメージボーナス。\n" +
+                "推奨：10-30%",
+
             };
         }
     }

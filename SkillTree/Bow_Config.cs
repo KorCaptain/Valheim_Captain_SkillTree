@@ -57,6 +57,10 @@ namespace CaptainSkillTree.SkillTree
         public static ConfigEntry<int>   ArrowRainRequiredPoints;
         public static ConfigEntry<float> ArrowRainLevelBonus;
 
+        // === 화살비 던전 내 대체 버프 (공격력 강화 자버프) ===
+        public static ConfigEntry<float> ArrowRainDungeonBuffDamageBonus;
+        public static ConfigEntry<float> ArrowRainDungeonBuffDuration;
+
         // === 필요 포인트 접근 프로퍼티 ===
         public static int BowExpertRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_expert_required_points", BowExpertRequiredPoints?.Value ?? 2);
         public static int BowFocusShotRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_focusshot_required_points", BowFocusShotRequiredPoints?.Value ?? 2);
@@ -97,6 +101,10 @@ namespace CaptainSkillTree.SkillTree
         public static float ArrowRainStaminaCostValue    => SkillTreeConfig.GetEffectiveValue("bow_Step6_arrow_rain_stamina",  ArrowRainStaminaCost.Value);
         public static int   ArrowRainRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("bow_Step6_arrow_rain_points", ArrowRainRequiredPoints.Value);
         public static float ArrowRainLevelBonusValue    => SkillTreeConfig.GetEffectiveValue("bow_Step6_arrow_rain_level_bonus", ArrowRainLevelBonus?.Value ?? 2f);
+
+        // === 화살비 던전 내 대체 버프 접근 프로퍼티 ===
+        public static float ArrowRainDungeonBuffDamageBonusValue => SkillTreeConfig.GetEffectiveValue("bow_Step6_arrow_rain_dungeon_damage", ArrowRainDungeonBuffDamageBonus?.Value ?? 25f);
+        public static float ArrowRainDungeonBuffDurationValue    => SkillTreeConfig.GetEffectiveValue("bow_Step6_arrow_rain_dungeon_duration", ArrowRainDungeonBuffDuration?.Value ?? 10f);
 
         public static void Initialize(ConfigFile config)
         {
@@ -241,6 +249,14 @@ namespace CaptainSkillTree.SkillTree
             ArrowRainLevelBonus = SkillTreeConfig.BindServerSync(config,
                 "Bow Tree", "Tier6_ArrowRain_LevelBonus", 2f,
                 SkillTreeConfig.GetConfigDescription("Tier6_ArrowRain_LevelBonus"), order: 2);
+
+            ArrowRainDungeonBuffDamageBonus = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier6_ArrowRain_DungeonBuff_DamageBonus", 25f,
+                SkillTreeConfig.GetConfigDescription("Tier6_ArrowRain_DungeonBuff_DamageBonus"));
+
+            ArrowRainDungeonBuffDuration = SkillTreeConfig.BindServerSync(config,
+                "Bow Tree", "Tier6_ArrowRain_DungeonBuff_Duration", 10f,
+                SkillTreeConfig.GetConfigDescription("Tier6_ArrowRain_DungeonBuff_Duration"));
 
             Plugin.Log.LogDebug("[Bow_Config] 활 전문가 트리 설정 초기화 완료");
         }

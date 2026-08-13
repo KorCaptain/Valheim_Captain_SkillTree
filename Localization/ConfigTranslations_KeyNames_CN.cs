@@ -23,6 +23,7 @@ namespace CaptainSkillTree.Localization
                 ["HotKey_R"] = "远程技能键",
                 ["HotKey_G"] = "近战主技能键",
                 ["HotKey_H"] = "副技能键",
+                ["QuestToggleKey"] = "任务面板快捷键",
                 ["HUD_IconSize"] = "技能图标大小",
                 ["HUD_PosX"] = "技能图标 HUD X位置",
                 ["HUD_PosY"] = "技能图标 HUD Y位置",
@@ -45,7 +46,7 @@ namespace CaptainSkillTree.Localization
                 ["Tier1_Opener_RequiredPoints"] = "Tier 1: [先发制人] 所需点数",
                 ["Tier2_OpenerMelee_FinisherBonus"] = "Tier 2-1: [近战] 终结加成 (%)",
                 ["Tier2_OpenerMelee_RequiredPoints"] = "Tier 2-1: [近战] 所需点数",
-                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [弓] 暴击率 (%)",
+                ["Tier2_OpenerBow_CritChance"] = "Tier 2-2: [弓] 暴击伤害加成 (%)",
                 ["Tier2_OpenerBow_RequiredPoints"] = "Tier 2-2: [弓] 所需点数",
                 ["Tier2_OpenerCrossbow_FirstShotBonus"] = "Tier 2-3: [弩] 首发加成 (%)",
                 ["Tier2_OpenerCrossbow_RequiredPoints"] = "Tier 2-3: [弩] 所需点数",
@@ -57,8 +58,8 @@ namespace CaptainSkillTree.Localization
                 ["Tier3_Pursuit_RequiredPoints"] = "Tier 3: [追击] 所需点数",
                 ["Tier4_PursuitSpeed_SpeedBonus"] = "Tier 4-1: [疾风追击] 移动速度加成 (%)",
                 ["Tier4_PursuitSpeed_RequiredPoints"] = "Tier 4-1: [疾风追击] 所需点数",
-                ["Tier4_FrenzyTrigger_StaminaReduction"] = "Tier 4-2: [混战冲入] 体力减少 (%)",
-                ["Tier4_FrenzyTrigger_RequiredPoints"] = "Tier 4-2: [混战冲入] 所需点数",
+                ["Tier4_FrenzyTrigger_CritChancePerLevel"] = "Tier 4-2: [致命一击] 暴击率/等级 (%)",
+                ["Tier4_FrenzyTrigger_PointsPerLevel"] = "Tier 4-2: [致命一击] 每级所需点数",
                 ["Tier5_Frenzy_StackBonusBase"] = "Tier 5: [混战] 基础叠加加成 (%)",
                 ["Tier5_Frenzy_StackBonusChain"] = "Tier 5: [混战] 连锁叠加加成 (%)",
                 ["Tier5_Frenzy_MaxStacks"] = "Tier 5: [混战] 最大叠加层数",
@@ -104,8 +105,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier5_SpecialStat_RequiredPoints"] = "Tier 5: [充能] 所需点数",
 
                 // === Tier 6: 终极强化 (8) ===
-                ["Tier6_WeakPointAttack_CritDamageBonus"] = "Tier 6-1: [弱点] 暴击伤害加成 (%)",
-                ["Tier6_WeakPointAttack_RequiredPoints"] = "Tier 6-1: [弱点] 所需点数",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv1"] = "Tier 6-1: [弱点] 暴击伤害加成 Lv1 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv2"] = "Tier 6-1: [弱点] 暴击伤害加成 Lv2 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv3"] = "Tier 6-1: [弱点] 暴击伤害加成 Lv3 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv4"] = "Tier 6-1: [弱点] 暴击伤害加成 Lv4 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv5"] = "Tier 6-1: [弱点] 暴击伤害加成 Lv5 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv6"] = "Tier 6-1: [弱点] 暴击伤害加成 Lv6 (%)",
+                ["Tier6_WeakPointAttack_CritDamageBonus_Lv7"] = "Tier 6-1: [弱点] 暴击伤害加成 Lv7 (%)",
+                ["Tier6_WeakPointAttack_PointsPerLevel"] = "Tier 6-1: [弱点] 每级所需点数",
                 ["Tier6_ComboFinisher_3HitComboBonus"] = "Tier 6-2: [连击终结] 必定加成 (%)",
                 ["Tier6_ComboFinisher_RequiredPoints"] = "Tier 6-2: [连击终结] 所需点数",
                 ["Tier6_TwoHandCrush_TwoHandDamageBonus"] = "Tier 6-3: [双手重击] 双手武器伤害加成 (%)",
@@ -221,6 +228,7 @@ namespace CaptainSkillTree.Localization
                 // === Tier 0: 防御专家 (3) ===
                 ["Tier0_DefenseExpert_HPBonus"] = "Tier 0: [防御专家] 生命值加成",
                 ["Tier0_DefenseExpert_ArmorBonus"] = "Tier 0: [防御专家] 护甲加成",
+                ["Tier0_DefenseExpert_AtkPenalty"] = "Tier 0: [防御专家] 攻击力降低 (%)",
                 ["Tier0_DefenseExpert_RequiredPoints"] = "Tier 0: [防御专家] 所需点数",
 
                 // === Tier 1: 皮肤硬化 (3) ===
@@ -313,11 +321,14 @@ namespace CaptainSkillTree.Localization
                 ["Tier6_JotunnVitality_ArmorBonus"] = "Tier 6-4: [巨人生命] 物理/元素抗性 (%)",
                 ["Tier6_JotunnVitality_RequiredPoints"] = "Tier 6-4: [巨人生命] 所需点数",
 
-                // === Tier 6-5: 巨人盾 (4) ===
-                ["Tier6_JotunnShield_BlockStaminaReduction"] = "Tier 6-5: [巨人盾] 格挡体力消耗减少 (%)",
-                ["Tier6_JotunnShield_NormalShieldMoveSpeedBonus"] = "Tier 6-5: [巨人盾] 普通盾移动速度加成 (%)",
-                ["Tier6_JotunnShield_TowerShieldMoveSpeedBonus"] = "Tier 6-5: [巨人盾] 塔盾移动速度加成 (%)",
-                ["Tier6_JotunnShield_RequiredPoints"] = "Tier 6-5: [巨人盾] 所需点数",
+                // === Tier 6-5: 盾击冲锋 (7, 从钝器树移动) ===
+                ["Tier6_GuardianHeart_Cooldown"] = "Tier 6-5: [盾击冲锋] 冷却时间 (秒)",
+                ["Tier6_GuardianHeart_StaminaCost"] = "Tier 6-5: [盾击冲锋] 体力消耗",
+                ["Tier6_ShieldCharge_DamagePercent"] = "Tier 6-5: [盾击冲锋] 格挡力伤害比例 (%)",
+                ["Tier6_ShieldCharge_MultiHitDamagePercent"] = "Tier 6-5: [盾击冲锋] 连击伤害比例 (%)",
+                ["Tier6_ShieldCharge_MultiHitLevelBonus"] = "Tier 6-5: [盾击冲锋] 连击等级加成 (%)",
+                ["Tier6_GuardianHeart_RequiredPoints"] = "Tier 6-5: [盾击冲锋] 所需点数",
+                ["Tier6_ShieldCharge_LevelBonus"] = "Tier 6-5: [盾击冲锋] 等级加成 (%)",
 
                 // ============================================
                 // 生产树 - 22个键

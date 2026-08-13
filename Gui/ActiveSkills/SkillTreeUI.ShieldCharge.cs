@@ -11,7 +11,7 @@ namespace CaptainSkillTree.Gui
         // ─── CanInvestWithMessage 분기 ───
         private InvestResult CheckShieldChargeInvest(SkillTree.SkillNode node, int currentLevel)
         {
-            if (currentLevel == 0 && SkillTree.SkillTreeManager.Instance.GetSkillLevel("mace_Step6_grandmaster") <= 0)
+            if (currentLevel == 0 && SkillTree.SkillTreeManager.Instance.GetSkillLevel("defense_Step5_parry") <= 0)
                 return new InvestResult(false, L10n.Get("shield_charge_prereq_required"));
             int targetLevel = currentLevel + 1;
             if (targetLevel > 7)
@@ -41,9 +41,10 @@ namespace CaptainSkillTree.Gui
                 return true;
             }
             bool isAdmin = CaptainSkillTree.MMO_System.CaptainLevelConfig.IsAdminModeActive();
-            if (!isAdmin && manager.GetAvailablePoints(false) < node.RequiredPoints)
+            int requiredPts = SkillTree.Defense_Config.GuardianHeartRequiredPointsValue;
+            if (!isAdmin && manager.GetAvailablePoints(false) < requiredPts)
             {
-                tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", node.RequiredPoints, manager.GetAvailablePoints(false)));
+                tooltipUI.ShowWarning(L10n.Get("skill_insufficient_points_detail", requiredPts, manager.GetAvailablePoints(false)));
                 return true;
             }
             if (isAdmin || manager.HasShieldChargeLevelItems(targetLevel))

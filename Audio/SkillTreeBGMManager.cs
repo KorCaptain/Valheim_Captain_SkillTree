@@ -350,7 +350,7 @@ namespace CaptainSkillTree.Audio
         {
             try
             {
-                Plugin.Log.LogDebug("[🎵 BGM] PauseSkillTreeBGM 호출됨 - 일시정지 시작");
+                Plugin.Log.LogDebug("[BGM] PauseSkillTreeBGM 호출됨 - 일시정지 시작");
 
                 // ✅ 일시정지: 현재 재생 위치 저장
                 if (bgmAudioSource != null)
@@ -377,7 +377,7 @@ namespace CaptainSkillTree.Audio
                 // 발헤임 기본 음악 복원 (스킬트리 BGM 일시정지 후)
                 ResumeValheimMusic();
                 Plugin.Log.LogDebug("[BGM 관리자] 발헤임 음악 복원 완료");
-                Plugin.Log.LogDebug("[🎵 BGM] PauseSkillTreeBGM 완료 ✅");
+                Plugin.Log.LogDebug("[BGM] PauseSkillTreeBGM 완료 [OK]");
             }
             catch (Exception ex)
             {
@@ -403,7 +403,7 @@ namespace CaptainSkillTree.Audio
         {
             try
             {
-                Plugin.Log.LogDebug("[🎵 BGM] StopSkillTreeBGM 호출됨 - 완전 정지 시작");
+                Plugin.Log.LogDebug("[BGM] StopSkillTreeBGM 호출됨 - 완전 정지 시작");
 
                 if (bgmAudioSource != null)
                 {
@@ -416,14 +416,14 @@ namespace CaptainSkillTree.Audio
                     // 완전 정리: clip 제거 및 비활성화
                     bgmAudioSource.clip = null;
                     bgmAudioSource.enabled = false;
-                    Plugin.Log.LogDebug("[🎵 BGM] AudioSource 클립 제거 및 컴포넌트 비활성화");
+                    Plugin.Log.LogDebug("[BGM] AudioSource 클립 제거 및 컴포넌트 비활성화");
                 }
 
                 pausedTime = 0f; // 일시정지 위치 초기화
 
                 // 발헤임 기본 음악 복원
                 ResumeValheimMusic();
-                Plugin.Log.LogDebug("[🎵 BGM] StopSkillTreeBGM 완료 ✅");
+                Plugin.Log.LogDebug("[BGM] StopSkillTreeBGM 완료 [OK]");
             }
             catch (Exception ex)
             {

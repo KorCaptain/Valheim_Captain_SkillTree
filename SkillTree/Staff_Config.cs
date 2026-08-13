@@ -57,6 +57,7 @@ namespace CaptainSkillTree.SkillTree
         private static ConfigEntry<float> StaffHealPercentage;
         private static ConfigEntry<float> StaffHealRange;
         private static ConfigEntry<int> StaffHealRequiredPoints;
+        private static ConfigEntry<float> StaffHealLightningDamage;
 
         /// <summary>
         /// 컨피그 초기화
@@ -205,6 +206,10 @@ namespace CaptainSkillTree.SkillTree
                     "Staff Tree", "Tier5_InstantAreaHeal_RequiredPoints", 3,
                     SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_RequiredPoints"));
 
+                StaffHealLightningDamage = SkillTreeConfig.BindServerSync(config,
+                    "Staff Tree", "Tier5_InstantAreaHeal_LightningDamagePercent", 60f,
+                    SkillTreeConfig.GetConfigDescription("Tier5_InstantAreaHeal_LightningDamagePercent"));
+
                 // === 이벤트 핸들러 등록 ===
                 RegisterStaffEventHandlers();
 
@@ -234,6 +239,7 @@ namespace CaptainSkillTree.SkillTree
                 StaffHealEitrCost.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffHealPercentage.SettingChanged += (sender, args) => OnStaffConfigChanged();
                 StaffHealRange.SettingChanged += (sender, args) => OnStaffConfigChanged();
+                StaffHealLightningDamage.SettingChanged += (sender, args) => OnStaffConfigChanged();
 
                 // 기타 스킬 이벤트
                 StaffExpertDamage.SettingChanged += (sender, args) => OnStaffConfigChanged();
@@ -259,7 +265,7 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                Plugin.Log.LogInfo("[Staff_Config] 설정값 변경됨");
+                Plugin.Log.LogDebug("[Staff_Config] 설정값 변경됨");
                 LogCurrentConfig();
             }
             catch (Exception ex)
@@ -318,6 +324,7 @@ namespace CaptainSkillTree.SkillTree
         public static float StaffHealPercentageValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_percent", StaffHealPercentage?.Value ?? 25f);
         public static float StaffHealRangeValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_range", StaffHealRange?.Value ?? 12f);
         public static int StaffHealRequiredPointsValue => (int)SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_rp", StaffHealRequiredPoints?.Value ?? 3);
+        public static float StaffHealLightningDamageValue => SkillTreeConfig.GetEffectiveValue("staff_tier5_heal_lightning", StaffHealLightningDamage?.Value ?? 60f);
 
         /// <summary>
         /// 현재 설정값 디버그 출력
@@ -326,10 +333,10 @@ namespace CaptainSkillTree.SkillTree
         {
             try
             {
-                Plugin.Log.LogInfo("[Staff_Config] 현재 설정값:");
-                Plugin.Log.LogInfo($"  - 지팡이 전문가 공격력: +{StaffExpertDamageValue}%");
-                Plugin.Log.LogInfo($"  - 연속 발사: {StaffDoubleCastProjectileCountValue}발, {StaffDoubleCastDamagePercentValue}%, 쿨타임 {StaffDoubleCastCooldownValue}초");
-                Plugin.Log.LogInfo($"  - 즉시 범위 힐: 힐량 {StaffHealPercentageValue}%, 범위 {StaffHealRangeValue}m, 쿨타임 {StaffHealCooldownValue}초");
+                Plugin.Log.LogDebug("[Staff_Config] 현재 설정값:");
+                Plugin.Log.LogDebug($"  - 지팡이 전문가 공격력: +{StaffExpertDamageValue}%");
+                Plugin.Log.LogDebug($"  - 연속 발사: {StaffDoubleCastProjectileCountValue}발, {StaffDoubleCastDamagePercentValue}%, 쿨타임 {StaffDoubleCastCooldownValue}초");
+                Plugin.Log.LogDebug($"  - 즉시 범위 힐: 힐량 {StaffHealPercentageValue}%, 범위 {StaffHealRangeValue}m, 쿨타임 {StaffHealCooldownValue}초");
             }
             catch (Exception ex)
             {

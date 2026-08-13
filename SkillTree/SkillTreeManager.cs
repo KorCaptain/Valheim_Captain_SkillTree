@@ -123,6 +123,7 @@ namespace CaptainSkillTree.SkillTree
                 DescriptionKey = original.DescriptionKey,
                 DescriptionArgs = original.DescriptionArgs,
                 RequiredPoints = original.RequiredPoints,
+                RequiredPointsResolver = original.RequiredPointsResolver,
                 Prerequisites = new List<string>(original.Prerequisites ?? new List<string>()),
                 MaxLevel = original.MaxLevel,
                 Tier = original.Tier,
@@ -435,7 +436,7 @@ namespace CaptainSkillTree.SkillTree
             else
             {
                 // 일반 스킬: 포인트 체크 (대기 중인 투자 고려)
-                if (GetAvailablePoints(true) < node.RequiredPoints) return false;
+                if (GetAvailablePoints(true) < node.EffectiveRequiredPoints) return false;
             }
             
             // 4. 전제조건 체크
@@ -486,9 +487,17 @@ namespace CaptainSkillTree.SkillTree
                 return false;
             }
 
+            // 6. 직업별 스킬트리 학습 제한 체크
+            if (!JobRestriction.JobTreeRules.IsTreeAccessAllowed(Player.m_localPlayer, skillId,
+                    JobRestriction.JobTreeRules.IsActiveSkillId(skillId), out string jobRestrictionMessage))
+            {
+                Plugin.Log.LogWarning($"[SkillTreeManager] 직업 트리 제한: {skillId} - {jobRestrictionMessage}");
+                return false;
+            }
+
             return true;
         }
-        
+
         /// 스킬 ID에서 무기 그룹 prefix 추출 (bow_, crossbow_, staff_, sword_, knife_, spear_, polearm_, mace_)
         private static string GetWeaponGroupPrefix(string skillId)
         {
@@ -517,7 +526,7 @@ namespace CaptainSkillTree.SkillTree
                 "spear_Step5_penetrate",      // 창: 꿰뚫는 창
                 "polearm_step5_king",         // 폴암: 장창의 제왕
                 "defense_Step6_mind",         // 방어전문가: 마인드쉴드 (고유 prefix)
-                "mace_Step7_guardian_heart"   // 둔기: 수호자의 진심
+                "mace_Step7_shockwave_slam"   // 둔기: 충격파 강타
             };
 
             // H키: 보조 액티브 (무기별 1개 - 무기 다르면 중복 허용)
@@ -597,7 +606,7 @@ namespace CaptainSkillTree.SkillTree
                 "spear_Step5_penetrate",      // 창: 꿰뚫는 창
                 "polearm_step5_king",         // 폴암: 장창의 제왕
                 "defense_Step6_mind",         // 방어전문가: 마인드쉴드 (고유 prefix)
-                "mace_Step7_guardian_heart"   // 둔기: 수호자의 진심
+                "mace_Step7_shockwave_slam"   // 둔기: 충격파 강타
             };
 
             // H키: 보조 액티브 (무기별 1개 - 무기 다르면 중복 허용)
@@ -1123,7 +1132,23 @@ namespace CaptainSkillTree.SkillTree
                     return;
                 }
             }
-            else if (node.RequiredPoints > 0 && GetAvailablePoints(true) < node.RequiredPoints) return;
+            else if (skillId == "speed_root")
+            {
+                int targetLevel = currentLevel + 1;
+                if (!HasSpeedRootLevelItems(targetLevel))
+                {
+                    if ((System.Object)Player.m_localPlayer != null)
+                    {
+                        var missing = GetMissingSpeedRootItems(targetLevel);
+                        string missingText = missing.Count > 0 ? string.Join(", ", missing) : "";
+                        SkillEffect.DrawFloatingText(Player.m_localPlayer,
+                            "<size=20>⚠️ " + L.Get("speedroot_item_required", targetLevel) +
+                            (missingText.Length > 0 ? $"\n({missingText})" : "") + "</size>", Color.red);
+                    }
+                    return;
+                }
+            }
+            else if (node.RequiredPoints > 0 && GetAvailablePoints(true) < node.EffectiveRequiredPoints) return;
 
             // === 상호 배타적 스킬 체크 ===
             if (node.MutuallyExclusive != null && node.MutuallyExclusive.Count > 0)
@@ -1158,6 +1183,18 @@ namespace CaptainSkillTree.SkillTree
                 return;
             }
 
+            // === 직업별 스킬트리 학습 제한 체크 ===
+            if (!JobRestriction.JobTreeRules.IsTreeAccessAllowed(Player.m_localPlayer, skillId,
+                    JobRestriction.JobTreeRules.IsActiveSkillId(skillId), out string jobRestrictionMessage))
+            {
+                if ((System.Object)Player.m_localPlayer != null)
+                {
+                    SkillEffect.DrawFloatingText(Player.m_localPlayer, $"⚠️ {jobRestrictionMessage}", Color.red);
+                }
+                Plugin.Log.LogDebug($"[직업 트리 제한] {skillId} 투자 차단: {jobRestrictionMessage}");
+                return;
+            }
+
             if (pendingInvestments.ContainsKey(skillId))
             {
                 pendingInvestments[skillId]++;
@@ -1167,7 +1204,19 @@ namespace CaptainSkillTree.SkillTree
                 pendingInvestments[skillId] = 1;
             }
         }
-        
+
+        /// <summary>
+        /// 확인 버튼 클릭 시점에 재료를 재검증한다. 다이얼로그를 연 시점과 확인 시점 사이
+        /// 인벤토리 상태가 바뀌었다면(멀티플레이 동기화 등) 소모를 막고 경고만 띄운다.
+        /// </summary>
+        private bool ReverifyLevelItems(bool hasItems)
+        {
+            if (hasItems) return true;
+            if (Player.m_localPlayer != null)
+                SkillEffect.DrawFloatingText(Player.m_localPlayer, "⚠️ " + L.Get("level_upgrade_items_changed"), Color.red);
+            return false;
+        }
+
         // 투자 확정
         public void ConfirmInvestments()
         {
@@ -1186,139 +1235,177 @@ namespace CaptainSkillTree.SkillTree
                     if (pending.Key == "Archer")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasArcherLevelItems(targetLevel))) continue;
                         ConsumeArcherLevelItems(targetLevel);
                     }
                     // 제작 전문가: 레벨별 트로피 소모
                     else if (pending.Key == "Producer")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasProducerLevelItems(targetLevel))) continue;
                         ConsumeProducerLevelItems(targetLevel);
                     }
                     // 버서커: 레벨별 트로피 소모
                     else if (pending.Key == "Berserker")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasBerserkerLevelItems(targetLevel))) continue;
                         ConsumeBerserkerLevelItems(targetLevel);
                     }
                     // 로그 직업: 레벨별 트로피 소모
                     else if (pending.Key == "Rogue")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasRogueLevelItems(targetLevel))) continue;
                         ConsumeRogueLevelItems(targetLevel);
                     }
                     // 메이지 직업: 레벨별 트로피 소모
                     else if (pending.Key == "Mage")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasMageLevelItems(targetLevel))) continue;
                         ConsumeMageLevelItems(targetLevel);
                     }
                     // 탱커 직업: 레벨별 트로피 소모
                     else if (pending.Key == "Tanker")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasTankerLevelItems(targetLevel))) continue;
                         ConsumeTankerLevelItems(targetLevel);
                     }
                     // 성기사 직업: 레벨별 트로피+코인 소모
                     else if (pending.Key == "Paladin")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasPaladinLevelItems(targetLevel))) continue;
                         ConsumePaladinLevelItems(targetLevel);
                     }
                     // 폭발화살: Lv1+ 업그레이드 시 트로피 소모
                     else if (pending.Key == "bow_Step6_critboost")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasExplosiveArrowLevelItems(targetLevel))) continue;
                         ConsumeExplosiveArrowLevelItems(targetLevel);
                     }
                     // 연공창: Lv1+ 업그레이드 시 트로피 소모
                     else if (pending.Key == "spear_Step5_combo")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasSpearComboLevelItems(targetLevel))) continue;
                         ConsumeSpearComboLevelItems(targetLevel);
                     }
                     // 꿰뚫는 창: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.SpearPenetrate.cs
                     else if (pending.Key == "spear_Step5_penetrate" && currentLevel >= 0)
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasSpearPenetrateLevelItems(targetLevel))) continue;
                         ConsumeSpearPenetrateLevelItems(targetLevel);
                     }
                     // 관통 돌격: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.PierceCharge.cs
                     else if (pending.Key == "polearm_step5_king")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasPierceChargeLevelItems(targetLevel))) continue;
                         ConsumePierceChargeLevelItems(targetLevel);
                     }
                     // 분노의 망치: Lv1+ 업그레이드 시 트로피 소모
                     else if (pending.Key == "mace_Step7_fury_hammer")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasFuryHammerLevelItems(targetLevel))) continue;
                         ConsumeFuryHammerLevelItems(targetLevel);
                     }
                     // 방패돌진: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.ShieldCharge.cs
                     else if (pending.Key == "mace_Step7_guardian_heart")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasShieldChargeLevelItems(targetLevel))) continue;
+                        ConsumeShieldChargeLevelItems(targetLevel);
+                    }
+                    // 충격파 강타: Lv1+ 업그레이드 시 트로피 소모 (방패돌진과 동일 트로피 재사용) → SkillTree/ActiveSkills/SkillTreeManager.ShieldCharge.cs
+                    else if (pending.Key == "mace_Step7_shockwave_slam")
+                    {
+                        int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasShieldChargeLevelItems(targetLevel))) continue;
                         ConsumeShieldChargeLevelItems(targetLevel);
                     }
                     // 암살자의 심장: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.KnifeAssassinHeart.cs
                     else if (pending.Key == "knife_step9_assassin_heart")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasAssassinHeartLevelItems(targetLevel))) continue;
                         ConsumeAssassinHeartLevelItems(targetLevel);
                     }
                     // 힐: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.StaffHeal.cs
                     else if (pending.Key == "staff_Step6_heal" && currentLevel >= 0)
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasStaffHealLevelItems(targetLevel))) continue;
                         ConsumeStaffHealLevelItems(targetLevel);
                     }
                     // 이중시전: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.StaffDualCast.cs
                     else if (pending.Key == "staff_Step6_dual_cast" && currentLevel >= 0)
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasDualCastLevelItems(targetLevel))) continue;
                         ConsumeDualCastLevelItems(targetLevel);
                     }
                     // 화살비: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.BowArrowRain.cs
                     else if (pending.Key == "bow_Step6_arrow_rain" && currentLevel >= 0)
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasArrowRainLevelItems(targetLevel))) continue;
                         ConsumeArrowRainLevelItems(targetLevel);
                     }
                     // 약점폭발: Lv1+ 업그레이드 시 트로피 소모
                     else if (pending.Key == "knife_step10_stack_explosion" && currentLevel >= 0)
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasStackExplosionLevelItems(targetLevel))) continue;
                         ConsumeStackExplosionLevelItems(targetLevel);
                     }
                     // 단 한 발: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.CrossbowOneShot.cs
                     else if (pending.Key == "crossbow_Step6_expert" && currentLevel >= 0)
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasOneShotLevelItems(targetLevel))) continue;
                         ConsumeOneShotLevelItems(targetLevel);
                     }
                     // 빙결폭발탄: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.CrossbowIceBreath.cs
                     else if (pending.Key == "crossbow_ice_breath" && currentLevel >= 0)
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasIceBreathLevelItems(targetLevel))) continue;
                         ConsumeIceBreathLevelItems(targetLevel);
                     }
                     // 돌진베기: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.SwordRushSlash.cs
                     else if (pending.Key == "sword_step5_finalcut" && currentLevel >= 0)
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasRushSlashLevelItems(targetLevel))) continue;
                         ConsumeRushSlashLevelItems(targetLevel);
                     }
                     // 회오리베기: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.SwordWhirlwindSlash.cs
                     else if (pending.Key == "sword_step5_defswitch" && currentLevel >= 0)
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasWhirlwindSlashLevelItems(targetLevel))) continue;
                         ConsumeWhirlwindSlashLevelItems(targetLevel);
                     }
                     // 폴암 휠윈드: Lv1+ 업그레이드 시 트로피 소모 → SkillTree/ActiveSkills/SkillTreeManager.PolearmWhirlwind.cs
                     else if (pending.Key == "polearm_step6_whirlwind")
                     {
                         int targetLevel = currentLevel + 1;
+                        if (!ReverifyLevelItems(HasPolearmWhirlwindLevelItems(targetLevel))) continue;
                         ConsumePolearmWhirlwindLevelItems(targetLevel);
+                    }
+                    // 속도 전문가: 레벨별 트로피 소모 (예약된 레벨 수만큼 반복)
+                    else if (pending.Key == "speed_root")
+                    {
+                        for (int lv = currentLevel + 1; lv <= currentLevel + pending.Value; lv++)
+                        {
+                            ConsumeSpeedRootLevelItems(lv);
+                        }
                     }
                     // 다른 직업 스킬: 레벨 0에서 1로 올라가는 경우(처음 전직)에만 아이템 소모
                     else if (IsJobSkill(pending.Key) && currentLevel == 0)
@@ -1632,6 +1719,64 @@ namespace CaptainSkillTree.SkillTree
                     inventory.RemoveItem("$item_trophy_fader", 1);
                     inventory.RemoveItem("$item_trophy_charredarcher", 1);
                     break;
+            }
+        }
+
+        public bool HasSpeedRootLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return false;
+            var inv = player.GetInventory();
+            if (inv == null) return false;
+            switch (targetLevel)
+            {
+                case 1: return inv.CountItems("$item_trophy_boar") >= 5;
+                case 2: return inv.CountItems("$item_trophy_greydwarfshaman") >= 5;
+                case 3: return inv.CountItems("$item_trophy_wraith") >= 5;
+                case 4: return inv.CountItems("$item_trophy_fenring") >= 5;
+                case 5: return inv.CountItems("$item_trophy_goblinbrute") >= 5;
+                case 6: return inv.CountItems("$item_trophy_gjall") >= 5;
+                case 7: return inv.CountItems("$item_trophy_fallenvalkyrie") >= 5;
+                default: return true;
+            }
+        }
+
+        public System.Collections.Generic.List<string> GetMissingSpeedRootItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            var missing = new System.Collections.Generic.List<string>();
+            if (player == null) return missing;
+            var inv = player.GetInventory();
+            if (inv == null) return missing;
+            string[] locKeys  = { "", "item_trophy_boar", "item_trophy_greydwarfshaman",
+                "item_trophy_wraith", "item_trophy_fenring", "item_trophy_goblinbrute",
+                "item_trophy_gjall", "item_trophy_fallenvalkyrie" };
+            string[] itemKeys = { "", "$item_trophy_boar", "$item_trophy_greydwarfshaman",
+                "$item_trophy_wraith", "$item_trophy_fenring", "$item_trophy_goblinbrute",
+                "$item_trophy_gjall", "$item_trophy_fallenvalkyrie" };
+            if (targetLevel >= 1 && targetLevel <= 7)
+            {
+                if (inv.CountItems(itemKeys[targetLevel]) < 5)
+                    missing.Add($"{Localization.L.Get(locKeys[targetLevel])} x5");
+            }
+            return missing;
+        }
+
+        private void ConsumeSpeedRootLevelItems(int targetLevel)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null) return;
+            var inv = player.GetInventory();
+            if (inv == null) return;
+            switch (targetLevel)
+            {
+                case 1: inv.RemoveItem("$item_trophy_boar", 5); break;
+                case 2: inv.RemoveItem("$item_trophy_greydwarfshaman", 5); break;
+                case 3: inv.RemoveItem("$item_trophy_wraith", 5); break;
+                case 4: inv.RemoveItem("$item_trophy_fenring", 5); break;
+                case 5: inv.RemoveItem("$item_trophy_goblinbrute", 5); break;
+                case 6: inv.RemoveItem("$item_trophy_gjall", 5); break;
+                case 7: inv.RemoveItem("$item_trophy_fallenvalkyrie", 5); break;
             }
         }
 
@@ -2418,7 +2563,8 @@ namespace CaptainSkillTree.SkillTree
                 int level = GetSkillLevel(node.Id);
                 if (level > 0)
                 {
-                    totalPoints += level * node.RequiredPoints;
+                    for (int lv = 1; lv <= level; lv++)
+                        totalPoints += node.GetRequiredPointsForLevel(lv);
                 }
             }
             return totalPoints;
@@ -2528,7 +2674,9 @@ namespace CaptainSkillTree.SkillTree
                 foreach (var pending in pendingInvestments)
                 {
                     var node = SkillNodes[pending.Key];
-                    pendingPoints += pending.Value * node.RequiredPoints;
+                    int baseLevel = GetSkillLevel(pending.Key);
+                    for (int lv = baseLevel + 1; lv <= baseLevel + pending.Value; lv++)
+                        pendingPoints += node.GetRequiredPointsForLevel(lv);
                 }
             }
             return Math.Max(0, GetSkillPoints() - GetTotalUsedPoints() - pendingPoints);
@@ -2839,7 +2987,7 @@ namespace CaptainSkillTree.SkillTree
                 "spear_Step5_penetrate",
                 "polearm_step5_king",
                 "defense_Step6_mind",
-                "mace_Step7_guardian_heart"
+                "mace_Step7_shockwave_slam"
             };
             var hKeySkills = new[] {
                 "sword_step5_defswitch",
